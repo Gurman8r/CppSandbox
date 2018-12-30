@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.168
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MemeLib", "proj\MemeLib\MemeLib.vcxproj", "{FB3F7428-B79A-4E01-82B4-FDA9CE9C8572}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Demo", "proj\Demo\Demo.vcxproj", "{2E2EE9AD-06FF-4A73-B09D-EC42CB1A9923}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FB3F7428-B79A-4E01-82B4-FDA9CE9C8572} = {FB3F7428-B79A-4E01-82B4-FDA9CE9C8572}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FB3F7428-B79A-4E01-82B4-FDA9CE9C8572}.Debug|x64.ActiveCfg = Debug|x64
+		{FB3F7428-B79A-4E01-82B4-FDA9CE9C8572}.Debug|x64.Build.0 = Debug|x64
+		{FB3F7428-B79A-4E01-82B4-FDA9CE9C8572}.Debug|x86.ActiveCfg = Debug|Win32
+		{FB3F7428-B79A-4E01-82B4-FDA9CE9C8572}.Debug|x86.Build.0 = Debug|Win32
+		{FB3F7428-B79A-4E01-82B4-FDA9CE9C8572}.Release|x64.ActiveCfg = Release|x64
+		{FB3F7428-B79A-4E01-82B4-FDA9CE9C8572}.Release|x64.Build.0 = Release|x64
+		{FB3F7428-B79A-4E01-82B4-FDA9CE9C8572}.Release|x86.ActiveCfg = Release|Win32
+		{FB3F7428-B79A-4E01-82B4-FDA9CE9C8572}.Release|x86.Build.0 = Release|Win32
+		{2E2EE9AD-06FF-4A73-B09D-EC42CB1A9923}.Debug|x64.ActiveCfg = Debug|x64
+		{2E2EE9AD-06FF-4A73-B09D-EC42CB1A9923}.Debug|x64.Build.0 = Debug|x64
+		{2E2EE9AD-06FF-4A73-B09D-EC42CB1A9923}.Debug|x86.ActiveCfg = Debug|Win32
+		{2E2EE9AD-06FF-4A73-B09D-EC42CB1A9923}.Debug|x86.Build.0 = Debug|Win32
+		{2E2EE9AD-06FF-4A73-B09D-EC42CB1A9923}.Release|x64.ActiveCfg = Release|x64
+		{2E2EE9AD-06FF-4A73-B09D-EC42CB1A9923}.Release|x64.Build.0 = Release|x64
+		{2E2EE9AD-06FF-4A73-B09D-EC42CB1A9923}.Release|x86.ActiveCfg = Release|Win32
+		{2E2EE9AD-06FF-4A73-B09D-EC42CB1A9923}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CBA93077-9F7A-4603-BDEB-A00B94D6BDBF}
+	EndGlobalSection
+EndGlobal
