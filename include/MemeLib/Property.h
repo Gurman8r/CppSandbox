@@ -2,6 +2,7 @@
 #define _PROPERTY_H_
 
 #include <MemeLib/ITrackable.h>
+#include <type_traits>
 
 namespace ml
 {
@@ -74,6 +75,17 @@ namespace ml
 		inline Property & operator=(int value) { return intValue(value); }
 		inline Property & operator=(const std::string & value) { return stringValue(value); }
 		inline Property & operator=(const char* value) { return stringValue(value); }
+
+	public:
+		inline operator bool()			const { return boolValue(); }
+		inline operator char()			const { return charValue(); }
+		inline operator double()		const { return doubleValue(); }
+		inline operator float()			const { return floatValue(); }
+		inline operator int()			const { return intValue(); }
+		inline operator std::string()	const { return stringValue(); }
+		inline operator const char*()	const { return stringValue().c_str(); }
+		inline operator char*()			const { return std::remove_cv_t<char*>((const char*)(*this)); }
+
 		
 	public:
 		void serialize(std::ostream & out) const override;

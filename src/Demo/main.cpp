@@ -37,8 +37,6 @@ int main(int argc, char** argv)
 	ml::Timer timer;
 	timer.start();
 
-	float f = ml::Maths::sign(-1.f);
-
 	// Colors
 	char c = 64;
 	for (uint16_t i = 0; i < ml::FG::MAX_COLOR; i++)
@@ -51,9 +49,7 @@ int main(int argc, char** argv)
 		}
 		std::cout << std::endl;
 	}
-	std::cout 
-		<< ml::Fmt() << std::endl 
-		<< std::endl;
+	std::cout << ml::Fmt() << std::endl << std::endl;
 
 
 	// Vectors
@@ -128,6 +124,7 @@ int main(int argc, char** argv)
 		<< ml::Property("S", "Hello!")	<< std::endl
 		<< std::endl;
 
+	auto a = (char*)(ml::Property(""));
 
 	// Show Time
 	timer.stop();
