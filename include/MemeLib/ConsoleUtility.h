@@ -33,8 +33,12 @@ namespace ml
 			Red			= Gray | DarkRed,
 			Magenta		= Gray | DarkRed | DarkBlue,
 			Yellow		= Gray | DarkRed | DarkGreen,
-			White		= Gray | DarkRed | DarkGreen | DarkBlue
+			White		= Gray | DarkRed | DarkGreen | DarkBlue,
+
+			MAX_COLOR = 16
 		};
+
+		const static FG::Color ColorValues[FG::MAX_COLOR];
 	};
 
 	struct ML_API BG final
@@ -56,8 +60,12 @@ namespace ml
 			Red			= DarkGray | DarkRed,
 			Magenta		= DarkGray | DarkRed | DarkBlue,
 			Yellow		= DarkGray | DarkRed | DarkGreen,
-			White		= DarkGray | DarkRed | DarkGreen | DarkBlue
+			White		= DarkGray | DarkRed | DarkGreen | DarkBlue,
+
+			MAX_COLOR = 16
 		};
+
+		const static BG::Color ColorValues[BG::MAX_COLOR];
 	};
 
 	struct ML_API Fmt final
@@ -112,19 +120,6 @@ namespace ml
 		ConsoleUtility::setAttribute(uint16_t(value.fg) | uint16_t(value.bg));
 		return out;
 	};
-
-
-	inline std::ostream& endfmt(std::ostream& out)
-	{
-		out << Fmt(FG::Normal, BG::Black);
-		return out;
-	}
-
-	inline std::ostream& endln(std::ostream& out)
-	{
-		out << endfmt << std::endl;
-		return out;
-	}
 }
 
 #endif // !_CONSOLE_UTILITY_H_

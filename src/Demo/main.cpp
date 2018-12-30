@@ -14,49 +14,68 @@ public:
 	~TestComponent() {}
 };
 
+void delay(uint64_t value)
+{
+	static ml::Timer t;
+	t.reset();
+	while (t.elapsed().millis() < value);
+}
+
 int main(int argc, char** argv)
 {
-	std::vector<int> tVec;
-	std::vector<int>::const_iterator test = tVec.cbegin();
-
 	ml::Timer timer;
 	timer.start();
 
+	// Colors
+	char c = (char)64;
+	for (uint16_t i = 0; i < ml::FG::MAX_COLOR; i++)
+	{
+		for (uint16_t j = 0; j < ml::BG::MAX_COLOR; j++)
+		{
+			std::cout 
+				<< (ml::FG::ColorValues[i] | ml::BG::ColorValues[j])
+				<< (c = c < 127 ? c + 1 : (char)64) << " ";
+		}
+		std::cout << std::endl;
+	}
+	std::cout << ml::Fmt() << std::endl;
+
 	// Vectors
-	ml::vec2f v2a = { 1.2f, 3.4f };
-	ml::vec3f v3a = v2a;
-	ml::vec3f v3b = { 5.6f, 7.8f, 9.0f };
-	ml::vec2f v2b = v3b;
+	ml::vec2f vec2A = { 1.2f, 3.4f };
+	ml::vec3f vec3A = vec2A;
+	ml::vec3f vec3B = { 5.6f, 7.8f, 9.0f };
+	ml::vec2f vec2B = vec3B;
 	std::cout 
-		<< "V2 A: { " << v2a << " }" << std::endl
-		<< "V3 A: { " << v3a << " }" << std::endl
+		<< "V2 A: { " << vec2A << " }" << std::endl
+		<< "V3 A: { " << vec3A << " }" << std::endl
 		<< std::endl
-		<< "V3 B: { " << v3b << " }" << std::endl
-		<< "V2 B: { " << v2b << " }" << std::endl
+		<< "V3 B: { " << vec3B << " }" << std::endl
+		<< "V2 B: { " << vec2B << " }" << std::endl
+		<< std::endl
 		<< std::endl;
 
-	// Iterators
+	// Matrix Iterators
 	ml::mat3f m3 = {
 		2.2f,  4.4f,  6.6f,
 		8.8f,  10.1f, 12.12f,
 		14.14f, 16.16f, 18.18f,
 	};
-	std::cout << m3 << std::endl << std::endl;
+	std::cout
+		<< "M3: " << std::endl
+		<< m3 << std::endl << std::endl;
 	for (auto it = m3.begin(); it != m3.end(); it++)
 	{
-		std::size_t i = (it - m3.begin());
-		if (i == m3.Size / 2)
-			(*it) = 1.2345f;
-		std::cout << "[" << (i) << "] " << (*it) << std::endl;
+		std::cout << "[" << (it - m3.begin()) << "] " << (*it) << std::endl;
 	}
 	std::cout << std::endl << std::endl;
 
 	auto m4 = ml::mat4f();
-	std::cout << m4 << std::endl << std::endl;
+	std::cout 
+		<< "M4: " << std::endl
+		<< m4 << std::endl << std::endl;
 	for (auto it = m4.cbegin(); it != m4.cend(); it++)
 	{
-		std::size_t i = (it - m4.cbegin());
-		std::cout << "[" << (i) << "] " << (*it) << std::endl;
+		std::cout << "[" << (it - m4.cbegin()) << "] " << (*it) << std::endl;
 	}
 	std::cout << std::endl << std::endl;
 	
@@ -68,6 +87,7 @@ int main(int argc, char** argv)
 
 	// Properties
 	std::cout
+		<< "Properties:" << std::endl
 		<< ml::Property("B", true)		<< std::endl
 		<< ml::Property("C", 'c')		<< std::endl
 		<< ml::Property("D", 1.23)		<< std::endl
