@@ -7,7 +7,7 @@
 
 namespace ml
 {
-	const FG::Color FG::ColorValues[FG::MAX_COLOR] = {
+	const FG::Color FG::Values[FG::MAX_COLOR] = {
 		Black,
 		DarkBlue,
 		DarkGreen,
@@ -26,7 +26,7 @@ namespace ml
 		White,
 	};
 
-	const BG::Color BG::ColorValues[BG::MAX_COLOR] = {
+	const BG::Color BG::Values[BG::MAX_COLOR] = {
 		Black,
 		DarkBlue,
 		DarkGreen,

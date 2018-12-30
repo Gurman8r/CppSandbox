@@ -5,7 +5,8 @@
 
 namespace ml
 {
-	class ML_API Component : public ITrackable
+	class ML_API Component 
+		: public ITrackable
 	{
 	public:
 		Component() {}

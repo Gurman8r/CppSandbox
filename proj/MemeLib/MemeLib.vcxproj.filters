@@ -46,6 +46,12 @@
     <Filter Include="Header Files\Maths">
       <UniqueIdentifier>{31b96231-5819-483e-b653-76572a31bbb8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Input">
+      <UniqueIdentifier>{91633fc4-9309-4b6a-9b6f-19ae66fdc149}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Input">
+      <UniqueIdentifier>{d1a3add3-e7bb-49d0-9c80-8908fba0b68b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeLib\ITrackable.h">
@@ -70,9 +76,6 @@
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeLib\BitHelper.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeLib\KeyCode.h">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeLib\TimePoint.h">
@@ -117,6 +120,12 @@
     <ClInclude Include="..\..\include\MemeLib\ArrayIterator.h">
       <Filter>Header Files\Maths</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeLib\InputState.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeLib\KeyCode.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeLib\ConsoleUtility.cpp">
@@ -139,6 +148,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeLib\Property.cpp">
       <Filter>Source Files\Properties</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeLib\InputState.cpp">
+      <Filter>Source Files\Input</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

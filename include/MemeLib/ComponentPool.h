@@ -13,9 +13,9 @@ namespace ml
 	{
 	public: // types
 		using key_type = const std::type_info*;
-		using data_type = std::unordered_map<key_type, Component*>;
-		using iterator = data_type::iterator;
-		using c_iterator = data_type::const_iterator;
+		using map_type = std::unordered_map<key_type, Component*>;
+		using iterator = map_type::iterator;
+		using c_iterator = map_type::const_iterator;
 
 	public:
 		ComponentPool();
@@ -32,7 +32,7 @@ namespace ml
 
 			if (!contains<T>())
 			{
-				return set<T>(T());
+				return set<T>();
 			}
 
 			return NULL;
@@ -92,19 +92,15 @@ namespace ml
 
 			return NULL;
 		}
-		template <typename T> inline T*			set(const T& value)
+		template <typename T> inline T*			set()
 		{
 			assert_is_base_of_component(T);
 
-			if (T* tmp = get<T>())
-			{
-				*tmp = value;
-				return tmp;
-			}
-			else
+			if (!get<T>())
 			{
 				m_value.insert({ &typeid(T), new T() });
-				return set(value);
+
+				return get<T>();
 			}
 
 			return NULL;
@@ -137,7 +133,7 @@ namespace ml
 		}
 
 	private: // data
-		data_type m_value;
+		map_type m_value;
 	};
 }
 

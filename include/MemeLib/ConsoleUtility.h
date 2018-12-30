@@ -38,7 +38,7 @@ namespace ml
 			MAX_COLOR = 16
 		};
 
-		const static FG::Color ColorValues[FG::MAX_COLOR];
+		const static FG::Color Values[FG::MAX_COLOR];
 	};
 
 	struct ML_API BG final
@@ -65,7 +65,7 @@ namespace ml
 			MAX_COLOR = 16
 		};
 
-		const static BG::Color ColorValues[BG::MAX_COLOR];
+		const static BG::Color Values[BG::MAX_COLOR];
 	};
 
 	struct ML_API Fmt final
