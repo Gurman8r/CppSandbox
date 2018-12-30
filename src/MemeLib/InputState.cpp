@@ -6,10 +6,10 @@
 
 namespace PRIV
 {
-	inline bool _getKeyState(int32_t value)
+	inline static bool _getKeyState(int32_t value)
 	{
 #ifdef _WIN32
-		return (bool)GetKeyState(value);
+		return (bool)GetAsyncKeyState(value);
 #else
 		return false;
 #endif
@@ -27,20 +27,27 @@ namespace ml
 	}
 
 
-	void InputState::beginStep()
+	InputState & InputState::beginStep()
 	{
 		for (uint32_t i = 0; i < KeyCode::MAX_KEYCODE; i++)
 		{
 			m_new[i] = PRIV::_getKeyState((int32_t)i);
 		}
+		return (*this);
 	}
 
-	void InputState::endStep()
+	InputState & InputState::endStep()
 	{
 		for (uint32_t i = 0; i < KeyCode::MAX_KEYCODE; i++)
 		{
 			m_old[i] = m_new[i];
 		}
+		return (*this);
+	}
+
+	InputState & InputState::fullStep()
+	{
+		return beginStep().endStep();
 	}
 
 
@@ -57,5 +64,16 @@ namespace ml
 	bool InputState::getKeyUp(KeyCode value) const
 	{
 		return (!m_new[value]) && (m_old[value]);
+	}
+	
+	
+	bool InputState::getAnyKey(bool allowMouse) const
+	{
+		uint32_t imin = (allowMouse ? KeyCode::Backspace : KeyCode::LeftMouse);
+		for (uint32_t i = imin; i < KeyCode::MAX_KEYCODE; i++)
+		{
+			if (getKey((KeyCode)i)) return true;
+		}
+		return false;
 	}
 }

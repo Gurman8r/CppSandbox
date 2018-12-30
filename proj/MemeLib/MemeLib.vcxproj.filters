@@ -43,14 +43,17 @@
     <Filter Include="Header Files\Properties">
       <UniqueIdentifier>{5ea09d24-fe9f-4be6-a7a7-47eda361e9f7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Maths">
-      <UniqueIdentifier>{31b96231-5819-483e-b653-76572a31bbb8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Input">
       <UniqueIdentifier>{91633fc4-9309-4b6a-9b6f-19ae66fdc149}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Input">
       <UniqueIdentifier>{d1a3add3-e7bb-49d0-9c80-8908fba0b68b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Maths">
+      <UniqueIdentifier>{31b96231-5819-483e-b653-76572a31bbb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Maths">
+      <UniqueIdentifier>{5bbc0650-5c5d-42bb-b2e9-bc0c2e4d57e0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -117,14 +120,17 @@
     <ClInclude Include="..\..\include\MemeLib\Vector3.h">
       <Filter>Header Files\Maths</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeLib\ArrayIterator.h">
-      <Filter>Header Files\Maths</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeLib\InputState.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeLib\KeyCode.h">
       <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeLib\BaseIterator.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeLib\Maths.h">
+      <Filter>Header Files\Maths</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -151,6 +157,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeLib\InputState.cpp">
       <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\MemeLib\IEnumerator.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeLib\Maths.cpp">
+      <Filter>Source Files\Maths</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

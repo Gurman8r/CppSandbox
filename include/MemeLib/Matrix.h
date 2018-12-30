@@ -1,15 +1,18 @@
 #ifndef _MATRIX_H_
 #define _MATRIX_H_
 
-#include <MemeLib/ArrayIterator.h>
+#include <MemeLib/IEnumerator.h>
 #include <initializer_list>
 
 namespace ml
 {
+	// Template 2D Array
 	template <typename T, std::size_t X, std::size_t Y>
 	class Matrix
 		: public ITrackable
 		, public IComparable<Matrix<T, X, Y>>
+		, public IEnumerator<T>
+
 	{
 	public:
 		using self_type = Matrix<T, X, Y>;
@@ -21,14 +24,9 @@ namespace ml
 	private:
 		T m_data[Size];
 
-	public:
-		using iterator			= ArrayIterator<std::forward_iterator_tag, T>;
-		using const_iterator	= ArrayIterator<std::forward_iterator_tag, const T>;
-
-		inline iterator			begin() { return iterator(&m_data[0]); }
-		inline iterator			end()	{ return iterator(&m_data[Size]); }
-		inline const_iterator	cbegin(){ return begin(); }
-		inline const_iterator	cend()	{ return end(); }
+	protected:
+		inline T* _MyBegin(){ return &m_data[0]; }
+		inline T* _MyEnd()	{ return &m_data[Size]; }
 
 	public:
 		Matrix()

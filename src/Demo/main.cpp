@@ -1,3 +1,5 @@
+/* * * * * * * * * * * * * * * * * * * * */
+
 #include <MemeLib/Property.h>
 #include <MemeLib/Timer.h>
 #include <MemeLib/MemoryTracker.h>
@@ -6,13 +8,18 @@
 #include <MemeLib/Vector2.h>
 #include <MemeLib/Vector3.h>
 #include <MemeLib/InputState.h>
+#include <MemeLib/Maths.h>
+
+/* * * * * * * * * * * * * * * * * * * * */
 
 class TestComponent : public ml::Component
 {
 public:
-	TestComponent() { std::cout << "Test Component Created" << std::endl; }
-	~TestComponent() { std::cout << "Test Component Destroyed" << std::endl; }
+	TestComponent() { std::cout << (*this) << " Created" << std::endl; }
+	~TestComponent() { std::cout << (*this) << " Destroyed" << std::endl; }
 };
+
+/* * * * * * * * * * * * * * * * * * * * */
 
 inline static void delay(uint64_t value)
 {
@@ -21,22 +28,15 @@ inline static void delay(uint64_t value)
 	while (t.elapsed().millis() < value);
 }
 
-inline static void waitForKey(ml::KeyCode value)
-{
-	static ml::InputState input;
-	while (true)
-	{
-		input.beginStep();
-		if (input.getKeyUp(value)) break;
-		input.endStep();
-	}
-}
-
+/* * * * * * * * * * * * * * * * * * * * */
 
 int main(int argc, char** argv)
 {
+	// Start Timer
 	ml::Timer timer;
 	timer.start();
+
+	float f = ml::Maths::sign(-1.f);
 
 	// Colors
 	char c = 64;
@@ -50,7 +50,9 @@ int main(int argc, char** argv)
 		}
 		std::cout << std::endl;
 	}
-	std::cout << ml::Fmt() << std::endl;
+	std::cout 
+		<< ml::Fmt() << std::endl 
+		<< std::endl;
 
 
 	// Vectors
@@ -67,7 +69,7 @@ int main(int argc, char** argv)
 		<< std::endl
 		<< std::endl;
 
-
+	
 	// Matrix Iterators
 	ml::mat3f m3 = {
 		2.2f,   4.4f,   6.6f,
@@ -75,7 +77,7 @@ int main(int argc, char** argv)
 		14.14f, 16.16f, 18.18f,
 	};
 	std::cout << "M3: " << std::endl << m3 << std::endl << std::endl;
-	for (auto it = m3.begin(); it != m3.end(); it++)
+	for (ml::mat3f::iterator it = m3.begin(); it != m3.end(); it++)
 	{
 		std::cout << "[" << (it - m3.begin()) << "] " << (*it) << std::endl;
 	}
@@ -84,7 +86,7 @@ int main(int argc, char** argv)
 
 	ml::mat4f m4 = ml::mat4f();
 	std::cout << "M4: " << std::endl << m4 << std::endl << std::endl;
-	for (auto it = m4.cbegin(); it != m4.cend(); it++)
+	for (ml::mat4f::const_iterator it = m4.cbegin(); it != m4.cend(); it++)
 	{
 		std::cout << "[" << (it - m4.cbegin()) << "] " << (*it) << std::endl;
 	}
@@ -94,6 +96,10 @@ int main(int argc, char** argv)
 	// Entity / Component
 	ml::Entity* ent = new ml::Entity();
 	ent->addComponent<TestComponent>();
+	if (auto tmp = ent->getComponent<TestComponent>())
+	{
+		std::cout << (*tmp) << " OK" << std::endl;
+	}
 	delete ent;
 	std::cout << std::endl;
 
@@ -116,10 +122,14 @@ int main(int argc, char** argv)
 		<< "Elapsed: " << timer.elapsed().millis() << " msec" << std::endl
 		<< std::endl;
 
+
 	// Exit
-	std::cout << "Press Escape to Continue..." << std::endl;
-	waitForKey(ml::KeyCode::Escape);
+	std::cout << "Press Any Key to Continue..." << std::endl;
+	ml::InputState input;
+	while (!input.fullStep().getAnyKey());
 	std::cout << std::endl;
 
 	return EXIT_SUCCESS;
 }
+
+/* * * * * * * * * * * * * * * * * * * * */

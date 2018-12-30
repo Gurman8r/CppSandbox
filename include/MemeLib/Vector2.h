@@ -102,7 +102,7 @@ namespace ml
 		};
 		inline self_type & normalize()
 		{
-			return ((*this) = (T(1) / sqrt(sqrMagnitude())));
+			return ((*this) = ((T)1 / sqrt(sqrMagnitude())));
 		};
 		inline self_type normal() const
 		{
@@ -120,7 +120,9 @@ namespace ml
 		};
 		inline static float det(const self_type& a, const self_type& b)
 		{
-			return (a[0] * b[1]) - (a[1] * b[0]);
+			return 
+				(static_cast<float>(a[0]) * static_cast<float>(b[1])) - 
+				(static_cast<float>(a[1]) * static_cast<float>(b[0]));
 		};
 		inline static float distance(const self_type& a, const self_type& b)
 		{
@@ -129,9 +131,9 @@ namespace ml
 		inline static float dot(const self_type& a, const self_type& b)
 		{
 			float value = 0;
-			for (unsigned i = 0; i < (*this).Size; i++)
+			for (std::size_t i = 0; i < (*this).Size; i++)
 			{
-				value += a[i] * b[i];
+				value += static_cast<float>(a[i]) * static_cast<float>(b[i]);
 			}
 			return value;
 		};
@@ -150,11 +152,11 @@ namespace ml
 		};
 		inline static self_type lerp(const self_type& a, const self_type& b, float t)
 		{
-			return self_type(Vector2<float>(a * t + b * (T(1) - t)));
+			return self_type(Vector2<float>(a * t + b * (static_cast<T>(1) - t)));
 		};
 		inline static self_type reflect(const self_type& direction, const self_type& normal)
 		{
-			return (normal - direction) * (2 * dot(direction, normal));
+			return (normal - direction) * (static_cast<T>(2) * dot(direction, normal));
 		};
 
 	public:

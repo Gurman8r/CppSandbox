@@ -158,13 +158,14 @@
     <ClInclude Include="..\..\include\MemeLib\Entity.h" />
     <ClInclude Include="..\..\include\MemeLib\Enum.h" />
     <ClInclude Include="..\..\include\MemeLib\Export.h" />
-    <ClInclude Include="..\..\include\MemeLib\ArrayIterator.h" />
+    <ClInclude Include="..\..\include\MemeLib\BaseIterator.h" />
     <ClInclude Include="..\..\include\MemeLib\IComparable.h" />
     <ClInclude Include="..\..\include\MemeLib\InputState.h" />
     <ClInclude Include="..\..\include\MemeLib\ISerializable.h" />
     <ClInclude Include="..\..\include\MemeLib\ISingleton.h" />
     <ClInclude Include="..\..\include\MemeLib\ITrackable.h" />
     <ClInclude Include="..\..\include\MemeLib\KeyCode.h" />
+    <ClInclude Include="..\..\include\MemeLib\Maths.h" />
     <ClInclude Include="..\..\include\MemeLib\Matrix.h" />
     <ClInclude Include="..\..\include\MemeLib\MemoryTracker.h" />
     <ClInclude Include="..\..\include\MemeLib\Property.h" />
@@ -176,12 +177,14 @@
     <ClInclude Include="..\..\include\MemeLib\Vector3.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\include\MemeLib\IEnumerator.h" />
     <ClCompile Include="..\..\src\MemeLib\ComponentPool.cpp" />
     <ClCompile Include="..\..\src\MemeLib\ConsoleUtility.cpp" />
     <ClCompile Include="..\..\src\MemeLib\InputState.cpp" />
     <ClCompile Include="..\..\src\MemeLib\ITrackable.cpp" />
     <ClCompile Include="..\..\src\MemeLib\MemoryTracker.cpp" />
     <ClCompile Include="..\..\src\MemeLib\Property.cpp" />
+    <ClCompile Include="..\..\src\MemeLib\Maths.cpp" />
     <ClCompile Include="..\..\src\MemeLib\StringUtility.cpp" />
     <ClCompile Include="..\..\src\MemeLib\Timer.cpp" />
   </ItemGroup>

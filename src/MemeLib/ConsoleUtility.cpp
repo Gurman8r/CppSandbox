@@ -53,14 +53,4 @@ namespace ml
 
 #endif
 	}
-
-	void ConsoleUtility::pause()
-	{
-#ifdef ML_SYSTEM_WINDOWS
-		system("pause");
-#else
-		std::cout << "Press Any Key to Continue..." << std::endl;
-#endif
-		std::cout << std::endl;
-	}
 }

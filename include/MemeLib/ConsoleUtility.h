@@ -10,7 +10,6 @@ namespace ml
 	class ML_API ConsoleUtility final
 	{
 	public:
-		static void pause();
 		static void setAttribute(const uint16_t & value);
 	};
 

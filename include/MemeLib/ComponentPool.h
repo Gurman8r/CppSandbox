@@ -12,10 +12,10 @@ namespace ml
 		: public ITrackable
 	{
 	public: // types
-		using key_type = const std::type_info*;
-		using map_type = std::unordered_map<key_type, Component*>;
-		using iterator = map_type::iterator;
-		using c_iterator = map_type::const_iterator;
+		using key_type		= const std::type_info*;
+		using map_type		= std::unordered_map<key_type, Component*>;
+		using iterator		= map_type::iterator;
+		using const_iterator= map_type::const_iterator;
 
 	public:
 		ComponentPool();
@@ -26,7 +26,8 @@ namespace ml
 		ComponentPool&	clear();
 
 	public: // templates
-		template <typename T> inline T*			add()
+		template <typename T> 
+		inline T * add()
 		{
 			assert_is_base_of_component(T);
 
@@ -37,13 +38,17 @@ namespace ml
 
 			return NULL;
 		}
-		template <typename T> inline bool		contains() const
+		
+		template <typename T> 
+		inline bool	contains() const
 		{
 			assert_is_base_of_component(T);
 
 			return find<T>() != end();
 		}
-		template <typename T> inline bool		erase()
+		
+		template <typename T> 
+		inline bool	erase()
 		{
 			assert_is_base_of_component(T);
 
@@ -56,19 +61,25 @@ namespace ml
 
 			return false;
 		}
-		template <typename T> inline iterator	find()
+		
+		template <typename T> 
+		inline iterator	find()
 		{
 			assert_is_base_of_component(T);
 
 			return m_value.find(&typeid(T));
 		}
-		template <typename T> inline c_iterator find() const
+		
+		template <typename T> 
+		inline const_iterator find() const
 		{
 			assert_is_base_of_component(T);
 
 			return m_value.find(&typeid(T));
 		}
-		template <typename T> inline T*			get()
+		
+		template <typename T> 
+		inline T * get()
 		{
 			assert_is_base_of_component(T);
 
@@ -80,7 +91,9 @@ namespace ml
 
 			return NULL;
 		}
-		template <typename T> inline const T*	get() const
+		
+		template <typename T> 
+		inline const T * get() const
 		{
 			assert_is_base_of_component(T);
 
@@ -92,7 +105,9 @@ namespace ml
 
 			return NULL;
 		}
-		template <typename T> inline T*			set()
+		
+		template <typename T> 
+		inline T * set()
 		{
 			assert_is_base_of_component(T);
 
@@ -115,19 +130,19 @@ namespace ml
 		{
 			return m_value.end();
 		};
-		inline ComponentPool::c_iterator		begin() const
+		inline ComponentPool::const_iterator		begin() const
 		{
 			return m_value.begin();
 		};
-		inline ComponentPool::c_iterator		end() const
+		inline ComponentPool::const_iterator		end() const
 		{
 			return m_value.end();
 		}
-		inline ComponentPool::c_iterator		cbegin() const
+		inline ComponentPool::const_iterator		cbegin() const
 		{
 			return m_value.cbegin();
 		}
-		inline ComponentPool::c_iterator		cend() const
+		inline ComponentPool::const_iterator		cend() const
 		{
 			return m_value.cend();
 		}

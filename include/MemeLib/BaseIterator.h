@@ -14,51 +14,48 @@
 
 namespace ml
 {
-	template <class IC, class TV, class UT = std::remove_cv_t<TV>, class DT = std::ptrdiff_t>
-	class ArrayIterator
+	// IC : iterator category
+	// VT : value type
+	// UT : unqualified type
+	// DT : difference type
+	template <class IC, class VT, class UT = std::remove_cv_t<VT>, class DT = std::ptrdiff_t>
+	class BaseIterator
 		: public ITrackable
-		, public std::iterator<IC, UT, DT, TV*, TV&>
+		, public std::iterator<IC, UT, DT, VT*, VT&>
 	{
 	public:
 		using iterator_category = IC;
-		using value_type		= TV;
+		using value_type		= VT;
 		using unqualified_type	= UT;
 		using difference_type	= DT;
 		using pointer			= value_type * ;
 		using reference			= value_type & ;
-		using self_type			= ArrayIterator<iterator_category, value_type, unqualified_type>;
+		using self_type			= BaseIterator<iterator_category, value_type, unqualified_type>;
 
 	public:
-		ArrayIterator()
+		BaseIterator()
 			: m_ptr(NULL)
 		{
 		}
-		ArrayIterator(const self_type & copy)
+		BaseIterator(const self_type & copy)
 			: m_ptr(copy.m_ptr)
 		{
 		}
-		explicit ArrayIterator(unqualified_type* ptr)
+		explicit BaseIterator(unqualified_type* ptr)
 			: m_ptr(ptr)
 		{
 		}
-		virtual ~ArrayIterator() {}
-
-	public:
-		void swap(ArrayIterator & value) noexcept
-		{
-			using std::swap;
-			swap(m_ptr, value.m_ptr);
-		}
+		virtual ~BaseIterator() {}
 
 	public:
 		template <class U>
-		inline bool operator==(const ArrayIterator<iterator_category, U> & rhs) const
+		inline bool operator==(const BaseIterator<iterator_category, U> & rhs) const
 		{
 			return (m_ptr == rhs.m_ptr);
 		}
 
 		template <class U>
-		inline bool operator!=(const ArrayIterator<iterator_category, U> & rhs) const
+		inline bool operator!=(const BaseIterator<iterator_category, U> & rhs) const
 		{
 			return !((*this) == rhs);
 		}
@@ -129,9 +126,9 @@ namespace ml
 			return (m_ptr - other.m_ptr);
 		}
 
-		inline operator ArrayIterator<iterator_category, const value_type>() const
+		inline operator BaseIterator<iterator_category, const value_type>() const
 		{
-			return ArrayIterator<iterator_category, const TV>(m_ptr);
+			return BaseIterator<iterator_category, const VT>(m_ptr);
 		}
 
 	private:
