@@ -9,6 +9,7 @@
 #include <MemeLib/Vector3.h>
 #include <MemeLib/InputState.h>
 #include <MemeLib/Maths.h>
+#include <iomanip>
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -66,6 +67,18 @@ int main(int argc, char** argv)
 		<< std::endl
 		<< "V3 B: { " << vec3B << " }" << std::endl
 		<< "V2 B: { " << vec2B << " }" << std::endl
+		<< std::endl
+		<< std::endl;
+
+	// Check Maths
+	ml::vec2f vec(-1.f, 1.f);
+	std::cout
+		<< "Checking Maths:" << std::endl
+		<< std::left
+		<< std::setw(12) << "Value: " << vec << std::endl
+		<< std::setw(12) << "SqrMag: " << vec.sqrMagnitude() << std::endl
+		<< std::setw(12) << "Magnitude: " << vec.magnitude() << std::endl
+		<< std::setw(12) << "Normal: " << vec.normal() << std::endl
 		<< std::endl
 		<< std::endl;
 

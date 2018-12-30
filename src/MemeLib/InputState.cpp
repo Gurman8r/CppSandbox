@@ -69,7 +69,7 @@ namespace ml
 	
 	bool InputState::getAnyKey(bool allowMouse) const
 	{
-		uint32_t imin = (allowMouse ? KeyCode::Backspace : KeyCode::LeftMouse);
+		uint32_t imin = (allowMouse ?  KeyCode::LeftMouse : KeyCode::Backspace);
 		for (uint32_t i = imin; i < KeyCode::MAX_KEYCODE; i++)
 		{
 			if (getKey((KeyCode)i)) return true;

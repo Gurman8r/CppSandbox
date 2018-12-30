@@ -8,10 +8,8 @@ namespace ml
 	template <typename T>
 	class Vector3
 		: public Vector<T, 3>
-		, public IComparable<Vector<T, 3>>
 	{
 	public:
-		using base_type = Vector<T, 3>;
 		using self_type = Vector3<T>;
 
 	public:
@@ -32,14 +30,11 @@ namespace ml
 			(*this)[1] = y;
 			(*this)[2] = z;
 		}
-		virtual ~Vector3() {}
 
-	public:
 		template <std::size_t N>
 		Vector3(const Vector<T, N> & copy)
 		{
-			std::size_t num = std::min((*this).Size, copy.Size);
-			for (std::size_t i = 0; i < num; i++)
+			for (std::size_t i = 0, imax = std::min((*this).Size, copy.Size); i < imax; i++)
 			{
 				(*this)[i] = copy[i];
 			}
@@ -57,99 +52,14 @@ namespace ml
 		template <typename U, std::size_t N>
 		explicit Vector3(const Vector<U, N> & copy)
 		{
-			std::size_t num = std::min((*this).Size, copy.Size);
-			for (std::size_t i = 0; i < num; i++)
+			for (std::size_t i = 0, imax = std::min((*this).Size, copy.Size); i < imax; i++)
 			{
 				(*this)[i] = copy[i];
 			}
 		}
 
+		virtual ~Vector3() {}
 
-	public:
-		inline virtual bool equals(const base_type & value) const override
-		{
-			for (std::size_t i = 0; i < (*this).Size; i++)
-			{
-				if ((*this)[i] != value[i])
-				{
-					return false;
-				}
-			}
-			return true;
-		}
-
-		inline virtual bool lessThan(const base_type & value) const override
-		{
-			for (std::size_t i = 0; i < (*this).Size; i++)
-			{
-				if ((*this)[i] >= value[i])
-				{
-					return false;
-				}
-			}
-			return true;
-		}
-
-	public:
-		inline friend self_type		operator+(const self_type& lhs, const self_type& rhs)
-		{
-			return self_type(lhs[0] + rhs[0], lhs[1] + rhs[1]);
-		};
-		inline friend self_type		operator-(const self_type& lhs, const self_type& rhs)
-		{
-			return self_type(lhs[0] - rhs[0], lhs[1] - rhs[1]);
-		};
-		inline friend self_type		operator*(const self_type& lhs, const self_type& rhs)
-		{
-			return self_type(lhs[0] * rhs[0], lhs[1] * rhs[1]);
-		};
-		inline friend self_type		operator/(const self_type& lhs, const self_type& rhs)
-		{
-			return self_type(lhs[0] / rhs[0], lhs[1] / rhs[1]);
-		};
-		inline friend self_type		operator*(const self_type& lhs, const T rhs)
-		{
-			return self_type(lhs[0] * rhs, lhs[1] * rhs);
-		};
-		inline friend self_type		operator/(const self_type& lhs, const T rhs)
-		{
-			return self_type(lhs[0] / rhs, lhs[1] / rhs);
-		};
-		inline friend self_type &	operator+=(self_type& lhs, const self_type& rhs)
-		{
-			lhs = (lhs + rhs);
-			return lhs;
-		};
-		inline friend self_type &	operator-=(self_type& lhs, const self_type& rhs)
-		{
-			lhs = (lhs - rhs);
-			return lhs;
-		};
-		inline friend self_type &	operator*=(self_type& lhs, const self_type& rhs)
-		{
-			lhs = (lhs * rhs);
-			return lhs;
-		};
-		inline friend self_type &	operator/=(self_type& lhs, const self_type& rhs)
-		{
-			lhs = (lhs / rhs);
-			return lhs;
-		};
-		inline friend self_type &	operator*=(self_type& lhs, const T rhs)
-		{
-			lhs = (lhs * rhs);
-			return lhs;
-		};
-		inline friend self_type &	operator/=(self_type& lhs, const T rhs)
-		{
-			lhs = (lhs / rhs);
-			return lhs;
-		};
-		inline friend self_type		operator-(const self_type& rhs)
-		{
-			return rhs * static_cast<T>(-1);
-		}
-		
 	public:
 		static const self_type Zero;
 		static const self_type One;
