@@ -30,7 +30,8 @@ namespace ml
 		using difference_type	= DT;
 		using pointer			= value_type * ;
 		using reference			= value_type & ;
-		using self_type			= BaseIterator<iterator_category, value_type, unqualified_type>;
+		using self_type			= BaseIterator<iterator_category, value_type, unqualified_type, difference_type>;
+		using const_self_type	= BaseIterator<iterator_category, const value_type, unqualified_type, difference_type>;
 
 	public:
 		BaseIterator()
@@ -126,7 +127,7 @@ namespace ml
 			return (m_ptr - other.m_ptr);
 		}
 
-		inline operator BaseIterator<iterator_category, const value_type>() const
+		inline operator const_self_type() const
 		{
 			return BaseIterator<iterator_category, const VT>(m_ptr);
 		}
@@ -134,6 +135,9 @@ namespace ml
 	private:
 		unqualified_type* m_ptr;
 	};
+
+	template <class VT, class UT = std::remove_cv_t<VT>, class DT = std::ptrdiff_t>
+	using ForwardIterator = BaseIterator<std::forward_iterator_tag, VT, UT, DT>;
 }
 
 #endif // !_FORWARD_ITERATOR_H_

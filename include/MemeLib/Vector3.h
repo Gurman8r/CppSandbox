@@ -10,52 +10,42 @@ namespace ml
 		: public Vector<T, 3>
 	{
 	public:
+		using base_type = Vector<T, 3>;
 		using self_type = Vector3<T>;
 
 	public:
 		Vector3()
-			: Vector3((T)0, (T)0, (T)0)
+			: base_type()
 		{
 		}
 		Vector3(const T & xyz)
-			: Vector3(xyz, xyz, xyz)
+			: base_type(xyz)
 		{
-			(*this)[0] = xyz;
-			(*this)[1] = xyz;
-			(*this)[2] = xyz;
 		}
 		Vector3(const T & x, const T & y, const T & z)
+			: base_type({ x, y, z })
 		{
-			(*this)[0] = x;
-			(*this)[1] = y;
-			(*this)[2] = z;
 		}
 
 		template <std::size_t N>
 		Vector3(const Vector<T, N> & copy)
+			: base_type()
 		{
-			for (std::size_t i = 0, imax = std::min((*this).Size, copy.Size); i < imax; i++)
-			{
-				(*this)[i] = copy[i];
-			}
+			base_type::copyData(copy);
 		}
 
 		template<typename U>
 		explicit Vector3(const Vector3<U>& copy)
-			: Vector3(
-				static_cast<T>(copy[0]), 
-				static_cast<T>(copy[1]), 
-				static_cast<T>(copy[2]))
+			: base_type()
 		{
+			base_type::copyData(copy);
 		}
 		
 		template <typename U, std::size_t N>
 		explicit Vector3(const Vector<U, N> & copy)
+			: base_type()
 		{
-			for (std::size_t i = 0, imax = std::min((*this).Size, copy.Size); i < imax; i++)
-			{
-				(*this)[i] = copy[i];
-			}
+			base_type::copyData(copy);
 		}
 
 		virtual ~Vector3() {}

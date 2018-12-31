@@ -10,47 +10,41 @@ namespace ml
 		: public Vector<T, 2>
 	{
 	public:
+		using base_type = Vector<T, 2>;
 		using self_type = Vector2<T>;
 
 	public:
 		Vector2()
-			: Vector2((T)0, (T)0)
+			: base_type()
 		{
 		}
 		Vector2(const T & xy)
-			: Vector2(xy, xy)
+			: base_type(xy)
 		{
 		}
-		Vector2(const T & xx, const T & yy)
+		Vector2(const T & x, const T & y)
+			: base_type({ x, y })
 		{
-			(*this)[0] = xx;
-			(*this)[1] = yy;
 		}
 		
 		template <std::size_t N>
 		Vector2(const Vector<T, N> & copy)
+			: base_type()
 		{
-			for (std::size_t i = 0, imax = std::min((*this).Size, copy.Size); i < imax; i++)
-			{
-				(*this)[i] = copy[i];
-			}
+			base_type::copyData(copy);
 		}
 
 		template<typename U>
 		explicit Vector2(const Vector2<U>& copy)
-			: Vector2(
-				static_cast<T>(copy[0]), 
-				static_cast<T>(copy[1]))
+			: base_type()
 		{
+			base_type::copyData(copy);
 		}
 
 		template <typename U, std::size_t N>
 		explicit Vector2(const Vector<U, N> & copy)
 		{
-			for (std::size_t i = 0, imax = std::min((*this).Size, copy.Size); i < imax; i++)
-			{
-				(*this)[i] = copy[i];
-			}
+			base_type::copyData(copy);
 		}
 
 		virtual ~Vector2() {}

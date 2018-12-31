@@ -150,6 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\include\MemeLib\Axis.h" />
     <ClInclude Include="..\..\include\MemeLib\BitHelper.h" />
     <ClInclude Include="..\..\include\MemeLib\Component.h" />
     <ClInclude Include="..\..\include\MemeLib\ComponentPool.h" />
@@ -169,15 +170,19 @@
     <ClInclude Include="..\..\include\MemeLib\Matrix.h" />
     <ClInclude Include="..\..\include\MemeLib\MemoryTracker.h" />
     <ClInclude Include="..\..\include\MemeLib\Property.h" />
+    <ClInclude Include="..\..\include\MemeLib\Quaternion.h" />
     <ClInclude Include="..\..\include\MemeLib\StringUtility.h" />
     <ClInclude Include="..\..\include\MemeLib\TimePoint.h" />
     <ClInclude Include="..\..\include\MemeLib\Timer.h" />
+    <ClInclude Include="..\..\include\MemeLib\Transform.h" />
     <ClInclude Include="..\..\include\MemeLib\Vector.h" />
     <ClInclude Include="..\..\include\MemeLib\Vector2.h" />
     <ClInclude Include="..\..\include\MemeLib\Vector3.h" />
+    <ClInclude Include="..\..\include\MemeLib\Vector4.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\include\MemeLib\IEnumerator.h" />
+    <ClCompile Include="..\..\include\MemeLib\IEnumerable.h" />
+    <ClCompile Include="..\..\src\MemeLib\Axis.cpp" />
     <ClCompile Include="..\..\src\MemeLib\ComponentPool.cpp" />
     <ClCompile Include="..\..\src\MemeLib\ConsoleUtility.cpp" />
     <ClCompile Include="..\..\src\MemeLib\InputState.cpp" />
@@ -187,6 +192,7 @@
     <ClCompile Include="..\..\src\MemeLib\Maths.cpp" />
     <ClCompile Include="..\..\src\MemeLib\StringUtility.cpp" />
     <ClCompile Include="..\..\src\MemeLib\Timer.cpp" />
+    <ClCompile Include="..\..\src\MemeLib\Transform.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

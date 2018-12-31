@@ -15,6 +15,26 @@ namespace ml
 		using self_type = Vector<T, N>;
 
 	public:
+		Vector()
+			: base_type()
+		{
+		}
+		Vector(const T & value)
+			: base_type(value)
+		{
+		}
+		Vector(const T * value)
+			: base_type(value)
+		{
+		}
+		Vector(const std::initializer_list<T> & value)
+			: base_type(value)
+		{
+		}
+		Vector(const self_type & value)
+			: base_type(value)
+		{
+		}
 		virtual ~Vector() {}
 
 	public:
@@ -44,6 +64,16 @@ namespace ml
 
 
 	public:
+		inline float distanceTo(const self_type & value) const
+		{
+			return self_type::distance((*this), value);
+		}
+
+		inline float dot(const self_type & value) const
+		{
+			return self_type::dot((*this), value);
+		}
+		
 		inline float magnitude() const
 		{
 			return sqrt(sqrMagnitude());
@@ -58,7 +88,7 @@ namespace ml
 			}
 			return value;
 		};
-
+		
 
 		inline self_type & normalize()
 		{
@@ -70,7 +100,7 @@ namespace ml
 			return self_type(*this).normalize();
 		};
 
-
+		
 		inline static float distance(const self_type& a, const self_type& b)
 		{
 			return self_type(a - b).magnitude();
@@ -79,7 +109,7 @@ namespace ml
 		inline static float dot(const self_type& a, const self_type& b)
 		{
 			float value = 0;
-			for (std::size_t i = 0; i < (*this).Size; i++)
+			for (std::size_t i = 0; i < self_type::Size; i++)
 			{
 				value += static_cast<float>(a[i]) * static_cast<float>(b[i]);
 			}

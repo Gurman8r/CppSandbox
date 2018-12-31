@@ -132,6 +132,18 @@
     <ClInclude Include="..\..\include\MemeLib\Maths.h">
       <Filter>Header Files\Maths</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeLib\Axis.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeLib\Transform.h">
+      <Filter>Header Files\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeLib\Quaternion.h">
+      <Filter>Header Files\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeLib\Vector4.h">
+      <Filter>Header Files\Maths</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeLib\ConsoleUtility.cpp">
@@ -158,11 +170,17 @@
     <ClCompile Include="..\..\src\MemeLib\InputState.cpp">
       <Filter>Source Files\Input</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\include\MemeLib\IEnumerator.h">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemeLib\Maths.cpp">
       <Filter>Source Files\Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeLib\Axis.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeLib\Transform.cpp">
+      <Filter>Source Files\Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\MemeLib\IEnumerable.h">
+      <Filter>Header Files\Interfaces</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

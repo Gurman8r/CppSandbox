@@ -7,8 +7,8 @@
 #include <MemeLib/Entity.h>
 #include <MemeLib/Vector2.h>
 #include <MemeLib/Vector3.h>
+#include <MemeLib/Quaternion.h>
 #include <MemeLib/InputState.h>
-#include <MemeLib/Maths.h>
 #include <iomanip>
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -27,6 +27,13 @@ inline static void delay(uint64_t value)
 	static ml::Timer t;
 	t.reset();
 	while (t.elapsed().millis() < value);
+}
+
+inline static void pause()
+{
+	std::cout << "Press Any Key to Continue..." << std::endl;
+	ml::InputState input;
+	while (!input.fullStep().getAnyKey());
 }
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -54,9 +61,10 @@ int main(int argc, char** argv)
 
 	// Vectors
 	ml::vec2f vec2A = { 1.2f, 3.4f };
-	ml::vec3f vec3A = vec2A;
 	ml::vec3f vec3B = { 5.6f, 7.8f, 9.0f };
+	ml::vec3f vec3A = vec2A;
 	ml::vec2f vec2B = vec3B;
+	ml::vec3u vec3C = (ml::vec3u)vec2A;
 	std::cout 
 		<< "V2 A: { " << vec2A << " }" << std::endl
 		<< "V3 A: { " << vec3A << " }" << std::endl
@@ -65,6 +73,7 @@ int main(int argc, char** argv)
 		<< "V2 B: { " << vec2B << " }" << std::endl
 		<< std::endl
 		<< std::endl;
+
 
 	// Check Maths
 	ml::vec2f vec(-1.f, 1.f);
@@ -75,9 +84,11 @@ int main(int argc, char** argv)
 		<< std::setw(12) << "SqrMag: " << vec.sqrMagnitude() << std::endl
 		<< std::setw(12) << "Magnitude: " << vec.magnitude() << std::endl
 		<< std::setw(12) << "Normal: " << vec.normal() << std::endl
+		<< std::setw(12) << "Front: " << vec.front() << std::endl
+		<< std::setw(12) << "Back: " << vec.back() << std::endl
+		<< std::setw(12) << "Empty: " << (vec.empty() ? "true" : "false") << std::endl
 		<< std::endl
 		<< std::endl;
-
 	
 	// Matrix Iterators
 	ml::mat3f m3 = {
@@ -92,14 +103,31 @@ int main(int argc, char** argv)
 	}
 	std::cout << std::endl << std::endl;
 
-
-	ml::mat4f m4 = ml::mat4f();
+	ml::mat4f m4 = ml::mat4f::identity();
 	std::cout << "M4: " << std::endl << m4 << std::endl << std::endl;
 	for (ml::mat4f::const_iterator it = m4.cbegin(); it != m4.cend(); it++)
 	{
 		std::cout << "[" << (it - m4.cbegin()) << "] " << (*it) << std::endl;
 	}
 	std::cout << std::endl << std::endl;
+
+
+	// Quaternaions
+	ml::quat q1(1, 2, 3, 4);
+	ml::quat q2 = ml::vec4f();
+	ml::quat q3 = q1 * q2;
+	ml::quat q4 = q1 * 1.0f;
+	ml::quat q5 = ml::quat::slerp(q1, q2, 0.5f);
+	std::cout
+		<< std::left
+		<< std::setw(10) << "Quaternions:" << std::endl
+		<< std::setw(10) << "Q1" << q1 << std::endl
+		<< std::setw(10) << "Q2" << q2 << std::endl
+		<< std::setw(10) << "Q3" << q3 << std::endl
+		<< std::setw(10) << "Q4" << q4 << std::endl
+		<< std::setw(10) << "Q5" << q5 << std::endl
+		<< std::endl
+		<< std::endl;
 	
 
 	// Entity / Component
@@ -112,6 +140,7 @@ int main(int argc, char** argv)
 	delete ent;
 	std::cout << std::endl;
 
+	std::vector<int>::reverse_iterator foo;
 
 	// Properties
 	std::cout
@@ -124,9 +153,8 @@ int main(int argc, char** argv)
 		<< ml::Property("S", "Hello!")	<< std::endl
 		<< std::endl;
 
-	auto a = (char*)(ml::Property(""));
 
-	// Show Time
+	// Stop Timer
 	timer.stop();
 	std::cout 
 		<< "Elapsed: " << timer.elapsed().millis() << " msec" << std::endl
@@ -134,9 +162,8 @@ int main(int argc, char** argv)
 
 
 	// Exit
-	std::cout << "Press Any Key to Continue..." << std::endl;
-	ml::InputState input;
-	while (!input.fullStep().getAnyKey());
+	//pause();
+	system("pause");
 	std::cout << std::endl;
 
 	return EXIT_SUCCESS;
