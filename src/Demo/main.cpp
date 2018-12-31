@@ -9,6 +9,7 @@
 #include <MemeLib/Vector3.h>
 #include <MemeLib/Quaternion.h>
 #include <MemeLib/InputState.h>
+#include <MemeLib/INIReader.h>
 #include <iomanip>
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -28,6 +29,10 @@ inline static void delay(uint64_t value)
 	t.reset();
 	while (t.elapsed().millis() < value);
 }
+
+/* * * * * * * * * * * * * * * * * * * * */
+
+INIReader ini;
 
 /* * * * * * * * * * * * * * * * * * * * */
 
