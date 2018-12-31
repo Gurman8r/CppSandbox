@@ -2,11 +2,11 @@
 #define _FORWARD_ITERATOR_H_
 
 #include <MemeLib/ITrackable.h>
+#include <MemeLib/IComparable.h>
 #include <algorithm>
 #include <cassert>
 #include <cstddef>
 #include <iterator>
-#include <type_traits>
 #include <utility>
 
 // Source:
@@ -18,14 +18,11 @@ namespace ml
 	// VT : value type
 	// UT : unqualified type
 	// DT : difference type
-	template <
-		class IC,
-		class VT, 
-		class UT = std::remove_cv_t<VT>,
-		class DT = std::ptrdiff_t>
+	template <class IC, class VT, class UT = std::remove_cv_t<VT>, class DT = std::ptrdiff_t>
 	class BaseIterator
 		: public ITrackable
 		, public std::iterator<IC, UT, DT, VT*, VT&>
+		, public IComparable<BaseIterator<IC, VT, UT, DT>>
 	{
 	public:
 		using iterator_category = IC;
@@ -53,18 +50,16 @@ namespace ml
 		virtual ~BaseIterator() {}
 
 	public:
-		template <class U>
-		inline bool operator==(const BaseIterator<iterator_category, U> & rhs) const
+		virtual bool equals(const self_type & value) const override
 		{
-			return (m_ptr == rhs.m_ptr);
+			return m_ptr == value.m_ptr;
+		}
+		virtual bool lessThan(const self_type & value) const override
+		{
+			return m_ptr < value.m_ptr;
 		}
 
-		template <class U>
-		inline bool operator!=(const BaseIterator<iterator_category, U> & rhs) const
-		{
-			return !((*this) == rhs);
-		}
-
+	public:
 		inline reference operator*() const
 		{
 			assert((m_ptr != NULL) && "Invalid iterator dereference!");

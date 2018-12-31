@@ -3,7 +3,7 @@
 
 #include <MemeLib/Export.h>
 #include <string>
-#include <typeindex>
+#include <type_traits>
 
 namespace ml
 {

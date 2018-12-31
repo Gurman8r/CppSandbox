@@ -1,6 +1,7 @@
 #ifndef _TRANSFORM_H_
 #define _TRANSFORM_H_
 
+#include <MemeLib/Component.h>
 #include <MemeLib/Vector3.h>
 #include <MemeLib/Vector2.h>
 #include <MemeLib/Quaternion.h>
@@ -32,6 +33,8 @@ namespace ml
 		const vec3f backward() const;
 		const vec3f right() const;
 		const vec3f left() const;
+		const vec3f up() const;
+		const vec3f down() const;
 
 		inline const mat4f & matrix() const { return m_matrix; }
 

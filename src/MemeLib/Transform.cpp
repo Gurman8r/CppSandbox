@@ -107,5 +107,15 @@ namespace ml
 	{
 		return vec3f();
 	}
+
+	const vec3f Transform::up() const
+	{
+		return vec3f();
+	}
+
+	const vec3f Transform::down() const
+	{
+		return vec3f();
+	}
 	
 }
