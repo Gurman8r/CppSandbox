@@ -45,6 +45,7 @@ int main(int argc, char** argv)
 	timer.start();
 
 	// Colors
+	std::cout << "Colors:" << std::endl;
 	char c = 64;
 	for (uint16_t i = 0; i < ml::FG::MAX_COLOR; i++)
 	{
@@ -52,11 +53,11 @@ int main(int argc, char** argv)
 		{
 			std::cout 
 				<< (ml::FG::Values[i] | ml::BG::Values[j])
-				<< (c = c < 127 ? c + 1 : 64) << " ";
+				<< (c = ((c < 127) ? c + 1 : 64)) << " ";
 		}
 		std::cout << std::endl;
 	}
-	std::cout << ml::Fmt() << std::endl << std::endl;
+	std::cout << ml::FMT() << std::endl << std::endl;
 
 
 	// Vectors
@@ -64,13 +65,16 @@ int main(int argc, char** argv)
 	ml::vec3f vec3B = { 5.6f, 7.8f, 9.0f };
 	ml::vec3f vec3A = vec2A;
 	ml::vec2f vec2B = vec3B;
-	ml::vec3u vec3C = (ml::vec3u)vec2A;
+	ml::vec4f vec4A = vec2A;
 	std::cout 
-		<< "V2 A: { " << vec2A << " }" << std::endl
-		<< "V3 A: { " << vec3A << " }" << std::endl
+		<< "Vectors:" << std::endl
+		<< "V2A: { " << vec2A << " }" << std::endl
+		<< "V3A: { " << vec3A << " }" << std::endl
 		<< std::endl
-		<< "V3 B: { " << vec3B << " }" << std::endl
-		<< "V2 B: { " << vec2B << " }" << std::endl
+		<< "V3B: { " << vec3B << " }" << std::endl
+		<< "V2B: { " << vec2B << " }" << std::endl
+		<< std::endl
+		<< "V4A: { " << vec4A << " }" << std::endl
 		<< std::endl
 		<< std::endl;
 
@@ -99,7 +103,10 @@ int main(int argc, char** argv)
 	std::cout << "M3: " << std::endl << m3 << std::endl << std::endl;
 	for (ml::mat3f::iterator it = m3.begin(); it != m3.end(); it++)
 	{
-		std::cout << "[" << (it - m3.begin()) << "] " << (*it) << std::endl;
+		std::size_t i = (it - m3.begin());
+		std::cout 
+			<< "{" << i << ": " << (*it) << "}"
+			<< ((it != m3.end() - 1) ? " " : "\n");;
 	}
 	std::cout << std::endl << std::endl;
 
@@ -107,7 +114,10 @@ int main(int argc, char** argv)
 	std::cout << "M4: " << std::endl << m4 << std::endl << std::endl;
 	for (ml::mat4f::const_iterator it = m4.cbegin(); it != m4.cend(); it++)
 	{
-		std::cout << "[" << (it - m4.cbegin()) << "] " << (*it) << std::endl;
+		std::size_t i = (it - m4.cbegin());
+		std::cout 
+			<< "{" << i << ": " << (*it) << "}"
+			<< ((it != m4.cend() - 1) ? " " : "\n");
 	}
 	std::cout << std::endl << std::endl;
 
@@ -116,7 +126,7 @@ int main(int argc, char** argv)
 	ml::quat q1(1, 2, 3, 4);
 	ml::quat q2 = ml::vec4f();
 	ml::quat q3 = q1 * q2;
-	ml::quat q4 = q1 * 1.0f;
+	ml::quat q4 = q1 * 1.5f;
 	ml::quat q5 = ml::quat::slerp(q1, q2, 0.5f);
 	std::cout
 		<< std::left

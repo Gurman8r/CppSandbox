@@ -18,7 +18,11 @@ namespace ml
 	// VT : value type
 	// UT : unqualified type
 	// DT : difference type
-	template <class IC, class VT, class UT = std::remove_cv_t<VT>, class DT = std::ptrdiff_t>
+	template <
+		class IC,
+		class VT, 
+		class UT = std::remove_cv_t<VT>,
+		class DT = std::ptrdiff_t>
 	class BaseIterator
 		: public ITrackable
 		, public std::iterator<IC, UT, DT, VT*, VT&>

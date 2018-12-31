@@ -5,6 +5,7 @@
 
 namespace ml
 {
+	// One Dimensional Matrix
 	template <typename T, std::size_t N>
 	class Vector
 		: public Matrix<T, N, 1>
@@ -35,6 +36,25 @@ namespace ml
 			: base_type(value)
 		{
 		}
+
+		template <std::size_t N>
+		Vector(const Vector<T, N> & copy)
+			: base_type(copy)
+		{
+		}
+
+		template<typename U>
+		Vector(const Vector<U, N>& copy)
+			: base_type(copy)
+		{
+		}
+
+		template <typename U, std::size_t N>
+		Vector(const Vector<U, N> & copy)
+			: base_type(copy)
+		{
+		}
+
 		virtual ~Vector() {}
 
 	public:
@@ -142,6 +162,7 @@ namespace ml
 			}
 			return tmp;
 		};
+		
 		inline friend self_type operator-(const self_type& lhs, const self_type& rhs)
 		{
 			self_type tmp;
@@ -151,6 +172,7 @@ namespace ml
 			}
 			return tmp;
 		};
+		
 		inline friend self_type operator*(const self_type& lhs, const self_type& rhs)
 		{
 			self_type tmp;
@@ -160,6 +182,7 @@ namespace ml
 			}
 			return tmp;
 		};
+		
 		inline friend self_type operator/(const self_type& lhs, const self_type& rhs)
 		{
 			self_type tmp;
@@ -169,7 +192,7 @@ namespace ml
 			}
 			return tmp;
 		};
-
+		
 		inline friend self_type operator*(const self_type& lhs, float rhs)
 		{
 			self_type tmp;
@@ -179,6 +202,7 @@ namespace ml
 			}
 			return tmp;
 		};
+		
 		inline friend self_type operator/(const self_type& lhs, float rhs)
 		{
 			self_type tmp;
@@ -189,18 +213,22 @@ namespace ml
 			return tmp;
 		};
 		
+
 		inline friend self_type & operator+=(self_type& lhs, const self_type& rhs)
 		{
 			return (lhs = (lhs + rhs));
 		};
+		
 		inline friend self_type & operator-=(self_type& lhs, const self_type& rhs)
 		{
 			return (lhs = (lhs - rhs));
 		};
+		
 		inline friend self_type & operator*=(self_type& lhs, const self_type& rhs)
 		{
 			return (lhs = (lhs * rhs));
 		};
+		
 		inline friend self_type & operator/=(self_type& lhs, const self_type& rhs)
 		{
 			return (lhs = (lhs / rhs));
@@ -210,6 +238,7 @@ namespace ml
 		{
 			return (lhs = (lhs * rhs));
 		};
+		
 		inline friend self_type & operator/=(self_type& lhs, const float rhs)
 		{
 			return (lhs = (lhs / rhs));

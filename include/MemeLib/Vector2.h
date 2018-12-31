@@ -18,10 +18,12 @@ namespace ml
 			: base_type()
 		{
 		}
+
 		Vector2(const T & xy)
 			: base_type(xy)
 		{
 		}
+
 		Vector2(const T & x, const T & y)
 			: base_type({ x, y })
 		{
@@ -29,22 +31,20 @@ namespace ml
 		
 		template <std::size_t N>
 		Vector2(const Vector<T, N> & copy)
-			: base_type()
+			: base_type(copy)
 		{
-			base_type::copyData(copy);
 		}
 
 		template<typename U>
-		explicit Vector2(const Vector2<U>& copy)
-			: base_type()
+		Vector2(const Vector2<U>& copy)
+			: base_type(copy)
 		{
-			base_type::copyData(copy);
 		}
 
 		template <typename U, std::size_t N>
-		explicit Vector2(const Vector<U, N> & copy)
+		Vector2(const Vector<U, N> & copy)
+			: base_type(copy)
 		{
-			base_type::copyData(copy);
 		}
 
 		virtual ~Vector2() {}

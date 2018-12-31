@@ -13,8 +13,8 @@ namespace ml
 		using value_type		= T;
 		using pointer			= value_type *;
 		using reference			= value_type &;
-		using const_pointer		= const pointer;
-		using const_reference	= const reference;
+		using const_pointer		= const value_type *;
+		using const_reference	= const value_type &;
 		using iterator			= ForwardIterator<value_type>;
 		using const_iterator	= ForwardIterator<const value_type>;
 
@@ -57,6 +57,7 @@ namespace ml
 		{
 			return end();
 		}
+
 
 	public:
 		inline reference front()

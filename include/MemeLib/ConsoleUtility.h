@@ -67,38 +67,38 @@ namespace ml
 		const static BG::Color Values[BG::MAX_COLOR];
 	};
 
-	struct ML_API Fmt final
+	struct ML_API FMT final
 	{
 		FG::Color fg;
 		BG::Color bg;
 
-		Fmt()
+		FMT()
 			: fg(FG::Normal)
 			, bg(BG::Black)
 		{};
-		Fmt(FG::Color fg)
+		FMT(FG::Color fg)
 			: fg(fg)
 			, bg(BG::Black)
 		{};
-		Fmt(BG::Color bg)
+		FMT(BG::Color bg)
 			: fg(FG::Normal)
 			, bg(bg)
 		{};
-		Fmt(FG::Color fg, BG::Color bg)
+		FMT(FG::Color fg, BG::Color bg)
 			: fg(fg)
 			, bg(bg)
 		{};
 	};
 
 
-	inline Fmt operator|(const BG::Color& bg, const FG::Color& fg)
+	inline FMT operator|(const BG::Color& bg, const FG::Color& fg)
 	{
-		return Fmt(fg, bg);
+		return FMT(fg, bg);
 	};
 
-	inline Fmt operator|(const FG::Color& fg, const BG::Color& bg)
+	inline FMT operator|(const FG::Color& fg, const BG::Color& bg)
 	{
-		return Fmt(fg, bg);
+		return FMT(fg, bg);
 	};
 
 
@@ -114,7 +114,7 @@ namespace ml
 		return out;
 	};
 
-	inline std::ostream& operator<<(std::ostream& out, const Fmt& value)
+	inline std::ostream& operator<<(std::ostream& out, const FMT& value)
 	{
 		ConsoleUtility::setAttribute(uint16_t(value.fg) | uint16_t(value.bg));
 		return out;

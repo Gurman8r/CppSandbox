@@ -16,22 +16,24 @@ namespace ml
 
 	{
 	public:
-		using enum_type		= IEnumerable<T>;
-		using self_type		= Matrix<T, _Cols, _Rows>;
+		using value_type	= T;
+		using enum_type		= IEnumerable<value_type>;
+		using self_type		= Matrix<value_type, _Cols, _Rows>;
 
 		static const std::size_t Cols = _Cols;
 		static const std::size_t Rows = _Rows;
 		static const std::size_t Size = (Rows * Cols);
 
 	private:
-		T m_data[Size];
+		value_type m_data[Size];
 
 	public:
 		Matrix()
 			: enum_type(&m_data[0], &m_data[Size])
 		{
 		}
-		Matrix(const T & value)
+		
+		Matrix(const value_type & value)
 			: self_type()
 		{
 			for (std::size_t i = 0; i < Size; i++)
@@ -39,7 +41,8 @@ namespace ml
 				(*this)[i] = value;
 			}
 		}
-		Matrix(const T * value)
+		
+		Matrix(const value_type * value)
 			: self_type()
 		{
 			for (std::size_t i = 0; i < Size; i++)
@@ -47,7 +50,8 @@ namespace ml
 				(*this)[i] = value[i];
 			}
 		}
-		Matrix(const std::initializer_list<T> & value)
+		
+		Matrix(const std::initializer_list<value_type> & value)
 			: self_type()
 		{
 			for (auto it = value.begin(); it != value.end(); it++)
@@ -55,6 +59,7 @@ namespace ml
 				(*this)[(it - value.begin())] = (*it);
 			}
 		}
+		
 		Matrix(const self_type & value)
 			: self_type()
 		{
@@ -63,21 +68,32 @@ namespace ml
 				(*this)[i] = value[i];
 			}
 		}
+		
+		template <typename U, std::size_t C, std::size_t R>
+		Matrix(const Matrix<U, C, R> & copy)
+			: self_type()
+		{
+			for (std::size_t i = 0, imax = std::min((*this).Size, copy.Size); i < imax; i++)
+			{
+				(*this)[i] = static_cast<value_type>(copy[i]);
+			}
+		}
+
 		virtual ~Matrix() {}
 
 	public:
-		inline T * ptr() const
+		inline value_type * ptr() const
 		{
 			return m_data;
 		}
 		
-		inline const T & operator[](std::size_t index) const
+		inline const value_type & operator[](std::size_t index) const
 		{
 			assert(index < (*this).Size);
 			return m_data[index];
 		}
 		
-		inline T & operator[](std::size_t index)
+		inline value_type & operator[](std::size_t index)
 		{
 			assert(index < (*this).Size);
 			return m_data[index];
@@ -90,20 +106,10 @@ namespace ml
 			{
 				for (std::size_t x = 0; x < Cols; x++)
 				{
-					value[y * Cols + x] = (x == y) ? (T)1 : (T)0;
+					value[y * Cols + x] = (x == y) ? (value_type)1 : (value_type)0;
 				}
 			}
 			return value;
-		}
-
-		template <typename U, std::size_t C, std::size_t R>
-		inline self_type & copyData(const Matrix<U, C, R> & copy)
-		{
-			for (std::size_t i = 0, imax = std::min((*this).Size, copy.Size); i < imax; i++)
-			{
-				(*this)[i] = static_cast<T>(copy[i]);
-			}
-			return (*this);
 		}
 
 	public:
@@ -156,14 +162,17 @@ namespace ml
 		}
 	};
 
-	template <typename T> using Matrix3 = Matrix<T, 3, 3>;
-	template <typename T> using Matrix4 = Matrix<T, 4, 4>;
+	template <typename T, std::size_t N> 
+	using MatrixN = Matrix<T, N, N>;
+	
+	template <typename T> 
+	using Matrix3 = MatrixN<T, 3>;
+	
+	template <typename T> 
+	using Matrix4 = MatrixN<T, 4>;
 
-	using Matrix3f = Matrix3<float>;
-	using Matrix4f = Matrix4<float>;
-
-	using mat3f = Matrix3f;
-	using mat4f = Matrix4f;
+	using mat3f = Matrix3<float>;
+	using mat4f = Matrix4<float>;
 }
 
 #endif // !_MATRIX_H_
