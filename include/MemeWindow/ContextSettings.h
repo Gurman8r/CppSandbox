@@ -11,9 +11,9 @@ namespace ml
 	{
 		enum Attribute : uint32_t
 		{
-			Default = 0 << 0, // Non-debug, compatibility context (this and the core attribute are mutually exclusive)
-			Core    = 1 << 0, // Core attribute
-			Debug   = 1 << 2  // Debug attribute
+			Compat	= 0x00032002, // Compatibility attribute
+			Core    = 0x00032001, // Core attribute
+			Debug   = 0x00022007  // Debug attribute
 		};
 
 		uint32_t	depthBits;
@@ -30,14 +30,14 @@ namespace ml
 			uint32_t antialiasing = 0,
 			uint32_t major = 1,
 			uint32_t minor = 1,
-			uint32_t attributes = Attribute::Default,
+			uint32_t attrib = Attribute::Compat,
 			bool sRgb = false)
 			: depthBits(depth)
 			, stencilBits(stencil)
 			, antialiasingLevel(antialiasingLevel)
 			, majorVersion(major)
 			, minorVersion(minor)
-			, attributeFlags(attributes)
+			, attributeFlags(attrib)
 			, sRgbCapable(sRgb)
 		{};
 

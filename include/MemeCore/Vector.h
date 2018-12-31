@@ -197,7 +197,7 @@ namespace ml
 			return tmp;
 		};
 		
-		inline friend self_type operator*(const self_type& lhs, float rhs)
+		inline friend self_type operator*(const self_type& lhs, const T & rhs)
 		{
 			self_type tmp;
 			for (std::size_t i = 0; i < tmp.Size; i++)
@@ -207,7 +207,7 @@ namespace ml
 			return tmp;
 		};
 		
-		inline friend self_type operator/(const self_type& lhs, float rhs)
+		inline friend self_type operator/(const self_type& lhs, const T & rhs)
 		{
 			self_type tmp;
 			for (std::size_t i = 0; i < tmp.Size; i++)
@@ -238,12 +238,12 @@ namespace ml
 			return (lhs = (lhs / rhs));
 		};
 		
-		inline friend self_type & operator*=(self_type& lhs, const float rhs)
+		inline friend self_type & operator*=(self_type& lhs, const T & rhs)
 		{
 			return (lhs = (lhs * rhs));
 		};
 		
-		inline friend self_type & operator/=(self_type& lhs, const float rhs)
+		inline friend self_type & operator/=(self_type& lhs, const T & rhs)
 		{
 			return (lhs = (lhs / rhs));
 		};

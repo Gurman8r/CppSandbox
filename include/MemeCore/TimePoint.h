@@ -22,28 +22,23 @@ namespace ml
 		TimePoint()
 			: m_ms(0UL)
 		{
-		}
-		
+		}		
 		TimePoint(uint64_t value)
 			: m_ms(value)
 		{
-		}
-		
+		}		
 		TimePoint(const nanoseconds & value)
 			: TimePoint(std::chrono::duration_cast<milliseconds>(value))
 		{
-		}
-		
+		}		
 		TimePoint(const milliseconds & value)
 			: m_ms(value.count())
 		{
-		}
-		
+		}		
 		TimePoint(const TimePoint & copy)
 			: m_ms(copy.m_ms)
 		{
-		}
-		
+		}		
 		~TimePoint()
 		{
 		}

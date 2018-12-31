@@ -33,6 +33,18 @@ inline static void delay(uint64_t value)
 	while (t.elapsed().millis() < value);
 }
 
+inline static void pause()
+{
+#ifdef ML_SYSTEM_WINDOWS
+	system("pause");
+#else
+	std::cout << "Press \'Escape\' to Continue..." << std::endl;
+	ml::InputState input;
+	while (!input.beginStep().getKeyDown(ml::KeyCode::Escape));
+	std::cout << std::endl;
+#endif
+}
+
 /* * * * * * * * * * * * * * * * * * * * */
 
 ml::Window window;
@@ -47,7 +59,6 @@ int main(int argc, char** argv)
 	// Start Timer
 	ml::Timer timer;
 	timer.start();
-
 
 	// Colors
 	std::cout << "Colors:" << std::endl;
@@ -169,6 +180,37 @@ int main(int argc, char** argv)
 		<< std::endl;
 
 
+	// Window
+	switch (window.create("Title", 
+		ml::VideoMode(1280, 720),
+		ml::Window::Default, 
+		ml::ContextSettings(0, 0, 0, 3, 3, ml::ContextSettings::Core, false)))
+	{
+	case -1:
+		std::cerr << "Failed to Initialize GLFW" << std::endl;
+		pause();
+		return EXIT_FAILURE;
+	case 1:
+		std::cerr << "Failed to Create Window" << std::endl;
+		pause();
+		return EXIT_FAILURE;
+	case 2:
+		std::cerr << "Failed to Initialize GLEW" << std::endl;
+		pause();
+		return EXIT_FAILURE;
+	}
+
+	while (!window.shouldClose())
+	{
+		window.clear();
+		{
+
+		}
+		window.swapBuffers();
+		window.pollEvents();
+	}
+
+
 	// Stop Timer
 	timer.stop();
 	std::cout 
@@ -176,11 +218,7 @@ int main(int argc, char** argv)
 		<< std::endl;
 
 
-	// Exit
-	std::cout << "Press \'Escape\' to Continue..." << std::endl;
-	ml::InputState input;
-	while (!input.beginStep().getKeyDown(ml::KeyCode::Escape));
-	std::cout << std::endl;
+	pause();
 
 	return EXIT_SUCCESS;
 }

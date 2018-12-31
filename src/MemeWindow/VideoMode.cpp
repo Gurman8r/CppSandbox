@@ -20,6 +20,13 @@ namespace ml
 	{
 	}
 
+	VideoMode::VideoMode(const VideoMode & copy)
+		: width(copy.width)
+		, height(copy.height)
+		, bitsPerPixel(copy.bitsPerPixel)
+	{
+	}
+
 	VideoMode::~VideoMode()
 	{
 	}

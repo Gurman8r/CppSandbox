@@ -2,8 +2,7 @@
 #define _VIDEO_MODE_H_
 
 #include <MemeWindow/Export.h>
-#include <MemeCore/ITrackable.h>
-#include <MemeCore/IComparable.h>
+#include <MemeCore/Vector2.h>
 #include <vector>
 
 namespace ml
@@ -14,6 +13,7 @@ namespace ml
 	{
 		VideoMode();
 		VideoMode(uint32_t width, uint32_t height, uint32_t bitsPerPixel = 32);
+		VideoMode(const VideoMode & copy);
 		~VideoMode();
 
 		static VideoMode getDesktopMode();
@@ -25,9 +25,10 @@ namespace ml
 		uint32_t height;
 		uint32_t bitsPerPixel;
 
-		inline bool equals(const VideoMode & value) const override;
-		
-		inline bool lessThan(const VideoMode & value) const override;
+		inline vec2u size() const { return vec2u(width, height); }
+
+		bool equals(const VideoMode & value) const override;		
+		bool lessThan(const VideoMode & value) const override;
 
 	};
 }
