@@ -50,26 +50,26 @@ namespace ml
 		virtual ~Vector2() {}
 		
 	public:
-		inline static float angle(const self_type& from, const self_type& to)
+		inline static float angle(const self_type & from, const self_type & to)
 		{
 			return angle(to - from);
 		};
 
-		inline static float angle(const self_type& dir)
+		inline static float angle(const self_type & value)
 		{
-			return atan2(dir[0], dir[1]);
+			return atan2(value[0], value[1]);
 		};
 
-		inline static float det(const self_type& a, const self_type& b)
+		inline static float det(const self_type & a, const self_type & b)
 		{
 			return 
 				(static_cast<float>(a[0]) * static_cast<float>(b[1])) - 
 				(static_cast<float>(a[1]) * static_cast<float>(b[0]));
 		};
 
-		inline static self_type angle(float angle)
+		inline static self_type angle(float value)
 		{
-			return self_type(self_type(cos(angle), sin(angle)));
+			return self_type(cos(value), sin(value));
 		};
 
 	public:

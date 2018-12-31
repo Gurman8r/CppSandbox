@@ -29,13 +29,6 @@ inline static void delay(uint64_t value)
 	while (t.elapsed().millis() < value);
 }
 
-inline static void pause()
-{
-	std::cout << "Press Any Key to Continue..." << std::endl;
-	ml::InputState input;
-	while (!input.fullStep().getAnyKey());
-}
-
 /* * * * * * * * * * * * * * * * * * * * */
 
 int main(int argc, char** argv)
@@ -43,6 +36,7 @@ int main(int argc, char** argv)
 	// Start Timer
 	ml::Timer timer;
 	timer.start();
+
 
 	// Colors
 	std::cout << "Colors:" << std::endl;
@@ -93,6 +87,7 @@ int main(int argc, char** argv)
 		<< std::setw(12) << "Empty: " << (vec.empty() ? "true" : "false") << std::endl
 		<< std::endl
 		<< std::endl;
+
 	
 	// Matrix Iterators
 	ml::mat3f m3 = {
@@ -150,7 +145,6 @@ int main(int argc, char** argv)
 	delete ent;
 	std::cout << std::endl;
 
-	std::vector<int>::reverse_iterator foo;
 
 	// Properties
 	std::cout
@@ -172,7 +166,6 @@ int main(int argc, char** argv)
 
 
 	// Exit
-	//pause();
 	system("pause");
 	std::cout << std::endl;
 

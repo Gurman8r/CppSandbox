@@ -5,28 +5,22 @@ namespace ml
 {
 	void * ITrackable::operator new(std::size_t size)
 	{
-		ITrackable* ptr = static_cast<ITrackable*>(malloc(size));
-		ML_MemoryTracker.AddAllocation(ptr, size);
-		return ptr;
+		return ML_MemoryTracker.newAllocation(static_cast<ITrackable*>(malloc(size)), size);
 	}
 	
 	void ITrackable::operator delete(void *ptr)
 	{
-		ML_MemoryTracker.RemoveAllocation(static_cast<ITrackable*>(ptr));
-		free(ptr);
+		return ML_MemoryTracker.deleteAllocation(static_cast<ITrackable*>(ptr));
 	}
 	
-	void * ITrackable::operator new[](size_t size)
+	void * ITrackable::operator new[](std::size_t size)
 	{
-		ITrackable* ptr = static_cast<ITrackable*>(malloc(size));
-		ML_MemoryTracker.AddAllocation(ptr, size);
-		return ptr;
+		return ML_MemoryTracker.newAllocation(static_cast<ITrackable*>(malloc(size)), size);
 	}
 	
 	void ITrackable::operator delete[](void *ptr)
 	{
-		ML_MemoryTracker.RemoveAllocation(static_cast<ITrackable*>(ptr));
-		free(ptr);
+		return ML_MemoryTracker.deleteAllocation(static_cast<ITrackable*>(ptr));
 	}
 	
 }

@@ -9,52 +9,52 @@ namespace ml
 		: public ITrackable
 	{
 	public:
-		Entity() : m_components() {};
+		Entity() : m_pool() {};
 		virtual ~Entity() {}
 
 	protected:
-		inline const ComponentPool & components() const
+		inline const ComponentPool & pool() const
 		{
-			return m_components;
+			return m_pool;
 		}
-		inline ComponentPool & components()
+		inline ComponentPool & pool()
 		{
-			return m_components;
+			return m_pool;
 		}
 
 	public:
 		template <typename T> 
 		inline T* addComponent()
 		{
-			return components().add<T>();
+			return pool().add<T>();
 		}
 		
 		template <typename T> 
 		inline T* getComponent()
 		{
-			return components().get<T>();
+			return pool().get<T>();
 		}
 		
 		template <typename T> 
 		inline const T* getComponent() const
 		{
-			return components().get<T>();
+			return pool().get<T>();
 		}
 		
 		template <typename T>
 		inline bool hasComponent() const
 		{
-			return components().contains<T>();
+			return pool().contains<T>();
 		}
 		
 		template <typename T> 
 		inline T* setComponent(const T& value)
 		{
-			return components().set<T>(value);
+			return pool().set<T>(value);
 		}
 
 	private:
-		ComponentPool m_components;
+		ComponentPool m_pool;
 	};
 }
 

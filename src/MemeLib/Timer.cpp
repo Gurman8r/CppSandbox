@@ -4,6 +4,10 @@ namespace ml
 {
 	Timer::Timer()
 		: m_paused(true)
+		, m_elapsed(0)
+		, m_clock()
+		, m_min()
+		, m_max()
 	{
 	}
 
@@ -26,18 +30,14 @@ namespace ml
 		if (pause && !m_paused)
 		{
 			m_paused = true;
-
 			m_max = m_clock.now();
-
-			m_elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(m_max - m_min);
+			m_elapsed = (m_max - m_min);
 		}
 		else if (!pause && m_paused)
 		{
 			m_paused = false;
-
 			m_min = m_clock.now();
 		}
-
 		return (*this);
 	}
 
@@ -48,21 +48,15 @@ namespace ml
 
 	Timer& Timer::start()
 	{
-		m_min = m_clock.now();
-
-		m_max = m_clock.now();
-
+		m_min = m_max = m_clock.now();
 		m_elapsed = TimePoint();
-
 		return pause(false);
 	}
 
 	Timer& Timer::stop()
 	{
 		m_max = m_clock.now();
-
-		m_elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(m_max - m_min);
-
+		m_elapsed = (m_max - m_min);
 		return (*this);
 	}
 
@@ -71,7 +65,7 @@ namespace ml
 	{
 		return (m_paused)
 			? m_elapsed
-			: m_elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(m_clock.now() - m_min);
+			: m_elapsed = (m_clock.now() - m_min);
 	}
 
 	bool Timer::paused() const

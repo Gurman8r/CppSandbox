@@ -2,7 +2,7 @@
 #define _PROPERTY_H_
 
 #include <MemeLib/ITrackable.h>
-#include <type_traits>
+#include <MemeLib/IComparable.h>
 
 namespace ml
 {
@@ -11,7 +11,7 @@ namespace ml
 		, public IComparable<Property>
 	{
 	public:
-		enum Type : int
+		enum Type : uint32_t
 		{
 			None = 0,
 			Bool,
@@ -32,7 +32,7 @@ namespace ml
 
 		inline friend std::istream & operator>>(std::istream & in, Property::Type & value)
 		{
-			static int temp;
+			uint32_t temp;
 			in >> temp;
 			value = (Property::Type)temp;
 			return in;

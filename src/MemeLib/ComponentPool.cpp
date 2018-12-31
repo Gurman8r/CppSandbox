@@ -6,14 +6,17 @@ namespace ml
 		: m_value()
 	{
 	}
+	
 	ComponentPool::ComponentPool(const ComponentPool & copy)
 		: m_value(copy.m_value)
 	{
 	}
+	
 	ComponentPool::~ComponentPool()
 	{
 		clear();
 	}
+
 
 	const bool ComponentPool::empty() const
 	{

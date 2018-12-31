@@ -13,15 +13,15 @@ namespace ml
 
 	public:
 		Quaternion()
-			: base_type(0.0f)
+			: Quaternion(0.0f, 0.0f, 0.0f)
 		{
 		}
 		Quaternion(const float & xyzw)
-			: base_type(xyzw)
+			: Quaternion(xyzw, xyzw, xyzw)
 		{
 		}
 		Quaternion(const float & x, const float & y, const float & z)
-			: base_type(x, y, z, 1.0f)
+			: Quaternion(x, y, z, 1.0f)
 		{
 		}
 		Quaternion(const float & x, const float & y, const float & z, const float & w)

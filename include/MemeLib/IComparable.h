@@ -1,8 +1,6 @@
 #ifndef _ICOMPARABLE_H_
 #define _ICOMPARABLE_H_
 
-#include <typeindex>
-
 namespace ml
 {
 	template <typename T>

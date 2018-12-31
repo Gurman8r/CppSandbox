@@ -9,6 +9,10 @@ namespace ml
 		: public ITrackable
 	{
 	public:
+		using clock_type = std::chrono::high_resolution_clock;
+		using point_type = std::chrono::steady_clock::time_point;
+
+	public:
 		Timer();
 		Timer(const Timer& copy);
 		~Timer();
@@ -23,11 +27,11 @@ namespace ml
 
 	private:
 		mutable TimePoint m_elapsed;
-		bool m_paused;
 
-		std::chrono::high_resolution_clock		m_clock;
-		std::chrono::steady_clock::time_point	m_min;
-		std::chrono::steady_clock::time_point	m_max;
+		bool		m_paused;
+		clock_type	m_clock;
+		point_type	m_min;
+		point_type	m_max;
 	};
 }
 

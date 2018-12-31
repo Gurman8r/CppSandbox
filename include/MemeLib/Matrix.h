@@ -2,6 +2,7 @@
 #define _MATRIX_H_
 
 #include <MemeLib/IEnumerable.h>
+#include <MemeLib/IComparable.h>
 #include <MemeLib/Maths.h>
 #include <initializer_list>
 
@@ -17,7 +18,6 @@ namespace ml
 	{
 	public:
 		using value_type	= T;
-		using enum_type		= IEnumerable<value_type>;
 		using self_type		= Matrix<value_type, _Cols, _Rows>;
 
 		static const std::size_t Cols = _Cols;
@@ -29,7 +29,7 @@ namespace ml
 
 	public:
 		Matrix()
-			: enum_type(&m_data[0], &m_data[Size])
+			: IEnumerable<value_type>(&m_data[0], &m_data[Size])
 		{
 		}
 		

@@ -44,11 +44,12 @@ namespace ml
 		using MemoryMap = std::map<ITrackable*, MemoryRecord>;
 
 	public:		
-		void AddAllocation(ITrackable* ptr, std::size_t size);
-		void RemoveAllocation(ITrackable* ptr);
-		void DisplayFinalAllocations(std::ostream& out);
-		void DisplayAllAllocations(std::ostream& out);
-		void DisplayAllocation(std::ostream& out, MemoryMap::iterator it);
+		ITrackable* newAllocation(ITrackable* ptr, std::size_t size);
+		void		deleteAllocation(ITrackable* ptr);
+
+		void displayFinalAllocations(std::ostream& out);
+		void displayAllAllocations(std::ostream& out);
+		void displayAllocation(std::ostream& out, MemoryMap::iterator it);
 
 	private:
 		MemoryTracker();
