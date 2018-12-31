@@ -9,7 +9,7 @@
 
 namespace ml
 {
-	class ML_API StringUtility
+	class ML_API StringUtility final
 	{
 	public:
 		static std::string Replace(const std::string& src, const std::string& find, const std::string& replace);
@@ -26,22 +26,14 @@ namespace ml
 			(void)sink;
 
 			std::string	out = fmt;
-			std::size_t pos = 0;
-
-			// Replace each format value with the ones in the stringstream
-			while (ss.good())
+			for (std::size_t pos = 0; ss.good();)
 			{
 				std::string find = StringUtility::Sprintf("{%i}", pos);
-
 				std::string replace;
-
 				std::getline(ss, replace);
-
 				out = StringUtility::Replace(out, find, replace);
-
 				pos++;
 			}
-
 			return out;
 		}
 

@@ -45,11 +45,6 @@ namespace ml
 		return (*this);
 	}
 
-	InputState & InputState::fullStep()
-	{
-		return beginStep().endStep();
-	}
-
 
 	bool InputState::getKey(KeyCode value) const
 	{

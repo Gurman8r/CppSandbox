@@ -15,7 +15,6 @@ namespace ml
 
 		InputState & beginStep();
 		InputState & endStep();
-		InputState & fullStep();
 
 		bool getKey(KeyCode value) const;
 		bool getKeyDown(KeyCode value) const;

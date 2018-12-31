@@ -166,7 +166,9 @@ int main(int argc, char** argv)
 
 
 	// Exit
-	system("pause");
+	std::cout << "Press \'Escape\' to Continue..." << std::endl;
+	ml::InputState input;
+	while (!input.beginStep().getKeyDown(ml::KeyCode::Escape));
 	std::cout << std::endl;
 
 	return EXIT_SUCCESS;

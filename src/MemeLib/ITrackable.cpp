@@ -21,6 +21,5 @@ namespace ml
 	void ITrackable::operator delete[](void *ptr)
 	{
 		return ML_MemoryTracker.deleteAllocation(static_cast<ITrackable*>(ptr));
-	}
-	
+	}	
 }

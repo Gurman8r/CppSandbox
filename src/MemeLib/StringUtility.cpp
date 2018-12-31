@@ -7,27 +7,21 @@ namespace ml
 {
 	std::string StringUtility::Replace(const std::string & src, const std::string & find, const std::string & replace)
 	{
-		if (src == "" || find == "")
-		{
-			return src;
-		}
-
 		std::string copy = src;
-
-		for (std::size_t i = 0; (i = copy.find(find, i)) != std::string::npos;)
+		if (src != "" && find != "")
 		{
-			copy.replace(i, find.length(), replace);
-
-			i += replace.length();
+			for (std::size_t i = 0; (i = copy.find(find, i)) != std::string::npos;)
+			{
+				copy.replace(i, find.size(), replace);
+				i += replace.size();
+			}
 		}
-
 		return copy;
 	}
 
 	std::string StringUtility::Sprintf(const std::string fmt, ...)
 	{
 		std::vector<char> buf(BUFFER_SIZE);
-
 		va_list args;
 		va_start(args, fmt);
 		{
@@ -39,7 +33,6 @@ namespace ml
 				args);
 		}
 		va_end(args);
-
 		return std::string(&buf[0]);
 	}
 }

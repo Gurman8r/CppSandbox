@@ -44,6 +44,11 @@ namespace ml
 			return Vector<float, 3>(*this);
 		}
 
+		inline float real() const
+		{
+			return back();
+		}
+
 		inline mat3f matrix() const
 		{
 			float xx = ((*this)[0] * (*this)[0]);
@@ -61,11 +66,6 @@ namespace ml
 				(2.f * xy + 2.f * zw), (1.f - 2.f * xx - 2.f * zz), (2.f * yz - 2.f * xw),
 				(2.f * xz - 2.f * yw), (2.f * yz + 2.f * xw), (1.f - 2.f * xx - 2.f * yy)
 			});
-		}
-
-		inline float real() const
-		{
-			return back();
 		}
 
 	public:

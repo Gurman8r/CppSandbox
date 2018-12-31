@@ -20,18 +20,22 @@ namespace ml
 			: base_type()
 		{
 		}
+		
 		Vector(const T & value)
 			: base_type(value)
 		{
 		}
+		
 		Vector(const T * value)
 			: base_type(value)
 		{
 		}
+		
 		Vector(const std::initializer_list<T> & value)
 			: base_type(value)
 		{
 		}
+		
 		Vector(const self_type & value)
 			: base_type(value)
 		{

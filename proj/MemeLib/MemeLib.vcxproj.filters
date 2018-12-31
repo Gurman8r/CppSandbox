@@ -28,9 +28,6 @@
     <Filter Include="Header Files\Components">
       <UniqueIdentifier>{13ee360c-6001-4db0-9640-32f0da0d317c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Components">
-      <UniqueIdentifier>{86c73bc8-c4a8-48bd-983b-1f4c68a12150}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Time">
       <UniqueIdentifier>{fd5b1dcc-ce58-48cc-ac44-0685e0b911dc}</UniqueIdentifier>
     </Filter>
@@ -54,6 +51,9 @@
     </Filter>
     <Filter Include="Source Files\Maths">
       <UniqueIdentifier>{5bbc0650-5c5d-42bb-b2e9-bc0c2e4d57e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{a326272c-c214-4189-b30b-01fc42214a54}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -144,6 +144,9 @@
     <ClInclude Include="..\..\include\MemeLib\Vector4.h">
       <Filter>Header Files\Maths</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeLib\INonCopyable.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeLib\ConsoleUtility.cpp">
@@ -160,9 +163,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeLib\ITrackable.cpp">
       <Filter>Source Files\Interfaces</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeLib\ComponentPool.cpp">
-      <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeLib\Property.cpp">
       <Filter>Source Files\Properties</Filter>
@@ -181,6 +181,9 @@
     </ClCompile>
     <ClCompile Include="..\..\include\MemeLib\IEnumerable.h">
       <Filter>Header Files\Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeLib\ComponentPool.cpp">
+      <Filter>Source Files\Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

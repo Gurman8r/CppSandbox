@@ -20,13 +20,13 @@ namespace ml
 		{
 		}
 
-		inline friend std::ostream & operator<<(std::ostream& out, const ISerializable& obj)
+		inline friend std::ostream & operator<<(std::ostream & out, const ISerializable & obj)
 		{
 			obj.serialize(out);
 			return out;
 		}
 
-		inline friend std::istream & operator>>(std::istream& in, ISerializable& obj)
+		inline friend std::istream & operator>>(std::istream & in, ISerializable & obj)
 		{
 			obj.deserialize(in);
 			return in;

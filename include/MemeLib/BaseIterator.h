@@ -18,11 +18,11 @@ namespace ml
 	// VT : value type
 	// UT : unqualified type
 	// DT : difference type
-	template <class IC, class VT, class UT = std::remove_cv_t<VT>, class DT = std::ptrdiff_t>
+	template <class IC, class VT, class UT, class DT>
 	class BaseIterator
 		: public ITrackable
-		, public std::iterator<IC, UT, DT, VT*, VT&>
 		, public IComparable<BaseIterator<IC, VT, UT, DT>>
+		, public std::iterator<IC, UT, DT, VT*, VT&>
 	{
 	public:
 		using iterator_category = IC;
@@ -39,14 +39,17 @@ namespace ml
 			: m_ptr(NULL)
 		{
 		}
+		
 		BaseIterator(const self_type & copy)
 			: m_ptr(copy.m_ptr)
 		{
 		}
+		
 		explicit BaseIterator(unqualified_type* ptr)
 			: m_ptr(ptr)
 		{
 		}
+		
 		virtual ~BaseIterator() {}
 
 	public:
@@ -54,6 +57,7 @@ namespace ml
 		{
 			return m_ptr == value.m_ptr;
 		}
+		
 		virtual bool lessThan(const self_type & value) const override
 		{
 			return m_ptr < value.m_ptr;
@@ -65,11 +69,13 @@ namespace ml
 			assert((m_ptr != NULL) && "Invalid iterator dereference!");
 			return (*m_ptr);
 		}
+		
 		inline reference operator->() const
 		{
 			assert((m_ptr != NULL) && "Invalid iterator dereference!");
 			return (*m_ptr);
 		}
+
 
 		inline self_type & operator++()
 		{
@@ -77,6 +83,7 @@ namespace ml
 			(++m_ptr);
 			return (*this);
 		}
+		
 		inline self_type & operator--()
 		{
 			assert((m_ptr != NULL) && "Out-of-bounds iterator increment!");
@@ -84,6 +91,7 @@ namespace ml
 			return (*this);
 		}
 		
+
 		inline self_type operator++(int)
 		{
 			assert((m_ptr != NULL) && "Out-of-bounds iterator increment!");
@@ -91,6 +99,7 @@ namespace ml
 			operator++();
 			return tmp;
 		}
+		
 		inline self_type operator--(int)
 		{
 			assert((m_ptr != NULL) && "Out-of-bounds iterator increment!");
@@ -98,33 +107,40 @@ namespace ml
 			operator--();
 			return tmp;
 		}
-				
+		
+
 		inline self_type operator+(const difference_type & value) const
 		{
 			return self_type(m_ptr + value);
 		}
+		
 		inline self_type operator-(const difference_type & value) const
 		{
 			return self_type(m_ptr - value);
 		}
 		
+
 		inline self_type & operator+=(const difference_type & value)
 		{
 			return (*this) = (*this) + value;
 		}
+		
 		inline self_type & operator-=(const difference_type & value)
 		{
 			return (*this) = (*this) - value;
 		}
 		
+
 		inline const difference_type operator+(const self_type & other) const
 		{
 			return (m_ptr + other.m_ptr);
 		}
+		
 		inline const difference_type operator-(const self_type & other) const
 		{
 			return (m_ptr - other.m_ptr);
 		}
+
 
 		inline operator const_self_type() const
 		{

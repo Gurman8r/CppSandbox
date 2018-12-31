@@ -18,13 +18,13 @@ namespace ml
 		friend ISingleton<MemoryTracker>;
 
 	public:
-		struct MemoryRecord final
+		struct Allocation final
 		{
 			void*		addr;
 			std::size_t	index;
 			std::size_t	size;
 
-			MemoryRecord(void* addr, std::size_t index, std::size_t size)
+			Allocation(void* addr, std::size_t index, std::size_t size)
 				: addr(addr)
 				, index(index)
 				, size(size) 
@@ -32,7 +32,7 @@ namespace ml
 
 		};
 
-		inline friend std::ostream & operator<<(std::ostream & out, const MemoryRecord & rhs)
+		inline friend std::ostream & operator<<(std::ostream & out, const Allocation & rhs)
 		{
 			return (out)
 				<< " { addr: " << rhs.addr
@@ -41,21 +41,20 @@ namespace ml
 				<< " }";
 		}
 
-		using MemoryMap = std::map<ITrackable*, MemoryRecord>;
+		using AllocationMap = std::map<ITrackable*, Allocation>;
 
 	public:		
 		ITrackable* newAllocation(ITrackable* ptr, std::size_t size);
 		void		deleteAllocation(ITrackable* ptr);
 
-		void displayFinalAllocations(std::ostream& out);
-		void displayAllAllocations(std::ostream& out);
-		void displayAllocation(std::ostream& out, MemoryMap::iterator it);
+		void displayFinalAllocations();
+		void displayAllAllocations();
 
 	private:
-		MemoryTracker();
-		~MemoryTracker();
+		MemoryTracker() {}
+		~MemoryTracker() { displayFinalAllocations(); }
 
-		MemoryMap	m_records;
+		AllocationMap	m_records;
 		std::size_t m_guid;
 	};
 }

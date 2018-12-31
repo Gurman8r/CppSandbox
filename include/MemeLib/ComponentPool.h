@@ -13,7 +13,7 @@ namespace ml
 	class ML_API ComponentPool
 		: public ITrackable
 	{
-	public: // types
+	public:
 		using key_type		= const std::type_info*;
 		using map_type		= std::unordered_map<key_type, Component*>;
 		using iterator		= map_type::iterator;
@@ -24,17 +24,14 @@ namespace ml
 		ComponentPool(const ComponentPool& copy);
 		~ComponentPool();
 
-		const bool		empty() const;
-		ComponentPool&	clear();
-
-	public: // templates
+	public:
 		template <typename T> 
 		inline T * add()
 		{
 			assert_typeof_component(T);
 			if (!contains<T>())
 			{
-				m_value.insert({ &typeid(T), new T() });
+				m_map.insert({ &typeid(T), new T() });
 				return get<T>();
 			}
 			return NULL;
@@ -54,7 +51,7 @@ namespace ml
 			if (T* tmp = get<T>())
 			{
 				delete tmp;
-				m_value.erase(&typeid(T));
+				m_map.erase(&typeid(T));
 				return !contains<T>();
 			}
 			return false;
@@ -64,14 +61,14 @@ namespace ml
 		inline iterator	find()
 		{
 			assert_typeof_component(T);
-			return m_value.find(&typeid(T));
+			return m_map.find(&typeid(T));
 		}
 		
 		template <typename T> 
 		inline const_iterator find() const
 		{
 			assert_typeof_component(T);
-			return m_value.find(&typeid(T));
+			return m_map.find(&typeid(T));
 		}
 		
 		template <typename T> 
@@ -98,35 +95,34 @@ namespace ml
 			return NULL;
 		}
 		
-
-	public: // iterators
+	public:
 		inline ComponentPool::iterator			begin()
 		{
-			return m_value.begin();
+			return m_map.begin();
 		};
 		inline ComponentPool::iterator			end()
 		{
-			return m_value.end();
+			return m_map.end();
 		};
 		inline ComponentPool::const_iterator	begin() const
 		{
-			return m_value.begin();
+			return m_map.begin();
 		};
 		inline ComponentPool::const_iterator	end() const
 		{
-			return m_value.end();
+			return m_map.end();
 		}
 		inline ComponentPool::const_iterator	cbegin() const
 		{
-			return m_value.cbegin();
+			return m_map.cbegin();
 		}
 		inline ComponentPool::const_iterator	cend() const
 		{
-			return m_value.cend();
+			return m_map.cend();
 		}
 
-	private: // data
-		map_type m_value;
+	private:
+		map_type m_map;
 	};
 }
 
