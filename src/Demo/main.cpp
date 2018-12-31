@@ -1,6 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * */
 
-#include <MemeCore/Property.h>
 #include <MemeCore/Timer.h>
 #include <MemeCore/MemoryTracker.h>
 #include <MemeCore/ConsoleUtility.h>
@@ -13,7 +12,8 @@
 #include <MemeCore/EventSystem.h>
 #include <MemeWindow/Window.h>
 #include <MemeGraphics/Shader.h>
-#include <iomanip>
+#include <MemeScript/Script.h>
+#include <MemeScript/Property.h>
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -37,6 +37,7 @@ inline static void delay(uint64_t value)
 
 ml::Window window;
 ml::Shader shader;
+ml::Script script;
 INIReader ini;
 
 /* * * * * * * * * * * * * * * * * * * * */

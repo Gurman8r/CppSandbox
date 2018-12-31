@@ -1,12 +1,13 @@
 #ifndef _PROPERTY_H_
 #define _PROPERTY_H_
 
+#include <MemeScript/Export.h>
 #include <MemeCore/ITrackable.h>
 #include <MemeCore/IComparable.h>
 
 namespace ml
 {
-	class ML_CORE_API Property final
+	class ML_SCRIPT_API Property final
 		: public ITrackable
 		, public IComparable<Property>
 	{

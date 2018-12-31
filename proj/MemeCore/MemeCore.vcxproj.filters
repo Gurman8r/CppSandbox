@@ -34,12 +34,6 @@
     <Filter Include="Source Files\Time">
       <UniqueIdentifier>{035f9e6c-7836-4ba6-91e0-7f95ab678938}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Properties">
-      <UniqueIdentifier>{32ef55d1-f78d-45e3-a04f-0432f1999207}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Properties">
-      <UniqueIdentifier>{5ea09d24-fe9f-4be6-a7a7-47eda361e9f7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Input">
       <UniqueIdentifier>{91633fc4-9309-4b6a-9b6f-19ae66fdc149}</UniqueIdentifier>
     </Filter>
@@ -111,9 +105,6 @@
     <ClInclude Include="..\..\include\MemeCore\Entity.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Property.h">
-      <Filter>Header Files\Properties</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Matrix.h">
       <Filter>Header Files\Maths</Filter>
     </ClInclude>
@@ -181,9 +172,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\ITrackable.cpp">
       <Filter>Source Files\Interfaces</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeCore\Property.cpp">
-      <Filter>Source Files\Properties</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\InputState.cpp">
       <Filter>Source Files\Input</Filter>

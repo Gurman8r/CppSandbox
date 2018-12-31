@@ -4,6 +4,7 @@
 #include <MemeCore/Export.h>
 #include <MemeCore/Enum.h>
 #include <iostream>
+#include <iomanip>
 
 namespace ml
 {

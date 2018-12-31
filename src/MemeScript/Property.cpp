@@ -1,4 +1,4 @@
-#include <MemeCore/Property.h>
+#include <MemeScript/Property.h>
 #include <iomanip>
 
 namespace ml
