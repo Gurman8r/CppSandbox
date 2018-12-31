@@ -8,7 +8,7 @@
 
 namespace ml
 {
-	class ML_API Transform
+	class ML_CORE_API Transform
 		: public ITrackable
 	{
 	public:

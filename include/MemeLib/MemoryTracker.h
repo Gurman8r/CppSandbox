@@ -12,7 +12,7 @@ namespace ml
 {
 	class ITrackable;
 
-	class ML_API MemoryTracker final
+	class ML_CORE_API MemoryTracker final
 		: public ISingleton<MemoryTracker>
 	{
 		friend ISingleton<MemoryTracker>;

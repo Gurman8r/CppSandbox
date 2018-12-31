@@ -6,7 +6,7 @@
 
 namespace ml
 {
-	class ML_API InputState
+	class ML_CORE_API InputState
 		: public ITrackable
 	{
 	public:

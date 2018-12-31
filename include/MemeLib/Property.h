@@ -6,7 +6,7 @@
 
 namespace ml
 {
-	class ML_API Property final
+	class ML_CORE_API Property final
 		: public ITrackable
 		, public IComparable<Property>
 	{

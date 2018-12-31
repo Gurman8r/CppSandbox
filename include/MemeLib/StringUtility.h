@@ -9,7 +9,7 @@
 
 namespace ml
 {
-	class ML_API StringUtility final
+	class ML_CORE_API StringUtility final
 	{
 	public:
 		static std::string Replace(const std::string& src, const std::string& find, const std::string& replace);

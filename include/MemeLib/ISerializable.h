@@ -7,7 +7,7 @@
 
 namespace ml
 {
-	class ML_API ISerializable
+	class ML_CORE_API ISerializable
 	{
 	public:
 		virtual void serialize(std::ostream & out) const

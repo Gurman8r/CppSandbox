@@ -5,7 +5,7 @@
 
 namespace ml
 {
-	class ML_API Maths
+	class ML_CORE_API Maths
 	{
 	public:
 		static const float Pi;

@@ -5,7 +5,7 @@
 
 namespace ml
 {
-	class ML_API Timer final
+	class ML_CORE_API Timer final
 		: public ITrackable
 	{
 	public:

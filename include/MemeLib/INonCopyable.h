@@ -5,7 +5,7 @@
 
 namespace ml
 {
-	class ML_API INonCopyable
+	class ML_CORE_API INonCopyable
 	{
 	protected:
 		INonCopyable() {}

@@ -7,13 +7,13 @@
 
 namespace ml
 {
-	class ML_API ConsoleUtility final
+	class ML_CORE_API ConsoleUtility final
 	{
 	public:
 		static void setAttribute(const uint16_t & value);
 	};
 
-	struct ML_API FG final
+	struct ML_CORE_API FG final
 	{
 		enum Color : uint16_t
 		{
@@ -40,7 +40,7 @@ namespace ml
 		const static FG::Color Values[FG::MAX_COLOR];
 	};
 
-	struct ML_API BG final
+	struct ML_CORE_API BG final
 	{
 		enum Color : uint16_t
 		{
@@ -67,7 +67,7 @@ namespace ml
 		const static BG::Color Values[BG::MAX_COLOR];
 	};
 
-	struct ML_API FMT final
+	struct ML_CORE_API FMT final
 	{
 		FG::Color fg;
 		BG::Color bg;

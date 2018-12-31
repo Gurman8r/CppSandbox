@@ -10,7 +10,7 @@ static_assert(std::is_base_of<ml::Component, T>::value, "Type must inherit ml::C
 
 namespace ml
 {
-	class ML_API ComponentPool
+	class ML_CORE_API ComponentPool
 		: public ITrackable
 	{
 	public:

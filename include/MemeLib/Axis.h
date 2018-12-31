@@ -5,7 +5,7 @@
 
 namespace ml
 {
-	class ML_API Axis
+	class ML_CORE_API Axis
 		: public ITrackable
 	{
 	public:

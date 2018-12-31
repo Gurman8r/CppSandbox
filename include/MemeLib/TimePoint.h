@@ -8,7 +8,7 @@
 
 namespace ml
 {
-	class ML_API TimePoint final 
+	class ML_CORE_API TimePoint final 
 		: public ITrackable
 		, public IComparable<uint64_t>
 		, public IComparable<TimePoint>

@@ -5,7 +5,7 @@
 
 namespace ml
 {
-	class ML_API ITrackable : public ISerializable
+	class ML_CORE_API ITrackable : public ISerializable
 	{
 	public:
 		void*	operator new(std::size_t size);
