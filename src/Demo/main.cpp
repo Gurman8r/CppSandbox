@@ -1,15 +1,18 @@
 /* * * * * * * * * * * * * * * * * * * * */
 
-#include <MemeLib/Property.h>
-#include <MemeLib/Timer.h>
-#include <MemeLib/MemoryTracker.h>
-#include <MemeLib/ConsoleUtility.h>
-#include <MemeLib/Entity.h>
-#include <MemeLib/Vector2.h>
-#include <MemeLib/Vector3.h>
-#include <MemeLib/Quaternion.h>
-#include <MemeLib/InputState.h>
-#include <MemeLib/INIReader.h>
+#include <MemeCore/Property.h>
+#include <MemeCore/Timer.h>
+#include <MemeCore/MemoryTracker.h>
+#include <MemeCore/ConsoleUtility.h>
+#include <MemeCore/Entity.h>
+#include <MemeCore/Vector2.h>
+#include <MemeCore/Vector3.h>
+#include <MemeCore/Quaternion.h>
+#include <MemeCore/InputState.h>
+#include <MemeCore/INIReader.h>
+#include <MemeCore/EventSystem.h>
+#include <MemeWindow/Window.h>
+#include <MemeGraphics/Shader.h>
 #include <iomanip>
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -32,6 +35,8 @@ inline static void delay(uint64_t value)
 
 /* * * * * * * * * * * * * * * * * * * * */
 
+ml::Window window;
+ml::Shader shader;
 INIReader ini;
 
 /* * * * * * * * * * * * * * * * * * * * */

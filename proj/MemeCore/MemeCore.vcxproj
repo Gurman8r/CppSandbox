@@ -20,32 +20,32 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{2E2EE9AD-06FF-4A73-B09D-EC42CB1A9923}</ProjectGuid>
-    <RootNamespace>Demo</RootNamespace>
+    <ProjectGuid>{BCF9C343-33E2-4BDE-BAFA-1C570DFF525F}</ProjectGuid>
+    <RootNamespace>MemeCore</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -70,22 +70,22 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\</OutDir>
+    <OutDir>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\</OutDir>
     <IntDir>$(SolutionDir)tmp\$(ProjectName)\$(Configuration)\$(PlatformTarget)\</IntDir>
     <TargetName>$(ProjectName)_$(Configuration)_$(PlatformTarget)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\</OutDir>
+    <OutDir>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\</OutDir>
     <IntDir>$(SolutionDir)tmp\$(ProjectName)\$(Configuration)\$(PlatformTarget)\</IntDir>
     <TargetName>$(ProjectName)_$(Configuration)_$(PlatformTarget)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\</OutDir>
+    <OutDir>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\</OutDir>
     <IntDir>$(SolutionDir)tmp\$(ProjectName)\$(Configuration)\$(PlatformTarget)\</IntDir>
     <TargetName>$(ProjectName)_$(Configuration)_$(PlatformTarget)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\</OutDir>
+    <OutDir>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\</OutDir>
     <IntDir>$(SolutionDir)tmp\$(ProjectName)\$(Configuration)\$(PlatformTarget)\</IntDir>
     <TargetName>$(ProjectName)_$(Configuration)_$(PlatformTarget)</TargetName>
   </PropertyGroup>
@@ -95,12 +95,12 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)include</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>ML_CORE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
+      <OutputFile>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -109,12 +109,12 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)include</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>ML_CORE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
+      <OutputFile>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -125,14 +125,14 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)include</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>ML_CORE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <OutputFile>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -143,18 +143,66 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)include</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>ML_CORE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <OutputFile>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\Demo\main.cpp" />
+    <ClInclude Include="..\..\include\MemeCore\Axis.h" />
+    <ClInclude Include="..\..\include\MemeCore\BitHelper.h" />
+    <ClInclude Include="..\..\include\MemeCore\Component.h" />
+    <ClInclude Include="..\..\include\MemeCore\ComponentPool.h" />
+    <ClInclude Include="..\..\include\MemeCore\Config.h" />
+    <ClInclude Include="..\..\include\MemeCore\ConsoleUtility.h" />
+    <ClInclude Include="..\..\include\MemeCore\Entity.h" />
+    <ClInclude Include="..\..\include\MemeCore\Enum.h" />
+    <ClInclude Include="..\..\include\MemeCore\EventBase.h" />
+    <ClInclude Include="..\..\include\MemeCore\EventListener.h" />
+    <ClInclude Include="..\..\include\MemeCore\EventSystem.h" />
+    <ClInclude Include="..\..\include\MemeCore\Export.h" />
+    <ClInclude Include="..\..\include\MemeCore\BaseIterator.h" />
+    <ClInclude Include="..\..\include\MemeCore\IComparable.h" />
+    <ClInclude Include="..\..\include\MemeCore\INIReader.h" />
+    <ClInclude Include="..\..\include\MemeCore\INonCopyable.h" />
+    <ClInclude Include="..\..\include\MemeCore\InputState.h" />
+    <ClInclude Include="..\..\include\MemeCore\ISerializable.h" />
+    <ClInclude Include="..\..\include\MemeCore\ISingleton.h" />
+    <ClInclude Include="..\..\include\MemeCore\ITrackable.h" />
+    <ClInclude Include="..\..\include\MemeCore\KeyCode.h" />
+    <ClInclude Include="..\..\include\MemeCore\Maths.h" />
+    <ClInclude Include="..\..\include\MemeCore\Matrix.h" />
+    <ClInclude Include="..\..\include\MemeCore\MemoryTracker.h" />
+    <ClInclude Include="..\..\include\MemeCore\Property.h" />
+    <ClInclude Include="..\..\include\MemeCore\Quaternion.h" />
+    <ClInclude Include="..\..\include\MemeCore\StringUtility.h" />
+    <ClInclude Include="..\..\include\MemeCore\TimePoint.h" />
+    <ClInclude Include="..\..\include\MemeCore\Timer.h" />
+    <ClInclude Include="..\..\include\MemeCore\Transform.h" />
+    <ClInclude Include="..\..\include\MemeCore\Vector.h" />
+    <ClInclude Include="..\..\include\MemeCore\Vector2.h" />
+    <ClInclude Include="..\..\include\MemeCore\Vector3.h" />
+    <ClInclude Include="..\..\include\MemeCore\Vector4.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\include\MemeCore\IEnumerable.h" />
+    <ClCompile Include="..\..\src\MemeCore\Axis.cpp" />
+    <ClCompile Include="..\..\src\MemeCore\ComponentPool.cpp" />
+    <ClCompile Include="..\..\src\MemeCore\ConsoleUtility.cpp" />
+    <ClCompile Include="..\..\src\MemeCore\EventSystem.cpp" />
+    <ClCompile Include="..\..\src\MemeCore\InputState.cpp" />
+    <ClCompile Include="..\..\src\MemeCore\ITrackable.cpp" />
+    <ClCompile Include="..\..\src\MemeCore\MemoryTracker.cpp" />
+    <ClCompile Include="..\..\src\MemeCore\Property.cpp" />
+    <ClCompile Include="..\..\src\MemeCore\Maths.cpp" />
+    <ClCompile Include="..\..\src\MemeCore\StringUtility.cpp" />
+    <ClCompile Include="..\..\src\MemeCore\Timer.cpp" />
+    <ClCompile Include="..\..\src\MemeCore\Transform.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
