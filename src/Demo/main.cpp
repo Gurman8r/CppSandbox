@@ -29,6 +29,8 @@ struct Settings final
 	: public ml::ITrackable
 {
 	std::string title;
+	uint32_t	width;
+	uint32_t	height;
 };
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -73,10 +75,12 @@ ml::Script		script;
 
 bool loadSettings(const std::string & filename)
 {
-	INIReader ini(filename.c_str());	
+	INIReader ini(filename.c_str());
 	if (ini.ParseError() == 0)
 	{
-		settings.title = ini.Get("General", "sTitle", "ML");
+		settings.title	= ini.Get("Window", "sTitle", "Title");
+		settings.width	= ini.GetInteger("Window", "iWidth", 640);
+		settings.height = ini.GetInteger("Window", "iHeight", 480);
 		return true;
 	}
 	return false;
@@ -211,7 +215,7 @@ int main(int argc, char** argv)
 	std::cout << "Creating Window..." << std::endl;
 	switch (window.create(
 		settings.title, 
-		ml::VideoMode(1280, 720, 32),
+		ml::VideoMode(settings.width, settings.height, 32),
 		ml::Window::Default,
 		ml::ContextSettings(3, 3, 24, 8, ml::ContextSettings::Core, false, false)))
 	{
