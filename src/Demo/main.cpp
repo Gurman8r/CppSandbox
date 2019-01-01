@@ -1,5 +1,6 @@
 /* * * * * * * * * * * * * * * * * * * * */
 
+#include <MemeCore/StringUtility.h>
 #include <MemeCore/Timer.h>
 #include <MemeCore/MemoryTracker.h>
 #include <MemeCore/ConsoleUtility.h>
@@ -33,16 +34,26 @@ inline static void delay(uint64_t value)
 	while (t.elapsed().millis() < value);
 }
 
-inline static void pause()
+inline static int32_t pause(int32_t exitCode = EXIT_SUCCESS)
 {
-#ifdef ML_SYSTEM_WINDOWS
 	system("pause");
-#else
-	std::cout << "Press \'Escape\' to Continue..." << std::endl;
-	ml::InputState input;
-	while (!input.beginStep().getKeyDown(ml::KeyCode::Escape));
-	std::cout << std::endl;
-#endif
+	return exitCode;
+}
+
+template <typename T>
+inline static void printBits(T value)
+{
+	std::cout
+		<< std::left 
+		<< std::setw(8)
+		<< ml::FG::Yellow << value;
+	for (unsigned i = 0, imax = (sizeof(value) * 8); i < imax; i++)
+	{
+		bool b = bitRead(value, i);
+
+		std::cout << (b ? ml::FG::Green : ml::FG::Red) << b << " ";
+	}
+	std::cout << ml::FMT() << std::endl;
 }
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -56,10 +67,6 @@ INIReader ini;
 
 int main(int argc, char** argv)
 {
-	// Start Timer
-	ml::Timer timer;
-	timer.start();
-
 	// Colors
 	std::cout << "Colors:" << std::endl;
 	char c = 64;
@@ -179,46 +186,57 @@ int main(int argc, char** argv)
 		<< ml::Property("S", "Hello!")	<< std::endl
 		<< std::endl;
 
-
 	// Window
-	switch (window.create("Title", 
-		ml::VideoMode(1280, 720),
-		ml::Window::Default, 
-		ml::ContextSettings(0, 0, 0, 3, 3, ml::ContextSettings::Core, false)))
+	std::cout << "Creating Window..." << std::endl;
+	switch (window.create("Demo", 
+		ml::VideoMode(1280, 720, 32),
+		ml::Window::Default,
+		ml::ContextSettings(3, 3, 24, 8, ml::ContextSettings::Core, false, false)))
 	{
-	case -1:
+	case ml::Window::ER_Invalid_Mode:
+		std::cerr << "Video Mode is Invalid" << std::endl;
+		return pause(EXIT_FAILURE);
+	
+	case ml::Window::ER_GLFW_Init_Failure:
 		std::cerr << "Failed to Initialize GLFW" << std::endl;
-		pause();
-		return EXIT_FAILURE;
-	case 1:
-		std::cerr << "Failed to Create Window" << std::endl;
-		pause();
-		return EXIT_FAILURE;
-	case 2:
+		return pause(EXIT_FAILURE);
+	
+	case ml::Window::ER_GLFW_Create_Failure:
+		std::cerr << "Failed to Create GLFW Window" << std::endl;
+		return pause(EXIT_FAILURE);
+	
+	case ml::Window::ER_GLEW_Init_Failure:
 		std::cerr << "Failed to Initialize GLEW" << std::endl;
-		pause();
-		return EXIT_FAILURE;
+		return pause(EXIT_FAILURE);
+	
+	case ml::Window::ER_Invalid_Handle:
+		std::cerr << "Window Handle is Null" << std::endl;
+		return pause(EXIT_FAILURE);
 	}
+	std::cout << "OK." << std::endl;
 
-	while (!window.shouldClose())
+	window.setCursorMode(ml::Window::CursorMode::Normal);
+	window.setViewport(ml::vec2i::Zero, window.getMode().size());
+	window.setCentered();
+
+	ml::Timer	timer;
+	uint64_t	deltaTime = 0;
+
+	while (window.isOpen())
 	{
-		window.clear();
+		timer.start();
 		{
-
+			window.clear({ 0.5f, 0.0f, 1.0f, 1.0f });
+			{
+				window.setTitle(ml::StringUtility::Format("Demo @ {0}ms", deltaTime));
+			}
+			window.swapBuffers(); 
+			window.pollEvents();
 		}
-		window.swapBuffers();
-		window.pollEvents();
+		timer.stop();
+
+		deltaTime = timer.elapsed().millis();
 	}
-
-
-	// Stop Timer
-	timer.stop();
-	std::cout 
-		<< "Elapsed: " << timer.elapsed().millis() << " msec" << std::endl
-		<< std::endl;
-
-
-	pause();
 
 	return EXIT_SUCCESS;
 }

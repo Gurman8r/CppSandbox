@@ -24,6 +24,7 @@ namespace ml
 		uint32_t width;
 		uint32_t height;
 		uint32_t bitsPerPixel;
+		uint32_t refreshRate;
 
 		inline vec2u size() const { return vec2u(width, height); }
 

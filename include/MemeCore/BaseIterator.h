@@ -36,17 +36,17 @@ namespace ml
 
 	public:
 		BaseIterator()
-			: m_ptr(NULL)
+			: m_handle(NULL)
 		{
 		}
 		
 		BaseIterator(const self_type & copy)
-			: m_ptr(copy.m_ptr)
+			: m_handle(copy.m_handle)
 		{
 		}
 		
 		explicit BaseIterator(unqualified_type* ptr)
-			: m_ptr(ptr)
+			: m_handle(ptr)
 		{
 		}
 		
@@ -55,46 +55,46 @@ namespace ml
 	public:
 		virtual bool equals(const self_type & value) const override
 		{
-			return m_ptr == value.m_ptr;
+			return m_handle == value.m_handle;
 		}
 		
 		virtual bool lessThan(const self_type & value) const override
 		{
-			return m_ptr < value.m_ptr;
+			return m_handle < value.m_handle;
 		}
 
 	public:
 		inline reference operator*() const
 		{
-			assert((m_ptr != NULL) && "Invalid iterator dereference!");
-			return (*m_ptr);
+			assert((m_handle != NULL) && "Invalid iterator dereference!");
+			return (*m_handle);
 		}
 		
 		inline reference operator->() const
 		{
-			assert((m_ptr != NULL) && "Invalid iterator dereference!");
-			return (*m_ptr);
+			assert((m_handle != NULL) && "Invalid iterator dereference!");
+			return (*m_handle);
 		}
 
 
 		inline self_type & operator++()
 		{
-			assert((m_ptr != NULL) && "Out-of-bounds iterator increment!");
-			(++m_ptr);
+			assert((m_handle != NULL) && "Out-of-bounds iterator increment!");
+			(++m_handle);
 			return (*this);
 		}
 		
 		inline self_type & operator--()
 		{
-			assert((m_ptr != NULL) && "Out-of-bounds iterator increment!");
-			(--m_ptr);
+			assert((m_handle != NULL) && "Out-of-bounds iterator increment!");
+			(--m_handle);
 			return (*this);
 		}
 		
 
 		inline self_type operator++(int)
 		{
-			assert((m_ptr != NULL) && "Out-of-bounds iterator increment!");
+			assert((m_handle != NULL) && "Out-of-bounds iterator increment!");
 			self_type tmp = (*this);
 			operator++();
 			return tmp;
@@ -102,7 +102,7 @@ namespace ml
 		
 		inline self_type operator--(int)
 		{
-			assert((m_ptr != NULL) && "Out-of-bounds iterator increment!");
+			assert((m_handle != NULL) && "Out-of-bounds iterator increment!");
 			self_type tmp = (*this);
 			operator--();
 			return tmp;
@@ -111,12 +111,12 @@ namespace ml
 
 		inline self_type operator+(const difference_type & value) const
 		{
-			return self_type(m_ptr + value);
+			return self_type(m_handle + value);
 		}
 		
 		inline self_type operator-(const difference_type & value) const
 		{
-			return self_type(m_ptr - value);
+			return self_type(m_handle - value);
 		}
 		
 
@@ -133,22 +133,22 @@ namespace ml
 
 		inline const difference_type operator+(const self_type & other) const
 		{
-			return (m_ptr + other.m_ptr);
+			return (m_handle + other.m_handle);
 		}
 		
 		inline const difference_type operator-(const self_type & other) const
 		{
-			return (m_ptr - other.m_ptr);
+			return (m_handle - other.m_handle);
 		}
 
 
 		inline operator const_self_type() const
 		{
-			return BaseIterator<iterator_category, const VT>(m_ptr);
+			return BaseIterator<iterator_category, const VT>(m_handle);
 		}
 
 	private:
-		unqualified_type* m_ptr;
+		unqualified_type* m_handle;
 	};
 
 	template <class VT, class UT = std::remove_cv_t<VT>, class DT = std::ptrdiff_t>

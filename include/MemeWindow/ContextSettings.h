@@ -9,45 +9,46 @@ namespace ml
 	struct ML_WINDOW_API ContextSettings final
 		: public ITrackable
 	{
-		enum Attribute : uint32_t
+		enum Profile : uint32_t
 		{
-			Compat	= 0x00032002, // Compatibility attribute
-			Core    = 0x00032001, // Core attribute
-			Debug   = 0x00022007  // Debug attribute
+			Any		= 0,
+			Compat	= 0x00032002, // Compatibility
+			Core    = 0x00032001, // Core
+			Debug   = 0x00022007  // Debug
 		};
 
 		uint32_t	depthBits;
 		uint32_t	stencilBits;
-		uint32_t	antialiasingLevel;
 		uint32_t	majorVersion;
 		uint32_t	minorVersion;
-		uint32_t	attributeFlags;
+		Profile		profile;
+		bool		multisample;
 		bool		sRgbCapable;
 
 		ContextSettings(
-			uint32_t depth = 0,
-			uint32_t stencil = 0,
-			uint32_t antialiasing = 0,
-			uint32_t major = 1,
-			uint32_t minor = 1,
-			uint32_t attrib = Attribute::Compat,
-			bool sRgb = false)
-			: depthBits(depth)
-			, stencilBits(stencil)
-			, antialiasingLevel(antialiasingLevel)
-			, majorVersion(major)
-			, minorVersion(minor)
-			, attributeFlags(attrib)
-			, sRgbCapable(sRgb)
+			uint32_t	majorVersion	= 1,
+			uint32_t	minorVersion	= 1,
+			uint32_t	depthBits		= 24,
+			uint32_t	stencilBits		= 8,
+			Profile		profile			= Profile::Compat,
+			bool		multisample		= false,
+			bool		sRgbCapable		= false)
+			: majorVersion(majorVersion)
+			, minorVersion(minorVersion)
+			, depthBits(depthBits)
+			, stencilBits(stencilBits)
+			, profile(profile)
+			, multisample(multisample)
+			, sRgbCapable(sRgbCapable)
 		{};
 
 		ContextSettings(const ContextSettings& copy)
-			: depthBits(copy.depthBits)
-			, stencilBits(copy.stencilBits)
-			, antialiasingLevel(copy.antialiasingLevel)
-			, majorVersion(copy.majorVersion)
+			: majorVersion(copy.majorVersion)
 			, minorVersion(copy.minorVersion)
-			, attributeFlags(copy.attributeFlags)
+			, depthBits(copy.depthBits)
+			, stencilBits(copy.stencilBits)
+			, profile(copy.profile)
+			, multisample(copy.multisample)
 			, sRgbCapable(copy.sRgbCapable)
 		{};
 	};

@@ -3,7 +3,7 @@
 
 #include <MemeWindow/ContextSettings.h>
 #include <MemeWindow/VideoMode.h>
-#include <MemeCore/Enum.h>
+#include <MemeCore/Vector4.h>
 
 namespace ml
 {
@@ -11,57 +11,92 @@ namespace ml
 		: public ITrackable
 	{
 	public:
-		enum CursorMode : int
+		enum ErrorCode : uint32_t
+		{
+			ER_Success = 0,
+			ER_Invalid_Mode,
+			ER_GLFW_Init_Failure,
+			ER_GLFW_Create_Failure,
+			ER_GLEW_Init_Failure,
+			ER_Invalid_Handle,
+		};
+		enum CursorMode : uint32_t
 		{
 			Normal	 = 0x00034001,
 			Hidden	 = 0x00034002,
 			Disabled = 0x00034003,
 		};
-		enum Style : int
+		enum Flags : uint32_t
 		{
-			None		= ML_FLAG_0, // No border / title bar (mutually exclusive)
-			Titlebar	= ML_FLAG_1, // Title bar + fixed border
-			Resize		= ML_FLAG_2, // Titlebar + resizable border + maximize button
-			Close		= ML_FLAG_3, // Titlebar + close button
-			Fullscreen	= ML_FLAG_4, // Fullscreen configuration (mutually exclusive)
-			Default		= Titlebar | Resize | Close,
+			None		= (0 << 0),
+			Resizable	= (1 << 0),
+			Visible		= (1 << 1),
+			Decorated	= (1 << 2),
+			Focused		= (1 << 3),
+			AutoIconify	= (1 << 4),
+			Floating	= (1 << 5),
+			Maximized	= (1 << 6),
+
+			Default		= Resizable | Visible | Decorated | Focused | AutoIconify,
 		};
 
 	public:
-		Window();
-		virtual ~Window();
+		Window() {}
+		virtual ~Window() {}
 
-		int create(
+		ErrorCode create(
 			const std::string & title,
 			const VideoMode & mode,
-			const Style & style,
+			const Flags & flags,
 			const ContextSettings & settings);
 
-		Window & clear();
+		Window & clear(const vec4f & value = vec4f::Zero);
+		Window & close();
+		Window & maximize();
+		Window & minimize();
 		Window & pollEvents();
-		Window & setPosition(const vec2u & value);
+		Window & setCentered();
+		Window & setCursorMode(CursorMode value);
+		Window & setPosition(const vec2i & value);
+		Window & setSize(const vec2u & value);
+		Window & setTitle(const std::string & value);
+		Window & setViewport(const vec2i & pos, const vec2u & size);
 		Window & swapBuffers();
 
-		bool shouldClose() const;
+		bool isOpen() const;
 
-		inline const ContextSettings & settings() const { return m_settings; }
-		inline const VideoMode & mode() const { return m_mode; }
+		inline const void *				getHandle()		const { return m_handle; }
+		inline const ContextSettings &	getSettings()	const { return m_settings; }
+		inline const VideoMode &		getMode()		const { return m_mode; }
+		inline const Flags &			getFlags()		const { return m_flags; }
+		inline const vec2i &			getPosition()	const { return m_position; }
+		inline const vec2u				getSize()		const { return m_size; }
+		inline const std::string &		getTitle()		const { return m_title; }
 
 	private:
+		void *			m_handle;
 		ContextSettings m_settings;
 		VideoMode		m_mode;
-		void *			m_ptr;
-
+		Flags			m_flags;
+		vec2i			m_position;
+		vec2u			m_size;
+		std::string		m_title;
 	};
 
-	inline Window::Window::Style operator|(const Window::Style& lhs, const Window::Style& rhs)
+	inline Window::Flags operator|(Window::Flags lhs, Window::Flags rhs)
 	{
-		return static_cast<Window::Style>(static_cast<int>(lhs) | static_cast<int>(rhs));
+		return (Window::Flags)((uint32_t)lhs | (uint32_t)rhs);
 	}
 
-	inline Window::Style& operator|=(Window::Style& lhs, const Window::Style rhs)
+	inline Window::Flags & operator|=(Window::Flags & lhs, const Window::Flags & rhs)
 	{
 		return (lhs = (lhs | rhs));
 	}
+
+	inline bool operator&(Window::Flags lhs, Window::Flags rhs)
+	{
+		return (bool)(static_cast<uint32_t>(lhs) & static_cast<uint32_t>(rhs));
+	}
+
 }
 #endif // !_WINDOW_H_

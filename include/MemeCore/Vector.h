@@ -172,7 +172,7 @@ namespace ml
 			self_type tmp;
 			for (std::size_t i = 0; i < tmp.Size; i++)
 			{
-				tmp[i] = lhs[i] + rhs[i];
+				tmp[i] = lhs[i] - rhs[i];
 			}
 			return tmp;
 		};

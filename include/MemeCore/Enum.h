@@ -2,7 +2,6 @@
 #define _ENUM_H_
 
 #include <inttypes.h>
-#include <MemeCore/BitHelper.h>
 
 namespace ml
 {
