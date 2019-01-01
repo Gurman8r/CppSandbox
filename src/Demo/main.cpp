@@ -58,10 +58,10 @@ inline static void printBits(T value)
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-ml::Window window;
-ml::Shader shader;
-ml::Script script;
-INIReader ini;
+ml::Window		window;
+ml::Shader		shader;
+ml::Script		script;
+INIReader		ini;
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -178,17 +178,18 @@ int main(int argc, char** argv)
 	// Properties
 	std::cout
 		<< "Properties:" << std::endl
-		<< ml::Property("B", true)		<< std::endl
-		<< ml::Property("C", 'c')		<< std::endl
-		<< ml::Property("D", 1.23)		<< std::endl
-		<< ml::Property("F", 4.56f)		<< std::endl
-		<< ml::Property("C", 789)		<< std::endl
-		<< ml::Property("S", "Hello!")	<< std::endl
+		<< ml::Property("PropB", true)		<< std::endl
+		<< ml::Property("PropC", 'c')		<< std::endl
+		<< ml::Property("PropD", 1.23)		<< std::endl
+		<< ml::Property("PropF", 4.56f)		<< std::endl
+		<< ml::Property("PropC", 789)		<< std::endl
+		<< ml::Property("PropS", "Hello!")	<< std::endl
 		<< std::endl;
 
 	// Window
 	std::cout << "Creating Window..." << std::endl;
-	switch (window.create("Demo", 
+	switch (window.create(
+		"Demo", 
 		ml::VideoMode(1280, 720, 32),
 		ml::Window::Default,
 		ml::ContextSettings(3, 3, 24, 8, ml::ContextSettings::Core, false, false)))
@@ -210,7 +211,7 @@ int main(int argc, char** argv)
 		return pause(EXIT_FAILURE);
 	
 	case ml::Window::ER_Invalid_Handle:
-		std::cerr << "Window Handle is Null" << std::endl;
+		std::cerr << "Window Handle is Invalid" << std::endl;
 		return pause(EXIT_FAILURE);
 	}
 	std::cout << "OK." << std::endl;
@@ -219,23 +220,31 @@ int main(int argc, char** argv)
 	window.setViewport(ml::vec2i::Zero, window.getMode().size());
 	window.setCentered();
 
-	ml::Timer	timer;
-	uint64_t	deltaTime = 0;
-
+	// Loop
+	ml::InputState	input;
+	ml::Timer		loopTimer;
+	uint64_t		deltaTime = 0;
 	while (window.isOpen())
 	{
-		timer.start();
+		loopTimer.start();
+		input.beginStep();
 		{
 			window.clear({ 0.5f, 0.0f, 1.0f, 1.0f });
 			{
 				window.setTitle(ml::StringUtility::Format("Demo @ {0}ms", deltaTime));
+
+				if (input.getKeyDown(ml::KeyCode::Escape))
+				{
+					window.close();
+				}
 			}
-			window.swapBuffers(); 
+			window.swapBuffers();
 			window.pollEvents();
 		}
-		timer.stop();
+		input.endStep();
+		loopTimer.stop();
 
-		deltaTime = timer.elapsed().millis();
+		deltaTime = loopTimer.elapsed().millis();
 	}
 
 	return EXIT_SUCCESS;

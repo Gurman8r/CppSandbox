@@ -1,14 +1,14 @@
 #include <MemeCore/InputState.h>
 
-#ifdef _WIN32
+#ifdef ML_SYSTEM_WINDOWS
 #include <Windows.h>
 #endif // _WIN32
 
 namespace PRIV
 {
-	inline static bool _getKeyState(int32_t value)
+	inline static bool getKeyState(int32_t value)
 	{
-#ifdef _WIN32
+#ifdef ML_SYSTEM_WINDOWS
 		return (bool)GetAsyncKeyState(value);
 #else
 		return false;
@@ -31,7 +31,7 @@ namespace ml
 	{
 		for (uint32_t i = 0; i < KeyCode::MAX_KEYCODE; i++)
 		{
-			m_new[i] = PRIV::_getKeyState((int32_t)i);
+			m_new[i] = PRIV::getKeyState((int32_t)i);
 		}
 		return (*this);
 	}

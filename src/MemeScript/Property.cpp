@@ -178,8 +178,8 @@ namespace ml
 	void Property::serialize(std::ostream & out) const
 	{
 		out << std::left 
-			<< std::setw(10) << type()
-			<< std::setw(10) << name();
+			<< std::setw(10) << name()
+			<< std::setw(10) << type();
 
 		switch (type())
 		{

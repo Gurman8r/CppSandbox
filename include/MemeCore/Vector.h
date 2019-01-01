@@ -9,7 +9,7 @@ namespace ml
 	template <typename T, std::size_t N>
 	class Vector
 		: public Matrix<T, N, 1>
-		, IComparable<Vector<T, N>>
+		, public IComparable<Vector<T, N>>
 	{
 	public:
 		using base_type = Matrix<T, N, 1>;

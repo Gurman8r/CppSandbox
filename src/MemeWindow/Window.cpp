@@ -1,9 +1,8 @@
 #include <MemeWindow/Window.h>
-#include <MemeCore/BitHelper.h>
+
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-
 #pragma comment (lib, "glew32s.lib") // Link to glew32s.lib
 
 namespace ml
