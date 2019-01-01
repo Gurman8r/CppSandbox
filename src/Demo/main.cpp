@@ -264,7 +264,7 @@ int main(int argc, char** argv)
 
 	// Loop
 	ml::InputState	input;
-	ml::Timer		loopTimer;
+	ml::Timer		loopTimer; 
 	uint64_t		deltaTime = 0;
 	while (window.isOpen())
 	{

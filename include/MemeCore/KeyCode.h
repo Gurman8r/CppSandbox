@@ -19,7 +19,7 @@ namespace ml
 		Shift		= 0x10, Control, Alt, Pause, CapsLock, Kana, Hanguel, Hangul,
 		// 0x16 Undefined
 		Junja		= 0x17, Final, Hanja, Kanji,
-		// 0x1A Undefined
+		// 0x1A Undefined 0
 		Escape		= 0x1B, Convert, NonConvert, Accept, ModeChange, 
 							Space, PageUp, PageDown, End, Home, Left, Up, Right, Down, 
 							Select, Print, Execute, Snapshot, Insert, Delete, Help,
