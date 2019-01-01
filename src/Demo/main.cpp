@@ -13,8 +13,13 @@
 #include <MemeCore/EventSystem.h>
 #include <MemeWindow/Window.h>
 #include <MemeGraphics/Shader.h>
+#include <MemeGraphics/Color.h>
 #include <MemeScript/Script.h>
 #include <MemeScript/Property.h>
+
+/* * * * * * * * * * * * * * * * * * * * */
+
+#define CONFIG_INI "../../../config.ini"
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -75,19 +80,22 @@ ml::Script		script;
 
 bool loadSettings(const std::string & filename)
 {
-	INIReader ini(filename.c_str());
-	
-	settings.title = ini.Get("Window", "sTitle", "Title");
-	settings.width = ini.GetInteger("Window", "iWidth", 640);
-	settings.height = ini.GetInteger("Window", "iHeight", 480);
-
-	return ini.ParseError() == 0;
+	INIReader ini(filename.c_str());	
+	if (ini.ParseError() == 0)
+	{
+		settings.title = ini.Get("Window", "sTitle", "Title");
+		settings.width = ini.GetInteger("Window", "iWidth", 640);
+		settings.height = ini.GetInteger("Window", "iHeight", 480);
+		return true;
+	}
+	return false;
 }
 
 int main(int argc, char** argv)
 {
-	if (!loadSettings("../../../config.ini"))
+	if (!loadSettings(CONFIG_INI))
 	{
+		std::cerr << "Unable to locate config: \'" << CONFIG_INI << "\'." << std::endl;
 		return pause(EXIT_FAILURE);
 	}
 
@@ -170,18 +178,21 @@ int main(int argc, char** argv)
 
 	// Quaternaions
 	ml::quat q1(1, 2, 3, 4);
-	ml::quat q2 = ml::vec4f();
+	ml::quat q2 = ml::vec4f::One;
 	ml::quat q3 = q1 * q2;
 	ml::quat q4 = q1 * 1.5f;
 	ml::quat q5 = ml::quat::slerp(q1, q2, 0.5f);
+	
 	std::cout
 		<< std::left
-		<< std::setw(10) << "Quaternions:" << std::endl
-		<< std::setw(10) << "Q1" << q1 << std::endl
-		<< std::setw(10) << "Q2" << q2 << std::endl
-		<< std::setw(10) << "Q3" << q3 << std::endl
-		<< std::setw(10) << "Q4" << q4 << std::endl
-		<< std::setw(10) << "Q5" << q5 << std::endl
+		<< std::setw(12) << "Quaternions:" << std::endl
+		<< std::setw(12) << "Q1" << q1 << std::endl
+		<< std::setw(12) << "Q2" << q2 << std::endl
+		<< std::setw(12) << "Q3" << q3 << std::endl
+		<< std::setw(12) << "Q4" << q4 << std::endl
+		<< std::setw(12) << "Q5" << q5 << std::endl
+		<< std::setw(12) << "Q1 Complex" << q1.complex() << std::endl
+		<< std::setw(12) << "Q1 Real" << q1.real() << std::endl
 		<< std::endl
 		<< std::endl;
 	
@@ -253,7 +264,7 @@ int main(int argc, char** argv)
 		loopTimer.start();
 		input.beginStep();
 		{
-			window.clear({ 0.5f, 0.0f, 1.0f, 1.0f });
+			window.clear(ml::Color::Violet);
 			{
 				window.setTitle(ml::StringUtility::Format("{0} @ {1}ms", settings.title, deltaTime));
 

@@ -2,7 +2,7 @@
 
 #ifdef ML_SYSTEM_WINDOWS
 #include <Windows.h>
-#endif // _WIN32
+#endif // ML_SYSTEM_WINDOWS
 
 namespace PRIV
 {

@@ -57,9 +57,15 @@
     <ClInclude Include="..\..\include\MemeGraphics\Uniform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\Color.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeGraphics\Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\Color.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

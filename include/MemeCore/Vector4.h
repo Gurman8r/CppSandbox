@@ -53,8 +53,8 @@ namespace ml
 		static const self_type One;
 	};
 
-	template<typename T> const Vector4<T> Vector4<T>::Zero = Vector2<T>(0);
-	template<typename T> const Vector4<T> Vector4<T>::One = Vector2<T>(1);
+	template<typename T> const Vector4<T> Vector4<T>::Zero = Vector4<T>(0);
+	template<typename T> const Vector4<T> Vector4<T>::One = Vector4<T>(1);
 
 	using vec4f = Vector4<float>;
 	using vec4i = Vector4<int>;

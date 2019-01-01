@@ -36,7 +36,7 @@ namespace ml
 			: base_type((base_type)copy)
 		{
 		}
-		~Quaternion() {}		
+		~Quaternion() {}
 
 	public:
 		inline Vector<float, 3> complex() const
