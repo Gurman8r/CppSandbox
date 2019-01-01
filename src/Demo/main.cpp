@@ -23,7 +23,8 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-class TestComponent : public ml::Component
+class TestComponent final
+	: public ml::Component
 {
 public:
 	TestComponent() { std::cout << (*this) << " Created" << std::endl; }
@@ -40,6 +41,13 @@ struct Settings final
 
 /* * * * * * * * * * * * * * * * * * * * */
 
+Settings		settings;
+ml::Window		window;
+ml::Shader		shader;
+ml::Script		script;
+
+/* * * * * * * * * * * * * * * * * * * * */
+
 inline static void delay(uint64_t value)
 {
 	static ml::Timer t;
@@ -49,7 +57,13 @@ inline static void delay(uint64_t value)
 
 inline static int32_t pause(int32_t exitCode = EXIT_SUCCESS)
 {
+#ifdef ML_SYSTEM_WINDOWS
 	system("pause");
+#else
+	std::cout << "Press Any Key to Continue..." << std::endl;
+	ml::InputState input;
+	while (!input.beginStep().endStep().getAnyKey());
+#endif
 	return exitCode;
 }
 
@@ -68,13 +82,6 @@ inline static void printBits(T value)
 	}
 	std::cout << ml::FMT() << std::endl;
 }
-
-/* * * * * * * * * * * * * * * * * * * * */
-
-Settings		settings;
-ml::Window		window;
-ml::Shader		shader;
-ml::Script		script;
 
 /* * * * * * * * * * * * * * * * * * * * */
 

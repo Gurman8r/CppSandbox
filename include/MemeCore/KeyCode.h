@@ -4,6 +4,7 @@
 #include <inttypes.h>
 
 // https://docs.microsoft.com/en-us/windows/desktop/inputdev/virtual-key-codes
+// Note: not sure if any of these work on not-Windows
 
 namespace ml
 {
