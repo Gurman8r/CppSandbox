@@ -1,5 +1,6 @@
 /* * * * * * * * * * * * * * * * * * * * */
 
+#include <MemeCore/INIReader.h>
 #include <MemeCore/StringUtility.h>
 #include <MemeCore/Timer.h>
 #include <MemeCore/MemoryTracker.h>
@@ -9,7 +10,6 @@
 #include <MemeCore/Vector3.h>
 #include <MemeCore/Quaternion.h>
 #include <MemeCore/InputState.h>
-#include <MemeCore/INIReader.h>
 #include <MemeCore/EventSystem.h>
 #include <MemeWindow/Window.h>
 #include <MemeGraphics/Shader.h>
@@ -23,6 +23,12 @@ class TestComponent : public ml::Component
 public:
 	TestComponent() { std::cout << (*this) << " Created" << std::endl; }
 	~TestComponent() { std::cout << (*this) << " Destroyed" << std::endl; }
+};
+
+struct Settings final
+	: public ml::ITrackable
+{
+	std::string title;
 };
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -58,15 +64,31 @@ inline static void printBits(T value)
 
 /* * * * * * * * * * * * * * * * * * * * */
 
+Settings		settings;
 ml::Window		window;
 ml::Shader		shader;
 ml::Script		script;
-INIReader		ini;
 
 /* * * * * * * * * * * * * * * * * * * * */
 
+bool loadSettings(const std::string & filename)
+{
+	INIReader ini(filename.c_str());	
+	if (ini.ParseError() == 0)
+	{
+		settings.title = ini.Get("General", "sTitle", "ML");
+		return true;
+	}
+	return false;
+}
+
 int main(int argc, char** argv)
 {
+	if (!loadSettings("config.ini"))
+	{
+		return pause(EXIT_FAILURE);
+	}
+
 	// Colors
 	std::cout << "Colors:" << std::endl;
 	char c = 64;
@@ -188,7 +210,7 @@ int main(int argc, char** argv)
 	// Window
 	std::cout << "Creating Window..." << std::endl;
 	switch (window.create(
-		"Demo", 
+		settings.title, 
 		ml::VideoMode(1280, 720, 32),
 		ml::Window::Default,
 		ml::ContextSettings(3, 3, 24, 8, ml::ContextSettings::Core, false, false)))
@@ -231,7 +253,7 @@ int main(int argc, char** argv)
 		{
 			window.clear({ 0.5f, 0.0f, 1.0f, 1.0f });
 			{
-				window.setTitle(ml::StringUtility::Format("Demo @ {0}ms", deltaTime));
+				window.setTitle(ml::StringUtility::Format("{0} @ {1}ms", settings.title, deltaTime));
 
 				if (input.getKeyDown(ml::KeyCode::Escape))
 				{
