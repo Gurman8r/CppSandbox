@@ -76,19 +76,17 @@ ml::Script		script;
 bool loadSettings(const std::string & filename)
 {
 	INIReader ini(filename.c_str());
-	if (ini.ParseError() == 0)
-	{
-		settings.title	= ini.Get("Window", "sTitle", "Title");
-		settings.width	= ini.GetInteger("Window", "iWidth", 640);
-		settings.height = ini.GetInteger("Window", "iHeight", 480);
-		return true;
-	}
-	return false;
+	
+	settings.title = ini.Get("Window", "sTitle", "Title");
+	settings.width = ini.GetInteger("Window", "iWidth", 640);
+	settings.height = ini.GetInteger("Window", "iHeight", 480);
+
+	return ini.ParseError() == 0;
 }
 
 int main(int argc, char** argv)
 {
-	if (!loadSettings("config.ini"))
+	if (!loadSettings("../../../config.ini"))
 	{
 		return pause(EXIT_FAILURE);
 	}
