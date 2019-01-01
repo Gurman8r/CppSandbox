@@ -160,10 +160,12 @@
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeWindow\ContextSettings.h" />
     <ClInclude Include="..\..\include\MemeWindow\Export.h" />
+    <ClInclude Include="..\..\include\MemeWindow\Screen.h" />
     <ClInclude Include="..\..\include\MemeWindow\VideoMode.h" />
     <ClInclude Include="..\..\include\MemeWindow\Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\MemeWindow\Screen.cpp" />
     <ClCompile Include="..\..\src\MemeWindow\VideoMode.cpp" />
     <ClCompile Include="..\..\src\MemeWindow\Window.cpp" />
   </ItemGroup>

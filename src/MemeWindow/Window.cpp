@@ -1,4 +1,5 @@
 #include <MemeWindow/Window.h>
+#include <MemeWindow/Screen.h>
 
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -160,7 +161,7 @@ namespace ml
 
 	Window & Window::setCentered()
 	{
-		return setPosition((VideoMode::getDesktopMode().size() - getMode().size()) / 2);
+		return setPosition((Screen::size() - getSize()) / 2);
 	}
 
 	Window & Window::setCursorMode(CursorMode value)

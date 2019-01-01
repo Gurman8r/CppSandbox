@@ -5,7 +5,7 @@
 
 namespace ml
 {
-	// Supports simple iteration
+	// Supports simple iteration of a fixed array
 	template <typename T>
 	class IEnumerable
 	{

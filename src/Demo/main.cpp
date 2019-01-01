@@ -93,10 +93,8 @@ int main(int argc, char** argv)
 		<< "Vectors:" << std::endl
 		<< "V2A: { " << vec2A << " }" << std::endl
 		<< "V3A: { " << vec3A << " }" << std::endl
-		<< std::endl
 		<< "V3B: { " << vec3B << " }" << std::endl
 		<< "V2B: { " << vec2B << " }" << std::endl
-		<< std::endl
 		<< "V4A: { " << vec4A << " }" << std::endl
 		<< std::endl
 		<< std::endl;
@@ -186,6 +184,7 @@ int main(int argc, char** argv)
 		<< ml::Property("PropS", "Hello!")	<< std::endl
 		<< std::endl;
 
+
 	// Window
 	std::cout << "Creating Window..." << std::endl;
 	switch (window.create(
@@ -219,6 +218,7 @@ int main(int argc, char** argv)
 	window.setCursorMode(ml::Window::CursorMode::Normal);
 	window.setViewport(ml::vec2i::Zero, window.getMode().size());
 	window.setCentered();
+
 
 	// Loop
 	ml::InputState	input;
