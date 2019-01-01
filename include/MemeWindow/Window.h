@@ -70,7 +70,7 @@ namespace ml
 		inline const VideoMode &		getMode()		const { return m_mode; }
 		inline const Flags &			getFlags()		const { return m_flags; }
 		inline const vec2i &			getPosition()	const { return m_position; }
-		inline const vec2u				getSize()		const { return m_size; }
+		inline const vec2u &			getSize()		const { return m_size; }
 		inline const std::string &		getTitle()		const { return m_title; }
 
 	private:

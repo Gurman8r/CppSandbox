@@ -258,7 +258,7 @@ int main(int argc, char** argv)
 	std::cout << "OK." << std::endl;
 
 	window.setCursorMode(ml::Window::CursorMode::Normal);
-	window.setViewport(ml::vec2i::Zero, window.getMode().size());
+	window.setViewport(ml::vec2i::Zero, window.getSize());
 	window.setCentered();
 
 
