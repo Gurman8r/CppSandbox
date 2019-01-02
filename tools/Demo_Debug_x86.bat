@@ -1,5 +1,12 @@
 @echo off
-set FILENAME=Demo
-set CONFIG=Debug
-set PLATFORM=x86
-call run.bat %FILENAME% %CONFIG% %PLATFORM%
+
+set ExePath=./bin
+set ExeName=Demo
+set ExeConf=Debug
+set ExeCPU=x86
+
+cd %ExePath%/%ExeConf%/%ExeCPU%
+
+%ExeName%_%ExeConf%_%ExeCPU%.exe
+
+exit 0
