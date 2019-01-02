@@ -38,10 +38,10 @@ namespace ml
 
 	Var	Interpreter::execScript(const std::string & value)
 	{
-		if (FileSystem::fileExists(value.c_str()))
+		if (ML_FileSystem.fileExists(value.c_str()))
 		{
 			std::vector<char> buffer;
-			if (FileSystem::getFileContents(value, buffer))
+			if (ML_FileSystem.getFileContents(value, buffer))
 			{
 				return execTokens(lexer()->setBuffer(buffer).splitTokens());
 			}

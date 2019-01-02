@@ -282,10 +282,10 @@ namespace ml
 	bool AST_Include::run()
 	{
 		const std::string& filename = str->evaluate().stringValue();
-		if (FileSystem::fileExists(filename.c_str()))
+		if (ML_FileSystem.fileExists(filename.c_str()))
 		{
 			std::vector<char> buffer;
-			if (FileSystem::getFileContents(filename, buffer))
+			if (ML_FileSystem.getFileContents(filename, buffer))
 			{
 				TokenList toks = ML_Interpreter.lexer()->setBuffer(buffer).splitTokens();
 				if (AST_Block* root = ML_Interpreter.parser()->genAST(toks))
