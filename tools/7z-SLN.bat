@@ -22,5 +22,6 @@ cd %ProgDir%
 7z a -r %OutFile% %CurDir%../proj
 7z a -r %OutFile% %CurDir%../src
 7z a -r %OutFile% %CurDir%../thirdparty
-pause
+
+#pause
 exit 0

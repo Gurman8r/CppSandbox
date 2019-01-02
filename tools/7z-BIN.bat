@@ -22,5 +22,5 @@ cd %ProgDir%
 7z a -r %OutFile% %CurDir%../bin
 7z a -r %OutFile% %CurDir%../assets
 
-pause
+#pause
 exit 0
