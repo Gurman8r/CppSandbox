@@ -1,0 +1,6 @@
+@echo off
+set FILENAME=%1
+set CONFIG=%2
+set PLATFORM=%3
+cd ../bin/%CONFIG%/%PLATFORM%
+%FILENAME%_%CONFIG%_%PLATFORM%.exe
