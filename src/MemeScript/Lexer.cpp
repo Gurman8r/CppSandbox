@@ -1,0 +1,228 @@
+#include <MemeScript/Lexer.h>
+#include <MemeCore/StringUtility.h>
+
+namespace
+{
+	inline bool issymbol(const char& c)
+	{
+		return
+			(c >= '!'  && c <= '/') ||
+			(c >= ':'  && c <= '@') ||
+			(c >= '['  && c <= '`') ||
+			(c >= '{' && c <= '~');
+	}
+}
+
+namespace ml
+{
+	Lexer::Lexer()
+	{
+	}
+
+	Lexer::~Lexer()
+	{
+	}
+
+
+	Lexer::CharBuffer Lexer::getBuffer() const
+	{
+		return m_buffer;
+	}
+
+	std::string Lexer::getString() const
+	{
+		std::string out;
+		for (const char& c : m_buffer)
+			out += c;
+		return out;
+	}
+
+	Lexer & Lexer::clearBuffer()
+	{
+		m_buffer.clear();
+		return (*this);
+	}
+
+	Lexer & Lexer::setBuffer(const std::string & value)
+	{
+		m_buffer.clear();
+		for (auto it = value.begin(); it != value.end(); it++)
+			m_buffer.push_back(*it);
+		return (*this);
+	}
+
+	Lexer& Lexer::setBuffer(const CharBuffer & value)
+	{
+		m_buffer = value;
+		return (*this);
+	}
+
+
+	TokenList Lexer::splitTokens() const
+	{
+		TokenList tokens;
+
+		CharBuffer::const_iterator it;
+		for (it = m_buffer.begin(); it != m_buffer.end(); it++)
+		{
+			std::string text;
+
+			// End of line
+			if (*it == '\n')
+			{
+				tokens.push_back({ Token::TOK_ENDL });
+			}
+			// String
+			else if (scanString(it, text))
+			{
+				tokens.push_back({ Token::TOK_STR, text });
+			}
+			// name_t
+			else if (scanName(it, text))
+			{
+				tokens.push_back({ Token::TOK_NAME, text });
+			}
+			// Number
+			else if (scanNumber(it, text))
+			{
+				// Integer
+				if (StringUtility::IsInt(text))
+				{
+					tokens.push_back({ Token::TOK_INT, text });
+				}
+				// Float
+				else if (StringUtility::IsDecimal(text))
+				{
+					tokens.push_back({ Token::TOK_FLT, text });
+				}
+				// Error
+				else
+				{
+					tokens.push_back({ Token::TOK_ERR, text });
+				}
+			}
+			// Symbols
+			else if (scanSymbol(it, text))
+			{
+				Token::SymbolMap::const_iterator it = Token::Symbols.find(text);
+
+				if (it != Token::Symbols.end())
+				{
+					tokens.push_back({ it->second, text });
+				}
+				else
+				{
+					tokens.push_back({ Token::TOK_ERR, text });
+				}
+			}
+		}
+
+		// End of file
+		//tokens.push_back({ Token::TOK_ENDF });
+
+		return tokens;
+	}
+
+
+	bool Lexer::scanName(const_iterator & it, std::string & text) const
+	{
+		if (isalpha(*it))
+		{
+			std::string out;
+
+			while (it != m_buffer.end())
+			{
+				if (isalnum(*it))
+				{
+					out += *it;
+					it++;
+				}
+				else
+				{
+					break;
+				}
+			}
+
+			it--;
+			text = out;
+			return true;
+		}
+
+		text = std::string();
+		return false;
+	}
+
+	bool Lexer::scanNumber(const_iterator& it, std::string & text) const
+	{
+		if (isdigit(*it))
+		{
+			std::string out;
+
+			while (it != m_buffer.end())
+			{
+				if (isdigit(*it) || *it == '.')
+				{
+					out += *it;
+					it++;
+				}
+				else
+				{
+					break;
+				}
+			}
+
+			it--;
+			text = out;
+			return true;
+		}
+
+		text = std::string();
+		return false;
+	}
+
+	bool Lexer::scanString(const_iterator& it, std::string & text) const
+	{
+		if (*it == '\"')
+		{
+			std::string out;
+
+			while (++it != m_buffer.end())
+			{
+				if (*it == '\\')
+				{
+					continue;
+				}
+				else if (*(it - 1) != '\\' && *it == '\"')
+				{
+					break;
+				}
+				else if (isprint(*it))
+				{
+					out += *it;
+				}
+			}
+
+			text = out;
+			return true;
+		}
+
+		text = std::string();
+		return false;
+	}
+
+	bool Lexer::scanSymbol(const_iterator & it, std::string & text) const
+	{
+		if (issymbol(*it))
+		{
+			text = std::string(1, *it);
+			return true;
+		}
+
+		text = std::string();
+		return false;
+	}
+
+
+
+
+}

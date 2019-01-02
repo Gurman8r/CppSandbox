@@ -9,7 +9,7 @@
 
 namespace ml
 {
-	class EventSystem
+	class EventSystem final
 		: public ISingleton<EventSystem>
 	{
 		friend class ISingleton<EventSystem>;

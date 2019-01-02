@@ -1,0 +1,157 @@
+testIf = [](value);
+{
+	print("Test If: {value}");
+	if(value == 0);
+	{
+		print("if == 0");
+	};
+	elif (value == 1);
+	{
+		print("elif == 1");
+		
+		if(true);
+		{
+			print("Here!");
+		};
+	};
+	elif (value != 2);
+	{
+		print("elif != 2");
+	};
+	else;
+	{
+		print("else");
+	};
+	print("End of If");
+	print("");
+	return true;
+};
+
+testFor = [](min, max, it);
+{
+	print("Test For: i = {min}; i < {max}; i += {it}");
+	for(i = min; i < max; i = i + it);
+	{
+		print("for: {i}");
+	};
+	free(i);
+	print("End of For");
+	print("");
+	return true;
+};
+
+testWhile = [](value);
+{
+	print("Test While: {value} > 0");
+	i = value;
+	while(i > 0);
+	{	
+		print("while: {i}");
+		i = i - 1;
+	};
+	free(i);
+	print("End of While");
+	print("");
+	return true;
+};
+
+getFn = []();
+{
+	return 3.33;
+};
+
+thruFn = [](value);
+{
+	return value;
+};
+
+addFn = [](lhs, rhs);
+{
+	return lhs + rhs;
+};
+
+subFn = [](lhs, rhs);
+{
+	return lhs - rhs;
+};
+
+testVars = []();
+{
+	print("Test Vars");
+
+	a = 1;
+	b = 2.0;
+	c = 1 + 2;
+	d = a + b + a;
+	e = b + 3;
+	f = 2 + b + 2;
+
+	x = getFn();
+	y = thruFn(x);
+	z = addFn(y, 1);
+	w = subFn(1, z);
+
+	print("a = {a}");
+	print("b = {b}");
+	print("c = {c}");
+	print("d = {d}");
+	print("e = {e}");
+	print("f = {f}");
+	print("x = {x}");
+	print("y = {y}");
+	print("z = {z}");
+	print("w = {w}");
+
+	print("End of Vars");
+	print("");
+};
+
+testArrays = []();
+{
+	print("Test Arrays");
+
+	a = [ "a", "bb", "ccc", "dddd" ];
+	print(a);
+
+	str = "Hello, World!";
+	
+	print("Forward");
+	for(i = 0; i < 4; i = i + 1);
+	{
+		print(a[i]);
+	};
+
+	print("Reverse");
+	for(j = 3; j >= 0; j = j - 1);
+	{
+		tmp = a[j];
+		print("{tmp}");
+	};
+
+	print("End of Arrays");
+	print("");
+	return a;
+};
+
+stub = []();
+{
+	print("Start of Stub");
+
+	for(i = 0; i < 4; i = i + 1);
+	{
+		testIf(i);
+	};
+
+	testFor(0, 8, 2);
+
+	testWhile(5);
+
+	testVars();
+
+	testArrays();
+
+	print("End of Stub");
+
+	return true;
+};
+return stub();

@@ -11,6 +11,9 @@ namespace ml
 		: public ITrackable
 	{
 	public:
+		using Handle = void *;
+
+	public:
 		enum ErrorCode : uint32_t
 		{
 			ER_Success = 0,
@@ -19,6 +22,7 @@ namespace ml
 			ER_GLFW_Create_Failure,
 			ER_GLEW_Init_Failure,
 			ER_Invalid_Handle,
+			ER_SRGB_Failure,
 		};
 		enum CursorMode : uint32_t
 		{
@@ -37,6 +41,7 @@ namespace ml
 			Floating	= (1 << 5),
 			Maximized	= (1 << 6),
 
+			// Resizable | Visible | Decorated | Focused | AutoIconify
 			Default		= Resizable | Visible | Decorated | Focused | AutoIconify,
 		};
 
@@ -49,6 +54,8 @@ namespace ml
 			const VideoMode & mode,
 			const Flags & flags,
 			const ContextSettings & settings);
+
+		ErrorCode initialize();
 
 		Window & clear(const vec4f & value = vec4f::Zero);
 		Window & close();
@@ -65,7 +72,7 @@ namespace ml
 
 		bool isOpen() const;
 
-		inline const void *				getHandle()		const { return m_handle; }
+		inline const Handle				getHandle()		const { return m_handle; }
 		inline const ContextSettings &	getSettings()	const { return m_settings; }
 		inline const VideoMode &		getMode()		const { return m_mode; }
 		inline const Flags &			getFlags()		const { return m_flags; }
@@ -74,7 +81,7 @@ namespace ml
 		inline const std::string &		getTitle()		const { return m_title; }
 
 	private:
-		void *			m_handle;
+		Handle			m_handle;
 		ContextSettings m_settings;
 		VideoMode		m_mode;
 		Flags			m_flags;

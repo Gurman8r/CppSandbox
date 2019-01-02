@@ -160,6 +160,7 @@
     <ClInclude Include="..\..\include\MemeCore\ComponentPool.h" />
     <ClInclude Include="..\..\include\MemeCore\Config.h" />
     <ClInclude Include="..\..\include\MemeCore\ConsoleUtility.h" />
+    <ClInclude Include="..\..\include\MemeCore\DebugUtility.h" />
     <ClInclude Include="..\..\include\MemeCore\Entity.h" />
     <ClInclude Include="..\..\include\MemeCore\Enum.h" />
     <ClInclude Include="..\..\include\MemeCore\EventBase.h" />
@@ -167,8 +168,8 @@
     <ClInclude Include="..\..\include\MemeCore\EventSystem.h" />
     <ClInclude Include="..\..\include\MemeCore\Export.h" />
     <ClInclude Include="..\..\include\MemeCore\BaseIterator.h" />
+    <ClInclude Include="..\..\include\MemeCore\FileSystem.h" />
     <ClInclude Include="..\..\include\MemeCore\IComparable.h" />
-    <ClInclude Include="..\..\include\MemeCore\INIReader.h" />
     <ClInclude Include="..\..\include\MemeCore\INonCopyable.h" />
     <ClInclude Include="..\..\include\MemeCore\InputState.h" />
     <ClInclude Include="..\..\include\MemeCore\ISerializable.h" />
@@ -193,7 +194,9 @@
     <ClCompile Include="..\..\src\MemeCore\Axis.cpp" />
     <ClCompile Include="..\..\src\MemeCore\ComponentPool.cpp" />
     <ClCompile Include="..\..\src\MemeCore\ConsoleUtility.cpp" />
+    <ClCompile Include="..\..\src\MemeCore\DebugUtility.cpp" />
     <ClCompile Include="..\..\src\MemeCore\EventSystem.cpp" />
+    <ClCompile Include="..\..\src\MemeCore\FileSystem.cpp" />
     <ClCompile Include="..\..\src\MemeCore\InputState.cpp" />
     <ClCompile Include="..\..\src\MemeCore\ITrackable.cpp" />
     <ClCompile Include="..\..\src\MemeCore\MemoryTracker.cpp" />

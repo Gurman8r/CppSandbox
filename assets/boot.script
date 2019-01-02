@@ -1,0 +1,7 @@
+main = []();
+{
+	print("Welcome to NeutrinOS!");
+	print("Type \'help\' for a list of commands.");
+	return 0;
+};
+return main();

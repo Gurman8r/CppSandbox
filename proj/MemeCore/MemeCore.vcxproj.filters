@@ -144,9 +144,6 @@
     <ClInclude Include="..\..\include\MemeCore\INonCopyable.h">
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\INIReader.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\EventBase.h">
       <Filter>Header Files\Events</Filter>
     </ClInclude>
@@ -155,6 +152,12 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\EventSystem.h">
       <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\DebugUtility.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\FileSystem.h">
+      <Filter>Header Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -193,6 +196,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\EventSystem.cpp">
       <Filter>Source Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeCore\DebugUtility.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeCore\FileSystem.cpp">
+      <Filter>Source Files\Utility</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

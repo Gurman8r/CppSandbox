@@ -17,11 +17,11 @@ namespace ml
 			Debug   = 0x00022007  // Debug
 		};
 
-		uint32_t	depthBits;
-		uint32_t	stencilBits;
 		uint32_t	majorVersion;
 		uint32_t	minorVersion;
-		Profile		profile;
+		uint32_t	depthBits;
+		uint32_t	stencilBits;
+		uint32_t	profile;
 		bool		multisample;
 		bool		sRgbCapable;
 
@@ -30,7 +30,7 @@ namespace ml
 			uint32_t	minorVersion	= 1,
 			uint32_t	depthBits		= 24,
 			uint32_t	stencilBits		= 8,
-			Profile		profile			= Profile::Compat,
+			uint32_t	profile			= Profile::Compat,
 			bool		multisample		= false,
 			bool		sRgbCapable		= false)
 			: majorVersion(majorVersion)

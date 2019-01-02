@@ -13,24 +13,138 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\AST">
+      <UniqueIdentifier>{05a78be4-8f55-45cd-a54e-9865a73cc22e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DS">
+      <UniqueIdentifier>{65f368aa-3e82-4816-accd-da921251f7de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Interpreter">
+      <UniqueIdentifier>{12098b63-a68c-4113-b987-808426dd0767}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DS">
+      <UniqueIdentifier>{9578f313-fbcb-4761-aa03-114ed59d2856}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Interpreter">
+      <UniqueIdentifier>{2dfc6b64-3a19-481d-ba93-dcb46c188622}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AST">
+      <UniqueIdentifier>{4b2e37b9-97fe-4253-aee8-aecf52b6932c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Commands">
+      <UniqueIdentifier>{d551898e-18a8-4c46-b363-8f33067693bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Commands">
+      <UniqueIdentifier>{d55026f8-cf45-4d1f-8583-335d2efddc68}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeScript\Script.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Interpreter</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemeScript\Property.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\src\MemeScript\Args.cpp">
+      <Filter>Source Files\DS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeScript\Interpreter.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeScript\Lexer.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeScript\Parser.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeScript\AST_Expr.cpp">
+      <Filter>Source Files\AST</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeScript\AST_Stmt.cpp">
+      <Filter>Source Files\AST</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeScript\AST_Block.cpp">
+      <Filter>Source Files\AST</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeScript\AST_Node.cpp">
+      <Filter>Source Files\AST</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeScript\Operator.cpp">
+      <Filter>Source Files\DS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeScript\Token.cpp">
+      <Filter>Source Files\DS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeScript\TokenList.cpp">
+      <Filter>Source Files\DS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeScript\Var.cpp">
+      <Filter>Source Files\DS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeScript\Memory.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeScript\Command.cpp">
+      <Filter>Source Files\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeScript\CommandList.cpp">
+      <Filter>Source Files\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeScript\CommandInfo.cpp">
+      <Filter>Source Files\Commands</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\MemeScript\Script.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeScript\Export.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeScript\Property.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\include\MemeScript\AST_Block.h">
+      <Filter>Header Files\AST</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\AST_Expr.h">
+      <Filter>Header Files\AST</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\AST_Node.h">
+      <Filter>Header Files\AST</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\AST_Stmt.h">
+      <Filter>Header Files\AST</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\Args.h">
+      <Filter>Header Files\DS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\Var.h">
+      <Filter>Header Files\DS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\TokenList.h">
+      <Filter>Header Files\DS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\Token.h">
+      <Filter>Header Files\DS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\Operator.h">
+      <Filter>Header Files\DS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\Interpreter.h">
+      <Filter>Header Files\Interpreter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\Lexer.h">
+      <Filter>Header Files\Interpreter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\Memory.h">
+      <Filter>Header Files\Interpreter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\Parser.h">
+      <Filter>Header Files\Interpreter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\Script.h">
+      <Filter>Header Files\Interpreter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\Command.h">
+      <Filter>Header Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\CommandInfo.h">
+      <Filter>Header Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\CommandList.h">
+      <Filter>Header Files\Commands</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

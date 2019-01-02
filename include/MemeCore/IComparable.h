@@ -10,6 +10,16 @@ namespace ml
 		virtual bool equals(const T & value) const = 0;
 		virtual bool lessThan(const T & value) const = 0;
 
+		inline virtual bool notEquals(const T & value) const
+		{
+			return !equals(value);
+		}
+
+		inline virtual bool greaterThan(const T & value) const
+		{
+			return !lessThan(value);
+		}
+
 	public:
 		inline friend bool operator==(const IComparable<T> & lhs, const T & rhs)
 		{
@@ -18,27 +28,27 @@ namespace ml
 		
 		inline friend bool operator!=(const IComparable<T> & lhs, const T & rhs)
 		{
-			return !(lhs == rhs);
-		};
-		
-		inline friend bool operator>=(const IComparable<T> & lhs, const T & rhs)
-		{
-			return (lhs == rhs) || (lhs > rhs);
-		};
-		
-		inline friend bool operator<=(const IComparable<T> & lhs, const T & rhs)
-		{
-			return (lhs == rhs) || (lhs < rhs);
+			return lhs.notEquals(rhs);
 		};
 		
 		inline friend bool operator >(const IComparable<T> & lhs, const T & rhs)
 		{
-			return !(lhs < rhs);
+			return lhs.greaterThan(rhs);
 		};
 		
 		inline friend bool operator <(const IComparable<T> & lhs, const T & rhs)
 		{
 			return lhs.lessThan(rhs);
+		};
+
+		inline friend bool operator>=(const IComparable<T> & lhs, const T & rhs)
+		{
+			return lhs.equals(rhs) || lhs.greaterThan(rhs);
+		};
+
+		inline friend bool operator<=(const IComparable<T> & lhs, const T & rhs)
+		{
+			return lhs.equals(rhs) || lhs.lessThan(rhs);
 		};
 
 	};

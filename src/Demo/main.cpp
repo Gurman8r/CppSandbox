@@ -1,6 +1,6 @@
 /* * * * * * * * * * * * * * * * * * * * */
 
-#include <MemeCore/INIReader.h>
+#include <INIReader.h>
 #include <MemeCore/StringUtility.h>
 #include <MemeCore/Timer.h>
 #include <MemeCore/MemoryTracker.h>
@@ -11,11 +11,13 @@
 #include <MemeCore/Quaternion.h>
 #include <MemeCore/InputState.h>
 #include <MemeCore/EventSystem.h>
+#include <MemeCore/FileSystem.h>
 #include <MemeWindow/Window.h>
 #include <MemeGraphics/Shader.h>
 #include <MemeGraphics/Color.h>
-#include <MemeScript/Script.h>
-#include <MemeScript/Property.h>
+#include <MemeGraphics/GL_Error.h>
+#include <MemeGraphics/Glyph.h>
+#include <MemeScript/Interpreter.h>
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -37,14 +39,12 @@ struct Settings final
 	std::string title;
 	uint32_t	width;
 	uint32_t	height;
+	std::string	assetPath;
 };
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-Settings		settings;
-ml::Window		window;
-ml::Shader		shader;
-ml::Script		script;
+Settings settings;
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -83,29 +83,24 @@ inline static void printBits(T value)
 	std::cout << ml::FMT() << std::endl;
 }
 
-/* * * * * * * * * * * * * * * * * * * * */
-
-bool loadSettings(const std::string & filename)
+inline static bool loadSettings(Settings & s, const std::string & filename)
 {
 	INIReader ini(filename.c_str());	
 	if (ini.ParseError() == 0)
 	{
-		settings.title = ini.Get("Window", "sTitle", "Title");
-		settings.width = ini.GetInteger("Window", "iWidth", 640);
-		settings.height = ini.GetInteger("Window", "iHeight", 480);
+		s.title		= ini.Get("Window", "sTitle", "Title");
+		s.width		= ini.GetInteger("Window", "iWidth", 640);
+		s.height	= ini.GetInteger("Window", "iHeight", 480);
+		s.assetPath = ini.Get("Assets", "sPath", "/assets");
 		return true;
 	}
 	return false;
 }
 
-int main(int argc, char** argv)
-{
-	if (!loadSettings(CONFIG_INI))
-	{
-		std::cerr << "Unable to locate config: \'" << CONFIG_INI << "\'." << std::endl;
-		return pause(EXIT_FAILURE);
-	}
+/* * * * * * * * * * * * * * * * * * * * */
 
+inline static int coreStub()
+{
 	// Colors
 	std::cout << "Colors:" << std::endl;
 	char c = 64;
@@ -113,7 +108,7 @@ int main(int argc, char** argv)
 	{
 		for (uint16_t j = 0; j < ml::BG::MAX_COLOR; j++)
 		{
-			std::cout 
+			std::cout
 				<< (ml::FG::Values[i] | ml::BG::Values[j])
 				<< (c = ((c < 127) ? c + 1 : 64)) << " ";
 		}
@@ -128,7 +123,7 @@ int main(int argc, char** argv)
 	ml::vec3f vec3A = vec2A;
 	ml::vec2f vec2B = vec3B;
 	ml::vec4f vec4A = vec2A;
-	std::cout 
+	std::cout
 		<< "Vectors:" << std::endl
 		<< "V2A: { " << vec2A << " }" << std::endl
 		<< "V3A: { " << vec3A << " }" << std::endl
@@ -154,7 +149,7 @@ int main(int argc, char** argv)
 		<< std::endl
 		<< std::endl;
 
-	
+
 	// Matrix Iterators
 	ml::mat3f m3 = {
 		2.2f,   4.4f,   6.6f,
@@ -165,7 +160,7 @@ int main(int argc, char** argv)
 	for (ml::mat3f::iterator it = m3.begin(); it != m3.end(); it++)
 	{
 		std::size_t i = (it - m3.begin());
-		std::cout 
+		std::cout
 			<< "{" << i << ": " << (*it) << "}"
 			<< ((it != m3.end() - 1) ? " " : "\n");;
 	}
@@ -176,7 +171,7 @@ int main(int argc, char** argv)
 	for (ml::mat4f::const_iterator it = m4.cbegin(); it != m4.cend(); it++)
 	{
 		std::size_t i = (it - m4.cbegin());
-		std::cout 
+		std::cout
 			<< "{" << i << ": " << (*it) << "}"
 			<< ((it != m4.cend() - 1) ? " " : "\n");
 	}
@@ -189,7 +184,7 @@ int main(int argc, char** argv)
 	ml::quat q3 = q1 * q2;
 	ml::quat q4 = q1 * 1.5f;
 	ml::quat q5 = ml::quat::slerp(q1, q2, 0.5f);
-	
+
 	std::cout
 		<< std::left
 		<< std::setw(12) << "Quaternions:" << std::endl
@@ -202,7 +197,7 @@ int main(int argc, char** argv)
 		<< std::setw(12) << "Q1 Real" << q1.real() << std::endl
 		<< std::endl
 		<< std::endl;
-	
+
 
 	// Entity / Component
 	ml::Entity* ent = new ml::Entity();
@@ -214,46 +209,43 @@ int main(int argc, char** argv)
 	delete ent;
 	std::cout << std::endl;
 
+	return EXIT_SUCCESS;
+}
 
-	// Properties
-	std::cout
-		<< "Properties:" << std::endl
-		<< ml::Property("PropB", true)		<< std::endl
-		<< ml::Property("PropC", 'c')		<< std::endl
-		<< ml::Property("PropD", 1.23)		<< std::endl
-		<< ml::Property("PropF", 4.56f)		<< std::endl
-		<< ml::Property("PropC", 789)		<< std::endl
-		<< ml::Property("PropS", "Hello!")	<< std::endl
-		<< std::endl;
-
-
+inline static int windowStub()
+{
 	// Window
+	ml::Window window;
 	std::cout << "Creating Window..." << std::endl;
 	switch (window.create(
-		settings.title, 
+		settings.title,
 		ml::VideoMode(settings.width, settings.height, 32),
 		ml::Window::Default,
-		ml::ContextSettings(3, 3, 24, 8, ml::ContextSettings::Core, false, false)))
+		ml::ContextSettings(3, 3, 24, 8, ml::ContextSettings::Compat, false, false)))
 	{
 	case ml::Window::ER_Invalid_Mode:
-		std::cerr << "Video Mode is Invalid" << std::endl;
+		std::cerr << "Error: Video Mode is Invalid" << std::endl;
 		return pause(EXIT_FAILURE);
-	
+
 	case ml::Window::ER_GLFW_Init_Failure:
-		std::cerr << "Failed to Initialize GLFW" << std::endl;
+		std::cerr << "Error: Failed to Initialize GLFW" << std::endl;
 		return pause(EXIT_FAILURE);
-	
+
 	case ml::Window::ER_GLFW_Create_Failure:
-		std::cerr << "Failed to Create GLFW Window" << std::endl;
+		std::cerr << "Error: Failed to Create GLFW Window" << std::endl;
 		return pause(EXIT_FAILURE);
-	
+
 	case ml::Window::ER_GLEW_Init_Failure:
-		std::cerr << "Failed to Initialize GLEW" << std::endl;
+		std::cerr << "Error: Failed to Initialize GLEW" << std::endl;
 		return pause(EXIT_FAILURE);
-	
+
 	case ml::Window::ER_Invalid_Handle:
-		std::cerr << "Window Handle is Invalid" << std::endl;
+		std::cerr << "Error: Window Handle is Invalid" << std::endl;
 		return pause(EXIT_FAILURE);
+
+	case ml::Window::ER_SRGB_Failure:
+		std::cerr << "Warning: Failed to enable SRGB" << std::endl;
+		break;
 	}
 	std::cout << "OK." << std::endl;
 
@@ -261,20 +253,19 @@ int main(int argc, char** argv)
 	window.setViewport(ml::vec2i::Zero, window.getSize());
 	window.setCentered();
 
-
 	// Loop
 	ml::InputState	input;
-	ml::Timer		loopTimer; 
-	uint64_t		deltaTime = 0;
+	ml::Timer		loopTimer;
+	uint64_t		elapsedMS = 0;
 	while (window.isOpen())
 	{
 		loopTimer.start();
 		input.beginStep();
 		{
+			window.setTitle(ml::StringUtility::Format("{0} @ {1}ms", settings.title, elapsedMS));
+
 			window.clear(ml::Color::Violet);
 			{
-				window.setTitle(ml::StringUtility::Format("{0} @ {1}ms", settings.title, deltaTime));
-
 				if (input.getKeyDown(ml::KeyCode::Escape))
 				{
 					window.close();
@@ -285,10 +276,34 @@ int main(int argc, char** argv)
 		}
 		input.endStep();
 		loopTimer.stop();
-
-		deltaTime = loopTimer.elapsed().millis();
+		elapsedMS = loopTimer.elapsed().millis();
 	}
 
+	return EXIT_SUCCESS;
+}
+
+inline static int scriptStub()
+{
+	ML_Interpreter.parser()->setFlags(ml::Parser::ShowToks | ml::Parser::ShowTree);
+	ML_Interpreter.execScript(settings.assetPath + "/stub.script");
+	return pause(EXIT_SUCCESS);
+}
+
+/* * * * * * * * * * * * * * * * * * * * */
+
+int main(int argc, char** argv)
+{	
+	if (!loadSettings(settings, CONFIG_INI))
+	{
+		std::cerr << "Unable to locate config: \'" << CONFIG_INI << "\'." << std::endl;
+		return pause(EXIT_FAILURE);
+	}
+
+	
+	//coreStub();
+	//windowStub();
+	scriptStub();
+	
 	return EXIT_SUCCESS;
 }
 

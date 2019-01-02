@@ -6,7 +6,8 @@
 
 namespace ml
 {
-	class ML_SCRIPT_API Script
+	class ML_SCRIPT_API Script final
+		: public ITrackable
 	{
 	public:
 		Script();
