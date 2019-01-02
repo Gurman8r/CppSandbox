@@ -2,20 +2,25 @@ rem Build.bat
 @echo off
 cls
 
-rem Store Working Directory
+rem Environment
 set WorkingDir=%cd%\
+set MSBuildExe=msbuild.exe
+set MSBuildPath=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Enterprise\
+set VCTargetsPath=%MSBuildPath%Common7\IDE\VC\VCTargets\
+set VCVarsPath=%MSBuildPath%VC\Auxiliary\Build\
+set VCVars32=vcvars32.bat
+set VCVars64=vcvars64.bat
 
 rem Set Solution File
 :setSolution
 if "%1"=="" (
-	set /P SolutionFile="Enter Solution: "
+	set /P SolutionFile="Solution: "
 ) else (
 	set SolutionFile=%1
 )
-
 set SolutionPath=%WorkingDir%%SolutionFile%
 if exist "%SolutionPath%" (
-	echo Solution = %SolutionPath%
+	echo Set Solution %SolutionPath%
 	echo OK
 ) else (
 	echo %SolutionPath% does not exist.
@@ -26,49 +31,45 @@ if exist "%SolutionPath%" (
 rem Set Configuration
 :setConfiguration
 if "%2"=="" (
-	set /P Configuration="Enter Configuration (Debug): "
+	set /P Configuration="Configuration: [Debug]"
 	if "%Configuration%"=="" (
-		set Configuration="Debug"
+		set Configuration=Debug
 	)
 ) else (
 	set Configuration=%2
 )
-echo Configuration = %Configuration%
+echo Set Configuration %Configuration%
 
 
 rem Set Platform Target
 :setPlatformTarget
 if "%3"=="" (
-	set /P PlatformTarget="Enter Platform Target (x86): "
+	set /P PlatformTarget="Platform Target [x86]: "
 	if "%PlatformTarget%"=="" (
-		set PlatformTarget="x86"
+		set PlatformTarget=x86
 	)
 ) else (
 	set PlatformTarget=%3
 )
-echo PlatformTarget = %PlatformTarget%
+echo Set Platform Target %PlatformTarget%
 
 
 rem Setup Environment
-set MSBuildPath=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Enterprise\
-set VCVarsPath=%MSBuildPath%VC\Auxiliary\Build\
-set VCTargetsPath=%MSBuildPath%Common7\IDE\VC\VCTargets\
-
+:setupEnvironment
 cd %VCVarsPath%
-if %PlatformTarget%=="x86" (
-	echo Running vcvars32.bat...
-	call vcvars32.bat
+if "%PlatformTarget%"=="x86" (
+	echo Running %VCVars32%...
+	call %VCVars32%
 ) else (
-	echo Running vcvars64.bat...
-	call vcvars64.bat
+	echo Running %VCVars64%...
+	call %VCVars64%
 )
 
 
 rem Build
+:build
 cd %MSBuildPath%
-echo Running msbuild.exe...
-msbuild.exe %SolutionPath% /p:Configuration=%Configuration% /p:PlatformTarget=%PlatformTarget%
-
-echo Status: %ERRORLEVEL%
+echo Running %MSBuildExe%...
+%MSBuildExe% %SolutionPath% /p:Configuration=%Configuration% /p:PlatformTarget=%PlatformTarget%
 pause
 exit %ERRORLEVEL%
