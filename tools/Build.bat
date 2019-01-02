@@ -2,7 +2,8 @@ rem Build.bat
 @echo off
 cls
 
-rem Environment
+rem Initialize
+:init
 set WorkingDir=%cd%\
 set MSBuildExe=msbuild.exe
 set MSBuildPath=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Enterprise\
@@ -10,6 +11,7 @@ set VCTargetsPath=%MSBuildPath%Common7\IDE\VC\VCTargets\
 set VCVarsPath=%MSBuildPath%VC\Auxiliary\Build\
 set VCVars32=vcvars32.bat
 set VCVars64=vcvars64.bat
+
 
 rem Set Solution File
 :setSolution

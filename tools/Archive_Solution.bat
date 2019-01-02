@@ -1,28 +1,22 @@
 @echo off
 
-set SlnName=CppSandbox
+set WorkingDir=%cd%/
+set OutName=CppSandbox
+set OutDir=%WorkingDir%
+set OutType=.zip
+set OutFile=%OutDir%%OutName%%OutType%
 
-set ProgDir=C:\Program Files\7-Zip
-set CurDir=%cd%/
-set OutDir=%CurDir%
+cd C:\Program Files\7-Zip
 
-set ArchiveName=%SlnName%
-set ArchiveType=.zip
+7z a -r %OutFile% %WorkingDir%../tools
+7z a 	%OutFile% %WorkingDir%../*.sln
+7z a 	%OutFile% %WorkingDir%../config.ini
+7z a 	%OutFile% %WorkingDir%../*.bat
+7z a 	%OutFile% %WorkingDir%../README.md
+7z a -r %OutFile% %WorkingDir%../assets
+7z a -r %OutFile% %WorkingDir%../include
+7z a -r %OutFile% %WorkingDir%../proj
+7z a -r %OutFile% %WorkingDir%../src
+7z a -r %OutFile% %WorkingDir%../thirdparty
 
-set OutFile=%OutDir%%ArchiveName%%ArchiveType%
-set RunFile=%ArchiveName%.bat
-
-cd %ProgDir%
-
-7z a -r %OutFile% %CurDir%../tools
-7z a 	%OutFile% %CurDir%../%SlnName%.sln
-7z a 	%OutFile% %CurDir%../config.ini
-7z a 	%OutFile% %CurDir%../README.md
-7z a -r %OutFile% %CurDir%../assets
-7z a -r %OutFile% %CurDir%../include
-7z a -r %OutFile% %CurDir%../proj
-7z a -r %OutFile% %CurDir%../src
-7z a -r %OutFile% %CurDir%../thirdparty
-
-#pause
-exit 0
+exit %ERRORLEVEL%
