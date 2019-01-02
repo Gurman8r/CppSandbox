@@ -25,7 +25,7 @@ namespace ml
 	{ "^",  Operator::OP_POW },
 	{ "*",  Operator::OP_MUL },
 	{ "/",  Operator::OP_DIV },
-	{ "%",  Operator::OP_DIV },
+	{ "%",  Operator::OP_MOD },
 	{ "+",  Operator::OP_ADD },
 	{ "-",  Operator::OP_SUB },
 	};
