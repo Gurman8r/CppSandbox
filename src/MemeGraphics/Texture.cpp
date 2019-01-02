@@ -2,5 +2,11 @@
 
 namespace ml
 {
+	Texture::Texture()
+	{
+	}
 
+	Texture::~Texture()
+	{
+	}
 }

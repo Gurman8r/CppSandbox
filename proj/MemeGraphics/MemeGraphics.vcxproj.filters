@@ -42,9 +42,6 @@
     <ClInclude Include="..\..\include\MemeGraphics\Export.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\OpenGL.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\RenderState.h">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
@@ -81,12 +78,6 @@
     <ClInclude Include="..\..\include\MemeGraphics\VertexArray.h">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Uniform.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\GL_Error.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Text.h">
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
@@ -95,6 +86,12 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\IDrawable.h">
       <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\Uniform.h">
+      <Filter>Header Files\DS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\OpenGL.h">
+      <Filter>Header Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -106,12 +103,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\RenderTarget.cpp">
       <Filter>Source Files\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeGraphics\GL_Error.cpp">
-      <Filter>Source Files\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeGraphics\Uniform.cpp">
-      <Filter>Source Files\Utility</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Color.cpp">
       <Filter>Source Files\DS</Filter>
@@ -139,6 +130,15 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Sprite.cpp">
       <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\Font.cpp">
+      <Filter>Source Files\DS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\OpenGL.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\Uniform.cpp">
+      <Filter>Source Files\DS</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -2,5 +2,11 @@
 
 namespace ml
 {
+	Mesh::Mesh()
+	{
+	}
 
+	Mesh::~Mesh()
+	{
+	}
 }

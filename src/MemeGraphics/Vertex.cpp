@@ -2,5 +2,11 @@
 
 namespace ml
 {
+	Vertex::Vertex()
+	{
+	}
 
+	Vertex::~Vertex()
+	{
+	}
 }

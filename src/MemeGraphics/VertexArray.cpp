@@ -2,5 +2,11 @@
 
 namespace ml
 {
+	VertexArray::VertexArray()
+	{
+	}
 
+	VertexArray::~VertexArray()
+	{
+	}
 }

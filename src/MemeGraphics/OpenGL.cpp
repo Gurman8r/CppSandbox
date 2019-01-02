@@ -1,7 +1,6 @@
-#include <MemeGraphics/GL_Error.h>
+#include <MemeGraphics/OpenGL.h>
 #include <MemeCore/StringUtility.h>
 #include <MemeCore/ConsoleUtility.h>
-#include <MemeGraphics/OpenGL.h>
 
 namespace ml
 {

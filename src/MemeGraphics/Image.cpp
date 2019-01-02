@@ -2,5 +2,11 @@
 
 namespace ml
 {
+	Image::Image()
+	{
+	}
 
+	Image::~Image()
+	{
+	}
 }

@@ -15,7 +15,7 @@
 #include <MemeWindow/Window.h>
 #include <MemeGraphics/Shader.h>
 #include <MemeGraphics/Color.h>
-#include <MemeGraphics/GL_Error.h>
+#include <MemeGraphics/OpenGL.h>
 #include <MemeGraphics/RenderWindow.h>
 #include <MemeGraphics/Glyph.h>
 #include <MemeScript/Interpreter.h>

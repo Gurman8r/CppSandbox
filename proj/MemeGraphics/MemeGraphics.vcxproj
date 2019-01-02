@@ -24,7 +24,6 @@
     <ClInclude Include="..\..\include\MemeGraphics\Export.h" />
     <ClInclude Include="..\..\include\MemeGraphics\Font.h" />
     <ClInclude Include="..\..\include\MemeGraphics\Glyph.h" />
-    <ClInclude Include="..\..\include\MemeGraphics\GL_Error.h" />
     <ClInclude Include="..\..\include\MemeGraphics\Image.h" />
     <ClInclude Include="..\..\include\MemeGraphics\Mesh.h" />
     <ClInclude Include="..\..\include\MemeGraphics\OpenGL.h" />
@@ -41,7 +40,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeGraphics\Color.cpp" />
-    <ClCompile Include="..\..\src\MemeGraphics\GL_Error.cpp" />
+    <ClCompile Include="..\..\src\MemeGraphics\Font.cpp" />
+    <ClCompile Include="..\..\src\MemeGraphics\OpenGL.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Image.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Mesh.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\RenderState.cpp" />
