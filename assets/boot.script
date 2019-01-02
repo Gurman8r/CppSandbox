@@ -1,6 +1,8 @@
 main = []();
 {
 	print("Hello, World!");
+	print((1 + (2 * 3) + 32 ^ 2) - 7);
+	print(10 / 2);
 	sys("pause");
 	return 0;
 };

@@ -50,8 +50,8 @@ namespace ml
 		AST_Call::Params  genCallParams(const TokenList& toks) const;
 		AST_Func::Params  genFuncParams(const TokenList& toks) const;
 
-		inline void showToks(bool value) { m_showToks = value; }
-		inline void showTree(bool value) { m_showTree = value; }
+		inline Parser & showToks(bool value) { m_showToks = value; return (*this); }
+		inline Parser & showTree(bool value) { m_showTree = value; return (*this); }
 
 	private:
 		bool m_showToks;

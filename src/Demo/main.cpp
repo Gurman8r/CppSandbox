@@ -28,6 +28,7 @@
 struct Settings final
 	: public ml::ITrackable
 {
+	int			program;
 	std::string	assetPath;
 
 	std::string title;
@@ -43,6 +44,7 @@ struct Settings final
 		INIReader ini(filename.c_str());
 		if (ini.ParseError() == 0)
 		{
+			program		= ini.GetInteger("General", "iProgram", 0);
 			assetPath	= ini.Get("General", "sAssetPath", "../../../assets/");
 
 			title		= ini.Get("Window", "sTitle", "Title");
@@ -50,8 +52,8 @@ struct Settings final
 			height		= ini.GetInteger("Window", "iHeight", 480);
 
 			bootScript	= ini.Get("Script", "sBootScript", "boot.script");
-			showToks	= ini.GetInteger("Script", "bShowToks", 0);
-			showTree	= ini.GetInteger("Script", "bShowTree", 0);
+			showToks	= ini.GetBoolean("Script", "bShowToks", false);
+			showTree	= ini.GetBoolean("Script", "bShowTree", false);
 
 			return true;
 		}
@@ -220,7 +222,7 @@ inline static int coreStub()
 	delete ent;
 	std::cout << std::endl;
 
-	return EXIT_SUCCESS;
+	return pause(EXIT_SUCCESS);
 }
 
 inline static int windowStub()
@@ -299,15 +301,15 @@ inline static int scriptStub()
 	{
 		for(auto n : ML_Interpreter.getCmdNames())
 			std::cout << n << std::endl;
-		return ml::Var();
+		return ml::Var().boolValue(true);
 	}));
 	ML_Interpreter.addCommand(ml::Command("pause", [](const ml::Args & args)
 	{
 		return ml::Var().intValue(pause());
 	}));
 
-	ML_Interpreter.parser()->showToks(settings.showToks);
-	ML_Interpreter.parser()->showTree(settings.showTree);
+	ML_Interpreter.parser()->showToks(settings.showToks).showTree(settings.showTree);
+
 	ML_Interpreter.execScript(settings.assetPath + settings.bootScript);
 
 	return EXIT_SUCCESS;
@@ -323,13 +325,18 @@ int main(int argc, char** argv)
 		return pause(EXIT_FAILURE);
 	}
 	
-	//coreStub();
-	
-	//windowStub();
-	
-	scriptStub();
-	
-	return EXIT_SUCCESS;
+	switch (settings.program)
+	{
+	case 0:
+		return coreStub();
+	case 1:
+		return windowStub();
+	case 2:
+		return scriptStub();
+	default:
+		std::cerr << "Unknown program: " << settings.program << std::endl;
+		return pause(EXIT_FAILURE);
+	}
 }
 
 /* * * * * * * * * * * * * * * * * * * * */
