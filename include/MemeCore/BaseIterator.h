@@ -10,7 +10,7 @@
 #include <utility>
 
 // Source:
-// https://codereview.stackexchange.com/questions/74609/custom-iterator-for-a-linked-list-class
+// https://codereview.stackexchange.com/a/74647/86601
 
 namespace ml
 {
