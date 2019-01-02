@@ -166,16 +166,11 @@
     <None Include="..\..\tools\Archive_Bin_Release_x64.bat" />
     <None Include="..\..\tools\Archive_Bin_Release_x86.bat" />
     <None Include="..\..\tools\Archive_Solution.bat" />
+    <None Include="..\..\tools\Build.bat" />
     <None Include="..\..\tools\Build_Debug_x64.bat" />
     <None Include="..\..\tools\Build_Debug_x86.bat" />
     <None Include="..\..\tools\Build_Release_x64.bat" />
     <None Include="..\..\tools\Build_Release_x86.bat" />
-    <None Include="..\..\tools\Build_x64.bat" />
-    <None Include="..\..\tools\Build_x86.bat" />
-    <None Include="..\..\tools\Demo_Debug_x64.bat" />
-    <None Include="..\..\tools\Demo_Debug_x86.bat" />
-    <None Include="..\..\tools\Demo_Release_x64.bat" />
-    <None Include="..\..\tools\Demo_Release_x86.bat" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
