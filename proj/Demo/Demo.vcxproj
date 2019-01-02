@@ -160,6 +160,9 @@
     <None Include="..\..\assets\boot.script" />
     <None Include="..\..\assets\stub.script" />
     <None Include="..\..\config.ini" />
+    <None Include="..\..\tools\7z-BIN.bat" />
+    <None Include="..\..\tools\7z-SLN.bat" />
+    <None Include="..\..\tools\Demo_Debug_x86.bat" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

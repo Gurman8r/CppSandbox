@@ -2,11 +2,12 @@
 
 set ExeName=Demo
 set ExeConf=Debug
-set ExeCPU=x86
+set ExeCPU=x64
 
 set ProgDir=C:\Program Files\7-Zip
 set CurDir=%cd%/
 set OutDir=%CurDir%
+set List=%CurDir%list.txt
 
 set ArchiveName=%ExeName%_%ExeConf%_%ExeCPU%
 set ArchiveType=.zip
@@ -19,8 +20,9 @@ cd %ProgDir%
 7z a 	%OutFile% %CurDir%%RunFile%
 7z a 	%OutFile% %CurDir%../config.ini
 7z a 	%OutFile% %CurDir%../README.md
-7z a -r %OutFile% %CurDir%../bin
-7z a -r %OutFile% %CurDir%../assets
+7z a -r %OutFile% %CurDir%../assets/
+7z a -r %OutFile% %CurDir%../*%ExeConf%_%ExeCPU%.exe*
+7z a -r %OutFile% %CurDir%../*%ExeConf%_%ExeCPU%.dll*
 
-#pause
+pause
 exit 0
