@@ -161,7 +161,7 @@ namespace ml
 		 
 	bool Var::isErrorType() const
 	{
-		return tokensValue().front(Token::TOK_ERR);
+		return tokensValue().front(TokenType::TOK_ERR);
 	}
 		 
 	bool Var::isFloatType() const
@@ -201,7 +201,7 @@ namespace ml
 		 
 	bool Var::isVoidType() const
 	{
-		return compareType(Var::Void) || tokensValue().front(Token::TOK_VOID);
+		return compareType(Var::Void) || tokensValue().front(TokenType::TOK_VOID);
 	}
 
 
@@ -217,7 +217,7 @@ namespace ml
 		return isValid() ? StringUtility::ToFloat((textValue())) : 0;
 	}
 
-	Var			Var::elemValue(uint32_t i) const
+	Var			Var::elemValue(std::size_t i) const
 	{
 		if (!isEmptyValue())
 		{
@@ -295,10 +295,10 @@ namespace ml
 
 	Var &	Var::boolValue(const bool & value)
 	{
-		return setType(Var::Bool).tokensValue({ { Token::TOK_NAME, (value ? "true" : "false") } });
+		return setType(Var::Bool).tokensValue({ { TokenType::TOK_NAME, (value ? "true" : "false") } });
 	}
 
-	Var &	Var::elemValue(uint32_t index, const Token & value)
+	Var &	Var::elemValue(std::size_t index, const Token & value)
 	{
 		if (tokensValue().inRange(index))
 		{
@@ -310,12 +310,12 @@ namespace ml
 
 	Var &	Var::errorValue(const std::string & value)
 	{
-		return voidValue().tokensValue({ { Token::TOK_ERR, value } });
+		return voidValue().tokensValue({ { TokenType::TOK_ERR, value } });
 	}
 
 	Var &	Var::floatValue(const float & value)
 	{
-		return setType(Var::Float).tokensValue({ { Token::TOK_FLT, std::to_string(value) } });
+		return setType(Var::Float).tokensValue({ { TokenType::TOK_FLT, std::to_string(value) } });
 	}
 
 	Var &	Var::funcValue(const TokenList & value)
@@ -325,7 +325,7 @@ namespace ml
 
 	Var &	Var::intValue(const int & value)
 	{
-		return setType(Var::Integer).tokensValue({ { Token::TOK_INT, std::to_string(value) } });
+		return setType(Var::Integer).tokensValue({ { TokenType::TOK_INT, std::to_string(value) } });
 	}
 	
 	Var &	Var::nullValue()
@@ -335,12 +335,12 @@ namespace ml
 
 	Var &	Var::pointerValue(const Ptr & value)
 	{
-		return setType(Var::Pointer).tokensValue({ { Token::TOK_NAME, value.name } });
+		return setType(Var::Pointer).tokensValue({ { TokenType::TOK_NAME, value.name } });
 	}
 
 	Var &	Var::stringValue(const std::string & value)
 	{
-		return setType(Var::String).tokensValue({ { Token::TOK_STR, value } });
+		return setType(Var::String).tokensValue({ { TokenType::TOK_STR, value } });
 	}
 
 	Var &	Var::tokensValue(const TokenList & value)
@@ -352,7 +352,7 @@ namespace ml
 
 	Var &	Var::voidValue()
 	{
-		return setType(Var::Void).tokensValue({ Token::TOK_VOID });
+		return setType(Var::Void).tokensValue({ TokenType::TOK_VOID });
 	}
 
 
@@ -401,7 +401,7 @@ namespace ml
 		}
 
 		Debug::LogError("Invalid Operation: \'{0}\' {1} \'{2}\'",
-			(*this), Operator::OP_AND, other);
+			(*this), OperatorType::OP_AND, other);
 		return false;
 	}
 
@@ -451,7 +451,7 @@ namespace ml
 		}
 
 		Debug::LogError("Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
-			getType(), (*this), Operator::OP_EQU, other.getType(), other);
+			getType(), (*this), OperatorType::OP_EQU, other.getType(), other);
 
 		return false;
 	}
@@ -502,7 +502,7 @@ namespace ml
 		}
 
 		Debug::LogError("Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
-			getType(), (*this), Operator::OP_GT, other.getType(), other);
+			getType(), (*this), OperatorType::OP_GT, other.getType(), other);
 
 		return false;
 	}
@@ -553,7 +553,7 @@ namespace ml
 		}
 
 		Debug::LogError("Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
-			getType(), (*this), Operator::OP_LT, other.getType(), other);
+			getType(), (*this), OperatorType::OP_LT, other.getType(), other);
 
 		return false;
 	}
@@ -601,7 +601,7 @@ namespace ml
 		}
 
 		Debug::LogError("Invalid Operation: \'{0}\' {1} \'{2}\'",
-			(*this), Operator::OP_OR, other);
+			(*this), OperatorType::OP_OR, other);
 		return false;
 	}
 
@@ -673,7 +673,7 @@ namespace ml
 		//return (*this);
 
 		return errorValue(StringUtility::Format("Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
-			getType(), (*this), Operator::OP_ADD, other.getType(), other));
+			getType(), (*this), OperatorType::OP_ADD, other.getType(), other));
 	}
 
 	Var &	Var::Div(const Var & other)
@@ -711,7 +711,7 @@ namespace ml
 			}
 
 			//	// String
-			//case Type::String:
+			//case TokenType::String:
 			//	switch (other.getType())
 			//	{
 			//	case Var::String:
@@ -744,7 +744,7 @@ namespace ml
 		}
 
 		return errorValue(StringUtility::Format("Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
-			getType(), (*this), Operator::OP_DIV, other.getType(), other));
+			getType(), (*this), OperatorType::OP_DIV, other.getType(), other));
 	}
 
 	Var &	Var::Mul(const Var & other)
@@ -782,7 +782,7 @@ namespace ml
 			}
 
 			//	// String
-			//case Type::String:
+			//case TokenType::String:
 			//	switch (other.getType())
 			//	{
 			//	case Var::String:
@@ -815,7 +815,7 @@ namespace ml
 		}
 
 		return errorValue(StringUtility::Format("Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
-			getType(), (*this), Operator::OP_MUL, other.getType(), other));
+			getType(), (*this), OperatorType::OP_MUL, other.getType(), other));
 	}
 
 	Var &	Var::Pow(const Var & other)
@@ -877,7 +877,7 @@ namespace ml
 		}
 
 		return errorValue(StringUtility::Format("Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
-			getType(), (*this), Operator::OP_POW, other.getType(), other));
+			getType(), (*this), OperatorType::OP_POW, other.getType(), other));
 	}
 
 	Var &	Var::Set(const Var & other)
@@ -924,7 +924,7 @@ namespace ml
 			}
 
 			//	// String
-			//case Type::String:
+			//case TokenType::String:
 			//	switch (other.getType())
 			//	{
 			//	case Var::String:
@@ -957,7 +957,7 @@ namespace ml
 		}
 
 		return errorValue(StringUtility::Format("Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
-			getType(), (*this), Operator::OP_SUB, other.getType(), other));
+			getType(), (*this), OperatorType::OP_SUB, other.getType(), other));
 	}
 
 

@@ -20,9 +20,9 @@ namespace ml
 
 	std::ostream & AST_Block::display(std::ostream & out) const
 	{
-		auto tab = [](int n)
+		auto tab = [](std::size_t n)
 		{
-			return std::string(((n < 0) ? 0 : n), '\t');
+			return std::string(n, '\t');
 		};
 
 		out << "{\n";
@@ -127,7 +127,7 @@ namespace ml
 	{
 		if (!getFunc(name))
 		{
-			if (Var * v = setv(name, Var().funcValue({ { Token::TOK_NAME, name } })))
+			if (Var * v = setv(name, Var().funcValue({ { TokenType::TOK_NAME, name } })))
 			{
 				m_funcs.insert({ name, func });
 

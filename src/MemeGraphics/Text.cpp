@@ -2,5 +2,11 @@
 
 namespace ml
 {
+	Text::Text()
+	{
+	}
 
+	Text::~Text()
+	{
+	}
 }

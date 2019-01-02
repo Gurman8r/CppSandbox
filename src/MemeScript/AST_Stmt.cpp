@@ -111,7 +111,7 @@ namespace ml
 		{
 			if (assn->run())
 			{
-				uint32_t count = 0;
+				std::size_t count = 0;
 
 				while (expr->evaluate().boolValue())
 				{
@@ -426,7 +426,7 @@ namespace ml
 	{
 		if (AST_Block* blck = nextAs<AST_Block>())
 		{
-			uint32_t count = 0;
+			std::size_t count = 0;
 			while (expr->evaluate().boolValue())
 			{
 				if (blck->runFirst())

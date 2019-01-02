@@ -2,5 +2,11 @@
 
 namespace ml
 {
+	Sprite::Sprite()
+	{
+	}
 
+	Sprite::~Sprite()
+	{
+	}
 }

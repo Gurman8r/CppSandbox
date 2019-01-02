@@ -55,9 +55,8 @@ namespace ml
 			const Flags & flags,
 			const ContextSettings & settings);
 
-		ErrorCode initialize();
+		virtual ErrorCode initialize();
 
-		Window & clear(const vec4f & value = vec4f::Zero);
 		Window & close();
 		Window & maximize();
 		Window & minimize();
@@ -67,20 +66,20 @@ namespace ml
 		Window & setPosition(const vec2i & value);
 		Window & setSize(const vec2u & value);
 		Window & setTitle(const std::string & value);
-		Window & setViewport(const vec2i & pos, const vec2u & size);
+		
 		Window & swapBuffers();
 
 		bool isOpen() const;
 
-		inline const Handle				getHandle()		const { return m_handle; }
-		inline const ContextSettings &	getSettings()	const { return m_settings; }
-		inline const VideoMode &		getMode()		const { return m_mode; }
-		inline const Flags &			getFlags()		const { return m_flags; }
-		inline const vec2i &			getPosition()	const { return m_position; }
-		inline const vec2u &			getSize()		const { return m_size; }
-		inline const std::string &		getTitle()		const { return m_title; }
+		inline Handle				getHandle()		{ return m_handle; }
+		inline ContextSettings &	getSettings()	{ return m_settings; }
+		inline VideoMode &			getMode()		{ return m_mode; }
+		inline Flags &				getFlags()		{ return m_flags; }
+		inline vec2i &				getPosition()	{ return m_position; }
+		inline vec2u &				getSize()		{ return m_size; }
+		inline std::string &		getTitle()		{ return m_title; }
 
-	private:
+	protected:
 		Handle			m_handle;
 		ContextSettings m_settings;
 		VideoMode		m_mode;

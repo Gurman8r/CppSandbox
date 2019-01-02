@@ -70,17 +70,17 @@ namespace ml
 			// End of line
 			if (*it == '\n')
 			{
-				tokens.push_back({ Token::TOK_ENDL });
+				tokens.push_back({ TokenType::TOK_ENDL });
 			}
 			// String
 			else if (scanString(it, text))
 			{
-				tokens.push_back({ Token::TOK_STR, text });
+				tokens.push_back({ TokenType::TOK_STR, text });
 			}
 			// std::string
 			else if (scanName(it, text))
 			{
-				tokens.push_back({ Token::TOK_NAME, text });
+				tokens.push_back({ TokenType::TOK_NAME, text });
 			}
 			// Number
 			else if (scanNumber(it, text))
@@ -88,17 +88,17 @@ namespace ml
 				// Integer
 				if (StringUtility::IsInt(text))
 				{
-					tokens.push_back({ Token::TOK_INT, text });
+					tokens.push_back({ TokenType::TOK_INT, text });
 				}
 				// Float
 				else if (StringUtility::IsDecimal(text))
 				{
-					tokens.push_back({ Token::TOK_FLT, text });
+					tokens.push_back({ TokenType::TOK_FLT, text });
 				}
 				// Error
 				else
 				{
-					tokens.push_back({ Token::TOK_ERR, text });
+					tokens.push_back({ TokenType::TOK_ERR, text });
 				}
 			}
 			// Symbols
@@ -112,13 +112,13 @@ namespace ml
 				}
 				else
 				{
-					tokens.push_back({ Token::TOK_ERR, text });
+					tokens.push_back({ TokenType::TOK_ERR, text });
 				}
 			}
 		}
 
 		// End of file
-		//tokens.push_back({ Token::TOK_ENDF });
+		//tokens.push_back({ TokenType::TOK_ENDF });
 
 		return tokens;
 	}

@@ -33,19 +33,19 @@ namespace ml
 		TokenList(const TokenList& copy);
 		~TokenList();
 
-		const value_type	at(uint32_t index) const;
+		const value_type	at(std::size_t index) const;
 		const value_type	back() const;
 		const value_type	front() const;
 		const std::string	str() const;
-		const std::string	substr(uint32_t index, uint32_t count) const;
-		const vector_type	subvec(uint32_t index, uint32_t count) const;
+		const std::string	substr(std::size_t index, std::size_t count) const;
+		const vector_type	subvec(std::size_t index, std::size_t count) const;
 		const vector_type&	values() const;
 		const stream_type	sstream() const;
 
-		const uint32_t	count(const value_type& value) const;
-		const uint32_t	count(const_iterator first, const_iterator last, const value_type& value) const;
-		const uint32_t	indexOf(const value_type& value) const;
-		const uint32_t	size() const;
+		const std::size_t	count(const value_type& value) const;
+		const std::size_t	count(const_iterator first, const_iterator last, const value_type& value) const;
+		const std::size_t	indexOf(const value_type& value) const;
+		const std::size_t	size() const;
 
 		const bool	back(const value_type& value) const;
 		const bool	back(const string_type& value) const;
@@ -56,26 +56,26 @@ namespace ml
 
 		const bool	contains(const value_type& value) const;
 		const bool	empty() const;
-		const bool	inRange(uint32_t index) const;
+		const bool	inRange(std::size_t index) const;
 		const bool	inRange(const_iterator it) const;
 		const bool	isWrap(const value_type& value) const;
 		const bool	isWrap(const value_type& lhs, const value_type& rhs) const;
 
-		const bool	matchChar(uint32_t index, char c) const;
+		const bool	matchChar(std::size_t index, char c) const;
 		const bool	matchChar(const const_iterator& it, char c) const;
-		const bool	matchStr(uint32_t index, const std::string& str) const;
+		const bool	matchStr(std::size_t index, const std::string& str) const;
 		const bool	matchStr(const const_iterator& it, const std::string& str) const;
-		const bool	matchPat(uint32_t index, const char_list& pattern) const;
+		const bool	matchPat(std::size_t index, const char_list& pattern) const;
 		const bool	matchPat(const const_iterator& it, const char_list& pattern) const;
-		const bool	matchData(uint32_t index, const cstring_list& data) const;
+		const bool	matchData(std::size_t index, const cstring_list& data) const;
 		const bool	matchData(const const_iterator& it, const cstring_list& data) const;
 
-		TokenList	after(uint32_t index) const;
+		TokenList	after(std::size_t index) const;
 		TokenList	between(const value_type& lhs, const value_type& rhs) const;
 		TokenList	clone() const;
-		TokenList	clone(uint32_t index, uint32_t count = 1) const;
+		TokenList	clone(std::size_t index, std::size_t count = 1) const;
 		TokenList	clone(const TokenList& other) const;
-		TokenList	clone(const TokenList& other, uint32_t index, uint32_t count = 1) const;
+		TokenList	clone(const TokenList& other, std::size_t index, std::size_t count = 1) const;
 		TokenList	clone(const_iterator first, const_iterator last) const;
 		TokenList	unwrapped() const;
 
@@ -83,14 +83,14 @@ namespace ml
 		TokenList & assign(const vector_type& value);
 		TokenList &	clear();
 		TokenList &	copy(const TokenList& other);
-		TokenList &	copy(const TokenList& other, uint32_t index);
-		TokenList &	copy(const TokenList& other, uint32_t index, uint32_t count);
+		TokenList &	copy(const TokenList& other, std::size_t index);
+		TokenList &	copy(const TokenList& other, std::size_t index, std::size_t count);
 		TokenList &	copy(const_iterator first, const_iterator last);
-		TokenList &	erase(uint32_t index, uint32_t count = 1);
-		TokenList &	erase(const_iterator it, uint32_t count = 1);
+		TokenList &	erase(std::size_t index, std::size_t count = 1);
+		TokenList &	erase(const_iterator it, std::size_t count = 1);
 		TokenList &	erase(const_iterator first, const_iterator last);
-		TokenList &	insert(uint32_t index, char value);
-		TokenList &	insert(uint32_t index, const value_type& value);
+		TokenList &	insert(std::size_t index, char value);
+		TokenList &	insert(std::size_t index, const value_type& value);
 		TokenList &	insert(iterator it, const value_type& value);
 		TokenList &	pop_back();
 		TokenList &	pop_front();
@@ -104,7 +104,7 @@ namespace ml
 		TokenList &	push_front(const TokenList& value);
 		TokenList &	remove(const value_type& value);
 		TokenList &	removeAll(const value_type& value);
-		TokenList &	resize(uint32_t size);
+		TokenList &	resize(std::size_t size);
 		TokenList &	reverse();
 		TokenList &	unwrap();
 		TokenList &	unwrapIf(const value_type& value);
@@ -113,9 +113,9 @@ namespace ml
 		TokenList &	wrap(const value_type& lhs, const value_type& rhs);
 
 	public:
-		const_iterator	find(const value_type& value, uint32_t begin = 0) const;
+		const_iterator	find(const value_type& value, std::size_t begin = 0) const;
 		const_iterator	find_first(const value_type& value) const;
-		const_iterator	find_first_not_of(const value_type& value, uint32_t begin = 0) const;
+		const_iterator	find_first_not_of(const value_type& value, std::size_t begin = 0) const;
 		const_iterator	find_last(const value_type& value) const;
 		const_iterator	find_last_not_of(const value_type& value) const;
 
@@ -132,7 +132,7 @@ namespace ml
 		const_reverse_iterator	crend() const;
 
 	public:
-		inline const value_type & operator[](uint32_t index) const
+		inline const value_type & operator[](std::size_t index) const
 		{
 			static value_type df;
 			if (inRange(index))
@@ -141,7 +141,7 @@ namespace ml
 			}
 			return df;
 		}
-		inline value_type & operator[](uint32_t index)
+		inline value_type & operator[](std::size_t index)
 		{
 			static value_type df;
 			if (inRange(index))

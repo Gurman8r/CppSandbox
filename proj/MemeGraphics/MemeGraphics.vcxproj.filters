@@ -31,6 +31,12 @@
     <Filter Include="Source Files\Utility">
       <UniqueIdentifier>{18eb3d43-0a77-4af5-9975-896e67ff95dc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Drawable">
+      <UniqueIdentifier>{e457087a-0389-4e7c-8e64-003cda0b531f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Drawable">
+      <UniqueIdentifier>{cb876993-bbd4-413e-8c82-1a5f5e12a944}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeGraphics\Export.h">
@@ -66,13 +72,7 @@
     <ClInclude Include="..\..\include\MemeGraphics\Mesh.h">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Sprite.h">
-      <Filter>Header Files\DS</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Texture.h">
-      <Filter>Header Files\DS</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Text.h">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Vertex.h">
@@ -86,6 +86,15 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\GL_Error.h">
       <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\Text.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\Sprite.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\IDrawable.h">
+      <Filter>Header Files\Drawable</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -116,12 +125,6 @@
     <ClCompile Include="..\..\src\MemeGraphics\Shader.cpp">
       <Filter>Source Files\DS</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemeGraphics\Sprite.cpp">
-      <Filter>Source Files\DS</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeGraphics\Text.cpp">
-      <Filter>Source Files\DS</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Texture.cpp">
       <Filter>Source Files\DS</Filter>
     </ClCompile>
@@ -130,6 +133,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\VertexArray.cpp">
       <Filter>Source Files\DS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\Text.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\Sprite.cpp">
+      <Filter>Source Files\Drawable</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

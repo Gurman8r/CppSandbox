@@ -5,37 +5,37 @@ namespace ml
 {
 	//const std::string Operator::OpCodes[Operator::MAX_OP_TYPE] =
 	const Operator::OperMap Operator::OpValues = {
-	{ "=",	Operator::OP_SET },
-	{ "^=",	Operator::OP_POW_SET },
-	{ "*=",	Operator::OP_MUL_SET },
-	{ "/=",	Operator::OP_DIV_SET },
-	{ "%=",	Operator::OP_DIV_SET },
-	{ "+=",	Operator::OP_ADD_SET },
-	{ "-=",	Operator::OP_SUB_SET },
+	{ "=",	OperatorType::OP_SET },
+	{ "^=",	OperatorType::OP_POW_SET },
+	{ "*=",	OperatorType::OP_MUL_SET },
+	{ "/=",	OperatorType::OP_DIV_SET },
+	{ "%=",	OperatorType::OP_DIV_SET },
+	{ "+=",	OperatorType::OP_ADD_SET },
+	{ "-=",	OperatorType::OP_SUB_SET },
 
-	{ "==", Operator::OP_EQU },
-	{ "!=", Operator::OP_NEQ },
-	{ "<=", Operator::OP_LTE },
-	{ ">=", Operator::OP_GTE },
-	{ "&&", Operator::OP_AND },
-	{ "||", Operator::OP_OR  },
-	{ "<",  Operator::OP_LT  },
-	{ ">",  Operator::OP_GT  },
+	{ "==", OperatorType::OP_EQU },
+	{ "!=", OperatorType::OP_NEQ },
+	{ "<=", OperatorType::OP_LTE },
+	{ ">=", OperatorType::OP_GTE },
+	{ "&&", OperatorType::OP_AND },
+	{ "||", OperatorType::OP_OR  },
+	{ "<",  OperatorType::OP_LT  },
+	{ ">",  OperatorType::OP_GT  },
 
-	{ "^",  Operator::OP_POW },
-	{ "*",  Operator::OP_MUL },
-	{ "/",  Operator::OP_DIV },
-	{ "%",  Operator::OP_MOD },
-	{ "+",  Operator::OP_ADD },
-	{ "-",  Operator::OP_SUB },
+	{ "^",  OperatorType::OP_POW },
+	{ "*",  OperatorType::OP_MUL },
+	{ "/",  OperatorType::OP_DIV },
+	{ "%",  OperatorType::OP_MOD },
+	{ "+",  OperatorType::OP_ADD },
+	{ "-",  OperatorType::OP_SUB },
 	};
 
 	Operator::Operator()
-		: type(Operator::OP_INVALID)
+		: type(OperatorType::OP_INVALID)
 	{
 	}
 
-	Operator::Operator(Operator::Type type)
+	Operator::Operator(OperatorType type)
 		: type(type)
 	{
 	}
@@ -58,89 +58,33 @@ namespace ml
 			op = Operator(it->second);
 			return true;
 		}
-		op = Operator::OP_INVALID;
+		op = OperatorType::OP_INVALID;
 		return false;
 	}
 
 
-	std::ostream & operator<<(std::ostream & out, const Operator::Type & rhs)
+	bool Operator::equals(const Operator & value) const
 	{
-		for (auto pair : Operator::OpValues)
-		{
-			if (pair.second == rhs)
-			{
-				out << pair.first;
-				break;
-			}
-		}
-		return out;
+		return type == value.type;
 	}
 
-	std::ostream & operator<<(std::ostream & out, const Operator & rhs)
+	bool Operator::equals(const OperatorType & value) const
 	{
-		out << (FG::Black | BG::Cyan) << rhs.type << FMT();
-		return out;
+		return type == value;
 	}
 
-
-	bool operator==(const Operator & lhs, const Operator & rhs)
+	bool Operator::lessThan(const Operator & value) const
 	{
-		return lhs.type == rhs.type;
+		return type < value.type;
 	}
 
-	bool operator!=(const Operator & lhs, const Operator & rhs)
+	bool Operator::lessThan(const OperatorType & value) const
 	{
-		return !(lhs == rhs);
+		return type < value;
 	}
 
-	bool operator>(const Operator & lhs, const Operator & rhs)
+	void Operator::serialize(std::ostream & out) const
 	{
-		return lhs.type > rhs.type;
-	}
-
-	bool operator<(const Operator & lhs, const Operator & rhs)
-	{
-		return lhs.type < rhs.type;
-	}
-
-	bool operator>=(const Operator & lhs, const Operator & rhs)
-	{
-		return lhs > rhs || lhs == rhs;
-	}
-
-	bool operator<=(const Operator & lhs, const Operator & rhs)
-	{
-		return lhs < rhs || lhs == rhs;
-	}
-
-
-	bool operator==(const Operator & lhs, const Operator::Type & rhs)
-	{
-		return lhs.type == rhs;
-	}
-
-	bool operator!=(const Operator & lhs, const Operator::Type & rhs)
-	{
-		return !(lhs == rhs);
-	}
-
-	bool operator>(const Operator & lhs, const Operator::Type & rhs)
-	{
-		return lhs.type > rhs;
-	}
-
-	bool operator<(const Operator & lhs, const Operator::Type & rhs)
-	{
-		return lhs.type < rhs;
-	}
-
-	bool operator>=(const Operator & lhs, const Operator::Type & rhs)
-	{
-		return lhs > rhs || lhs == rhs;
-	}
-
-	bool operator<=(const Operator & lhs, const Operator::Type & rhs)
-	{
-		return lhs < rhs || lhs == rhs;
+		out << (FG::Black | BG::Cyan) << type << FMT();
 	}
 }

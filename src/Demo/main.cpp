@@ -16,6 +16,7 @@
 #include <MemeGraphics/Shader.h>
 #include <MemeGraphics/Color.h>
 #include <MemeGraphics/GL_Error.h>
+#include <MemeGraphics/RenderWindow.h>
 #include <MemeGraphics/Glyph.h>
 #include <MemeScript/Interpreter.h>
 
@@ -228,7 +229,7 @@ inline static int coreStub()
 inline static int windowStub()
 {
 	// Window
-	ml::Window window;
+	ml::RenderWindow window;
 	std::cout << "Creating Window..." << std::endl;
 	switch (window.create(
 		settings.title,

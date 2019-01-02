@@ -132,13 +132,13 @@ namespace ml
 	{
 		static std::vector<std::string> names;
 
-		uint32_t size = m_commands.size();
+		std::size_t size = m_commands.size();
 
 		if (names.size() != size)
 		{
 			names.resize(size);
 
-			uint32_t i = 0;
+			std::size_t i = 0;
 			for (const auto & pair : m_commands)
 			{
 				names[i++] = pair.first;

@@ -35,11 +35,9 @@ namespace ml
 	VideoMode VideoMode::getDesktopMode()
 	{
 #ifdef ML_SYSTEM_WINDOWS
-
 		DEVMODE win32Mode;
 		win32Mode.dmSize = sizeof(win32Mode);
 		EnumDisplaySettings(NULL, ENUM_CURRENT_SETTINGS, &win32Mode);
-
 		return VideoMode(
 			win32Mode.dmPelsWidth,
 			win32Mode.dmPelsHeight,
@@ -54,18 +52,15 @@ namespace ml
 	{
 		std::vector<VideoMode> modes;
 
-#ifdef ML_SYSTEM_WINDOWS
-		
+#ifdef ML_SYSTEM_WINDOWS		
 		DEVMODE win32Mode;
 		win32Mode.dmSize = sizeof(win32Mode);
-
 		for (int count = 0; EnumDisplaySettings(NULL, count, &win32Mode); ++count)
 		{
 			VideoMode mode(
 				win32Mode.dmPelsWidth,
 				win32Mode.dmPelsHeight,
 				win32Mode.dmBitsPerPel);
-
 			if (std::find(modes.begin(), modes.end(), mode) == modes.end())
 			{
 				modes.push_back(mode);

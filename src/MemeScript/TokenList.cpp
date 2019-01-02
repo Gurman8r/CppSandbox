@@ -27,7 +27,7 @@ namespace ml
 	}
 
 
-	const TokenList::value_type		TokenList::at(uint32_t index) const
+	const TokenList::value_type		TokenList::at(std::size_t index) const
 	{
 		return (*this)[index];
 	}
@@ -66,7 +66,7 @@ namespace ml
 		return out;
 	}
 	
-	const std::string				TokenList::substr(uint32_t index, uint32_t count) const
+	const std::string				TokenList::substr(std::size_t index, std::size_t count) const
 	{
 		auto from = (begin() + index);
 
@@ -77,7 +77,7 @@ namespace ml
 
 		std::string toStr;
 
-		for (uint32_t i = 0; i < count; i++)
+		for (std::size_t i = 0; i < count; i++)
 		{
 			auto it = (from + i);
 
@@ -90,7 +90,7 @@ namespace ml
 		return toStr;
 	}
 	
-	const TokenList::vector_type	TokenList::subvec(uint32_t index, uint32_t count) const
+	const TokenList::vector_type	TokenList::subvec(std::size_t index, std::size_t count) const
 	{
 		auto from = (begin() + index);
 
@@ -101,7 +101,7 @@ namespace ml
 
 		vector_type out;
 
-		for (uint32_t i = 0; i < count; i++)
+		for (std::size_t i = 0; i < count; i++)
 		{
 			auto it = (from + i);
 
@@ -135,12 +135,12 @@ namespace ml
 	}
 
 
-	const uint32_t	TokenList::count(const value_type & value) const
+	const std::size_t	TokenList::count(const value_type & value) const
 	{
 		return count(begin(), end(), value);
 	}
 	
-	const uint32_t	TokenList::count(const_iterator first, const_iterator last, const value_type & val) const
+	const std::size_t	TokenList::count(const_iterator first, const_iterator last, const value_type & val) const
 	{
 		difference_type ret = 0;
 
@@ -157,7 +157,7 @@ namespace ml
 		return ret;
 	}
 	
-	const uint32_t	TokenList::indexOf(const value_type& value) const
+	const std::size_t	TokenList::indexOf(const value_type& value) const
 	{
 		auto it = find(value);
 
@@ -169,7 +169,7 @@ namespace ml
 		return size();
 	}
 	
-	const uint32_t	TokenList::size() const
+	const std::size_t	TokenList::size() const
 	{
 		return m_values.size();
 	}
@@ -218,7 +218,7 @@ namespace ml
 	}
 
 	
-	const bool	TokenList::inRange(uint32_t index) const
+	const bool	TokenList::inRange(std::size_t index) const
 	{
 		return (index < size());
 	}
@@ -239,7 +239,7 @@ namespace ml
 	}
 
 
-	const bool	TokenList::matchChar(uint32_t index, char c) const
+	const bool	TokenList::matchChar(std::size_t index, char c) const
 	{
 		if (inRange(index))
 		{
@@ -257,7 +257,7 @@ namespace ml
 			case 'S':	// Non-Operand (Symbol?)
 				return !at(index).isOperand();
 
-			default:	// Type
+			default:	// TokenType
 				return at(index).type == c;
 			}
 		}
@@ -270,7 +270,7 @@ namespace ml
 		return matchChar((it - begin()), c);
 	}
 	
-	const bool	TokenList::matchStr(uint32_t index, const std::string & str) const
+	const bool	TokenList::matchStr(std::size_t index, const std::string & str) const
 	{
 		return matchStr(begin() + index, str);
 	}
@@ -280,7 +280,7 @@ namespace ml
 		return matchPat(it, char_list(str.begin(), str.end()));
 	}
 	
-	const bool	TokenList::matchPat(uint32_t index, const char_list & pattern) const
+	const bool	TokenList::matchPat(std::size_t index, const char_list & pattern) const
 	{
 		if (!empty() && !pattern.empty())
 		{
@@ -288,7 +288,7 @@ namespace ml
 			{
 				if (pattern.size() <= size())
 				{
-					for (uint32_t i = index; i < pattern.size(); i++)
+					for (std::size_t i = index; i < pattern.size(); i++)
 					{
 						if (!matchChar(i, pattern.at(i)))
 						{
@@ -307,7 +307,7 @@ namespace ml
 		return matchPat((it - begin()), pattern);
 	}
 	
-	const bool	TokenList::matchData(uint32_t index, const cstring_list & data) const
+	const bool	TokenList::matchData(std::size_t index, const cstring_list & data) const
 	{
 		if (!empty() && !data.empty())
 		{
@@ -315,7 +315,7 @@ namespace ml
 			{
 				if (data.size() <= size())
 				{
-					for (uint32_t i = index; i < data.size(); i++)
+					for (std::size_t i = index; i < data.size(); i++)
 					{
 						if (at(i).data != data.at(i))
 						{
@@ -335,7 +335,7 @@ namespace ml
 	}
 
 
-	TokenList	TokenList::after(uint32_t index) const
+	TokenList	TokenList::after(std::size_t index) const
 	{
 		if (inRange(index))
 		{
@@ -379,7 +379,7 @@ namespace ml
 		return TokenList().copy(*this);
 	}
 	
-	TokenList	TokenList::clone(uint32_t index, uint32_t count) const
+	TokenList	TokenList::clone(std::size_t index, std::size_t count) const
 	{
 		return TokenList().copy(*this, index, count);
 	}
@@ -389,7 +389,7 @@ namespace ml
 		return TokenList().copy(other);
 	}
 	
-	TokenList	TokenList::clone(const TokenList & other, uint32_t index, uint32_t count) const
+	TokenList	TokenList::clone(const TokenList & other, std::size_t index, std::size_t count) const
 	{
 		return TokenList().copy(other, index, count);
 	}
@@ -422,7 +422,7 @@ namespace ml
 		return copy(other, 0);
 	}
 	
-	TokenList&	TokenList::copy(const TokenList& other, uint32_t index)
+	TokenList&	TokenList::copy(const TokenList& other, std::size_t index)
 	{
 		if (other.inRange(index))
 		{
@@ -432,7 +432,7 @@ namespace ml
 		return (*this);
 	}
 	
-	TokenList&	TokenList::copy(const TokenList& other, uint32_t index, uint32_t count)
+	TokenList&	TokenList::copy(const TokenList& other, std::size_t index, std::size_t count)
 	{
 		if (other.inRange(index))
 		{
@@ -449,12 +449,12 @@ namespace ml
 		return assign(vector_type(first, last));
 	}
 	
-	TokenList&	TokenList::erase(uint32_t index, uint32_t count)
+	TokenList&	TokenList::erase(std::size_t index, std::size_t count)
 	{
 		return erase(begin() + index, count);
 	}
 	
-	TokenList&	TokenList::erase(const_iterator it, uint32_t count)
+	TokenList&	TokenList::erase(const_iterator it, std::size_t count)
 	{
 		return erase(it, it + count);
 	}
@@ -468,12 +468,12 @@ namespace ml
 		return (*this);
 	}
 	
-	TokenList&	TokenList::insert(uint32_t index, char value)
+	TokenList&	TokenList::insert(std::size_t index, char value)
 	{
 		return insert(index, value_type(value));
 	}
 	
-	TokenList&	TokenList::insert(uint32_t index, const value_type& value)
+	TokenList&	TokenList::insert(std::size_t index, const value_type& value)
 	{
 		return insert(begin() + index, value);
 	}
@@ -569,7 +569,7 @@ namespace ml
 		return (*this);
 	}
 	
-	TokenList&	TokenList::resize(uint32_t size)
+	TokenList&	TokenList::resize(std::size_t size)
 	{
 		m_values.resize(size);
 		return (*this);
@@ -620,7 +620,7 @@ namespace ml
 	}
 
 
-	TokenList::const_iterator TokenList::find(const value_type& value, uint32_t index) const
+	TokenList::const_iterator TokenList::find(const value_type& value, std::size_t index) const
 	{
 		for (auto it = begin() + index; it != end(); it++)
 		{
@@ -644,7 +644,7 @@ namespace ml
 		return end();
 	}
 	
-	TokenList::const_iterator TokenList::find_first_not_of(const value_type& value, uint32_t index) const
+	TokenList::const_iterator TokenList::find_first_not_of(const value_type& value, std::size_t index) const
 	{
 		for (auto it = begin(); it != end(); it++)
 		{

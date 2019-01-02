@@ -7,11 +7,11 @@ namespace ml
 {
 	Parser::ToksList Parser::SplitStatements(const TokenList & tokens)
 	{
-		static uint32_t id = 0;
+		static std::size_t id = 0;
 
 		ToksList out = { TokenList() };
 
-		uint32_t i = 0;
+		std::size_t i = 0;
 
 		TokenList::const_iterator it;
 		for (it = tokens.begin(); it != tokens.end(); it++)
@@ -22,7 +22,7 @@ namespace ml
 				continue;
 
 			case '#':
-				while (*it != Token::TOK_ENDL)
+				while (*it != TokenType::TOK_ENDL)
 				{
 					it++;
 				}
@@ -57,11 +57,11 @@ namespace ml
 			return true;
 		}
 
-		TokenList stk = { Token::TOK_LPRN };
+		TokenList stk = { TokenType::TOK_LPRN };
 
 		pfx = TokenList();
 
-		for (uint32_t i = 0; i < ifx.size(); i++)
+		for (std::size_t i = 0; i < ifx.size(); i++)
 		{
 			//out() << pfx << std::endl;
 
@@ -69,7 +69,7 @@ namespace ml
 
 			if (arg.isOperator())
 			{
-				uint32_t count = 0;
+				std::size_t count = 0;
 
 				while (!stk.empty() && (stk.front() <= arg))
 				{
@@ -120,7 +120,7 @@ namespace ml
 			}
 		}
 
-		while (!stk.empty() && stk.front() != Token::TOK_LPRN)
+		while (!stk.empty() && stk.front() != TokenType::TOK_LPRN)
 		{
 			pfx.push_back(stk.front());
 
@@ -143,10 +143,10 @@ namespace ml
 		//}
 
 		// Final Error Checking
-		uint32_t numOperators = 0;
-		uint32_t numOperands = 0;
+		std::size_t numOperators = 0;
+		std::size_t numOperands = 0;
 
-		for (uint32_t i = 0; i < pfx.size(); i++)
+		for (std::size_t i = 0; i < pfx.size(); i++)
 		{
 			const Token& arg = pfx[i];
 
@@ -463,16 +463,16 @@ namespace ml
 	{
 		switch (token.type)
 		{
-		case Token::TOK_FLT:
+		case TokenType::TOK_FLT:
 			return new AST_Flt(StringUtility::ToFloat(token.data));
 
-		case Token::TOK_INT:
+		case TokenType::TOK_INT:
 			return new AST_Int(StringUtility::ToInt(token.data));
 
-		case Token::TOK_STR:
+		case TokenType::TOK_STR:
 			return new AST_Str(token.data);
 
-		case Token::TOK_NAME:
+		case TokenType::TOK_NAME:
 			if (StringUtility::IsBool(token.data))
 			{
 				return new AST_Bool(StringUtility::ToBool(token.data));
@@ -489,7 +489,7 @@ namespace ml
 
 	AST_Bool*	Parser::genBool(const Token & token) const
 	{
-		if (token == Token::TOK_NAME)
+		if (token == TokenType::TOK_NAME)
 		{
 			if (StringUtility::IsBool(token.data))
 			{
@@ -501,7 +501,7 @@ namespace ml
 
 	AST_Flt*	Parser::genFlt(const Token & token) const
 	{
-		if (token == Token::TOK_FLT)
+		if (token == TokenType::TOK_FLT)
 		{
 			if (StringUtility::IsDecimal(token.data))
 			{
@@ -513,7 +513,7 @@ namespace ml
 
 	AST_Int*	Parser::genInt(const Token & token) const
 	{
-		if (token == Token::TOK_INT)
+		if (token == TokenType::TOK_INT)
 		{
 			if (StringUtility::IsInt(token.data))
 			{
@@ -525,7 +525,7 @@ namespace ml
 
 	AST_Name*	Parser::genName(const Token & token) const
 	{
-		if (token == Token::TOK_NAME)
+		if (token == TokenType::TOK_NAME)
 		{
 			return new AST_Name(token.data);
 		}
@@ -534,7 +534,7 @@ namespace ml
 
 	AST_Str*	Parser::genStr(const Token & token) const
 	{
-		if (token == Token::TOK_STR)
+		if (token == TokenType::TOK_STR)
 		{
 			return new AST_Str(token.data);
 		}
@@ -568,7 +568,7 @@ namespace ml
 		if (toks.matchStr(it, "n=A"))
 		{
 			return new AST_Assign(
-				Operator::OP_SET,
+				OperatorType::OP_SET,
 				new AST_Name(it->data),
 				genComplex(toks.after(2)));
 		}
@@ -786,7 +786,7 @@ namespace ml
 		{
 			for (TokenList::const_iterator it = toks.begin() + 1; it != toks.end() - 1; it++)
 			{
-				if ((*it).type != Token::TOK_CMMA)
+				if ((*it).type != TokenType::TOK_CMMA)
 				{
 					params.push_back(new AST_Name(it->data));
 				}

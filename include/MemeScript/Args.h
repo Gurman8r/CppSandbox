@@ -33,47 +33,47 @@ namespace ml
 		Args(const self_type& copy);
 		~Args();
 
-		const value_type	at(uint32_t index) const;
+		const value_type	at(std::size_t index) const;
 		const value_type	back() const;
 		const value_type	front() const;
 		const value_type	str() const;
-		const value_type	substr(uint32_t index, uint32_t count) const;
+		const value_type	substr(std::size_t index, std::size_t count) const;
 
-		const vector_type	subvec(uint32_t index, uint32_t count) const;
+		const vector_type	subvec(std::size_t index, std::size_t count) const;
 		const vector_type&	values() const;
 
 		std::stringstream	sstream() const;
 
-		const uint32_t	count(const value_type& value) const;
-		const uint32_t	count(const_iterator first, const_iterator last, const value_type& value) const;
-		const uint32_t	indexOf(const value_type& value) const;
-		const uint32_t	size() const;
+		const std::size_t	count(const value_type& value) const;
+		const std::size_t	count(const_iterator first, const_iterator last, const value_type& value) const;
+		const std::size_t	indexOf(const value_type& value) const;
+		const std::size_t	size() const;
 
 		const bool		contains(const value_type& value) const;
 		const bool		empty() const;
-		const bool		inRange(uint32_t index) const;
+		const bool		inRange(std::size_t index) const;
 		const bool		inRange(const_iterator it) const;
 
 		const self_type	clone() const;
-		const self_type	clone(uint32_t index, uint32_t count = 1) const;
+		const self_type	clone(std::size_t index, std::size_t count = 1) const;
 		const self_type	clone(const self_type& other) const;
-		const self_type	clone(const self_type& other, uint32_t index, uint32_t count = 1) const;
+		const self_type	clone(const self_type& other, std::size_t index, std::size_t count = 1) const;
 		const self_type	clone(const_iterator first, const_iterator last) const;
 
 	public:
 		self_type&	assign(const vector_type& value);
 		self_type&	clear();
 		self_type&	copy(const self_type& other);
-		self_type&	copy(const self_type& other, uint32_t index);
-		self_type&	copy(const self_type& other, uint32_t index, uint32_t count);
+		self_type&	copy(const self_type& other, std::size_t index);
+		self_type&	copy(const self_type& other, std::size_t index, std::size_t count);
 		self_type&	copy(const_iterator first, const_iterator last);
-		self_type&	erase(uint32_t index, uint32_t count = 1);
-		self_type&	erase(const_iterator it, uint32_t count = 1);
+		self_type&	erase(std::size_t index, std::size_t count = 1);
+		self_type&	erase(const_iterator it, std::size_t count = 1);
 		self_type&	erase(const_iterator first, const_iterator last);
-		self_type&	insert(uint32_t index, char value);
-		self_type&	insert(uint32_t index, const char* value);
-		self_type&	insert(uint32_t index, const value_type& value);
-		self_type&	merge(uint32_t index, uint32_t count);
+		self_type&	insert(std::size_t index, char value);
+		self_type&	insert(std::size_t index, const char* value);
+		self_type&	insert(std::size_t index, const value_type& value);
+		self_type&	merge(std::size_t index, std::size_t count);
 		self_type&	pop_back();
 		self_type&	pop_front();
 		self_type&	push_back(char value);
@@ -88,13 +88,13 @@ namespace ml
 		self_type&	push_front(const self_type& value);
 		self_type&	remove(const value_type& value);
 		self_type&	removeAll(const value_type& value);
-		self_type&	resize(uint32_t size);
+		self_type&	resize(std::size_t size);
 		self_type&	reverse();
 
 	public:
-		Args::const_iterator	find(const value_type& value, uint32_t begin = 0) const;
+		Args::const_iterator	find(const value_type& value, std::size_t begin = 0) const;
 		Args::const_iterator	find_first(const value_type& value) const;
-		Args::const_iterator	find_first_not_of(const value_type& value, uint32_t begin = 0) const;
+		Args::const_iterator	find_first_not_of(const value_type& value, std::size_t begin = 0) const;
 		Args::const_iterator	find_last(const value_type& value) const;
 		Args::const_iterator	find_last_not_of(const value_type& value) const;
 
@@ -117,7 +117,7 @@ namespace ml
 				out << s << " ";
 			return out;
 		}
-		inline value_type	operator[](uint32_t index) const
+		inline value_type	operator[](std::size_t index) const
 		{
 			if (inRange(index))
 			{

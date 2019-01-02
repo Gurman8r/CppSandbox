@@ -70,7 +70,7 @@ namespace ml
 		std::vector<std::string> list;
 
 		std::string	cpy = src;
-		uint32_t	pos = 0;
+		std::size_t	pos = 0;
 		std::string	tok;
 
 		while ((pos = cpy.find(delims)) != std::string::npos)

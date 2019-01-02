@@ -92,7 +92,7 @@ namespace ml
 
 	Var AST_Assign::evaluate() const
 	{
-		if (op == Operator::OP_SET)
+		if (op == OperatorType::OP_SET)
 		{
 			if (Var * v = block()->setv(name->value, expr->evaluate()))
 			{
@@ -103,19 +103,19 @@ namespace ml
 		{
 			switch (op.type)
 			{
-			case Operator::OP_ADD:
+			case OperatorType::OP_ADD:
 				return v->Add(expr->evaluate());
 
-			case Operator::OP_SUB:
+			case OperatorType::OP_SUB:
 				return v->Sub(expr->evaluate());
 
-			case Operator::OP_MUL:
+			case OperatorType::OP_MUL:
 				return v->Mul(expr->evaluate());
 
-			case Operator::OP_DIV:
+			case OperatorType::OP_DIV:
 				return v->Div(expr->evaluate());
 
-			case Operator::OP_POW:
+			case OperatorType::OP_POW:
 				return v->Pow(expr->evaluate());
 			}
 		}
@@ -209,7 +209,7 @@ namespace ml
 			{
 				if (f->args.size() == args.size())
 				{
-					for (uint32_t i = 0; i < f->args.size(); i++)
+					for (std::size_t i = 0; i < f->args.size(); i++)
 					{
 						if (!b->setv(f->args[i]->value, args[i]->evaluate()))
 						{
@@ -220,7 +220,7 @@ namespace ml
 
 					if (b->runFirst())
 					{
-						for (uint32_t i = 0; i < f->args.size(); i++)
+						for (std::size_t i = 0; i < f->args.size(); i++)
 						{
 							if (!b->delv(f->args[i]->value))
 							{
@@ -458,33 +458,33 @@ namespace ml
 		{
 			switch (op.type)
 			{
-			case Operator::OP_ADD:
+			case OperatorType::OP_ADD:
 				return lhs->evaluate() + rhs->evaluate();
-			case Operator::OP_SUB:
+			case OperatorType::OP_SUB:
 				return lhs->evaluate() - rhs->evaluate();
-			case Operator::OP_MUL:
+			case OperatorType::OP_MUL:
 				return lhs->evaluate() * rhs->evaluate();
-			case Operator::OP_DIV:
+			case OperatorType::OP_DIV:
 				return lhs->evaluate() / rhs->evaluate();
-			case Operator::OP_POW:
+			case OperatorType::OP_POW:
 				return lhs->evaluate() ^ rhs->evaluate();
 
-			case Operator::OP_EQU:
+			case OperatorType::OP_EQU:
 				return Var().boolValue(lhs->evaluate() == rhs->evaluate());
-			case Operator::OP_NEQ:
+			case OperatorType::OP_NEQ:
 				return Var().boolValue(lhs->evaluate() != rhs->evaluate());
-			case Operator::OP_LT:
+			case OperatorType::OP_LT:
 				return Var().boolValue(lhs->evaluate() < rhs->evaluate());
-			case Operator::OP_GT:
+			case OperatorType::OP_GT:
 				return Var().boolValue(lhs->evaluate() > rhs->evaluate());
-			case Operator::OP_LTE:
+			case OperatorType::OP_LTE:
 				return Var().boolValue(lhs->evaluate() <= rhs->evaluate());
-			case Operator::OP_GTE:
+			case OperatorType::OP_GTE:
 				return Var().boolValue(lhs->evaluate() >= rhs->evaluate());
 
-			case Operator::OP_AND:
+			case OperatorType::OP_AND:
 				return Var().boolValue(lhs->evaluate() && rhs->evaluate());
-			case Operator::OP_OR:
+			case OperatorType::OP_OR:
 				return Var().boolValue(lhs->evaluate() || rhs->evaluate());
 			}
 		}

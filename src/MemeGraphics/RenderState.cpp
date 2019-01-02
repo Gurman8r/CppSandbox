@@ -2,5 +2,11 @@
 
 namespace ml
 {
+	RenderState::RenderState()
+	{
+	}
 
+	RenderState::RenderState(const RenderState & copy)
+	{
+	}
 }

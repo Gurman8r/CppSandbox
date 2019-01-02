@@ -78,26 +78,26 @@ namespace ml
 	{
 	}
 
-	Token::Token(Type type)
+	Token::Token(TokenType type)
 		: type(type)
 		, data(Token::TypeNames.at(type))
 	{
 	}
 
 	Token::Token(char type)
-		: type((Token::Type)type)
+		: type((TokenType)type)
 		, data(std::string())
 	{
 	}
 
-	Token::Token(Type type, const std::string & data)
+	Token::Token(TokenType type, const std::string & data)
 		: type(type)
 		, data(data)
 	{
 	}
 
 	Token::Token(char type, const std::string & data)
-		: type((Token::Type)type)
+		: type((TokenType)type)
 		, data(data)
 	{
 	}
@@ -116,7 +116,7 @@ namespace ml
 		return (*this);
 	}
 
-	Token & Token::operator=(const Token::Type & value)
+	Token & Token::operator=(const TokenType & value)
 	{
 		type = value;
 		data = Token::TypeNames.at(value);
@@ -154,140 +154,66 @@ namespace ml
 		return ss.str();
 	}
 
-
-	std::ostream & operator<<(std::ostream & out, const Token::Type & rhs)
+	
+	bool Token::equals(const Token & value) const
 	{
-		out << Token::TypeNames.at(rhs);
-		return out;
+		return (type == value.type) && (data == value.data);
 	}
 
-	std::ostream & operator<<(std::ostream & out, const Token & tok)
+	bool Token::equals(const TokenType & value) const
 	{
-		out
-			<< FMT()
-			<< FG::White << "[ "
-			<< FG::Green << tok.type
-			<< FG::White << " "
-			<< FG::Yellow << tok.data
-			<< FG::White << " ]" 
-			<< FMT();
-		return out;
+		return type == value;
 	}
 
-
-	bool operator==(const Token & lhs, const Token & rhs)
+	bool Token::equals(const char & value) const
 	{
-		return
-			(lhs.type == rhs.type) &&
-			(lhs.data == rhs.data);
+		return (char)type == value;
 	}
 
-	bool operator!=(const Token & lhs, const Token & rhs)
+	bool Token::equals(const std::string & value) const
 	{
-		return !(lhs == rhs);
+		return data == value;
 	}
-
-	bool operator >(const Token & lhs, const Token & rhs)
-	{
-		return (lhs.type > rhs.type);
-	}
-
-	bool operator <(const Token & lhs, const Token & rhs)
+	
+	
+	bool Token::lessThan(const Token & value) const
 	{
 		Operator lo;
-		if (Operator::makeOperator(lhs.data, lo))
+		if (Operator::makeOperator(data, lo))
 		{
 			Operator ro;
-			if (Operator::makeOperator(rhs.data, ro))
+			if (Operator::makeOperator(value.data, ro))
 			{
 				return lo < ro;
 			}
 		}
-
 		return false;
 	}
 
-	bool operator>=(const Token & lhs, const Token & rhs)
+	bool Token::lessThan(const TokenType & value) const
 	{
-		return (lhs > rhs) || (lhs == rhs);
+		return type < value;
+	}
+	
+	bool Token::lessThan(const char & value) const
+	{
+		return (char)type < value;
 	}
 
-	bool operator<=(const Token & lhs, const Token & rhs)
+	bool Token::lessThan(const std::string & value) const
 	{
-		return (lhs < rhs) || (lhs == rhs);
-	}
-
-
-	bool operator==(const Token & lhs, const Token::Type & rhs)
-	{
-		return lhs.type == rhs;
-	}
-
-	bool operator!=(const Token & lhs, const Token::Type & rhs)
-	{
-		return !(lhs == rhs);
-	}
-
-	bool operator >(const Token & lhs, const Token::Type & rhs)
-	{
-		return lhs.type > rhs;
-	}
-
-	bool operator <(const Token & lhs, const Token::Type & rhs)
-	{
-		return lhs.type < rhs;
-	}
-
-	bool operator>=(const Token & lhs, const Token::Type & rhs)
-	{
-		return (lhs > rhs) || (lhs == rhs);
-	}
-
-	bool operator<=(const Token & lhs, const Token::Type & rhs)
-	{
-		return (lhs < rhs) || (lhs == rhs);
+		return data < value;
 	}
 
 
-	bool operator==(const Token & lhs, const char & rhs)
+	void Token::serialize(std::ostream & out) const
 	{
-		return (char)lhs.type == rhs;
+		out << FMT()
+			<< FG::White << "[ "
+			<< FG::Green << type
+			<< FG::White << " "
+			<< FG::Yellow << data
+			<< FG::White << " ]"
+			<< FMT();
 	}
-
-	bool operator!=(const Token & lhs, const char & rhs)
-	{
-		return !(lhs == rhs);
-	}
-
-	bool operator >(const Token & lhs, const char & rhs)
-	{
-		return (char)lhs.type > rhs;
-	}
-
-	bool operator <(const Token & lhs, const char & rhs)
-	{
-		return (char)lhs.type < rhs;
-	}
-
-	bool operator>=(const Token & lhs, const char & rhs)
-	{
-		return (lhs > rhs) || (lhs == rhs);
-	}
-
-	bool operator<=(const Token & lhs, const char & rhs)
-	{
-		return (lhs < rhs) || (lhs == rhs);
-	}
-
-
-	bool operator==(const Token & lhs, const std::string & rhs)
-	{
-		return (lhs.data == rhs);
-	}
-
-	bool operator!=(const Token & lhs, const std::string & rhs)
-	{
-		return !(lhs == rhs);
-	}
-
 }

@@ -80,32 +80,32 @@ namespace ml
 	}
 
 
-	uint32_t	AST_Node::getDepth() const
+	std::size_t	AST_Node::getDepth() const
 	{
 		return m_depth;
 	}
 
-	AST_Node&	AST_Node::setDepth(uint32_t value)
+	AST_Node&	AST_Node::setDepth(std::size_t value)
 	{
 		m_depth = value;
 		return (*this);
 	}
 
-	uint32_t	AST_Node::childCount() const
+	std::size_t	AST_Node::childCount() const
 	{
 		return m_children.size();
 	}
 
-	uint32_t	AST_Node::siblingCount() const
+	std::size_t	AST_Node::siblingCount() const
 	{
 		return getSiblings().size();
 	}
 
-	uint32_t	AST_Node::siblingIndex() const
+	std::size_t	AST_Node::siblingIndex() const
 	{
 		if (AST_Node * p = getParent())
 		{
-			uint32_t i = 0;
+			std::size_t i = 0;
 
 			for (AST_Node * c : (*p))
 			{
@@ -134,7 +134,7 @@ namespace ml
 		return NULL;
 	}
 
-	AST_Node * AST_Node::getChild(uint32_t index) const
+	AST_Node * AST_Node::getChild(std::size_t index) const
 	{
 		if (index < childCount())
 		{
@@ -148,7 +148,7 @@ namespace ml
 		return m_parent;
 	}
 
-	AST_Node * AST_Node::getSibling(uint32_t index) const
+	AST_Node * AST_Node::getSibling(std::size_t index) const
 	{
 		list_type siblings = getSiblings();
 		if (index < siblings.size())
@@ -158,7 +158,7 @@ namespace ml
 		return NULL;
 	}
 
-	AST_Node * AST_Node::insertChild(uint32_t index, AST_Node * value)
+	AST_Node * AST_Node::insertChild(std::size_t index, AST_Node * value)
 	{
 		if (value)
 		{
@@ -204,7 +204,7 @@ namespace ml
 
 	AST_Node * AST_Node::getNext() const
 	{
-		uint32_t i = siblingIndex() + 1;
+		std::size_t i = siblingIndex() + 1;
 		if (i < siblingCount())
 		{
 			return getSibling(i);
@@ -214,7 +214,7 @@ namespace ml
 
 	AST_Node * AST_Node::getPrev() const
 	{
-		uint32_t i = siblingIndex();
+		std::size_t i = siblingIndex();
 		if (i > 0)
 		{
 			return getSibling(i - 1);
@@ -283,7 +283,7 @@ namespace ml
 
 
 	// Search
-	AST_Node::const_iterator	AST_Node::find(const value_type & value, uint32_t index) const
+	AST_Node::const_iterator	AST_Node::find(const value_type & value, std::size_t index) const
 	{
 		if (value)
 		{
@@ -309,7 +309,7 @@ namespace ml
 		return end();
 	}
 
-	AST_Node::const_iterator	AST_Node::find_first_not_of(const value_type & value, uint32_t index) const
+	AST_Node::const_iterator	AST_Node::find_first_not_of(const value_type & value, std::size_t index) const
 	{
 		if (value)
 		{
