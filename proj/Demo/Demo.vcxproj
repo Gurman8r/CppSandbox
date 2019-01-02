@@ -160,9 +160,22 @@
     <None Include="..\..\assets\boot.script" />
     <None Include="..\..\assets\stub.script" />
     <None Include="..\..\config.ini" />
-    <None Include="..\..\tools\7z-BIN.bat" />
-    <None Include="..\..\tools\7z-SLN.bat" />
+    <None Include="..\..\tools\Archive_Bin.bat" />
+    <None Include="..\..\tools\Archive_Bin_Debug_x64.bat" />
+    <None Include="..\..\tools\Archive_Bin_Debug_x86.bat" />
+    <None Include="..\..\tools\Archive_Bin_Release_x64.bat" />
+    <None Include="..\..\tools\Archive_Bin_Release_x86.bat" />
+    <None Include="..\..\tools\Archive_Solution.bat" />
+    <None Include="..\..\tools\Build_Debug_x64.bat" />
+    <None Include="..\..\tools\Build_Debug_x86.bat" />
+    <None Include="..\..\tools\Build_Release_x64.bat" />
+    <None Include="..\..\tools\Build_Release_x86.bat" />
+    <None Include="..\..\tools\Build_x64.bat" />
+    <None Include="..\..\tools\Build_x86.bat" />
+    <None Include="..\..\tools\Demo_Debug_x64.bat" />
     <None Include="..\..\tools\Demo_Debug_x86.bat" />
+    <None Include="..\..\tools\Demo_Release_x64.bat" />
+    <None Include="..\..\tools\Demo_Release_x86.bat" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

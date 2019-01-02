@@ -22,13 +22,52 @@
     <None Include="..\..\assets\stub.script">
       <Filter>Resource Files\assets</Filter>
     </None>
-    <None Include="..\..\tools\7z-BIN.bat">
+    <None Include="..\..\tools\Archive_Bin.bat">
       <Filter>Resource Files\tools</Filter>
     </None>
-    <None Include="..\..\tools\7z-SLN.bat">
+    <None Include="..\..\tools\Archive_Bin_Debug_x64.bat">
+      <Filter>Resource Files\tools</Filter>
+    </None>
+    <None Include="..\..\tools\Archive_Bin_Debug_x86.bat">
+      <Filter>Resource Files\tools</Filter>
+    </None>
+    <None Include="..\..\tools\Archive_Bin_Release_x64.bat">
+      <Filter>Resource Files\tools</Filter>
+    </None>
+    <None Include="..\..\tools\Archive_Bin_Release_x86.bat">
+      <Filter>Resource Files\tools</Filter>
+    </None>
+    <None Include="..\..\tools\Archive_Solution.bat">
+      <Filter>Resource Files\tools</Filter>
+    </None>
+    <None Include="..\..\tools\Build_Debug_x64.bat">
+      <Filter>Resource Files\tools</Filter>
+    </None>
+    <None Include="..\..\tools\Build_Debug_x86.bat">
+      <Filter>Resource Files\tools</Filter>
+    </None>
+    <None Include="..\..\tools\Build_Release_x64.bat">
+      <Filter>Resource Files\tools</Filter>
+    </None>
+    <None Include="..\..\tools\Build_Release_x86.bat">
+      <Filter>Resource Files\tools</Filter>
+    </None>
+    <None Include="..\..\tools\Demo_Debug_x64.bat">
       <Filter>Resource Files\tools</Filter>
     </None>
     <None Include="..\..\tools\Demo_Debug_x86.bat">
+      <Filter>Resource Files\tools</Filter>
+    </None>
+    <None Include="..\..\tools\Demo_Release_x64.bat">
+      <Filter>Resource Files\tools</Filter>
+    </None>
+    <None Include="..\..\tools\Demo_Release_x86.bat">
+      <Filter>Resource Files\tools</Filter>
+    </None>
+    <None Include="..\..\tools\Build_x64.bat">
+      <Filter>Resource Files\tools</Filter>
+    </None>
+    <None Include="..\..\tools\Build_x86.bat">
       <Filter>Resource Files\tools</Filter>
     </None>
   </ItemGroup>
