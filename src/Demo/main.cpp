@@ -25,14 +25,6 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-class TestComponent final
-	: public ml::Component
-{
-public:
-	TestComponent() { std::cout << (*this) << " Created" << std::endl; }
-	~TestComponent() { std::cout << (*this) << " Destroyed" << std::endl; }
-};
-
 struct Settings final
 	: public ml::ITrackable
 {
@@ -40,11 +32,33 @@ struct Settings final
 	uint32_t	width;
 	uint32_t	height;
 	std::string	assetPath;
+
+	inline bool load(const std::string & filename)
+	{
+		INIReader ini(filename.c_str());
+		if (ini.ParseError() == 0)
+		{
+			title		= ini.Get("Window", "sTitle", "Title");
+			width		= ini.GetInteger("Window", "iWidth", 640);
+			height		= ini.GetInteger("Window", "iHeight", 480);
+			assetPath	= ini.Get("Assets", "sPath", "/assets");
+			return true;
+		}
+		return false;
+	}
 };
+
+Settings settings;
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-Settings settings;
+class TestComponent final
+	: public ml::Component
+{
+public:
+	TestComponent() { std::cout << (*this) << " Created" << std::endl; }
+	~TestComponent() { std::cout << (*this) << " Destroyed" << std::endl; }
+};
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -81,20 +95,6 @@ inline static void printBits(T value)
 		std::cout << (b ? ml::FG::Green : ml::FG::Red) << b << " ";
 	}
 	std::cout << ml::FMT() << std::endl;
-}
-
-inline static bool loadSettings(Settings & s, const std::string & filename)
-{
-	INIReader ini(filename.c_str());	
-	if (ini.ParseError() == 0)
-	{
-		s.title		= ini.Get("Window", "sTitle", "Title");
-		s.width		= ini.GetInteger("Window", "iWidth", 640);
-		s.height	= ini.GetInteger("Window", "iHeight", 480);
-		s.assetPath = ini.Get("Assets", "sPath", "/assets");
-		return true;
-	}
-	return false;
 }
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -293,15 +293,16 @@ inline static int scriptStub()
 
 int main(int argc, char** argv)
 {	
-	if (!loadSettings(settings, CONFIG_INI))
+	if (!settings.load(CONFIG_INI))
 	{
 		std::cerr << "Unable to locate config: \'" << CONFIG_INI << "\'." << std::endl;
 		return pause(EXIT_FAILURE);
 	}
-
 	
 	//coreStub();
+	
 	//windowStub();
+	
 	scriptStub();
 	
 	return EXIT_SUCCESS;

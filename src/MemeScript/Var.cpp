@@ -308,7 +308,7 @@ namespace ml
 
 	Var &	Var::errorValue(const string_t & value)
 	{
-		return makeVoid().tokensValue({ { Token::TOK_ERR, value } });
+		return voidValue().tokensValue({ { Token::TOK_ERR, value } });
 	}
 
 	Var &	Var::floatValue(const float & value)
@@ -326,6 +326,11 @@ namespace ml
 		return setType(Var::Integer).tokensValue({ { Token::TOK_INT, std::to_string(value) } });
 	}
 	
+	Var &	Var::nullValue()
+	{
+		return voidValue().tokensValue({});
+	}
+
 	Var &	Var::pointerValue(const Ptr & value)
 	{
 		return setType(Var::Pointer).tokensValue({ { Token::TOK_NAME, value.name } });
@@ -343,13 +348,7 @@ namespace ml
 		return (*this);
 	}
 
-	
-	Var &	Var::makeNull()
-	{
-		return makeVoid().tokensValue({});
-	}
-
-	Var &	Var::makeVoid()
+	Var &	Var::voidValue()
 	{
 		return setType(Var::Void).tokensValue({ Token::TOK_VOID });
 	}
@@ -1179,7 +1178,7 @@ namespace ml
 		switch (toks.size())
 		{
 		case 0:
-			return Var().makeNull();
+			return Var().nullValue();
 
 		case 1:
 			return Var::MakeVarS(toks.front());

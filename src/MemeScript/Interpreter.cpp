@@ -33,7 +33,7 @@ namespace ml
 
 			return execSyntax(value);
 		}
-		return Var().makeVoid();
+		return Var().voidValue();
 	}
 
 	Var	Interpreter::execScript(const std::string & value)

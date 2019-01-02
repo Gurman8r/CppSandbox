@@ -150,7 +150,7 @@ namespace ml
 		{
 			m_values->insert({ index, new VarMap() });
 
-			setVar(index, "?", Var().makeVoid());
+			setVar(index, "?", Var().voidValue());
 		}
 		return values(index);
 	}

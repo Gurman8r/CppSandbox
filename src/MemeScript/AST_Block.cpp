@@ -114,7 +114,7 @@ namespace ml
 		{
 			return v;
 		}
-		return setRet(Var().makeVoid());
+		return setRet(Var().voidValue());
 	}
 
 	Var *	AST_Block::setRet(const Var & value) const

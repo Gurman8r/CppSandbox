@@ -106,12 +106,11 @@ namespace ml
 		Var &		floatValue(const float & value);
 		Var &		funcValue(const TokenList & value);
 		Var &		intValue(const int & value);
+		Var &		nullValue();
 		Var &		pointerValue(const Ptr & value);
 		Var &		stringValue(const string_t & value);
 		Var &		tokensValue(const TokenList & value);
-		
-		Var &		makeNull();
-		Var &		makeVoid();
+		Var &		voidValue();
 		
 		template<typename T, typename ... A>
 		inline Var & errorValue(const string_t & fmt, const T & arg0, const A &... args)
