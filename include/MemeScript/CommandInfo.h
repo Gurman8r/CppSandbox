@@ -21,7 +21,9 @@ namespace ml
 			MAX_ARG_TYPE
 		};
 		const static std::string ArgNames[MAX_ARG_TYPE];
-		struct CmdOpt
+
+	public:
+		struct ML_SCRIPT_API CmdOpt
 		{
 			std::string name;
 			std::string desc;
@@ -51,7 +53,6 @@ namespace ml
 				return out;
 			};
 		};
-
 		using CmdOptMap = std::unordered_map<ArgType, std::vector<CmdOpt>>;
 
 	public:

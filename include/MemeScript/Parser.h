@@ -14,20 +14,9 @@ namespace ml
 	public:
 		using ToksList = std::vector<TokenList>;
 
-		enum Flags : uint16_t
-		{
-			None	 = (0 << 0),
-			ShowToks = (1 << 0),
-			ShowTree = (1 << 1),
-		};
-		inline friend Flags operator|(const Parser::Flags& lhs, const Parser::Flags& rhs)
-		{
-			return static_cast<Parser::Flags>(static_cast<uint16_t>(lhs) | static_cast<uint16_t>(rhs));
-		}
-
 	public:
-		Parser();
-		~Parser();
+		Parser() {}
+		~Parser() {}
 
 		static ToksList	SplitStatements(const TokenList& toks);
 		static bool		InfixToPostfix(const TokenList& ifx, TokenList& pfx);
@@ -61,11 +50,12 @@ namespace ml
 		AST_Call::Params  genCallParams(const TokenList& toks) const;
 		AST_Func::Params  genFuncParams(const TokenList& toks) const;
 
-		inline Flags getFlags() const { return m_flags; }
-		inline void	 setFlags(Flags value) { m_flags = value; }
+		inline void showToks(bool value) { m_showToks = value; }
+		inline void showTree(bool value) { m_showTree = value; }
 
 	private:
-		Flags m_flags;
+		bool m_showToks;
+		bool m_showTree;
 	};
 }
 

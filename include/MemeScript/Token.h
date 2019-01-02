@@ -15,7 +15,7 @@ namespace ml
 			TOK_VOID = ' ',	// ' ' - Empty / Space
 			TOK_ENDL = '\n',	// \n - End of line
 
-			TOK_NAME = 'n',	// n - name_t
+			TOK_NAME = 'n',	// n - std::string
 			TOK_FLT = 'f',	// f - Float / Decimal
 			TOK_INT = 'i',	// i - Integer
 			TOK_STR = 's',	// s - String

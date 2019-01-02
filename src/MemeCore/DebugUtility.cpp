@@ -14,7 +14,8 @@ namespace ml
 				<< FG::White << "["
 				<< FG::Green << "   OK   "
 				<< FG::White << "]"
-				<< FMT() << message;
+				<< FMT() << message
+				<< std::endl;
 		}
 	}
 
@@ -27,7 +28,8 @@ namespace ml
 				<< FG::White << "["
 				<< FG::Yellow << "  WARN  "
 				<< FG::White << "]"
-				<< FMT() << message;
+				<< FMT() << message
+				<< std::endl;
 		}
 	}
 
@@ -40,7 +42,8 @@ namespace ml
 				<< FG::White << "["
 				<< FG::Red << " ERROR! "
 				<< FG::White << "]"
-				<< FMT() << message;
+				<< FMT() << message
+				<< std::endl;
 		}
 		return false;
 	}

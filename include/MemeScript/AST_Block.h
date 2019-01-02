@@ -20,10 +20,10 @@ namespace ml
 
 		virtual std::ostream& display(std::ostream& out) const;
 
-		bool	delv(const Var::name_t & name);
-		Var *	getv(const Var::name_t & name) const;
-		Var *	newv(const Var::name_t & name, const Var & value);
-		Var *	setv(const Var::name_t & name, const Var & value);
+		bool	delv(const std::string & name);
+		Var *	getv(const std::string & name) const;
+		Var *	newv(const std::string & name, const Var & value);
+		Var *	setv(const std::string & name, const Var & value);
 
 		Var *	getRet() const;
 		Var *	setRet(const Var & value) const;

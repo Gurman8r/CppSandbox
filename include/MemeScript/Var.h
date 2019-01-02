@@ -13,18 +13,16 @@ namespace ml
 		, public IComparable<Var>
 	{
 	public:
-		using string_t	= std::string;
-		using name_t	= std::string;
-
-	public:
 		struct ML_SCRIPT_API Ptr
 			: public ITrackable
 		{
-			name_t	name;
-			int		index;
+			std::string	name;
+			int32_t		index;
+
 			Ptr();
-			Ptr(int index, const name_t& name);
+			Ptr(int32_t index, const std::string& name);
 			Ptr(const Ptr& copy);
+
 			Var * get() const;
 
 			void serialize(std::ostream & out) const override;
@@ -34,6 +32,7 @@ namespace ml
 		enum Type : int
 		{
 			INVALID_TYPE = -1,
+
 			//- Basic - - -//
 			MIN_BASIC,
 			Void = MIN_BASIC,
@@ -54,7 +53,7 @@ namespace ml
 			MAX_VAR_TYPE
 		};
 		
-		static const string_t TypeNames[Type::MAX_VAR_TYPE];
+		static const std::string TypeNames[Type::MAX_VAR_TYPE];
 		
 		inline friend std::ostream & operator<<(std::ostream & out, const Type & rhs)
 		{
@@ -93,27 +92,28 @@ namespace ml
 		bool		boolValue() const;
 		float		floatValue() const;
 		Var			elemValue(uint32_t i) const;
-		string_t	errorValue() const;
+		std::string	errorValue() const;
 		int			intValue() const;
 		Ptr			pointerValue() const;
-		string_t	stringValue() const;
+		std::string	stringValue() const;
+		std::string	textValue() const;
 		TokenList	tokensValue() const;
 
 		Var &		arrayValue(const TokenList & value);
 		Var &		boolValue(const bool & value);
 		Var &		elemValue(uint32_t index, const Token & value);
-		Var &		errorValue(const string_t & value);
+		Var &		errorValue(const std::string & value);
 		Var &		floatValue(const float & value);
 		Var &		funcValue(const TokenList & value);
 		Var &		intValue(const int & value);
 		Var &		nullValue();
 		Var &		pointerValue(const Ptr & value);
-		Var &		stringValue(const string_t & value);
+		Var &		stringValue(const std::string & value);
 		Var &		tokensValue(const TokenList & value);
 		Var &		voidValue();
 		
 		template<typename T, typename ... A>
-		inline Var & errorValue(const string_t & fmt, const T & arg0, const A &... args)
+		inline Var & errorValue(const std::string & fmt, const T & arg0, const A &... args)
 		{
 			return errorValue(StringUtility::Format(fmt, arg0, (args)...));
 		};
@@ -159,7 +159,7 @@ namespace ml
 		Var & operator=(double value);
 		Var & operator=(int value);
 		Var & operator=(const Ptr & value);
-		Var & operator=(const string_t & value);
+		Var & operator=(const std::string & value);
 		Var & operator=(const char * value);
 		Var & operator=(char value);
 
@@ -171,17 +171,13 @@ namespace ml
 		static std::ostream& PrintList(std::ostream & out, const Var & value);
 		
 	public: // Factory
-		static Var MakeVarS(const Token & tok);
-		static Var MakeVarR(const TokenList & toks);
+		static Var makeSingle(const Token & tok);
+		static Var makeRecursive(const TokenList & toks);
 
 	public: // Helper Functions
 		inline int		getScope() const
 		{
 			return m_scope;
-		}
-		inline string_t	getText() const
-		{
-			return m_tokens.str();
 		}
 		inline Type		getType() const
 		{

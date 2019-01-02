@@ -5,17 +5,6 @@
 
 namespace ml
 {
-	Parser::Parser()
-	{
-		setFlags(Flags::None);
-	}
-
-	Parser::~Parser()
-	{
-	}
-
-
-
 	Parser::ToksList Parser::SplitStatements(const TokenList & tokens)
 	{
 		static uint32_t id = 0;
@@ -211,13 +200,13 @@ namespace ml
 				ToksList::const_iterator it;
 				for (it = statements.begin(); it != statements.end(); it++)
 				{
-					if (getFlags() & Parser::ShowToks)
+					if (m_showToks)
 					{
-						std::cerr << std::endl << (*it) << std::endl;
+						std::cout << (*it) << std::endl;
 					}
 
 					// For
-					if (it->matchD(it->begin(), { "for" }))
+					if (it->matchData(it->begin(), { "for" }))
 					{
 						TokenList args = TokenList(*it).after(2);
 						if (AST_Assign* assn = genAssign(args))
@@ -259,9 +248,9 @@ namespace ml
 					}
 				}
 
-				if (getFlags() & Flags::ShowTree)
+				if (m_showTree)
 				{
-					std::cerr << std::endl << (*root) << std::endl;
+					std::cout << (*root) << std::endl;
 				}
 			}
 		}
@@ -301,7 +290,7 @@ namespace ml
 	AST_Stmt*	Parser::genStatement(const TokenList & toks) const
 	{
 		// If
-		if (toks.matchD(toks.begin(), { "if" }))
+		if (toks.matchData(toks.begin(), { "if" }))
 		{
 			if (AST_Expr* expr = genComplex(toks.between('(', ')').pop_front()))
 			{
@@ -309,7 +298,7 @@ namespace ml
 			}
 		}
 		// Elif
-		else if (toks.matchD(toks.begin(), { "elif" }))
+		else if (toks.matchData(toks.begin(), { "elif" }))
 		{
 			if (AST_Expr* expr = genComplex(toks.between('(', ')').pop_front()))
 			{
@@ -317,12 +306,12 @@ namespace ml
 			}
 		}
 		// Else
-		else if (toks.matchD(toks.begin(), { "else" }))
+		else if (toks.matchData(toks.begin(), { "else" }))
 		{
 			return new AST_Else();
 		}
 		// Print
-		else if (toks.matchD(toks.begin(), { "print" }))
+		else if (toks.matchData(toks.begin(), { "print" }))
 		{
 			AST_Call::Params params = genCallParams(toks.after(1));
 			switch (params.size())
@@ -335,7 +324,7 @@ namespace ml
 			}
 		}
 		// Return
-		else if (toks.matchD(toks.begin(), { "return" }))
+		else if (toks.matchData(toks.begin(), { "return" }))
 		{
 			if (AST_Expr* expr = genComplex(toks.between('(', ')').pop_front()))
 			{
@@ -347,7 +336,7 @@ namespace ml
 			}
 		}
 		// While
-		else if (toks.matchD(toks.begin(), { "while" }))
+		else if (toks.matchData(toks.begin(), { "while" }))
 		{
 			if (AST_Expr* expr = genComplex(toks.between('(', ')').pop_front()))
 			{
@@ -355,7 +344,7 @@ namespace ml
 			}
 		}
 		// Free
-		else if (toks.matchD(toks.begin(), { "free" }))
+		else if (toks.matchData(toks.begin(), { "free" }))
 		{
 			if (AST_Expr* expr = genComplex(toks.between('(', ')').pop_front()))
 			{
@@ -371,7 +360,7 @@ namespace ml
 			}
 		}
 		// If
-		else if (toks.matchD(toks.begin(), { "include" }))
+		else if (toks.matchData(toks.begin(), { "include" }))
 		{
 			if (AST_Expr* expr = genComplex(toks.between('(', ')').pop_front()))
 			{
@@ -400,7 +389,7 @@ namespace ml
 		{
 			return genComplex(toks.unwrapped());
 		}
-		else if (toks.size() == 4 && toks.matchS(toks.begin(), "EOOE"))
+		else if (toks.size() == 4 && toks.matchStr(toks.begin(), "EOOE"))
 		{
 			Operator op;
 			if (MakeOperator(toks[1], toks[2], op))
@@ -409,7 +398,7 @@ namespace ml
 			}
 		}
 		// System
-		else if (toks.matchD(toks.begin(), { "sys" }))
+		else if (toks.matchData(toks.begin(), { "sys" }))
 		{
 			if (AST_Expr* expr = genComplex(toks.between('(', ')').pop_front()))
 			{
@@ -559,7 +548,7 @@ namespace ml
 	{
 		if (toks.isWrap('[', ']'))
 		{
-			if (toks.matchS(toks.begin(), "[]"))
+			if (toks.matchStr(toks.begin(), "[]"))
 			{
 				return new AST_Array({});
 			}
@@ -576,14 +565,14 @@ namespace ml
 	{
 		const TokenList::const_iterator& it = toks.begin();
 
-		if (toks.matchS(it, "n=A"))
+		if (toks.matchStr(it, "n=A"))
 		{
 			return new AST_Assign(
 				Operator::OP_SET,
 				new AST_Name(it->data),
 				genComplex(toks.after(2)));
 		}
-		else if (toks.matchS(it, "nO=A"))
+		else if (toks.matchStr(it, "nO=A"))
 		{
 			Operator op;
 			if (MakeOperator(*(it + 1), *(it + 2), op))
@@ -599,7 +588,7 @@ namespace ml
 
 	AST_Call*	Parser::genCall(const TokenList & toks) const
 	{
-		if (toks.matchS(toks.begin(), "n(") && toks.back(')'))
+		if (toks.matchStr(toks.begin(), "n(") && toks.back(')'))
 		{
 			return new AST_Call(
 				new AST_Name(toks.front().data),
@@ -610,7 +599,7 @@ namespace ml
 
 	AST_Func*	Parser::genFunc(const TokenList & toks) const
 	{
-		if (toks.matchS(toks.begin(), "n=[](") && toks.back(')'))
+		if (toks.matchStr(toks.begin(), "n=[](") && toks.back(')'))
 		{
 			return new AST_Func(
 				toks.front().data,
@@ -621,7 +610,7 @@ namespace ml
 
 	AST_Input * Parser::genInput(const TokenList & toks) const
 	{
-		if (toks.matchS(toks.begin(), "n(") && toks.back(')'))
+		if (toks.matchStr(toks.begin(), "n(") && toks.back(')'))
 		{
 			if (toks.front("input"))
 			{
@@ -672,7 +661,7 @@ namespace ml
 
 	AST_Subscr* Parser::genSubscr(const TokenList & toks) const
 	{
-		if (toks.matchS(toks.begin(), "n[E]"))
+		if (toks.matchStr(toks.begin(), "n[E]"))
 		{
 			if (AST_Name* name = new AST_Name(toks.front().data))
 			{
@@ -741,7 +730,7 @@ namespace ml
 	{
 		AST_Call::Params params;
 
-		if (toks.matchS(toks.begin(), "()"))
+		if (toks.matchStr(toks.begin(), "()"))
 		{
 			return params;
 		}

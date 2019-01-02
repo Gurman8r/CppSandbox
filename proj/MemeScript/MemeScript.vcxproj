@@ -26,7 +26,6 @@
     <ClCompile Include="..\..\src\MemeScript\AST_Stmt.cpp" />
     <ClCompile Include="..\..\src\MemeScript\Command.cpp" />
     <ClCompile Include="..\..\src\MemeScript\CommandInfo.cpp" />
-    <ClCompile Include="..\..\src\MemeScript\CommandList.cpp" />
     <ClCompile Include="..\..\src\MemeScript\Interpreter.cpp" />
     <ClCompile Include="..\..\src\MemeScript\Lexer.cpp" />
     <ClCompile Include="..\..\src\MemeScript\Memory.cpp" />
@@ -45,7 +44,6 @@
     <ClInclude Include="..\..\include\MemeScript\AST_Stmt.h" />
     <ClInclude Include="..\..\include\MemeScript\Command.h" />
     <ClInclude Include="..\..\include\MemeScript\CommandInfo.h" />
-    <ClInclude Include="..\..\include\MemeScript\CommandList.h" />
     <ClInclude Include="..\..\include\MemeScript\Export.h" />
     <ClInclude Include="..\..\include\MemeScript\Interpreter.h" />
     <ClInclude Include="..\..\include\MemeScript\Lexer.h" />

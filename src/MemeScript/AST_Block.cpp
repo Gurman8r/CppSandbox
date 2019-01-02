@@ -38,7 +38,7 @@ namespace ml
 	}
 
 
-	bool	AST_Block::delv(const Var::name_t & name)
+	bool	AST_Block::delv(const std::string & name)
 	{
 		if (ML_Interpreter.memory()->delVar(getID(), name))
 		{
@@ -54,7 +54,7 @@ namespace ml
 		}
 	}
 
-	Var *	AST_Block::getv(const Var::name_t & name) const
+	Var *	AST_Block::getv(const std::string & name) const
 	{
 		if (Var * v = ML_Interpreter.memory()->getVar(getID(), name))
 		{
@@ -70,7 +70,7 @@ namespace ml
 		}
 	}
 
-	Var *	AST_Block::newv(const Var::name_t & name, const Var & value)
+	Var *	AST_Block::newv(const std::string & name, const Var & value)
 	{
 		if (Var * v = ML_Interpreter.memory()->newVar(getID(), name, value))
 		{
@@ -86,7 +86,7 @@ namespace ml
 		}
 	}
 
-	Var *	AST_Block::setv(const Var::name_t & name, const Var & value)
+	Var *	AST_Block::setv(const std::string & name, const Var & value)
 	{
 		if (Var * v = getv(name))
 		{

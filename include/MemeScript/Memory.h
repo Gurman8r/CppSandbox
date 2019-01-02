@@ -13,7 +13,7 @@ namespace ml
 		: public ITrackable
 	{
 	public:
-		using VarMap = std::map<Var::name_t, Var *>;
+		using VarMap = std::map<std::string, Var *>;
 		using ScopeMap = std::unordered_map<int, VarMap*>;
 
 	public:
@@ -24,10 +24,10 @@ namespace ml
 
 		void	clean();
 
-		bool	delVar(int index, const Var::name_t& name);
-		Var *	getVar(int index, const Var::name_t& name) const;
-		Var *	newVar(int index, const Var::name_t& name, const Var & value);
-		Var *	setVar(int index, const Var::name_t& name, const Var & value);
+		bool	delVar(int index, const std::string & name);
+		Var *	getVar(int index, const std::string & name) const;
+		Var *	newVar(int index, const std::string & name, const Var & value);
+		Var *	setVar(int index, const std::string & name, const Var & value);
 
 		const VarMap*	values(int index) const;
 		VarMap*			values(int index);

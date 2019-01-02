@@ -9,11 +9,11 @@ namespace ml
 {
 	Var::Ptr::Ptr()
 		: index(0)
-		, name(name_t())
+		, name(std::string())
 	{
 	}
 	
-	Var::Ptr::Ptr(int index, const name_t & name)
+	Var::Ptr::Ptr(int32_t index, const std::string & name)
 		: index(index)
 		, name(name)
 	{
@@ -52,16 +52,14 @@ namespace ml
 
 namespace ml
 {
-	using string_t = Var::string_t;
-
-	const string_t Var::TypeNames[Type::MAX_VAR_TYPE] =
+	const std::string Var::TypeNames[Type::MAX_VAR_TYPE] =
 	{
 		"void",
 		"bool",
 		"float",
 		"int",
 		"ptr",
-		"string_t",
+		"std::string",
 		"array"
 		"func",
 	};
@@ -114,7 +112,7 @@ namespace ml
 			switch (getType())
 			{
 			case Var::Func:
-				return !(getText()).empty();
+				return !(textValue()).empty();
 
 			case Var::Bool:
 				return isBoolType();
@@ -133,7 +131,6 @@ namespace ml
 				return true;
 			}
 		}
-
 		return true;
 	}
 		 
@@ -149,7 +146,7 @@ namespace ml
 		 
 	bool Var::isBoolType() const
 	{
-		return isNameType() && StringUtility::IsBool((getText()));
+		return isNameType() && StringUtility::IsBool((textValue()));
 	}
 		 
 	bool Var::isComplexType() const
@@ -169,7 +166,7 @@ namespace ml
 		 
 	bool Var::isFloatType() const
 	{
-		return tokensValue().front() == 'f' && StringUtility::IsDecimal((getText()));
+		return tokensValue().front() == 'f' && StringUtility::IsDecimal((textValue()));
 	}
 		 
 	bool Var::isFuncType() const
@@ -179,12 +176,12 @@ namespace ml
 		 
 	bool Var::isIntType() const
 	{
-		return tokensValue().front() == 'i' && StringUtility::IsInt((getText()));
+		return tokensValue().front() == 'i' && StringUtility::IsInt((textValue()));
 	}
 		 
 	bool Var::isNameType() const
 	{
-		return m_tokens.front() == 'n' && StringUtility::IsName((getText()));
+		return m_tokens.front() == 'n' && StringUtility::IsName((textValue()));
 	}
 		 
 	bool Var::isNullValue() const
@@ -212,12 +209,12 @@ namespace ml
 
 	bool		Var::boolValue() const
 	{
-		return isValid() ? StringUtility::ToBool((getText())) : false;
+		return isValid() ? StringUtility::ToBool((textValue())) : false;
 	}
 
 	float		Var::floatValue() const
 	{
-		return isValid() ? StringUtility::ToFloat((getText())) : 0;
+		return isValid() ? StringUtility::ToFloat((textValue())) : 0;
 	}
 
 	Var			Var::elemValue(uint32_t i) const
@@ -230,7 +227,7 @@ namespace ml
 				{
 					const Token& t = m_tokens.at(i);
 
-					return Var::MakeVarS(t);
+					return Var::makeSingle(t);
 				}
 				else
 				{
@@ -239,34 +236,39 @@ namespace ml
 			}
 			else if (isStringType())
 			{
-				const string_t str = stringValue();
+				const std::string str = stringValue();
 				if (i < str.size())
 				{
-					return Var().stringValue(string_t(1, str[i]));
+					return Var().stringValue(std::string(1, str[i]));
 				}
 			}
 		}
 		return Var().errorValue("Var : Cannot access element {0}[{1}]", *this, i);
 	}
 
-	string_t	Var::errorValue() const
+	std::string	Var::errorValue() const
 	{
-		return isErrorType() ? (getText()) : string_t();
+		return isErrorType() ? (textValue()) : std::string();
 	}
 
 	int			Var::intValue() const
 	{
-		return isValid() ? StringUtility::ToInt((getText())) : 0;
+		return isValid() ? StringUtility::ToInt((textValue())) : 0;
 	}
 
 	Var::Ptr	Var::pointerValue() const
 	{
-		return Ptr(m_scope, (getText()));
+		return Ptr(m_scope, (textValue()));
 	}
 	
-	string_t	Var::stringValue() const
+	std::string	Var::stringValue() const
 	{
-		return isValid() ? (getText()) : string_t();
+		return isValid() ? (textValue()) : std::string();
+	}
+
+	std::string	Var::textValue() const
+	{
+		return m_tokens.str();
 	}
 
 	TokenList	Var::tokensValue() const
@@ -306,7 +308,7 @@ namespace ml
 		return (*this);
 	}
 
-	Var &	Var::errorValue(const string_t & value)
+	Var &	Var::errorValue(const std::string & value)
 	{
 		return voidValue().tokensValue({ { Token::TOK_ERR, value } });
 	}
@@ -336,7 +338,7 @@ namespace ml
 		return setType(Var::Pointer).tokensValue({ { Token::TOK_NAME, value.name } });
 	}
 
-	Var &	Var::stringValue(const string_t & value)
+	Var &	Var::stringValue(const std::string & value)
 	{
 		return setType(Var::String).tokensValue({ { Token::TOK_STR, value } });
 	}
@@ -1054,7 +1056,7 @@ namespace ml
 		return pointerValue(value);
 	}
 
-	Var & Var::operator=(const string_t& value)
+	Var & Var::operator=(const std::string& value)
 	{
 		return stringValue(value);
 	}
@@ -1066,7 +1068,7 @@ namespace ml
 
 	Var & Var::operator=(char value)
 	{
-		return stringValue(string_t(1, value));
+		return stringValue(std::string(1, value));
 	}
 	
 
@@ -1078,7 +1080,7 @@ namespace ml
 
 		if (!isValid())
 		{
-			out << (FG::Black | BG::Red) << getText() << FMT();
+			out << (FG::Black | BG::Red) << textValue() << FMT();
 			return;
 		}
 
@@ -1127,7 +1129,7 @@ namespace ml
 			break;
 
 		case Var::Void:
-			out << (FG::Black | BG::White) << getText();
+			out << (FG::Black | BG::White) << textValue();
 			break;
 		}
 	}
@@ -1138,7 +1140,7 @@ namespace ml
 		const TokenList& data = value.tokensValue();
 		for (TokenList::const_iterator it = data.cbegin(); it != data.cend(); it++)
 		{
-			out << Var::MakeVarS(*it) << (it != data.cend() - 1 ? ", " : "") << FMT();
+			out << Var::makeSingle(*it) << (it != data.cend() - 1 ? ", " : "") << FMT();
 		}
 		return out;
 	}
@@ -1146,43 +1148,33 @@ namespace ml
 
 	// Factory
 
-	Var Var::MakeVarS(const Token & tok)
+	Var Var::makeSingle(const Token & tok)
 	{
 		switch (tok.type)
 		{
-		case 's':
+		case 's': 
 			return Var().stringValue(tok.data);
-
-		case 'i':
+		case 'i': 
 			return Var().intValue(std::stoi(tok.data));
-
-		case 'f':
+		case 'f': 
 			return Var().floatValue(std::stof(tok.data));
-
 		case 'n':
-			if (StringUtility::IsBool(tok.data))
-			{
-				return Var().boolValue(StringUtility::ToBool(tok.data));
-			}
-			else
-			{
-				return Var().pointerValue(Var::Ptr(0, tok.data));
-			}
+			return StringUtility::IsBool(tok.data)
+				? Var().boolValue(StringUtility::ToBool(tok.data))
+				: Var().pointerValue(Var::Ptr(0, tok.data));
+		default: 
+			return Var().errorValue(tok.str());
 		}
-
-		return Var().errorValue(tok.str());
 	}
 
-	Var Var::MakeVarR(const TokenList & toks)
+	Var Var::makeRecursive(const TokenList & toks)
 	{
 		switch (toks.size())
 		{
-		case 0:
+		case 0:	
 			return Var().nullValue();
-
-		case 1:
-			return Var::MakeVarS(toks.front());
-
+		case 1:	
+			return Var::makeSingle(toks.front());
 		default:
 			return Var().arrayValue(toks);
 		}

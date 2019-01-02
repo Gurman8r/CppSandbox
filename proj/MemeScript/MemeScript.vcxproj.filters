@@ -84,9 +84,6 @@
     <ClCompile Include="..\..\src\MemeScript\Command.cpp">
       <Filter>Source Files\Commands</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemeScript\CommandList.cpp">
-      <Filter>Source Files\Commands</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemeScript\CommandInfo.cpp">
       <Filter>Source Files\Commands</Filter>
     </ClCompile>
@@ -141,9 +138,6 @@
       <Filter>Header Files\Commands</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeScript\CommandInfo.h">
-      <Filter>Header Files\Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeScript\CommandList.h">
       <Filter>Header Files\Commands</Filter>
     </ClInclude>
   </ItemGroup>

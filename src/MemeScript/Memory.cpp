@@ -60,7 +60,7 @@ namespace ml
 	}
 
 
-	bool Memory::delVar(int index, const Var::name_t& name)
+	bool Memory::delVar(int index, const std::string& name)
 	{
 		if (values(index))
 		{
@@ -78,7 +78,7 @@ namespace ml
 		return false;
 	}
 
-	Var * Memory::getVar(int index, const Var::name_t& name) const
+	Var * Memory::getVar(int index, const std::string& name) const
 	{
 		if (values(index))
 		{
@@ -91,7 +91,7 @@ namespace ml
 		return NULL;
 	}
 
-	Var * Memory::newVar(int index, const Var::name_t & name, const Var & value)
+	Var * Memory::newVar(int index, const std::string & name, const Var & value)
 	{
 		if (values(index) || makeScope(index))
 		{
@@ -111,7 +111,7 @@ namespace ml
 		return NULL;
 	}
 
-	Var * Memory::setVar(int index, const Var::name_t & name, const Var & value)
+	Var * Memory::setVar(int index, const std::string & name, const Var & value)
 	{
 		if (Var * v = getVar(index, name))
 		{

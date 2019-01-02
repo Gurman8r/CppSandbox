@@ -349,12 +349,12 @@ namespace ml
 							break;
 						}
 
-						name += *it;
+						name += (*it);
 					}
 
 					if (Var * v = block()->getv(name))
 					{
-						std::cout << (*v);
+						std::cout << (*v).textValue();
 					}
 					else
 					{
@@ -363,7 +363,7 @@ namespace ml
 				}
 				else
 				{
-					std::cout << *it;
+					std::cout << (*it);
 				}
 			}
 		}

@@ -130,23 +130,21 @@ namespace ml
 	
 	const std::vector<std::string> & Interpreter::getCmdNames() const
 	{
+		static std::vector<std::string> names;
+
+		uint32_t size = m_commands.size();
+
+		if (names.size() != size)
 		{
-			static std::vector<std::string> names;
+			names.resize(size);
 
-			uint32_t size = allCommands().size();
-
-			if (names.size() != size)
+			uint32_t i = 0;
+			for (const auto & pair : m_commands)
 			{
-				names.resize(size);
-
-				uint32_t i = 0;
-				for (const auto& pair : allCommands())
-				{
-					names[i++] = pair.first;
-				}
+				names[i++] = pair.first;
 			}
-
-			return names;
 		}
+
+		return names;
 	}
 }

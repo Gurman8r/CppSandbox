@@ -77,7 +77,7 @@ namespace ml
 			{
 				tokens.push_back({ Token::TOK_STR, text });
 			}
-			// name_t
+			// std::string
 			else if (scanName(it, text))
 			{
 				tokens.push_back({ Token::TOK_NAME, text });

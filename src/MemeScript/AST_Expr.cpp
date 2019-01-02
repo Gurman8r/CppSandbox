@@ -29,7 +29,7 @@ namespace ml
 			//out() << v << endln;
 			return true;
 		}
-		return Debug::LogError("AST_Expr : Invalid Syntax: \'{0}\'", v.getText());
+		return Debug::LogError("AST_Expr : Invalid Syntax: \'{0}\'", v.textValue());
 	}
 
 
@@ -194,7 +194,7 @@ namespace ml
 			{
 				if (v->isFuncType())
 				{
-					return b->getFunc(v->getText());
+					return b->getFunc(v->textValue());
 				}
 			}
 		}
@@ -382,7 +382,7 @@ namespace ml
 	}
 
 
-	// name_t
+	// std::string
 	AST_Name::AST_Name(const std::string & value)
 		: AST_Expr(AST_Expr::Type::EX_Name)
 		, value(value)
@@ -569,7 +569,7 @@ namespace ml
 				}
 				else
 				{
-					return Var().errorValue("AST_Subscr : Could not evaluate expression to index: \'{0}\'", v.getText());
+					return Var().errorValue("AST_Subscr : Could not evaluate expression to index: \'{0}\'", v.textValue());
 				}
 			}
 			return Var().errorValue("AST_Subscr : Null reference {0}", name->value);
@@ -597,7 +597,7 @@ namespace ml
 
 	Var AST_Sys::evaluate() const
 	{
-		return ML_Interpreter.execCommand(str->evaluate().getText());
+		return ML_Interpreter.execCommand(str->evaluate().textValue());
 	}
 
 	bool AST_Sys::run()

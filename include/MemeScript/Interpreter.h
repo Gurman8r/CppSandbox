@@ -40,14 +40,13 @@ namespace ml
 
 		Command * addCommand(const Command & value);
 		Command * getCommand(const std::string & value);
-		
-		const CommandMap & allCommands() const { return m_commands; }
 
 		const std::vector<std::string> & getCmdNames() const;
 
-		const Lexer*	lexer() const	{ return m_lexer;  }
+		const Lexer*	lexer()  const	{ return m_lexer;  }
 		const Memory*	memory() const	{ return m_memory; }
 		const Parser*	parser() const	{ return m_parser; }
+
 		Lexer*			lexer()			{ return m_lexer;  }
 		Memory*			memory()		{ return m_memory; }
 		Parser*			parser()		{ return m_parser; }

@@ -28,20 +28,31 @@
 struct Settings final
 	: public ml::ITrackable
 {
+	std::string	assetPath;
+
 	std::string title;
 	uint32_t	width;
 	uint32_t	height;
-	std::string	assetPath;
+
+	std::string bootScript;
+	bool		showToks;
+	bool		showTree;
 
 	inline bool load(const std::string & filename)
 	{
 		INIReader ini(filename.c_str());
 		if (ini.ParseError() == 0)
 		{
+			assetPath	= ini.Get("General", "sAssetPath", "../../../assets/");
+
 			title		= ini.Get("Window", "sTitle", "Title");
 			width		= ini.GetInteger("Window", "iWidth", 640);
 			height		= ini.GetInteger("Window", "iHeight", 480);
-			assetPath	= ini.Get("Assets", "sPath", "/assets");
+
+			bootScript	= ini.Get("Script", "sBootScript", "boot.script");
+			showToks	= ini.GetInteger("Script", "bShowToks", 0);
+			showTree	= ini.GetInteger("Script", "bShowTree", 0);
+
 			return true;
 		}
 		return false;
@@ -284,9 +295,22 @@ inline static int windowStub()
 
 inline static int scriptStub()
 {
-	ML_Interpreter.parser()->setFlags(ml::Parser::ShowToks | ml::Parser::ShowTree);
-	ML_Interpreter.execScript(settings.assetPath + "/stub.script");
-	return pause(EXIT_SUCCESS);
+	ML_Interpreter.addCommand(ml::Command("help", [](const ml::Args & args)
+	{
+		for(auto n : ML_Interpreter.getCmdNames())
+			std::cout << n << std::endl;
+		return ml::Var();
+	}));
+	ML_Interpreter.addCommand(ml::Command("pause", [](const ml::Args & args)
+	{
+		return ml::Var().intValue(pause());
+	}));
+
+	ML_Interpreter.parser()->showToks(settings.showToks);
+	ML_Interpreter.parser()->showTree(settings.showTree);
+	ML_Interpreter.execScript(settings.assetPath + settings.bootScript);
+
+	return EXIT_SUCCESS;
 }
 
 /* * * * * * * * * * * * * * * * * * * * */
