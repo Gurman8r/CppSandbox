@@ -31,7 +31,7 @@ if exist "%SolutionPath%" (
 rem Set Configuration
 :setConfiguration
 if "%2"=="" (
-	set /P Configuration="Configuration: [Debug]"
+	set /P Configuration="Configuration [Debug]: "
 	if "%Configuration%"=="" (
 		set Configuration=Debug
 	)
