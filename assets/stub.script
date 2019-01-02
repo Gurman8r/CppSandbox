@@ -151,7 +151,9 @@ stub = []();
 	testArrays();
 
 	print("End of Stub");
+	
+	sys("pause");
 
 	return true;
 };
-#return stub();
+return stub();
