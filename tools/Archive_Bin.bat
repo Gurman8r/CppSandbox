@@ -1,13 +1,11 @@
 @echo off
 
-set ExeName=Demo
-set ExeConf=Debug
-set ExeCPU=x64
+set ExeName=%1
+set ExeConf=%2
+set ExeCPU=%3
 
-set ProgDir=C:\Program Files\7-Zip
 set CurDir=%cd%/
 set OutDir=%CurDir%
-set List=%CurDir%list.txt
 
 set ArchiveName=%ExeName%_%ExeConf%_%ExeCPU%
 set ArchiveType=.zip
@@ -15,9 +13,11 @@ set ArchiveType=.zip
 set OutFile=%OutDir%%ArchiveName%%ArchiveType%
 set RunFile=%ArchiveName%.bat
 
-cd %ProgDir%
+set ZipDir=%ProgramFiles%\7-Zip
+cd %ZipDir%
 
-7z a 	%OutFile% %CurDir%%RunFile%
+rem 7z a 	%OutFile% %CurDir%%RunFile%
+7z a 	%OutFile% %CurDir%%ExeName%_%ExeConf%_%ExeCPU%.bat
 7z a 	%OutFile% %CurDir%../config.ini
 7z a 	%OutFile% %CurDir%../README.md
 7z a -r %OutFile% %CurDir%../assets/
