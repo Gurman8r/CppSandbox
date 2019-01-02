@@ -14,6 +14,7 @@ set RunFile=%ArchiveName%.bat
 
 cd %ProgDir%
 
+7z a -r %OutFile% %CurDir%../tools
 7z a 	%OutFile% %CurDir%../%SlnName%.sln
 7z a 	%OutFile% %CurDir%../config.ini
 7z a 	%OutFile% %CurDir%../README.md
