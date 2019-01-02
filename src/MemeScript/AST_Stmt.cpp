@@ -354,7 +354,7 @@ namespace ml
 
 					if (Var * v = block()->getv(name))
 					{
-						std::cout << (*v).textValue();
+						std::cout << (*v);
 					}
 					else
 					{

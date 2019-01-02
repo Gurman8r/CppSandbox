@@ -359,7 +359,7 @@ namespace ml
 				}
 			}
 		}
-		// If
+		// Include
 		else if (toks.matchData(toks.begin(), { "include" }))
 		{
 			if (AST_Expr* expr = genComplex(toks.between('(', ')').pop_front()))
