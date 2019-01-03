@@ -5,8 +5,7 @@ cls
 rem Initialize
 :init
 set WorkingDir=%cd%\
-set VSVersion=Enterprise\
-set MSBuildPath=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\%VSVersion%
+set MSBuildPath=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Enterprise\
 set MSBuildExe=msbuild.exe
 set VCTargetsPath=%MSBuildPath%Common7\IDE\VC\VCTargets\
 set VCVarsPath=%MSBuildPath%VC\Auxiliary\Build\
