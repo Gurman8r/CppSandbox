@@ -1,6 +1,7 @@
 #ifndef _MATRIX_H_
 #define _MATRIX_H_
 
+#include <algorithm>
 #include <MemeCore/IEnumerable.h>
 #include <MemeCore/IComparable.h>
 #include <MemeCore/Maths.h>
@@ -73,7 +74,7 @@ namespace ml
 		Matrix(const Matrix<U, C, R> & copy)
 			: self_type()
 		{
-			for (std::size_t i = 0, imax = std::min((*this).Size, copy.Size); i < imax; i++)
+			for (std::size_t i = 0, imax = std::min<std::size_t>(Size, copy.Size); i < imax; i++)
 			{
 				(*this)[i] = static_cast<value_type>(copy[i]);
 			}

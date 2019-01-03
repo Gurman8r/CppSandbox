@@ -1,5 +1,6 @@
 /* * * * * * * * * * * * * * * * * * * * */
 
+#include <dirent.h>
 #include <INIReader.h>
 #include <MemeCore/StringUtility.h>
 #include <MemeCore/Timer.h>
@@ -39,6 +40,7 @@ struct Settings final
 	std::string bootScript;
 	bool		showToks;
 	bool		showTree;
+	bool		showItoP;
 
 	inline bool load(const std::string & filename)
 	{
@@ -55,6 +57,7 @@ struct Settings final
 			bootScript	= ini.Get("Script", "sBootScript", "boot.script");
 			showToks	= ini.GetBoolean("Script", "bShowToks", false);
 			showTree	= ini.GetBoolean("Script", "bShowTree", false);
+			showItoP	= ini.GetBoolean("Script", "bShowItoP", false);
 
 			return true;
 		}
@@ -298,22 +301,97 @@ inline static int windowStub()
 
 inline static int scriptStub()
 {
-	ML_Interpreter.addCommand(ml::Command("help", [](const ml::Args & args)
+	ML_Interpreter.addCommand(ml::Command("help", [](ml::Args & args)
 	{
 		for(auto n : ML_Interpreter.getCmdNames())
 			std::cout << n << std::endl;
 		return ml::Var().boolValue(true);
 	}));
-	ML_Interpreter.addCommand(ml::Command("pause", [](const ml::Args & args)
+	ML_Interpreter.addCommand(ml::Command("pause", [](ml::Args & args)
 	{
 		return ml::Var().intValue(pause());
 	}));
+	ML_Interpreter.addCommand(ml::Command("clear", [](ml::Args & args)
+	{
+#ifdef ML_SYSTEM_WINDOWS
+		system("cls");
+#else
+		system("clear");
+#endif
+		return ml::Var().boolValue(true);
+	}));
+	ML_Interpreter.addCommand(ml::Command("dir", [](ml::Args & args)
+	{
+		std::string dName = args.pop_front().empty() ? "./" : args.str();
 
-	ML_Interpreter.parser()->showToks(settings.showToks).showTree(settings.showTree);
+		if (DIR* dir = opendir(dName.c_str()))
+		{
+			dirent* e;
+			while ((e = readdir(dir)))
+			{
+				switch (e->d_type)
+				{
+				case DT_REG:
+					std::cout << (ml::FG::Green | ml::BG::Black) << e->d_name << "";
+					break;
+				case DT_DIR:
+					std::cout << (ml::FG::Blue | ml::BG::Green) << e->d_name << "/";
+					break;
+				case DT_LNK:
+					std::cout << (ml::FG::Green | ml::BG::Black) << e->d_name << "@";
+					break;
+				default:
+					std::cout << (ml::FG::Green | ml::BG::Black) << e->d_name << "*";
+					break;
+				}
+				std::cout << ml::FMT() << std::endl;
+			}
+			closedir(dir);
+			return ml::Var().boolValue(true);
+		}
+		std::cout << "Dir \'" << dName << "\' does not exist." << std::endl;
+		return ml::Var().boolValue(false);
+	}));
+	ML_Interpreter.addCommand(ml::Command("exist", [](ml::Args & args)
+	{
+		return ml::Var().boolValue(ML_FileSystem.fileExists(args.pop_front().front()));
+	}));
+
+	ML_Interpreter.parser()->
+		showToks(settings.showToks).
+		showTree(settings.showTree).
+		showItoP(settings.showItoP);
 
 	ML_Interpreter.execScript(settings.assetPath + settings.bootScript);
 
 	return EXIT_SUCCESS;
+}
+
+inline static int astStub()
+{
+	using namespace ml;
+	AST_Block root({
+
+		new AST_Func("test", { }),
+		new AST_Block({
+			new AST_Return(new AST_String("Here"))
+		}),
+		
+		new AST_Assign(
+			OperatorType::OP_SET,
+			new AST_Name("a"),
+			new AST_Oper(
+				OperatorType::OP_ADD,
+				new AST_Call(new AST_Name("test"), { }),
+				new AST_Call(new AST_Name("test"), { }))),
+		
+		new AST_Print(new AST_Name("a")),
+		
+		new AST_Return(new AST_Bool(true))
+		});
+	std::cout << root << std::endl;
+	root.run();
+	return pause(EXIT_SUCCESS);
 }
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -334,6 +412,8 @@ int main(int argc, char** argv)
 		return windowStub();
 	case 2:
 		return scriptStub();
+	case 3:
+		return astStub();
 	default:
 		std::cerr << "Unknown program: " << settings.program << std::endl;
 		return pause(EXIT_FAILURE);

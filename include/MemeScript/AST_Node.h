@@ -36,7 +36,6 @@ namespace ml
 		bool	isParentOf(AST_Node* node) const;
 
 		std::size_t	getDepth() const;
-		AST_Node&	setDepth(std::size_t value);
 
 		std::size_t	childCount() const;
 		std::size_t	siblingCount() const;
@@ -73,7 +72,10 @@ namespace ml
 		const_iterator	find_last_not_of(const value_type& value) const;
 
 	public: // Operators
-		friend std::ostream& operator<<(std::ostream& out, const AST_Node& rhs);
+		inline void serialize(std::ostream & out) const
+		{
+			display(out);
+		}
 		virtual std::ostream& display(std::ostream& out) const;
 		
 	public: // Execution
@@ -164,10 +166,10 @@ namespace ml
 	private: // Variables
 		AST_Node*	m_parent;
 		list_type	m_children;
-		std::size_t	m_depth;
-		int			m_id;
+		//std::size_t	m_depth;		
+		std::size_t	m_id;
 
-		static int s_id;
+		static std::size_t s_id;
 	};
 }
 

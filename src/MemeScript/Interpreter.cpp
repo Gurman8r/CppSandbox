@@ -22,7 +22,7 @@ namespace ml
 	{
 		if (!value.empty())
 		{
-			const Args args(value, " ");
+			Args args(value, " ");
 
 			CommandMap::iterator it = m_commands.find(args.front());
 

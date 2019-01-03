@@ -47,7 +47,7 @@ namespace ml
 		return out;
 	}
 
-	bool	Parser::InfixToPostfix(const TokenList & ifx, TokenList & pfx)
+	bool	Parser::InfixToPostfix(const TokenList & ifx, TokenList & pfx, bool show)
 	{
 		// just one operand
 		if (ifx.size() == 1 && ifx.front().isOperand())
@@ -61,11 +61,10 @@ namespace ml
 
 		pfx = TokenList();
 
-		for (std::size_t i = 0; i < ifx.size(); i++)
+		bool func = false;
+		for (auto it = ifx.cbegin(); it != ifx.cend(); it++)
 		{
-			//out() << pfx << std::endl;
-
-			const Token& arg = ifx[i];
+			const Token& arg = (*it);
 
 			if (arg.isOperator())
 			{
@@ -87,27 +86,47 @@ namespace ml
 
 				stk.insert(stk.begin(), arg);
 			}
-			else if (arg == '(')
+			else if (arg == TokenType::TOK_LPRN) // (
 			{
-				stk.insert(stk.begin(), arg);
+				TokenList::const_iterator prev = (it - 1);
+				if (!func && ((prev >= ifx.begin()) && prev->type == TokenType::TOK_NAME))
+				{
+					pfx.push_back(arg);
+					func = true;
+				}
+				else
+				{
+					stk.insert(stk.begin(), arg);
+				}
 			}
-			else if (arg == ')')
+			else if (arg == TokenType::TOK_RPRN) // )
 			{
+				unsigned count = 0;
 				while (!stk.empty())
 				{
-					if (stk.front() == '(')
+					if (stk.front() == TokenType::TOK_LPRN)
+					{
 						break;
-
+					}
 					pfx.push_back(stk.front());
-
 					stk.erase(stk.begin());
+					count++;
+				}
+
+				if (func)
+				{
+					func = false;
+					//TokenList::const_iterator prev = (it - 1);
+					//if((prev >= ifx.begin()) && prev->type == TOK_LPRN)
+					//pfx.push_back(arg);
+					pfx.insert(pfx.end() - count, arg);
 				}
 
 				if (!stk.empty())
 				{
 					stk.erase(stk.begin());
 				}
-
+				
 				if (stk.empty())
 				{
 					Debug::LogError("Missing left parenthesis (1)\n");
@@ -118,15 +137,19 @@ namespace ml
 			{
 				pfx.push_back(arg);
 			}
+
+			if(show) std::cout << "P: " << pfx << std::endl;
 		}
 
 		while (!stk.empty() && stk.front() != TokenType::TOK_LPRN)
 		{
 			pfx.push_back(stk.front());
-
 			stk.erase(stk.begin());
 		}
 
+		if (show) std::cout << "P: " << pfx << std::endl;
+
+		auto str = stk.str();
 		if (stk.empty())
 		{
 			Debug::LogError("Missing left parenthesis (2)\n");
@@ -138,7 +161,7 @@ namespace ml
 		//if (!stk.empty())
 		//{
 		//	Debug::LogError("Missing left parenthesis (3)\n");
-		//	out() << stk << std::endl;
+		//	std::cout << stk << std::endl;
 		//	return false;
 		//}
 
@@ -320,7 +343,7 @@ namespace ml
 				return new AST_Print(params.front());
 			case 0:
 			default:
-				return new AST_Print(new AST_Str(std::string()));
+				return new AST_Print(new AST_String(std::string()));
 			}
 		}
 		// Return
@@ -364,7 +387,7 @@ namespace ml
 		{
 			if (AST_Expr* expr = genComplex(toks.between('(', ')').pop_front()))
 			{
-				if (AST_Str* str = expr->As<AST_Str>())
+				if (AST_String* str = expr->As<AST_String>())
 				{
 					return new AST_Include(str);
 				}
@@ -402,7 +425,7 @@ namespace ml
 		{
 			if (AST_Expr* expr = genComplex(toks.between('(', ')').pop_front()))
 			{
-				if (AST_Str* str = expr->As<AST_Str>())
+				if (AST_String* str = expr->As<AST_String>())
 				{
 					return new AST_Sys(str);
 				}
@@ -440,7 +463,7 @@ namespace ml
 		}
 
 		TokenList ifx(toks), pfx;
-		if (InfixToPostfix(ifx, pfx))
+		if (InfixToPostfix(ifx, pfx, m_showItoP))
 		{
 			if (AST_Oper* oper = genOper(pfx))
 			{
@@ -452,7 +475,7 @@ namespace ml
 			}
 			else
 			{
-				return new AST_Str(pfx.str());
+				return new AST_String(pfx.str());
 			}
 		}
 
@@ -470,7 +493,7 @@ namespace ml
 			return new AST_Int(StringUtility::ToInt(token.data));
 
 		case TokenType::TOK_STR:
-			return new AST_Str(token.data);
+			return new AST_String(token.data);
 
 		case TokenType::TOK_NAME:
 			if (StringUtility::IsBool(token.data))
@@ -532,11 +555,11 @@ namespace ml
 		return NULL;
 	}
 
-	AST_Str*	Parser::genStr(const Token & token) const
+	AST_String*	Parser::genStr(const Token & token) const
 	{
 		if (token == TokenType::TOK_STR)
 		{
-			return new AST_Str(token.data);
+			return new AST_String(token.data);
 		}
 		return NULL;
 	}
@@ -588,7 +611,7 @@ namespace ml
 
 	AST_Call*	Parser::genCall(const TokenList & toks) const
 	{
-		if (toks.matchStr(toks.begin(), "n(") && toks.back(')'))
+		if (toks.matchStr(toks.begin(), "n(") && toks.back(")"))
 		{
 			return new AST_Call(
 				new AST_Name(toks.front().data),
@@ -624,34 +647,45 @@ namespace ml
 
 	AST_Oper*	Parser::genOper(const TokenList & toks) const
 	{
-		std::stack<AST_Expr*> q;
+		std::stack<AST_Expr*> stk;
 
 		TokenList::const_iterator it;
 		for (it = toks.begin(); it != toks.end(); it++)
 		{
+			// Call
+			if ((it)->type == TOK_NAME && (it + 1)->type == TOK_LPRN)
+			{
+				TokenList call;
+				call.push_back(*it);
+				while ((it++)->type != TOK_RPRN)
+				{
+					call.push_back(*it);
+				}
+				//std::cout << "Call: " << call << std::endl;
+				stk.push(genCall(call));
+			}
+
 			Operator op;
 			if (Operator::makeOperator(it->data, op))
 			{
-				if (q.size() < 2)
+				if (stk.size() < 2)
 				{
 					return NULL;
 				}
 
-				AST_Expr* rhs = q.top();
-				q.pop();
-
-				AST_Expr* lhs = q.top();
-				q.pop();
-
-				q.push(new AST_Oper(op, lhs, rhs));
+				AST_Expr* rhs = stk.top();
+				stk.pop();
+				AST_Expr* lhs = stk.top();
+				stk.pop();
+				stk.push(new AST_Oper(op, lhs, rhs));
 			}
 			else
 			{
-				q.push(genSimple(*it));
+				stk.push(genComplex(*it));
 			}
 		}
 
-		if (AST_Oper* oper = dynamic_cast<AST_Oper*>(q.top()))
+		if (AST_Oper* oper = stk.top()->As<AST_Oper>())
 		{
 			return oper;
 		}

@@ -19,7 +19,7 @@ namespace ml
 		~Parser() {}
 
 		static ToksList	SplitStatements(const TokenList& toks);
-		static bool		InfixToPostfix(const TokenList& ifx, TokenList& pfx);
+		static bool		InfixToPostfix(const TokenList& ifx, TokenList& pfx, bool show);
 		static bool		MakeOperator(const Token& lhs, const Token& rhs, Operator& op);
 
 		// Upper Level
@@ -34,7 +34,7 @@ namespace ml
 		AST_Flt*	genFlt(const Token& token) const;
 		AST_Int*	genInt(const Token& token) const;
 		AST_Name*	genName(const Token& token) const;
-		AST_Str*	genStr(const Token& token) const;
+		AST_String*	genStr(const Token& token) const;
 
 		// Complex Expressions
 		AST_Array*	genArray(const TokenList& toks) const;
@@ -52,10 +52,12 @@ namespace ml
 
 		inline Parser & showToks(bool value) { m_showToks = value; return (*this); }
 		inline Parser & showTree(bool value) { m_showTree = value; return (*this); }
+		inline Parser & showItoP(bool value) { m_showItoP = value; return (*this); }
 
 	private:
 		bool m_showToks;
 		bool m_showTree;
+		bool m_showItoP;
 	};
 }
 

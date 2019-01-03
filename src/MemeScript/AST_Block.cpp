@@ -6,6 +6,12 @@
 
 namespace ml
 {
+	AST_Block::AST_Block()
+		: AST_Node()
+	{
+		ML_Interpreter.memory()->makeScope(getID());
+	}
+
 	AST_Block::AST_Block(const list_type & body)
 		: AST_Node(body)
 	{
@@ -22,14 +28,17 @@ namespace ml
 	{
 		auto tab = [](std::size_t n)
 		{
-			return std::string(n, '\t');
+			return (n == 0)
+				? std::string()
+				: std::string(n, '\t');
 		};
 
 		out << "{\n";
 
 		for (AST_Node* n : (*this))
 		{
-			out << tab(n->getDepth()) << (*n) << std::endl << FMT();
+			out << tab(n->getDepth()) << (*n) 
+				<< std::endl << FMT();
 		}
 
 		out << tab(getDepth()) << "}";

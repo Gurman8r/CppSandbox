@@ -128,6 +128,7 @@ namespace ml
 
 		Var &	Add(const Var & other);
 		Var &	Div(const Var & other);
+		Var &	Mod(const Var & other);
 		Var &	Mul(const Var & other);
 		Var &	Pow(const Var & other);
 		Var &	Set(const Var & other);
@@ -146,12 +147,14 @@ namespace ml
 		friend Var & operator*=(Var & lhs, const Var & rhs);
 		friend Var & operator/=(Var & lhs, const Var & rhs);
 		friend Var & operator^=(Var & lhs, const Var & rhs);
+		friend Var & operator%=(Var & lhs, const Var & rhs);
 
 		friend Var	operator+(const Var & lhs, const Var & rhs);
 		friend Var	operator-(const Var & lhs, const Var & rhs);
 		friend Var	operator*(const Var & lhs, const Var & rhs);
 		friend Var	operator/(const Var & lhs, const Var & rhs);
 		friend Var	operator^(const Var & lhs, const Var & rhs);
+		friend Var	operator%(const Var & lhs, const Var & rhs);
 
 		Var & operator=(const Var & rhs);
 		Var & operator=(bool value);

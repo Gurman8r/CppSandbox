@@ -10,7 +10,7 @@ namespace ml
 		: public ITrackable
 	{
 	public:
-		using fn_type = Var(*)(const Args &);
+		using fn_type = Var(*)(Args &);
 
 	public:
 		Command();
@@ -23,7 +23,7 @@ namespace ml
 		std::string	name() const;
 		CommandInfo info() const;
 
-		Var	operator()(const Args & args);
+		Var	operator()(Args & args);
 
 		friend std::ostream& operator<<(std::ostream& out, const Command& cmd);
 

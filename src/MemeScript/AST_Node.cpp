@@ -2,26 +2,33 @@
 
 namespace ml
 {
-	int AST_Node::s_id = 0;
+	std::size_t AST_Node::s_id = 0;
 
 	AST_Node::AST_Node()
 		: m_parent(NULL)
 		, m_children()
-		, m_id(s_id++)
+		//, m_depth(0)
+		, m_id(++s_id)
 	{
 	}
 
 	AST_Node::AST_Node(const list_type & children)
 		: m_parent(NULL)
 		, m_children(children)
-		, m_id(s_id++)
+		//, m_depth(0)
+		, m_id(++s_id)
 	{
+		for (auto e : m_children)
+		{
+			addChild(e);
+		}
 	}
 
 	AST_Node::AST_Node(const AST_Node & copy)
 		: m_parent(copy.m_parent)
 		, m_children(copy.m_children)
-		, m_id(s_id++)
+		//, m_depth(copy.m_depth)
+		, m_id(copy.m_id)
 	{
 	}
 
@@ -82,14 +89,18 @@ namespace ml
 
 	std::size_t	AST_Node::getDepth() const
 	{
-		return m_depth;
+		if (auto p = getParent())
+		{
+			return p->getDepth() + 1;
+		}
+		return 0;
 	}
 
-	AST_Node&	AST_Node::setDepth(std::size_t value)
-	{
-		m_depth = value;
-		return (*this);
-	}
+	//AST_Node&	AST_Node::setDepth(std::size_t value)
+	//{
+	//	m_depth = value;
+	//	return (*this);
+	//}
 
 	std::size_t	AST_Node::childCount() const
 	{
@@ -127,8 +138,10 @@ namespace ml
 		if (value)
 		{
 			value->setParent(this);
-			value->setDepth(getDepth() + 1);
-			m_children.push_back(value);
+			if (std::find(begin(), end(), value) == end())
+			{
+				m_children.push_back(value);
+			}
 			return value;
 		}
 		return NULL;
@@ -163,7 +176,6 @@ namespace ml
 		if (value)
 		{
 			value->setParent(this);
-			value->setDepth(getDepth() + 1);
 			m_children.insert(begin() + index, value);
 			return value;
 		}
@@ -178,7 +190,6 @@ namespace ml
 			if (it != end())
 			{
 				value->setParent(this);
-				value->setDepth(getDepth() + 1);
 				m_children.insert(it + 1, value);
 				return value;
 			}
@@ -194,7 +205,6 @@ namespace ml
 			if (it != end())
 			{
 				value->setParent(this);
-				value->setDepth(getDepth() + 1);
 				m_children.insert(it, value);
 			}
 			return value;
@@ -231,52 +241,52 @@ namespace ml
 
 
 	// Iterators
-	AST_Node::iterator			AST_Node::begin()
+	AST_Node::iterator AST_Node::begin()
 	{
 		return m_children.begin();
 	}
 
-	AST_Node::iterator			AST_Node::end()
+	AST_Node::iterator AST_Node::end()
 	{
 		return m_children.end();
 	}
 
-	AST_Node::const_iterator	AST_Node::begin() const
+	AST_Node::const_iterator AST_Node::begin() const
 	{
 		return m_children.begin();
 	}
 
-	AST_Node::const_iterator	AST_Node::end() const
+	AST_Node::const_iterator AST_Node::end() const
 	{
 		return m_children.end();
 	}
 
-	AST_Node::const_iterator	AST_Node::cbegin() const
+	AST_Node::const_iterator AST_Node::cbegin() const
 	{
 		return m_children.cbegin();
 	}
 
-	AST_Node::const_iterator	AST_Node::cend() const
+	AST_Node::const_iterator AST_Node::cend() const
 	{
 		return m_children.cend();
 	}
 
-	AST_Node::reverse_iterator	AST_Node::rbegin()
+	AST_Node::reverse_iterator AST_Node::rbegin()
 	{
 		return m_children.rbegin();
 	}
 
-	AST_Node::reverse_iterator	AST_Node::rend()
+	AST_Node::reverse_iterator AST_Node::rend()
 	{
 		return m_children.rend();
 	}
 
-	AST_Node::const_reverse_iterator	AST_Node::crbegin() const
+	AST_Node::const_reverse_iterator AST_Node::crbegin() const
 	{
 		return m_children.crbegin();
 	}
 
-	AST_Node::const_reverse_iterator	AST_Node::crend() const
+	AST_Node::const_reverse_iterator AST_Node::crend() const
 	{
 		return m_children.crend();
 	}
@@ -356,18 +366,12 @@ namespace ml
 
 
 	// Operators
-	std::ostream&	operator<<(std::ostream & out, const AST_Node & rhs)
-	{
-		return rhs.display(out);
-	}
-
 	std::ostream&	AST_Node::display(std::ostream & out) const
 	{
 		for (AST_Node * n : (*this))
 		{
 			n->display(out);
 		}
-
 		return out;
 	}
 

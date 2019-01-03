@@ -747,6 +747,68 @@ namespace ml
 			getType(), (*this), OperatorType::OP_DIV, other.getType(), other));
 	}
 
+	Var &	Var::Mod(const Var & other)
+	{
+		switch (getType())
+		{
+			// Int
+		case Type::Integer:
+			switch (other.getType())
+			{
+			case Type::Integer:
+				return intValue(intValue() % other.intValue());
+
+			case Type::Float:
+				return intValue(intValue() % (int)other.floatValue());
+
+			default:
+				if (other.isIntType())
+					return intValue(intValue() % other.intValue());
+			}
+
+			// Float
+		case Type::Float:
+			switch (other.getType())
+			{
+			case Type::Float:
+				return intValue((int)floatValue() % (int)other.floatValue());
+
+			case Type::Integer:
+				return intValue((int)floatValue() % other.intValue());
+
+			default:
+				if (other.isFloatType())
+					return intValue((int)floatValue() % (int)other.floatValue());
+			}
+		}
+
+		bool lp = compareType(Var::Pointer);
+		bool lg = isValid();
+		bool rp = other.compareType(Var::Pointer);
+		bool rg = other.isValid();
+		if (lp || rp)
+		{
+			if (lg && rg)
+			{
+				if (lp && rp)
+				{
+					return pointerValue().get()->Mod(*other.pointerValue().get());
+				}
+				else if (!lp && rp)
+				{
+					return Mod(*other.pointerValue().get());
+				}
+				else if (lp && !rp)
+				{
+					return Set(*pointerValue().get()).Mod(other);
+				}
+			}
+		}
+
+		return errorValue(StringUtility::Format("Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
+			getType(), (*this), OperatorType::OP_MOD, other.getType(), other));
+	}
+
 	Var &	Var::Mul(const Var & other)
 	{
 		switch (getType())
@@ -999,6 +1061,11 @@ namespace ml
 		return lhs.Pow(rhs);
 	}
 
+	Var & operator%=(Var & lhs, const Var & rhs)
+	{
+		return lhs.Mod(rhs);
+	}
+
 
 	Var operator+(const Var & lhs, const Var & rhs)
 	{
@@ -1023,6 +1090,11 @@ namespace ml
 	Var operator^(const Var & lhs, const Var & rhs)
 	{
 		return Var().Set(lhs).Pow(rhs);
+	}
+
+	Var operator%(const Var & lhs, const Var & rhs)
+	{
+		return Var().Set(lhs).Mod(rhs);
 	}
 
 

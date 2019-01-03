@@ -8,7 +8,8 @@
 namespace ml
 {
 	AST_Stmt::AST_Stmt(AST_Stmt::Type type)
-		: stmtType(type)
+		: AST_Node()
+		, stmtType(type)
 	{
 	}
 
@@ -263,7 +264,7 @@ namespace ml
 
 
 	// Include
-	AST_Include::AST_Include(AST_Str* str)
+	AST_Include::AST_Include(AST_String* str)
 		: AST_Stmt(AST_Stmt::Type::ST_Include)
 		, str(str)
 	{
@@ -328,12 +329,12 @@ namespace ml
 
 	std::ostream & AST_Print::display(std::ostream & out) const
 	{
-		return out << "print(" << *expr << ")";
+		return out << "print(" << *expr << ") ";// << (getParent() ? getParent()->getID() : 0);
 	}
 
 	bool AST_Print::run()
 	{
-		if (AST_Str* str = expr->As<AST_Str>())
+		if (AST_String* str = expr->As<AST_String>())
 		{
 			std::string::const_iterator it;
 			for (it = str->value.begin(); it != str->value.end(); it++)

@@ -2,6 +2,6 @@ main = []();
 {
 	print("Hello, World!");
 	sys("pause");
-	return 0;
+	return true;
 };
 return main();

@@ -180,12 +180,12 @@ namespace ml
 	};
 
 	// String
-	struct ML_SCRIPT_API AST_Str : public AST_Expr
+	struct ML_SCRIPT_API AST_String : public AST_Expr
 	{
 		std::string value;
 
-		AST_Str(const std::string& value);
-		~AST_Str();
+		AST_String(const std::string& value);
+		~AST_String();
 
 		std::ostream& display(std::ostream& out) const override;
 		Var evaluate() const override;
@@ -217,9 +217,9 @@ namespace ml
 	// System
 	struct ML_SCRIPT_API AST_Sys : public AST_Expr
 	{
-		AST_Str* str;
+		AST_String* str;
 
-		AST_Sys(AST_Str* str);
+		AST_Sys(AST_String* str);
 		~AST_Sys();
 
 		std::ostream& display(std::ostream& out) const override;

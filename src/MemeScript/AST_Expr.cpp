@@ -493,23 +493,23 @@ namespace ml
 
 
 	// String
-	AST_Str::AST_Str(const std::string & value)
+	AST_String::AST_String(const std::string & value)
 		: AST_Expr(AST_Expr::Type::EX_Str)
 		, value(value)
 	{
 	}
 
-	AST_Str::~AST_Str()
+	AST_String::~AST_String()
 	{
 	}
 
-	std::ostream & AST_Str::display(std::ostream & out) const
+	std::ostream & AST_String::display(std::ostream & out) const
 	{
 		out << Var().stringValue(value);
 		return out;
 	}
 
-	Var AST_Str::evaluate() const
+	Var AST_String::evaluate() const
 	{
 		return Var().stringValue(value);
 	}
@@ -579,7 +579,7 @@ namespace ml
 
 
 	// System
-	AST_Sys::AST_Sys(AST_Str* str)
+	AST_Sys::AST_Sys(AST_String* str)
 		: AST_Expr(AST_Expr::Type::EX_Sys)
 		, str(str)
 	{

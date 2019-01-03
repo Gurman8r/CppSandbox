@@ -15,6 +15,7 @@ namespace ml
 		using FuncMap = std::unordered_map<std::string, AST_Func*>;
 
 	public:
+		AST_Block();
 		AST_Block(const list_type& body);
 		~AST_Block();
 

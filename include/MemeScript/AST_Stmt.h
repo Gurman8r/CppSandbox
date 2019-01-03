@@ -15,7 +15,7 @@ namespace ml
 	struct AST_Name;
 	struct AST_Call;
 	struct AST_Oper;
-	struct AST_Str;
+	struct AST_String;
 
 	class ML_SCRIPT_API AST_Stmt : public AST_Node
 	{
@@ -115,9 +115,9 @@ namespace ml
 	// Include
 	struct ML_SCRIPT_API AST_Include : public AST_Stmt
 	{
-		AST_Str* str;
+		AST_String* str;
 		
-		AST_Include(AST_Str* str);
+		AST_Include(AST_String* str);
 		~AST_Include();
 
 		std::ostream& display(std::ostream& out) const override;
