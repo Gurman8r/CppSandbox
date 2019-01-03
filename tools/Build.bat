@@ -5,8 +5,9 @@ cls
 rem Initialize
 :init
 set WorkingDir=%cd%\
+set VSVersion=Enterprise\
+set MSBuildPath=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\%VSVersion%
 set MSBuildExe=msbuild.exe
-set MSBuildPath=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Enterprise\
 set VCTargetsPath=%MSBuildPath%Common7\IDE\VC\VCTargets\
 set VCVarsPath=%MSBuildPath%VC\Auxiliary\Build\
 set VCVars32=vcvars32.bat
@@ -73,5 +74,7 @@ rem Build
 cd %MSBuildPath%
 echo Running %MSBuildExe%...
 %MSBuildExe% %SolutionPath% /p:Configuration=%Configuration% /p:PlatformTarget=%PlatformTarget%
-pause
+if "%ERRORLEVEL%"!="0" (
+	pause
+)
 exit %ERRORLEVEL%
