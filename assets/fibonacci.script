@@ -2,16 +2,14 @@ fib = [](num);
 {
 	print("Fibonacci: {num}");
 	
-	a = 0;
-	b = 1;
-	next = 0;	
-	
 	if(num >= 0);
 	{
+		a = 0;
 		print("{a}");
 		
 		if(num >= 1);
 		{
+			b = 1;
 			print("{b}");
 	
 			next = a + b;
