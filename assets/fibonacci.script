@@ -1,0 +1,35 @@
+fib = [](num);
+{
+	print("Fibonacci: {num}");
+	
+	a = 0;
+	b = 1;
+	next = 0;	
+	
+	if(num >= 0);
+	{
+		print("{a}");
+		
+		if(num >= 1);
+		{
+			print("{b}");
+	
+			next = a + b;
+			while(next <= num);
+			{
+				print("{next}");
+				a = b;
+				b = next;
+				next = a + b;
+			};
+		};
+	};
+};
+
+main = []();
+{
+	fib(100);
+	sys("pause");
+	return true;
+};
+return main();

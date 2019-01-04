@@ -101,7 +101,7 @@ namespace ml
 			}
 			else if (arg == TokenType::TOK_RPRN) // )
 			{
-				unsigned count = 0;
+				std::size_t count = 0;
 				while (!stk.empty())
 				{
 					if (stk.front() == TokenType::TOK_LPRN)
@@ -116,9 +116,6 @@ namespace ml
 				if (func)
 				{
 					func = false;
-					//TokenList::const_iterator prev = (it - 1);
-					//if((prev >= ifx.begin()) && prev->type == TOK_LPRN)
-					//pfx.push_back(arg);
 					pfx.insert(pfx.end() - count, arg);
 				}
 
@@ -312,8 +309,12 @@ namespace ml
 
 	AST_Stmt*	Parser::genStatement(const TokenList & toks) const
 	{
+		if (toks.empty())
+		{
+			return NULL;
+		}
 		// If
-		if (toks.matchData(toks.begin(), { "if" }))
+		else if (toks.matchData(toks.begin(), { "if" }))
 		{
 			if (AST_Expr* expr = genComplex(toks.between('(', ')').pop_front()))
 			{

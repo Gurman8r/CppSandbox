@@ -2,12 +2,11 @@
 
 namespace ml
 {
-	std::size_t AST_Node::s_id = 0;
+	int AST_Node::s_id = 0;
 
 	AST_Node::AST_Node()
 		: m_parent(NULL)
 		, m_children()
-		//, m_depth(0)
 		, m_id(++s_id)
 	{
 	}
@@ -15,7 +14,6 @@ namespace ml
 	AST_Node::AST_Node(const list_type & children)
 		: m_parent(NULL)
 		, m_children(children)
-		//, m_depth(0)
 		, m_id(++s_id)
 	{
 		for (auto e : m_children)
@@ -27,7 +25,6 @@ namespace ml
 	AST_Node::AST_Node(const AST_Node & copy)
 		: m_parent(copy.m_parent)
 		, m_children(copy.m_children)
-		//, m_depth(copy.m_depth)
 		, m_id(copy.m_id)
 	{
 	}
@@ -95,12 +92,6 @@ namespace ml
 		}
 		return 0;
 	}
-
-	//AST_Node&	AST_Node::setDepth(std::size_t value)
-	//{
-	//	m_depth = value;
-	//	return (*this);
-	//}
 
 	std::size_t	AST_Node::childCount() const
 	{

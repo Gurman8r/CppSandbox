@@ -166,10 +166,9 @@ namespace ml
 	private: // Variables
 		AST_Node*	m_parent;
 		list_type	m_children;
-		//std::size_t	m_depth;		
-		std::size_t	m_id;
+		int			m_id;
 
-		static std::size_t s_id;
+		static int s_id;
 	};
 }
 

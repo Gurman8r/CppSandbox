@@ -169,6 +169,13 @@ testFuncs = []();
 	print("End of Funcs");
 };
 
+testInput = []();
+{
+	print("What is your name?");
+	name = input();
+	print("Hello, {name}");
+};
+
 stub = []();
 {
 	print("Start of Stub");

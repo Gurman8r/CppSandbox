@@ -301,7 +301,7 @@ namespace ml
 							}
 						}
 
-						std::cerr 
+						std::cout 
 							<< FMT() << std::endl 
 							<< (*block()) 
 							<< FMT() << std::endl;
