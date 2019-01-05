@@ -120,7 +120,7 @@ namespace ml
 	};
 
 
-	// std::string
+	// Name
 	struct ML_SCRIPT_API AST_Name : public AST_Expr
 	{
 		std::string value;

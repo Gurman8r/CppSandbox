@@ -55,6 +55,12 @@
     <None Include="..\..\tools\Build_Release_x86.bat">
       <Filter>Resource Files\tools</Filter>
     </None>
+    <None Include="..\..\assets\fibonacci.script">
+      <Filter>Resource Files\assets</Filter>
+    </None>
+    <None Include="..\..\assets\hello.script">
+      <Filter>Resource Files\assets</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Demo\main.cpp" />

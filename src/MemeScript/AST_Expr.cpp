@@ -382,7 +382,7 @@ namespace ml
 	}
 
 
-	// std::string
+	// Name
 	AST_Name::AST_Name(const std::string & value)
 		: AST_Expr(AST_Expr::Type::EX_Name)
 		, value(value)

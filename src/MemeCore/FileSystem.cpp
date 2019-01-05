@@ -3,12 +3,18 @@
 #include <fstream>
 
 #ifdef ML_SYSTEM_WINDOWS
+#include <direct.h>
 #include <dirent.h>
 #endif // ML_SYSTEM_WINDOWS
 
 
 namespace ml
 {
+	bool FileSystem::changeDir(const std::string & value)
+	{
+		return (_chdir(value.c_str()) == EXIT_SUCCESS) ? true : false;
+	}
+
 	bool FileSystem::fileExists(const std::string & filename)
 	{
 		return (bool)(std::ifstream(filename));

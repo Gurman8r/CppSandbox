@@ -48,7 +48,7 @@ namespace ml
 					glfwMakeContextCurrent(ptr);
 
 					glfwSetWindowSizeCallback(static_cast<GLFWwindow*>(m_handle),
-								[](GLFWwindow* window, int w, int h)
+						[](GLFWwindow* window, int w, int h)
 					{});
 
 					glfwSetWindowPosCallback(static_cast<GLFWwindow*>(m_handle),

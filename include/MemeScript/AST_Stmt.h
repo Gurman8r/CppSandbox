@@ -152,6 +152,7 @@ namespace ml
 	struct ML_SCRIPT_API AST_While : public AST_Stmt
 	{
 		AST_Expr* expr;
+
 		AST_While(AST_Expr* expr);
 		~AST_While();
 

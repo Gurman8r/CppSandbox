@@ -20,6 +20,7 @@
 #include <MemeGraphics/RenderWindow.h>
 #include <MemeGraphics/Glyph.h>
 #include <MemeScript/Interpreter.h>
+#include <MemeNet/Client.h>
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -112,6 +113,76 @@ inline static void printBits(T value)
 		std::cout << (b ? ml::FG::Green : ml::FG::Red) << b << " ";
 	}
 	std::cout << ml::FMT() << std::endl;
+}
+
+/* * * * * * * * * * * * * * * * * * * * */
+
+inline static void loadCommands()
+{
+	ML_Interpreter.addCommand(ml::Command("help", [](ml::Args & args)
+	{
+		for (auto n : ML_Interpreter.getCmdNames())
+			std::cout << n << std::endl;
+		return ml::Var().boolValue(true);
+	}));
+
+	ML_Interpreter.addCommand(ml::Command("pause", [](ml::Args & args)
+	{
+		return ml::Var().intValue(pause());
+	}));
+
+	ML_Interpreter.addCommand(ml::Command("clear", [](ml::Args & args)
+	{
+#ifdef ML_SYSTEM_WINDOWS
+		system("cls");
+#else
+		system("clear");
+#endif
+		return ml::Var().boolValue(true);
+	}));
+
+	ML_Interpreter.addCommand(ml::Command("cd", [](ml::Args & args)
+	{
+		return ml::Var().boolValue(ML_FileSystem.changeDir(args.pop_front().front()));
+	}));
+
+	ML_Interpreter.addCommand(ml::Command("exist", [](ml::Args & args)
+	{
+		return ml::Var().boolValue(ML_FileSystem.fileExists(args.pop_front().front()));
+	}));
+
+	ML_Interpreter.addCommand(ml::Command("dir", [](ml::Args & args)
+	{
+		std::string dName = args.pop_front().empty() ? "./" : args.str();
+
+		if (DIR* dir = opendir(dName.c_str()))
+		{
+			dirent* e;
+			while ((e = readdir(dir)))
+			{
+				switch (e->d_type)
+				{
+				case DT_REG:
+					std::cout << (ml::FG::Green | ml::BG::Black) << e->d_name << "";
+					break;
+				case DT_DIR:
+					std::cout << (ml::FG::Blue | ml::BG::Green) << e->d_name << "/";
+					break;
+				case DT_LNK:
+					std::cout << (ml::FG::Green | ml::BG::Black) << e->d_name << "@";
+					break;
+				default:
+					std::cout << (ml::FG::Green | ml::BG::Black) << e->d_name << "*";
+					break;
+				}
+				std::cout << ml::FMT() << std::endl;
+			}
+			closedir(dir);
+			return ml::Var().boolValue(true);
+		}
+		std::cout << "Dir \'" << dName << "\' does not exist." << std::endl;
+		return ml::Var().boolValue(false);
+	}));
 }
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -301,62 +372,6 @@ inline static int windowStub()
 
 inline static int scriptStub()
 {
-	ML_Interpreter.addCommand(ml::Command("help", [](ml::Args & args)
-	{
-		for(auto n : ML_Interpreter.getCmdNames())
-			std::cout << n << std::endl;
-		return ml::Var().boolValue(true);
-	}));
-	ML_Interpreter.addCommand(ml::Command("pause", [](ml::Args & args)
-	{
-		return ml::Var().intValue(pause());
-	}));
-	ML_Interpreter.addCommand(ml::Command("clear", [](ml::Args & args)
-	{
-#ifdef ML_SYSTEM_WINDOWS
-		system("cls");
-#else
-		system("clear");
-#endif
-		return ml::Var().boolValue(true);
-	}));
-	ML_Interpreter.addCommand(ml::Command("dir", [](ml::Args & args)
-	{
-		std::string dName = args.pop_front().empty() ? "./" : args.str();
-
-		if (DIR* dir = opendir(dName.c_str()))
-		{
-			dirent* e;
-			while ((e = readdir(dir)))
-			{
-				switch (e->d_type)
-				{
-				case DT_REG:
-					std::cout << (ml::FG::Green | ml::BG::Black) << e->d_name << "";
-					break;
-				case DT_DIR:
-					std::cout << (ml::FG::Blue | ml::BG::Green) << e->d_name << "/";
-					break;
-				case DT_LNK:
-					std::cout << (ml::FG::Green | ml::BG::Black) << e->d_name << "@";
-					break;
-				default:
-					std::cout << (ml::FG::Green | ml::BG::Black) << e->d_name << "*";
-					break;
-				}
-				std::cout << ml::FMT() << std::endl;
-			}
-			closedir(dir);
-			return ml::Var().boolValue(true);
-		}
-		std::cout << "Dir \'" << dName << "\' does not exist." << std::endl;
-		return ml::Var().boolValue(false);
-	}));
-	ML_Interpreter.addCommand(ml::Command("exist", [](ml::Args & args)
-	{
-		return ml::Var().boolValue(ML_FileSystem.fileExists(args.pop_front().front()));
-	}));
-
 	ML_Interpreter.parser()->
 		showToks(settings.showToks).
 		showTree(settings.showTree).
@@ -394,6 +409,13 @@ inline static int astStub()
 	return pause(EXIT_SUCCESS);
 }
 
+inline static int netStub()
+{
+	ml::Client client;
+
+	return pause(EXIT_SUCCESS);
+}
+
 /* * * * * * * * * * * * * * * * * * * * */
 
 int main(int argc, char** argv)
@@ -403,17 +425,16 @@ int main(int argc, char** argv)
 		std::cerr << "Unable to locate config: \'" << CONFIG_INI << "\'." << std::endl;
 		return pause(EXIT_FAILURE);
 	}
+
+	loadCommands();
 	
 	switch (settings.program)
 	{
-	case 0:
-		return coreStub();
-	case 1:
-		return windowStub();
-	case 2:
-		return scriptStub();
-	case 3:
-		return astStub();
+	case 0: return coreStub();
+	case 1: return windowStub();
+	case 2: return scriptStub();
+	case 3: return astStub();
+	case 4: return netStub();
 	default:
 		std::cerr << "Unknown program: " << settings.program << std::endl;
 		return pause(EXIT_FAILURE);

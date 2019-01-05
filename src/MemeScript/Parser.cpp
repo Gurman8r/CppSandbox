@@ -146,7 +146,6 @@ namespace ml
 
 		if (show) std::cout << "P: " << pfx << std::endl;
 
-		auto str = stk.str();
 		if (stk.empty())
 		{
 			Debug::LogError("Missing left parenthesis (2)\n");
@@ -154,13 +153,6 @@ namespace ml
 		}
 
 		stk.erase(stk.begin());
-
-		//if (!stk.empty())
-		//{
-		//	Debug::LogError("Missing left parenthesis (3)\n");
-		//	std::cout << stk << std::endl;
-		//	return false;
-		//}
 
 		// Final Error Checking
 		std::size_t numOperators = 0;
@@ -587,9 +579,39 @@ namespace ml
 
 	AST_Assign* Parser::genAssign(const TokenList & toks) const
 	{
-		const TokenList::const_iterator& it = toks.begin();
+		TokenList::const_iterator it = toks.begin();
 
-		if (toks.matchStr(it, "n=A"))
+		if (toks.matchStr(it, "n[E]=A"))
+		{
+			TokenList list({ *(it), *(it + 1), *(it + 2), *(it + 3) });
+
+			if (AST_Subscr* subscr = genSubscr(list))
+			{
+				if (AST_Expr* value = genComplex(toks.after(5)))
+				{
+					return NULL;
+					//return new AST_Assign(OperatorType::OP_SET, subscr, value);
+				}
+			}
+		}
+		else if (toks.matchStr(it, "n[E]O=A"))
+		{
+			TokenList list({ *(it), *(it + 1), *(it + 2), *(it + 3) });
+
+			if (AST_Subscr* subscr = genSubscr(list))
+			{
+				Operator op;
+				if (MakeOperator(*(it + 4), *(it + 5), op))
+				{
+					if (AST_Expr* value = genComplex(toks.after(6)))
+					{
+						return NULL;
+						//return new AST_Assign(op, subscr, value);
+					}
+				}
+			}
+		}
+		else if (toks.matchStr(it, "n=A"))
 		{
 			return new AST_Assign(
 				OperatorType::OP_SET,

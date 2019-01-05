@@ -21,6 +21,7 @@ namespace ml
 		~FileSystem() {}
 
 	public:
+		bool changeDir(const std::string & value);
 		bool fileExists(const std::string & filename);
 		bool getFileContents(const std::string& filename, std::vector<char>& buffer);
 	};

@@ -622,7 +622,7 @@ namespace ml
 
 	TokenList::const_iterator TokenList::find(const value_type& value, std::size_t index) const
 	{
-		for (auto it = begin() + index; it != end(); it++)
+		for (TokenList::const_iterator it = begin() + index; it != end(); it++)
 		{
 			if (*it == value)
 			{
@@ -634,9 +634,9 @@ namespace ml
 	
 	TokenList::const_iterator TokenList::find_first(const value_type& value) const
 	{
-		for (auto it = begin(); it != end(); it++)
+		for (TokenList::const_iterator it = begin(); it != end(); it++)
 		{
-			if (*it == value)
+			if ((*it) == value)
 			{
 				return it;
 			}
@@ -646,9 +646,9 @@ namespace ml
 	
 	TokenList::const_iterator TokenList::find_first_not_of(const value_type& value, std::size_t index) const
 	{
-		for (auto it = begin(); it != end(); it++)
+		for (TokenList::const_iterator it = begin(); it != end(); it++)
 		{
-			if (*it != value)
+			if ((*it) != value)
 			{
 				return it;
 			}
@@ -658,9 +658,9 @@ namespace ml
 	
 	TokenList::const_iterator TokenList::find_last(const value_type& value) const
 	{
-		for (auto it = end(); it != begin(); it--)
+		for (TokenList::const_iterator it = end(); it != begin(); it--)
 		{
-			if (*it == value)
+			if ((*it) == value)
 			{
 				return it;
 			}
@@ -672,7 +672,7 @@ namespace ml
 	{
 		for (auto it = end(); it != begin(); it--)
 		{
-			if (*it != value)
+			if ((*it) != value)
 			{
 				return it;
 			}
