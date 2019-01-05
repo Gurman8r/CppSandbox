@@ -12,7 +12,7 @@ namespace ml
 		~Client();
 
 	private:
-
+		void * m_peer;
 	};
 }
 

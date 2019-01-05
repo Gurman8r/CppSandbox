@@ -18,9 +18,10 @@
 #include <MemeGraphics/Color.h>
 #include <MemeGraphics/OpenGL.h>
 #include <MemeGraphics/RenderWindow.h>
-#include <MemeGraphics/Glyph.h>
+#include <MemeGraphics/Font.h>
 #include <MemeScript/Interpreter.h>
 #include <MemeNet/Client.h>
+#include <MemeAudio/Sound.h>
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -372,6 +373,8 @@ inline static int windowStub()
 
 inline static int scriptStub()
 {
+	loadCommands();
+
 	ML_Interpreter.parser()->
 		showToks(settings.showToks).
 		showTree(settings.showTree).
@@ -384,6 +387,8 @@ inline static int scriptStub()
 
 inline static int astStub()
 {
+	loadCommands();
+
 	using namespace ml;
 	AST_Block root({
 
@@ -416,6 +421,28 @@ inline static int netStub()
 	return pause(EXIT_SUCCESS);
 }
 
+inline static int audioStub()
+{
+	ml::Sound sound;
+
+	return pause(EXIT_SUCCESS);
+}
+
+inline static int graphicsStub()
+{
+	ml::Font font;
+	if (font.loadFromFile(settings.assetPath + "fonts/Consolas.ttf"))
+	{
+		std::cout << "Loaded Font" << std::endl;
+		return pause(EXIT_SUCCESS);
+	}
+	else
+	{
+		std::cerr << "Failed Loading Font" << std::endl;
+		return pause(EXIT_FAILURE);
+	}
+}
+
 /* * * * * * * * * * * * * * * * * * * * */
 
 int main(int argc, char** argv)
@@ -425,8 +452,6 @@ int main(int argc, char** argv)
 		std::cerr << "Unable to locate config: \'" << CONFIG_INI << "\'." << std::endl;
 		return pause(EXIT_FAILURE);
 	}
-
-	loadCommands();
 	
 	switch (settings.program)
 	{
@@ -435,6 +460,8 @@ int main(int argc, char** argv)
 	case 2: return scriptStub();
 	case 3: return astStub();
 	case 4: return netStub();
+	case 5: return audioStub();
+	case 6: return graphicsStub();
 	default:
 		std::cerr << "Unknown program: " << settings.program << std::endl;
 		return pause(EXIT_FAILURE);

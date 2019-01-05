@@ -172,6 +172,7 @@
     <ClInclude Include="..\..\include\MemeCore\IComparable.h" />
     <ClInclude Include="..\..\include\MemeCore\INonCopyable.h" />
     <ClInclude Include="..\..\include\MemeCore\InputState.h" />
+    <ClInclude Include="..\..\include\MemeCore\IResource.h" />
     <ClInclude Include="..\..\include\MemeCore\ISerializable.h" />
     <ClInclude Include="..\..\include\MemeCore\ISingleton.h" />
     <ClInclude Include="..\..\include\MemeCore\ITrackable.h" />
@@ -180,6 +181,7 @@
     <ClInclude Include="..\..\include\MemeCore\Matrix.h" />
     <ClInclude Include="..\..\include\MemeCore\MemoryTracker.h" />
     <ClInclude Include="..\..\include\MemeCore\Quaternion.h" />
+    <ClInclude Include="..\..\include\MemeCore\Rect.h" />
     <ClInclude Include="..\..\include\MemeCore\StringUtility.h" />
     <ClInclude Include="..\..\include\MemeCore\TimePoint.h" />
     <ClInclude Include="..\..\include\MemeCore\Timer.h" />

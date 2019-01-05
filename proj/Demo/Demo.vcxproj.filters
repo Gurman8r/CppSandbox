@@ -11,16 +11,16 @@
     <Filter Include="Resource Files\tools">
       <UniqueIdentifier>{035ecba2-2b73-4311-a209-1a3bbad2ba39}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\assets\fonts">
+      <UniqueIdentifier>{196a0fee-b6a8-42a2-af56-74bc60806553}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\scripts">
+      <UniqueIdentifier>{59483728-d1a2-4120-9e4c-e3fdf1e83de8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\config.ini">
       <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\..\assets\boot.script">
-      <Filter>Resource Files\assets</Filter>
-    </None>
-    <None Include="..\..\assets\stub.script">
-      <Filter>Resource Files\assets</Filter>
     </None>
     <None Include="..\..\tools\Archive_Bin.bat">
       <Filter>Resource Files\tools</Filter>
@@ -55,14 +55,34 @@
     <None Include="..\..\tools\Build_Release_x86.bat">
       <Filter>Resource Files\tools</Filter>
     </None>
-    <None Include="..\..\assets\fibonacci.script">
-      <Filter>Resource Files\assets</Filter>
+    <None Include="..\..\assets\scripts\boot.script">
+      <Filter>Resource Files\assets\scripts</Filter>
     </None>
-    <None Include="..\..\assets\hello.script">
-      <Filter>Resource Files\assets</Filter>
+    <None Include="..\..\assets\scripts\fibonacci.script">
+      <Filter>Resource Files\assets\scripts</Filter>
+    </None>
+    <None Include="..\..\assets\scripts\hello.script">
+      <Filter>Resource Files\assets\scripts</Filter>
+    </None>
+    <None Include="..\..\assets\scripts\stub.script">
+      <Filter>Resource Files\assets\scripts</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Demo\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="..\..\assets\fonts\clacon.ttf">
+      <Filter>Resource Files\assets\fonts</Filter>
+    </Font>
+    <Font Include="..\..\assets\fonts\Consolas.ttf">
+      <Filter>Resource Files\assets\fonts</Filter>
+    </Font>
+    <Font Include="..\..\assets\fonts\lucida_console.ttf">
+      <Filter>Resource Files\assets\fonts</Filter>
+    </Font>
+    <Font Include="..\..\assets\fonts\minecraft.ttf">
+      <Filter>Resource Files\assets\fonts</Filter>
+    </Font>
   </ItemGroup>
 </Project>

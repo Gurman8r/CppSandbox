@@ -9,4 +9,12 @@ namespace ml
 	Mesh::~Mesh()
 	{
 	}
+	bool Mesh::cleanup()
+	{
+		return false;
+	}
+	bool Mesh::loadFromFile(const std::string & filename)
+	{
+		return false;
+	}
 }

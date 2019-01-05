@@ -21,9 +21,15 @@
     <ClInclude Include="..\..\include\MemeNet\Client.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeNet\Server.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeNet\Client.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeNet\Server.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

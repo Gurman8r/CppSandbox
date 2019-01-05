@@ -6,10 +6,15 @@
 namespace ml
 {
 	class ML_GRAPHICS_API Texture final
+		: public ITrackable
+		, public IResource
 	{
 	public:
 		Texture();
 		~Texture();
+
+		bool cleanup() override;
+		bool loadFromFile(const std::string & filename) override;
 
 	private:
 
