@@ -190,6 +190,8 @@ inline static void loadCommands()
 
 inline static int coreStub()
 {
+	std::cout << "Core Stub:" << std::endl;
+
 	// Colors
 	std::cout << "Colors:" << std::endl;
 	char c = 64;
@@ -303,6 +305,8 @@ inline static int coreStub()
 
 inline static int windowStub()
 {
+	std::cout << "Window Stub:" << std::endl;
+	
 	// Window
 	ml::RenderWindow window;
 	std::cout << "Creating Window..." << std::endl;
@@ -373,6 +377,8 @@ inline static int windowStub()
 
 inline static int scriptStub()
 {
+	std::cout << "Script Stub:" << std::endl;
+
 	loadCommands();
 
 	ML_Interpreter.parser()->
@@ -387,6 +393,8 @@ inline static int scriptStub()
 
 inline static int astStub()
 {
+	std::cout << "AST Stub:" << std::endl;
+
 	loadCommands();
 
 	using namespace ml;
@@ -416,6 +424,8 @@ inline static int astStub()
 
 inline static int netStub()
 {
+	std::cout << "Net Stub:" << std::endl;
+
 	ml::Client client;
 
 	return pause(EXIT_SUCCESS);
@@ -423,6 +433,8 @@ inline static int netStub()
 
 inline static int audioStub()
 {
+	std::cout << "Audio Stub:" << std::endl;
+
 	ml::Sound sound;
 
 	return pause(EXIT_SUCCESS);
@@ -430,6 +442,8 @@ inline static int audioStub()
 
 inline static int graphicsStub()
 {
+	std::cout << "Graphics Stub:" << std::endl;
+
 	ml::Font font;
 	if (font.loadFromFile(settings.assetPath + "fonts/Consolas.ttf"))
 	{

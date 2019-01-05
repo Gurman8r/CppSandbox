@@ -13,6 +13,9 @@ set VCVarsPath=%MSBuildPath%VC\Auxiliary\Build\
 set VCVars32=vcvars32.bat
 set VCVars64=vcvars64.bat
 
+set DefaultConfiguration=Debug
+set DefaultPlatform=x86
+
 
 rem Set Solution File
 :setSolution
@@ -34,9 +37,9 @@ if exist "%SolutionPath%" (
 rem Set Configuration
 :setConfiguration
 if "%2"=="" (
-	set /P Configuration="Configuration [Debug]: "
+	set /P Configuration="Configuration [%DefaultConfiguration%]: "
 	if "%Configuration%"=="" (
-		set Configuration=Debug
+		set Configuration=%DefaultConfiguration%
 	)
 ) else (
 	set Configuration=%2
@@ -47,9 +50,9 @@ echo Set Configuration %Configuration%
 rem Set Platform Target
 :setPlatformTarget
 if "%3"=="" (
-	set /P PlatformTarget="Platform Target [x86]: "
+	set /P PlatformTarget="Platform Target [%DefaultPlatform%]: "
 	if "%PlatformTarget%"=="" (
-		set PlatformTarget=x86
+		set PlatformTarget=%DefaultPlatform%
 	)
 ) else (
 	set PlatformTarget=%3
