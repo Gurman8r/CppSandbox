@@ -32,6 +32,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MemeScript", "proj\MemeScri
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MemeNet", "proj\MemeNet\MemeNet.vcxproj", "{A12B263A-F022-46DB-A461-19F0EECAFA3D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BCF9C343-33E2-4BDE-BAFA-1C570DFF525F} = {BCF9C343-33E2-4BDE-BAFA-1C570DFF525F}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MemeAudio", "proj\MemeAudio\MemeAudio.vcxproj", "{3E1CA3E7-0585-4E41-BBEF-59BC48454410}"
 	ProjectSection(ProjectDependencies) = postProject
