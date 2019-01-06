@@ -15,7 +15,7 @@ namespace ml
 		RenderWindow() {}
 		virtual ~RenderWindow() {}
 
-		Window::ErrorCode initialize() override;
+		bool initialize() override;
 
 		RenderWindow & setViewport(const vec2i & pos, const vec2u & size);
 

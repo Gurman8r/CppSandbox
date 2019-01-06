@@ -14,16 +14,6 @@ namespace ml
 		using Handle = void *;
 
 	public:
-		enum ErrorCode : uint32_t
-		{
-			ER_Success = 0,
-			ER_Invalid_Mode,
-			ER_GLFW_Init_Failure,
-			ER_GLFW_Create_Failure,
-			ER_GLEW_Init_Failure,
-			ER_Invalid_Handle,
-			ER_SRGB_Failure,
-		};
 		enum CursorMode : uint32_t
 		{
 			Normal	 = 0x00034001,
@@ -49,13 +39,13 @@ namespace ml
 		Window() {}
 		virtual ~Window() {}
 
-		ErrorCode create(
+		bool create(
 			const std::string & title,
 			const VideoMode & mode,
 			const Flags & flags,
 			const ContextSettings & settings);
 
-		virtual ErrorCode initialize();
+		virtual bool initialize();
 
 		Window & close();
 		Window & maximize();

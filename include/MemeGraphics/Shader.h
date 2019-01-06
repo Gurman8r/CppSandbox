@@ -6,11 +6,12 @@
 #include <MemeGraphics/Uniform.h>
 #include <MemeGraphics/Texture.h>
 #include <MemeGraphics/Transform.h>
+#include <MemeGraphics/Color.h>
 #include <map>
 
 namespace ml
 {
-	class ML_GRAPHICS_API Shader
+	class ML_GRAPHICS_API Shader final
 		: public ITrackable
 		, public IResource
 	{
@@ -29,6 +30,10 @@ namespace ml
 
 		bool cleanup() override;
 		bool loadFromFile(const std::string & filename) override;
+		bool loadFromFile(const std::string & vs, const std::string & fs);
+		bool loadFromFile(const std::string & vs, const std::string & gs, const std::string & fs);
+		bool loadFromMemory(const std::string& vs, const std::string& fs);
+		bool loadFromMemory(const std::string& vs, const std::string& gs, const std::string& fs);
 
 		void	use() const;
 		int		program() const;

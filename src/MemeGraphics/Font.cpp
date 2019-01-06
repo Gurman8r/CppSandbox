@@ -161,12 +161,9 @@ namespace ml
 		// Now store character for later use
 		glyph.texture = texture;
 
-		glyph.position = {
+		glyph.bounds = {
 			(int)face->glyph->bitmap_left,
-			(int)face->glyph->bitmap_top 
-		};
-
-		glyph.size = {
+			(int)face->glyph->bitmap_top,
 			(int)face->glyph->bitmap.width,
 			(int)face->glyph->bitmap.rows
 		};

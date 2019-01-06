@@ -15,12 +15,29 @@ namespace ml
 	{
 	public:
 		Sprite();
+		Sprite(Shader* shader, Texture* texture);
+		Sprite(const Sprite & copy);
 		~Sprite();
 
-		void draw(RenderTarget * target, RenderState state) const;
+		const vec4f &	color() const;
+		const Mesh *	mesh() const;
+		const Shader *	shader() const;
+		const Texture *	texture() const;
+
+		Sprite & color(const vec4f & value);
+		Sprite & shader(Shader * value);
+		Sprite & texture(Texture * value);
+
+		void draw(RenderTarget & target, RenderState state) const;
+
+		bool isValid() const;
+		operator bool() const;
 
 	private:
-
+		Shader * 	m_shader;
+		Texture *	m_texture;
+		vec4f		m_color;
+		Mesh		m_mesh;
 	};
 }
 

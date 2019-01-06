@@ -1,10 +1,11 @@
 #include <MemeWindow/Window.h>
 #include <MemeWindow/Screen.h>
+#include <MemeCore/DebugUtility.h>
 #include <GLFW/glfw3.h>
 
 namespace ml
 {
-	Window::ErrorCode Window::create(
+	bool Window::create(
 		const std::string & title, 
 		const VideoMode & mode, 
 		const Flags & flags,
@@ -20,7 +21,7 @@ namespace ml
 
 		if (!getMode().isValid())
 		{
-			return ErrorCode::ER_Invalid_Mode;
+			return ml::Debug::LogError("Video Mode is Invalid");
 		}
 
 		if (glfwInit() == GL_TRUE)
@@ -77,16 +78,16 @@ namespace ml
 
 					return initialize();
 				}
-				return ErrorCode::ER_Invalid_Handle;
+				return ml::Debug::LogError("Window Handle is Invalid");
 			}
-			return ErrorCode::ER_GLFW_Create_Failure;
+			return ml::Debug::LogError("Failed to Create GLFW Window");
 		}
-		return ErrorCode::ER_GLFW_Init_Failure;
+		return ml::Debug::LogError("Failed to Initialize GLFW");
 	}
 
-	Window::ErrorCode Window::initialize()
+	bool Window::initialize()
 	{
-		return ErrorCode::ER_Success;
+		return true;
 	}
 
 

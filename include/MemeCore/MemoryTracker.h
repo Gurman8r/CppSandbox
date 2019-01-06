@@ -55,7 +55,7 @@ namespace ml
 		~MemoryTracker() { displayFinalAllocations(); }
 
 		AllocationMap	m_records;
-		std::size_t m_guid;
+		std::size_t		m_guid;
 	};
 }
 

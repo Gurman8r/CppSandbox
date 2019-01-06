@@ -2,6 +2,7 @@
 #define _OPENGL_H_
 
 #include <MemeGraphics/Export.h>
+#include <string>
 
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -12,7 +13,7 @@
 	// In debug configuration, perform a test on every OpenGL call
 	// The do-while loop is needed so that glCheck can be 
 	// used as a single statement in if/else branches
-	#define glCheck(expr) do { expr; ml::glCheckError(__FILE__, __LINE__, #expr); } while (false)
+	#define glCheck(expr) do { expr; ml::OpenGL::checkError(__FILE__, __LINE__, #expr); } while (false)
 #else
 	// Else, we don't add any overhead
 	#define glCheck(expr) (expr)
@@ -20,7 +21,19 @@
 
 namespace ml
 {
-	void ML_GRAPHICS_API glCheckError(const char* file, unsigned int line, const char* expression);
+	class ML_GRAPHICS_API OpenGL final
+	{
+	public:
+		static bool initGL();
+
+		static void checkError(const char * file, unsigned int line, const char * expression);
+
+		static const char * getVersion();
+
+	private:
+		static bool m_good;
+	};
+
 }
 
 #endif // !_OPENGL_H_

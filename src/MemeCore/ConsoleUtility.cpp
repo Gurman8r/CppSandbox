@@ -1,4 +1,5 @@
 #include <MemeCore/ConsoleUtility.h>
+#include <MemeCore/InputState.h>
 
 #ifdef ML_SYSTEM_WINDOWS
 #include <Windows.h>
@@ -44,6 +45,18 @@ namespace ml
 		Yellow,
 		White,
 	};
+
+	int32_t ConsoleUtility::pause(int32_t exitCode)
+	{
+#ifdef ML_SYSTEM_WINDOWS
+		system("pause");
+#else
+		std::cout << "Press any key to continue..." << std::endl;
+		ml::InputState input;
+		while (!input.beginStep().endStep().getAnyKey());
+#endif
+		return exitCode;
+	}
 
 	void ConsoleUtility::setAttribute(const uint16_t & value)
 	{

@@ -1,13 +1,12 @@
 #include <MemeGraphics/RenderWindow.h>
 #include <MemeGraphics/OpenGL.h>
+#include <MemeCore/DebugUtility.h>
 
 namespace ml
 {
-	Window::ErrorCode RenderWindow::initialize()
+	bool RenderWindow::initialize()
 	{
-		glewExperimental = GL_TRUE;
-
-		if (glewInit() == GLEW_OK)
+		if (OpenGL::initGL())
 		{
 			glEnable(GL_CULL_FACE);
 			glCullFace(GL_BACK);
@@ -105,13 +104,13 @@ namespace ml
 				if (glIsEnabled(GL_FRAMEBUFFER_SRGB) == GL_FALSE)
 				{
 					m_settings.sRgbCapable = false;
-					return ErrorCode::ER_SRGB_Failure;
+					ml::Debug::LogWarning("Failed to enable SRGB");
 				}
 			}
-			return ErrorCode::ER_Success;
 
+			return true;
 		}
-		return ErrorCode::ER_GLEW_Init_Failure;
+		return ml::Debug::LogError("Failed to Initialize GLEW");
 	}
 
 	RenderWindow & RenderWindow::setViewport(const vec2i & pos, const vec2u & size)

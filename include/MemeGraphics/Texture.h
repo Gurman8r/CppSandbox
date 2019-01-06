@@ -42,6 +42,7 @@ namespace ml
 
 		Image	copyToImage() const;
 		bool	generateMipmap();
+		void	use() const;
 		void	swap(Texture & value);
 
 		static void		bind(const Texture * value);

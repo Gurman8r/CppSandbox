@@ -79,12 +79,12 @@ namespace ml
 	bool Texture::loadFromFile(const std::string & filename, const IntRect & area)
 	{
 		Image image;
-		return image.loadFromFile(filename) && loadFromImage(image, area);
+		return image.loadFromFile(filename) && loadFromImage(image);
 	}
 
 	bool Texture::loadFromImage(const Image & value)
 	{
-		return loadFromImage(value, IntRect());
+		return loadFromImage(value, IntRect(vec2i::Zero, value.size()));
 	}
 
 	bool Texture::loadFromImage(const Image & image, const IntRect & area)
@@ -412,6 +412,11 @@ namespace ml
 			}
 		}
 		return false;
+	}
+
+	void Texture::use() const
+	{
+		Texture::bind(this);
 	}
 
 	void Texture::swap(Texture & other)

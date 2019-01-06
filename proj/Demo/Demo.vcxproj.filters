@@ -115,6 +115,12 @@
     <None Include="..\..\assets\shaders\fs\text_fs.shader">
       <Filter>Resource Files\assets\shaders\fs</Filter>
     </None>
+    <None Include="..\..\assets\shaders\fs\basic_fs.shader">
+      <Filter>Resource Files\assets\shaders\fs</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\vs\basic_vs.shader">
+      <Filter>Resource Files\assets\shaders\vs</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Demo\main.cpp" />

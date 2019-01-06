@@ -3,6 +3,25 @@
 namespace ml
 {
 	Transform::Transform()
+		: m_matrix(mat4f::identity())
+	{
+	}
+
+	Transform::Transform(const vec3f & position, const vec3f & scale, const quat & rotation)
+		: m_matrix()
+	{
+		this->position(position);
+		this->localScale(scale);
+		this->rotation(rotation);
+	}
+
+	Transform::Transform(const mat4f & value)
+		: m_matrix(value)
+	{
+	}
+
+	Transform::Transform(const Transform & copy)
+		: m_matrix(copy.m_matrix)
 	{
 	}
 

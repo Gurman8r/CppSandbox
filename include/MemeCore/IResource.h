@@ -1,7 +1,6 @@
 #ifndef _IRESOURCE_H_
 #define _IRESOURCE_H_
 
-#include <MemeCore/Export.h>
 #include <string>
 
 namespace ml

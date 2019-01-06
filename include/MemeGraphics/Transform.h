@@ -13,6 +13,9 @@ namespace ml
 	{
 	public:
 		Transform();
+		Transform(const vec3f & position, const vec3f & scale, const quat & rotation);
+		Transform(const mat4f & value);
+		Transform(const Transform & copy);
 		~Transform();
 
 		Transform & rotate(float angle, const vec3f & axis);

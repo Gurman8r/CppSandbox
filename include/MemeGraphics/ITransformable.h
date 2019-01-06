@@ -26,7 +26,7 @@ namespace ml
 			return (*this);
 		}
 
-	protected:
+	private:
 		Transform m_transform;
 	};
 }

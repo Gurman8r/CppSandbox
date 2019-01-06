@@ -2,25 +2,25 @@
 
 #include <dirent.h>
 #include <INIReader.h>
-#include <MemeCore/StringUtility.h>
+#include <MemeCore/DebugUtility.h>
 #include <MemeCore/Timer.h>
 #include <MemeCore/MemoryTracker.h>
 #include <MemeCore/ConsoleUtility.h>
-#include <MemeCore/Entity.h>
-#include <MemeCore/Vector2.h>
-#include <MemeCore/Vector3.h>
-#include <MemeCore/Quaternion.h>
 #include <MemeCore/InputState.h>
 #include <MemeCore/EventSystem.h>
 #include <MemeCore/FileSystem.h>
-#include <MemeGraphics/Shader.h>
+#include <MemeCore/Entity.h>
+#include <MemeAudio/Sound.h>
 #include <MemeGraphics/Sprite.h>
 #include <MemeGraphics/Text.h>
 #include <MemeGraphics/RenderWindow.h>
-#include <MemeGraphics/Font.h>
-#include <MemeScript/Interpreter.h>
+#include <MemeGraphics/Shapes.h>
+#include <MemeGraphics/VertexBuffer.h>
+#include <MemeGraphics/IndexBuffer.h>
+#include <MemeGraphics/BufferLayout.h>
+#include <MemeGraphics/OpenGL.h>
 #include <MemeNet/Client.h>
-#include <MemeAudio/Sound.h>
+#include <MemeScript/Interpreter.h>
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -87,18 +87,6 @@ inline static void delay(uint64_t value)
 	while (t.elapsed().millis() < value);
 }
 
-inline static int32_t pause(int32_t exitCode = EXIT_SUCCESS)
-{
-#ifdef ML_SYSTEM_WINDOWS
-	system("pause");
-#else
-	std::cout << "Press Any Key to Continue..." << std::endl;
-	ml::InputState input;
-	while (!input.beginStep().endStep().getAnyKey());
-#endif
-	return exitCode;
-}
-
 template <typename T>
 inline static void printBits(T value)
 {
@@ -126,9 +114,9 @@ inline static void loadCommands()
 		return ml::Var().boolValue(true);
 	}));
 
-	ML_Interpreter.addCommand(ml::Command("pause", [](ml::Args & args)
+	ML_Interpreter.addCommand(ml::Command("ml::ConsoleUtility::pause", [](ml::Args & args)
 	{
-		return ml::Var().intValue(pause());
+		return ml::Var().intValue(ml::ConsoleUtility::pause());
 	}));
 
 	ML_Interpreter.addCommand(ml::Command("clear", [](ml::Args & args)
@@ -299,47 +287,24 @@ inline static int coreStub()
 	delete ent;
 	std::cout << std::endl;
 
-	return pause(EXIT_SUCCESS);
+	return ml::ConsoleUtility::pause(EXIT_SUCCESS);
 }
 
 inline static int windowStub()
 {
-	std::cout << "Window Stub:" << std::endl;
+	ml::Debug::LogInfo("Window Stub");
 	
 	// Window
 	ml::RenderWindow window;
-	std::cout << "Creating Window..." << std::endl;
-	switch (window.create(
+	ml::Debug::LogInfo("Creating Window...");
+	if (!window.create(
 		settings.title,
 		ml::VideoMode(settings.width, settings.height, 32),
 		ml::Window::Default,
 		ml::ContextSettings(3, 3, 24, 8, ml::ContextSettings::Compat, false, false)))
 	{
-	case ml::Window::ER_Invalid_Mode:
-		std::cerr << "Error: Video Mode is Invalid" << std::endl;
-		return pause(EXIT_FAILURE);
-
-	case ml::Window::ER_GLFW_Init_Failure:
-		std::cerr << "Error: Failed to Initialize GLFW" << std::endl;
-		return pause(EXIT_FAILURE);
-
-	case ml::Window::ER_GLFW_Create_Failure:
-		std::cerr << "Error: Failed to Create GLFW Window" << std::endl;
-		return pause(EXIT_FAILURE);
-
-	case ml::Window::ER_GLEW_Init_Failure:
-		std::cerr << "Error: Failed to Initialize GLEW" << std::endl;
-		return pause(EXIT_FAILURE);
-
-	case ml::Window::ER_Invalid_Handle:
-		std::cerr << "Error: Window Handle is Invalid" << std::endl;
-		return pause(EXIT_FAILURE);
-
-	case ml::Window::ER_SRGB_Failure:
-		std::cerr << "Warning: Failed to enable SRGB" << std::endl;
-		break;
+		return ml::ConsoleUtility::pause(EXIT_FAILURE);
 	}
-	std::cout << "OK." << std::endl;
 
 	window.setCursorMode(ml::Window::CursorMode::Normal);
 	window.setViewport(ml::vec2i::Zero, window.getSize());
@@ -348,14 +313,11 @@ inline static int windowStub()
 	// Loop
 	ml::InputState	input;
 	ml::Timer		loopTimer;
-	uint64_t		elapsedMS = 0;
 	while (window.isOpen())
 	{
 		loopTimer.start();
 		input.beginStep();
 		{
-			window.setTitle(ml::StringUtility::Format("{0} @ {1}ms", settings.title, elapsedMS));
-
 			window.clear(ml::Color::Violet);
 			{
 				if (input.getKeyDown(ml::KeyCode::Escape))
@@ -368,7 +330,10 @@ inline static int windowStub()
 		}
 		input.endStep();
 		loopTimer.stop();
-		elapsedMS = loopTimer.elapsed().millis();
+
+		window.setTitle(ml::StringUtility::Format("{0} @ {1}ms",
+			settings.title,
+			loopTimer.elapsed().millis()));
 	}
 
 	return EXIT_SUCCESS;
@@ -376,7 +341,7 @@ inline static int windowStub()
 
 inline static int scriptStub()
 {
-	std::cout << "Script Stub:" << std::endl;
+	ml::Debug::LogInfo("Script Stub");
 
 	loadCommands();
 
@@ -392,7 +357,7 @@ inline static int scriptStub()
 
 inline static int astStub()
 {
-	std::cout << "AST Stub:" << std::endl;
+	ml::Debug::LogInfo("AST Stub");
 
 	loadCommands();
 
@@ -418,99 +383,211 @@ inline static int astStub()
 		});
 	std::cout << root << std::endl;
 	root.run();
-	return pause(EXIT_SUCCESS);
+	return ml::ConsoleUtility::pause(EXIT_SUCCESS);
 }
 
 inline static int netStub()
 {
-	std::cout << "Net Stub:" << std::endl;
+	ml::Debug::LogInfo("Net Stub");
 
 	ml::Client client;
 
-	return pause(EXIT_SUCCESS);
+	return ml::ConsoleUtility::pause(EXIT_SUCCESS);
 }
 
 inline static int audioStub()
 {
-	std::cout << "Audio Stub:" << std::endl;
+	ml::Debug::LogInfo("Audio Stub");
 
 	ml::Sound sound;
 
-	return pause(EXIT_SUCCESS);
+	return ml::ConsoleUtility::pause(EXIT_SUCCESS);
 }
 
 inline static int graphicsStub()
 {
-	std::cout << "Graphics Stub:" << std::endl;
+	ml::Debug::LogInfo("Graphics Stub");
 
 	// Window
+	ml::Debug::LogInfo("Creating Window...");
 	ml::RenderWindow window;
-	std::cout << "Creating Window..." << std::endl;
-	if (window.create(
+	if (!window.create(
 		settings.title,
 		ml::VideoMode(settings.width, settings.height, 32),
 		ml::Window::Default,
-		ml::ContextSettings(3, 3, 24, 8, ml::ContextSettings::Compat, false, false)) != 0)
+		ml::ContextSettings(4, 6, 0, 0, ml::ContextSettings::Core, false, false)) != 0)
 	{
-		return pause(EXIT_FAILURE);
+		return ml::ConsoleUtility::pause(EXIT_FAILURE);		
 	}
+	ml::Debug::LogInfo("OpenGL version: {0}", ml::OpenGL::getVersion());
 	window.setCursorMode(ml::Window::CursorMode::Normal);
 	window.setViewport(ml::vec2i::Zero, window.getSize());
 	window.setCentered();
 
+	//if (!GLEW_ARB_vertex_array_object)
+	//{
+	//	ml::Debug::LogError("ARB_vertex_array_object not available.");
+	//	return ml::ConsoleUtility::pause(EXIT_FAILURE);
+	//}
+
+	//unsigned int vao;
+	//glCheck(glGenVertexArrays(1, &vao));
+	//glCheck(glBindVertexArray(vao));
+
+
+	// Font
+	ml::Debug::LogInfo("Loading Fonts...");
+
 	ml::Font font;
 	if (!font.loadFromFile(settings.assetPath + "/fonts/Consolas.ttf"))
 	{
-		std::cerr << "Failed Loading Font" << std::endl;
-		return pause(EXIT_FAILURE);
+		ml::Debug::LogError("Failed Loading Font");
+		return ml::ConsoleUtility::pause(EXIT_FAILURE);
 	}
+
+	// Image
+	ml::Debug::LogInfo("Loading Images...");
 
 	ml::Image image;
 	if (!image.loadFromFile(settings.assetPath + "/images/dean.png"))
 	{
-		std::cerr << "Failed Loading Image" << std::endl;
-		return pause(EXIT_FAILURE);
+		ml::Debug::LogError("Failed Loading Image");
+		return ml::ConsoleUtility::pause(EXIT_FAILURE);
 	}
+
+	// Texture
+	ml::Debug::LogInfo("Loading Textures...");
 
 	ml::Texture texture;
 	if (!texture.loadFromImage(image))
 	{
-		std::cerr << "Failed Loading Texture" << std::endl;
-		return pause(EXIT_FAILURE);
+		ml::Debug::LogError("Failed Loading Texture");
+		return ml::ConsoleUtility::pause(EXIT_FAILURE);
 	}
 
-	ml::Shader	shader;
-	ml::Sprite	sprite;
-	ml::Text	text;
+	// Shader
+	ml::Debug::LogInfo("Loading Shaders...");
+
+	ml::Shader shaderSpr;
+	if (!shaderSpr.loadFromFile(
+		settings.assetPath + "/shaders/vs/draw2D_vs.shader",
+		settings.assetPath + "/shaders/fs/draw2D_fs.shader"))
+	{
+		ml::Debug::LogError("Failed Loading Shader: {0}", "Spr");
+		return ml::ConsoleUtility::pause(EXIT_FAILURE);
+	}
+
+	ml::Shader shaderTxt;
+	if (!shaderTxt.loadFromFile(
+		settings.assetPath + "/shaders/vs/text_vs.shader",
+		settings.assetPath + "/shaders/fs/text_fs.shader"))
+	{
+		ml::Debug::LogError("Failed Loading Shader: {0}", "Txt");
+		return ml::ConsoleUtility::pause(EXIT_FAILURE);
+	}
+
+	ml::Shader shaderBasic;
+	if (!shaderBasic.loadFromFile(
+		settings.assetPath + "/shaders/vs/basic_vs.shader",
+		settings.assetPath + "/shaders/fs/basic_fs.shader"))
+	{
+		ml::Debug::LogError("Failed Loading Shader: {0}", "Basic");
+		return ml::ConsoleUtility::pause(EXIT_FAILURE);
+	}
+
+	// Sprite
+	ml::Debug::LogInfo("Loading Sprites...");
+
+	ml::Sprite sprite(&shaderSpr, &texture);
+	if (!sprite)
+	{
+		ml::Debug::LogError("Failed Loading Sprite");
+		return ml::ConsoleUtility::pause(EXIT_FAILURE);
+	}
+	sprite.color(ml::Color::White);
+	sprite.transform().position(ml::vec3f::Zero);
+
+	// Text
+	ml::Debug::LogInfo("Loading Text...");
+
+	ml::Text text(&shaderTxt, &font);
+	if(!text)
+	{
+		ml::Debug::LogError("Failed Loading Text");
+		return ml::ConsoleUtility::pause(EXIT_FAILURE);
+	}
+	text.color(ml::Color::White);
+	text.fontSize(14);
+	text.string("Hello, World!");
+	text.transform().position(ml::vec3f::Zero);
+
+
+	float positions[] = {
+		-0.5f, -0.5f,
+		+0.5f, -0.5f,
+		+0.5f, +0.5f,
+		-0.5f, +0.5f,
+	};
+	uint32_t indices[] = {
+		0, 1, 2,
+		2, 3, 0,
+	};
+	
+	//unsigned int vao;
+	//glCheck(glGenVertexArrays(1, &vao));
+	//glCheck(glBindVertexArray(vao));
+	//glGenVertexArrays(1, &vao);
+	//glBindVertexArray(vao);
+	//ml::VertexBuffer vbo(ml::VertexBuffer::Static, positions, 4 * 2 * sizeof(float));	
+	//ml::IndexBuffer	 ibo(indices, 6 * sizeof(uint32_t));
+	//glCheck(glVertexAttribPointer(
+	//	0, 4, GL_FLOAT, GL_FALSE, 
+	//	(ml::Vertex::Size * sizeof(float)), 
+	//	((void*)(0 * sizeof(float)))));
+	//glCheck(glEnableVertexAttribArray(0));
+	
+
+	window.disable(ml::RenderTarget::CullFace);
+	window.disable(ml::RenderTarget::DepthTest);
 
 	// Loop
 	ml::InputState	input;
 	ml::Timer		loopTimer;
-	uint64_t		elapsedMS = 0;
 	while (window.isOpen())
 	{
 		loopTimer.start();
 		input.beginStep();
 		{
-			window.setTitle(ml::StringUtility::Format("{0} @ {1}ms", settings.title, elapsedMS));
+			if (input.getKeyDown(ml::KeyCode::Escape))
+			{
+				window.close();
+			}
 
 			window.clear(ml::Color::Violet);
 			{
-				if (input.getKeyDown(ml::KeyCode::Escape))
-				{
-					window.close();
-				}
+				shaderBasic.setUniform(ml::Uniform::Color, ml::Color::Red);
+				shaderBasic.use();
+
+				glBegin(GL_TRIANGLES);
+				glVertex2f(-0.5f, -0.5f);
+				glVertex2f(0.0f, 0.0f);
+				glVertex2f(0.5f, -0.5f);
+				glEnd();
 			}
 			window.swapBuffers();
 			window.pollEvents();
 		}
 		input.endStep();
 		loopTimer.stop();
-		elapsedMS = loopTimer.elapsed().millis();
+
+		window.setTitle(ml::StringUtility::Format("{0} @ {1}ms", 
+			settings.title, 
+			loopTimer.elapsed().millis()));
 	}
 	
 	std::cout << "OK" << std::endl;
-	return pause(EXIT_SUCCESS);
+
+	return EXIT_SUCCESS;
 }
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -520,7 +597,7 @@ int main(int argc, char** argv)
 	if (!settings.load(CONFIG_INI))
 	{
 		std::cerr << "Unable to locate config: \'" << CONFIG_INI << "\'." << std::endl;
-		return pause(EXIT_FAILURE);
+		return ml::ConsoleUtility::pause(EXIT_FAILURE);
 	}
 	
 	switch (settings.program)
@@ -534,7 +611,7 @@ int main(int argc, char** argv)
 	case 6: return graphicsStub();
 	default:
 		std::cerr << "Unknown program: " << settings.program << std::endl;
-		return pause(EXIT_FAILURE);
+		return ml::ConsoleUtility::pause(EXIT_FAILURE);
 	}
 }
 

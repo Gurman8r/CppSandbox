@@ -1,10 +1,20 @@
 #include <MemeGraphics/OpenGL.h>
 #include <MemeCore/StringUtility.h>
 #include <MemeCore/ConsoleUtility.h>
+#include <vector>
 
 namespace ml
 {
-	void glCheckError(const char * file, unsigned int line, const char * expression)
+	bool OpenGL::m_good = false;
+
+	bool OpenGL::initGL()
+	{
+		glewExperimental = GL_TRUE;
+
+		return (m_good = (glewInit() == GLEW_OK));
+	}
+
+	void OpenGL::checkError(const char * file, unsigned int line, const char * expression)
 	{
 		// Get the last error
 		GLenum errorCode = glGetError();
@@ -62,13 +72,15 @@ namespace ml
 				<< std::endl
 				<< std::endl << FMT();
 
-#ifdef ML_SYSTEM_WINDOWS
-			system("pause");
-#else
-			// pause ?
-#endif
+			ConsoleUtility::pause();
 
 		}
 	}
 		
+	const char * OpenGL::getVersion()
+	{
+		return m_good
+			? (const char *)glGetString(GL_VERSION)
+			: "ERROR";
+	}
 }

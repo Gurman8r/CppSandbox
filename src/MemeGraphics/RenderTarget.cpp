@@ -10,13 +10,41 @@ namespace ml
 		return (*this);
 	}
 
-	RenderTarget & RenderTarget::draw(const IDrawable * value)
+	RenderTarget & RenderTarget::enable(uint32_t value)
 	{
-		value->draw(this, RenderState());
+		glCheck(glEnable(static_cast<GLenum>(value)));
 		return (*this);
 	}
 
-	RenderTarget & RenderTarget::draw(RenderState & value)
+	RenderTarget & RenderTarget::disable(uint32_t value)
+	{
+		glCheck(glDisable(static_cast<GLenum>(value)));
+		return (*this);
+	}
+
+
+	RenderTarget & RenderTarget::draw(const IDrawable & value)
+	{
+		value.draw((*this), RenderState());
+		return (*this);
+	}
+
+	RenderTarget & RenderTarget::draw(const RenderState & value)
+	{
+		return (*this);
+	}
+
+	RenderTarget & RenderTarget::draw(const VertexArray & vertices, const RenderState & state)
+	{
+		return draw(vertices.ptr(), vertices.count(), vertices.primitive(), state);
+	}
+
+	RenderTarget & RenderTarget::draw(const Vertex * vertices, std::size_t count, Primitive::Type type, const RenderState & state)
+	{
+		return (*this);
+	}
+
+	RenderTarget & RenderTarget::draw(const VertexBuffer & buffer, std::size_t begin, std::size_t count, const RenderState & state)
 	{
 		return (*this);
 	}

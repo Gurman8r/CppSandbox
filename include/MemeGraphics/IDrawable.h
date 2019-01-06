@@ -12,7 +12,7 @@ namespace ml
 	public:
 		virtual ~IDrawable() {}
 
-		virtual void draw(RenderTarget * target, RenderState state) const = 0;
+		virtual void draw(RenderTarget & target, RenderState state) const = 0;
 
 	private:
 

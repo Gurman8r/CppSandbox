@@ -1,6 +1,7 @@
 #include <MemeGraphics/Shader.h>
 #include <MemeGraphics/OpenGL.h>
 #include <MemeCore/DebugUtility.h>
+#include <MemeCore/FileSystem.h>
 
 namespace
 {
@@ -69,10 +70,18 @@ namespace ml
 namespace ml
 {
 	Shader::Shader()
+		: m_program(0)
+		, m_currentTexture(0)
+		, m_textures()
+		, m_uniforms()
 	{
 	}
 
 	Shader::Shader(const Shader & copy)
+		: m_program(copy.m_program)
+		, m_currentTexture(copy.m_currentTexture)
+		, m_textures(copy.m_textures)
+		, m_uniforms(copy.m_uniforms)
 	{
 	}
 
@@ -89,6 +98,68 @@ namespace ml
 	bool Shader::loadFromFile(const std::string & filename)
 	{
 		return false;
+	}
+
+	bool Shader::loadFromFile(const std::string & vs, const std::string & fs)
+	{
+		// Read the vertex shader file
+		std::vector<char> vertexShader;
+		if (!ML_FileSystem.getFileContents(vs, vertexShader))
+		{
+			Debug::LogError("Failed to open vertex source file \"{0}\"", vs);
+			return false;
+		}
+
+		// Read the fragment shader file
+		std::vector<char> fragmentShader;
+		if (!ML_FileSystem.getFileContents(fs, fragmentShader))
+		{
+			Debug::LogError("Failed to open fragment source file \"{0}\"", fs);
+			return false;
+		}
+
+		// Compile the shader program
+		return compile(&vertexShader[0], NULL, &fragmentShader[0]);
+	}
+
+	bool Shader::loadFromFile(const std::string & vs, const std::string & gs, const std::string & fs)
+	{
+		// Read the vertex shader file
+		std::vector<char> vertexShader;
+		if (!ML_FileSystem.getFileContents(vs, vertexShader))
+		{
+			Debug::LogError("Failed to open vertex source file \"{0}\"", vs);
+			return false;
+		}
+
+		// Read the geometry shader file
+		std::vector<char> geometryShader;
+		if (!ML_FileSystem.getFileContents(gs, geometryShader))
+		{
+			Debug::LogError("Failed to open geometry source file \"{0}\"", gs);
+			return false;
+		}
+
+		// Read the fragment shader file
+		std::vector<char> fragmentShader;
+		if (!ML_FileSystem.getFileContents(fs, fragmentShader))
+		{
+			Debug::LogError("Failed to open fragment source file \"{0}\"", fs);
+			return false;
+		}
+
+		// Compile the shader program
+		return compile(&vertexShader[0], &geometryShader[0], &fragmentShader[0]);
+	}
+
+	bool Shader::loadFromMemory(const std::string & vs, const std::string & fs)
+	{
+		return compile(vs.c_str(), NULL, fs.c_str());
+	}
+
+	bool Shader::loadFromMemory(const std::string & vs, const std::string & gs, const std::string & fs)
+	{
+		return compile(vs.c_str(), gs.c_str(), fs.c_str());
 	}
 
 
@@ -484,6 +555,11 @@ namespace ml
 	
 	void Shader::bindTextures() const
 	{
+		TextureTable::const_iterator it;
+		for (it = m_textures.begin(); it != m_textures.end(); it++)
+		{
+			it->second->use();
+		}
 	}
 	
 	int Shader::getUniformLocation(const std::string & value)

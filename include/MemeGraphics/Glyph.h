@@ -2,7 +2,7 @@
 #define _GLYPH_H_
 
 #include <MemeGraphics/Export.h>
-#include <MemeCore/Vector2.h>
+#include <MemeCore/Rect.h>
 
 namespace ml
 {
@@ -10,8 +10,7 @@ namespace ml
 		: public ITrackable
 	{
 		uint32_t	texture;
-		vec2i		position;
-		vec2i		size;
+		IntRect		bounds;
 		uint32_t	advance;
 	};
 }
