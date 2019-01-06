@@ -91,8 +91,8 @@ namespace ml
 	using vec2f = Vector2<float>;
 	using vec2i = Vector2<int>;
 	using vec2d = Vector2<double>;
-	using vec2u = Vector2<unsigned>;
-	using vec2s = Vector2<std::size_t>;
+	using vec2b = Vector2<uint8_t>;
+	using vec2u = Vector2<uint32_t>;
 }
 
 #endif // !_VECTOR_2_H_

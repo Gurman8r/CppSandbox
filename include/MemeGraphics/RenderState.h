@@ -2,6 +2,7 @@
 #define _RENDER_STATE_H_
 
 #include <MemeGraphics/Color.h>
+#include <MemeGraphics/Texture.h>
 
 namespace ml
 {

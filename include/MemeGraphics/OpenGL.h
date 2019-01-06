@@ -3,9 +3,7 @@
 
 #include <MemeGraphics/Export.h>
 
-#ifndef GLEW_STATIC
 #define GLEW_STATIC
-#endif
 #include <GL/glew.h>
 #pragma comment (lib, "glew32s.lib") // Link to glew32s.lib
 

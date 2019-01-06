@@ -13,7 +13,7 @@ namespace ml
 		~VertexArray();
 
 	private:
-
+		std::vector<Vertex> m_values;
 	};
 }
 

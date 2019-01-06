@@ -22,24 +22,24 @@ namespace ml
 		bool cleanup() override;
 		bool loadFromFile(const std::string & filename) override;		
 
-		Image & create(std::size_t width, std::size_t height, const vec4u & color);
-		Image & create(std::size_t width, std::size_t height, const uint8_t * pixels);
-		Image & createMaskFromColor(const vec4u & color, uint8_t alpha = 0);
+		Image & create(uint32_t width, uint32_t height, const vec4b & color);
+		Image & create(uint32_t width, uint32_t height, const uint8_t * pixels);
+		Image & createMaskFromColor(const vec4b & color, uint8_t alpha = 0);
 		Image & flipHorizontally();
 		Image & flipVertically();
 
-		vec4u	getPixel(std::size_t x, std::size_t y) const;
-		Image & setPixel(std::size_t x, std::size_t y, const vec4u & color);
+		vec4b	getPixel(uint32_t x, uint32_t y) const;
+		Image & setPixel(uint32_t x, uint32_t y, const vec4b & color);
 
-		inline const vec2s &	size() const { return m_size; }
+		inline const vec2u &	size() const { return m_size; }
 		inline const Pixels &	pixels() const { return m_pixels; }
 		inline const uint8_t *	pixelsPtr() const { return &pixels()[0]; }
 
-		inline const uint8_t &	operator[](std::size_t index) const { return m_pixels[index]; }
-		inline uint8_t &		operator[](std::size_t index) { return m_pixels[index]; }
+		inline const uint8_t &	operator[](uint32_t index) const { return m_pixels[index]; }
+		inline uint8_t &		operator[](uint32_t index) { return m_pixels[index]; }
 
 	private:
-		vec2s	m_size;
+		vec2u	m_size;
 		Pixels	m_pixels;
 	};
 }

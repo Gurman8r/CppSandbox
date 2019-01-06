@@ -34,10 +34,9 @@ namespace ml
 		stbi_set_flip_vertically_on_load(true);
 		
 		int width, height, nrChannels;
-		uint8_t * data = stbi_load(filename.c_str(), &width, &height, &nrChannels, 0);
-		if (data)
+		if (uint8_t * data = stbi_load(filename.c_str(), &width, &height, &nrChannels, 0))
 		{
-			m_size = { (std::size_t)width, (std::size_t)height };
+			m_size = { (uint32_t)width, (uint32_t)height };
 			m_pixels.clear();
 			m_pixels.resize(width * height * 4);
 			memcpy(&m_pixels[0], data, m_pixels.size());
@@ -49,7 +48,7 @@ namespace ml
 	}
 	
 	
-	Image & Image::create(std::size_t width, std::size_t height, const vec4u & color)
+	Image & Image::create(uint32_t width, uint32_t height, const vec4b & color)
 	{
 		if (width && height)
 		{
@@ -86,7 +85,7 @@ namespace ml
 		return (*this);
 	}
 	
-	Image & Image::create(std::size_t width, std::size_t height, const uint8_t * pixels)
+	Image & Image::create(uint32_t width, uint32_t height, const uint8_t * pixels)
 	{
 		if (pixels && width && height)
 		{
@@ -112,12 +111,12 @@ namespace ml
 		return (*this);
 	}
 	
-	Image & Image::createMaskFromColor(const vec4u & color, uint8_t alpha)
+	Image & Image::createMaskFromColor(const vec4b & color, uint8_t alpha)
 	{
 		// Make sure that the image is not empty
 		if (!m_pixels.empty())
 		{
-			// Replace the alpha of the pixels that matchC the transparent color
+			// Replace the alpha of the pixels that match the transparent color
 			uint8_t* ptr = &m_pixels[0];
 			uint8_t* end = ptr + m_pixels.size();
 			while (ptr < end)
@@ -140,14 +139,14 @@ namespace ml
 	{
 		if (!m_pixels.empty())
 		{
-			std::size_t rowSize = m_size[0] * 4;
+			uint32_t rowSize = m_size[0] * 4;
 
-			for (std::size_t y = 0; y < m_size[1]; ++y)
+			for (uint32_t y = 0; y < m_size[1]; ++y)
 			{
 				Pixels::iterator left = m_pixels.begin() + y * rowSize;
 				Pixels::iterator right = m_pixels.begin() + (y + 1) * rowSize - 4;
 
-				for (std::size_t x = 0; x < m_size[0] / 2; ++x)
+				for (uint32_t x = 0; x < m_size[0] / 2; ++x)
 				{
 					std::swap_ranges(left, left + 4, right);
 					left += 4;
@@ -162,12 +161,12 @@ namespace ml
 	{
 		if (!m_pixels.empty())
 		{
-			std::size_t rowSize = m_size[0] * 4;
+			uint32_t rowSize = m_size[0] * 4;
 
 			Pixels::iterator top = m_pixels.begin();
 			Pixels::iterator bottom = m_pixels.end() - rowSize;
 
-			for (std::size_t y = 0; y < m_size[1] / 2; ++y)
+			for (uint32_t y = 0; y < m_size[1] / 2; ++y)
 			{
 				std::swap_ranges(top, top + rowSize, bottom);
 				top += rowSize;
@@ -178,14 +177,14 @@ namespace ml
 	}
 
 
-	vec4u	Image::getPixel(std::size_t x, std::size_t y) const
+	vec4b	Image::getPixel(uint32_t x, uint32_t y) const
 	{
 		const uint8_t* pix = &m_pixels[(x + y * m_size[0]) * 4];
 
 		return vec4u(pix[0], pix[1], pix[2], pix[3]);
 	}
 
-	Image & Image::setPixel(std::size_t x, std::size_t y, const vec4u & color)
+	Image & Image::setPixel(uint32_t x, uint32_t y, const vec4b & color)
 	{
 		uint8_t* pixel = &m_pixels[(x + y * m_size[0]) * 4];
 

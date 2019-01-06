@@ -59,7 +59,7 @@ namespace ml
 	using vec4f = Vector4<float>;
 	using vec4i = Vector4<int>;
 	using vec4d = Vector4<double>;
-	using vec4u = Vector4<unsigned>;
-	using vec4s = Vector4<std::size_t>;
+	using vec4b = Vector4<uint8_t>;
+	using vec4u = Vector4<uint32_t>;
 }
 #endif // !_VECTOR_4_H_

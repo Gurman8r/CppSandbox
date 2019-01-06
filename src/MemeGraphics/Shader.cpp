@@ -180,7 +180,7 @@ namespace ml
 		}
 	}
 	
-	void Shader::setUniform(const std::string & name, signed value)
+	void Shader::setUniform(const std::string & name, int32_t value)
 	{
 		UniformBinder binder((*this), name);
 		if (binder)
@@ -189,7 +189,7 @@ namespace ml
 		}
 	}
 	
-	void Shader::setUniform(const std::string & name, unsigned value)
+	void Shader::setUniform(const std::string & name, uint32_t value)
 	{
 		UniformBinder binder((*this), name);
 		if (binder)
@@ -278,9 +278,37 @@ namespace ml
 			glCheck(glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, value.ptr()));
 		}
 	}
+
+	void Shader::setUniform(const std::string & name, const Texture * value)
+	{
+		if (m_program)
+		{
+			int location = getUniformLocation(name);
+			if (location != -1)
+			{
+				TextureTable::iterator it;
+				if ((it = m_textures.find(location)) != m_textures.end())
+				{
+					GLint maxUnits = GetMaxTextureUnits();
+
+					if ((m_textures.size() + 1) >= static_cast<std::size_t>(maxUnits))
+					{
+						Debug::LogError("Impossible to use texture \"{0}\" for source: all available texture units are used", name);
+						return;
+					}
+
+					m_textures[location] = value;
+				}
+				else
+				{
+					m_textures[location] = value;
+				}
+			}
+		}
+	}
 	
 	
-	void Shader::SetUniformArray(const std::string & name, const float * value, int length)
+	void Shader::setUniformArray(const std::string & name, const float * value, int length)
 	{
 		UniformBinder binder((*this), name);
 		if (binder)
@@ -289,7 +317,7 @@ namespace ml
 		}
 	}
 	
-	void Shader::SetUniformArray(const std::string & name, const vec2f * value, int length)
+	void Shader::setUniformArray(const std::string & name, const vec2f * value, int length)
 	{
 		std::vector<float> contiguous = vec2f::Flatten(value, length);
 
@@ -300,7 +328,7 @@ namespace ml
 		}
 	}
 	
-	void Shader::SetUniformArray(const std::string & name, const vec3f * value, int length)
+	void Shader::setUniformArray(const std::string & name, const vec3f * value, int length)
 	{
 		std::vector<float> contiguous = vec3f::Flatten(value, length);
 
@@ -311,7 +339,7 @@ namespace ml
 		}
 	}
 	
-	void Shader::SetUniformArray(const std::string & name, const vec4f * value, int length)
+	void Shader::setUniformArray(const std::string & name, const vec4f * value, int length)
 	{
 		std::vector<float> contiguous = vec4f::Flatten(value, length);
 
@@ -322,7 +350,7 @@ namespace ml
 		}
 	}
 	
-	void Shader::SetUniformArray(const std::string & name, const mat3f * value, int length)
+	void Shader::setUniformArray(const std::string & name, const mat3f * value, int length)
 	{
 		std::vector<float> contiguous = mat3f::Flatten(value, length);
 
@@ -333,7 +361,7 @@ namespace ml
 		}
 	}
 	
-	void Shader::SetUniformArray(const std::string & name, const mat4f * value, int length)
+	void Shader::setUniformArray(const std::string & name, const mat4f * value, int length)
 	{
 		std::vector<float> contiguous = mat4f::Flatten(value, length);
 

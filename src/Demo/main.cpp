@@ -444,6 +444,21 @@ inline static int graphicsStub()
 {
 	std::cout << "Graphics Stub:" << std::endl;
 
+	// Window
+	ml::RenderWindow window;
+	std::cout << "Creating Window..." << std::endl;
+	if (window.create(
+		settings.title,
+		ml::VideoMode(settings.width, settings.height, 32),
+		ml::Window::Default,
+		ml::ContextSettings(3, 3, 24, 8, ml::ContextSettings::Compat, false, false)) != 0)
+	{
+		return pause(EXIT_FAILURE);
+	}
+	window.setCursorMode(ml::Window::CursorMode::Normal);
+	window.setViewport(ml::vec2i::Zero, window.getSize());
+	window.setCentered();
+
 	ml::Font font;
 	if (font.loadFromFile(settings.assetPath + "/fonts/Consolas.ttf"))
 	{
@@ -463,6 +478,17 @@ inline static int graphicsStub()
 	else
 	{
 		std::cerr << "Failed Loading Image" << std::endl;
+		return pause(EXIT_FAILURE);
+	}
+
+	ml::Texture texture;
+	if (texture.loadFromImage(image))
+	{
+		std::cout << "Loaded Texture" << std::endl;
+	}
+	else
+	{
+		std::cerr << "Failed Loading Texture" << std::endl;
 		return pause(EXIT_FAILURE);
 	}
 

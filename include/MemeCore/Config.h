@@ -50,7 +50,6 @@
 		// For Visual C++ compilers, we also need to turn off this annoying C4251 warning
 		#ifdef _MSC_VER
 			#pragma warning(disable: 4251)
-			#pragma warning(disable: 4099)
 		#endif
 	#else
 		#if __GNUC__ >= 4
