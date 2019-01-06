@@ -55,6 +55,37 @@ namespace ml
 		m_matrix[8] = value[6]; m_matrix[9] = value[7]; m_matrix[11] = value[8];
 		return (*this);
 	}
+
+
+	Transform & Transform::forward(const vec3f & value)
+	{
+		return (*this);
+	}
+
+	Transform & Transform::backward(const vec3f & value)
+	{
+		return (*this);
+	}
+
+	Transform & Transform::right(const vec3f & value)
+	{
+		return (*this);
+	}
+
+	Transform & Transform::left(const vec3f & value)
+	{
+		return (*this);
+	}
+
+	Transform & Transform::up(const vec3f & value)
+	{
+		return (*this);
+	}
+
+	Transform & Transform::down(const vec3f & value)
+	{
+		return (*this);
+	}
 	
 	
 	const vec3f Transform::localScale() const
@@ -73,7 +104,7 @@ namespace ml
 			m_matrix[14]);
 	}
 	
-	const quat Transform::rotation() const
+	const quat	Transform::rotation() const
 	{
 		return quat();
 	}

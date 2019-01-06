@@ -17,16 +17,19 @@
     <Filter Include="Resource Files\assets\scripts">
       <UniqueIdentifier>{59483728-d1a2-4120-9e4c-e3fdf1e83de8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\shaders">
+    <Filter Include="Resource Files\assets\images">
+      <UniqueIdentifier>{125eb0c8-07c4-4796-899b-738bbcba963c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\shaders">
       <UniqueIdentifier>{f0ce37f6-161c-4c7e-9b01-30e5675bfdc0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\shaders\fs">
+    <Filter Include="Resource Files\assets\shaders\fs">
       <UniqueIdentifier>{a51be1ba-0151-43fb-b270-0a5f71fecc00}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\shaders\gs">
+    <Filter Include="Resource Files\assets\shaders\gs">
       <UniqueIdentifier>{78d3d745-88bf-4a7f-8462-d4c54e0fbadb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\shaders\vs">
+    <Filter Include="Resource Files\assets\shaders\vs">
       <UniqueIdentifier>{0d26678f-f1f3-4b09-9e38-5339d5e05438}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -80,37 +83,37 @@
       <Filter>Resource Files\assets\scripts</Filter>
     </None>
     <None Include="..\..\assets\shaders\vs\demo_vs.shader">
-      <Filter>Resource Files\shaders\vs</Filter>
+      <Filter>Resource Files\assets\shaders\vs</Filter>
     </None>
     <None Include="..\..\assets\shaders\vs\draw2D_vs.shader">
-      <Filter>Resource Files\shaders\vs</Filter>
+      <Filter>Resource Files\assets\shaders\vs</Filter>
     </None>
     <None Include="..\..\assets\shaders\vs\draw3D_vs.shader">
-      <Filter>Resource Files\shaders\vs</Filter>
+      <Filter>Resource Files\assets\shaders\vs</Filter>
     </None>
     <None Include="..\..\assets\shaders\vs\drawLine_vs.shader">
-      <Filter>Resource Files\shaders\vs</Filter>
+      <Filter>Resource Files\assets\shaders\vs</Filter>
     </None>
     <None Include="..\..\assets\shaders\vs\text_vs.shader">
-      <Filter>Resource Files\shaders\vs</Filter>
+      <Filter>Resource Files\assets\shaders\vs</Filter>
     </None>
     <None Include="..\..\assets\shaders\gs\drawLine_gs.shader">
-      <Filter>Resource Files\shaders\gs</Filter>
+      <Filter>Resource Files\assets\shaders\gs</Filter>
     </None>
     <None Include="..\..\assets\shaders\fs\demo_fs.shader">
-      <Filter>Resource Files\shaders\fs</Filter>
+      <Filter>Resource Files\assets\shaders\fs</Filter>
     </None>
     <None Include="..\..\assets\shaders\fs\draw2D_fs.shader">
-      <Filter>Resource Files\shaders\fs</Filter>
+      <Filter>Resource Files\assets\shaders\fs</Filter>
     </None>
     <None Include="..\..\assets\shaders\fs\draw3D_fs.shader">
-      <Filter>Resource Files\shaders\fs</Filter>
+      <Filter>Resource Files\assets\shaders\fs</Filter>
     </None>
     <None Include="..\..\assets\shaders\fs\drawLine_fs.shader">
-      <Filter>Resource Files\shaders\fs</Filter>
+      <Filter>Resource Files\assets\shaders\fs</Filter>
     </None>
     <None Include="..\..\assets\shaders\fs\text_fs.shader">
-      <Filter>Resource Files\shaders\fs</Filter>
+      <Filter>Resource Files\assets\shaders\fs</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -129,5 +132,10 @@
     <Font Include="..\..\assets\fonts\minecraft.ttf">
       <Filter>Resource Files\assets\fonts</Filter>
     </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\assets\images\dean.png">
+      <Filter>Resource Files\assets\images</Filter>
+    </Image>
   </ItemGroup>
 </Project>

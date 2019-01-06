@@ -8,7 +8,7 @@
 
 namespace ml
 {
-	class ML_GRAPHICS_API Transform
+	class ML_GRAPHICS_API Transform final
 		: public ITrackable
 	{
 	public:
@@ -23,6 +23,13 @@ namespace ml
 		Transform & position(const vec3f & value);
 		Transform & rotation(const quat & value);
 		Transform & rotationMatrix(const mat3f & value);
+
+		Transform & forward(const vec3f & value);
+		Transform & backward(const vec3f & value);
+		Transform & right(const vec3f & value);
+		Transform & left(const vec3f & value);
+		Transform & up(const vec3f & value);
+		Transform & down(const vec3f & value);
 
 		const vec3f localScale() const;
 		const vec3f position() const;

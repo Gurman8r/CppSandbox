@@ -14,10 +14,12 @@ namespace ml
 		{
 			return m_transform;
 		}
+		
 		inline Transform & transform() 
 		{ 
 			return m_transform;
 		}
+		
 		inline ITransformable &	transform(const Transform & value)
 		{
 			m_transform = value;

@@ -13,7 +13,6 @@
 #include <MemeCore/InputState.h>
 #include <MemeCore/EventSystem.h>
 #include <MemeCore/FileSystem.h>
-#include <MemeWindow/Window.h>
 #include <MemeGraphics/Shader.h>
 #include <MemeGraphics/Sprite.h>
 #include <MemeGraphics/Text.h>
@@ -50,13 +49,13 @@ struct Settings final
 		if (ini.ParseError() == 0)
 		{
 			program		= ini.GetInteger("General", "iProgram", 0);
-			assetPath	= ini.Get("General", "sAssetPath", "../../../assets/");
+			assetPath	= ini.Get("General", "sAssetPath", "../../../assets");
 
 			title		= ini.Get("Window", "sTitle", "Title");
 			width		= ini.GetInteger("Window", "iWidth", 640);
 			height		= ini.GetInteger("Window", "iHeight", 480);
 
-			bootScript	= ini.Get("Script", "sBootScript", "boot.script");
+			bootScript	= ini.Get("Script", "sBootScript", "/scripts/boot.script");
 			showToks	= ini.GetBoolean("Script", "bShowToks", false);
 			showTree	= ini.GetBoolean("Script", "bShowTree", false);
 			showItoP	= ini.GetBoolean("Script", "bShowItoP", false);
