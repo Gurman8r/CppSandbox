@@ -1,12 +1,22 @@
 @echo off
 
-set ExePath=./bin
-set ExeName=Demo
-set ExeConf=Release
-set ExeCPU=x64
+set TargetName=Demo
+set Configuration=Release
+set PlatformTarget=x64
 
-cd %ExePath%/%ExeConf%/%ExeCPU%
+set FilePath=.\bin\%Configuration%\%PlatformTarget%
+set FileName=%TargetName%_%Configuration%_%PlatformTarget%.exe
 
-%ExeName%_%ExeConf%_%ExeCPU%.exe
+if not exist %FilePath%\%FileName% (
+	echo File Not Found: "%FilePath%\%FileName%"
+	pause
+	exit 1
+)
 
-exit 0
+cd %FilePath%
+%FileName%
+
+if "%ERRORLEVEL%"!="0" (
+	pause
+)
+exit %ERRORLEVEL%
