@@ -8,25 +8,14 @@ namespace ml
 		glCheck(glClear(GL_DEPTH_BUFFER_BIT));
 		return (*this);
 	}
+	
 	RenderTarget & RenderTarget::clear(const vec4f & value)
 	{
 		glCheck(glClearColor(value[0], value[1], value[2], value[3]));
 		glCheck(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 		return (*this);
 	}
-
-	RenderTarget & RenderTarget::enable(uint32_t value)
-	{
-		glCheck(glEnable(static_cast<GLenum>(value)));
-		return (*this);
-	}
-
-	RenderTarget & RenderTarget::disable(uint32_t value)
-	{
-		glCheck(glDisable(static_cast<GLenum>(value)));
-		return (*this);
-	}
-
+	
 
 	RenderTarget & RenderTarget::draw(const IDrawable & value)
 	{
@@ -52,5 +41,24 @@ namespace ml
 	RenderTarget & RenderTarget::draw(const VertexBuffer & buffer, std::size_t begin, std::size_t count, const RenderState & state)
 	{
 		return (*this);
+	}
+	
+	
+	RenderTarget & RenderTarget::enable(uint32_t value)
+	{
+		glCheck(glEnable(static_cast<GLenum>(value)));
+		return (*this);
+	}
+
+	RenderTarget & RenderTarget::disable(uint32_t value)
+	{
+		glCheck(glDisable(static_cast<GLenum>(value)));
+		return (*this);
+	}
+	
+	
+	bool RenderTarget::isEnabled(uint32_t value) const
+	{
+		return (glIsEnabled(value) == GL_TRUE);
 	}
 }

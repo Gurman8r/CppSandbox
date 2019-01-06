@@ -46,6 +46,15 @@ namespace ml
 		White,
 	};
 
+	int32_t ConsoleUtility::clear()
+	{
+#ifdef ML_SYSTEM_WINDOWS
+		return system("cls");
+#else
+		return system("clear");
+#endif
+	}
+
 	int32_t ConsoleUtility::pause(int32_t exitCode)
 	{
 #ifdef ML_SYSTEM_WINDOWS
@@ -58,7 +67,7 @@ namespace ml
 		return exitCode;
 	}
 
-	void ConsoleUtility::setVertexAttribute(const uint16_t & value)
+	void ConsoleUtility::setConsoleTextAttribute(const uint16_t & value)
 	{
 #ifdef ML_SYSTEM_WINDOWS
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), static_cast<WORD>(value));

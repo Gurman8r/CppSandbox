@@ -415,13 +415,14 @@ inline static int graphicsStub()
 		settings.title,
 		ml::VideoMode(settings.width, settings.height, 32),
 		ml::Window::Default,
-		ml::ContextSettings(4, 6, 24, 8, ml::ContextSettings::Compat, false, false)))
+		ml::ContextSettings(3, 3, 24, 8, ml::ContextSettings::Compat, false, false)))
 	{
-		return ml::ConsoleUtility::pause(EXIT_FAILURE);		
+		return ml::ConsoleUtility::pause(EXIT_FAILURE);
 	}
 	window.setCursorMode(ml::Window::CursorMode::Normal);
 	window.setViewport(ml::vec2i::Zero, window.getSize());
 	window.setCentered();
+
 
 	// Font
 	ml::Debug::LogInfo("Loading Fonts...");
@@ -433,6 +434,7 @@ inline static int graphicsStub()
 		return ml::ConsoleUtility::pause(EXIT_FAILURE);
 	}
 
+
 	// Image
 	ml::Debug::LogInfo("Loading Images...");
 
@@ -443,6 +445,7 @@ inline static int graphicsStub()
 		return ml::ConsoleUtility::pause(EXIT_FAILURE);
 	}
 
+
 	// Texture
 	ml::Debug::LogInfo("Loading Textures...");
 
@@ -452,6 +455,7 @@ inline static int graphicsStub()
 		ml::Debug::LogError("Failed Loading Texture");
 		return ml::ConsoleUtility::pause(EXIT_FAILURE);
 	}
+
 
 	// Shader
 	ml::Debug::LogInfo("Loading Shaders...");
@@ -483,6 +487,7 @@ inline static int graphicsStub()
 		return ml::ConsoleUtility::pause(EXIT_FAILURE);
 	}
 
+
 	// Sprite
 	ml::Debug::LogInfo("Loading Sprites...");
 
@@ -494,6 +499,7 @@ inline static int graphicsStub()
 	}
 	sprite.color(ml::Color::White);
 	sprite.transform().position(ml::vec3f::Zero);
+
 
 	// Text
 	ml::Debug::LogInfo("Loading Text...");
@@ -509,6 +515,8 @@ inline static int graphicsStub()
 	text.string("Hello, World!");
 	text.transform().position(ml::vec3f::Zero);
 
+	// Geometry
+	ml::Debug::LogInfo("Loading Geometry...");
 
 	ml::FloatArray positions = {
 		-0.5f, -0.5f,
@@ -527,10 +535,13 @@ inline static int graphicsStub()
 	ml::VertexBuffer vbo(ml::VertexBuffer::Static, &positions[0], positions.size());
 	ml::IndexBuffer	 ibo(ml::IndexBuffer::Static, &indices[0], indices.size());
 
-	ml::OpenGL::setVertexAttribute(0, 2, 2 * sizeof(float), NULL);
+	ml::OpenGL::setVertexAttribute(0, 2, 2 * sizeof(float));
 
 	shaderBasic.setUniform(ml::Uniform::Color, ml::Color::Red);
 	shaderBasic.use();
+
+	// Done
+	ml::Debug::LogInfo("Done Loading Assets.");
 
 	// Loop
 	ml::InputState	input;

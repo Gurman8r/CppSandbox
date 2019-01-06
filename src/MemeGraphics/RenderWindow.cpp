@@ -14,6 +14,22 @@ namespace ml
 			enable(AlphaTest);
 			enable(Texture2D);
 
+			if (m_settings.multisample)
+			{
+				enable(MultiSample);
+			}
+
+			if (m_settings.sRgbCapable)
+			{
+				enable(FrameBufferSRGB);
+
+				if (!isEnabled(FrameBufferSRGB))
+				{
+					ml::Debug::LogWarning("Failed to enable FrameBufferSRGB");
+					m_settings.sRgbCapable = false;
+				}
+			}
+
 			glCheck(glCullFace(GL_BACK));
 			glCheck(glDepthFunc(GL_LESS));
 			glCheck(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
@@ -33,19 +49,21 @@ namespace ml
 			{
 				m_settings.majorVersion = static_cast<unsigned int>(majorVersion);
 				m_settings.minorVersion = static_cast<unsigned int>(minorVersion);
+
+				Debug::LogInfo("Using OpenGL Version: {0}.{1}", m_settings.majorVersion, m_settings.minorVersion);
 			}
 			else
 			{
 				// Try the old way
 				if (const char * version = OpenGL::getVersion())
 				{
-					// The beginning of the returned string is "major.minor" (this is standard)
 					m_settings.majorVersion = version[0] - '0';
 					m_settings.minorVersion = version[2] - '0';
+					Debug::LogInfo("Using OpenGL Version: {0}.{1}", m_settings.majorVersion, m_settings.minorVersion);
 				}
 				else
 				{
-					// Can't get the version number, assume 1.1
+					Debug::LogWarning("Can't get the version number, assuming 1.1");
 					m_settings.majorVersion = 1;
 					m_settings.minorVersion = 1;
 				}
@@ -59,6 +77,7 @@ namespace ml
 
 				if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
 				{
+					Debug::LogWarning("Set Compat Profile");
 					m_settings.profile |= ContextSettings::Compat;
 				}
 
@@ -73,6 +92,7 @@ namespace ml
 
 						if (std::strstr(extensionString, "GL_ARB_compatibility"))
 						{
+							Debug::LogWarning("Clear Core Profile");
 							m_settings.profile &= ~static_cast<uint32_t>(ContextSettings::Core);
 							break;
 						}
@@ -85,24 +105,9 @@ namespace ml
 					glCheck(glGetIntegerv(GL_CONTEXT_PROFILE_MASK, &profile));
 					if (profile & GL_CONTEXT_CORE_PROFILE_BIT)
 					{
+						Debug::LogWarning("Set Core Profile");
 						m_settings.profile |= ContextSettings::Core;
 					}
-				}
-			}
-
-			if (m_settings.multisample)
-			{
-				enable(MultiSample);
-			}
-
-			if (m_settings.sRgbCapable)
-			{
-				enable(FrameBufferSRGB);
-
-				if (glIsEnabled(GL_FRAMEBUFFER_SRGB) == GL_FALSE)
-				{
-					m_settings.sRgbCapable = false;
-					ml::Debug::LogWarning("Failed to enable SRGB");
 				}
 			}
 

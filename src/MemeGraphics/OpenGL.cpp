@@ -13,9 +13,10 @@ namespace ml
 		{
 			glewExperimental = GL_TRUE;
 
-			m_good = (glewInit() == GLEW_OK);
-
-			Debug::LogInfo("OpenGL version: {0}", getVersion());
+			if (m_good = (glewInit() == GLEW_OK))
+			{
+				Debug::LogInfo("OpenGL version supported by this platform: {0}", getVersion());
+			}
 		}
 		return m_good;
 	}

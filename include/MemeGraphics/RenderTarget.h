@@ -28,15 +28,16 @@ namespace ml
 		RenderTarget & clear();
 		RenderTarget & clear(const vec4f & value);
 
-		RenderTarget & enable(uint32_t value);
-		RenderTarget & disable(uint32_t value);
-
 		RenderTarget & draw(const IDrawable & value);
 		RenderTarget & draw(const RenderState & value);
 		RenderTarget & draw(const VertexArray & vertices, const RenderState & state);
 		RenderTarget & draw(const Vertex * vertices, std::size_t count, Primitive::Type type, const RenderState & state);
 		RenderTarget & draw(const VertexBuffer & buffer, std::size_t begin, std::size_t count, const RenderState & state);
 
+		RenderTarget & enable(uint32_t value);
+		RenderTarget & disable(uint32_t value);
+
+		bool isEnabled(uint32_t value) const;
 
 
 	private:

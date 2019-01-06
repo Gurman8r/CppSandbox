@@ -11,8 +11,9 @@ namespace ml
 	class ML_CORE_API ConsoleUtility final
 	{
 	public:
+		static int32_t clear();
 		static int32_t pause(int32_t exitCode = EXIT_SUCCESS);
-		static void setVertexAttribute(const uint16_t & value);
+		static void setConsoleTextAttribute(const uint16_t & value);
 	};
 
 	struct ML_CORE_API FG final
@@ -106,19 +107,19 @@ namespace ml
 
 	inline std::ostream& operator<<(std::ostream& out, const FG::Color& value)
 	{
-		ConsoleUtility::setVertexAttribute(uint16_t(value));
+		ConsoleUtility::setConsoleTextAttribute(uint16_t(value));
 		return out;
 	};
 
 	inline std::ostream& operator<<(std::ostream& out, const BG::Color& value)
 	{
-		ConsoleUtility::setVertexAttribute(uint16_t(value));
+		ConsoleUtility::setConsoleTextAttribute(uint16_t(value));
 		return out;
 	};
 
 	inline std::ostream& operator<<(std::ostream& out, const FMT& value)
 	{
-		ConsoleUtility::setVertexAttribute(uint16_t(value.fg) | uint16_t(value.bg));
+		ConsoleUtility::setConsoleTextAttribute(uint16_t(value.fg) | uint16_t(value.bg));
 		return out;
 	};
 }
