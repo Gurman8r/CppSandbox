@@ -62,7 +62,12 @@ namespace ml
 				<< std::endl
 				<< std::endl << FMT();
 
+#ifdef ML_SYSTEM_WINDOWS
 			system("pause");
+#else
+			// pause ?
+#endif
+
 		}
 	}
 		

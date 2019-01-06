@@ -37,6 +37,9 @@
     <Filter Include="Source Files\Drawable">
       <UniqueIdentifier>{cb876993-bbd4-413e-8c82-1a5f5e12a944}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Interfaces">
+      <UniqueIdentifier>{0bee5786-4dbe-41db-81dd-9cad85974a90}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeGraphics\Export.h">
@@ -84,14 +87,20 @@
     <ClInclude Include="..\..\include\MemeGraphics\Sprite.h">
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\IDrawable.h">
-      <Filter>Header Files\Drawable</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Uniform.h">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\OpenGL.h">
       <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\Transform.h">
+      <Filter>Header Files\DS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\IDrawable.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\ITransformable.h">
+      <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -138,6 +147,9 @@
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Uniform.cpp">
+      <Filter>Source Files\DS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\Transform.cpp">
       <Filter>Source Files\DS</Filter>
     </ClCompile>
   </ItemGroup>

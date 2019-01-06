@@ -132,9 +132,6 @@
     <ClInclude Include="..\..\include\MemeCore\Axis.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Transform.h">
-      <Filter>Header Files\Maths</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Quaternion.h">
       <Filter>Header Files\Maths</Filter>
     </ClInclude>
@@ -190,9 +187,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\Axis.cpp">
       <Filter>Source Files\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeCore\Transform.cpp">
-      <Filter>Source Files\Maths</Filter>
     </ClCompile>
     <ClCompile Include="..\..\include\MemeCore\IEnumerable.h">
       <Filter>Header Files\Interfaces</Filter>

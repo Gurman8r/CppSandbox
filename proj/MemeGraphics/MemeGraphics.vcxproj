@@ -25,6 +25,7 @@
     <ClInclude Include="..\..\include\MemeGraphics\Font.h" />
     <ClInclude Include="..\..\include\MemeGraphics\Glyph.h" />
     <ClInclude Include="..\..\include\MemeGraphics\Image.h" />
+    <ClInclude Include="..\..\include\MemeGraphics\ITransformable.h" />
     <ClInclude Include="..\..\include\MemeGraphics\Mesh.h" />
     <ClInclude Include="..\..\include\MemeGraphics\OpenGL.h" />
     <ClInclude Include="..\..\include\MemeGraphics\RenderState.h" />
@@ -34,6 +35,7 @@
     <ClInclude Include="..\..\include\MemeGraphics\Sprite.h" />
     <ClInclude Include="..\..\include\MemeGraphics\Text.h" />
     <ClInclude Include="..\..\include\MemeGraphics\Texture.h" />
+    <ClInclude Include="..\..\include\MemeGraphics\Transform.h" />
     <ClInclude Include="..\..\include\MemeGraphics\Uniform.h" />
     <ClInclude Include="..\..\include\MemeGraphics\Vertex.h" />
     <ClInclude Include="..\..\include\MemeGraphics\VertexArray.h" />
@@ -51,6 +53,7 @@
     <ClCompile Include="..\..\src\MemeGraphics\Sprite.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Text.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Texture.cpp" />
+    <ClCompile Include="..\..\src\MemeGraphics\Transform.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Uniform.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Vertex.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\VertexArray.cpp" />

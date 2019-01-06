@@ -15,8 +15,8 @@
 #include <MemeCore/FileSystem.h>
 #include <MemeWindow/Window.h>
 #include <MemeGraphics/Shader.h>
-#include <MemeGraphics/Color.h>
-#include <MemeGraphics/OpenGL.h>
+#include <MemeGraphics/Sprite.h>
+#include <MemeGraphics/Text.h>
 #include <MemeGraphics/RenderWindow.h>
 #include <MemeGraphics/Font.h>
 #include <MemeScript/Interpreter.h>
@@ -460,39 +460,55 @@ inline static int graphicsStub()
 	window.setCentered();
 
 	ml::Font font;
-	if (font.loadFromFile(settings.assetPath + "/fonts/Consolas.ttf"))
-	{
-		std::cout << "Loaded Font" << std::endl;
-	}
-	else
+	if (!font.loadFromFile(settings.assetPath + "/fonts/Consolas.ttf"))
 	{
 		std::cerr << "Failed Loading Font" << std::endl;
 		return pause(EXIT_FAILURE);
 	}
 
 	ml::Image image;
-	if (image.loadFromFile(settings.assetPath + "/images/dean.png"))
-	{
-		std::cout << "Loaded Image" << std::endl;
-	}
-	else
+	if (!image.loadFromFile(settings.assetPath + "/images/dean.png"))
 	{
 		std::cerr << "Failed Loading Image" << std::endl;
 		return pause(EXIT_FAILURE);
 	}
 
 	ml::Texture texture;
-	if (texture.loadFromImage(image))
-	{
-		std::cout << "Loaded Texture" << std::endl;
-	}
-	else
+	if (!texture.loadFromImage(image))
 	{
 		std::cerr << "Failed Loading Texture" << std::endl;
 		return pause(EXIT_FAILURE);
 	}
 
-	ml::Shader shader;
+	ml::Shader	shader;
+	ml::Sprite	sprite;
+	ml::Text	text;
+
+	// Loop
+	ml::InputState	input;
+	ml::Timer		loopTimer;
+	uint64_t		elapsedMS = 0;
+	while (window.isOpen())
+	{
+		loopTimer.start();
+		input.beginStep();
+		{
+			window.setTitle(ml::StringUtility::Format("{0} @ {1}ms", settings.title, elapsedMS));
+
+			window.clear(ml::Color::Violet);
+			{
+				if (input.getKeyDown(ml::KeyCode::Escape))
+				{
+					window.close();
+				}
+			}
+			window.swapBuffers();
+			window.pollEvents();
+		}
+		input.endStep();
+		loopTimer.stop();
+		elapsedMS = loopTimer.elapsed().millis();
+	}
 	
 	std::cout << "OK" << std::endl;
 	return pause(EXIT_SUCCESS);

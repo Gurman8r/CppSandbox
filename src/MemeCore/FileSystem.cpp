@@ -5,14 +5,18 @@
 #ifdef ML_SYSTEM_WINDOWS
 #include <direct.h>
 #include <dirent.h>
-#endif // ML_SYSTEM_WINDOWS
+#endif
 
 
 namespace ml
 {
 	bool FileSystem::changeDir(const std::string & value)
 	{
+#ifdef ML_SYSTEM_WINDOWS
 		return (_chdir(value.c_str()) == EXIT_SUCCESS) ? true : false;
+#else
+		return false;
+#endif
 	}
 
 	bool FileSystem::fileExists(const std::string & filename)
@@ -20,7 +24,7 @@ namespace ml
 		return (bool)(std::ifstream(filename));
 	}
 
-	bool FileSystem::getFileContents(const std::string & filename, std::vector<char>& buffer)
+	bool FileSystem::getFileContents(const std::string & filename, std::vector<char> & buffer)
 	{
 		if (!filename.empty())
 		{
@@ -47,12 +51,12 @@ namespace ml
 			}
 			else
 			{
-				return Debug::LogError("FS: File not found \'{0}\'", filename);
+				return Debug::LogError("FileSystem: File not found \'{0}\'", filename);
 			}
 		}
 		else
 		{
-			return Debug::LogError("FS: Filename cannot be empty");
+			return Debug::LogError("FileSystem: Filename cannot be empty");
 		}
 	}
 }

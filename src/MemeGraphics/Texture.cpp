@@ -1,7 +1,7 @@
 #include <MemeGraphics/Texture.h>
 #include <MemeGraphics/OpenGL.h>
+#include <MemeCore/DebugUtility.h>
 #include <cassert>
-#include <iostream>
 #include <algorithm>
 
 namespace
@@ -51,7 +51,7 @@ namespace ml
 			}
 			else
 			{
-				std::cerr << "Failed to copy texture, failed to create new texture" << std::endl;
+				Debug::LogError("Failed to copy texture, failed to create new texture");
 			}
 		}
 	}
@@ -209,7 +209,7 @@ namespace ml
 
 			if (!sourceFrameBuffer || !destFrameBuffer)
 			{
-				std::cerr << "Cannot copy texture, failed to create a frame buffer object\n";
+				Debug::LogError("Cannot copy texture, failed to create a frame buffer object");
 				return (*this);
 			}
 
@@ -235,7 +235,7 @@ namespace ml
 			}
 			else
 			{
-				std::cerr << "Cannot copy texture, failed to link texture to frame buffer\n";
+				Debug::LogError("Cannot copy texture, failed to link texture to frame buffer");
 			}
 
 			// Restore previously bound framebuffers
@@ -266,9 +266,7 @@ namespace ml
 	{
 		if (width == 0 || height == 0)
 		{
-			std::cerr
-				<< "Failed to create texture, invalid size (" << width << "x" << height << ")"
-				<< std::endl;
+			Debug::LogError("Failed to create texture, invalid size ( {0}x{1} )");
 			return false;
 		}
 
@@ -278,11 +276,7 @@ namespace ml
 
 		if ((actualSize[0] > maxSize) || (actualSize[1] > maxSize))
 		{
-			std::cerr
-				<< "Failed to create texture, its internal size is too high "
-				<< "(" << actualSize[0] << "x" << actualSize[1] << ", "
-				<< "maximum is " << maxSize << "x" << maxSize << ")"
-				<< std::endl;
+			Debug::LogError("Failed to create texture, its internal size is too high ( {0}x{1} ), maximum is ( {2}x{2} )", actualSize[0], actualSize[1], maxSize);
 			return false;
 		}
 
@@ -306,11 +300,10 @@ namespace ml
 
 			if (!warned)
 			{
-				std::cerr 
-					<< "OpenGL extension SGIS_texture_edge_clamp unavailable" << std::endl
-					<< "Artifacts may occur along texture edges" << std::endl
-					<< "Ensure that hardware acceleration is enabled if available" << std::endl;
-
+				Debug::LogError(
+					"OpenGL extension SGIS_texture_edge_clamp unavailable\n"
+					"Artifacts may occur along texture edges\n"
+					"Ensure that hardware acceleration is enabled if available");
 				warned = true;
 			}
 		}
@@ -323,10 +316,9 @@ namespace ml
 
 			if (!warned)
 			{
-				std::cerr 
-					<< "OpenGL ES extension EXT_sRGB unavailable" << std::endl
-					<< "Automatic sRGB to linear conversion disabled" << std::endl;
-
+				Debug::LogError(
+					"OpenGL ES extension EXT_sRGB unavailable\n"
+					"Automatic sRGB to linear conversion disabled");
 				warned = true;
 			}
 
@@ -488,10 +480,10 @@ namespace ml
 
 					if (!warned)
 					{
-						std::cerr 
-							<< "OpenGL extension SGIS_texture_edge_clamp unavailable" << std::endl
-							<< "Artifacts may occur along texture edges" << std::endl
-							<< "Ensure that hardware acceleration is enabled if available" << std::endl;
+						Debug::LogError(
+							"OpenGL extension SGIS_texture_edge_clamp unavailable\n"
+							"Artifacts may occur along texture edges\n"
+							"Ensure that hardware acceleration is enabled if available");
 
 						warned = true;
 					}

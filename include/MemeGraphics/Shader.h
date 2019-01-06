@@ -1,13 +1,11 @@
 #ifndef _SHADER_H_
 #define _SHADER_H_
 
-#include <MemeGraphics/Uniform.h>
-#include <MemeGraphics/Texture.h>
 #include <MemeCore/ITrackable.h>
 #include <MemeCore/IResource.h>
-#include <MemeCore/Vector2.h>
-#include <MemeCore/Vector3.h>
-#include <MemeCore/Vector4.h>
+#include <MemeGraphics/Uniform.h>
+#include <MemeGraphics/Texture.h>
+#include <MemeGraphics/Transform.h>
 #include <map>
 
 namespace ml
@@ -40,18 +38,6 @@ namespace ml
 		static bool isAvailable();
 		static bool isGeometryAvailable();
 
-		template <typename T>
-		void setUniform(Uniform::ID id, T value)
-		{
-			setUniform(Uniform::UniformNames[id], value);
-		};
-
-		template <typename T>
-		void setUniformArray(Uniform::ID id, T* value, std::size_t length)
-		{
-			setUniformArray(Uniform::UniformNames[id], value, length);
-		};
-
 		// Set Uniform
 		void setUniform(const std::string & name, float value);
 		void setUniform(const std::string & name, int32_t value);
@@ -66,6 +52,7 @@ namespace ml
 		void setUniform(const std::string & name, const mat3f & value);
 		void setUniform(const std::string & name, const mat4f & value);
 		void setUniform(const std::string & name, const Texture * value);
+		void setUniform(const std::string & name, const Transform & value);
 
 		// Set Uniform Array
 		void setUniformArray(const std::string & name, const float * value, int length);
@@ -74,6 +61,18 @@ namespace ml
 		void setUniformArray(const std::string & name, const vec4f * value, int length);
 		void setUniformArray(const std::string & name, const mat3f * value, int length);
 		void setUniformArray(const std::string & name, const mat4f * value, int length);
+
+		template <typename T>
+		void setUniform(Uniform::ID id, T value)
+		{
+			setUniform(Uniform::UniformNames[id], value);
+		};
+
+		template <typename T>
+		void setUniformArray(Uniform::ID id, T * value, std::size_t length)
+		{
+			setUniformArray(Uniform::UniformNames[id], value, length);
+		};
 
 	private:
 		struct UniformBinder;

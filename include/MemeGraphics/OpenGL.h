@@ -5,7 +5,7 @@
 
 #define GLEW_STATIC
 #include <GL/glew.h>
-#pragma comment (lib, "glew32s.lib") // Link to glew32s.lib
+#pragma comment (lib, "glew32s.lib")
 
 // Macro to quickly check every OpenGL API call
 #ifdef ML_DEBUG

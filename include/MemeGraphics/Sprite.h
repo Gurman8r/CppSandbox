@@ -2,16 +2,22 @@
 #define _SPRITE_H_
 
 #include <MemeGraphics/IDrawable.h>
+#include <MemeGraphics/ITransformable.h>
 
 namespace ml
 {
-	class ML_GRAPHICS_API Sprite
+	class RenderTarget;
+
+	class ML_GRAPHICS_API Sprite final
 		: public ITrackable
 		, public IDrawable
+		, public ITransformable
 	{
 	public:
 		Sprite();
 		~Sprite();
+
+		void draw(RenderTarget * target, RenderState state) const;
 
 	private:
 

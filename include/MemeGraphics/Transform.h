@@ -1,14 +1,14 @@
 #ifndef _TRANSFORM_H_
 #define _TRANSFORM_H_
 
-#include <MemeCore/Component.h>
+#include <MemeGraphics/Export.h>
 #include <MemeCore/Vector3.h>
 #include <MemeCore/Vector2.h>
 #include <MemeCore/Quaternion.h>
 
 namespace ml
 {
-	class ML_CORE_API Transform
+	class ML_GRAPHICS_API Transform
 		: public ITrackable
 	{
 	public:

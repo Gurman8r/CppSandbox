@@ -9,4 +9,9 @@ namespace ml
 	Text::~Text()
 	{
 	}
+
+
+	void Text::draw(RenderTarget * target, RenderState state) const
+	{
+	}
 }

@@ -15,8 +15,8 @@ namespace ml
 	public:
 		enum CoordinateType
 		{
-			Normalized,	///< Texture coordinates in range [0 .. 1]
-			Pixels		///< Texture coordinates in range [0 .. size]
+			Normalized,	// Texture coordinates in range [0 .. 1]
+			Pixels		// Texture coordinates in range [0 .. size]
 		};
 
 	public:

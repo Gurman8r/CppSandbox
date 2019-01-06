@@ -287,7 +287,7 @@ namespace ml
 			if (location != -1)
 			{
 				TextureTable::iterator it;
-				if ((it = m_textures.find(location)) != m_textures.end())
+				if ((it = m_textures.find(location)) == m_textures.end())
 				{
 					GLint maxUnits = GetMaxTextureUnits();
 
@@ -301,10 +301,16 @@ namespace ml
 				}
 				else
 				{
+					//it->second = value;
 					m_textures[location] = value;
 				}
 			}
 		}
+	}
+
+	void Shader::setUniform(const std::string & name, const Transform & value)
+	{
+		setUniform(name, value.matrix());
 	}
 	
 	
