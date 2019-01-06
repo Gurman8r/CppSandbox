@@ -73,6 +73,7 @@ namespace ml
 	using vec3i = Vector3<int>;
 	using vec3d = Vector3<double>;
 	using vec3u = Vector3<unsigned>;
+	using vec3s = Vector3<std::size_t>;
 }
 
 #endif // !_VECTOR_3_H_

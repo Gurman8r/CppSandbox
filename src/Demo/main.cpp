@@ -445,16 +445,31 @@ inline static int graphicsStub()
 	std::cout << "Graphics Stub:" << std::endl;
 
 	ml::Font font;
-	if (font.loadFromFile(settings.assetPath + "fonts/Consolas.ttf"))
+	if (font.loadFromFile(settings.assetPath + "/fonts/Consolas.ttf"))
 	{
 		std::cout << "Loaded Font" << std::endl;
-		return pause(EXIT_SUCCESS);
 	}
 	else
 	{
 		std::cerr << "Failed Loading Font" << std::endl;
 		return pause(EXIT_FAILURE);
 	}
+
+	ml::Image image;
+	if (image.loadFromFile(settings.assetPath + "/images/dean.png"))
+	{
+		std::cout << "Loaded Image" << std::endl;
+	}
+	else
+	{
+		std::cerr << "Failed Loading Image" << std::endl;
+		return pause(EXIT_FAILURE);
+	}
+
+	ml::Shader shader;
+	
+	std::cout << "OK" << std::endl;
+	return pause(EXIT_SUCCESS);
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

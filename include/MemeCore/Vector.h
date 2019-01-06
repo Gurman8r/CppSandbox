@@ -252,7 +252,6 @@ namespace ml
 		{
 			return rhs * static_cast<T>(-1);
 		}
-
 	};
 }
 

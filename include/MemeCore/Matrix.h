@@ -6,6 +6,7 @@
 #include <MemeCore/IComparable.h>
 #include <MemeCore/Maths.h>
 #include <initializer_list>
+#include <vector>
 
 namespace ml
 {
@@ -83,7 +84,7 @@ namespace ml
 		virtual ~Matrix() {}
 
 	public:
-		inline value_type * ptr() const
+		inline const value_type * ptr() const
 		{
 			return m_data;
 		}
@@ -160,6 +161,22 @@ namespace ml
 				}
 			}
 			return true;
+		}
+
+	public:
+		inline static std::vector<T> Flatten(const self_type * value, std::size_t length)
+		{
+			std::vector<T> out(Size * length);
+
+			for (std::size_t i = 0; i < length; i++)
+			{
+				for (std::size_t j = 0; j < Size; j++)
+				{
+					out[Size * i + j] = value[i][j];
+				}
+			}
+
+			return out;
 		}
 	};
 

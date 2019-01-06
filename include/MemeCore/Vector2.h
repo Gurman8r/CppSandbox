@@ -92,6 +92,7 @@ namespace ml
 	using vec2i = Vector2<int>;
 	using vec2d = Vector2<double>;
 	using vec2u = Vector2<unsigned>;
+	using vec2s = Vector2<std::size_t>;
 }
 
 #endif // !_VECTOR_2_H_
