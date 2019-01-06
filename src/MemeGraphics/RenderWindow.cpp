@@ -8,28 +8,26 @@ namespace ml
 	{
 		if (OpenGL::initGL())
 		{
-			glEnable(GL_CULL_FACE);
-			glCullFace(GL_BACK);
+			enable(CullFace);
+			enable(DepthTest);
+			enable(Blend);
+			enable(AlphaTest);
+			enable(Texture2D);
 
-			glEnable(GL_DEPTH_TEST);
-			glDepthFunc(GL_LESS);
+			glCheck(glCullFace(GL_BACK));
+			glCheck(glDepthFunc(GL_LESS));
+			glCheck(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+			glCheck(glAlphaFunc(GL_GREATER, 0.01f));
+			glCheck(glActiveTexture(GL_TEXTURE0));
 
-			glEnable(GL_BLEND);
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-			glEnable(GL_ALPHA_TEST);
-			glAlphaFunc(GL_GREATER, 0.01f);
-
-			glEnable(GL_TEXTURE_2D);
-			glActiveTexture(GL_TEXTURE0);
 
 			// Retrieve the context version number
 			int majorVersion = 0;
 			int minorVersion = 0;
 
 			// Try the new way first
-			glGetIntegerv(GL_MAJOR_VERSION, &majorVersion);
-			glGetIntegerv(GL_MINOR_VERSION, &minorVersion);
+			glCheck(glGetIntegerv(GL_MAJOR_VERSION, &majorVersion));
+			glCheck(glGetIntegerv(GL_MINOR_VERSION, &minorVersion));
 
 			if (glGetError() != GL_INVALID_ENUM)
 			{
@@ -39,10 +37,9 @@ namespace ml
 			else
 			{
 				// Try the old way
-				const GLubyte* version = glGetString(GL_VERSION);
-				if (version)
+				if (const char * version = OpenGL::getVersion())
 				{
-					// The beginning of the returned std::string is "major.minor" (this is standard)
+					// The beginning of the returned string is "major.minor" (this is standard)
 					m_settings.majorVersion = version[0] - '0';
 					m_settings.minorVersion = version[2] - '0';
 				}
@@ -58,7 +55,7 @@ namespace ml
 			{
 				// Retrieve the context flags
 				int flags = 0;
-				glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
+				glCheck(glGetIntegerv(GL_CONTEXT_FLAGS, &flags));
 
 				if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
 				{
@@ -69,7 +66,7 @@ namespace ml
 				{
 					m_settings.profile |= ContextSettings::Core;
 					int numExtensions = 0;
-					glGetIntegerv(GL_NUM_EXTENSIONS, &numExtensions);
+					glCheck(glGetIntegerv(GL_NUM_EXTENSIONS, &numExtensions));
 					for (uint32_t i = 0; i < static_cast<uint32_t>(numExtensions); ++i)
 					{
 						const char* extensionString = reinterpret_cast<const char*>(glGetStringi(GL_EXTENSIONS, i));
@@ -85,7 +82,7 @@ namespace ml
 				{
 					// Retrieve the context profile
 					int profile = 0;
-					glGetIntegerv(GL_CONTEXT_PROFILE_MASK, &profile);
+					glCheck(glGetIntegerv(GL_CONTEXT_PROFILE_MASK, &profile));
 					if (profile & GL_CONTEXT_CORE_PROFILE_BIT)
 					{
 						m_settings.profile |= ContextSettings::Core;
@@ -95,12 +92,13 @@ namespace ml
 
 			if (m_settings.multisample)
 			{
-				glEnable(GL_MULTISAMPLE);
+				enable(MultiSample);
 			}
 
 			if (m_settings.sRgbCapable)
 			{
-				glEnable(GL_FRAMEBUFFER_SRGB);
+				enable(FrameBufferSRGB);
+
 				if (glIsEnabled(GL_FRAMEBUFFER_SRGB) == GL_FALSE)
 				{
 					m_settings.sRgbCapable = false;
@@ -115,7 +113,7 @@ namespace ml
 
 	RenderWindow & RenderWindow::setViewport(const vec2i & pos, const vec2u & size)
 	{
-		glViewport(pos[0], pos[1], size[0], size[1]);
+		glCheck(glViewport(pos[0], pos[1], size[0], size[1]));
 		return (*this);
 	}
 }

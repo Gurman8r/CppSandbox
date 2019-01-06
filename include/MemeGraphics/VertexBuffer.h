@@ -2,18 +2,19 @@
 #define _VERTEX_BUFFER_H_
 
 #include <MemeGraphics/Export.h>
-#include <inttypes.h>
+#include <MemeCore/ITrackable.h>
 
 namespace ml
 {
-	class ML_GRAPHICS_API VertexBuffer
+	class ML_GRAPHICS_API VertexBuffer final
+		: public ITrackable
 	{
 	public:
 		enum Usage
 		{
-			Stream,
-			Dynamic,
-			Static,
+			Stream	= 0x88E0,
+			Dynamic = 0x88E8,
+			Static	= 0x88E4,
 		};
 
 	public:

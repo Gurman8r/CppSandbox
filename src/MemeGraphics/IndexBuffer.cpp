@@ -3,11 +3,12 @@
 
 namespace ml
 {
-	IndexBuffer::IndexBuffer(const uint32_t * data, uint32_t count)
+	IndexBuffer::IndexBuffer(Usage usage, const uint32_t * data, uint32_t count)
+		: m_usage(usage)
 	{
 		glCheck(glGenBuffers(1, &m_id));
 		glCheck(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id));
-		glCheck(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), data, GL_STATIC_DRAW));
+		glCheck(glBufferData(GL_ELEMENT_ARRAY_BUFFER, (count * sizeof(uint32_t)), data, static_cast<GLenum>(m_usage)));
 	}
 
 	IndexBuffer::~IndexBuffer()

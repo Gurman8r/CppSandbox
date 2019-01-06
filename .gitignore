@@ -2,3 +2,5 @@
 /lib
 /bin
 /.vs
+/tools/glewinfo.txt
+/tools/visualinfo.txt

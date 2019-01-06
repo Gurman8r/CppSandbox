@@ -19,10 +19,10 @@ namespace ml
 		m_position	= vec2i::Zero;
 		m_size		= mode.size();
 
-		if (!getMode().isValid())
-		{
-			return ml::Debug::LogError("Video Mode is Invalid");
-		}
+		//if (!getMode().isValid())
+		//{
+		//	return ml::Debug::LogError("Video Mode is Invalid");
+		//}
 
 		if (glfwInit() == GL_TRUE)
 		{

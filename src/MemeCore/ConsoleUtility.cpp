@@ -58,7 +58,7 @@ namespace ml
 		return exitCode;
 	}
 
-	void ConsoleUtility::setAttribute(const uint16_t & value)
+	void ConsoleUtility::setVertexAttribute(const uint16_t & value)
 	{
 #ifdef ML_SYSTEM_WINDOWS
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), static_cast<WORD>(value));

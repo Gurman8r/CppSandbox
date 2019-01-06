@@ -12,7 +12,7 @@ namespace ml
 	{
 	public:
 		static int32_t pause(int32_t exitCode = EXIT_SUCCESS);
-		static void setAttribute(const uint16_t & value);
+		static void setVertexAttribute(const uint16_t & value);
 	};
 
 	struct ML_CORE_API FG final
@@ -106,19 +106,19 @@ namespace ml
 
 	inline std::ostream& operator<<(std::ostream& out, const FG::Color& value)
 	{
-		ConsoleUtility::setAttribute(uint16_t(value));
+		ConsoleUtility::setVertexAttribute(uint16_t(value));
 		return out;
 	};
 
 	inline std::ostream& operator<<(std::ostream& out, const BG::Color& value)
 	{
-		ConsoleUtility::setAttribute(uint16_t(value));
+		ConsoleUtility::setVertexAttribute(uint16_t(value));
 		return out;
 	};
 
 	inline std::ostream& operator<<(std::ostream& out, const FMT& value)
 	{
-		ConsoleUtility::setAttribute(uint16_t(value.fg) | uint16_t(value.bg));
+		ConsoleUtility::setVertexAttribute(uint16_t(value.fg) | uint16_t(value.bg));
 		return out;
 	};
 }

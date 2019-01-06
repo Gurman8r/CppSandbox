@@ -66,7 +66,7 @@ struct Settings final
 	}
 };
 
-Settings settings;
+static Settings settings;
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -364,7 +364,7 @@ inline static int astStub()
 	using namespace ml;
 	AST_Block root({
 
-		new AST_Func("test", { }),
+		new AST_Func("genVAO", { }),
 		new AST_Block({
 			new AST_Return(new AST_String("Here"))
 		}),
@@ -374,8 +374,8 @@ inline static int astStub()
 			new AST_Name("a"),
 			new AST_Oper(
 				OperatorType::OP_ADD,
-				new AST_Call(new AST_Name("test"), { }),
-				new AST_Call(new AST_Name("test"), { }))),
+				new AST_Call(new AST_Name("genVAO"), { }),
+				new AST_Call(new AST_Name("genVAO"), { }))),
 		
 		new AST_Print(new AST_Name("a")),
 		
@@ -415,25 +415,13 @@ inline static int graphicsStub()
 		settings.title,
 		ml::VideoMode(settings.width, settings.height, 32),
 		ml::Window::Default,
-		ml::ContextSettings(4, 6, 0, 0, ml::ContextSettings::Core, false, false)) != 0)
+		ml::ContextSettings(4, 6, 24, 8, ml::ContextSettings::Compat, false, false)))
 	{
 		return ml::ConsoleUtility::pause(EXIT_FAILURE);		
 	}
-	ml::Debug::LogInfo("OpenGL version: {0}", ml::OpenGL::getVersion());
 	window.setCursorMode(ml::Window::CursorMode::Normal);
 	window.setViewport(ml::vec2i::Zero, window.getSize());
 	window.setCentered();
-
-	//if (!GLEW_ARB_vertex_array_object)
-	//{
-	//	ml::Debug::LogError("ARB_vertex_array_object not available.");
-	//	return ml::ConsoleUtility::pause(EXIT_FAILURE);
-	//}
-
-	//unsigned int vao;
-	//glCheck(glGenVertexArrays(1, &vao));
-	//glCheck(glBindVertexArray(vao));
-
 
 	// Font
 	ml::Debug::LogInfo("Loading Fonts...");
@@ -522,33 +510,27 @@ inline static int graphicsStub()
 	text.transform().position(ml::vec3f::Zero);
 
 
-	float positions[] = {
+	ml::FloatArray positions = {
 		-0.5f, -0.5f,
 		+0.5f, -0.5f,
 		+0.5f, +0.5f,
 		-0.5f, +0.5f,
 	};
-	uint32_t indices[] = {
+	ml::IndexArray indices = {
 		0, 1, 2,
 		2, 3, 0,
 	};
 	
-	//unsigned int vao;
-	//glCheck(glGenVertexArrays(1, &vao));
-	//glCheck(glBindVertexArray(vao));
-	//glGenVertexArrays(1, &vao);
-	//glBindVertexArray(vao);
-	//ml::VertexBuffer vbo(ml::VertexBuffer::Static, positions, 4 * 2 * sizeof(float));	
-	//ml::IndexBuffer	 ibo(indices, 6 * sizeof(uint32_t));
-	//glCheck(glVertexAttribPointer(
-	//	0, 4, GL_FLOAT, GL_FALSE, 
-	//	(ml::Vertex::Size * sizeof(float)), 
-	//	((void*)(0 * sizeof(float)))));
-	//glCheck(glEnableVertexAttribArray(0));
-	
+	uint32_t vao;
+	ml::OpenGL::genVAO(1, vao);
 
-	window.disable(ml::RenderTarget::CullFace);
-	window.disable(ml::RenderTarget::DepthTest);
+	ml::VertexBuffer vbo(ml::VertexBuffer::Static, &positions[0], positions.size());
+	ml::IndexBuffer	 ibo(ml::IndexBuffer::Static, &indices[0], indices.size());
+
+	ml::OpenGL::setVertexAttribute(0, 2, 2 * sizeof(float), NULL);
+
+	shaderBasic.setUniform(ml::Uniform::Color, ml::Color::Red);
+	shaderBasic.use();
 
 	// Loop
 	ml::InputState	input;
@@ -565,14 +547,13 @@ inline static int graphicsStub()
 
 			window.clear(ml::Color::Violet);
 			{
-				shaderBasic.setUniform(ml::Uniform::Color, ml::Color::Red);
-				shaderBasic.use();
-
-				glBegin(GL_TRIANGLES);
-				glVertex2f(-0.5f, -0.5f);
-				glVertex2f(0.0f, 0.0f);
-				glVertex2f(0.5f, -0.5f);
-				glEnd();
+				window.disable(ml::RenderTarget::CullFace);
+				window.disable(ml::RenderTarget::DepthTest);
+				{
+					glCheck(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL));
+				}
+				window.enable(ml::RenderTarget::CullFace);
+				window.enable(ml::RenderTarget::DepthTest);
 			}
 			window.swapBuffers();
 			window.pollEvents();
@@ -584,7 +565,7 @@ inline static int graphicsStub()
 			settings.title, 
 			loopTimer.elapsed().millis()));
 	}
-	
+
 	std::cout << "OK" << std::endl;
 
 	return EXIT_SUCCESS;

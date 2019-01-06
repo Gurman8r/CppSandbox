@@ -3,6 +3,11 @@
 
 namespace ml
 {
+	RenderTarget & RenderTarget::clear()
+	{
+		glCheck(glClear(GL_DEPTH_BUFFER_BIT));
+		return (*this);
+	}
 	RenderTarget & RenderTarget::clear(const vec4f & value)
 	{
 		glCheck(glClearColor(value[0], value[1], value[2], value[3]));

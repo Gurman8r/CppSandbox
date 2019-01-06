@@ -68,7 +68,7 @@ namespace ml
 		void setUniformArray(const std::string & name, const mat4f * value, int length);
 
 		template <typename T>
-		void setUniform(Uniform::ID id, T value)
+		void setUniform(Uniform::ID id, const T & value)
 		{
 			setUniform(Uniform::UniformNames[id], value);
 		};
