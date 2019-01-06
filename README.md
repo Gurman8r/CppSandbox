@@ -5,12 +5,16 @@ Primarily just for practice and messing around ;)
 
 - Projects
 	- Demo
-    		- Exe with stubs for each library
+    		- Executable with demos for each library
+	- MemeAudio
+			- Audio library
   	- MemeCore
     		- Contains structures used in all others libraries
   	- MemeGraphics
-    		- Graphics specific library using GLEW
+    		- Graphics library
+	- MemeNet
+    		- Network library
   	- MemeScript
     		- Simple interpreter library
   	- MemeWindow
-    		- Window specific library using GLFW
+    		- Window library
