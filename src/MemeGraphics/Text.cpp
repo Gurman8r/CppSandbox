@@ -111,7 +111,7 @@ namespace ml
 	{
 		if (isValid())
 		{
-			target.disable(RenderTarget::CullFace);
+			target.disableFlag(Enum::Flag::CullFace);
 
 			vec2f pos = transform().position();
 			vec2f scale = transform().localScale();
@@ -147,12 +147,12 @@ namespace ml
 				state.shader = shader();
 				state.color = color();
 
-				//target->drawDynamic(Primitive::Triangles, vertices, state);
+				//target->drawDynamic(Enum::Primitive::Triangles, vertices, state);
 
 				pos[0] += (g.advance >> vertices.size()) * scale[0];
 			}
 
-			target.enable(RenderTarget::CullFace);
+			target.enableFlag(Enum::Flag::CullFace);
 		}
 	}
 }

@@ -3,12 +3,19 @@
 
 namespace ml
 {
-	IndexBuffer::IndexBuffer(Usage usage, const uint32_t * data, uint32_t count)
+	IndexBuffer::IndexBuffer(Enum::Usage usage, const uint32_t * data, uint32_t size)
 		: m_usage(usage)
+		, m_data(data)
+		, m_count(size)
 	{
 		glCheck(glGenBuffers(1, &m_id));
-		glCheck(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id));
-		glCheck(glBufferData(GL_ELEMENT_ARRAY_BUFFER, (count * sizeof(uint32_t)), data, static_cast<GLenum>(m_usage)));
+		bind();
+		glCheck(glBufferData(GL_ELEMENT_ARRAY_BUFFER, (size * sizeof(uint32_t)), data, m_usage));
+	}
+
+	IndexBuffer::IndexBuffer(Enum::Usage usage, const std::vector<uint32_t>& data)
+		: IndexBuffer(usage, &data[0], data.size())
+	{
 	}
 
 	IndexBuffer::~IndexBuffer()
@@ -16,21 +23,21 @@ namespace ml
 		clean();
 	}
 
+
 	IndexBuffer & IndexBuffer::clean()
 	{
 		glCheck(glDeleteBuffers(1, &m_id));
 		return (*this);
 	}
 
-	IndexBuffer & IndexBuffer::bind()
+
+	void IndexBuffer::bind() const
 	{
 		glCheck(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id));
-		return (*this);
 	}
 
-	IndexBuffer & IndexBuffer::unbind()
+	void IndexBuffer::unbind() const
 	{
 		glCheck(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
-		return (*this);
 	}
 }

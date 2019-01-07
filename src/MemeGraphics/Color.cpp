@@ -3,8 +3,8 @@
 namespace ml
 {
 	const vec4f Color::Clear	= { 0.0f, 0.0f, 0.0f, 0.0f };
-	const vec4f Color::White	= { 0.0f, 0.0f, 0.0f, 1.0f };
-	const vec4f Color::Black	= { 1.0f, 1.0f, 1.0f, 1.0f };
+	const vec4f Color::White	= { 1.0f, 1.0f, 1.0f, 1.0f };
+	const vec4f Color::Black	= { 0.0f, 0.0f, 0.0f, 1.0f };
 
 	const vec4f Color::Red		= { 1.0f, 0.0f, 0.0f, 1.0f };
 	const vec4f Color::Green	= { 0.0f, 1.0f, 0.0f, 1.0f };

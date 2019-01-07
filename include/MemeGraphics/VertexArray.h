@@ -2,65 +2,33 @@
 #define _VERTEX_ARRAY_H_
 
 #include <MemeGraphics/Vertex.h>
-#include <MemeGraphics/Primitive.h>
+#include <MemeGraphics/Enum.h>
 
 namespace ml
 {
-	using FloatArray = std::vector<float>;
-	using IndexArray = std::vector<uint32_t>;
+	using Vertices		= std::vector<Vertex>;
+	using FloatArray	= std::vector<float>;
+	using IndexArray	= std::vector<uint32_t>;
 
 	class ML_GRAPHICS_API VertexArray final
 		: public ITrackable
 	{
 	public:
-		using vector_type	= std::vector<Vertex>;
-		using iterator		= vector_type::iterator;
-		using const_iterator= vector_type::const_iterator;
-
-	public:
 		VertexArray();
-		VertexArray(Primitive::Type primitive);
-		VertexArray(const vector_type & values);
-		VertexArray(Primitive::Type primitive, const vector_type & values);
+		VertexArray(Enum::Primitive primitive);
+		VertexArray(const Vertices & values);
+		VertexArray(Enum::Primitive primitive, const Vertices & values);
 		VertexArray(const VertexArray & copy);
 		~VertexArray();
 
 		bool			empty() const;
 		std::size_t		size() const;
 		uint32_t		count() const;
-		Primitive::Type	primitive() const;
+		Enum::Primitive	primitive() const;
 		const Vertex *	ptr() const;
 
 		VertexArray &	append(const Vertex & value);
 		VertexArray &	clear();
-
-		static FloatArray Flatten(const VertexArray & value);
-
-	public:
-		inline iterator			begin()
-		{
-			return m_values.begin();
-		};
-		inline iterator			end()
-		{
-			return m_values.end();
-		};
-		inline const_iterator	begin() const
-		{
-			return m_values.begin();
-		};
-		inline const_iterator	end() const
-		{
-			return m_values.end();
-		};
-		inline const_iterator	cbegin() const
-		{
-			return m_values.cbegin();
-		};
-		inline const_iterator	cend() const
-		{
-			return m_values.cend();
-		};
 
 	public:
 		const Vertex & operator[](std::size_t index) const
@@ -72,11 +40,17 @@ namespace ml
 		{
 			return m_values[index];
 		}
+		
+	public:
+		static const FloatArray & Flatten(const VertexArray & value);
+		static void GenVAO(uint32_t count, uint32_t & vao);
 
 	private:
-		vector_type		m_values;
-		Primitive::Type	m_primitive;
+		uint32_t		m_id;
+		Enum::Primitive	m_primitive;
+		Vertices		m_values;
 	};
+
 }
 
 #endif // !_VERTEX_ARRAY_H_

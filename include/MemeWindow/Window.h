@@ -61,13 +61,15 @@ namespace ml
 
 		bool isOpen() const;
 
-		inline Handle				getHandle()		{ return m_handle; }
-		inline ContextSettings &	getSettings()	{ return m_settings; }
-		inline VideoMode &			getMode()		{ return m_mode; }
-		inline Flags &				getFlags()		{ return m_flags; }
-		inline vec2i &				getPosition()	{ return m_position; }
-		inline vec2u &				getSize()		{ return m_size; }
-		inline std::string &		getTitle()		{ return m_title; }
+		inline const Handle				getHandle()		const { return m_handle; }
+		inline const ContextSettings &	getSettings()	const { return m_settings; }
+		inline const VideoMode &		getMode()		const { return m_mode; }
+		inline const Flags &			getFlags()		const { return m_flags; }
+		inline const vec2i &			getPosition()	const { return m_position; }
+		inline const vec2u &			getSize()		const { return m_size; }
+		inline const std::string &		getTitle()		const { return m_title; }
+
+		inline float getAspect() const { return (float)getSize()[0] / (float)getSize()[1]; };
 
 	protected:
 		Handle			m_handle;

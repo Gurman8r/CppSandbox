@@ -9,7 +9,7 @@ namespace ml
 		: m_shader(NULL)
 		, m_texture(NULL)
 		, m_color(Color::White)
-		, m_mesh(Mesh::Quad)
+		, m_mesh(Shapes::Quad::Mesh)
 	{
 	}
 
@@ -17,7 +17,7 @@ namespace ml
 		: m_shader(shader)
 		, m_texture(texture)
 		, m_color(Color::White)
-		, m_mesh(Mesh::Quad)
+		, m_mesh(Shapes::Quad::Mesh)
 	{
 	}
 
@@ -91,8 +91,8 @@ namespace ml
 	{
 		if (isValid())
 		{
-			target.disable(RenderTarget::DepthTest);
-			target.disable(RenderTarget::CullFace);
+			target.disableFlag(Enum::Flag::DepthTest);
+			target.disableFlag(Enum::Flag::CullFace);
 
 			state.shader = shader();
 			state.texture = texture();
@@ -101,8 +101,8 @@ namespace ml
 
 			target.draw(state);
 
-			target.enable(RenderTarget::DepthTest);
-			target.enable(RenderTarget::CullFace);
+			target.enableFlag(Enum::Flag::DepthTest);
+			target.enableFlag(Enum::Flag::CullFace);
 		}
 	}
 }

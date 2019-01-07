@@ -18,7 +18,6 @@
 #include <MemeGraphics/VertexBuffer.h>
 #include <MemeGraphics/IndexBuffer.h>
 #include <MemeGraphics/BufferLayout.h>
-#include <MemeGraphics/OpenGL.h>
 #include <MemeNet/Client.h>
 #include <MemeScript/Interpreter.h>
 
@@ -364,7 +363,7 @@ inline static int astStub()
 	using namespace ml;
 	AST_Block root({
 
-		new AST_Func("genVAO", { }),
+		new AST_Func("GenVAO", { }),
 		new AST_Block({
 			new AST_Return(new AST_String("Here"))
 		}),
@@ -374,8 +373,8 @@ inline static int astStub()
 			new AST_Name("a"),
 			new AST_Oper(
 				OperatorType::OP_ADD,
-				new AST_Call(new AST_Name("genVAO"), { }),
-				new AST_Call(new AST_Name("genVAO"), { }))),
+				new AST_Call(new AST_Name("GenVAO"), { }),
+				new AST_Call(new AST_Name("GenVAO"), { }))),
 		
 		new AST_Print(new AST_Name("a")),
 		
@@ -460,24 +459,6 @@ inline static int graphicsStub()
 	// Shader
 	ml::Debug::LogInfo("Loading Shaders...");
 
-	ml::Shader shaderSpr;
-	if (!shaderSpr.loadFromFile(
-		settings.assetPath + "/shaders/vs/draw2D_vs.shader",
-		settings.assetPath + "/shaders/fs/draw2D_fs.shader"))
-	{
-		ml::Debug::LogError("Failed Loading Shader: {0}", "Spr");
-		return ml::ConsoleUtility::pause(EXIT_FAILURE);
-	}
-
-	ml::Shader shaderTxt;
-	if (!shaderTxt.loadFromFile(
-		settings.assetPath + "/shaders/vs/text_vs.shader",
-		settings.assetPath + "/shaders/fs/text_fs.shader"))
-	{
-		ml::Debug::LogError("Failed Loading Shader: {0}", "Txt");
-		return ml::ConsoleUtility::pause(EXIT_FAILURE);
-	}
-
 	ml::Shader shaderBasic;
 	if (!shaderBasic.loadFromFile(
 		settings.assetPath + "/shaders/vs/basic_vs.shader",
@@ -487,11 +468,48 @@ inline static int graphicsStub()
 		return ml::ConsoleUtility::pause(EXIT_FAILURE);
 	}
 
+	ml::Shader shader2D;
+	if (!shader2D.loadFromFile(
+		settings.assetPath + "/shaders/vs/draw2D_vs.shader",
+		settings.assetPath + "/shaders/fs/draw2D_fs.shader"))
+	{
+		ml::Debug::LogError("Failed Loading Shader: {0}", "2D");
+		return ml::ConsoleUtility::pause(EXIT_FAILURE);
+	}
+
+	ml::Shader shader3D;
+	if (!shader3D.loadFromFile(
+		settings.assetPath + "/shaders/vs/draw3D_vs.shader",
+		settings.assetPath + "/shaders/fs/draw3D_fs.shader"))
+	{
+		ml::Debug::LogError("Failed Loading Shader: {0}", "3D");
+		return ml::ConsoleUtility::pause(EXIT_FAILURE);
+	}
+
+	ml::Shader shaderGS;
+	if (!shaderGS.loadFromFile(
+		settings.assetPath + "/shaders/vs/drawLine_vs.shader",
+		settings.assetPath + "/shaders/gs/drawLine_gs.shader",
+		settings.assetPath + "/shaders/fs/drawLine_fs.shader"))
+	{
+		ml::Debug::LogError("Failed Loading Shader: {0}", "GS");
+		return ml::ConsoleUtility::pause(EXIT_FAILURE);
+	}
+
+	ml::Shader shaderText;
+	if (!shaderText.loadFromFile(
+		settings.assetPath + "/shaders/vs/text_vs.shader",
+		settings.assetPath + "/shaders/fs/text_fs.shader"))
+	{
+		ml::Debug::LogError("Failed Loading Shader: {0}", "Text");
+		return ml::ConsoleUtility::pause(EXIT_FAILURE);
+	}
+
 
 	// Sprite
 	ml::Debug::LogInfo("Loading Sprites...");
 
-	ml::Sprite sprite(&shaderSpr, &texture);
+	ml::Sprite sprite(&shader2D, &texture);
 	if (!sprite)
 	{
 		ml::Debug::LogError("Failed Loading Sprite");
@@ -504,7 +522,7 @@ inline static int graphicsStub()
 	// Text
 	ml::Debug::LogInfo("Loading Text...");
 
-	ml::Text text(&shaderTxt, &font);
+	ml::Text text(&shaderText, &font);
 	if(!text)
 	{
 		ml::Debug::LogError("Failed Loading Text");
@@ -517,28 +535,24 @@ inline static int graphicsStub()
 
 	// Geometry
 	ml::Debug::LogInfo("Loading Geometry...");
-
-	ml::FloatArray positions = {
-		-0.5f, -0.5f,
-		+0.5f, -0.5f,
-		+0.5f, +0.5f,
-		-0.5f, +0.5f,
-	};
-	ml::IndexArray indices = {
-		0, 1, 2,
-		2, 3, 0,
-	};
 	
 	uint32_t vao;
-	ml::OpenGL::genVAO(1, vao);
+	ml::VertexArray::GenVAO(1, vao);
 
-	ml::VertexBuffer vbo(ml::VertexBuffer::Static, &positions[0], positions.size());
-	ml::IndexBuffer	 ibo(ml::IndexBuffer::Static, &indices[0], indices.size());
+	ml::VBO vbo(ml::Enum::Static, ml::VertexArray::Flatten(ml::Shapes::Quad::Mesh.vertices()));
+	ml::IBO ibo(ml::Enum::Static, ml::Shapes::Quad::Mesh.indices());
+	
+	ml::BufferLayout layout;
+	layout.push_back({ 0, 3, ml::Enum::Float, false, ml::Vertex::Size, 0, sizeof(float) });
+	layout.push_back({ 1, 4, ml::Enum::Float, false, ml::Vertex::Size, 3, sizeof(float) });
+	layout.push_back({ 2, 2, ml::Enum::Float, false, ml::Vertex::Size, 7, sizeof(float) });
+	layout.apply();
 
-	ml::OpenGL::setVertexAttribute(0, 2, 2 * sizeof(float));
+	const ml::mat4f & proj_ortho = ml::Transform::Orthographic(0, (float)window.getSize()[0], 0, (float)window.getSize()[1]);
+	const ml::mat4f & proj_persp = ml::Transform::Perspective(90.f, window.getAspect(), 0.1f, 1000.f);
 
-	shaderBasic.setUniform(ml::Uniform::Color, ml::Color::Red);
-	shaderBasic.use();
+	ml::Transform view(ml::vec3f::Zero, ml::vec3f::One, ml::quat());
+	ml::Transform model(ml::vec3f::Forward, ml::vec3f::One, ml::quat());
 
 	// Done
 	ml::Debug::LogInfo("Done Loading Assets.");
@@ -551,20 +565,29 @@ inline static int graphicsStub()
 		loopTimer.start();
 		input.beginStep();
 		{
+			// Handle Input
 			if (input.getKeyDown(ml::KeyCode::Escape))
 			{
 				window.close();
 			}
 
+			// Draw
 			window.clear(ml::Color::Violet);
 			{
-				window.disable(ml::RenderTarget::CullFace);
-				window.disable(ml::RenderTarget::DepthTest);
+				window.disableFlag(ml::Enum::CullFace);
+				window.disableFlag(ml::Enum::DepthTest);
 				{
-					glCheck(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL));
+					shaderBasic.use();
+					shaderBasic.setUniform(ml::Uniform::Color,		ml::Color::White);
+					shaderBasic.setUniform(ml::Uniform::Model,		model);
+					shaderBasic.setUniform(ml::Uniform::View,		view);
+					shaderBasic.setUniform(ml::Uniform::Proj,		proj_ortho);
+					shaderBasic.setUniform(ml::Uniform::Texture,	&texture);
+
+					window.drawElements(ibo, ml::Enum::Triangles, ml::Enum::UnsignedInt);
 				}
-				window.enable(ml::RenderTarget::CullFace);
-				window.enable(ml::RenderTarget::DepthTest);
+				window.enableFlag(ml::Enum::CullFace);
+				window.enableFlag(ml::Enum::DepthTest);
 			}
 			window.swapBuffers();
 			window.pollEvents();

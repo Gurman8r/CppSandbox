@@ -1,6 +1,7 @@
 #include <MemeGraphics/RenderWindow.h>
 #include <MemeGraphics/OpenGL.h>
 #include <MemeCore/DebugUtility.h>
+#include <MemeGraphics/Enum.h>
 
 namespace ml
 {
@@ -8,32 +9,32 @@ namespace ml
 	{
 		if (OpenGL::initGL())
 		{
-			enable(CullFace);
-			enable(DepthTest);
-			enable(Blend);
-			enable(AlphaTest);
-			enable(Texture2D);
+			enableFlag(Enum::CullFace);
+			enableFlag(Enum::DepthTest);
+			enableFlag(Enum::Blend);
+			enableFlag(Enum::AlphaTest);
+			enableFlag(Enum::Texture2D);
 
 			if (m_settings.multisample)
 			{
-				enable(MultiSample);
+				enableFlag(Enum::MultiSample);
 			}
 
 			if (m_settings.sRgbCapable)
 			{
-				enable(FrameBufferSRGB);
+				enableFlag(Enum::FrameBufferSRGB);
 
-				if (!isEnabled(FrameBufferSRGB))
+				if (!isEnabled(Enum::FrameBufferSRGB))
 				{
-					ml::Debug::LogWarning("Failed to enable FrameBufferSRGB");
+					ml::Debug::LogWarning("Failed to enableFlag FrameBufferSRGB");
 					m_settings.sRgbCapable = false;
 				}
 			}
 
-			glCheck(glCullFace(GL_BACK));
-			glCheck(glDepthFunc(GL_LESS));
-			glCheck(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
-			glCheck(glAlphaFunc(GL_GREATER, 0.01f));
+			glCheck(glCullFace(Enum::Back));
+			glCheck(glDepthFunc(Enum::Less));
+			glCheck(glBlendFunc(Enum::SourceAlpha, Enum::OneMinusSourceAlpha));
+			glCheck(glAlphaFunc(Enum::Greater, 0.01f));
 			glCheck(glActiveTexture(GL_TEXTURE0));
 
 

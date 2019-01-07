@@ -40,6 +40,12 @@
     <Filter Include="Header Files\Interfaces">
       <UniqueIdentifier>{0bee5786-4dbe-41db-81dd-9cad85974a90}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Buffers">
+      <UniqueIdentifier>{6652bc3a-a5fa-44ca-8400-ad6093276177}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Buffers">
+      <UniqueIdentifier>{b05bb526-d2bd-4bc7-aa76-f105027d8beb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeGraphics\Export.h">
@@ -64,9 +70,6 @@
       <Filter>Header Files\DS</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Image.h">
-      <Filter>Header Files\DS</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Shader.h">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Mesh.h">
@@ -99,23 +102,29 @@
     <ClInclude Include="..\..\include\MemeGraphics\ITransformable.h">
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Primitive.h">
-      <Filter>Header Files\DS</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Shapes.h">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\VertexArray.h">
+    <ClInclude Include="..\..\include\MemeGraphics\Shader.h">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\IndexBuffer.h">
+    <ClInclude Include="..\..\include\MemeGraphics\Enum.h">
       <Filter>Header Files\DS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\Gizmos.h">
+      <Filter>Header Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\VertexBuffer.h">
-      <Filter>Header Files\DS</Filter>
+      <Filter>Header Files\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\VertexArray.h">
+      <Filter>Header Files\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\IndexBuffer.h">
+      <Filter>Header Files\Buffers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\BufferLayout.h">
-      <Filter>Header Files\DS</Filter>
+      <Filter>Header Files\Buffers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -137,16 +146,10 @@
     <ClCompile Include="..\..\src\MemeGraphics\Mesh.cpp">
       <Filter>Source Files\DS</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemeGraphics\Shader.cpp">
-      <Filter>Source Files\DS</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Texture.cpp">
       <Filter>Source Files\DS</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Vertex.cpp">
-      <Filter>Source Files\DS</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeGraphics\VertexArray.cpp">
       <Filter>Source Files\DS</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Text.cpp">
@@ -170,11 +173,23 @@
     <ClCompile Include="..\..\src\MemeGraphics\Shapes.cpp">
       <Filter>Source Files\DS</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemeGraphics\VertexBuffer.cpp">
+    <ClCompile Include="..\..\src\MemeGraphics\Shader.cpp">
       <Filter>Source Files\DS</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\Gizmos.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\BufferLayout.cpp">
+      <Filter>Source Files\Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\VertexBuffer.cpp">
+      <Filter>Source Files\Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\VertexArray.cpp">
+      <Filter>Source Files\Buffers</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\IndexBuffer.cpp">
-      <Filter>Source Files\DS</Filter>
+      <Filter>Source Files\Buffers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

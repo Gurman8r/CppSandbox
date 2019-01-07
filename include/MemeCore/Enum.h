@@ -1,5 +1,5 @@
-#ifndef _ENUM_H_
-#define _ENUM_H_
+#ifndef _ML_ENUM_H_
+#define _ML_ENUM_H_
 
 #include <inttypes.h>
 
@@ -46,4 +46,4 @@ namespace ml
 	};
 }
 
-#endif // !_ENUM_H_
+#endif // !_ML_ENUM_H_

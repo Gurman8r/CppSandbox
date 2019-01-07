@@ -12,7 +12,7 @@ namespace ml
 		: public ITrackable
 	{
 	public:
-		enum { Size = 9 };
+		enum { Size = 9U };
 
 	public:
 		Vertex();

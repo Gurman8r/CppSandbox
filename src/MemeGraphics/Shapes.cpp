@@ -2,67 +2,76 @@
 
 namespace ml
 {
-
 	/*	Triangle
 	* * * * * * * * * */
-	const VertexArray Shapes::TriangleVertices(Primitive::Triangles, {
-		Vertex({  0.0f,  0.5f, 0.0f }, Color::White,{ 0.5f, 1.0f }), // top right
-		Vertex({  0.5f, -0.5f, 0.0f }, Color::White,{ 1.0f, 0.0f }), // bottom right
-		Vertex({ -0.5f, -0.5f, 0.0f }, Color::White,{ 0.0f, 0.0f }), // bottom left
+	const VertexArray Shapes::Triangle::Vertices(Enum::Primitive::Triangles, {
+		Vertex({  0.0f,  0.5f, 0.0f }, Color::White, { 0.5f, 1.0f }), // top right
+		Vertex({  0.5f, -0.5f, 0.0f }, Color::White, { 1.0f, 0.0f }), // bottom right
+		Vertex({ -0.5f, -0.5f, 0.0f }, Color::White, { 0.0f, 0.0f }), // bottom left
 	});
-	const IndexArray Shapes::TriangleIndices({
+	const IndexArray Shapes::Triangle::Indices({
 		0, 1, 2
 	});
+	const Mesh Shapes::Triangle::Mesh(
+		Shapes::Triangle::Vertices,
+		Shapes::Triangle::Indices);
 
 
 	/*	Quad
 	* * * * * * * * * */
-	const VertexArray Shapes::QuadVertices(Primitive::Triangles, {
-		Vertex({ 1, 1, 0 }, Color::White,{ 1, 1 }),
-		Vertex({ 1, 0, 0 }, Color::White,{ 1, 0 }),
-		Vertex({ 0, 0, 0 }, Color::White,{ 0, 0 }),
-		Vertex({ 0, 1, 0 }, Color::White,{ 0, 1 }),
+	const VertexArray Shapes::Quad::Vertices(Enum::Primitive::Triangles, {
+		//Vertex({ 1.0f, 1.0f, 0.0f }, Color::White, { 1.0f, 1.0f }),
+		//Vertex({ 1.0f, 0.0f, 0.0f }, Color::White, { 1.0f, 0.0f }),
+		//Vertex({ 0.0f, 0.0f, 0.0f }, Color::White, { 0.0f, 0.0f }),
+		//Vertex({ 0.0f, 1.0f, 0.0f }, Color::White, { 0.0f, 1.0f }),
+		Vertex({ +0.5f, +0.5f, -0.5f }, Color::White, { 1.0f, 1.0f }),
+		Vertex({ +0.5f, -0.5f, -0.5f }, Color::White, { 1.0f, 0.0f }),
+		Vertex({ -0.5f, -0.5f, -0.5f }, Color::White, { 0.0f, 0.0f }),
+		Vertex({ -0.5f, +0.5f, -0.5f }, Color::White, { 0.0f, 1.0f }),
 	});
-	const IndexArray Shapes::QuadIndices({
+	const IndexArray Shapes::Quad::Indices({
 		0, 1, 3,
 		1, 2, 3
 	});
+	const Mesh Shapes::Quad::Mesh(
+		Shapes::Quad::Vertices, 
+		Shapes::Quad::Indices);
 
 
 	/*	Cube
 	* * * * * * * * * */
-	const VertexArray Shapes::CubeVertices(Primitive::Triangles, {
-		Vertex({  1,  1, -1 }, Color::White,{ 1, 1 }), // 0 front
-		Vertex({  1, -1, -1 }, Color::White,{ 1, 0 }), // 1
-		Vertex({ -1, -1, -1 }, Color::White,{ 0, 0 }), // 2
-		Vertex({ -1,  1, -1 }, Color::White,{ 0, 1 }), // 3
-
-		Vertex({  1,  1,  1 }, Color::White,{ 1, 1 }), // 4 back
-		Vertex({  1, -1,  1 }, Color::White,{ 1, 0 }), // 5
-		Vertex({ -1, -1,  1 }, Color::White,{ 0, 0 }), // 6
-		Vertex({ -1,  1,  1 }, Color::White,{ 0, 1 }), // 7
-
-		Vertex({  1,  1,  1 }, Color::White,{ 1, 1 }), // 8 right
-		Vertex({  1, -1,  1 }, Color::White,{ 1, 0 }), // 9
-		Vertex({  1, -1, -1 }, Color::White,{ 0, 0 }), // 10
-		Vertex({  1,  1, -1 }, Color::White,{ 0, 1 }), // 11
-
-		Vertex({ -1,  1,  1 }, Color::White,{ 1, 1 }), // 12 left
-		Vertex({ -1, -1,  1 }, Color::White,{ 1, 0 }), // 13
-		Vertex({ -1, -1, -1 }, Color::White,{ 0, 0 }), // 14
-		Vertex({ -1,  1, -1 }, Color::White,{ 0, 1 }), // 15
-
-		Vertex({ -1,  1,  1 }, Color::White,{ 1, 1 }), // 16 top
-		Vertex({  1,  1,  1 }, Color::White,{ 1, 0 }), // 17
-		Vertex({  1,  1, -1 }, Color::White,{ 0, 0 }), // 18
-		Vertex({ -1,  1, -1 }, Color::White,{ 0, 1 }), // 19
-
-		Vertex({ -1, -1,  1 }, Color::White,{ 1, 1 }), // 20 bottom
-		Vertex({  1, -1,  1 }, Color::White,{ 1, 0 }), // 21
-		Vertex({  1, -1, -1 }, Color::White,{ 0, 0 }), // 22
-		Vertex({ -1, -1, -1 }, Color::White,{ 0, 1 }), // 23
+	const VertexArray Shapes::Cube::Vertices(Enum::Primitive::Triangles, {
+		Vertex({  1,  1, -1 }, Color::White, { 1, 1 }), // 0 front
+		Vertex({  1, -1, -1 }, Color::White, { 1, 0 }), // 1
+		Vertex({ -1, -1, -1 }, Color::White, { 0, 0 }), // 2
+		Vertex({ -1,  1, -1 }, Color::White, { 0, 1 }), // 3
+											 
+		Vertex({  1,  1,  1 }, Color::White, { 1, 1 }), // 4 back
+		Vertex({  1, -1,  1 }, Color::White, { 1, 0 }), // 5
+		Vertex({ -1, -1,  1 }, Color::White, { 0, 0 }), // 6
+		Vertex({ -1,  1,  1 }, Color::White, { 0, 1 }), // 7
+											 
+		Vertex({  1,  1,  1 }, Color::White, { 1, 1 }), // 8 right
+		Vertex({  1, -1,  1 }, Color::White, { 1, 0 }), // 9
+		Vertex({  1, -1, -1 }, Color::White, { 0, 0 }), // 10
+		Vertex({  1,  1, -1 }, Color::White, { 0, 1 }), // 11
+											 
+		Vertex({ -1,  1,  1 }, Color::White, { 1, 1 }), // 12 left
+		Vertex({ -1, -1,  1 }, Color::White, { 1, 0 }), // 13
+		Vertex({ -1, -1, -1 }, Color::White, { 0, 0 }), // 14
+		Vertex({ -1,  1, -1 }, Color::White, { 0, 1 }), // 15
+											 
+		Vertex({ -1,  1,  1 }, Color::White, { 1, 1 }), // 16 top
+		Vertex({  1,  1,  1 }, Color::White, { 1, 0 }), // 17
+		Vertex({  1,  1, -1 }, Color::White, { 0, 0 }), // 18
+		Vertex({ -1,  1, -1 }, Color::White, { 0, 1 }), // 19
+											 
+		Vertex({ -1, -1,  1 }, Color::White, { 1, 1 }), // 20 bottom
+		Vertex({  1, -1,  1 }, Color::White, { 1, 0 }), // 21
+		Vertex({  1, -1, -1 }, Color::White, { 0, 0 }), // 22
+		Vertex({ -1, -1, -1 }, Color::White, { 0, 1 }), // 23
 	});
-	const IndexArray Shapes::CubeIndices({
+	const IndexArray Shapes::Cube::Indices({
 		0, 1, 3,
 		1, 2, 3,
 
@@ -81,4 +90,7 @@ namespace ml
 		22, 21, 20,
 		20, 23, 22,
 	});
+	const Mesh Shapes::Cube::Mesh(
+		Shapes::Cube::Vertices, 
+		Shapes::Cube::Indices);
 }

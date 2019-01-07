@@ -1,6 +1,8 @@
 #ifndef _SHAPES_H_
 #define _SHAPES_H_
 
+#include <MemeGraphics/Export.h>
+#include <MemeGraphics/Mesh.h>
 #include <MemeGraphics/VertexArray.h>
 
 namespace ml
@@ -8,14 +10,27 @@ namespace ml
 	class ML_GRAPHICS_API Shapes
 	{
 	public:
-		const static VertexArray	TriangleVertices;
-		const static IndexArray		TriangleIndices;
+		struct ML_GRAPHICS_API Triangle final
+		{
+			const static VertexArray	Vertices;
+			const static IndexArray		Indices;
+			const static Mesh			Mesh;
+		};
 
-		const static VertexArray	QuadVertices;
-		const static IndexArray		QuadIndices;
+		struct ML_GRAPHICS_API Quad final
+		{
+			const static VertexArray	Vertices;
+			const static IndexArray		Indices;
+			const static Mesh			Mesh;
 
-		const static VertexArray	CubeVertices;
-		const static IndexArray		CubeIndices;
+		};
+
+		struct ML_GRAPHICS_API Cube final
+		{
+			const static VertexArray	Vertices;
+			const static IndexArray		Indices;
+			const static Mesh			Mesh;
+		};
 	};
 }
 

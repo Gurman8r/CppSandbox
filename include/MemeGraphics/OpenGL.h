@@ -30,12 +30,6 @@ namespace ml
 
 		static const char * getVersion();
 
-		static void genVAO(uint32_t count, uint32_t & vao);
-
-		static void setVertexAttribute(uint32_t index, uint32_t size, uint32_t stride);
-		static void setVertexAttribute(uint32_t index, uint32_t size, uint32_t stride, void * pointer);
-		static void setVertexAttribute(uint32_t index, uint32_t size, uint32_t type, uint32_t normalized, uint32_t stride, void * pointer);
-
 	private:
 		static bool m_good;
 	};

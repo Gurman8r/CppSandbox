@@ -3,12 +3,19 @@
 
 namespace ml
 {
-	VertexBuffer::VertexBuffer(Usage usage, const void * data, uint32_t size)
+	VertexBuffer::VertexBuffer(Enum::Usage usage, const void * data, uint32_t size)
 		: m_usage(usage)
+		, m_data(data)
+		, m_size(size)
 	{
 		glCheck(glGenBuffers(1, &m_id));
-		glCheck(glBindBuffer(GL_ARRAY_BUFFER, m_id));
-		glCheck(glBufferData(GL_ARRAY_BUFFER, (size * sizeof(float)), data, static_cast<GLenum>(m_usage)));
+		bind();
+		glCheck(glBufferData(GL_ARRAY_BUFFER, (size * sizeof(float)), data, m_usage));
+	}
+
+	VertexBuffer::VertexBuffer(Enum::Usage usage, const std::vector<float>& data)
+		: VertexBuffer(usage, &data[0], data.size())
+	{
 	}
 
 	VertexBuffer::~VertexBuffer()
@@ -16,21 +23,21 @@ namespace ml
 		clean();
 	}
 
+
 	VertexBuffer & VertexBuffer::clean()
 	{
 		glCheck(glDeleteBuffers(1, &m_id));
 		return (*this);
 	}
 
-	VertexBuffer & VertexBuffer::bind()
+
+	void VertexBuffer::bind() const
 	{
 		glCheck(glBindBuffer(GL_ARRAY_BUFFER, m_id));
-		return (*this);
 	}
 
-	VertexBuffer & VertexBuffer::unbind()
+	void VertexBuffer::unbind() const
 	{
 		glCheck(glBindBuffer(GL_ARRAY_BUFFER, 0));
-		return (*this);
 	}
 }

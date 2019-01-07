@@ -79,7 +79,7 @@ namespace ml
 				<< std::endl
 				<< std::endl << FMT();
 
-			ConsoleUtility::pause();
+			//ConsoleUtility::pause();
 
 		}
 	}
@@ -89,28 +89,5 @@ namespace ml
 		return m_good
 			? (const char *)glGetString(GL_VERSION)
 			: "ERROR";
-	}
-
-	
-	void OpenGL::genVAO(uint32_t count, uint32_t & vao)
-	{
-		glCheck(glGenVertexArrays(count, &vao));
-		glCheck(glBindVertexArray(vao));
-	}
-
-	void OpenGL::setVertexAttribute(uint32_t index, uint32_t size, uint32_t stride)
-	{
-		setVertexAttribute(index, size, stride, NULL);
-	}
-	
-	void OpenGL::setVertexAttribute(uint32_t index, uint32_t count, uint32_t stride, void * pointer)
-	{
-		setVertexAttribute(index, count, GL_FLOAT, GL_FALSE, stride, pointer);
-	}
-	
-	void OpenGL::setVertexAttribute(uint32_t index, uint32_t size, uint32_t type, uint32_t normalized, uint32_t stride, void * pointer)
-	{
-		glCheck(glVertexAttribPointer(index, size, type, normalized, stride, pointer));
-		glCheck(glEnableVertexAttribArray(index));
 	}
 }

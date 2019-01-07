@@ -24,7 +24,6 @@ namespace
 
 namespace ml
 {
-	// Used to check for errors with uniforms
 	struct Shader::UniformBinder
 	{
 		UniformBinder(Shader& shader, const std::string& name)
@@ -39,20 +38,19 @@ namespace ml
 
 				if (currentProgram != savedProgram)
 				{
-					glCheck(glUseProgram(currentProgram));
+					glCheck(glUseProgramObjectARB(currentProgram));
 				}
 
 				// Store uniform location for further use outside constructor
 				location = shader.getUniformLocation(name);
 			}
 		}
-
 		~UniformBinder()
 		{
 			// Disable program object
 			if (currentProgram && (currentProgram != savedProgram))
 			{
-				glCheck(glUseProgram(savedProgram));
+				glCheck(glUseProgramObjectARB(savedProgram));
 			}
 		}
 
@@ -168,7 +166,7 @@ namespace ml
 		Shader::bind(this);
 	}
 
-	int Shader::program() const
+	uint32_t Shader::program() const
 	{
 		return m_program;
 	}
@@ -244,8 +242,7 @@ namespace ml
 	
 	void Shader::setUniform(const std::string & name, float value)
 	{
-		UniformBinder binder((*this), name);
-		if (binder)
+		if (UniformBinder((*this), name))
 		{
 			glCheck(glUniform1f(getUniformLocation(name), value));
 		}
@@ -253,8 +250,7 @@ namespace ml
 	
 	void Shader::setUniform(const std::string & name, int32_t value)
 	{
-		UniformBinder binder((*this), name);
-		if (binder)
+		if (UniformBinder((*this), name))
 		{
 			glCheck(glUniform1i(getUniformLocation(name), value));
 		}
@@ -262,8 +258,7 @@ namespace ml
 	
 	void Shader::setUniform(const std::string & name, uint32_t value)
 	{
-		UniformBinder binder((*this), name);
-		if (binder)
+		if (UniformBinder((*this), name))
 		{
 			glCheck(glUniform1ui(getUniformLocation(name), value));
 		}
@@ -271,8 +266,7 @@ namespace ml
 	
 	void Shader::setUniform(const std::string & name, const float * value)
 	{
-		UniformBinder binder((*this), name);
-		if (binder)
+		if (UniformBinder((*this), name))
 		{
 			glCheck(glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, value));
 		}
@@ -280,8 +274,7 @@ namespace ml
 	
 	void Shader::setUniform(const std::string & name, const vec2f & value)
 	{
-		UniformBinder binder((*this), name);
-		if (binder)
+		if (UniformBinder((*this), name))
 		{
 			glCheck(glUniform2f(getUniformLocation(name), value[0], value[1]));
 		}
@@ -289,8 +282,7 @@ namespace ml
 	
 	void Shader::setUniform(const std::string & name, const vec3f & value)
 	{
-		UniformBinder binder((*this), name);
-		if (binder)
+		if (UniformBinder((*this), name))
 		{
 			glCheck(glUniform3f(getUniformLocation(name), value[0], value[1], value[2]));
 		}
@@ -298,8 +290,7 @@ namespace ml
 	
 	void Shader::setUniform(const std::string & name, const vec4f & value)
 	{
-		UniformBinder binder((*this), name);
-		if (binder)
+		if (UniformBinder((*this), name))
 		{
 			glCheck(glUniform4f(getUniformLocation(name), value[0], value[1], value[2], value[3]));
 		}
@@ -307,8 +298,7 @@ namespace ml
 	
 	void Shader::setUniform(const std::string & name, const vec2i & value)
 	{
-		UniformBinder binder((*this), name);
-		if (binder)
+		if (UniformBinder((*this), name))
 		{
 			glCheck(glUniform2i(getUniformLocation(name), value[0], value[1]));
 		}
@@ -316,8 +306,7 @@ namespace ml
 	
 	void Shader::setUniform(const std::string & name, const vec3i & value)
 	{
-		UniformBinder binder((*this), name);
-		if (binder)
+		if (UniformBinder((*this), name))
 		{
 			glCheck(glUniform3i(getUniformLocation(name), value[0], value[1], value[2]));
 		}
@@ -325,8 +314,7 @@ namespace ml
 	
 	void Shader::setUniform(const std::string & name, const vec4i & value)
 	{
-		UniformBinder binder((*this), name);
-		if (binder)
+		if (UniformBinder((*this), name))
 		{
 			glCheck(glUniform4i(getUniformLocation(name), value[0], value[1], value[2], value[3]));
 		}
@@ -334,8 +322,7 @@ namespace ml
 	
 	void Shader::setUniform(const std::string & name, const mat3f & value)
 	{
-		UniformBinder binder((*this), name);
-		if (binder)
+		if (UniformBinder((*this), name))
 		{
 			glCheck(glUniformMatrix3fv(getUniformLocation(name), 1, GL_FALSE, value.ptr()));
 		}
@@ -343,11 +330,15 @@ namespace ml
 	
 	void Shader::setUniform(const std::string & name, const mat4f & value)
 	{
-		UniformBinder binder((*this), name);
-		if (binder)
+		if (UniformBinder((*this), name))
 		{
 			glCheck(glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, value.ptr()));
 		}
+	}
+
+	void Shader::setUniform(const std::string & name, const Transform & value)
+	{
+		setUniform(name, value.matrix());
 	}
 
 	void Shader::setUniform(const std::string & name, const Texture * value)
@@ -377,11 +368,6 @@ namespace ml
 				}
 			}
 		}
-	}
-
-	void Shader::setUniform(const std::string & name, const Transform & value)
-	{
-		setUniform(name, value.matrix());
 	}
 	
 	
@@ -564,6 +550,25 @@ namespace ml
 	
 	int Shader::getUniformLocation(const std::string & value)
 	{
-		return 0;
+		// Check the cache
+		UniformTable::const_iterator it = m_uniforms.find(value);
+		if (it != m_uniforms.end())
+		{
+			// Already in cache, return it
+			return it->second;
+		}
+		else
+		{
+			// Not in cache, request the location from OpenGL
+			int location = glGetUniformLocation(program(), value.c_str());
+			m_uniforms.insert(std::make_pair(value, location));
+
+			if (location == -1)
+			{
+				Debug::LogWarning("Uniform \"{0}\" not found in source", value);
+			}
+
+			return location;
+		}
 	}
 }

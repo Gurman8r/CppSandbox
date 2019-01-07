@@ -35,9 +35,9 @@ namespace ml
 		bool loadFromMemory(const std::string& vs, const std::string& fs);
 		bool loadFromMemory(const std::string& vs, const std::string& gs, const std::string& fs);
 
-		void	use() const;
-		int		program() const;
-		int		currentTexture() const;
+		void		use() const;
+		uint32_t	program() const;
+		int			currentTexture() const;
 
 		static void bind(const Shader* shader, bool tex = true);
 		static bool isAvailable();
@@ -56,8 +56,8 @@ namespace ml
 		void setUniform(const std::string & name, const vec4i & value);
 		void setUniform(const std::string & name, const mat3f & value);
 		void setUniform(const std::string & name, const mat4f & value);
-		void setUniform(const std::string & name, const Texture * value);
 		void setUniform(const std::string & name, const Transform & value);
+		void setUniform(const std::string & name, const Texture * value);
 
 		// Set Uniform Array
 		void setUniformArray(const std::string & name, const float * value, int length);
@@ -89,7 +89,7 @@ namespace ml
 		void	bindTextures() const;
 		int		getUniformLocation(const std::string & value);
 
-		int				m_program;
+		uint32_t		m_program;
 		int				m_currentTexture;
 		TextureTable	m_textures;
 		UniformTable	m_uniforms;

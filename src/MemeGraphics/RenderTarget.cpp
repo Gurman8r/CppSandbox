@@ -33,7 +33,7 @@ namespace ml
 		return draw(vertices.ptr(), vertices.count(), vertices.primitive(), state);
 	}
 
-	RenderTarget & RenderTarget::draw(const Vertex * vertices, std::size_t count, Primitive::Type type, const RenderState & state)
+	RenderTarget & RenderTarget::draw(const Vertex * vertices, std::size_t count, Enum::Primitive type, const RenderState & state)
 	{
 		return (*this);
 	}
@@ -42,22 +42,35 @@ namespace ml
 	{
 		return (*this);
 	}
+
+
+	RenderTarget & RenderTarget::drawElements(const IBO & ibo, Enum::Primitive primitive, Enum::Type type)
+	{
+		ibo.bind();
+		return drawElements(primitive, type, ibo.size(), NULL);
+	}
+
+	RenderTarget & RenderTarget::drawElements(Enum::Primitive primitive, Enum::Type type, std::size_t count, const float * indices)
+	{
+		glCheck(glDrawElements(primitive, count, type, indices));
+		return (*this);
+	}
 	
 	
-	RenderTarget & RenderTarget::enable(uint32_t value)
+	RenderTarget & RenderTarget::enableFlag(Enum::Flag value)
 	{
 		glCheck(glEnable(static_cast<GLenum>(value)));
 		return (*this);
 	}
 
-	RenderTarget & RenderTarget::disable(uint32_t value)
+	RenderTarget & RenderTarget::disableFlag(Enum::Flag value)
 	{
 		glCheck(glDisable(static_cast<GLenum>(value)));
 		return (*this);
 	}
 	
 	
-	bool RenderTarget::isEnabled(uint32_t value) const
+	bool RenderTarget::isEnabled(Enum::Flag value) const
 	{
 		return (glIsEnabled(value) == GL_TRUE);
 	}

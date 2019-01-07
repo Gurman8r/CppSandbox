@@ -1,10 +1,14 @@
 #version 330 core
 
-layout(location = 0) out vec4 a_color;
+// varyings
+out vec4	v_FragColor;
+in vec2		v_TexCoords;
+in vec4		v_Color;
 
-uniform vec4 u_color;
+uniform sampler2D	u_texture;
+uniform vec4		u_color;
 
 void main()
 {
-	a_color = u_color;
+	v_FragColor = u_color * texture(u_texture, v_TexCoords);
 }
