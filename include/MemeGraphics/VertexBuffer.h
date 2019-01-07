@@ -20,13 +20,13 @@ namespace ml
 		void bind() const;
 		void unbind() const;
 
-		inline const void *			data() const	{ return m_data;}
 		inline const uint32_t &		id() const		{ return m_id; }
+		inline const void *			data() const	{ return m_data;}
 		inline const Enum::Usage &	usage() const	{ return m_usage; }
 
 	private:
-		const void * m_data;
 		uint32_t	 m_id;
+		const void * m_data;
 		Enum::Usage	 m_usage;
 		uint32_t	 m_size;
 	};

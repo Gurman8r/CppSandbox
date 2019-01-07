@@ -533,12 +533,12 @@ inline static int graphicsStub()
 	text.string("Hello, World!");
 	text.transform().position(ml::vec3f::Zero);
 
+
 	// Geometry
 	ml::Debug::LogInfo("Loading Geometry...");
 	
-	uint32_t vao;
+	ml::VAO vao;
 	ml::VertexArray::GenVAO(1, vao);
-
 	ml::VBO vbo(ml::Enum::Static, ml::VertexArray::Flatten(ml::Shapes::Quad::Mesh.vertices()));
 	ml::IBO ibo(ml::Enum::Static, ml::Shapes::Quad::Mesh.indices());
 	
@@ -548,14 +548,14 @@ inline static int graphicsStub()
 	layout.push_back({ 2, 2, ml::Enum::Float, false, ml::Vertex::Size, 7, sizeof(float) });
 	layout.apply();
 
+
+	// Matricies
 	const ml::mat4f & proj_ortho = ml::Transform::Orthographic(0, (float)window.getSize()[0], 0, (float)window.getSize()[1]);
 	const ml::mat4f & proj_persp = ml::Transform::Perspective(90.f, window.getAspect(), 0.1f, 1000.f);
 
 	ml::Transform view(ml::vec3f::Zero, ml::vec3f::One, ml::quat());
 	ml::Transform model(ml::vec3f::Forward, ml::vec3f::One, ml::quat());
 
-	// Done
-	ml::Debug::LogInfo("Done Loading Assets.");
 
 	// Loop
 	ml::InputState	input;
@@ -565,12 +565,6 @@ inline static int graphicsStub()
 		loopTimer.start();
 		input.beginStep();
 		{
-			// Handle Input
-			if (input.getKeyDown(ml::KeyCode::Escape))
-			{
-				window.close();
-			}
-
 			// Draw
 			window.clear(ml::Color::Violet);
 			{
@@ -591,6 +585,12 @@ inline static int graphicsStub()
 			}
 			window.swapBuffers();
 			window.pollEvents();
+
+			// Handle Input
+			if (input.getKeyDown(ml::KeyCode::Escape))
+			{
+				window.close();
+			}
 		}
 		input.endStep();
 		loopTimer.stop();

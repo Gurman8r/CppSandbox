@@ -51,6 +51,8 @@ namespace ml
 		Vertices		m_values;
 	};
 
+	using VAO = uint32_t;
+
 }
 
 #endif // !_VERTEX_ARRAY_H_
