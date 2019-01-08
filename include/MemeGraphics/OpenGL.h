@@ -37,7 +37,7 @@ namespace ml
 		static void			getBool(uint32_t name, bool & value);
 		static void			getDouble(uint32_t name, double & value);
 		static void			getFloat(uint32_t name, float & value);
-		static void			getInt(uint32_t name, int32_t & value	);
+		static void			getInt(uint32_t name, int32_t & value);
 
 		static bool			getBool(uint32_t name);
 		static double		getDouble(uint32_t name);
