@@ -17,7 +17,7 @@ namespace ml
 	public:
 		const Timer & timer() const;
 
-		const TimePoint & elapsed() const;
+		const Duration & elapsed() const;
 		
 		void start();
 	

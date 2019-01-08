@@ -1,7 +1,7 @@
 #ifndef _TIMER_H_
 #define _TIMER_H_
 
-#include <MemeCore/TimePoint.h>
+#include <MemeCore/Duration.h>
 
 namespace ml
 {
@@ -9,8 +9,8 @@ namespace ml
 		: public ITrackable
 	{
 	public:
-		using clock_type = std::chrono::high_resolution_clock;
-		using point_type = std::chrono::steady_clock::time_point;
+		using Clock		= std::chrono::high_resolution_clock;
+		using TimePoint = std::chrono::steady_clock::time_point;
 
 	public:
 		Timer();
@@ -22,16 +22,16 @@ namespace ml
 		Timer & start();
 		Timer & stop();
 
-		const TimePoint & elapsed() const;
+		const Duration & elapsed() const;
 		const bool & paused() const;
 
 	private:
-		mutable TimePoint m_elapsed;
+		mutable Duration m_elapsed;
 
 		bool		m_paused;
-		clock_type	m_clock;
-		point_type	m_prev;
-		point_type	m_next;
+		Clock		m_clock;
+		TimePoint	m_prev;
+		TimePoint	m_next;
 	};
 }
 

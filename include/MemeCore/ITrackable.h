@@ -5,9 +5,12 @@
 
 namespace ml
 {
-	class ML_CORE_API ITrackable : public ISerializable
+	class ML_CORE_API ITrackable
+		: public ISerializable
 	{
 	public:
+		virtual ~ITrackable() {}
+
 		void*	operator new(std::size_t size);
 		void	operator delete(void *ptr);
 		void*	operator new[](std::size_t size);

@@ -78,9 +78,6 @@
     <ClInclude Include="..\..\include\MemeCore\MemoryTracker.h">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\TimePoint.h">
-      <Filter>Header Files\Time</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Timer.h">
       <Filter>Header Files\Time</Filter>
     </ClInclude>
@@ -165,6 +162,9 @@
     <ClInclude Include="..\..\include\MemeCore\Time.h">
       <Filter>Header Files\Time</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Duration.h">
+      <Filter>Header Files\Time</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeCore\ConsoleUtility.cpp">
@@ -209,7 +209,7 @@
     <ClCompile Include="..\..\src\MemeCore\Time.cpp">
       <Filter>Source Files\Time</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemeCore\TimePoint.cpp">
+    <ClCompile Include="..\..\src\MemeCore\Duration.cpp">
       <Filter>Source Files\Time</Filter>
     </ClCompile>
   </ItemGroup>

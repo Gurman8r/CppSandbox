@@ -61,7 +61,7 @@ namespace ml
 	}
 
 
-	const TimePoint & Timer::elapsed() const
+	const Duration & Timer::elapsed() const
 	{
 		return (m_paused)
 			? m_elapsed

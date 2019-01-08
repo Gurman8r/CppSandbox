@@ -7,7 +7,7 @@ namespace ml
 		return m_timer;
 	}
 
-	const TimePoint & Time::elapsed() const
+	const Duration & Time::elapsed() const
 	{
 		return timer().elapsed();
 	}

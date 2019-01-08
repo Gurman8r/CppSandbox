@@ -546,6 +546,7 @@ inline static int graphicsStub()
 	// Loop
 	ml::InputState	input;
 	ml::Timer		loopTimer;
+	ml::Duration	deltaTime;
 	while (window.isOpen())
 	{
 		loopTimer.start();
@@ -581,12 +582,12 @@ inline static int graphicsStub()
 		input.endStep();
 		loopTimer.stop();
 
-		ml::TimePoint now = ML_Time.elapsed();
+		ml::Duration now = ML_Time.elapsed();
 
 		window.title(ml::StringUtility::Format(
 			"{0} | {1}ms | {2}{3}:{4}{5}:{6}{7}", 
 			settings.title, 
-			loopTimer.elapsed().millis(),
+			loopTimer.elapsed().seconds(),
 			(now.minutes() % 60) / 10 % 10,
 			(now.minutes() % 60) % 10,
 			(now.seconds() % 60) / 10 % 10,
