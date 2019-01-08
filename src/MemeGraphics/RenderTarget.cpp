@@ -5,14 +5,14 @@ namespace ml
 {
 	RenderTarget & RenderTarget::clear()
 	{
-		glCheck(glClear(Enum::DepthBufferBit));
+		glCheck(glClear(GL::DepthBufferBit));
 		return (*this);
 	}
 	
 	RenderTarget & RenderTarget::clear(const vec4f & color)
 	{
 		glCheck(glClearColor(color[0], color[1], color[2], color[3]));
-		glCheck(glClear(Enum::ColorBufferBit | Enum::DepthBufferBit));
+		glCheck(glClear(GL::ColorBufferBit | GL::DepthBufferBit));
 		return (*this);
 	}
 	
@@ -29,7 +29,7 @@ namespace ml
 	}
 
 
-	RenderTarget & RenderTarget::drawElements(const IBO & ibo, Enum::Primitive prim, Enum::Type type)
+	RenderTarget & RenderTarget::drawElements(const IBO & ibo, GL::Primitive prim, GL::Type type)
 	{
 		ibo.bind();
 		glCheck(glDrawElements(prim, (uint32_t)ibo.size(), type, NULL));
@@ -38,14 +38,14 @@ namespace ml
 	
 	
 	
-	bool RenderTarget::getFlag(Enum::Base value) const
+	bool RenderTarget::getFlag(GL::Base value) const
 	{
 		static bool tmp;
 		glCheck(tmp = glIsEnabled(value));
 		return tmp;
 	}
 
-	void RenderTarget::setFlag(Enum::Base flag, bool value) const
+	void RenderTarget::setFlag(GL::Base flag, bool value) const
 	{
 		if (value)
 		{
@@ -57,38 +57,38 @@ namespace ml
 		}
 	}
 		
-	void RenderTarget::enableFlag(Enum::Base value) const
+	void RenderTarget::enableFlag(GL::Base value) const
 	{
 		glCheck(glEnable(value));
 	}
 
-	void RenderTarget::disableFlag(Enum::Base value) const
+	void RenderTarget::disableFlag(GL::Base value) const
 	{
 		glCheck(glDisable(value));
 	}
 	
 
-	void RenderTarget::setActiveTexture(Enum::TextureID textureID) const
+	void RenderTarget::setActiveTexture(GL::TextureID textureID) const
 	{
 		glCheck(glActiveTexture(textureID));
 	}
 
-	void RenderTarget::setAlphaFunc(Enum::Comparison cmp, float value) const
+	void RenderTarget::setAlphaFunc(GL::Comparison cmp, float value) const
 	{
 		glCheck(glAlphaFunc(cmp, value));
 	}
 
-	void RenderTarget::setBlendFunc(Enum::Factor src, Enum::Factor dst) const
+	void RenderTarget::setBlendFunc(GL::Factor src, GL::Factor dst) const
 	{
 		glCheck(glBlendFunc(src, dst));
 	}
 
-	void RenderTarget::setCullFace(Enum::Face face) const
+	void RenderTarget::setCullFace(GL::Face face) const
 	{
 		glCheck(glCullFace(face));
 	}
 
-	void RenderTarget::setDepthFunc(Enum::Comparison cmp) const
+	void RenderTarget::setDepthFunc(GL::Comparison cmp) const
 	{
 		glCheck(glDepthFunc(cmp));
 	}

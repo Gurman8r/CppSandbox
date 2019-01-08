@@ -20,20 +20,20 @@ namespace ml
 		RenderTarget & draw(const IDrawable & value);
 		RenderTarget & draw(const RenderState & value);
 
-		RenderTarget & drawElements(const IBO & ibo, Enum::Primitive prim, Enum::Type type);
+		RenderTarget & drawElements(const IBO & ibo, GL::Primitive prim, GL::Type type);
 
 	public:// Utility
-		bool getFlag(Enum::Base value) const;
-		void setFlag(Enum::Base flag, bool value) const;
+		bool getFlag(GL::Base value) const;
+		void setFlag(GL::Base flag, bool value) const;
 
-		void enableFlag(Enum::Base value) const;
-		void disableFlag(Enum::Base value) const;
+		void enableFlag(GL::Base value) const;
+		void disableFlag(GL::Base value) const;
 
-		void setActiveTexture(Enum::TextureID textureID) const;
-		void setAlphaFunc(Enum::Comparison comp, float value) const;
-		void setBlendFunc(Enum::Factor src, Enum::Factor dst) const;
-		void setCullFace(Enum::Face value) const;
-		void setDepthFunc(Enum::Comparison value) const;
+		void setActiveTexture(GL::TextureID textureID) const;
+		void setAlphaFunc(GL::Comparison comp, float value) const;
+		void setBlendFunc(GL::Factor src, GL::Factor dst) const;
+		void setCullFace(GL::Face value) const;
+		void setDepthFunc(GL::Comparison value) const;
 		void setViewport(const vec2i & pos, const vec2i & size) const;
 
 

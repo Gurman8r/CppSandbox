@@ -10,45 +10,45 @@ namespace ml
 		{
 			// Setup GL
 
-			enableFlag(Enum::CullFace);
-			enableFlag(Enum::DepthTest);
-			enableFlag(Enum::Blend);
-			enableFlag(Enum::AlphaTest);
-			enableFlag(Enum::Texture2D);
+			enableFlag(GL::CullFace);
+			enableFlag(GL::DepthTest);
+			enableFlag(GL::Blend);
+			enableFlag(GL::AlphaTest);
+			enableFlag(GL::Texture2D);
 
 			if (m_settings.multisample)
 			{
-				enableFlag(Enum::Multisample);
+				enableFlag(GL::Multisample);
 			}
 
 			if (m_settings.sRgbCapable)
 			{
-				enableFlag(Enum::FramebufferSRGB);
-				if (!getFlag(Enum::FramebufferSRGB))
+				enableFlag(GL::FramebufferSRGB);
+				if (!getFlag(GL::FramebufferSRGB))
 				{
 					ml::Debug::LogWarning("Failed to enable Framebuffer SRGB");
 					m_settings.sRgbCapable = false;
 				}
 			}
 
-			setAlphaFunc(Enum::Greater, 0.01f);
-			setBlendFunc(Enum::SourceAlpha, Enum::OneMinusSourceAlpha);
-			setCullFace(Enum::Back);
-			setDepthFunc(Enum::Less);
-			setActiveTexture(Enum::Texture0);
+			setAlphaFunc(GL::Greater, 0.01f);
+			setBlendFunc(GL::SourceAlpha, GL::OneMinusSourceAlpha);
+			setCullFace(GL::Back);
+			setDepthFunc(GL::Less);
+			setActiveTexture(GL::Texture0);
 
 
 			// Validate GL Version
 
-			int majorVersion = OpenGL::getInt(Enum::MajorVersion);
-			int minorVersion = OpenGL::getInt(Enum::MinorVersion);
+			int majorVersion = OpenGL::getInt(GL::MajorVersion);
+			int minorVersion = OpenGL::getInt(GL::MinorVersion);
 
-			if (OpenGL::getError() != Enum::InvalidEnum)
+			if (OpenGL::getError() != GL::InvalidEnum)
 			{
 				m_settings.majorVersion = (uint32_t)(majorVersion);
 				m_settings.minorVersion = (uint32_t)(minorVersion);
 			}
-			else if (const char * version = OpenGL::getString(Enum::Version))
+			else if (const char * version = OpenGL::getString(GL::Version))
 			{
 				m_settings.majorVersion = version[0] - '0';
 				m_settings.minorVersion = version[2] - '0';
@@ -67,8 +67,8 @@ namespace ml
 			if (m_settings.majorVersion >= 3)
 			{
 				// Retrieve the context flags
-				int flags = OpenGL::getInt(Enum::ContextFlags);
-				if (flags & Enum::ContextFlagDebugBit)
+				int flags = OpenGL::getInt(GL::ContextFlags);
+				if (flags & GL::ContextFlagDebugBit)
 				{
 					Debug::LogWarning("Set Compat Profile");
 					m_settings.profile |= ContextSettings::Compat;
@@ -78,10 +78,10 @@ namespace ml
 				{
 					m_settings.profile |= ContextSettings::Core;
 					
-					int numExtensions = (uint32_t)OpenGL::getInt(Enum::NumExtensions);
+					int numExtensions = (uint32_t)OpenGL::getInt(GL::NumExtensions);
 					for (uint32_t i = 0; i < (uint32_t)(numExtensions); ++i)
 					{
-						const char* extensions = OpenGL::getString(Enum::Extensions, i);
+						const char* extensions = OpenGL::getString(GL::Extensions, i);
 						if (std::strstr(extensions, "GL_ARB_compatibility"))
 						{
 							Debug::LogWarning("Clear Core Profile");
@@ -93,8 +93,8 @@ namespace ml
 				else if ((m_settings.majorVersion > 3) || (m_settings.minorVersion >= 2))
 				{
 					// Retrieve the context profile
-					int profile = OpenGL::getInt(Enum::ContextProfileMask);
-					if (profile & Enum::ContextCoreProfileBit)
+					int profile = OpenGL::getInt(GL::ContextProfileMask);
+					if (profile & GL::ContextCoreProfileBit)
 					{
 						Debug::LogWarning("Set Core Profile");
 						m_settings.profile |= ContextSettings::Core;

@@ -451,7 +451,7 @@ namespace ml
 		{
 			// Create and Compile the shader
 			int32_t vertexShader;
-			glCheck(vertexShader = glCreateShaderObjectARB(Enum::VertexShader));
+			glCheck(vertexShader = glCreateShaderObjectARB(GL::VertexShader));
 			glCheck(glShaderSource(vertexShader, 1, &vs, NULL));
 			glCheck(glCompileShader(vertexShader));
 
@@ -478,7 +478,7 @@ namespace ml
 		if (gs)
 		{
 			// Create and Compile the shader
-			uint32_t geometryShader = glCreateShaderObjectARB(Enum::GeometryShader);
+			uint32_t geometryShader = glCreateShaderObjectARB(GL::GeometryShader);
 			glCheck(glShaderSource(geometryShader, 1, &gs, NULL));
 			glCheck(glCompileShader(geometryShader));
 
@@ -506,7 +506,7 @@ namespace ml
 		{
 			// Create and Compile the shader
 			int32_t fragmentShader;
-			glCheck(fragmentShader = glCreateShaderObjectARB(Enum::FragmentShader));
+			glCheck(fragmentShader = glCreateShaderObjectARB(GL::FragmentShader));
 			glCheck(glShaderSource(fragmentShader, 1, &fs, NULL));
 			glCheck(glCompileShader(fragmentShader));
 

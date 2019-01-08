@@ -4,7 +4,7 @@
 namespace ml
 {
 	Mesh::Mesh()
-		: m_primitive(Enum::Points)
+		: m_primitive(GL::Points)
 		, m_vertices()
 		, m_indices()
 		, m_flattened()
@@ -12,7 +12,7 @@ namespace ml
 	{
 	}
 
-	Mesh::Mesh(Enum::Primitive primitive, const VertexList & vertices, const IndexList & indices)
+	Mesh::Mesh(GL::Primitive primitive, const VertexList & vertices, const IndexList & indices)
 		: m_primitive(primitive)
 		, m_vertices(vertices)
 		, m_indices(indices)

@@ -27,7 +27,7 @@ namespace ml
 		
 	public:
 		static void			errorPause(bool value);
-		static Enum::Error	getError();
+		static GL::Error	getError();
 		static void			checkError(const char * file, unsigned int line, const char * expression);
 		
 	public:

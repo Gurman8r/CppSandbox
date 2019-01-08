@@ -6,7 +6,7 @@
 
 namespace ml
 {
-	class ML_GRAPHICS_API Enum final
+	class ML_GRAPHICS_API GL_Enum final
 	{
 	public:
 		using Base = uint32_t;
@@ -257,6 +257,8 @@ namespace ml
 			Texture31,						// GL_TEXTURE31
 		};
 	};
+
+	using GL = GL_Enum;
 }
 
 #endif // !_GRAPHICS_ENUM_H_

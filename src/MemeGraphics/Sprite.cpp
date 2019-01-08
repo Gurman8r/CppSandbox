@@ -91,8 +91,8 @@ namespace ml
 	{
 		if (isValid())
 		{
-			target.disableFlag(Enum::DepthTest);
-			target.disableFlag(Enum::CullFace);
+			target.disableFlag(GL::DepthTest);
+			target.disableFlag(GL::CullFace);
 
 			state.shader = shader();
 			state.texture = texture();
@@ -100,8 +100,8 @@ namespace ml
 			state.mesh = mesh();
 			target.draw(state);
 
-			target.enableFlag(Enum::DepthTest);
-			target.enableFlag(Enum::CullFace);
+			target.enableFlag(GL::DepthTest);
+			target.enableFlag(GL::CullFace);
 		}
 	}
 }

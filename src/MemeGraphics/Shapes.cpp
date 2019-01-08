@@ -13,7 +13,7 @@ namespace ml
 		0, 1, 2
 	});
 	const Mesh Shapes::Triangle::Mesh(
-		Enum::Primitive::Triangles,
+		GL::Primitive::Triangles,
 		Shapes::Triangle::Vertices,
 		Shapes::Triangle::Indices);
 
@@ -35,7 +35,7 @@ namespace ml
 		1, 2, 3
 	});
 	const Mesh Shapes::Quad::Mesh(
-		Enum::Primitive::Triangles,
+		GL::Primitive::Triangles,
 		Shapes::Quad::Vertices, 
 		Shapes::Quad::Indices);
 
@@ -93,7 +93,7 @@ namespace ml
 		20, 23, 22,
 	});
 	const Mesh Shapes::Cube::Mesh(
-		Enum::Primitive::Triangles,
+		GL::Primitive::Triangles,
 		Shapes::Cube::Vertices, 
 		Shapes::Cube::Indices);
 }

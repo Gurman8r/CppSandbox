@@ -525,13 +525,13 @@ inline static int graphicsStub()
 	ml::Debug::LogInfo("Loading Geometry...");
 
 	ml::VAO vao(1);
-	ml::VBO vbo(ml::Enum::StaticDraw, ml::Shapes::Quad::Mesh.flattened());
-	ml::IBO ibo(ml::Enum::StaticDraw, ml::Shapes::Quad::Mesh.indices());
+	ml::VBO vbo(ml::GL::StaticDraw, ml::Shapes::Quad::Mesh.flattened());
+	ml::IBO ibo(ml::GL::StaticDraw, ml::Shapes::Quad::Mesh.indices());
 
 	ml::BufferLayout layout({
-		{ 0, 3, ml::Enum::Float, false, ml::Vertex::Size, 0, sizeof(float) },
-		{ 1, 4, ml::Enum::Float, false, ml::Vertex::Size, 3, sizeof(float) },
-		{ 2, 2, ml::Enum::Float, false, ml::Vertex::Size, 7, sizeof(float) },
+		{ 0, 3, ml::GL::Float, false, ml::Vertex::Size, 0, sizeof(float) },
+		{ 1, 4, ml::GL::Float, false, ml::Vertex::Size, 3, sizeof(float) },
+		{ 2, 2, ml::GL::Float, false, ml::Vertex::Size, 7, sizeof(float) },
 	});
 	layout.use();
 
@@ -555,8 +555,8 @@ inline static int graphicsStub()
 			// Draw
 			window.clear(ml::Color::Violet);
 			{
-				window.disableFlag(ml::Enum::CullFace);
-				window.disableFlag(ml::Enum::DepthTest);
+				window.disableFlag(ml::GL::CullFace);
+				window.disableFlag(ml::GL::DepthTest);
 				{
 					shaderBasic.use();
 					shaderBasic.setUniform(ml::Uniform::Color,		ml::Color::White);
@@ -565,10 +565,10 @@ inline static int graphicsStub()
 					shaderBasic.setUniform(ml::Uniform::Proj,		proj_ortho);
 					shaderBasic.setUniform(ml::Uniform::Texture,	&texture);
 
-					window.drawElements(ibo, ml::Enum::Triangles, ml::Enum::UnsignedInt);
+					window.drawElements(ibo, ml::GL::Triangles, ml::GL::UnsignedInt);
 				}
-				window.enableFlag(ml::Enum::CullFace);
-				window.enableFlag(ml::Enum::DepthTest);
+				window.enableFlag(ml::GL::CullFace);
+				window.enableFlag(ml::GL::DepthTest);
 			}
 			window.swapBuffers();
 			window.pollEvents();

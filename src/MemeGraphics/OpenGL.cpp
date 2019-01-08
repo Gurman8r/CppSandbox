@@ -19,7 +19,7 @@ namespace ml
 			m_good = (glewInit() == GLEW_OK);
 
 			Debug::LogInfo("OpenGL version supported by this platform: {0}", 
-				getString(Enum::Version));
+				getString(GL::Version));
 		}
 		return m_good;
 	}
@@ -30,17 +30,17 @@ namespace ml
 		m_errorPause = value;
 	}
 
-	Enum::Error OpenGL::getError()
+	GL::Error OpenGL::getError()
 	{
-		return static_cast<Enum::Error>(glGetError());
+		return static_cast<GL::Error>(glGetError());
 	}
 
 	void OpenGL::checkError(const char * file, unsigned int line, const char * expression)
 	{
 		// Get the last error
-		Enum::Error errorCode = getError();
+		GL::Error errorCode = getError();
 		
-		if (errorCode != Enum::NoError)
+		if (errorCode != GL::NoError)
 		{
 			std::string fileString	= file;
 			std::string fileName	= fileString.substr(fileString.find_last_of("\\/") + 1);
@@ -50,31 +50,31 @@ namespace ml
 			// Decode the error code
 			switch (errorCode)
 			{
-			case Enum::InvalidEnum:
-				errorName = "Invalid Enum";
+			case GL::InvalidEnum:
+				errorName = "Invalid GL";
 				errorDesc = "An unacceptable value has been specified for an enumerated argument.";
 				break;
-			case Enum::InvalidValue:
+			case GL::InvalidValue:
 				errorName = "Invalid Value";
 				errorDesc = "A numeric argument is out of range.";
 				break;
-			case Enum::InvalidOperation:
+			case GL::InvalidOperation:
 				errorName = "Invalid Operation";
 				errorDesc = "The specified operation is not allowed in the current state.";
 				break;
-			case Enum::StackOverflow:
+			case GL::StackOverflow:
 				errorName = "Stack Overflow";
 				errorDesc = "This command would cause a stack overflow.";
 				break;
-			case Enum::StackUnderflow:
+			case GL::StackUnderflow:
 				errorName = "Stack Underflow";
 				errorDesc = "This command would cause a stack underflow.";
 				break;
-			case Enum::OutOfMemory:
+			case GL::OutOfMemory:
 				errorName = "Out Of Memory";
 				errorDesc = "There is not enough memory left to execute the command.";
 				break;
-			case Enum::InvalidFramebufferOperation:
+			case GL::InvalidFramebufferOperation:
 				errorName = "Invalid Framebuffer Operation";
 				errorDesc = "The object bound to framebuffer binding is not \"framebuffer complete\".";
 				break;

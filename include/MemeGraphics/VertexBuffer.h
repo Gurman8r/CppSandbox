@@ -11,8 +11,8 @@ namespace ml
 		: public ITrackable
 	{
 	public:
-		VertexBuffer(Enum::Usage usage, const void * data, uint32_t size);
-		VertexBuffer(Enum::Usage usage, const std::vector<float> & data);
+		VertexBuffer(GL::Usage usage, const void * data, uint32_t size);
+		VertexBuffer(GL::Usage usage, const std::vector<float> & data);
 		VertexBuffer(const VertexBuffer & copy);
 		~VertexBuffer();
 
@@ -23,12 +23,12 @@ namespace ml
 
 		inline const uint32_t &		id() const		{ return m_id; }
 		inline const void *			data() const	{ return m_data;}
-		inline const Enum::Usage &	usage() const	{ return m_usage; }
+		inline const GL::Usage &	usage() const	{ return m_usage; }
 
 	private:
 		uint32_t	 m_id;
 		const void * m_data;
-		Enum::Usage	 m_usage;
+		GL::Usage	 m_usage;
 		uint32_t	 m_size;
 	};
 

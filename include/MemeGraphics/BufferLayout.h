@@ -13,7 +13,7 @@ namespace ml
 		{
 			uint32_t	index;
 			uint32_t	size;
-			Enum::Type	type;
+			GL::Type	type;
 			bool		normalized;
 			uint32_t	stride;
 			uint32_t	offset;

@@ -3,7 +3,7 @@
 
 namespace ml
 {
-	VertexBuffer::VertexBuffer(Enum::Usage usage, const void * data, uint32_t size)
+	VertexBuffer::VertexBuffer(GL::Usage usage, const void * data, uint32_t size)
 		: m_usage(usage)
 		, m_data(data)
 		, m_size(size)
@@ -13,13 +13,13 @@ namespace ml
 		bind();
 		
 		glCheck(glBufferData(
-			Enum::ArrayBuffer, 
+			GL::ArrayBuffer, 
 			(m_size * sizeof(float)),
 			m_data, 
 			m_usage));
 	}
 
-	VertexBuffer::VertexBuffer(Enum::Usage usage, const std::vector<float>& data)
+	VertexBuffer::VertexBuffer(GL::Usage usage, const std::vector<float>& data)
 		: VertexBuffer(usage, &data[0], (uint32_t)data.size())
 	{
 	}
@@ -46,11 +46,11 @@ namespace ml
 
 	void VertexBuffer::bind() const
 	{
-		glCheck(glBindBuffer(Enum::ArrayBuffer, m_id));
+		glCheck(glBindBuffer(GL::ArrayBuffer, m_id));
 	}
 
 	void VertexBuffer::unbind() const
 	{
-		glCheck(glBindBuffer(Enum::ArrayBuffer, 0));
+		glCheck(glBindBuffer(GL::ArrayBuffer, 0));
 	}
 }

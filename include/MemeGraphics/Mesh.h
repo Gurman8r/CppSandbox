@@ -13,14 +13,14 @@ namespace ml
 	{
 	public:
 		Mesh();
-		Mesh(Enum::Primitive primitive, const VertexList & vertices, const IndexList & indices);
+		Mesh(GL::Primitive primitive, const VertexList & vertices, const IndexList & indices);
 		Mesh(const Mesh& copy);
 		~Mesh();
 
 		bool cleanup() override;
 		bool loadFromFile(const std::string & filename) override;
 
-		inline const Enum::Primitive & primitive() const { return m_primitive; }
+		inline const GL::Primitive & primitive() const { return m_primitive; }
 		inline const VertexList & vertices() const { return m_vertices; }
 		inline const IndexList & indices() const { return m_indices; }
 		inline const FloatList & flattened() const
@@ -36,7 +36,7 @@ namespace ml
 		static const FloatList & Flatten(const VertexList & value);
 
 	private:
-		Enum::Primitive	m_primitive;
+		GL::Primitive	m_primitive;
 		VertexList		m_vertices;
 		IndexList		m_indices;
 
