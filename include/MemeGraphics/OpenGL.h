@@ -26,8 +26,8 @@ namespace ml
 		static bool			initGL(bool experimental);
 		
 	public:
-		static void			errorPause(bool value);
 		static GL::Error	getError();
+		static void			errorPause(bool value);
 		static void			checkError(const char * file, unsigned int line, const char * expression);
 		
 	public:

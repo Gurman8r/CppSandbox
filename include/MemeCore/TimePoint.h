@@ -10,134 +10,67 @@ namespace ml
 {
 	class ML_CORE_API TimePoint final 
 		: public ITrackable
-		, public IComparable<uint64_t>
 		, public IComparable<TimePoint>
+		, public IComparable<uint64_t>
 	{
-	public:
-		using duration_type = std::chrono::duration<uint64_t>;
-		using nanoseconds	= std::chrono::nanoseconds;
-		using milliseconds	= std::chrono::milliseconds;
+	private:
+		uint64_t m_value;
 
 	public:
-		TimePoint()
-			: m_ms(0UL)
-		{
-		}		
-		TimePoint(uint64_t value)
-			: m_ms(value)
-		{
-		}		
-		TimePoint(const nanoseconds & value)
-			: TimePoint(std::chrono::duration_cast<milliseconds>(value))
-		{
-		}		
-		TimePoint(const milliseconds & value)
-			: m_ms(value.count())
-		{
-		}		
-		TimePoint(const TimePoint & copy)
-			: m_ms(copy.m_ms)
-		{
-		}		
-		~TimePoint()
-		{
-		}
-		
-	public:
-		inline const uint64_t millis() const
-		{
-			return m_ms;
-		}
-		
-		inline const uint64_t seconds() const
-		{
-			return millis() / 1000UL;
-		}
-		
-		inline const uint64_t minutes() const
-		{
-			return seconds() / 60UL;
-		}
-		
-		inline const uint64_t hours() const
-		{
-			return minutes() / 24UL;
-		}
+		using nanoseconds_t		= std::chrono::nanoseconds;
+		using microseconds_t	= std::chrono::microseconds;
+		using milliseconds_t	= std::chrono::milliseconds;
+		using seconds_t			= std::chrono::seconds;
+		using minutes_t			= std::chrono::minutes;
+		using hours_t			= std::chrono::hours;
 
 	public:
-		inline friend TimePoint	operator+(const TimePoint & lhs, const TimePoint & rhs)
-		{
-			return lhs + (uint64_t)rhs;
-		}
+		TimePoint();
+		TimePoint(uint64_t value);
+		TimePoint(const nanoseconds_t & value);
+		TimePoint(const milliseconds_t & value);
+		TimePoint(const TimePoint & copy);
+		~TimePoint();
 		
-		inline friend TimePoint	operator-(const TimePoint & lhs, const TimePoint & rhs)
-		{
-			return lhs - (uint64_t)rhs;
-		}
-
-
-		inline friend TimePoint & operator+=(TimePoint & lhs, const TimePoint & rhs)
-		{
-			return (lhs = (lhs + rhs));
-		}
-		
-		inline friend TimePoint & operator-=(TimePoint & lhs, const TimePoint & rhs)
-		{
-			return (lhs = (lhs - rhs));
-		}
-
-
-		inline friend TimePoint	operator+(const TimePoint & lhs, uint64_t rhs)
-		{
-			return (lhs.millis() + rhs);
-		}
-		
-		inline friend TimePoint	operator-(const TimePoint & lhs, uint64_t rhs)
-		{
-			return (lhs.millis() - rhs);
-		}
-
-
-		inline friend TimePoint & operator+=(TimePoint & lhs, uint64_t rhs)
-		{
-			return (lhs = (lhs + rhs));
-		}
-		
-		inline friend TimePoint & operator-=(TimePoint & lhs, uint64_t rhs)
-		{
-			return (lhs = (lhs - rhs));
-		}
+	public:
+		const uint64_t millis() const;		
+		const uint64_t seconds() const;		
+		const uint64_t minutes() const;		
+		const uint64_t hours() const;
 
 	public:
+		friend TimePoint	operator+(const TimePoint & lhs, const TimePoint & rhs);
+		friend TimePoint	operator-(const TimePoint & lhs, const TimePoint & rhs);
+		friend TimePoint & operator+=(TimePoint & lhs, const TimePoint & rhs);
+		friend TimePoint & operator-=(TimePoint & lhs, const TimePoint & rhs);
+		friend TimePoint	operator+(const TimePoint & lhs, uint64_t rhs);
+		friend TimePoint	operator-(const TimePoint & lhs, uint64_t rhs);
+		friend TimePoint & operator+=(TimePoint & lhs, uint64_t rhs);
+		friend TimePoint & operator-=(TimePoint & lhs, uint64_t rhs);
+
+	public:
+		inline bool equals(const TimePoint & other) const override
+		{
+			return millis() == other.millis();
+		}
+		inline bool lessThan(const TimePoint & other) const override
+		{
+			return millis() < other.millis();
+		}
+
 		inline bool equals(const uint64_t & other) const override
 		{
 			return millis() == other;
 		}
-		
 		inline bool lessThan(const uint64_t & other) const override
 		{
 			return millis() < other;
 		}
-		
 
-		inline bool equals(const TimePoint & other) const override
-		{
-			return (*this) == (uint64_t)other;
-		}
-		
-		inline bool lessThan(const TimePoint & other) const override
-		{
-			return (*this) < (uint64_t)other;
-		}
-		
-
-		inline operator uint64_t() const
-		{
-			return millis();
-		}
+	public:
+		inline operator uint64_t()	const { return millis(); }
+		inline operator float()	const { return static_cast<float>(millis()); }
 	
-	private:
-		uint64_t m_ms;
 	};
 }
 

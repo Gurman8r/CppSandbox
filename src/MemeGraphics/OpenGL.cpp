@@ -25,14 +25,14 @@ namespace ml
 	}
 
 
-	void OpenGL::errorPause(bool value)
-	{
-		m_errorPause = value;
-	}
-
 	GL::Error OpenGL::getError()
 	{
 		return static_cast<GL::Error>(glGetError());
+	}
+
+	void OpenGL::errorPause(bool value)
+	{
+		m_errorPause = value;
 	}
 
 	void OpenGL::checkError(const char * file, unsigned int line, const char * expression)

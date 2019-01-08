@@ -17,13 +17,13 @@ namespace ml
 		Timer(const Timer& copy);
 		~Timer();
 
-		Timer& pause(bool pause);
-		Timer& reset();
-		Timer& start();
-		Timer& stop();
+		Timer & pause(bool pause);
+		Timer & reset();
+		Timer & start();
+		Timer & stop();
 
-		TimePoint	elapsed() const;
-		bool		paused() const;
+		const TimePoint & elapsed() const;
+		const bool & paused() const;
 
 	private:
 		mutable TimePoint m_elapsed;

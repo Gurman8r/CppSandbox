@@ -26,8 +26,8 @@ namespace ml
 
 	public:
 		BufferLayout();
-		BufferLayout(const Elements & elements);
-		BufferLayout(const BufferLayout & copy);
+		BufferLayout(const Elements & elements, bool dontUse = true);
+		BufferLayout(const BufferLayout & copy, bool dontUse = true);
 		~BufferLayout();
 
 		void use() const;

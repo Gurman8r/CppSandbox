@@ -47,8 +47,8 @@ namespace ml
 		FT_Library library;
 		if (FT_Init_FreeType(&library) != 0)
 		{
-			Debug::LogError("Failed to load font \"{0}\" (failed to initialize FreeType)", filename);
-			return false;
+			return Debug::LogError("Failed to load font \"{0}\" (failed to initialize FreeType)", 
+				filename);
 		}
 		m_library = library;
 
@@ -56,26 +56,26 @@ namespace ml
 		FT_Face face;
 		if (FT_New_Face(static_cast<FT_Library>(m_library), filename.c_str(), 0, &face) != 0)
 		{
-			Debug::LogError("Failed to load font \"{0}\" (failed to create the font face)", filename);
-			return false;
+			return Debug::LogError("Failed to load font \"{0}\" (failed to create the font face)",
+				filename);
 		}
 
 		// Load the stroker that will be used to outline the font
 		FT_Stroker stroker;
 		if (FT_Stroker_New(static_cast<FT_Library>(m_library), &stroker) != 0)
 		{
-			Debug::LogError("Failed to load font \"{0}\" (failed to create the stroker)", filename);
 			FT_Done_Face(face);
-			return false;
+			return Debug::LogError("Failed to load font \"{0}\" (failed to create the stroker)", 
+				filename);
 		}
 
 		// Select the unicode character map
 		if (FT_Select_Charmap(face, FT_ENCODING_UNICODE) != 0)
 		{
-			Debug::LogError("Failed to load font \"{0}\" (failed to set the Unicode character set)", filename);
 			FT_Stroker_Done(stroker);
 			FT_Done_Face(face);
-			return false;
+			return Debug::LogError("Failed to load font \"{0}\" (failed to set the Unicode character set)", 
+				filename);
 		}
 
 		// Store the loaded font in our ugly void* :)
@@ -136,7 +136,7 @@ namespace ml
 		// Load character glyph 
 		if (FT_Load_Char(face, c, FT_LOAD_RENDER))
 		{
-			Debug::LogError("FREETYTPE: Failed to load Glyph \'{0}\'", c);
+			Debug::LogWarning("Failed to load Glyph \'{0}\'", c);
 			return glyph;
 		}
 

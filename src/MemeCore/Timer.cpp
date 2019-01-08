@@ -61,14 +61,14 @@ namespace ml
 	}
 
 
-	TimePoint Timer::elapsed() const
+	const TimePoint & Timer::elapsed() const
 	{
 		return (m_paused)
 			? m_elapsed
 			: m_elapsed = (m_clock.now() - m_min);
 	}
 
-	bool Timer::paused() const
+	const bool & Timer::paused() const
 	{
 		return m_paused;
 	}

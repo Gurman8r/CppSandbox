@@ -19,17 +19,21 @@ namespace ml
 namespace ml
 {
 	BufferLayout::BufferLayout()
-		: BufferLayout(Elements())
+		: BufferLayout(Elements(), false)
 	{
 	}
 
-	BufferLayout::BufferLayout(const Elements & elements)
+	BufferLayout::BufferLayout(const Elements & elements, bool dontUse)
 		: m_elements(elements)
 	{
+		if (!dontUse)
+		{
+			use();
+		}
 	}
 
-	BufferLayout::BufferLayout(const BufferLayout & copy)
-		: BufferLayout(copy.m_elements)
+	BufferLayout::BufferLayout(const BufferLayout & copy, bool dontUse)
+		: BufferLayout(copy.m_elements, dontUse)
 	{
 	}
 

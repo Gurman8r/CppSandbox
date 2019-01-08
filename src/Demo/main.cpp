@@ -3,7 +3,7 @@
 #include <dirent.h>
 #include <INIReader.h>
 #include <MemeCore/DebugUtility.h>
-#include <MemeCore/Timer.h>
+#include <MemeCore/Time.h>
 #include <MemeCore/MemoryTracker.h>
 #include <MemeCore/ConsoleUtility.h>
 #include <MemeCore/InputState.h>
@@ -525,15 +525,13 @@ inline static int graphicsStub()
 	ml::Debug::LogInfo("Loading Geometry...");
 
 	ml::VAO vao(1);
-	ml::VBO vbo(ml::GL::StaticDraw, ml::Shapes::Quad::Mesh.flattened());
-	ml::IBO ibo(ml::GL::StaticDraw, ml::Shapes::Quad::Mesh.indices());
-
 	ml::BufferLayout layout({
 		{ 0, 3, ml::GL::Float, false, ml::Vertex::Size, 0, sizeof(float) },
 		{ 1, 4, ml::GL::Float, false, ml::Vertex::Size, 3, sizeof(float) },
 		{ 2, 2, ml::GL::Float, false, ml::Vertex::Size, 7, sizeof(float) },
 	});
-	layout.use();
+	ml::VBO vbo(ml::GL::StaticDraw, ml::Shapes::Quad::Mesh.flattened());
+	ml::IBO ibo(ml::GL::StaticDraw, ml::Shapes::Quad::Mesh.indices());
 
 
 	// Matricies
@@ -582,9 +580,19 @@ inline static int graphicsStub()
 		input.endStep();
 		loopTimer.stop();
 
-		window.title(ml::StringUtility::Format("{0} @ {1}ms", 
+		ml::TimePoint now = ML_Time.now();
+
+		ml::TimePoint test;
+
+		window.title(ml::StringUtility::Format("{0} | {1}ms | {2}{3}:{4}{5}:{6}{7}", 
 			settings.title, 
-			loopTimer.elapsed().millis()));
+			loopTimer.elapsed().millis(),
+			now.minutes() / 10 % 10,
+			now.minutes() % 10,
+			now.seconds() / 10 % 10,
+			now.seconds() % 10,
+			now.millis() / 10 % 10,
+			now.millis() % 10));
 	}
 
 	std::cout << "OK" << std::endl;
@@ -601,6 +609,8 @@ int main(int argc, char** argv)
 		std::cerr << "Unable to locate config: \'" << CONFIG_INI << "\'." << std::endl;
 		return ml::ConsoleUtility::pause(EXIT_FAILURE);
 	}
+
+	ML_Time.start();
 	
 	switch (settings.program)
 	{
