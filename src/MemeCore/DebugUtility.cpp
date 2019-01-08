@@ -3,6 +3,14 @@
 
 namespace ml
 {
+	void Debug::terminate(bool areYouSure)
+	{
+		if (areYouSure)
+		{
+			std::terminate();
+		}
+	}
+
 	bool Debug::Log(const std::string & message)
 	{
 		out()

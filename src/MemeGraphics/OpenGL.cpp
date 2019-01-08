@@ -2,6 +2,7 @@
 #include <MemeGraphics/GLEW.h>
 #include <MemeCore/DebugUtility.h>
 #include <MemeCore/ConsoleUtility.h>
+#include <cassert>
 
 namespace ml
 {
@@ -10,6 +11,8 @@ namespace ml
 
 	bool OpenGL::init(bool experimental)
 	{
+		assert((sizeof(GL::Enum) == sizeof(GLenum)));
+
 		static bool checked = false;
 		if (!checked)
 		{

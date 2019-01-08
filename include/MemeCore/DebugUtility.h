@@ -5,6 +5,14 @@
 #include <iostream>
 #include <unordered_map>
 
+#ifdef ML_DEBUG
+	#if defined(ML_VisualCpp)
+		#define ML_DEBUG_BREAK __debugbreak()
+	#else
+		#define ML_DEBUG_BREAK raise(SIGTRAP)
+	#endif
+#endif // ML_DEBUG
+
 namespace ml
 {
 	inline static std::ostream & out() { return std::cout; }
@@ -12,6 +20,9 @@ namespace ml
 
 	class ML_CORE_API Debug
 	{
+	public:
+		static void terminate(bool areYouSure);
+
 	public:
 		static bool Log(const std::string& message);
 		static bool LogWarning(const std::string& message);

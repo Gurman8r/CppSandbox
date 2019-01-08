@@ -423,7 +423,7 @@ inline static int audioStub()
 
 inline static int graphicsStub()
 {
-	ml::Debug::Log("Graphics Stub");
+	ml::Debug::Log("{0}.exe", settings.title);
 
 	// Window
 	ml::Debug::Log("Creating Window...");
@@ -544,9 +544,10 @@ inline static int graphicsStub()
 	// Load Geometry
 	ml::Debug::Log("Loading Geometry...");
 
+	const ml::Mesh & mesh = ml::Shapes::Quad::Mesh;
 	ml::VAO vao(1);
-	ml::VBO vbo(ml::GL::StaticDraw, ml::Shapes::Quad::Mesh.flattened());
-	ml::IBO ibo(ml::GL::StaticDraw, ml::Shapes::Quad::Mesh.indices());
+	ml::VBO vbo(ml::GL::StaticDraw, mesh.flattened());
+	ml::IBO ibo(ml::GL::StaticDraw, mesh.indices());
 	ml::BufferLayout layout({
 		{ 0, 3, ml::GL::Float, false, ml::Vertex::Size, 0, sizeof(float) },
 		{ 1, 4, ml::GL::Float, false, ml::Vertex::Size, 3, sizeof(float) },
@@ -554,7 +555,6 @@ inline static int graphicsStub()
 	});
 	layout.use();
 
-	// Matricies
 	const ml::mat4f proj_ortho = ml::Transform::Ortho(ml::vec2f::Zero, window.size());
 	const ml::mat4f proj_persp = ml::Transform::Persp(90.f, window.getAspect(), 0.1f, 1000.f);
 	
@@ -603,7 +603,7 @@ inline static int graphicsStub()
 			// Window Title
 			const ml::Duration & now = ML_Time.elapsed();
 			window.title(ml::StringUtility::Format(
-				"{0} | {1} ms | {2} fps | {3}",
+				"{0}.exe | {1} ms | {2} fps | {3}",
 				settings.title,
 				elapsed.millis(),
 				getFPS(elapsed.delta()),

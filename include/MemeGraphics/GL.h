@@ -6,7 +6,7 @@
 
 namespace ml
 {
-	namespace GL
+	struct ML_GRAPHICS_API GL final
 	{
 		using Enum = uint32_t;
 
