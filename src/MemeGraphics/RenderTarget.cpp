@@ -5,14 +5,14 @@ namespace ml
 {
 	RenderTarget & RenderTarget::clear()
 	{
-		glCheck(glClear(GL_DEPTH_BUFFER_BIT));
+		glCheck(glClear(Enum::DepthBufferBit));
 		return (*this);
 	}
 	
-	RenderTarget & RenderTarget::clear(const vec4f & value)
+	RenderTarget & RenderTarget::clear(const vec4f & color)
 	{
-		glCheck(glClearColor(value[0], value[1], value[2], value[3]));
-		glCheck(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+		glCheck(glClearColor(color[0], color[1], color[2], color[3]));
+		glCheck(glClear(Enum::ColorBufferBit | Enum::DepthBufferBit));
 		return (*this);
 	}
 	
@@ -28,50 +28,73 @@ namespace ml
 		return (*this);
 	}
 
-	RenderTarget & RenderTarget::draw(const VertexArray & vertices, const RenderState & state)
-	{
-		return draw(vertices.ptr(), vertices.count(), vertices.primitive(), state);
-	}
 
-	RenderTarget & RenderTarget::draw(const Vertex * vertices, std::size_t count, Enum::Primitive type, const RenderState & state)
-	{
-		return (*this);
-	}
-
-	RenderTarget & RenderTarget::draw(const VertexBuffer & buffer, std::size_t begin, std::size_t count, const RenderState & state)
-	{
-		return (*this);
-	}
-
-
-	RenderTarget & RenderTarget::drawElements(const IBO & ibo, Enum::Primitive primitive, Enum::Type type)
+	RenderTarget & RenderTarget::drawElements(const IBO & ibo, Enum::Primitive prim, Enum::Type type)
 	{
 		ibo.bind();
-		return drawElements(primitive, type, ibo.size(), NULL);
+		glCheck(glDrawElements(prim, (uint32_t)ibo.size(), type, NULL));
+		return (*this);
+	}
+	
+	
+	
+	bool RenderTarget::getFlag(Enum::Base value) const
+	{
+		static bool tmp;
+		glCheck(tmp = glIsEnabled(value));
+		return tmp;
 	}
 
-	RenderTarget & RenderTarget::drawElements(Enum::Primitive primitive, Enum::Type type, std::size_t count, const float * indices)
+	void RenderTarget::setFlag(Enum::Base flag, bool value) const
 	{
-		glCheck(glDrawElements(primitive, count, type, indices));
-		return (*this);
+		if (value)
+		{
+			enableFlag(flag);
+		}
+		else
+		{
+			disableFlag(flag);
+		}
 	}
-	
-	
-	RenderTarget & RenderTarget::enableFlag(Enum::Flag value)
+		
+	void RenderTarget::enableFlag(Enum::Base value) const
 	{
-		glCheck(glEnable(static_cast<GLenum>(value)));
-		return (*this);
+		glCheck(glEnable(value));
 	}
 
-	RenderTarget & RenderTarget::disableFlag(Enum::Flag value)
+	void RenderTarget::disableFlag(Enum::Base value) const
 	{
-		glCheck(glDisable(static_cast<GLenum>(value)));
-		return (*this);
+		glCheck(glDisable(value));
 	}
 	
-	
-	bool RenderTarget::isEnabled(Enum::Flag value) const
+
+	void RenderTarget::setActiveTexture(Enum::TextureID textureID) const
 	{
-		return (glIsEnabled(value) == GL_TRUE);
+		glCheck(glActiveTexture(textureID));
+	}
+
+	void RenderTarget::setAlphaFunc(Enum::Comparison cmp, float value) const
+	{
+		glCheck(glAlphaFunc(cmp, value));
+	}
+
+	void RenderTarget::setBlendFunc(Enum::Factor src, Enum::Factor dst) const
+	{
+		glCheck(glBlendFunc(src, dst));
+	}
+
+	void RenderTarget::setCullFace(Enum::Face face) const
+	{
+		glCheck(glCullFace(face));
+	}
+
+	void RenderTarget::setDepthFunc(Enum::Comparison cmp) const
+	{
+		glCheck(glDepthFunc(cmp));
+	}
+	
+	void RenderTarget::setViewport(const vec2i & pos, const vec2i & size) const
+	{
+		glCheck(glViewport(pos[0], pos[1], size[0], size[1]));
 	}
 }

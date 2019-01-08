@@ -76,44 +76,44 @@ namespace ml
 	}
 
 
-	const mat4f & Transform::Orthographic(float l, float r, float t, float b)
+	mat4f Transform::Ortho(const vec2f & position, const vec2f & size)
 	{
-		static mat4f m;
-		return m = mat4f(glm::value_ptr(glm::ortho(l, r, t, b)));
+		return Ortho(position[0], size[0], position[1], size[1]);
 	}
 
-	const mat4f & Transform::Perspective(float fov, float aspect, float near, float far)
+	mat4f Transform::Ortho(float left, float right, float top, float bottom)
 	{
-		static mat4f m;
-		return m = mat4f(glm::value_ptr(glm::perspective(fov, aspect, near, far)));
+		return mat4f(glm::value_ptr(glm::ortho(left, right, top, bottom)));
+	}
+
+	mat4f Transform::Persp(float fov, float aspect, float near, float far)
+	{
+		return mat4f(glm::value_ptr(glm::perspective(fov, aspect, near, far)));
 	}
 
 
 	Transform & Transform::Rotate(float angle, const vec3f & value)
 	{
-		static glm::vec3 v;
 		m_matrix = mat4f(glm::value_ptr(glm::rotate(
 			ToMat4(m_matrix),
 			(angle * Maths::Deg2Rad),
-			v = glm::vec3(value[0], value[1], value[2]))));
+			glm::vec3(value[0], value[1], value[2]))));
 		return changed(true);
 	}
 
 	Transform & Transform::Scale(const vec3f & value)
 	{
-		static glm::vec3 v;
 		m_matrix = mat4f(glm::value_ptr(glm::scale(
 			ToMat4(m_matrix),
-			v = glm::vec3(value[0], value[1], value[2]))));
+			glm::vec3(value[0], value[1], value[2]))));
 		return changed(true);
 	}
 
 	Transform & Transform::Translate(const vec3f & value)
 	{
-		static glm::vec3 v;
 		m_matrix = mat4f(glm::value_ptr(glm::translate(
 			ToMat4(m_matrix),
-			v = glm::vec3(value[0], value[1], value[2]))));
+			glm::vec3(value[0], value[1], value[2]))));
 		return changed(true);
 	}
 	
@@ -146,8 +146,7 @@ namespace ml
 		m_matrix[8] = value[6]; m_matrix[9] = value[7]; m_matrix[11] = value[8];
 		return changed(true);
 	}
-
-
+	
 	Transform & Transform::forward(const vec3f & value)
 	{
 		return changed(true);
@@ -179,77 +178,66 @@ namespace ml
 	}
 	
 	
-	const vec3f & Transform::localScale() const
+	vec3f Transform::localScale() const
 	{
-		static vec3f out;
-		return out = vec3f(
+		return vec3f(
 			m_matrix[0],
 			m_matrix[5],
 			m_matrix[10]);
 	}
 	
-	const vec3f & Transform::position() const
+	vec3f Transform::position() const
 	{
-		static vec3f out;
 		return vec3f(
 			m_matrix[12],
 			m_matrix[13],
 			m_matrix[14]);
 	}
 	
-	const quat	& Transform::rotation() const
+	quat Transform::rotation() const
 	{
 		static glm::quat gq;
-		static ml::quat mq;
 		gq = ToQuat(m_matrix);
-		return mq = quat(gq[0], gq[1], gq[2], gq[3]);
+		return quat(gq[0], gq[1], gq[2], gq[3]);
 	}
 
-	const mat3f & Transform::rotationMatrix() const
+	mat3f Transform::rotationMatrix() const
 	{
-		static mat3f out;
-		return  mat3f({
+		return mat3f({
 			m_matrix[0], m_matrix[1], m_matrix[2],
 			m_matrix[4], m_matrix[5], m_matrix[7],
 			m_matrix[8], m_matrix[9], m_matrix[11]
 			});
 	}
-
-
-	const vec3f & Transform::forward() const
+	
+	vec3f Transform::forward() const
 	{
-		static vec3f out;
-		return out;
+		return vec3f();
 	}
 
-	const vec3f & Transform::backward() const
+	vec3f Transform::backward() const
 	{
-		static vec3f out;
-		return out;
+		return vec3f();
 	}
 
-	const vec3f & Transform::right() const
+	vec3f Transform::right() const
 	{
-		static vec3f out;
-		return out;
+		return vec3f();
 	}
 
-	const vec3f & Transform::left() const
+	vec3f Transform::left() const
 	{
-		static vec3f out;
-		return out;
+		return vec3f();
 	}
 
-	const vec3f & Transform::up() const
+	vec3f Transform::up() const
 	{
-		static vec3f out;
-		return out;
+		return vec3f();
 	}
 
-	const vec3f & Transform::down() const
+	vec3f Transform::down() const
 	{
-		static vec3f out;
-		return out;
+		return vec3f();
 	}
 	
 }

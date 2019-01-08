@@ -233,7 +233,7 @@ namespace ml
 					}
 					else
 					{
-						return Var().errorValue("AST_Call : {0} Failed Running Func Body",
+						return Var().errorValue("AST_Call : {0} Failed Running Comparison Body",
 							f->name);
 					}
 				}
@@ -245,12 +245,12 @@ namespace ml
 			}
 			else
 			{
-				return Var().errorValue("AST_Call : {0} Func Body Not Found", f->name);
+				return Var().errorValue("AST_Call : {0} Comparison Body Not Found", f->name);
 			}
 		}
 		else
 		{
-			return Var().errorValue("AST_Call : {0} Func Not Found", name->value);
+			return Var().errorValue("AST_Call : {0} Comparison Not Found", name->value);
 		}
 	}
 

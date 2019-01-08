@@ -36,6 +36,10 @@ namespace ml
 		vec3f m_position;
 		vec2f m_texcoords;
 	};
+
+	using VertexList	= std::vector<Vertex>;
+	using FloatList		= std::vector<float>;
+	using IndexList		= std::vector<uint32_t>;
 }
 
 #endif // !_VERTEX_H_

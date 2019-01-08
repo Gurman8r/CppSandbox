@@ -1,7 +1,7 @@
 #ifndef _VERTEX_BUFFER_H_
 #define _VERTEX_BUFFER_H_
 
-#include <MemeGraphics/Enum.h>
+#include <MemeGraphics/GL_Enum.h>
 #include <MemeCore/ITrackable.h>
 #include <vector>
 
@@ -13,6 +13,7 @@ namespace ml
 	public:
 		VertexBuffer(Enum::Usage usage, const void * data, uint32_t size);
 		VertexBuffer(Enum::Usage usage, const std::vector<float> & data);
+		VertexBuffer(const VertexBuffer & copy);
 		~VertexBuffer();
 
 		VertexBuffer & clean();

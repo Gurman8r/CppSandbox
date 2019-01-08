@@ -42,6 +42,7 @@ namespace ml
 
 		Image	copyToImage() const;
 		bool	generateMipmap();
+
 		void	use() const;
 		void	swap(Texture & value);
 
@@ -51,9 +52,9 @@ namespace ml
 		Texture & operator=(const Texture & value);
 
 	public:
+		inline const uint32_t & id()			const { return m_id; }
 		inline const vec2u &	size()			const { return m_size; }
 		inline const vec2u &	actualSize()	const { return m_actualSize; }
-		inline const uint32_t & handle()		const { return m_handle; }
 		inline const uint64_t & cacheID()		const { return m_cacheID; }
 		inline const bool &		isSmooth()		const { return m_isSmooth; }
 		inline const bool &		isSrgb()		const { return m_sRgb; }
@@ -71,9 +72,11 @@ namespace ml
 
 		void invalidateMipmap();
 
+		inline uint32_t & id() { return m_id; }
+
+		uint32_t	m_id;
 		vec2u		m_size;
 		vec2u		m_actualSize;
-		uint32_t	m_handle;
 		uint64_t	m_cacheID;
 		bool		m_isSmooth;
 		bool		m_sRgb;

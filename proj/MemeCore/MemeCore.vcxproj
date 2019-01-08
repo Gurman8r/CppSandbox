@@ -162,7 +162,7 @@
     <ClInclude Include="..\..\include\MemeCore\ConsoleUtility.h" />
     <ClInclude Include="..\..\include\MemeCore\DebugUtility.h" />
     <ClInclude Include="..\..\include\MemeCore\Entity.h" />
-    <ClInclude Include="..\..\include\MemeCore\Enum.h" />
+    <ClInclude Include="..\..\include\MemeCore\ML_Enum.h" />
     <ClInclude Include="..\..\include\MemeCore\EventBase.h" />
     <ClInclude Include="..\..\include\MemeCore\EventListener.h" />
     <ClInclude Include="..\..\include\MemeCore\EventSystem.h" />

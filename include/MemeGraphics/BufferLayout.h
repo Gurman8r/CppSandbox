@@ -1,7 +1,7 @@
 #ifndef _BUFFER_LAYOUT_H_
 #define _BUFFER_LAYOUT_H_
 
-#include <MemeGraphics/Enum.h>
+#include <MemeGraphics/GL_Enum.h>
 #include <vector>
 
 namespace ml
@@ -26,9 +26,12 @@ namespace ml
 
 	public:
 		BufferLayout();
+		BufferLayout(const Elements & elements);
+		BufferLayout(const BufferLayout & copy);
 		~BufferLayout();
 
-		BufferLayout & apply();
+		void use() const;
+
 		BufferLayout & push_back(const Element & value);
 		
 		inline const Elements & elements() const { return m_elements; }

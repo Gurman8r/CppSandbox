@@ -5,7 +5,7 @@
 
 namespace ml
 {
-	enum ML_Enum : uint16_t
+	enum ML_Enum : uint32_t
 	{
 		ML_ENUM_0	= (0 << 0), // [0] |  0  | 0x0000 | (0 << 0)
 		ML_ENUM_1	= (1 << 0), // [1] |  1  | 0x0001 | (1 << 0)

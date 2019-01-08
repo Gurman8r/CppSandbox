@@ -3,7 +3,7 @@
 
 #include <MemeGraphics/Export.h>
 #include <MemeGraphics/Mesh.h>
-#include <MemeGraphics/VertexArray.h>
+#include <MemeGraphics/Vertex.h>
 
 namespace ml
 {
@@ -12,23 +12,23 @@ namespace ml
 	public:
 		struct ML_GRAPHICS_API Triangle final
 		{
-			const static VertexArray	Vertices;
-			const static IndexArray		Indices;
+			const static VertexList		Vertices;
+			const static IndexList		Indices;
 			const static Mesh			Mesh;
 		};
 
 		struct ML_GRAPHICS_API Quad final
 		{
-			const static VertexArray	Vertices;
-			const static IndexArray		Indices;
+			const static VertexList		Vertices;
+			const static IndexList		Indices;
 			const static Mesh			Mesh;
 
 		};
 
 		struct ML_GRAPHICS_API Cube final
 		{
-			const static VertexArray	Vertices;
-			const static IndexArray		Indices;
+			const static VertexList		Vertices;
+			const static IndexList		Indices;
 			const static Mesh			Mesh;
 		};
 	};

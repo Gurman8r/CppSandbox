@@ -6,18 +6,18 @@
 namespace ml
 {
 	bool Window::create(
-		const std::string & title, 
-		const VideoMode & mode, 
-		const Flags & flags,
-		const ContextSettings & settings)
+		const std::string & _title, 
+		const VideoMode & _mode, 
+		const Flags & _flags,
+		const ContextSettings & _settings)
 	{
 		m_handle	= NULL;
-		m_title		= title;
-		m_settings	= settings;
-		m_mode		= mode;
-		m_flags		= flags;
+		m_title		= _title;
+		m_settings	= _settings;
+		m_mode		= _mode;
+		m_flags		= _flags;
 		m_position	= vec2i::Zero;
-		m_size		= mode.size();
+		m_size		= _mode.size();
 
 		//if (!getMode().isValid())
 		//{
@@ -117,39 +117,40 @@ namespace ml
 
 	Window & Window::setCentered()
 	{
-		return setPosition((Screen::size() - getSize()) / 2);
+		return position((Screen::size() - size()) / 2);
 	}
 
-	Window & Window::setCursorMode(CursorMode value)
+	Window & Window::swapBuffers()
+	{
+		glfwSwapBuffers(static_cast<GLFWwindow*>(m_handle));
+		return (*this);
+	}
+
+	
+	Window & Window::cursorMode(CursorMode value)
 	{
 		glfwSetInputMode(static_cast<GLFWwindow*>(m_handle), GLFW_CURSOR, value);
 		return (*this);
 	}
 
-	Window & Window::setPosition(const vec2i & value)
+	Window & Window::position(const vec2i & value)
 	{
 		m_position = value;
 		glfwSetWindowPos(static_cast<GLFWwindow*>(m_handle), value[0], value[1]);
 		return (*this);
 	}
 
-	Window & Window::setSize(const vec2u & value)
+	Window & Window::size(const vec2u & value)
 	{
 		m_size = value;
 		glfwSetWindowSize(static_cast<GLFWwindow*>(m_handle), value[0], value[1]);
 		return (*this);
 	}
 
-	Window & Window::setTitle(const std::string & value)
+	Window & Window::title(const std::string & value)
 	{
 		m_title = value;
 		glfwSetWindowTitle(static_cast<GLFWwindow*>(m_handle), value.c_str());
-		return (*this);
-	}
-
-	Window & Window::swapBuffers()
-	{
-		glfwSwapBuffers(static_cast<GLFWwindow*>(m_handle));
 		return (*this);
 	}
 

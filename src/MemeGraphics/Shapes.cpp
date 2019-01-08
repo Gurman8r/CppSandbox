@@ -4,22 +4,23 @@ namespace ml
 {
 	/*	Triangle
 	* * * * * * * * * */
-	const VertexArray Shapes::Triangle::Vertices(Enum::Primitive::Triangles, {
+	const VertexList Shapes::Triangle::Vertices({
 		Vertex({  0.0f,  0.5f, 0.0f }, Color::White, { 0.5f, 1.0f }), // top right
 		Vertex({  0.5f, -0.5f, 0.0f }, Color::White, { 1.0f, 0.0f }), // bottom right
 		Vertex({ -0.5f, -0.5f, 0.0f }, Color::White, { 0.0f, 0.0f }), // bottom left
 	});
-	const IndexArray Shapes::Triangle::Indices({
+	const IndexList Shapes::Triangle::Indices({
 		0, 1, 2
 	});
 	const Mesh Shapes::Triangle::Mesh(
+		Enum::Primitive::Triangles,
 		Shapes::Triangle::Vertices,
 		Shapes::Triangle::Indices);
 
 
 	/*	Quad
 	* * * * * * * * * */
-	const VertexArray Shapes::Quad::Vertices(Enum::Primitive::Triangles, {
+	const VertexList Shapes::Quad::Vertices({
 		//Vertex({ 1.0f, 1.0f, 0.0f }, Color::White, { 1.0f, 1.0f }),
 		//Vertex({ 1.0f, 0.0f, 0.0f }, Color::White, { 1.0f, 0.0f }),
 		//Vertex({ 0.0f, 0.0f, 0.0f }, Color::White, { 0.0f, 0.0f }),
@@ -29,18 +30,19 @@ namespace ml
 		Vertex({ -0.5f, -0.5f, -0.5f }, Color::White, { 0.0f, 0.0f }),
 		Vertex({ -0.5f, +0.5f, -0.5f }, Color::White, { 0.0f, 1.0f }),
 	});
-	const IndexArray Shapes::Quad::Indices({
+	const IndexList Shapes::Quad::Indices({
 		0, 1, 3,
 		1, 2, 3
 	});
 	const Mesh Shapes::Quad::Mesh(
+		Enum::Primitive::Triangles,
 		Shapes::Quad::Vertices, 
 		Shapes::Quad::Indices);
 
 
 	/*	Cube
 	* * * * * * * * * */
-	const VertexArray Shapes::Cube::Vertices(Enum::Primitive::Triangles, {
+	const VertexList Shapes::Cube::Vertices({
 		Vertex({  1,  1, -1 }, Color::White, { 1, 1 }), // 0 front
 		Vertex({  1, -1, -1 }, Color::White, { 1, 0 }), // 1
 		Vertex({ -1, -1, -1 }, Color::White, { 0, 0 }), // 2
@@ -71,7 +73,7 @@ namespace ml
 		Vertex({  1, -1, -1 }, Color::White, { 0, 0 }), // 22
 		Vertex({ -1, -1, -1 }, Color::White, { 0, 1 }), // 23
 	});
-	const IndexArray Shapes::Cube::Indices({
+	const IndexList Shapes::Cube::Indices({
 		0, 1, 3,
 		1, 2, 3,
 
@@ -91,6 +93,7 @@ namespace ml
 		20, 23, 22,
 	});
 	const Mesh Shapes::Cube::Mesh(
+		Enum::Primitive::Triangles,
 		Shapes::Cube::Vertices, 
 		Shapes::Cube::Indices);
 }

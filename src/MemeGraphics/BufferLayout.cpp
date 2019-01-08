@@ -11,7 +11,7 @@ namespace ml
 			type,
 			normalized,
 			(stride * width),
-			(void*)(offset * width)));
+			reinterpret_cast<const void*>(offset * width)));
 		glCheck(glEnableVertexAttribArray(index));
 	}
 }
@@ -19,7 +19,17 @@ namespace ml
 namespace ml
 {
 	BufferLayout::BufferLayout()
-		: m_elements(Elements())
+		: BufferLayout(Elements())
+	{
+	}
+
+	BufferLayout::BufferLayout(const Elements & elements)
+		: m_elements(elements)
+	{
+	}
+
+	BufferLayout::BufferLayout(const BufferLayout & copy)
+		: BufferLayout(copy.m_elements)
 	{
 	}
 
@@ -28,13 +38,12 @@ namespace ml
 	}
 
 
-	BufferLayout & BufferLayout::apply()
+	void BufferLayout::use() const
 	{
-		for (auto e : elements())
+		for (const Element & e : elements())
 		{
 			e.use();
 		}
-		return (*this);
 	}
 
 	BufferLayout & BufferLayout::push_back(const Element & value)

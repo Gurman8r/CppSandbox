@@ -305,8 +305,8 @@ inline static int windowStub()
 		return ml::ConsoleUtility::pause(EXIT_FAILURE);
 	}
 
-	window.setCursorMode(ml::Window::CursorMode::Normal);
-	window.setViewport(ml::vec2i::Zero, window.getSize());
+	window.cursorMode(ml::Window::CursorMode::Normal);
+	window.setViewport(ml::vec2i::Zero, window.size());
 	window.setCentered();
 
 	// Loop
@@ -330,7 +330,7 @@ inline static int windowStub()
 		input.endStep();
 		loopTimer.stop();
 
-		window.setTitle(ml::StringUtility::Format("{0} @ {1}ms",
+		window.title(ml::StringUtility::Format("{0} @ {1}ms",
 			settings.title,
 			loopTimer.elapsed().millis()));
 	}
@@ -418,14 +418,12 @@ inline static int graphicsStub()
 	{
 		return ml::ConsoleUtility::pause(EXIT_FAILURE);
 	}
-	window.setCursorMode(ml::Window::CursorMode::Normal);
-	window.setViewport(ml::vec2i::Zero, window.getSize());
+	window.cursorMode(ml::Window::CursorMode::Normal);
+	window.setViewport(ml::vec2i::Zero, window.size());
 	window.setCentered();
 
-
-	// Font
+	// Load Fonts
 	ml::Debug::LogInfo("Loading Fonts...");
-
 	ml::Font font;
 	if (!font.loadFromFile(settings.assetPath + "/fonts/Consolas.ttf"))
 	{
@@ -433,10 +431,8 @@ inline static int graphicsStub()
 		return ml::ConsoleUtility::pause(EXIT_FAILURE);
 	}
 
-
-	// Image
+	// Load Images
 	ml::Debug::LogInfo("Loading Images...");
-
 	ml::Image image;
 	if (!image.loadFromFile(settings.assetPath + "/images/dean.png"))
 	{
@@ -444,10 +440,8 @@ inline static int graphicsStub()
 		return ml::ConsoleUtility::pause(EXIT_FAILURE);
 	}
 
-
-	// Texture
+	// Load Textures
 	ml::Debug::LogInfo("Loading Textures...");
-
 	ml::Texture texture;
 	if (!texture.loadFromImage(image))
 	{
@@ -455,10 +449,8 @@ inline static int graphicsStub()
 		return ml::ConsoleUtility::pause(EXIT_FAILURE);
 	}
 
-
-	// Shader
+	// Load Shaders
 	ml::Debug::LogInfo("Loading Shaders...");
-
 	ml::Shader shaderBasic;
 	if (!shaderBasic.loadFromFile(
 		settings.assetPath + "/shaders/vs/basic_vs.shader",
@@ -505,10 +497,8 @@ inline static int graphicsStub()
 		return ml::ConsoleUtility::pause(EXIT_FAILURE);
 	}
 
-
-	// Sprite
+	// Load Sprites
 	ml::Debug::LogInfo("Loading Sprites...");
-
 	ml::Sprite sprite(&shader2D, &texture);
 	if (!sprite)
 	{
@@ -518,12 +508,10 @@ inline static int graphicsStub()
 	sprite.color(ml::Color::White);
 	sprite.transform().position(ml::vec3f::Zero);
 
-
-	// Text
+	// Load Text
 	ml::Debug::LogInfo("Loading Text...");
-
 	ml::Text text(&shaderText, &font);
-	if(!text)
+	if (!text)
 	{
 		ml::Debug::LogError("Failed Loading Text");
 		return ml::ConsoleUtility::pause(EXIT_FAILURE);
@@ -533,25 +521,24 @@ inline static int graphicsStub()
 	text.string("Hello, World!");
 	text.transform().position(ml::vec3f::Zero);
 
-
-	// Geometry
+	// Load Geometry
 	ml::Debug::LogInfo("Loading Geometry...");
-	
-	ml::VAO vao;
-	ml::VertexArray::GenVAO(1, vao);
-	ml::VBO vbo(ml::Enum::Static, ml::VertexArray::Flatten(ml::Shapes::Quad::Mesh.vertices()));
-	ml::IBO ibo(ml::Enum::Static, ml::Shapes::Quad::Mesh.indices());
-	
-	ml::BufferLayout layout;
-	layout.push_back({ 0, 3, ml::Enum::Float, false, ml::Vertex::Size, 0, sizeof(float) });
-	layout.push_back({ 1, 4, ml::Enum::Float, false, ml::Vertex::Size, 3, sizeof(float) });
-	layout.push_back({ 2, 2, ml::Enum::Float, false, ml::Vertex::Size, 7, sizeof(float) });
-	layout.apply();
+
+	ml::VAO vao(1);
+	ml::VBO vbo(ml::Enum::StaticDraw, ml::Shapes::Quad::Mesh.flattened());
+	ml::IBO ibo(ml::Enum::StaticDraw, ml::Shapes::Quad::Mesh.indices());
+
+	ml::BufferLayout layout({
+		{ 0, 3, ml::Enum::Float, false, ml::Vertex::Size, 0, sizeof(float) },
+		{ 1, 4, ml::Enum::Float, false, ml::Vertex::Size, 3, sizeof(float) },
+		{ 2, 2, ml::Enum::Float, false, ml::Vertex::Size, 7, sizeof(float) },
+	});
+	layout.use();
 
 
 	// Matricies
-	const ml::mat4f & proj_ortho = ml::Transform::Orthographic(0, (float)window.getSize()[0], 0, (float)window.getSize()[1]);
-	const ml::mat4f & proj_persp = ml::Transform::Perspective(90.f, window.getAspect(), 0.1f, 1000.f);
+	const ml::mat4f proj_ortho = ml::Transform::Ortho(ml::vec2f::Zero, window.size());
+	const ml::mat4f proj_persp = ml::Transform::Persp(90.f, window.getAspect(), 0.1f, 1000.f);
 
 	ml::Transform view(ml::vec3f::Zero, ml::vec3f::One, ml::quat());
 	ml::Transform model(ml::vec3f::Forward, ml::vec3f::One, ml::quat());
@@ -595,7 +582,7 @@ inline static int graphicsStub()
 		input.endStep();
 		loopTimer.stop();
 
-		window.setTitle(ml::StringUtility::Format("{0} @ {1}ms", 
+		window.title(ml::StringUtility::Format("{0} @ {1}ms", 
 			settings.title, 
 			loopTimer.elapsed().millis()));
 	}

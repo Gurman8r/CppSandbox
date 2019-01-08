@@ -18,7 +18,7 @@ namespace ml
 	Texture::Texture()
 		: m_size(0, 0)
 		, m_actualSize(0, 0)
-		, m_handle(0)
+		, m_id(0)
 		, m_isSmooth(false)
 		, m_sRgb(false)
 		, m_isRepeated(false)
@@ -32,7 +32,7 @@ namespace ml
 	Texture::Texture(const Texture & copy)
 		: m_size(0, 0)
 		, m_actualSize(0, 0)
-		, m_handle(0)
+		, m_id(0)
 		, m_isSmooth(copy.m_isSmooth)
 		, m_sRgb(copy.m_sRgb)
 		, m_isRepeated(copy.m_isRepeated)
@@ -41,7 +41,7 @@ namespace ml
 		, m_hasMipmap(false)
 		, m_cacheID(getUniqueID())
 	{
-		if (copy.m_handle)
+		if (copy.m_id)
 		{
 			if (create(copy.size()[0], copy.size()[1]))
 			{
@@ -63,9 +63,9 @@ namespace ml
 
 	bool Texture::cleanup()
 	{
-		if (m_handle)
+		if (m_id)
 		{
-			glCheck(glDeleteTextures(1, &m_handle));
+			glCheck(glDeleteTextures(1, &m_id));
 			return true;
 		}
 		return false;
@@ -104,10 +104,7 @@ namespace ml
 
 				return true;
 			}
-			else
-			{
-				return false;
-			}
+			return false;
 		}
 		else
 		{
@@ -122,18 +119,30 @@ namespace ml
 			if (create(rect.width(), rect.height()))
 			{
 				// Copy the pixels to the texture, row by row
-				const uint8_t * pixels = image.pixelsPtr() + 4 * (rect.left() + (width * rect.top()));
+				const uint8_t * pixels = 
+					image.pixelsPtr() + 4 * (rect.left() + (width * rect.top()));
 
-				glCheck(glBindTexture(GL_TEXTURE_2D, m_handle));
+				glCheck(glBindTexture(Enum::Texture2D, id()));
 
 				for (int i = 0; i < rect.height(); i++)
 				{
-					glCheck(glTexSubImage2D(GL_TEXTURE_2D, 0, 0, i, rect.width(), 1, GL_RGBA, GL_UNSIGNED_BYTE, pixels));
+					glCheck(glTexSubImage2D(
+						Enum::Texture2D,
+						0, 
+						0, i, rect.width(), 1, 
+						Enum::RGBA, 
+						Enum::UnsignedByte, 
+						pixels));
 
 					pixels += 4 * width;
 				}
 
-				glCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, m_isSmooth ? GL_LINEAR : GL_NEAREST));
+				glCheck(glTexParameteri(
+					Enum::Texture2D,
+					Enum::TexMinFilter,
+					(m_isSmooth 
+						? Enum::Linear 
+						: Enum::Nearest)));
 
 				m_hasMipmap = false;
 
@@ -162,11 +171,24 @@ namespace ml
 		assert(x + width <= m_size[0]);
 		assert(y + height <= m_size[1]);
 
-		if (pixels && m_handle)
+		if (pixels && id())
 		{
-			glCheck(glBindTexture(GL_TEXTURE_2D, m_handle));
-			glCheck(glTexSubImage2D(GL_TEXTURE_2D, 0, x, y, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels));
-			glCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, m_isSmooth ? GL_LINEAR : GL_NEAREST));
+			glCheck(glBindTexture(Enum::Texture2D, id()));
+
+			glCheck(glTexSubImage2D(
+				Enum::Texture2D, 
+				0, 
+				x, y, width, height,
+				Enum::RGBA,
+				Enum::UnsignedByte, 
+				pixels));
+
+			glCheck(glTexParameteri(
+				Enum::Texture2D, 
+				Enum::TexMinFilter,
+				(m_isSmooth 
+					? Enum::Linear 
+					: Enum::Nearest)));
 
 			m_hasMipmap = false;
 			m_pixelsFlipped = false;
@@ -187,7 +209,7 @@ namespace ml
 		assert(x + texture.m_size[0] <= m_size[0]);
 		assert(y + texture.m_size[1] <= m_size[1]);
 
-		if (!m_handle || !texture.m_handle)
+		if (!id() || !texture.id())
 		{
 			return (*this);
 		}
@@ -214,24 +236,39 @@ namespace ml
 			}
 
 			// Link the source texture to the source frame buffer
-			glCheck(glBindFramebuffer(GL_READ_FRAMEBUFFER, sourceFrameBuffer));
-			glCheck(glFramebufferTexture2D(GL_READ_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture.m_handle, 0));
+			glCheck(glBindFramebuffer(Enum::FramebufferRead, sourceFrameBuffer));
+			glCheck(glFramebufferTexture2D(
+				Enum::FramebufferRead, 
+				Enum::ColorAttachment0, 
+				Enum::Texture2D, 
+				texture.id(), 
+				0));
 
 			// Link the destination texture to the destination frame buffer
-			glCheck(glBindFramebuffer(GL_DRAW_FRAMEBUFFER, destFrameBuffer));
-			glCheck(glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_handle, 0));
+			glCheck(glBindFramebuffer(Enum::FramebufferDraw, destFrameBuffer));
+			glCheck(glFramebufferTexture2D(
+				Enum::FramebufferDraw, 
+				Enum::ColorAttachment0,
+				Enum::Texture2D, 
+				id(), 
+				0));
 
 			// A final check, just to be sure...
 			GLenum sourceStatus;
-			glCheck(sourceStatus = glCheckFramebufferStatus(GL_READ_FRAMEBUFFER));
+			glCheck(sourceStatus = glCheckFramebufferStatus(Enum::FramebufferRead));
 
 			GLenum destStatus;
-			glCheck(destStatus = glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER));
+			glCheck(destStatus = glCheckFramebufferStatus(Enum::FramebufferDraw));
 
-			if ((sourceStatus == GL_FRAMEBUFFER_COMPLETE) && (destStatus == GL_FRAMEBUFFER_COMPLETE))
+			if ((sourceStatus == Enum::FramebufferComplete) &&
+				(destStatus == Enum::FramebufferComplete))
 			{
 				// Blit the texture contents from the source to the destination texture
-				glCheck(glBlitFramebuffer(0, 0, texture.m_size[0], texture.m_size[1], x, y, x + texture.m_size[0], y + texture.m_size[1], GL_COLOR_BUFFER_BIT, GL_NEAREST));
+				glCheck(glBlitFramebuffer(
+					0, 0, texture.m_size[0], texture.m_size[1],
+					x, y, x + texture.m_size[0], y + texture.m_size[1],
+					Enum::ColorBufferBit, 
+					Enum::Nearest));
 			}
 			else
 			{
@@ -239,8 +276,8 @@ namespace ml
 			}
 
 			// Restore previously bound framebuffers
-			glCheck(glBindFramebuffer(GL_READ_FRAMEBUFFER, readFramebuffer));
-			glCheck(glBindFramebuffer(GL_DRAW_FRAMEBUFFER, drawFramebuffer));
+			glCheck(glBindFramebuffer(Enum::FramebufferRead, readFramebuffer));
+			glCheck(glBindFramebuffer(Enum::FramebufferDraw, drawFramebuffer));
 
 			// Delete the framebuffers
 			glCheck(glDeleteFramebuffers(1, &sourceFrameBuffer));
@@ -285,16 +322,16 @@ namespace ml
 		m_pixelsFlipped = false;
 		m_fboAttachment = false;
 
-		if (!m_handle)
+		if (!m_id)
 		{
 			GLuint texture;
 			glCheck(glGenTextures(1, &texture));
-			m_handle = static_cast<uint32_t>(texture);
+			m_id = static_cast<uint32_t>(texture);
 		}
 
-		static bool textureEdgeClamp = GL_EXT_texture_edge_clamp || GLEW_EXT_texture_edge_clamp;
+		static bool edgeClamp = GL_EXT_texture_edge_clamp || GLEW_EXT_texture_edge_clamp;
 
-		if (!m_isRepeated && !textureEdgeClamp)
+		if (!m_isRepeated && !edgeClamp)
 		{
 			static bool warned = false;
 
@@ -326,16 +363,55 @@ namespace ml
 		}
 
 		// Initialize the texture
-		glCheck(glBindTexture(GL_TEXTURE_2D, m_handle));
-		glCheck(glTexImage2D(GL_TEXTURE_2D, 0, (m_sRgb ? GL_SRGB8_ALPHA8 : GL_RGBA), m_actualSize[0], m_actualSize[1], 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL));
-		glCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, m_isRepeated ? GL_REPEAT : (textureEdgeClamp ? GL_CLAMP_TO_EDGE : GL_CLAMP)));
-		glCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, m_isRepeated ? GL_REPEAT : (textureEdgeClamp ? GL_CLAMP_TO_EDGE : GL_CLAMP)));
-		glCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, m_isSmooth ? GL_LINEAR : GL_NEAREST));
-		glCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, m_isSmooth ? GL_LINEAR : GL_NEAREST));
+		glCheck(glBindTexture(Enum::Texture2D, id()));
+		
+		glCheck(glTexImage2D(
+			Enum::Texture2D,
+			0,
+			(m_sRgb
+				? Enum::SRGB8_Alpha8
+				: Enum::RGBA),
+			m_actualSize[0], 
+			m_actualSize[1], 
+			0, 
+			Enum::RGBA, 
+			Enum::UnsignedByte, 
+			NULL));
+		
+		glCheck(glTexParameteri(
+			Enum::Texture2D,
+			Enum::TexWrapS,
+			(m_isRepeated
+				? Enum::Repeat
+				: (edgeClamp
+					? Enum::ClampToEdge
+					: Enum::Clamp))));
+		
+		glCheck(glTexParameteri(
+			Enum::Texture2D,
+			Enum::TexWrapT, 
+			(m_isRepeated
+				? Enum::Repeat
+				: (edgeClamp
+					? Enum::ClampToEdge
+					: Enum::Clamp))));
+		
+		glCheck(glTexParameteri(
+			Enum::Texture2D, 
+			Enum::TexMagFilter,
+			(m_isSmooth
+				? Enum::Linear
+				: Enum::Nearest)));
+		
+		glCheck(glTexParameteri(
+			Enum::Texture2D, 
+			Enum::TexMinFilter, 
+			(m_isSmooth
+				? Enum::Linear
+				: Enum::Nearest)));
+		
 		m_cacheID = getUniqueID();
-
 		m_hasMipmap = false;
-
 		return true;
 	}
 
@@ -348,7 +424,7 @@ namespace ml
 	Image Texture::copyToImage() const
 	{
 		// Easy case: empty texture
-		if (!m_handle)
+		if (!id())
 		{
 			return Image();
 		}
@@ -359,8 +435,12 @@ namespace ml
 		if ((m_size == m_actualSize) && !m_pixelsFlipped)
 		{
 			// Texture is not padded nor flipped, we can use a direct copy
-			glCheck(glBindTexture(GL_TEXTURE_2D, m_handle));
-			glCheck(glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, &pixels[0]));
+			glCheck(glBindTexture(Enum::Texture2D, id()));
+			glCheck(glGetTexImage(Enum::Texture2D, 
+				0, 
+				Enum::RGBA,
+				Enum::UnsignedByte, 
+				&pixels[0]));
 		}
 		else
 		{
@@ -368,8 +448,15 @@ namespace ml
 
 			// All the pixels will first be copied to a temporary array
 			std::vector<uint8_t> allPixels(m_actualSize[0] * m_actualSize[1] * 4);
-			glCheck(glBindTexture(GL_TEXTURE_2D, m_handle));
-			glCheck(glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, &allPixels[0]));
+
+			glCheck(glBindTexture(Enum::Texture2D, id()));
+			
+			glCheck(glGetTexImage(
+				Enum::Texture2D,
+				0, 
+				Enum::RGBA, 
+				Enum::UnsignedByte,
+				&allPixels[0]));
 
 			// Then we copy the useful pixels from the temporary array to the final one
 			const uint8_t* src = &allPixels[0];
@@ -400,15 +487,24 @@ namespace ml
 
 	bool Texture::generateMipmap()
 	{
-		if (m_handle)
+		if (id())
 		{
 			if (!GL_EXT_framebuffer_object)
 			{
-				glCheck(glBindTexture(GL_TEXTURE_2D, m_handle));
-				glCheck(glGenerateMipmap(GL_TEXTURE_2D));
-				glCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, m_isSmooth ? GL_LINEAR_MIPMAP_LINEAR : GL_NEAREST_MIPMAP_NEAREST));
+				glCheck(glBindTexture(Enum::Texture2D, id()));
+				
+				glCheck(glGenerateMipmap(Enum::Texture2D));
+				
+				glCheck(glTexParameteri(
+					Enum::Texture2D, 
+					Enum::TexMinFilter,
+					(m_isSmooth
+						? Enum::LinearMipmapLinear
+						: Enum::NearestMipmapNearest)));
 
 				m_hasMipmap = true;
+
+				return true;
 			}
 		}
 		return false;
@@ -421,9 +517,9 @@ namespace ml
 
 	void Texture::swap(Texture & other)
 	{
+		std::swap(m_id,				other.m_id);
 		std::swap(m_size,			other.m_size);
 		std::swap(m_actualSize,		other.m_actualSize);
-		std::swap(m_handle,			other.m_handle);
 		std::swap(m_isSmooth,		other.m_isSmooth);
 		std::swap(m_sRgb,			other.m_sRgb);
 		std::swap(m_isRepeated,		other.m_isRepeated);
@@ -438,10 +534,10 @@ namespace ml
 
 	void Texture::bind(const Texture * value)
 	{
-		if (value && value->m_handle)
+		if (value && value->id())
 		{
 			// Bind the texture
-			glCheck(glBindTexture(GL_TEXTURE_2D, value->m_handle));
+			glCheck(glBindTexture(Enum::Texture2D, value->id()));
 		}
 	}
 
@@ -452,7 +548,7 @@ namespace ml
 
 		if (!checked)
 		{
-			glCheck(glGetIntegerv(GL_MAX_TEXTURE_SIZE, &size));
+			glCheck(glGetIntegerv(Enum::MaxTextureSize, &size));
 		}
 
 		return static_cast<uint32_t>(size);
@@ -475,11 +571,13 @@ namespace ml
 		{
 			m_isRepeated = value;
 
-			if (m_handle)
+			if (id())
 			{
-				static bool textureEdgeClamp = GL_EXT_texture_edge_clamp || GLEW_EXT_texture_edge_clamp;
+				static bool edgeClamp =
+					GL_EXT_texture_edge_clamp || 
+					GLEW_EXT_texture_edge_clamp;
 
-				if (m_isRepeated && !textureEdgeClamp)
+				if (m_isRepeated && !edgeClamp)
 				{
 					static bool warned = false;
 
@@ -494,9 +592,24 @@ namespace ml
 					}
 				}
 
-				glCheck(glBindTexture(GL_TEXTURE_2D, m_handle));
-				glCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, m_isRepeated ? GL_REPEAT : (textureEdgeClamp ? GL_CLAMP_TO_EDGE : GL_CLAMP)));
-				glCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, m_isRepeated ? GL_REPEAT : (textureEdgeClamp ? GL_CLAMP_TO_EDGE : GL_CLAMP)));
+				glCheck(glBindTexture(Enum::Texture2D, id()));
+				glCheck(glTexParameteri(
+					Enum::Texture2D, 
+					Enum::TexWrapS, 
+					(m_isRepeated
+						? Enum::Repeat
+						: (edgeClamp
+							? Enum::ClampToEdge
+							: Enum::Clamp))));
+
+				glCheck(glTexParameteri(
+					Enum::Texture2D, 
+					Enum::TexWrapT, 
+					(m_isRepeated
+						? Enum::Repeat
+						: (edgeClamp
+							? Enum::ClampToEdge
+							: Enum::Clamp))));
 			}
 		}
 		return (*this);
@@ -508,18 +621,34 @@ namespace ml
 		{
 			m_isSmooth = value;
 
-			if (m_handle)
+			if (id())
 			{
-				glCheck(glBindTexture(GL_TEXTURE_2D, m_handle));
-				glCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, m_isSmooth ? GL_LINEAR : GL_NEAREST));
+				glCheck(glBindTexture(Enum::Texture2D, id()));
+
+				glCheck(glTexParameteri(
+					Enum::Texture2D,
+					Enum::TexMagFilter,
+					(m_isSmooth
+						? Enum::Linear
+						: Enum::Nearest)));
 
 				if (m_hasMipmap)
 				{
-					glCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, m_isSmooth ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR_MIPMAP_NEAREST));
+					glCheck(glTexParameteri(
+						Enum::Texture2D,
+						Enum::TexMinFilter, 
+						(m_isSmooth
+							? Enum::LinearMipmapLinear
+							: Enum::LinearMipmapNearest)));
 				}
 				else
 				{
-					glCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, m_isSmooth ? GL_LINEAR : GL_NEAREST));
+					glCheck(glTexParameteri(
+						Enum::Texture2D,
+						Enum::TexMinFilter,
+						(m_isSmooth
+							? Enum::Linear
+							: Enum::Nearest)));
 				}
 			}
 		}
@@ -535,11 +664,7 @@ namespace ml
 
 	uint32_t Texture::getValidSize(uint32_t value)
 	{
-		if (GLEW_ARB_texture_non_power_of_two)
-		{
-			return value;
-		}
-		else
+		if (!GLEW_ARB_texture_non_power_of_two)
 		{
 			uint32_t powerOfTwo = 1;
 			while (powerOfTwo < value)
@@ -548,18 +673,22 @@ namespace ml
 			}
 			return powerOfTwo;
 		}
+		return value;
 	}
 
 	void Texture::invalidateMipmap()
 	{
-		if (!m_hasMipmap)
+		if (m_hasMipmap)
 		{
-			return;
+			glCheck(glBindTexture(Enum::Texture2D, id()));
+			glCheck(glTexParameteri(
+				Enum::Texture2D,
+				Enum::TexMinFilter,
+				(m_isSmooth
+					? Enum::Linear
+					: Enum::Nearest)));
+
+			m_hasMipmap = false;
 		}
-
-		glCheck(glBindTexture(GL_TEXTURE_2D, m_handle));
-		glCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, m_isSmooth ? GL_LINEAR : GL_NEAREST));
-
-		m_hasMipmap = false;
 	}
 }

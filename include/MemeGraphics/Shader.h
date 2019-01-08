@@ -35,14 +35,14 @@ namespace ml
 		bool loadFromMemory(const std::string& vs, const std::string& fs);
 		bool loadFromMemory(const std::string& vs, const std::string& gs, const std::string& fs);
 
-		void		use() const;
-		uint32_t	program() const;
-		int			currentTexture() const;
+	public:
+		void use() const;
 
 		static void bind(const Shader* shader, bool tex = true);
 		static bool isAvailable();
 		static bool isGeometryAvailable();
 
+	public:
 		// Set Uniform
 		void setUniform(const std::string & name, float value);
 		void setUniform(const std::string & name, int32_t value);
@@ -79,6 +79,10 @@ namespace ml
 			setUniformArray(Uniform::UniformNames[id], value, length);
 		};
 
+	public:
+		inline const uint32_t & program() const { return m_program; }
+		inline const int32_t &  currentTexture() const { return m_currentTexture; }
+
 	private:
 		struct UniformBinder;
 		
@@ -90,7 +94,7 @@ namespace ml
 		int		getUniformLocation(const std::string & value);
 
 		uint32_t		m_program;
-		int				m_currentTexture;
+		int32_t			m_currentTexture;
 		TextureTable	m_textures;
 		UniformTable	m_uniforms;
 	};

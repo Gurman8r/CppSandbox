@@ -91,18 +91,17 @@ namespace ml
 	{
 		if (isValid())
 		{
-			target.disableFlag(Enum::Flag::DepthTest);
-			target.disableFlag(Enum::Flag::CullFace);
+			target.disableFlag(Enum::DepthTest);
+			target.disableFlag(Enum::CullFace);
 
 			state.shader = shader();
 			state.texture = texture();
 			state.color = color();
 			state.mesh = mesh();
-
 			target.draw(state);
 
-			target.enableFlag(Enum::Flag::DepthTest);
-			target.enableFlag(Enum::Flag::CullFace);
+			target.enableFlag(Enum::DepthTest);
+			target.enableFlag(Enum::CullFace);
 		}
 	}
 }

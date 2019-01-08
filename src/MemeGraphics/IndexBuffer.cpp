@@ -3,18 +3,31 @@
 
 namespace ml
 {
-	IndexBuffer::IndexBuffer(Enum::Usage usage, const uint32_t * data, uint32_t size)
+	IndexBuffer::IndexBuffer(Enum::Usage usage, const uint32_t * data, uint32_t count)
 		: m_usage(usage)
 		, m_data(data)
-		, m_count(size)
+		, m_count(count)
 	{
 		glCheck(glGenBuffers(1, &m_id));
+		
 		bind();
-		glCheck(glBufferData(GL_ELEMENT_ARRAY_BUFFER, (size * sizeof(uint32_t)), data, m_usage));
+		
+		glCheck(glBufferData(
+			Enum::ElementArrayBuffer, 
+			(m_count * sizeof(uint32_t)),
+			m_data, 
+			m_usage));
 	}
 
 	IndexBuffer::IndexBuffer(Enum::Usage usage, const std::vector<uint32_t>& data)
-		: IndexBuffer(usage, &data[0], data.size())
+		: IndexBuffer(usage, &data[0], (uint32_t)data.size())
+	{
+	}
+
+	IndexBuffer::IndexBuffer(const IndexBuffer & copy)
+		: m_usage(copy.m_usage)
+		, m_data(copy.m_data)
+		, m_count(copy.m_count)
 	{
 	}
 
@@ -33,11 +46,11 @@ namespace ml
 
 	void IndexBuffer::bind() const
 	{
-		glCheck(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id));
+		glCheck(glBindBuffer(Enum::ElementArrayBuffer, m_id));
 	}
 
 	void IndexBuffer::unbind() const
 	{
-		glCheck(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
+		glCheck(glBindBuffer(Enum::ElementArrayBuffer, 0));
 	}
 }

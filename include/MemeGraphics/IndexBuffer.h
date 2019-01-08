@@ -1,8 +1,8 @@
 #ifndef _INDEX_BUFFER_H_
 #define _INDEX_BUFFER_H_
 
-#include <MemeGraphics/Enum.h>
 #include <MemeCore/ITrackable.h>
+#include <MemeGraphics/GL_Enum.h>
 #include <vector>
 
 namespace ml
@@ -13,6 +13,7 @@ namespace ml
 	public:
 		IndexBuffer(Enum::Usage usage, const uint32_t * data, uint32_t size);
 		IndexBuffer(Enum::Usage usage, const std::vector<uint32_t> & data);
+		IndexBuffer(const IndexBuffer & copy);
 		~IndexBuffer();
 
 		IndexBuffer & clean();

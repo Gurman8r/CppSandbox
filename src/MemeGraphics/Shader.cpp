@@ -5,18 +5,14 @@
 
 namespace
 {
-	GLint CheckMaxTextureUnits()
+	inline static int32_t checkMaxTextureUnits()
 	{
-		GLint maxUnits = 0;
-
-		glCheck(glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &maxUnits));
-
-		return maxUnits;
+		return ml::OpenGL::getInt(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS);
 	}
 
-	GLint GetMaxTextureUnits()
+	inline static int32_t getMaxTextureUnits()
 	{
-		static GLint maxUnits = CheckMaxTextureUnits();
+		static int32_t maxUnits = checkMaxTextureUnits();
 
 		return maxUnits;
 	}
@@ -26,7 +22,7 @@ namespace ml
 {
 	struct Shader::UniformBinder
 	{
-		UniformBinder(Shader& shader, const std::string& name)
+		UniformBinder(Shader & shader, const std::string& name)
 			: savedProgram(0)
 			, currentProgram(shader.m_program)
 			, location(-1)
@@ -56,11 +52,11 @@ namespace ml
 
 		uint32_t	savedProgram;
 		uint32_t	currentProgram;
-		GLint		location;
+		int32_t		location;
 
 		inline operator bool() const
 		{
-			return location != -1;
+			return (location != -1);
 		}
 	};
 }
@@ -104,16 +100,14 @@ namespace ml
 		std::vector<char> vertexShader;
 		if (!ML_FileSystem.getFileContents(vs, vertexShader))
 		{
-			Debug::LogError("Failed to open vertex source file \"{0}\"", vs);
-			return false;
+			return Debug::LogError("Failed to open vertex source file \"{0}\"", vs);
 		}
 
 		// Read the fragment shader file
 		std::vector<char> fragmentShader;
 		if (!ML_FileSystem.getFileContents(fs, fragmentShader))
 		{
-			Debug::LogError("Failed to open fragment source file \"{0}\"", fs);
-			return false;
+			return Debug::LogError("Failed to open fragment source file \"{0}\"", fs);
 		}
 
 		// Compile the shader program
@@ -126,24 +120,21 @@ namespace ml
 		std::vector<char> vertexShader;
 		if (!ML_FileSystem.getFileContents(vs, vertexShader))
 		{
-			Debug::LogError("Failed to open vertex source file \"{0}\"", vs);
-			return false;
+			return Debug::LogError("Failed to open vertex source file \"{0}\"", vs);
 		}
 
 		// Read the geometry shader file
 		std::vector<char> geometryShader;
 		if (!ML_FileSystem.getFileContents(gs, geometryShader))
 		{
-			Debug::LogError("Failed to open geometry source file \"{0}\"", gs);
-			return false;
+			return Debug::LogError("Failed to open geometry source file \"{0}\"", gs);
 		}
 
 		// Read the fragment shader file
 		std::vector<char> fragmentShader;
 		if (!ML_FileSystem.getFileContents(fs, fragmentShader))
 		{
-			Debug::LogError("Failed to open fragment source file \"{0}\"", fs);
-			return false;
+			return Debug::LogError("Failed to open fragment source file \"{0}\"", fs);
 		}
 
 		// Compile the shader program
@@ -164,16 +155,6 @@ namespace ml
 	void Shader::use() const
 	{
 		Shader::bind(this);
-	}
-
-	uint32_t Shader::program() const
-	{
-		return m_program;
-	}
-
-	int Shader::currentTexture() const
-	{
-		return m_currentTexture;
 	}
 
 
@@ -206,11 +187,9 @@ namespace ml
 	{
 		static bool checked = false;
 		static bool available = false;
-
 		if (!checked)
 		{
 			checked = true;
-
 			available =
 				GL_ARB_multitexture &&
 				GL_ARB_shading_language_100 &&
@@ -218,7 +197,6 @@ namespace ml
 				GL_ARB_vertex_shader &&
 				GL_ARB_fragment_shader;
 		}
-
 		return available;
 	}
 
@@ -226,113 +204,120 @@ namespace ml
 	{
 		static bool checked = false;
 		static bool available = false;
-
 		if (!checked)
 		{
 			checked = true;
-
-			available =
-				isAvailable() &&
-				GL_GEOMETRY_SHADER_ARB;
+			available = isAvailable() && GL_GEOMETRY_SHADER_ARB;
 		}
-
 		return available;
 	}
 	
 	
 	void Shader::setUniform(const std::string & name, float value)
 	{
-		if (UniformBinder((*this), name))
+		UniformBinder binder((*this), name);
+		if (binder)
 		{
-			glCheck(glUniform1f(getUniformLocation(name), value));
+			glCheck(glUniform1f(binder.location, value));
 		}
 	}
 	
 	void Shader::setUniform(const std::string & name, int32_t value)
 	{
-		if (UniformBinder((*this), name))
+		UniformBinder binder((*this), name);
+		if(binder)
 		{
-			glCheck(glUniform1i(getUniformLocation(name), value));
+			glCheck(glUniform1i(binder.location, value));
 		}
 	}
 	
 	void Shader::setUniform(const std::string & name, uint32_t value)
 	{
-		if (UniformBinder((*this), name))
+		UniformBinder binder((*this), name);
+		if (binder)
 		{
-			glCheck(glUniform1ui(getUniformLocation(name), value));
+			glCheck(glUniform1ui(binder.location, value));
 		}
 	}
 	
 	void Shader::setUniform(const std::string & name, const float * value)
 	{
-		if (UniformBinder((*this), name))
+		UniformBinder binder((*this), name);
+		if (binder)
 		{
-			glCheck(glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, value));
+			glCheck(glUniformMatrix4fv(binder.location, 1, GL_FALSE, value));
 		}
 	}
 	
 	void Shader::setUniform(const std::string & name, const vec2f & value)
 	{
-		if (UniformBinder((*this), name))
+		UniformBinder binder((*this), name);
+		if (binder)
 		{
-			glCheck(glUniform2f(getUniformLocation(name), value[0], value[1]));
+			glCheck(glUniform2f(binder.location, value[0], value[1]));
 		}
 	}
 	
 	void Shader::setUniform(const std::string & name, const vec3f & value)
 	{
-		if (UniformBinder((*this), name))
+		UniformBinder binder((*this), name);
+		if (binder)
 		{
-			glCheck(glUniform3f(getUniformLocation(name), value[0], value[1], value[2]));
+			glCheck(glUniform3f(binder.location, value[0], value[1], value[2]));
 		}
 	}
 	
 	void Shader::setUniform(const std::string & name, const vec4f & value)
 	{
-		if (UniformBinder((*this), name))
+		UniformBinder binder((*this), name);
+		if (binder)
 		{
-			glCheck(glUniform4f(getUniformLocation(name), value[0], value[1], value[2], value[3]));
+			glCheck(glUniform4f(binder.location, value[0], value[1], value[2], value[3]));
 		}
 	}
 	
 	void Shader::setUniform(const std::string & name, const vec2i & value)
 	{
-		if (UniformBinder((*this), name))
+		UniformBinder binder((*this), name);
+		if (binder)
 		{
-			glCheck(glUniform2i(getUniformLocation(name), value[0], value[1]));
+			glCheck(glUniform2i(binder.location, value[0], value[1]));
 		}
 	}
 	
 	void Shader::setUniform(const std::string & name, const vec3i & value)
 	{
-		if (UniformBinder((*this), name))
+		UniformBinder binder((*this), name);
+		if (binder)
 		{
-			glCheck(glUniform3i(getUniformLocation(name), value[0], value[1], value[2]));
+			glCheck(glUniform3i(binder.location, value[0], value[1], value[2]));
 		}
 	}
 	
 	void Shader::setUniform(const std::string & name, const vec4i & value)
 	{
-		if (UniformBinder((*this), name))
+		UniformBinder binder((*this), name);
+		if (binder)
 		{
-			glCheck(glUniform4i(getUniformLocation(name), value[0], value[1], value[2], value[3]));
+			glCheck(glUniform4i(binder.location, value[0], value[1], value[2], value[3]));
 		}
 	}
 	
 	void Shader::setUniform(const std::string & name, const mat3f & value)
 	{
-		if (UniformBinder((*this), name))
+		UniformBinder binder((*this), name);
+		if (binder)
 		{
-			glCheck(glUniformMatrix3fv(getUniformLocation(name), 1, GL_FALSE, value.ptr()));
+			glCheck(glUniformMatrix3fv(binder.location, 1, GL_FALSE, value.ptr()));
 		}
 	}
 	
 	void Shader::setUniform(const std::string & name, const mat4f & value)
 	{
-		if (UniformBinder((*this), name))
+		UniformBinder binder((*this), name);
+		if (binder)
 		{
-			glCheck(glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, value.ptr()));
+			glCheck(glUniformMatrix4fv(binder.location, 1, GL_FALSE, value.ptr()));
 		}
 	}
 
@@ -351,7 +336,7 @@ namespace ml
 				TextureTable::iterator it;
 				if ((it = m_textures.find(location)) == m_textures.end())
 				{
-					GLint maxUnits = GetMaxTextureUnits();
+					int32_t maxUnits = getMaxTextureUnits();
 
 					if ((m_textures.size() + 1) >= static_cast<std::size_t>(maxUnits))
 					{
@@ -440,12 +425,12 @@ namespace ml
 	{
 		if (!isAvailable())
 		{
-			return false;
+			return ml::Debug::LogError("Shaders are not available on your system.");
 		}
 
 		if (gs && !isGeometryAvailable())
 		{
-			return false;
+			return ml::Debug::LogError("Geometry shaders are not available on your system.");
 		}
 
 		if (m_program)
@@ -458,29 +443,30 @@ namespace ml
 		m_textures.clear();
 		m_uniforms.clear();
 
-		GLint shaderProgram;
-		glCheck(shaderProgram = glCreateProgram());
+		int32_t shaderProgram;
+		glCheck(shaderProgram = glCreateProgramObjectARB());
 
 		// Create the vertex shader if needed
 		if (vs)
 		{
 			// Create and Compile the shader
-			GLint vertexShader;
-			glCheck(vertexShader = glCreateShaderObjectARB(GL_VERTEX_SHADER));
+			int32_t vertexShader;
+			glCheck(vertexShader = glCreateShaderObjectARB(Enum::VertexShader));
 			glCheck(glShaderSource(vertexShader, 1, &vs, NULL));
 			glCheck(glCompileShader(vertexShader));
 
 			// Check the Compile log
-			GLint success;
-			glCheck(glGetObjectParameterivARB(vertexShader, GL_OBJECT_COMPILE_STATUS_ARB, &success));
+			int32_t success;
+			glCheck(glGetObjectParameterivARB(
+				vertexShader, GL_OBJECT_COMPILE_STATUS_ARB, &success));
+
 			if (success == GL_FALSE)
 			{
 				char log[1024];
 				glCheck(glGetInfoLogARB(vertexShader, sizeof(log), 0, log));
-				Debug::LogError("Failed to compile vertex source: {0}", log);
 				glCheck(glDeleteObjectARB(vertexShader));
 				glCheck(glDeleteObjectARB(shaderProgram));
-				return false;
+				return Debug::LogError("Failed to compile vertex source: {0}", log);
 			}
 
 			// Attach the shader to the program, and delete it (not needed anymore)
@@ -488,26 +474,54 @@ namespace ml
 			glCheck(glDeleteObjectARB(vertexShader));
 		}
 
+		// Create the geometry shader if needed
+		if (gs)
+		{
+			// Create and Compile the shader
+			uint32_t geometryShader = glCreateShaderObjectARB(Enum::GeometryShader);
+			glCheck(glShaderSource(geometryShader, 1, &gs, NULL));
+			glCheck(glCompileShader(geometryShader));
+
+			// Check the Compile log
+			int32_t success;
+			glCheck(glGetObjectParameterivARB(
+				geometryShader, GL_OBJECT_COMPILE_STATUS_ARB, &success));
+
+			if (success == GL_FALSE)
+			{
+				char log[1024];
+				glCheck(glGetInfoLogARB(geometryShader, sizeof(log), 0, log));
+				glCheck(glDeleteObjectARB(geometryShader));
+				glCheck(glDeleteObjectARB(shaderProgram));
+				return Debug::LogError("Failed to compile geometry source: {0}", log);
+			}
+
+			// Attach the shader to the program, and delete it (not needed anymore)
+			glCheck(glAttachObjectARB(shaderProgram, geometryShader));
+			glCheck(glDeleteObjectARB(geometryShader));
+		}
+
 		// Create the fragment shader if needed
 		if (fs)
 		{
 			// Create and Compile the shader
-			GLint fragmentShader;
-			glCheck(fragmentShader = glCreateShaderObjectARB(GL_FRAGMENT_SHADER));
+			int32_t fragmentShader;
+			glCheck(fragmentShader = glCreateShaderObjectARB(Enum::FragmentShader));
 			glCheck(glShaderSource(fragmentShader, 1, &fs, NULL));
 			glCheck(glCompileShader(fragmentShader));
 
 			// Check the Compile log
-			GLint success;
-			glCheck(glGetObjectParameterivARB(fragmentShader, GL_OBJECT_COMPILE_STATUS_ARB, &success));
+			int32_t success;
+			glCheck(glGetObjectParameterivARB(
+				fragmentShader, GL_OBJECT_COMPILE_STATUS_ARB, &success));
+
 			if (success == GL_FALSE)
 			{
 				char log[1024];
 				glCheck(glGetInfoLogARB(fragmentShader, sizeof(log), 0, log));
-				Debug::LogError("Failed to compile fragment source: {0}", log);
 				glCheck(glDeleteObjectARB(fragmentShader));
 				glCheck(glDeleteObjectARB(shaderProgram));
-				return false;
+				return Debug::LogError("Failed to compile fragment source: {0}", log);
 			}
 
 			// Attach the shader to the program, and delete it (not needed anymore)
@@ -519,15 +533,16 @@ namespace ml
 		glCheck(glLinkProgram(shaderProgram));
 
 		// Check the link log
-		GLint success;
-		glCheck(glGetObjectParameterivARB(shaderProgram, GL_OBJECT_LINK_STATUS_ARB, &success));
+		int32_t success;
+		glCheck(glGetObjectParameterivARB(
+			shaderProgram, GL_OBJECT_LINK_STATUS_ARB, &success));
+
 		if (success == GL_FALSE)
 		{
 			char log[1024];
 			glCheck(glGetInfoLogARB(shaderProgram, sizeof(log), 0, log));
-			Debug::LogError("Failed to link source: {0}", log);
 			glCheck(glDeleteObjectARB(shaderProgram));
-			return false;
+			return Debug::LogError("Failed to link source: {0}", log);
 		}
 
 		m_program = shaderProgram;
@@ -552,6 +567,7 @@ namespace ml
 	{
 		// Check the cache
 		UniformTable::const_iterator it = m_uniforms.find(value);
+
 		if (it != m_uniforms.end())
 		{
 			// Already in cache, return it
@@ -562,7 +578,6 @@ namespace ml
 			// Not in cache, request the location from OpenGL
 			int location = glGetUniformLocation(program(), value.c_str());
 			m_uniforms.insert(std::make_pair(value, location));
-
 			if (location == -1)
 			{
 				Debug::LogWarning("Uniform \"{0}\" not found in source", value);

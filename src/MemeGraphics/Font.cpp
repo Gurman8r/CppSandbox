@@ -120,15 +120,17 @@ namespace ml
 	{
 		Glyph glyph;
 
-		FT_Face face = static_cast<FT_Face>(m_face);
-		if (!face)
+		FT_Face face;
+		if (!(face = static_cast<FT_Face>(m_face)))
+		{
 			return glyph;
+		}
 
 		// Set size to load glyphs as
 		FT_Set_Pixel_Sizes(face, 0, characterSize);
 
 		// Disable byte-alignment restriction
-		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		glCheck(glPixelStorei(Enum::UnpackAlignment, 1));
 
 		// Load character glyph 
 		if (FT_Load_Char(face, c, FT_LOAD_RENDER))
@@ -138,25 +140,25 @@ namespace ml
 		}
 
 		uint32_t texture;
-		glGenTextures(1, &texture);
-		glBindTexture(GL_TEXTURE_2D, texture);
-		glTexImage2D(
-			GL_TEXTURE_2D,
+		glCheck(glGenTextures(1, &texture));
+		glCheck(glBindTexture(Enum::Texture2D, texture));
+		glCheck(glTexImage2D(
+			Enum::Texture2D,
 			0,
-			GL_RED,
+			Enum::Red,
 			face->glyph->bitmap.width,
 			face->glyph->bitmap.rows,
 			0,
-			GL_RED,
-			GL_UNSIGNED_BYTE,
+			Enum::Red,
+			Enum::UnsignedByte,
 			face->glyph->bitmap.buffer
-		);
+		));
 
 		// Set texture options
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glCheck(glTexParameteri(Enum::Texture2D, Enum::TexWrapS, Enum::ClampToEdge));
+		glCheck(glTexParameteri(Enum::Texture2D, Enum::TexWrapT, Enum::ClampToEdge));
+		glCheck(glTexParameteri(Enum::Texture2D, Enum::TexMinFilter, Enum::Linear));
+		glCheck(glTexParameteri(Enum::Texture2D, Enum::TexMagFilter, Enum::Linear));
 
 		// Now store character for later use
 		glyph.texture = texture;
@@ -170,7 +172,7 @@ namespace ml
 
 		glyph.advance = uint32_t(face->glyph->advance.x);
 
-		glBindTexture(GL_TEXTURE_2D, 0);
+		glCheck(glBindTexture(Enum::Texture2D, 0));
 
 		return glyph;
 	}

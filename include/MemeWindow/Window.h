@@ -52,24 +52,24 @@ namespace ml
 		Window & minimize();
 		Window & pollEvents();
 		Window & setCentered();
-		Window & setCursorMode(CursorMode value);
-		Window & setPosition(const vec2i & value);
-		Window & setSize(const vec2u & value);
-		Window & setTitle(const std::string & value);
-		
 		Window & swapBuffers();
+
+		Window & cursorMode(CursorMode value);
+		Window & position(const vec2i & value);
+		Window & size(const vec2u & value);
+		Window & title(const std::string & value);
 
 		bool isOpen() const;
 
-		inline const Handle				getHandle()		const { return m_handle; }
-		inline const ContextSettings &	getSettings()	const { return m_settings; }
-		inline const VideoMode &		getMode()		const { return m_mode; }
-		inline const Flags &			getFlags()		const { return m_flags; }
-		inline const vec2i &			getPosition()	const { return m_position; }
-		inline const vec2u &			getSize()		const { return m_size; }
-		inline const std::string &		getTitle()		const { return m_title; }
+		inline const Handle				handle()		const { return m_handle; }
+		inline const ContextSettings &	settings()	const { return m_settings; }
+		inline const VideoMode &		videoMode()		const { return m_mode; }
+		inline const Flags &			flags()		const { return m_flags; }
+		inline const vec2i &			position()	const { return m_position; }
+		inline const vec2u &			size()		const { return m_size; }
+		inline const std::string &		title()		const { return m_title; }
 
-		inline float getAspect() const { return (float)getSize()[0] / (float)getSize()[1]; };
+		inline float getAspect() const { return (float)size()[0] / (float)size()[1]; };
 
 	protected:
 		Handle			m_handle;

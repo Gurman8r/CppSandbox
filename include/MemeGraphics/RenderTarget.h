@@ -1,12 +1,10 @@
 #ifndef _RENDER_TARGET_H_
 #define _RENDER_TARGET_H_
 
-#include <MemeGraphics/RenderState.h>
 #include <MemeGraphics/IDrawable.h>
 #include <MemeGraphics/VertexArray.h>
 #include <MemeGraphics/VertexBuffer.h>
 #include <MemeGraphics/IndexBuffer.h>
-#include <MemeGraphics/Enum.h>
 
 namespace ml
 {
@@ -15,22 +13,28 @@ namespace ml
 	public:
 		virtual ~RenderTarget() {}
 
+	public: // Drawing
 		RenderTarget & clear();
-		RenderTarget & clear(const vec4f & value);
+		RenderTarget & clear(const vec4f & color);
 
 		RenderTarget & draw(const IDrawable & value);
 		RenderTarget & draw(const RenderState & value);
-		RenderTarget & draw(const VertexArray & vertices, const RenderState & state);
-		RenderTarget & draw(const Vertex * vertices, std::size_t count, Enum::Primitive type, const RenderState & state);
-		RenderTarget & draw(const VertexBuffer & buffer, std::size_t begin, std::size_t count, const RenderState & state);
 
-		RenderTarget & drawElements(const IBO & ibo, Enum::Primitive primitive, Enum::Type type);
-		RenderTarget & drawElements(Enum::Primitive primitive, Enum::Type type, std::size_t count, const float * indices);
+		RenderTarget & drawElements(const IBO & ibo, Enum::Primitive prim, Enum::Type type);
 
-		RenderTarget & enableFlag(Enum::Flag value);
-		RenderTarget & disableFlag(Enum::Flag value);
+	public:// Utility
+		bool getFlag(Enum::Base value) const;
+		void setFlag(Enum::Base flag, bool value) const;
 
-		bool isEnabled(Enum::Flag value) const;
+		void enableFlag(Enum::Base value) const;
+		void disableFlag(Enum::Base value) const;
+
+		void setActiveTexture(Enum::TextureID textureID) const;
+		void setAlphaFunc(Enum::Comparison comp, float value) const;
+		void setBlendFunc(Enum::Factor src, Enum::Factor dst) const;
+		void setCullFace(Enum::Face value) const;
+		void setDepthFunc(Enum::Comparison value) const;
+		void setViewport(const vec2i & pos, const vec2i & size) const;
 
 
 	private:

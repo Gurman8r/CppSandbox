@@ -9,12 +9,25 @@ namespace ml
 		, m_size(size)
 	{
 		glCheck(glGenBuffers(1, &m_id));
+		
 		bind();
-		glCheck(glBufferData(GL_ARRAY_BUFFER, (size * sizeof(float)), data, m_usage));
+		
+		glCheck(glBufferData(
+			Enum::ArrayBuffer, 
+			(m_size * sizeof(float)),
+			m_data, 
+			m_usage));
 	}
 
 	VertexBuffer::VertexBuffer(Enum::Usage usage, const std::vector<float>& data)
-		: VertexBuffer(usage, &data[0], data.size())
+		: VertexBuffer(usage, &data[0], (uint32_t)data.size())
+	{
+	}
+
+	VertexBuffer::VertexBuffer(const VertexBuffer & copy)
+		: m_usage(copy.m_usage)
+		, m_data(copy.m_data)
+		, m_size(copy.m_size)
 	{
 	}
 
@@ -33,11 +46,11 @@ namespace ml
 
 	void VertexBuffer::bind() const
 	{
-		glCheck(glBindBuffer(GL_ARRAY_BUFFER, m_id));
+		glCheck(glBindBuffer(Enum::ArrayBuffer, m_id));
 	}
 
 	void VertexBuffer::unbind() const
 	{
-		glCheck(glBindBuffer(GL_ARRAY_BUFFER, 0));
+		glCheck(glBindBuffer(Enum::ArrayBuffer, 0));
 	}
 }

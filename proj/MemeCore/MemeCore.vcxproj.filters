@@ -78,9 +78,6 @@
     <ClInclude Include="..\..\include\MemeCore\MemoryTracker.h">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\BitHelper.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\TimePoint.h">
       <Filter>Header Files\Time</Filter>
     </ClInclude>
@@ -92,9 +89,6 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Config.h">
       <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Enum.h">
-      <Filter>Header Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Component.h">
       <Filter>Header Files\Components</Filter>
@@ -160,6 +154,12 @@
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Rect.h">
+      <Filter>Header Files\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\ML_Enum.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\BitHelper.h">
       <Filter>Header Files\Maths</Filter>
     </ClInclude>
   </ItemGroup>

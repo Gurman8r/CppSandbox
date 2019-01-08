@@ -2,8 +2,8 @@
 #define _MESH_H_
 
 #include <MemeCore/IResource.h>
-#include <MemeGraphics/VertexArray.h>
-#include <MemeGraphics/Enum.h>
+#include <MemeGraphics/Vertex.h>
+#include <MemeGraphics/GL_Enum.h>
 
 namespace ml
 {
@@ -13,19 +13,35 @@ namespace ml
 	{
 	public:
 		Mesh();
-		Mesh(const VertexArray & vertices, const IndexArray & indices);
+		Mesh(Enum::Primitive primitive, const VertexList & vertices, const IndexList & indices);
 		Mesh(const Mesh& copy);
 		~Mesh();
 
 		bool cleanup() override;
 		bool loadFromFile(const std::string & filename) override;
 
-		inline const VertexArray &	vertices() const { return m_vertices; }
-		inline const IndexArray &	indices() const { return m_indices; }
+		inline const Enum::Primitive & primitive() const { return m_primitive; }
+		inline const VertexList & vertices() const { return m_vertices; }
+		inline const IndexList & indices() const { return m_indices; }
+		inline const FloatList & flattened() const
+		{
+			if (m_changed)
+			{
+				m_changed = false;
+				return m_flattened = Flatten(vertices());
+			}
+			return m_flattened;
+		}
+
+		static const FloatList & Flatten(const VertexList & value);
 
 	private:
-		VertexArray		m_vertices;
-		IndexArray		m_indices;
+		Enum::Primitive	m_primitive;
+		VertexList		m_vertices;
+		IndexList		m_indices;
+
+		mutable bool		m_changed;
+		mutable FloatList	m_flattened;
 	};
 }
 

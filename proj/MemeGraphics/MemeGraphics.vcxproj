@@ -20,7 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeGraphics\Color.h" />
-    <ClInclude Include="..\..\include\MemeGraphics\Enum.h" />
+    <ClInclude Include="..\..\include\MemeGraphics\GL_Enum.h" />
     <ClInclude Include="..\..\include\MemeGraphics\Gizmos.h" />
     <ClInclude Include="..\..\include\MemeGraphics\IDrawable.h" />
     <ClInclude Include="..\..\include\MemeGraphics\Export.h" />

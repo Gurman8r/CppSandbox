@@ -133,7 +133,7 @@ namespace ml
 					continue;
 				}
 
-				const VertexArray vertices({
+				const VertexList vertices({
 					Vertex(vec3f(l,	b,  0), Color::White, vec2f::Zero),
 					Vertex(vec3f(l,	t,	0), Color::White, vec2f::Up),
 					Vertex(vec3f(r,	t,	0), Color::White, vec2f::One),
