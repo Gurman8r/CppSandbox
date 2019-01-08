@@ -66,12 +66,12 @@ namespace ml
 	
 	Duration operator+(const Duration & lhs, uint64_t rhs)
 	{
-		return (lhs.millis() + rhs);
+		return lhs.millis() + rhs;
 	}
 	
 	Duration operator-(const Duration & lhs, uint64_t rhs)
 	{
-		return (lhs.millis() - rhs);
+		return lhs.millis() - rhs;
 	}
 	
 	

@@ -23,11 +23,11 @@ namespace ml
 		RenderTarget & drawElements(const IBO & ibo, GL::Primitive prim, GL::Type type);
 
 	public:// Utility
-		bool getFlag(GL::Base value) const;
-		void setFlag(GL::Base flag, bool value) const;
+		bool getFlag(GL::Enum value) const;
+		void setFlag(GL::Enum flag, bool value) const;
 
-		void enableFlag(GL::Base value) const;
-		void disableFlag(GL::Base value) const;
+		void enableFlag(GL::Enum value) const;
+		void disableFlag(GL::Enum value) const;
 
 		void setActiveTexture(GL::TextureID textureID) const;
 		void setAlphaFunc(GL::Comparison comp, float value) const;

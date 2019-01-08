@@ -11,9 +11,11 @@ out vec4 v_Color;
 out vec2 v_TexCoords;
 
 // uniforms
+
 uniform mat4 u_model;
 uniform mat4 u_view;
 uniform mat4 u_proj;
+uniform bool u_useMvp;
 
 void main()
 {
@@ -21,7 +23,7 @@ void main()
 	v_TexCoords = a_texcoord;
 	v_Color		= a_color;
 
-	mat4 mvp = u_proj * u_view * u_model;
+	mat4 mvp = (u_proj * u_view * u_model);
 
 	gl_Position = vec4(a_position, 1.0);
 }

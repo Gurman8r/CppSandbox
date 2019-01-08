@@ -1,5 +1,6 @@
 #include <MemeGraphics/Shader.h>
 #include <MemeGraphics/OpenGL.h>
+#include <MemeGraphics/GLEW.h>
 #include <MemeCore/DebugUtility.h>
 #include <MemeCore/FileSystem.h>
 
@@ -22,7 +23,7 @@ namespace ml
 {
 	struct Shader::UniformBinder
 	{
-		UniformBinder(Shader & shader, const std::string& name)
+		UniformBinder(Shader & shader, const std::string & name)
 			: savedProgram(0)
 			, currentProgram(shader.m_program)
 			, location(-1)
@@ -215,115 +216,110 @@ namespace ml
 	
 	void Shader::setUniform(const std::string & name, float value)
 	{
-		UniformBinder binder((*this), name);
-		if (binder)
+		UniformBinder u((*this), name);
+		if (u)
 		{
-			glCheck(glUniform1f(binder.location, value));
+			glCheck(glUniform1f(u.location, value));
 		}
 	}
 	
 	void Shader::setUniform(const std::string & name, int32_t value)
 	{
-		UniformBinder binder((*this), name);
-		if(binder)
+		UniformBinder u((*this), name);
+		if (u)
 		{
-			glCheck(glUniform1i(binder.location, value));
+			glCheck(glUniform1i(u.location, value));
 		}
 	}
 	
 	void Shader::setUniform(const std::string & name, uint32_t value)
 	{
-		UniformBinder binder((*this), name);
-		if (binder)
+		UniformBinder u((*this), name);
+		if (u)
 		{
-			glCheck(glUniform1ui(binder.location, value));
+			glCheck(glUniform1ui(u.location, value));
 		}
 	}
 	
 	void Shader::setUniform(const std::string & name, const float * value)
 	{
-		UniformBinder binder((*this), name);
-		if (binder)
+		UniformBinder u((*this), name);
+		if (u)
 		{
-			glCheck(glUniformMatrix4fv(binder.location, 1, GL_FALSE, value));
+			glCheck(glUniformMatrix4fv(u.location, 1, GL_FALSE, value));
 		}
 	}
 	
 	void Shader::setUniform(const std::string & name, const vec2f & value)
 	{
-		UniformBinder binder((*this), name);
-		if (binder)
+		UniformBinder u((*this), name);
+		if (u)
 		{
-			glCheck(glUniform2f(binder.location, value[0], value[1]));
+			glCheck(glUniform2f(u.location, value[0], value[1]));
 		}
 	}
 	
 	void Shader::setUniform(const std::string & name, const vec3f & value)
 	{
-		UniformBinder binder((*this), name);
-		if (binder)
+		UniformBinder u((*this), name);
+		if (u)
 		{
-			glCheck(glUniform3f(binder.location, value[0], value[1], value[2]));
+			glCheck(glUniform3f(u.location, value[0], value[1], value[2]));
 		}
 	}
 	
 	void Shader::setUniform(const std::string & name, const vec4f & value)
 	{
-		UniformBinder binder((*this), name);
-		if (binder)
+		UniformBinder u((*this), name);
+		if (u)
 		{
-			glCheck(glUniform4f(binder.location, value[0], value[1], value[2], value[3]));
+			glCheck(glUniform4f(u.location, value[0], value[1], value[2], value[3]));
 		}
 	}
 	
 	void Shader::setUniform(const std::string & name, const vec2i & value)
 	{
-		UniformBinder binder((*this), name);
-		if (binder)
+		UniformBinder u((*this), name);
+		if (u)
 		{
-			glCheck(glUniform2i(binder.location, value[0], value[1]));
+			glCheck(glUniform2i(u.location, value[0], value[1]));
 		}
 	}
 	
 	void Shader::setUniform(const std::string & name, const vec3i & value)
 	{
-		UniformBinder binder((*this), name);
-		if (binder)
+		UniformBinder u((*this), name);
+		if (u)
 		{
-			glCheck(glUniform3i(binder.location, value[0], value[1], value[2]));
+			glCheck(glUniform3i(u.location, value[0], value[1], value[2]));
 		}
 	}
 	
 	void Shader::setUniform(const std::string & name, const vec4i & value)
 	{
-		UniformBinder binder((*this), name);
-		if (binder)
+		UniformBinder u((*this), name);
+		if (u)
 		{
-			glCheck(glUniform4i(binder.location, value[0], value[1], value[2], value[3]));
+			glCheck(glUniform4i(u.location, value[0], value[1], value[2], value[3]));
 		}
 	}
 	
 	void Shader::setUniform(const std::string & name, const mat3f & value)
 	{
-		UniformBinder binder((*this), name);
-		if (binder)
+		UniformBinder u((*this), name);
+		if (u)
 		{
-			glCheck(glUniformMatrix3fv(binder.location, 1, GL_FALSE, value.ptr()));
+			glCheck(glUniformMatrix3fv(u.location, 1, GL_FALSE, value.ptr()));
 		}
 	}
 	
 	void Shader::setUniform(const std::string & name, const mat4f & value)
 	{
-		UniformBinder binder((*this), name);
-		if (binder)
+		UniformBinder u((*this), name);
+		if (u)
 		{
-			glCheck(glUniformMatrix4fv(binder.location, 1, GL_FALSE, value.ptr()));
+			glCheck(glUniformMatrix4fv(u.location, 1, GL_FALSE, value.ptr()));
 		}
-	}
-
-	void Shader::setUniform(const std::string & name, const Transform & value)
-	{
-		setUniform(name, value.matrix());
 	}
 
 	void Shader::setUniform(const std::string & name, const Texture * value)
@@ -358,10 +354,10 @@ namespace ml
 	
 	void Shader::setUniformArray(const std::string & name, const float * value, int length)
 	{
-		UniformBinder binder((*this), name);
-		if (binder)
+		UniformBinder u((*this), name);
+		if (u)
 		{
-			glCheck(glUniform1fv(binder.location, length, value));
+			glCheck(glUniform1fv(u.location, length, value));
 		}
 	}
 	
@@ -369,10 +365,10 @@ namespace ml
 	{
 		std::vector<float> contiguous = vec2f::Flatten(value, length);
 
-		UniformBinder binder((*this), name);
-		if (binder)
+		UniformBinder u((*this), name);
+		if (u)
 		{
-			glCheck(glUniform2fv(binder.location, length, &contiguous[0]));
+			glCheck(glUniform2fv(u.location, length, &contiguous[0]));
 		}
 	}
 	
@@ -380,10 +376,10 @@ namespace ml
 	{
 		std::vector<float> contiguous = vec3f::Flatten(value, length);
 
-		UniformBinder binder((*this), name);
-		if (binder)
+		UniformBinder u((*this), name);
+		if (u)
 		{
-			glCheck(glUniform3fv(binder.location, length, &contiguous[0]));
+			glCheck(glUniform3fv(u.location, length, &contiguous[0]));
 		}
 	}
 	
@@ -391,10 +387,10 @@ namespace ml
 	{
 		std::vector<float> contiguous = vec4f::Flatten(value, length);
 
-		UniformBinder binder((*this), name);
-		if (binder)
+		UniformBinder u((*this), name);
+		if (u)
 		{
-			glCheck(glUniform4fv(binder.location, length, &contiguous[0]));
+			glCheck(glUniform4fv(u.location, length, &contiguous[0]));
 		}
 	}
 	
@@ -402,10 +398,10 @@ namespace ml
 	{
 		std::vector<float> contiguous = mat3f::Flatten(value, length);
 
-		UniformBinder binder((*this), name);
-		if (binder)
+		UniformBinder u((*this), name);
+		if (u)
 		{
-			glCheck(glUniformMatrix3fv(binder.location, length, GL_FALSE, &contiguous[0]));
+			glCheck(glUniformMatrix3fv(u.location, length, GL_FALSE, &contiguous[0]));
 		}
 	}
 	
@@ -413,10 +409,10 @@ namespace ml
 	{
 		std::vector<float> contiguous = mat4f::Flatten(value, length);
 
-		UniformBinder binder((*this), name);
-		if (binder)
+		UniformBinder u((*this), name);
+		if (u)
 		{
-			glCheck(glUniformMatrix4fv(binder.location, length, GL_FALSE, &contiguous[0]));
+			glCheck(glUniformMatrix4fv(u.location, length, GL_FALSE, &contiguous[0]));
 		}
 	}
 

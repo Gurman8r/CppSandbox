@@ -1,5 +1,6 @@
 #include <MemeGraphics/RenderTarget.h>
 #include <MemeGraphics/OpenGL.h>
+#include <MemeGraphics/GLEW.h>
 
 namespace ml
 {
@@ -38,14 +39,14 @@ namespace ml
 	
 	
 	
-	bool RenderTarget::getFlag(GL::Base value) const
+	bool RenderTarget::getFlag(GL::Enum value) const
 	{
 		static bool tmp;
 		glCheck(tmp = glIsEnabled(value));
 		return tmp;
 	}
 
-	void RenderTarget::setFlag(GL::Base flag, bool value) const
+	void RenderTarget::setFlag(GL::Enum flag, bool value) const
 	{
 		if (value)
 		{
@@ -57,12 +58,12 @@ namespace ml
 		}
 	}
 		
-	void RenderTarget::enableFlag(GL::Base value) const
+	void RenderTarget::enableFlag(GL::Enum value) const
 	{
 		glCheck(glEnable(value));
 	}
 
-	void RenderTarget::disableFlag(GL::Base value) const
+	void RenderTarget::disableFlag(GL::Enum value) const
 	{
 		glCheck(glDisable(value));
 	}

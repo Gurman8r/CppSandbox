@@ -120,11 +120,14 @@
     <ClInclude Include="..\..\include\MemeGraphics\BufferLayout.h">
       <Filter>Header Files\Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\GL_Enum.h">
-      <Filter>Header Files\GL</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Gizmos.h">
       <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\GLEW.h">
+      <Filter>Header Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\GL.h">
+      <Filter>Header Files\GL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -190,6 +193,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Gizmos.cpp">
       <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\MemeGraphics\GLM.h">
+      <Filter>Header Files\GL</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

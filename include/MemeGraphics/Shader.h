@@ -56,7 +56,6 @@ namespace ml
 		void setUniform(const std::string & name, const vec4i & value);
 		void setUniform(const std::string & name, const mat3f & value);
 		void setUniform(const std::string & name, const mat4f & value);
-		void setUniform(const std::string & name, const Transform & value);
 		void setUniform(const std::string & name, const Texture * value);
 
 		// Set Uniform Array

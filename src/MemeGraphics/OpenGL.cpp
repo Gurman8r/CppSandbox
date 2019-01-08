@@ -1,4 +1,5 @@
 #include <MemeGraphics/OpenGL.h>
+#include <MemeGraphics/GLEW.h>
 #include <MemeCore/DebugUtility.h>
 #include <MemeCore/ConsoleUtility.h>
 
@@ -7,7 +8,7 @@ namespace ml
 	bool OpenGL::m_good = false;
 	bool OpenGL::m_errorPause = false;
 
-	bool OpenGL::initGL(bool experimental)
+	bool OpenGL::init(bool experimental)
 	{
 		static bool checked = false;
 		if (!checked)
@@ -18,7 +19,7 @@ namespace ml
 
 			m_good = (glewInit() == GLEW_OK);
 
-			Debug::LogInfo("OpenGL version supported by this platform: {0}", 
+			Debug::Log("OpenGL version supported by this platform: {0}", 
 				getString(GL::Version));
 		}
 		return m_good;
@@ -38,16 +39,14 @@ namespace ml
 	void OpenGL::checkError(const char * file, unsigned int line, const char * expression)
 	{
 		// Get the last error
-		GL::Error errorCode = getError();
-		
-		if (errorCode != GL::NoError)
+		if (GL::Error errorCode = getError())
 		{
-			std::string fileString	= file;
-			std::string fileName	= fileString.substr(fileString.find_last_of("\\/") + 1);
-			std::string errorName	= "Unknown error";
-			std::string errorDesc	= "No description";
+			std::string fileName(file);
+			fileName = fileName.substr(fileName.find_last_of("\\/") + 1);
 
 			// Decode the error code
+			std::string errorName;
+			std::string errorDesc;
 			switch (errorCode)
 			{
 			case GL::InvalidEnum:
@@ -77,6 +76,10 @@ namespace ml
 			case GL::InvalidFramebufferOperation:
 				errorName = "Invalid Framebuffer Operation";
 				errorDesc = "The object bound to framebuffer binding is not \"framebuffer complete\".";
+				break;
+			default:
+				errorName = "Unknown error";
+				errorDesc = "No description";
 				break;
 			}
 			
@@ -162,8 +165,12 @@ namespace ml
 
 	int32_t OpenGL::getInt(uint32_t name)
 	{
+
 		static int32_t temp;
 		getInt(name, temp);
 		return temp;
 	}
+
+
+
 }

@@ -30,12 +30,10 @@ namespace ml
 
 	public:
 		inline operator uint64_t() const { return m_millis; }
-		
-		template <class R, class P>
-		inline operator std::chrono::duration<R, P>() const
-		{
-			return std::chrono::milliseconds(m_nanos);
-		}
+
+		inline operator float() const { return static_cast<float>(m_millis); }
+
+		inline const float delta() const { return (float)(*this) / 1000.f; }
 		
 	public:
 		const uint64_t nanos() const;
@@ -52,11 +50,11 @@ namespace ml
 		friend Duration	operator+(const Duration & lhs, uint64_t rhs);
 		friend Duration	operator-(const Duration & lhs, uint64_t rhs);
 		
-		friend Duration &	operator+=(Duration & lhs, const Duration & rhs);
-		friend Duration &	operator-=(Duration & lhs, const Duration & rhs);
+		friend Duration & operator+=(Duration & lhs, const Duration & rhs);
+		friend Duration & operator-=(Duration & lhs, const Duration & rhs);
 		
-		friend Duration &	operator+=(Duration & lhs, uint64_t rhs);
-		friend Duration &	operator-=(Duration & lhs, uint64_t rhs);
+		friend Duration & operator+=(Duration & lhs, uint64_t rhs);
+		friend Duration & operator-=(Duration & lhs, uint64_t rhs);
 
 	public:
 		inline bool equals(const Duration & other) const override

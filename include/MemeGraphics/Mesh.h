@@ -3,7 +3,7 @@
 
 #include <MemeCore/IResource.h>
 #include <MemeGraphics/Vertex.h>
-#include <MemeGraphics/GL_Enum.h>
+#include <MemeGraphics/GL.h>
 
 namespace ml
 {

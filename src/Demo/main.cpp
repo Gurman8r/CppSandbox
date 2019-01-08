@@ -18,6 +18,7 @@
 #include <MemeGraphics/VertexBuffer.h>
 #include <MemeGraphics/IndexBuffer.h>
 #include <MemeGraphics/BufferLayout.h>
+#include <MemeGraphics/OpenGL.h>
 #include <MemeNet/Client.h>
 #include <MemeScript/Interpreter.h>
 
@@ -100,6 +101,23 @@ inline static void printBits(T value)
 		std::cout << (b ? ml::FG::Green : ml::FG::Red) << b << " ";
 	}
 	std::cout << ml::FMT() << std::endl;
+}
+
+inline static uint64_t getFPS(float elapsedMS, bool fast = false)
+{
+	static uint64_t	frameCounter = 0;
+	static uint64_t	fps = 0;
+	static float	nextSecond = 0.0f;
+	static float	prevSecond = 0.0f;
+	frameCounter++;
+	nextSecond += elapsedMS;
+	if (nextSecond - prevSecond > 1.0f)
+	{
+		prevSecond = nextSecond;
+		fps = frameCounter;
+		frameCounter = 0;
+	}
+	return fps;
 }
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -291,11 +309,11 @@ inline static int coreStub()
 
 inline static int windowStub()
 {
-	ml::Debug::LogInfo("Window Stub");
+	ml::Debug::Log("Window Stub");
 	
 	// Window
 	ml::RenderWindow window;
-	ml::Debug::LogInfo("Creating Window...");
+	ml::Debug::Log("Creating Window...");
 	if (!window.create(
 		settings.title,
 		ml::VideoMode(settings.width, settings.height, 32),
@@ -340,7 +358,7 @@ inline static int windowStub()
 
 inline static int scriptStub()
 {
-	ml::Debug::LogInfo("Script Stub");
+	ml::Debug::Log("Script Stub");
 
 	loadCommands();
 
@@ -356,7 +374,7 @@ inline static int scriptStub()
 
 inline static int astStub()
 {
-	ml::Debug::LogInfo("AST Stub");
+	ml::Debug::Log("AST Stub");
 
 	loadCommands();
 
@@ -387,7 +405,7 @@ inline static int astStub()
 
 inline static int netStub()
 {
-	ml::Debug::LogInfo("Net Stub");
+	ml::Debug::Log("Net Stub");
 
 	ml::Client client;
 
@@ -396,7 +414,7 @@ inline static int netStub()
 
 inline static int audioStub()
 {
-	ml::Debug::LogInfo("Audio Stub");
+	ml::Debug::Log("Audio Stub");
 
 	ml::Sound sound;
 
@@ -405,10 +423,10 @@ inline static int audioStub()
 
 inline static int graphicsStub()
 {
-	ml::Debug::LogInfo("Graphics Stub");
+	ml::Debug::Log("Graphics Stub");
 
 	// Window
-	ml::Debug::LogInfo("Creating Window...");
+	ml::Debug::Log("Creating Window...");
 	ml::RenderWindow window;
 	if (!window.create(
 		settings.title,
@@ -422,8 +440,10 @@ inline static int graphicsStub()
 	window.setViewport(ml::vec2i::Zero, window.size());
 	window.setCentered();
 
+	ml::OpenGL::errorPause(true);
+
 	// Load Fonts
-	ml::Debug::LogInfo("Loading Fonts...");
+	ml::Debug::Log("Loading Fonts...");
 	ml::Font font;
 	if (!font.loadFromFile(settings.assetPath + "/fonts/Consolas.ttf"))
 	{
@@ -432,7 +452,7 @@ inline static int graphicsStub()
 	}
 
 	// Load Images
-	ml::Debug::LogInfo("Loading Images...");
+	ml::Debug::Log("Loading Images...");
 	ml::Image image;
 	if (!image.loadFromFile(settings.assetPath + "/images/dean.png"))
 	{
@@ -441,7 +461,7 @@ inline static int graphicsStub()
 	}
 
 	// Load Textures
-	ml::Debug::LogInfo("Loading Textures...");
+	ml::Debug::Log("Loading Textures...");
 	ml::Texture texture;
 	if (!texture.loadFromImage(image))
 	{
@@ -450,7 +470,7 @@ inline static int graphicsStub()
 	}
 
 	// Load Shaders
-	ml::Debug::LogInfo("Loading Shaders...");
+	ml::Debug::Log("Loading Shaders...");
 	ml::Shader shaderBasic;
 	if (!shaderBasic.loadFromFile(
 		settings.assetPath + "/shaders/vs/basic_vs.shader",
@@ -498,7 +518,7 @@ inline static int graphicsStub()
 	}
 
 	// Load Sprites
-	ml::Debug::LogInfo("Loading Sprites...");
+	ml::Debug::Log("Loading Sprites...");
 	ml::Sprite sprite(&shader2D, &texture);
 	if (!sprite)
 	{
@@ -509,7 +529,7 @@ inline static int graphicsStub()
 	sprite.transform().position(ml::vec3f::Zero);
 
 	// Load Text
-	ml::Debug::LogInfo("Loading Text...");
+	ml::Debug::Log("Loading Text...");
 	ml::Text text(&shaderText, &font);
 	if (!text)
 	{
@@ -522,7 +542,7 @@ inline static int graphicsStub()
 	text.transform().position(ml::vec3f::Zero);
 
 	// Load Geometry
-	ml::Debug::LogInfo("Loading Geometry...");
+	ml::Debug::Log("Loading Geometry...");
 
 	ml::VAO vao(1);
 	ml::VBO vbo(ml::GL::StaticDraw, ml::Shapes::Quad::Mesh.flattened());
@@ -534,19 +554,20 @@ inline static int graphicsStub()
 	});
 	layout.use();
 
-
 	// Matricies
 	const ml::mat4f proj_ortho = ml::Transform::Ortho(ml::vec2f::Zero, window.size());
 	const ml::mat4f proj_persp = ml::Transform::Persp(90.f, window.getAspect(), 0.1f, 1000.f);
-
+	
 	ml::Transform view(ml::vec3f::Zero, ml::vec3f::One, ml::quat());
 	ml::Transform model(ml::vec3f::Forward, ml::vec3f::One, ml::quat());
 
+	// Done
+	ml::Debug::Log("OK");
 
 	// Loop
 	ml::InputState	input;
 	ml::Timer		loopTimer;
-	ml::Duration	deltaTime;
+	ml::Duration	elapsed;
 	while (window.isOpen())
 	{
 		loopTimer.start();
@@ -578,22 +599,25 @@ inline static int graphicsStub()
 			{
 				window.close();
 			}
+
+			// Window Title
+			const ml::Duration & now = ML_Time.elapsed();
+			window.title(ml::StringUtility::Format(
+				"{0} | {1} ms | {2} fps | {3}",
+				settings.title,
+				elapsed.millis(),
+				getFPS(elapsed.delta()),
+				ml::StringUtility::Format("{0}{1}:{2}{3}:{4}{5}",
+				(now.minutes() % 60) / 10 % 10,
+					(now.minutes() % 60) % 10,
+					(now.seconds() % 60) / 10 % 10,
+					(now.seconds() % 60) % 10,
+					(now.millis()) / 10 % 10,
+					(now.millis()) % 10))
+			);
 		}
 		input.endStep();
-		loopTimer.stop();
-
-		ml::Duration now = ML_Time.elapsed();
-
-		window.title(ml::StringUtility::Format(
-			"{0} | {1}ms | {2}{3}:{4}{5}:{6}{7}", 
-			settings.title, 
-			loopTimer.elapsed().seconds(),
-			(now.minutes() % 60) / 10 % 10,
-			(now.minutes() % 60) % 10,
-			(now.seconds() % 60) / 10 % 10,
-			(now.seconds() % 60) % 10,
-			(now.millis()) / 10 % 10,
-			(now.millis()) % 10));
+		elapsed = loopTimer.stop().elapsed();
 	}
 
 	std::cout << "OK" << std::endl;

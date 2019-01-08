@@ -1,11 +1,7 @@
 #ifndef _OPENGL_H_
 #define _OPENGL_H_
 
-#include <MemeGraphics/GL_Enum.h>
-
-#define GLEW_STATIC
-#include <GL/glew.h>
-#pragma comment (lib, "glew32s.lib")
+#include <MemeGraphics/GL.h>
 
 // Macro to quickly check every OpenGL API call
 #ifdef ML_DEBUG
@@ -22,31 +18,35 @@ namespace ml
 {
 	class ML_GRAPHICS_API OpenGL final
 	{
+	private:
+		static bool m_good;
+		static bool m_errorPause;
+
 	public:
-		static bool			initGL(bool experimental);
+		static bool	init(bool experimental);
 		
 	public:
-		static GL::Error	getError();
-		static void			errorPause(bool value);
-		static void			checkError(const char * file, unsigned int line, const char * expression);
+		static GL::Error getError();
+
+		static void	errorPause(bool value);
+		static void	checkError(const char * file, unsigned int line, const char * expression);
 		
 	public:
 		static const char * getString(uint32_t name);
 		static const char * getString(uint32_t name, uint32_t index);
 
-		static void			getBool(uint32_t name, bool & value);
-		static void			getDouble(uint32_t name, double & value);
-		static void			getFloat(uint32_t name, float & value);
-		static void			getInt(uint32_t name, int32_t & value);
+		static void		getBool(uint32_t name, bool & value);
+		static void		getDouble(uint32_t name, double & value);
+		static void		getFloat(uint32_t name, float & value);
+		static void		getInt(uint32_t name, int32_t & value);
 
-		static bool			getBool(uint32_t name);
-		static double		getDouble(uint32_t name);
-		static float		getFloat(uint32_t name);
-		static int32_t		getInt(uint32_t name);
+		static bool		getBool(uint32_t name);
+		static double	getDouble(uint32_t name);
+		static float	getFloat(uint32_t name);
+		static int32_t	getInt(uint32_t name);
 
-	private:
-		static bool m_good;
-		static bool m_errorPause;
+	public:
+
 	};
 
 }

@@ -13,15 +13,15 @@ namespace ml
 	class ML_CORE_API Debug
 	{
 	public:
-		static bool LogInfo(const std::string& message);
+		static bool Log(const std::string& message);
 		static bool LogWarning(const std::string& message);
 		static bool LogError(const std::string& message);
 
 	public:
 		template<typename T, typename ... A>
-		inline static bool LogInfo(const std::string& fmt, const T& arg0, const A&... args)
+		inline static bool Log(const std::string& fmt, const T& arg0, const A&... args)
 		{
-			return Debug::LogInfo(StringUtility::Format(fmt, arg0, (args)...));
+			return Debug::Log(StringUtility::Format(fmt, arg0, (args)...));
 		}
 
 		template<typename T, typename ... A>

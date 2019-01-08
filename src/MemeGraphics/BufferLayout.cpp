@@ -1,5 +1,6 @@
 #include <MemeGraphics/BufferLayout.h>
 #include <MemeGraphics/OpenGL.h>
+#include <MemeGraphics/GLEW.h>
 
 namespace ml
 {

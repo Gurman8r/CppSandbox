@@ -2,7 +2,7 @@
 #define _INDEX_BUFFER_H_
 
 #include <MemeCore/ITrackable.h>
-#include <MemeGraphics/GL_Enum.h>
+#include <MemeGraphics/GL.h>
 #include <vector>
 
 namespace ml

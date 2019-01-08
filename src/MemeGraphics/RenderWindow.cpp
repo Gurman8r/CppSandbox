@@ -6,7 +6,7 @@ namespace ml
 {
 	bool RenderWindow::initialize()
 	{
-		if (OpenGL::initGL(true))
+		if (OpenGL::init(true))
 		{
 			// Setup GL
 
@@ -60,7 +60,7 @@ namespace ml
 				m_settings.minorVersion = 1;
 			}
 
-			Debug::LogInfo("Using OpenGL Version: {0}.{1}",
+			Debug::Log("Using OpenGL Version: {0}.{1}",
 				m_settings.majorVersion,
 				m_settings.minorVersion);
 
@@ -101,7 +101,7 @@ namespace ml
 					}
 				}
 			}
-			return ml::Debug::LogInfo("OK");
+			return ml::Debug::Log("OK");
 		}
 		return ml::Debug::LogError("Failed to Initialize GLEW");
 	}

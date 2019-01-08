@@ -1,5 +1,6 @@
 #include <MemeGraphics/Texture.h>
 #include <MemeGraphics/OpenGL.h>
+#include <MemeGraphics/GLEW.h>
 #include <MemeCore/DebugUtility.h>
 #include <cassert>
 #include <algorithm>

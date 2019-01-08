@@ -18,12 +18,12 @@ namespace ml
 		void bind() const;
 		void unbind() const;
 
-		inline const uint32_t & id() const { return m_id; }
-		inline const uint32_t & count() const { return m_id; }
+		inline const uint32_t &	id() const { return m_id; }
+		inline const uint32_t &	count() const { return m_id; }
 
 	private:
-		uint32_t m_id;
-		uint32_t m_count;
+		uint32_t	m_id;
+		uint32_t	m_count;
 	};
 
 	using VAO = VertexArray;

@@ -1,5 +1,6 @@
 #include <MemeGraphics/Font.h>
 #include <MemeGraphics/OpenGL.h>
+#include <MemeGraphics/GLEW.h>
 #include <MemeCore/DebugUtility.h>
 
 #include <ft2build.h>

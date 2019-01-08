@@ -1,7 +1,7 @@
 #ifndef _BUFFER_LAYOUT_H_
 #define _BUFFER_LAYOUT_H_
 
-#include <MemeGraphics/GL_Enum.h>
+#include <MemeGraphics/GL.h>
 #include <MemeCore/ITrackable.h>
 #include <vector>
 

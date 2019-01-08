@@ -3,7 +3,7 @@
 
 namespace ml
 {
-	bool Debug::LogInfo(const std::string & message)
+	bool Debug::Log(const std::string & message)
 	{
 		out()
 			<< FMT()

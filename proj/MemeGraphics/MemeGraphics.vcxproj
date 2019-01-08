@@ -20,7 +20,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeGraphics\Color.h" />
-    <ClInclude Include="..\..\include\MemeGraphics\GL_Enum.h" />
+    <ClInclude Include="..\..\include\MemeGraphics\GLEW.h" />
+    <ClInclude Include="..\..\include\MemeGraphics\GL.h" />
     <ClInclude Include="..\..\include\MemeGraphics\Gizmos.h" />
     <ClInclude Include="..\..\include\MemeGraphics\IDrawable.h" />
     <ClInclude Include="..\..\include\MemeGraphics\Export.h" />
@@ -47,6 +48,7 @@
     <ClInclude Include="..\..\include\MemeGraphics\BufferLayout.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\include\MemeGraphics\GLM.h" />
     <ClCompile Include="..\..\src\MemeGraphics\BufferLayout.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Color.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Font.cpp" />

@@ -1,5 +1,5 @@
 #include <MemeGraphics/Gizmos.h>
-#include <MemeGraphics/GL_Enum.h>
+#include <MemeGraphics/GL.h>
 
 namespace ml
 {
