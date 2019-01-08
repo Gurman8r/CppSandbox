@@ -19,17 +19,11 @@
     <Filter Include="Header Files\DS">
       <UniqueIdentifier>{aeee4eb9-e7d8-430c-bc68-d3ca84f8d369}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Utility">
-      <UniqueIdentifier>{e6925aeb-bae2-4cf0-bfbb-70aba96f9b5e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\DS">
       <UniqueIdentifier>{af5c254e-15a7-4a77-9673-c744352d7b68}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Rendering">
       <UniqueIdentifier>{22518504-c8c3-4139-b999-60b4911a73bd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility">
-      <UniqueIdentifier>{18eb3d43-0a77-4af5-9975-896e67ff95dc}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Drawable">
       <UniqueIdentifier>{e457087a-0389-4e7c-8e64-003cda0b531f}</UniqueIdentifier>
@@ -45,6 +39,12 @@
     </Filter>
     <Filter Include="Source Files\Buffers">
       <UniqueIdentifier>{b05bb526-d2bd-4bc7-aa76-f105027d8beb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GL">
+      <UniqueIdentifier>{18eb3d43-0a77-4af5-9975-896e67ff95dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GL">
+      <UniqueIdentifier>{e6925aeb-bae2-4cf0-bfbb-70aba96f9b5e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -91,7 +91,7 @@
       <Filter>Header Files\DS</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\OpenGL.h">
-      <Filter>Header Files\Utility</Filter>
+      <Filter>Header Files\GL</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Transform.h">
       <Filter>Header Files\DS</Filter>
@@ -121,7 +121,7 @@
       <Filter>Header Files\Buffers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\GL_Enum.h">
-      <Filter>Header Files\Utility</Filter>
+      <Filter>Header Files\GL</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Gizmos.h">
       <Filter>Header Files\Rendering</Filter>
@@ -162,7 +162,7 @@
       <Filter>Source Files\DS</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\OpenGL.cpp">
-      <Filter>Source Files\Utility</Filter>
+      <Filter>Source Files\GL</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Uniform.cpp">
       <Filter>Source Files\DS</Filter>

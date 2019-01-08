@@ -7,11 +7,6 @@ namespace ml
 	bool OpenGL::m_good = false;
 	bool OpenGL::m_errorPause = false;
 
-	bool OpenGL::good()
-	{
-		return m_good;
-	}
-
 	bool OpenGL::initGL(bool experimental)
 	{
 		static bool checked = false;
@@ -81,7 +76,7 @@ namespace ml
 				break;
 			case Enum::InvalidFramebufferOperation:
 				errorName = "Invalid Framebuffer Operation";
-				errorDesc = "The object bound to FRAMEBUFFER_BINDING is not \"framebuffer complete\".";
+				errorDesc = "The object bound to framebuffer binding is not \"framebuffer complete\".";
 				break;
 			}
 			

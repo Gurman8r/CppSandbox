@@ -61,9 +61,9 @@ namespace ml
 
 		bool isOpen() const;
 
-		inline const Handle				handle()		const { return m_handle; }
+		inline const Handle				handle()	const { return m_handle; }
 		inline const ContextSettings &	settings()	const { return m_settings; }
-		inline const VideoMode &		videoMode()		const { return m_mode; }
+		inline const VideoMode &		videoMode()	const { return m_mode; }
 		inline const Flags &			flags()		const { return m_flags; }
 		inline const vec2i &			position()	const { return m_position; }
 		inline const vec2u &			size()		const { return m_size; }

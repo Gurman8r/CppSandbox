@@ -6,21 +6,23 @@
 
 namespace ml
 {
-	class ML_GRAPHICS_API Enum
+	class ML_GRAPHICS_API Enum final
 	{
 	public:
 		using Base = uint32_t;
 
 	public:
-		enum Bit : Base
+		enum ContextBit : Base
 		{
-			DepthBufferBit			= 0x00000100,	// GL_DEPTH_BUFFER_BIT
-			StencilBufferBit		= 0x00000400,	// GL_STENCIL_BUFFER_BIT
-			ColorBufferBit			= 0x00004000,	// GL_COLOR_BUFFER_BIT
-			
-			ContextCoreProfileBit	= 0x00000001,	// GL_CONTEXT_CORE_PROFILE_BIT
-			ContextCompatProfileBit = 0x00000002,	// GL_CONTEXT_COMPATIBILITY_PROFILE_BIT
-			ContextFlagDebugBit		= 0x00000002,	// GL_CONTEXT_FLAG_DEBUG_BIT
+			ContextCoreProfileBit	= 0x1,	// GL_CONTEXT_CORE_PROFILE_BIT
+			ContextCompatProfileBit = 0x2,	// GL_CONTEXT_COMPATIBILITY_PROFILE_BIT
+			ContextFlagDebugBit		= 0x2,	// GL_CONTEXT_FLAG_DEBUG_BIT
+		};
+		enum BufferBit : Base
+		{
+			DepthBufferBit	 = 0x100,		// GL_DEPTH_BUFFER_BIT
+			StencilBufferBit = 0x400,		// GL_STENCIL_BUFFER_BIT
+			ColorBufferBit	 = 0x4000,		// GL_COLOR_BUFFER_BIT
 		};
 		enum Flag : Base
 		{
@@ -173,7 +175,7 @@ namespace ml
 			LinearMipmapNearest,			// GL_LINEAR_MIPMAP_NEAREST
 			NearestMipmapLinear,			// GL_NEAREST_MIPMAP_LINEAR
 			LinearMipmapLinear,				// GL_LINEAR_MIPMAP_LINEAR
-			TexMagFilter		= 0x2800,	// GL_TEXTURE_MAX_FILTER
+			TexMagFilter		= 0x2800,	// GL_TEXTURE_MAG_FILTER
 			TexMinFilter,					// GL_TEXTURE_MIN_FILTER
 			TexWrapS,						// GL_TEXTURE_WRAP_S
 			TexWrapT,						// GL_TEXTURE_WRAP_T

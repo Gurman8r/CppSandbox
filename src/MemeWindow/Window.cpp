@@ -6,23 +6,18 @@
 namespace ml
 {
 	bool Window::create(
-		const std::string & _title, 
-		const VideoMode & _mode, 
-		const Flags & _flags,
-		const ContextSettings & _settings)
+		const std::string & title, 
+		const VideoMode & mode, 
+		const Flags & flags,
+		const ContextSettings & settings)
 	{
 		m_handle	= NULL;
-		m_title		= _title;
-		m_settings	= _settings;
-		m_mode		= _mode;
-		m_flags		= _flags;
+		m_title		= title;
+		m_settings	= settings;
+		m_mode		= mode;
+		m_flags		= flags;
 		m_position	= vec2i::Zero;
-		m_size		= _mode.size();
-
-		//if (!getMode().isValid())
-		//{
-		//	return ml::Debug::LogError("Video Mode is Invalid");
-		//}
+		m_size		= mode.size();
 
 		if (glfwInit() == GL_TRUE)
 		{

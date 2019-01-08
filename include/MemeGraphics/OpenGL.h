@@ -23,8 +23,7 @@ namespace ml
 	class ML_GRAPHICS_API OpenGL final
 	{
 	public:
-		static bool good();
-		static bool initGL(bool experimental);
+		static bool			initGL(bool experimental);
 		
 	public:
 		static void			errorPause(bool value);
