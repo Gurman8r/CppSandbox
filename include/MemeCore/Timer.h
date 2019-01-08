@@ -30,8 +30,8 @@ namespace ml
 
 		bool		m_paused;
 		clock_type	m_clock;
-		point_type	m_min;
-		point_type	m_max;
+		point_type	m_prev;
+		point_type	m_next;
 	};
 }
 

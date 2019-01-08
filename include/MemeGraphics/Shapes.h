@@ -22,7 +22,6 @@ namespace ml
 			const static VertexList		Vertices;
 			const static IndexList		Indices;
 			const static Mesh			Mesh;
-
 		};
 
 		struct ML_GRAPHICS_API Cube final

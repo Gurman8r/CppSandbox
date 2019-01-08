@@ -525,13 +525,14 @@ inline static int graphicsStub()
 	ml::Debug::LogInfo("Loading Geometry...");
 
 	ml::VAO vao(1);
+	ml::VBO vbo(ml::GL::StaticDraw, ml::Shapes::Quad::Mesh.flattened());
+	ml::IBO ibo(ml::GL::StaticDraw, ml::Shapes::Quad::Mesh.indices());
 	ml::BufferLayout layout({
 		{ 0, 3, ml::GL::Float, false, ml::Vertex::Size, 0, sizeof(float) },
 		{ 1, 4, ml::GL::Float, false, ml::Vertex::Size, 3, sizeof(float) },
 		{ 2, 2, ml::GL::Float, false, ml::Vertex::Size, 7, sizeof(float) },
 	});
-	ml::VBO vbo(ml::GL::StaticDraw, ml::Shapes::Quad::Mesh.flattened());
-	ml::IBO ibo(ml::GL::StaticDraw, ml::Shapes::Quad::Mesh.indices());
+	layout.use();
 
 
 	// Matricies
@@ -580,19 +581,18 @@ inline static int graphicsStub()
 		input.endStep();
 		loopTimer.stop();
 
-		ml::TimePoint now = ML_Time.now();
+		ml::TimePoint now = ML_Time.elapsed();
 
-		ml::TimePoint test;
-
-		window.title(ml::StringUtility::Format("{0} | {1}ms | {2}{3}:{4}{5}:{6}{7}", 
+		window.title(ml::StringUtility::Format(
+			"{0} | {1}ms | {2}{3}:{4}{5}:{6}{7}", 
 			settings.title, 
 			loopTimer.elapsed().millis(),
-			now.minutes() / 10 % 10,
-			now.minutes() % 10,
-			now.seconds() / 10 % 10,
-			now.seconds() % 10,
-			now.millis() / 10 % 10,
-			now.millis() % 10));
+			(now.minutes() % 60) / 10 % 10,
+			(now.minutes() % 60) % 10,
+			(now.seconds() % 60) / 10 % 10,
+			(now.seconds() % 60) % 10,
+			(now.millis()) / 10 % 10,
+			(now.millis()) % 10));
 	}
 
 	std::cout << "OK" << std::endl;

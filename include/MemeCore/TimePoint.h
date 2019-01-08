@@ -17,22 +17,30 @@ namespace ml
 		uint64_t m_value;
 
 	public:
-		using nanoseconds_t		= std::chrono::nanoseconds;
-		using microseconds_t	= std::chrono::microseconds;
-		using milliseconds_t	= std::chrono::milliseconds;
-		using seconds_t			= std::chrono::seconds;
-		using minutes_t			= std::chrono::minutes;
-		using hours_t			= std::chrono::hours;
-
-	public:
 		TimePoint();
 		TimePoint(uint64_t value);
-		TimePoint(const nanoseconds_t & value);
-		TimePoint(const milliseconds_t & value);
 		TimePoint(const TimePoint & copy);
 		~TimePoint();
+
+		template <class R, class P>
+		TimePoint(const std::chrono::duration<R, P> & value)
+			: m_value(std::chrono::duration_cast<std::chrono::milliseconds>(value).count())
+		{
+		}
+
+	public:
+		inline operator uint64_t()	const { return m_value; }
+		inline operator float()		const { return static_cast<float>(m_value); }
+		
+		template <class R, class P>
+		inline operator std::chrono::duration<R, P>() const
+		{
+			return std::chrono::milliseconds(m_value);
+		}
 		
 	public:
+		const uint64_t nanos() const;
+		const uint64_t micros() const;
 		const uint64_t millis() const;		
 		const uint64_t seconds() const;		
 		const uint64_t minutes() const;		
@@ -41,12 +49,15 @@ namespace ml
 	public:
 		friend TimePoint	operator+(const TimePoint & lhs, const TimePoint & rhs);
 		friend TimePoint	operator-(const TimePoint & lhs, const TimePoint & rhs);
-		friend TimePoint & operator+=(TimePoint & lhs, const TimePoint & rhs);
-		friend TimePoint & operator-=(TimePoint & lhs, const TimePoint & rhs);
+		
 		friend TimePoint	operator+(const TimePoint & lhs, uint64_t rhs);
 		friend TimePoint	operator-(const TimePoint & lhs, uint64_t rhs);
-		friend TimePoint & operator+=(TimePoint & lhs, uint64_t rhs);
-		friend TimePoint & operator-=(TimePoint & lhs, uint64_t rhs);
+		
+		friend TimePoint &	operator+=(TimePoint & lhs, const TimePoint & rhs);
+		friend TimePoint &	operator-=(TimePoint & lhs, const TimePoint & rhs);
+		
+		friend TimePoint &	operator+=(TimePoint & lhs, uint64_t rhs);
+		friend TimePoint &	operator-=(TimePoint & lhs, uint64_t rhs);
 
 	public:
 		inline bool equals(const TimePoint & other) const override
@@ -66,11 +77,7 @@ namespace ml
 		{
 			return millis() < other;
 		}
-
-	public:
-		inline operator uint64_t()	const { return millis(); }
-		inline operator float()	const { return static_cast<float>(millis()); }
-	
+		
 	};
 }
 

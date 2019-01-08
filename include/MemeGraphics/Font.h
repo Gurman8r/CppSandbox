@@ -12,7 +12,7 @@ namespace ml
 		, public IResource
 	{
 	public:
-		struct ML_GRAPHICS_API Info final
+		struct Info final
 			: public ITrackable
 		{
 			std::string family;

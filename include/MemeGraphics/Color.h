@@ -7,6 +7,7 @@
 namespace ml
 {
 	class ML_GRAPHICS_API Color
+		: public ITrackable
 	{
 	public:
 		const static vec4f Clear;

@@ -2,11 +2,13 @@
 #define _BUFFER_LAYOUT_H_
 
 #include <MemeGraphics/GL_Enum.h>
+#include <MemeCore/ITrackable.h>
 #include <vector>
 
 namespace ml
 {
 	class ML_GRAPHICS_API BufferLayout final
+		: public ITrackable
 	{
 	public:
 		struct ML_GRAPHICS_API Element final
@@ -26,8 +28,8 @@ namespace ml
 
 	public:
 		BufferLayout();
-		BufferLayout(const Elements & elements, bool dontUse = true);
-		BufferLayout(const BufferLayout & copy, bool dontUse = true);
+		BufferLayout(const Elements & elements);
+		BufferLayout(const BufferLayout & copy);
 		~BufferLayout();
 
 		void use() const;
