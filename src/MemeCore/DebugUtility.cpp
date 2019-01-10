@@ -11,19 +11,7 @@ namespace ml
 		}
 	}
 
-	bool Debug::Log(const std::string & message)
-	{
-		out()
-			<< FMT()
-			<< FG::White << "["
-			<< FG::Green << "  INFO  "
-			<< FG::White << "]"
-			<< FMT() << " " << message
-			<< std::endl;
-		return true;
-	}
-
-	bool Debug::LogWarning(const std::string & message)
+	Debug::ErrorCode Debug::LogWarning(const std::string & message)
 	{
 		err()
 			<< FMT()
@@ -32,10 +20,10 @@ namespace ml
 			<< FG::White << "]"
 			<< FMT() << " " << message
 			<< std::endl;
-		return true;
+		return Debug::Warning;
 	}
 
-	bool Debug::LogError(const std::string & message)
+	Debug::ErrorCode Debug::LogError(const std::string & message)
 	{
 		err()
 			<< FMT()
@@ -44,7 +32,18 @@ namespace ml
 			<< FG::White << "]"
 			<< FMT() << " " << message
 			<< std::endl;
-		return false;
+		return Debug::Error;
 	}
 	
+	Debug::ErrorCode Debug::Log(const std::string & message)
+	{
+		out()
+			<< FMT()
+			<< FG::White << "["
+			<< FG::Green << "  INFO  "
+			<< FG::White << "]"
+			<< FMT() << " " << message
+			<< std::endl;
+		return Debug::Success;
+	}
 }

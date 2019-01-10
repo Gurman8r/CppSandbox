@@ -19,7 +19,7 @@ namespace ml
 
 				if (currentProgram != savedProgram)
 				{
-					OpenGL::useProgram(currentProgram);
+					OpenGL::useShader(currentProgram);
 				}
 
 				// Store uniform location for further use outside constructor
@@ -31,7 +31,7 @@ namespace ml
 			// Disable program object
 			if (currentProgram && (currentProgram != savedProgram))
 			{
-				OpenGL::useProgram(savedProgram);
+				OpenGL::useShader(savedProgram);
 			}
 		}
 
@@ -142,14 +142,13 @@ namespace ml
 		Shader::bind(this, tex);
 	}
 
-
 	void Shader::bind(const Shader * shader, bool tex)
 	{
 		if (OpenGL::shadersAvailable())
 		{
-			if (shader && shader->program())
+			if (shader && shader->m_program)
 			{
-				OpenGL::useProgram(shader->program());
+				OpenGL::useShader(shader->m_program);
 			}
 
 			if (tex)
@@ -164,7 +163,7 @@ namespace ml
 		}
 		else
 		{
-			OpenGL::useProgram(0);
+			OpenGL::useShader(0);
 		}
 	}
 	
@@ -195,7 +194,7 @@ namespace ml
 			OpenGL::uniform1u(u.location, value);
 		}
 	}
-	
+
 	void Shader::setUniform(const std::string & name, const vec2f & value)
 	{
 		UniformBinder u((*this), name);
@@ -270,7 +269,7 @@ namespace ml
 
 	void Shader::setUniform(const std::string & name, const Texture * value)
 	{
-		if (m_program)
+		if (m_program && value)
 		{
 			int location = getUniformLocation(name);
 			if (location != -1)
@@ -377,7 +376,7 @@ namespace ml
 
 		if (m_program)
 		{
-			OpenGL::deleteProgram(m_program);
+			OpenGL::deleteShader(m_program);
 			m_program = 0;
 		}
 
@@ -393,20 +392,20 @@ namespace ml
 			// Create and Compile the shader
 			uint32_t vertexShader = OpenGL::createShaderObject(GL::VertexShader);
 			OpenGL::shaderSource(vertexShader, 1, &vs, NULL);
-			OpenGL::compileProgram(vertexShader);
+			OpenGL::compileShader(vertexShader);
 
 			// Check the Compile log
 			if (!OpenGL::getProgramParameter(vertexShader, GL::ObjectCompileStatus))
 			{
 				const char * log = OpenGL::getInfoLog(vertexShader);
-				OpenGL::deleteProgram(vertexShader);
-				OpenGL::deleteProgram(shaderProgram);
+				OpenGL::deleteShader(vertexShader);
+				OpenGL::deleteShader(shaderProgram);
 				return Debug::LogError("Failed to compile vertex source: {0}", log);
 			}
 
 			// Attach the shader to the program, and delete it (not needed anymore)
-			OpenGL::attachProgram(shaderProgram, vertexShader);
-			OpenGL::deleteProgram(vertexShader);
+			OpenGL::attachShader(shaderProgram, vertexShader);
+			OpenGL::deleteShader(vertexShader);
 		}
 
 		// Create the geometry shader if needed
@@ -415,20 +414,20 @@ namespace ml
 			// Create and Compile the shader
 			uint32_t geometryShader = OpenGL::createShaderObject(GL::GeometryShader);
 			OpenGL::shaderSource(geometryShader, 1, &gs, NULL);
-			OpenGL::compileProgram(geometryShader);
+			OpenGL::compileShader(geometryShader);
 
 			// Check the Compile log
 			if (!OpenGL::getProgramParameter(geometryShader, GL::ObjectCompileStatus))
 			{
 				const char * log = OpenGL::getInfoLog(geometryShader);
-				OpenGL::deleteProgram(geometryShader);
-				OpenGL::deleteProgram(shaderProgram);
+				OpenGL::deleteShader(geometryShader);
+				OpenGL::deleteShader(shaderProgram);
 				return Debug::LogError("Failed to compile geometry source: {0}", log);
 			}
 
 			// Attach the shader to the program, and delete it (not needed anymore)
-			OpenGL::attachProgram(shaderProgram, geometryShader);
-			OpenGL::deleteProgram(geometryShader);
+			OpenGL::attachShader(shaderProgram, geometryShader);
+			OpenGL::deleteShader(geometryShader);
 		}
 
 		// Create the fragment shader if needed
@@ -437,30 +436,30 @@ namespace ml
 			// Create and Compile the shader
 			uint32_t fragmentShader = OpenGL::createShaderObject(GL::FragmentShader);
 			OpenGL::shaderSource(fragmentShader, 1, &fs, NULL);
-			OpenGL::compileProgram(fragmentShader);
+			OpenGL::compileShader(fragmentShader);
 
 			// Check the Compile log
 			if (!OpenGL::getProgramParameter(fragmentShader, GL::ObjectCompileStatus))
 			{
 				const char * log = OpenGL::getInfoLog(fragmentShader);
-				OpenGL::deleteProgram(fragmentShader);
-				OpenGL::deleteProgram(shaderProgram);
+				OpenGL::deleteShader(fragmentShader);
+				OpenGL::deleteShader(shaderProgram);
 				return Debug::LogError("Failed to compile fragment source: {0}", log);
 			}
 
 			// Attach the shader to the program, and delete it (not needed anymore)
-			OpenGL::attachProgram(shaderProgram, fragmentShader);
-			OpenGL::deleteProgram(fragmentShader);
+			OpenGL::attachShader(shaderProgram, fragmentShader);
+			OpenGL::deleteShader(fragmentShader);
 		}
 
 		// Link the program
-		OpenGL::linkProgram(shaderProgram);
+		OpenGL::linkShader(shaderProgram);
 
 		// Check the link log
 		if (!OpenGL::getProgramParameter(shaderProgram, GL::ObjectLinkStatus))
 		{
 			const char * log = OpenGL::getInfoLog(shaderProgram);
-			OpenGL::deleteProgram(shaderProgram);
+			OpenGL::deleteShader(shaderProgram);
 			return Debug::LogError("Failed to link source: {0}", log);
 		}
 
@@ -493,7 +492,7 @@ namespace ml
 		else
 		{
 			// Not in cache, request the location from OpenGL
-			int32_t location = OpenGL::getUniformLocation(program(), value.c_str());
+			int32_t location = OpenGL::getUniformLocation(m_program, value.c_str());
 			
 			m_uniforms.insert(std::make_pair(value, location));
 			

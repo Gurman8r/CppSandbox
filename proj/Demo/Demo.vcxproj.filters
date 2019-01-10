@@ -82,35 +82,8 @@
     <None Include="..\..\assets\scripts\stub.script">
       <Filter>Resource Files\assets\scripts</Filter>
     </None>
-    <None Include="..\..\assets\shaders\vs\demo_vs.shader">
-      <Filter>Resource Files\assets\shaders\vs</Filter>
-    </None>
-    <None Include="..\..\assets\shaders\vs\draw2D_vs.shader">
-      <Filter>Resource Files\assets\shaders\vs</Filter>
-    </None>
-    <None Include="..\..\assets\shaders\vs\draw3D_vs.shader">
-      <Filter>Resource Files\assets\shaders\vs</Filter>
-    </None>
-    <None Include="..\..\assets\shaders\vs\drawLine_vs.shader">
-      <Filter>Resource Files\assets\shaders\vs</Filter>
-    </None>
     <None Include="..\..\assets\shaders\vs\text_vs.shader">
       <Filter>Resource Files\assets\shaders\vs</Filter>
-    </None>
-    <None Include="..\..\assets\shaders\gs\drawLine_gs.shader">
-      <Filter>Resource Files\assets\shaders\gs</Filter>
-    </None>
-    <None Include="..\..\assets\shaders\fs\demo_fs.shader">
-      <Filter>Resource Files\assets\shaders\fs</Filter>
-    </None>
-    <None Include="..\..\assets\shaders\fs\draw2D_fs.shader">
-      <Filter>Resource Files\assets\shaders\fs</Filter>
-    </None>
-    <None Include="..\..\assets\shaders\fs\draw3D_fs.shader">
-      <Filter>Resource Files\assets\shaders\fs</Filter>
-    </None>
-    <None Include="..\..\assets\shaders\fs\drawLine_fs.shader">
-      <Filter>Resource Files\assets\shaders\fs</Filter>
     </None>
     <None Include="..\..\assets\shaders\fs\text_fs.shader">
       <Filter>Resource Files\assets\shaders\fs</Filter>
@@ -119,6 +92,15 @@
       <Filter>Resource Files\assets\shaders\fs</Filter>
     </None>
     <None Include="..\..\assets\shaders\vs\basic_vs.shader">
+      <Filter>Resource Files\assets\shaders\vs</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\fs\geometry_fs.shader">
+      <Filter>Resource Files\assets\shaders\fs</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\gs\geometry_gs.shader">
+      <Filter>Resource Files\assets\shaders\gs</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\vs\geometry_vs.shader">
       <Filter>Resource Files\assets\shaders\vs</Filter>
     </None>
   </ItemGroup>

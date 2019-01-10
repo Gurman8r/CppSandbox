@@ -23,7 +23,7 @@ namespace ml
 
 		inline const uint32_t &		id() const { return m_id; }
 		inline const uint32_t *		data() const { return m_data; }
-		inline const uint32_t &		size() const { return m_count; }
+		inline const uint32_t &		count() const { return m_count; }
 		inline const GL::Usage &	usage() const { return m_usage; }
 
 	private:

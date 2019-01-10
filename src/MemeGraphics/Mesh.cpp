@@ -12,7 +12,7 @@ namespace ml
 	{
 	}
 
-	Mesh::Mesh(GL::Primitive primitive, const VertexList & vertices, const IndexList & indices)
+	Mesh::Mesh(GL::Prim primitive, const VertexList & vertices, const IndexList & indices)
 		: m_primitive(primitive)
 		, m_vertices(vertices)
 		, m_indices(indices)
@@ -44,6 +44,63 @@ namespace ml
 	{
 		return false;
 	}
+
+	
+	const GL::Prim & Mesh::primitive() const
+	{
+		return m_primitive;
+	}
+
+	const VertexList & Mesh::vertices() const
+	{
+		return m_vertices;
+	}
+
+	const IndexList & Mesh::indices() const
+	{
+		return m_indices;
+	}
+
+	const FloatList & Mesh::flattened() const
+	{
+		update();
+		return m_flattened;
+	}
+
+
+	void Mesh::update() const
+	{
+		if (m_changed)
+		{
+			m_changed = false;
+
+			m_flattened = Flatten(vertices());
+		}
+	}
+
+
+	Mesh & Mesh::primitive(GL::Prim value)
+	{
+		if (value != m_primitive)
+		{
+			m_primitive = value;
+			return changed(true);
+		}
+		return changed(false);
+	}
+
+	Mesh & Mesh::vertices(const VertexList & value)
+	{
+		m_vertices = value;
+		return changed(true);
+	}
+
+	Mesh & Mesh::indices(const IndexList & value)
+	{
+		m_indices = value;
+		return changed(false);
+	}
+
 
 	const FloatList & Mesh::Flatten(const VertexList & value)
 	{

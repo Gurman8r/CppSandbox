@@ -13,35 +13,35 @@ namespace ml
 	{
 	public:
 		Mesh();
-		Mesh(GL::Primitive primitive, const VertexList & vertices, const IndexList & indices);
+		Mesh(GL::Prim primitive, const VertexList & vertices, const IndexList & indices);
 		Mesh(const Mesh& copy);
 		~Mesh();
 
 		bool cleanup() override;
 		bool loadFromFile(const std::string & filename) override;
 
-		inline const GL::Primitive & primitive() const { return m_primitive; }
-		inline const VertexList & vertices() const { return m_vertices; }
-		inline const IndexList & indices() const { return m_indices; }
-		inline const FloatList & flattened() const
-		{
-			if (m_changed)
-			{
-				m_changed = false;
-				return m_flattened = Flatten(vertices());
-			}
-			return m_flattened;
-		}
+		const GL::Prim &	primitive() const;
+		const VertexList &	vertices() const;
+		const IndexList &	indices() const;
+		const FloatList &	flattened() const;
+
+		void update() const;
+
+		Mesh & primitive(GL::Prim value);
+		Mesh & vertices(const VertexList & value);
+		Mesh & indices(const IndexList & value);
 
 		static const FloatList & Flatten(const VertexList & value);
 
 	private:
-		GL::Primitive	m_primitive;
-		VertexList		m_vertices;
-		IndexList		m_indices;
+		GL::Prim	m_primitive;
+		VertexList	m_vertices;
+		IndexList	m_indices;
 
 		mutable bool		m_changed;
 		mutable FloatList	m_flattened;
+
+		inline Mesh & changed(bool value) { m_changed = value; return (*this); }
 	};
 }
 

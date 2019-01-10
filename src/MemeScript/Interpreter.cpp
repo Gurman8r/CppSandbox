@@ -1,5 +1,7 @@
 #include <MemeScript/Interpreter.h>	
 #include <MemeCore/FileSystem.h>
+#include <MemeCore/ConsoleUtility.h>
+#include <dirent.h>
 
 namespace ml
 {
@@ -146,5 +148,74 @@ namespace ml
 		}
 
 		return names;
+	}
+
+
+	void Interpreter::LoadBuiltinCommands()
+	{
+		ML_Interpreter.addCommand(ml::Command("help", [](ml::Args & args)
+		{
+			for (auto n : ML_Interpreter.getCmdNames())
+				std::cout << n << std::endl;
+			return ml::Var().boolValue(true);
+		}));
+
+		ML_Interpreter.addCommand(ml::Command("pause", [](ml::Args & args)
+		{
+			return ml::Var().intValue(ml::ConsoleUtility::pause());
+		}));
+
+		ML_Interpreter.addCommand(ml::Command("clear", [](ml::Args & args)
+		{
+#ifdef ML_SYSTEM_WINDOWS
+			system("cls");
+#else
+			system("clear");
+#endif
+			return ml::Var().boolValue(true);
+		}));
+
+		ML_Interpreter.addCommand(ml::Command("cd", [](ml::Args & args)
+		{
+			return ml::Var().boolValue(ML_FileSystem.changeDir(args.pop_front().front()));
+		}));
+
+		ML_Interpreter.addCommand(ml::Command("exist", [](ml::Args & args)
+		{
+			return ml::Var().boolValue(ML_FileSystem.fileExists(args.pop_front().front()));
+		}));
+
+		ML_Interpreter.addCommand(ml::Command("dir", [](ml::Args & args)
+		{
+			std::string dName = args.pop_front().empty() ? "./" : args.str();
+
+			if (DIR* dir = opendir(dName.c_str()))
+			{
+				dirent* e;
+				while ((e = readdir(dir)))
+				{
+					switch (e->d_type)
+					{
+					case DT_REG:
+						std::cout << (ml::FG::Green | ml::BG::Black) << e->d_name << "";
+						break;
+					case DT_DIR:
+						std::cout << (ml::FG::Blue | ml::BG::Green) << e->d_name << "/";
+						break;
+					case DT_LNK:
+						std::cout << (ml::FG::Green | ml::BG::Black) << e->d_name << "@";
+						break;
+					default:
+						std::cout << (ml::FG::Green | ml::BG::Black) << e->d_name << "*";
+						break;
+					}
+					std::cout << ml::FMT() << std::endl;
+				}
+				closedir(dir);
+				return ml::Var().boolValue(true);
+			}
+			std::cout << "Dir \'" << dName << "\' does not exist." << std::endl;
+			return ml::Var().boolValue(false);
+		}));
 	}
 }

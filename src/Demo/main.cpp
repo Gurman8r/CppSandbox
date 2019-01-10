@@ -1,6 +1,6 @@
 /* * * * * * * * * * * * * * * * * * * * */
 
-#include <dirent.h>
+
 #include <INIReader.h>
 #include <MemeCore/DebugUtility.h>
 #include <MemeCore/Time.h>
@@ -19,6 +19,7 @@
 #include <MemeGraphics/IndexBuffer.h>
 #include <MemeGraphics/BufferLayout.h>
 #include <MemeGraphics/OpenGL.h>
+//#include <MemeGraphics/GLM.h>
 #include <MemeNet/Client.h>
 #include <MemeScript/Interpreter.h>
 
@@ -103,7 +104,7 @@ inline static void printBits(T value)
 	std::cout << ml::FMT() << std::endl;
 }
 
-inline static uint64_t getFPS(float elapsedMS, bool fast = false)
+inline static uint64_t getFPS(float elapsedMS)
 {
 	static uint64_t	frameCounter = 0;
 	static uint64_t	fps = 0;
@@ -118,76 +119,6 @@ inline static uint64_t getFPS(float elapsedMS, bool fast = false)
 		frameCounter = 0;
 	}
 	return fps;
-}
-
-/* * * * * * * * * * * * * * * * * * * * */
-
-inline static void loadCommands()
-{
-	ML_Interpreter.addCommand(ml::Command("help", [](ml::Args & args)
-	{
-		for (auto n : ML_Interpreter.getCmdNames())
-			std::cout << n << std::endl;
-		return ml::Var().boolValue(true);
-	}));
-
-	ML_Interpreter.addCommand(ml::Command("ml::ConsoleUtility::pause", [](ml::Args & args)
-	{
-		return ml::Var().intValue(ml::ConsoleUtility::pause());
-	}));
-
-	ML_Interpreter.addCommand(ml::Command("clear", [](ml::Args & args)
-	{
-#ifdef ML_SYSTEM_WINDOWS
-		system("cls");
-#else
-		system("clear");
-#endif
-		return ml::Var().boolValue(true);
-	}));
-
-	ML_Interpreter.addCommand(ml::Command("cd", [](ml::Args & args)
-	{
-		return ml::Var().boolValue(ML_FileSystem.changeDir(args.pop_front().front()));
-	}));
-
-	ML_Interpreter.addCommand(ml::Command("exist", [](ml::Args & args)
-	{
-		return ml::Var().boolValue(ML_FileSystem.fileExists(args.pop_front().front()));
-	}));
-
-	ML_Interpreter.addCommand(ml::Command("dir", [](ml::Args & args)
-	{
-		std::string dName = args.pop_front().empty() ? "./" : args.str();
-
-		if (DIR* dir = opendir(dName.c_str()))
-		{
-			dirent* e;
-			while ((e = readdir(dir)))
-			{
-				switch (e->d_type)
-				{
-				case DT_REG:
-					std::cout << (ml::FG::Green | ml::BG::Black) << e->d_name << "";
-					break;
-				case DT_DIR:
-					std::cout << (ml::FG::Blue | ml::BG::Green) << e->d_name << "/";
-					break;
-				case DT_LNK:
-					std::cout << (ml::FG::Green | ml::BG::Black) << e->d_name << "@";
-					break;
-				default:
-					std::cout << (ml::FG::Green | ml::BG::Black) << e->d_name << "*";
-					break;
-				}
-				std::cout << ml::FMT() << std::endl;
-			}
-			closedir(dir);
-			return ml::Var().boolValue(true);
-		}
-		std::cout << "Dir \'" << dName << "\' does not exist." << std::endl;
-		return ml::Var().boolValue(false);
-	}));
 }
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -360,7 +291,7 @@ inline static int scriptStub()
 {
 	ml::Debug::Log("Script Stub");
 
-	loadCommands();
+	ml::Interpreter::LoadBuiltinCommands();
 
 	ML_Interpreter.parser()->
 		showToks(settings.showToks).
@@ -370,37 +301,6 @@ inline static int scriptStub()
 	ML_Interpreter.execScript(settings.assetPath + settings.bootScript);
 
 	return EXIT_SUCCESS;
-}
-
-inline static int astStub()
-{
-	ml::Debug::Log("AST Stub");
-
-	loadCommands();
-
-	using namespace ml;
-	AST_Block root({
-
-		new AST_Func("GenVAO", { }),
-		new AST_Block({
-			new AST_Return(new AST_String("Here"))
-		}),
-		
-		new AST_Assign(
-			OperatorType::OP_SET,
-			new AST_Name("a"),
-			new AST_Oper(
-				OperatorType::OP_ADD,
-				new AST_Call(new AST_Name("GenVAO"), { }),
-				new AST_Call(new AST_Name("GenVAO"), { }))),
-		
-		new AST_Print(new AST_Name("a")),
-		
-		new AST_Return(new AST_Bool(true))
-		});
-	std::cout << root << std::endl;
-	root.run();
-	return ml::ConsoleUtility::pause(EXIT_SUCCESS);
 }
 
 inline static int netStub()
@@ -481,29 +381,11 @@ inline static int graphicsStub()
 		return ml::ConsoleUtility::pause(EXIT_FAILURE);
 	}
 
-	ml::Shader shader2D;
-	if (!shader2D.loadFromFile(
-		settings.assetPath + "/shaders/vs/draw2D_vs.shader",
-		settings.assetPath + "/shaders/fs/draw2D_fs.shader"))
-	{
-		ml::Debug::LogError("Failed Loading Shader: {0}", "2D");
-		return ml::ConsoleUtility::pause(EXIT_FAILURE);
-	}
-
-	ml::Shader shader3D;
-	if (!shader3D.loadFromFile(
-		settings.assetPath + "/shaders/vs/draw3D_vs.shader",
-		settings.assetPath + "/shaders/fs/draw3D_fs.shader"))
-	{
-		ml::Debug::LogError("Failed Loading Shader: {0}", "3D");
-		return ml::ConsoleUtility::pause(EXIT_FAILURE);
-	}
-
 	ml::Shader shaderGS;
 	if (!shaderGS.loadFromFile(
-		settings.assetPath + "/shaders/vs/drawLine_vs.shader",
-		settings.assetPath + "/shaders/gs/drawLine_gs.shader",
-		settings.assetPath + "/shaders/fs/drawLine_fs.shader"))
+		settings.assetPath + "/shaders/vs/geometry_vs.shader",
+		settings.assetPath + "/shaders/gs/geometry_gs.shader",
+		settings.assetPath + "/shaders/fs/geometry_fs.shader"))
 	{
 		ml::Debug::LogError("Failed Loading Shader: {0}", "GS");
 		return ml::ConsoleUtility::pause(EXIT_FAILURE);
@@ -520,7 +402,7 @@ inline static int graphicsStub()
 
 	// Load Sprites
 	ml::Debug::Log("Loading Sprites...");
-	ml::Sprite sprite(&shader2D, &texture);
+	ml::Sprite sprite(&shaderBasic, &texture);
 	if (!sprite)
 	{
 		ml::Debug::LogError("Failed Loading Sprite");
@@ -544,22 +426,39 @@ inline static int graphicsStub()
 
 	// Load Geometry
 	ml::Debug::Log("Loading Geometry...");
-	const ml::Mesh & mesh = ml::Shapes::Quad::Mesh;
+
+	const ml::Mesh & mesh = ml::Shapes::Cube::Mesh;
+
 	ml::VAO vao(1);
 	ml::VBO vbo(ml::GL::StaticDraw, mesh.flattened());
-	ml::IBO ibo(ml::GL::StaticDraw, mesh.indices());
+	ml::IBO ibo(ml::GL::StaticDraw, mesh.indices());	
 	ml::BufferLayout layout({
 		{ 0, 3, ml::GL::Float, false, ml::Vertex::Size, 0, sizeof(float) },
 		{ 1, 4, ml::GL::Float, false, ml::Vertex::Size, 3, sizeof(float) },
 		{ 2, 2, ml::GL::Float, false, ml::Vertex::Size, 7, sizeof(float) },
 	});
 	layout.use();
+	vao.unbind();
+	vbo.unbind();
+	ibo.unbind();
 
-	const ml::mat4f proj_ortho = ml::Transform::Ortho(ml::vec2f::Zero, window.size());
-	const ml::mat4f proj_persp = ml::Transform::Persp(90.f, window.getAspect(), 0.1f, 1000.f);
+	const ml::mat4f proj_ortho = ml::Transform::Ortho(
+		0.0f, (float)window.size()[0], 
+		0.0f, (float)window.size()[1], 
+		-1.0f, 1.0f);
+
+	const ml::mat4f proj_persp = ml::Transform::Persp(
+		90.0f, window.getAspect(), 0.1f, 1000.0f);
 	
-	ml::Transform view(ml::vec3f::Zero, ml::vec3f::One, ml::quat());
-	ml::Transform model(ml::vec3f::Forward, ml::vec3f::One, ml::quat());
+	ml::vec3f camPos = { 0.0f, 0.0f, 3.0f };
+	ml::vec3f camFwd = { 0.0f, 0.0f, -1.0f };
+	ml::vec3f camUp  = { 0.0f, 1.0f, 0.0f };
+	ml::mat4f view = ml::Transform::LookAt(camPos, camPos + camFwd, camUp);
+
+	ml::Transform model;
+	model.translate({ 0.0f, 0.0f, 0.0f });
+	model.rotate(0.0f, { 0.0f, 1.0f, 0.0f });
+	model.scale({ 1.0f, 1.0f, 1.0f });
 
 	// Done
 	ml::Debug::Log("OK");
@@ -576,20 +475,21 @@ inline static int graphicsStub()
 			// Draw
 			window.clear(ml::Color::Violet);
 			{
-				window.disable(ml::GL::CullFace);
-				window.disable(ml::GL::DepthTest);
-				{
-					shaderBasic.use();
-					shaderBasic.setUniform(ml::Uniform::Color,		ml::Color::White);
-					shaderBasic.setUniform(ml::Uniform::Model,		model);
-					shaderBasic.setUniform(ml::Uniform::View,		view);
-					shaderBasic.setUniform(ml::Uniform::Proj,		proj_ortho);
-					shaderBasic.setUniform(ml::Uniform::Texture,	&texture);
+				model.translate({ 0.0f, 0.0f, 0.0f });
+				model.rotate(elapsed.delta(), { 1.0f, 1.0f, 1.0f });
+				model.scale({ 1.0f, 1.0f, 1.0f });
 
-					window.drawElements(ibo, ml::GL::Triangles, ml::GL::UnsignedInt);
-				}
-				window.enable(ml::GL::CullFace);
-				window.enable(ml::GL::DepthTest);
+				ml::Shader * shader = &shaderBasic;
+				shader->use();
+				shader->setUniform(ml::Uniform::Proj, proj_persp);
+				shader->setUniform(ml::Uniform::View, view);
+				shader->setUniform(ml::Uniform::Model, model);
+				shader->setUniform(ml::Uniform::Color, ml::Color::White);
+				shader->setUniform(ml::Uniform::Texture, &texture);
+
+				vao.bind();
+				vbo.bind();
+				window.drawElements(ibo, ml::GL::Triangles, ml::GL::UnsignedInt);
 			}
 			window.swapBuffers();
 			window.pollEvents();
@@ -605,7 +505,7 @@ inline static int graphicsStub()
 			window.title(ml::StringUtility::Format(
 				"{0} | {1} ms | {2} fps | {3}",
 				settings.title,
-				elapsed.millis(),
+				elapsed.delta(),
 				getFPS(elapsed.delta()),
 				(ml::StringUtility::Format("{0}{1}:{2}{3}:{4}{5}",
 					(now.minutes() % 60) / 10 % 10,
@@ -642,10 +542,9 @@ int main(int argc, char** argv)
 	case 0: return coreStub();
 	case 1: return windowStub();
 	case 2: return scriptStub();
-	case 3: return astStub();
-	case 4: return netStub();
-	case 5: return audioStub();
-	case 6: return graphicsStub();
+	case 3: return netStub();
+	case 4: return audioStub();
+	case 5: return graphicsStub();
 	default:
 		std::cerr << "Unknown program: " << settings.program << std::endl;
 		return ml::ConsoleUtility::pause(EXIT_FAILURE);

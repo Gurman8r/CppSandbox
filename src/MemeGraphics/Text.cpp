@@ -141,13 +141,22 @@ namespace ml
 					Vertex(vec3f(r,	t,	0), Color::White, vec2f::One),
 					Vertex(vec3f(r,	b,  0), Color::White, vec2f::Right),
 				});
+				Mesh mesh(GL::Triangles, vertices, {});
+				mesh.update();
 
-				state.textureHandle = g.texture;
-				state.transform = Transform(pos, scale, 0);
-				state.shader = shader();
-				state.color = color();
+				//state.textureHandle = g.texture;
+				//state.transform = Transform(pos, scale, 0);
+				//state.shader = shader();
+				//state.color = color();
 
-				//target->drawDynamic(Enum::Primitive::Triangles, vertices, state);
+				//target->drawDynamic(Enum::Prim::Triangles, vertices, state);
+
+				//OpenGL::activeTexture(GL::Texture0);
+				//OpenGL::bindVertexArray(vao);
+				//OpenGL::bindTexture(GL::Texture2D, g.texture);
+				//OpenGL::bindBuffer(GL::ArrayBuffer, vbo);
+				//OpenGL::bufferSubData(GL::ArrayBuffer, 0, mesh.flattened().size() * Vertex::Size, &mesh.flattened()[0]);
+				//OpenGL::drawArrays(GL::Triangles, 0, vertices.size());
 
 				pos[0] += (g.advance >> vertices.size()) * scale[0];
 			}
@@ -155,4 +164,22 @@ namespace ml
 			target.enable(GL::Flag::CullFace);
 		}
 	}
+
+	//void drawDynamic(Primitive primType, const VertexArray& vertices, RenderState & state)
+	//{
+	//	glCheck(glActiveTexture(GL_TEXTURE0));
+	//	glCheck(glBindVertexArray(m_vao));
+	//
+	//	glCheck(glBindTexture(GL_TEXTURE_2D, state.textureHandle));
+	//	glCheck(glBindBuffer(GL_ARRAY_BUFFER, m_vbo));
+	//
+	//	glCheck(glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.vertexCount(), &vertices.contiguous()[0]));
+	//	glCheck(glDrawArrays(_EnumCast(primType), 0, vertices.size()));
+	//
+	//	glCheck(glBindTexture(GL_TEXTURE_2D, 0));
+	//	glCheck(glBindBuffer(GL_ARRAY_BUFFER, 0));
+	//
+	//	glCheck(glBindVertexArray(0));
+	//	glCheck(glActiveTexture(GL_TEXTURE0));
+	//}
 }

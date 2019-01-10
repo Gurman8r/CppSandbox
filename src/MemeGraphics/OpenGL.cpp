@@ -9,14 +9,17 @@
 
 namespace ml
 {
+	// Members
+
 	bool OpenGL::m_good = false;
 	bool OpenGL::m_errorPause = false;
+
 
 	// General
 
 	bool OpenGL::init(bool experimental)
 	{
-		assert((sizeof(GL::Enum) == sizeof(GLenum)));
+		assert((sizeof(GL::Enum) == sizeof(GLenum))); // sanity check
 
 		static bool checked = false;
 		if (!checked)
@@ -33,12 +36,7 @@ namespace ml
 		return m_good;
 	}
 
-	void OpenGL::flush()
-	{
-		glCheck(glFlush());
-	}
-
-
+	
 	// Flags
 
 	bool OpenGL::isEnabled(GL::Enum value)
@@ -62,57 +60,6 @@ namespace ml
 		return check
 			? !isEnabled(value)
 			: true;
-	}
-
-
-	// Functions
-
-	void OpenGL::activeTexture(GL::TextureID target)
-	{
-		glCheck(glActiveTexture(target));
-	}
-
-	void OpenGL::alphaFunc(GL::Comparison comp, float value)
-	{
-		glCheck(glAlphaFunc(comp, value));
-	}
-
-	void OpenGL::blendFunc(GL::Factor src, GL::Factor dst)
-	{
-		glCheck(glBlendFunc(src, dst));
-	}
-
-	void OpenGL::cullFace(GL::Face face)
-	{
-		glCheck(glCullFace(face));
-	}
-
-	void OpenGL::depthFunc(GL::Comparison cmp)
-	{
-		glCheck(glDepthFunc(cmp));
-	}
-
-	void OpenGL::viewport(int32_t x, int32_t y, int32_t w, int32_t h)
-	{
-		glCheck(glViewport(x, y, w, h));
-	}
-
-
-	// Drawing
-
-	void OpenGL::clear(GL::Mask mask)
-	{
-		glCheck(glClear(mask));
-	}
-
-	void OpenGL::clearColor(float r, float g, float b, float a)
-	{
-		glCheck(glClearColor(r, g, b, a));
-	}
-
-	void OpenGL::drawElements(GL::Primitive primitive, int32_t count, GL::Type type, const void * indices)
-	{
-		glCheck(glDrawElements(primitive, count, type, indices));
 	}
 
 
@@ -176,6 +123,8 @@ namespace ml
 			}
 			
 			std::cerr 
+				<< FMT()
+				<< std::endl 
 				<< FG::Red
 				<< "An internal OpenGL call failed in " << fileName << "(" << line << ")"
 				<< FG::Yellow	<< std::endl << "Code: " 
@@ -185,8 +134,9 @@ namespace ml
 				<< FG::Yellow	<< std::endl << "Description:"
 				<< FG::White	<< std::endl << "\t" << errorName
 				<< FG::White	<< std::endl << "\t" << errorDesc
+				<< FMT()
 				<< std::endl
-				<< std::endl << FMT();
+				<< std::endl;
 
 			if (m_errorPause)
 			{
@@ -241,6 +191,67 @@ namespace ml
 	}
 
 
+	// Functions
+
+	void OpenGL::activeTexture(GL::TextureID target)
+	{
+		glCheck(glActiveTexture(target));
+	}
+
+	void OpenGL::alphaFunc(GL::Comparison comp, float value)
+	{
+		glCheck(glAlphaFunc(comp, value));
+	}
+
+	void OpenGL::blendFunc(GL::Factor src, GL::Factor dst)
+	{
+		glCheck(glBlendFunc(src, dst));
+	}
+
+	void OpenGL::cullFace(GL::Face face)
+	{
+		glCheck(glCullFace(face));
+	}
+
+	void OpenGL::depthFunc(GL::Comparison cmp)
+	{
+		glCheck(glDepthFunc(cmp));
+	}
+
+	void OpenGL::viewport(int32_t x, int32_t y, int32_t w, int32_t h)
+	{
+		glCheck(glViewport(x, y, w, h));
+	}
+
+
+	// Drawing
+
+	void OpenGL::clear(GL::Mask mask)
+	{
+		glCheck(glClear(mask));
+	}
+
+	void OpenGL::clearColor(float r, float g, float b, float a)
+	{
+		glCheck(glClearColor(r, g, b, a));
+	}
+
+	void OpenGL::drawElements(GL::Prim primitive, int32_t count, GL::Type type, const void * indices)
+	{
+		glCheck(glDrawElements(primitive, count, type, indices));
+	}
+
+	void OpenGL::drawArrays(GL::Prim primitive, int32_t first, int32_t count)
+	{
+		glCheck(glDrawArrays(primitive, first, count));
+	}
+
+	void OpenGL::flush()
+	{
+		glCheck(glFlush());
+	}
+
+
 	// Buffers
 
 	uint32_t OpenGL::genBuffers(uint32_t count)
@@ -257,7 +268,7 @@ namespace ml
 		return temp;
 	}
 
-	void OpenGL::bindBuffer(GL::BufferType type, uint32_t buffer)
+	void OpenGL::bindBuffer(GL::Target type, uint32_t buffer)
 	{
 		glCheck(glBindBuffer(type, buffer));
 	}
@@ -267,9 +278,14 @@ namespace ml
 		glCheck(glBindVertexArray(value));
 	}
 
-	void OpenGL::bufferData(GL::BufferType type, uint32_t size, const void * data, GL::Usage usage)
+	void OpenGL::bufferData(GL::Target type, uint32_t size, const void * data, GL::Usage usage)
 	{
 		glCheck(glBufferData(type, size, data, usage));
+	}
+
+	void OpenGL::bufferSubData(GL::Target target, ptrdiff_t offset, ptrdiff_t size, const void * data)
+	{
+		glCheck(glBufferSubData(target, offset, size, data));
 	}
 
 	void OpenGL::deleteBuffers(uint32_t count, const uint32_t * buffers)
@@ -294,12 +310,174 @@ namespace ml
 	}
 
 
+	// Textures
+
+	bool OpenGL::edgeClampAvailable()
+	{
+		static bool checked = false;
+		static bool temp;
+		if (!checked)
+		{
+			checked = true;
+			temp = GL_EXT_texture_edge_clamp || GLEW_EXT_texture_edge_clamp;
+		}
+		return temp;
+	}
+
+	bool OpenGL::textureSrgbAvailable()
+	{
+		static bool checked = false;
+		static bool temp;
+		if (!checked)
+		{
+			checked = true;
+			temp = GL_EXT_texture_sRGB;
+		}
+		return temp;
+	}
+
+	bool OpenGL::nonPowerOfTwoAvailable()
+	{
+		static bool checked = false;
+		static bool temp;
+		if (!checked)
+		{
+			checked = true;
+			temp = GLEW_ARB_texture_non_power_of_two;
+		}
+		return temp;
+	}
+
+	int32_t OpenGL::getMaxTextureUnits()
+	{
+		static int32_t maxUnits;
+		static bool checked = false;
+		if (!checked)
+		{
+			maxUnits = getInt(GL::MaxCombTexImgUnits);
+		}
+		return maxUnits;
+	}
+
+	uint32_t OpenGL::getMaxTextureSize()
+	{
+		static uint32_t size = 0;
+		static bool checked = false;
+		if (!checked)
+		{
+			size = static_cast<uint32_t>(OpenGL::getInt(GL::MaxTextureSize));
+		}
+		return size;
+	}
+
+
+	uint32_t OpenGL::genTextures(uint32_t count)
+	{
+		static uint32_t temp;
+		glCheck(glGenTextures(count, &temp));
+		return temp;
+	}
+
+	void OpenGL::deleteTextures(uint32_t count, const uint32_t * id)
+	{
+		glCheck(glDeleteTextures(count, id));
+	}
+
+	void OpenGL::bindTexture(GL::Target target, uint32_t id)
+	{
+		glCheck(glBindTexture(target, id));
+	}
+
+	void OpenGL::texImage2D(GL::Target target, int32_t level, GL::Format internalFormat, int32_t width, int32_t height, int32_t border, GL::Format format, GL::Type type, const void * pixels)
+	{
+		glCheck(glTexImage2D(target, level, internalFormat, width, height, border, format, type, pixels));
+	}
+
+	void OpenGL::texSubImage2D(GL::Target target, int32_t level, int32_t xoffset, int32_t yoffset, int32_t width, int32_t height, GL::Format format, GL::Type type, const void * pixels)
+	{
+		glCheck(glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, pixels));
+	}
+
+	void OpenGL::texParameter(GL::Target target, uint32_t name, GL::TexParam param)
+	{
+		glCheck(glTexParameteri(target, name, param));
+	}
+
+	void OpenGL::getTexImage(GL::Target target, int32_t level, GL::Format format, GL::Type type, void * pixels)
+	{
+		glCheck(glGetTexImage(target, level, format, type, pixels));
+	}
+
+	void OpenGL::generateMipmap(GL::Target target)
+	{
+		glCheck(glGenerateMipmap(target));
+	}
+
+	void OpenGL::pixelStore(uint32_t name, int32_t param)
+	{
+		glCheck(glPixelStorei(name, 1));
+	}
+
+
+	// Framebuffers
+
+	bool OpenGL::framebuffersAvailable()
+	{
+		static bool checked = false;
+		static bool temp;
+		if (!checked)
+		{
+			checked = true;
+			temp = GL_EXT_framebuffer_object && GL_EXT_framebuffer_blit;
+		}
+		return temp;
+	}
+	
+	uint32_t OpenGL::genFramebuffers(uint32_t count)
+	{
+		static uint32_t temp;
+		glCheck(glGenFramebuffers(count, &temp));
+		return temp;
+	}
+
+	uint32_t OpenGL::checkFramebufferStatus(GL::Target target)
+	{
+		static uint32_t temp;
+		glCheck(temp = glCheckFramebufferStatus(target));
+		return temp;
+	}
+
+	void OpenGL::bindFramebuffer(GL::Target target, uint32_t framebuffer)
+	{
+		glCheck(glBindFramebuffer(target, framebuffer));
+	}
+
+	void OpenGL::deleteFramebuffers(uint32_t count, const uint32_t * framebuffers)
+	{
+		glCheck(glDeleteFramebuffers(count, framebuffers));
+	}
+
+	void OpenGL::blitFramebuffer(int32_t srcX0, int32_t srcY0, int32_t srcX1, int32_t srcY1, int32_t dstX0, int32_t dstY0, int32_t dstX1, int32_t dstY1, GL::Mask mask, uint32_t filter)
+	{
+		glCheck(glBlitFramebuffer(
+			srcX0, srcY0, srcX1, srcY1,
+			dstX0, dstY0, dstX1, dstY1,
+			mask,
+			filter));
+	}
+
+	void OpenGL::framebufferTexture2D(GL::Target target, GL::Attachment attachment, GL::Target textarget, uint32_t texture, int32_t level)
+	{
+		glCheck(glFramebufferTexture2D(target, attachment, textarget, texture, level));
+	}
+
+
 	// Shaders
 
 	bool OpenGL::shadersAvailable()
 	{
-		static bool checked = false;
 		static bool available = false;
+		static bool checked = false;
 		if (!checked)
 		{
 			checked = true;
@@ -315,8 +493,8 @@ namespace ml
 
 	bool OpenGL::geometryShadersAvailable()
 	{
-		static bool checked = false;
 		static bool available = false;
+		static bool checked = false;
 		if (!checked)
 		{
 			checked = true;
@@ -332,7 +510,6 @@ namespace ml
 		glCheck(glGetInfoLogARB(obj, sizeof(log), 0, log));
 		return log;
 	}
-	
 
 	uint32_t OpenGL::getProgramHandle(uint32_t name)
 	{
@@ -354,8 +531,8 @@ namespace ml
 		glCheck(temp = glCreateShaderObjectARB(type));
 		return temp;
 	}
-	
-	int32_t OpenGL::getProgramParameter(int32_t obj, GL::ProgramParam param)
+
+	int32_t OpenGL::getProgramParameter(int32_t obj, GL::Status param)
 	{
 		static int32_t temp;
 		glCheck(glGetObjectParameterivARB(obj, param, &temp));
@@ -368,19 +545,19 @@ namespace ml
 		glCheck(temp = glGetUniformLocation(obj, name));
 		return temp;
 	}
-	
 
-	void OpenGL::useProgram(uint32_t obj)
+
+	void OpenGL::useShader(uint32_t obj)
 	{
 		glCheck(glUseProgramObjectARB(obj));
 	}
 
-	void OpenGL::deleteProgram(uint32_t obj)
+	void OpenGL::deleteShader(uint32_t obj)
 	{
 		glCheck(glDeleteObjectARB(obj));
 	}
 
-	void OpenGL::attachProgram(uint32_t containerObj, uint32_t obj)
+	void OpenGL::attachShader(uint32_t containerObj, uint32_t obj)
 	{
 		glCheck(glAttachObjectARB(containerObj, obj));
 	}
@@ -390,12 +567,12 @@ namespace ml
 		glCheck(glShaderSource(obj, count, src, length));
 	}
 
-	void OpenGL::compileProgram(uint32_t obj)
+	void OpenGL::compileShader(uint32_t obj)
 	{
 		glCheck(glCompileShader(obj));
 	}
 
-	void OpenGL::linkProgram(uint32_t obj)
+	void OpenGL::linkShader(uint32_t obj)
 	{
 		glCheck(glLinkProgram(obj));
 	}
@@ -494,139 +671,6 @@ namespace ml
 	void OpenGL::uniformMatrixArray4f(int32_t location, uint32_t count, bool transpose, const float * value)
 	{
 		glCheck(glUniformMatrix4fv(location, count, GL_FALSE, value));
-	}
-	   
-	
-	// Textures
-
-	bool OpenGL::edgeClampAvailable()
-	{
-		static bool temp = GL_EXT_texture_edge_clamp || GLEW_EXT_texture_edge_clamp;
-		return temp;
-	}
-
-	bool OpenGL::textureSrgbAvailable()
-	{
-		static bool temp = GL_EXT_texture_sRGB;
-		return temp;
-	}
-
-	bool OpenGL::nonPowerOfTwoAvailable()
-	{
-		static bool temp = GLEW_ARB_texture_non_power_of_two;
-		return temp;
-	}
-
-	int32_t OpenGL::getMaxTextureUnits()
-	{
-		static int32_t maxUnits = getInt(GL::MaxCombTexImgUnits);
-		return maxUnits;
-	}
-
-	uint32_t OpenGL::getMaxTextureSize()
-	{
-		static bool checked = false;
-		static uint32_t size = 0;
-		if (!checked)
-		{
-			size = static_cast<uint32_t>(OpenGL::getInt(GL::MaxTextureSize));
-		}
-		return size;
-	}
-
-
-	uint32_t OpenGL::genTextures(uint32_t count)
-	{
-		static uint32_t temp;
-		glCheck(glGenTextures(count, &temp));
-		return temp;
-	}
-
-	void OpenGL::deleteTextures(uint32_t count, const uint32_t * id)
-	{
-		glCheck(glDeleteTextures(count, id));
-	}
-
-	void OpenGL::bindTexture(GL::Target target, uint32_t id)
-	{
-		glCheck(glBindTexture(target, id));
-	}
-
-	void OpenGL::texImage2D(GL::Target target, int32_t level, GL::Format internalFormat, int32_t width, int32_t height, int32_t border, GL::Format format, GL::Type type, const void * pixels)
-	{
-		glCheck(glTexImage2D(target, level, internalFormat, width, height, border, format, type, pixels));
-	}
-
-	void OpenGL::texSubImage2D(GL::Target target, int32_t level, int32_t xoffset, int32_t yoffset, int32_t width, int32_t height, GL::Format format, GL::Type type, const void * pixels)
-	{
-		glCheck(glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, pixels));
-	}
-
-	void OpenGL::texParameter(GL::Target target, uint32_t name, GL::TexParam param)
-	{
-		glCheck(glTexParameteri(target, name, param));
-	}
-
-	void OpenGL::getTexImage(GL::Target target, int32_t level, GL::Format format, GL::Type type, void * pixels)
-	{
-		glCheck(glGetTexImage(target, level, format, type, pixels));
-	}
-
-	void OpenGL::generateMipmap(GL::Target target)
-	{
-		glCheck(glGenerateMipmap(target));
-	}
-
-	void OpenGL::pixelStore(uint32_t name, int32_t param)
-	{
-		glCheck(glPixelStorei(name, 1));
-	}
-
-
-	// Framebuffers
-
-	bool OpenGL::framebuffersAvailable()
-	{
-		static bool temp = GL_EXT_framebuffer_object && GL_EXT_framebuffer_blit;
-		return temp;
-	}
-	
-	uint32_t OpenGL::genFramebuffers(uint32_t count)
-	{
-		static uint32_t temp;
-		glCheck(glGenFramebuffers(count, &temp));
-		return temp;
-	}
-
-	uint32_t OpenGL::checkFramebufferStatus(GL::Target target)
-	{
-		static uint32_t temp;
-		glCheck(temp = glCheckFramebufferStatus(target));
-		return temp;
-	}
-
-	void OpenGL::bindFramebuffer(GL::Target target, uint32_t framebuffer)
-	{
-		glCheck(glBindFramebuffer(target, framebuffer));
-	}
-
-	void OpenGL::deleteFramebuffers(uint32_t count, const uint32_t * framebuffers)
-	{
-		glCheck(glDeleteFramebuffers(count, framebuffers));
-	}
-
-	void OpenGL::blitFramebuffer(int32_t srcX0, int32_t srcY0, int32_t srcX1, int32_t srcY1, int32_t dstX0, int32_t dstY0, int32_t dstX1, int32_t dstY1, GL::Mask mask, uint32_t filter)
-	{
-		glCheck(glBlitFramebuffer(
-			srcX0, srcY0, srcX1, srcY1,
-			dstX0, dstY0, dstX1, dstY1,
-			mask,
-			filter));
-	}
-
-	void OpenGL::framebufferTexture2D(GL::Target target, GL::ColorAttachment attachment, GL::Target textarget, uint32_t texture, int32_t level)
-	{
-		glCheck(glFramebufferTexture2D(target, attachment, textarget, texture, level));
 	}
 
 }

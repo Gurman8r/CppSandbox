@@ -18,7 +18,7 @@ namespace ml
 
 			if (m_settings.multisample)
 			{
-				OpenGL::enable(GL::Multisample);
+				enable(GL::Multisample);
 			}
 
 			if (m_settings.sRgbCapable)

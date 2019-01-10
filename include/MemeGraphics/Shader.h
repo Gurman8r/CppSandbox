@@ -70,9 +70,9 @@ namespace ml
 		};
 
 		template <typename T>
-		void setUniformArray(Uniform::ID id, T * value, std::size_t length)
+		void setUniformArray(Uniform::ID id, int32_t count, T * value)
 		{
-			setUniformArray(Uniform::UniformNames[id], value, length);
+			setUniformArray(Uniform::UniformNames[id], value, count);
 		};
 
 	public:

@@ -9,19 +9,8 @@ namespace ml
 	// Types
 	struct ML_GRAPHICS_API GL final
 	{
-		using Enum = uint32_t;
-		using CStr = const char *;
-
-		enum Mask : Enum
-		{
-			ContextCoreProfileBit	= 0x1,	// GL_CONTEXT_CORE_PROFILE_BIT
-			ContextCompatProfileBit = 0x2,	// GL_CONTEXT_COMPATIBILITY_PROFILE_BIT
-			ContextFlagDebugBit		= 0x2,	// GL_CONTEXT_FLAG_DEBUG_BIT
-		
-			DepthBufferBit	 = 0x100,		// GL_DEPTH_BUFFER_BIT
-			StencilBufferBit = 0x400,		// GL_STENCIL_BUFFER_BIT
-			ColorBufferBit	 = 0x4000,		// GL_COLOR_BUFFER_BIT
-		};
+		using Enum		= uint32_t;
+		using CStr		= const char *;
 
 		enum Flag : Enum
 		{
@@ -30,14 +19,19 @@ namespace ml
 			AlphaTest		= 0x0BC0,		// GL_ALPHA_TEST
 			Blend			= 0x0BE2,		// GL_BLEND
 			Multisample		= 0x809D,		// GL_MULTISAMPLE
+			FramebufferSRGB	= 0x8DB9,		// GL_FRAMEBUFFER_SRGB
 		};
 
 		enum Target : Enum
 		{
 			Texture2D		= 0x0DE1,		// GL_TEXTURE_2D
+			ArrayBuffer		= 0x8892,		// GL_ARRAY_BUFFER
+			ElementArrayBuffer,				// GL_ELEMENT_ARRAY_BUFFER
 			ProgramObject	= 0x8B40,		// GL_PROGRAM_OBJECT_ARB
 			FramebufferRead = 0x8CA8,		// GL_READ_FRAMEBUFFER
 			FramebufferDraw = 0x8CA9,		// GL_DRAW_FRAMEBUFFER
+			ReadFramebufferBinding = 0x8CAA,// GL_READ_FRAMEBUFFER_BINDING
+			DrawFramebufferBinding = 0x8CA6,// GL_DRAW_FRAMEBUFFER_BINDING
 		};
 
 		enum Usage : Enum
@@ -79,17 +73,12 @@ namespace ml
 			MaxCombTexImgUnits = 0x8B4D,	// GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS
 		};
 
-		enum ProgramParam : Enum
+		enum Status : Enum
 		{
 			ObjectDeleteStatus = 0x8B80,	// GL_OBJECT_DELETE_STATUS_ARB
 			ObjectCompileStatus,			// GL_OBJECT_COMPILE_STATUS_ARB
 			ObjectLinkStatus,				// GL_OBJECT_LINK_STATUS_ARB
-		};
-
-		enum BufferType : Enum
-		{
-			ArrayBuffer = 0x8892,			// GL_ARRAY_BUFFER
-			ElementArrayBuffer,				// GL_ELEMENT_ARRAY_BUFFER
+			FramebufferComplete = 0x8CD5,	// GL_FRAMEBUFFER_COMPLETE
 		};
 
 		enum ShaderType : Enum
@@ -99,7 +88,7 @@ namespace ml
 			GeometryShader = 0x8DD9,		// GL_GEOMETRY_SHADER
 		};
 
-		enum Primitive : Enum
+		enum Prim : Enum
 		{
 			Points = 0x000,					// GL_POINTS
 			Lines,							// GL_LINES
@@ -187,14 +176,6 @@ namespace ml
 			SLuminance8,					// GL_SLUMINANCE8
 		};
 
-		enum FramebufferEnum : Enum
-		{
-			FramebufferSRGB		= 0x8DB9,	// GL_FRAMEBUFFER_SRGB
-			FramebufferComplete = 0x8CD5,	// GL_FRAMEBUFFER_COMPLETE
-			ReadFramebufferBinding = 0x8CAA,// GL_READ_FRAMEBUFFER_BINDING
-			DrawFramebufferBinding = 0x8CA6,// GL_DRAW_FRAMEBUFFER_BINDING
-		};
-
 		enum TexParam : Enum
 		{
 			Nearest = 0x2600,				// GL_NEAREST
@@ -210,10 +191,9 @@ namespace ml
 			Clamp				= 0x2900,	// GL_CLAMP
 			Repeat,							// GL_REPEAT
 			ClampToEdge			= 0x812F,	// GL_CLAMP_TO_EDGE
-			
 		};
 
-		enum Unpack : Enum
+		enum Pack : Enum
 		{
 			UnpackSwapBytes = 0x0CF0,		// GL_UNPACK_SWAP_BYTES
 			UnpackLsbFirst,					// GL_UNPACK_LSB_FIRST
@@ -221,10 +201,7 @@ namespace ml
 			UnpackSkipRows,					// GL_UNPACK_SKIP_ROWS
 			UnpackSkipPixels,				// GL_UNPACK_SKIP_PIXELS
 			UnpackAlignment,				// GL_UNPACK_ALIGNMENT
-		};
-
-		enum Pack : Enum
-		{
+		
 			PackSwapBytes = 0x0D00,			// GL_PACK_SWAP_BYTES
 			PackLsbFirst,					// GL_PACK_LSB_FIRST
 			PackRowLength,					// GL_PACK_ROW_LENGTH
@@ -233,7 +210,7 @@ namespace ml
 			PackAlignment,					// GL_PACK_ALIGNMENT
 		};
 
-		enum ColorAttachment : Enum
+		enum Attachment : Enum
 		{
 			ColorAttachment0 = 0x8CE0,		// GL_COLOR_ATTACHMENT0
 			ColorAttachment1,				// GL_COLOR_ATTACHMENT1
@@ -251,6 +228,7 @@ namespace ml
 			ColorAttachment13,				// GL_COLOR_ATTACHMENT13
 			ColorAttachment14,				// GL_COLOR_ATTACHMENT14
 			ColorAttachment15,				// GL_COLOR_ATTACHMENT15
+			MAX_COLOR_ATTACHMENT
 		};
 
 		enum TextureID : Enum
@@ -287,10 +265,29 @@ namespace ml
 			Texture29,						// GL_TEXTURE29
 			Texture30,						// GL_TEXTURE30
 			Texture31,						// GL_TEXTURE31
+			MAX_TEXTURE_ID
+		};
+
+		enum Mask : Enum
+		{
+			ContextCoreProfileBit	= 0x1,	// GL_CONTEXT_CORE_PROFILE_BIT
+			ContextCompatProfileBit = 0x2,	// GL_CONTEXT_COMPATIBILITY_PROFILE_BIT
+			ContextFlagDebugBit		= 0x2,	// GL_CONTEXT_FLAG_DEBUG_BIT
+		
+			DepthBufferBit	 = 0x100,		// GL_DEPTH_BUFFER_BIT
+			StencilBufferBit = 0x400,		// GL_STENCIL_BUFFER_BIT
+			ColorBufferBit	 = 0x4000,		// GL_COLOR_BUFFER_BIT
 		};
 	};
 
 	// Operators
+
+	template <typename T>
+	inline GL::TextureID operator+(GL::TextureID lhs, T rhs)
+	{
+		return static_cast<GL::TextureID>(static_cast<uint32_t>(lhs) + rhs);
+	}
+
 	inline GL::Mask operator&(GL::Mask lhs, GL::Mask rhs)
 	{
 		return static_cast<GL::Mask>(static_cast<uint32_t>(lhs) & static_cast<uint32_t>(rhs));
@@ -298,6 +295,14 @@ namespace ml
 	inline GL::Mask operator|(GL::Mask lhs, GL::Mask rhs)
 	{
 		return static_cast<GL::Mask>(static_cast<uint32_t>(lhs) | static_cast<uint32_t>(rhs));
+	}
+	inline GL::Mask & operator&=(GL::Mask lhs, GL::Mask rhs)
+	{
+		return (lhs = (lhs & rhs));
+	}
+	inline GL::Mask & operator|=(GL::Mask lhs, GL::Mask rhs)
+	{
+		return (lhs = (lhs | rhs));
 	}
 }
 

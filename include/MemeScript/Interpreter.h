@@ -51,6 +51,9 @@ namespace ml
 		Memory*			memory()		{ return m_memory; }
 		Parser*			parser()		{ return m_parser; }
 
+	public:
+		static void LoadBuiltinCommands();
+
 	private:
 		CommandMap	m_commands;
 		Memory*		m_memory;

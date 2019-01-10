@@ -154,4 +154,8 @@ namespace ml
 	{
 		return !glfwWindowShouldClose(static_cast<GLFWwindow*>(m_handle));
 	}
+	float Window::getTime() const
+	{
+		return static_cast<float>(glfwGetTime());
+	}
 }

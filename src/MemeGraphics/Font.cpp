@@ -92,7 +92,7 @@ namespace ml
 	const Glyph & Font::getGlyph(uint32_t c, uint32_t characterSize) const
 	{
 		// Get the page corresponding to the character size
-		GlyphTable& glyphs = m_pages[characterSize].glyphs;
+		GlyphTable & glyphs = m_pages[characterSize].glyphs;
 
 		// Build the key by combining the code point, bold flag, and outline thickness
 		const uint32_t key = c;

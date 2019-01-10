@@ -20,7 +20,7 @@ namespace ml
 		RenderTarget & draw(const IDrawable & value);
 		RenderTarget & draw(const RenderState & value);
 
-		RenderTarget & drawElements(const IBO & ibo, GL::Primitive prim, GL::Type type);
+		RenderTarget & drawElements(const IBO & ibo, GL::Prim prim, GL::Type type);
 
 	public:
 		bool isEnabled(GL::Enum value) const;

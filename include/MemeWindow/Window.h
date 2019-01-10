@@ -59,7 +59,8 @@ namespace ml
 		Window & size(const vec2u & value);
 		Window & title(const std::string & value);
 
-		bool isOpen() const;
+		bool	isOpen() const;
+		float	getTime() const;
 
 		inline const Handle				handle()	const { return m_handle; }
 		inline const ContextSettings &	settings()	const { return m_settings; }
