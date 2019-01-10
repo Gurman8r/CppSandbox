@@ -1,5 +1,6 @@
 #include <MemeCore/ConsoleUtility.h>
 #include <MemeCore/InputState.h>
+#include <MemeCore/DebugUtility.h>
 
 #ifdef ML_SYSTEM_WINDOWS
 #include <Windows.h>
@@ -60,7 +61,7 @@ namespace ml
 #ifdef ML_SYSTEM_WINDOWS
 		system("pause");
 #else
-		std::cout << "Press any key to continue..." << std::endl;
+		Debug::out() << "Press any key to continue..." << std::endl;
 		ml::InputState input;
 		while (!input.beginStep().endStep().getAnyKey());
 #endif

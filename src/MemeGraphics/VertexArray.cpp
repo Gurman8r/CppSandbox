@@ -3,6 +3,10 @@
 
 namespace ml
 {
+	VertexArray::VertexArray()
+	{
+	}
+
 	VertexArray::VertexArray(uint32_t count)
 		: m_count(count)
 	{

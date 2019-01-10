@@ -47,10 +47,7 @@ namespace ml
 		Matrix(const value_type * value)
 			: self_type()
 		{
-			for (std::size_t i = 0; i < Size; i++)
-			{
-				(*this)[i] = value[i];
-			}
+			memcpy(m_data, value, Size * sizeof(value));
 		}
 		
 		Matrix(const std::initializer_list<value_type> & value)
@@ -63,12 +60,8 @@ namespace ml
 		}
 		
 		Matrix(const self_type & value)
-			: self_type()
+			: self_type(value.ptr())
 		{
-			for (std::size_t i = 0; i < Size; i++)
-			{
-				(*this)[i] = value[i];
-			}
 		}
 		
 		template <typename U, std::size_t C, std::size_t R>

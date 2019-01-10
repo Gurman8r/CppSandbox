@@ -9,6 +9,7 @@ namespace ml
 		: public ITrackable
 	{
 	public:
+		VertexArray();
 		VertexArray(uint32_t count);
 		VertexArray(const VertexArray & copy);
 		~VertexArray();

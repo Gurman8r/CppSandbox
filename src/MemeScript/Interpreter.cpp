@@ -2,6 +2,7 @@
 #include <MemeCore/FileSystem.h>
 #include <MemeCore/ConsoleUtility.h>
 #include <dirent.h>
+#include <MemeCore/DebugUtility.h>
 
 namespace ml
 {
@@ -156,7 +157,7 @@ namespace ml
 		ML_Interpreter.addCommand(ml::Command("help", [](ml::Args & args)
 		{
 			for (auto n : ML_Interpreter.getCmdNames())
-				std::cout << n << std::endl;
+				Debug::out() << n << std::endl;
 			return ml::Var().boolValue(true);
 		}));
 
@@ -197,24 +198,24 @@ namespace ml
 					switch (e->d_type)
 					{
 					case DT_REG:
-						std::cout << (ml::FG::Green | ml::BG::Black) << e->d_name << "";
+						Debug::out() << (ml::FG::Green | ml::BG::Black) << e->d_name << "";
 						break;
 					case DT_DIR:
-						std::cout << (ml::FG::Blue | ml::BG::Green) << e->d_name << "/";
+						Debug::out() << (ml::FG::Blue | ml::BG::Green) << e->d_name << "/";
 						break;
 					case DT_LNK:
-						std::cout << (ml::FG::Green | ml::BG::Black) << e->d_name << "@";
+						Debug::out() << (ml::FG::Green | ml::BG::Black) << e->d_name << "@";
 						break;
 					default:
-						std::cout << (ml::FG::Green | ml::BG::Black) << e->d_name << "*";
+						Debug::out() << (ml::FG::Green | ml::BG::Black) << e->d_name << "*";
 						break;
 					}
-					std::cout << ml::FMT() << std::endl;
+					Debug::out() << ml::FMT() << std::endl;
 				}
 				closedir(dir);
 				return ml::Var().boolValue(true);
 			}
-			std::cout << "Dir \'" << dName << "\' does not exist." << std::endl;
+			Debug::out() << "Dir \'" << dName << "\' does not exist." << std::endl;
 			return ml::Var().boolValue(false);
 		}));
 	}

@@ -6,7 +6,6 @@
 
 namespace ml
 {
-	// Types
 	struct ML_GRAPHICS_API GL final
 	{
 		using Enum		= uint32_t;
@@ -228,7 +227,6 @@ namespace ml
 			ColorAttachment13,				// GL_COLOR_ATTACHMENT13
 			ColorAttachment14,				// GL_COLOR_ATTACHMENT14
 			ColorAttachment15,				// GL_COLOR_ATTACHMENT15
-			MAX_COLOR_ATTACHMENT
 		};
 
 		enum TextureID : Enum
@@ -265,7 +263,6 @@ namespace ml
 			Texture29,						// GL_TEXTURE29
 			Texture30,						// GL_TEXTURE30
 			Texture31,						// GL_TEXTURE31
-			MAX_TEXTURE_ID
 		};
 
 		enum Mask : Enum
@@ -285,7 +282,19 @@ namespace ml
 	template <typename T>
 	inline GL::TextureID operator+(GL::TextureID lhs, T rhs)
 	{
-		return static_cast<GL::TextureID>(static_cast<uint32_t>(lhs) + rhs);
+		uint32_t temp = static_cast<uint32_t>(lhs) - static_cast<uint32_t>(rhs);
+		return (temp <= GL::Texture31)
+			? static_cast<GL::TextureID>(temp)
+			: GL::Texture31;
+	}
+
+	template <typename T>
+	inline GL::TextureID operator-(GL::TextureID lhs, T rhs)
+	{
+		uint32_t temp = static_cast<uint32_t>(lhs) - static_cast<uint32_t>(rhs);
+		return (temp >= GL::Texture0)
+			? static_cast<GL::TextureID>(temp)
+			: GL::Texture0;
 	}
 
 	inline GL::Mask operator&(GL::Mask lhs, GL::Mask rhs)

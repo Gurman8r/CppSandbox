@@ -122,7 +122,7 @@ namespace ml
 				break;
 			}
 			
-			std::cerr 
+			Debug::err()
 				<< FMT()
 				<< std::endl 
 				<< FG::Red

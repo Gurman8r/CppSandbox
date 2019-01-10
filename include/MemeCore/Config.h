@@ -49,7 +49,6 @@
 		#define ML_API_IMPORT __declspec(dllimport)
 		// For Visual C++ compilers, we also need to turn off this annoying C4251 warning
 		#ifdef _MSC_VER
-			#define ML_VisualCpp
 			#pragma warning(disable: 4251)
 		#endif
 	#else

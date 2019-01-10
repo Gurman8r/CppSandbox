@@ -26,10 +26,10 @@ namespace ml
 
 	bool FileSystem::getFileContents(const std::string & filename, std::vector<char> & buffer)
 	{
+		buffer.clear();
 		if (!filename.empty())
 		{
 			std::ifstream file(filename.c_str(), std::ios_base::binary);
-
 			if (file)
 			{
 				file.seekg(0, std::ios_base::end);
@@ -59,4 +59,29 @@ namespace ml
 			return Debug::LogError("FileSystem: Filename cannot be empty");
 		}
 	}
+
+	bool FileSystem::getFileContents(const std::string & filename, std::string & str)
+	{
+		static std::vector<char> buffer;
+		str.clear();
+		if (getFileContents(filename, buffer))
+		{
+			str = std::string(buffer.begin(), buffer.end());
+			return true;
+		}
+		return false;
+	}
+
+	bool FileSystem::getFileContents(const std::string & filename, std::stringstream & stream)
+	{
+		static std::string buffer;
+		stream.str(std::string());
+		if (getFileContents(filename, buffer))
+		{
+			stream.str(buffer);
+			return true;
+		}
+		return false;
+	}
+	
 }

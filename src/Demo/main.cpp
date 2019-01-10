@@ -75,8 +75,8 @@ class TestComponent final
 	: public ml::Component
 {
 public:
-	TestComponent() { std::cout << (*this) << " Created" << std::endl; }
-	~TestComponent() { std::cout << (*this) << " Destroyed" << std::endl; }
+	TestComponent() { ml::Debug::out() << (*this) << " Created" << std::endl; }
+	~TestComponent() { ml::Debug::out() << (*this) << " Destroyed" << std::endl; }
 };
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -91,7 +91,7 @@ inline static void delay(uint64_t value)
 template <typename T>
 inline static void printBits(T value)
 {
-	std::cout
+	ml::Debug::out()
 		<< std::left 
 		<< std::setw(8)
 		<< ml::FG::Yellow << value;
@@ -99,9 +99,9 @@ inline static void printBits(T value)
 	{
 		bool b = bitRead(value, i);
 
-		std::cout << (b ? ml::FG::Green : ml::FG::Red) << b << " ";
+		ml::Debug::out() << (b ? ml::FG::Green : ml::FG::Red) << b << " ";
 	}
-	std::cout << ml::FMT() << std::endl;
+	ml::Debug::out() << ml::FMT() << std::endl;
 }
 
 inline static uint64_t getFPS(float elapsedMS)
@@ -125,22 +125,22 @@ inline static uint64_t getFPS(float elapsedMS)
 
 inline static int coreStub()
 {
-	std::cout << "Core Stub:" << std::endl;
+	ml::Debug::out() << "Core Stub:" << std::endl;
 
 	// Colors
-	std::cout << "Colors:" << std::endl;
+	ml::Debug::out() << "Colors:" << std::endl;
 	char c = 64;
 	for (uint16_t i = 0; i < ml::FG::MAX_COLOR; i++)
 	{
 		for (uint16_t j = 0; j < ml::BG::MAX_COLOR; j++)
 		{
-			std::cout
+			ml::Debug::out()
 				<< (ml::FG::Values[i] | ml::BG::Values[j])
 				<< (c = ((c < 127) ? c + 1 : 64)) << " ";
 		}
-		std::cout << std::endl;
+		ml::Debug::out() << std::endl;
 	}
-	std::cout << ml::FMT() << std::endl << std::endl;
+	ml::Debug::out() << ml::FMT() << std::endl << std::endl;
 
 
 	// Vectors
@@ -149,7 +149,7 @@ inline static int coreStub()
 	ml::vec3f vec3A = vec2A;
 	ml::vec2f vec2B = vec3B;
 	ml::vec4f vec4A = vec2A;
-	std::cout
+	ml::Debug::out()
 		<< "Vectors:" << std::endl
 		<< "V2A: { " << vec2A << " }" << std::endl
 		<< "V3A: { " << vec3A << " }" << std::endl
@@ -162,7 +162,7 @@ inline static int coreStub()
 
 	// Check Maths
 	ml::vec2f vec(-1.f, 1.f);
-	std::cout
+	ml::Debug::out()
 		<< "Checking Maths:" << std::endl
 		<< std::left
 		<< std::setw(12) << "Value: " << vec << std::endl
@@ -182,26 +182,26 @@ inline static int coreStub()
 		8.8f,   10.1f,  12.12f,
 		14.14f, 16.16f, 18.18f,
 	};
-	std::cout << "M3: " << std::endl << m3 << std::endl << std::endl;
+	ml::Debug::out() << "M3: " << std::endl << m3 << std::endl << std::endl;
 	for (ml::mat3f::iterator it = m3.begin(); it != m3.end(); it++)
 	{
 		std::size_t i = (it - m3.begin());
-		std::cout
+		ml::Debug::out()
 			<< "{" << i << ": " << (*it) << "}"
 			<< ((it != m3.end() - 1) ? " " : "\n");;
 	}
-	std::cout << std::endl << std::endl;
+	ml::Debug::out() << std::endl << std::endl;
 
 	ml::mat4f m4 = ml::mat4f::identity();
-	std::cout << "M4: " << std::endl << m4 << std::endl << std::endl;
+	ml::Debug::out() << "M4: " << std::endl << m4 << std::endl << std::endl;
 	for (ml::mat4f::const_iterator it = m4.cbegin(); it != m4.cend(); it++)
 	{
 		std::size_t i = (it - m4.cbegin());
-		std::cout
+		ml::Debug::out()
 			<< "{" << i << ": " << (*it) << "}"
 			<< ((it != m4.cend() - 1) ? " " : "\n");
 	}
-	std::cout << std::endl << std::endl;
+	ml::Debug::out() << std::endl << std::endl;
 
 
 	// Quaternaions
@@ -211,7 +211,7 @@ inline static int coreStub()
 	ml::quat q4 = q1 * 1.5f;
 	ml::quat q5 = ml::quat::slerp(q1, q2, 0.5f);
 
-	std::cout
+	ml::Debug::out()
 		<< std::left
 		<< std::setw(12) << "Quaternions:" << std::endl
 		<< std::setw(12) << "Q1" << q1 << std::endl
@@ -230,10 +230,10 @@ inline static int coreStub()
 	ent->addComponent<TestComponent>();
 	if (auto tmp = ent->getComponent<TestComponent>())
 	{
-		std::cout << (*tmp) << " OK" << std::endl;
+		ml::Debug::out() << (*tmp) << " OK" << std::endl;
 	}
 	delete ent;
-	std::cout << std::endl;
+	ml::Debug::out() << std::endl;
 
 	return ml::ConsoleUtility::pause(EXIT_SUCCESS);
 }
@@ -372,6 +372,13 @@ inline static int graphicsStub()
 
 	// Load Shaders
 	ml::Debug::Log("Loading Shaders...");
+	ml::Shader shaderTest;
+	if (!shaderTest.loadFromFile(settings.assetPath + "/shaders/test.shader"))
+	{
+		ml::Debug::LogError("Failed Loading Shader: {0}", "Test");
+		return ml::ConsoleUtility::pause(EXIT_FAILURE);
+	}
+
 	ml::Shader shaderBasic;
 	if (!shaderBasic.loadFromFile(
 		settings.assetPath + "/shaders/vs/basic_vs.shader",
@@ -479,7 +486,7 @@ inline static int graphicsStub()
 				model.rotate(elapsed.delta(), { 1.0f, 1.0f, 1.0f });
 				model.scale({ 1.0f, 1.0f, 1.0f });
 
-				ml::Shader * shader = &shaderBasic;
+				ml::Shader * shader = &shaderTest;
 				shader->use();
 				shader->setUniform(ml::Uniform::Proj, proj_persp);
 				shader->setUniform(ml::Uniform::View, view);
@@ -520,7 +527,7 @@ inline static int graphicsStub()
 		elapsed = loopTimer.stop().elapsed();
 	}
 
-	std::cout << "OK" << std::endl;
+	ml::Debug::out() << "OK" << std::endl;
 
 	return EXIT_SUCCESS;
 }
@@ -531,7 +538,7 @@ int main(int argc, char** argv)
 {	
 	if (!settings.load(CONFIG_INI))
 	{
-		std::cerr << "Unable to locate config: \'" << CONFIG_INI << "\'." << std::endl;
+		ml::Debug::err() << "Unable to locate config: \'" << CONFIG_INI << "\'." << std::endl;
 		return ml::ConsoleUtility::pause(EXIT_FAILURE);
 	}
 
@@ -546,7 +553,7 @@ int main(int argc, char** argv)
 	case 4: return audioStub();
 	case 5: return graphicsStub();
 	default:
-		std::cerr << "Unknown program: " << settings.program << std::endl;
+		ml::Debug::err() << "Unknown program: " << settings.program << std::endl;
 		return ml::ConsoleUtility::pause(EXIT_FAILURE);
 	}
 }

@@ -11,6 +11,7 @@ namespace ml
 		: public ITrackable
 	{
 	public:
+		IndexBuffer();
 		IndexBuffer(GL::Usage usage, const uint32_t * data, uint32_t size);
 		IndexBuffer(GL::Usage usage, const std::vector<uint32_t> & data);
 		IndexBuffer(const IndexBuffer & copy);

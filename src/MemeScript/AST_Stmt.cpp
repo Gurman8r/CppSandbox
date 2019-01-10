@@ -301,7 +301,7 @@ namespace ml
 							}
 						}
 
-						std::cout 
+						Debug::out() 
 							<< FMT() << std::endl 
 							<< (*block()) 
 							<< FMT() << std::endl;
@@ -355,25 +355,25 @@ namespace ml
 
 					if (Var * v = block()->getv(name))
 					{
-						std::cout << (*v);
+						Debug::out() << (*v);
 					}
 					else
 					{
-						std::cout << name;
+						Debug::out() << name;
 					}
 				}
 				else
 				{
-					std::cout << (*it);
+					Debug::out() << (*it);
 				}
 			}
 		}
 		else
 		{
-			std::cout << expr->evaluate();
+			Debug::out() << expr->evaluate();
 		}
 		
-		std::cout << FMT() << std::endl;
+		Debug::out() << FMT() << std::endl;
 		
 		return runNext();
 	}

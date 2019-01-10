@@ -103,6 +103,9 @@
     <None Include="..\..\assets\shaders\vs\geometry_vs.shader">
       <Filter>Resource Files\assets\shaders\vs</Filter>
     </None>
+    <None Include="..\..\assets\shaders\test.shader">
+      <Filter>Resource Files\assets\shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Demo\main.cpp" />

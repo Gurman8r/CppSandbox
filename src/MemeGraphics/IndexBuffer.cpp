@@ -3,6 +3,10 @@
 
 namespace ml
 {
+	IndexBuffer::IndexBuffer()
+	{
+	}
+
 	IndexBuffer::IndexBuffer(GL::Usage usage, const uint32_t * data, uint32_t count)
 		: m_usage(usage)
 		, m_data(data)

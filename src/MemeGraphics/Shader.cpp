@@ -76,7 +76,55 @@ namespace ml
 
 	bool Shader::loadFromFile(const std::string & filename)
 	{
-		return false;
+		std::stringstream stream;
+		if (ML_FileSystem.getFileContents(filename, stream))
+		{
+			enum SourceType
+			{
+				NONE = -1, VERT, FRAG, GEOM, MAX
+			};
+
+			std::stringstream	source[SourceType::MAX];
+			SourceType			type = SourceType::NONE;
+
+			std::string line;
+			while (std::getline(stream, line))
+			{
+				if (line.find("#shader") != std::string::npos)
+				{
+					if (line.find("vertex") != std::string::npos)
+					{
+						type = SourceType::VERT;
+					}
+					else if (line.find("fragment") != std::string::npos)
+					{
+						type = SourceType::FRAG;
+					}
+					else if (line.find("geometry") != std::string::npos)
+					{
+						type = SourceType::GEOM;
+					}
+				}
+				else if(type > SourceType::NONE)
+				{
+					source[type] << line << '\n';
+				}
+			}
+
+			const std::string & vs = source[SourceType::VERT].str();
+			const std::string & gs = source[SourceType::GEOM].str();
+			const std::string & fs = source[SourceType::FRAG].str();
+
+			if (!gs.empty())
+			{
+				return loadFromMemory(vs, gs, fs);
+			}
+			else
+			{
+				return loadFromMemory(vs, fs);
+			}
+		}
+		return Debug::LogError("Failed to open shader source file \"{0}\"", filename);
 	}
 
 	bool Shader::loadFromFile(const std::string & vs, const std::string & fs)
@@ -403,7 +451,7 @@ namespace ml
 				return Debug::LogError("Failed to compile vertex source: {0}", log);
 			}
 
-			// Attach the shader to the program, and delete it (not needed anymore)
+			// Attach the shader to the program, and delete it
 			OpenGL::attachShader(shaderProgram, vertexShader);
 			OpenGL::deleteShader(vertexShader);
 		}
@@ -425,7 +473,7 @@ namespace ml
 				return Debug::LogError("Failed to compile geometry source: {0}", log);
 			}
 
-			// Attach the shader to the program, and delete it (not needed anymore)
+			// Attach the shader to the program, and delete it
 			OpenGL::attachShader(shaderProgram, geometryShader);
 			OpenGL::deleteShader(geometryShader);
 		}
@@ -447,7 +495,7 @@ namespace ml
 				return Debug::LogError("Failed to compile fragment source: {0}", log);
 			}
 
-			// Attach the shader to the program, and delete it (not needed anymore)
+			// Attach the shader to the program, and delete it
 			OpenGL::attachShader(shaderProgram, fragmentShader);
 			OpenGL::deleteShader(fragmentShader);
 		}

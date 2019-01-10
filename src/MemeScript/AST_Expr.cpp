@@ -349,7 +349,7 @@ namespace ml
 	{
 #ifdef ML_DEBUG
 
-		std::cout << "$: ";
+		Debug::out() << "$: ";
 		std::string line;
 		std::getline(std::cin, line);
 		return Var().stringValue(line);

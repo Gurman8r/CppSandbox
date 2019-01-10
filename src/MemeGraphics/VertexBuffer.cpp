@@ -3,6 +3,10 @@
 
 namespace ml
 {
+	VertexBuffer::VertexBuffer()
+	{
+	}
+
 	VertexBuffer::VertexBuffer(GL::Usage usage, const void * data, uint32_t size)
 		: m_usage(usage)
 		, m_data(data)

@@ -135,7 +135,7 @@ namespace ml
 				pfx.push_back(arg);
 			}
 
-			if(show) std::cout << "P: " << pfx << std::endl;
+			if(show) Debug::out() << "P: " << pfx << std::endl;
 		}
 
 		while (!stk.empty() && stk.front() != TokenType::TOK_LPRN)
@@ -144,7 +144,7 @@ namespace ml
 			stk.erase(stk.begin());
 		}
 
-		if (show) std::cout << "P: " << pfx << std::endl;
+		if (show) Debug::out() << "P: " << pfx << std::endl;
 
 		if (stk.empty())
 		{
@@ -214,7 +214,7 @@ namespace ml
 				{
 					if (m_showToks)
 					{
-						std::cout << (*it) << std::endl;
+						Debug::out() << (*it) << std::endl;
 					}
 
 					// For
@@ -262,7 +262,7 @@ namespace ml
 
 				if (m_showTree)
 				{
-					std::cout << (*root) << std::endl;
+					Debug::out() << (*root) << std::endl;
 				}
 			}
 		}
@@ -684,7 +684,7 @@ namespace ml
 				{
 					call.push_back(*it);
 				}
-				//std::cout << "Call: " << call << std::endl;
+				//Debug::out() << "Call: " << call << std::endl;
 				stk.push(genCall(call));
 			}
 

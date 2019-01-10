@@ -11,6 +11,7 @@ namespace ml
 		: public ITrackable
 	{
 	public:
+		VertexBuffer();
 		VertexBuffer(GL::Usage usage, const void * data, uint32_t size);
 		VertexBuffer(GL::Usage usage, const std::vector<float> & data);
 		VertexBuffer(const VertexBuffer & copy);

@@ -1,5 +1,6 @@
 #include <MemeCore/MemoryTracker.h>
 #include <MemeCore/ITrackable.h>
+#include <MemeCore/DebugUtility.h>
 
 namespace ml
 {
@@ -26,10 +27,10 @@ namespace ml
 
 	void MemoryTracker::displayFinalAllocations()
 	{
-		std::cout << ("Deleting Memory Tracker...")  << std::endl;
+		Debug::out() << ("Deleting Memory Tracker...")  << std::endl;
 		if (m_records.size() > 0)
 		{
-			std::cout << ("Final allocations follow:") << std::endl;
+			Debug::out() << ("Final allocations follow:") << std::endl;
 			displayAllAllocations();
 #ifdef ML_SYSTEM_WINDOWS
 			system("pause");
@@ -43,9 +44,9 @@ namespace ml
 	{
 		for (AllocationMap::iterator it = m_records.begin(); it != m_records.end(); ++it)
 		{
-			std::cout << (*it->first) << (it->second) << std::endl;
+			Debug::out() << (*it->first) << (it->second) << std::endl;
 		}
-		std::cout << std::endl;
+		Debug::out() << std::endl;
 	}
 
 }
