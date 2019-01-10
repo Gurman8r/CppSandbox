@@ -1,6 +1,5 @@
 #include <MemeGraphics/VertexBuffer.h>
 #include <MemeGraphics/OpenGL.h>
-#include <MemeGraphics/GLEW.h>
 
 namespace ml
 {
@@ -9,15 +8,15 @@ namespace ml
 		, m_data(data)
 		, m_size(size)
 	{
-		glCheck(glGenBuffers(1, &m_id));
+		m_id = OpenGL::genBuffers(1);
 		
 		bind();
 		
-		glCheck(glBufferData(
+		OpenGL::bufferData(
 			GL::ArrayBuffer, 
 			(m_size * sizeof(float)),
 			m_data, 
-			m_usage));
+			m_usage);
 	}
 
 	VertexBuffer::VertexBuffer(GL::Usage usage, const std::vector<float>& data)
@@ -40,18 +39,18 @@ namespace ml
 
 	VertexBuffer & VertexBuffer::clean()
 	{
-		glCheck(glDeleteBuffers(1, &m_id));
+		OpenGL::deleteBuffers(1, &m_id);
 		return (*this);
 	}
 
 
 	void VertexBuffer::bind() const
 	{
-		glCheck(glBindBuffer(GL::ArrayBuffer, m_id));
+		OpenGL::bindBuffer(GL::ArrayBuffer, m_id);
 	}
 
 	void VertexBuffer::unbind() const
 	{
-		glCheck(glBindBuffer(GL::ArrayBuffer, 0));
+		OpenGL::bindBuffer(GL::ArrayBuffer, 0);
 	}
 }

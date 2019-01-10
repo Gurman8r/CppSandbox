@@ -1,19 +1,19 @@
 #include <MemeGraphics/BufferLayout.h>
 #include <MemeGraphics/OpenGL.h>
-#include <MemeGraphics/GLEW.h>
 
 namespace ml
 {
 	void BufferLayout::Element::use() const
 	{
-		glCheck(glVertexAttribPointer(
+		OpenGL::vertexAttribPointer(
 			index,
 			size,
 			type,
 			normalized,
-			(stride * width),
-			reinterpret_cast<const void*>(offset * width)));
-		glCheck(glEnableVertexAttribArray(index));
+			stride,
+			offset,
+			width);
+		OpenGL::enableVertexAttribArray(index);
 	}
 }
 

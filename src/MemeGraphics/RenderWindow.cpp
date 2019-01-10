@@ -10,32 +10,31 @@ namespace ml
 		{
 			// Setup GL
 
-			enableFlag(GL::CullFace);
-			enableFlag(GL::DepthTest);
-			enableFlag(GL::Blend);
-			enableFlag(GL::AlphaTest);
-			enableFlag(GL::Texture2D);
+			enable(GL::CullFace);
+			enable(GL::DepthTest);
+			enable(GL::Blend);
+			enable(GL::AlphaTest);
+			enable(GL::Texture2D);
 
 			if (m_settings.multisample)
 			{
-				enableFlag(GL::Multisample);
+				OpenGL::enable(GL::Multisample);
 			}
 
 			if (m_settings.sRgbCapable)
 			{
-				enableFlag(GL::FramebufferSRGB);
-				if (!getFlag(GL::FramebufferSRGB))
+				if (!enable(GL::FramebufferSRGB, true))
 				{
 					ml::Debug::LogWarning("Failed to enable Framebuffer SRGB");
 					m_settings.sRgbCapable = false;
 				}
 			}
 
-			setAlphaFunc(GL::Greater, 0.01f);
-			setBlendFunc(GL::SourceAlpha, GL::OneMinusSourceAlpha);
-			setCullFace(GL::Back);
-			setDepthFunc(GL::Less);
-			setActiveTexture(GL::Texture0);
+			alphaFunc(GL::Greater, 0.01f);
+			blendFunc(GL::SourceAlpha, GL::OneMinusSourceAlpha);
+			cullFace(GL::Back);
+			depthFunc(GL::Less);
+			activeTexture(GL::Texture0);
 
 
 			// Validate GL Version

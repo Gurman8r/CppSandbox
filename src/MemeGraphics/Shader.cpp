@@ -1,23 +1,7 @@
 #include <MemeGraphics/Shader.h>
 #include <MemeGraphics/OpenGL.h>
-#include <MemeGraphics/GLEW.h>
 #include <MemeCore/DebugUtility.h>
 #include <MemeCore/FileSystem.h>
-
-namespace
-{
-	inline static int32_t checkMaxTextureUnits()
-	{
-		return ml::OpenGL::getInt(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS);
-	}
-
-	inline static int32_t getMaxTextureUnits()
-	{
-		static int32_t maxUnits = checkMaxTextureUnits();
-
-		return maxUnits;
-	}
-}
 
 namespace ml
 {
@@ -31,11 +15,11 @@ namespace ml
 			if (currentProgram)
 			{
 				// Enable program object
-				glCheck(savedProgram = glGetHandleARB(GL_PROGRAM_OBJECT_ARB));
+				savedProgram = OpenGL::getProgramHandle(GL::ProgramObject);
 
 				if (currentProgram != savedProgram)
 				{
-					glCheck(glUseProgramObjectARB(currentProgram));
+					OpenGL::useProgram(currentProgram);
 				}
 
 				// Store uniform location for further use outside constructor
@@ -47,7 +31,7 @@ namespace ml
 			// Disable program object
 			if (currentProgram && (currentProgram != savedProgram))
 			{
-				glCheck(glUseProgramObjectARB(savedProgram));
+				OpenGL::useProgram(savedProgram);
 			}
 		}
 
@@ -153,19 +137,19 @@ namespace ml
 	}
 
 
-	void Shader::use() const
+	void Shader::use(bool tex) const
 	{
-		Shader::bind(this);
+		Shader::bind(this, tex);
 	}
 
 
 	void Shader::bind(const Shader * shader, bool tex)
 	{
-		if (isAvailable())
+		if (OpenGL::shadersAvailable())
 		{
 			if (shader && shader->program())
 			{
-				glCheck(glUseProgramObjectARB(shader->program()));
+				OpenGL::useProgram(shader->program());
 			}
 
 			if (tex)
@@ -175,42 +159,13 @@ namespace ml
 
 			if (shader->currentTexture() != -1)
 			{
-				glCheck(glUniform1i(shader->currentTexture(), 0));
+				OpenGL::uniform1i(shader->currentTexture(), 0);
 			}
 		}
 		else
 		{
-			glCheck(glUseProgramObjectARB(0));
+			OpenGL::useProgram(0);
 		}
-	}
-
-	bool Shader::isAvailable()
-	{
-		static bool checked = false;
-		static bool available = false;
-		if (!checked)
-		{
-			checked = true;
-			available =
-				GL_ARB_multitexture &&
-				GL_ARB_shading_language_100 &&
-				GL_ARB_shader_objects &&
-				GL_ARB_vertex_shader &&
-				GL_ARB_fragment_shader;
-		}
-		return available;
-	}
-
-	bool Shader::isGeometryAvailable()
-	{
-		static bool checked = false;
-		static bool available = false;
-		if (!checked)
-		{
-			checked = true;
-			available = isAvailable() && GL_GEOMETRY_SHADER_ARB;
-		}
-		return available;
 	}
 	
 	
@@ -219,7 +174,7 @@ namespace ml
 		UniformBinder u((*this), name);
 		if (u)
 		{
-			glCheck(glUniform1f(u.location, value));
+			OpenGL::uniform1f(u.location, value);
 		}
 	}
 	
@@ -228,7 +183,7 @@ namespace ml
 		UniformBinder u((*this), name);
 		if (u)
 		{
-			glCheck(glUniform1i(u.location, value));
+			OpenGL::uniform1i(u.location, value);
 		}
 	}
 	
@@ -237,16 +192,7 @@ namespace ml
 		UniformBinder u((*this), name);
 		if (u)
 		{
-			glCheck(glUniform1ui(u.location, value));
-		}
-	}
-	
-	void Shader::setUniform(const std::string & name, const float * value)
-	{
-		UniformBinder u((*this), name);
-		if (u)
-		{
-			glCheck(glUniformMatrix4fv(u.location, 1, GL_FALSE, value));
+			OpenGL::uniform1u(u.location, value);
 		}
 	}
 	
@@ -255,7 +201,7 @@ namespace ml
 		UniformBinder u((*this), name);
 		if (u)
 		{
-			glCheck(glUniform2f(u.location, value[0], value[1]));
+			OpenGL::uniform2f(u.location, value[0], value[1]);
 		}
 	}
 	
@@ -264,7 +210,7 @@ namespace ml
 		UniformBinder u((*this), name);
 		if (u)
 		{
-			glCheck(glUniform3f(u.location, value[0], value[1], value[2]));
+			OpenGL::uniform3f(u.location, value[0], value[1], value[2]);
 		}
 	}
 	
@@ -273,7 +219,7 @@ namespace ml
 		UniformBinder u((*this), name);
 		if (u)
 		{
-			glCheck(glUniform4f(u.location, value[0], value[1], value[2], value[3]));
+			OpenGL::uniform4f(u.location, value[0], value[1], value[2], value[3]);
 		}
 	}
 	
@@ -282,7 +228,7 @@ namespace ml
 		UniformBinder u((*this), name);
 		if (u)
 		{
-			glCheck(glUniform2i(u.location, value[0], value[1]));
+			OpenGL::uniform2i(u.location, value[0], value[1]);
 		}
 	}
 	
@@ -291,7 +237,7 @@ namespace ml
 		UniformBinder u((*this), name);
 		if (u)
 		{
-			glCheck(glUniform3i(u.location, value[0], value[1], value[2]));
+			OpenGL::uniform3i(u.location, value[0], value[1], value[2]);
 		}
 	}
 	
@@ -300,7 +246,7 @@ namespace ml
 		UniformBinder u((*this), name);
 		if (u)
 		{
-			glCheck(glUniform4i(u.location, value[0], value[1], value[2], value[3]));
+			OpenGL::uniform4i(u.location, value[0], value[1], value[2], value[3]);
 		}
 	}
 	
@@ -309,7 +255,7 @@ namespace ml
 		UniformBinder u((*this), name);
 		if (u)
 		{
-			glCheck(glUniformMatrix3fv(u.location, 1, GL_FALSE, value.ptr()));
+			OpenGL::uniformMatrix3f(u.location, 1, false, value.ptr());
 		}
 	}
 	
@@ -318,7 +264,7 @@ namespace ml
 		UniformBinder u((*this), name);
 		if (u)
 		{
-			glCheck(glUniformMatrix4fv(u.location, 1, GL_FALSE, value.ptr()));
+			OpenGL::uniformMatrix4f(u.location, 1, false, value.ptr());
 		}
 	}
 
@@ -332,7 +278,7 @@ namespace ml
 				TextureTable::iterator it;
 				if ((it = m_textures.find(location)) == m_textures.end())
 				{
-					int32_t maxUnits = getMaxTextureUnits();
+					int32_t maxUnits = OpenGL::getMaxTextureUnits();
 
 					if ((m_textures.size() + 1) >= static_cast<std::size_t>(maxUnits))
 					{
@@ -352,86 +298,86 @@ namespace ml
 	}
 	
 	
-	void Shader::setUniformArray(const std::string & name, const float * value, int length)
+	void Shader::setUniformArray(const std::string & name, int32_t count, const float * value)
 	{
 		UniformBinder u((*this), name);
 		if (u)
 		{
-			glCheck(glUniform1fv(u.location, length, value));
+			OpenGL::uniformArray1f(u.location, count, value);
 		}
 	}
 	
-	void Shader::setUniformArray(const std::string & name, const vec2f * value, int length)
+	void Shader::setUniformArray(const std::string & name, int32_t count, const vec2f * value)
 	{
-		std::vector<float> contiguous = vec2f::Flatten(value, length);
+		std::vector<float> contiguous = vec2f::Flatten(value, count);
 
 		UniformBinder u((*this), name);
 		if (u)
 		{
-			glCheck(glUniform2fv(u.location, length, &contiguous[0]));
+			OpenGL::uniformArray2f(u.location, count, &contiguous[0]);
 		}
 	}
 	
-	void Shader::setUniformArray(const std::string & name, const vec3f * value, int length)
+	void Shader::setUniformArray(const std::string & name, int32_t count, const vec3f * value)
 	{
-		std::vector<float> contiguous = vec3f::Flatten(value, length);
+		std::vector<float> contiguous = vec3f::Flatten(value, count);
 
 		UniformBinder u((*this), name);
 		if (u)
 		{
-			glCheck(glUniform3fv(u.location, length, &contiguous[0]));
+			OpenGL::uniformArray3f(u.location, count, &contiguous[0]);
 		}
 	}
 	
-	void Shader::setUniformArray(const std::string & name, const vec4f * value, int length)
+	void Shader::setUniformArray(const std::string & name, int32_t count, const vec4f * value)
 	{
-		std::vector<float> contiguous = vec4f::Flatten(value, length);
+		std::vector<float> contiguous = vec4f::Flatten(value, count);
 
 		UniformBinder u((*this), name);
 		if (u)
 		{
-			glCheck(glUniform4fv(u.location, length, &contiguous[0]));
+			OpenGL::uniformArray4f(u.location, count, &contiguous[0]);
 		}
 	}
 	
-	void Shader::setUniformArray(const std::string & name, const mat3f * value, int length)
+	void Shader::setUniformArray(const std::string & name, int32_t count, const mat3f * value)
 	{
-		std::vector<float> contiguous = mat3f::Flatten(value, length);
+		std::vector<float> contiguous = mat3f::Flatten(value, count);
 
 		UniformBinder u((*this), name);
 		if (u)
 		{
-			glCheck(glUniformMatrix3fv(u.location, length, GL_FALSE, &contiguous[0]));
+			OpenGL::uniformMatrixArray3f(u.location, count, false, &contiguous[0]);
 		}
 	}
 	
-	void Shader::setUniformArray(const std::string & name, const mat4f * value, int length)
+	void Shader::setUniformArray(const std::string & name, int32_t count, const mat4f * value)
 	{
-		std::vector<float> contiguous = mat4f::Flatten(value, length);
+		std::vector<float> contiguous = mat4f::Flatten(value, count);
 
 		UniformBinder u((*this), name);
 		if (u)
 		{
-			glCheck(glUniformMatrix4fv(u.location, length, GL_FALSE, &contiguous[0]));
+			OpenGL::uniformMatrixArray4f(u.location, count, false, &contiguous[0]);
 		}
 	}
 
 
 	bool Shader::compile(const char * vs, const char * gs, const char * fs)
 	{
-		if (!isAvailable())
+		if (!OpenGL::shadersAvailable())
 		{
 			return ml::Debug::LogError("Shaders are not available on your system.");
 		}
 
-		if (gs && !isGeometryAvailable())
+		if (gs && !OpenGL::geometryShadersAvailable())
 		{
 			return ml::Debug::LogError("Geometry shaders are not available on your system.");
 		}
 
 		if (m_program)
 		{
-			glCheck(glDeleteObjectARB(m_program));
+			OpenGL::deleteProgram(m_program);
 			m_program = 0;
 		}
 
@@ -439,113 +385,88 @@ namespace ml
 		m_textures.clear();
 		m_uniforms.clear();
 
-		int32_t shaderProgram;
-		glCheck(shaderProgram = glCreateProgramObjectARB());
+		uint32_t shaderProgram = OpenGL::createProgramObject();
 
 		// Create the vertex shader if needed
 		if (vs)
 		{
 			// Create and Compile the shader
-			int32_t vertexShader;
-			glCheck(vertexShader = glCreateShaderObjectARB(GL::VertexShader));
-			glCheck(glShaderSource(vertexShader, 1, &vs, NULL));
-			glCheck(glCompileShader(vertexShader));
+			uint32_t vertexShader = OpenGL::createShaderObject(GL::VertexShader);
+			OpenGL::shaderSource(vertexShader, 1, &vs, NULL);
+			OpenGL::compileProgram(vertexShader);
 
 			// Check the Compile log
-			int32_t success;
-			glCheck(glGetObjectParameterivARB(
-				vertexShader, GL_OBJECT_COMPILE_STATUS_ARB, &success));
-
-			if (success == GL_FALSE)
+			if (!OpenGL::getProgramParameter(vertexShader, GL::ObjectCompileStatus))
 			{
-				char log[1024];
-				glCheck(glGetInfoLogARB(vertexShader, sizeof(log), 0, log));
-				glCheck(glDeleteObjectARB(vertexShader));
-				glCheck(glDeleteObjectARB(shaderProgram));
+				const char * log = OpenGL::getInfoLog(vertexShader);
+				OpenGL::deleteProgram(vertexShader);
+				OpenGL::deleteProgram(shaderProgram);
 				return Debug::LogError("Failed to compile vertex source: {0}", log);
 			}
 
 			// Attach the shader to the program, and delete it (not needed anymore)
-			glCheck(glAttachObjectARB(shaderProgram, vertexShader));
-			glCheck(glDeleteObjectARB(vertexShader));
+			OpenGL::attachProgram(shaderProgram, vertexShader);
+			OpenGL::deleteProgram(vertexShader);
 		}
 
 		// Create the geometry shader if needed
 		if (gs)
 		{
 			// Create and Compile the shader
-			uint32_t geometryShader = glCreateShaderObjectARB(GL::GeometryShader);
-			glCheck(glShaderSource(geometryShader, 1, &gs, NULL));
-			glCheck(glCompileShader(geometryShader));
+			uint32_t geometryShader = OpenGL::createShaderObject(GL::GeometryShader);
+			OpenGL::shaderSource(geometryShader, 1, &gs, NULL);
+			OpenGL::compileProgram(geometryShader);
 
 			// Check the Compile log
-			int32_t success;
-			glCheck(glGetObjectParameterivARB(
-				geometryShader, GL_OBJECT_COMPILE_STATUS_ARB, &success));
-
-			if (success == GL_FALSE)
+			if (!OpenGL::getProgramParameter(geometryShader, GL::ObjectCompileStatus))
 			{
-				char log[1024];
-				glCheck(glGetInfoLogARB(geometryShader, sizeof(log), 0, log));
-				glCheck(glDeleteObjectARB(geometryShader));
-				glCheck(glDeleteObjectARB(shaderProgram));
+				const char * log = OpenGL::getInfoLog(geometryShader);
+				OpenGL::deleteProgram(geometryShader);
+				OpenGL::deleteProgram(shaderProgram);
 				return Debug::LogError("Failed to compile geometry source: {0}", log);
 			}
 
 			// Attach the shader to the program, and delete it (not needed anymore)
-			glCheck(glAttachObjectARB(shaderProgram, geometryShader));
-			glCheck(glDeleteObjectARB(geometryShader));
+			OpenGL::attachProgram(shaderProgram, geometryShader);
+			OpenGL::deleteProgram(geometryShader);
 		}
 
 		// Create the fragment shader if needed
 		if (fs)
 		{
 			// Create and Compile the shader
-			int32_t fragmentShader;
-			glCheck(fragmentShader = glCreateShaderObjectARB(GL::FragmentShader));
-			glCheck(glShaderSource(fragmentShader, 1, &fs, NULL));
-			glCheck(glCompileShader(fragmentShader));
+			uint32_t fragmentShader = OpenGL::createShaderObject(GL::FragmentShader);
+			OpenGL::shaderSource(fragmentShader, 1, &fs, NULL);
+			OpenGL::compileProgram(fragmentShader);
 
 			// Check the Compile log
-			int32_t success;
-			glCheck(glGetObjectParameterivARB(
-				fragmentShader, GL_OBJECT_COMPILE_STATUS_ARB, &success));
-
-			if (success == GL_FALSE)
+			if (!OpenGL::getProgramParameter(fragmentShader, GL::ObjectCompileStatus))
 			{
-				char log[1024];
-				glCheck(glGetInfoLogARB(fragmentShader, sizeof(log), 0, log));
-				glCheck(glDeleteObjectARB(fragmentShader));
-				glCheck(glDeleteObjectARB(shaderProgram));
+				const char * log = OpenGL::getInfoLog(fragmentShader);
+				OpenGL::deleteProgram(fragmentShader);
+				OpenGL::deleteProgram(shaderProgram);
 				return Debug::LogError("Failed to compile fragment source: {0}", log);
 			}
 
 			// Attach the shader to the program, and delete it (not needed anymore)
-			glCheck(glAttachObjectARB(shaderProgram, fragmentShader));
-			glCheck(glDeleteObjectARB(fragmentShader));
+			OpenGL::attachProgram(shaderProgram, fragmentShader);
+			OpenGL::deleteProgram(fragmentShader);
 		}
 
 		// Link the program
-		glCheck(glLinkProgram(shaderProgram));
+		OpenGL::linkProgram(shaderProgram);
 
 		// Check the link log
-		int32_t success;
-		glCheck(glGetObjectParameterivARB(
-			shaderProgram, GL_OBJECT_LINK_STATUS_ARB, &success));
-
-		if (success == GL_FALSE)
+		if (!OpenGL::getProgramParameter(shaderProgram, GL::ObjectLinkStatus))
 		{
-			char log[1024];
-			glCheck(glGetInfoLogARB(shaderProgram, sizeof(log), 0, log));
-			glCheck(glDeleteObjectARB(shaderProgram));
+			const char * log = OpenGL::getInfoLog(shaderProgram);
+			OpenGL::deleteProgram(shaderProgram);
 			return Debug::LogError("Failed to link source: {0}", log);
 		}
 
 		m_program = shaderProgram;
 
-		// Force an OpenGL flush, so that the shader will appear updated
-		// in all contexts immediately (solves problems in multi-threaded apps)
-		glCheck(glFlush());
+		OpenGL::flush();
 
 		return true;
 	}
@@ -572,8 +493,10 @@ namespace ml
 		else
 		{
 			// Not in cache, request the location from OpenGL
-			int location = glGetUniformLocation(program(), value.c_str());
+			int32_t location = OpenGL::getUniformLocation(program(), value.c_str());
+			
 			m_uniforms.insert(std::make_pair(value, location));
+			
 			if (location == -1)
 			{
 				Debug::LogWarning("Uniform \"{0}\" not found in source", value);

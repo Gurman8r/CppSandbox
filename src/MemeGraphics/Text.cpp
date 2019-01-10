@@ -111,7 +111,7 @@ namespace ml
 	{
 		if (isValid())
 		{
-			target.disableFlag(GL::Flag::CullFace);
+			target.disable(GL::Flag::CullFace);
 
 			vec2f pos = transform().position();
 			vec2f scale = transform().localScale();
@@ -152,7 +152,7 @@ namespace ml
 				pos[0] += (g.advance >> vertices.size()) * scale[0];
 			}
 
-			target.enableFlag(GL::Flag::CullFace);
+			target.enable(GL::Flag::CullFace);
 		}
 	}
 }

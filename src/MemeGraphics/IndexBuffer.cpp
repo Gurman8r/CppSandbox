@@ -1,6 +1,5 @@
 #include <MemeGraphics/IndexBuffer.h>
 #include <MemeGraphics/OpenGL.h>
-#include <MemeGraphics/GLEW.h>
 
 namespace ml
 {
@@ -9,15 +8,15 @@ namespace ml
 		, m_data(data)
 		, m_count(count)
 	{
-		glCheck(glGenBuffers(1, &m_id));
+		m_id = OpenGL::genBuffers(1);
 		
 		bind();
 		
-		glCheck(glBufferData(
+		OpenGL::bufferData(
 			GL::ElementArrayBuffer, 
 			(m_count * sizeof(uint32_t)),
 			m_data, 
-			m_usage));
+			m_usage);
 	}
 
 	IndexBuffer::IndexBuffer(GL::Usage usage, const std::vector<uint32_t>& data)
@@ -40,18 +39,18 @@ namespace ml
 
 	IndexBuffer & IndexBuffer::clean()
 	{
-		glCheck(glDeleteBuffers(1, &m_id));
+		OpenGL::deleteBuffers(1, &m_id);
 		return (*this);
 	}
 
 
 	void IndexBuffer::bind() const
 	{
-		glCheck(glBindBuffer(GL::ElementArrayBuffer, m_id));
+		OpenGL::bindBuffer(GL::ElementArrayBuffer, m_id);
 	}
 
 	void IndexBuffer::unbind() const
 	{
-		glCheck(glBindBuffer(GL::ElementArrayBuffer, 0));
+		OpenGL::bindBuffer(GL::ElementArrayBuffer, 0);
 	}
 }

@@ -1,13 +1,12 @@
 #include <MemeGraphics/VertexArray.h>
 #include <MemeGraphics/OpenGL.h>
-#include <MemeGraphics/GLEW.h>
 
 namespace ml
 {
 	VertexArray::VertexArray(uint32_t count)
 		: m_count(count)
 	{
-		glCheck(glGenVertexArrays(m_count, &m_id));
+		m_id = OpenGL::genVertexArrays(m_count);
 		bind();
 	}
 
@@ -31,11 +30,11 @@ namespace ml
 
 	void VertexArray::bind() const
 	{
-		glCheck(glBindVertexArray(m_id));
+		OpenGL::bindVertexArray(m_id);
 	}
 
 	void VertexArray::unbind() const
 	{
-		glCheck(glBindVertexArray(0));
+		OpenGL::bindVertexArray(0);
 	}
 }

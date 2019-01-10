@@ -47,7 +47,6 @@ namespace ml
 		void	swap(Texture & value);
 
 		static void		bind(const Texture * value);
-		static uint32_t	getMaximumSize();
 
 		Texture & operator=(const Texture & value);
 

@@ -1,19 +1,20 @@
 #include <MemeGraphics/RenderTarget.h>
 #include <MemeGraphics/OpenGL.h>
-#include <MemeGraphics/GLEW.h>
 
 namespace ml
 {
+	// Drawing
+	
 	RenderTarget & RenderTarget::clear()
 	{
-		glCheck(glClear(GL::DepthBufferBit));
+		OpenGL::clear(GL::DepthBufferBit);
 		return (*this);
 	}
 	
 	RenderTarget & RenderTarget::clear(const vec4f & color)
 	{
-		glCheck(glClearColor(color[0], color[1], color[2], color[3]));
-		glCheck(glClear(GL::ColorBufferBit | GL::DepthBufferBit));
+		OpenGL::clearColor(color[0], color[1], color[2], color[3]);
+		OpenGL::clear(GL::ColorBufferBit | GL::DepthBufferBit);
 		return (*this);
 	}
 	
@@ -28,74 +29,63 @@ namespace ml
 	{
 		return (*this);
 	}
-
+	
 
 	RenderTarget & RenderTarget::drawElements(const IBO & ibo, GL::Primitive prim, GL::Type type)
 	{
 		ibo.bind();
-		glCheck(glDrawElements(prim, (uint32_t)ibo.size(), type, NULL));
+		OpenGL::drawElements(prim, (int32_t)ibo.size(), type, NULL);
 		return (*this);
 	}
 	
-	
-	
-	bool RenderTarget::getFlag(GL::Enum value) const
-	{
-		static bool tmp;
-		glCheck(tmp = glIsEnabled(value));
-		return tmp;
-	}
 
-	void RenderTarget::setFlag(GL::Enum flag, bool value) const
+	// Flags
+	
+	bool RenderTarget::isEnabled(GL::Enum value) const
 	{
-		if (value)
-		{
-			enableFlag(flag);
-		}
-		else
-		{
-			disableFlag(flag);
-		}
+		return OpenGL::isEnabled(value);
 	}
 		
-	void RenderTarget::enableFlag(GL::Enum value) const
+	bool RenderTarget::enable(GL::Enum value, bool check) const
 	{
-		glCheck(glEnable(value));
+		return OpenGL::enable(value, check);
 	}
 
-	void RenderTarget::disableFlag(GL::Enum value) const
+	bool RenderTarget::disable(GL::Enum value, bool check) const
 	{
-		glCheck(glDisable(value));
+		return OpenGL::disable(value, check);
 	}
 	
 
-	void RenderTarget::setActiveTexture(GL::TextureID textureID) const
+	// Functions
+
+	void RenderTarget::activeTexture(GL::TextureID target) const
 	{
-		glCheck(glActiveTexture(textureID));
+		OpenGL::activeTexture(target);
 	}
 
-	void RenderTarget::setAlphaFunc(GL::Comparison cmp, float value) const
+	void RenderTarget::alphaFunc(GL::Comparison cmp, float value) const
 	{
-		glCheck(glAlphaFunc(cmp, value));
+		OpenGL::alphaFunc(cmp, value);
 	}
 
-	void RenderTarget::setBlendFunc(GL::Factor src, GL::Factor dst) const
+	void RenderTarget::blendFunc(GL::Factor src, GL::Factor dst) const
 	{
-		glCheck(glBlendFunc(src, dst));
+		OpenGL::blendFunc(src, dst);
 	}
 
-	void RenderTarget::setCullFace(GL::Face face) const
+	void RenderTarget::cullFace(GL::Face face) const
 	{
-		glCheck(glCullFace(face));
+		OpenGL::cullFace(face);
 	}
 
-	void RenderTarget::setDepthFunc(GL::Comparison cmp) const
+	void RenderTarget::depthFunc(GL::Comparison cmp) const
 	{
-		glCheck(glDepthFunc(cmp));
+		OpenGL::depthFunc(cmp);
 	}
 	
-	void RenderTarget::setViewport(const vec2i & pos, const vec2i & size) const
+	void RenderTarget::viewport(const vec2i & pos, const vec2i & size) const
 	{
-		glCheck(glViewport(pos[0], pos[1], size[0], size[1]));
+		OpenGL::viewport(pos[0], pos[1], size[0], size[1]);
 	}
 }

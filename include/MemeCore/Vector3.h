@@ -70,7 +70,7 @@ namespace ml
 	template<typename T> const Vector3<T> Vector3<T>::Backward	= Vector3<T>( 0,  0, -1);
 
 	using vec3f = Vector3<float>;
-	using vec3i = Vector3<int>;
+	using vec3i = Vector3<int32_t>;
 	using vec3d = Vector3<double>;
 	using vec3b = Vector3<uint8_t>;
 	using vec3u = Vector3<uint32_t>;

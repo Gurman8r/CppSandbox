@@ -1,6 +1,5 @@
 #include <MemeGraphics/Font.h>
 #include <MemeGraphics/OpenGL.h>
-#include <MemeGraphics/GLEW.h>
 #include <MemeCore/DebugUtility.h>
 
 #include <ft2build.h>
@@ -132,7 +131,7 @@ namespace ml
 		FT_Set_Pixel_Sizes(face, 0, characterSize);
 
 		// Disable byte-alignment restriction
-		glCheck(glPixelStorei(GL::UnpackAlignment, 1));
+		OpenGL::pixelStore(GL::UnpackAlignment, 1);
 
 		// Load character glyph 
 		if (FT_Load_Char(face, c, FT_LOAD_RENDER))
@@ -141,10 +140,9 @@ namespace ml
 			return glyph;
 		}
 
-		uint32_t texture;
-		glCheck(glGenTextures(1, &texture));
-		glCheck(glBindTexture(GL::Texture2D, texture));
-		glCheck(glTexImage2D(
+		uint32_t texture = OpenGL::genTextures(1);
+		OpenGL::bindTexture(GL::Texture2D, texture);
+		OpenGL::texImage2D(
 			GL::Texture2D,
 			0,
 			GL::Red,
@@ -154,13 +152,13 @@ namespace ml
 			GL::Red,
 			GL::UnsignedByte,
 			face->glyph->bitmap.buffer
-		));
+		);
 
 		// Set texture options
-		glCheck(glTexParameteri(GL::Texture2D, GL::TexWrapS, GL::ClampToEdge));
-		glCheck(glTexParameteri(GL::Texture2D, GL::TexWrapT, GL::ClampToEdge));
-		glCheck(glTexParameteri(GL::Texture2D, GL::TexMinFilter, GL::Linear));
-		glCheck(glTexParameteri(GL::Texture2D, GL::TexMagFilter, GL::Linear));
+		OpenGL::texParameter(GL::Texture2D, GL::TexWrapS, GL::ClampToEdge);
+		OpenGL::texParameter(GL::Texture2D, GL::TexWrapT, GL::ClampToEdge);
+		OpenGL::texParameter(GL::Texture2D, GL::TexMinFilter, GL::Linear);
+		OpenGL::texParameter(GL::Texture2D, GL::TexMagFilter, GL::Linear);
 
 		// Now store character for later use
 		glyph.texture = texture;
@@ -174,7 +172,7 @@ namespace ml
 
 		glyph.advance = uint32_t(face->glyph->advance.x);
 
-		glCheck(glBindTexture(GL::Texture2D, 0));
+		OpenGL::bindTexture(GL::Texture2D, 0);
 
 		return glyph;
 	}

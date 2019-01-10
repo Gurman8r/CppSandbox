@@ -1,13 +1,18 @@
 #include <MemeGraphics/OpenGL.h>
-#include <MemeGraphics/GLEW.h>
 #include <MemeCore/DebugUtility.h>
 #include <MemeCore/ConsoleUtility.h>
 #include <cassert>
+
+#define GLEW_STATIC
+#include <GL/glew.h>
+#pragma comment (lib, "glew32s.lib")
 
 namespace ml
 {
 	bool OpenGL::m_good = false;
 	bool OpenGL::m_errorPause = false;
+
+	// General
 
 	bool OpenGL::init(bool experimental)
 	{
@@ -28,10 +33,94 @@ namespace ml
 		return m_good;
 	}
 
-
-	GL::Error OpenGL::getError()
+	void OpenGL::flush()
 	{
-		return static_cast<GL::Error>(glGetError());
+		glCheck(glFlush());
+	}
+
+
+	// Flags
+
+	bool OpenGL::isEnabled(GL::Enum value)
+	{
+		static bool temp;
+		glCheck(temp = glIsEnabled(value));
+		return temp;
+	}
+
+	bool OpenGL::enable(GL::Enum value, bool check)
+	{
+		glCheck(glEnable(value));
+		return check
+			? isEnabled(value)
+			: true;
+	}
+
+	bool OpenGL::disable(GL::Enum value, bool check)
+	{
+		glCheck(glDisable(value));
+		return check
+			? !isEnabled(value)
+			: true;
+	}
+
+
+	// Functions
+
+	void OpenGL::activeTexture(GL::TextureID target)
+	{
+		glCheck(glActiveTexture(target));
+	}
+
+	void OpenGL::alphaFunc(GL::Comparison comp, float value)
+	{
+		glCheck(glAlphaFunc(comp, value));
+	}
+
+	void OpenGL::blendFunc(GL::Factor src, GL::Factor dst)
+	{
+		glCheck(glBlendFunc(src, dst));
+	}
+
+	void OpenGL::cullFace(GL::Face face)
+	{
+		glCheck(glCullFace(face));
+	}
+
+	void OpenGL::depthFunc(GL::Comparison cmp)
+	{
+		glCheck(glDepthFunc(cmp));
+	}
+
+	void OpenGL::viewport(int32_t x, int32_t y, int32_t w, int32_t h)
+	{
+		glCheck(glViewport(x, y, w, h));
+	}
+
+
+	// Drawing
+
+	void OpenGL::clear(GL::Mask mask)
+	{
+		glCheck(glClear(mask));
+	}
+
+	void OpenGL::clearColor(float r, float g, float b, float a)
+	{
+		glCheck(glClearColor(r, g, b, a));
+	}
+
+	void OpenGL::drawElements(GL::Primitive primitive, int32_t count, GL::Type type, const void * indices)
+	{
+		glCheck(glDrawElements(primitive, count, type, indices));
+	}
+
+
+	// Errors
+
+	GL::Err OpenGL::getError()
+	{
+		return static_cast<GL::Err>(glGetError());
 	}
 
 	void OpenGL::errorPause(bool value)
@@ -39,10 +128,10 @@ namespace ml
 		m_errorPause = value;
 	}
 
-	void OpenGL::checkError(const char * file, unsigned int line, const char * expression)
+	void OpenGL::checkError(GL::CStr file, unsigned int line, GL::CStr expression)
 	{
 		// Get the last error
-		if (GL::Error errorCode = getError())
+		if (GL::Err errorCode = getError())
 		{
 			std::string fileName(file);
 			fileName = fileName.substr(fileName.find_last_of("\\/") + 1);
@@ -107,73 +196,437 @@ namespace ml
 	}
 
 
-	const char * OpenGL::getString(uint32_t name)
+	// Get
+
+	GL::CStr OpenGL::getString(GL::Enum name)
 	{
 		static const char* temp;
-		glCheck(temp = reinterpret_cast<const char *>(glGetString(name)));
+		glCheck(temp = reinterpret_cast<GL::CStr>(glGetString(name)));
 		return temp;
 	}
 
-	const char * OpenGL::getString(uint32_t name, uint32_t index)
+	GL::CStr OpenGL::getString(GL::Enum name, uint32_t index)
 	{
 		static const char* temp;
-		glCheck(temp = reinterpret_cast<const char *>(glGetStringi(name, index)));
+		glCheck(temp = reinterpret_cast<GL::CStr>(glGetStringi(name, index)));
 		return temp;
 	}
 
-
-	void OpenGL::getBool(uint32_t name, bool & value)
+	bool OpenGL::getBool(GL::Enum name)
 	{
 		static uint8_t temp;
 		glCheck(glGetBooleanv(name, &temp));
-		value = temp;
+		return (bool)temp;
 	}
 
-	void OpenGL::getDouble(uint32_t name, double & value)
-	{
-		glCheck(glGetDoublev(name, &value));
-	}
-
-	void OpenGL::getFloat(uint32_t name, float & value)
-	{
-		glCheck(glGetFloatv(name, &value));
-	}
-
-	void OpenGL::getInt(uint32_t name, int32_t & value)
-	{
-		glCheck(glGetIntegerv(name, &value));
-	}
-
-	
-	bool OpenGL::getBool(uint32_t name)
-	{
-		static bool temp;
-		getBool(name, temp);
-		return temp;
-	}
-
-	double OpenGL::getDouble(uint32_t name)
+	double OpenGL::getDouble(GL::Enum name)
 	{
 		static double temp;
-		getDouble(name, temp);
+		glCheck(glGetDoublev(name, &temp));
 		return temp;
 	}
 
-	float OpenGL::getFloat(uint32_t name)
+	float OpenGL::getFloat(GL::Enum name)
 	{
 		static float temp;
-		getFloat(name, temp);
+		glCheck(glGetFloatv(name, &temp));
 		return temp;
 	}
 
-	int32_t OpenGL::getInt(uint32_t name)
+	int32_t OpenGL::getInt(GL::Enum name)
 	{
-
 		static int32_t temp;
-		getInt(name, temp);
+		glCheck(glGetIntegerv(name, &temp));
 		return temp;
 	}
 
 
+	// Buffers
+
+	uint32_t OpenGL::genBuffers(uint32_t count)
+	{
+		static uint32_t temp;
+		glCheck(glGenBuffers(1, &temp));
+		return temp;
+	}
+
+	uint32_t OpenGL::genVertexArrays(uint32_t count)
+	{
+		static uint32_t temp;
+		glCheck(glGenVertexArrays(count, &temp));
+		return temp;
+	}
+
+	void OpenGL::bindBuffer(GL::BufferType type, uint32_t buffer)
+	{
+		glCheck(glBindBuffer(type, buffer));
+	}
+
+	void OpenGL::bindVertexArray(uint32_t value)
+	{
+		glCheck(glBindVertexArray(value));
+	}
+
+	void OpenGL::bufferData(GL::BufferType type, uint32_t size, const void * data, GL::Usage usage)
+	{
+		glCheck(glBufferData(type, size, data, usage));
+	}
+
+	void OpenGL::deleteBuffers(uint32_t count, const uint32_t * buffers)
+	{
+		glCheck(glDeleteBuffers(count, buffers));
+	}
+
+	void OpenGL::vertexAttribPointer(uint32_t index, uint32_t size, GL::Type type, bool normalized, uint32_t stride, uint32_t offset, uint32_t width)
+	{
+		glCheck(glVertexAttribPointer(
+			index,
+			size,
+			type,
+			normalized,
+			(stride * width),
+			reinterpret_cast<const void*>(offset * width)));
+	}
+
+	void OpenGL::enableVertexAttribArray(uint32_t index)
+	{
+		glCheck(glEnableVertexAttribArray(index));
+	}
+
+
+	// Shaders
+
+	bool OpenGL::shadersAvailable()
+	{
+		static bool checked = false;
+		static bool available = false;
+		if (!checked)
+		{
+			checked = true;
+			available =
+				GL_ARB_multitexture &&
+				GL_ARB_shading_language_100 &&
+				GL_ARB_shader_objects &&
+				GL_ARB_vertex_shader &&
+				GL_ARB_fragment_shader;
+		}
+		return available;
+	}
+
+	bool OpenGL::geometryShadersAvailable()
+	{
+		static bool checked = false;
+		static bool available = false;
+		if (!checked)
+		{
+			checked = true;
+			available = shadersAvailable() && GL_GEOMETRY_SHADER_ARB;
+		}
+		return available;
+	}
+
+
+	GL::CStr OpenGL::getInfoLog(uint32_t obj)
+	{
+		static char log[1024];
+		glCheck(glGetInfoLogARB(obj, sizeof(log), 0, log));
+		return log;
+	}
+	
+
+	uint32_t OpenGL::getProgramHandle(uint32_t name)
+	{
+		static uint32_t temp;
+		glCheck(temp = glGetHandleARB(name));
+		return temp;
+	}
+
+	uint32_t OpenGL::createProgramObject()
+	{
+		static uint32_t temp;
+		glCheck(temp = glCreateProgramObjectARB());
+		return temp;
+	}
+
+	uint32_t OpenGL::createShaderObject(GL::ShaderType type)
+	{
+		static uint32_t temp;
+		glCheck(temp = glCreateShaderObjectARB(type));
+		return temp;
+	}
+	
+	int32_t OpenGL::getProgramParameter(int32_t obj, GL::ProgramParam param)
+	{
+		static int32_t temp;
+		glCheck(glGetObjectParameterivARB(obj, param, &temp));
+		return temp;
+	}
+
+	int32_t OpenGL::getUniformLocation(uint32_t obj, GL::CStr name)
+	{
+		static int32_t temp;
+		glCheck(temp = glGetUniformLocation(obj, name));
+		return temp;
+	}
+	
+
+	void OpenGL::useProgram(uint32_t obj)
+	{
+		glCheck(glUseProgramObjectARB(obj));
+	}
+
+	void OpenGL::deleteProgram(uint32_t obj)
+	{
+		glCheck(glDeleteObjectARB(obj));
+	}
+
+	void OpenGL::attachProgram(uint32_t containerObj, uint32_t obj)
+	{
+		glCheck(glAttachObjectARB(containerObj, obj));
+	}
+
+	void OpenGL::shaderSource(uint32_t obj, int32_t count, GL::CStr const * src, const int32_t * length)
+	{
+		glCheck(glShaderSource(obj, count, src, length));
+	}
+
+	void OpenGL::compileProgram(uint32_t obj)
+	{
+		glCheck(glCompileShader(obj));
+	}
+
+	void OpenGL::linkProgram(uint32_t obj)
+	{
+		glCheck(glLinkProgram(obj));
+	}
+
+
+	void OpenGL::uniform1f(int32_t location, float value)
+	{
+		glCheck(glUniform1f(location, value));
+	}
+
+	void OpenGL::uniform1i(int32_t location, int32_t value)
+	{
+		glCheck(glUniform1i(location, value));
+	}
+
+	void OpenGL::uniform1u(int32_t location, uint32_t value)
+	{
+		glCheck(glUniform1ui(location, value));
+	}
+
+	void OpenGL::uniform2f(int32_t location, float x, float y)
+	{
+		glCheck(glUniform2f(location, x, y));
+	}
+
+	void OpenGL::uniform3f(int32_t location, float x, float y, float z)
+	{
+		glCheck(glUniform3f(location, x, y, z));
+	}
+
+	void OpenGL::uniform4f(int32_t location, float x, float y, float z, float w)
+	{
+		glCheck(glUniform4f(location, x, y, z, w));
+	}
+
+	void OpenGL::uniform2i(int32_t location, int32_t x, int32_t y)
+	{
+		glCheck(glUniform2i(location, x, y));
+	}
+
+	void OpenGL::uniform3i(int32_t location, int32_t x, int32_t y, int32_t z)
+	{
+		glCheck(glUniform3i(location, x, y, z));
+	}
+
+	void OpenGL::uniform4i(int32_t location, int32_t x, int32_t y, int32_t z, int32_t w)
+	{
+		glCheck(glUniform4i(location, x, y, z, w));
+	}
+
+	void OpenGL::uniformMatrix2f(int32_t location, uint32_t count, bool transpose, const float * value)
+	{
+		glCheck(glUniformMatrix2fv(location, count, transpose, value));
+	}
+
+	void OpenGL::uniformMatrix3f(int32_t location, uint32_t count, bool transpose, const float * value)
+	{
+		glCheck(glUniformMatrix3fv(location, count, transpose, value));
+	}
+
+	void OpenGL::uniformMatrix4f(int32_t location, uint32_t count, bool transpose, const float * value)
+	{
+		glCheck(glUniformMatrix4fv(location, count, transpose, value));
+	}
+
+	void OpenGL::uniformArray1f(int32_t location, uint32_t count, const float * value)
+	{
+		glCheck(glUniform1fv(location, count, value));
+	}
+
+	void OpenGL::uniformArray2f(int32_t location, uint32_t count, const float * value)
+	{
+		glCheck(glUniform2fv(location, count, value));
+	}
+
+	void OpenGL::uniformArray3f(int32_t location, uint32_t count, const float * value)
+	{
+		glCheck(glUniform3fv(location, count, value));
+	}
+
+	void OpenGL::uniformArray4f(int32_t location, uint32_t count, const float * value)
+	{
+		glCheck(glUniform4fv(location, count, value));
+	}
+
+	void OpenGL::uniformMatrixArray2f(int32_t location, uint32_t count, bool transpose, const float * value)
+	{
+		glCheck(glUniformMatrix2fv(location, count, GL_FALSE, value));
+	}
+
+	void OpenGL::uniformMatrixArray3f(int32_t location, uint32_t count, bool transpose, const float * value)
+	{
+		glCheck(glUniformMatrix3fv(location, count, GL_FALSE, value));
+	}
+
+	void OpenGL::uniformMatrixArray4f(int32_t location, uint32_t count, bool transpose, const float * value)
+	{
+		glCheck(glUniformMatrix4fv(location, count, GL_FALSE, value));
+	}
+	   
+	
+	// Textures
+
+	bool OpenGL::edgeClampAvailable()
+	{
+		static bool temp = GL_EXT_texture_edge_clamp || GLEW_EXT_texture_edge_clamp;
+		return temp;
+	}
+
+	bool OpenGL::textureSrgbAvailable()
+	{
+		static bool temp = GL_EXT_texture_sRGB;
+		return temp;
+	}
+
+	bool OpenGL::nonPowerOfTwoAvailable()
+	{
+		static bool temp = GLEW_ARB_texture_non_power_of_two;
+		return temp;
+	}
+
+	int32_t OpenGL::getMaxTextureUnits()
+	{
+		static int32_t maxUnits = getInt(GL::MaxCombTexImgUnits);
+		return maxUnits;
+	}
+
+	uint32_t OpenGL::getMaxTextureSize()
+	{
+		static bool checked = false;
+		static uint32_t size = 0;
+		if (!checked)
+		{
+			size = static_cast<uint32_t>(OpenGL::getInt(GL::MaxTextureSize));
+		}
+		return size;
+	}
+
+
+	uint32_t OpenGL::genTextures(uint32_t count)
+	{
+		static uint32_t temp;
+		glCheck(glGenTextures(count, &temp));
+		return temp;
+	}
+
+	void OpenGL::deleteTextures(uint32_t count, const uint32_t * id)
+	{
+		glCheck(glDeleteTextures(count, id));
+	}
+
+	void OpenGL::bindTexture(GL::Target target, uint32_t id)
+	{
+		glCheck(glBindTexture(target, id));
+	}
+
+	void OpenGL::texImage2D(GL::Target target, int32_t level, GL::Format internalFormat, int32_t width, int32_t height, int32_t border, GL::Format format, GL::Type type, const void * pixels)
+	{
+		glCheck(glTexImage2D(target, level, internalFormat, width, height, border, format, type, pixels));
+	}
+
+	void OpenGL::texSubImage2D(GL::Target target, int32_t level, int32_t xoffset, int32_t yoffset, int32_t width, int32_t height, GL::Format format, GL::Type type, const void * pixels)
+	{
+		glCheck(glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, pixels));
+	}
+
+	void OpenGL::texParameter(GL::Target target, uint32_t name, GL::TexParam param)
+	{
+		glCheck(glTexParameteri(target, name, param));
+	}
+
+	void OpenGL::getTexImage(GL::Target target, int32_t level, GL::Format format, GL::Type type, void * pixels)
+	{
+		glCheck(glGetTexImage(target, level, format, type, pixels));
+	}
+
+	void OpenGL::generateMipmap(GL::Target target)
+	{
+		glCheck(glGenerateMipmap(target));
+	}
+
+	void OpenGL::pixelStore(uint32_t name, int32_t param)
+	{
+		glCheck(glPixelStorei(name, 1));
+	}
+
+
+	// Framebuffers
+
+	bool OpenGL::framebuffersAvailable()
+	{
+		static bool temp = GL_EXT_framebuffer_object && GL_EXT_framebuffer_blit;
+		return temp;
+	}
+	
+	uint32_t OpenGL::genFramebuffers(uint32_t count)
+	{
+		static uint32_t temp;
+		glCheck(glGenFramebuffers(count, &temp));
+		return temp;
+	}
+
+	uint32_t OpenGL::checkFramebufferStatus(GL::Target target)
+	{
+		static uint32_t temp;
+		glCheck(temp = glCheckFramebufferStatus(target));
+		return temp;
+	}
+
+	void OpenGL::bindFramebuffer(GL::Target target, uint32_t framebuffer)
+	{
+		glCheck(glBindFramebuffer(target, framebuffer));
+	}
+
+	void OpenGL::deleteFramebuffers(uint32_t count, const uint32_t * framebuffers)
+	{
+		glCheck(glDeleteFramebuffers(count, framebuffers));
+	}
+
+	void OpenGL::blitFramebuffer(int32_t srcX0, int32_t srcY0, int32_t srcX1, int32_t srcY1, int32_t dstX0, int32_t dstY0, int32_t dstX1, int32_t dstY1, GL::Mask mask, uint32_t filter)
+	{
+		glCheck(glBlitFramebuffer(
+			srcX0, srcY0, srcX1, srcY1,
+			dstX0, dstY0, dstX1, dstY1,
+			mask,
+			filter));
+	}
+
+	void OpenGL::framebufferTexture2D(GL::Target target, GL::ColorAttachment attachment, GL::Target textarget, uint32_t texture, int32_t level)
+	{
+		glCheck(glFramebufferTexture2D(target, attachment, textarget, texture, level));
+	}
 
 }

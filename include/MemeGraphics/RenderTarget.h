@@ -22,19 +22,17 @@ namespace ml
 
 		RenderTarget & drawElements(const IBO & ibo, GL::Primitive prim, GL::Type type);
 
-	public:// Utility
-		bool getFlag(GL::Enum value) const;
-		void setFlag(GL::Enum flag, bool value) const;
+	public:
+		bool isEnabled(GL::Enum value) const;
+		bool enable(GL::Enum value, bool check = false) const;
+		bool disable(GL::Enum value, bool check = false) const;
 
-		void enableFlag(GL::Enum value) const;
-		void disableFlag(GL::Enum value) const;
-
-		void setActiveTexture(GL::TextureID textureID) const;
-		void setAlphaFunc(GL::Comparison comp, float value) const;
-		void setBlendFunc(GL::Factor src, GL::Factor dst) const;
-		void setCullFace(GL::Face value) const;
-		void setDepthFunc(GL::Comparison value) const;
-		void setViewport(const vec2i & pos, const vec2i & size) const;
+		void activeTexture(GL::TextureID textureID) const;
+		void alphaFunc(GL::Comparison comp, float value) const;
+		void blendFunc(GL::Factor src, GL::Factor dst) const;
+		void cullFace(GL::Face value) const;
+		void depthFunc(GL::Comparison value) const;
+		void viewport(const vec2i & pos, const vec2i & size) const;
 
 
 	private:

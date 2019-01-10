@@ -324,7 +324,7 @@ inline static int windowStub()
 	}
 
 	window.cursorMode(ml::Window::CursorMode::Normal);
-	window.setViewport(ml::vec2i::Zero, window.size());
+	window.viewport(ml::vec2i::Zero, window.size());
 	window.setCentered();
 
 	// Loop
@@ -423,7 +423,10 @@ inline static int audioStub()
 
 inline static int graphicsStub()
 {
-	ml::Debug::Log("{0}.exe", settings.title);
+	ml::Debug::Log("{0}", settings.title);
+
+	// Enable GL Error Pause
+	ml::OpenGL::errorPause(true);
 
 	// Window
 	ml::Debug::Log("Creating Window...");
@@ -437,10 +440,8 @@ inline static int graphicsStub()
 		return ml::ConsoleUtility::pause(EXIT_FAILURE);
 	}
 	window.cursorMode(ml::Window::CursorMode::Normal);
-	window.setViewport(ml::vec2i::Zero, window.size());
+	window.viewport(ml::vec2i::Zero, window.size());
 	window.setCentered();
-
-	ml::OpenGL::errorPause(true);
 
 	// Load Fonts
 	ml::Debug::Log("Loading Fonts...");
@@ -543,7 +544,6 @@ inline static int graphicsStub()
 
 	// Load Geometry
 	ml::Debug::Log("Loading Geometry...");
-
 	const ml::Mesh & mesh = ml::Shapes::Quad::Mesh;
 	ml::VAO vao(1);
 	ml::VBO vbo(ml::GL::StaticDraw, mesh.flattened());
@@ -576,8 +576,8 @@ inline static int graphicsStub()
 			// Draw
 			window.clear(ml::Color::Violet);
 			{
-				window.disableFlag(ml::GL::CullFace);
-				window.disableFlag(ml::GL::DepthTest);
+				window.disable(ml::GL::CullFace);
+				window.disable(ml::GL::DepthTest);
 				{
 					shaderBasic.use();
 					shaderBasic.setUniform(ml::Uniform::Color,		ml::Color::White);
@@ -588,8 +588,8 @@ inline static int graphicsStub()
 
 					window.drawElements(ibo, ml::GL::Triangles, ml::GL::UnsignedInt);
 				}
-				window.enableFlag(ml::GL::CullFace);
-				window.enableFlag(ml::GL::DepthTest);
+				window.enable(ml::GL::CullFace);
+				window.enable(ml::GL::DepthTest);
 			}
 			window.swapBuffers();
 			window.pollEvents();
@@ -603,17 +603,17 @@ inline static int graphicsStub()
 			// Window Title
 			const ml::Duration & now = ML_Time.elapsed();
 			window.title(ml::StringUtility::Format(
-				"{0}.exe | {1} ms | {2} fps | {3}",
+				"{0} | {1} ms | {2} fps | {3}",
 				settings.title,
 				elapsed.millis(),
 				getFPS(elapsed.delta()),
-				ml::StringUtility::Format("{0}{1}:{2}{3}:{4}{5}",
-				(now.minutes() % 60) / 10 % 10,
+				(ml::StringUtility::Format("{0}{1}:{2}{3}:{4}{5}",
+					(now.minutes() % 60) / 10 % 10,
 					(now.minutes() % 60) % 10,
 					(now.seconds() % 60) / 10 % 10,
 					(now.seconds() % 60) % 10,
 					(now.millis()) / 10 % 10,
-					(now.millis()) % 10))
+					(now.millis()) % 10)))
 			);
 		}
 		input.endStep();

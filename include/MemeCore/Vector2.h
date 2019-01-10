@@ -89,7 +89,7 @@ namespace ml
 	template<typename T> const Vector2<T> Vector2<T>::Right = Vector2<T>( 1,  0);
 
 	using vec2f = Vector2<float>;
-	using vec2i = Vector2<int>;
+	using vec2i = Vector2<int32_t>;
 	using vec2d = Vector2<double>;
 	using vec2b = Vector2<uint8_t>;
 	using vec2u = Vector2<uint32_t>;

@@ -123,9 +123,6 @@
     <ClInclude Include="..\..\include\MemeGraphics\Gizmos.h">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\GLEW.h">
-      <Filter>Header Files\GL</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\GL.h">
       <Filter>Header Files\GL</Filter>
     </ClInclude>

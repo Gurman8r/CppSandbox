@@ -1,19 +1,8 @@
 #include <MemeGraphics/Texture.h>
 #include <MemeGraphics/OpenGL.h>
-#include <MemeGraphics/GLEW.h>
 #include <MemeCore/DebugUtility.h>
 #include <cassert>
 #include <algorithm>
-
-namespace
-{
-	inline static uint64_t getUniqueID()
-	{
-		static uint64_t id = 1;
-		return id++;
-	}
-}
-
 namespace ml
 {
 	Texture::Texture()
@@ -26,7 +15,7 @@ namespace ml
 		, m_pixelsFlipped(false)
 		, m_fboAttachment(false)
 		, m_hasMipmap(false)
-		, m_cacheID(getUniqueID())
+		, m_cacheID(OpenGL::getUniqueID<Texture>())
 	{
 	}
 
@@ -40,7 +29,7 @@ namespace ml
 		, m_pixelsFlipped(false)
 		, m_fboAttachment(false)
 		, m_hasMipmap(false)
-		, m_cacheID(getUniqueID())
+		, m_cacheID(OpenGL::getUniqueID<Texture>())
 	{
 		if (copy.m_id)
 		{
@@ -48,7 +37,7 @@ namespace ml
 			{
 				update(copy);
 
-				glCheck(glFlush());
+				OpenGL::flush();
 			}
 			else
 			{
@@ -67,7 +56,7 @@ namespace ml
 	{
 		if (m_id)
 		{
-			glCheck(glDeleteTextures(1, &m_id));
+			OpenGL::deleteTextures(1, &m_id);
 			return true;
 		}
 		return false;
@@ -127,40 +116,36 @@ namespace ml
 				const uint8_t * pixels = 
 					image.pixelsPtr() + 4 * (rect.left() + (width * rect.top()));
 
-				glCheck(glBindTexture(GL::Texture2D, id()));
+				OpenGL::bindTexture(GL::Texture2D, m_id);
 
 				for (int i = 0; i < rect.height(); i++)
 				{
-					glCheck(glTexSubImage2D(
+					OpenGL::texSubImage2D(
 						GL::Texture2D,
 						0, 
 						0, i, rect.width(), 1, 
 						GL::RGBA, 
 						GL::UnsignedByte, 
-						pixels));
+						pixels);
 
 					pixels += 4 * width;
 				}
 
-				glCheck(glTexParameteri(
+				OpenGL::texParameter(
 					GL::Texture2D,
 					GL::TexMinFilter,
-					(m_isSmooth 
-						? GL::Linear 
-						: GL::Nearest)));
+					(m_isSmooth
+						? GL::Linear
+						: GL::Nearest));
 
 				m_hasMipmap = false;
 
 				// Force an OpenGL flush, so that the texture will appear updated
-				glCheck(glFlush());
+				OpenGL::flush();
 
 				return true;
 			}
-			else
-			{
-				return false;
-			}
-
+			return false;
 		}
 	}
 	
@@ -175,30 +160,30 @@ namespace ml
 		assert(x + width <= m_size[0]);
 		assert(y + height <= m_size[1]);
 
-		if (pixels && id())
+		if (pixels && m_id)
 		{
-			glCheck(glBindTexture(GL::Texture2D, id()));
+			OpenGL::bindTexture(GL::Texture2D, m_id);
 
-			glCheck(glTexSubImage2D(
-				GL::Texture2D, 
-				0, 
+			OpenGL::texSubImage2D(
+				GL::Texture2D,
+				0,
 				x, y, width, height,
 				GL::RGBA,
-				GL::UnsignedByte, 
-				pixels));
+				GL::UnsignedByte,
+				pixels);
 
-			glCheck(glTexParameteri(
-				GL::Texture2D, 
+			OpenGL::texParameter(
+				GL::Texture2D,
 				GL::TexMinFilter,
-				(m_isSmooth 
-					? GL::Linear 
-					: GL::Nearest)));
+				(m_isSmooth
+					? GL::Linear
+					: GL::Nearest));
 
 			m_hasMipmap = false;
 			m_pixelsFlipped = false;
-			m_cacheID = getUniqueID();
+			m_cacheID = OpenGL::getUniqueID<Texture>();
 
-			glCheck(glFlush());
+			OpenGL::flush();
 		}
 		return (*this);
 	}
@@ -213,66 +198,58 @@ namespace ml
 		assert(x + texture.m_size[0] <= m_size[0]);
 		assert(y + texture.m_size[1] <= m_size[1]);
 
-		if (!id() || !texture.id())
+		if (!m_id || !texture.m_id)
 		{
 			return (*this);
 		}
 
-		if (GL_EXT_framebuffer_object && GL_EXT_framebuffer_blit)
+		if (OpenGL::framebuffersAvailable())
 		{
 			// Save the current bindings so we can restore them after we are done
-			GLint readFramebuffer = 0;
-			GLint drawFramebuffer = 0;
-
-			glCheck(glGetIntegerv(GL_READ_FRAMEBUFFER_BINDING, &readFramebuffer));
-			glCheck(glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &drawFramebuffer));
+			int32_t readFramebuffer = OpenGL::getInt(GL::ReadFramebufferBinding);
+			int32_t drawFramebuffer = OpenGL::getInt(GL::DrawFramebufferBinding);
 
 			// Create the framebuffers
-			GLuint sourceFrameBuffer = 0;
-			GLuint destFrameBuffer = 0;
-			glCheck(glGenFramebuffers(1, &sourceFrameBuffer));
-			glCheck(glGenFramebuffers(1, &destFrameBuffer));
+			uint32_t src = OpenGL::genFramebuffers(1);
+			uint32_t dst = OpenGL::genFramebuffers(1);
 
-			if (!sourceFrameBuffer || !destFrameBuffer)
+			if (!src || !dst)
 			{
 				Debug::LogError("Cannot copy texture, failed to create a frame buffer object");
 				return (*this);
 			}
 
 			// Link the source texture to the source frame buffer
-			glCheck(glBindFramebuffer(GL::FramebufferRead, sourceFrameBuffer));
-			glCheck(glFramebufferTexture2D(
+			OpenGL::bindFramebuffer(GL::FramebufferRead, src);
+			OpenGL::framebufferTexture2D(
 				GL::FramebufferRead, 
 				GL::ColorAttachment0, 
 				GL::Texture2D, 
-				texture.id(), 
-				0));
+				texture.m_id, 
+				0);
 
 			// Link the destination texture to the destination frame buffer
-			glCheck(glBindFramebuffer(GL::FramebufferDraw, destFrameBuffer));
-			glCheck(glFramebufferTexture2D(
+			OpenGL::bindFramebuffer(GL::FramebufferDraw, dst);
+			OpenGL::framebufferTexture2D(
 				GL::FramebufferDraw, 
 				GL::ColorAttachment0,
 				GL::Texture2D, 
-				id(), 
-				0));
+				m_id, 
+				0);
 
 			// A final check, just to be sure...
-			GLenum sourceStatus;
-			glCheck(sourceStatus = glCheckFramebufferStatus(GL::FramebufferRead));
+			uint32_t srcStatus = OpenGL::checkFramebufferStatus(GL::FramebufferRead);
+			uint32_t dstStatus = OpenGL::checkFramebufferStatus(GL::FramebufferDraw);
 
-			GLenum destStatus;
-			glCheck(destStatus = glCheckFramebufferStatus(GL::FramebufferDraw));
-
-			if ((sourceStatus == GL::FramebufferComplete) &&
-				(destStatus == GL::FramebufferComplete))
+			if ((srcStatus == GL::FramebufferComplete) &&
+				(dstStatus == GL::FramebufferComplete))
 			{
 				// Blit the texture contents from the source to the destination texture
-				glCheck(glBlitFramebuffer(
+				OpenGL::blitFramebuffer(
 					0, 0, texture.m_size[0], texture.m_size[1],
 					x, y, x + texture.m_size[0], y + texture.m_size[1],
 					GL::ColorBufferBit, 
-					GL::Nearest));
+					GL::Nearest);
 			}
 			else
 			{
@@ -280,12 +257,12 @@ namespace ml
 			}
 
 			// Restore previously bound framebuffers
-			glCheck(glBindFramebuffer(GL::FramebufferRead, readFramebuffer));
-			glCheck(glBindFramebuffer(GL::FramebufferDraw, drawFramebuffer));
+			OpenGL::bindFramebuffer(GL::FramebufferRead, readFramebuffer);
+			OpenGL::bindFramebuffer(GL::FramebufferDraw, drawFramebuffer);
 
 			// Delete the framebuffers
-			glCheck(glDeleteFramebuffers(1, &sourceFrameBuffer));
-			glCheck(glDeleteFramebuffers(1, &destFrameBuffer));
+			OpenGL::deleteFramebuffers(1, &src);
+			OpenGL::deleteFramebuffers(1, &dst);
 
 			return (*this);
 		}
@@ -314,7 +291,7 @@ namespace ml
 
 		vec2u actualSize(getValidSize(width), getValidSize(height));
 
-		uint32_t maxSize = getMaximumSize();
+		uint32_t maxSize = OpenGL::getMaxTextureSize();
 
 		if ((actualSize[0] > maxSize) || (actualSize[1] > maxSize))
 		{
@@ -331,14 +308,10 @@ namespace ml
 
 		if (!m_id)
 		{
-			GLuint texture;
-			glCheck(glGenTextures(1, &texture));
-			m_id = static_cast<uint32_t>(texture);
+			m_id = OpenGL::genTextures(1);
 		}
 
-		static bool edgeClamp = GL_EXT_texture_edge_clamp || GLEW_EXT_texture_edge_clamp;
-
-		if (!m_isRepeated && !edgeClamp)
+		if (!m_isRepeated && !OpenGL::edgeClampAvailable())
 		{
 			static bool warned = false;
 			if (!warned)
@@ -351,9 +324,7 @@ namespace ml
 			}
 		}
 
-		static bool textureSrgb = GL_EXT_texture_sRGB;
-
-		if (m_sRgb && !textureSrgb)
+		if (m_sRgb && !OpenGL::textureSrgbAvailable())
 		{
 			static bool warned = false;
 			if (!warned)
@@ -367,9 +338,9 @@ namespace ml
 		}
 
 		// Initialize the texture
-		glCheck(glBindTexture(GL::Texture2D, id()));
+		OpenGL::bindTexture(GL::Texture2D, m_id);
 		
-		glCheck(glTexImage2D(
+		OpenGL::texImage2D(
 			GL::Texture2D,
 			0,
 			(m_sRgb
@@ -380,55 +351,57 @@ namespace ml
 			0, 
 			GL::RGBA, 
 			GL::UnsignedByte, 
-			NULL));
+			NULL);
 		
-		glCheck(glTexParameteri(
+		OpenGL::texParameter(
 			GL::Texture2D,
 			GL::TexWrapS,
 			(m_isRepeated
 				? GL::Repeat
-				: (edgeClamp
+				: (OpenGL::edgeClampAvailable()
 					? GL::ClampToEdge
-					: GL::Clamp))));
+					: GL::Clamp)));
 		
-		glCheck(glTexParameteri(
+		OpenGL::texParameter(
 			GL::Texture2D,
 			GL::TexWrapT, 
 			(m_isRepeated
 				? GL::Repeat
-				: (edgeClamp
+				: (OpenGL::edgeClampAvailable()
 					? GL::ClampToEdge
-					: GL::Clamp))));
+					: GL::Clamp)));
 		
-		glCheck(glTexParameteri(
+		OpenGL::texParameter(
 			GL::Texture2D, 
 			GL::TexMagFilter,
 			(m_isSmooth
 				? GL::Linear
-				: GL::Nearest)));
+				: GL::Nearest));
 		
-		glCheck(glTexParameteri(
+		OpenGL::texParameter(
 			GL::Texture2D, 
 			GL::TexMinFilter, 
 			(m_isSmooth
 				? GL::Linear
-				: GL::Nearest)));
+				: GL::Nearest));
 		
-		m_cacheID = getUniqueID();
+		m_cacheID = OpenGL::getUniqueID<Texture>();
 		m_hasMipmap = false;
 		return true;
 	}
 
 	bool Texture::create(uint32_t width, uint32_t height, const vec4f & color)
 	{
-		return false;
+		static Image image;
+		image.create(width, height, color);
+		return loadFromImage(image);
 	}
 
 
 	Image Texture::copyToImage() const
 	{
 		// Easy case: empty texture
-		if (!id())
+		if (!m_id)
 		{
 			return Image();
 		}
@@ -439,12 +412,13 @@ namespace ml
 		if ((m_size == m_actualSize) && !m_pixelsFlipped)
 		{
 			// Texture is not padded nor flipped, we can use a direct copy
-			glCheck(glBindTexture(GL::Texture2D, id()));
-			glCheck(glGetTexImage(GL::Texture2D, 
+			OpenGL::bindTexture(GL::Texture2D, m_id);
+			OpenGL::getTexImage(
+				GL::Texture2D, 
 				0, 
 				GL::RGBA,
 				GL::UnsignedByte, 
-				&pixels[0]));
+				&pixels[0]);
 		}
 		else
 		{
@@ -453,14 +427,14 @@ namespace ml
 			// All the pixels will first be copied to a temporary array
 			std::vector<uint8_t> allPixels(m_actualSize[0] * m_actualSize[1] * 4);
 
-			glCheck(glBindTexture(GL::Texture2D, id()));
+			OpenGL::bindTexture(GL::Texture2D, m_id);
 			
-			glCheck(glGetTexImage(
+			OpenGL::getTexImage(
 				GL::Texture2D,
 				0, 
 				GL::RGBA, 
 				GL::UnsignedByte,
-				&allPixels[0]));
+				&allPixels[0]);
 
 			// Then we copy the useful pixels from the temporary array to the final one
 			const uint8_t* src = &allPixels[0];
@@ -491,20 +465,20 @@ namespace ml
 
 	bool Texture::generateMipmap()
 	{
-		if (id())
+		if (m_id)
 		{
-			if (!GL_EXT_framebuffer_object)
+			if (!OpenGL::framebuffersAvailable())
 			{
-				glCheck(glBindTexture(GL::Texture2D, id()));
+				OpenGL::bindTexture(GL::Texture2D, m_id);
 				
-				glCheck(glGenerateMipmap(GL::Texture2D));
+				OpenGL::generateMipmap(GL::Texture2D);
 				
-				glCheck(glTexParameteri(
+				OpenGL::texParameter(
 					GL::Texture2D, 
 					GL::TexMinFilter,
 					(m_isSmooth
 						? GL::LinearMipmapLinear
-						: GL::NearestMipmapNearest)));
+						: GL::NearestMipmapNearest));
 
 				m_hasMipmap = true;
 
@@ -531,38 +505,24 @@ namespace ml
 		std::swap(m_fboAttachment,	other.m_fboAttachment);
 		std::swap(m_hasMipmap,		other.m_hasMipmap);
 
-		m_cacheID = getUniqueID();
-		other.m_cacheID = getUniqueID();
+		m_cacheID = OpenGL::getUniqueID<Texture>();
+		other.m_cacheID = OpenGL::getUniqueID<Texture>();
 	}
 
 
 	void Texture::bind(const Texture * value)
 	{
-		if (value && value->id())
+		if (value && value->m_id)
 		{
 			// Bind the texture
-			glCheck(glBindTexture(GL::Texture2D, value->id()));
+			OpenGL::bindTexture(GL::Texture2D, value->m_id);
 		}
 	}
-
-	uint32_t Texture::getMaximumSize()
-	{
-		static bool checked = false;
-		static GLint size = 0;
-		if (!checked)
-		{
-			glCheck(glGetIntegerv(GL::MaxTextureSize, &size));
-		}
-		return static_cast<uint32_t>(size);
-	}
-
-
+	
 	Texture & Texture::operator=(const Texture & value)
 	{
 		static Texture temp;
-
 		swap(temp);
-
 		return temp;
 	}
 	
@@ -573,13 +533,9 @@ namespace ml
 		{
 			m_isRepeated = value;
 
-			if (id())
+			if (m_id)
 			{
-				static bool edgeClamp =
-					GL_EXT_texture_edge_clamp || 
-					GLEW_EXT_texture_edge_clamp;
-
-				if (m_isRepeated && !edgeClamp)
+				if (m_isRepeated && !OpenGL::edgeClampAvailable())
 				{
 					static bool warned = false;
 					if (!warned)
@@ -592,24 +548,24 @@ namespace ml
 					}
 				}
 
-				glCheck(glBindTexture(GL::Texture2D, id()));
-				glCheck(glTexParameteri(
+				OpenGL::bindTexture(GL::Texture2D, m_id);
+				OpenGL::texParameter(
 					GL::Texture2D, 
 					GL::TexWrapS, 
 					(m_isRepeated
 						? GL::Repeat
-						: (edgeClamp
+						: (OpenGL::edgeClampAvailable()
 							? GL::ClampToEdge
-							: GL::Clamp))));
+							: GL::Clamp)));
 
-				glCheck(glTexParameteri(
+				OpenGL::texParameter(
 					GL::Texture2D, 
 					GL::TexWrapT, 
 					(m_isRepeated
 						? GL::Repeat
-						: (edgeClamp
+						: (OpenGL::edgeClampAvailable()
 							? GL::ClampToEdge
-							: GL::Clamp))));
+							: GL::Clamp)));
 			}
 		}
 		return (*this);
@@ -621,34 +577,34 @@ namespace ml
 		{
 			m_isSmooth = value;
 
-			if (id())
+			if (m_id)
 			{
-				glCheck(glBindTexture(GL::Texture2D, id()));
+				OpenGL::bindTexture(GL::Texture2D, m_id);
 
-				glCheck(glTexParameteri(
+				OpenGL::texParameter(
 					GL::Texture2D,
 					GL::TexMagFilter,
 					(m_isSmooth
 						? GL::Linear
-						: GL::Nearest)));
+						: GL::Nearest));
 
 				if (m_hasMipmap)
 				{
-					glCheck(glTexParameteri(
+					OpenGL::texParameter(
 						GL::Texture2D,
 						GL::TexMinFilter, 
 						(m_isSmooth
 							? GL::LinearMipmapLinear
-							: GL::LinearMipmapNearest)));
+							: GL::LinearMipmapNearest));
 				}
 				else
 				{
-					glCheck(glTexParameteri(
+					OpenGL::texParameter(
 						GL::Texture2D,
 						GL::TexMinFilter,
 						(m_isSmooth
 							? GL::Linear
-							: GL::Nearest)));
+							: GL::Nearest));
 				}
 			}
 		}
@@ -664,7 +620,7 @@ namespace ml
 
 	uint32_t Texture::getValidSize(uint32_t value)
 	{
-		if (!GLEW_ARB_texture_non_power_of_two)
+		if (!OpenGL::nonPowerOfTwoAvailable())
 		{
 			uint32_t powerOfTwo = 1;
 			while (powerOfTwo < value)
@@ -680,13 +636,13 @@ namespace ml
 	{
 		if (m_hasMipmap)
 		{
-			glCheck(glBindTexture(GL::Texture2D, id()));
-			glCheck(glTexParameteri(
+			OpenGL::bindTexture(GL::Texture2D, m_id);
+			OpenGL::texParameter(
 				GL::Texture2D,
 				GL::TexMinFilter,
 				(m_isSmooth
 					? GL::Linear
-					: GL::Nearest)));
+					: GL::Nearest));
 
 			m_hasMipmap = false;
 		}
