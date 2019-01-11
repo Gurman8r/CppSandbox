@@ -1,3 +1,45 @@
+/* Vertex
+* * * * * * * * * * * * * * * * * * * * */
+#shader vertex
+#version 330 core
+
+layout(location = 0) in vec3 a_position;
+layout(location = 1) in vec4 a_color;
+layout(location = 2) in vec2 a_texcoord;
+
+out vec3 v_Position;
+out vec4 v_Color;
+out vec2 v_TexCoords;
+
+void main()
+{
+	v_Position = a_position;
+
+	gl_Position = vec4(a_position, 1.0);
+}
+
+
+/* Fragment
+* * * * * * * * * * * * * * * * * * * * */
+#shader fragment
+#version 330 core
+
+in vec3		v_Position;
+in vec4		v_Color;
+in vec2		v_TexCoords;
+out vec4	v_FragColor;
+
+uniform vec4 u_color;
+
+void main()
+{
+	v_FragColor = u_color * v_Color.w;
+}
+
+
+/* Geometry
+* * * * * * * * * * * * * * * * * * * * */
+#shader geometry
 #version 330 core
 
 #define SAMPLES_PER_SEGMENT 16
@@ -9,16 +51,16 @@
 #define CURVE_HERMITE 3
 
 // Layout
-layout (points) in;
-layout (line_strip, max_vertices = SAMPLES_MAX) out;
+layout(points) in;
+layout(line_strip, max_vertices = SAMPLES_MAX) out;
 
 // uniforms
 uniform int		u_curveMode;
 
 // constants
-const vec4 RED		= vec4(1.0, 0.5, 0.0, 1.0);
-const vec4 BLUE		= vec4(0.0, 0.5, 1.0, 1.0);
-const vec4 GREEN	= vec4(0.0, 1.0, 0.5, 1.0);
+const vec4 RED = vec4(1.0, 0.5, 0.0, 1.0);
+const vec4 BLUE = vec4(0.0, 0.5, 1.0, 1.0);
+const vec4 GREEN = vec4(0.0, 1.0, 0.5, 1.0);
 
 // Maths
 vec4 lerp(in vec4 p0, in vec4 p1, const float t)
@@ -201,9 +243,9 @@ void drawCubicHermiteSplineSegment(in vec4 p0, in vec4 m0, in vec4 p1, in vec4 m
 void stub(const int samples, const float dt)
 {
 	// test points
-	vec4 testP0 = vec4(-0.5,  0.5, 0.0, 1.0);
-	vec4 testP1 = vec4( 0.5,  0.5, 0.0, 1.0);
-	vec4 testP2 = vec4( 0.5, -0.5, 0.0, 1.0);
+	vec4 testP0 = vec4(-0.5, 0.5, 0.0, 1.0);
+	vec4 testP1 = vec4(0.5, 0.5, 0.0, 1.0);
+	vec4 testP2 = vec4(0.5, -0.5, 0.0, 1.0);
 	vec4 testP3 = vec4(-0.5, -0.5, 0.0, 1.0);
 
 	vec4 p0, p1, p2, p3, pPrev, pNext, m0, m1;

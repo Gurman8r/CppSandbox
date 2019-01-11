@@ -27,11 +27,9 @@
 struct Settings final
 {
 	std::string		assetPath;	// 
-
 	std::string		title;		// 
 	uint32_t		width;		// 
 	uint32_t		height;		// 
-
 	std::string		bootScript;	// 
 	bool			showToks;	// 
 	bool			showTree;	// 
@@ -42,12 +40,10 @@ struct Settings final
 		INIReader ini(filename.c_str());
 		if (ini.ParseError() == 0)
 		{
-			assetPath	= ini.Get("Assets", "sAssetPath", "../../../assets");
-			
+			assetPath	= ini.Get("Assets", "sPath", "../../../assets");
 			title		= ini.Get("Window", "sTitle", "Title");
 			width		= ini.GetInteger("Window", "iWidth", 640);
 			height		= ini.GetInteger("Window", "iHeight", 480);
-			
 			bootScript	= ini.Get("Script", "sBootScript", "/scripts/boot.script");
 			showToks	= ini.GetBoolean("Script", "bShowToks", false);
 			showTree	= ini.GetBoolean("Script", "bShowTree", false);
@@ -56,6 +52,11 @@ struct Settings final
 			return true;
 		}
 		return false;
+	}
+
+	inline const std::string pathTo(const std::string & filename) const
+	{
+		return assetPath + filename;
 	}
 };
 
@@ -157,22 +158,22 @@ inline static bool loadAssets()
 	// Load Fonts
 	ml::Debug::Log("Loading Fonts...");
 
-	if (!fonts[FNT_clacon].loadFromFile(settings.assetPath + "/fonts/clacon.ttf"))
+	if (!fonts[FNT_clacon].loadFromFile(settings.pathTo("/fonts/clacon.ttf")))
 	{
 		return ml::Debug::LogError("Failed Loading Font");
 	}
 
-	if (!fonts[FNT_consolas].loadFromFile(settings.assetPath + "/fonts/consolas.ttf"))
+	if (!fonts[FNT_consolas].loadFromFile(settings.pathTo("/fonts/consolas.ttf")))
 	{
 		return ml::Debug::LogError("Failed Loading Font");
 	}
 
-	if (!fonts[FNT_lucida_console].loadFromFile(settings.assetPath + "/fonts/lucida_console.ttf"))
+	if (!fonts[FNT_lucida_console].loadFromFile(settings.pathTo("/fonts/lucida_console.ttf")))
 	{
 		return ml::Debug::LogError("Failed Loading Font");
 	}
 
-	if (!fonts[FNT_minecraft].loadFromFile(settings.assetPath + "/fonts/minecraft.ttf"))
+	if (!fonts[FNT_minecraft].loadFromFile(settings.pathTo("/fonts/minecraft.ttf")))
 	{
 		return ml::Debug::LogError("Failed Loading Font");
 	}
@@ -180,7 +181,7 @@ inline static bool loadAssets()
 	// Load Textures
 	ml::Debug::Log("Loading Textures...");
 
-	if (!textures[TEX_dean].loadFromFile(settings.assetPath + "/images/dean.png"))
+	if (!textures[TEX_dean].loadFromFile(settings.pathTo("/images/dean.png")))
 	{
 		return ml::Debug::LogError("Failed Loading Texture");
 	}
@@ -188,20 +189,17 @@ inline static bool loadAssets()
 	// Load Shaders
 	ml::Debug::Log("Loading Shaders...");
 
-	if (!shaders[GL_basic].loadFromFile(settings.assetPath + "/shaders/basic.shader"))
+	if (!shaders[GL_basic].loadFromFile(settings.pathTo("/shaders/basic.shader")))
 	{
 		return ml::Debug::LogError("Failed Loading Shader: {0}", "Basic");
 	}
 
-	if (!shaders[GL_text].loadFromFile(settings.assetPath + "/shaders/text.shader"))
+	if (!shaders[GL_text].loadFromFile(settings.pathTo("/shaders/text.shader")))
 	{
 		return ml::Debug::LogError("Failed Loading Shader: {0}", "Text");
 	}
 
-	if (!shaders[GL_geometry].loadFromFile(
-		settings.assetPath + "/shaders/vs/geometry_vs.shader",
-		settings.assetPath + "/shaders/gs/geometry_gs.shader",
-		settings.assetPath + "/shaders/fs/geometry_fs.shader"))
+	if (!shaders[GL_geometry].loadFromFile(settings.pathTo("/shaders/geometry.shader")))
 	{
 		return ml::Debug::LogError("Failed Loading Shader: {0}", "Geometry");
 	}
@@ -274,7 +272,13 @@ int main(int argc, char** argv)
 		return ml::ConsoleUtility::pause(EXIT_FAILURE);
 	}
 
-	ml::Debug::Log("{0}", settings.title);
+	// Run Script
+	ml::Interpreter::LoadBuiltinCommands();
+	ML_Interpreter.parser()->
+		showToks(settings.showToks).
+		showTree(settings.showTree).
+		showItoP(settings.showItoP);
+	ML_Interpreter.execScript(settings.pathTo(settings.bootScript));
 
 	// Enable GL Error Pause
 	ml::OpenGL::errorPause(true);

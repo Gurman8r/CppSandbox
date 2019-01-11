@@ -1,7 +1,6 @@
 main = []();
 {
 	print("Hello, World!");
-	sys("pause");
 	return true;
 };
 return main();
