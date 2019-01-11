@@ -12,22 +12,22 @@ namespace ml
 	{
 	public:
 		VertexBuffer();
-		VertexBuffer(GL::Usage usage, const void * data, uint32_t size);
-		VertexBuffer(GL::Usage usage, const std::vector<float> & data);
 		VertexBuffer(const VertexBuffer & copy);
 		~VertexBuffer();
 
 		VertexBuffer & clean();
-		VertexBuffer & create(GL::Usage usage, const void * data, uint32_t size);
-		VertexBuffer & create(GL::Usage usage, const std::vector<float> & data);
-		VertexBuffer & update();
+		VertexBuffer & create();
 
-		void bind() const;
-		void unbind() const;
+		VertexBuffer & bind();
+		VertexBuffer & unbind();
 
-		inline const uint32_t &		id() const		{ return m_id; }
-		inline const void *			data() const	{ return m_data;}
-		inline const GL::Usage &	usage() const	{ return m_usage; }
+		VertexBuffer & update(GL::Usage usage, const void * data, uint32_t size);
+		VertexBuffer & update(GL::Usage usage, const std::vector<float> & data);
+
+		inline const uint32_t &		id()	const { return m_id; }
+		inline const void *			data()	const { return m_data;}
+		inline const GL::Usage &	usage() const { return m_usage; }
+		inline const uint32_t &		size()	const { return m_size; }
 
 		inline operator bool() const { return (bool)id(); }
 

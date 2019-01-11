@@ -17,6 +17,7 @@ namespace ml
 
 	public:
 		Image();
+		Image(uint32_t width, uint32_t height, const uint8_t * pixels);
 		Image(const Image & copy);
 		~Image();
 

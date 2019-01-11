@@ -66,7 +66,7 @@ namespace ml
 		{
 			return (*this)[3];
 		}		
-		inline const value_type bottom() const
+		inline const value_type bot() const
 		{
 			return top() + height();
 		}
@@ -107,7 +107,7 @@ namespace ml
 			(*this)[3] = value;
 			return (*this);
 		}		
-		inline self_type &	bottom(value_type value)
+		inline self_type &	bot(value_type value)
 		{
 			return height(value - top());
 		}

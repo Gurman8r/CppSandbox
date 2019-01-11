@@ -13,6 +13,13 @@ namespace ml
 	{
 	}
 
+	Image::Image(uint32_t width, uint32_t height, const uint8_t * pixels)
+		: m_size(width, height)
+		, m_pixels(Pixels())
+	{
+		create(width, height, pixels);
+	}
+
 	Image::Image(const Image & copy)
 		: m_size(copy.m_size)
 		, m_pixels(copy.m_pixels)
@@ -26,6 +33,7 @@ namespace ml
 
 	bool Image::cleanup()
 	{
+		m_pixels.clear();
 		return true;
 	}
 	

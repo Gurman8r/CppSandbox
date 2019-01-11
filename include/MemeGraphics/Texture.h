@@ -3,6 +3,7 @@
 
 #include <MemeGraphics/Image.h>
 #include <MemeCore/Rect.h>
+#include <MemeGraphics/GL.h>
 
 namespace ml
 {
@@ -39,6 +40,7 @@ namespace ml
 
 		bool create(uint32_t width, uint32_t height);
 		bool create(uint32_t width, uint32_t height, const vec4f & color);
+		bool create(uint32_t width, uint32_t height, const uint8_t * pixels, GL::Format colFmt, GL::Format intFmt, bool smooth, bool repeat);
 
 		Image	copyToImage() const;
 		bool	generateMipmap();

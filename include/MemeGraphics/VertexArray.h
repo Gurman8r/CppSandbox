@@ -10,25 +10,23 @@ namespace ml
 	{
 	public:
 		VertexArray();
-		VertexArray(uint32_t count);
 		VertexArray(const VertexArray & copy);
 		~VertexArray();
 
 		VertexArray & clean();
-		VertexArray & create(uint32_t count);
+		VertexArray & create();
+
+		VertexArray & bind();
+		VertexArray & unbind();
+
 		VertexArray & update();
-		
-		void bind() const;
-		void unbind() const;
 
 		inline const uint32_t &	id() const { return m_id; }
-		inline const uint32_t &	count() const { return m_id; }
 
 		inline operator bool() const { return (bool)id(); }
 
 	private:
 		uint32_t	m_id;
-		uint32_t	m_count;
 	};
 
 	using VAO = VertexArray;

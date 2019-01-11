@@ -85,8 +85,8 @@ namespace ml
 		using TextureTable = std::map<int32_t, const Texture*>;
 		using UniformTable = std::map<std::string, int32_t>;
 
-		bool	compile(const char* vs, const char* gs, const char* fs);
-		void	bindTextures() const;
+		bool		compile(const char* vs, const char* gs, const char* fs);
+		void		bindTextures() const;
 		int32_t		getUniformLocation(const std::string & value);
 
 		uint32_t		m_program;

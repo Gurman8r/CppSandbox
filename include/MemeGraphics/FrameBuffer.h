@@ -12,16 +12,16 @@ namespace ml
 	{
 	public:
 		FrameBuffer();
-		FrameBuffer(uint32_t width, uint32_t height, GL::Format color, uint32_t depth, uint32_t wrap);
 		FrameBuffer(const FrameBuffer & copy);
 		~FrameBuffer();
 
 		FrameBuffer & clean();
-		FrameBuffer & create(uint32_t width, uint32_t height, GL::Format color, uint32_t depth, uint32_t wrap);
-		FrameBuffer & update();
+		FrameBuffer & create();
 
-		void bind() const;
-		void unbind() const;
+		FrameBuffer & bind();
+		FrameBuffer & unbind();
+		
+		FrameBuffer & update(uint32_t width, uint32_t height, GL::Format color, uint32_t depth, uint32_t wrap);
 
 		inline const uint32_t &	id() const { return m_id; }
 

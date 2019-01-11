@@ -266,7 +266,7 @@ inline static bool loadAssets()
 	}
 
 	// Load Sprites
-	if(ml::Debug::Log("Loading Sprites..."))
+	if(!ml::Debug::Log("Loading Sprites..."))
 	{
 		if (!(sprites[SPR_dean] = ml::Sprite(&shaders[GL_basic], &textures[TEX_dean])))
 		{
@@ -275,7 +275,7 @@ inline static bool loadAssets()
 	}
 
 	// Load Text
-	if(ml::Debug::Log("Loading Text..."))
+	if(!ml::Debug::Log("Loading Text..."))
 	{
 		if (!(text[TXT_default] = ml::Text(&shaders[GL_text], &fonts[FNT_consolas])))
 		{
@@ -287,49 +287,119 @@ inline static bool loadAssets()
 	if(ml::Debug::Log("Loading Geometry..."))
 	{
 		// Cube
-		vao[VAO_cube].create(1);
-		vbo[VBO_cube].create(ml::GL::StaticDraw, ml::Shapes::Cube::Mesh.flattened());
-		ibo[IBO_cube].create(ml::GL::StaticDraw, ml::Shapes::Cube::Mesh.indices());
+		vao[VAO_cube]
+			.create()
+			.bind()
+			.update();
+		vbo[VBO_cube]
+			.create()
+			.bind()
+			.update(ml::GL::StaticDraw, ml::Shapes::Cube::Mesh.flattened());
+		ibo[IBO_cube]
+			.create()
+			.bind()
+			.update(ml::GL::StaticDraw, ml::Shapes::Cube::Mesh.indices());
 		ml::BufferLayout::bind({
 			{ 0, 3, ml::GL::Float, false, ml::Vertex::Size, 0, sizeof(float) },
 			{ 1, 4, ml::GL::Float, false, ml::Vertex::Size, 3, sizeof(float) },
 			{ 2, 2, ml::GL::Float, false, ml::Vertex::Size, 7, sizeof(float) },
 		});
-		vao[VAO_cube].unbind();
-		vbo[VBO_cube].unbind();
 		ibo[IBO_cube].unbind();
+		vbo[VBO_cube].unbind();
+		vao[VAO_cube].unbind();
 
 		// Quad
-		vao[VAO_quad].create(1);
-		vbo[VBO_quad].create(ml::GL::StaticDraw, ml::Shapes::Quad::Mesh.flattened());
-		ibo[IBO_quad].create(ml::GL::StaticDraw, ml::Shapes::Quad::Mesh.indices());
+		vao[VAO_quad]
+			.create()
+			.bind()
+			.update();
+		vbo[VBO_quad]
+			.create()
+			.bind()
+			.update(ml::GL::StaticDraw, ml::Shapes::Quad::Mesh.flattened());
+		ibo[IBO_quad]
+			.create()
+			.bind()
+			.update(ml::GL::StaticDraw, ml::Shapes::Quad::Mesh.indices());
 		ml::BufferLayout::bind({
 			{ 0, 3, ml::GL::Float, false, ml::Vertex::Size, 0, sizeof(float) },
 			{ 1, 4, ml::GL::Float, false, ml::Vertex::Size, 3, sizeof(float) },
 			{ 2, 2, ml::GL::Float, false, ml::Vertex::Size, 7, sizeof(float) },
 		});
-		vao[VAO_quad].unbind();
-		vbo[VBO_quad].unbind();
 		ibo[IBO_quad].unbind();
+		vbo[VBO_quad].unbind();
+		vao[VAO_quad].unbind();
 
 		// Text
-		vao[VAO_text].create(1);
-		vbo[VBO_text].create(ml::GL::DynamicDraw, ml::Shapes::Quad::Mesh.flattened());
+		vao[VAO_text].create().bind().update();
+		vbo[VBO_text]
+			.create()
+			.bind()
+			.update(ml::GL::StaticDraw, NULL, (6 * ml::Vertex::Size));
 		ml::BufferLayout::bind({
 			{ 0, 3, ml::GL::Float, false, ml::Vertex::Size, 0, sizeof(float) },
 			{ 1, 4, ml::GL::Float, false, ml::Vertex::Size, 3, sizeof(float) },
 			{ 2, 2, ml::GL::Float, false, ml::Vertex::Size, 7, sizeof(float) },
 		});
-		vao[VAO_text].unbind();
 		vbo[VBO_text].unbind();
+		vao[VAO_text].unbind();
 	}
 
 	return true;
 }
 
+inline static void drawText(
+	ml::Shader *		shader,
+	const ml::Font &	font,
+	uint32_t			fontSize,
+	const std::string & text,
+	const ml::vec2f &	pos,
+	const ml::vec2f &	scale = ml::vec2f::One)
+{
+	static ml::vec2f drawPos;
+	drawPos = pos;
+
+	vao[VAO_text].bind();
+	std::string::const_iterator it;
+	for (it = text.begin(); it != text.end(); it++)
+	{
+		const ml::Glyph & g = font.getGlyph((*it), fontSize);
+
+		ml::FloatRect r(
+			drawPos[0] + g.x() * scale[0],
+			drawPos[1] - (g.height() - g.y()) * scale[1],
+			g.width() * scale[0],
+			g.height() * scale[1]
+		);
+
+		(*shader)
+			.setUniform(ml::Uniform::Proj, proj[P_ortho])
+			.setUniform(ml::Uniform::Color, ml::Color::White)
+			.setUniform(ml::Uniform::Texture, g.texture)
+			.use();
+
+		vbo[VBO_text]
+			.bind()
+			.update(ml::GL::DynamicDraw, ml::Mesh::Flatten({
+				{{ r.left(),  r.bot(), 0 }, ml::Color::White, ml::vec2f::Zero	},
+				{{ r.left(),  r.top(), 0 }, ml::Color::White, ml::vec2f::Up		},
+				{{ r.right(), r.top(), 0 }, ml::Color::White, ml::vec2f::One	},
+				{{ r.left(),  r.bot(), 0 }, ml::Color::White, ml::vec2f::Zero	},
+				{{ r.right(), r.top(), 0 }, ml::Color::White, ml::vec2f::One	},
+				{{ r.right(), r.bot(), 0 }, ml::Color::White, ml::vec2f::Right	},
+				}))
+			.unbind();
+
+		ml::OpenGL::drawArrays(ml::GL::Triangles, 0, 6);
+
+		drawPos[0] += (float)(g.advance >> 6) * scale[0];
+	}
+	vao[VAO_text].unbind();
+}
+
 /* * * * * * * * * * * * * * * * * * * * */
 
-int32_t main(int32_t argc, char** argv)
+int main(int argc, char** argv)
 {
 	// Start master timer
 	ML_Time.start();
@@ -428,43 +498,63 @@ int32_t main(int32_t argc, char** argv)
 			// Draw
 			window.clear(ml::Color::Violet);
 			{
+				window.setEnabled(ml::GL::CullFace);
+				window.setEnabled(ml::GL::DepthTest);
+				
 				// Cube
 				if (ml::Shader * shader = &shaders[GL_basic])
 				{
-					shader->use()
+					(*shader)
 						.setUniform(ml::Uniform::Proj, proj[P_persp])
 						.setUniform(ml::Uniform::View, view[V_camera])
 						.setUniform(ml::Uniform::Model, model[M_cube])
 						.setUniform(ml::Uniform::Color, ml::Color::White)
-						.setUniform(ml::Uniform::Texture, textures[TEX_dean]);
+						.setUniform(ml::Uniform::Texture, textures[TEX_dean])
+						.use();
 				
 					vao[VAO_cube].bind();
 					vbo[VBO_cube].bind();
 					ibo[IBO_cube].bind();
 					{
-						window.setEnabled(ml::GL::CullFace);
 						window.drawElements(ibo[IBO_cube], ml::GL::Triangles, ml::GL::UnsignedInt);
 					}
+					ibo[IBO_cube].unbind();
+					vbo[VBO_cube].unbind();
+					vao[VAO_cube].unbind();
 				}
 
+				window.setDisabled(ml::GL::CullFace);
+				window.setDisabled(ml::GL::DepthTest);
+				
 				// Quad
 				if (ml::Shader * shader = &shaders[GL_basic])
 				{
-					shader->use()
+					(*shader)
 						.setUniform(ml::Uniform::Proj, proj[P_persp])
 						.setUniform(ml::Uniform::View, view[V_camera])
 						.setUniform(ml::Uniform::Model, model[M_quad])
 						.setUniform(ml::Uniform::Color, ml::Color::White)
-						.setUniform(ml::Uniform::Texture, textures[TEX_dean]);
+						.setUniform(ml::Uniform::Texture, textures[TEX_dean])
+						.use();
 
 					vao[VAO_quad].bind();
 					vbo[VBO_quad].bind();
 					ibo[IBO_quad].bind();
 					{
-						window.setDisabled(ml::GL::CullFace);
 						window.drawElements(ibo[IBO_quad], ml::GL::Triangles, ml::GL::UnsignedInt);
 					}
+					ibo[IBO_quad].unbind();
+					vbo[VBO_quad].unbind();
+					vao[VAO_quad].unbind();
 				}
+
+				// Text
+				drawText(&shaders[GL_text], fonts[FNT_clacon], 24,
+					"Hello, World!", { 256, 256 });
+
+				drawText(&shaders[GL_text], fonts[FNT_clacon], 24,
+					"Hello, World!", { 512, 256 });
+
 			}
 			window.swapBuffers();
 			window.pollEvents();

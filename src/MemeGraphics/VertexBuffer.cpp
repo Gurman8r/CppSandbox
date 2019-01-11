@@ -8,16 +8,6 @@ namespace ml
 	{
 	}
 
-	VertexBuffer::VertexBuffer(GL::Usage usage, const void * data, uint32_t size)
-	{
-		create(usage, data, size);
-	}
-
-	VertexBuffer::VertexBuffer(GL::Usage usage, const std::vector<float>& data)
-		: VertexBuffer(usage, &data[0], (uint32_t)data.size())
-	{
-	}
-
 	VertexBuffer::VertexBuffer(const VertexBuffer & copy)
 		: m_id(copy.m_id)
 		, m_usage(copy.m_usage)
@@ -38,42 +28,61 @@ namespace ml
 		return (*this);
 	}
 
-	VertexBuffer & VertexBuffer::create(GL::Usage usage, const void * data, uint32_t size)
+	VertexBuffer & VertexBuffer::create()
 	{
-		m_usage = usage;
-		m_data	= data;
-		m_size	= size;
-		m_id	= OpenGL::genBuffers(1);
-
-		bind();
-
-		return update();
+		m_id = OpenGL::genBuffers(1);
+		return (*this);
 	}
 
-	VertexBuffer & VertexBuffer::create(GL::Usage usage, const std::vector<float>& data)
+
+	VertexBuffer & VertexBuffer::bind()
 	{
-		return create(usage, &data[0], (uint32_t)data.size());
+		OpenGL::bindBuffer(GL::ArrayBuffer, m_id);
+
+		return (*this);
 	}
 
-	VertexBuffer & VertexBuffer::update()
+	VertexBuffer & VertexBuffer::unbind()
 	{
-		OpenGL::bufferData(
-			GL::ArrayBuffer,
-			(m_size * sizeof(float)),
-			m_data,
-			m_usage);
+		OpenGL::bindBuffer(GL::ArrayBuffer, NULL);
 
 		return (*this);
 	}
 
 
-	void VertexBuffer::bind() const
+	VertexBuffer & VertexBuffer::update(GL::Usage usage, const std::vector<float>& data)
 	{
-		OpenGL::bindBuffer(GL::ArrayBuffer, m_id);
+		return update(usage, &data[0], (uint32_t)data.size());
 	}
 
-	void VertexBuffer::unbind() const
+	VertexBuffer & VertexBuffer::update(GL::Usage usage, const void * data, uint32_t size)
 	{
-		OpenGL::bindBuffer(GL::ArrayBuffer, NULL);
+		m_usage = usage;
+		m_data = data;
+		m_size = size;
+
+		switch (m_usage)
+		{
+		case GL::StaticDraw:
+			OpenGL::bufferData(
+				GL::ArrayBuffer,
+				(sizeof(float) * m_size),
+				m_data,
+				m_usage);
+			break;
+
+		case GL::DynamicDraw:
+			OpenGL::bufferSubData(
+				GL::ArrayBuffer,
+				0,
+				(sizeof(float) * m_size),
+				m_data);
+			break;
+
+		case GL::StreamDraw:
+		default:
+			break;
+		}
+		return (*this);
 	}
 }

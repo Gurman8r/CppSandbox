@@ -107,7 +107,7 @@ namespace ml
 			if (rect.left() < 0)		rect.left(0);
 			if (rect.top() < 0)			rect.top(0);
 			if (rect.right() > width)	rect.right(width);
-			if (rect.bottom() > height) rect.bottom(height);
+			if (rect.bot() > height) rect.bot(height);
 
 			// Create the texture and upload the pixels
 			if (create(rect.width(), rect.height()))
@@ -216,7 +216,8 @@ namespace ml
 
 			if (!src || !dst)
 			{
-				return Debug::LogError("Cannot copy texture, failed to create a frame buffer object");
+				return Debug::LogError(
+					"Cannot copy texture, failed to create a frame buffer object");
 			}
 
 			// Link the source texture to the source frame buffer
@@ -253,7 +254,8 @@ namespace ml
 			}
 			else
 			{
-				return Debug::LogError("Cannot copy texture, failed to link texture to frame buffer");
+				return Debug::LogError(
+					"Cannot copy texture, failed to link texture to frame buffer");
 			}
 
 			// Restore previously bound framebuffers
@@ -285,9 +287,10 @@ namespace ml
 	{
 		if (width == 0 || height == 0)
 		{
-			return Debug::LogError("Failed to create texture, invalid size ( {0}x{1} )",
-				width,
-				height);
+			m_size = m_actualSize = vec2u::Zero;
+
+			return Debug::LogError("Failed creating texture, invalid size {0}",
+				m_size);
 		}
 
 		vec2u actualSize(getValidSize(width), getValidSize(height));
@@ -296,7 +299,10 @@ namespace ml
 
 		if ((actualSize[0] > maxSize) || (actualSize[1] > maxSize))
 		{
-			return Debug::LogError("Failed to create texture, its internal size is too high ( {0}x{1} ), maximum is ( {2}x{2} )", 
+			return Debug::LogError(
+				"Failed creating texture: "
+				"Internal size is too high ( {0} x {1} ) "
+				"Maximum is ( {2} x {2} )", 
 				actualSize[0],
 				actualSize[1], 
 				maxSize);
@@ -398,6 +404,73 @@ namespace ml
 		return loadFromImage(image);
 	}
 
+	bool Texture::create(
+		uint32_t width, uint32_t height,
+		const uint8_t * pixels, 
+		GL::Format colFmt, GL::Format intFmt, 
+		bool smooth, bool repeat)
+	{
+		if (!m_id && (m_id = OpenGL::genTextures(1)))
+		{
+			Texture::bind(this);
+
+			m_size[0]		= m_actualSize[0] = width;
+			m_size[1]		= m_actualSize[1] = height;
+			m_isSmooth		= smooth;
+			m_isRepeated	= repeat;
+			m_sRgb			= false;
+			m_hasMipmap		= false;
+			m_cacheID		= OpenGL::getUniqueID<Texture>();
+
+			OpenGL::texImage2D(
+				GL::Texture2D,
+				0,
+				colFmt,
+				m_size[0],
+				m_size[1],
+				0,
+				intFmt,
+				GL::UnsignedByte,
+				pixels);
+
+			OpenGL::texParameter(
+				GL::Texture2D,
+				GL::TexWrapS,
+					(m_isRepeated
+						? GL::Repeat
+						: (OpenGL::edgeClampAvailable()
+							? GL::ClampToEdge
+							: GL::Clamp)));
+
+			OpenGL::texParameter(
+				GL::Texture2D,
+				GL::TexWrapT,
+					(m_isRepeated
+						? GL::Repeat
+						: (OpenGL::edgeClampAvailable()
+							? GL::ClampToEdge
+							: GL::Clamp)));
+
+			OpenGL::texParameter(
+				GL::Texture2D,
+				GL::TexMagFilter,
+					(m_isSmooth
+						? GL::Linear
+						: GL::Nearest));
+
+			OpenGL::texParameter(
+				GL::Texture2D,
+				GL::TexMinFilter,
+					(m_isSmooth
+						? GL::Linear
+						: GL::Nearest));
+
+			return true;
+		}
+		return false;
+	}
+
+
 
 	Image Texture::copyToImage() const
 	{
@@ -468,7 +541,7 @@ namespace ml
 	{
 		if (m_id)
 		{
-			if (!OpenGL::framebuffersAvailable())
+			if (OpenGL::framebuffersAvailable())
 			{
 				OpenGL::bindTexture(GL::Texture2D, m_id);
 				

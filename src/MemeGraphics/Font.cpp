@@ -45,7 +45,7 @@ namespace ml
 	bool Font::loadFromFile(const std::string & filename)
 	{
 		FT_Library library;
-		if (FT_Init_FreeType(&library) != 0)
+		if (FT_Init_FreeType(&library) != EXIT_SUCCESS)
 		{
 			return Debug::LogError("Failed to load font \"{0}\" (failed to initialize FreeType)", 
 				filename);
@@ -54,7 +54,7 @@ namespace ml
 
 		// Load the new fonts face from the specified file
 		FT_Face face;
-		if (FT_New_Face(static_cast<FT_Library>(m_library), filename.c_str(), 0, &face) != 0)
+		if (FT_New_Face(static_cast<FT_Library>(m_library), filename.c_str(), 0, &face) != EXIT_SUCCESS)
 		{
 			return Debug::LogError("Failed to load font \"{0}\" (failed to create the font face)",
 				filename);
@@ -62,7 +62,7 @@ namespace ml
 
 		// Load the stroker that will be used to outline the fonts
 		FT_Stroker stroker;
-		if (FT_Stroker_New(static_cast<FT_Library>(m_library), &stroker) != 0)
+		if (FT_Stroker_New(static_cast<FT_Library>(m_library), &stroker) != EXIT_SUCCESS)
 		{
 			FT_Done_Face(face);
 			return Debug::LogError("Failed to load font \"{0}\" (failed to create the stroker)", 
@@ -70,7 +70,7 @@ namespace ml
 		}
 
 		// Select the unicode character map
-		if (FT_Select_Charmap(face, FT_ENCODING_UNICODE) != 0)
+		if (FT_Select_Charmap(face, FT_ENCODING_UNICODE) != EXIT_SUCCESS)
 		{
 			FT_Stroker_Done(stroker);
 			FT_Done_Face(face);
@@ -91,24 +91,16 @@ namespace ml
 
 	const Glyph & Font::getGlyph(uint32_t c, uint32_t characterSize) const
 	{
-		// Get the page corresponding to the character size
-		GlyphTable & glyphs = m_pages[characterSize].glyphs;
+		GlyphTable & table = m_pages[characterSize].glyphs;
 
-		// Build the key by combining the code point, bold flag, and outline thickness
-		const uint32_t key = c;
-
-		// Search the glyph into the cache
-		GlyphTable::const_iterator it = glyphs.find(key);
-		if (it != glyphs.end())
+		GlyphTable::const_iterator it;
+		if ((it = table.find(c)) != table.end())
 		{
-			// Found: just return it
 			return it->second;
 		}
 		else
 		{
-			// Not found: we have to load it
-			Glyph glyph = loadGlyph(c, characterSize);
-			return glyphs.insert(std::make_pair(key, glyph)).first->second;
+			return table.insert({ c, loadGlyph(c, characterSize) }).first->second;
 		}
 	}
 
@@ -134,45 +126,33 @@ namespace ml
 		OpenGL::pixelStore(GL::UnpackAlignment, 1);
 
 		// Load character glyph 
-		if (FT_Load_Char(face, c, FT_LOAD_RENDER))
+		if (FT_Load_Char(face, c, FT_LOAD_RENDER) != EXIT_SUCCESS)
 		{
 			Debug::LogWarning("Failed to load Glyph \'{0}\'", c);
 			return glyph;
 		}
 
-		uint32_t texture = OpenGL::genTextures(1);
-		OpenGL::bindTexture(GL::Texture2D, texture);
-		OpenGL::texImage2D(
-			GL::Texture2D,
-			0,
-			GL::Red,
+		if (!glyph.texture.create(
 			face->glyph->bitmap.width,
 			face->glyph->bitmap.rows,
-			0,
+			face->glyph->bitmap.buffer,
+			GL::Red, 
 			GL::Red,
-			GL::UnsignedByte,
-			face->glyph->bitmap.buffer
-		);
-
-		// Set texture options
-		OpenGL::texParameter(GL::Texture2D, GL::TexWrapS, GL::ClampToEdge);
-		OpenGL::texParameter(GL::Texture2D, GL::TexWrapT, GL::ClampToEdge);
-		OpenGL::texParameter(GL::Texture2D, GL::TexMinFilter, GL::Linear);
-		OpenGL::texParameter(GL::Texture2D, GL::TexMagFilter, GL::Linear);
-
-		// Now store character for later use
-		glyph.texture = texture;
+			true, 
+			true))
+		{
+			Debug::LogError("Failed Loading Glyph Texture: \'{0}\'", (char)c);
+			return glyph;
+		}
 
 		glyph.bounds = {
-			(int32_t)face->glyph->bitmap_left,
-			(int32_t)face->glyph->bitmap_top,
-			(int32_t)face->glyph->bitmap.width,
-			(int32_t)face->glyph->bitmap.rows
+			(float)face->glyph->bitmap_left,
+			(float)face->glyph->bitmap_top,
+			(float)face->glyph->bitmap.width,
+			(float)face->glyph->bitmap.rows
 		};
 
-		glyph.advance = uint32_t(face->glyph->advance.x);
-
-		OpenGL::bindTexture(GL::Texture2D, 0);
+		glyph.advance = (uint32_t)face->glyph->advance.x;
 
 		return glyph;
 	}

@@ -26,8 +26,8 @@ namespace ml
 		bool cleanup() override;
 		bool loadFromFile(const std::string & filename) override;
 
-		const Glyph &	getGlyph(uint32_t c, uint32_t characterSize) const;
-		const Info &	getInfo() const;
+		const Glyph & getGlyph(uint32_t c, uint32_t characterSize) const;
+		const Info	& getInfo() const;
 
 	private:
 		using GlyphTable = std::map<uint32_t, Glyph>;
