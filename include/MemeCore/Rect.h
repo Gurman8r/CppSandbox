@@ -138,7 +138,7 @@ namespace ml
 	template <typename T> const Rect<T> Rect<T>::One = Rect<T>(1, 1, 1, 1);
 
 	using FloatRect = Rect<float>;
-	using IntRect	= Rect<int>;
+	using IntRect	= Rect<int32_t>;
 	using UintRect	= Rect<uint32_t>;
 }
 

@@ -101,9 +101,9 @@ vec4 sampleCubicHermite(in vec4 p0, in vec4 m0, in vec4 p1, in vec4 m1, const fl
 
 // ****
 // draw line
-void drawLine(in vec4 p0, in vec4 p1, const int samples, const float dt)
+void drawLine(in vec4 p0, in vec4 p1, const int32_t samples, const float dt)
 {
-	int i = 0;
+	int32_t i = 0;
 	float t = 0.0f;
 
 	for(i = 0; i <= samples; i++)
@@ -120,9 +120,9 @@ void drawLine(in vec4 p0, in vec4 p1, const int samples, const float dt)
 
 // ****
 // draw entire Bezier curve
-void drawBezierCurve0(in vec4 p0, const int samples, const float dt)
+void drawBezierCurve0(in vec4 p0, const int32_t samples, const float dt)
 {
-	int i = 0;
+	int32_t i = 0;
 	float t = 0.0f;
 
 	for(i = 0; i <= samples; i++)
@@ -136,9 +136,9 @@ void drawBezierCurve0(in vec4 p0, const int samples, const float dt)
 
 	EndPrimitive();
 }
-void drawBezierCurve1(in vec4 p0, in vec4 p1, const int samples, const float dt)
+void drawBezierCurve1(in vec4 p0, in vec4 p1, const int32_t samples, const float dt)
 {
-	int i = 0;
+	int32_t i = 0;
 	float t = 0.0f;
 
 	for(i = 0; i <= samples; i++)
@@ -152,9 +152,9 @@ void drawBezierCurve1(in vec4 p0, in vec4 p1, const int samples, const float dt)
 
 	EndPrimitive();
 }
-void drawBezierCurve2(in vec4 p0, in vec4 p1, in vec4 p2, const int samples, const float dt)
+void drawBezierCurve2(in vec4 p0, in vec4 p1, in vec4 p2, const int32_t samples, const float dt)
 {
-	int i = 0;
+	int32_t i = 0;
 	float t = 0.0f;
 
 	for(i = 0; i <= samples; i++)
@@ -168,9 +168,9 @@ void drawBezierCurve2(in vec4 p0, in vec4 p1, in vec4 p2, const int samples, con
 
 	EndPrimitive();
 }
-void drawBezierCurve3(in vec4 p0, in vec4 p1, in vec4 p2, in vec4 p3, const int samples, const float dt)
+void drawBezierCurve3(in vec4 p0, in vec4 p1, in vec4 p2, in vec4 p3, const int32_t samples, const float dt)
 {
-	int i = 0;
+	int32_t i = 0;
 	float t = 0.0f;
 
 	for(i = 0; i <= samples; i++)
@@ -187,11 +187,11 @@ void drawBezierCurve3(in vec4 p0, in vec4 p1, in vec4 p2, in vec4 p3, const int 
 
 // ****
 // draw Catmull-Rom spline segment
-void drawCatmullRomSplineSegment(in vec4 pPrev, in vec4 p0, in vec4 p1, in vec4 pNext, const int samples, const float dt)
+void drawCatmullRomSplineSegment(in vec4 pPrev, in vec4 p0, in vec4 p1, in vec4 pNext, const int32_t samples, const float dt)
 {
 	// vec4 sampleCatmullRom(in vec4 pPrev, in vec4 p0, in vec4 p1, in vec4 pNext, const float t)
 
-	int i = 0;
+	int32_t i = 0;
 	float t = 0.0f;
 
 	for(i = 0; i <= samples; i++)
@@ -208,11 +208,11 @@ void drawCatmullRomSplineSegment(in vec4 pPrev, in vec4 p0, in vec4 p1, in vec4 
 
 // ****
 // draw cubic Hermite spline segment
-void drawCubicHermiteSplineSegment(in vec4 p0, in vec4 m0, in vec4 p1, in vec4 m1, const int samples, const float dt)
+void drawCubicHermiteSplineSegment(in vec4 p0, in vec4 m0, in vec4 p1, in vec4 m1, const int32_t samples, const float dt)
 {
 	// vec4 sampleCubicHermite(in vec4 p0, in vec4 m0, in vec4 p1, in vec4 m1, const float t)
 
-	int i = 0;
+	int32_t i = 0;
 	float t = 0.0f;
 
 	for(i = 0; i <= samples; i++)
@@ -246,7 +246,7 @@ void main()
 {
 	
 
-	const int samples = SAMPLES_PER_SEGMENT;
+	const int32_t samples = SAMPLES_PER_SEGMENT;
 	const float dt = 1.0 / float(SAMPLES_PER_SEGMENT);
 	
 	passColor = vec4(0.5f, 0.0f, 1.0f, 1.0f);

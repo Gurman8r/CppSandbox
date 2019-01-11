@@ -29,7 +29,7 @@ namespace ml
 		};
 
 	public:
-		enum Type : int
+		enum Type : int32_t
 		{
 			INVALID_TYPE = -1,
 
@@ -93,7 +93,7 @@ namespace ml
 		float		floatValue() const;
 		Var			elemValue(std::size_t i) const;
 		std::string	errorValue() const;
-		int			intValue() const;
+		int32_t			intValue() const;
 		Ptr			pointerValue() const;
 		std::string	stringValue() const;
 		std::string	textValue() const;
@@ -105,7 +105,7 @@ namespace ml
 		Var &		errorValue(const std::string & value);
 		Var &		floatValue(const float & value);
 		Var &		funcValue(const TokenList & value);
-		Var &		intValue(const int & value);
+		Var &		intValue(const int32_t & value);
 		Var &		nullValue();
 		Var &		pointerValue(const Ptr & value);
 		Var &		stringValue(const std::string & value);
@@ -160,7 +160,7 @@ namespace ml
 		Var & operator=(bool value);
 		Var & operator=(float value);
 		Var & operator=(double value);
-		Var & operator=(int value);
+		Var & operator=(int32_t value);
 		Var & operator=(const Ptr & value);
 		Var & operator=(const std::string & value);
 		Var & operator=(const char * value);
@@ -178,7 +178,7 @@ namespace ml
 		static Var makeRecursive(const TokenList & toks);
 
 	public: // Helper Functions
-		inline int		getScope() const
+		inline int32_t		getScope() const
 		{
 			return m_scope;
 		}
@@ -187,7 +187,7 @@ namespace ml
 			return m_type;
 		}
 
-		inline Var &	setScope(int value)
+		inline Var &	setScope(int32_t value)
 		{
 			m_scope = value;
 			return (*this);
@@ -201,7 +201,7 @@ namespace ml
 
 	private:
 		TokenList	m_tokens;
-		int			m_scope;
+		int32_t			m_scope;
 		Type		m_type;
 
 		mutable bool m_changed = true;

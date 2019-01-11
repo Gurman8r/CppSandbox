@@ -2,7 +2,7 @@
 
 namespace ml
 {
-	int AST_Node::s_id = 0;
+	int32_t AST_Node::s_id = 0;
 
 	AST_Node::AST_Node()
 		: m_parent(NULL)
@@ -368,7 +368,7 @@ namespace ml
 
 
 	// Execution
-	int		AST_Node::getID() const
+	int32_t		AST_Node::getID() const
 	{
 		return m_id;
 	}

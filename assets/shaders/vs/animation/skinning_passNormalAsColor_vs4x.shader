@@ -39,10 +39,10 @@ vec4 skin(in vec4 v)
 {
 	vec4 v_out = vec4(0.0);
 
-	v_out += bones_skinning[int(blendIndex.x)] * blendWeight.x * v; 
-	v_out += bones_skinning[int(blendIndex.y)] * blendWeight.y * v; 
-	v_out += bones_skinning[int(blendIndex.z)] * blendWeight.z * v; 
-	v_out += bones_skinning[int(blendIndex.w)] * blendWeight.w * v; 
+	v_out += bones_skinning[int32_t(blendIndex.x)] * blendWeight.x * v; 
+	v_out += bones_skinning[int32_t(blendIndex.y)] * blendWeight.y * v; 
+	v_out += bones_skinning[int32_t(blendIndex.z)] * blendWeight.z * v; 
+	v_out += bones_skinning[int32_t(blendIndex.w)] * blendWeight.w * v; 
 
 	return v_out;
 }

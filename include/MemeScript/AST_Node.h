@@ -79,7 +79,7 @@ namespace ml
 		virtual std::ostream& display(std::ostream& out) const;
 		
 	public: // Execution
-		int	getID() const;
+		int32_t	getID() const;
 		virtual bool run();
 		bool runNext();
 
@@ -166,9 +166,9 @@ namespace ml
 	private: // Variables
 		AST_Node*	m_parent;
 		list_type	m_children;
-		int			m_id;
+		int32_t			m_id;
 
-		static int s_id;
+		static int32_t s_id;
 	};
 }
 

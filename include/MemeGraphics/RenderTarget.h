@@ -24,16 +24,14 @@ namespace ml
 
 	public:
 		bool isEnabled(GL::Enum value) const;
-		bool enable(GL::Enum value, bool check = false) const;
-		bool disable(GL::Enum value, bool check = false) const;
-
-		void activeTexture(GL::TextureID textureID) const;
-		void alphaFunc(GL::Comparison comp, float value) const;
-		void blendFunc(GL::Factor src, GL::Factor dst) const;
-		void cullFace(GL::Face value) const;
-		void depthFunc(GL::Comparison value) const;
-		void viewport(const vec2i & pos, const vec2i & size) const;
-
+		bool setEnabled(GL::Enum value, bool check = false) const;
+		bool setDisabled(GL::Enum value, bool check = false) const;
+		void setActiveTexture(GL::TextureID textureID) const;
+		void setAlphaFunc(GL::Comparison comp, float value) const;
+		void setBlendFunc(GL::Factor src, GL::Factor dst) const;
+		void setCullFace(GL::Face value) const;
+		void setDepthFunc(GL::Comparison value) const;
+		void setViewport(const vec2i & pos, const vec2i & size) const;
 
 	private:
 	};

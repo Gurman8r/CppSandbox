@@ -20,6 +20,7 @@ namespace ml
 	class ML_GRAPHICS_API OpenGL final
 	{
 	private: // Members
+		static bool m_good;
 		static bool m_errorPause;
 
 	public: // Utility
@@ -32,6 +33,7 @@ namespace ml
 
 	public: // General
 		static bool		init(bool experimental);
+		static bool		good();
 
 	public: // Flags
 		static bool		isEnabled(GL::Enum value);
@@ -41,7 +43,7 @@ namespace ml
 	public: // Errors
 		static GL::Err	getError();
 		static void		errorPause(bool value);
-		static void		checkError(GL::CStr file, unsigned int line, GL::CStr expression);
+		static void		checkError(GL::CStr file, uint32_t line, GL::CStr expression);
 		
 	public: // Get
 		static GL::CStr getString(GL::Enum name);

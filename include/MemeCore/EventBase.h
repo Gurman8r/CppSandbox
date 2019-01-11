@@ -9,23 +9,23 @@ namespace ml
 		: public ITrackable
 	{
 	public:
-		enum EventID : int
+		enum EventID : int32_t
 		{
 			EV_Invalid = -1,
 			MAX_EVENT_ID
 		};
 
 	public:
-		EventBase(int id)
+		EventBase(int32_t id)
 			: m_id(id)
 		{
 		}
 		virtual ~EventBase() {}
 
-		inline const int & id() const { return m_id; }
+		inline const int32_t & id() const { return m_id; }
 
 	private:
-		int m_id;
+		int32_t m_id;
 
 	};
 }

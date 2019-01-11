@@ -10,7 +10,7 @@
 namespace ml
 {
 	// Members
-
+	bool OpenGL::m_good = false;
 	bool OpenGL::m_errorPause = false;
 
 
@@ -19,16 +19,20 @@ namespace ml
 	bool OpenGL::init(bool experimental)
 	{
 		static bool checked = false;
-		static bool good;
 		if (!checked)
 		{
 			checked = true;
 
 			glewExperimental = experimental;
 
-			good = (glewInit() == GLEW_OK);
+			m_good = (glewInit() == GLEW_OK);
 		}
-		return good;
+		return good();
+	}
+
+	bool OpenGL::good()
+	{
+		return m_good;
 	}
 
 	
@@ -70,7 +74,7 @@ namespace ml
 		m_errorPause = value;
 	}
 
-	void OpenGL::checkError(GL::CStr file, unsigned int line, GL::CStr expression)
+	void OpenGL::checkError(GL::CStr file, uint32_t line, GL::CStr expression)
 	{
 		// Get the last error
 		if (GL::Err errorCode = getError())

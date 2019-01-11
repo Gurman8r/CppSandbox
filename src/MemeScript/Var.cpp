@@ -57,7 +57,7 @@ namespace ml
 		"void",
 		"bool",
 		"float",
-		"int",
+		"int32_t",
 		"ptr",
 		"std::string",
 		"array"
@@ -251,7 +251,7 @@ namespace ml
 		return isErrorType() ? (textValue()) : std::string();
 	}
 
-	int			Var::intValue() const
+	int32_t			Var::intValue() const
 	{
 		return isValid() ? StringUtility::ToInt((textValue())) : 0;
 	}
@@ -323,7 +323,7 @@ namespace ml
 		return setType(Var::Func).tokensValue(value);
 	}
 
-	Var &	Var::intValue(const int & value)
+	Var &	Var::intValue(const int32_t & value)
 	{
 		return setType(Var::Integer).tokensValue({ { TokenType::TOK_INT, std::to_string(value) } });
 	}
@@ -618,7 +618,7 @@ namespace ml
 				return intValue(intValue() + other.intValue());
 
 			case Type::Float:
-				return intValue(intValue() + (int)other.floatValue());
+				return intValue(intValue() + (int32_t)other.floatValue());
 
 			default:
 				if (other.isIntType())
@@ -688,7 +688,7 @@ namespace ml
 				return intValue(intValue() / other.intValue());
 
 			case Type::Float:
-				return intValue(intValue() / (int)other.floatValue());
+				return intValue(intValue() / (int32_t)other.floatValue());
 
 			default:
 				if (other.isIntType())
@@ -759,7 +759,7 @@ namespace ml
 				return intValue(intValue() % other.intValue());
 
 			case Type::Float:
-				return intValue(intValue() % (int)other.floatValue());
+				return intValue(intValue() % (int32_t)other.floatValue());
 
 			default:
 				if (other.isIntType())
@@ -771,14 +771,14 @@ namespace ml
 			switch (other.getType())
 			{
 			case Type::Float:
-				return intValue((int)floatValue() % (int)other.floatValue());
+				return intValue((int32_t)floatValue() % (int32_t)other.floatValue());
 
 			case Type::Integer:
-				return intValue((int)floatValue() % other.intValue());
+				return intValue((int32_t)floatValue() % other.intValue());
 
 			default:
 				if (other.isFloatType())
-					return intValue((int)floatValue() % (int)other.floatValue());
+					return intValue((int32_t)floatValue() % (int32_t)other.floatValue());
 			}
 		}
 
@@ -821,7 +821,7 @@ namespace ml
 				return intValue(intValue() * other.intValue());
 
 			case Type::Float:
-				return intValue(intValue() * (int)other.floatValue());
+				return intValue(intValue() * (int32_t)other.floatValue());
 
 			default:
 				if (other.isIntType())
@@ -912,14 +912,14 @@ namespace ml
 			switch (other.getType())
 			{
 			case Type::Integer:
-				return intValue((int)pow(intValue(), other.intValue()));
+				return intValue((int32_t)pow(intValue(), other.intValue()));
 
 			case Type::Float:
-				return intValue((int)pow(intValue(), (int)other.floatValue()));
+				return intValue((int32_t)pow(intValue(), (int32_t)other.floatValue()));
 
 			default:
 				if (other.isIntType())
-					return intValue((int)pow(intValue(), other.intValue()));
+					return intValue((int32_t)pow(intValue(), other.intValue()));
 			}
 
 			// Float
@@ -963,7 +963,7 @@ namespace ml
 				return intValue(intValue() - other.intValue());
 
 			case Type::Float:
-				return intValue(intValue() - (int)other.floatValue());
+				return intValue(intValue() - (int32_t)other.floatValue());
 
 			default:
 				if (other.isIntType())
@@ -1118,7 +1118,7 @@ namespace ml
 		return floatValue((float)value);
 	}
 
-	Var & Var::operator=(int value)
+	Var & Var::operator=(int32_t value)
 	{
 		return intValue(value);
 	}

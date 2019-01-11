@@ -41,52 +41,47 @@ namespace ml
 	}
 	
 
-	// Flags
-	
 	bool RenderTarget::isEnabled(GL::Enum value) const
 	{
 		return OpenGL::isEnabled(value);
 	}
 		
-	bool RenderTarget::enable(GL::Enum value, bool check) const
+	bool RenderTarget::setEnabled(GL::Enum value, bool check) const
 	{
 		return OpenGL::enable(value, check);
 	}
 
-	bool RenderTarget::disable(GL::Enum value, bool check) const
+	bool RenderTarget::setDisabled(GL::Enum value, bool check) const
 	{
 		return OpenGL::disable(value, check);
 	}
 	
-
-	// Functions
-
-	void RenderTarget::activeTexture(GL::TextureID target) const
+	void RenderTarget::setActiveTexture(GL::TextureID target) const
 	{
 		OpenGL::activeTexture(target);
 	}
 
-	void RenderTarget::alphaFunc(GL::Comparison cmp, float value) const
+	void RenderTarget::setAlphaFunc(GL::Comparison cmp, float value) const
 	{
 		OpenGL::alphaFunc(cmp, value);
 	}
 
-	void RenderTarget::blendFunc(GL::Factor src, GL::Factor dst) const
+	void RenderTarget::setBlendFunc(GL::Factor src, GL::Factor dst) const
 	{
 		OpenGL::blendFunc(src, dst);
 	}
 
-	void RenderTarget::cullFace(GL::Face face) const
+	void RenderTarget::setCullFace(GL::Face face) const
 	{
 		OpenGL::cullFace(face);
 	}
 
-	void RenderTarget::depthFunc(GL::Comparison cmp) const
+	void RenderTarget::setDepthFunc(GL::Comparison cmp) const
 	{
 		OpenGL::depthFunc(cmp);
 	}
 	
-	void RenderTarget::viewport(const vec2i & pos, const vec2i & size) const
+	void RenderTarget::setViewport(const vec2i & pos, const vec2i & size) const
 	{
 		OpenGL::viewport(pos[0], pos[1], size[0], size[1]);
 	}

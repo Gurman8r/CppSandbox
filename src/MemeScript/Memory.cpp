@@ -23,7 +23,7 @@ namespace ml
 		ScopeMap::const_iterator scope;
 		for (scope = m_values->begin(); scope != m_values->end(); scope++)
 		{
-			const int& index = scope->first;
+			const int32_t& index = scope->first;
 
 			out << FG::Yellow << "\tScope [" << index << "]"
 				<< std::endl;
@@ -60,7 +60,7 @@ namespace ml
 	}
 
 
-	bool Memory::delVar(int index, const std::string& name)
+	bool Memory::delVar(int32_t index, const std::string& name)
 	{
 		if (values(index))
 		{
@@ -78,7 +78,7 @@ namespace ml
 		return false;
 	}
 
-	Var * Memory::getVar(int index, const std::string& name) const
+	Var * Memory::getVar(int32_t index, const std::string& name) const
 	{
 		if (values(index))
 		{
@@ -91,7 +91,7 @@ namespace ml
 		return NULL;
 	}
 
-	Var * Memory::newVar(int index, const std::string & name, const Var & value)
+	Var * Memory::newVar(int32_t index, const std::string & name, const Var & value)
 	{
 		if (values(index) || makeScope(index))
 		{
@@ -111,7 +111,7 @@ namespace ml
 		return NULL;
 	}
 
-	Var * Memory::setVar(int index, const std::string & name, const Var & value)
+	Var * Memory::setVar(int32_t index, const std::string & name, const Var & value)
 	{
 		if (Var * v = getVar(index, name))
 		{
@@ -123,7 +123,7 @@ namespace ml
 	}
 
 
-	const Memory::VarMap * Memory::values(int index) const
+	const Memory::VarMap * Memory::values(int32_t index) const
 	{
 		ScopeMap::const_iterator it = m_values->find(index);
 		if (it != m_values->end())
@@ -133,7 +133,7 @@ namespace ml
 		return NULL;
 	}
 
-	Memory::VarMap * Memory::values(int index)
+	Memory::VarMap * Memory::values(int32_t index)
 	{
 		ScopeMap::iterator it = m_values->find(index);
 		if (it != m_values->end())
@@ -144,7 +144,7 @@ namespace ml
 	}
 
 
-	Memory::VarMap* Memory::makeScope(int index)
+	Memory::VarMap* Memory::makeScope(int32_t index)
 	{
 		if (!values(index))
 		{
@@ -155,7 +155,7 @@ namespace ml
 		return values(index);
 	}
 
-	bool Memory::clearScope(int index)
+	bool Memory::clearScope(int32_t index)
 	{
 		if (VarMap* vars = values(index))
 		{

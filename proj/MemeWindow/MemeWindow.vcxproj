@@ -160,8 +160,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\MemeWindow\ContextSettings.h" />
+    <ClInclude Include="..\..\include\MemeWindow\Context.h" />
     <ClInclude Include="..\..\include\MemeWindow\Export.h" />
+    <ClInclude Include="..\..\include\MemeWindow\Icon.h" />
     <ClInclude Include="..\..\include\MemeWindow\Screen.h" />
     <ClInclude Include="..\..\include\MemeWindow\VideoMode.h" />
     <ClInclude Include="..\..\include\MemeWindow\Window.h" />

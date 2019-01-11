@@ -52,7 +52,7 @@ namespace ml
 
 	VertexBuffer & VertexBuffer::create(GL::Usage usage, const std::vector<float>& data)
 	{
-		return create(usage, &data[0], data.size());
+		return create(usage, &data[0], (uint32_t)data.size());
 	}
 
 	VertexBuffer & VertexBuffer::update()

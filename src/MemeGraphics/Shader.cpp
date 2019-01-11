@@ -532,7 +532,7 @@ namespace ml
 		}
 	}
 	
-	int Shader::getUniformLocation(const std::string & value)
+	int32_t Shader::getUniformLocation(const std::string & value)
 	{
 		// Check the cache
 		UniformTable::const_iterator it;

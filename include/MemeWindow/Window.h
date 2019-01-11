@@ -1,8 +1,9 @@
 #ifndef _WINDOW_H_
 #define _WINDOW_H_
 
-#include <MemeWindow/ContextSettings.h>
-#include <MemeWindow/VideoMode.h>
+#include <MemeWindow/Context.h>
+#include <MemeWindow/Icon.h>
+#include <MemeWindow/Screen.h>
 #include <MemeCore/Vector4.h>
 
 namespace ml
@@ -16,11 +17,11 @@ namespace ml
 	public:
 		enum CursorMode : uint32_t
 		{
-			Normal	 = 0x00034001,
-			Hidden	 = 0x00034002,
-			Disabled = 0x00034003,
+			Normal	 = 0x34001,
+			Hidden	 = 0x34002,
+			Disabled = 0x34003,
 		};
-		enum Flags : uint32_t
+		enum Style : uint32_t
 		{
 			None		= (0 << 0),
 			Resizable	= (1 << 0),
@@ -32,7 +33,7 @@ namespace ml
 			Maximized	= (1 << 6),
 
 			// Resizable | Visible | Decorated | Focused | AutoIconify
-			Default		= Resizable | Visible | Decorated | Focused | AutoIconify,
+			Default	= Resizable | Visible | Decorated | Focused | AutoIconify,
 		};
 
 	public:
@@ -42,8 +43,8 @@ namespace ml
 		bool create(
 			const std::string & title,
 			const VideoMode & mode,
-			const Flags & flags,
-			const ContextSettings & settings);
+			const Style & flags,
+			const Context & context);
 
 		virtual bool initialize();
 
@@ -51,21 +52,20 @@ namespace ml
 		Window & maximize();
 		Window & minimize();
 		Window & pollEvents();
-		Window & setCentered();
 		Window & swapBuffers();
 
-		Window & cursorMode(CursorMode value);
-		Window & position(const vec2i & value);
-		Window & size(const vec2u & value);
-		Window & title(const std::string & value);
+		Window & setCursor(CursorMode value);
+		Window & setIcons(const std::vector<Icon> & value);
+		Window & setPosition(const vec2i & value);
+		Window & setSize(const vec2u & value);
+		Window & setTitle(const std::string & value);
 
 		bool	isOpen() const;
 		float	getTime() const;
 
-		inline const Handle				handle()	const { return m_handle; }
-		inline const ContextSettings &	settings()	const { return m_settings; }
+		inline const Context &			context()	const { return m_context; }
 		inline const VideoMode &		videoMode()	const { return m_mode; }
-		inline const Flags &			flags()		const { return m_flags; }
+		inline const Style &			style()		const { return m_style; }
 		inline const vec2i &			position()	const { return m_position; }
 		inline const vec2u &			size()		const { return m_size; }
 		inline const std::string &		title()		const { return m_title; }
@@ -76,25 +76,26 @@ namespace ml
 
 	protected:
 		Handle			m_handle;
-		ContextSettings m_settings;
+		Context			m_context;
 		VideoMode		m_mode;
-		Flags			m_flags;
+		Style			m_style;
+		CursorMode		m_cursorMode;
 		vec2i			m_position;
 		vec2u			m_size;
 		std::string		m_title;
 	};
 
-	inline Window::Flags operator|(Window::Flags lhs, Window::Flags rhs)
+	inline Window::Style operator|(Window::Style lhs, Window::Style rhs)
 	{
-		return (Window::Flags)((uint32_t)lhs | (uint32_t)rhs);
+		return (Window::Style)((uint32_t)lhs | (uint32_t)rhs);
 	}
 
-	inline Window::Flags & operator|=(Window::Flags & lhs, const Window::Flags & rhs)
+	inline Window::Style & operator|=(Window::Style & lhs, const Window::Style & rhs)
 	{
 		return (lhs = (lhs | rhs));
 	}
 
-	inline bool operator&(Window::Flags lhs, Window::Flags rhs)
+	inline bool operator&(Window::Style lhs, Window::Style rhs)
 	{
 		return (bool)(static_cast<uint32_t>(lhs) & static_cast<uint32_t>(rhs));
 	}

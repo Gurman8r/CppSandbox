@@ -21,13 +21,16 @@
     <ClInclude Include="..\..\include\MemeWindow\Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeWindow\ContextSettings.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeWindow\VideoMode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeWindow\Screen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeWindow\Icon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeWindow\Context.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

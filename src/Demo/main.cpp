@@ -65,6 +65,25 @@ static Settings settings;
 
 /* * * * * * * * * * * * * * * * * * * * */
 
+inline static uint64_t calcFPS(float deltaTime)
+{
+	static uint64_t	frameCounter = 0;
+	static uint64_t	fps = 0;
+	static float	nextSecond = 0.0f;
+	static float	prevSecond = 0.0f;
+
+	frameCounter++;
+	if (((nextSecond += deltaTime) - prevSecond) > 1.0f)
+	{
+		prevSecond = nextSecond;
+		fps = frameCounter;
+		frameCounter = 0;
+	}
+	return fps;
+}
+
+/* * * * * * * * * * * * * * * * * * * * */
+
 enum : int32_t
 {
 	/* Fonts
@@ -75,6 +94,12 @@ enum : int32_t
 	FNT_lucida_console,
 	FNT_minecraft,
 	MAX_FONT,
+
+	/* Images
+	* * * * * * * * * * * * * * * * * * * * */
+	MIN_IMAGE = -1,
+	IMG_icon,
+	MAX_IMAGE,
 
 	/* Textures
 	* * * * * * * * * * * * * * * * * * * * */
@@ -127,6 +152,7 @@ enum : int32_t
 	MIN_VAO = -1,
 	VAO_cube,
 	VAO_quad,
+	VAO_text,
 	MAX_VAO,
 
 	/* VBOs
@@ -134,6 +160,7 @@ enum : int32_t
 	MIN_VBO = -1,
 	VBO_cube,
 	VBO_quad,
+	VBO_text,
 	MAX_VBO,
 
 	/* IBOs
@@ -159,6 +186,7 @@ enum : int32_t
 /* * * * * * * * * * * * * * * * * * * * */
 
 ml::Font		fonts	[MAX_FONT];
+ml::Image		images	[MAX_IMAGE];
 ml::Texture		textures[MAX_TEXTURE];
 ml::Shader		shaders	[MAX_SHADER];
 ml::Sprite		sprites	[MAX_SPRITE];
@@ -177,7 +205,7 @@ ml::Sound		sounds	[MAX_SOUND];
 inline static bool loadAssets()
 {
 	// Load Fonts
-	ml::Debug::Log("Loading Fonts...");
+	if(ml::Debug::Log("Loading Fonts..."))
 	{
 		if (!fonts[FNT_clacon].loadFromFile(settings.pathTo("/fonts/clacon.ttf")))
 		{
@@ -200,8 +228,17 @@ inline static bool loadAssets()
 		}
 	}
 
+	// Load Images
+	if (ml::Debug::Log("Loading Images..."))
+	{
+		if (!images[IMG_icon].loadFromFile(settings.pathTo("/images/dean.png")))
+		{
+			return ml::Debug::LogError("Failed Loading Icon");
+		}
+	}
+
 	// Load Textures
-	ml::Debug::Log("Loading Textures...");
+	if(ml::Debug::Log("Loading Textures..."))
 	{
 		if (!textures[TEX_dean].loadFromFile(settings.pathTo("/images/dean.png")))
 		{
@@ -210,7 +247,7 @@ inline static bool loadAssets()
 	}
 
 	// Load Shaders
-	ml::Debug::Log("Loading Shaders...");
+	if(ml::Debug::Log("Loading Shaders..."))
 	{
 		if (!shaders[GL_basic].loadFromFile(settings.pathTo("/shaders/basic.shader")))
 		{
@@ -229,7 +266,7 @@ inline static bool loadAssets()
 	}
 
 	// Load Sprites
-	ml::Debug::Log("Loading Sprites...");
+	if(ml::Debug::Log("Loading Sprites..."))
 	{
 		if (!(sprites[SPR_dean] = ml::Sprite(&shaders[GL_basic], &textures[TEX_dean])))
 		{
@@ -238,7 +275,7 @@ inline static bool loadAssets()
 	}
 
 	// Load Text
-	ml::Debug::Log("Loading Text...");
+	if(ml::Debug::Log("Loading Text..."))
 	{
 		if (!(text[TXT_default] = ml::Text(&shaders[GL_text], &fonts[FNT_consolas])))
 		{
@@ -247,7 +284,7 @@ inline static bool loadAssets()
 	}
 
 	// Load Geometry
-	ml::Debug::Log("Loading Geometry...");
+	if(ml::Debug::Log("Loading Geometry..."))
 	{
 		// Cube
 		vao[VAO_cube].create(1);
@@ -274,6 +311,17 @@ inline static bool loadAssets()
 		vao[VAO_quad].unbind();
 		vbo[VBO_quad].unbind();
 		ibo[IBO_quad].unbind();
+
+		// Text
+		vao[VAO_text].create(1);
+		vbo[VBO_text].create(ml::GL::DynamicDraw, ml::Shapes::Quad::Mesh.flattened());
+		ml::BufferLayout::bind({
+			{ 0, 3, ml::GL::Float, false, ml::Vertex::Size, 0, sizeof(float) },
+			{ 1, 4, ml::GL::Float, false, ml::Vertex::Size, 3, sizeof(float) },
+			{ 2, 2, ml::GL::Float, false, ml::Vertex::Size, 7, sizeof(float) },
+		});
+		vao[VAO_text].unbind();
+		vbo[VBO_text].unbind();
 	}
 
 	return true;
@@ -281,27 +329,8 @@ inline static bool loadAssets()
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-inline static uint64_t calcFPS(float deltaTime)
+int32_t main(int32_t argc, char** argv)
 {
-	static uint64_t	frameCounter = 0;
-	static uint64_t	fps = 0;
-	static float	nextSecond = 0.0f;
-	static float	prevSecond = 0.0f;
-	frameCounter++;
-	nextSecond += deltaTime;
-	if (nextSecond - prevSecond > 1.0f)
-	{
-		prevSecond = nextSecond;
-		fps = frameCounter;
-		frameCounter = 0;
-	}
-	return fps;
-}
-
-/* * * * * * * * * * * * * * * * * * * * */
-
-int main(int argc, char** argv)
-{	
 	// Start master timer
 	ML_Time.start();
 
@@ -328,14 +357,14 @@ int main(int argc, char** argv)
 	if (!window.create(
 		settings.title,
 		ml::VideoMode(settings.width, settings.height, 32),
-		ml::Window::Default,
-		ml::ContextSettings(3, 3, 24, 8, ml::ContextSettings::Compat, false, false)))
+		ml::Window::Style::Default,
+		ml::Context(3, 3, 24, 8, ml::Context::Compat, false, false)))
 	{
 		return ml::ConsoleUtility::pause(EXIT_FAILURE);
 	}
-	window.cursorMode(ml::Window::CursorMode::Normal);
-	window.viewport(ml::vec2i::Zero, window.size());
-	window.setCentered();
+	window.setViewport(ml::vec2i::Zero, window.size());
+	window.setCursor(ml::Window::CursorMode::Normal);
+	window.setPosition((ml::Screen::size() - window.size()) / 2);
 
 	// Load Assets
 	if (!loadAssets())
@@ -343,22 +372,35 @@ int main(int argc, char** argv)
 		return ml::ConsoleUtility::pause(EXIT_FAILURE);
 	}
 
+	// Set Window Icon
+	if (const ml::Image icon = ml::Image(images[IMG_icon]).flipVertically())
+	{
+		window.setIcons({ icon });
+	}
+
 	// Load Matrices
-	proj[P_ortho] = ml::Transform::Ortho(0.0f, (float)window.width(), 0.0f, (float)window.height(), -1.0f, 1.0f);
-	proj[P_persp] = ml::Transform::Perspective(90.0f, window.aspect(), 0.1f, 1000.0f);
+	if (ml::Debug::Log("Loading Matrices..."))
+	{
+		// Projections
+		proj[P_ortho] = ml::Transform::Ortho(0.0f, (float)window.width(), 0.0f, (float)window.height(), -1.0f, 1.0f);
+		proj[P_persp] = ml::Transform::Perspective(90.0f, window.aspect(), 0.1f, 1000.0f);
 
-	ml::vec3f camPos = { 0.0f, 0.0f, 3.0f };
-	view[V_camera] = ml::Transform::LookAt(camPos, camPos + ml::vec3f::Back, ml::vec3f::Up);
+		// Views
+		ml::vec3f camPos = { 0.0f, 0.0f, 3.0f };
+		view[V_camera] = ml::Transform::LookAt(camPos, camPos + ml::vec3f::Back, ml::vec3f::Up);
 
-	model[M_cube]
-		.translate({ 2.0f, 0.0f, 0.0f })
-		.rotate(0.0f, ml::vec3f::Up)
-		.scale(ml::vec3f::One);
+		// Cube
+		model[M_cube]
+			.translate({ +3.0f, 0.0f, 0.0f })
+			.rotate(0.0f, ml::vec3f::Up)
+			.scale(ml::vec3f::One);
 
-	model[M_quad]
-		.translate({ -2.0f, 0.0f, 0.0f })
-		.rotate(0.0f, ml::vec3f::Up)
-		.scale(ml::vec3f::One);
+		// Quad
+		model[M_quad]
+			.translate({ -3.0f, 0.0f, 0.0f })
+			.rotate(0.0f, ml::vec3f::Up)
+			.scale(ml::vec3f::One);
+	}
 
 	// Loop
 	ml::InputState	input;
@@ -377,10 +419,9 @@ int main(int argc, char** argv)
 					.rotate(elapsed.delta(), ml::vec3f::One)
 					.scale(ml::vec3f::One);
 
-				// Quad
 				model[M_quad]
 					.translate(ml::vec3f::Zero)
-					.rotate(elapsed.delta(), ml::vec3f::Up)
+					.rotate(elapsed.delta(), ml::vec3f::Forward)
 					.scale(ml::vec3f::One);
 			}
 
@@ -391,44 +432,38 @@ int main(int argc, char** argv)
 				if (ml::Shader * shader = &shaders[GL_basic])
 				{
 					shader->use()
-						.setUniform(ml::Uniform::Proj,		proj[P_persp])
-						.setUniform(ml::Uniform::View,		view[V_camera])
-						.setUniform(ml::Uniform::Model,		model[M_cube])
-						.setUniform(ml::Uniform::Color,		ml::Color::White)
-						.setUniform(ml::Uniform::Texture,	textures[TEX_dean]);
+						.setUniform(ml::Uniform::Proj, proj[P_persp])
+						.setUniform(ml::Uniform::View, view[V_camera])
+						.setUniform(ml::Uniform::Model, model[M_cube])
+						.setUniform(ml::Uniform::Color, ml::Color::White)
+						.setUniform(ml::Uniform::Texture, textures[TEX_dean]);
 				
 					vao[VAO_cube].bind();
 					vbo[VBO_cube].bind();
 					ibo[IBO_cube].bind();
 					{
-						window.enable(ml::GL::CullFace);
+						window.setEnabled(ml::GL::CullFace);
 						window.drawElements(ibo[IBO_cube], ml::GL::Triangles, ml::GL::UnsignedInt);
 					}
-					vao[VAO_cube].unbind();
-					vbo[VBO_cube].unbind();
-					ibo[IBO_cube].unbind();
 				}
 
 				// Quad
 				if (ml::Shader * shader = &shaders[GL_basic])
 				{
 					shader->use()
-						.setUniform(ml::Uniform::Proj,		proj[P_persp])
-						.setUniform(ml::Uniform::View,		view[V_camera])
-						.setUniform(ml::Uniform::Model,		model[M_quad])
-						.setUniform(ml::Uniform::Color,		ml::Color::White)
-						.setUniform(ml::Uniform::Texture,	textures[TEX_dean]);
+						.setUniform(ml::Uniform::Proj, proj[P_persp])
+						.setUniform(ml::Uniform::View, view[V_camera])
+						.setUniform(ml::Uniform::Model, model[M_quad])
+						.setUniform(ml::Uniform::Color, ml::Color::White)
+						.setUniform(ml::Uniform::Texture, textures[TEX_dean]);
 
 					vao[VAO_quad].bind();
 					vbo[VBO_quad].bind();
 					ibo[IBO_quad].bind();
 					{
-						window.disable(ml::GL::CullFace);
+						window.setDisabled(ml::GL::CullFace);
 						window.drawElements(ibo[IBO_quad], ml::GL::Triangles, ml::GL::UnsignedInt);
 					}
-					vao[VAO_quad].unbind();
-					vbo[VBO_quad].unbind();
-					ibo[IBO_quad].unbind();
 				}
 			}
 			window.swapBuffers();
@@ -442,8 +477,8 @@ int main(int argc, char** argv)
 
 			// Set Window Title
 			const ml::Duration & now = ML_Time.elapsed();
-			window.title(ml::StringUtility::Format(
-				"{0} | {1} ms | {2} fps | {3}",
+			window.setTitle(ml::StringUtility::Format(
+				"{0} | {3} | {1} ({2} fps)",
 				settings.title,
 				elapsed.delta(),
 				calcFPS(elapsed.delta()),

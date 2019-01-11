@@ -21,7 +21,7 @@ uniform mat4	mvp;
 
 #define KEYFRAME_COUNT 4
 uniform float	param;
-uniform int index[KEYFRAME_COUNT];
+uniform int32_t index[KEYFRAME_COUNT];
 
 // varying output: solid color
 out vec4 passColor;

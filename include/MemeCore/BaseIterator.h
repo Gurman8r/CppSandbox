@@ -92,7 +92,7 @@ namespace ml
 		}
 		
 
-		inline self_type operator++(int)
+		inline self_type operator++(int32_t)
 		{
 			assert((m_handle != NULL) && "Out-of-bounds iterator increment!");
 			self_type tmp = (*this);
@@ -100,7 +100,7 @@ namespace ml
 			return tmp;
 		}
 		
-		inline self_type operator--(int)
+		inline self_type operator--(int32_t)
 		{
 			assert((m_handle != NULL) && "Out-of-bounds iterator increment!");
 			self_type tmp = (*this);

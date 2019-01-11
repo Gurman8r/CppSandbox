@@ -9,7 +9,7 @@ namespace ml
 	class ML_SCRIPT_API AST_Expr : public AST_Stmt
 	{
 	public:
-		enum Type : int
+		enum Type : int32_t
 		{
 			EX_INVALID = -1,
 			EX_Array,
@@ -110,9 +110,9 @@ namespace ml
 	// Int
 	struct ML_SCRIPT_API AST_Int : public AST_Expr
 	{
-		int value;
+		int32_t value;
 
-		AST_Int(int value);
+		AST_Int(int32_t value);
 		~AST_Int();
 
 		std::ostream& display(std::ostream& out) const override;

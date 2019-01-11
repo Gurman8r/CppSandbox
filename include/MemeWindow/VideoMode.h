@@ -3,7 +3,6 @@
 
 #include <MemeWindow/Export.h>
 #include <MemeCore/Vector2.h>
-#include <vector>
 
 namespace ml
 {
@@ -19,7 +18,7 @@ namespace ml
 		static VideoMode getDesktopMode();
 		static std::vector<VideoMode> getFullscreenModes();
 
-		bool isValid() const;
+		bool isValidFullscreen() const;
 
 		uint32_t width;
 		uint32_t height;

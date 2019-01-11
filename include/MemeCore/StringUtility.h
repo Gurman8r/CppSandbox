@@ -38,12 +38,12 @@ namespace ml
 
 	public: // Conversions
 		static bool		ToBool(const std::string& src);
-		static int		ToInt(const std::string& src);
+		static int32_t		ToInt(const std::string& src);
 		static double	ToDecimal(const std::string& src);
 		static float	ToFloat(const std::string& src);
 
 		static bool		MakeBool(const std::string& src, bool& value);
-		static bool		MakeInt(const std::string& src, int& value);
+		static bool		MakeInt(const std::string& src, int32_t& value);
 		static bool		MakeDecimal(const std::string& src, double& value);
 		static bool		MakeFloat(const std::string& src, float& value);
 
@@ -54,7 +54,7 @@ namespace ml
 			std::stringstream ss;
 			ss << arg0 << std::endl;
 
-			int sink[] = { 0, ((void)(ss << args << std::endl), 0)... };
+			int32_t sink[] = { 0, ((void)(ss << args << std::endl), 0)... };
 			(void)sink;
 
 			std::string	out = fmt;

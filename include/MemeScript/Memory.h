@@ -14,7 +14,7 @@ namespace ml
 	{
 	public:
 		using VarMap = std::map<std::string, Var *>;
-		using ScopeMap = std::unordered_map<int, VarMap*>;
+		using ScopeMap = std::unordered_map<int32_t, VarMap*>;
 
 	public:
 		Memory();
@@ -24,15 +24,15 @@ namespace ml
 
 		void	clean();
 
-		bool	delVar(int index, const std::string & name);
-		Var *	getVar(int index, const std::string & name) const;
-		Var *	newVar(int index, const std::string & name, const Var & value);
-		Var *	setVar(int index, const std::string & name, const Var & value);
+		bool	delVar(int32_t index, const std::string & name);
+		Var *	getVar(int32_t index, const std::string & name) const;
+		Var *	newVar(int32_t index, const std::string & name, const Var & value);
+		Var *	setVar(int32_t index, const std::string & name, const Var & value);
 
-		const VarMap*	values(int index) const;
-		VarMap*			values(int index);
-		VarMap*			makeScope(int index);
-		bool			clearScope(int index);
+		const VarMap*	values(int32_t index) const;
+		VarMap*			values(int32_t index);
+		VarMap*			makeScope(int32_t index);
+		bool			clearScope(int32_t index);
 
 	private:
 		ScopeMap * m_values;

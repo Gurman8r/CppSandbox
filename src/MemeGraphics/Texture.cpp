@@ -81,8 +81,8 @@ namespace ml
 	bool Texture::loadFromImage(const Image & image, const IntRect & area)
 	{
 		// Image size
-		int width = static_cast<int>(image.size()[0]);
-		int height = static_cast<int>(image.size()[1]);
+		int32_t width = static_cast<int32_t>(image.size()[0]);
+		int32_t height = static_cast<int32_t>(image.size()[1]);
 
 		// Load the entire image if the source area
 		// is either empty or contains the whole image
@@ -114,11 +114,11 @@ namespace ml
 			{
 				// Copy the pixels to the texture, row by row
 				const uint8_t * pixels = 
-					image.pixelsPtr() + 4 * (rect.left() + (width * rect.top()));
+					image.ptr() + 4 * (rect.left() + (width * rect.top()));
 
 				OpenGL::bindTexture(GL::Texture2D, m_id);
 
-				for (int i = 0; i < rect.height(); i++)
+				for (int32_t i = 0; i < rect.height(); i++)
 				{
 					OpenGL::texSubImage2D(
 						GL::Texture2D,
@@ -272,12 +272,12 @@ namespace ml
 	
 	bool Texture::update(const Image & image)
 	{
-		return update(image.pixelsPtr(), image.size()[0], image.size()[1], 0, 0);
+		return update(image.ptr(), image.size()[0], image.size()[1], 0, 0);
 	}
 	
 	bool Texture::update(const Image & image, uint32_t x, uint32_t y)
 	{
-		return update(image.pixelsPtr(), image.size()[0], image.size()[1], x, y);
+		return update(image.ptr(), image.size()[0], image.size()[1], x, y);
 	}
 
 
@@ -440,8 +440,8 @@ namespace ml
 			// Then we copy the useful pixels from the temporary array to the final one
 			const uint8_t* src = &allPixels[0];
 			uint8_t* dst = &pixels[0];
-			int srcPitch = m_actualSize[0] * 4;
-			int dstPitch = m_size[0] * 4;
+			int32_t srcPitch = m_actualSize[0] * 4;
+			int32_t dstPitch = m_size[0] * 4;
 
 			// Handle the case where source pixels are flipped vertically
 			if (m_pixelsFlipped)
@@ -450,7 +450,7 @@ namespace ml
 				srcPitch = -srcPitch;
 			}
 
-			for (unsigned int i = 0; i < m_size[1]; ++i)
+			for (uint32_t i = 0; i < m_size[1]; ++i)
 			{
 				std::memcpy(dst, src, dstPitch);
 				src += srcPitch;

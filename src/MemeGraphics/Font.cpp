@@ -164,10 +164,10 @@ namespace ml
 		glyph.texture = texture;
 
 		glyph.bounds = {
-			(int)face->glyph->bitmap_left,
-			(int)face->glyph->bitmap_top,
-			(int)face->glyph->bitmap.width,
-			(int)face->glyph->bitmap.rows
+			(int32_t)face->glyph->bitmap_left,
+			(int32_t)face->glyph->bitmap_top,
+			(int32_t)face->glyph->bitmap.width,
+			(int32_t)face->glyph->bitmap.rows
 		};
 
 		glyph.advance = uint32_t(face->glyph->advance.x);

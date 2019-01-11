@@ -55,7 +55,7 @@ namespace ml
 #ifdef ML_SYSTEM_WINDOWS		
 		DEVMODE win32Mode;
 		win32Mode.dmSize = sizeof(win32Mode);
-		for (int count = 0; EnumDisplaySettings(NULL, count, &win32Mode); ++count)
+		for (int32_t count = 0; EnumDisplaySettings(NULL, count, &win32Mode); ++count)
 		{
 			VideoMode mode(
 				win32Mode.dmPelsWidth,
@@ -72,7 +72,7 @@ namespace ml
 		return modes;
 	}
 
-	bool VideoMode::isValid() const
+	bool VideoMode::isValidFullscreen() const
 	{
 		const std::vector<VideoMode>& modes = getFullscreenModes();
 

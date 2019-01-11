@@ -55,7 +55,7 @@ layout(points) in;
 layout(line_strip, max_vertices = SAMPLES_MAX) out;
 
 // uniforms
-uniform int		u_curveMode;
+uniform int	u_curveMode;
 
 // constants
 const vec4 RED = vec4(1.0, 0.5, 0.0, 1.0);

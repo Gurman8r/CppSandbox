@@ -33,7 +33,7 @@ namespace ml
 	{
 		stbi_set_flip_vertically_on_load(true);
 		
-		int width, height, nrChannels;
+		int32_t width, height, nrChannels;
 		if (uint8_t * data = stbi_load(filename.c_str(), &width, &height, &nrChannels, 0))
 		{
 			m_size = { (uint32_t)width, (uint32_t)height };
@@ -137,7 +137,7 @@ namespace ml
 
 	Image & Image::flipHorizontally()
 	{
-		if (!m_pixels.empty())
+		if (*this)
 		{
 			uint32_t rowSize = m_size[0] * 4;
 
@@ -159,7 +159,7 @@ namespace ml
 
 	Image & Image::flipVertically()
 	{
-		if (!m_pixels.empty())
+		if (*this)
 		{
 			uint32_t rowSize = m_size[0] * 4;
 

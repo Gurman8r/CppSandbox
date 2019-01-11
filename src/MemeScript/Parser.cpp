@@ -739,7 +739,7 @@ namespace ml
 		AST_Array::Values elems;
 
 		TokenList	arg;
-		int		depth = 0;
+		int32_t		depth = 0;
 
 		for (TokenList::const_iterator it = toks.begin(); it != toks.end(); it++)
 		{
@@ -793,7 +793,7 @@ namespace ml
 		}
 
 		TokenList	arg;
-		int		depth = 0;
+		int32_t		depth = 0;
 
 		for (TokenList::const_iterator it = toks.begin() + 1; it != toks.end(); it++)
 		{

@@ -360,7 +360,7 @@ namespace ml
 
 
 	// Int
-	AST_Int::AST_Int(int value)
+	AST_Int::AST_Int(int32_t value)
 		: AST_Expr(AST_Expr::Type::EX_Int)
 		, value(value)
 	{

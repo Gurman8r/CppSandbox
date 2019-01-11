@@ -52,7 +52,7 @@ namespace ml
 
 	IndexBuffer & IndexBuffer::create(GL::Usage usage, const std::vector<uint32_t>& data)
 	{
-		return create(usage, &data[0], data.size());
+		return create(usage, &data[0], (uint32_t)data.size());
 	}
 
 	IndexBuffer & IndexBuffer::update()

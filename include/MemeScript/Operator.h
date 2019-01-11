@@ -8,7 +8,7 @@
 
 namespace ml
 {
-	enum OperatorType : int
+	enum OperatorType : int32_t
 	{
 		OP_INVALID = -1,
 

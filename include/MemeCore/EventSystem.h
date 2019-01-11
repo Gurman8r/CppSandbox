@@ -15,9 +15,9 @@ namespace ml
 		friend class ISingleton<EventSystem>;
 
 	public:
-		void addListener(const int & type, EventListener * listener);
+		void addListener(const int32_t & type, EventListener * listener);
 		void fireEvent(const EventBase & ev);
-		void removeListener(const int & type, EventListener * listener);
+		void removeListener(const int32_t & type, EventListener * listener);
 		void removeListenerFromAllEvents(EventListener * listener);
 
 	private:
@@ -26,7 +26,7 @@ namespace ml
 
 		void dispatchAllEvents(const EventBase * ev);
 
-		std::multimap<int, EventListener*> m_listeners;
+		std::multimap<int32_t, EventListener*> m_listeners;
 	};
 }
 

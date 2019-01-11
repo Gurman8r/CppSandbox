@@ -263,7 +263,7 @@ namespace ml
 		return (src == "1" || ToLower(src) == "true");
 	}
 	
-	int		StringUtility::ToInt(const std::string& src)
+	int32_t		StringUtility::ToInt(const std::string& src)
 	{
 		return std::stoi(src);
 	}
@@ -290,7 +290,7 @@ namespace ml
 		return false;
 	}
 	
-	bool	StringUtility::MakeInt(const std::string& src, int & value)
+	bool	StringUtility::MakeInt(const std::string& src, int32_t & value)
 	{
 		if (IsInt(src))
 		{
