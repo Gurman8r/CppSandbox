@@ -185,12 +185,12 @@ namespace ml
 	}
 
 
-	void Shader::use(bool tex) const
+	void Shader::use(bool bindTex) const
 	{
-		Shader::bind(this, tex);
+		Shader::bind(this, bindTex);
 	}
 
-	void Shader::bind(const Shader * shader, bool tex)
+	void Shader::bind(const Shader * shader, bool bindTex)
 	{
 		if (OpenGL::shadersAvailable())
 		{
@@ -199,7 +199,7 @@ namespace ml
 				OpenGL::useShader(shader->m_program);
 			}
 
-			if (tex)
+			if (bindTex)
 			{
 				shader->bindTextures();
 			}
@@ -216,7 +216,7 @@ namespace ml
 	}
 	
 	
-	void Shader::setUniform(const std::string & name, float value)
+	void Shader::setUniform(const std::string & name, const float & value)
 	{
 		UniformBinder u((*this), name);
 		if (u)
@@ -225,7 +225,7 @@ namespace ml
 		}
 	}
 	
-	void Shader::setUniform(const std::string & name, int32_t value)
+	void Shader::setUniform(const std::string & name, const int32_t & value)
 	{
 		UniformBinder u((*this), name);
 		if (u)
@@ -234,7 +234,7 @@ namespace ml
 		}
 	}
 	
-	void Shader::setUniform(const std::string & name, uint32_t value)
+	void Shader::setUniform(const std::string & name, const uint32_t & value)
 	{
 		UniformBinder u((*this), name);
 		if (u)
@@ -315,9 +315,9 @@ namespace ml
 		}
 	}
 
-	void Shader::setUniform(const std::string & name, const Texture * value)
+	void Shader::setUniform(const std::string & name, const Texture & value)
 	{
-		if (m_program && value)
+		if (m_program && value.id())
 		{
 			int location = getUniformLocation(name);
 			if (location != -1)
@@ -333,12 +333,12 @@ namespace ml
 						return;
 					}
 
-					m_textures[location] = value;
+					m_textures[location] = &value;
 				}
 				else
 				{
 					//it->second = value;
-					m_textures[location] = value;
+					m_textures[location] = &value;
 				}
 			}
 		}

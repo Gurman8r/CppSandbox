@@ -36,15 +36,15 @@ namespace ml
 		bool loadFromMemory(const std::string& vs, const std::string& gs, const std::string& fs);
 
 	public:
-		void use(bool tex = true) const;
+		void use(bool bindTex = true) const;
 
-		static void bind(const Shader* shader, bool tex = true);
+		static void bind(const Shader* shader, bool bindTex = true);
 
 	public:
 		// Set Uniform
-		void setUniform(const std::string & name, float value);
-		void setUniform(const std::string & name, int32_t value);
-		void setUniform(const std::string & name, uint32_t value);
+		void setUniform(const std::string & name, const float & value);
+		void setUniform(const std::string & name, const int32_t & value);
+		void setUniform(const std::string & name, const uint32_t & value);
 		void setUniform(const std::string & name, const vec2f & value);
 		void setUniform(const std::string & name, const vec3f & value);
 		void setUniform(const std::string & name, const vec4f & value);
@@ -53,7 +53,7 @@ namespace ml
 		void setUniform(const std::string & name, const vec4i & value);
 		void setUniform(const std::string & name, const mat3f & value);
 		void setUniform(const std::string & name, const mat4f & value);
-		void setUniform(const std::string & name, const Texture * value);
+		void setUniform(const std::string & name, const Texture & value);
 
 		// Set Uniform Array
 		void setUniformArray(const std::string & name, int32_t count, const float * value);

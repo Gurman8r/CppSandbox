@@ -49,9 +49,9 @@ struct Settings final
 			showTree	= ini.GetBoolean("Script", "bShowTree", false);
 			showItoP	= ini.GetBoolean("Script", "bShowItoP", false);
 
-			return true;
+			return ml::Debug::Log("OK");
 		}
-		return false;
+		return ml::Debug::LogError("Failed Loading Settings");
 	}
 
 	inline const std::string pathTo(const std::string & filename) const
@@ -60,7 +60,7 @@ struct Settings final
 	}
 };
 
-Settings settings;
+static Settings settings;
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -139,6 +139,8 @@ enum : int8_t
 	MAX_IBO,
 };
 
+/* * * * * * * * * * * * * * * * * * * * */
+
 ml::Font		fonts	[MAX_FONT];
 ml::Texture		textures[MAX_TEXTURE];
 ml::Shader		shaders	[MAX_SHADER];
@@ -150,6 +152,8 @@ ml::Transform	model	[MAX_MODEL];
 ml::VAO			vao		[MAX_VAO];
 ml::VBO			vbo		[MAX_VBO];
 ml::IBO			ibo		[MAX_IBO];
+
+/* * * * * * * * * * * * * * * * * * * * */
 
 inline static bool loadAssets()
 {
@@ -272,7 +276,7 @@ int main(int argc, char** argv)
 		return ml::ConsoleUtility::pause(EXIT_FAILURE);
 	}
 
-	// Run Script
+	// Run Boot Script
 	ml::Interpreter::LoadBuiltinCommands();
 	ML_Interpreter.parser()->
 		showToks(settings.showToks).
@@ -338,7 +342,7 @@ int main(int argc, char** argv)
 					shader->setUniform(ml::Uniform::Proj,		proj[P_persp]);
 					shader->setUniform(ml::Uniform::View,		view[V_camera]);
 					shader->setUniform(ml::Uniform::Model,		model[M_transform]);
-					shader->setUniform(ml::Uniform::Texture,	&textures[TEX_dean]);
+					shader->setUniform(ml::Uniform::Texture,	textures[TEX_dean]);
 					shader->setUniform(ml::Uniform::Color,		ml::Color::White);
 				}
 
