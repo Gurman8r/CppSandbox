@@ -33,7 +33,10 @@ namespace ml
 
 	RenderTarget & RenderTarget::drawElements(const IBO & ibo, GL::Mode mode, GL::Type type)
 	{
-		OpenGL::drawElements(mode, (int32_t)ibo.count(), type, NULL);
+		if (ibo)
+		{
+			OpenGL::drawElements(mode, (int32_t)ibo.count(), type, NULL);
+		}
 		return (*this);
 	}
 	

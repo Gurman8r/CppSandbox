@@ -32,6 +32,7 @@ namespace ml
 		}
 
 	public: // General
+		static bool		good();
 		static bool		init(bool experimental);
 
 	public: // Flags
@@ -108,7 +109,7 @@ namespace ml
 	public: // Framebuffers
 		static bool		framebuffersAvailable();
 		static uint32_t genFramebuffers(uint32_t count);
-		static uint32_t	checkFramebufferStatus(GL::Target target);		
+		static uint32_t	checkFramebufferStatus(GL::Target target);
 		static void		bindFramebuffer(GL::Target target, uint32_t framebuffer);
 		static void		deleteFramebuffers(uint32_t count, const uint32_t * framebuffersAvailable);
 		static void		blitFramebuffer(int32_t srcX0, int32_t srcY0, int32_t srcX1, int32_t srcY1, int32_t dstX0, int32_t dstY0, int32_t dstX1, int32_t dstY1, GL::Mask mask, uint32_t filter);

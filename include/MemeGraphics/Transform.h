@@ -20,7 +20,7 @@ namespace ml
 
 		static mat4f Ortho(float left, float right, float top, float bottom, float near, float far);
 		static mat4f Ortho(float left, float right, float top, float bottom);
-		static mat4f Persp(float fov, float aspect, float near, float far);
+		static mat4f Perspective(float fov, float aspect, float near, float far);
 
 		static mat4f LookAt(const vec3f & eye, const vec3f & pos, const vec3f & up);
 

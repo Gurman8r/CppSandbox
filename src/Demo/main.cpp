@@ -50,7 +50,7 @@ struct Settings final
 			showTree	= ini.GetBoolean("Script", "bShowTree", false);
 			showItoP	= ini.GetBoolean("Script", "bShowItoP", false);
 
-			return ml::Debug::Log("OK");
+			return true;
 		}
 		return ml::Debug::LogError("Failed Loading Settings \"{0}\"", filename);
 	}
@@ -80,7 +80,6 @@ enum : int32_t
 	* * * * * * * * * * * * * * * * * * * * */
 	MIN_TEXTURE = -1,
 	TEX_dean,
-	TEX_test,
 	MAX_TEXTURE,
 
 	/* Shaders
@@ -119,25 +118,29 @@ enum : int32_t
 	/* Model Matrices
 	* * * * * * * * * * * * * * * * * * * * */
 	MIN_MODEL = -1,
-	M_transform,
+	M_cube,
+	M_quad,
 	MAX_MODEL,
 
 	/* VAOs
 	* * * * * * * * * * * * * * * * * * * * */
 	MIN_VAO = -1,
-	VAO_test,
+	VAO_cube,
+	VAO_quad,
 	MAX_VAO,
 
 	/* VBOs
 	* * * * * * * * * * * * * * * * * * * * */
 	MIN_VBO = -1,
-	VBO_test,
+	VBO_cube,
+	VBO_quad,
 	MAX_VBO,
 
 	/* IBOs
 	* * * * * * * * * * * * * * * * * * * * */
 	MIN_IBO = -1,
-	IBO_test,
+	IBO_cube,
+	IBO_quad,
 	MAX_IBO,
 
 	/* FBOs
@@ -168,7 +171,6 @@ ml::VBO			vbo		[MAX_VBO];
 ml::IBO			ibo		[MAX_IBO];
 ml::FBO			fbo		[MAX_FBO];
 ml::Sound		sounds	[MAX_SOUND];
-
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -243,21 +245,34 @@ inline static bool loadAssets()
 
 	// Load Geometry
 	ml::Debug::Log("Loading Geometry...");
-	const ml::Mesh & mesh = ml::Shapes::Cube::Mesh;
-
-	vao[VAO_test].create(1);
-	vbo[VBO_test].create(ml::GL::StaticDraw, mesh.flattened());
-	ibo[IBO_test].create(ml::GL::StaticDraw, mesh.indices());
+	
+	// Cube
+	vao[VAO_cube].create(1);
+	vbo[VBO_cube].create(ml::GL::StaticDraw, ml::Shapes::Cube::Mesh.flattened());
+	ibo[IBO_cube].create(ml::GL::StaticDraw, ml::Shapes::Cube::Mesh.indices());
 	ml::BufferLayout::bind({
 		{ 0, 3, ml::GL::Float, false, ml::Vertex::Size, 0, sizeof(float) },
 		{ 1, 4, ml::GL::Float, false, ml::Vertex::Size, 3, sizeof(float) },
 		{ 2, 2, ml::GL::Float, false, ml::Vertex::Size, 7, sizeof(float) },
 	});
-	vao[VAO_test].unbind();
-	vbo[VBO_test].unbind();
-	ibo[IBO_test].unbind();
+	vao[VAO_cube].unbind();
+	vbo[VBO_cube].unbind();
+	ibo[IBO_cube].unbind();
 
-	return ml::Debug::Log("OK");
+	// Quad
+	vao[VAO_quad].create(1);
+	vbo[VBO_quad].create(ml::GL::StaticDraw, ml::Shapes::Quad::Mesh.flattened());
+	ibo[IBO_quad].create(ml::GL::StaticDraw, ml::Shapes::Quad::Mesh.indices());
+	ml::BufferLayout::bind({
+		{ 0, 3, ml::GL::Float, false, ml::Vertex::Size, 0, sizeof(float) },
+		{ 1, 4, ml::GL::Float, false, ml::Vertex::Size, 3, sizeof(float) },
+		{ 2, 2, ml::GL::Float, false, ml::Vertex::Size, 7, sizeof(float) },
+	});
+	vao[VAO_quad].unbind();
+	vbo[VBO_quad].unbind();
+	ibo[IBO_quad].unbind();
+
+	return true;
 }
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -325,15 +340,21 @@ int main(int argc, char** argv)
 	}
 
 	// Load Matrices
-	proj[P_ortho] = ml::Transform::Ortho(0.0f, (float)window.size()[0], 0.0f, (float)window.size()[1], -1.0f, 1.0f);
-	proj[P_persp] = ml::Transform::Persp(90.0f, window.getAspect(), 0.1f, 1000.0f);
+	proj[P_ortho] = ml::Transform::Ortho(0.0f, (float)window.width(), 0.0f, (float)window.height(), -1.0f, 1.0f);
+	proj[P_persp] = ml::Transform::Perspective(90.0f, window.aspect(), 0.1f, 1000.0f);
 
 	ml::vec3f camPos = { 0.0f, 0.0f, 3.0f };
 	view[V_camera] = ml::Transform::LookAt(camPos, camPos + ml::vec3f::Back, ml::vec3f::Up);
 
-	model[M_transform].translate({ 0.0f, 0.0f, 0.0f });
-	model[M_transform].rotate(0.0f, { 0.0f, 1.0f, 0.0f });
-	model[M_transform].scale({ 1.0f, 1.0f, 1.0f });
+	model[M_cube]
+		.translate({ 2.0f, 0.0f, 0.0f })
+		.rotate(0.0f, ml::vec3f::Up)
+		.scale(ml::vec3f::One);
+
+	model[M_quad]
+		.translate({ -2.0f, 0.0f, 0.0f })
+		.rotate(0.0f, ml::vec3f::Up)
+		.scale(ml::vec3f::One);
 
 	// Loop
 	ml::InputState	input;
@@ -345,31 +366,67 @@ int main(int argc, char** argv)
 		input.beginStep();
 		{
 			// Update
-			model[M_transform].translate({ 0.0f, 0.0f, 0.0f });
-			model[M_transform].rotate(elapsed.delta(), { 1.0f, 1.0f, 1.0f });
-			model[M_transform].scale({ 1.0f, 1.0f, 1.0f });
+			{
+				// Cube
+				model[M_cube]
+					.translate(ml::vec3f::Zero)
+					.rotate(elapsed.delta(), ml::vec3f::One)
+					.scale(ml::vec3f::One);
+
+				// Quad
+				model[M_quad]
+					.translate(ml::vec3f::Zero)
+					.rotate(0.0f, ml::vec3f::Up)
+					.scale(ml::vec3f::One);
+			}
+
 
 			// Draw
 			window.clear(ml::Color::Violet);
 			{
-				if(ml::Shader * shader = &shaders[GL_basic])
+				// Cube
+				if (ml::Shader * shader = &shaders[GL_basic])
 				{
-					shader->use();
-					shader->setUniform(ml::Uniform::Proj,		proj[P_persp]);
-					shader->setUniform(ml::Uniform::View,		view[V_camera]);
-					shader->setUniform(ml::Uniform::Model,		model[M_transform]);
-					shader->setUniform(ml::Uniform::Texture,	textures[TEX_test]);
-					shader->setUniform(ml::Uniform::Color,		ml::Color::White);
+					shader->use()
+						.setUniform(ml::Uniform::Proj,		proj[P_persp])
+						.setUniform(ml::Uniform::View,		view[V_camera])
+						.setUniform(ml::Uniform::Model,		model[M_cube])
+						.setUniform(ml::Uniform::Color,		ml::Color::White)
+						.setUniform(ml::Uniform::Texture,	textures[TEX_dean]);
+				
+					vao[VAO_cube].bind();
+					vbo[VBO_cube].bind();
+					ibo[IBO_cube].bind();
+					{
+						window.enable(ml::GL::CullFace);
+						window.drawElements(ibo[IBO_cube], ml::GL::Triangles, ml::GL::UnsignedInt);
+					}
+					vao[VAO_cube].unbind();
+					vbo[VBO_cube].unbind();
+					ibo[IBO_cube].unbind();
 				}
-				vao[VAO_test].bind();
-				vbo[VBO_test].bind();
-				ibo[IBO_test].bind();
+
+				// Quad
+				if (ml::Shader * shader = &shaders[GL_basic])
 				{
-					window.drawElements(ibo[IBO_test], ml::GL::Triangles, ml::GL::UnsignedInt);
+					shader->use()
+						.setUniform(ml::Uniform::Proj,		proj[P_persp])
+						.setUniform(ml::Uniform::View,		view[V_camera])
+						.setUniform(ml::Uniform::Model,		model[M_quad])
+						.setUniform(ml::Uniform::Color,		ml::Color::White)
+						.setUniform(ml::Uniform::Texture,	textures[TEX_dean]);
+
+					vao[VAO_quad].bind();
+					vbo[VBO_quad].bind();
+					ibo[IBO_quad].bind();
+					{
+						window.disable(ml::GL::CullFace);
+						window.drawElements(ibo[IBO_quad], ml::GL::Triangles, ml::GL::UnsignedInt);
+					}
+					vao[VAO_quad].unbind();
+					vbo[VBO_quad].unbind();
+					ibo[IBO_quad].unbind();
 				}
-				vao[VAO_test].unbind();
-				vbo[VBO_test].unbind();
-				ibo[IBO_test].unbind();
 			}
 			window.swapBuffers();
 			window.pollEvents();
@@ -380,7 +437,7 @@ int main(int argc, char** argv)
 				window.close();
 			}
 
-			// Window Title
+			// Set Window Title
 			const ml::Duration & now = ML_Time.elapsed();
 			window.title(ml::StringUtility::Format(
 				"{0} | {1} ms | {2} fps | {3}",

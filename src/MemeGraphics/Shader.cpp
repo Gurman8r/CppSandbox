@@ -8,35 +8,30 @@ namespace ml
 	struct Shader::UniformBinder
 	{
 		UniformBinder(Shader & shader, const std::string & name)
-			: savedProgram(0)
-			, currentProgram(shader.m_program)
+			: saved(0)
+			, current(shader.m_program)
 			, location(-1)
 		{
-			if (currentProgram)
+			if (current)
 			{
-				// Enable program object
-				savedProgram = OpenGL::getProgramHandle(GL::ProgramObject);
-
-				if (currentProgram != savedProgram)
+				if (current != (saved = OpenGL::getProgramHandle(GL::ProgramObject)))
 				{
-					OpenGL::useShader(currentProgram);
+					OpenGL::useShader(current);
 				}
 
-				// Store uniform location for further use outside constructor
 				location = shader.getUniformLocation(name);
 			}
 		}
 		~UniformBinder()
 		{
-			// Disable current program object
-			if (currentProgram && (currentProgram != savedProgram))
+			if (current && (current != saved))
 			{
-				OpenGL::useShader(savedProgram);
+				OpenGL::useShader(saved);
 			}
 		}
 
-		uint32_t	savedProgram;
-		uint32_t	currentProgram;
+		uint32_t	saved;
+		uint32_t	current;
 		int32_t		location;
 
 		inline operator bool() const
@@ -185,9 +180,10 @@ namespace ml
 	}
 
 
-	void Shader::use(bool bindTex) const
+	Shader & Shader::use(bool bindTex)
 	{
 		Shader::bind(this, bindTex);
+		return (*this);
 	}
 
 	void Shader::bind(const Shader * shader, bool bindTex)
@@ -211,150 +207,154 @@ namespace ml
 		}
 		else
 		{
-			OpenGL::useShader(0);
+			OpenGL::useShader(NULL);
 		}
 	}
 	
 	
-	void Shader::setUniform(const std::string & name, const float & value)
+	Shader & Shader::setUniform(const std::string & name, const float & value)
 	{
 		UniformBinder u((*this), name);
 		if (u)
 		{
 			OpenGL::uniform1f(u.location, value);
 		}
+		return (*this);
 	}
 	
-	void Shader::setUniform(const std::string & name, const int32_t & value)
+	Shader & Shader::setUniform(const std::string & name, const int32_t & value)
 	{
 		UniformBinder u((*this), name);
 		if (u)
 		{
 			OpenGL::uniform1i(u.location, value);
 		}
+		return (*this);
 	}
 	
-	void Shader::setUniform(const std::string & name, const uint32_t & value)
+	Shader & Shader::setUniform(const std::string & name, const uint32_t & value)
 	{
 		UniformBinder u((*this), name);
 		if (u)
 		{
 			OpenGL::uniform1u(u.location, value);
 		}
+		return (*this);
 	}
 
-	void Shader::setUniform(const std::string & name, const vec2f & value)
+	Shader & Shader::setUniform(const std::string & name, const vec2f & value)
 	{
 		UniformBinder u((*this), name);
 		if (u)
 		{
 			OpenGL::uniform2f(u.location, value[0], value[1]);
 		}
+		return (*this);
 	}
 	
-	void Shader::setUniform(const std::string & name, const vec3f & value)
+	Shader & Shader::setUniform(const std::string & name, const vec3f & value)
 	{
 		UniformBinder u((*this), name);
 		if (u)
 		{
 			OpenGL::uniform3f(u.location, value[0], value[1], value[2]);
 		}
+		return (*this);
 	}
 	
-	void Shader::setUniform(const std::string & name, const vec4f & value)
+	Shader & Shader::setUniform(const std::string & name, const vec4f & value)
 	{
 		UniformBinder u((*this), name);
 		if (u)
 		{
 			OpenGL::uniform4f(u.location, value[0], value[1], value[2], value[3]);
 		}
+		return (*this);
 	}
 	
-	void Shader::setUniform(const std::string & name, const vec2i & value)
+	Shader & Shader::setUniform(const std::string & name, const vec2i & value)
 	{
 		UniformBinder u((*this), name);
 		if (u)
 		{
 			OpenGL::uniform2i(u.location, value[0], value[1]);
 		}
+		return (*this);
 	}
 	
-	void Shader::setUniform(const std::string & name, const vec3i & value)
+	Shader & Shader::setUniform(const std::string & name, const vec3i & value)
 	{
 		UniformBinder u((*this), name);
 		if (u)
 		{
 			OpenGL::uniform3i(u.location, value[0], value[1], value[2]);
 		}
+		return (*this);
 	}
 	
-	void Shader::setUniform(const std::string & name, const vec4i & value)
+	Shader & Shader::setUniform(const std::string & name, const vec4i & value)
 	{
 		UniformBinder u((*this), name);
 		if (u)
 		{
 			OpenGL::uniform4i(u.location, value[0], value[1], value[2], value[3]);
 		}
+		return (*this);
 	}
 	
-	void Shader::setUniform(const std::string & name, const mat3f & value)
+	Shader & Shader::setUniform(const std::string & name, const mat3f & value)
 	{
 		UniformBinder u((*this), name);
 		if (u)
 		{
 			OpenGL::uniformMatrix3f(u.location, 1, false, value.ptr());
 		}
+		return (*this);
 	}
 	
-	void Shader::setUniform(const std::string & name, const mat4f & value)
+	Shader & Shader::setUniform(const std::string & name, const mat4f & value)
 	{
 		UniformBinder u((*this), name);
 		if (u)
 		{
 			OpenGL::uniformMatrix4f(u.location, 1, false, value.ptr());
 		}
+		return (*this);
 	}
 
-	void Shader::setUniform(const std::string & name, const Texture & value)
+	Shader & Shader::setUniform(const std::string & name, const Texture & value)
 	{
-		if (m_program && value.id())
+		UniformBinder u((*this), name);
+		if (u)
 		{
-			int location = getUniformLocation(name);
-			if (location != -1)
+			TextureTable::iterator it;
+			if ((it = m_textures.find(u.location)) == m_textures.end())
 			{
-				TextureTable::iterator it;
-				if ((it = m_textures.find(location)) == m_textures.end())
-				{
-					int32_t maxUnits = OpenGL::getMaxTextureUnits();
+				static std::size_t maxUnits = static_cast<std::size_t>(OpenGL::getMaxTextureUnits());
 
-					if ((m_textures.size() + 1) >= static_cast<std::size_t>(maxUnits))
-					{
-						Debug::LogError("Impossible to use texture \"{0}\" for source: all available texture units are used", name);
-						return;
-					}
-
-					m_textures[location] = &value;
-				}
-				else
+				if ((m_textures.size() + 1) >= maxUnits)
 				{
-					//it->second = value;
-					m_textures[location] = &value;
+					Debug::LogError("Impossible to use texture \"{0}\" for source: all available texture units are used: {1}", name, maxUnits);
+					return (*this);
 				}
 			}
+			m_textures[u.location] = &value;
 		}
+		return (*this);
 	}
 	
 	
-	void Shader::setUniformArray(const std::string & name, int32_t count, const float * value)
+	Shader & Shader::setUniformArray(const std::string & name, int32_t count, const float * value)
 	{
 		UniformBinder u((*this), name);
 		if (u)
 		{
 			OpenGL::uniformArray1f(u.location, count, value);
 		}
+		return (*this);
 	}
 	
-	void Shader::setUniformArray(const std::string & name, int32_t count, const vec2f * value)
+	Shader & Shader::setUniformArray(const std::string & name, int32_t count, const vec2f * value)
 	{
 		std::vector<float> contiguous = vec2f::Flatten(value, count);
 
@@ -363,9 +363,10 @@ namespace ml
 		{
 			OpenGL::uniformArray2f(u.location, count, &contiguous[0]);
 		}
+		return (*this);
 	}
 	
-	void Shader::setUniformArray(const std::string & name, int32_t count, const vec3f * value)
+	Shader & Shader::setUniformArray(const std::string & name, int32_t count, const vec3f * value)
 	{
 		std::vector<float> contiguous = vec3f::Flatten(value, count);
 
@@ -374,9 +375,10 @@ namespace ml
 		{
 			OpenGL::uniformArray3f(u.location, count, &contiguous[0]);
 		}
+		return (*this);
 	}
 	
-	void Shader::setUniformArray(const std::string & name, int32_t count, const vec4f * value)
+	Shader & Shader::setUniformArray(const std::string & name, int32_t count, const vec4f * value)
 	{
 		std::vector<float> contiguous = vec4f::Flatten(value, count);
 
@@ -385,9 +387,10 @@ namespace ml
 		{
 			OpenGL::uniformArray4f(u.location, count, &contiguous[0]);
 		}
+		return (*this);
 	}
 	
-	void Shader::setUniformArray(const std::string & name, int32_t count, const mat3f * value)
+	Shader & Shader::setUniformArray(const std::string & name, int32_t count, const mat3f * value)
 	{
 		std::vector<float> contiguous = mat3f::Flatten(value, count);
 
@@ -396,9 +399,10 @@ namespace ml
 		{
 			OpenGL::uniformMatrixArray3f(u.location, count, false, &contiguous[0]);
 		}
+		return (*this);
 	}
 	
-	void Shader::setUniformArray(const std::string & name, int32_t count, const mat4f * value)
+	Shader & Shader::setUniformArray(const std::string & name, int32_t count, const mat4f * value)
 	{
 		std::vector<float> contiguous = mat4f::Flatten(value, count);
 
@@ -407,6 +411,7 @@ namespace ml
 		{
 			OpenGL::uniformMatrixArray4f(u.location, count, false, &contiguous[0]);
 		}
+		return (*this);
 	}
 
 
@@ -530,11 +535,10 @@ namespace ml
 	int Shader::getUniformLocation(const std::string & value)
 	{
 		// Check the cache
-		UniformTable::const_iterator it = m_uniforms.find(value);
+		UniformTable::const_iterator it;
 
-		if (it != m_uniforms.end())
+		if ((it = m_uniforms.find(value)) != m_uniforms.end())
 		{
-			// Already in cache, return it
 			return it->second;
 		}
 		else

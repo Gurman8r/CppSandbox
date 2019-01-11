@@ -63,19 +63,19 @@ namespace ml
 
 	const FloatList & Mesh::flattened() const
 	{
-		update();
+		if (m_changed)
+		{
+			m_changed = false;
+
+			update();
+		}
 		return m_flattened;
 	}
 
 
 	void Mesh::update() const
 	{
-		if (m_changed)
-		{
-			m_changed = false;
-
-			m_flattened = Flatten(vertices());
-		}
+		m_flattened = Flatten(vertices());
 	}
 
 

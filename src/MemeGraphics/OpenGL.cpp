@@ -17,10 +17,13 @@ namespace ml
 
 	// General
 
+	bool OpenGL::good()
+	{
+		return m_good;
+	}
+
 	bool OpenGL::init(bool experimental)
 	{
-		assert((sizeof(GL::Enum) == sizeof(GLenum))); // sanity check
-
 		static bool checked = false;
 		if (!checked)
 		{
@@ -30,8 +33,7 @@ namespace ml
 
 			m_good = (glewInit() == GLEW_OK);
 
-			Debug::Log("OpenGL version supported by this platform: {0}", 
-				getString(GL::Version));
+			Debug::Log("OpenGL version supported by this platform: {0}", getString(GL::Version));
 		}
 		return m_good;
 	}
@@ -343,7 +345,7 @@ namespace ml
 			type,
 			normalized,
 			(stride * width),
-			reinterpret_cast<const void*>(offset * width)));
+			reinterpret_cast<const void *>(offset * width))); // this causes a warning in x64
 	}
 
 	void OpenGL::enableVertexAttribArray(uint32_t index)

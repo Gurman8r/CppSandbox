@@ -44,7 +44,7 @@ namespace ml
 		return mat4f(glm::value_ptr(glm::ortho(left, right, top, bottom)));
 	}
 
-	mat4f Transform::Persp(float fov, float aspect, float near, float far)
+	mat4f Transform::Perspective(float fov, float aspect, float near, float far)
 	{
 		return mat4f(glm::value_ptr(glm::perspective(fov, aspect, near, far)));
 	}

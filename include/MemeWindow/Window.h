@@ -69,8 +69,10 @@ namespace ml
 		inline const vec2i &			position()	const { return m_position; }
 		inline const vec2u &			size()		const { return m_size; }
 		inline const std::string &		title()		const { return m_title; }
-
-		inline float getAspect() const { return (float)size()[0] / (float)size()[1]; };
+		
+		inline const uint32_t & width()		const { return size()[0]; }
+		inline const uint32_t & height()	const { return size()[1]; }
+		inline const float		aspect()	const { return (float)width() / (float)height(); };
 
 	protected:
 		Handle			m_handle;
