@@ -4,7 +4,7 @@
 namespace ml
 {
 	Mesh::Mesh()
-		: m_primitive(GL::Points)
+		: m_mode(GL::Points)
 		, m_vertices()
 		, m_indices()
 		, m_flattened()
@@ -12,8 +12,8 @@ namespace ml
 	{
 	}
 
-	Mesh::Mesh(GL::Prim primitive, const VertexList & vertices, const IndexList & indices)
-		: m_primitive(primitive)
+	Mesh::Mesh(GL::Mode mode, const VertexList & vertices, const IndexList & indices)
+		: m_mode(mode)
 		, m_vertices(vertices)
 		, m_indices(indices)
 		, m_flattened()
@@ -22,7 +22,7 @@ namespace ml
 	}
 
 	Mesh::Mesh(const Mesh & copy)
-		: m_primitive(copy.m_primitive)
+		: m_mode(copy.m_mode)
 		, m_vertices(copy.m_vertices)
 		, m_indices(copy.m_indices)
 		, m_flattened(copy.m_flattened)
@@ -46,9 +46,9 @@ namespace ml
 	}
 
 	
-	const GL::Prim & Mesh::primitive() const
+	const GL::Mode & Mesh::mode() const
 	{
-		return m_primitive;
+		return m_mode;
 	}
 
 	const VertexList & Mesh::vertices() const
@@ -79,11 +79,11 @@ namespace ml
 	}
 
 
-	Mesh & Mesh::primitive(GL::Prim value)
+	Mesh & Mesh::mode(GL::Mode value)
 	{
-		if (value != m_primitive)
+		if (value != m_mode)
 		{
-			m_primitive = value;
+			m_mode = value;
 			return changed(true);
 		}
 		return changed(false);

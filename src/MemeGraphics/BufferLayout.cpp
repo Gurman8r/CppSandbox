@@ -20,12 +20,17 @@ namespace ml
 namespace ml
 {
 	BufferLayout::BufferLayout()
-		: BufferLayout(Elements())
+		: BufferLayout(std::vector<Element>())
 	{
 	}
 
-	BufferLayout::BufferLayout(const Elements & elements)
+	BufferLayout::BufferLayout(const std::vector<Element> & elements)
 		: m_elements(elements)
+	{
+	}
+
+	BufferLayout::BufferLayout(const std::initializer_list<Element> & elements)
+		: m_elements(elements.begin(), elements.end())
 	{
 	}
 
@@ -41,7 +46,12 @@ namespace ml
 
 	void BufferLayout::use() const
 	{
-		for (const Element & e : elements())
+		BufferLayout::bind(*this);
+	}
+
+	void BufferLayout::bind(const BufferLayout & value)
+	{
+		for (const Element & e : value.elements())
 		{
 			e.use();
 		}

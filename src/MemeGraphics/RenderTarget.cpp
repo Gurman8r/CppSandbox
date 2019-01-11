@@ -31,10 +31,9 @@ namespace ml
 	}
 	
 
-	RenderTarget & RenderTarget::drawElements(const IBO & ibo, GL::Prim prim, GL::Type type)
+	RenderTarget & RenderTarget::drawElements(const IBO & ibo, GL::Mode mode, GL::Type type)
 	{
-		ibo.bind();
-		OpenGL::drawElements(prim, (int32_t)ibo.count(), type, NULL);
+		OpenGL::drawElements(mode, (int32_t)ibo.count(), type, NULL);
 		return (*this);
 	}
 	

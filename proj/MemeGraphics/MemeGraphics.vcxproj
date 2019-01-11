@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeGraphics\Color.h" />
+    <ClInclude Include="..\..\include\MemeGraphics\FrameBuffer.h" />
     <ClInclude Include="..\..\include\MemeGraphics\GL.h" />
     <ClInclude Include="..\..\include\MemeGraphics\Gizmos.h" />
     <ClInclude Include="..\..\include\MemeGraphics\IDrawable.h" />
@@ -51,6 +52,7 @@
     <ClCompile Include="..\..\src\MemeGraphics\BufferLayout.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Color.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Font.cpp" />
+    <ClCompile Include="..\..\src\MemeGraphics\FrameBuffer.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Gizmos.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\IndexBuffer.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\OpenGL.cpp" />

@@ -157,18 +157,45 @@
     <ClCompile Include="..\..\src\Demo\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\assets\meshes\sphere32x24.mesh" />
+    <None Include="..\..\assets\meshes\sphere8x6.mesh" />
     <None Include="..\..\assets\scripts\boot.script" />
     <None Include="..\..\assets\scripts\fibonacci.script" />
     <None Include="..\..\assets\scripts\hello.script" />
     <None Include="..\..\assets\scripts\stub.script" />
-    <None Include="..\..\assets\shaders\fs\basic_fs.shader" />
+    <None Include="..\..\assets\shaders\fs\basic\drawColor_fs4x.shader" />
+    <None Include="..\..\assets\shaders\fs\basic\drawSolid_fs4x.shader" />
+    <None Include="..\..\assets\shaders\fs\basic\drawTexture_fs4x.shader" />
+    <None Include="..\..\assets\shaders\fs\basic\phong_fs4x.shader" />
+    <None Include="..\..\assets\shaders\fs\bloom\blend_screen_fs4x.shader" />
+    <None Include="..\..\assets\shaders\fs\bloom\blur_gaussian_fs4x.shader" />
+    <None Include="..\..\assets\shaders\fs\bloom\brightpass_fs4x.shader" />
+    <None Include="..\..\assets\shaders\fs\deferred\deferredComposite_fs4x.shader" />
+    <None Include="..\..\assets\shaders\fs\deferred\deferredShading_fs4x.shader" />
+    <None Include="..\..\assets\shaders\fs\deferred\drawGBuffers_fs4x.shader" />
+    <None Include="..\..\assets\shaders\fs\deferred\phong_deferred_pointLight_fs4x.shader" />
     <None Include="..\..\assets\shaders\fs\geometry_fs.shader" />
-    <None Include="..\..\assets\shaders\fs\text_fs.shader" />
+    <None Include="..\..\assets\shaders\fs\shadow\phong_projtex_fs4x.shader" />
+    <None Include="..\..\assets\shaders\fs\shadow\phong_shadowmap_fs4x.shader" />
+    <None Include="..\..\assets\shaders\gs\basic\drawCurve_gs4x.glsl" />
+    <None Include="..\..\assets\shaders\gs\basic\drawCurve_morphing_gs4x.glsl" />
     <None Include="..\..\assets\shaders\gs\geometry_gs.shader" />
-    <None Include="..\..\assets\shaders\test.shader" />
-    <None Include="..\..\assets\shaders\vs\basic_vs.shader" />
+    <None Include="..\..\assets\shaders\basic.shader" />
+    <None Include="..\..\assets\shaders\text.shader" />
+    <None Include="..\..\assets\shaders\vs\animation\drawBone_vs4x.shader" />
+    <None Include="..\..\assets\shaders\vs\animation\morphing_passKeyframes_vs4x.shader" />
+    <None Include="..\..\assets\shaders\vs\animation\morphing_vs4x.shader" />
+    <None Include="..\..\assets\shaders\vs\animation\skinning_passNormalAsColor_vs4x.shader" />
+    <None Include="..\..\assets\shaders\vs\basic\passColor_vs4x.shader" />
+    <None Include="..\..\assets\shaders\vs\basic\passTexcoord_passthruPosition_vs4x.shader" />
+    <None Include="..\..\assets\shaders\vs\basic\passTexcoord_vs4x.shader" />
+    <None Include="..\..\assets\shaders\vs\basic\passThru_vs4x.shader" />
+    <None Include="..\..\assets\shaders\vs\basic\phong_vs4x.shader" />
+    <None Include="..\..\assets\shaders\vs\basic\transform_vs4x.shader" />
+    <None Include="..\..\assets\shaders\vs\deferred\passAttribs_world_vs4x.shader" />
+    <None Include="..\..\assets\shaders\vs\deferred\passPosition_clip_vs4x.shader" />
     <None Include="..\..\assets\shaders\vs\geometry_vs.shader" />
-    <None Include="..\..\assets\shaders\vs\text_vs.shader" />
+    <None Include="..\..\assets\shaders\vs\shadow\phong_passAltClip_vs4x.shader" />
     <None Include="..\..\config.ini" />
     <None Include="..\..\tools\Archive_Bin.bat" />
     <None Include="..\..\tools\Archive_Bin_Debug_x64.bat" />
@@ -184,7 +211,7 @@
   </ItemGroup>
   <ItemGroup>
     <Font Include="..\..\assets\fonts\clacon.ttf" />
-    <Font Include="..\..\assets\fonts\Consolas.ttf" />
+    <Font Include="..\..\assets\fonts\consolas.ttf" />
     <Font Include="..\..\assets\fonts\lucida_console.ttf" />
     <Font Include="..\..\assets\fonts\minecraft.ttf" />
   </ItemGroup>

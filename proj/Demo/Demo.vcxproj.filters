@@ -32,6 +32,36 @@
     <Filter Include="Resource Files\assets\shaders\vs">
       <UniqueIdentifier>{0d26678f-f1f3-4b09-9e38-5339d5e05438}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\assets\meshes">
+      <UniqueIdentifier>{698365e7-9b18-4357-942c-0422c5cab989}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\shaders\fs\basic">
+      <UniqueIdentifier>{80e4d7eb-0415-4ab7-8817-6e7ec73e512b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\shaders\fs\bloom">
+      <UniqueIdentifier>{a4031056-3890-45ee-9669-f56deb4c75df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\shaders\fs\deferred">
+      <UniqueIdentifier>{431b4128-0f88-494f-bd76-09b83739ba39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\shaders\fs\shadow">
+      <UniqueIdentifier>{e2c89452-1786-4a62-b204-9422e06a5dfb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\shaders\vs\animation">
+      <UniqueIdentifier>{a42fa075-34ac-484d-9920-eb236d8cc4ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\shaders\vs\basic">
+      <UniqueIdentifier>{1e21c74a-c52a-4f6a-9a18-2254c3d09ada}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\shaders\vs\deferred">
+      <UniqueIdentifier>{cb7fc047-de88-44fe-8f62-75121de14b07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\shaders\vs\shadow">
+      <UniqueIdentifier>{a3bc38d7-8d8c-49b7-914f-73fd27a52861}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\shaders\gs\basic">
+      <UniqueIdentifier>{91eea630-db0a-4806-9433-4c8030e9959d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\config.ini">
@@ -82,18 +112,6 @@
     <None Include="..\..\assets\scripts\stub.script">
       <Filter>Resource Files\assets\scripts</Filter>
     </None>
-    <None Include="..\..\assets\shaders\vs\text_vs.shader">
-      <Filter>Resource Files\assets\shaders\vs</Filter>
-    </None>
-    <None Include="..\..\assets\shaders\fs\text_fs.shader">
-      <Filter>Resource Files\assets\shaders\fs</Filter>
-    </None>
-    <None Include="..\..\assets\shaders\fs\basic_fs.shader">
-      <Filter>Resource Files\assets\shaders\fs</Filter>
-    </None>
-    <None Include="..\..\assets\shaders\vs\basic_vs.shader">
-      <Filter>Resource Files\assets\shaders\vs</Filter>
-    </None>
     <None Include="..\..\assets\shaders\fs\geometry_fs.shader">
       <Filter>Resource Files\assets\shaders\fs</Filter>
     </None>
@@ -103,7 +121,100 @@
     <None Include="..\..\assets\shaders\vs\geometry_vs.shader">
       <Filter>Resource Files\assets\shaders\vs</Filter>
     </None>
-    <None Include="..\..\assets\shaders\test.shader">
+    <None Include="..\..\assets\shaders\fs\basic\drawColor_fs4x.shader">
+      <Filter>Resource Files\assets\shaders\fs\basic</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\fs\basic\drawSolid_fs4x.shader">
+      <Filter>Resource Files\assets\shaders\fs\basic</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\fs\basic\drawTexture_fs4x.shader">
+      <Filter>Resource Files\assets\shaders\fs\basic</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\fs\basic\phong_fs4x.shader">
+      <Filter>Resource Files\assets\shaders\fs\basic</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\fs\shadow\phong_projtex_fs4x.shader">
+      <Filter>Resource Files\assets\shaders\fs\shadow</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\fs\shadow\phong_shadowmap_fs4x.shader">
+      <Filter>Resource Files\assets\shaders\fs\shadow</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\fs\deferred\deferredComposite_fs4x.shader">
+      <Filter>Resource Files\assets\shaders\fs\deferred</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\fs\deferred\deferredShading_fs4x.shader">
+      <Filter>Resource Files\assets\shaders\fs\deferred</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\fs\deferred\drawGBuffers_fs4x.shader">
+      <Filter>Resource Files\assets\shaders\fs\deferred</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\fs\deferred\phong_deferred_pointLight_fs4x.shader">
+      <Filter>Resource Files\assets\shaders\fs\deferred</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\fs\bloom\blend_screen_fs4x.shader">
+      <Filter>Resource Files\assets\shaders\fs\bloom</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\fs\bloom\blur_gaussian_fs4x.shader">
+      <Filter>Resource Files\assets\shaders\fs\bloom</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\fs\bloom\brightpass_fs4x.shader">
+      <Filter>Resource Files\assets\shaders\fs\bloom</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\vs\shadow\phong_passAltClip_vs4x.shader">
+      <Filter>Resource Files\assets\shaders\vs\shadow</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\vs\deferred\passAttribs_world_vs4x.shader">
+      <Filter>Resource Files\assets\shaders\vs\deferred</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\vs\deferred\passPosition_clip_vs4x.shader">
+      <Filter>Resource Files\assets\shaders\vs\deferred</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\vs\basic\passColor_vs4x.shader">
+      <Filter>Resource Files\assets\shaders\vs\basic</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\vs\basic\passTexcoord_passthruPosition_vs4x.shader">
+      <Filter>Resource Files\assets\shaders\vs\basic</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\vs\basic\passTexcoord_vs4x.shader">
+      <Filter>Resource Files\assets\shaders\vs\basic</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\vs\basic\passThru_vs4x.shader">
+      <Filter>Resource Files\assets\shaders\vs\basic</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\vs\basic\phong_vs4x.shader">
+      <Filter>Resource Files\assets\shaders\vs\basic</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\vs\basic\transform_vs4x.shader">
+      <Filter>Resource Files\assets\shaders\vs\basic</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\vs\animation\drawBone_vs4x.shader">
+      <Filter>Resource Files\assets\shaders\vs\animation</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\vs\animation\morphing_passKeyframes_vs4x.shader">
+      <Filter>Resource Files\assets\shaders\vs\animation</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\vs\animation\morphing_vs4x.shader">
+      <Filter>Resource Files\assets\shaders\vs\animation</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\vs\animation\skinning_passNormalAsColor_vs4x.shader">
+      <Filter>Resource Files\assets\shaders\vs\animation</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\gs\basic\drawCurve_gs4x.glsl">
+      <Filter>Resource Files\assets\shaders\gs\basic</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\gs\basic\drawCurve_morphing_gs4x.glsl">
+      <Filter>Resource Files\assets\shaders\gs\basic</Filter>
+    </None>
+    <None Include="..\..\assets\meshes\sphere8x6.mesh">
+      <Filter>Resource Files\assets\meshes</Filter>
+    </None>
+    <None Include="..\..\assets\meshes\sphere32x24.mesh">
+      <Filter>Resource Files\assets\meshes</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\text.shader">
+      <Filter>Resource Files\assets\shaders</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\basic.shader">
       <Filter>Resource Files\assets\shaders</Filter>
     </None>
   </ItemGroup>
@@ -114,13 +225,13 @@
     <Font Include="..\..\assets\fonts\clacon.ttf">
       <Filter>Resource Files\assets\fonts</Filter>
     </Font>
-    <Font Include="..\..\assets\fonts\Consolas.ttf">
-      <Filter>Resource Files\assets\fonts</Filter>
-    </Font>
     <Font Include="..\..\assets\fonts\lucida_console.ttf">
       <Filter>Resource Files\assets\fonts</Filter>
     </Font>
     <Font Include="..\..\assets\fonts\minecraft.ttf">
+      <Filter>Resource Files\assets\fonts</Filter>
+    </Font>
+    <Font Include="..\..\assets\fonts\consolas.ttf">
       <Filter>Resource Files\assets\fonts</Filter>
     </Font>
   </ItemGroup>

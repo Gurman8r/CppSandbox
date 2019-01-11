@@ -488,6 +488,7 @@ namespace ml
 		return false;
 	}
 
+
 	void Texture::use() const
 	{
 		Texture::bind(this);

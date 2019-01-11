@@ -12,12 +12,15 @@ namespace ml
 	{
 	public:
 		IndexBuffer();
-		IndexBuffer(GL::Usage usage, const uint32_t * data, uint32_t size);
+		IndexBuffer(GL::Usage usage, const uint32_t * data, uint32_t count);
 		IndexBuffer(GL::Usage usage, const std::vector<uint32_t> & data);
 		IndexBuffer(const IndexBuffer & copy);
 		~IndexBuffer();
 
 		IndexBuffer & clean();
+		IndexBuffer & create(GL::Usage usage, const uint32_t * data, uint32_t count);
+		IndexBuffer & create(GL::Usage usage, const std::vector<uint32_t> & data);
+		IndexBuffer & update();
 
 		void bind() const;
 		void unbind() const;
@@ -26,6 +29,8 @@ namespace ml
 		inline const uint32_t *		data() const { return m_data; }
 		inline const uint32_t &		count() const { return m_count; }
 		inline const GL::Usage &	usage() const { return m_usage; }
+
+		inline operator bool() const { return (bool)id(); }
 
 	private:
 		uint32_t		 m_id;

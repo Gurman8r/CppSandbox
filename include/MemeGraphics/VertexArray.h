@@ -15,12 +15,16 @@ namespace ml
 		~VertexArray();
 
 		VertexArray & clean();
+		VertexArray & create(uint32_t count);
+		VertexArray & update();
 		
 		void bind() const;
 		void unbind() const;
 
 		inline const uint32_t &	id() const { return m_id; }
 		inline const uint32_t &	count() const { return m_id; }
+
+		inline operator bool() const { return (bool)id(); }
 
 	private:
 		uint32_t	m_id;

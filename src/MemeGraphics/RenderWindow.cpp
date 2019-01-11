@@ -6,7 +6,7 @@ namespace ml
 {
 	bool RenderWindow::initialize()
 	{
-		if (OpenGL::init(true))
+		if (Window::initialize() && OpenGL::init(true))
 		{
 			// Setup GL
 
@@ -80,8 +80,8 @@ namespace ml
 					int numExtensions = (uint32_t)OpenGL::getInt(GL::NumExtensions);
 					for (uint32_t i = 0; i < (uint32_t)(numExtensions); ++i)
 					{
-						const char* extensions = OpenGL::getString(GL::Extensions, i);
-						if (std::strstr(extensions, "GL_ARB_compatibility"))
+						const std::string ext = OpenGL::getString(GL::Extensions, i);
+						if (ext == "GL_ARB_compatibility")
 						{
 							Debug::LogWarning("Clear Core Profile");
 							m_settings.profile &= ~ContextSettings::Core;

@@ -236,19 +236,61 @@ namespace ml
 		glCheck(glClearColor(r, g, b, a));
 	}
 
-	void OpenGL::drawElements(GL::Prim primitive, int32_t count, GL::Type type, const void * indices)
+	void OpenGL::drawElements(GL::Mode mode, int32_t count, GL::Type type, const void * indices)
 	{
-		glCheck(glDrawElements(primitive, count, type, indices));
+		glCheck(glDrawElements(mode, count, type, indices));
 	}
 
-	void OpenGL::drawArrays(GL::Prim primitive, int32_t first, int32_t count)
+	void OpenGL::drawArrays(GL::Mode mode, int32_t first, int32_t count)
 	{
-		glCheck(glDrawArrays(primitive, first, count));
+		glCheck(glDrawArrays(mode, first, count));
 	}
 
 	void OpenGL::flush()
 	{
 		glCheck(glFlush());
+	}
+
+
+	void OpenGL::pushMatrix()
+	{
+		glCheck(glPushMatrix());
+	}
+
+	void OpenGL::popMatrix()
+	{
+		glCheck(glPopMatrix());
+	}
+
+	void OpenGL::loadMatrix(const float * value)
+	{
+		glCheck(glLoadMatrixf(value));
+	}
+
+	void OpenGL::begin(GL::Mode mode)
+	{
+		glCheck(glBegin(mode));
+	}
+
+	void OpenGL::end()
+	{
+		glCheck(glEnd());
+	}
+
+
+	void OpenGL::vertex3f(float x, float y, float z)
+	{
+		glCheck(glVertex3f(x, y, z));
+	}
+
+	void OpenGL::color3f(float r, float g, float b)
+	{
+		glCheck(glColor3f(r, g, b));
+	}
+
+	void OpenGL::color4f(float r, float g, float b, float a)
+	{
+		glCheck(glColor4f(r, g, b, a));
 	}
 
 

@@ -14,9 +14,9 @@ namespace ml
 	{
 	}
 
-	Text::Text(Shader * shader, Font * font)
+	Text::Text(Shader * shader, Font * fonts)
 		: m_shader(shader)
-		, m_font(font)
+		, m_font(fonts)
 		, m_fontSize(0)
 		, m_color(Color::White)
 		, m_string()
@@ -42,7 +42,7 @@ namespace ml
 		return m_color;
 	}
 
-	const Font * Text::font() const
+	const Font * Text::fonts() const
 	{
 		return m_font;
 	}
@@ -69,7 +69,7 @@ namespace ml
 		return (*this);
 	}
 
-	Text & Text::font(Font * value)
+	Text & Text::fonts(Font * value)
 	{
 		m_font = value;
 		return (*this);
@@ -98,7 +98,7 @@ namespace ml
 	{
 		return 
 			shader() &&
-			font();
+			fonts();
 	}
 
 	Text::operator bool() const
@@ -149,7 +149,7 @@ namespace ml
 				//state.shader = shader();
 				//state.color = color();
 
-				//target->drawDynamic(Enum::Prim::Triangles, vertices, state);
+				//target->drawDynamic(Enum::Mode::Triangles, vertices, state);
 
 				//OpenGL::activeTexture(GL::Texture0);
 				//OpenGL::bindVertexArray(vao);

@@ -4,14 +4,13 @@
 namespace ml
 {
 	VertexArray::VertexArray()
+		: m_id(NULL)
 	{
 	}
 
 	VertexArray::VertexArray(uint32_t count)
-		: m_count(count)
 	{
-		m_id = OpenGL::genVertexArrays(m_count);
-		bind();
+		create(count);
 	}
 
 	VertexArray::VertexArray(const VertexArray & copy)
@@ -31,6 +30,21 @@ namespace ml
 		return (*this);
 	}
 
+	VertexArray & VertexArray::create(uint32_t count)
+	{
+		m_count = count;
+		m_id = OpenGL::genVertexArrays(m_count);
+
+		bind();
+
+		return update();
+	}
+
+	VertexArray & VertexArray::update()
+	{
+		return (*this);
+	}
+
 
 	void VertexArray::bind() const
 	{
@@ -39,6 +53,6 @@ namespace ml
 
 	void VertexArray::unbind() const
 	{
-		OpenGL::bindVertexArray(0);
+		OpenGL::bindVertexArray(NULL);
 	}
 }

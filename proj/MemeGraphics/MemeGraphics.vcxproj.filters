@@ -126,6 +126,9 @@
     <ClInclude Include="..\..\include\MemeGraphics\GL.h">
       <Filter>Header Files\GL</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\FrameBuffer.h">
+      <Filter>Header Files\Buffers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeGraphics\RenderWindow.cpp">
@@ -193,6 +196,9 @@
     </ClCompile>
     <ClCompile Include="..\..\include\MemeGraphics\GLM.h">
       <Filter>Header Files\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\FrameBuffer.cpp">
+      <Filter>Source Files\Buffers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

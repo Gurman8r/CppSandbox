@@ -24,22 +24,25 @@ namespace ml
 			void use() const;
 		};
 
-		using Elements = std::vector<Element>;
+		//using Elements = std::vector<Element>;
 
 	public:
 		BufferLayout();
-		BufferLayout(const Elements & elements);
+		BufferLayout(const std::vector<Element> & elements);
+		BufferLayout(const std::initializer_list<Element> & elements);
 		BufferLayout(const BufferLayout & copy);
 		~BufferLayout();
 
 		void use() const;
 
+		static void bind(const BufferLayout & value);
+
 		BufferLayout & push_back(const Element & value);
 		
-		inline const Elements & elements() const { return m_elements; }
+		inline const std::vector<Element> & elements() const { return m_elements; }
 
 	private:
-		Elements m_elements;
+		std::vector<Element> m_elements;
 	};
 }
 

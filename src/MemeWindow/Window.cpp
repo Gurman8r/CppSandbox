@@ -37,39 +37,16 @@ namespace ml
 			glfwWindowHint(GLFW_FLOATING,		(m_flags & Flags::Floating));
 			glfwWindowHint(GLFW_MAXIMIZED,		(m_flags & Flags::Maximized));
 
-			if (GLFWwindow* ptr = glfwCreateWindow(m_mode.width, m_mode.height, m_title.c_str(), NULL, NULL))
+			if (GLFWwindow * ptr = glfwCreateWindow(
+				m_mode.width,
+				m_mode.height,
+				m_title.c_str(),
+				NULL, 
+				NULL))
 			{
 				if (m_handle = static_cast<GLFWwindow*>(ptr))
 				{
 					glfwMakeContextCurrent(ptr);
-
-					glfwSetWindowSizeCallback(static_cast<GLFWwindow*>(m_handle),
-						[](GLFWwindow* window, int w, int h)
-					{});
-
-					glfwSetWindowPosCallback(static_cast<GLFWwindow*>(m_handle),
-						[](GLFWwindow* window, int w, int h)
-					{});
-
-					glfwSetCharCallback(static_cast<GLFWwindow*>(m_handle),
-						[](GLFWwindow* window, uint32_t c)
-					{});
-
-					glfwSetScrollCallback(static_cast<GLFWwindow*>(m_handle),
-						[](GLFWwindow* window, double x, double y)
-					{});
-
-					glfwSetWindowCloseCallback(static_cast<GLFWwindow*>(m_handle),
-						[](GLFWwindow* window)
-					{});
-
-					glfwSetFramebufferSizeCallback(static_cast<GLFWwindow*>(m_handle),
-						[](GLFWwindow* window, int width, int height)
-					{});
-
-					glfwSetWindowFocusCallback(static_cast<GLFWwindow*>(m_handle),
-						[](GLFWwindow* window, int focused)
-					{});
 
 					return initialize();
 				}
@@ -82,6 +59,41 @@ namespace ml
 
 	bool Window::initialize()
 	{
+		glfwSetWindowSizeCallback(static_cast<GLFWwindow*>(m_handle),
+			[](GLFWwindow * window, int32_t width, int32_t height)
+		{
+		});
+
+		glfwSetWindowPosCallback(static_cast<GLFWwindow*>(m_handle),
+			[](GLFWwindow * window, int32_t width, int32_t h)
+		{
+		});
+
+		glfwSetCharCallback(static_cast<GLFWwindow*>(m_handle),
+			[](GLFWwindow * window, uint32_t c)
+		{
+		});
+
+		glfwSetScrollCallback(static_cast<GLFWwindow*>(m_handle),
+			[](GLFWwindow * window, double x, double y)
+		{
+		});
+
+		glfwSetWindowCloseCallback(static_cast<GLFWwindow*>(m_handle),
+			[](GLFWwindow * window)
+		{
+		});
+
+		glfwSetFramebufferSizeCallback(static_cast<GLFWwindow*>(m_handle),
+			[](GLFWwindow * window, int32_t width, int32_t height)
+		{
+		});
+
+		glfwSetWindowFocusCallback(static_cast<GLFWwindow*>(m_handle),
+			[](GLFWwindow * window, int32_t focused)
+		{
+		});
+
 		return true;
 	}
 
@@ -154,8 +166,10 @@ namespace ml
 	{
 		return !glfwWindowShouldClose(static_cast<GLFWwindow*>(m_handle));
 	}
+
 	float Window::getTime() const
 	{
 		return static_cast<float>(glfwGetTime());
 	}
+	
 }

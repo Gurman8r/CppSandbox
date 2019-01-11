@@ -45,7 +45,7 @@ namespace ml
 	}
 
 
-	Var	 Command::operator()(Args & args)
+	Var	 Command::operator()(fn_args args)
 	{
 		return m_func(args);
 	}

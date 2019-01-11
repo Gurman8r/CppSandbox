@@ -27,7 +27,7 @@ namespace ml
 
 	bool Font::cleanup()
 	{
-		// Destroy the font face
+		// Destroy the fonts face
 		if (m_face)
 		{
 			FT_Done_Face(static_cast<FT_Face>(m_face));
@@ -52,7 +52,7 @@ namespace ml
 		}
 		m_library = library;
 
-		// Load the new font face from the specified file
+		// Load the new fonts face from the specified file
 		FT_Face face;
 		if (FT_New_Face(static_cast<FT_Library>(m_library), filename.c_str(), 0, &face) != 0)
 		{
@@ -60,7 +60,7 @@ namespace ml
 				filename);
 		}
 
-		// Load the stroker that will be used to outline the font
+		// Load the stroker that will be used to outline the fonts
 		FT_Stroker stroker;
 		if (FT_Stroker_New(static_cast<FT_Library>(m_library), &stroker) != 0)
 		{
@@ -78,11 +78,11 @@ namespace ml
 				filename);
 		}
 
-		// Store the loaded font in our ugly void* :)
+		// Store the loaded fonts in our ugly void* :)
 		m_stroker = stroker;
 		m_face = face;
 
-		// Store the font information
+		// Store the fonts information
 		m_info.family = face->family_name ? face->family_name : std::string();
 
 		return true;

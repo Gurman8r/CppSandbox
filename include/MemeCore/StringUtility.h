@@ -51,7 +51,6 @@ namespace ml
 		template<typename T, typename ... A>
 		inline static std::string Format(const std::string& fmt, const T& arg0, const A&... args)
 		{
-			// Move args into stringstream
 			std::stringstream ss;
 			ss << arg0 << std::endl;
 

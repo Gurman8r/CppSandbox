@@ -42,7 +42,7 @@ namespace ml
 
 		enum Err : Enum
 		{
-			NoError = 0,					// GL_NO_ERROR
+			NoError		= 0,				// GL_NO_ERROR
 			InvalidEnum = 0x0500,			// GL_INVALID_ENUM
 			InvalidValue,					// GL_INVALID_VALUE
 			InvalidOperation,				// GL_INVALID_OPERATION
@@ -87,7 +87,7 @@ namespace ml
 			GeometryShader = 0x8DD9,		// GL_GEOMETRY_SHADER
 		};
 
-		enum Prim : Enum
+		enum Mode : Enum
 		{
 			Points = 0x000,					// GL_POINTS
 			Lines,							// GL_LINES

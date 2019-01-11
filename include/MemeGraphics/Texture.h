@@ -46,8 +46,7 @@ namespace ml
 		void	use() const;
 		void	swap(Texture & value);
 
-		static void		bind(const Texture * value);
-
+		static void	bind(const Texture * value);
 		Texture & operator=(const Texture & value);
 
 	public:

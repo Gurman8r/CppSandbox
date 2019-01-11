@@ -13,28 +13,28 @@ namespace ml
 	{
 	public:
 		Mesh();
-		Mesh(GL::Prim primitive, const VertexList & vertices, const IndexList & indices);
+		Mesh(GL::Mode mode, const VertexList & vertices, const IndexList & indices);
 		Mesh(const Mesh& copy);
 		~Mesh();
 
 		bool cleanup() override;
 		bool loadFromFile(const std::string & filename) override;
 
-		const GL::Prim &	primitive() const;
+		const GL::Mode &	mode() const;
 		const VertexList &	vertices() const;
 		const IndexList &	indices() const;
 		const FloatList &	flattened() const;
 
 		void update() const;
 
-		Mesh & primitive(GL::Prim value);
+		Mesh & mode(GL::Mode value);
 		Mesh & vertices(const VertexList & value);
 		Mesh & indices(const IndexList & value);
 
 		static const FloatList & Flatten(const VertexList & value);
 
 	private:
-		GL::Prim	m_primitive;
+		GL::Mode	m_mode;
 		VertexList	m_vertices;
 		IndexList	m_indices;
 

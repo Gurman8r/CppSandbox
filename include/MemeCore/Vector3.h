@@ -57,7 +57,7 @@ namespace ml
 		static const self_type Left;
 		static const self_type Right;
 		static const self_type Forward;
-		static const self_type Backward;
+		static const self_type Back;
 	};
 
 	template<typename T> const Vector3<T> Vector3<T>::Zero		= Vector3<T>( 0,  0,  0);
@@ -67,7 +67,7 @@ namespace ml
 	template<typename T> const Vector3<T> Vector3<T>::Left		= Vector3<T>(-1,  0,  0);
 	template<typename T> const Vector3<T> Vector3<T>::Right		= Vector3<T>( 1,  0,  0);
 	template<typename T> const Vector3<T> Vector3<T>::Forward	= Vector3<T>( 0,  0,  1);
-	template<typename T> const Vector3<T> Vector3<T>::Backward	= Vector3<T>( 0,  0, -1);
+	template<typename T> const Vector3<T> Vector3<T>::Back		= Vector3<T>( 0,  0, -1);
 
 	using vec3f = Vector3<float>;
 	using vec3i = Vector3<int32_t>;

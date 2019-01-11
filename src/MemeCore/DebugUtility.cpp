@@ -11,7 +11,7 @@ namespace ml
 		}
 	}
 
-	Debug::ErrorCode Debug::LogWarning(const std::string & message)
+	Debug::Status Debug::LogWarning(const std::string & message)
 	{
 		err()
 			<< FMT()
@@ -23,7 +23,7 @@ namespace ml
 		return Debug::Warning;
 	}
 
-	Debug::ErrorCode Debug::LogError(const std::string & message)
+	Debug::Status Debug::LogError(const std::string & message)
 	{
 		err()
 			<< FMT()
@@ -35,7 +35,7 @@ namespace ml
 		return Debug::Error;
 	}
 	
-	Debug::ErrorCode Debug::Log(const std::string & message)
+	Debug::Status Debug::Log(const std::string & message)
 	{
 		out()
 			<< FMT()

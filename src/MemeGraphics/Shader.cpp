@@ -28,7 +28,7 @@ namespace ml
 		}
 		~UniformBinder()
 		{
-			// Disable program object
+			// Disable current program object
 			if (currentProgram && (currentProgram != savedProgram))
 			{
 				OpenGL::useShader(savedProgram);
