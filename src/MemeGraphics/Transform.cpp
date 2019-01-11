@@ -1,5 +1,8 @@
 #include <MemeGraphics/Transform.h>
-#include <MemeGraphics/GLM.h>
+
+#include <glm/gtx/transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/rotate_vector.hpp>
 
 namespace ml
 {

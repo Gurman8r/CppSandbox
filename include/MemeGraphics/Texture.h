@@ -30,12 +30,12 @@ namespace ml
 		bool loadFromImage(const Image & value);
 		bool loadFromImage(const Image & value, const IntRect & area);
 
-		Texture & update(const uint8_t* pixels);
-		Texture & update(const uint8_t* pixels, uint32_t width, uint32_t height, uint32_t x, uint32_t y);
-		Texture & update(const Texture& texture);
-		Texture & update(const Texture& texture, uint32_t x, uint32_t y);
-		Texture & update(const Image& image);
-		Texture & update(const Image& image, uint32_t x, uint32_t y);
+		bool update(const uint8_t* pixels);
+		bool update(const uint8_t* pixels, uint32_t width, uint32_t height, uint32_t x, uint32_t y);
+		bool update(const Texture& texture);
+		bool update(const Texture& texture, uint32_t x, uint32_t y);
+		bool update(const Image& image);
+		bool update(const Image& image, uint32_t x, uint32_t y);
 
 		bool create(uint32_t width, uint32_t height);
 		bool create(uint32_t width, uint32_t height, const vec4f & color);
@@ -60,6 +60,9 @@ namespace ml
 		inline const bool &		pixelsFlipped()	const { return m_pixelsFlipped; }
 		inline const bool &		fboAttachment()	const { return m_fboAttachment; }
 		inline const bool &		hasMipmap()		const { return m_hasMipmap; }
+
+		inline const uint32_t & width()  const { return size()[0]; }
+		inline const uint32_t & height() const { return size()[1]; }
 
 		Texture & setRepeated(bool value);
 		Texture & setSmooth(bool value);

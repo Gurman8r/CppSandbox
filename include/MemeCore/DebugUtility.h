@@ -25,9 +25,9 @@ namespace ml
 		static void terminate(bool areYouSure);
 
 	public:
-		static Status LogWarning(const std::string & message);// - 1
-		static Status LogError(const std::string & message);	 //   0
-		static Status Log(const std::string & message);		 // + 1
+		static Status LogWarning(const std::string & message);	// - 1
+		static Status LogError(const std::string & message);	//   0
+		static Status Log(const std::string & message);			// + 1
 
 	public:
 		template<typename T, typename ... A>

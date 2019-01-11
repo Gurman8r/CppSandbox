@@ -8,14 +8,16 @@
 namespace ml
 {
 	class ML_GRAPHICS_API FrameBuffer
+		: public ITrackable
 	{
 	public:
 		FrameBuffer();
+		FrameBuffer(uint32_t width, uint32_t height, GL::Format color, uint32_t depth, uint32_t wrap);
 		FrameBuffer(const FrameBuffer & copy);
 		~FrameBuffer();
 
 		FrameBuffer & clean();
-		FrameBuffer & create();
+		FrameBuffer & create(uint32_t width, uint32_t height, GL::Format color, uint32_t depth, uint32_t wrap);
 		FrameBuffer & update();
 
 		void bind() const;
@@ -29,8 +31,9 @@ namespace ml
 		uint32_t	m_id;
 		uint32_t	m_width;
 		uint32_t	m_height;
-		GL::Format	m_colorFmt;
+		GL::Format	m_color;
 		uint32_t	m_depth;
+		uint32_t	m_wrap;
 	};
 
 	using FBO = FrameBuffer;

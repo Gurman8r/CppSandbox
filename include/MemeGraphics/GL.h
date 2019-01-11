@@ -26,6 +26,8 @@ namespace ml
 			Texture2D		= 0x0DE1,		// GL_TEXTURE_2D
 			ArrayBuffer		= 0x8892,		// GL_ARRAY_BUFFER
 			ElementArrayBuffer,				// GL_ELEMENT_ARRAY_BUFFER
+			Framebuffer		= 0x8D40,		// GL_FRAMEBUFFER
+			Renderbuffer,					// GL_RENDERBUFFER
 			ProgramObject	= 0x8B40,		// GL_PROGRAM_OBJECT_ARB
 			FramebufferRead = 0x8CA8,		// GL_READ_FRAMEBUFFER
 			FramebufferDraw = 0x8CA9,		// GL_DRAW_FRAMEBUFFER

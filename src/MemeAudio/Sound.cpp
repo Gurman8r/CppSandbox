@@ -12,5 +12,6 @@ namespace ml
 
 	Sound::~Sound()
 	{
+		alcCloseDevice(static_cast<ALCdevice*>(m_device));
 	}
 }

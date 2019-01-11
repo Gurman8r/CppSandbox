@@ -150,12 +150,12 @@ namespace ml
 	}
 	
 	
-	Texture & Texture::update(const uint8_t * pixels)
+	bool Texture::update(const uint8_t * pixels)
 	{
 		return update(pixels, m_size[0], m_size[1], 0, 0);
 	}
 	
-	Texture & Texture::update(const uint8_t * pixels, uint32_t width, uint32_t height, uint32_t x, uint32_t y)
+	bool Texture::update(const uint8_t * pixels, uint32_t width, uint32_t height, uint32_t x, uint32_t y)
 	{
 		assert(x + width <= m_size[0]);
 		assert(y + height <= m_size[1]);
@@ -184,23 +184,24 @@ namespace ml
 			m_cacheID = OpenGL::getUniqueID<Texture>();
 
 			OpenGL::flush();
+			return true;
 		}
-		return (*this);
+		return false;
 	}
 	
-	Texture & Texture::update(const Texture & texture)
+	bool Texture::update(const Texture & texture)
 	{
 		return update(texture, 0, 0);
 	}
 	
-	Texture & Texture::update(const Texture & texture, uint32_t x, uint32_t y)
+	bool Texture::update(const Texture & texture, uint32_t x, uint32_t y)
 	{
-		assert(x + texture.m_size[0] <= m_size[0]);
-		assert(y + texture.m_size[1] <= m_size[1]);
+		//assert(x + texture.m_size[0] <= m_size[0]);
+		//assert(y + texture.m_size[1] <= m_size[1]);
 
 		if (!m_id || !texture.m_id)
 		{
-			return (*this);
+			return false;
 		}
 
 		if (OpenGL::framebuffersAvailable())
@@ -215,8 +216,7 @@ namespace ml
 
 			if (!src || !dst)
 			{
-				Debug::LogError("Cannot copy texture, failed to create a frame buffer object");
-				return (*this);
+				return Debug::LogError("Cannot copy texture, failed to create a frame buffer object");
 			}
 
 			// Link the source texture to the source frame buffer
@@ -253,7 +253,7 @@ namespace ml
 			}
 			else
 			{
-				Debug::LogError("Cannot copy texture, failed to link texture to frame buffer");
+				return Debug::LogError("Cannot copy texture, failed to link texture to frame buffer");
 			}
 
 			// Restore previously bound framebuffers
@@ -264,17 +264,18 @@ namespace ml
 			OpenGL::deleteFramebuffers(1, &src);
 			OpenGL::deleteFramebuffers(1, &dst);
 
-			return (*this);
+			return true;
 		}
+		
 		return update(texture.copyToImage(), x, y);
 	}
 	
-	Texture & Texture::update(const Image & image)
+	bool Texture::update(const Image & image)
 	{
 		return update(image.pixelsPtr(), image.size()[0], image.size()[1], 0, 0);
 	}
 	
-	Texture & Texture::update(const Image & image, uint32_t x, uint32_t y)
+	bool Texture::update(const Image & image, uint32_t x, uint32_t y)
 	{
 		return update(image.pixelsPtr(), image.size()[0], image.size()[1], x, y);
 	}

@@ -48,7 +48,6 @@
     <ClInclude Include="..\..\include\MemeGraphics\BufferLayout.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\include\MemeGraphics\GLM.h" />
     <ClCompile Include="..\..\src\MemeGraphics\BufferLayout.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Color.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Font.cpp" />

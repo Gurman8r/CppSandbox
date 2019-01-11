@@ -12,6 +12,7 @@
 #include <MemeGraphics/Shapes.h>
 #include <MemeGraphics/VertexBuffer.h>
 #include <MemeGraphics/IndexBuffer.h>
+#include <MemeGraphics/FrameBuffer.h>
 #include <MemeGraphics/BufferLayout.h>
 #include <MemeGraphics/OpenGL.h>
 #include <MemeAudio/Sound.h>
@@ -51,7 +52,7 @@ struct Settings final
 
 			return ml::Debug::Log("OK");
 		}
-		return ml::Debug::LogError("Failed Loading Settings");
+		return ml::Debug::LogError("Failed Loading Settings \"{0}\"", filename);
 	}
 
 	inline const std::string pathTo(const std::string & filename) const
@@ -64,7 +65,7 @@ static Settings settings;
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-enum : int8_t
+enum : int32_t
 {
 	/* Fonts
 	* * * * * * * * * * * * * * * * * * * * */
@@ -79,6 +80,7 @@ enum : int8_t
 	* * * * * * * * * * * * * * * * * * * * */
 	MIN_TEXTURE = -1,
 	TEX_dean,
+	TEX_test,
 	MAX_TEXTURE,
 
 	/* Shaders
@@ -137,6 +139,18 @@ enum : int8_t
 	MIN_IBO = -1,
 	IBO_test,
 	MAX_IBO,
+
+	/* FBOs
+	* * * * * * * * * * * * * * * * * * * * */
+	MIN_FBO = -1,
+	FBO_test,
+	MAX_FBO,
+
+	/* Sounds
+	* * * * * * * * * * * * * * * * * * * * */
+	MIN_SOUND = -1,
+	SND_test,
+	MAX_SOUND,
 };
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -152,6 +166,9 @@ ml::Transform	model	[MAX_MODEL];
 ml::VAO			vao		[MAX_VAO];
 ml::VBO			vbo		[MAX_VBO];
 ml::IBO			ibo		[MAX_IBO];
+ml::FBO			fbo		[MAX_FBO];
+ml::Sound		sounds	[MAX_SOUND];
+
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -240,7 +257,7 @@ inline static bool loadAssets()
 	vbo[VBO_test].unbind();
 	ibo[IBO_test].unbind();
 
-	return ml::Debug::Log("Done Loading Assets");
+	return ml::Debug::Log("OK");
 }
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -272,7 +289,6 @@ int main(int argc, char** argv)
 	// Load Settings
 	if (!settings.load(CONFIG_INI))
 	{
-		ml::Debug::LogError("Unable to locate config: \"{0}\".", CONFIG_INI);
 		return ml::ConsoleUtility::pause(EXIT_FAILURE);
 	}
 
@@ -342,14 +358,15 @@ int main(int argc, char** argv)
 					shader->setUniform(ml::Uniform::Proj,		proj[P_persp]);
 					shader->setUniform(ml::Uniform::View,		view[V_camera]);
 					shader->setUniform(ml::Uniform::Model,		model[M_transform]);
-					shader->setUniform(ml::Uniform::Texture,	textures[TEX_dean]);
+					shader->setUniform(ml::Uniform::Texture,	textures[TEX_test]);
 					shader->setUniform(ml::Uniform::Color,		ml::Color::White);
 				}
-
 				vao[VAO_test].bind();
 				vbo[VBO_test].bind();
 				ibo[IBO_test].bind();
-				window.drawElements(ibo[IBO_test], ml::GL::Triangles, ml::GL::UnsignedInt);
+				{
+					window.drawElements(ibo[IBO_test], ml::GL::Triangles, ml::GL::UnsignedInt);
+				}
 				vao[VAO_test].unbind();
 				vbo[VBO_test].unbind();
 				ibo[IBO_test].unbind();
@@ -382,7 +399,6 @@ int main(int argc, char** argv)
 		input.endStep();
 		elapsed = loopTimer.stop().elapsed();
 	}
-
 	return EXIT_SUCCESS;
 }
 

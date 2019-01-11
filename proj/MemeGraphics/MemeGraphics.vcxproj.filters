@@ -194,9 +194,6 @@
     <ClCompile Include="..\..\src\MemeGraphics\Gizmos.cpp">
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\include\MemeGraphics\GLM.h">
-      <Filter>Header Files\GL</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\FrameBuffer.cpp">
       <Filter>Source Files\Buffers</Filter>
     </ClCompile>
