@@ -47,7 +47,10 @@ namespace ml
 		Matrix(const value_type * value)
 			: self_type()
 		{
-			memcpy(m_data, value, Size * sizeof(value));
+			for (std::size_t i = 0; i < Size; i++)
+			{
+				(*this)[i] = value[i];
+			}
 		}
 		
 		Matrix(const std::initializer_list<value_type> & value)

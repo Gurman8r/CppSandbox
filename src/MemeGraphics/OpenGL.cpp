@@ -11,31 +11,24 @@ namespace ml
 {
 	// Members
 
-	bool OpenGL::m_good = false;
 	bool OpenGL::m_errorPause = false;
 
 
 	// General
 
-	bool OpenGL::good()
-	{
-		return m_good;
-	}
-
 	bool OpenGL::init(bool experimental)
 	{
 		static bool checked = false;
+		static bool good;
 		if (!checked)
 		{
 			checked = true;
 
 			glewExperimental = experimental;
 
-			m_good = (glewInit() == GLEW_OK);
-
-			Debug::Log("OpenGL version supported by this platform: {0}", getString(GL::Version));
+			good = (glewInit() == GLEW_OK);
 		}
-		return m_good;
+		return good;
 	}
 
 	

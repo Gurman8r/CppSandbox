@@ -11,12 +11,12 @@ namespace ml
 	{
 	}
 
-	Transform::Transform(const vec3f & position, const vec3f & scale, const quat & rotation)
+	Transform::Transform(const vec3f & pos, const vec3f & scl, const quat & rot)
 		: m_matrix()
 	{
-		this->position(position);
-		this->localScale(scale);
-		this->rotation(rotation);
+		translate(pos);
+		rotate(rot.real(), rot.complex());
+		scale(scl);
 	}
 
 	Transform::Transform(const mat4f & value)
@@ -113,136 +113,6 @@ namespace ml
 	{
 		m_matrix = Translate(m_matrix, value);
 		return (*this);
-	}
-	
-	
-	Transform & Transform::localScale(const vec3f & value)
-	{
-		m_matrix[0] = value[0];
-		m_matrix[5] = value[1];
-		m_matrix[10] = value[2];
-		return (*this);
-	}
-	
-	Transform & Transform::position(const vec3f & value)
-	{
-		m_matrix[12] = value[0];
-		m_matrix[13] = value[1];
-		m_matrix[14] = value[2];
-		return (*this);
-	}
-	
-	Transform & Transform::rotation(const quat & value)
-	{
-		return (*this);
-	}
-
-	Transform & Transform::rotationMatrix(const mat3f & value)
-	{
-		m_matrix[0] = value[0]; m_matrix[1] = value[1]; m_matrix[2]  = value[2];
-		m_matrix[4] = value[3]; m_matrix[5] = value[4]; m_matrix[7]  = value[5];
-		m_matrix[8] = value[6]; m_matrix[9] = value[7]; m_matrix[11] = value[8];
-		return (*this);
-	}
-	
-	Transform & Transform::forward(const vec3f & value)
-	{
-		return (*this);
-	}
-
-	Transform & Transform::backward(const vec3f & value)
-	{
-		return (*this);
-	}
-
-	Transform & Transform::right(const vec3f & value)
-	{
-		return (*this);
-	}
-
-	Transform & Transform::left(const vec3f & value)
-	{
-		return (*this);
-	}
-
-	Transform & Transform::up(const vec3f & value)
-	{
-		return (*this);
-	}
-
-	Transform & Transform::down(const vec3f & value)
-	{
-		return (*this);
-	}
-	
-	
-	const vec3f & Transform::localScale() const
-	{
-		static vec3f temp;
-		temp[0] = m_matrix[0];
-		temp[1] = m_matrix[5];
-		temp[2] = m_matrix[10];
-		return temp;
-	}
-	
-	const vec3f & Transform::position() const
-	{
-		static vec3f temp;
-		temp[0] = m_matrix[12];
-		temp[1] = m_matrix[13];
-		temp[2] = m_matrix[14];
-		return temp;
-	}
-	
-	const quat & Transform::rotation() const
-	{
-		static quat temp;
-		return temp;
-	}
-
-	const mat3f & Transform::rotationMatrix() const
-	{
-		static mat3f temp;
-		temp[0] = m_matrix[0]; temp[1] = m_matrix[1]; temp[2] = m_matrix[2];
-		temp[4] = m_matrix[3]; temp[5] = m_matrix[4]; temp[7] = m_matrix[5];
-		temp[8] = m_matrix[6]; temp[9] = m_matrix[7]; temp[11] = m_matrix[8];
-		return temp;
-	}
-	
-	const vec3f & Transform::forward() const
-	{
-		static vec3f temp;
-		return temp;
-	}
-
-	const vec3f & Transform::backward() const
-	{
-		static vec3f temp;
-		return temp;
-	}
-
-	const vec3f & Transform::right() const
-	{
-		static vec3f temp;
-		return temp;
-	}
-
-	const vec3f & Transform::left() const
-	{
-		static vec3f temp;
-		return temp;
-	}
-
-	const vec3f & Transform::up() const
-	{
-		static vec3f temp;
-		return temp;
-	}
-
-	const vec3f & Transform::down() const
-	{
-		static vec3f temp;
-		return temp;
 	}
 	
 }

@@ -8,13 +8,48 @@ namespace ml
 	{
 		if (Window::initialize() && OpenGL::init(true))
 		{
-			// Setup GL
+			// Validate GL Version
+			Debug::Log("OpenGL version supported by this platform: {0}", 
+				OpenGL::getString(GL::Version));
 
+			m_settings.majorVersion = (uint32_t)OpenGL::getInt(GL::MajorVersion);
+			m_settings.minorVersion = (uint32_t)OpenGL::getInt(GL::MinorVersion);
+
+			if (OpenGL::getError() == GL::InvalidEnum)
+			{
+				if (const char * version = OpenGL::getString(GL::Version))
+				{
+					m_settings.majorVersion = version[0] - '0';
+					m_settings.minorVersion = version[2] - '0';
+				}
+				else
+				{
+					Debug::LogWarning("Can't get the version number, assuming 1.1");
+					m_settings.majorVersion = 1;
+					m_settings.minorVersion = 1;
+				}
+			}
+
+			Debug::Log("Using OpenGL Version: {0}.{1}",
+				m_settings.majorVersion,
+				m_settings.minorVersion);
+
+
+			// Setup GL
 			enable(GL::CullFace);
+			cullFace(GL::Back);
+
 			enable(GL::DepthTest);
+			depthFunc(GL::Less);
+
 			enable(GL::Blend);
+			blendFunc(GL::SourceAlpha, GL::OneMinusSourceAlpha);
+
 			enable(GL::AlphaTest);
+			alphaFunc(GL::Greater, 0.01f);
+
 			enable(GL::Texture2D);
+			activeTexture(GL::Texture0);
 
 			if (m_settings.multisample)
 			{
@@ -30,77 +65,7 @@ namespace ml
 				}
 			}
 
-			alphaFunc(GL::Greater, 0.01f);
-			blendFunc(GL::SourceAlpha, GL::OneMinusSourceAlpha);
-			cullFace(GL::Back);
-			depthFunc(GL::Less);
-			activeTexture(GL::Texture0);
-
-
-			// Validate GL Version
-
-			int majorVersion = OpenGL::getInt(GL::MajorVersion);
-			int minorVersion = OpenGL::getInt(GL::MinorVersion);
-
-			if (OpenGL::getError() != GL::InvalidEnum)
-			{
-				m_settings.majorVersion = (uint32_t)(majorVersion);
-				m_settings.minorVersion = (uint32_t)(minorVersion);
-			}
-			else if (const char * version = OpenGL::getString(GL::Version))
-			{
-				m_settings.majorVersion = version[0] - '0';
-				m_settings.minorVersion = version[2] - '0';
-			}
-			else
-			{
-				Debug::LogWarning("Can't get the version number, assuming 1.1");
-				m_settings.majorVersion = 1;
-				m_settings.minorVersion = 1;
-			}
-
-			Debug::Log("Using OpenGL Version: {0}.{1}",
-				m_settings.majorVersion,
-				m_settings.minorVersion);
-
-			if (m_settings.majorVersion >= 3)
-			{
-				// Retrieve the context flags
-				int flags = OpenGL::getInt(GL::ContextFlags);
-				if (flags & GL::ContextFlagDebugBit)
-				{
-					Debug::LogWarning("Set Compat Profile");
-					m_settings.profile |= ContextSettings::Compat;
-				}
-
-				if ((m_settings.majorVersion == 3) && (m_settings.minorVersion == 1))
-				{
-					m_settings.profile |= ContextSettings::Core;
-					
-					int numExtensions = (uint32_t)OpenGL::getInt(GL::NumExtensions);
-					for (uint32_t i = 0; i < (uint32_t)(numExtensions); ++i)
-					{
-						const std::string ext = OpenGL::getString(GL::Extensions, i);
-						if (ext == "GL_ARB_compatibility")
-						{
-							Debug::LogWarning("Clear Core Profile");
-							m_settings.profile &= ~ContextSettings::Core;
-							break;
-						}
-					}
-				}
-				else if ((m_settings.majorVersion > 3) || (m_settings.minorVersion >= 2))
-				{
-					// Retrieve the context profile
-					int profile = OpenGL::getInt(GL::ContextProfileMask);
-					if (profile & GL::ContextCoreProfileBit)
-					{
-						Debug::LogWarning("Set Core Profile");
-						m_settings.profile |= ContextSettings::Core;
-					}
-				}
-			}
-			return ml::Debug::Log("OK");
+			return true;
 		}
 		return ml::Debug::LogError("Failed to Initialize GLEW");
 	}

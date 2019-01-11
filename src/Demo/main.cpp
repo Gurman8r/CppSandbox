@@ -27,14 +27,14 @@
 
 struct Settings final
 {
-	std::string		assetPath;	// 
-	std::string		title;		// 
-	uint32_t		width;		// 
-	uint32_t		height;		// 
-	std::string		bootScript;	// 
-	bool			showToks;	// 
-	bool			showTree;	// 
-	bool			showItoP;	// 
+	std::string		assetPath;	// Where's all the data?
+	std::string		title;		// Window Title
+	uint32_t		width;		// Window Width
+	uint32_t		height;		// Window Height
+	std::string		bootScript;	// Script to run on start
+	bool			showToks;	// Show Script Tokens
+	bool			showTree;	// Show Script Syntax Tree
+	bool			showItoP;	// Show Script Infix to Postfix
 
 	inline bool load(const std::string & filename)
 	{
@@ -176,101 +176,105 @@ ml::Sound		sounds	[MAX_SOUND];
 
 inline static bool loadAssets()
 {
-	ml::Debug::Log("Loading Assets...");
-
 	// Load Fonts
 	ml::Debug::Log("Loading Fonts...");
-
-	if (!fonts[FNT_clacon].loadFromFile(settings.pathTo("/fonts/clacon.ttf")))
 	{
-		return ml::Debug::LogError("Failed Loading Font");
-	}
+		if (!fonts[FNT_clacon].loadFromFile(settings.pathTo("/fonts/clacon.ttf")))
+		{
+			return ml::Debug::LogError("Failed Loading Font");
+		}
 
-	if (!fonts[FNT_consolas].loadFromFile(settings.pathTo("/fonts/consolas.ttf")))
-	{
-		return ml::Debug::LogError("Failed Loading Font");
-	}
+		if (!fonts[FNT_consolas].loadFromFile(settings.pathTo("/fonts/consolas.ttf")))
+		{
+			return ml::Debug::LogError("Failed Loading Font");
+		}
 
-	if (!fonts[FNT_lucida_console].loadFromFile(settings.pathTo("/fonts/lucida_console.ttf")))
-	{
-		return ml::Debug::LogError("Failed Loading Font");
-	}
+		if (!fonts[FNT_lucida_console].loadFromFile(settings.pathTo("/fonts/lucida_console.ttf")))
+		{
+			return ml::Debug::LogError("Failed Loading Font");
+		}
 
-	if (!fonts[FNT_minecraft].loadFromFile(settings.pathTo("/fonts/minecraft.ttf")))
-	{
-		return ml::Debug::LogError("Failed Loading Font");
+		if (!fonts[FNT_minecraft].loadFromFile(settings.pathTo("/fonts/minecraft.ttf")))
+		{
+			return ml::Debug::LogError("Failed Loading Font");
+		}
 	}
 
 	// Load Textures
 	ml::Debug::Log("Loading Textures...");
-
-	if (!textures[TEX_dean].loadFromFile(settings.pathTo("/images/dean.png")))
 	{
-		return ml::Debug::LogError("Failed Loading Texture");
+		if (!textures[TEX_dean].loadFromFile(settings.pathTo("/images/dean.png")))
+		{
+			return ml::Debug::LogError("Failed Loading Texture");
+		}
 	}
 
 	// Load Shaders
 	ml::Debug::Log("Loading Shaders...");
-
-	if (!shaders[GL_basic].loadFromFile(settings.pathTo("/shaders/basic.shader")))
 	{
-		return ml::Debug::LogError("Failed Loading Shader: {0}", "Basic");
-	}
+		if (!shaders[GL_basic].loadFromFile(settings.pathTo("/shaders/basic.shader")))
+		{
+			return ml::Debug::LogError("Failed Loading Shader: {0}", "Basic");
+		}
 
-	if (!shaders[GL_text].loadFromFile(settings.pathTo("/shaders/text.shader")))
-	{
-		return ml::Debug::LogError("Failed Loading Shader: {0}", "Text");
-	}
+		if (!shaders[GL_text].loadFromFile(settings.pathTo("/shaders/text.shader")))
+		{
+			return ml::Debug::LogError("Failed Loading Shader: {0}", "Text");
+		}
 
-	if (!shaders[GL_geometry].loadFromFile(settings.pathTo("/shaders/geometry.shader")))
-	{
-		return ml::Debug::LogError("Failed Loading Shader: {0}", "Geometry");
+		if (!shaders[GL_geometry].loadFromFile(settings.pathTo("/shaders/geometry.shader")))
+		{
+			return ml::Debug::LogError("Failed Loading Shader: {0}", "Geometry");
+		}
 	}
 
 	// Load Sprites
 	ml::Debug::Log("Loading Sprites...");
-
-	if (!(sprites[SPR_dean] = ml::Sprite(&shaders[GL_basic], &textures[TEX_dean])))
 	{
-		return ml::Debug::LogError("Failed Loading Sprite");
+		if (!(sprites[SPR_dean] = ml::Sprite(&shaders[GL_basic], &textures[TEX_dean])))
+		{
+			return ml::Debug::LogError("Failed Loading Sprite");
+		}
 	}
 
 	// Load Text
 	ml::Debug::Log("Loading Text...");
-
-	if (!(text[TXT_default] = ml::Text(&shaders[GL_text], &fonts[FNT_consolas])))
 	{
-		return ml::Debug::LogError("Failed Loading Text");
+		if (!(text[TXT_default] = ml::Text(&shaders[GL_text], &fonts[FNT_consolas])))
+		{
+			return ml::Debug::LogError("Failed Loading Text");
+		}
 	}
 
 	// Load Geometry
 	ml::Debug::Log("Loading Geometry...");
-	
-	// Cube
-	vao[VAO_cube].create(1);
-	vbo[VBO_cube].create(ml::GL::StaticDraw, ml::Shapes::Cube::Mesh.flattened());
-	ibo[IBO_cube].create(ml::GL::StaticDraw, ml::Shapes::Cube::Mesh.indices());
-	ml::BufferLayout::bind({
-		{ 0, 3, ml::GL::Float, false, ml::Vertex::Size, 0, sizeof(float) },
-		{ 1, 4, ml::GL::Float, false, ml::Vertex::Size, 3, sizeof(float) },
-		{ 2, 2, ml::GL::Float, false, ml::Vertex::Size, 7, sizeof(float) },
-	});
-	vao[VAO_cube].unbind();
-	vbo[VBO_cube].unbind();
-	ibo[IBO_cube].unbind();
+	{
+		// Cube
+		vao[VAO_cube].create(1);
+		vbo[VBO_cube].create(ml::GL::StaticDraw, ml::Shapes::Cube::Mesh.flattened());
+		ibo[IBO_cube].create(ml::GL::StaticDraw, ml::Shapes::Cube::Mesh.indices());
+		ml::BufferLayout::bind({
+			{ 0, 3, ml::GL::Float, false, ml::Vertex::Size, 0, sizeof(float) },
+			{ 1, 4, ml::GL::Float, false, ml::Vertex::Size, 3, sizeof(float) },
+			{ 2, 2, ml::GL::Float, false, ml::Vertex::Size, 7, sizeof(float) },
+		});
+		vao[VAO_cube].unbind();
+		vbo[VBO_cube].unbind();
+		ibo[IBO_cube].unbind();
 
-	// Quad
-	vao[VAO_quad].create(1);
-	vbo[VBO_quad].create(ml::GL::StaticDraw, ml::Shapes::Quad::Mesh.flattened());
-	ibo[IBO_quad].create(ml::GL::StaticDraw, ml::Shapes::Quad::Mesh.indices());
-	ml::BufferLayout::bind({
-		{ 0, 3, ml::GL::Float, false, ml::Vertex::Size, 0, sizeof(float) },
-		{ 1, 4, ml::GL::Float, false, ml::Vertex::Size, 3, sizeof(float) },
-		{ 2, 2, ml::GL::Float, false, ml::Vertex::Size, 7, sizeof(float) },
-	});
-	vao[VAO_quad].unbind();
-	vbo[VBO_quad].unbind();
-	ibo[IBO_quad].unbind();
+		// Quad
+		vao[VAO_quad].create(1);
+		vbo[VBO_quad].create(ml::GL::StaticDraw, ml::Shapes::Quad::Mesh.flattened());
+		ibo[IBO_quad].create(ml::GL::StaticDraw, ml::Shapes::Quad::Mesh.indices());
+		ml::BufferLayout::bind({
+			{ 0, 3, ml::GL::Float, false, ml::Vertex::Size, 0, sizeof(float) },
+			{ 1, 4, ml::GL::Float, false, ml::Vertex::Size, 3, sizeof(float) },
+			{ 2, 2, ml::GL::Float, false, ml::Vertex::Size, 7, sizeof(float) },
+		});
+		vao[VAO_quad].unbind();
+		vbo[VBO_quad].unbind();
+		ibo[IBO_quad].unbind();
+	}
 
 	return true;
 }
@@ -376,10 +380,9 @@ int main(int argc, char** argv)
 				// Quad
 				model[M_quad]
 					.translate(ml::vec3f::Zero)
-					.rotate(0.0f, ml::vec3f::Up)
+					.rotate(elapsed.delta(), ml::vec3f::Up)
 					.scale(ml::vec3f::One);
 			}
-
 
 			// Draw
 			window.clear(ml::Color::Violet);

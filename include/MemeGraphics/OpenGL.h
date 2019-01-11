@@ -20,7 +20,6 @@ namespace ml
 	class ML_GRAPHICS_API OpenGL final
 	{
 	private: // Members
-		static bool m_good;
 		static bool m_errorPause;
 
 	public: // Utility
@@ -32,7 +31,6 @@ namespace ml
 		}
 
 	public: // General
-		static bool		good();
 		static bool		init(bool experimental);
 
 	public: // Flags
