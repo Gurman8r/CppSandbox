@@ -23,7 +23,7 @@
     <ClInclude Include="..\..\include\MemeGraphics\FrameBuffer.h" />
     <ClInclude Include="..\..\include\MemeGraphics\GL.h" />
     <ClInclude Include="..\..\include\MemeGraphics\Gizmos.h" />
-    <ClInclude Include="..\..\include\MemeGraphics\IDrawable.h" />
+    <ClInclude Include="..\..\include\MemeGraphics\IRenderer.h" />
     <ClInclude Include="..\..\include\MemeGraphics\Export.h" />
     <ClInclude Include="..\..\include\MemeGraphics\Font.h" />
     <ClInclude Include="..\..\include\MemeGraphics\Glyph.h" />
@@ -32,7 +32,7 @@
     <ClInclude Include="..\..\include\MemeGraphics\ITransformable.h" />
     <ClInclude Include="..\..\include\MemeGraphics\Mesh.h" />
     <ClInclude Include="..\..\include\MemeGraphics\OpenGL.h" />
-    <ClInclude Include="..\..\include\MemeGraphics\RenderState.h" />
+    <ClInclude Include="..\..\include\MemeGraphics\RenderBatch.h" />
     <ClInclude Include="..\..\include\MemeGraphics\RenderTarget.h" />
     <ClInclude Include="..\..\include\MemeGraphics\RenderWindow.h" />
     <ClInclude Include="..\..\include\MemeGraphics\Shader.h" />
@@ -55,7 +55,6 @@
     <ClCompile Include="..\..\src\MemeGraphics\OpenGL.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Image.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Mesh.cpp" />
-    <ClCompile Include="..\..\src\MemeGraphics\RenderState.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\RenderTarget.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\RenderWindow.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Shader.cpp" />

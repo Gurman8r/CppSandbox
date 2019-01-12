@@ -1,7 +1,7 @@
 #ifndef _RENDER_TARGET_H_
 #define _RENDER_TARGET_H_
 
-#include <MemeGraphics/IDrawable.h>
+#include <MemeGraphics/IRenderer.h>
 #include <MemeGraphics/VertexArray.h>
 #include <MemeGraphics/VertexBuffer.h>
 #include <MemeGraphics/IndexBuffer.h>
@@ -17,8 +17,8 @@ namespace ml
 		RenderTarget & clear();
 		RenderTarget & clear(const vec4f & color);
 
-		RenderTarget & draw(const IDrawable & value);
-		RenderTarget & draw(const RenderState & value);
+		RenderTarget & draw(const IRenderer & value);
+		RenderTarget & draw(const RenderBatch & value);
 
 
 	public:

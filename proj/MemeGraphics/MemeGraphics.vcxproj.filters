@@ -45,9 +45,6 @@
     <ClInclude Include="..\..\include\MemeGraphics\Export.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\RenderState.h">
-      <Filter>Header Files\Rendering</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\RenderTarget.h">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
@@ -78,14 +75,8 @@
     <ClInclude Include="..\..\include\MemeGraphics\Uniform.h">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\OpenGL.h">
-      <Filter>Header Files\GL</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Transform.h">
       <Filter>Header Files\DS</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\IDrawable.h">
-      <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\ITransformable.h">
       <Filter>Header Files\Interfaces</Filter>
@@ -111,17 +102,23 @@
     <ClInclude Include="..\..\include\MemeGraphics\Gizmos.h">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\GL.h">
-      <Filter>Header Files\GL</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\FrameBuffer.h">
       <Filter>Header Files\Buffers</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\GL.h">
+      <Filter>Header Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\OpenGL.h">
+      <Filter>Header Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\RenderBatch.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\IRenderer.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\MemeGraphics\RenderState.cpp">
-      <Filter>Source Files\Rendering</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\RenderTarget.cpp">
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>

@@ -16,14 +16,6 @@ namespace ml
 		, public IResource
 	{
 	public:
-		enum Type
-		{
-			Vertex,
-			Geometry,
-			Fragment,
-			MAX_SHADER_TYPE
-		};
-	public:
 		Shader();
 		Shader(const Shader & copy);
 		~Shader();
@@ -62,6 +54,14 @@ namespace ml
 		Shader & setUniformArray(const std::string & name, int32_t count, const mat3f * value);
 		Shader & setUniformArray(const std::string & name, int32_t count, const mat4f * value);
 
+		Shader & setUniformArray(const std::string & name, const std::vector<float> & value);
+		Shader & setUniformArray(const std::string & name, const std::vector<vec2f> & value);
+		Shader & setUniformArray(const std::string & name, const std::vector<vec3f> & value);
+		Shader & setUniformArray(const std::string & name, const std::vector<vec4f> & value);
+		Shader & setUniformArray(const std::string & name, const std::vector<mat3f> & value);
+		Shader & setUniformArray(const std::string & name, const std::vector<mat4f> & value);
+
+	public:
 		template <typename T>
 		Shader & setUniform(Uniform::ID id, const T & value)
 		{
@@ -74,15 +74,20 @@ namespace ml
 			return setUniformArray(Uniform::UniformNames[id], value, count);
 		};
 
+		template <typename T>
+		Shader & setUniformArray(Uniform::ID id, const std::vector<T> & value)
+		{
+			return setUniformArray(Uniform::UniformNames[id], value);
+		};
+
 	public:
 		inline const uint32_t & id() const { return m_id; }
 		inline operator bool() const { return (bool)id(); }
 
 	private:
-		struct UniformBinder;
-		
-		using TextureTable = std::map<int32_t, const Texture*>;
-		using UniformTable = std::map<std::string, int32_t>;
+		struct	UniformBinder;
+		using	TextureTable = std::map<int32_t, const Texture*>;
+		using	UniformTable = std::map<std::string, int32_t>;
 
 		bool		compile(const char* vs, const char* gs, const char* fs);
 		int32_t		getUniformLocation(const std::string & value);

@@ -168,6 +168,12 @@ enum : int32_t
 	MIN_SOUND = -1,
 	SND_test,
 	MAX_SOUND,
+
+	/* Text
+	* * * * * * * * * * * * * * * * * * * * */
+	MIN_TEXT = -1,
+	TXT_default,
+	MAX_TEXT,
 };
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -184,6 +190,79 @@ ml::VBO			vbo		[MAX_VBO];
 ml::IBO			ibo		[MAX_IBO];
 ml::FBO			fbo		[MAX_FBO];
 ml::Sound		sounds	[MAX_SOUND];
+
+/* * * * * * * * * * * * * * * * * * * * */
+
+namespace ml
+{
+	class Text final
+		: public IRenderer
+	{
+	private:
+		mutable std::vector<FloatList>	vertices;
+		mutable std::vector<const Texture*>	textures;
+
+	public:
+		const Font* font;
+		uint32_t	fontSize;
+		vec2f		position;
+		vec4f		color;
+		vec2f		scale;
+		std::string text;
+
+	public:
+		inline void update() const
+		{
+			vec2f tempPos = position;
+			
+			vertices.resize(text.size() * 6);
+			textures.resize(text.size());
+			
+			for (std::size_t i = 0, imax = text.size(); i < imax; i++)
+			{
+				const Glyph & g = font->getGlyph(text[i], fontSize);
+
+				const FloatRect r(
+					vec2f(g.x(), -(g.height() - g.y())) + tempPos * scale,
+					g.size() * scale
+				);
+
+				vertices[i] = Vertex::Flatten({
+					{{ r.left(),  r.bot(), 0.f }, vec2f::Zero	},
+					{{ r.left(),  r.top(), 0.f }, vec2f::Up		},
+					{{ r.right(), r.top(), 0.f }, vec2f::One	},
+					{{ r.left(),  r.bot(), 0.f }, vec2f::Zero	},
+					{{ r.right(), r.top(), 0.f }, vec2f::One	},
+					{{ r.right(), r.bot(), 0.f }, vec2f::Right	},
+				});
+
+				textures[i] = &g.texture;
+
+				tempPos[0] += (float)(g.advance >> 6) * scale[0];
+			}
+		}
+
+		inline void draw(RenderTarget & target, RenderBatch batch) const override
+		{
+			update();
+			
+			batch.vao	= &vao[VAO_text];
+			batch.vbo	= &vbo[VBO_text];
+			batch.shader= &shaders[GL_text];
+			batch.proj	= &proj[P_ortho];
+			batch.color	= &color;
+
+			for (std::size_t i = 0, imax = text.size(); i < imax; i++)
+			{
+				batch.texture  = textures[i];
+				batch.vertices = &vertices[i];
+				target.draw(batch);
+			}
+		}
+	};
+}
+
+ml::Text text[MAX_TEXT];
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -324,69 +403,6 @@ inline static bool loadGeometry()
 		vao[VAO_text].unbind();
 	}
 	return true;
-}
-
-/* * * * * * * * * * * * * * * * * * * * */
-
-inline static void drawText(
-	ml::Shader &		shader,
-	const ml::Font &	font,
-	uint32_t			fontSize,
-	const ml::vec2f &	pos,
-	const ml::vec4f &	color,
-	const ml::vec2f &	scale,
-	const std::string & text)
-{
-	static ml::vec2f drawPos;
-	drawPos = pos;
-
-	vao[VAO_text].bind();
-	for (std::string::const_iterator it = text.cbegin(); it != text.cend(); it++)
-	{
-		const ml::Glyph & g = font.getGlyph((*it), fontSize);
-
-		const ml::FloatRect r(
-			ml::vec2f(g.x(), -(g.height() - g.y())) + drawPos * scale,
-			g.size() * scale
-		);
-
-		(shader)
-			.setUniform(ml::Uniform::Proj, proj[P_ortho])
-			.setUniform(ml::Uniform::Color, color)
-			.setUniform(ml::Uniform::Texture, g.texture)
-			.bind();
-
-		vbo[VBO_text]
-			.bind()
-			.bufferSubData(ml::Mesh::Flatten({
-				{{ r.left(),  r.bot(), 0.f }, ml::vec2f::Zero	},
-				{{ r.left(),  r.top(), 0.f }, ml::vec2f::Up		},
-				{{ r.right(), r.top(), 0.f }, ml::vec2f::One	},
-				{{ r.left(),  r.bot(), 0.f }, ml::vec2f::Zero	},
-				{{ r.right(), r.top(), 0.f }, ml::vec2f::One	},
-				{{ r.right(), r.bot(), 0.f }, ml::vec2f::Right	},
-				}))
-			.unbind();
-
-		ml::OpenGL::drawArrays(vao[VAO_text].mode(), 0, vbo[VBO_text].count());
-
-		drawPos[0] += (float)(g.advance >> vbo[VBO_text].count()) * scale[0];
-	}
-	vao[VAO_text].unbind();
-}
-
-template<typename T, typename ... A>
-inline static void drawText(
-	ml::Shader &		shader,
-	const ml::Font &	font,
-	uint32_t			fontSize,
-	const ml::vec2f &	pos,
-	const ml::vec4f &	color,
-	const ml::vec2f &	scale,
-	const std::string & fmt, const T & arg0, const A & ... args)
-{
-	drawText(shader, font, fontSize, pos, color, scale,
-		ml::StringUtility::Format(fmt, arg0, (args)...));
 }
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -566,14 +582,21 @@ int main(int argc, char** argv)
 						ml::Color::Blue,
 						ml::Color::White
 					};
-					uint32_t  fontSize = 32;
-					ml::vec2f textOff = { 0, -(float)fontSize };
-					ml::vec2f textPos = { (float)fontSize, (float)window.height() };
+					static const uint32_t  fontSize = 32;
+					static const ml::vec2f textOff = { 0, -(float)fontSize };
+					static const ml::vec2f textPos = { (float)fontSize, (float)window.height() };
 
 					for (uint32_t i = (MIN_FONT + 1); i < MAX_FONT; i++)
 					{
-						drawText(shader, fonts[i], fontSize, textPos + (textOff * (float)(i + 1)), colors[i], ml::vec2f::One,
-							"Hello, World!");
+						text[TXT_default].font		= &fonts[i];
+						text[TXT_default].fontSize	= fontSize;
+						text[TXT_default].position	= (ml::vec2f)(window.size() / 2);
+						text[TXT_default].scale		= ml::vec2f::One;
+						text[TXT_default].position	= textPos + (textOff * (float)(i + 1));
+						text[TXT_default].color		= colors[i];
+						text[TXT_default].text		= "Hello, World!";
+						
+						window.draw(text[TXT_default]);
 					}
 				}
 

@@ -22,9 +22,12 @@ namespace ml
 		using value_type	= T;
 		using self_type		= Matrix<value_type, _Cols, _Rows>;
 
-		static const std::size_t Cols = _Cols;
-		static const std::size_t Rows = _Rows;
-		static const std::size_t Size = (Rows * Cols);
+		enum
+		{ 
+			Cols = _Cols,
+			Rows = _Rows,
+			Size = Cols * Rows 
+		};
 
 	private:
 		value_type m_data[Size];
@@ -160,18 +163,24 @@ namespace ml
 		}
 
 	public:
-		inline static std::vector<T> Flatten(const self_type * value, std::size_t length)
+		inline static const std::vector<T> & Flatten(const self_type * value, std::size_t length)
 		{
-			std::vector<T> out(Size * length);
-
-			for (std::size_t i = 0; i < length; i++)
+			static std::vector<T> out;
+			if (const std::size_t imax = (length * Size))
 			{
-				for (std::size_t j = 0; j < Size; j++)
+				if (out.size() != imax)
 				{
-					out[Size * i + j] = value[i][j];
+					out.resize(imax);
+				}
+				for (std::size_t i = 0; i < imax; i++)
+				{
+					out[i] = value[i / Size][i % Size];
 				}
 			}
-
+			else if(!out.empty())
+			{
+				out.clear();
+			}
 			return out;
 		}
 	};

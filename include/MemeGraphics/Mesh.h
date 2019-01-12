@@ -31,8 +31,6 @@ namespace ml
 		Mesh & vertices(const VertexList & value);
 		Mesh & indices(const IndexList & value);
 
-		static const FloatList & Flatten(const VertexList & value);
-
 	private:
 		GL::Mode	m_mode;
 		VertexList	m_vertices;

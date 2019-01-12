@@ -75,7 +75,7 @@ namespace ml
 
 	void Mesh::update() const
 	{
-		m_flattened = Flatten(vertices());
+		m_flattened = Vertex::Flatten(vertices());
 	}
 
 
@@ -101,29 +101,4 @@ namespace ml
 		return changed(false);
 	}
 
-
-	const FloatList & Mesh::Flatten(const VertexList & value)
-	{
-		static FloatList out;
-		if (const std::size_t imax = value.size())
-		{
-			if (out.size() != imax)
-			{
-				out.resize(imax * Vertex::Size);
-			}
-
-			for (std::size_t i = 0; i < imax; i++)
-			{
-				for (uint32_t j = 0; j < Vertex::Size; j++)
-				{
-					out[i * Vertex::Size + j] = value[i][j];
-				}
-			}
-		}
-		else if (!out.empty())
-		{
-			out.clear();
-		}
-		return out;
-	}
 }

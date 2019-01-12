@@ -23,14 +23,6 @@ namespace ml
 		static bool m_good;
 		static bool m_errorPause;
 
-	public: // Utility
-		template <typename T>
-		inline static uint64_t getUniqueID()
-		{
-			static uint64_t id = 1;
-			return id++;
-		}
-
 	public: // General
 		static bool		init(bool experimental);
 		static bool		good();

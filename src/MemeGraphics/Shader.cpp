@@ -353,62 +353,83 @@ namespace ml
 	
 	Shader & Shader::setUniformArray(const std::string & name, int32_t count, const vec2f * value)
 	{
-		std::vector<float> contiguous = vec2f::Flatten(value, count);
-
 		UniformBinder u((*this), name);
 		if (u)
 		{
-			OpenGL::uniformArray2f(u.location, count, &contiguous[0]);
+			OpenGL::uniformArray2f(u.location, count, &vec2f::Flatten(value, count)[0]);
 		}
 		return (*this);
 	}
 	
 	Shader & Shader::setUniformArray(const std::string & name, int32_t count, const vec3f * value)
 	{
-		std::vector<float> contiguous = vec3f::Flatten(value, count);
-
 		UniformBinder u((*this), name);
 		if (u)
 		{
-			OpenGL::uniformArray3f(u.location, count, &contiguous[0]);
+			OpenGL::uniformArray3f(u.location, count, &vec3f::Flatten(value, count)[0]);
 		}
 		return (*this);
 	}
 	
 	Shader & Shader::setUniformArray(const std::string & name, int32_t count, const vec4f * value)
 	{
-		std::vector<float> contiguous = vec4f::Flatten(value, count);
-
 		UniformBinder u((*this), name);
 		if (u)
 		{
-			OpenGL::uniformArray4f(u.location, count, &contiguous[0]);
+			OpenGL::uniformArray4f(u.location, count, &vec4f::Flatten(value, count)[0]);
 		}
 		return (*this);
 	}
 	
 	Shader & Shader::setUniformArray(const std::string & name, int32_t count, const mat3f * value)
 	{
-		std::vector<float> contiguous = mat3f::Flatten(value, count);
-
 		UniformBinder u((*this), name);
 		if (u)
 		{
-			OpenGL::uniformMatrixArray3f(u.location, count, false, &contiguous[0]);
+			OpenGL::uniformMatrixArray3f(u.location, count, false, &mat3f::Flatten(value, count)[0]);
 		}
 		return (*this);
 	}
 	
 	Shader & Shader::setUniformArray(const std::string & name, int32_t count, const mat4f * value)
 	{
-		std::vector<float> contiguous = mat4f::Flatten(value, count);
-
 		UniformBinder u((*this), name);
 		if (u)
 		{
-			OpenGL::uniformMatrixArray4f(u.location, count, false, &contiguous[0]);
+			OpenGL::uniformMatrixArray4f(u.location, count, false, &mat4f::Flatten(value, count)[0]);
 		}
 		return (*this);
+	}
+
+
+	Shader & Shader::setUniformArray(const std::string & name, const std::vector<float> & value)
+	{
+		return setUniformArray(name, (int32_t)value.size(), &value[0]);
+	}
+
+	Shader & Shader::setUniformArray(const std::string & name, const std::vector<vec2f> & value)
+	{
+		return setUniformArray(name, (int32_t)value.size(), &value[0]);
+	}
+
+	Shader & Shader::setUniformArray(const std::string & name, const std::vector<vec3f> & value)
+	{
+		return setUniformArray(name, (int32_t)value.size(), &value[0]);
+	}
+
+	Shader & Shader::setUniformArray(const std::string & name, const std::vector<vec4f> & value)
+	{
+		return setUniformArray(name, (int32_t)value.size(), &value[0]);
+	}
+
+	Shader & Shader::setUniformArray(const std::string & name, const std::vector<mat3f> & value)
+	{
+		return setUniformArray(name, (int32_t)value.size(), &value[0]);
+	}
+
+	Shader & Shader::setUniformArray(const std::string & name, const std::vector<mat4f> & value)
+	{
+		return setUniformArray(name, (int32_t)value.size(), &value[0]);
 	}
 
 

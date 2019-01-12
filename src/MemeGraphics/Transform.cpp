@@ -63,10 +63,10 @@ namespace ml
 	{
 		return mat4f(glm::value_ptr(glm::rotate(
 			glm::mat4(
-				value[ 0],	value[ 1],	value[ 2],	value[ 3],
-				value[ 4],	value[ 5],	value[ 6],	value[ 7],
-				value[ 8],	value[ 9],	value[10],	value[11],
-				value[12],	value[13],	value[14],	value[15]
+				value[0x0], value[0x1], value[0x2], value[0x3],
+				value[0x4], value[0x5], value[0x6], value[0x7],
+				value[0x8], value[0x9], value[0xA], value[0xB],
+				value[0xC], value[0xD], value[0xE], value[0xF]
 			),
 			angle,
 			glm::vec3(axis[0], axis[1], axis[2]))));
@@ -76,10 +76,10 @@ namespace ml
 	{
 		return mat4f(glm::value_ptr(glm::scale(
 			glm::mat4(
-				value[ 0],	value[ 1],	value[ 2],	value[ 3],
-				value[ 4],	value[ 5],	value[ 6],	value[ 7],
-				value[ 8],	value[ 9],	value[10],	value[11],
-				value[12],	value[13],	value[14],	value[15]
+				value[0x0],	value[0x1],	value[0x2],	value[0x3],
+				value[0x4],	value[0x5],	value[0x6],	value[0x7],
+				value[0x8],	value[0x9],	value[0xA],	value[0xB],
+				value[0xC],	value[0xD],	value[0xE],	value[0xF]
 			),
 			glm::vec3(vec[0], vec[1], vec[2]))));
 	}
@@ -88,10 +88,10 @@ namespace ml
 	{
 		return mat4f(glm::value_ptr(glm::translate(
 			glm::mat4(
-				value[ 0],	value[ 1],	value[ 2],	value[ 3],
-				value[ 4],	value[ 5],	value[ 6],	value[ 7],
-				value[ 8],	value[ 9],	value[10],	value[11],
-				value[12],	value[13],	value[14],	value[15]
+				value[0x0], value[0x1], value[0x2], value[0x3],
+				value[0x4], value[0x5], value[0x6], value[0x7],
+				value[0x8], value[0x9], value[0xA], value[0xB],
+				value[0xC], value[0xD], value[0xE], value[0xF]
 			),
 			glm::vec3(vec[0], vec[1], vec[2]))));
 	}

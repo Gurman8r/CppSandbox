@@ -33,7 +33,6 @@ namespace ml
 		Transform &	translate(const vec3f & value);
 
 		inline const mat4f & matrix() const { return m_matrix; }
-
 		inline operator mat4f() const { return matrix(); }
 
 	private:

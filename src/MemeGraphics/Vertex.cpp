@@ -52,52 +52,74 @@ namespace ml
 	const vec3f & Vertex::position() const
 	{
 		static vec3f temp;
-		temp[0] = m_data[0];
-		temp[1] = m_data[1];
-		temp[2] = m_data[2];
+		temp[0] = (*this)[0];
+		temp[1] = (*this)[1];
+		temp[2] = (*this)[2];
 		return temp;
 	}
 	
 	const vec4f & Vertex::color() const
 	{
 		static vec4f temp;
-		temp[0] = m_data[3];
-		temp[1] = m_data[4];
-		temp[2] = m_data[5];
-		temp[3] = m_data[6];
+		temp[0] = (*this)[3];
+		temp[1] = (*this)[4];
+		temp[2] = (*this)[5];
+		temp[3] = (*this)[6];
 		return temp;
 	}
 	
 	const vec2f & Vertex::texcoords() const
 	{
 		static vec2f temp;
-		temp[0] = m_data[7];
-		temp[1] = m_data[8];
+		temp[0] = (*this)[7];
+		temp[1] = (*this)[8];
 		return temp;
 	}
 
 
 	Vertex & Vertex::position(const vec3f & value)
 	{
-		m_data[0] = value[0];
-		m_data[1] = value[1];
-		m_data[2] = value[2];
+		(*this)[0] = value[0];
+		(*this)[1] = value[1];
+		(*this)[2] = value[2];
 		return (*this);
 	}
 	
 	Vertex & Vertex::color(const vec4f & value)
 	{
-		m_data[3] = value[0];
-		m_data[4] = value[1];
-		m_data[5] = value[2];
-		m_data[6] = value[3];
+		(*this)[3] = value[0];
+		(*this)[4] = value[1];
+		(*this)[5] = value[2];
+		(*this)[6] = value[3];
 		return (*this);
 	}
 	
 	Vertex & Vertex::texcoords(const vec2f & value)
 	{
-		m_data[7] = value[0];
-		m_data[8] = value[1];
+		(*this)[7] = value[0];
+		(*this)[8] = value[1];
 		return (*this);
+	}
+
+
+	const FloatList & Vertex::Flatten(const VertexList & value)
+	{
+		static FloatList out;
+		if (const std::size_t imax = value.size() * Vertex::Size)
+		{
+			if (out.size() != imax)
+			{
+				out.resize(imax);
+			}
+			for (std::size_t i = 0; i < imax; i++)
+			{
+				out[i] = value[i / Vertex::Size][i % Vertex::Size];
+			}
+		}
+		else if (!out.empty())
+		{
+			out.clear();
+		}
+		return out;
 	}
 }

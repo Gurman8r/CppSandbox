@@ -14,6 +14,7 @@ namespace ml
 		, m_usage(copy.m_usage)
 		, m_data(copy.m_data)
 		, m_size(copy.m_size)
+		, m_count(copy.m_count)
 	{
 	}
 

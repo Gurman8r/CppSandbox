@@ -19,16 +19,37 @@ namespace ml
 	}
 	
 
-	RenderTarget & RenderTarget::draw(const IDrawable & value)
+	RenderTarget & RenderTarget::draw(const IRenderer & value)
 	{
-		value.draw((*this), RenderState());
+		RenderBatch batch;
+		value.draw((*this), batch);
 		return (*this);
 	}
 
-	RenderTarget & RenderTarget::draw(const RenderState & value)
+	RenderTarget & RenderTarget::draw(const RenderBatch & batch)
 	{
+		if (batch.vao && batch.vbo && batch.shader)
+		{
+			(*batch.vao).bind();
+
+			(*batch.shader)
+				.setUniform(Uniform::Proj, (*batch.proj))
+				.setUniform(Uniform::Color, (*batch.color))
+				.setUniform(Uniform::Texture, (*batch.texture))
+				.bind();
+
+			(*batch.vbo)
+				.bind()
+				.bufferSubData((*batch.vertices))
+				.unbind();
+			
+			OpenGL::drawArrays((*batch.vao).mode(), 0, (*batch.vertices).size());
+
+			(*batch.vao).unbind();
+		}
 		return (*this);
 	}
+
 	
 	void RenderTarget::setViewport(const vec2i & pos, const vec2i & size) const
 	{
