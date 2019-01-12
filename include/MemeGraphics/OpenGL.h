@@ -92,6 +92,7 @@ namespace ml
 	public: // Textures
 		static int32_t	getMaxTextureUnits();
 		static uint32_t	getMaxTextureSize();
+		static uint32_t getValidTextureSize(uint32_t value);
 		static bool		edgeClampAvailable();
 		static bool		textureSrgbAvailable();
 		static bool		nonPowerOfTwoAvailable();

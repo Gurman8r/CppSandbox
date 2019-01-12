@@ -180,13 +180,13 @@ namespace ml
 	}
 
 
-	Shader & Shader::use(bool bindTex)
+	Shader & Shader::use(bool bindTextures)
 	{
-		Shader::bind(this, bindTex);
+		Shader::bind(this, bindTextures);
 		return (*this);
 	}
 
-	void Shader::bind(const Shader * shader, bool bindTex)
+	void Shader::bind(const Shader * shader, bool bindTextures)
 	{
 		if (shader && OpenGL::shadersAvailable())
 		{
@@ -195,9 +195,13 @@ namespace ml
 				OpenGL::useShader(shader->m_program);
 			}
 
-			if (bindTex)
+			if (bindTextures)
 			{
-				shader->bindTextures();
+				TextureTable::const_iterator it;
+				for (it = shader->m_textures.begin(); it != shader->m_textures.end(); it++)
+				{
+					Texture::bind(it->second);
+				}
 			}
 
 			if (shader->currentTexture() != -1)
@@ -521,15 +525,6 @@ namespace ml
 		OpenGL::flush();
 
 		return true;
-	}
-	
-	void Shader::bindTextures() const
-	{
-		TextureTable::const_iterator it;
-		for (it = m_textures.begin(); it != m_textures.end(); it++)
-		{
-			Texture::bind(it->second);
-		}
 	}
 	
 	int32_t Shader::getUniformLocation(const std::string & value)

@@ -40,7 +40,7 @@ struct Settings final
 		INIReader ini(filename.c_str());
 		if (ini.ParseError() == 0)
 		{
-			assetPath	= ini.Get("Assets", "sPath", "../../../assets");
+			assetPath	= ini.Get("Assets", "sAssetPath", "../../../assets");
 			title		= ini.Get("Window", "sTitle", "Title");
 			width		= ini.GetInteger("Window", "iWidth", 640);
 			height		= ini.GetInteger("Window", "iHeight", 480);
@@ -103,6 +103,7 @@ enum : int32_t
 	* * * * * * * * * * * * * * * * * * * * */
 	MIN_TEXTURE = -1,
 	TEX_dean,
+	TEX_wall,
 	MAX_TEXTURE,
 
 	/* Shaders
@@ -228,6 +229,11 @@ inline static bool loadAssets()
 		{
 			return ml::Debug::LogError("Failed Loading Texture");
 		}
+
+		if (!textures[TEX_wall].loadFromFile(settings.pathTo("/textures/stone/stone_dm.png")))
+		{
+			return ml::Debug::LogError("Failed Loading Texture");
+		}
 	}
 
 	// Load Shaders
@@ -249,8 +255,13 @@ inline static bool loadAssets()
 		}
 	}
 
+	return true;
+}
+
+inline static bool loadGeometry()
+{
 	// Load Geometry
-	if(ml::Debug::Log("Loading Geometry..."))
+	if (ml::Debug::Log("Loading Geometry..."))
 	{
 		// Cube
 		vao[VAO_cube]
@@ -273,6 +284,7 @@ inline static bool loadAssets()
 		vbo[VBO_cube].unbind();
 		vao[VAO_cube].unbind();
 
+
 		// Quad
 		vao[VAO_quad]
 			.create()
@@ -294,6 +306,7 @@ inline static bool loadAssets()
 		vbo[VBO_quad].unbind();
 		vao[VAO_quad].unbind();
 
+
 		// Text
 		vao[VAO_text]
 			.create()
@@ -310,7 +323,6 @@ inline static bool loadAssets()
 		vbo[VBO_text].unbind();
 		vao[VAO_text].unbind();
 	}
-
 	return true;
 }
 
@@ -334,10 +346,8 @@ inline static void drawText(
 		const ml::Glyph & g = font.getGlyph((*it), fontSize);
 
 		const ml::FloatRect r(
-			(drawPos[0] + g.x() * scale[0]),
-			(drawPos[1] - (g.height() - g.y()) * scale[1]),
-			(g.width() * scale[0]),
-			(g.height() * scale[1])
+			(ml::vec2f(g.x(), -(g.height() - g.y())) + drawPos) * scale,
+			g.size() * scale
 		);
 
 		if(shader) (*shader)
@@ -424,6 +434,12 @@ int main(int argc, char** argv)
 		return ml::ConsoleUtility::pause(EXIT_FAILURE);
 	}
 
+	// Load Geometry
+	if (!loadGeometry())
+	{
+		return ml::ConsoleUtility::pause(EXIT_FAILURE);
+	}
+
 	// Set Window Icon
 	if (const ml::Image icon = ml::Image(images[IMG_icon]).flipVertically())
 	{
@@ -471,6 +487,7 @@ int main(int argc, char** argv)
 					.rotate(elapsed.delta(), ml::vec3f::One)
 					.scale(ml::vec3f::One);
 
+				// Quad
 				model[M_quad]
 					.translate(ml::vec3f::Zero)
 					.rotate(elapsed.delta(), ml::vec3f::Forward)
@@ -480,6 +497,7 @@ int main(int argc, char** argv)
 			// Draw
 			window.clear(ml::Color::Violet);
 			{
+				// 3D
 				window.setEnabled(ml::GL::CullFace);
 				window.setEnabled(ml::GL::DepthTest);
 				
@@ -491,7 +509,7 @@ int main(int argc, char** argv)
 						.setUniform(ml::Uniform::View, view[V_camera])
 						.setUniform(ml::Uniform::Model, model[M_cube])
 						.setUniform(ml::Uniform::Color, ml::Color::White)
-						.setUniform(ml::Uniform::Texture, textures[TEX_dean])
+						.setUniform(ml::Uniform::Texture, textures[TEX_wall])
 						.use();
 				
 					vao[VAO_cube].bind();
@@ -505,6 +523,7 @@ int main(int argc, char** argv)
 					vao[VAO_cube].unbind();
 				}
 
+				// 2D
 				window.setDisabled(ml::GL::CullFace);
 				window.setDisabled(ml::GL::DepthTest);
 				
@@ -531,21 +550,18 @@ int main(int argc, char** argv)
 				}
 
 				// Text
-				drawText(&shaders[GL_text], fonts[FNT_minecraft], 24, { 256, 256 }, ml::Color::Black, ml::vec2f::One,
-					"Hello, World!");
-
-				drawText(&shaders[GL_text], fonts[FNT_clacon], 72, { 512, 256 }, ml::Color::White, ml::vec2f::One,
-					"Hello, {0}!", "Formatting");
+				uint32_t  fontSize = 32;
+				ml::vec2f textOff = { 0, -(float)fontSize };
+				ml::vec2f textPos = { (float)fontSize, (float)window.height() };
+				for (uint32_t i = (MIN_FONT + 1); i < MAX_FONT; i++)
+				{
+					drawText(&shaders[GL_text], fonts[i], fontSize, textPos + (textOff * (float)(i + 1)), ml::Color::White, ml::vec2f::One,
+						"Hello, World!");
+				}
 
 			}
 			window.swapBuffers();
 			window.pollEvents();
-
-			// Handle Input
-			if (input.getKeyDown(ml::KeyCode::Escape))
-			{
-				window.close();
-			}
 
 			// Set Window Title
 			const ml::Duration & now = ML_Time.elapsed();
@@ -562,6 +578,12 @@ int main(int argc, char** argv)
 					(now.millis()) / 10 % 10,
 					(now.millis()) % 10)))
 			);
+
+			// Handle Input
+			if (input.getKeyDown(ml::KeyCode::Escape))
+			{
+				window.close();
+			}
 		}
 		input.endStep();
 		elapsed = loopTimer.stop().elapsed();

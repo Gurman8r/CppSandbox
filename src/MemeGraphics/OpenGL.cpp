@@ -411,6 +411,20 @@ namespace ml
 		return size;
 	}
 
+	uint32_t OpenGL::getValidTextureSize(uint32_t value)
+	{
+		if (!nonPowerOfTwoAvailable())
+		{
+			uint32_t powerOfTwo = 1;
+			while (powerOfTwo < value)
+			{
+				powerOfTwo *= 2;
+			}
+			return powerOfTwo;
+		}
+		return value;
+	}
+
 
 	uint32_t OpenGL::genTextures(uint32_t count)
 	{

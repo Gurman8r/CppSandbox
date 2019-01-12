@@ -293,10 +293,10 @@ namespace ml
 				m_size[1]);
 		}
 
-		vec2u actualSize(getValidSize(width), getValidSize(height));
-
+		vec2u actualSize(
+			OpenGL::getValidTextureSize(width),
+			OpenGL::getValidTextureSize(height));
 		uint32_t maxSize = OpenGL::getMaxTextureSize();
-
 		if ((actualSize[0] > maxSize) || (actualSize[1] > maxSize))
 		{
 			return Debug::LogError(
@@ -424,7 +424,9 @@ namespace ml
 						height);
 			}
 
-			vec2u actualSize(getValidSize(width), getValidSize(height));
+			vec2u actualSize(
+				OpenGL::getValidTextureSize(width),
+				OpenGL::getValidTextureSize(height));
 			uint32_t maxSize = OpenGL::getMaxTextureSize();
 			if ((actualSize[0] > maxSize) || (actualSize[1] > maxSize))
 			{
@@ -459,7 +461,7 @@ namespace ml
 				GL::UnsignedByte,
 				pixels);
 
-			OpenGL::texParameter(
+			OpenGL::texParameter( // TexWrapS
 				GL::Texture2D,
 				GL::TexWrapS,
 					(m_isRepeated
@@ -468,7 +470,7 @@ namespace ml
 							? GL::ClampToEdge
 							: GL::Clamp)));
 
-			OpenGL::texParameter(
+			OpenGL::texParameter( // TexWrapT
 				GL::Texture2D,
 				GL::TexWrapT,
 					(m_isRepeated
@@ -477,14 +479,14 @@ namespace ml
 							? GL::ClampToEdge
 							: GL::Clamp)));
 
-			OpenGL::texParameter(
+			OpenGL::texParameter( // TexMagFilter
 				GL::Texture2D,
 				GL::TexMagFilter,
 					(m_isSmooth
 						? GL::Linear
 						: GL::Nearest));
 
-			OpenGL::texParameter(
+			OpenGL::texParameter( // TexMinFilter
 				GL::Texture2D,
 				GL::TexMinFilter,
 					(m_isSmooth
@@ -497,6 +499,169 @@ namespace ml
 		return false;
 	}
 
+
+	Texture & Texture::swap(Texture & other)
+	{
+		std::swap(m_id,				other.m_id);
+		std::swap(m_size,			other.m_size);
+		std::swap(m_actualSize,		other.m_actualSize);
+		std::swap(m_isSmooth,		other.m_isSmooth);
+		std::swap(m_sRgb,			other.m_sRgb);
+		std::swap(m_isRepeated,		other.m_isRepeated);
+		std::swap(m_pixelsFlipped,	other.m_pixelsFlipped);
+		std::swap(m_hasMipmap,		other.m_hasMipmap);
+
+		m_cacheID = OpenGL::getUniqueID<Texture>();
+		other.m_cacheID = OpenGL::getUniqueID<Texture>();
+
+		return (*this);
+	}
+
+	Texture & Texture::setRepeated(bool value)
+	{
+		if (m_id && (m_isRepeated != value))
+		{
+			if ((m_isRepeated = value) && !OpenGL::edgeClampAvailable())
+			{
+				static bool warned = false;
+				if (!warned)
+				{
+					Debug::LogWarning(
+						"OpenGL extension texture_edge_clamp unavailable\n"
+						"Artifacts may occur along texture edges");
+					warned = true;
+				}
+			}
+
+			Texture::bind(this);
+
+			OpenGL::texParameter(
+				GL::Texture2D,
+				GL::TexWrapS,
+				(m_isRepeated
+					? GL::Repeat
+					: (OpenGL::edgeClampAvailable()
+						? GL::ClampToEdge
+						: GL::Clamp)));
+
+			OpenGL::texParameter(
+				GL::Texture2D,
+				GL::TexWrapT,
+				(m_isRepeated
+					? GL::Repeat
+					: (OpenGL::edgeClampAvailable()
+						? GL::ClampToEdge
+						: GL::Clamp)));
+
+			Texture::bind(NULL);
+		}
+		return (*this);
+	}
+
+	Texture & Texture::setSmooth(bool value)
+	{
+		if (m_id && (m_isSmooth != value))
+		{
+			if ((m_isSmooth = value) /*&& !isAvailable()*/)
+			{
+				// error checking if needed
+			}
+
+			Texture::bind(this);
+
+			OpenGL::texParameter(
+				GL::Texture2D,
+				GL::TexMagFilter,
+				(m_isSmooth
+					? GL::Linear
+					: GL::Nearest));
+
+			if (m_hasMipmap)
+			{
+				OpenGL::texParameter(
+					GL::Texture2D,
+					GL::TexMinFilter,
+					(m_isSmooth
+						? GL::LinearMipmapLinear
+						: GL::LinearMipmapNearest));
+			}
+			else
+			{
+				OpenGL::texParameter(
+					GL::Texture2D,
+					GL::TexMinFilter,
+					(m_isSmooth
+						? GL::Linear
+						: GL::Nearest));
+			}
+
+			Texture::bind(NULL);
+		}
+		return (*this);
+	}
+
+	Texture & Texture::setSrgb(bool value)
+	{
+		if (m_id && (m_sRgb != value))
+		{
+			if ((m_sRgb = value) && !OpenGL::textureSrgbAvailable())
+			{
+				static bool warned = false;
+				if (!warned)
+				{
+					Debug::LogWarning(
+						"OpenGL extension texture SRGB unavailable");
+					warned = true;
+				}
+			}
+			
+			//Texture::bind(this);
+			//Texture::bind(NULL);
+		}
+		return (*this);
+	}
+
+	Texture & Texture::generateMipmap()
+	{
+		if (m_id && (m_hasMipmap = OpenGL::framebuffersAvailable()))
+		{
+			Texture::bind(this);
+
+			OpenGL::generateMipmap(GL::Texture2D);
+
+			OpenGL::texParameter(
+				GL::Texture2D,
+				GL::TexMinFilter,
+			(m_isSmooth
+				? GL::LinearMipmapLinear
+				: GL::NearestMipmapNearest));
+
+			m_hasMipmap = true;
+
+			Texture::bind(NULL);
+		}
+		return (*this);
+	}
+
+	Texture & Texture::invalidateMipmap()
+	{
+		if (m_id && m_hasMipmap)
+		{
+			Texture::bind(this);
+
+			OpenGL::texParameter(
+				GL::Texture2D,
+				GL::TexMinFilter,
+				(m_isSmooth
+					? GL::Linear
+					: GL::Nearest));
+
+			m_hasMipmap = false;
+
+			Texture::bind(NULL);
+		}
+		return (*this);
+	}
 
 
 	Image Texture::copyToImage() const
@@ -515,10 +680,10 @@ namespace ml
 			// Texture is not padded nor flipped, we can use a direct copy
 			Texture::bind(this);
 			OpenGL::getTexImage(
-				GL::Texture2D, 
-				0, 
+				GL::Texture2D,
+				0,
 				GL::RGBA,
-				GL::UnsignedByte, 
+				GL::UnsignedByte,
 				&pixels[0]);
 			Texture::bind(NULL);
 		}
@@ -530,11 +695,11 @@ namespace ml
 			std::vector<uint8_t> allPixels(m_actualSize[0] * m_actualSize[1] * 4);
 
 			Texture::bind(this);
-			
+
 			OpenGL::getTexImage(
 				GL::Texture2D,
-				0, 
-				GL::RGBA, 
+				0,
+				GL::RGBA,
 				GL::UnsignedByte,
 				&allPixels[0]);
 
@@ -567,48 +732,12 @@ namespace ml
 		return image;
 	}
 
-	bool Texture::generateMipmap()
+	bool Texture::copyToImage(Image & image) const
 	{
-		if (m_id && (m_hasMipmap = OpenGL::framebuffersAvailable()))
-		{
-			Texture::bind(this);
-
-			OpenGL::generateMipmap(GL::Texture2D);
-
-			OpenGL::texParameter(
-				GL::Texture2D,
-				GL::TexMinFilter,
-				(m_isSmooth
-					? GL::LinearMipmapLinear
-					: GL::NearestMipmapNearest));
-
-			m_hasMipmap = true;
-
-			Texture::bind(NULL);
-
-			return true;
-		}
 		return false;
 	}
 
-
-	Texture & Texture::swap(Texture & other)
-	{
-		std::swap(m_id,				other.m_id);
-		std::swap(m_size,			other.m_size);
-		std::swap(m_actualSize,		other.m_actualSize);
-		std::swap(m_isSmooth,		other.m_isSmooth);
-		std::swap(m_sRgb,			other.m_sRgb);
-		std::swap(m_isRepeated,		other.m_isRepeated);
-		std::swap(m_pixelsFlipped,	other.m_pixelsFlipped);
-		std::swap(m_hasMipmap,		other.m_hasMipmap);
-
-		m_cacheID = OpenGL::getUniqueID<Texture>();
-		other.m_cacheID = OpenGL::getUniqueID<Texture>();
-
-		return (*this);
-	}
-
+	
 	void Texture::bind(const Texture * value)
 	{
 		OpenGL::bindTexture(GL::Texture2D, 
@@ -617,133 +746,4 @@ namespace ml
 				: NULL));
 	}
 	
-	
-	Texture & Texture::setRepeated(bool value)
-	{
-		if (value != m_isRepeated)
-		{
-			m_isRepeated = value;
-
-			if (m_id)
-			{
-				if (m_isRepeated && !OpenGL::edgeClampAvailable())
-				{
-					static bool warned = false;
-					if (!warned)
-					{
-						Debug::LogWarning(
-							"OpenGL extension SGIS_texture_edge_clamp unavailable\n"
-							"Artifacts may occur along texture edges\n"
-							"Ensure that hardware acceleration is enabled if available");
-						warned = true;
-					}
-				}
-
-				Texture::bind(this);
-
-				OpenGL::texParameter(
-					GL::Texture2D, 
-					GL::TexWrapS, 
-					(m_isRepeated
-						? GL::Repeat
-						: (OpenGL::edgeClampAvailable()
-							? GL::ClampToEdge
-							: GL::Clamp)));
-
-				OpenGL::texParameter(
-					GL::Texture2D, 
-					GL::TexWrapT, 
-					(m_isRepeated
-						? GL::Repeat
-						: (OpenGL::edgeClampAvailable()
-							? GL::ClampToEdge
-							: GL::Clamp)));
-
-				Texture::bind(NULL);
-			}
-		}
-		return (*this);
-	}
-
-	Texture & Texture::setSmooth(bool value)
-	{
-		if (m_isSmooth != value)
-		{
-			m_isSmooth = value;
-
-			if (m_id)
-			{
-				Texture::bind(this);
-
-				OpenGL::texParameter(
-					GL::Texture2D,
-					GL::TexMagFilter,
-					(m_isSmooth
-						? GL::Linear
-						: GL::Nearest));
-
-				if (m_hasMipmap)
-				{
-					OpenGL::texParameter(
-						GL::Texture2D,
-						GL::TexMinFilter, 
-						(m_isSmooth
-							? GL::LinearMipmapLinear
-							: GL::LinearMipmapNearest));
-				}
-				else
-				{
-					OpenGL::texParameter(
-						GL::Texture2D,
-						GL::TexMinFilter,
-						(m_isSmooth
-							? GL::Linear
-							: GL::Nearest));
-				}
-
-				Texture::bind(NULL);
-			}
-		}
-		return (*this);
-	}
-
-	Texture & Texture::setSrgb(bool value)
-	{
-		m_sRgb = value;
-		return (*this);
-	}
-
-
-	uint32_t Texture::getValidSize(uint32_t value)
-	{
-		if (!OpenGL::nonPowerOfTwoAvailable())
-		{
-			uint32_t powerOfTwo = 1;
-			while (powerOfTwo < value)
-			{
-				powerOfTwo *= 2;
-			}
-			return powerOfTwo;
-		}
-		return value;
-	}
-
-	void Texture::invalidateMipmap()
-	{
-		if (m_hasMipmap)
-		{
-			Texture::bind(this);
-
-			OpenGL::texParameter(
-				GL::Texture2D,
-				GL::TexMinFilter,
-				(m_isSmooth
-					? GL::Linear
-					: GL::Nearest));
-
-			m_hasMipmap = false;
-
-			Texture::bind(NULL);
-		}
-	}
 }

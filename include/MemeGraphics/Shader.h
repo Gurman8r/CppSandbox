@@ -36,9 +36,8 @@ namespace ml
 		bool loadFromMemory(const std::string& vs, const std::string& gs, const std::string& fs);
 
 	public:
-		Shader & use(bool bindTex = true);
-
-		static void bind(const Shader* shader, bool bindTex = true);
+		Shader &	use(bool bindTextures = true);
+		static void bind(const Shader* shader, bool bindTextures = true);
 
 	public:
 		// Set Uniform
@@ -86,7 +85,6 @@ namespace ml
 		using UniformTable = std::map<std::string, int32_t>;
 
 		bool		compile(const char* vs, const char* gs, const char* fs);
-		void		bindTextures() const;
 		int32_t		getUniformLocation(const std::string & value);
 
 		uint32_t		m_program;

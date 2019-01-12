@@ -233,5 +233,11 @@
     <Image Include="..\..\assets\images\dean.png">
       <Filter>Resource Files\assets\images</Filter>
     </Image>
+    <Image Include="..\..\assets\images\icon.png">
+      <Filter>Resource Files\assets\images</Filter>
+    </Image>
+    <Image Include="..\..\assets\images\Sanic.png">
+      <Filter>Resource Files\assets\images</Filter>
+    </Image>
   </ItemGroup>
 </Project>

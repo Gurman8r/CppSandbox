@@ -49,9 +49,18 @@ namespace ml
 		bool create(uint32_t width, uint32_t height, const vec4f & color);
 		bool create(uint32_t width, uint32_t height, const uint8_t * pixels, GL::Format colFmt, GL::Format intFmt, bool smooth, bool repeat);
 
-		Image		copyToImage() const;
-		bool		generateMipmap();
-		Texture &	swap(Texture & value);
+		Texture & swap(Texture & value);
+		Texture & setRepeated(bool value);
+		Texture & setSmooth(bool value);
+		Texture & setSrgb(bool value);
+		Texture & generateMipmap();
+		Texture & invalidateMipmap();
+		
+		Image	copyToImage() const;
+		bool	copyToImage(Image & image) const;
+
+
+	public:
 		static void	bind(const Texture * value);
 
 	public:
@@ -68,14 +77,9 @@ namespace ml
 		inline const uint32_t & width()  const { return size()[0]; }
 		inline const uint32_t & height() const { return size()[1]; }
 
-		Texture & setRepeated(bool value);
-		Texture & setSmooth(bool value);
-		Texture & setSrgb(bool value);
+		
 
 	private:
-		static uint32_t getValidSize(uint32_t value);
-
-		void invalidateMipmap();
 
 		uint32_t	m_id;
 		vec2u		m_size;
