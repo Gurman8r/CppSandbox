@@ -28,10 +28,13 @@ namespace ml
 		return (*this);
 	}
 
-	IndexBuffer & IndexBuffer::create(GL::Usage usage)
+	IndexBuffer & IndexBuffer::create(GL::Usage usage, GL::Type type)
 	{
-		m_id = OpenGL::genBuffers(1);
-		m_usage = usage;
+		if (!m_id && (m_id = OpenGL::genBuffers(1)))
+		{
+			m_usage = usage;
+			m_type = type;
+		}
 		return (*this);
 	}
 

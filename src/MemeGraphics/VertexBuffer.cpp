@@ -1,5 +1,6 @@
 #include <MemeGraphics/VertexBuffer.h>
 #include <MemeGraphics/OpenGL.h>
+#include <MemeGraphics/Vertex.h>
 
 namespace ml
 {
@@ -30,8 +31,10 @@ namespace ml
 
 	VertexBuffer & VertexBuffer::create(GL::Usage usage)
 	{
-		m_id = OpenGL::genBuffers(1);
-		m_usage = usage;
+		if (!m_id && (m_id = OpenGL::genBuffers(1)))
+		{
+			m_usage = usage;
+		}
 		return (*this);
 	}
 
@@ -53,6 +56,7 @@ namespace ml
 	{
 		m_data = data;
 		m_size = size;
+		m_count = size / Vertex::Size;
 		OpenGL::bufferData(GL::ArrayBuffer, (sizeof(float) * m_size), m_data, m_usage);
 		return (*this);
 	}
@@ -63,17 +67,18 @@ namespace ml
 	}
 
 
-	VertexBuffer & VertexBuffer::bufferSubData(const void * data, uint32_t size)
+	VertexBuffer & VertexBuffer::bufferSubData(const void * data, uint32_t size, uint32_t offset)
 	{
 		m_data = data;
 		m_size = size;
-		OpenGL::bufferSubData(GL::ArrayBuffer, 0, (sizeof(float) * m_size), m_data);
+		m_count = size / Vertex::Size;
+		OpenGL::bufferSubData(GL::ArrayBuffer, offset, (sizeof(float) * m_size), m_data);
 		return (*this);
 	}
 
-	VertexBuffer & VertexBuffer::bufferSubData(const std::vector<float>& data)
+	VertexBuffer & VertexBuffer::bufferSubData(const std::vector<float>& data, uint32_t offset)
 	{
-		return bufferSubData(&data[0], data.size());
+		return bufferSubData(&data[0], data.size(), offset);
 	}
 
 }

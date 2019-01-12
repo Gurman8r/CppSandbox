@@ -103,7 +103,7 @@ enum : int32_t
 	* * * * * * * * * * * * * * * * * * * * */
 	MIN_TEXTURE = -1,
 	TEX_dean,
-	TEX_wall,
+	TEX_stone,
 	MAX_TEXTURE,
 
 	/* Shaders
@@ -230,7 +230,7 @@ inline static bool loadAssets()
 			return ml::Debug::LogError("Failed Loading Texture");
 		}
 
-		if (!textures[TEX_wall].loadFromFile(settings.pathTo("/textures/stone/stone_dm.png")))
+		if (!textures[TEX_stone].loadFromFile(settings.pathTo("/textures/stone/stone_dm.png")))
 		{
 			return ml::Debug::LogError("Failed Loading Texture");
 		}
@@ -265,14 +265,14 @@ inline static bool loadGeometry()
 	{
 		// Cube
 		vao[VAO_cube]
-			.create()
+			.create(ml::GL::Triangles)
 			.bind();
 		vbo[VBO_cube]
 			.create(ml::GL::StaticDraw)
 			.bind()
 			.bufferData(ml::Shapes::Cube::Mesh.flattened());
 		ibo[IBO_cube]
-			.create(ml::GL::StaticDraw)
+			.create(ml::GL::StaticDraw, ml::GL::UnsignedInt)
 			.bind()
 			.bufferData(ml::Shapes::Cube::Mesh.indices());
 		ml::BufferLayout::bind({
@@ -287,14 +287,14 @@ inline static bool loadGeometry()
 
 		// Quad
 		vao[VAO_quad]
-			.create()
+			.create(ml::GL::Triangles)
 			.bind();
 		vbo[VBO_quad]
 			.create(ml::GL::StaticDraw)
 			.bind()
 			.bufferData(ml::Shapes::Quad::Mesh.flattened());
 		ibo[IBO_quad]
-			.create(ml::GL::StaticDraw)
+			.create(ml::GL::StaticDraw, ml::GL::UnsignedInt)
 			.bind()
 			.bufferData(ml::Shapes::Quad::Mesh.indices());
 		ml::BufferLayout::bind({
@@ -309,7 +309,7 @@ inline static bool loadGeometry()
 
 		// Text
 		vao[VAO_text]
-			.create()
+			.create(ml::GL::Triangles)
 			.bind();
 		vbo[VBO_text]
 			.create(ml::GL::DynamicDraw)
@@ -346,31 +346,31 @@ inline static void drawText(
 		const ml::Glyph & g = font.getGlyph((*it), fontSize);
 
 		const ml::FloatRect r(
-			(ml::vec2f(g.x(), -(g.height() - g.y())) + drawPos) * scale,
+			ml::vec2f(g.x(), -(g.height() - g.y())) + drawPos * scale,
 			g.size() * scale
 		);
 
-		if(shader) (*shader)
+		vbo[VBO_text]
+			.bind()
+			.bufferSubData(ml::Mesh::Flatten({
+				{{ r.left(),  r.bot(), 0.f }, ml::vec2f::Zero	},
+				{{ r.left(),  r.top(), 0.f }, ml::vec2f::Up		},
+				{{ r.right(), r.top(), 0.f }, ml::vec2f::One	},
+				{{ r.left(),  r.bot(), 0.f }, ml::vec2f::Zero	},
+				{{ r.right(), r.top(), 0.f }, ml::vec2f::One	},
+				{{ r.right(), r.bot(), 0.f }, ml::vec2f::Right	},
+				}))
+			.unbind();
+
+		if (shader) (*shader)
 			.setUniform(ml::Uniform::Proj, proj[P_ortho])
 			.setUniform(ml::Uniform::Color, color)
 			.setUniform(ml::Uniform::Texture, g.texture)
 			.use();
 
-		vbo[VBO_text]
-			.bind()
-			.bufferSubData(ml::Mesh::Flatten({
-				{{ r.left(),  r.bot(), 0 }, ml::Color::White, ml::vec2f::Zero	},
-				{{ r.left(),  r.top(), 0 }, ml::Color::White, ml::vec2f::Up		},
-				{{ r.right(), r.top(), 0 }, ml::Color::White, ml::vec2f::One	},
-				{{ r.left(),  r.bot(), 0 }, ml::Color::White, ml::vec2f::Zero	},
-				{{ r.right(), r.top(), 0 }, ml::Color::White, ml::vec2f::One	},
-				{{ r.right(), r.bot(), 0 }, ml::Color::White, ml::vec2f::Right	},
-				}))
-			.unbind();
+		ml::OpenGL::drawArrays(vao[VAO_text].mode(), 0, vbo[VBO_text].count());
 
-		ml::OpenGL::drawArrays(ml::GL::Triangles, 0, 6);
-
-		drawPos[0] += (float)(g.advance >> 6) * scale[0];
+		drawPos[0] += (float)(g.advance >> vbo[VBO_text].count()) * scale[0];
 	}
 	vao[VAO_text].unbind();
 }
@@ -498,8 +498,8 @@ int main(int argc, char** argv)
 			window.clear(ml::Color::Violet);
 			{
 				// 3D
-				window.setEnabled(ml::GL::CullFace);
-				window.setEnabled(ml::GL::DepthTest);
+				ml::OpenGL::enable(ml::GL::CullFace);
+				ml::OpenGL::enable(ml::GL::DepthTest);
 				
 				// Cube
 				if (ml::Shader * shader = &shaders[GL_basic])
@@ -509,14 +509,18 @@ int main(int argc, char** argv)
 						.setUniform(ml::Uniform::View, view[V_camera])
 						.setUniform(ml::Uniform::Model, model[M_cube])
 						.setUniform(ml::Uniform::Color, ml::Color::White)
-						.setUniform(ml::Uniform::Texture, textures[TEX_wall])
+						.setUniform(ml::Uniform::Texture, textures[TEX_stone])
 						.use();
 				
 					vao[VAO_cube].bind();
 					vbo[VBO_cube].bind();
 					ibo[IBO_cube].bind();
 					{
-						window.drawElements(ibo[IBO_cube], ml::GL::Triangles, ml::GL::UnsignedInt);
+						ml::OpenGL::drawElements(
+							vao[VAO_cube].mode(),
+							ibo[IBO_cube].count(),
+							ibo[IBO_cube].type(),
+							NULL);
 					}
 					ibo[IBO_cube].unbind();
 					vbo[VBO_cube].unbind();
@@ -524,8 +528,8 @@ int main(int argc, char** argv)
 				}
 
 				// 2D
-				window.setDisabled(ml::GL::CullFace);
-				window.setDisabled(ml::GL::DepthTest);
+				ml::OpenGL::disable(ml::GL::CullFace);
+				ml::OpenGL::disable(ml::GL::DepthTest);
 				
 				// Quad
 				if (ml::Shader * shader = &shaders[GL_basic])
@@ -542,7 +546,11 @@ int main(int argc, char** argv)
 					vbo[VBO_quad].bind();
 					ibo[IBO_quad].bind();
 					{
-						window.drawElements(ibo[IBO_quad], ml::GL::Triangles, ml::GL::UnsignedInt);
+						ml::OpenGL::drawElements(
+							vao[VAO_quad].mode(),
+							ibo[IBO_quad].count(),
+							ibo[IBO_quad].type(),
+							NULL);
 					}
 					ibo[IBO_quad].unbind();
 					vbo[VBO_quad].unbind();
@@ -556,7 +564,7 @@ int main(int argc, char** argv)
 				for (uint32_t i = (MIN_FONT + 1); i < MAX_FONT; i++)
 				{
 					drawText(&shaders[GL_text], fonts[i], fontSize, textPos + (textOff * (float)(i + 1)), ml::Color::White, ml::vec2f::One,
-						"Hello, World!");
+						"Hello, {0}!", "World");
 				}
 
 			}

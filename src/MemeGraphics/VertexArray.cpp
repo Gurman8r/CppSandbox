@@ -24,9 +24,12 @@ namespace ml
 		return (*this);
 	}
 
-	VertexArray & VertexArray::create()
+	VertexArray & VertexArray::create(GL::Mode mode)
 	{
-		m_id = OpenGL::genVertexArrays(1);
+		if (!m_id && (m_id = OpenGL::genVertexArrays(1)))
+		{
+			m_mode = mode;
+		}
 		return (*this);
 	}
 	

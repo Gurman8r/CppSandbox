@@ -30,57 +30,6 @@ namespace ml
 		return (*this);
 	}
 	
-
-	RenderTarget & RenderTarget::drawElements(const IBO & ibo, GL::Mode mode, GL::Type type)
-	{
-		if (ibo)
-		{
-			OpenGL::drawElements(mode, (int32_t)ibo.count(), type, NULL);
-		}
-		return (*this);
-	}
-	
-
-	bool RenderTarget::isEnabled(GL::Enum value) const
-	{
-		return OpenGL::isEnabled(value);
-	}
-		
-	bool RenderTarget::setEnabled(GL::Enum value, bool check) const
-	{
-		return OpenGL::enable(value, check);
-	}
-
-	bool RenderTarget::setDisabled(GL::Enum value, bool check) const
-	{
-		return OpenGL::disable(value, check);
-	}
-	
-	void RenderTarget::setActiveTexture(GL::TextureID target) const
-	{
-		OpenGL::activeTexture(target);
-	}
-
-	void RenderTarget::setAlphaFunc(GL::Comparison cmp, float value) const
-	{
-		OpenGL::alphaFunc(cmp, value);
-	}
-
-	void RenderTarget::setBlendFunc(GL::Factor src, GL::Factor dst) const
-	{
-		OpenGL::blendFunc(src, dst);
-	}
-
-	void RenderTarget::setCullFace(GL::Face face) const
-	{
-		OpenGL::cullFace(face);
-	}
-
-	void RenderTarget::setDepthFunc(GL::Comparison cmp) const
-	{
-		OpenGL::depthFunc(cmp);
-	}
-	
 	void RenderTarget::setViewport(const vec2i & pos, const vec2i & size) const
 	{
 		OpenGL::viewport(pos[0], pos[1], size[0], size[1]);

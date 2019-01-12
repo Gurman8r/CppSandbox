@@ -43,29 +43,29 @@ namespace ml
 			validate();
 
 			// Setup GL
-			setEnabled(GL::CullFace);
-			setCullFace(GL::Back);
+			OpenGL::enable(GL::CullFace);
+			OpenGL::cullFace(GL::Back);
 
-			setEnabled(GL::DepthTest);
-			setDepthFunc(GL::Less);
+			OpenGL::enable(GL::DepthTest);
+			OpenGL::depthFunc(GL::Less);
 
-			setEnabled(GL::Blend);
-			setBlendFunc(GL::SourceAlpha, GL::OneMinusSourceAlpha);
+			OpenGL::enable(GL::Blend);
+			OpenGL::blendFunc(GL::SourceAlpha, GL::OneMinusSourceAlpha);
 
-			setEnabled(GL::AlphaTest);
-			setAlphaFunc(GL::Greater, 0.01f);
+			OpenGL::enable(GL::AlphaTest);
+			OpenGL::alphaFunc(GL::Greater, 0.01f);
 
-			setEnabled(GL::Texture2D);
-			setActiveTexture(GL::Texture0);
+			OpenGL::enable(GL::Texture2D);
+			OpenGL::activeTexture(GL::Texture0);
 
 			if (m_context.multisample)
 			{
-				setEnabled(GL::Multisample);
+				OpenGL::enable(GL::Multisample);
 			}
 
 			if (m_context.sRgbCapable)
 			{
-				if (!setEnabled(GL::FramebufferSRGB, true))
+				if (!OpenGL::enable(GL::FramebufferSRGB, true))
 				{
 					ml::Debug::LogWarning("Failed to enable Framebuffer SRGB");
 					m_context.sRgbCapable = false;

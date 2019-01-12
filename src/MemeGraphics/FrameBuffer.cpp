@@ -27,7 +27,10 @@ namespace ml
 
 	FrameBuffer & FrameBuffer::create()
 	{
-		m_id = OpenGL::genFramebuffers(1);
+		if (!m_id && (m_id = OpenGL::genFramebuffers(1)))
+		{
+
+		}
 		return (*this);
 	}
 
