@@ -21,10 +21,6 @@ namespace ml
 	/*	Quad
 	* * * * * * * * * */
 	const VertexList Shapes::Quad::Vertices({
-		//Vertex({ 1.0f, 1.0f, 0.0f }, Color::White, { 1.0f, 1.0f }),
-		//Vertex({ 1.0f, 0.0f, 0.0f }, Color::White, { 1.0f, 0.0f }),
-		//Vertex({ 0.0f, 0.0f, 0.0f }, Color::White, { 0.0f, 0.0f }),
-		//Vertex({ 0.0f, 1.0f, 0.0f }, Color::White, { 0.0f, 1.0f }),
 		Vertex({ +0.5f, +0.5f, -0.5f }, Color::White, { 1.0f, 1.0f }),
 		Vertex({ +0.5f, -0.5f, -0.5f }, Color::White, { 1.0f, 0.0f }),
 		Vertex({ -0.5f, -0.5f, -0.5f }, Color::White, { 0.0f, 0.0f }),

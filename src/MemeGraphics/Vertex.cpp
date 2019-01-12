@@ -3,45 +3,45 @@
 namespace ml
 {
 	Vertex::Vertex()
-		: m_position(vec3f::Zero)
-		, m_color(Color::White)
-		, m_texcoords(vec2f::Zero)
 	{
+		this->position(vec3f::Zero);
+		this->color(Color::White);
+		this->texcoords(vec2f::Zero);
 	}
 
 	Vertex::Vertex(const vec3f & position)
-		: m_position(position)
-		, m_color(Color::White)
-		, m_texcoords(vec2f::Zero)
 	{
+		this->position(position);
+		this->color(Color::White);
+		this->texcoords(vec2f::Zero);
 	}
 
 	Vertex::Vertex(const vec3f & position, const vec4f & color)
-		: m_position(position)
-		, m_color(color)
-		, m_texcoords(vec2f::Zero)
 	{
+		this->position(position);
+		this->color(color);
+		this->texcoords(vec2f::Zero);
 	}
 
 	Vertex::Vertex(const vec3f & position, const vec2f & texcoords)
-		: m_position(position)
-		, m_color(Color::White)
-		, m_texcoords(texcoords)
 	{
+		this->position(position);
+		this->color(Color::White);
+		this->texcoords(texcoords);
 	}
 
 	Vertex::Vertex(const vec3f & position, const vec4f & color, const vec2f & texcoords)
-		: m_position(position)
-		, m_color(color)
-		, m_texcoords(texcoords)
 	{
+		this->position(position);
+		this->color(color);
+		this->texcoords(texcoords);
 	}
 
 	Vertex::Vertex(const Vertex & copy)
-		: m_color(copy.m_color)
-		, m_position(copy.m_position)
-		, m_texcoords(copy.m_texcoords)
 	{
+		this->position(copy.position());
+		this->color(copy.color());
+		this->texcoords(copy.texcoords());
 	}
 
 	Vertex::~Vertex()
@@ -49,37 +49,55 @@ namespace ml
 	}
 	
 	
-	const vec4f & Vertex::color() const
-	{
-		return m_color;
-	}
-	
 	const vec3f & Vertex::position() const
 	{
-		return m_position;
+		static vec3f temp;
+		temp[0] = m_data[0];
+		temp[1] = m_data[1];
+		temp[2] = m_data[2];
+		return temp;
+	}
+	
+	const vec4f & Vertex::color() const
+	{
+		static vec4f temp;
+		temp[0] = m_data[3];
+		temp[1] = m_data[4];
+		temp[2] = m_data[5];
+		temp[3] = m_data[6];
+		return temp;
 	}
 	
 	const vec2f & Vertex::texcoords() const
 	{
-		return m_texcoords;
+		static vec2f temp;
+		temp[0] = m_data[7];
+		temp[1] = m_data[8];
+		return temp;
 	}
 
 
-	Vertex & Vertex::color(const vec4f & value)
+	Vertex & Vertex::position(const vec3f & value)
 	{
-		m_color = value;
+		m_data[0] = value[0];
+		m_data[1] = value[1];
+		m_data[2] = value[2];
 		return (*this);
 	}
 	
-	Vertex & Vertex::position(const vec3f & value)
+	Vertex & Vertex::color(const vec4f & value)
 	{
-		m_position = value;
+		m_data[3] = value[0];
+		m_data[4] = value[1];
+		m_data[5] = value[2];
+		m_data[6] = value[3];
 		return (*this);
 	}
 	
 	Vertex & Vertex::texcoords(const vec2f & value)
 	{
-		m_texcoords = value;
+		m_data[7] = value[0];
+		m_data[8] = value[1];
 		return (*this);
 	}
 }

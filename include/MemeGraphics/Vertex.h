@@ -23,18 +23,21 @@ namespace ml
 		Vertex(const Vertex& copy);
 		~Vertex();
 
-		const vec4f & color() const;
 		const vec3f & position() const;
+		const vec4f & color() const;
 		const vec2f & texcoords() const;
 
-		Vertex & color(const vec4f & value);
 		Vertex & position(const vec3f & value);
+		Vertex & color(const vec4f & value);
 		Vertex & texcoords(const vec2f & value);
 
+		inline const float * ptr() const { return m_data; }
+
+		inline const float &operator[](std::size_t index) const { return m_data[index]; }
+		inline float &		operator[](std::size_t index)		{ return m_data[index]; }
+
 	private:
-		vec4f m_color;
-		vec3f m_position;
-		vec2f m_texcoords;
+		float m_data[Size];
 	};
 
 	using VertexList	= std::vector<Vertex>;

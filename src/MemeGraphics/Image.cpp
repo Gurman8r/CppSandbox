@@ -48,7 +48,7 @@ namespace ml
 			
 			m_pixels.clear();
 
-			m_pixels.resize(width * height * 4);
+			m_pixels.resize(width * height * nrChannels);
 			
 			memcpy(&m_pixels[0], data, m_pixels.size());
 

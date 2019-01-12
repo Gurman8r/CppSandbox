@@ -9,7 +9,7 @@ namespace ml
 	{
 		UniformBinder(Shader & shader, const std::string & name)
 			: saved(0)
-			, current(shader.m_program)
+			, current(shader.m_id)
 			, location(-1)
 		{
 			if (current)
@@ -44,16 +44,14 @@ namespace ml
 namespace ml
 {
 	Shader::Shader()
-		: m_program(0)
-		, m_currentTexture(0)
+		: m_id(0)
 		, m_textures()
 		, m_uniforms()
 	{
 	}
 
 	Shader::Shader(const Shader & copy)
-		: m_program(copy.m_program)
-		, m_currentTexture(copy.m_currentTexture)
+		: m_id(copy.m_id)
 		, m_textures(copy.m_textures)
 		, m_uniforms(copy.m_uniforms)
 	{
@@ -180,7 +178,7 @@ namespace ml
 	}
 
 
-	Shader & Shader::use(bool bindTextures)
+	Shader & Shader::bind(bool bindTextures)
 	{
 		Shader::bind(this, bindTextures);
 		return (*this);
@@ -190,9 +188,9 @@ namespace ml
 	{
 		if (shader && OpenGL::shadersAvailable())
 		{
-			if (shader->m_program)
+			if (shader->m_id)
 			{
-				OpenGL::useShader(shader->m_program);
+				OpenGL::useShader(shader->m_id);
 			}
 
 			if (bindTextures)
@@ -202,11 +200,6 @@ namespace ml
 				{
 					Texture::bind(it->second);
 				}
-			}
-
-			if (shader->currentTexture() != -1)
-			{
-				OpenGL::uniform1i(shader->currentTexture(), 0);
 			}
 		}
 		else
@@ -431,13 +424,12 @@ namespace ml
 			return ml::Debug::LogError("Geometry shaders are not available on your system.");
 		}
 
-		if (m_program)
+		if (m_id)
 		{
-			OpenGL::deleteShader(m_program);
-			m_program = 0;
+			OpenGL::deleteShader(m_id);
+			m_id = 0;
 		}
 
-		m_currentTexture = -1;
 		m_textures.clear();
 		m_uniforms.clear();
 
@@ -520,7 +512,7 @@ namespace ml
 			return Debug::LogError("Failed to link source: {0}", log);
 		}
 
-		m_program = shaderProgram;
+		m_id = shaderProgram;
 
 		OpenGL::flush();
 
@@ -539,7 +531,7 @@ namespace ml
 		else
 		{
 			// Not in cache, request the location from OpenGL
-			int32_t location = OpenGL::getUniformLocation(m_program, value.c_str());
+			int32_t location = OpenGL::getUniformLocation(m_id, value.c_str());
 			
 			m_uniforms.insert(std::make_pair(value, location));
 			

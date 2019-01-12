@@ -7,8 +7,6 @@
 
 namespace ml
 {
-	class RenderTarget;
-
 	class ML_GRAPHICS_API Texture final
 		: public ITrackable
 		, public IResource
@@ -28,7 +26,7 @@ namespace ml
 		inline Texture & operator=(const Texture & value)
 		{
 			static Texture temp;
-			return temp.swap(*this);
+			return swap(temp);
 		}
 
 	public:
@@ -56,9 +54,7 @@ namespace ml
 		Texture & generateMipmap();
 		Texture & invalidateMipmap();
 		
-		Image	copyToImage() const;
-		bool	copyToImage(Image & image) const;
-
+		const Image copyToImage() const;
 
 	public:
 		static void	bind(const Texture * value);
@@ -67,7 +63,6 @@ namespace ml
 		inline const uint32_t & id()			const { return m_id; }
 		inline const vec2u &	size()			const { return m_size; }
 		inline const vec2u &	actualSize()	const { return m_actualSize; }
-		inline const uint64_t & cacheID()		const { return m_cacheID; }
 		inline const bool &		isSmooth()		const { return m_isSmooth; }
 		inline const bool &		isSrgb()		const { return m_sRgb; }
 		inline const bool &		isRepeated()	const { return m_isRepeated; }
@@ -77,21 +72,18 @@ namespace ml
 		inline const uint32_t & width()  const { return size()[0]; }
 		inline const uint32_t & height() const { return size()[1]; }
 
-		
+		inline operator bool() const { return (bool)id(); }
 
 	private:
 
 		uint32_t	m_id;
 		vec2u		m_size;
 		vec2u		m_actualSize;
-		uint64_t	m_cacheID;
 		bool		m_isSmooth;
 		bool		m_sRgb;
 		bool		m_isRepeated;
 		bool		m_pixelsFlipped;
 		bool		m_hasMipmap;
-
-		friend class RenderTarget;
 	};
 }
 

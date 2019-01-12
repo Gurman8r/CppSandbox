@@ -14,7 +14,6 @@ namespace ml
 		, m_isRepeated(false)
 		, m_pixelsFlipped(false)
 		, m_hasMipmap(false)
-		, m_cacheID(OpenGL::getUniqueID<Texture>())
 	{
 	}
 
@@ -27,7 +26,6 @@ namespace ml
 		, m_isRepeated(copy.m_isRepeated)
 		, m_pixelsFlipped(false)
 		, m_hasMipmap(false)
-		, m_cacheID(OpenGL::getUniqueID<Texture>())
 	{
 		if (copy.m_id)
 		{
@@ -179,7 +177,6 @@ namespace ml
 
 			m_hasMipmap = false;
 			m_pixelsFlipped = false;
-			m_cacheID = OpenGL::getUniqueID<Texture>();
 
 			Texture::bind(NULL);
 
@@ -205,72 +202,72 @@ namespace ml
 			return false;
 		}
 
-		if (OpenGL::framebuffersAvailable())
+		if (!OpenGL::framebuffersAvailable())
 		{
-			// Save the current bindings so we can restore them after we are done
-			int32_t readFramebuffer = OpenGL::getInt(GL::ReadFramebufferBinding);
-			int32_t drawFramebuffer = OpenGL::getInt(GL::DrawFramebufferBinding);
-
-			// Create the framebuffers
-			uint32_t src = OpenGL::genFramebuffers(1);
-			uint32_t dst = OpenGL::genFramebuffers(1);
-
-			if (!src || !dst)
-			{
-				return Debug::LogError(
-					"Cannot copy texture, failed to create a frame buffer object");
-			}
-
-			// Link the source texture to the source frame buffer
-			OpenGL::bindFramebuffer(GL::FramebufferRead, src);
-			OpenGL::framebufferTexture2D(
-				GL::FramebufferRead, 
-				GL::ColorAttachment0, 
-				GL::Texture2D, 
-				texture.m_id, 
-				0);
-
-			// Link the destination texture to the destination frame buffer
-			OpenGL::bindFramebuffer(GL::FramebufferDraw, dst);
-			OpenGL::framebufferTexture2D(
-				GL::FramebufferDraw, 
-				GL::ColorAttachment0,
-				GL::Texture2D, 
-				m_id, 
-				0);
-
-			// A final check, just to be sure...
-			uint32_t srcStatus = OpenGL::checkFramebufferStatus(GL::FramebufferRead);
-			uint32_t dstStatus = OpenGL::checkFramebufferStatus(GL::FramebufferDraw);
-
-			if ((srcStatus == GL::FramebufferComplete) &&
-				(dstStatus == GL::FramebufferComplete))
-			{
-				// Blit the texture contents from the source to the destination texture
-				OpenGL::blitFramebuffer(
-					0, 0, texture.m_size[0], texture.m_size[1],
-					x, y, x + texture.m_size[0], y + texture.m_size[1],
-					GL::ColorBufferBit, 
-					GL::Nearest);
-			}
-			else
-			{
-				return Debug::LogError(
-					"Cannot copy texture, failed to link texture to frame buffer");
-			}
-
-			// Restore previously bound framebuffers
-			OpenGL::bindFramebuffer(GL::FramebufferRead, readFramebuffer);
-			OpenGL::bindFramebuffer(GL::FramebufferDraw, drawFramebuffer);
-
-			// Delete the framebuffers
-			OpenGL::deleteFramebuffers(1, &src);
-			OpenGL::deleteFramebuffers(1, &dst);
-
-			return true;
+			return update(texture.copyToImage(), x, y);
 		}
 		
-		return update(texture.copyToImage(), x, y);
+		// Save the current bindings so we can restore them after we are done
+		int32_t readFramebuffer = OpenGL::getInt(GL::ReadFramebufferBinding);
+		int32_t drawFramebuffer = OpenGL::getInt(GL::DrawFramebufferBinding);
+
+		// Create the framebuffers
+		uint32_t src = OpenGL::genFramebuffers(1);
+		uint32_t dst = OpenGL::genFramebuffers(1);
+
+		if (!src || !dst)
+		{
+			return Debug::LogError(
+				"Cannot copy texture, failed to create a frame buffer object");
+		}
+
+		// Link the source texture to the source frame buffer
+		OpenGL::bindFramebuffer(GL::FramebufferRead, src);
+		OpenGL::framebufferTexture2D(
+			GL::FramebufferRead,
+			GL::ColorAttachment0,
+			GL::Texture2D,
+			texture.m_id,
+			0);
+
+		// Link the destination texture to the destination frame buffer
+		OpenGL::bindFramebuffer(GL::FramebufferDraw, dst);
+		OpenGL::framebufferTexture2D(
+			GL::FramebufferDraw,
+			GL::ColorAttachment0,
+			GL::Texture2D,
+			m_id,
+			0);
+
+		// A final check, just to be sure...
+		uint32_t srcStatus = OpenGL::checkFramebufferStatus(GL::FramebufferRead);
+		uint32_t dstStatus = OpenGL::checkFramebufferStatus(GL::FramebufferDraw);
+
+		if ((srcStatus == GL::FramebufferComplete) &&
+			(dstStatus == GL::FramebufferComplete))
+		{
+			// Blit the texture contents from the source to the destination texture
+			OpenGL::blitFramebuffer(
+				0, 0, texture.m_size[0], texture.m_size[1],
+				x, y, x + texture.m_size[0], y + texture.m_size[1],
+				GL::ColorBufferBit,
+				GL::Nearest);
+		}
+		else
+		{
+			return Debug::LogError(
+				"Cannot copy texture, failed to link texture to frame buffer");
+		}
+
+		// Restore previously bound framebuffers
+		OpenGL::bindFramebuffer(GL::FramebufferRead, readFramebuffer);
+		OpenGL::bindFramebuffer(GL::FramebufferDraw, drawFramebuffer);
+
+		// Delete the framebuffers
+		OpenGL::deleteFramebuffers(1, &src);
+		OpenGL::deleteFramebuffers(1, &dst);
+
+		return true;
 	}
 	
 	bool Texture::update(const Image & image)
@@ -343,7 +340,6 @@ namespace ml
 			m_sRgb = false;
 		}
 
-		m_cacheID = OpenGL::getUniqueID<Texture>();
 		m_hasMipmap = false;
 
 		// Initialize the texture
@@ -441,7 +437,6 @@ namespace ml
 
 			m_size			= { width, height };
 			m_actualSize	= actualSize;
-			m_cacheID		= OpenGL::getUniqueID<Texture>();
 			m_isSmooth		= smooth;
 			m_sRgb			= false;
 			m_isRepeated	= repeat;
@@ -511,10 +506,7 @@ namespace ml
 		std::swap(m_pixelsFlipped,	other.m_pixelsFlipped);
 		std::swap(m_hasMipmap,		other.m_hasMipmap);
 
-		m_cacheID = OpenGL::getUniqueID<Texture>();
-		other.m_cacheID = OpenGL::getUniqueID<Texture>();
-
-		return (*this);
+		return other;
 	}
 
 	Texture & Texture::setRepeated(bool value)
@@ -664,7 +656,7 @@ namespace ml
 	}
 
 
-	Image Texture::copyToImage() const
+	const Image Texture::copyToImage() const
 	{
 		// Easy case: empty texture
 		if (!m_id)
@@ -730,11 +722,6 @@ namespace ml
 		Image image;
 		image.create(m_size[0], m_size[1], &pixels[0]);
 		return image;
-	}
-
-	bool Texture::copyToImage(Image & image) const
-	{
-		return false;
 	}
 
 	

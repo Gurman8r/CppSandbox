@@ -12,6 +12,9 @@ namespace ml
 		, public IResource
 	{
 	public:
+		using GlyphTable = std::map<uint32_t, Glyph>;
+		using PageTable  = std::map<uint32_t, GlyphTable>;
+
 		struct Info final
 			: public ITrackable
 		{
@@ -26,27 +29,17 @@ namespace ml
 		bool cleanup() override;
 		bool loadFromFile(const std::string & filename) override;
 
-		const Glyph & getGlyph(uint32_t c, uint32_t characterSize) const;
+		const Glyph & getGlyph(uint32_t value, uint32_t size) const;
 		const Info	& getInfo() const;
 
 	private:
-		using GlyphTable = std::map<uint32_t, Glyph>;
-
-		struct Page final
-			: public ITrackable
-		{
-			GlyphTable glyphs;
-		};
-
-		using PageTable = std::map<uint32_t, Page>;
-
 		mutable PageTable m_pages;
 		Info			  m_info;
 		void*			  m_library;
 		void*			  m_face;
 		void*			  m_stroker;
 
-		Glyph loadGlyph(uint32_t c, uint32_t characterSize) const;
+		Glyph loadGlyph(uint32_t value, uint32_t size) const;
 	};
 }
 

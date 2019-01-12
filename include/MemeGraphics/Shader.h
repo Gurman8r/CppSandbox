@@ -36,7 +36,7 @@ namespace ml
 		bool loadFromMemory(const std::string& vs, const std::string& gs, const std::string& fs);
 
 	public:
-		Shader &	use(bool bindTextures = true);
+		Shader &	bind(bool bindTextures = true);
 		static void bind(const Shader* shader, bool bindTextures = true);
 
 	public:
@@ -75,8 +75,8 @@ namespace ml
 		};
 
 	public:
-		inline const uint32_t & program() const { return m_program; }
-		inline const int32_t &  currentTexture() const { return m_currentTexture; }
+		inline const uint32_t & id() const { return m_id; }
+		inline operator bool() const { return (bool)id(); }
 
 	private:
 		struct UniformBinder;
@@ -87,8 +87,7 @@ namespace ml
 		bool		compile(const char* vs, const char* gs, const char* fs);
 		int32_t		getUniformLocation(const std::string & value);
 
-		uint32_t		m_program;
-		int32_t			m_currentTexture;
+		uint32_t		m_id;
 		TextureTable	m_textures;
 		UniformTable	m_uniforms;
 	};

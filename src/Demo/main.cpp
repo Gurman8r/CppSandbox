@@ -329,7 +329,7 @@ inline static bool loadGeometry()
 /* * * * * * * * * * * * * * * * * * * * */
 
 inline static void drawText(
-	ml::Shader *		shader,
+	ml::Shader &		shader,
 	const ml::Font &	font,
 	uint32_t			fontSize,
 	const ml::vec2f &	pos,
@@ -350,6 +350,12 @@ inline static void drawText(
 			g.size() * scale
 		);
 
+		(shader)
+			.setUniform(ml::Uniform::Proj, proj[P_ortho])
+			.setUniform(ml::Uniform::Color, color)
+			.setUniform(ml::Uniform::Texture, g.texture)
+			.bind();
+
 		vbo[VBO_text]
 			.bind()
 			.bufferSubData(ml::Mesh::Flatten({
@@ -362,12 +368,6 @@ inline static void drawText(
 				}))
 			.unbind();
 
-		if (shader) (*shader)
-			.setUniform(ml::Uniform::Proj, proj[P_ortho])
-			.setUniform(ml::Uniform::Color, color)
-			.setUniform(ml::Uniform::Texture, g.texture)
-			.use();
-
 		ml::OpenGL::drawArrays(vao[VAO_text].mode(), 0, vbo[VBO_text].count());
 
 		drawPos[0] += (float)(g.advance >> vbo[VBO_text].count()) * scale[0];
@@ -377,7 +377,7 @@ inline static void drawText(
 
 template<typename T, typename ... A>
 inline static void drawText(
-	ml::Shader *		shader,
+	ml::Shader &		shader,
 	const ml::Font &	font,
 	uint32_t			fontSize,
 	const ml::vec2f &	pos,
@@ -502,15 +502,15 @@ int main(int argc, char** argv)
 				ml::OpenGL::enable(ml::GL::DepthTest);
 				
 				// Cube
-				if (ml::Shader * shader = &shaders[GL_basic])
+				if (ml::Shader shader = shaders[GL_basic])
 				{
-					(*shader)
+					(shader)
 						.setUniform(ml::Uniform::Proj, proj[P_persp])
 						.setUniform(ml::Uniform::View, view[V_camera])
 						.setUniform(ml::Uniform::Model, model[M_cube])
 						.setUniform(ml::Uniform::Color, ml::Color::White)
 						.setUniform(ml::Uniform::Texture, textures[TEX_stone])
-						.use();
+						.bind();
 				
 					vao[VAO_cube].bind();
 					vbo[VBO_cube].bind();
@@ -532,15 +532,15 @@ int main(int argc, char** argv)
 				ml::OpenGL::disable(ml::GL::DepthTest);
 				
 				// Quad
-				if (ml::Shader * shader = &shaders[GL_basic])
+				if (ml::Shader shader = shaders[GL_basic])
 				{
-					(*shader)
+					(shader)
 						.setUniform(ml::Uniform::Proj, proj[P_persp])
 						.setUniform(ml::Uniform::View, view[V_camera])
 						.setUniform(ml::Uniform::Model, model[M_quad])
 						.setUniform(ml::Uniform::Color, ml::Color::White)
 						.setUniform(ml::Uniform::Texture, textures[TEX_dean])
-						.use();
+						.bind();
 
 					vao[VAO_quad].bind();
 					vbo[VBO_quad].bind();
@@ -558,13 +558,23 @@ int main(int argc, char** argv)
 				}
 
 				// Text
-				uint32_t  fontSize = 32;
-				ml::vec2f textOff = { 0, -(float)fontSize };
-				ml::vec2f textPos = { (float)fontSize, (float)window.height() };
-				for (uint32_t i = (MIN_FONT + 1); i < MAX_FONT; i++)
+				if (ml::Shader & shader = shaders[GL_text])
 				{
-					drawText(&shaders[GL_text], fonts[i], fontSize, textPos + (textOff * (float)(i + 1)), ml::Color::White, ml::vec2f::One,
-						"Hello, {0}!", "World");
+					static const ml::vec4f colors[MAX_FONT] = { 
+						ml::Color::Red,
+						ml::Color::Green,
+						ml::Color::Blue,
+						ml::Color::White
+					};
+					uint32_t  fontSize = 32;
+					ml::vec2f textOff = { 0, -(float)fontSize };
+					ml::vec2f textPos = { (float)fontSize, (float)window.height() };
+
+					for (uint32_t i = (MIN_FONT + 1); i < MAX_FONT; i++)
+					{
+						drawText(shader, fonts[i], fontSize, textPos + (textOff * (float)(i + 1)), colors[i], ml::vec2f::One,
+							"Hello, World!");
+					}
 				}
 
 			}

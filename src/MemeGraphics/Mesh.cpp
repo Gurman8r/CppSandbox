@@ -111,20 +111,16 @@ namespace ml
 			{
 				out.resize(imax * Vertex::Size);
 			}
+
 			for (std::size_t i = 0; i < imax; i++)
 			{
-				out[i * Vertex::Size + 0] = value[i].position()[0];	// [0] p.x
-				out[i * Vertex::Size + 1] = value[i].position()[1];	// [1] p.y
-				out[i * Vertex::Size + 2] = value[i].position()[2];	// [2] p.z
-				out[i * Vertex::Size + 3] = value[i].color()[0];	// [3] c.r
-				out[i * Vertex::Size + 4] = value[i].color()[1];	// [4] c.g
-				out[i * Vertex::Size + 5] = value[i].color()[2];	// [5] c.b
-				out[i * Vertex::Size + 6] = value[i].color()[3];	// [6] c.a
-				out[i * Vertex::Size + 7] = value[i].texcoords()[0];// [7] t.x
-				out[i * Vertex::Size + 8] = value[i].texcoords()[1];// [8] t.y
+				for (uint32_t j = 0; j < Vertex::Size; j++)
+				{
+					out[i * Vertex::Size + j] = value[i][j];
+				}
 			}
 		}
-		else if(!out.empty())
+		else if (!out.empty())
 		{
 			out.clear();
 		}

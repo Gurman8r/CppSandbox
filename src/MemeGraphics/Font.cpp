@@ -89,18 +89,18 @@ namespace ml
 	}
 
 
-	const Glyph & Font::getGlyph(uint32_t c, uint32_t characterSize) const
+	const Glyph & Font::getGlyph(uint32_t value, uint32_t size) const
 	{
-		GlyphTable & table = m_pages[characterSize].glyphs;
+		GlyphTable & table = m_pages[size];
 
 		GlyphTable::const_iterator it;
-		if ((it = table.find(c)) != table.end())
+		if ((it = table.find(value)) != table.end())
 		{
 			return it->second;
 		}
 		else
 		{
-			return table.insert({ c, loadGlyph(c, characterSize) }).first->second;
+			return table.insert({ value, loadGlyph(value, size) }).first->second;
 		}
 	}
 
@@ -109,7 +109,7 @@ namespace ml
 		return m_info;
 	}
 
-	Glyph Font::loadGlyph(uint32_t c, uint32_t characterSize) const
+	Glyph Font::loadGlyph(uint32_t value, uint32_t size) const
 	{
 		Glyph glyph;
 
@@ -120,20 +120,20 @@ namespace ml
 		}
 
 		// Set size to load glyphs as
-		FT_Set_Pixel_Sizes(face, 0, characterSize);
+		FT_Set_Pixel_Sizes(face, 0, size);
 
 		// Disable byte-alignment restriction
 		OpenGL::pixelStore(GL::UnpackAlignment, 1);
 
 		// Load character glyph 
-		if (FT_Load_Char(face, c, FT_LOAD_RENDER) != EXIT_SUCCESS)
+		if (FT_Load_Char(face, value, FT_LOAD_RENDER) != EXIT_SUCCESS)
 		{
-			Debug::LogWarning("Failed to load Glyph \'{0}\'", c);
+			Debug::LogWarning("Failed to load Glyph \'{0}\'", value);
 			return glyph;
 		}
 
 		// Spaces throw an error because they're empty
-		if ((c != ' ') && !glyph.texture.create(
+		if ((value != ' ') && !glyph.texture.create(
 			face->glyph->bitmap.width,
 			face->glyph->bitmap.rows,
 			face->glyph->bitmap.buffer,
@@ -142,7 +142,7 @@ namespace ml
 			true, 
 			true))
 		{
-			Debug::LogError("Failed Loading Glyph Texture: \'{0}\'", (char)c);
+			Debug::LogError("Failed Loading Glyph Texture: \'{0}\'", (char)value);
 			return glyph;
 		}
 
