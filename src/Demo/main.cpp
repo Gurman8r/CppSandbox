@@ -6,8 +6,7 @@
 #include <MemeCore/ConsoleUtility.h>
 #include <MemeCore/InputState.h>
 #include <MemeCore/FileSystem.h>
-#include <MemeGraphics/Sprite.h>
-#include <MemeGraphics/Text.h>
+#include <MemeGraphics/Font.h>
 #include <MemeGraphics/RenderWindow.h>
 #include <MemeGraphics/Shapes.h>
 #include <MemeGraphics/VertexBuffer.h>
@@ -71,7 +70,6 @@ inline static uint64_t calcFPS(float deltaTime)
 	static uint64_t	fps = 0;
 	static float	nextSecond = 0.0f;
 	static float	prevSecond = 0.0f;
-
 	frameCounter++;
 	if (((nextSecond += deltaTime) - prevSecond) > 1.0f)
 	{
@@ -114,18 +112,6 @@ enum : int32_t
 	GL_text,
 	GL_geometry,
 	MAX_SHADER,
-
-	/* Sprites
-	* * * * * * * * * * * * * * * * * * * * */
-	MIN_SPRITE = -1,
-	SPR_dean,
-	MAX_SPRITE,
-
-	/* Text
-	* * * * * * * * * * * * * * * * * * * * */
-	MIN_TEXT = -1,
-	TXT_default,
-	MAX_TEXT,
 
 	/* Projection Matrices
 	* * * * * * * * * * * * * * * * * * * * */
@@ -189,8 +175,6 @@ ml::Font		fonts	[MAX_FONT];
 ml::Image		images	[MAX_IMAGE];
 ml::Texture		textures[MAX_TEXTURE];
 ml::Shader		shaders	[MAX_SHADER];
-ml::Sprite		sprites	[MAX_SPRITE];
-ml::Text		text	[MAX_TEXT];
 ml::mat4f		proj	[MAX_PROJ];
 ml::mat4f		view	[MAX_VIEW];
 ml::Transform	model	[MAX_MODEL];
@@ -265,40 +249,21 @@ inline static bool loadAssets()
 		}
 	}
 
-	// Load Sprites
-	if(!ml::Debug::Log("Loading Sprites..."))
-	{
-		if (!(sprites[SPR_dean] = ml::Sprite(&shaders[GL_basic], &textures[TEX_dean])))
-		{
-			return ml::Debug::LogError("Failed Loading Sprite");
-		}
-	}
-
-	// Load Text
-	if(!ml::Debug::Log("Loading Text..."))
-	{
-		if (!(text[TXT_default] = ml::Text(&shaders[GL_text], &fonts[FNT_consolas])))
-		{
-			return ml::Debug::LogError("Failed Loading Text");
-		}
-	}
-
 	// Load Geometry
 	if(ml::Debug::Log("Loading Geometry..."))
 	{
 		// Cube
 		vao[VAO_cube]
 			.create()
-			.bind()
-			.update();
+			.bind();
 		vbo[VBO_cube]
-			.create()
+			.create(ml::GL::StaticDraw)
 			.bind()
-			.update(ml::GL::StaticDraw, ml::Shapes::Cube::Mesh.flattened());
+			.bufferData(ml::Shapes::Cube::Mesh.flattened());
 		ibo[IBO_cube]
-			.create()
+			.create(ml::GL::StaticDraw)
 			.bind()
-			.update(ml::GL::StaticDraw, ml::Shapes::Cube::Mesh.indices());
+			.bufferData(ml::Shapes::Cube::Mesh.indices());
 		ml::BufferLayout::bind({
 			{ 0, 3, ml::GL::Float, false, ml::Vertex::Size, 0, sizeof(float) },
 			{ 1, 4, ml::GL::Float, false, ml::Vertex::Size, 3, sizeof(float) },
@@ -311,16 +276,15 @@ inline static bool loadAssets()
 		// Quad
 		vao[VAO_quad]
 			.create()
-			.bind()
-			.update();
+			.bind();
 		vbo[VBO_quad]
-			.create()
+			.create(ml::GL::StaticDraw)
 			.bind()
-			.update(ml::GL::StaticDraw, ml::Shapes::Quad::Mesh.flattened());
+			.bufferData(ml::Shapes::Quad::Mesh.flattened());
 		ibo[IBO_quad]
-			.create()
+			.create(ml::GL::StaticDraw)
 			.bind()
-			.update(ml::GL::StaticDraw, ml::Shapes::Quad::Mesh.indices());
+			.bufferData(ml::Shapes::Quad::Mesh.indices());
 		ml::BufferLayout::bind({
 			{ 0, 3, ml::GL::Float, false, ml::Vertex::Size, 0, sizeof(float) },
 			{ 1, 4, ml::GL::Float, false, ml::Vertex::Size, 3, sizeof(float) },
@@ -331,11 +295,13 @@ inline static bool loadAssets()
 		vao[VAO_quad].unbind();
 
 		// Text
-		vao[VAO_text].create().bind().update();
-		vbo[VBO_text]
+		vao[VAO_text]
 			.create()
+			.bind();
+		vbo[VBO_text]
+			.create(ml::GL::DynamicDraw)
 			.bind()
-			.update(ml::GL::StaticDraw, NULL, (6 * ml::Vertex::Size));
+			.bufferData(NULL, (6 * ml::Vertex::Size));
 		ml::BufferLayout::bind({
 			{ 0, 3, ml::GL::Float, false, ml::Vertex::Size, 0, sizeof(float) },
 			{ 1, 4, ml::GL::Float, false, ml::Vertex::Size, 3, sizeof(float) },
@@ -348,39 +314,41 @@ inline static bool loadAssets()
 	return true;
 }
 
+/* * * * * * * * * * * * * * * * * * * * */
+
 inline static void drawText(
 	ml::Shader *		shader,
 	const ml::Font &	font,
 	uint32_t			fontSize,
-	const std::string & text,
 	const ml::vec2f &	pos,
-	const ml::vec2f &	scale = ml::vec2f::One)
+	const ml::vec4f &	color,
+	const ml::vec2f &	scale,
+	const std::string & text)
 {
 	static ml::vec2f drawPos;
 	drawPos = pos;
 
 	vao[VAO_text].bind();
-	std::string::const_iterator it;
-	for (it = text.begin(); it != text.end(); it++)
+	for (std::string::const_iterator it = text.cbegin(); it != text.cend(); it++)
 	{
 		const ml::Glyph & g = font.getGlyph((*it), fontSize);
 
-		ml::FloatRect r(
-			drawPos[0] + g.x() * scale[0],
-			drawPos[1] - (g.height() - g.y()) * scale[1],
-			g.width() * scale[0],
-			g.height() * scale[1]
+		const ml::FloatRect r(
+			(drawPos[0] + g.x() * scale[0]),
+			(drawPos[1] - (g.height() - g.y()) * scale[1]),
+			(g.width() * scale[0]),
+			(g.height() * scale[1])
 		);
 
-		(*shader)
+		if(shader) (*shader)
 			.setUniform(ml::Uniform::Proj, proj[P_ortho])
-			.setUniform(ml::Uniform::Color, ml::Color::White)
+			.setUniform(ml::Uniform::Color, color)
 			.setUniform(ml::Uniform::Texture, g.texture)
 			.use();
 
 		vbo[VBO_text]
 			.bind()
-			.update(ml::GL::DynamicDraw, ml::Mesh::Flatten({
+			.bufferSubData(ml::Mesh::Flatten({
 				{{ r.left(),  r.bot(), 0 }, ml::Color::White, ml::vec2f::Zero	},
 				{{ r.left(),  r.top(), 0 }, ml::Color::White, ml::vec2f::Up		},
 				{{ r.right(), r.top(), 0 }, ml::Color::White, ml::vec2f::One	},
@@ -395,6 +363,20 @@ inline static void drawText(
 		drawPos[0] += (float)(g.advance >> 6) * scale[0];
 	}
 	vao[VAO_text].unbind();
+}
+
+template<typename T, typename ... A>
+inline static void drawText(
+	ml::Shader *		shader,
+	const ml::Font &	font,
+	uint32_t			fontSize,
+	const ml::vec2f &	pos,
+	const ml::vec4f &	color,
+	const ml::vec2f &	scale,
+	const std::string & fmt, const T & arg0, const A & ... args)
+{
+	drawText(shader, font, fontSize, pos, color, scale,
+		ml::StringUtility::Format(fmt, arg0, (args)...));
 }
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -549,11 +531,11 @@ int main(int argc, char** argv)
 				}
 
 				// Text
-				drawText(&shaders[GL_text], fonts[FNT_clacon], 24,
-					"Hello, World!", { 256, 256 });
+				drawText(&shaders[GL_text], fonts[FNT_minecraft], 24, { 256, 256 }, ml::Color::Black, ml::vec2f::One,
+					"Hello, World!");
 
-				drawText(&shaders[GL_text], fonts[FNT_clacon], 24,
-					"Hello, World!", { 512, 256 });
+				drawText(&shaders[GL_text], fonts[FNT_clacon], 72, { 512, 256 }, ml::Color::White, ml::vec2f::One,
+					"Hello, {0}!", "Formatting");
 
 			}
 			window.swapBuffers();

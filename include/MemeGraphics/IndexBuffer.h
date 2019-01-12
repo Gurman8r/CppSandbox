@@ -16,13 +16,13 @@ namespace ml
 		~IndexBuffer();
 
 		IndexBuffer & clean();
-		IndexBuffer & create();
+		IndexBuffer & create(GL::Usage usage);
 
 		IndexBuffer & bind();
 		IndexBuffer & unbind();
 
-		IndexBuffer & update(GL::Usage usage, const uint32_t * data, uint32_t count);
-		IndexBuffer & update(GL::Usage usage, const std::vector<uint32_t> & data);
+		IndexBuffer & bufferData(const uint32_t * data, uint32_t count);
+		IndexBuffer & bufferData(const std::vector<uint32_t> & data);
 
 		inline const uint32_t &		id() const { return m_id; }
 		inline const uint32_t *		data() const { return m_data; }

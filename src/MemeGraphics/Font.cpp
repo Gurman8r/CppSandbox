@@ -132,7 +132,8 @@ namespace ml
 			return glyph;
 		}
 
-		if (!glyph.texture.create(
+		// Spaces throw an error because they're empty
+		if ((c != ' ') && !glyph.texture.create(
 			face->glyph->bitmap.width,
 			face->glyph->bitmap.rows,
 			face->glyph->bitmap.buffer,

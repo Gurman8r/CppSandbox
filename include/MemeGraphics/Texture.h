@@ -25,6 +25,13 @@ namespace ml
 		Texture(const Texture & copy);
 		~Texture();
 
+		inline Texture & operator=(const Texture & value)
+		{
+			static Texture temp;
+			return temp.swap(*this);
+		}
+
+	public:
 		bool cleanup() override;
 		bool loadFromFile(const std::string & filename) override;
 		bool loadFromFile(const std::string & filename, const IntRect & area);
@@ -42,14 +49,10 @@ namespace ml
 		bool create(uint32_t width, uint32_t height, const vec4f & color);
 		bool create(uint32_t width, uint32_t height, const uint8_t * pixels, GL::Format colFmt, GL::Format intFmt, bool smooth, bool repeat);
 
-		Image	copyToImage() const;
-		bool	generateMipmap();
-
-		void	use() const;
-		void	swap(Texture & value);
-
+		Image		copyToImage() const;
+		bool		generateMipmap();
+		Texture &	swap(Texture & value);
 		static void	bind(const Texture * value);
-		Texture & operator=(const Texture & value);
 
 	public:
 		inline const uint32_t & id()			const { return m_id; }
@@ -60,7 +63,6 @@ namespace ml
 		inline const bool &		isSrgb()		const { return m_sRgb; }
 		inline const bool &		isRepeated()	const { return m_isRepeated; }
 		inline const bool &		pixelsFlipped()	const { return m_pixelsFlipped; }
-		inline const bool &		fboAttachment()	const { return m_fboAttachment; }
 		inline const bool &		hasMipmap()		const { return m_hasMipmap; }
 
 		inline const uint32_t & width()  const { return size()[0]; }
@@ -75,8 +77,6 @@ namespace ml
 
 		void invalidateMipmap();
 
-		inline uint32_t & id() { return m_id; }
-
 		uint32_t	m_id;
 		vec2u		m_size;
 		vec2u		m_actualSize;
@@ -85,7 +85,6 @@ namespace ml
 		bool		m_sRgb;
 		bool		m_isRepeated;
 		bool		m_pixelsFlipped;
-		bool		m_fboAttachment;
 		bool		m_hasMipmap;
 
 		friend class RenderTarget;

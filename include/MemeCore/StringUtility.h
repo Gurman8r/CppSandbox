@@ -38,7 +38,7 @@ namespace ml
 
 	public: // Conversions
 		static bool		ToBool(const std::string& src);
-		static int32_t		ToInt(const std::string& src);
+		static int32_t	ToInt(const std::string& src);
 		static double	ToDecimal(const std::string& src);
 		static float	ToFloat(const std::string& src);
 

@@ -19,8 +19,6 @@ namespace ml
 		VertexArray & bind();
 		VertexArray & unbind();
 
-		VertexArray & update();
-
 		inline const uint32_t &	id() const { return m_id; }
 
 		inline operator bool() const { return (bool)id(); }

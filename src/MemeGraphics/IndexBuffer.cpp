@@ -28,9 +28,10 @@ namespace ml
 		return (*this);
 	}
 
-	IndexBuffer & IndexBuffer::create()
+	IndexBuffer & IndexBuffer::create(GL::Usage usage)
 	{
 		m_id = OpenGL::genBuffers(1);
+		m_usage = usage;
 		return (*this);
 	}
 
@@ -48,14 +49,13 @@ namespace ml
 	}
 
 
-	IndexBuffer & IndexBuffer::update(GL::Usage usage, const std::vector<uint32_t>& data)
+	IndexBuffer & IndexBuffer::bufferData(const std::vector<uint32_t>& data)
 	{
-		return update(usage, &data[0], (uint32_t)data.size());
+		return bufferData(&data[0], (uint32_t)data.size());
 	}
 
-	IndexBuffer & IndexBuffer::update(GL::Usage usage, const uint32_t * data, uint32_t count)
+	IndexBuffer & IndexBuffer::bufferData(const uint32_t * data, uint32_t count)
 	{
-		m_usage = usage;
 		m_data = data;
 		m_count = count;
 

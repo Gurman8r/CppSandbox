@@ -188,9 +188,9 @@ namespace ml
 
 	void Shader::bind(const Shader * shader, bool bindTex)
 	{
-		if (OpenGL::shadersAvailable())
+		if (shader && OpenGL::shadersAvailable())
 		{
-			if (shader && shader->m_program)
+			if (shader->m_program)
 			{
 				OpenGL::useShader(shader->m_program);
 			}
@@ -528,7 +528,7 @@ namespace ml
 		TextureTable::const_iterator it;
 		for (it = m_textures.begin(); it != m_textures.end(); it++)
 		{
-			it->second->use();
+			Texture::bind(it->second);
 		}
 	}
 	

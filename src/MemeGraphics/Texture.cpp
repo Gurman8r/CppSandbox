@@ -13,7 +13,6 @@ namespace ml
 		, m_sRgb(false)
 		, m_isRepeated(false)
 		, m_pixelsFlipped(false)
-		, m_fboAttachment(false)
 		, m_hasMipmap(false)
 		, m_cacheID(OpenGL::getUniqueID<Texture>())
 	{
@@ -27,7 +26,6 @@ namespace ml
 		, m_sRgb(copy.m_sRgb)
 		, m_isRepeated(copy.m_isRepeated)
 		, m_pixelsFlipped(false)
-		, m_fboAttachment(false)
 		, m_hasMipmap(false)
 		, m_cacheID(OpenGL::getUniqueID<Texture>())
 	{
@@ -107,7 +105,7 @@ namespace ml
 			if (rect.left() < 0)		rect.left(0);
 			if (rect.top() < 0)			rect.top(0);
 			if (rect.right() > width)	rect.right(width);
-			if (rect.bot() > height) rect.bot(height);
+			if (rect.bot() > height)	rect.bot(height);
 
 			// Create the texture and upload the pixels
 			if (create(rect.width(), rect.height()))
@@ -116,7 +114,7 @@ namespace ml
 				const uint8_t * pixels = 
 					image.ptr() + 4 * (rect.left() + (width * rect.top()));
 
-				OpenGL::bindTexture(GL::Texture2D, m_id);
+				Texture::bind(this);
 
 				for (int32_t i = 0; i < rect.height(); i++)
 				{
@@ -162,7 +160,7 @@ namespace ml
 
 		if (pixels && m_id)
 		{
-			OpenGL::bindTexture(GL::Texture2D, m_id);
+			Texture::bind(this);
 
 			OpenGL::texSubImage2D(
 				GL::Texture2D,
@@ -183,7 +181,10 @@ namespace ml
 			m_pixelsFlipped = false;
 			m_cacheID = OpenGL::getUniqueID<Texture>();
 
+			Texture::bind(NULL);
+
 			OpenGL::flush();
+
 			return true;
 		}
 		return false;
@@ -287,10 +288,9 @@ namespace ml
 	{
 		if (width == 0 || height == 0)
 		{
-			m_size = m_actualSize = vec2u::Zero;
-
-			return Debug::LogError("Failed creating texture, invalid size {0}",
-				m_size);
+			return Debug::LogError("Failed creating texture, invalid size ( {0} x {1} )",
+				m_size[0], 
+				m_size[1]);
 		}
 
 		vec2u actualSize(getValidSize(width), getValidSize(height));
@@ -311,7 +311,6 @@ namespace ml
 		m_actualSize = actualSize;
 		m_size = vec2u(width, height);
 		m_pixelsFlipped = false;
-		m_fboAttachment = false;
 
 		if (!m_id)
 		{
@@ -344,8 +343,11 @@ namespace ml
 			m_sRgb = false;
 		}
 
+		m_cacheID = OpenGL::getUniqueID<Texture>();
+		m_hasMipmap = false;
+
 		// Initialize the texture
-		OpenGL::bindTexture(GL::Texture2D, m_id);
+		Texture::bind(this);
 		
 		OpenGL::texImage2D(
 			GL::Texture2D,
@@ -392,8 +394,8 @@ namespace ml
 				? GL::Linear
 				: GL::Nearest));
 		
-		m_cacheID = OpenGL::getUniqueID<Texture>();
-		m_hasMipmap = false;
+		Texture::bind(NULL);
+		
 		return true;
 	}
 
@@ -405,22 +407,46 @@ namespace ml
 	}
 
 	bool Texture::create(
-		uint32_t width, uint32_t height,
+		uint32_t width, 
+		uint32_t height,
 		const uint8_t * pixels, 
-		GL::Format colFmt, GL::Format intFmt, 
-		bool smooth, bool repeat)
+		GL::Format colFmt,
+		GL::Format intFmt, 
+		bool smooth, 
+		bool repeat)
 	{
 		if (!m_id && (m_id = OpenGL::genTextures(1)))
 		{
-			Texture::bind(this);
+			if (!width || !height)
+			{
+				return Debug::LogError("Failed creating texture, invalid size ( {0} x {1} )",
+						width,
+						height);
+			}
 
-			m_size[0]		= m_actualSize[0] = width;
-			m_size[1]		= m_actualSize[1] = height;
-			m_isSmooth		= smooth;
-			m_isRepeated	= repeat;
-			m_sRgb			= false;
-			m_hasMipmap		= false;
+			vec2u actualSize(getValidSize(width), getValidSize(height));
+			uint32_t maxSize = OpenGL::getMaxTextureSize();
+			if ((actualSize[0] > maxSize) || (actualSize[1] > maxSize))
+			{
+				return Debug::LogError(
+					"Failed creating texture: "
+					"Internal size is too high ( {0} x {1} ) "
+					"Maximum is ( {2} x {2} )",
+					actualSize[0],
+					actualSize[1],
+					maxSize);
+			}
+
+			m_size			= { width, height };
+			m_actualSize	= actualSize;
 			m_cacheID		= OpenGL::getUniqueID<Texture>();
+			m_isSmooth		= smooth;
+			m_sRgb			= false;
+			m_isRepeated	= repeat;
+			m_pixelsFlipped = false;
+			m_hasMipmap		= false;
+		
+			Texture::bind(this);
 
 			OpenGL::texImage2D(
 				GL::Texture2D,
@@ -465,6 +491,7 @@ namespace ml
 						? GL::Linear
 						: GL::Nearest));
 
+			Texture::bind(NULL);
 			return true;
 		}
 		return false;
@@ -486,13 +513,14 @@ namespace ml
 		if ((m_size == m_actualSize) && !m_pixelsFlipped)
 		{
 			// Texture is not padded nor flipped, we can use a direct copy
-			OpenGL::bindTexture(GL::Texture2D, m_id);
+			Texture::bind(this);
 			OpenGL::getTexImage(
 				GL::Texture2D, 
 				0, 
 				GL::RGBA,
 				GL::UnsignedByte, 
 				&pixels[0]);
+			Texture::bind(NULL);
 		}
 		else
 		{
@@ -501,7 +529,7 @@ namespace ml
 			// All the pixels will first be copied to a temporary array
 			std::vector<uint8_t> allPixels(m_actualSize[0] * m_actualSize[1] * 4);
 
-			OpenGL::bindTexture(GL::Texture2D, m_id);
+			Texture::bind(this);
 			
 			OpenGL::getTexImage(
 				GL::Texture2D,
@@ -529,6 +557,8 @@ namespace ml
 				src += srcPitch;
 				dst += dstPitch;
 			}
+
+			Texture::bind(NULL);
 		}
 
 		// Create the image
@@ -539,36 +569,30 @@ namespace ml
 
 	bool Texture::generateMipmap()
 	{
-		if (m_id)
+		if (m_id && (m_hasMipmap = OpenGL::framebuffersAvailable()))
 		{
-			if (OpenGL::framebuffersAvailable())
-			{
-				OpenGL::bindTexture(GL::Texture2D, m_id);
-				
-				OpenGL::generateMipmap(GL::Texture2D);
-				
-				OpenGL::texParameter(
-					GL::Texture2D, 
-					GL::TexMinFilter,
-					(m_isSmooth
-						? GL::LinearMipmapLinear
-						: GL::NearestMipmapNearest));
+			Texture::bind(this);
 
-				m_hasMipmap = true;
+			OpenGL::generateMipmap(GL::Texture2D);
 
-				return true;
-			}
+			OpenGL::texParameter(
+				GL::Texture2D,
+				GL::TexMinFilter,
+				(m_isSmooth
+					? GL::LinearMipmapLinear
+					: GL::NearestMipmapNearest));
+
+			m_hasMipmap = true;
+
+			Texture::bind(NULL);
+
+			return true;
 		}
 		return false;
 	}
 
 
-	void Texture::use() const
-	{
-		Texture::bind(this);
-	}
-
-	void Texture::swap(Texture & other)
+	Texture & Texture::swap(Texture & other)
 	{
 		std::swap(m_id,				other.m_id);
 		std::swap(m_size,			other.m_size);
@@ -577,28 +601,20 @@ namespace ml
 		std::swap(m_sRgb,			other.m_sRgb);
 		std::swap(m_isRepeated,		other.m_isRepeated);
 		std::swap(m_pixelsFlipped,	other.m_pixelsFlipped);
-		std::swap(m_fboAttachment,	other.m_fboAttachment);
 		std::swap(m_hasMipmap,		other.m_hasMipmap);
 
 		m_cacheID = OpenGL::getUniqueID<Texture>();
 		other.m_cacheID = OpenGL::getUniqueID<Texture>();
-	}
 
+		return (*this);
+	}
 
 	void Texture::bind(const Texture * value)
 	{
-		if (value && value->m_id)
-		{
-			// Bind the texture
-			OpenGL::bindTexture(GL::Texture2D, value->m_id);
-		}
-	}
-	
-	Texture & Texture::operator=(const Texture & value)
-	{
-		static Texture temp;
-		swap(temp);
-		return temp;
+		OpenGL::bindTexture(GL::Texture2D, 
+			((value && value->m_id)
+				? value->m_id
+				: NULL));
 	}
 	
 	
@@ -623,7 +639,8 @@ namespace ml
 					}
 				}
 
-				OpenGL::bindTexture(GL::Texture2D, m_id);
+				Texture::bind(this);
+
 				OpenGL::texParameter(
 					GL::Texture2D, 
 					GL::TexWrapS, 
@@ -641,6 +658,8 @@ namespace ml
 						: (OpenGL::edgeClampAvailable()
 							? GL::ClampToEdge
 							: GL::Clamp)));
+
+				Texture::bind(NULL);
 			}
 		}
 		return (*this);
@@ -654,7 +673,7 @@ namespace ml
 
 			if (m_id)
 			{
-				OpenGL::bindTexture(GL::Texture2D, m_id);
+				Texture::bind(this);
 
 				OpenGL::texParameter(
 					GL::Texture2D,
@@ -681,6 +700,8 @@ namespace ml
 							? GL::Linear
 							: GL::Nearest));
 				}
+
+				Texture::bind(NULL);
 			}
 		}
 		return (*this);
@@ -711,7 +732,8 @@ namespace ml
 	{
 		if (m_hasMipmap)
 		{
-			OpenGL::bindTexture(GL::Texture2D, m_id);
+			Texture::bind(this);
+
 			OpenGL::texParameter(
 				GL::Texture2D,
 				GL::TexMinFilter,
@@ -720,6 +742,8 @@ namespace ml
 					: GL::Nearest));
 
 			m_hasMipmap = false;
+
+			Texture::bind(NULL);
 		}
 	}
 }

@@ -16,13 +16,16 @@ namespace ml
 		~VertexBuffer();
 
 		VertexBuffer & clean();
-		VertexBuffer & create();
+		VertexBuffer & create(GL::Usage usage);
 
 		VertexBuffer & bind();
 		VertexBuffer & unbind();
 
-		VertexBuffer & update(GL::Usage usage, const void * data, uint32_t size);
-		VertexBuffer & update(GL::Usage usage, const std::vector<float> & data);
+		VertexBuffer & bufferData(const void * data, uint32_t size);
+		VertexBuffer & bufferData(const std::vector<float> & data);
+
+		VertexBuffer & bufferSubData(const void * data, uint32_t size);
+		VertexBuffer & bufferSubData(const std::vector<float> & data);
 
 		inline const uint32_t &		id()	const { return m_id; }
 		inline const void *			data()	const { return m_data;}

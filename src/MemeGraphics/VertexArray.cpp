@@ -43,10 +43,4 @@ namespace ml
 		return (*this);
 	}
 
-
-	VertexArray & VertexArray::update()
-	{
-		return (*this);
-	}
-
 }
