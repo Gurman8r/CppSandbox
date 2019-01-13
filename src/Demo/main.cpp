@@ -546,9 +546,7 @@ int main(int argc, char** argv)
 				static ml::RenderBatch batch(
 					&vao[VAO_batch],
 					&vbo[VBO_batch],
-					NULL,
 					&proj[P_ortho],
-					NULL,
 					NULL,
 					&shader);
 

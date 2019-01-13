@@ -13,28 +13,28 @@ namespace ml
 	struct ML_GRAPHICS_API RenderBatch final : public ITrackable
 	{
 		RenderBatch(
-			VAO * vao, VBO * vbo, IBO * ibo,
-			const mat4f * proj, const mat4f * view, const Transform * model,
+			VAO * vao, VBO * vbo,
+			const mat4f * proj, const mat4f * view,
 			Shader * shader)
 			: vao(vao)
 			, vbo(vbo)
-			, ibo(ibo)
+			, ibo(NULL)
 			, fbo(NULL)
 			, shader(shader)
 			, proj(proj)
 			, view(view)
-			, model(model)
+			, model(NULL)
 			, color(NULL)
 			, texture(NULL)
 			, vertices(NULL)
 		{
 		}
-		RenderBatch(VAO * vao, VBO * vbo, IBO * ibo)
-			: RenderBatch(vao, vbo, ibo, NULL, NULL, NULL, NULL)
+		RenderBatch(VAO * vao, VBO * vbo)
+			: RenderBatch(vao, vbo, NULL, NULL, NULL)
 		{
 		}
 		RenderBatch()
-			: RenderBatch(NULL, NULL, NULL)
+			: RenderBatch(NULL, NULL)
 		{
 		}
 		RenderBatch(const RenderBatch & copy)

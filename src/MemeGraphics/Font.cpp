@@ -143,7 +143,6 @@ namespace ml
 			true))
 		{
 			Debug::LogWarning("Failed Loading Glyph Texture: \'{0}\'", (char)value);
-			return glyph;
 		}
 
 		glyph.bounds = {

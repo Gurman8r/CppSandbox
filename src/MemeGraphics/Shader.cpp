@@ -8,15 +8,17 @@ namespace ml
 	struct Shader::UniformBinder
 	{
 		UniformBinder(const Shader * shader, const std::string & name)
-			: saved(0)
-			, current(shader->m_id)
+			: cache(0)
+			, program(shader->m_id)
 			, location(-1)
 		{
-			if (current)
+			if (program)
 			{
-				if (current != (saved = OpenGL::getProgramHandle(GL::ProgramObject)))
+				cache = OpenGL::getProgramHandle(GL::ProgramObject);
+
+				if (program != cache)
 				{
-					OpenGL::useShader(current);
+					OpenGL::useShader(program);
 				}
 
 				location = shader->getUniformLocation(name);
@@ -24,14 +26,14 @@ namespace ml
 		}
 		~UniformBinder()
 		{
-			if (current && (current != saved))
+			if (program && (program != cache))
 			{
-				OpenGL::useShader(saved);
+				OpenGL::useShader(cache);
 			}
 		}
 
-		uint32_t	saved;
-		uint32_t	current;
+		uint32_t	cache;
+		uint32_t	program;
 		int32_t		location;
 
 		inline operator bool() const

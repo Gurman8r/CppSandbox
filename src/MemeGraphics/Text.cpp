@@ -104,8 +104,8 @@ namespace ml
 				switch (m_text[i])
 				{
 				case '\n':
-					drawPos[1] -= (rect.bot() - rect.top()) * 2.0f;
 					drawPos[0] = m_position[0];
+					drawPos[1] -= rect.height() * 2.0f;
 					break;
 				default:
 					drawPos[0] += (glyph.step() * m_scale[0]);
