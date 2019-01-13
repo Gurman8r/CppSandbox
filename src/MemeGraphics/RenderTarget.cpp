@@ -60,7 +60,7 @@ namespace ml
 		}
 		
 		// Update Geometry
-		if (batch.vao && batch.vbo && batch.vertices)
+		if (batch.vao && batch.vbo && !batch.ibo && batch.vertices)
 		{
 			(*batch.vao).bind();
 

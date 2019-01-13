@@ -104,7 +104,9 @@ enum : int32_t
 	MIN_TEXTURE = -1,
 	TEX_dean,
 	TEX_sanic,
-	TEX_stone,
+	TEX_stone_dm,
+	TEX_stone_hm,
+	TEX_stone_nm,
 	MAX_TEXTURE,
 
 	/* Shaders
@@ -238,13 +240,20 @@ inline static bool loadAssets()
 		{
 			return ml::Debug::LogError("Failed Loading Texture");
 		}
-
 		if (!textures[TEX_sanic].loadFromFile(settings.pathTo("/images/sanic.png")))
 		{
 			return ml::Debug::LogError("Failed Loading Texture");
 		}
 
-		if (!textures[TEX_stone].loadFromFile(settings.pathTo("/textures/stone/stone_dm.png")))
+		if (!textures[TEX_stone_dm].loadFromFile(settings.pathTo("/textures/stone/stone_dm.png")))
+		{
+			return ml::Debug::LogError("Failed Loading Texture");
+		}
+		if (!textures[TEX_stone_hm].loadFromFile(settings.pathTo("/textures/stone/stone_hm.png")))
+		{
+			return ml::Debug::LogError("Failed Loading Texture");
+		}
+		if (!textures[TEX_stone_nm].loadFromFile(settings.pathTo("/textures/stone/stone_nm.png")))
 		{
 			return ml::Debug::LogError("Failed Loading Texture");
 		}
@@ -277,6 +286,12 @@ inline static bool loadGeometry()
 	// Load Geometry
 	if (ml::Debug::Log("Loading Geometry..."))
 	{
+		static ml::BufferLayout layout({
+			{ 0, 3, ml::GL::Float, false, ml::Vertex::Size, 0, sizeof(float) },
+			{ 1, 4, ml::GL::Float, false, ml::Vertex::Size, 3, sizeof(float) },
+			{ 2, 2, ml::GL::Float, false, ml::Vertex::Size, 7, sizeof(float) },
+		});
+
 		// Cube
 		vao[VAO_cube]
 			.create(ml::GL::Triangles)
@@ -289,11 +304,7 @@ inline static bool loadGeometry()
 			.create(ml::GL::StaticDraw, ml::GL::UnsignedInt)
 			.bind()
 			.bufferData(ml::Shapes::Cube::Indices);
-		ml::BufferLayout::bind({
-			{ 0, 3, ml::GL::Float, false, ml::Vertex::Size, 0, sizeof(float) },
-			{ 1, 4, ml::GL::Float, false, ml::Vertex::Size, 3, sizeof(float) },
-			{ 2, 2, ml::GL::Float, false, ml::Vertex::Size, 7, sizeof(float) },
-		});
+		layout.bind();
 		ibo[IBO_cube].unbind();
 		vbo[VBO_cube].unbind();
 		vao[VAO_cube].unbind();
@@ -311,11 +322,7 @@ inline static bool loadGeometry()
 			.create(ml::GL::StaticDraw, ml::GL::UnsignedInt)
 			.bind()
 			.bufferData(ml::Shapes::Quad::Indices);
-		ml::BufferLayout::bind({
-			{ 0, 3, ml::GL::Float, false, ml::Vertex::Size, 0, sizeof(float) },
-			{ 1, 4, ml::GL::Float, false, ml::Vertex::Size, 3, sizeof(float) },
-			{ 2, 2, ml::GL::Float, false, ml::Vertex::Size, 7, sizeof(float) },
-		});
+		layout.bind();
 		ibo[IBO_quad].unbind();
 		vbo[VBO_quad].unbind();
 		vao[VAO_quad].unbind();
@@ -329,11 +336,7 @@ inline static bool loadGeometry()
 			.create(ml::GL::DynamicDraw)
 			.bind()
 			.bufferData(NULL, (6 * ml::Vertex::Size));
-		ml::BufferLayout::bind({
-			{ 0, 3, ml::GL::Float, false, ml::Vertex::Size, 0, sizeof(float) },
-			{ 1, 4, ml::GL::Float, false, ml::Vertex::Size, 3, sizeof(float) },
-			{ 2, 2, ml::GL::Float, false, ml::Vertex::Size, 7, sizeof(float) },
-		});
+		layout.bind();
 		vbo[VBO_batch].unbind();
 		vao[VAO_batch].unbind();
 	}
@@ -385,20 +388,20 @@ int main(int argc, char** argv)
 		return ml::ConsoleUtility::pause(EXIT_FAILURE);
 	}
 
-	// Load Geometry
-	if (!loadGeometry())
-	{
-		return ml::ConsoleUtility::pause(EXIT_FAILURE);
-	}
-
 	// Set Window Icon
 	if (const ml::Image icon = ml::Image(images[IMG_icon]).flipVertically())
 	{
 		window.setIcons({ icon });
 	}
 
-	// Load Matrices
-	if (ml::Debug::Log("Loading Matrices..."))
+	// Load Geometry
+	if (!loadGeometry())
+	{
+		return ml::ConsoleUtility::pause(EXIT_FAILURE);
+	}
+
+	// Init
+	if (ml::Debug::Log("Initializing..."))
 	{
 		// Projections
 		proj[P_ortho] = ml::Transform::Ortho(0.0f, (float)window.width(), 0.0f, (float)window.height(), -1.0f, 1.0f);
@@ -419,148 +422,49 @@ int main(int argc, char** argv)
 			.translate({ -3.0f, 0.0f, 0.0f })
 			.rotate(0.0f, ml::vec3f::Up)
 			.scale(ml::vec3f::One * 5.f);
+
+		// Static Text
+		text[TXT_static]
+			.setFont(&fonts[FNT_minecraft])
+			.setFontSize(72)
+			.setScale(ml::vec2f::One)
+			.setPosition({ 32, 128 })
+			.setColor(ml::Color::White)
+			.setText("there is no need\nto be upset");
 	}
 
 	// Loop
 	ml::InputState	input;
 	ml::Timer		loopTimer;
 	ml::Duration	elapsed;
-	while (window.isOpen())
-	{
+	do
+	{	// Begin Step
+		const ml::Duration & now = ML_Time.elapsed();
 		loopTimer.start();
 		input.beginStep();
+
+		// Update
 		{
-			// Update
-			{
-				// Cube
-				model[M_cube]
-					.translate(ml::vec3f::Zero)
-					.rotate(elapsed.delta(), ml::vec3f::One)
-					.scale(ml::vec3f::One);
+			// Cube
+			model[M_cube]
+				.translate(ml::vec3f::Zero)
+				.rotate(elapsed.delta(), ml::vec3f::One)
+				.scale(ml::vec3f::One);
 
-				// Quad
-				model[M_quad]
-					.translate(ml::vec3f::Zero)
-					.rotate(-elapsed.delta(), ml::vec3f::Forward)
-					.scale(ml::vec3f::One);
-			}
+			// Quad
+			model[M_quad]
+				.translate(ml::vec3f::Zero)
+				.rotate(-elapsed.delta(), ml::vec3f::Forward)
+				.scale(ml::vec3f::One);
 
-			// Draw
-			window.clear(ml::Color::Violet);
-			{
-				ml::OpenGL::enable(ml::GL::CullFace);
-				ml::OpenGL::enable(ml::GL::DepthTest);
-
-				// Cube
-				if (ml::Shader & shader = shaders[GL_basic])
-				{
-					(shader)
-						.setUniform(ml::Uniform::Proj, proj[P_persp])
-						.setUniform(ml::Uniform::View, view[V_camera])
-						.setUniform(ml::Uniform::Model, model[M_cube])
-						.setUniform(ml::Uniform::Color, ml::Color::White)
-						.setUniform(ml::Uniform::Texture, textures[TEX_stone])
-						.bind();
-
-					vao[VAO_cube].bind();
-					vbo[VBO_cube].bind();
-					ibo[IBO_cube].bind();
-					{
-						ml::OpenGL::drawElements(
-							vao[VAO_cube].mode(),
-							ibo[IBO_cube].count(),
-							ibo[IBO_cube].type(),
-							NULL);
-					}
-					ibo[IBO_cube].unbind();
-					vbo[VBO_cube].unbind();
-					vao[VAO_cube].unbind();
-				}
-
-				ml::OpenGL::disable(ml::GL::CullFace);
-				ml::OpenGL::disable(ml::GL::DepthTest);
-
-				// Quad
-				if (ml::Shader & shader = shaders[GL_basic])
-				{
-					(shader)
-						.setUniform(ml::Uniform::Proj, proj[P_persp])
-						.setUniform(ml::Uniform::View, view[V_camera])
-						.setUniform(ml::Uniform::Model, model[M_quad])
-						.setUniform(ml::Uniform::Color, ml::Color::White)
-						.setUniform(ml::Uniform::Texture, textures[TEX_sanic])
-						.bind();
-
-					vao[VAO_quad].bind();
-					vbo[VBO_quad].bind();
-					ibo[IBO_quad].bind();
-					{
-						ml::OpenGL::drawElements(
-							vao[VAO_quad].mode(),
-							ibo[IBO_quad].count(),
-							ibo[IBO_quad].type(),
-							NULL);
-					}
-					ibo[IBO_quad].unbind();
-					vbo[VBO_quad].unbind();
-					vao[VAO_quad].unbind();
-				}
-
-				// Text
-				if(ml::Shader & shader = shaders[GL_text])
-				{
-					static ml::RenderBatch batch(
-						&vao[VAO_batch],
-						&vbo[VBO_batch],
-						NULL,
-						&proj[P_ortho],
-						NULL,
-						NULL,
-						&shader);
-
-					static const uint32_t  fontSize = 32;
-					static const ml::vec2f offset = { 0.0f, -(float)fontSize };
-					static const ml::vec2f origin = { (float)fontSize, (float)window.height() };
-					static const ml::vec4f colors[MAX_FONT] = {
-						ml::Color::Red,
-						ml::Color::Green,
-						ml::Color::Blue,
-						ml::Color::White
-					};
-					for (uint32_t i = (MIN_FONT + 1); i < MAX_FONT; i++)
-					{
-						window.draw(text[TXT_dynamic]
-							.setFont(&fonts[i])
-							.setFontSize(fontSize)
-							.setScale(ml::vec2f::One)
-							.setPosition(origin + (offset * (float)(i + 1)))
-							.setColor(colors[i])
-							.setText(window.title())
-						, batch);
-					}
-
-					window.draw(text[TXT_static]
-						.setFont(&fonts[FNT_minecraft])
-						.setFontSize(72)
-						.setScale(ml::vec2f::One)
-						.setPosition({ 64, 128 })
-						.setColor(ml::Color::White)
-						.setText("there is no need\nto be upset")
-					, batch);
-				}
-
-			}
-			window.swapBuffers().pollEvents();
-
-			// Set Window Title
-			const ml::Duration & now = ML_Time.elapsed();
+			// Window Title
 			window.setTitle(ml::StringUtility::Format(
 				"{0} | {3} | {1} ({2} fps)",
 				settings.title,
 				elapsed.delta(),
 				calcFPS(elapsed.delta()),
 				(ml::StringUtility::Format("{0}{1}:{2}{3}:{4}{5}",
-					(now.minutes() % 60) / 10 % 10,
+				(now.minutes() % 60) / 10 % 10,
 					(now.minutes() % 60) % 10,
 					(now.seconds() % 60) / 10 % 10,
 					(now.seconds() % 60) % 10,
@@ -574,9 +478,116 @@ int main(int argc, char** argv)
 				window.close();
 			}
 		}
+
+		// Draw
+		window.clear(ml::Color::Violet);
+		{
+			ml::OpenGL::enable(ml::GL::CullFace);
+			ml::OpenGL::enable(ml::GL::DepthTest);
+
+			// Cube
+			if (ml::Shader & shader = shaders[GL_basic])
+			{
+				(shader)
+					.setUniform(ml::Uniform::Proj, proj[P_persp])
+					.setUniform(ml::Uniform::View, view[V_camera])
+					.setUniform(ml::Uniform::Model, model[M_cube])
+					.setUniform(ml::Uniform::Color, ml::Color::White)
+					.setUniform(ml::Uniform::Texture, textures[TEX_stone_dm])
+					.bind();
+
+				vao[VAO_cube].bind();
+				vbo[VBO_cube].bind();
+				ibo[IBO_cube].bind();
+				{
+					ml::OpenGL::drawElements(
+						vao[VAO_cube].mode(),
+						ibo[IBO_cube].count(),
+						ibo[IBO_cube].type(),
+						NULL);
+				}
+				ibo[IBO_cube].unbind();
+				vbo[VBO_cube].unbind();
+				vao[VAO_cube].unbind();
+			}
+
+			ml::OpenGL::disable(ml::GL::CullFace);
+			ml::OpenGL::disable(ml::GL::DepthTest);
+
+			// Quad
+			if (ml::Shader & shader = shaders[GL_basic])
+			{
+				(shader)
+					.setUniform(ml::Uniform::Proj, proj[P_persp])
+					.setUniform(ml::Uniform::View, view[V_camera])
+					.setUniform(ml::Uniform::Model, model[M_quad])
+					.setUniform(ml::Uniform::Color, ml::Color::White)
+					.setUniform(ml::Uniform::Texture, textures[TEX_sanic])
+					.bind();
+
+				vao[VAO_quad].bind();
+				vbo[VBO_quad].bind();
+				ibo[IBO_quad].bind();
+				{
+					ml::OpenGL::drawElements(
+						vao[VAO_quad].mode(),
+						ibo[IBO_quad].count(),
+						ibo[IBO_quad].type(),
+						NULL);
+				}
+				ibo[IBO_quad].unbind();
+				vbo[VBO_quad].unbind();
+				vao[VAO_quad].unbind();
+			}
+
+			// Text
+			if(ml::Shader & shader = shaders[GL_text])
+			{
+				static ml::RenderBatch batch(
+					&vao[VAO_batch],
+					&vbo[VBO_batch],
+					NULL,
+					&proj[P_ortho],
+					NULL,
+					NULL,
+					&shader);
+
+				static const uint32_t  fontSize = 32;
+				static const ml::vec2f offset = { 0.0f, -(float)fontSize };
+				static const ml::vec2f origin = { (float)fontSize, (float)window.height() };
+				static const ml::vec4f colors[MAX_FONT] = {
+					ml::Color::Red,
+					ml::Color::Green,
+					ml::Color::Blue,
+					ml::Color::White,
+				};
+				
+				// Dynamic Text
+				for (uint32_t i = (MIN_FONT + 1); i < MAX_FONT; i++)
+				{
+					window.draw(text[TXT_dynamic]
+						.setFont(&fonts[i])
+						.setFontSize(fontSize)
+						.setScale(ml::vec2f::One)
+						.setPosition(origin + (offset * (float)(i + 1)))
+						.setColor(colors[i])
+						.setText(window.title())
+					, batch);
+				}
+
+				// Static Text
+				window.draw(text[TXT_static], batch);
+			}
+
+		}
+		window.swapBuffers().pollEvents();
+
+		// End Step
 		input.endStep();
 		elapsed = loopTimer.stop().elapsed();
 	}
+	while (window.isOpen());
+
 	return EXIT_SUCCESS;
 }
 

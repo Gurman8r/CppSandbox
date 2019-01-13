@@ -217,6 +217,22 @@
     <Image Include="..\..\assets\images\dean.png" />
     <Image Include="..\..\assets\images\icon.png" />
     <Image Include="..\..\assets\images\Sanic.png" />
+    <Image Include="..\..\assets\textures\bg\bg_clouds.png" />
+    <Image Include="..\..\assets\textures\bg\sky_clouds.png" />
+    <Image Include="..\..\assets\textures\bg\sky_water.png" />
+    <Image Include="..\..\assets\textures\earth\earth_cm_2k.png" />
+    <Image Include="..\..\assets\textures\earth\earth_dm_2k.png" />
+    <Image Include="..\..\assets\textures\earth\earth_hm_2k.png" />
+    <Image Include="..\..\assets\textures\earth\earth_lm_2k.png" />
+    <Image Include="..\..\assets\textures\earth\earth_nm_2k.png" />
+    <Image Include="..\..\assets\textures\earth\earth_sm_2k.png" />
+    <Image Include="..\..\assets\textures\mars\mars_dm_2k.png" />
+    <Image Include="..\..\assets\textures\mars\mars_nm_2k.png" />
+    <Image Include="..\..\assets\textures\moon\moon_dm_2k.png" />
+    <Image Include="..\..\assets\textures\moon\moon_nm_2k.png" />
+    <Image Include="..\..\assets\textures\stone\stone_dm.png" />
+    <Image Include="..\..\assets\textures\stone\stone_hm.png" />
+    <Image Include="..\..\assets\textures\stone\stone_nm.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

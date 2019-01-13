@@ -44,7 +44,7 @@ namespace ml
 	}
 
 
-	void BufferLayout::use() const
+	void BufferLayout::bind() const
 	{
 		BufferLayout::bind(*this);
 	}

@@ -33,7 +33,7 @@ namespace ml
 		BufferLayout(const BufferLayout & copy);
 		~BufferLayout();
 
-		void use() const;
+		void bind() const;
 
 		static void bind(const BufferLayout & value);
 

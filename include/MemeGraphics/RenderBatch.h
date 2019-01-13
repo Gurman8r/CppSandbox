@@ -14,15 +14,19 @@ namespace ml
 	{
 		RenderBatch(
 			VAO * vao, VBO * vbo, IBO * ibo,
-			const mat4f * proj, const mat4f * view, const mat4f * model,
+			const mat4f * proj, const mat4f * view, const Transform * model,
 			Shader * shader)
 			: vao(vao)
 			, vbo(vbo)
-			, ibo(NULL)
+			, ibo(ibo)
+			, fbo(NULL)
 			, shader(shader)
 			, proj(proj)
-			, view(NULL)
-			, model(NULL)
+			, view(view)
+			, model(model)
+			, color(NULL)
+			, texture(NULL)
+			, vertices(NULL)
 		{
 		}
 		RenderBatch(VAO * vao, VBO * vbo, IBO * ibo)
@@ -37,28 +41,29 @@ namespace ml
 			: vao(copy.vao)
 			, vbo(copy.vbo)
 			, ibo(copy.ibo)
+			, fbo(copy.fbo)
 			, shader(copy.shader)
 			, proj(copy.proj)
 			, view(copy.view)
 			, model(copy.model)
+			, color(copy.color)
 			, texture(copy.texture)
 			, vertices(copy.vertices)
-			, color(copy.color)
 		{
 		}
 
 		VAO		* vao;
 		VBO		* vbo;
 		IBO		* ibo;
+		FBO		* fbo;
 		Shader	* shader;
 
 		const mat4f		* proj;
 		const mat4f		* view;
 		const Transform	* model;
-		
+		const vec4f		* color;
 		const Texture	* texture;
 		const FloatList	* vertices;
-		const vec4f		* color;
 	};
 }
 

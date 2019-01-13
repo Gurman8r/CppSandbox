@@ -62,6 +62,24 @@
     <Filter Include="Resource Files\assets\shaders\gs\basic">
       <UniqueIdentifier>{91eea630-db0a-4806-9433-4c8030e9959d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\assets\textures">
+      <UniqueIdentifier>{8ec56f32-edb8-4d6c-aeb7-0dd2c21de9b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\textures\bg">
+      <UniqueIdentifier>{429d3244-a0c2-4ebb-a7c4-ecd4f6fc52c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\textures\earth">
+      <UniqueIdentifier>{a6a1c69a-2efc-4182-b2f6-3774554e5bb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\textures\mars">
+      <UniqueIdentifier>{0cf74065-1eb0-40f0-bef7-73636e1e6991}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\textures\moon">
+      <UniqueIdentifier>{2d51a990-04e4-4511-b364-01a7273e086e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\assets\textures\stone">
+      <UniqueIdentifier>{51081792-8bda-4c88-a5d5-d30941816518}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\config.ini">
@@ -238,6 +256,54 @@
     </Image>
     <Image Include="..\..\assets\images\Sanic.png">
       <Filter>Resource Files\assets\images</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\stone\stone_dm.png">
+      <Filter>Resource Files\assets\textures\stone</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\stone\stone_hm.png">
+      <Filter>Resource Files\assets\textures\stone</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\stone\stone_nm.png">
+      <Filter>Resource Files\assets\textures\stone</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\moon\moon_dm_2k.png">
+      <Filter>Resource Files\assets\textures\moon</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\moon\moon_nm_2k.png">
+      <Filter>Resource Files\assets\textures\moon</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\mars\mars_dm_2k.png">
+      <Filter>Resource Files\assets\textures\mars</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\mars\mars_nm_2k.png">
+      <Filter>Resource Files\assets\textures\mars</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\earth\earth_cm_2k.png">
+      <Filter>Resource Files\assets\textures\earth</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\earth\earth_dm_2k.png">
+      <Filter>Resource Files\assets\textures\earth</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\earth\earth_hm_2k.png">
+      <Filter>Resource Files\assets\textures\earth</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\earth\earth_lm_2k.png">
+      <Filter>Resource Files\assets\textures\earth</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\earth\earth_nm_2k.png">
+      <Filter>Resource Files\assets\textures\earth</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\earth\earth_sm_2k.png">
+      <Filter>Resource Files\assets\textures\earth</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\bg\bg_clouds.png">
+      <Filter>Resource Files\assets\textures\bg</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\bg\sky_clouds.png">
+      <Filter>Resource Files\assets\textures\bg</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\bg\sky_water.png">
+      <Filter>Resource Files\assets\textures\bg</Filter>
     </Image>
   </ItemGroup>
 </Project>

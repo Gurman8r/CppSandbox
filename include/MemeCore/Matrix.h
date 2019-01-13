@@ -186,13 +186,13 @@ namespace ml
 	};
 
 	template <typename T, std::size_t N> 
-	using MatrixN = Matrix<T, N, N>;
+	using MatrixNxN = Matrix<T, N, N>;
 	
 	template <typename T> 
-	using Matrix3 = MatrixN<T, 3>;
+	using Matrix3 = MatrixNxN<T, 3>;
 	
 	template <typename T> 
-	using Matrix4 = MatrixN<T, 4>;
+	using Matrix4 = MatrixNxN<T, 4>;
 
 	using mat3f = Matrix3<float>;
 	using mat4f = Matrix4<float>;

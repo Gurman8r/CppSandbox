@@ -31,35 +31,35 @@ namespace ml
 	/*	Cube
 	* * * * * * * * * */
 	const VertexList Shapes::Cube::Vertices({
-		Vertex({  1,  1, -1 }, Color::White, { 1, 1 }), // 0 front
-		Vertex({  1, -1, -1 }, Color::White, { 1, 0 }), // 1
-		Vertex({ -1, -1, -1 }, Color::White, { 0, 0 }), // 2
-		Vertex({ -1,  1, -1 }, Color::White, { 0, 1 }), // 3
+		Vertex({ +0.5f, +0.5f, -0.5f }, Color::White, { 1, 1 }), // 0 front
+		Vertex({ +0.5f, -0.5f, -0.5f }, Color::White, { 1, 0 }), // 1
+		Vertex({ -0.5f, -0.5f, -0.5f }, Color::White, { 0, 0 }), // 2
+		Vertex({ -0.5f, +0.5f, -0.5f }, Color::White, { 0, 1 }), // 3
 											 
-		Vertex({  1,  1,  1 }, Color::White, { 1, 1 }), // 4 back
-		Vertex({  1, -1,  1 }, Color::White, { 1, 0 }), // 5
-		Vertex({ -1, -1,  1 }, Color::White, { 0, 0 }), // 6
-		Vertex({ -1,  1,  1 }, Color::White, { 0, 1 }), // 7
+		Vertex({ +0.5f, +0.5f, +0.5f }, Color::White, { 1, 1 }), // 4 back
+		Vertex({ +0.5f, -0.5f, +0.5f }, Color::White, { 1, 0 }), // 5
+		Vertex({ -0.5f, -0.5f, +0.5f }, Color::White, { 0, 0 }), // 6
+		Vertex({ -0.5f, +0.5f, +0.5f }, Color::White, { 0, 1 }), // 7
 											 
-		Vertex({  1,  1,  1 }, Color::White, { 1, 1 }), // 8 right
-		Vertex({  1, -1,  1 }, Color::White, { 1, 0 }), // 9
-		Vertex({  1, -1, -1 }, Color::White, { 0, 0 }), // 10
-		Vertex({  1,  1, -1 }, Color::White, { 0, 1 }), // 11
+		Vertex({ +0.5f, +0.5f, +0.5f }, Color::White, { 1, 1 }), // 8 right
+		Vertex({ +0.5f, -0.5f, +0.5f }, Color::White, { 1, 0 }), // 9
+		Vertex({ +0.5f, -0.5f, -0.5f }, Color::White, { 0, 0 }), // 10
+		Vertex({ +0.5f, +0.5f, -0.5f }, Color::White, { 0, 1 }), // 11
 											 
-		Vertex({ -1,  1,  1 }, Color::White, { 1, 1 }), // 12 left
-		Vertex({ -1, -1,  1 }, Color::White, { 1, 0 }), // 13
-		Vertex({ -1, -1, -1 }, Color::White, { 0, 0 }), // 14
-		Vertex({ -1,  1, -1 }, Color::White, { 0, 1 }), // 15
+		Vertex({ -0.5f, +0.5f, +0.5f }, Color::White, { 1, 1 }), // 12 left
+		Vertex({ -0.5f, -0.5f, +0.5f }, Color::White, { 1, 0 }), // 13
+		Vertex({ -0.5f, -0.5f, -0.5f }, Color::White, { 0, 0 }), // 14
+		Vertex({ -0.5f, +0.5f, -0.5f }, Color::White, { 0, 1 }), // 15
 											 
-		Vertex({ -1,  1,  1 }, Color::White, { 1, 1 }), // 16 top
-		Vertex({  1,  1,  1 }, Color::White, { 1, 0 }), // 17
-		Vertex({  1,  1, -1 }, Color::White, { 0, 0 }), // 18
-		Vertex({ -1,  1, -1 }, Color::White, { 0, 1 }), // 19
+		Vertex({ -0.5f, +0.5f, +0.5f }, Color::White, { 1, 1 }), // 16 top
+		Vertex({ +0.5f, +0.5f, +0.5f }, Color::White, { 1, 0 }), // 17
+		Vertex({ +0.5f, +0.5f, -0.5f }, Color::White, { 0, 0 }), // 18
+		Vertex({ -0.5f, +0.5f, -0.5f }, Color::White, { 0, 1 }), // 19
 											 
-		Vertex({ -1, -1,  1 }, Color::White, { 1, 1 }), // 20 bottom
-		Vertex({  1, -1,  1 }, Color::White, { 1, 0 }), // 21
-		Vertex({  1, -1, -1 }, Color::White, { 0, 0 }), // 22
-		Vertex({ -1, -1, -1 }, Color::White, { 0, 1 }), // 23
+		Vertex({ -0.5f, -0.5f, +0.5f }, Color::White, { 1, 1 }), // 20 bottom
+		Vertex({ +0.5f, -0.5f, +0.5f }, Color::White, { 1, 0 }), // 21
+		Vertex({ +0.5f, -0.5f, -0.5f }, Color::White, { 0, 0 }), // 22
+		Vertex({ -0.5f, -0.5f, -0.5f }, Color::White, { 0, 1 }), // 23
 	});
 	const IndexList Shapes::Cube::Indices({
 		0, 1, 3,
