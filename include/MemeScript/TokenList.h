@@ -36,7 +36,7 @@ namespace ml
 		const value_type	at(std::size_t index) const;
 		const value_type	back() const;
 		const value_type	front() const;
-		const std::string	str() const;
+		const std::string	str() const override;
 		const std::string	substr(std::size_t index, std::size_t count) const;
 		const vector_type	subvec(std::size_t index, std::size_t count) const;
 		const vector_type&	values() const;

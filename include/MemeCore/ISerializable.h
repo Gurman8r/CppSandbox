@@ -3,6 +3,7 @@
 
 #include <MemeCore/Export.h>
 #include <string>
+#include <sstream>
 #include <type_traits>
 
 namespace ml
@@ -18,6 +19,13 @@ namespace ml
 
 		virtual void deserialize(std::istream & in) 
 		{
+		}
+
+		virtual const std::string str() const
+		{
+			std::stringstream stream;
+			serialize(stream);
+			return stream.str();
 		}
 
 		inline friend std::ostream & operator<<(std::ostream & out, const ISerializable & obj)

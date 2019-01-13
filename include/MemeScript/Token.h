@@ -78,7 +78,6 @@ namespace ml
 
 		bool isOperand() const;
 		bool isOperator() const;
-		std::string str() const;
 
 		bool equals(const Token & value) const override;
 		bool equals(const TokenType & value) const override;

@@ -147,13 +147,6 @@ namespace ml
 			type == TOK_NOT;
 	}
 
-	std::string Token::str() const
-	{
-		std::stringstream ss;
-		ss << (*this);
-		return ss.str();
-	}
-
 	
 	bool Token::equals(const Token & value) const
 	{
