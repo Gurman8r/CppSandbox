@@ -32,6 +32,12 @@ namespace ml
 		const Glyph & getGlyph(uint32_t value, uint32_t size) const;
 		const Info	& getInfo() const;
 
+	public:
+		inline void serialize(std::ostream & out) const override
+		{
+			out << getInfo().family;
+		}
+
 	private:
 		mutable PageTable m_pages;
 		Info			  m_info;

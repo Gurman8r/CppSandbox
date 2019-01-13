@@ -445,18 +445,6 @@ int main(int argc, char** argv)
 
 		// Update
 		{
-			// Cube
-			model[M_cube]
-				.translate(ml::vec3f::Zero)
-				.rotate(elapsed.delta(), ml::vec3f::One)
-				.scale(ml::vec3f::One);
-
-			// Quad
-			model[M_quad]
-				.translate(ml::vec3f::Zero)
-				.rotate(-elapsed.delta(), ml::vec3f::Forward)
-				.scale(ml::vec3f::One);
-
 			// Window Title
 			window.setTitle(ml::StringUtility::Format(
 				"{0} | {3} | {1} ({2} fps)",
@@ -488,6 +476,12 @@ int main(int argc, char** argv)
 			// Cube
 			if (ml::Shader & shader = shaders[GL_basic])
 			{
+				// Cube
+				model[M_cube]
+					.translate(ml::vec3f::Zero)
+					.rotate(elapsed.delta(), ml::vec3f::One)
+					.scale(ml::vec3f::One);
+
 				(shader)
 					.setUniform(ml::Uniform::Proj, proj[P_persp])
 					.setUniform(ml::Uniform::View, view[V_camera])
@@ -517,6 +511,11 @@ int main(int argc, char** argv)
 			// Quad
 			if (ml::Shader & shader = shaders[GL_basic])
 			{
+				model[M_quad]
+					.translate(ml::vec3f::Zero)
+					.rotate(-elapsed.delta(), ml::vec3f::Forward)
+					.scale(ml::vec3f::One);
+
 				(shader)
 					.setUniform(ml::Uniform::Proj, proj[P_persp])
 					.setUniform(ml::Uniform::View, view[V_camera])
@@ -569,7 +568,7 @@ int main(int argc, char** argv)
 						.setScale(ml::vec2f::One)
 						.setPosition(origin + (offset * (float)(i + 1)))
 						.setColor(colors[i])
-						.setText(window.title())
+						.setText(ml::StringUtility::Format("Font: {0}", fonts[i]))
 					, batch);
 				}
 

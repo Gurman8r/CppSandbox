@@ -1,7 +1,6 @@
 #ifndef _TEXT_H_
 #define _TEXT_H_
 
-#include <MemeCore/StringUtility.h>
 #include <MemeGraphics/IRenderer.h>
 #include <MemeGraphics/Font.h>
 #include <MemeGraphics/RenderTarget.h>
@@ -24,12 +23,6 @@ namespace ml
 		Text & setFont(const Font * value);
 		Text & setFontSize(uint32_t value);
 		Text & setText(const std::string & value);
-
-		template <typename T, typename ... A>
-		Text & setText(const std::string & fmt, const T & arg0, A... args)
-		{
-			return setText(StringUtility::Format(fmt, arg0, (args)...));
-		}
 
 	public:
 		void update() const;
