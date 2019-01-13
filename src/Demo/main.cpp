@@ -350,6 +350,8 @@ int main(int argc, char** argv)
 	// Start master timer
 	ML_Time.start();
 
+	ml::Debug::Log("{0}", ML_Time.elapsed());
+
 	// Load Settings
 	if (!settings.load(CONFIG_INI))
 	{
@@ -433,13 +435,14 @@ int main(int argc, char** argv)
 			.setText("there is no need\nto be upset");
 	}
 
+	ml::Debug::Log("{0}", ML_Time.elapsed());
+
 	// Loop
 	ml::InputState	input;
 	ml::Timer		loopTimer;
 	ml::Duration	elapsed;
 	do
 	{	// Begin Step
-		const ml::Duration & now = ML_Time.elapsed();
 		loopTimer.start();
 		input.beginStep();
 
@@ -447,18 +450,12 @@ int main(int argc, char** argv)
 		{
 			// Window Title
 			window.setTitle(ml::StringUtility::Format(
-				"{0} | {3} | {1} ({2} fps)",
+				"{0} | {1} | {2} ({3} fps)",
 				settings.title,
+				ML_Time.elapsed(),
 				elapsed.delta(),
-				calcFPS(elapsed.delta()),
-				(ml::StringUtility::Format("{0}{1}:{2}{3}:{4}{5}",
-				(now.minutes() % 60) / 10 % 10,
-					(now.minutes() % 60) % 10,
-					(now.seconds() % 60) / 10 % 10,
-					(now.seconds() % 60) % 10,
-					(now.millis()) / 10 % 10,
-					(now.millis()) % 10)))
-			);
+				calcFPS(elapsed.delta())
+			));
 
 			// Handle Input
 			if (input.getKeyDown(ml::KeyCode::Escape))
@@ -568,7 +565,7 @@ int main(int argc, char** argv)
 						.setScale(ml::vec2f::One)
 						.setPosition(origin + (offset * (float)(i + 1)))
 						.setColor(colors[i])
-						.setText(ml::StringUtility::Format("Font: {0}", fonts[i]))
+						.setText(fonts[i].str())
 					, batch);
 				}
 

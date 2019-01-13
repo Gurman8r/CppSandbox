@@ -305,5 +305,18 @@
     <Image Include="..\..\assets\textures\bg\sky_water.png">
       <Filter>Resource Files\assets\textures\bg</Filter>
     </Image>
+    <Image Include="..\..\assets\icon.ico">
+      <Filter>Resource Files\assets</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Demo.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

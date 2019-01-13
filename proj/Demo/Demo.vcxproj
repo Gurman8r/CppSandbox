@@ -214,6 +214,7 @@
     <Font Include="..\..\assets\fonts\minecraft.ttf" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\..\assets\icon.ico" />
     <Image Include="..\..\assets\images\dean.png" />
     <Image Include="..\..\assets\images\icon.png" />
     <Image Include="..\..\assets\images\Sanic.png" />
@@ -233,6 +234,12 @@
     <Image Include="..\..\assets\textures\stone\stone_dm.png" />
     <Image Include="..\..\assets\textures\stone\stone_hm.png" />
     <Image Include="..\..\assets\textures\stone\stone_nm.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Demo.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
