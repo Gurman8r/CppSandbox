@@ -9,6 +9,8 @@ namespace ml
 	struct ML_GRAPHICS_API Glyph final
 		: public ITrackable
 	{
+		enum { VertexCount = 6U };
+
 		Texture		texture;
 		FloatRect	bounds;
 		uint32_t	advance;
@@ -19,6 +21,8 @@ namespace ml
 		inline const float y()			const { return bearing()[1]; }
 		inline const float width()		const { return size()[0]; }
 		inline const float height()		const { return size()[1]; }
+		inline const vec2f offset()		const { return vec2f(x(), -(height() - y())); }
+		inline const float step()		const { return (float)(advance >> VertexCount); }
 	};
 }
 

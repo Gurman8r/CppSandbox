@@ -77,7 +77,7 @@ namespace ml
 		return (*this);
 	}
 
-	VertexBuffer & VertexBuffer::bufferSubData(const std::vector<float>& data, uint32_t offset)
+	VertexBuffer & VertexBuffer::bufferSubData(const std::vector<float> & data, uint32_t offset)
 	{
 		return bufferSubData(&data[0], data.size(), offset);
 	}

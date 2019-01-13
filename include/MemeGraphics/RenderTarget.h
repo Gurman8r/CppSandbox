@@ -18,6 +18,7 @@ namespace ml
 		RenderTarget & clear(const vec4f & color);
 
 		RenderTarget & draw(const IRenderer & value);
+		RenderTarget & draw(const IRenderer & value, const RenderBatch & batch);
 		RenderTarget & draw(const RenderBatch & value);
 
 

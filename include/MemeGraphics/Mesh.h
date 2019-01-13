@@ -3,7 +3,7 @@
 
 #include <MemeCore/IResource.h>
 #include <MemeGraphics/Vertex.h>
-#include <MemeGraphics/GL.h>
+#include <MemeGraphics/Texture.h>
 
 namespace ml
 {
@@ -13,33 +13,36 @@ namespace ml
 	{
 	public:
 		Mesh();
-		Mesh(GL::Mode mode, const VertexList & vertices, const IndexList & indices);
 		Mesh(const Mesh& copy);
 		~Mesh();
 
 		bool cleanup() override;
 		bool loadFromFile(const std::string & filename) override;
 
-		const GL::Mode &	mode() const;
-		const VertexList &	vertices() const;
-		const IndexList &	indices() const;
-		const FloatList &	flattened() const;
-
-		void update() const;
-
-		Mesh & mode(GL::Mode value);
 		Mesh & vertices(const VertexList & value);
 		Mesh & indices(const IndexList & value);
+		Mesh & textures(const TextureList & value);
+
+		inline const VertexList		&vertices()		const { return m_vertices; }
+		inline const IndexList		&indices()		const { return m_indices; }
+		inline const TextureList	&textures()		const { return m_textures; }
+		inline const FloatList		&contiguous()	const { return update(); }
+
+		const FloatList & update() const;
 
 	private:
-		GL::Mode	m_mode;
 		VertexList	m_vertices;
 		IndexList	m_indices;
+		TextureList m_textures;
 
 		mutable bool		m_changed;
-		mutable FloatList	m_flattened;
+		mutable FloatList	m_contiguous;
 
-		inline Mesh & changed(bool value) { m_changed = value; return (*this); }
+		inline Mesh & changed(bool value)
+		{
+			m_changed = value;
+			return (*this);
+		}
 	};
 }
 

@@ -10,40 +10,55 @@
 
 namespace ml
 {
-	struct ML_GRAPHICS_API RenderBatch final
-		: public ITrackable
+	struct ML_GRAPHICS_API RenderBatch final : public ITrackable
 	{
-		RenderBatch()
-			: vao(NULL)
-			, vbo(NULL)
-			, shader(NULL)
-		{
-		}
-		RenderBatch(VAO * vao, VBO * vbo, Shader * shader)
+		RenderBatch(
+			VAO * vao, VBO * vbo, IBO * ibo,
+			const mat4f * proj, const mat4f * view, const mat4f * model,
+			Shader * shader)
 			: vao(vao)
 			, vbo(vbo)
+			, ibo(NULL)
 			, shader(shader)
+			, proj(proj)
+			, view(NULL)
+			, model(NULL)
+		{
+		}
+		RenderBatch(VAO * vao, VBO * vbo, IBO * ibo)
+			: RenderBatch(vao, vbo, ibo, NULL, NULL, NULL, NULL)
+		{
+		}
+		RenderBatch()
+			: RenderBatch(NULL, NULL, NULL)
 		{
 		}
 		RenderBatch(const RenderBatch & copy)
 			: vao(copy.vao)
 			, vbo(copy.vbo)
+			, ibo(copy.ibo)
 			, shader(copy.shader)
+			, proj(copy.proj)
+			, view(copy.view)
+			, model(copy.model)
 			, texture(copy.texture)
 			, vertices(copy.vertices)
 			, color(copy.color)
-			, proj(copy.proj)
 		{
 		}
 
 		VAO		* vao;
 		VBO		* vbo;
+		IBO		* ibo;
 		Shader	* shader;
 
-		const Texture	* texture;
-		const FloatList * vertices;
-		const vec4f		* color;
 		const mat4f		* proj;
+		const mat4f		* view;
+		const Transform	* model;
+		
+		const Texture	* texture;
+		const FloatList	* vertices;
+		const vec4f		* color;
 	};
 }
 

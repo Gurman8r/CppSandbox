@@ -9,6 +9,5 @@ namespace ml
 		"u_proj",
 		"u_texture",
 		"u_view",
-		"u_position",
 	};
 }

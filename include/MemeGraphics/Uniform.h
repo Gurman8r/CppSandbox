@@ -16,7 +16,6 @@ namespace ml
 			Proj,
 			Texture,
 			View,
-			Position,
 
 			MAX_UNIFORM_ID
 		};

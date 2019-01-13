@@ -16,6 +16,7 @@ namespace ml
 
 	class ML_GRAPHICS_API Vertex final
 		: public ITrackable
+		, public IComparable<Vertex>
 	{
 	public:
 		enum { Size = 9U };
@@ -42,8 +43,31 @@ namespace ml
 		inline const float &operator[](std::size_t index) const { return m_data[index]; }
 		inline float &		operator[](std::size_t index)		{ return m_data[index]; }
 
-
 		static const FloatList & Flatten(const VertexList & value);
+
+	public:
+		inline bool equals(const Vertex & other) const override
+		{
+			for (auto i = 0; i < Size; i++)
+			{
+				if ((*this)[i] != other[i])
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+		inline bool lessThan(const Vertex & other) const override
+		{
+			for (auto i = 0; i < Size; i++)
+			{
+				if ((*this)[i] >= other[i])
+				{
+					return false;
+				}
+			}
+			return true;
+		}
 
 	private:
 		float m_data[Size];

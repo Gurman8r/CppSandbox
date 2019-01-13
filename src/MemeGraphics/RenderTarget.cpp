@@ -22,28 +22,54 @@ namespace ml
 	RenderTarget & RenderTarget::draw(const IRenderer & value)
 	{
 		RenderBatch batch;
+		return draw(value, batch);
+	}
+
+	RenderTarget & RenderTarget::draw(const IRenderer & value, const RenderBatch & batch)
+	{
 		value.draw((*this), batch);
 		return (*this);
 	}
 
 	RenderTarget & RenderTarget::draw(const RenderBatch & batch)
 	{
-		if (batch.vao && batch.vbo && batch.shader)
+		// Update Shader
+		if (batch.shader)
+		{
+			if (batch.proj)
+			{
+				(*batch.shader).setUniform(Uniform::Proj, (*batch.proj));
+			}
+			if (batch.view)
+			{
+				(*batch.shader).setUniform(Uniform::View, (*batch.view));
+			}
+			if (batch.model)
+			{
+				(*batch.shader).setUniform(Uniform::Model, (*batch.model));
+			}
+			if (batch.color)
+			{
+				(*batch.shader).setUniform(Uniform::Color, (*batch.color));
+			}
+			if (batch.texture)
+			{
+				(*batch.shader).setUniform(Uniform::Texture, (*batch.texture));
+			}
+			(*batch.shader).bind((batch.texture != NULL));
+		}
+		
+		// Update Geometry
+		if (batch.vao && batch.vbo && batch.vertices)
 		{
 			(*batch.vao).bind();
 
-			(*batch.shader)
-				.setUniform(Uniform::Proj, (*batch.proj))
-				.setUniform(Uniform::Color, (*batch.color))
-				.setUniform(Uniform::Texture, (*batch.texture))
-				.bind();
-
 			(*batch.vbo)
 				.bind()
-				.bufferSubData((*batch.vertices))
+				.bufferSubData(*batch.vertices)
 				.unbind();
-			
-			OpenGL::drawArrays((*batch.vao).mode(), 0, (*batch.vertices).size());
+
+			OpenGL::drawArrays((*batch.vao).mode(), 0, (uint32_t)(*batch.vertices).size());
 
 			(*batch.vao).unbind();
 		}

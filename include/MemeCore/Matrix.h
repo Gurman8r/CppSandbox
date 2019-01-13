@@ -137,7 +137,7 @@ namespace ml
 				in >> (*this)[i];
 			}
 		}
-		
+
 		inline virtual bool equals(const self_type & value) const override
 		{
 			for (std::size_t i = 0; i < Size; i++)

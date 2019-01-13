@@ -728,9 +728,9 @@ namespace ml
 	void Texture::bind(const Texture * value)
 	{
 		OpenGL::bindTexture(GL::Texture2D, 
-			((value && value->m_id)
+			value && (*value)
 				? value->m_id
-				: NULL));
+				: NULL);
 	}
 	
 }

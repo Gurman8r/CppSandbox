@@ -128,12 +128,12 @@ namespace ml
 		// Load character glyph 
 		if (FT_Load_Char(face, value, FT_LOAD_RENDER) != EXIT_SUCCESS)
 		{
-			Debug::LogWarning("Failed to load Glyph \'{0}\'", value);
+			Debug::LogWarning("Failed to load Glyph \'{0}\'", (char)value);
 			return glyph;
 		}
 
-		// Spaces throw an error because they're empty
-		if ((value != ' ') && !glyph.texture.create(
+		// Only load a texture for characters requiring a graphic
+		if ((value != ' ') && isgraph(value) && !glyph.texture.create(
 			face->glyph->bitmap.width,
 			face->glyph->bitmap.rows,
 			face->glyph->bitmap.buffer,
@@ -142,7 +142,7 @@ namespace ml
 			true, 
 			true))
 		{
-			Debug::LogError("Failed Loading Glyph Texture: \'{0}\'", (char)value);
+			Debug::LogWarning("Failed Loading Glyph Texture: \'{0}\'", (char)value);
 			return glyph;
 		}
 

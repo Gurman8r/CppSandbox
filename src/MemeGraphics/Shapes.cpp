@@ -12,10 +12,6 @@ namespace ml
 	const IndexList Shapes::Triangle::Indices({
 		0, 1, 2
 	});
-	const Mesh Shapes::Triangle::Mesh(
-		GL::Mode::Triangles,
-		Shapes::Triangle::Vertices,
-		Shapes::Triangle::Indices);
 
 
 	/*	Quad
@@ -30,10 +26,6 @@ namespace ml
 		0, 1, 3,
 		1, 2, 3
 	});
-	const Mesh Shapes::Quad::Mesh(
-		GL::Mode::Triangles,
-		Shapes::Quad::Vertices, 
-		Shapes::Quad::Indices);
 
 
 	/*	Cube
@@ -88,8 +80,4 @@ namespace ml
 		22, 21, 20,
 		20, 23, 22,
 	});
-	const Mesh Shapes::Cube::Mesh(
-		GL::Mode::Triangles,
-		Shapes::Cube::Vertices, 
-		Shapes::Cube::Indices);
 }

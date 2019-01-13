@@ -6,7 +6,7 @@
 #include <MemeCore/ConsoleUtility.h>
 #include <MemeCore/InputState.h>
 #include <MemeCore/FileSystem.h>
-#include <MemeGraphics/Font.h>
+#include <MemeGraphics/Text.h>
 #include <MemeGraphics/RenderWindow.h>
 #include <MemeGraphics/Shapes.h>
 #include <MemeGraphics/VertexBuffer.h>
@@ -103,6 +103,7 @@ enum : int32_t
 	* * * * * * * * * * * * * * * * * * * * */
 	MIN_TEXTURE = -1,
 	TEX_dean,
+	TEX_sanic,
 	TEX_stone,
 	MAX_TEXTURE,
 
@@ -139,7 +140,7 @@ enum : int32_t
 	MIN_VAO = -1,
 	VAO_cube,
 	VAO_quad,
-	VAO_text,
+	VAO_batch,
 	MAX_VAO,
 
 	/* VBOs
@@ -147,7 +148,7 @@ enum : int32_t
 	MIN_VBO = -1,
 	VBO_cube,
 	VBO_quad,
-	VBO_text,
+	VBO_batch,
 	MAX_VBO,
 
 	/* IBOs
@@ -172,7 +173,8 @@ enum : int32_t
 	/* Text
 	* * * * * * * * * * * * * * * * * * * * */
 	MIN_TEXT = -1,
-	TXT_default,
+	TXT_dynamic,
+	TXT_static,
 	MAX_TEXT,
 };
 
@@ -190,79 +192,7 @@ ml::VBO			vbo		[MAX_VBO];
 ml::IBO			ibo		[MAX_IBO];
 ml::FBO			fbo		[MAX_FBO];
 ml::Sound		sounds	[MAX_SOUND];
-
-/* * * * * * * * * * * * * * * * * * * * */
-
-namespace ml
-{
-	class Text final
-		: public IRenderer
-	{
-	private:
-		mutable std::vector<FloatList>	vertices;
-		mutable std::vector<const Texture*>	textures;
-
-	public:
-		const Font* font;
-		uint32_t	fontSize;
-		vec2f		position;
-		vec4f		color;
-		vec2f		scale;
-		std::string text;
-
-	public:
-		inline void update() const
-		{
-			vec2f tempPos = position;
-			
-			vertices.resize(text.size() * 6);
-			textures.resize(text.size());
-			
-			for (std::size_t i = 0, imax = text.size(); i < imax; i++)
-			{
-				const Glyph & g = font->getGlyph(text[i], fontSize);
-
-				const FloatRect r(
-					vec2f(g.x(), -(g.height() - g.y())) + tempPos * scale,
-					g.size() * scale
-				);
-
-				vertices[i] = Vertex::Flatten({
-					{{ r.left(),  r.bot(), 0.f }, vec2f::Zero	},
-					{{ r.left(),  r.top(), 0.f }, vec2f::Up		},
-					{{ r.right(), r.top(), 0.f }, vec2f::One	},
-					{{ r.left(),  r.bot(), 0.f }, vec2f::Zero	},
-					{{ r.right(), r.top(), 0.f }, vec2f::One	},
-					{{ r.right(), r.bot(), 0.f }, vec2f::Right	},
-				});
-
-				textures[i] = &g.texture;
-
-				tempPos[0] += (float)(g.advance >> 6) * scale[0];
-			}
-		}
-
-		inline void draw(RenderTarget & target, RenderBatch batch) const override
-		{
-			update();
-			
-			batch.vao	= &vao[VAO_text];
-			batch.vbo	= &vbo[VBO_text];
-			batch.shader= &shaders[GL_text];
-			batch.proj	= &proj[P_ortho];
-			batch.color	= &color;
-
-			for (std::size_t i = 0, imax = text.size(); i < imax; i++)
-			{
-				batch.texture  = textures[i];
-				batch.vertices = &vertices[i];
-				target.draw(batch);
-			}
-		}
-	};
-}
-
-ml::Text text[MAX_TEXT];
+ml::Text		text	[MAX_TEXT];
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -309,6 +239,11 @@ inline static bool loadAssets()
 			return ml::Debug::LogError("Failed Loading Texture");
 		}
 
+		if (!textures[TEX_sanic].loadFromFile(settings.pathTo("/images/sanic.png")))
+		{
+			return ml::Debug::LogError("Failed Loading Texture");
+		}
+
 		if (!textures[TEX_stone].loadFromFile(settings.pathTo("/textures/stone/stone_dm.png")))
 		{
 			return ml::Debug::LogError("Failed Loading Texture");
@@ -349,11 +284,11 @@ inline static bool loadGeometry()
 		vbo[VBO_cube]
 			.create(ml::GL::StaticDraw)
 			.bind()
-			.bufferData(ml::Shapes::Cube::Mesh.flattened());
+			.bufferData(ml::Vertex::Flatten(ml::Shapes::Cube::Vertices));
 		ibo[IBO_cube]
 			.create(ml::GL::StaticDraw, ml::GL::UnsignedInt)
 			.bind()
-			.bufferData(ml::Shapes::Cube::Mesh.indices());
+			.bufferData(ml::Shapes::Cube::Indices);
 		ml::BufferLayout::bind({
 			{ 0, 3, ml::GL::Float, false, ml::Vertex::Size, 0, sizeof(float) },
 			{ 1, 4, ml::GL::Float, false, ml::Vertex::Size, 3, sizeof(float) },
@@ -371,11 +306,11 @@ inline static bool loadGeometry()
 		vbo[VBO_quad]
 			.create(ml::GL::StaticDraw)
 			.bind()
-			.bufferData(ml::Shapes::Quad::Mesh.flattened());
+			.bufferData(ml::Vertex::Flatten(ml::Shapes::Quad::Vertices));
 		ibo[IBO_quad]
 			.create(ml::GL::StaticDraw, ml::GL::UnsignedInt)
 			.bind()
-			.bufferData(ml::Shapes::Quad::Mesh.indices());
+			.bufferData(ml::Shapes::Quad::Indices);
 		ml::BufferLayout::bind({
 			{ 0, 3, ml::GL::Float, false, ml::Vertex::Size, 0, sizeof(float) },
 			{ 1, 4, ml::GL::Float, false, ml::Vertex::Size, 3, sizeof(float) },
@@ -387,10 +322,10 @@ inline static bool loadGeometry()
 
 
 		// Text
-		vao[VAO_text]
+		vao[VAO_batch]
 			.create(ml::GL::Triangles)
 			.bind();
-		vbo[VBO_text]
+		vbo[VBO_batch]
 			.create(ml::GL::DynamicDraw)
 			.bind()
 			.bufferData(NULL, (6 * ml::Vertex::Size));
@@ -399,8 +334,8 @@ inline static bool loadGeometry()
 			{ 1, 4, ml::GL::Float, false, ml::Vertex::Size, 3, sizeof(float) },
 			{ 2, 2, ml::GL::Float, false, ml::Vertex::Size, 7, sizeof(float) },
 		});
-		vbo[VBO_text].unbind();
-		vao[VAO_text].unbind();
+		vbo[VBO_batch].unbind();
+		vao[VAO_batch].unbind();
 	}
 	return true;
 }
@@ -483,7 +418,7 @@ int main(int argc, char** argv)
 		model[M_quad]
 			.translate({ -3.0f, 0.0f, 0.0f })
 			.rotate(0.0f, ml::vec3f::Up)
-			.scale(ml::vec3f::One);
+			.scale(ml::vec3f::One * 5.f);
 	}
 
 	// Loop
@@ -506,19 +441,18 @@ int main(int argc, char** argv)
 				// Quad
 				model[M_quad]
 					.translate(ml::vec3f::Zero)
-					.rotate(elapsed.delta(), ml::vec3f::Forward)
+					.rotate(-elapsed.delta(), ml::vec3f::Forward)
 					.scale(ml::vec3f::One);
 			}
 
 			// Draw
 			window.clear(ml::Color::Violet);
 			{
-				// 3D
 				ml::OpenGL::enable(ml::GL::CullFace);
 				ml::OpenGL::enable(ml::GL::DepthTest);
-				
+
 				// Cube
-				if (ml::Shader shader = shaders[GL_basic])
+				if (ml::Shader & shader = shaders[GL_basic])
 				{
 					(shader)
 						.setUniform(ml::Uniform::Proj, proj[P_persp])
@@ -527,7 +461,7 @@ int main(int argc, char** argv)
 						.setUniform(ml::Uniform::Color, ml::Color::White)
 						.setUniform(ml::Uniform::Texture, textures[TEX_stone])
 						.bind();
-				
+
 					vao[VAO_cube].bind();
 					vbo[VBO_cube].bind();
 					ibo[IBO_cube].bind();
@@ -543,19 +477,18 @@ int main(int argc, char** argv)
 					vao[VAO_cube].unbind();
 				}
 
-				// 2D
 				ml::OpenGL::disable(ml::GL::CullFace);
 				ml::OpenGL::disable(ml::GL::DepthTest);
-				
+
 				// Quad
-				if (ml::Shader shader = shaders[GL_basic])
+				if (ml::Shader & shader = shaders[GL_basic])
 				{
 					(shader)
 						.setUniform(ml::Uniform::Proj, proj[P_persp])
 						.setUniform(ml::Uniform::View, view[V_camera])
 						.setUniform(ml::Uniform::Model, model[M_quad])
 						.setUniform(ml::Uniform::Color, ml::Color::White)
-						.setUniform(ml::Uniform::Texture, textures[TEX_dean])
+						.setUniform(ml::Uniform::Texture, textures[TEX_sanic])
 						.bind();
 
 					vao[VAO_quad].bind();
@@ -574,35 +507,50 @@ int main(int argc, char** argv)
 				}
 
 				// Text
-				if (ml::Shader & shader = shaders[GL_text])
+				if(ml::Shader & shader = shaders[GL_text])
 				{
-					static const ml::vec4f colors[MAX_FONT] = { 
+					static ml::RenderBatch batch(
+						&vao[VAO_batch],
+						&vbo[VBO_batch],
+						NULL,
+						&proj[P_ortho],
+						NULL,
+						NULL,
+						&shader);
+
+					static const uint32_t  fontSize = 32;
+					static const ml::vec2f offset = { 0.0f, -(float)fontSize };
+					static const ml::vec2f origin = { (float)fontSize, (float)window.height() };
+					static const ml::vec4f colors[MAX_FONT] = {
 						ml::Color::Red,
 						ml::Color::Green,
 						ml::Color::Blue,
 						ml::Color::White
 					};
-					static const uint32_t  fontSize = 32;
-					static const ml::vec2f textOff = { 0, -(float)fontSize };
-					static const ml::vec2f textPos = { (float)fontSize, (float)window.height() };
-
 					for (uint32_t i = (MIN_FONT + 1); i < MAX_FONT; i++)
 					{
-						text[TXT_default].font		= &fonts[i];
-						text[TXT_default].fontSize	= fontSize;
-						text[TXT_default].position	= (ml::vec2f)(window.size() / 2);
-						text[TXT_default].scale		= ml::vec2f::One;
-						text[TXT_default].position	= textPos + (textOff * (float)(i + 1));
-						text[TXT_default].color		= colors[i];
-						text[TXT_default].text		= "Hello, World!";
-						
-						window.draw(text[TXT_default]);
+						window.draw(text[TXT_dynamic]
+							.setFont(&fonts[i])
+							.setFontSize(fontSize)
+							.setScale(ml::vec2f::One)
+							.setPosition(origin + (offset * (float)(i + 1)))
+							.setColor(colors[i])
+							.setText(window.title())
+						, batch);
 					}
+
+					window.draw(text[TXT_static]
+						.setFont(&fonts[FNT_minecraft])
+						.setFontSize(72)
+						.setScale(ml::vec2f::One)
+						.setPosition({ 64, 128 })
+						.setColor(ml::Color::White)
+						.setText("there is no need\nto be upset")
+					, batch);
 				}
 
 			}
-			window.swapBuffers();
-			window.pollEvents();
+			window.swapBuffers().pollEvents();
 
 			// Set Window Title
 			const ml::Duration & now = ML_Time.elapsed();

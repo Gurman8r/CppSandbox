@@ -85,6 +85,8 @@ namespace ml
 		bool		m_pixelsFlipped;
 		bool		m_hasMipmap;
 	};
+
+	using TextureList = std::vector<const Texture *>;
 }
 
 #endif // !_TEXTURE_H_
