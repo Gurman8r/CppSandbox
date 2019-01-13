@@ -231,9 +231,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\Demo\main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <Font Include="..\..\assets\fonts\clacon.ttf">
       <Filter>Resource Files\assets\fonts</Filter>
     </Font>
@@ -318,5 +315,8 @@
     <ClInclude Include="resource.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
 </Project>

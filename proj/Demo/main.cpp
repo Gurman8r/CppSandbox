@@ -30,6 +30,7 @@ struct Settings final
 	std::string		title;		// Window Title
 	uint32_t		width;		// Window Width
 	uint32_t		height;		// Window Height
+
 	std::string		bootScript;	// Script to run on start
 	bool			showToks;	// Show Script Tokens
 	bool			showTree;	// Show Script Syntax Tree
@@ -44,6 +45,7 @@ struct Settings final
 			title		= ini.Get("Window", "sTitle", "Title");
 			width		= ini.GetInteger("Window", "iWidth", 640);
 			height		= ini.GetInteger("Window", "iHeight", 480);
+
 			bootScript	= ini.Get("Script", "sBootScript", "/scripts/boot.script");
 			showToks	= ini.GetBoolean("Script", "bShowToks", false);
 			showTree	= ini.GetBoolean("Script", "bShowTree", false);
@@ -382,7 +384,7 @@ int main(int argc, char** argv)
 	}
 	window.setViewport(ml::vec2i::Zero, window.size());
 	window.setCursor(ml::Window::CursorMode::Normal);
-	window.setPosition((ml::Screen::size() - window.size()) / 2);
+	window.setPosition((ml::VideoMode::getDesktopMode().size() - window.size()) / 2);
 
 	// Load Assets
 	if (!loadAssets())
@@ -473,7 +475,6 @@ int main(int argc, char** argv)
 			// Cube
 			if (ml::Shader & shader = shaders[GL_basic])
 			{
-				// Cube
 				model[M_cube]
 					.translate(ml::vec3f::Zero)
 					.rotate(elapsed.delta(), ml::vec3f::One)
@@ -572,7 +573,7 @@ int main(int argc, char** argv)
 				// Static Text
 				window.draw(text[TXT_static], batch);
 			}
-
+		
 		}
 		window.swapBuffers().pollEvents();
 
@@ -581,6 +582,8 @@ int main(int argc, char** argv)
 		elapsed = loopTimer.stop().elapsed();
 	}
 	while (window.isOpen());
+
+	ml::Debug::Log("{0}", ML_Time.elapsed());
 
 	return EXIT_SUCCESS;
 }

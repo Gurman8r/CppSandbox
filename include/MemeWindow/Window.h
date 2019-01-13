@@ -3,7 +3,7 @@
 
 #include <MemeWindow/Context.h>
 #include <MemeWindow/Icon.h>
-#include <MemeWindow/Screen.h>
+#include <MemeWindow/VideoMode.h>
 #include <MemeCore/Vector4.h>
 
 namespace ml
@@ -11,9 +11,6 @@ namespace ml
 	class ML_WINDOW_API Window
 		: public ITrackable
 	{
-	public:
-		using Handle = void *;
-
 	public:
 		enum CursorMode : uint32_t
 		{
@@ -75,7 +72,7 @@ namespace ml
 		inline const float		aspect()	const { return (float)width() / (float)height(); };
 
 	protected:
-		Handle			m_handle;
+		void *			m_handle;
 		Context			m_context;
 		VideoMode		m_mode;
 		Style			m_style;

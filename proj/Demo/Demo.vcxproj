@@ -154,9 +154,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\Demo\main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\..\assets\meshes\sphere32x24.mesh" />
     <None Include="..\..\assets\meshes\sphere8x6.mesh" />
     <None Include="..\..\assets\scripts\boot.script" />
@@ -240,6 +237,9 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Demo.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
