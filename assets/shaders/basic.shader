@@ -40,7 +40,7 @@ uniform vec4		u_color;
 
 void main()
 {
-	v_FragColor = u_color * texture(u_texture, v_TexCoords);
+	v_FragColor = u_color  * v_Color * texture(u_texture, v_TexCoords);
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

@@ -15,9 +15,9 @@ uniform mat4 u_proj;
 
 void main()
 {
-	v_Position = a_position;
+	v_Position	= a_position;
 	v_TexCoords = a_texcoord;
-	v_Color = a_color;
+	v_Color		= a_color;
 
 	gl_Position = u_proj * vec4(a_position, 1.0);
 }

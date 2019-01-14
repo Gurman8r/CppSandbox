@@ -192,17 +192,6 @@
     <None Include="..\..\assets\shaders\vs\deferred\passPosition_clip_vs4x.shader" />
     <None Include="..\..\assets\shaders\vs\shadow\phong_passAltClip_vs4x.shader" />
     <None Include="..\..\config.ini" />
-    <None Include="..\..\tools\Archive_Bin.bat" />
-    <None Include="..\..\tools\Archive_Bin_Debug_x64.bat" />
-    <None Include="..\..\tools\Archive_Bin_Debug_x86.bat" />
-    <None Include="..\..\tools\Archive_Bin_Release_x64.bat" />
-    <None Include="..\..\tools\Archive_Bin_Release_x86.bat" />
-    <None Include="..\..\tools\Archive_Solution.bat" />
-    <None Include="..\..\tools\Build.bat" />
-    <None Include="..\..\tools\Build_Debug_x64.bat" />
-    <None Include="..\..\tools\Build_Debug_x86.bat" />
-    <None Include="..\..\tools\Build_Release_x64.bat" />
-    <None Include="..\..\tools\Build_Release_x86.bat" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="..\..\assets\fonts\clacon.ttf" />
@@ -231,12 +220,6 @@
     <Image Include="..\..\assets\textures\stone\stone_dm.png" />
     <Image Include="..\..\assets\textures\stone\stone_hm.png" />
     <Image Include="..\..\assets\textures\stone\stone_nm.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="resource.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Demo.rc" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

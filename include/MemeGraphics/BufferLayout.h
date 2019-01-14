@@ -11,7 +11,7 @@ namespace ml
 		: public ITrackable
 	{
 	public:
-		struct ML_GRAPHICS_API Element final
+		struct Element final
 		{
 			uint32_t	index;
 			uint32_t	size;

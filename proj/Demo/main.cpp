@@ -362,10 +362,10 @@ int main(int argc, char** argv)
 
 	// Run Boot Script
 	ml::Interpreter::LoadBuiltinCommands();
-	ML_Interpreter.parser()->
-		showToks(settings.showToks).
-		showTree(settings.showTree).
-		showItoP(settings.showItoP);
+	(*ML_Interpreter.parser())
+		.showToks(settings.showToks)
+		.showTree(settings.showTree)
+		.showItoP(settings.showItoP);
 	ML_Interpreter.execScript(settings.pathTo(settings.bootScript));
 
 	// Enable GL Error Pause
@@ -382,31 +382,31 @@ int main(int argc, char** argv)
 	{
 		return ml::ConsoleUtility::pause(EXIT_FAILURE);
 	}
-	window.setViewport(ml::vec2i::Zero, window.size());
 	window.setCursor(ml::Window::CursorMode::Normal);
 	window.setPosition((ml::VideoMode::getDesktopMode().size() - window.size()) / 2);
-
-	// Load Assets
-	if (!loadAssets())
-	{
-		return ml::ConsoleUtility::pause(EXIT_FAILURE);
-	}
-
-	// Set Window Icon
-	if (const ml::Image icon = ml::Image(images[IMG_icon]).flipVertically())
-	{
-		window.setIcons({ icon });
-	}
-
-	// Load Geometry
-	if (!loadGeometry())
-	{
-		return ml::ConsoleUtility::pause(EXIT_FAILURE);
-	}
+	window.setViewport(ml::vec2i::Zero, window.size());
 
 	// Init
 	if (ml::Debug::Log("Initializing..."))
 	{
+		// Load Assets
+		if (!loadAssets())
+		{
+			return ml::ConsoleUtility::pause(EXIT_FAILURE);
+		}
+
+		// Set Window Icon
+		if (const ml::Image icon = ml::Image(images[IMG_icon]).flipVertically())
+		{
+			window.setIcons({ icon });
+		}
+
+		// Load Geometry
+		if (!loadGeometry())
+		{
+			return ml::ConsoleUtility::pause(EXIT_FAILURE);
+		}
+
 		// Projections
 		proj[P_ortho] = ml::Transform::Ortho(0.0f, (float)window.width(), 0.0f, (float)window.height(), -1.0f, 1.0f);
 		proj[P_persp] = ml::Transform::Perspective(90.0f, window.aspect(), 0.1f, 1000.0f);
@@ -566,14 +566,13 @@ int main(int argc, char** argv)
 						.setScale(ml::vec2f::One)
 						.setPosition(origin + (offset * (float)(i + 1)))
 						.setColor(colors[i])
-						.setText(fonts[i].str())
+						.setText(fonts[i].str() + " | " + window.title())
 					, batch);
 				}
 
 				// Static Text
 				window.draw(text[TXT_static], batch);
 			}
-		
 		}
 		window.swapBuffers().pollEvents();
 

@@ -8,9 +8,6 @@
     <Filter Include="Resource Files\assets">
       <UniqueIdentifier>{cc9795a2-93ba-4e9c-b2c9-18df14e73105}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\tools">
-      <UniqueIdentifier>{035ecba2-2b73-4311-a209-1a3bbad2ba39}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\assets\fonts">
       <UniqueIdentifier>{196a0fee-b6a8-42a2-af56-74bc60806553}</UniqueIdentifier>
     </Filter>
@@ -84,39 +81,6 @@
   <ItemGroup>
     <None Include="..\..\config.ini">
       <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\..\tools\Archive_Bin.bat">
-      <Filter>Resource Files\tools</Filter>
-    </None>
-    <None Include="..\..\tools\Archive_Bin_Debug_x64.bat">
-      <Filter>Resource Files\tools</Filter>
-    </None>
-    <None Include="..\..\tools\Archive_Bin_Debug_x86.bat">
-      <Filter>Resource Files\tools</Filter>
-    </None>
-    <None Include="..\..\tools\Archive_Bin_Release_x64.bat">
-      <Filter>Resource Files\tools</Filter>
-    </None>
-    <None Include="..\..\tools\Archive_Bin_Release_x86.bat">
-      <Filter>Resource Files\tools</Filter>
-    </None>
-    <None Include="..\..\tools\Archive_Solution.bat">
-      <Filter>Resource Files\tools</Filter>
-    </None>
-    <None Include="..\..\tools\Build.bat">
-      <Filter>Resource Files\tools</Filter>
-    </None>
-    <None Include="..\..\tools\Build_Debug_x64.bat">
-      <Filter>Resource Files\tools</Filter>
-    </None>
-    <None Include="..\..\tools\Build_Debug_x86.bat">
-      <Filter>Resource Files\tools</Filter>
-    </None>
-    <None Include="..\..\tools\Build_Release_x64.bat">
-      <Filter>Resource Files\tools</Filter>
-    </None>
-    <None Include="..\..\tools\Build_Release_x86.bat">
-      <Filter>Resource Files\tools</Filter>
     </None>
     <None Include="..\..\assets\scripts\boot.script">
       <Filter>Resource Files\assets\scripts</Filter>
@@ -305,16 +269,6 @@
     <Image Include="..\..\assets\icon.ico">
       <Filter>Resource Files\assets</Filter>
     </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Demo.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="resource.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

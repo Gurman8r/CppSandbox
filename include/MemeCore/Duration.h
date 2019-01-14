@@ -77,8 +77,8 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			out << (minutes() % 60) / 10 % 10
-				<< (minutes() % 60) % 10
+			out << (minutes()) / 10 % 10
+				<< (minutes()) % 10
 				<< ':'
 				<< (seconds() % 60) / 10 % 10
 				<< (seconds() % 60) % 10
