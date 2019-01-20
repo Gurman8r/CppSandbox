@@ -46,9 +46,6 @@
     <Filter Include="Source Files\Maths">
       <UniqueIdentifier>{5bbc0650-5c5d-42bb-b2e9-bc0c2e4d57e0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Components">
-      <UniqueIdentifier>{a326272c-c214-4189-b30b-01fc42214a54}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Events">
       <UniqueIdentifier>{554f9adc-6997-4716-b5ca-b25faeaa10a6}</UniqueIdentifier>
     </Filter>
@@ -88,9 +85,6 @@
       <Filter>Resource Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Component.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\ComponentPool.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Entity.h">
@@ -165,6 +159,9 @@
     <ClInclude Include="..\..\include\MemeCore\Duration.h">
       <Filter>Header Files\Time</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\ComponentMap.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeCore\ConsoleUtility.cpp">
@@ -190,9 +187,6 @@
     </ClCompile>
     <ClCompile Include="..\..\include\MemeCore\IEnumerable.h">
       <Filter>Header Files\Interfaces</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeCore\ComponentPool.cpp">
-      <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\EventSystem.cpp">
       <Filter>Source Files\Events</Filter>

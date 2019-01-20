@@ -11,7 +11,8 @@ namespace ml
 	public:
 		enum EventID : int32_t
 		{
-			EV_Invalid = -1,
+			MIN_EVENT_ID = -1,
+			EV_Debug,
 			MAX_EVENT_ID
 		};
 

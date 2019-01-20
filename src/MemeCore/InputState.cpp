@@ -4,18 +4,6 @@
 #include <Windows.h>
 #endif // ML_SYSTEM_WINDOWS
 
-namespace PRIV
-{
-	inline static bool getKeyState(int32_t value)
-	{
-#ifdef ML_SYSTEM_WINDOWS
-		return (bool)GetAsyncKeyState(value);
-#else
-		return false;
-#endif
-	}
-}
-
 namespace ml
 {
 	InputState::InputState()
@@ -29,19 +17,29 @@ namespace ml
 
 	InputState & InputState::beginStep()
 	{
+		auto checkKey = [](uint32_t key)
+		{
+#ifdef ML_SYSTEM_WINDOWS
+			return (bool)GetAsyncKeyState((int32_t)key);
+#else
+			return false;
+#endif
+		};
+
 		for (uint32_t i = 0; i < KeyCode::MAX_KEYCODE; i++)
 		{
-			m_new[i] = PRIV::getKeyState((int32_t)i);
+			m_new[i] = checkKey(i);
 		}
 		return (*this);
 	}
 
 	InputState & InputState::endStep()
 	{
-		for (uint32_t i = 0; i < KeyCode::MAX_KEYCODE; i++)
-		{
-			m_old[i] = m_new[i];
-		}
+		memcpy(m_old, m_new, KeyCode::MAX_KEYCODE);
+		//for (uint32_t i = 0; i < KeyCode::MAX_KEYCODE; i++)
+		//{
+		//	m_old[i] = m_new[i];
+		//}
 		return (*this);
 	}
 

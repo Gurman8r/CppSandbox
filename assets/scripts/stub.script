@@ -197,7 +197,7 @@ stub = []();
 
 	print("End of Stub");
 	
-	sys("pause");
+	#sys("pause");
 
 	return true;
 };

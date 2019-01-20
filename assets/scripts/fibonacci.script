@@ -27,7 +27,6 @@ fib = [](num);
 main = []();
 {
 	fib(100);
-	sys("pause");
 	return true;
 };
 return main();

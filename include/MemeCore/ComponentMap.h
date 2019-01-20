@@ -10,7 +10,7 @@ static_assert(std::is_base_of<ml::Component, T>::value, "Type must inherit ml::C
 
 namespace ml
 {
-	class ML_CORE_API ComponentPool
+	class ML_CORE_API ComponentMap
 		: public ITrackable
 	{
 	public:
@@ -20,9 +20,29 @@ namespace ml
 		using const_iterator= map_type::const_iterator;
 
 	public:
-		ComponentPool();
-		ComponentPool(const ComponentPool& copy);
-		~ComponentPool();
+		ComponentMap()
+			: m_map()
+		{
+		}
+		ComponentMap(const ComponentMap& copy)
+			: m_map(copy.m_map)
+		{
+		}
+		~ComponentMap()
+		{
+			clear();
+		}
+
+	public:
+		inline void clear()
+		{
+			for (auto pair : (*this))
+			{
+				delete pair.second;
+				pair.second = NULL;
+			}
+			m_map.clear();
+		}
 
 	public:
 		template <typename T> 
@@ -96,30 +116,12 @@ namespace ml
 		}
 		
 	public:
-		inline ComponentPool::iterator			begin()
-		{
-			return m_map.begin();
-		};
-		inline ComponentPool::iterator			end()
-		{
-			return m_map.end();
-		};
-		inline ComponentPool::const_iterator	begin() const
-		{
-			return m_map.begin();
-		};
-		inline ComponentPool::const_iterator	end() const
-		{
-			return m_map.end();
-		}
-		inline ComponentPool::const_iterator	cbegin() const
-		{
-			return m_map.cbegin();
-		}
-		inline ComponentPool::const_iterator	cend() const
-		{
-			return m_map.cend();
-		}
+		inline ComponentMap::iterator		begin()			{ return m_map.begin(); };
+		inline ComponentMap::const_iterator	begin()	const	{ return m_map.begin(); };
+		inline ComponentMap::const_iterator	cbegin()const	{ return m_map.cbegin(); }
+		inline ComponentMap::iterator		end()			{ return m_map.end(); };
+		inline ComponentMap::const_iterator	end()	const	{ return m_map.end(); }
+		inline ComponentMap::const_iterator	cend()	const	{ return m_map.cend(); }
 
 	private:
 		map_type m_map;

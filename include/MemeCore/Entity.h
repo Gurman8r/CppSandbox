@@ -1,7 +1,7 @@
 #ifndef _ENTITY_H_
 #define _ENTITY_H_
 
-#include <MemeCore/ComponentPool.h>
+#include <MemeCore/ComponentMap.h>
 
 namespace ml
 {
@@ -9,52 +9,52 @@ namespace ml
 		: public ITrackable
 	{
 	public:
-		Entity() : m_pool() {};
+		Entity() : m_components() {};
 		virtual ~Entity() {}
 
 	protected:
-		inline const ComponentPool & pool() const
+		inline const ComponentMap & components() const
 		{
-			return m_pool;
+			return m_components;
 		}
-		inline ComponentPool & pool()
+		inline ComponentMap & components()
 		{
-			return m_pool;
+			return m_components;
 		}
 
 	public:
 		template <typename T> 
 		inline T* addComponent()
 		{
-			return pool().add<T>();
+			return components().add<T>();
 		}
 		
 		template <typename T> 
 		inline T* getComponent()
 		{
-			return pool().get<T>();
+			return components().get<T>();
 		}
 		
 		template <typename T> 
 		inline const T* getComponent() const
 		{
-			return pool().get<T>();
+			return components().get<T>();
 		}
 		
 		template <typename T>
 		inline bool hasComponent() const
 		{
-			return pool().contains<T>();
+			return components().contains<T>();
 		}
 		
 		template <typename T> 
 		inline T* setComponent(const T& value)
 		{
-			return pool().set<T>(value);
+			return components().set<T>(value);
 		}
 
 	private:
-		ComponentPool m_pool;
+		ComponentMap m_components;
 	};
 }
 
