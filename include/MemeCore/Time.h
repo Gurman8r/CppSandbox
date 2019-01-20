@@ -20,6 +20,8 @@ namespace ml
 		const Duration & elapsed() const;
 		
 		void start();
+
+		static uint64_t calcStableFPS(float deltaTime);
 	
 	private:
 		Time() { start(); }

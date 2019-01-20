@@ -66,24 +66,6 @@ static Settings settings;
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-inline static uint64_t calcFPS(float deltaTime)
-{
-	static uint64_t	frameCounter = 0;
-	static uint64_t	fps = 0;
-	static float	nextSecond = 0.0f;
-	static float	prevSecond = 0.0f;
-	frameCounter++;
-	if (((nextSecond += deltaTime) - prevSecond) > 1.0f)
-	{
-		prevSecond = nextSecond;
-		fps = frameCounter;
-		frameCounter = 0;
-	}
-	return fps;
-}
-
-/* * * * * * * * * * * * * * * * * * * * */
-
 enum : int32_t
 {
 	/* Fonts
@@ -458,7 +440,7 @@ int main(int argc, char** argv)
 				settings.title,
 				ML_Time.elapsed(),
 				elapsed.delta(),
-				calcFPS(elapsed.delta())
+				ml::Time::calcStableFPS(elapsed.delta())
 			));
 
 			// Handle Input
