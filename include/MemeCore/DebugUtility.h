@@ -22,7 +22,9 @@ namespace ml
 		};
 
 	public:
-		static void terminate(bool areYouSure);
+		static int32_t	clear();
+		static int32_t	pause(int32_t exitCode = EXIT_SUCCESS);
+		static void		terminate(bool areYouSure);
 
 	public:
 		static Status LogWarning(const std::string & message);	// - 1

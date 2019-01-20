@@ -357,7 +357,7 @@ int main(int argc, char** argv)
 	// Load Settings
 	if (!settings.load(CONFIG_INI))
 	{
-		return ml::ConsoleUtility::pause(EXIT_FAILURE);
+		return ml::Debug::pause(EXIT_FAILURE);
 	}
 
 	// Run Boot Script
@@ -380,19 +380,21 @@ int main(int argc, char** argv)
 		ml::Window::Style::Default,
 		ml::Context(3, 3, 24, 8, ml::Context::Compat, false, false)))
 	{
-		return ml::ConsoleUtility::pause(EXIT_FAILURE);
+		return ml::Debug::pause(EXIT_FAILURE);
 	}
-	window.setCursor(ml::Window::CursorMode::Normal);
-	window.setPosition((ml::VideoMode::getDesktopMode().size() - window.size()) / 2);
-	window.setViewport(ml::vec2i::Zero, window.size());
 
 	// Init
 	if (ml::Debug::Log("Initializing..."))
 	{
+		// Setup Window
+		window.setCursor(ml::Window::CursorMode::Normal);
+		window.setPosition((ml::VideoMode::getDesktopMode().size() - window.size()) / 2);
+		window.setViewport(ml::vec2i::Zero, window.size());
+
 		// Load Assets
 		if (!loadAssets())
 		{
-			return ml::ConsoleUtility::pause(EXIT_FAILURE);
+			return ml::Debug::pause(EXIT_FAILURE);
 		}
 
 		// Set Window Icon
@@ -404,7 +406,7 @@ int main(int argc, char** argv)
 		// Load Geometry
 		if (!loadGeometry())
 		{
-			return ml::ConsoleUtility::pause(EXIT_FAILURE);
+			return ml::Debug::pause(EXIT_FAILURE);
 		}
 
 		// Projections

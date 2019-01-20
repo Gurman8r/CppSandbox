@@ -163,17 +163,12 @@ namespace ml
 
 		ML_Interpreter.addCommand(ml::Command("pause", [](ml::Args & args)
 		{
-			return ml::Var().intValue(ml::ConsoleUtility::pause());
+			return ml::Var().intValue(ml::Debug::pause());
 		}));
 
 		ML_Interpreter.addCommand(ml::Command("clear", [](ml::Args & args)
 		{
-#ifdef ML_SYSTEM_WINDOWS
-			system("cls");
-#else
-			system("clear");
-#endif
-			return ml::Var().boolValue(true);
+			return ml::Var().intValue(Debug::clear());
 		}));
 
 		ML_Interpreter.addCommand(ml::Command("cd", [](ml::Args & args)

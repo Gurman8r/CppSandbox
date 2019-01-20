@@ -139,7 +139,7 @@ namespace ml
 
 			if (m_errorPause)
 			{
-				ConsoleUtility::pause();
+				Debug::pause();
 			}
 		}
 	}

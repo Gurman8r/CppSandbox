@@ -1,8 +1,29 @@
 #include <MemeCore/DebugUtility.h>
 #include <MemeCore/ConsoleUtility.h>
+#include <MemeCore/InputState.h>
 
 namespace ml
 {
+	int32_t Debug::clear()
+	{
+#ifdef ML_SYSTEM_WINDOWS
+		return system("cls");
+#else
+		return system("clear");
+#endif
+	}
+
+	int32_t Debug::pause(int32_t exitCode)
+	{
+#ifdef ML_SYSTEM_WINDOWS
+		system("pause");
+#else
+		Debug::out() << "Press any key to continue..." << std::endl;
+		ml::InputState input;
+		while (!input.beginStep().getAnyKey());
+#endif
+		return exitCode;
+	}
 	void Debug::terminate(bool areYouSure)
 	{
 		if (areYouSure)

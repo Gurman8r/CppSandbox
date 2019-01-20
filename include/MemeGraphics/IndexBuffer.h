@@ -24,11 +24,11 @@ namespace ml
 		IndexBuffer & bufferData(const uint32_t * data, uint32_t count);
 		IndexBuffer & bufferData(const std::vector<uint32_t> & data);
 
-		inline const uint32_t &		id() const { return m_id; }
-		inline const uint32_t *		data() const { return m_data; }
+		inline const uint32_t &		id()	const { return m_id; }
+		inline const uint32_t *		data()	const { return m_data; }
 		inline const uint32_t &		count() const { return m_count; }
 		inline const GL::Usage &	usage() const { return m_usage; }
-		inline const GL::Type &		type() const { return m_type; }
+		inline const GL::Type &		type()	const { return m_type; }
 
 		inline operator bool() const { return (bool)id(); }
 

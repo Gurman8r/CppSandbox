@@ -11,9 +11,7 @@ namespace ml
 	class ML_CORE_API ConsoleUtility final
 	{
 	public:
-		static int32_t clear();
-		static int32_t pause(int32_t exitCode = EXIT_SUCCESS);
-		static void setConsoleTextAttribute(const uint16_t & value);
+		static void	setConsoleTextAttribute(const uint16_t & value);
 	};
 
 	struct ML_CORE_API FG final
