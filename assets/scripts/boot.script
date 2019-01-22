@@ -1,6 +1,0 @@
-main = []();
-{
-	print("Hello, World!");
-	return true;
-};
-return main();
