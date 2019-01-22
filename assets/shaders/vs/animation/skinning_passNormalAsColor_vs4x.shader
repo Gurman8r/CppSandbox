@@ -4,7 +4,7 @@
 	Vertex shader that performs vertex skinning, passing resulting normal out
 		as a solid color for debugging purposes.
 	
-	Modified by: ______________________________________________________________
+	Modified by: Melody Gurman
 */
 
 #version 450

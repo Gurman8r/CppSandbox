@@ -65,19 +65,19 @@ namespace ml
 		template <typename T>
 		Shader & setUniform(Uniform::ID id, const T & value)
 		{
-			return setUniform(Uniform::UniformNames[id], value);
+			return setUniform(Uniform::Names[id], value);
 		};
 
 		template <typename T>
 		Shader & setUniformArray(Uniform::ID id, int32_t count, T * value)
 		{
-			return setUniformArray(Uniform::UniformNames[id], value, count);
+			return setUniformArray(Uniform::Names[id], value, count);
 		};
 
 		template <typename T>
 		Shader & setUniformArray(Uniform::ID id, const std::vector<T> & value)
 		{
-			return setUniformArray(Uniform::UniformNames[id], value);
+			return setUniformArray(Uniform::Names[id], value);
 		};
 
 	public:

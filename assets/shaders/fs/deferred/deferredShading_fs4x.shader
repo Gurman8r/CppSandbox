@@ -3,7 +3,7 @@
 	By Dan Buckstein
 	Fragment shader that performs shading using geometry buffers.
 	
-	Modified by: ______________________________________________________________
+	Modified by: Melody Gurman
 */
 
 // version

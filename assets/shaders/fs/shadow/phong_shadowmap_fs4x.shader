@@ -3,7 +3,7 @@
 	By Dan Buckstein
 	Fragment shader that performs Phong shading and shadow mapping.
 	
-	Modified by: ______________________________________________________________
+	Modified by: Melody Gurman
 */
 
 #version 410

@@ -3,7 +3,7 @@
 	By Dan Buckstein
 	Vertex shader that passes color attribute down pipeline.
 	
-	Modified by: ______________________________________________________________
+	Modified by: Melody Gurman
 */
 
 // which version of GLSL is this shader written in

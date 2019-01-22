@@ -3,7 +3,7 @@
 	By Dan Buckstein
 	Vertex shader that passes data required to perform Phong shading.
 	
-	Modified by: ______________________________________________________________
+	Modified by: Melody Gurman
 */
 
 // version

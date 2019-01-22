@@ -4,7 +4,7 @@
 	Vertex shader that performs vertex requirements for Phong shading, but also
 		passes clip position of light for shadow mapping/projective texturing.
 	
-	Modified by: ______________________________________________________________
+	Modified by: Melody Gurman
 */
 
 #version 410

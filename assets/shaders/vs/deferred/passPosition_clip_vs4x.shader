@@ -3,7 +3,7 @@
 	By Dan Buckstein
 	Vertex shader that passes final position in clip space.
 	
-	Modified by: ______________________________________________________________
+	Modified by: Melody Gurman
 */
 
 // version

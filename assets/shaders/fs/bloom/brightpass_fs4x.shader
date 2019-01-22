@@ -3,7 +3,7 @@
 	By Dan Buckstein
 	Fragment shader that leaves bright pixels bright and makes dark darker.
 	
-	Modified by: ______________________________________________________________
+	Modified by: Melody Gurman
 */
 
 // version

@@ -11,15 +11,22 @@ namespace ml
 	public:
 		enum ID : uint16_t
 		{
-			Color,
 			Model,
 			Proj,
-			Texture,
 			View,
+			
+			Color,
+			Texture,
+
+			LightPos,
+			EyePos,
+			NormalScale,
+			
+			CurveMode,
 
 			MAX_UNIFORM_ID
 		};
-		const static std::string UniformNames[Uniform::ID::MAX_UNIFORM_ID];
+		static const std::string Names[Uniform::ID::MAX_UNIFORM_ID];
 	};
 }
 

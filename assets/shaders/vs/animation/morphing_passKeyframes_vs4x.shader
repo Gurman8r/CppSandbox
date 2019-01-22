@@ -3,7 +3,7 @@
 	By Dan Buckstein
 	Vertex shader that passes keyframes for morphing to geometry shader.
 	
-	Modified by: ______________________________________________________________
+	Modified by: Melody Gurman
 */
 
 #version 410

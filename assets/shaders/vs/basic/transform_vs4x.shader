@@ -3,7 +3,7 @@
 	By Dan Buckstein
 	Vertex shader that performs standard MVP transform.
 	
-	Modified by: ______________________________________________________________
+	Modified by: Melody Gurman
 */
 
 #version 410

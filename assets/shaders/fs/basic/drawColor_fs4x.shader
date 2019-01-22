@@ -3,7 +3,7 @@
 	By Dan Buckstein
 	Fragment shader that displays color received from previous piipeline stage.
 	
-	Modified by: ______________________________________________________________
+	Modified by: Melody Gurman
 */
 
 // version (same idea)

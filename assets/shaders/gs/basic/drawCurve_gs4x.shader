@@ -3,7 +3,7 @@ Draw Curve
 By Dan Buckstein
 Geometry shader that draws waypoints to form a curve.
 
-Modified by: ______________________________________________________________
+Modified by: Melody Gurman
 */
 
 #version 410

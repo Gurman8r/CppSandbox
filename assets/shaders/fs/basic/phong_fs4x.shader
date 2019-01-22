@@ -3,7 +3,7 @@
 	By Dan Buckstein
 	Fragment shader that computes Phong shading.
 	
-	Modified by: ______________________________________________________________
+	Modified by: Melody Gurman
 */
 
 // version

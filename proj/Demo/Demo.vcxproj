@@ -173,8 +173,8 @@
     <None Include="..\..\assets\shaders\fs\shadow\phong_projtex_fs4x.shader" />
     <None Include="..\..\assets\shaders\fs\shadow\phong_shadowmap_fs4x.shader" />
     <None Include="..\..\assets\shaders\geometry.shader" />
-    <None Include="..\..\assets\shaders\gs\basic\drawCurve_gs4x.glsl" />
-    <None Include="..\..\assets\shaders\gs\basic\drawCurve_morphing_gs4x.glsl" />
+    <None Include="..\..\assets\shaders\gs\basic\drawCurve_gs4x.shader" />
+    <None Include="..\..\assets\shaders\gs\basic\drawCurve_morphing_gs4x.shader" />
     <None Include="..\..\assets\shaders\basic.shader" />
     <None Include="..\..\assets\shaders\text.shader" />
     <None Include="..\..\assets\shaders\vs\animation\drawBone_vs4x.shader" />

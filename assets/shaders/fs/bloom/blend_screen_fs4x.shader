@@ -3,7 +3,7 @@
 	By Dan Buckstein
 	Fragment shader that blends 4 textures using the "screen" filter.
 	
-	Modified by: ______________________________________________________________
+	Modified by: Melody Gurman
 */
 
 // version

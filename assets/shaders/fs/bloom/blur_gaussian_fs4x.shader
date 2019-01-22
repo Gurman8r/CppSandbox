@@ -3,7 +3,7 @@
 	By Dan Buckstein
 	Fragment shader that performs Gaussian blur along a single arbitrary axis.
 	
-	Modified by: ______________________________________________________________
+	Modified by: Melody Gurman
 */
 
 // version

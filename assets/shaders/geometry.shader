@@ -3,19 +3,21 @@
 #shader vertex
 #version 330 core
 
-layout(location = 0) in vec3 a_position;
-layout(location = 1) in vec4 a_color;
-layout(location = 2) in vec2 a_texcoord;
+// Layout
+layout(location = 0) in vec3 a_Position;
+layout(location = 1) in vec4 a_Color;
+layout(location = 2) in vec2 a_Texcoord;
 
+// Varyings
 out vec3 v_Position;
 out vec4 v_Color;
-out vec2 v_TexCoords;
+out vec2 v_Texcoord;
 
 void main()
 {
-	v_Position = a_position;
+	v_Position = a_Position;
 
-	gl_Position = vec4(a_position, 1.0);
+	gl_Position = vec4(a_Position, 1.0);
 }
 
 
@@ -24,11 +26,13 @@ void main()
 #shader fragment
 #version 330 core
 
+// Varyings
 in vec3		v_Position;
 in vec4		v_Color;
-in vec2		v_TexCoords;
+in vec2		v_Texcoord;
 out vec4	v_FragColor;
 
+// Uniforms
 uniform vec4 u_color;
 
 void main()
@@ -42,6 +46,7 @@ void main()
 #shader geometry
 #version 330 core
 
+// Constants
 #define SAMPLES_PER_SEGMENT 16
 #define SAMPLES_MAX 128
 
@@ -50,17 +55,16 @@ void main()
 #define CURVE_CATMULLROM 2
 #define CURVE_HERMITE 3
 
+#define RED		vec4(1.0, 0.5, 0.0, 1.0)
+#define BLUE	vec4(0.0, 0.5, 1.0, 1.0)
+#define GREEN	vec4(0.0, 1.0, 0.5, 1.0)
+
 // Layout
 layout(points) in;
 layout(line_strip, max_vertices = SAMPLES_MAX) out;
 
-// uniforms
+// Uniforms
 uniform int	u_curveMode;
-
-// constants
-const vec4 RED = vec4(1.0, 0.5, 0.0, 1.0);
-const vec4 BLUE = vec4(0.0, 0.5, 1.0, 1.0);
-const vec4 GREEN = vec4(0.0, 1.0, 0.5, 1.0);
 
 // Maths
 vec4 lerp(in vec4 p0, in vec4 p1, const float t)

@@ -3,7 +3,7 @@
 	By Dan Buckstein
 	Vertex shader that passes texcoord. Does not transform vertex position.
 	
-	Modified by: ______________________________________________________________
+	Modified by: Melody Gurman
 */
 
 // version

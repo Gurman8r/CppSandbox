@@ -3,7 +3,7 @@
 	By Dan Buckstein
 	Vertex shader that passes attributes in world space.
 	
-	Modified by: ______________________________________________________________
+	Modified by: Melody Gurman
 */
 
 // version

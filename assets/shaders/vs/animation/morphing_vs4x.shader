@@ -3,7 +3,7 @@
 	By Dan Buckstein
 	Vertex shader that performs morph target animation.
 	
-	Modified by: ______________________________________________________________
+	Modified by: Melody Gurman
 */
 
 #version 450

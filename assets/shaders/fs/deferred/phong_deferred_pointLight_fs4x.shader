@@ -4,7 +4,7 @@
 	Fragment shader that performs Phong shading for a point light in a deferred 
 		rendering pipeline.
 	
-	Modified by: ______________________________________________________________
+	Modified by: Melody Gurman
 */
 
 // version

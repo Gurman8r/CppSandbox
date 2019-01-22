@@ -3,7 +3,7 @@
 	By Dan Buckstein
 	Fragment shader that outputs incoming geometric attributes as color.
 	
-	Modified by: ______________________________________________________________
+	Modified by: Melody Gurman
 */
 
 // version

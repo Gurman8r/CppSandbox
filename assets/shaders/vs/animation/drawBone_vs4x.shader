@@ -3,7 +3,7 @@
 	By Dan Buckstein
 	Vertex shader that renders an instanced primitive and adds scale.
 	
-	Modified by: ______________________________________________________________
+	Modified by: Melody Gurman
 */
 
 #version 410

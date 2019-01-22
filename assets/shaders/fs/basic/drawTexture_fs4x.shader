@@ -3,7 +3,7 @@
 	By Dan Buckstein
 	Fragment shader that displays a sample from a texture.
 	
-	Modified by: ______________________________________________________________
+	Modified by: Melody Gurman
 */
 
 // version

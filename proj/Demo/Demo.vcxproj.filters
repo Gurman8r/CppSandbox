@@ -169,12 +169,6 @@
     <None Include="..\..\assets\shaders\vs\animation\skinning_passNormalAsColor_vs4x.shader">
       <Filter>Resource Files\assets\shaders\vs\animation</Filter>
     </None>
-    <None Include="..\..\assets\shaders\gs\basic\drawCurve_gs4x.glsl">
-      <Filter>Resource Files\assets\shaders\gs\basic</Filter>
-    </None>
-    <None Include="..\..\assets\shaders\gs\basic\drawCurve_morphing_gs4x.glsl">
-      <Filter>Resource Files\assets\shaders\gs\basic</Filter>
-    </None>
     <None Include="..\..\assets\meshes\sphere8x6.mesh">
       <Filter>Resource Files\assets\meshes</Filter>
     </None>
@@ -189,6 +183,12 @@
     </None>
     <None Include="..\..\assets\shaders\geometry.shader">
       <Filter>Resource Files\assets\shaders</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\gs\basic\drawCurve_gs4x.shader">
+      <Filter>Resource Files\assets\shaders\gs\basic</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\gs\basic\drawCurve_morphing_gs4x.shader">
+      <Filter>Resource Files\assets\shaders\gs\basic</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

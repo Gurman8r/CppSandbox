@@ -3,7 +3,7 @@
 	By Dan Buckstein
 	Vertex shader that passes texcoord attribute down pipeline.
 	
-	Modified by: ______________________________________________________________
+	Modified by: Melody Gurman
 */
 
 // version

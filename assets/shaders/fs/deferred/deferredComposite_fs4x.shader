@@ -3,7 +3,7 @@
 	By Dan Buckstein
 	Fragment shader that composites precomputed lighting with surface color.
 	
-	Modified by: ______________________________________________________________
+	Modified by: Melody Gurman
 */
 
 // version

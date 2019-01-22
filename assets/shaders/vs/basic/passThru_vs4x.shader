@@ -3,7 +3,7 @@
 	By Dan Buckstein
 	Vertex shader that does nothing special.
 	
-	Modified by: ______________________________________________________________
+	Modified by: Melody Gurman
 */
 
 #version 410

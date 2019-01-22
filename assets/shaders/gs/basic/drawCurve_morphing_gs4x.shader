@@ -3,7 +3,7 @@
 	By Dan Buckstein
 	Geometry shader that draws the path that a morphing vertex follows.
 	
-	Modified by: ______________________________________________________________
+	Modified by: Melody Gurman
 */
 
 #version 410
