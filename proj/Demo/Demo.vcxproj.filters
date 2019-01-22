@@ -82,9 +82,6 @@
     <None Include="..\..\config.ini">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\..\assets\scripts\boot.script">
-      <Filter>Resource Files\assets\scripts</Filter>
-    </None>
     <None Include="..\..\assets\scripts\fibonacci.script">
       <Filter>Resource Files\assets\scripts</Filter>
     </None>

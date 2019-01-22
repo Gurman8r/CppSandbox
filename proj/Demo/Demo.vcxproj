@@ -156,7 +156,6 @@
   <ItemGroup>
     <None Include="..\..\assets\meshes\sphere32x24.mesh" />
     <None Include="..\..\assets\meshes\sphere8x6.mesh" />
-    <None Include="..\..\assets\scripts\boot.script" />
     <None Include="..\..\assets\scripts\fibonacci.script" />
     <None Include="..\..\assets\scripts\hello.script" />
     <None Include="..\..\assets\scripts\stub.script" />
