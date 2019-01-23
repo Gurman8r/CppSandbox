@@ -38,10 +38,10 @@ namespace ml
 	void Mesh::serialize(std::ostream & out) const
 	{
 		out << "{"
-			<< "(VP: " << m_vp.size() << ") " // << std::endl// << m_vp << std::endl
-			<< "(VT: " << m_vt.size() << ") " // << std::endl// << m_vt << std::endl
-			<< "(VN: " << m_vn.size() << ") " // << std::endl// << m_vn << std::endl
-			<< "(VF: " << m_vf.size() << ") " // << std::endl// << m_vi << std::endl
+			<< "(VP: " << m_vp.size() << ") " // << std::endl << m_vp << std::endl
+			<< "(VT: " << m_vt.size() << ") " // << std::endl << m_vt << std::endl
+			<< "(VN: " << m_vn.size() << ") " // << std::endl << m_vn << std::endl
+			<< "(VF: " << m_vf.size() << ") " // << std::endl << m_vi << std::endl
 			<< "}" << std::endl;
 	}
 
@@ -105,6 +105,10 @@ namespace ml
 				}
 			}
 		}
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		// TODO...
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	}

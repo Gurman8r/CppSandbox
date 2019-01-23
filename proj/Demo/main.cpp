@@ -386,8 +386,6 @@ int main(int argc, char** argv)
 		return ml::Debug::pause(EXIT_FAILURE);
 	}
 
-	ml::Debug::Log("Video Mode: {0}", window.videoMode());
-
 	// Init
 	if (ml::Debug::Log("Initializing..."))
 	{
