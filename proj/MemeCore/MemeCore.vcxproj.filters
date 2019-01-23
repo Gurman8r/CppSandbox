@@ -108,14 +108,8 @@
     <ClInclude Include="..\..\include\MemeCore\KeyCode.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\BaseIterator.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Axis.h">
       <Filter>Header Files\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Quaternion.h">
-      <Filter>Header Files\Maths</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Vector4.h">
       <Filter>Header Files\Maths</Filter>
@@ -163,6 +157,9 @@
       <Filter>Header Files\Maths</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\List.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Iterator.h">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>

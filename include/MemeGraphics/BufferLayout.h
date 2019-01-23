@@ -24,8 +24,6 @@ namespace ml
 			void use() const;
 		};
 
-		//using Elements = std::vector<Element>;
-
 	public:
 		BufferLayout();
 		BufferLayout(const std::vector<Element> & elements);

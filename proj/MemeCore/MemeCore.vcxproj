@@ -168,7 +168,7 @@
     <ClInclude Include="..\..\include\MemeCore\EventListener.h" />
     <ClInclude Include="..\..\include\MemeCore\EventSystem.h" />
     <ClInclude Include="..\..\include\MemeCore\Export.h" />
-    <ClInclude Include="..\..\include\MemeCore\BaseIterator.h" />
+    <ClInclude Include="..\..\include\MemeCore\Iterator.h" />
     <ClInclude Include="..\..\include\MemeCore\FileSystem.h" />
     <ClInclude Include="..\..\include\MemeCore\IComparable.h" />
     <ClInclude Include="..\..\include\MemeCore\INonCopyable.h" />
@@ -181,7 +181,6 @@
     <ClInclude Include="..\..\include\MemeCore\Maths.h" />
     <ClInclude Include="..\..\include\MemeCore\Matrix.h" />
     <ClInclude Include="..\..\include\MemeCore\MemoryTracker.h" />
-    <ClInclude Include="..\..\include\MemeCore\Quaternion.h" />
     <ClInclude Include="..\..\include\MemeCore\Rect.h" />
     <ClInclude Include="..\..\include\MemeCore\StringUtility.h" />
     <ClInclude Include="..\..\include\MemeCore\Time.h" />

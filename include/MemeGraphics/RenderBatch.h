@@ -14,7 +14,7 @@ namespace ml
 	{
 		RenderBatch(
 			VAO * vao, VBO * vbo,
-			const mat4f * proj, const mat4f * view,
+			const Transform * proj, const Transform * view,
 			Shader * shader)
 			: vao		(vao)
 			, vbo		(vbo)
@@ -64,8 +64,8 @@ namespace ml
 		FBO		* fbo;
 		Shader	* shader;
 
-		const mat4f		* proj;
-		const mat4f		* view;
+		const Transform * proj;
+		const Transform * view;
 		const Transform	* model;
 		const vec4f		* color;
 		const Texture	* texture;

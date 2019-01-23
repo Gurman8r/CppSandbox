@@ -10,7 +10,6 @@ namespace ml
 	public:
 		virtual bool cleanup() = 0;
 		virtual bool loadFromFile(const std::string & filename) = 0;
-
 	};
 }
 

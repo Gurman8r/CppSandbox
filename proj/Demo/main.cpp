@@ -158,18 +158,18 @@ enum : int32_t
 	MESH_sphere32x24,
 	MAX_MESH,
 
-	/* Sounds
-	* * * * * * * * * * * * * * * * * * * * */
-	MIN_SOUND = -1,
-	SND_test,
-	MAX_SOUND,
-
 	/* Text
 	* * * * * * * * * * * * * * * * * * * * */
 	MIN_TEXT = -1,
 	TXT_dynamic,
 	TXT_static,
 	MAX_TEXT,
+
+	/* Sounds
+	* * * * * * * * * * * * * * * * * * * * */
+	MIN_SOUND = -1,
+	SND_test,
+	MAX_SOUND,
 };
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -178,14 +178,14 @@ ml::Font		fonts	[MAX_FONT];
 ml::Image		images	[MAX_IMAGE];
 ml::Texture		textures[MAX_TEXTURE];
 ml::Shader		shaders	[MAX_SHADER];
-ml::mat4f		proj	[MAX_PROJ];
-ml::mat4f		view	[MAX_VIEW];
+ml::Transform	proj	[MAX_PROJ];
+ml::Transform	view	[MAX_VIEW];
 ml::Transform	model	[MAX_MODEL];
 ml::VAO			vao		[MAX_VAO];
 ml::VBO			vbo		[MAX_VBO];
 ml::IBO			ibo		[MAX_IBO];
 ml::FBO			fbo		[MAX_FBO];
-ml::Mesh		meshes	[MAX_MESH];
+ml::Mesh		mesh	[MAX_MESH];
 ml::Sound		sounds	[MAX_SOUND];
 ml::Text		text	[MAX_TEXT];
 
@@ -200,17 +200,15 @@ inline static bool loadAssets()
 		{
 			return ml::Debug::LogError("Failed Loading Font");
 		}
-
 		if (!fonts[FNT_consolas].loadFromFile(settings.pathTo("/fonts/consolas.ttf")))
 		{
 			return ml::Debug::LogError("Failed Loading Font");
 		}
-
+		\
 		if (!fonts[FNT_lucida_console].loadFromFile(settings.pathTo("/fonts/lucida_console.ttf")))
 		{
 			return ml::Debug::LogError("Failed Loading Font");
 		}
-
 		if (!fonts[FNT_minecraft].loadFromFile(settings.pathTo("/fonts/minecraft.ttf")))
 		{
 			return ml::Debug::LogError("Failed Loading Font");
@@ -229,9 +227,6 @@ inline static bool loadAssets()
 	// Load Textures
 	if(ml::Debug::Log("Loading Textures..."))
 	{
-		ml::Image dean;
-		dean.loadFromFile(settings.pathTo("/images/dean.png"));
-
 		if (!textures[TEX_dean].loadFromFile(settings.pathTo("/images/dean.png")))
 		{
 			return ml::Debug::LogError("Failed Loading Texture");
@@ -240,7 +235,6 @@ inline static bool loadAssets()
 		{
 			return ml::Debug::LogError("Failed Loading Texture");
 		}
-
 		if (!textures[TEX_stone_dm].loadFromFile(settings.pathTo("/textures/stone/stone_dm.png")))
 		{
 			return ml::Debug::LogError("Failed Loading Texture");
@@ -262,15 +256,13 @@ inline static bool loadAssets()
 		{
 			return ml::Debug::LogError("Failed Loading Shader: {0}", "Basic3D");
 		}
-
 		if (!shaders[GL_text].loadFromFile(settings.pathTo("/shaders/text.shader")))
 		{
 			return ml::Debug::LogError("Failed Loading Shader: {0}", "Text");
 		}
-
 		if (!shaders[GL_geometry].loadFromFile(settings.pathTo("/shaders/geometry.shader")))
 		{
-			return ml::Debug::LogError("Failed Loading Shader: {0}", "Geometry");
+			ml::Debug::LogWarning("Failed Loading Shader: {0}", "Geometry");
 		}
 	}
 
@@ -282,21 +274,27 @@ inline static bool loadAssets()
 inline static bool loadGeometry()
 {
 	// Load Meshes
-	if (ml::Debug::Log("Loading Meshes"))
+	if (ml::Debug::Log("Loading Meshes..."))
 	{
-		if (!meshes[MESH_sphere8x6].loadFromFile(settings.pathTo("/meshes/sphere8x6.mesh")))
+		auto loadMesh = [](int32_t index, const std::string & filename, bool show = false)
 		{
-			return ml::Debug::LogError("Failed Loading Mesh: {0}", "sphere8x6");
-		}
+			if (!mesh[index].loadFromFile(settings.pathTo("/meshes/" + filename)))
+			{
+				return ml::Debug::LogError("Failed Loading Mesh: {0}", filename);
+			}
+			if (show)
+			{
+				ml::Debug::out() << filename << std::endl << mesh[index];
+			}
+			return ml::Debug::Success;
+		};
 
-		//if (!meshes[MESH_sphere32x24].loadFromFile(settings.pathTo("/meshes/sphere32x24.mesh")))
-		//{
-		//	return ml::Debug::LogError("Failed Loading Mesh: {0}", "sphere32x24");
-		//}
+		loadMesh(MESH_sphere8x6, "sphere8x6.mesh", true);
+		loadMesh(MESH_sphere32x24, "sphere32x24.mesh", true);
 	}
 
-	// Load Geometry
-	if (ml::Debug::Log("Loading Geometry..."))
+	// Load Buffers
+	if (ml::Debug::Log("Loading Buffers..."))
 	{
 		static const ml::BufferLayout layout({
 			{ 0, 3, ml::GL::Float, false, ml::Vertex::Size, 0, sizeof(float) },
@@ -489,12 +487,12 @@ int main(int argc, char** argv)
 			if (ml::Shader & shader = shaders[GL_basic3D])
 			{
 				(shader)
-					.setUniform(ml::Uniform::Proj, proj[P_persp])
-					.setUniform(ml::Uniform::View, view[V_camera])
 					.setUniform(ml::Uniform::Model, model[M_cube]
 						.translate(ml::vec3f::Zero)
 						.rotate(elapsed.delta(), ml::vec3f::One)
 						.scale(ml::vec3f::One))
+					.setUniform(ml::Uniform::View,	view[V_camera])
+					.setUniform(ml::Uniform::Proj,	proj[P_persp])
 					.setUniform(ml::Uniform::Color, ml::Color::White)
 					.setUniform(ml::Uniform::Texture, textures[TEX_stone_dm])
 					.bind();
@@ -522,12 +520,12 @@ int main(int argc, char** argv)
 			if (ml::Shader & shader = shaders[GL_basic3D])
 			{
 				(shader)
-					.setUniform(ml::Uniform::Proj, proj[P_persp])
-					.setUniform(ml::Uniform::View, view[V_camera])
 					.setUniform(ml::Uniform::Model, model[M_quad]
 						.translate(ml::vec3f::Zero)
 						.rotate(-elapsed.delta(), ml::vec3f::Forward)
 						.scale(ml::vec3f::One))
+					.setUniform(ml::Uniform::View,	view[V_camera])
+					.setUniform(ml::Uniform::Proj,	proj[P_persp])
 					.setUniform(ml::Uniform::Color, ml::Color::White)
 					.setUniform(ml::Uniform::Texture, textures[TEX_sanic])
 					.bind();

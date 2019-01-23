@@ -28,15 +28,15 @@ namespace ml
 			return stream.str();
 		}
 
-		inline friend std::ostream & operator<<(std::ostream & out, const ISerializable & obj)
+		inline friend std::ostream & operator<<(std::ostream & out, const ISerializable & value)
 		{
-			obj.serialize(out);
+			value.serialize(out);
 			return out;
 		}
 
-		inline friend std::istream & operator>>(std::istream & in, ISerializable & obj)
+		inline friend std::istream & operator>>(std::istream & in, ISerializable & value)
 		{
-			obj.deserialize(in);
+			value.deserialize(in);
 			return in;
 		}
 	};

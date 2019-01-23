@@ -1,7 +1,7 @@
 #ifndef _IENUMERATOR_H_
 #define _IENUMERATOR_H_
 
-#include <MemeCore/BaseIterator.h>
+#include <MemeCore/Iterator.h>
 
 namespace ml
 {

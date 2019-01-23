@@ -82,7 +82,7 @@ namespace ml
 
 	VertexBuffer & VertexBuffer::bufferSubData(const FloatList & data, uint32_t offset)
 	{
-		return bufferSubData(&data[0], data.size(), offset);
+		return bufferSubData(&data[0], (uint32_t)data.size(), offset);
 	}
 
 }

@@ -2,9 +2,9 @@
 #define _TRANSFORM_H_
 
 #include <MemeGraphics/Export.h>
+#include <MemeGraphics/Quaternion.h>
 #include <MemeCore/Vector3.h>
 #include <MemeCore/Vector2.h>
-#include <MemeCore/Quaternion.h>
 
 namespace ml
 {

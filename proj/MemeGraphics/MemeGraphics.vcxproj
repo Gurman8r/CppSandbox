@@ -34,6 +34,7 @@
     <ClInclude Include="..\..\include\MemeGraphics\Lists.h" />
     <ClInclude Include="..\..\include\MemeGraphics\Mesh.h" />
     <ClInclude Include="..\..\include\MemeGraphics\OpenGL.h" />
+    <ClInclude Include="..\..\include\MemeGraphics\Quaternion.h" />
     <ClInclude Include="..\..\include\MemeGraphics\RenderBatch.h" />
     <ClInclude Include="..\..\include\MemeGraphics\RenderTarget.h" />
     <ClInclude Include="..\..\include\MemeGraphics\RenderWindow.h" />

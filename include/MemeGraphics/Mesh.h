@@ -27,7 +27,7 @@ namespace ml
 		List<vec3f> m_vp;
 		List<vec2f> m_vt;
 		List<vec3f> m_vn;
-		IndexList	m_vf;
+		IndexList	m_vi;
 	};
 }
 

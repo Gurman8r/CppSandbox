@@ -25,16 +25,10 @@ namespace ml
 	
 	bool Mesh::loadFromFile(const std::string & filename)
 	{
-		m_vp.clear();
-		m_vt.clear();
-		m_vn.clear();
-		m_vf.clear();
-
 		std::stringstream file;
 		if (ML_FileSystem.getFileContents(filename, file))
 		{
 			file >> (*this);
-			//Debug::out() << (*this);
 			return true;
 		}
 		return false;
@@ -43,10 +37,11 @@ namespace ml
 
 	void Mesh::serialize(std::ostream & out) const
 	{
-		out << "VP: " << m_vp.size() << std::endl << m_vp << std::endl
-			<< "VT: " << m_vt.size() << std::endl << m_vt << std::endl
-			<< "VN: " << m_vn.size() << std::endl << m_vn << std::endl
-			<< "VF: " << m_vf.size() << std::endl << m_vf << std::endl;
+		out << "VP: " << m_vp.size() << std::endl// << m_vp << std::endl
+			<< "VT: " << m_vt.size() << std::endl// << m_vt << std::endl
+			<< "VN: " << m_vn.size() << std::endl// << m_vn << std::endl
+			<< "VI: " << m_vi.size() << std::endl// << m_vi << std::endl
+			;
 	}
 
 	void Mesh::deserialize(std::istream & in)
@@ -68,6 +63,11 @@ namespace ml
 		};
 		
 		/* * * * * * * * * * * * * * * * * * * * */
+
+		m_vp.clear();
+		m_vt.clear();
+		m_vn.clear();
+		m_vi.clear();
 
 		std::string line;
 		while (std::getline(in, line))
@@ -100,10 +100,12 @@ namespace ml
 				std::string tmp;
 				while (std::getline(data, tmp, '/'))
 				{
-					m_vf.push_back(std::stoi(tmp));
+					m_vi.push_back(std::stoi(tmp));
 				}
 			}
 		}
+
+		/* * * * * * * * * * * * * * * * * * * * */
 	}
 
 }

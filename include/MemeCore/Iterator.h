@@ -1,5 +1,5 @@
-#ifndef _FORWARD_ITERATOR_H_
-#define _FORWARD_ITERATOR_H_
+#ifndef _ITERATOR_H_
+#define _ITERATOR_H_
 
 #include <MemeCore/ITrackable.h>
 #include <MemeCore/IComparable.h>
@@ -9,7 +9,6 @@
 #include <iterator>
 #include <utility>
 
-// Source:
 // https://codereview.stackexchange.com/a/74647/86601
 
 namespace ml
@@ -19,9 +18,9 @@ namespace ml
 	// UT : unqualified type
 	// DT : difference type
 	template <class IC, class VT, class UT, class DT>
-	class BaseIterator
+	class Iterator
 		: public ITrackable
-		, public IComparable<BaseIterator<IC, VT, UT, DT>>
+		, public IComparable<Iterator<IC, VT, UT, DT>>
 		, public std::iterator<IC, UT, DT, VT*, VT&>
 	{
 	public:
@@ -31,26 +30,26 @@ namespace ml
 		using difference_type	= DT;
 		using pointer			= value_type * ;
 		using reference			= value_type & ;
-		using self_type			= BaseIterator<iterator_category, value_type, unqualified_type, difference_type>;
-		using const_self_type	= BaseIterator<iterator_category, const value_type, unqualified_type, difference_type>;
+		using self_type			= Iterator<iterator_category, value_type, unqualified_type, difference_type>;
+		using const_self_type	= Iterator<iterator_category, const value_type, unqualified_type, difference_type>;
 
 	public:
-		BaseIterator()
+		Iterator()
 			: m_handle(NULL)
 		{
 		}
 		
-		BaseIterator(const self_type & copy)
+		Iterator(const self_type & copy)
 			: m_handle(copy.m_handle)
 		{
 		}
 		
-		explicit BaseIterator(unqualified_type* ptr)
+		explicit Iterator(unqualified_type* ptr)
 			: m_handle(ptr)
 		{
 		}
 		
-		virtual ~BaseIterator() {}
+		virtual ~Iterator() {}
 
 	public:
 		virtual bool equals(const self_type & value) const override
@@ -64,6 +63,12 @@ namespace ml
 		}
 
 	public:
+		inline operator const_self_type() const
+		{
+			return Iterator<iterator_category, const VT>(m_handle);
+		}
+
+
 		inline reference operator*() const
 		{
 			assert((m_handle != NULL) && "Invalid iterator dereference!");
@@ -141,18 +146,12 @@ namespace ml
 			return (m_handle - other.m_handle);
 		}
 
-
-		inline operator const_self_type() const
-		{
-			return BaseIterator<iterator_category, const VT>(m_handle);
-		}
-
 	private:
-		unqualified_type* m_handle;
+		unqualified_type * m_handle;
 	};
 
 	template <class VT, class UT = std::remove_cv_t<VT>, class DT = std::ptrdiff_t>
-	using ForwardIterator = BaseIterator<std::forward_iterator_tag, VT, UT, DT>;
+	using ForwardIterator = Iterator<std::forward_iterator_tag, VT, UT, DT>;
 }
 
-#endif // !_FORWARD_ITERATOR_H_
+#endif // !_ITERATOR_H_

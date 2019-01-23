@@ -15,7 +15,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	// Vertex List : BaseList<Vertex> : std::vector<Vertex>
+	// Vertex List : List<Vertex> : std::vector<Vertex>
 	class ML_GRAPHICS_API VertexList final
 		: public List<Vertex>
 	{
@@ -24,10 +24,27 @@ namespace ml
 		using self_type = VertexList;
 
 	public:
-		VertexList() : base_type() {}
-		VertexList(const base_type & value) : base_type(value) {}
-		VertexList(const init_type & value) : base_type(value) {}
-		VertexList(const self_type & value) : base_type(value) {}
+		VertexList()
+			: base_type()
+		{
+		}
+		VertexList(const base_type & value)
+			: base_type(value)
+		{
+		}
+		VertexList(const init_type & value)
+			: base_type(value)
+		{
+		}
+		VertexList(const self_type & value)
+			: base_type(value)
+		{
+		}
+		template <typename Iter>
+		VertexList(Iter begin, Iter end)
+			: base_type(begin, end)
+		{
+		}
 		~VertexList() {}
 
 	public:
