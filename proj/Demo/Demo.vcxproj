@@ -221,7 +221,10 @@
     <Image Include="..\..\assets\textures\stone\stone_nm.png" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Demo.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Demo.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
