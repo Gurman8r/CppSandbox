@@ -446,7 +446,11 @@ namespace demo // Game Loop
 			ev.window.setCursor(ml::Window::Cursor::Normal);
 			ev.window.setPosition((ml::VideoMode::desktop().size - ev.window.size()) / 2);
 			ev.window.setViewport(ml::vec2i::Zero, ev.window.size());
-			ev.window.setIcons({ ml::Image(images[IMG_icon]).flipVertically() });
+			
+			if(ml::Image & icon = (images[IMG_icon]))
+			{
+				ev.window.setIcons({ icon.flipVertically() });
+			}
 
 			// Orthographic
 			proj[P_ortho] = ml::Transform::Ortho(
