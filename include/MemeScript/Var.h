@@ -93,7 +93,7 @@ namespace ml
 		float		floatValue() const;
 		Var			elemValue(std::size_t i) const;
 		std::string	errorValue() const;
-		int32_t			intValue() const;
+		int32_t		intValue() const;
 		Ptr			pointerValue() const;
 		std::string	stringValue() const;
 		std::string	textValue() const;
@@ -178,21 +178,15 @@ namespace ml
 		static Var makeRecursive(const TokenList & toks);
 
 	public: // Helper Functions
-		inline int32_t		getScope() const
-		{
-			return m_scope;
-		}
-		inline Type		getType() const
-		{
-			return m_type;
-		}
+		inline int32_t	getScope()	const { return m_scope; }
+		inline Type		getType()	const { return m_type; }
 
-		inline Var &	setScope(int32_t value)
+		inline Var & setScope(int32_t value)
 		{
 			m_scope = value;
 			return (*this);
 		}
-		inline Var &	setType(const Type & value)
+		inline Var & setType(const Type & value)
 		{
 			m_changed = !compareType(value);
 			m_type = value;

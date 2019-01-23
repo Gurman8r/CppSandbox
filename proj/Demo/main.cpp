@@ -127,7 +127,7 @@ enum : int32_t
 	MIN_VAO = -1,
 	VAO_cube,
 	VAO_quad,
-	VAO_batch,
+	VAO_text,
 	MAX_VAO,
 
 	/* VBOs
@@ -135,7 +135,7 @@ enum : int32_t
 	MIN_VBO = -1,
 	VBO_cube,
 	VBO_quad,
-	VBO_batch,
+	VBO_text,
 	MAX_VBO,
 
 	/* IBOs
@@ -161,8 +161,8 @@ enum : int32_t
 	/* Text
 	* * * * * * * * * * * * * * * * * * * * */
 	MIN_TEXT = -1,
-	TXT_dynamic,
-	TXT_static,
+	TEXT_dynamic,
+	TEXT_static,
 	MAX_TEXT,
 
 	/* Sounds
@@ -288,8 +288,8 @@ inline static bool loadGeometry()
 			return ml::Debug::Success;
 		};
 
-		loadMesh(MESH_sphere8x6, "sphere8x6.mesh", true);
-		loadMesh(MESH_sphere32x24, "sphere32x24.mesh", true);
+		loadMesh(MESH_sphere8x6, "sphere8x6.mesh");
+		loadMesh(MESH_sphere32x24, "sphere32x24.mesh");
 	}
 
 	// Load Buffers
@@ -338,16 +338,16 @@ inline static bool loadGeometry()
 
 
 		// Text
-		vao[VAO_batch]
+		vao[VAO_text]
 			.create(ml::GL::Triangles)
 			.bind();
-		vbo[VBO_batch]
+		vbo[VBO_text]
 			.create(ml::GL::DynamicDraw)
 			.bind()
-			.bufferData(NULL, (6 * ml::Vertex::Size));
+			.bufferData(NULL, (ml::Glyph::VertexCount * ml::Vertex::Size));
 		layout.bind();
-		vbo[VBO_batch].unbind();
-		vao[VAO_batch].unbind();
+		vbo[VBO_text].unbind();
+		vao[VAO_text].unbind();
 	}
 	return true;
 }
@@ -437,7 +437,7 @@ int main(int argc, char** argv)
 			.scale(ml::vec3f::One * 5.f);
 
 		// Static Text
-		text[TXT_static]
+		text[TEXT_static]
 			.setFont(&fonts[FNT_minecraft])
 			.setFontSize(72)
 			.setScale(ml::vec2f::One)
@@ -548,8 +548,8 @@ int main(int argc, char** argv)
 			if(ml::Shader & shader = shaders[GL_text])
 			{
 				static ml::RenderBatch batch(
-					&vao[VAO_batch],
-					&vbo[VBO_batch],
+					&vao[VAO_text],
+					&vbo[VBO_text],
 					&proj[P_ortho],
 					NULL,
 					&shader);
@@ -567,7 +567,7 @@ int main(int argc, char** argv)
 				// Dynamic Text
 				for (uint32_t i = (MIN_FONT + 1); i < MAX_FONT; i++)
 				{
-					window.draw(text[TXT_dynamic]
+					window.draw(text[TEXT_dynamic]
 						.setFont(&fonts[i])
 						.setFontSize(fontSize)
 						.setScale(ml::vec2f::One)
@@ -578,7 +578,7 @@ int main(int argc, char** argv)
 				}
 
 				// Static Text
-				window.draw(text[TXT_static], batch);
+				window.draw(text[TEXT_static], batch);
 			}
 		}
 		window.swapBuffers().pollEvents();
