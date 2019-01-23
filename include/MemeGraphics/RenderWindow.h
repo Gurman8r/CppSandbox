@@ -14,7 +14,6 @@ namespace ml
 		RenderWindow() {}
 		virtual ~RenderWindow() {}
 
-		void validate();
 		bool initialize() override;
 
 	private:

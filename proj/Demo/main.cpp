@@ -17,6 +17,7 @@
 #include <MemeGraphics/Mesh.h>
 #include <MemeAudio/Sound.h>
 #include <MemeNet/Client.h>
+#include <MemeNet/Server.h>
 #include <MemeScript/Interpreter.h>
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -161,8 +162,8 @@ enum : int32_t
 	/* Text
 	* * * * * * * * * * * * * * * * * * * * */
 	MIN_TEXT = -1,
-	TEXT_dynamic,
-	TEXT_static,
+	TXT_dynamic,
+	TXT_static,
 	MAX_TEXT,
 
 	/* Sounds
@@ -186,8 +187,10 @@ ml::VBO			vbo		[MAX_VBO];
 ml::IBO			ibo		[MAX_IBO];
 ml::FBO			fbo		[MAX_FBO];
 ml::Mesh		mesh	[MAX_MESH];
-ml::Sound		sounds	[MAX_SOUND];
 ml::Text		text	[MAX_TEXT];
+ml::Sound		sounds	[MAX_SOUND];
+ml::Client		client;
+ml::Server		server;
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -198,19 +201,19 @@ inline static bool loadAssets()
 	{
 		if (!fonts[FNT_clacon].loadFromFile(settings.pathTo("/fonts/clacon.ttf")))
 		{
-			return ml::Debug::LogError("Failed Loading Font");
+			ml::Debug::LogWarning("Failed Loading Font");
 		}
 		if (!fonts[FNT_consolas].loadFromFile(settings.pathTo("/fonts/consolas.ttf")))
 		{
-			return ml::Debug::LogError("Failed Loading Font");
+			ml::Debug::LogWarning("Failed Loading Font");
 		}
 		if (!fonts[FNT_lucida_console].loadFromFile(settings.pathTo("/fonts/lucida_console.ttf")))
 		{
-			return ml::Debug::LogError("Failed Loading Font");
+			ml::Debug::LogWarning("Failed Loading Font");
 		}
 		if (!fonts[FNT_minecraft].loadFromFile(settings.pathTo("/fonts/minecraft.ttf")))
 		{
-			return ml::Debug::LogError("Failed Loading Font");
+			ml::Debug::LogWarning("Failed Loading Font");
 		}
 	}
 
@@ -219,7 +222,7 @@ inline static bool loadAssets()
 	{
 		if (!images[IMG_icon].loadFromFile(settings.pathTo("/images/dean.png")))
 		{
-			return ml::Debug::LogError("Failed Loading Icon");
+			ml::Debug::LogWarning("Failed Loading Icon");
 		}
 	}
 
@@ -228,23 +231,23 @@ inline static bool loadAssets()
 	{
 		if (!textures[TEX_dean].loadFromFile(settings.pathTo("/images/dean.png")))
 		{
-			return ml::Debug::LogError("Failed Loading Texture");
+			ml::Debug::LogWarning("Failed Loading Texture");
 		}
 		if (!textures[TEX_sanic].loadFromFile(settings.pathTo("/images/sanic.png")))
 		{
-			return ml::Debug::LogError("Failed Loading Texture");
+			ml::Debug::LogWarning("Failed Loading Texture");
 		}
 		if (!textures[TEX_stone_dm].loadFromFile(settings.pathTo("/textures/stone/stone_dm.png")))
 		{
-			return ml::Debug::LogError("Failed Loading Texture");
+			ml::Debug::LogWarning("Failed Loading Texture");
 		}
 		if (!textures[TEX_stone_hm].loadFromFile(settings.pathTo("/textures/stone/stone_hm.png")))
 		{
-			return ml::Debug::LogError("Failed Loading Texture");
+			ml::Debug::LogWarning("Failed Loading Texture");
 		}
 		if (!textures[TEX_stone_nm].loadFromFile(settings.pathTo("/textures/stone/stone_nm.png")))
 		{
-			return ml::Debug::LogError("Failed Loading Texture");
+			ml::Debug::LogWarning("Failed Loading Texture");
 		}
 	}
 
@@ -253,11 +256,11 @@ inline static bool loadAssets()
 	{
 		if (!shaders[GL_basic3D].loadFromFile(settings.pathTo("/shaders/basic3D.shader")))
 		{
-			return ml::Debug::LogError("Failed Loading Shader: {0}", "Basic3D");
+			ml::Debug::LogWarning("Failed Loading Shader: {0}", "Basic3D");
 		}
 		if (!shaders[GL_text].loadFromFile(settings.pathTo("/shaders/text.shader")))
 		{
-			return ml::Debug::LogError("Failed Loading Shader: {0}", "Text");
+			ml::Debug::LogWarning("Failed Loading Shader: {0}", "Text");
 		}
 		if (!shaders[GL_geometry].loadFromFile(settings.pathTo("/shaders/geometry.shader")))
 		{
@@ -275,21 +278,14 @@ inline static bool loadGeometry()
 	// Load Meshes
 	if (ml::Debug::Log("Loading Meshes..."))
 	{
-		auto loadMesh = [](int32_t index, const std::string & filename, bool show = false)
+		if (!mesh[MESH_sphere8x6].loadFromFile(settings.pathTo("/meshes/sphere8x6.mesh")))
 		{
-			if (!mesh[index].loadFromFile(settings.pathTo("/meshes/" + filename)))
-			{
-				return ml::Debug::LogError("Failed Loading Mesh: {0}", filename);
-			}
-			if (show)
-			{
-				ml::Debug::out() << filename << std::endl << mesh[index];
-			}
-			return ml::Debug::Success;
-		};
-
-		loadMesh(MESH_sphere8x6, "sphere8x6.mesh");
-		loadMesh(MESH_sphere32x24, "sphere32x24.mesh");
+			return ml::Debug::LogError("Failed Loading Mesh: {0}", "sphere8x6");
+		}
+		if (!mesh[MESH_sphere32x24].loadFromFile(settings.pathTo("/meshes/sphere32x24.mesh")))
+		{
+			return ml::Debug::LogError("Failed Loading Mesh: {0}", "sphere32x24");
+		}
 	}
 
 	// Load Buffers
@@ -383,19 +379,21 @@ int main(int argc, char** argv)
 	ml::RenderWindow window;
 	if (!window.create(
 		settings.title,
-		ml::VideoMode(settings.width, settings.height, 32),
+		ml::VideoMode({ settings.width, settings.height }, 32),
 		ml::Window::Style::Default,
 		ml::Context(3, 3, 24, 8, ml::Context::Compat, false, false)))
 	{
 		return ml::Debug::pause(EXIT_FAILURE);
 	}
 
+	ml::Debug::Log("Video Mode: {0}", window.videoMode());
+
 	// Init
 	if (ml::Debug::Log("Initializing..."))
 	{
 		// Setup Window
-		window.setCursor(ml::Window::CursorMode::Normal);
-		window.setPosition((ml::VideoMode::getDesktopMode().size() - window.size()) / 2);
+		window.setCursor(ml::Window::Cursor::Normal);
+		window.setPosition((ml::VideoMode::desktop().size - window.size()) / 2);
 		window.setViewport(ml::vec2i::Zero, window.size());
 
 		// Load Assets
@@ -437,7 +435,7 @@ int main(int argc, char** argv)
 			.scale(ml::vec3f::One * 5.f);
 
 		// Static Text
-		text[TEXT_static]
+		text[TXT_static]
 			.setFont(&fonts[FNT_minecraft])
 			.setFontSize(72)
 			.setScale(ml::vec2f::One)
@@ -488,7 +486,7 @@ int main(int argc, char** argv)
 				(shader)
 					.setUniform(ml::Uniform::Model, model[M_cube]
 						.translate(ml::vec3f::Zero)
-						.rotate(elapsed.delta(), ml::vec3f::One)
+						.rotate(+elapsed.delta(), ml::vec3f::One)
 						.scale(ml::vec3f::One))
 					.setUniform(ml::Uniform::View,	view[V_camera])
 					.setUniform(ml::Uniform::Proj,	proj[P_persp])
@@ -567,18 +565,18 @@ int main(int argc, char** argv)
 				// Dynamic Text
 				for (uint32_t i = (MIN_FONT + 1); i < MAX_FONT; i++)
 				{
-					window.draw(text[TEXT_dynamic]
+					window.draw(text[TXT_dynamic]
 						.setFont(&fonts[i])
 						.setFontSize(fontSize)
 						.setScale(ml::vec2f::One)
 						.setPosition(origin + (offset * (float)(i + 1)))
 						.setColor(colors[i])
-						.setText(fonts[i].str() + " | " + window.title())
+						.setText(fonts[i].to_string() + " | " + window.title())
 					, batch);
 				}
 
 				// Static Text
-				window.draw(text[TEXT_static], batch);
+				window.draw(text[TXT_static], batch);
 			}
 		}
 		window.swapBuffers().pollEvents();

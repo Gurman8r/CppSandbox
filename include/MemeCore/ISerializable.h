@@ -13,27 +13,28 @@ namespace ml
 	public:
 		virtual void serialize(std::ostream & out) const
 		{
-			const std::type_info & type(typeid(*this));
-			out << "[" << type.name() << "]";
+			out << "[" << type_info().name() << "]";
 		}
-
 		virtual void deserialize(std::istream & in) 
 		{
 		}
 
-		virtual const std::string str() const
+	public:
+		inline const std::type_info &	type_info()	const { return typeid(*this); }
+		inline const std::string		to_string()	const { return to_stream().str(); }
+		inline const std::stringstream	to_stream() const
 		{
-			std::stringstream stream;
-			serialize(stream);
-			return stream.str();
+			std::stringstream temp;
+			temp << (*this);
+			return temp;
 		}
 
+	public:
 		inline friend std::ostream & operator<<(std::ostream & out, const ISerializable & value)
 		{
 			value.serialize(out);
 			return out;
 		}
-
 		inline friend std::istream & operator>>(std::istream & in, ISerializable & value)
 		{
 			value.deserialize(in);

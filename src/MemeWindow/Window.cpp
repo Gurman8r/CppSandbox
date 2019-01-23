@@ -1,20 +1,50 @@
 #include <MemeWindow/Window.h>
 #include <MemeCore/DebugUtility.h>
+
 #include <GLFW/glfw3.h>
+#define ML_WINDOW	static_cast<GLFWwindow*>
+#define ML_MONITOR	static_cast<GLFWmonitor*>
 
 namespace ml
 {
-	bool Window::create(
-		const std::string & title, 
-		const VideoMode & mode, const Style & style, const Context & context)
+	Window::Window()
+		: m_window		(NULL)
+		, m_monitor		(NULL)
+		, m_share		(NULL)
+		, m_title		("Meme Window")
+		, m_context		()
+		, m_videoMode	()
+		, m_style		(Window::Style::Default)
+		, m_cursorMode	(Window::Cursor::Hidden)
+		, m_position	(vec2i::Zero)
 	{
-		m_handle	= NULL;
+	}
+	Window::Window(const Window & copy)
+		: m_window		(copy.m_window)
+		, m_monitor		(copy.m_monitor)
+		, m_share		(copy.m_share)
+		, m_title		(copy.m_title)
+		, m_context		(copy.m_context)
+		, m_videoMode	(copy.m_videoMode)
+		, m_style		(copy.m_style)
+		, m_cursorMode	(copy.m_cursorMode)
+		, m_position	(copy.m_position)
+	{
+	}
+	Window::~Window()
+	{
+	}
+
+	bool Window::create(
+		const std::string	& title, 
+		const VideoMode		& videoMode, 
+		const Style			& style, 
+		const Context		& context)
+	{
 		m_title		= title;
 		m_context	= context;
-		m_mode		= mode;
+		m_videoMode	= videoMode;
 		m_style		= style;
-		m_position	= vec2i::Zero;
-		m_size		= mode.size();
 
 		if (glfwInit() == GL_TRUE)
 		{
@@ -34,14 +64,14 @@ namespace ml
 			glfwWindowHint(GLFW_FLOATING,		(m_style & Style::Floating));
 			glfwWindowHint(GLFW_MAXIMIZED,		(m_style & Style::Maximized));
 
-			if (m_handle = static_cast<GLFWwindow*>(glfwCreateWindow(
-				this->width(),
-				this->height(),
-				this->title().c_str(),
-				NULL,
-				NULL)))
+			if (m_window = ML_WINDOW(glfwCreateWindow(
+				width(), 
+				height(), 
+				m_title.c_str(),
+				ML_MONITOR(m_monitor),
+				ML_WINDOW(m_share))))
 			{
-				glfwMakeContextCurrent(static_cast<GLFWwindow*>(m_handle));
+				glfwMakeContextCurrent(ML_WINDOW(m_window));
 
 				return initialize();
 			}
@@ -52,43 +82,43 @@ namespace ml
 
 	bool Window::initialize()
 	{
-		glfwSetWindowSizeCallback(static_cast<GLFWwindow*>(m_handle),
+		glfwSetWindowSizeCallback(ML_WINDOW(m_window),
 			[](GLFWwindow * window, int32_t width, int32_t height)
 		{
 			// Window Size Callback
 		});
 
-		glfwSetWindowPosCallback(static_cast<GLFWwindow*>(m_handle),
+		glfwSetWindowPosCallback(ML_WINDOW(m_window),
 			[](GLFWwindow * window, int32_t width, int32_t h)
 		{
 			// Window Pos Callback
 		});
 
-		glfwSetCharCallback(static_cast<GLFWwindow*>(m_handle),
+		glfwSetCharCallback(ML_WINDOW(m_window),
 			[](GLFWwindow * window, uint32_t c)
 		{
-			// Char Callback
+			// Char (Typed) Callback
 		});
 
-		glfwSetScrollCallback(static_cast<GLFWwindow*>(m_handle),
+		glfwSetScrollCallback(ML_WINDOW(m_window),
 			[](GLFWwindow * window, double x, double y)
 		{
 			// Scroll Callback
 		});
 
-		glfwSetWindowCloseCallback(static_cast<GLFWwindow*>(m_handle),
+		glfwSetWindowCloseCallback(ML_WINDOW(m_window),
 			[](GLFWwindow * window)
 		{
 			// Window Closed Callback
 		});
 
-		glfwSetFramebufferSizeCallback(static_cast<GLFWwindow*>(m_handle),
+		glfwSetFramebufferSizeCallback(ML_WINDOW(m_window),
 			[](GLFWwindow * window, int32_t width, int32_t height)
 		{
 			// Framebuffer Resized Callback
 		});
 
-		glfwSetWindowFocusCallback(static_cast<GLFWwindow*>(m_handle),
+		glfwSetWindowFocusCallback(ML_WINDOW(m_window),
 			[](GLFWwindow * window, int32_t focused)
 		{
 			// Window Focused Callback
@@ -100,19 +130,19 @@ namespace ml
 
 	Window & Window::close()
 	{
-		glfwSetWindowShouldClose(static_cast<GLFWwindow*>(m_handle), GLFW_TRUE);
+		glfwSetWindowShouldClose(ML_WINDOW(m_window), GLFW_TRUE);
 		return (*this);
 	}
 
 	Window & Window::maximize()
 	{
-		glfwRestoreWindow(static_cast<GLFWwindow*>(m_handle));
+		glfwRestoreWindow(ML_WINDOW(m_window));
 		return (*this);
 	}
 
 	Window & Window::minimize()
 	{
-		glfwIconifyWindow(static_cast<GLFWwindow*>(m_handle));
+		glfwIconifyWindow(ML_WINDOW(m_window));
 		return (*this);
 	}
 
@@ -124,15 +154,15 @@ namespace ml
 
 	Window & Window::swapBuffers()
 	{
-		glfwSwapBuffers(static_cast<GLFWwindow*>(m_handle));
+		glfwSwapBuffers(ML_WINDOW(m_window));
 		return (*this);
 	}
 
 	
-	Window & Window::setCursor(CursorMode value)
+	Window & Window::setCursor(Cursor value)
 	{
 		m_cursorMode = value;
-		glfwSetInputMode(static_cast<GLFWwindow*>(m_handle), GLFW_CURSOR, value);
+		glfwSetInputMode(ML_WINDOW(m_window), GLFW_CURSOR, value);
 		return (*this);
 	}
 
@@ -153,11 +183,11 @@ namespace ml
 				};
 			}
 
-			glfwSetWindowIcon(static_cast<GLFWwindow*>(m_handle), count, &temp[0]);
+			glfwSetWindowIcon(ML_WINDOW(m_window), count, &temp[0]);
 		}
 		else
 		{
-			glfwSetWindowIcon(static_cast<GLFWwindow*>(m_handle), 0, NULL);
+			glfwSetWindowIcon(ML_WINDOW(m_window), 0, NULL);
 		}
 		return (*this);
 	}
@@ -165,28 +195,28 @@ namespace ml
 	Window & Window::setPosition(const vec2i & value)
 	{
 		m_position = value;
-		glfwSetWindowPos(static_cast<GLFWwindow*>(m_handle), value[0], value[1]);
+		glfwSetWindowPos(ML_WINDOW(m_window), value[0], value[1]);
 		return (*this);
 	}
 
 	Window & Window::setSize(const vec2u & value)
 	{
-		m_size = value;
-		glfwSetWindowSize(static_cast<GLFWwindow*>(m_handle), value[0], value[1]);
+		m_videoMode.size = value;
+		glfwSetWindowSize(ML_WINDOW(m_window), value[0], value[1]);
 		return (*this);
 	}
 
 	Window & Window::setTitle(const std::string & value)
 	{
 		m_title = value;
-		glfwSetWindowTitle(static_cast<GLFWwindow*>(m_handle), value.c_str());
+		glfwSetWindowTitle(ML_WINDOW(m_window), value.c_str());
 		return (*this);
 	}
 
 
 	bool Window::isOpen() const
 	{
-		return !glfwWindowShouldClose(static_cast<GLFWwindow*>(m_handle));
+		return !glfwWindowShouldClose(ML_WINDOW(m_window));
 	}
 
 	float Window::getTime() const

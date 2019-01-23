@@ -26,10 +26,24 @@ namespace ml
 
 		bool update(const Texture & texture);
 		bool update(const Image & image);
-		bool update(const uint8_t * pixels, uint32_t width, uint32_t height, uint32_t x, uint32_t y);
+		bool update(
+			const uint8_t * pixels, 
+			uint32_t width, 
+			uint32_t height, 
+			uint32_t x, 
+			uint32_t y);
 
 		bool create(uint32_t width, uint32_t height);
-		bool create(uint32_t width, uint32_t height, const uint8_t * pixels, GL::Format colFmt, GL::Format intFmt, bool smooth, bool repeat, bool mipmapped);
+		bool create(
+			const uint8_t * pixels, 
+			uint32_t width, 
+			uint32_t height,
+			GL::Format colFmt, 
+			GL::Format intFmt, 
+			bool smooth,
+			bool repeat, 
+			bool srgb, 
+			bool mipmapped);
 
 		Texture & swap(Texture & value);
 		Texture & setRepeated(bool value);
@@ -53,7 +67,7 @@ namespace ml
 		inline const vec2u &	size()		const { return m_size; }
 		inline const vec2u &	actualSize()const { return m_actualSize; }
 		inline const bool &		smooth()	const { return m_smooth; }
-		inline const bool &		sRGB()		const { return m_sRGB; }
+		inline const bool &		sRGB()		const { return m_srgb; }
 		inline const bool &		repeated()	const { return m_repeated; }
 		inline const bool &		mipmapped()	const { return m_mipmapped; }
 		inline const uint32_t & width()		const { return size().front(); }
@@ -63,7 +77,7 @@ namespace ml
 		vec2u	m_size;
 		vec2u	m_actualSize;
 		bool	m_smooth;
-		bool	m_sRGB;
+		bool	m_srgb;
 		bool	m_repeated;
 		bool	m_mipmapped;
 	};

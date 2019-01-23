@@ -20,6 +20,7 @@ namespace ml
 	public:
 		using data_type	= T;
 		using self_type	= Matrix<data_type, _Cols, _Rows>;
+		using size_type = std::size_t;
 
 		enum
 		{
@@ -40,7 +41,7 @@ namespace ml
 		Matrix(const data_type & value)
 			: self_type()
 		{
-			for (std::size_t i = 0; i < Size; i++)
+			for (size_type i = 0; i < Size; i++)
 			{
 				(*this)[i] = value;
 			}
@@ -49,7 +50,7 @@ namespace ml
 		Matrix(const data_type * value)
 			: self_type()
 		{
-			for (std::size_t i = 0; i < Size; i++)
+			for (size_type i = 0; i < Size; i++)
 			{
 				(*this)[i] = value[i];
 			}
@@ -69,13 +70,13 @@ namespace ml
 		{
 		}
 		
-		template <typename U, std::size_t C, std::size_t R>
+		template <typename U, size_type C, size_type R>
 		Matrix(const Matrix<U, C, R> & copy)
 			: self_type()
 		{
-			const std::size_t imax = std::min<std::size_t>(Size, copy.Size);
+			const size_type imax = std::min<size_type>(Size, copy.Size);
 
-			for (std::size_t i = 0; i < imax; i++)
+			for (size_type i = 0; i < imax; i++)
 			{
 				(*this)[i] = static_cast<data_type>(copy[i]);
 			}
@@ -89,12 +90,12 @@ namespace ml
 			return m_data;
 		}
 		
-		inline const data_type & operator[](std::size_t index) const
+		inline const data_type & operator[](size_type index) const
 		{
 			return m_data[index];
 		}
 		
-		inline data_type & operator[](std::size_t index)
+		inline data_type & operator[](size_type index)
 		{
 			return m_data[index];
 		}
@@ -102,9 +103,9 @@ namespace ml
 		inline static self_type identity()
 		{
 			self_type value;
-			for (std::size_t y = 0; y < Rows; y++)
+			for (size_type y = 0; y < Rows; y++)
 			{
-				for (std::size_t x = 0; x < Cols; x++)
+				for (size_type x = 0; x < Cols; x++)
 				{
 					value[y * Cols + x] = (x == y) ? (data_type)1 : (data_type)0;
 				}
@@ -116,9 +117,9 @@ namespace ml
 		inline virtual void serialize(std::ostream & out) const override
 		{
 			out << "{ ";
-			for (std::size_t y = 0; y < Rows; y++)
+			for (size_type y = 0; y < Rows; y++)
 			{
-				for (std::size_t x = 0; x < Cols; x++)
+				for (size_type x = 0; x < Cols; x++)
 				{
 					out << (*this)[y * Cols + x]
 						<< ((x < Cols - 1) ? ", " : " }");
@@ -132,7 +133,7 @@ namespace ml
 		
 		inline virtual void deserialize(std::istream & in) override
 		{
-			for (std::size_t i = 0; i < Size; i++)
+			for (size_type i = 0; i < Size; i++)
 			{
 				if (in.good())
 				{
@@ -148,7 +149,7 @@ namespace ml
 	public:
 		inline virtual bool equals(const self_type & value) const override
 		{
-			for (std::size_t i = 0; i < Size; i++)
+			for (size_type i = 0; i < Size; i++)
 			{
 				if ((*this)[i] != value[i])
 				{
@@ -160,7 +161,7 @@ namespace ml
 		
 		inline virtual bool lessThan(const self_type & value) const override
 		{
-			for (std::size_t i = 0; i < Size; i++)
+			for (size_type i = 0; i < Size; i++)
 			{
 				if ((*this)[i] >= value[i])
 				{
@@ -171,16 +172,16 @@ namespace ml
 		}
 
 	public:
-		inline static const std::vector<T> & Flatten(const self_type * value, std::size_t length)
+		inline static const std::vector<T> & Flatten(const self_type * value, size_type length)
 		{
 			static std::vector<T> out;
-			if (const std::size_t imax = (length * Size))
+			if (const size_type imax = (length * Size))
 			{
 				if (out.size() != imax)
 				{
 					out.resize(imax);
 				}
-				for (std::size_t i = 0; i < imax; i++)
+				for (size_type i = 0; i < imax; i++)
 				{
 					out[i] = value[i / Size][i % Size];
 				}

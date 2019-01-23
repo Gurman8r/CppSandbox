@@ -35,6 +35,37 @@ namespace ml
 		return m_good;
 	}
 
+	void OpenGL::validate(uint32_t & majorVersion, uint32_t & minorVersion)
+	{
+		if (good())
+		{
+			Debug::Log("OpenGL version supported by this platform: {0}",
+				getString(GL::Version));
+
+			majorVersion = (uint32_t)getInt(GL::MajorVersion);
+			minorVersion = (uint32_t)getInt(GL::MinorVersion);
+			
+			if (getError() == GL::InvalidEnum)
+			{
+				if (GL::CStr version = getString(GL::Version))
+				{
+					majorVersion = version[0] - '0';
+					minorVersion = version[2] - '0';
+				}
+				else
+				{
+					Debug::LogWarning("Can't get the version number, assuming 1.1");
+					majorVersion = 1;
+					minorVersion = 1;
+				}
+			}
+
+			Debug::Log("Using OpenGL Version: {0}.{1}",
+				majorVersion,
+				minorVersion);
+		}
+	}
+
 	
 	// Flags
 

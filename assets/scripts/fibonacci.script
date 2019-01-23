@@ -24,9 +24,5 @@ fib = [](num);
 	};
 };
 
-main = []();
-{
-	fib(100);
-	return true;
-};
-return main();
+fib(100);
+return true;

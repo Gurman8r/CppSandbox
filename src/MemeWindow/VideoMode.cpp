@@ -7,23 +7,23 @@
 namespace ml
 {
 	VideoMode::VideoMode()
-		: width(0)
-		, height(0)
-		, bitsPerPixel(0)
+		: VideoMode(vec2u::Zero, 0)
 	{
 	}
 
 	VideoMode::VideoMode(uint32_t width, uint32_t height, uint32_t bitsPerPixel)
-		: width(width)
-		, height(height)
+		: VideoMode(vec2u(width, height), bitsPerPixel)
+	{
+	}
+
+	VideoMode::VideoMode(const vec2u & size, uint32_t bitsPerPixel)
+		: size(size)
 		, bitsPerPixel(bitsPerPixel)
 	{
 	}
 
 	VideoMode::VideoMode(const VideoMode & copy)
-		: width(copy.width)
-		, height(copy.height)
-		, bitsPerPixel(copy.bitsPerPixel)
+		: VideoMode(copy.size, copy.bitsPerPixel)
 	{
 	}
 
@@ -32,78 +32,61 @@ namespace ml
 	}
 
 
-	VideoMode VideoMode::getDesktopMode()
+	const VideoMode & VideoMode::desktop()
 	{
+		static VideoMode temp;
+		static bool checked = false;
+		if(!checked)
+		{	checked = true;
+
 #ifdef ML_SYSTEM_WINDOWS
-		DEVMODE win32Mode;
-		win32Mode.dmSize = sizeof(win32Mode);
-		EnumDisplaySettings(NULL, ENUM_CURRENT_SETTINGS, &win32Mode);
-		return VideoMode(
-			win32Mode.dmPelsWidth,
-			win32Mode.dmPelsHeight,
-			win32Mode.dmBitsPerPel);
-#else
-		return VideoMode();
-#endif
-
-	}
-
-	std::vector<VideoMode> VideoMode::getFullscreenModes()
-	{
-		std::vector<VideoMode> modes;
-
-#ifdef ML_SYSTEM_WINDOWS		
-		DEVMODE win32Mode;
-		win32Mode.dmSize = sizeof(win32Mode);
-		for (int32_t count = 0; EnumDisplaySettings(NULL, count, &win32Mode); ++count)
-		{
-			VideoMode mode(
+			DEVMODE win32Mode;
+			win32Mode.dmSize = sizeof(win32Mode);
+			EnumDisplaySettings(NULL, ENUM_CURRENT_SETTINGS, &win32Mode);
+			temp = VideoMode(
 				win32Mode.dmPelsWidth,
 				win32Mode.dmPelsHeight,
 				win32Mode.dmBitsPerPel);
-			if (std::find(modes.begin(), modes.end(), mode) == modes.end())
-			{
-				modes.push_back(mode);
-			}
-		}
 #else
-
+			temp = VideoMode()
 #endif
-		return modes;
+		}
+		return temp;
 	}
 
-	bool VideoMode::isValidFullscreen() const
+	const List<VideoMode> & VideoMode::resolutions()
 	{
-		const std::vector<VideoMode>& modes = getFullscreenModes();
+		static List<VideoMode> temp;
+		static bool checked = false;
+		if(!checked)
+		{	checked = true;
+
+#ifdef ML_SYSTEM_WINDOWS
+			DEVMODE win32Mode;
+			win32Mode.dmSize = sizeof(win32Mode);
+			for (int32_t count = 0; EnumDisplaySettings(NULL, count, &win32Mode); ++count)
+			{
+				VideoMode mode(
+					win32Mode.dmPelsWidth,
+					win32Mode.dmPelsHeight,
+					win32Mode.dmBitsPerPel);
+
+				if (std::find(temp.begin(), temp.end(), mode) == temp.end())
+				{
+					temp.push_back(mode);
+				}
+			}
+#else
+			temp = List<VideoMode>();
+#endif
+		}
+		return temp;
+	}
+
+	bool VideoMode::isValidFullscreenMode() const
+	{
+		static const List<VideoMode> & modes = resolutions();
 
 		return std::find(modes.begin(), modes.end(), *this) != modes.end();
-	}
-	
-	
-	inline bool VideoMode::equals(const VideoMode & value) const
-	{
-		return
-			(width == value.width) &&
-			(height == value.height) &&
-			(bitsPerPixel == value.bitsPerPixel);
-	}
-	
-	inline bool VideoMode::lessThan(const VideoMode & value) const
-	{
-		if (bitsPerPixel == value.bitsPerPixel)
-		{
-			if (width == value.width)
-			{
-				return height < value.height;
-			}
-			else
-			{
-				return width < value.width;
-			}
-		}
-		else
-		{
-			return bitsPerPixel < value.bitsPerPixel;
-		}
 	}
 }

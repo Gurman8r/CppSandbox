@@ -3,6 +3,7 @@
 
 #include <MemeWindow/Export.h>
 #include <MemeCore/Vector2.h>
+#include <MemeCore/List.h>
 
 namespace ml
 {
@@ -12,22 +13,34 @@ namespace ml
 	{
 		VideoMode();
 		VideoMode(uint32_t width, uint32_t height, uint32_t bitsPerPixel = 32);
+		VideoMode(const vec2u & size, uint32_t bitsPerPixel = 32);
 		VideoMode(const VideoMode & copy);
 		~VideoMode();
 
-		static VideoMode getDesktopMode();
-		static std::vector<VideoMode> getFullscreenModes();
+		static const VideoMode & desktop();
+		static const List<VideoMode> & resolutions();
 
-		bool isValidFullscreen() const;
+		bool isValidFullscreenMode() const;
 
-		uint32_t width;
-		uint32_t height;
+		vec2u	 size;
 		uint32_t bitsPerPixel;
 
-		inline vec2u size() const { return vec2u(width, height); }
+		inline const uint32_t & width()  const { return size.front(); }
+		inline const uint32_t & height() const { return size.back(); }
 
-		bool equals(const VideoMode & value) const override;		
-		bool lessThan(const VideoMode & value) const override;
+	public:
+		inline void serialize(std::ostream & out) const override
+		{
+			out << "(" << size << ", " << bitsPerPixel << ")";
+		}
+		inline bool equals(const VideoMode & value) const override
+		{
+			return (size == value.size) && (bitsPerPixel == value.bitsPerPixel);
+		}
+		inline bool lessThan(const VideoMode & value) const override
+		{
+			return (size < value.size);
+		}
 
 	};
 }

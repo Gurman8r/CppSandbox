@@ -134,13 +134,14 @@ namespace ml
 
 		// Only load a texture for characters requiring a graphic
 		if ((value != ' ') && isgraph(value) && !glyph.texture.create(
+			face->glyph->bitmap.buffer,
 			face->glyph->bitmap.width,
 			face->glyph->bitmap.rows,
-			face->glyph->bitmap.buffer,
 			GL::Red, 
 			GL::Red,
 			true, 
 			true,
+			false,
 			false))
 		{
 			Debug::LogWarning("Failed Loading Glyph Texture: \'{0}\'", (char)value);

@@ -77,31 +77,31 @@ namespace ml
 			if (parseLine(line, "v ", data))
 			{
 				// Position
-				vec3f tmp;
-				data >> tmp;
-				m_vp.push_back(tmp);
+				vec3f temp;
+				data >> temp;
+				m_vp.push_back(temp);
 			}
 			else if (parseLine(line, "vt ", data))
 			{
 				// Texcoord
-				vec2f tmp;
-				data >> tmp;
-				m_vt.push_back(tmp);
+				vec2f temp;
+				data >> temp;
+				m_vt.push_back(temp);
 			}
 			else if (parseLine(line, "vn ", data))
 			{
 				// Normal
-				vec3f tmp;
-				data >> tmp;
-				m_vn.push_back(tmp);
+				vec3f temp;
+				data >> temp;
+				m_vn.push_back(temp);
 			}
 			else if (parseLine(line, "f ", data))
 			{
 				// Index
-				std::string tmp;
-				while (std::getline(data, tmp, '/'))
+				std::string temp;
+				while (std::getline(data, temp, '/'))
 				{
-					m_vf.push_back(std::stoi(tmp));
+					m_vf.push_back(std::stoi(temp));
 				}
 			}
 		}

@@ -26,6 +26,7 @@ namespace ml
 	public: // General
 		static bool		init(bool experimental);
 		static bool		good();
+		static void		validate(uint32_t & major, uint32_t & minor);
 
 	public: // Flags
 		static bool		isEnabled(GL::Enum value);

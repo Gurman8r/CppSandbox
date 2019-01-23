@@ -68,9 +68,9 @@ namespace ml
 		inline bool	erase()
 		{
 			assert_typeof_component(T);
-			if (T* tmp = get<T>())
+			if (T* temp = get<T>())
 			{
-				delete tmp;
+				delete temp;
 				m_map.erase(&typeid(T));
 				return !contains<T>();
 			}

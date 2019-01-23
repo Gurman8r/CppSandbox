@@ -7,7 +7,8 @@ namespace ml
 {
 	Client::Client()
 	{
-		m_peer = static_cast<RakNet::RakPeerInterface*>(RakNet::RakPeerInterface::GetInstance());
+		using namespace RakNet;
+		m_peer = static_cast<RakPeerInterface*>(RakPeerInterface::GetInstance());
 		if (!m_peer)
 		{
 			Debug::LogError("Client: Failed Getting RakPeerInterface Instance");

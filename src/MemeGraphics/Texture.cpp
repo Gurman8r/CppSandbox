@@ -11,7 +11,7 @@ namespace ml
 		, m_size		(vec2u::Zero)
 		, m_actualSize	(vec2u::Zero)
 		, m_smooth		(false)
-		, m_sRGB		(false)
+		, m_srgb		(false)
 		, m_repeated	(false)
 		, m_mipmapped	(false)
 	{
@@ -22,7 +22,7 @@ namespace ml
 		, m_size		(vec2u::Zero)
 		, m_actualSize	(vec2u::Zero)
 		, m_smooth		(copy.m_smooth)
-		, m_sRGB		(copy.m_sRGB)
+		, m_srgb		(copy.m_srgb)
 		, m_repeated	(copy.m_repeated)
 		, m_mipmapped	(false)
 	{
@@ -102,8 +102,7 @@ namespace ml
 			if (create(rect.width(), rect.height()))
 			{
 				// Copy the pixels to the texture, row by row
-				const uint8_t * pixels = 
-					image.ptr() + 4 * (rect.left() + (w * rect.top()));
+				const uint8_t * pixels = image.ptr() + 4 * (rect.left() + (w * rect.top()));
 
 				Texture::bind(this);
 
@@ -149,11 +148,13 @@ namespace ml
 		return update(image.ptr(), image.size()[0], image.size()[1], 0, 0);
 	}
 	
-	bool Texture::update(const uint8_t * pixels, uint32_t width, uint32_t height, uint32_t x, uint32_t y)
+	bool Texture::update(
+		const uint8_t * pixels, 
+		uint32_t width, 
+		uint32_t height, 
+		uint32_t x, 
+		uint32_t y)
 	{
-		assert(x + width <= m_size[0]);
-		assert(y + height <= m_size[1]);
-
 		if ((*this) && pixels)
 		{
 			Texture::bind(this);
@@ -189,24 +190,21 @@ namespace ml
 	{
 		if (width == 0 || height == 0)
 		{
-			return Debug::LogError("Failed creating texture, invalid size ( {0} x {1} )",
-				m_size[0], 
-				m_size[1]);
+			return Debug::LogError("Failed creating texture, invalid size {0}", m_size);
 		}
 
+		uint32_t maxSize = OpenGL::getMaxTextureSize();
 		vec2u actualSize(
 			OpenGL::getValidTextureSize(width),
 			OpenGL::getValidTextureSize(height));
-		uint32_t maxSize = OpenGL::getMaxTextureSize();
 		if ((actualSize[0] > maxSize) || (actualSize[1] > maxSize))
 		{
 			return Debug::LogError(
 				"Failed creating texture: "
-				"Internal size is too high ( {0} x {1} ) "
-				"Maximum is ( {2} x {2} )", 
-				actualSize[0],
-				actualSize[1], 
-				maxSize);
+				"Internal size is too high {0} "
+				"Maximum is {1}",
+				actualSize,
+				vec2u(maxSize));
 		}
 
 		m_actualSize = actualSize;
@@ -230,7 +228,7 @@ namespace ml
 			}
 		}
 
-		if (m_sRGB && !OpenGL::textureSrgbAvailable())
+		if (m_srgb && !OpenGL::textureSrgbAvailable())
 		{
 			static bool warned = false;
 			if (!warned)
@@ -240,7 +238,7 @@ namespace ml
 					"Automatic sRGB to linear conversion disabled");
 				warned = true;
 			}
-			m_sRGB = false;
+			m_srgb = false;
 		}
 
 		m_mipmapped = false;
@@ -251,7 +249,7 @@ namespace ml
 		OpenGL::texImage2D(
 			GL::Texture2D,
 			0,
-			(m_sRGB
+			(m_srgb
 				? GL::SRGB8_Alpha8
 				: GL::RGBA),
 			m_actualSize[0], 
@@ -299,45 +297,44 @@ namespace ml
 	}
 
 	bool Texture::create(
-		uint32_t width, 
-		uint32_t height,
 		const uint8_t * pixels, 
-		GL::Format colFmt,
-		GL::Format intFmt, 
-		bool smooth, 
-		bool repeat,
-		bool mipmapped)
+		uint32_t	width, 
+		uint32_t	height,
+		GL::Format	colFmt,
+		GL::Format	intFmt, 
+		bool		smooth, 
+		bool		repeat,
+		bool		srgb,
+		bool		mipmapped)
 	{
 		if (!(*this) && (handle() = OpenGL::genTextures(1)))
 		{
 			if (!width || !height)
 			{
-				return Debug::LogError("Failed creating texture, invalid size ( {0} x {1} )",
-						width,
-						height);
+				return Debug::LogError("Failed creating texture, invalid size {0}",
+						vec2u(width, height));
 			}
 
+			uint32_t maxSize = OpenGL::getMaxTextureSize();
 			vec2u actualSize(
 				OpenGL::getValidTextureSize(width),
 				OpenGL::getValidTextureSize(height));
-			uint32_t maxSize = OpenGL::getMaxTextureSize();
 			if ((actualSize[0] > maxSize) || (actualSize[1] > maxSize))
 			{
 				return Debug::LogError(
 					"Failed creating texture: "
-					"Internal size is too high ( {0} x {1} ) "
-					"Maximum is ( {2} x {2} )",
-					actualSize[0],
-					actualSize[1],
-					maxSize);
+					"Internal size is too high {0} "
+					"Maximum is {1}",
+					actualSize,
+					vec2u(maxSize));
 			}
 
 			m_size			= { width, height };
 			m_actualSize	= actualSize;
 			m_smooth		= smooth;
-			m_sRGB			= false;
+			m_srgb			= srgb;
 			m_repeated		= repeat;
-			m_mipmapped		= false;
+			m_mipmapped		= mipmapped;
 		
 			Texture::bind(this);
 
@@ -396,8 +393,8 @@ namespace ml
 		std::swap(handle(),		other.handle());
 		std::swap(m_size,		other.m_size);
 		std::swap(m_actualSize,	other.m_actualSize);
-		std::swap(m_smooth,	other.m_smooth);
-		std::swap(m_sRGB,		other.m_sRGB);
+		std::swap(m_smooth,		other.m_smooth);
+		std::swap(m_srgb,		other.m_srgb);
 		std::swap(m_repeated,	other.m_repeated);
 		std::swap(m_mipmapped,	other.m_mipmapped);
 
@@ -489,9 +486,9 @@ namespace ml
 
 	Texture & Texture::setSrgb(bool value)
 	{
-		if ((*this) && (m_sRGB != value))
+		if ((*this) && (m_srgb != value))
 		{
-			if ((m_sRGB = value) && !OpenGL::textureSrgbAvailable())
+			if ((m_srgb = value) && !OpenGL::textureSrgbAvailable())
 			{
 				static bool warned = false;
 				if (!warned)
@@ -519,9 +516,16 @@ namespace ml
 			OpenGL::texParameter(
 				GL::Texture2D,
 				GL::TexMinFilter,
-			(m_smooth
-				? GL::LinearMipmapLinear
-				: GL::NearestMipmapNearest));
+				((m_smooth
+					? GL::LinearMipmapLinear
+					: GL::NearestMipmapNearest)));
+
+			OpenGL::texParameter(
+				GL::Texture2D,
+				GL::TexMagFilter,
+				((m_smooth
+					? GL::LinearMipmapLinear
+					: GL::NearestMipmapNearest)));
 
 			m_mipmapped = true;
 
@@ -560,7 +564,7 @@ namespace ml
 		}
 
 		// Create an array of pixels
-		std::vector<uint8_t> pixels(m_size[0] * m_size[1] * 4);
+		Image::Pixels pixels(m_size[0] * m_size[1] * 4);
 
 		if ((m_size == m_actualSize))
 		{
@@ -586,7 +590,7 @@ namespace ml
 		OpenGL::bindTexture(
 			GL::Texture2D,
 			((value && (*value)) 
-				? value->id() 
+				? (uint32_t)(*value)
 				: NULL));
 	}
 	

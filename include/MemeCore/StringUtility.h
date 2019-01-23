@@ -57,7 +57,7 @@ namespace ml
 			int32_t sink[] = { 0, ((void)(stream << args << std::endl), 0)... };
 			(void)sink;
 
-			std::string	tmp = fmt;
+			std::string	temp = fmt;
 			for (std::size_t index = 0; stream.good(); index++)
 			{
 				const std::string find = "{" + std::to_string(index) + "}";
@@ -65,14 +65,14 @@ namespace ml
 				std::string arg;
 				if (std::getline(stream, arg))
 				{
-					for (std::size_t i = 0; (i = tmp.find(find, i)) != std::string::npos;)
+					for (std::size_t i = 0; (i = temp.find(find, i)) != std::string::npos;)
 					{
-						tmp.replace(i, find.size(), arg);
+						temp.replace(i, find.size(), arg);
 						i += arg.size();
 					}
 				}
 			}
-			return tmp;
+			return temp;
 		}
 
 		template <typename T>

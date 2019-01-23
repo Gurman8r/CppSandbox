@@ -4,43 +4,12 @@
 
 namespace ml
 {
-	void RenderWindow::validate()
-	{
-		if (OpenGL::good())
-		{
-			Debug::Log("OpenGL version supported by this platform: {0}",
-				OpenGL::getString(GL::Version));
-
-			m_context.majorVersion = (uint32_t)OpenGL::getInt(GL::MajorVersion);
-			m_context.minorVersion = (uint32_t)OpenGL::getInt(GL::MinorVersion);
-
-			if (OpenGL::getError() == GL::InvalidEnum)
-			{
-				if (const char * version = OpenGL::getString(GL::Version))
-				{
-					m_context.majorVersion = version[0] - '0';
-					m_context.minorVersion = version[2] - '0';
-				}
-				else
-				{
-					Debug::LogWarning("Can't get the version number, assuming 1.1");
-					m_context.majorVersion = 1;
-					m_context.minorVersion = 1;
-				}
-			}
-
-			Debug::Log("Using OpenGL Version: {0}.{1}",
-				m_context.majorVersion,
-				m_context.minorVersion);
-		}
-	}
-
 	bool RenderWindow::initialize()
 	{
 		if (Window::initialize() && OpenGL::init(true))
 		{
 			// Validate GL Version
-			validate();
+			OpenGL::validate(m_context.majorVersion, m_context.minorVersion);
 
 			// Setup GL
 			OpenGL::enable(GL::CullFace);
