@@ -12,6 +12,23 @@ namespace ml
 {
 	struct ML_GRAPHICS_API RenderBatch final : public ITrackable
 	{
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		VAO		* vao;
+		VBO		* vbo;
+		IBO		* ibo;
+		FBO		* fbo;
+		Shader	* shader;
+
+		const Transform * proj;
+		const Transform * view;
+		const Transform	* model;
+		const vec4f		* color;
+		const Texture	* texture;
+		const FloatList	* vertices;
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
 		RenderBatch(
 			VAO * vao, VBO * vbo,
 			const Transform * proj, const Transform * view,
@@ -58,18 +75,7 @@ namespace ml
 		{
 		}
 
-		VAO		* vao;
-		VBO		* vbo;
-		IBO		* ibo;
-		FBO		* fbo;
-		Shader	* shader;
-
-		const Transform * proj;
-		const Transform * view;
-		const Transform	* model;
-		const vec4f		* color;
-		const Texture	* texture;
-		const FloatList	* vertices;
+		/* * * * * * * * * * * * * * * * * * * * */
 	};
 }
 

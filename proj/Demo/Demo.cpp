@@ -10,15 +10,15 @@
 
 int main(int argc, char** argv)
 {
-	// Start master timer
-	ML_Time.start();
-	ml::Debug::Log("{0}", ML_Time.elapsed());
-
 	// Load Settings
-	if (!demo::settings.load(CONFIG_INI))
+	if (!demo::settings.loadFromFile(CONFIG_INI))
 	{
 		return ml::Debug::pause(EXIT_FAILURE);
 	}
+
+	// Start Master Timer
+	ML_Time.start();
+	ml::Debug::Log("{0}", ML_Time.elapsed());
 
 	// Run Boot Script
 	ml::Interpreter::LoadBuiltinCommands();
@@ -43,21 +43,19 @@ int main(int argc, char** argv)
 		return ml::Debug::pause(EXIT_FAILURE);
 	}
 
-	// Load Assets
-	if (!demo::loadAssets())
+	// Load Resources
+	if (!demo::onLoad({ }))
 	{
 		return ml::Debug::pause(EXIT_FAILURE);
 	}
 
 	// Initialize
-	if (!demo::init({ window }))
+	if (!demo::onInit({ window }))
 	{
 		return ml::Debug::pause(EXIT_FAILURE);
 	}
 
-	ml::Debug::Log("{0}", ML_Time.elapsed());
-
-	// Loop
+	// Game Loop
 	ml::Timer		loopTimer;
 	ml::Duration	elapsed;
 	ml::InputState	input;
@@ -67,10 +65,10 @@ int main(int argc, char** argv)
 		input.beginStep();
 		{
 			// Update
-			demo::update({ window, elapsed, input });
+			demo::onUpdate({ window, elapsed, input });
 
 			// Draw
-			demo::draw({ window, elapsed });
+			demo::onDraw({ window, elapsed });
 		}
 		// End Step
 		input.endStep();
@@ -78,7 +76,7 @@ int main(int argc, char** argv)
 	}
 	while (window.isOpen());
 
-	ml::Debug::Log("{0}", ML_Time.elapsed());
+	demo::onExit({ });
 
 	return EXIT_SUCCESS;
 }

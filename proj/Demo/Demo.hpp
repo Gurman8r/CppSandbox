@@ -28,60 +28,62 @@ namespace demo // Settings
 {
 	struct Settings final
 	{
-		// Assets
+		// [Assets]
 		std::string		assetPath;		// Where's all the data?
 		
-		// Window
+		// [Window]
 		std::string		title;			// Window Title
 		uint32_t		width;			// Window Width
 		uint32_t		height;			// Window Height
 		
-		// Graphics
+		// [Graphics]
 		float			fieldOfView;	// Field of View
 		float			minClipPersp;	// Min Clipping Range Perspective
 		float			maxClipPersp;	// Max Clipping Range Perspective
 		float			minClipOrtho;	// Min Clipping Range Orthographic
 		float			maxClipOrtho;	// Max Clipping Range Orthographic
 		
-		// Script
+		// [Script]
 		std::string		script;			// Script to run on start
 		bool			showToks;		// Show Script Tokens
 		bool			showTree;		// Show Script Syntax Tree
 		bool			showItoP;		// Show Script Infix to Postfix
 
-		// Network
+		// [Network]
 		bool			isServer;		// Is Server?
 
-		inline bool load(const std::string & filename)
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		inline bool loadFromFile(const std::string & filename)
 		{
 			INIReader ini(filename.c_str());
 			if (ini.ParseError() == 0)
 			{
-				// Assets
+				// [Assets]
 				assetPath	= ini.Get("Assets", "sAssetPath", "../../../assets");
 				
-				// Window
+				// [Window]
 				title		= ini.Get("Window", "sTitle", "Title");
 				width		= ini.GetInteger("Window", "iWidth", 640);
 				height		= ini.GetInteger("Window", "iHeight", 480);
 				
-				// Graphics
+				// [Graphics]
 				fieldOfView = (float)ini.GetReal("Graphics", "dFieldOfView",  90.0);
 				minClipPersp= (float)ini.GetReal("Graphics", "dMinClipPersp", 0.1);
 				maxClipPersp= (float)ini.GetReal("Graphics", "dMaxClipPersp", 1000.0);
 				minClipOrtho= (float)ini.GetReal("Graphics", "dMinClipOrtho", -1.0);
 				maxClipOrtho= (float)ini.GetReal("Graphics", "dMaxClipOrtho", +1.0);
 				
-				// Script
+				// [Script]
 				script		= ini.Get("Script", "sScript", "/scripts/hello.script");
 				showToks	= ini.GetBoolean("Script", "bShowToks", false);
 				showTree	= ini.GetBoolean("Script", "bShowTree", false);
 				showItoP	= ini.GetBoolean("Script", "bShowItoP", false);
 
-				// Network
+				// [Network]
 				isServer	= ini.GetBoolean("Network", "bIsServer", false);
 
-				return true;
+				return ml::Debug::Success;
 			}
 			return ml::Debug::LogError("Failed Loading Settings \"{0}\"", filename);
 		}
@@ -92,12 +94,14 @@ namespace demo // Settings
 		}
 	};
 
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	static Settings settings;
 }
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-namespace demo // Resources
+namespace demo // Resource Registry
 {
 	enum : int32_t
 	{
@@ -190,6 +194,8 @@ namespace demo // Resources
 		MAX_SOUND,
 	};
 
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	ml::Font		fonts	[MAX_FONT];
 	ml::Image		images	[MAX_IMAGE];
 	ml::Texture		textures[MAX_TEXTURE];
@@ -210,7 +216,7 @@ namespace demo // Resources
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-namespace demo // Loading
+namespace demo // Resource Loading
 {
 	inline static bool loadFonts()
 	{
@@ -379,15 +385,24 @@ namespace demo // Loading
 		return ml::Debug::Success;
 	}
 
-	inline static bool loadAssets()
+	inline static bool loadAudio()
 	{
-		return
-			loadFonts() &&
-			loadImages() &&
-			loadTextures() &&
-			loadShaders() &&
-			loadMeshes() &&
-			loadBuffers();
+		// disabled
+		if (0 && ml::Debug::Log("Loading Audio..."))
+		{
+
+		}
+		return ml::Debug::Success;
+	}
+
+	inline static bool loadNetwork()
+	{
+		// disabled
+		if (0 && ml::Debug::Log("Loading Network..."))
+		{
+
+		}
+		return ml::Debug::Success;
 	}
 }
 
@@ -395,12 +410,35 @@ namespace demo // Loading
 
 namespace demo // Game Loop
 {
+	// Load
+	struct LoadEvent final
+	{
+
+	};
+	inline static bool onLoad(const LoadEvent & ev)
+	{
+		if (ml::Debug::Log("Loading Resources..."))
+		{
+			return
+				loadFonts()		&&
+				loadImages()	&&
+				loadTextures()	&&
+				loadShaders()	&&
+				loadMeshes()	&&
+				loadBuffers()	&&
+				loadAudio()		&&
+				loadNetwork()	&&
+				ml::Debug::Log("OK.");
+		}
+		return ml::Debug::Success;
+	}
+
 	// Init
 	struct InitEvent final
 	{
-		ml::RenderWindow & window;
+		ml::RenderWindow &		window;
 	};
-	inline static bool init(const InitEvent & ev)
+	inline static bool onInit(const InitEvent & ev)
 	{
 		if (ml::Debug::Log("Initializing..."))
 		{
@@ -450,9 +488,10 @@ namespace demo // Game Loop
 				.setColor(ml::Color::White)
 				.setText("there is no need\nto be upset");
 		}
-		return true;
+		return ml::Debug::Log("{0}", ML_Time.elapsed());
 	}
 
+	
 	// Update
 	struct UpdateEvent final
 	{
@@ -460,7 +499,7 @@ namespace demo // Game Loop
 		const ml::Duration &	elapsed;
 		const ml::InputState &	input;
 	};
-	inline static void update(const UpdateEvent & ev)
+	inline static void onUpdate(const UpdateEvent & ev)
 	{
 		// Window Title
 		ev.window.setTitle(ml::StringUtility::Format(
@@ -478,13 +517,14 @@ namespace demo // Game Loop
 		}
 	}
 
+	
 	// Draw
 	struct DrawEvent final
 	{
 		ml::RenderWindow &		window;
 		const ml::Duration &	elapsed;
 	};
-	inline static void draw(const DrawEvent & ev)
+	inline static void onDraw(const DrawEvent & ev)
 	{
 		ev.window.clear(ml::Color::Violet);
 		{
@@ -592,6 +632,16 @@ namespace demo // Game Loop
 			}
 		}
 		ev.window.swapBuffers().pollEvents();
+	}
+
+	
+	// Exit
+	struct ExitEvent final
+	{
+	};
+	inline static bool onExit(const ExitEvent & ev)
+	{
+		return ml::Debug::Log("{0}", ML_Time.elapsed());
 	}
 }
 
