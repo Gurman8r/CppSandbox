@@ -1,11 +1,7 @@
 # CppSandbox
 
-Not Building? Try This:
-- Retargeting the solution to a different Windows SDK version.
-- Running OpenAL installer "/thirdparty/oalinst.exe"
-- Updating your graphics drivers, never know.
-
-- Projects
+Projects
+__________
 	- Demo
     		- Executable with demos for each library
 	- MemeAudio
@@ -20,3 +16,10 @@ Not Building? Try This:
     		- Simple interpreter library
   	- MemeWindow
     		- Window library
+
+Help
+__________
+- Solution Not Building?
+	- Retarget the solution to a different Windows SDK version.
+	- Run the OpenAL SDK installer "/thirdparty/oalinst.exe"
+	- Try updating your graphics drivers.
