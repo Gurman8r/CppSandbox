@@ -24,38 +24,62 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-#define CONFIG_INI "../../../config.ini"
-
-/* * * * * * * * * * * * * * * * * * * * */
-
-namespace demo
+namespace demo // Settings
 {
 	struct Settings final
 	{
-		std::string		assetPath;	// Where's all the data?
-		std::string		title;		// Window Title
-		uint32_t		width;		// Window Width
-		uint32_t		height;		// Window Height
+		// Assets
+		std::string		assetPath;		// Where's all the data?
+		
+		// Window
+		std::string		title;			// Window Title
+		uint32_t		width;			// Window Width
+		uint32_t		height;			// Window Height
+		
+		// Graphics
+		float			fieldOfView;	// Field of View
+		float			minClipPersp;	// Min Clipping Range Perspective
+		float			maxClipPersp;	// Max Clipping Range Perspective
+		float			minClipOrtho;	// Min Clipping Range Orthographic
+		float			maxClipOrtho;	// Max Clipping Range Orthographic
+		
+		// Script
+		std::string		script;			// Script to run on start
+		bool			showToks;		// Show Script Tokens
+		bool			showTree;		// Show Script Syntax Tree
+		bool			showItoP;		// Show Script Infix to Postfix
 
-		std::string		bootScript;	// Script to run on start
-		bool			showToks;	// Show Script Tokens
-		bool			showTree;	// Show Script Syntax Tree
-		bool			showItoP;	// Show Script Infix to Postfix
+		// Network
+		bool			isServer;		// Is Server?
 
 		inline bool load(const std::string & filename)
 		{
 			INIReader ini(filename.c_str());
 			if (ini.ParseError() == 0)
 			{
-				assetPath = ini.Get("Assets", "sAssetPath", "../../../assets");
-				title = ini.Get("Window", "sTitle", "Title");
-				width = ini.GetInteger("Window", "iWidth", 640);
-				height = ini.GetInteger("Window", "iHeight", 480);
+				// Assets
+				assetPath	= ini.Get("Assets", "sAssetPath", "../../../assets");
 				
-				bootScript = ini.Get("Script", "sBootScript", "/scripts/boot.script");
-				showToks = ini.GetBoolean("Script", "bShowToks", false);
-				showTree = ini.GetBoolean("Script", "bShowTree", false);
-				showItoP = ini.GetBoolean("Script", "bShowItoP", false);
+				// Window
+				title		= ini.Get("Window", "sTitle", "Title");
+				width		= ini.GetInteger("Window", "iWidth", 640);
+				height		= ini.GetInteger("Window", "iHeight", 480);
+				
+				// Graphics
+				fieldOfView = (float)ini.GetReal("Graphics", "dFieldOfView",  90.0);
+				minClipPersp= (float)ini.GetReal("Graphics", "dMinClipPersp", 0.1);
+				maxClipPersp= (float)ini.GetReal("Graphics", "dMaxClipPersp", 1000.0);
+				minClipOrtho= (float)ini.GetReal("Graphics", "dMinClipOrtho", -1.0);
+				maxClipOrtho= (float)ini.GetReal("Graphics", "dMaxClipOrtho", +1.0);
+				
+				// Script
+				script		= ini.Get("Script", "sScript", "/scripts/hello.script");
+				showToks	= ini.GetBoolean("Script", "bShowToks", false);
+				showTree	= ini.GetBoolean("Script", "bShowTree", false);
+				showItoP	= ini.GetBoolean("Script", "bShowItoP", false);
+
+				// Network
+				isServer	= ini.GetBoolean("Network", "bIsServer", false);
 
 				return true;
 			}
@@ -73,9 +97,9 @@ namespace demo
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-namespace demo
+namespace demo // Resources
 {
-	enum AssetID : int32_t
+	enum : int32_t
 	{
 		// Fonts
 		MIN_FONT = -1,
@@ -186,7 +210,7 @@ namespace demo
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-namespace demo
+namespace demo // Loading
 {
 	inline static bool loadFonts()
 	{
@@ -195,22 +219,22 @@ namespace demo
 		{
 			if (!fonts[FNT_clacon].loadFromFile(settings.pathTo("/fonts/clacon.ttf")))
 			{
-				ml::Debug::LogWarning("Failed Loading Font");
+				return ml::Debug::LogError("Failed Loading Font");
 			}
 			if (!fonts[FNT_consolas].loadFromFile(settings.pathTo("/fonts/consolas.ttf")))
 			{
-				ml::Debug::LogWarning("Failed Loading Font");
+				return ml::Debug::LogError("Failed Loading Font");
 			}
 			if (!fonts[FNT_lucida_console].loadFromFile(settings.pathTo("/fonts/lucida_console.ttf")))
 			{
-				ml::Debug::LogWarning("Failed Loading Font");
+				return ml::Debug::LogError("Failed Loading Font");
 			}
 			if (!fonts[FNT_minecraft].loadFromFile(settings.pathTo("/fonts/minecraft.ttf")))
 			{
-				ml::Debug::LogWarning("Failed Loading Font");
+				return ml::Debug::LogError("Failed Loading Font");
 			}
 		}
-		return true;
+		return ml::Debug::Success;
 	}
 
 	inline static bool loadImages()
@@ -220,10 +244,10 @@ namespace demo
 		{
 			if (!images[IMG_icon].loadFromFile(settings.pathTo("/images/dean.png")))
 			{
-				ml::Debug::LogWarning("Failed Loading Icon");
+				return ml::Debug::LogError("Failed Loading Icon");
 			}
 		}
-		return true;
+		return ml::Debug::Success;
 	}
 
 	inline static bool loadTextures()
@@ -233,25 +257,26 @@ namespace demo
 		{
 			if (!textures[TEX_dean].loadFromFile(settings.pathTo("/images/dean.png")))
 			{
-				ml::Debug::LogWarning("Failed Loading Texture");
+				return ml::Debug::LogError("Failed Loading Texture");
 			}
 			if (!textures[TEX_sanic].loadFromFile(settings.pathTo("/images/sanic.png")))
 			{
-				ml::Debug::LogWarning("Failed Loading Texture");
+				return ml::Debug::LogError("Failed Loading Texture");
 			}
 			if (!textures[TEX_stone_dm].loadFromFile(settings.pathTo("/textures/stone/stone_dm.png")))
 			{
-				ml::Debug::LogWarning("Failed Loading Texture");
+				return ml::Debug::LogError("Failed Loading Texture");
 			}
 			if (!textures[TEX_stone_hm].loadFromFile(settings.pathTo("/textures/stone/stone_hm.png")))
 			{
-				ml::Debug::LogWarning("Failed Loading Texture");
+				return ml::Debug::LogError("Failed Loading Texture");
 			}
 			if (!textures[TEX_stone_nm].loadFromFile(settings.pathTo("/textures/stone/stone_nm.png")))
 			{
-				ml::Debug::LogWarning("Failed Loading Texture");
+				return ml::Debug::LogError("Failed Loading Texture");
 			}
 		}
+		return ml::Debug::Success;
 	}
 
 	inline static bool loadShaders()
@@ -261,18 +286,18 @@ namespace demo
 		{
 			if (!shaders[GL_basic3D].loadFromFile(settings.pathTo("/shaders/basic3D.shader")))
 			{
-				ml::Debug::LogWarning("Failed Loading Shader: {0}", "Basic3D");
+				return ml::Debug::LogError("Failed Loading Shader: {0}", "Basic3D");
 			}
 			if (!shaders[GL_text].loadFromFile(settings.pathTo("/shaders/text.shader")))
 			{
-				ml::Debug::LogWarning("Failed Loading Shader: {0}", "Text");
+				return ml::Debug::LogError("Failed Loading Shader: {0}", "Text");
 			}
 			if (!shaders[GL_geometry].loadFromFile(settings.pathTo("/shaders/geometry.shader")))
 			{
-				ml::Debug::LogWarning("Failed Loading Shader: {0}", "Geometry");
+				return ml::Debug::LogError("Failed Loading Shader: {0}", "Geometry");
 			}
 		}
-		return true;
+		return ml::Debug::Success;
 	}
 
 	inline static bool loadMeshes()
@@ -289,9 +314,10 @@ namespace demo
 				return ml::Debug::LogError("Failed Loading Mesh: {0}", "sphere32x24");
 			}
 		}
+		return ml::Debug::Success;
 	}
 
-	inline static bool loadGeometry()
+	inline static bool loadBuffers()
 	{
 		// Load Buffers
 		if (ml::Debug::Log("Loading Buffers..."))
@@ -350,7 +376,7 @@ namespace demo
 			vbo[VBO_text].unbind();
 			vao[VAO_text].unbind();
 		}
-		return true;
+		return ml::Debug::Success;
 	}
 
 	inline static bool loadAssets()
@@ -361,20 +387,20 @@ namespace demo
 			loadTextures() &&
 			loadShaders() &&
 			loadMeshes() &&
-			loadGeometry();
+			loadBuffers();
 	}
 }
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-namespace demo
+namespace demo // Game Loop
 {
-	// Setup
-	struct SetupEvent final
+	// Init
+	struct InitEvent final
 	{
 		ml::RenderWindow & window;
 	};
-	inline static bool demo_setup(const SetupEvent & ev)
+	inline static bool init(const InitEvent & ev)
 	{
 		if (ml::Debug::Log("Initializing..."))
 		{
@@ -388,14 +414,15 @@ namespace demo
 			proj[P_ortho] = ml::Transform::Ortho(
 				0.0f, (float)ev.window.width(),
 				0.0f, (float)ev.window.height(),
-				-1.0f, 1.0f);
+				settings.minClipOrtho, 
+				settings.maxClipOrtho);
 
 			// Perspective
 			proj[P_persp] = ml::Transform::Perspective(
-				90.0f,
-				ev.window.aspect(),
-				0.1f, 
-				1000.0f);
+				settings.fieldOfView, 
+				ev.window.aspect(), 
+				settings.minClipPersp, 
+				settings.maxClipPersp);
 
 			// Views
 			ml::vec3f camPos = { 0.0f, 0.0f, 3.0f };
@@ -433,7 +460,7 @@ namespace demo
 		const ml::Duration &	elapsed;
 		const ml::InputState &	input;
 	};
-	inline static void demo_update(const UpdateEvent & ev)
+	inline static void update(const UpdateEvent & ev)
 	{
 		// Window Title
 		ev.window.setTitle(ml::StringUtility::Format(
@@ -457,7 +484,7 @@ namespace demo
 		ml::RenderWindow &		window;
 		const ml::Duration &	elapsed;
 	};
-	inline static void demo_draw(const DrawEvent & ev)
+	inline static void draw(const DrawEvent & ev)
 	{
 		ev.window.clear(ml::Color::Violet);
 		{

@@ -2,7 +2,9 @@
 
 #include "Demo.hpp"
 
-using namespace demo;
+/* * * * * * * * * * * * * * * * * * * * */
+
+#define CONFIG_INI "../../../config.ini"
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -10,11 +12,10 @@ int main(int argc, char** argv)
 {
 	// Start master timer
 	ML_Time.start();
-
 	ml::Debug::Log("{0}", ML_Time.elapsed());
 
 	// Load Settings
-	if (!settings.load(CONFIG_INI))
+	if (!demo::settings.load(CONFIG_INI))
 	{
 		return ml::Debug::pause(EXIT_FAILURE);
 	}
@@ -22,10 +23,10 @@ int main(int argc, char** argv)
 	// Run Boot Script
 	ml::Interpreter::LoadBuiltinCommands();
 	(*ML_Interpreter.parser())
-		.showToks(settings.showToks)
-		.showTree(settings.showTree)
-		.showItoP(settings.showItoP);
-	ML_Interpreter.execScript(settings.pathTo(settings.bootScript));
+		.showToks(demo::settings.showToks)
+		.showTree(demo::settings.showTree)
+		.showItoP(demo::settings.showItoP);
+	ML_Interpreter.execScript(demo::settings.pathTo(demo::settings.script));
 
 	// Enable GL Error Pause
 	ml::OpenGL::errorPause(true);
@@ -34,16 +35,22 @@ int main(int argc, char** argv)
 	ml::Debug::Log("Creating Window...");
 	ml::RenderWindow window;
 	if (!window.create(
-		settings.title,
-		ml::VideoMode({ settings.width, settings.height }, 32),
+		demo::settings.title,
+		ml::VideoMode({ demo::settings.width, demo::settings.height }, 32),
 		ml::Window::Style::Default,
 		ml::Context(3, 3, 24, 8, ml::Context::Compat, false, false)))
 	{
 		return ml::Debug::pause(EXIT_FAILURE);
 	}
 
-	// Loading / Setup
-	if (!loadAssets() || !demo_setup({ window }))
+	// Load Assets
+	if (!demo::loadAssets())
+	{
+		return ml::Debug::pause(EXIT_FAILURE);
+	}
+
+	// Initialize
+	if (!demo::init({ window }))
 	{
 		return ml::Debug::pause(EXIT_FAILURE);
 	}
@@ -60,10 +67,10 @@ int main(int argc, char** argv)
 		input.beginStep();
 		{
 			// Update
-			demo_update({ window, elapsed, input });
+			demo::update({ window, elapsed, input });
 
 			// Draw
-			demo_draw({ window, elapsed });
+			demo::draw({ window, elapsed });
 		}
 		// End Step
 		input.endStep();
