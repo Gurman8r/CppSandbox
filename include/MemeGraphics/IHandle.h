@@ -25,7 +25,7 @@ namespace ml
 		inline operator bool()		const { return good();	}
 
 	protected:
-		inline ID & id() { return m_id; }
+		inline ID & handle() { return m_id; }
 
 	private:
 		ID m_id;

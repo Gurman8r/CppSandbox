@@ -140,7 +140,8 @@ namespace ml
 			GL::Red, 
 			GL::Red,
 			true, 
-			true))
+			true,
+			false))
 		{
 			Debug::LogWarning("Failed Loading Glyph Texture: \'{0}\'", (char)value);
 		}

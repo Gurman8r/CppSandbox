@@ -7,26 +7,24 @@
 namespace ml
 {
 	Texture::Texture()
-		: IHandle(NULL)
-		, m_size(0, 0)
-		, m_actualSize(0, 0)
-		, m_isSmooth(false)
-		, m_sRgb(false)
-		, m_isRepeated(false)
-		, m_pixelsFlipped(false)
-		, m_hasMipmap(false)
+		: IHandle		(NULL)
+		, m_size		(vec2u::Zero)
+		, m_actualSize	(vec2u::Zero)
+		, m_smooth		(false)
+		, m_sRGB		(false)
+		, m_repeated	(false)
+		, m_mipmapped	(false)
 	{
 	}
 
 	Texture::Texture(const Texture & copy)
-		: IHandle(NULL)
-		, m_size(0, 0)
-		, m_actualSize(0, 0)
-		, m_isSmooth(copy.m_isSmooth)
-		, m_sRgb(copy.m_sRgb)
-		, m_isRepeated(copy.m_isRepeated)
-		, m_pixelsFlipped(false)
-		, m_hasMipmap(false)
+		: IHandle		(NULL)
+		, m_size		(vec2u::Zero)
+		, m_actualSize	(vec2u::Zero)
+		, m_smooth		(copy.m_smooth)
+		, m_sRGB		(copy.m_sRGB)
+		, m_repeated	(copy.m_repeated)
+		, m_mipmapped	(false)
 	{
 		if (copy)
 		{
@@ -60,11 +58,6 @@ namespace ml
 	}
 
 	bool Texture::loadFromFile(const std::string & filename)
-	{
-		return loadFromFile(filename, IntRect());
-	}
-
-	bool Texture::loadFromFile(const std::string & filename, const IntRect & area)
 	{
 		Image image;
 		return image.loadFromFile(filename) && loadFromImage(image);
@@ -131,11 +124,11 @@ namespace ml
 				OpenGL::texParameter(
 					GL::Texture2D,
 					GL::TexMinFilter,
-					(m_isSmooth
+					(m_smooth
 						? GL::Linear
 						: GL::Nearest));
 
-				m_hasMipmap = false;
+				m_mipmapped = false;
 
 				// Force an OpenGL flush, so that the texture will appear updated
 				OpenGL::flush();
@@ -157,16 +150,6 @@ namespace ml
 		return update(image.ptr(), image.size()[0], image.size()[1], 0, 0);
 	}
 	
-	bool Texture::update(const Image & image, uint32_t x, uint32_t y)
-	{
-		return update(image.ptr(), image.size()[0], image.size()[1], x, y);
-	}
-
-	bool Texture::update(const uint8_t * pixels)
-	{
-		return update(pixels, m_size[0], m_size[1], 0, 0);
-	}
-
 	bool Texture::update(const uint8_t * pixels, uint32_t width, uint32_t height, uint32_t x, uint32_t y)
 	{
 		assert(x + width <= m_size[0]);
@@ -187,12 +170,11 @@ namespace ml
 			OpenGL::texParameter(
 				GL::Texture2D,
 				GL::TexMinFilter,
-				(m_isSmooth
+				(m_smooth
 					? GL::Linear
 					: GL::Nearest));
 
-			m_hasMipmap = false;
-			m_pixelsFlipped = false;
+			m_mipmapped = false;
 
 			Texture::bind(NULL);
 
@@ -230,14 +212,13 @@ namespace ml
 
 		m_actualSize = actualSize;
 		m_size = vec2u(width, height);
-		m_pixelsFlipped = false;
 
-		if (!(*this))
+		if (!(*this) && (handle() = OpenGL::genTextures(1)))
 		{
-			id() = OpenGL::genTextures(1);
+			
 		}
 
-		if (!m_isRepeated && !OpenGL::edgeClampAvailable())
+		if (!m_repeated && !OpenGL::edgeClampAvailable())
 		{
 			static bool warned = false;
 			if (!warned)
@@ -250,7 +231,7 @@ namespace ml
 			}
 		}
 
-		if (m_sRgb && !OpenGL::textureSrgbAvailable())
+		if (m_sRGB && !OpenGL::textureSrgbAvailable())
 		{
 			static bool warned = false;
 			if (!warned)
@@ -260,10 +241,10 @@ namespace ml
 					"Automatic sRGB to linear conversion disabled");
 				warned = true;
 			}
-			m_sRgb = false;
+			m_sRGB = false;
 		}
 
-		m_hasMipmap = false;
+		m_mipmapped = false;
 
 		// Initialize the texture
 		Texture::bind(this);
@@ -271,7 +252,7 @@ namespace ml
 		OpenGL::texImage2D(
 			GL::Texture2D,
 			0,
-			(m_sRgb
+			(m_sRGB
 				? GL::SRGB8_Alpha8
 				: GL::RGBA),
 			m_actualSize[0], 
@@ -284,7 +265,7 @@ namespace ml
 		OpenGL::texParameter(
 			GL::Texture2D,
 			GL::TexWrapS,
-			(m_isRepeated
+			(m_repeated
 				? GL::Repeat
 				: (OpenGL::edgeClampAvailable()
 					? GL::ClampToEdge
@@ -293,7 +274,7 @@ namespace ml
 		OpenGL::texParameter(
 			GL::Texture2D,
 			GL::TexWrapT, 
-			(m_isRepeated
+			(m_repeated
 				? GL::Repeat
 				: (OpenGL::edgeClampAvailable()
 					? GL::ClampToEdge
@@ -302,14 +283,14 @@ namespace ml
 		OpenGL::texParameter(
 			GL::Texture2D, 
 			GL::TexMagFilter,
-			(m_isSmooth
+			(m_smooth
 				? GL::Linear
 				: GL::Nearest));
 		
 		OpenGL::texParameter(
 			GL::Texture2D, 
 			GL::TexMinFilter, 
-			(m_isSmooth
+			(m_smooth
 				? GL::Linear
 				: GL::Nearest));
 		
@@ -332,9 +313,10 @@ namespace ml
 		GL::Format colFmt,
 		GL::Format intFmt, 
 		bool smooth, 
-		bool repeat)
+		bool repeat,
+		bool mipmapped)
 	{
-		if (!(*this) && (id() = OpenGL::genTextures(1)))
+		if (!(*this) && (handle() = OpenGL::genTextures(1)))
 		{
 			if (!width || !height)
 			{
@@ -360,11 +342,10 @@ namespace ml
 
 			m_size			= { width, height };
 			m_actualSize	= actualSize;
-			m_isSmooth		= smooth;
-			m_sRgb			= false;
-			m_isRepeated	= repeat;
-			m_pixelsFlipped = false;
-			m_hasMipmap		= false;
+			m_smooth		= smooth;
+			m_sRGB			= false;
+			m_repeated	= repeat;
+			m_mipmapped		= false;
 		
 			Texture::bind(this);
 
@@ -382,7 +363,7 @@ namespace ml
 			OpenGL::texParameter( // TexWrapS
 				GL::Texture2D,
 				GL::TexWrapS,
-					(m_isRepeated
+					(m_repeated
 						? GL::Repeat
 						: (OpenGL::edgeClampAvailable()
 							? GL::ClampToEdge
@@ -391,7 +372,7 @@ namespace ml
 			OpenGL::texParameter( // TexWrapT
 				GL::Texture2D,
 				GL::TexWrapT,
-					(m_isRepeated
+					(m_repeated
 						? GL::Repeat
 						: (OpenGL::edgeClampAvailable()
 							? GL::ClampToEdge
@@ -400,14 +381,14 @@ namespace ml
 			OpenGL::texParameter( // TexMagFilter
 				GL::Texture2D,
 				GL::TexMagFilter,
-					(m_isSmooth
+					(m_smooth
 						? GL::Linear
 						: GL::Nearest));
 
 			OpenGL::texParameter( // TexMinFilter
 				GL::Texture2D,
 				GL::TexMinFilter,
-					(m_isSmooth
+					(m_smooth
 						? GL::Linear
 						: GL::Nearest));
 
@@ -420,23 +401,22 @@ namespace ml
 
 	Texture & Texture::swap(Texture & other)
 	{
-		std::swap(id(),				other.id());
-		std::swap(m_size,			other.m_size);
-		std::swap(m_actualSize,		other.m_actualSize);
-		std::swap(m_isSmooth,		other.m_isSmooth);
-		std::swap(m_sRgb,			other.m_sRgb);
-		std::swap(m_isRepeated,		other.m_isRepeated);
-		std::swap(m_pixelsFlipped,	other.m_pixelsFlipped);
-		std::swap(m_hasMipmap,		other.m_hasMipmap);
+		std::swap(handle(),		other.handle());
+		std::swap(m_size,		other.m_size);
+		std::swap(m_actualSize,	other.m_actualSize);
+		std::swap(m_smooth,	other.m_smooth);
+		std::swap(m_sRGB,		other.m_sRGB);
+		std::swap(m_repeated,	other.m_repeated);
+		std::swap(m_mipmapped,	other.m_mipmapped);
 
 		return other;
 	}
 
 	Texture & Texture::setRepeated(bool value)
 	{
-		if ((*this) && (m_isRepeated != value))
+		if ((*this) && (m_repeated != value))
 		{
-			if ((m_isRepeated = value) && !OpenGL::edgeClampAvailable())
+			if ((m_repeated = value) && !OpenGL::edgeClampAvailable())
 			{
 				static bool warned = false;
 				if (!warned)
@@ -453,7 +433,7 @@ namespace ml
 			OpenGL::texParameter(
 				GL::Texture2D,
 				GL::TexWrapS,
-				(m_isRepeated
+				(m_repeated
 					? GL::Repeat
 					: (OpenGL::edgeClampAvailable()
 						? GL::ClampToEdge
@@ -462,7 +442,7 @@ namespace ml
 			OpenGL::texParameter(
 				GL::Texture2D,
 				GL::TexWrapT,
-				(m_isRepeated
+				(m_repeated
 					? GL::Repeat
 					: (OpenGL::edgeClampAvailable()
 						? GL::ClampToEdge
@@ -475,9 +455,9 @@ namespace ml
 
 	Texture & Texture::setSmooth(bool value)
 	{
-		if ((*this) && (m_isSmooth != value))
+		if ((*this) && (m_smooth != value))
 		{
-			if ((m_isSmooth = value) /*&& !isAvailable()*/)
+			if ((m_smooth = value) /*&& !isAvailable()*/)
 			{
 				// error checking if needed
 			}
@@ -487,16 +467,16 @@ namespace ml
 			OpenGL::texParameter(
 				GL::Texture2D,
 				GL::TexMagFilter,
-				(m_isSmooth
+				(m_smooth
 					? GL::Linear
 					: GL::Nearest));
 
-			if (m_hasMipmap)
+			if (m_mipmapped)
 			{
 				OpenGL::texParameter(
 					GL::Texture2D,
 					GL::TexMinFilter,
-					(m_isSmooth
+					(m_smooth
 						? GL::LinearMipmapLinear
 						: GL::LinearMipmapNearest));
 			}
@@ -505,7 +485,7 @@ namespace ml
 				OpenGL::texParameter(
 					GL::Texture2D,
 					GL::TexMinFilter,
-					(m_isSmooth
+					(m_smooth
 						? GL::Linear
 						: GL::Nearest));
 			}
@@ -517,9 +497,9 @@ namespace ml
 
 	Texture & Texture::setSrgb(bool value)
 	{
-		if ((*this) && (m_sRgb != value))
+		if ((*this) && (m_sRGB != value))
 		{
-			if ((m_sRgb = value) && !OpenGL::textureSrgbAvailable())
+			if ((m_sRGB = value) && !OpenGL::textureSrgbAvailable())
 			{
 				static bool warned = false;
 				if (!warned)
@@ -538,7 +518,7 @@ namespace ml
 
 	Texture & Texture::generateMipmap()
 	{
-		if ((*this) && (m_hasMipmap = OpenGL::framebuffersAvailable()))
+		if ((*this) && (m_mipmapped = OpenGL::framebuffersAvailable()))
 		{
 			Texture::bind(this);
 
@@ -547,11 +527,11 @@ namespace ml
 			OpenGL::texParameter(
 				GL::Texture2D,
 				GL::TexMinFilter,
-			(m_isSmooth
+			(m_smooth
 				? GL::LinearMipmapLinear
 				: GL::NearestMipmapNearest));
 
-			m_hasMipmap = true;
+			m_mipmapped = true;
 
 			Texture::bind(NULL);
 		}
@@ -560,18 +540,18 @@ namespace ml
 
 	Texture & Texture::invalidateMipmap()
 	{
-		if ((*this) && m_hasMipmap)
+		if ((*this) && m_mipmapped)
 		{
 			Texture::bind(this);
 
 			OpenGL::texParameter(
 				GL::Texture2D,
 				GL::TexMinFilter,
-				(m_isSmooth
+				(m_smooth
 					? GL::Linear
 					: GL::Nearest));
 
-			m_hasMipmap = false;
+			m_mipmapped = false;
 
 			Texture::bind(NULL);
 		}
@@ -590,7 +570,7 @@ namespace ml
 		// Create an array of pixels
 		std::vector<uint8_t> pixels(m_size[0] * m_size[1] * 4);
 
-		if ((m_size == m_actualSize) && !m_pixelsFlipped)
+		if ((m_size == m_actualSize))
 		{
 			// Texture is not padded nor flipped, we can use a direct copy
 			Texture::bind(this);
@@ -600,44 +580,6 @@ namespace ml
 				GL::RGBA,
 				GL::UnsignedByte,
 				&pixels[0]);
-			Texture::bind(NULL);
-		}
-		else
-		{
-			// Texture is either padded or flipped, we have to use a slower algorithm
-
-			// All the pixels will first be copied to a temporary array
-			std::vector<uint8_t> allPixels(m_actualSize[0] * m_actualSize[1] * 4);
-
-			Texture::bind(this);
-
-			OpenGL::getTexImage(
-				GL::Texture2D,
-				0,
-				GL::RGBA,
-				GL::UnsignedByte,
-				&allPixels[0]);
-
-			// Then we copy the useful pixels from the temporary array to the final one
-			const uint8_t* src = &allPixels[0];
-			uint8_t* dst = &pixels[0];
-			int32_t srcPitch = m_actualSize[0] * 4;
-			int32_t dstPitch = m_size[0] * 4;
-
-			// Handle the case where source pixels are flipped vertically
-			if (m_pixelsFlipped)
-			{
-				src += srcPitch * (m_size[1] - 1);
-				srcPitch = -srcPitch;
-			}
-
-			for (uint32_t i = 0; i < m_size[1]; ++i)
-			{
-				std::memcpy(dst, src, dstPitch);
-				src += srcPitch;
-				dst += dstPitch;
-			}
-
 			Texture::bind(NULL);
 		}
 

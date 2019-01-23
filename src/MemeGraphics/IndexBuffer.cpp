@@ -33,7 +33,7 @@ namespace ml
 
 	IndexBuffer & IndexBuffer::create(GL::Usage usage, GL::Type type)
 	{
-		if (!(*this) && (id() = OpenGL::genBuffers(1)))
+		if (!(*this) && (handle() = OpenGL::genBuffers(1)))
 		{
 			m_usage = usage;
 			m_type = type;

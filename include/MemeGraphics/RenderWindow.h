@@ -17,8 +17,6 @@ namespace ml
 		void validate();
 		bool initialize() override;
 
-		
-
 	private:
 
 	};

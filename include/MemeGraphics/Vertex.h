@@ -45,6 +45,9 @@ namespace ml
 					<< ((i < Size - 1) ? ", " : " }");
 			}
 		}
+		inline void deserialize(std::istream & in) override
+		{
+		}
 
 	public:
 		inline bool equals(const Vertex & other) const override

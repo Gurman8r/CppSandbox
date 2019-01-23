@@ -7,6 +7,23 @@
 
 namespace ml
 {
+	// ByteList : BaseList<uint8_t>
+	class ML_GRAPHICS_API ByteList final
+		: public BaseList<uint8_t>
+	{
+	public:
+		using base_type = BaseList<data_type>;
+		using self_type = ByteList;
+	public:
+		ByteList() : base_type() {}
+		ByteList(const base_type & value) : base_type(value) {}
+		ByteList(const init_type & value) : base_type(value) {}
+		ByteList(const self_type & value) : base_type(value) {}
+		~ByteList() {}
+	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	// FloatList : BaseList<float>
 	class ML_GRAPHICS_API FloatList final
 		: public BaseList<float>

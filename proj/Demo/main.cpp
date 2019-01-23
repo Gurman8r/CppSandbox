@@ -229,6 +229,9 @@ inline static bool loadAssets()
 	// Load Textures
 	if(ml::Debug::Log("Loading Textures..."))
 	{
+		ml::Image dean;
+		dean.loadFromFile(settings.pathTo("/images/dean.png"));
+
 		if (!textures[TEX_dean].loadFromFile(settings.pathTo("/images/dean.png")))
 		{
 			return ml::Debug::LogError("Failed Loading Texture");
@@ -279,10 +282,10 @@ inline static bool loadGeometry()
 	// Load Meshes
 	if (ml::Debug::Log("Loading Meshes"))
 	{
-		if (!meshes[MESH_sphere8x6].loadFromFile(settings.pathTo("/meshes/sphere8x6.mesh")))
-		{
-			return ml::Debug::LogError("Failed Loading Mesh: {0}", "sphere8x6");
-		}
+		//if (!meshes[MESH_sphere8x6].loadFromFile(settings.pathTo("/meshes/sphere8x6.mesh")))
+		//{
+		//	return ml::Debug::LogError("Failed Loading Mesh: {0}", "sphere8x6");
+		//}
 
 		//if (!meshes[MESH_sphere32x24].loadFromFile(settings.pathTo("/meshes/sphere32x24.mesh")))
 		//{

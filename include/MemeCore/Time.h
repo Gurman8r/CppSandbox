@@ -15,16 +15,16 @@ namespace ml
 		friend class ISingleton<Time>;
 
 	public:
+		void start();
+		
 		const Timer & timer() const;
 
 		const Duration & elapsed() const;
-		
-		void start();
 
 		static uint64_t calculateFPS(float deltaTime);
 	
 	private:
-		Time() { start(); }
+		Time() { }
 		~Time() {}
 
 		Timer m_timer;

@@ -111,9 +111,6 @@
     <ClInclude Include="..\..\include\MemeCore\BaseIterator.h">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Maths.h">
-      <Filter>Header Files\Maths</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Axis.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
@@ -150,9 +147,6 @@
     <ClInclude Include="..\..\include\MemeCore\ML_Enum.h">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\BitHelper.h">
-      <Filter>Header Files\Maths</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Time.h">
       <Filter>Header Files\Time</Filter>
     </ClInclude>
@@ -164,6 +158,12 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\BaseList.h">
       <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\BitHelper.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Maths.h">
+      <Filter>Header Files\Maths</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

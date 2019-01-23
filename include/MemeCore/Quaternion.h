@@ -2,6 +2,7 @@
 #define _QUATERNION_H_
 
 #include <MemeCore/Vector4.h>
+#include <MemeCore/Maths.h>
 
 namespace ml
 {

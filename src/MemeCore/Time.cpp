@@ -2,6 +2,11 @@
 
 namespace ml
 {
+	void Time::start()
+	{
+		m_timer.start();
+	}
+
 	const Timer & Time::timer() const
 	{
 		return m_timer;
@@ -10,11 +15,6 @@ namespace ml
 	const Duration & Time::elapsed() const
 	{
 		return timer().elapsed();
-	}
-
-	void Time::start()
-	{
-		m_timer.start();
 	}
 
 	uint64_t Time::calculateFPS(float deltaTime)

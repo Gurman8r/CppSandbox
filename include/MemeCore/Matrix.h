@@ -1,12 +1,11 @@
 #ifndef _MATRIX_H_
 #define _MATRIX_H_
 
-#include <algorithm>
 #include <MemeCore/IEnumerable.h>
 #include <MemeCore/IComparable.h>
-#include <MemeCore/Maths.h>
-#include <initializer_list>
 #include <vector>
+#include <initializer_list>
+#include <algorithm>
 
 namespace ml
 {
@@ -74,7 +73,9 @@ namespace ml
 		Matrix(const Matrix<U, C, R> & copy)
 			: self_type()
 		{
-			for (std::size_t i = 0, imax = std::min<std::size_t>(Size, copy.Size); i < imax; i++)
+			const std::size_t imax = std::min<std::size_t>(Size, copy.Size);
+
+			for (std::size_t i = 0; i < imax; i++)
 			{
 				(*this)[i] = static_cast<value_type>(copy[i]);
 			}
@@ -90,13 +91,11 @@ namespace ml
 		
 		inline const value_type & operator[](std::size_t index) const
 		{
-			assert(index < (*this).Size);
 			return m_data[index];
 		}
 		
 		inline value_type & operator[](std::size_t index)
 		{
-			assert(index < (*this).Size);
 			return m_data[index];
 		}
 
@@ -116,12 +115,13 @@ namespace ml
 	public:
 		inline virtual void serialize(std::ostream & out) const override
 		{
+			out << "{ ";
 			for (std::size_t y = 0; y < Rows; y++)
 			{
 				for (std::size_t x = 0; x < Cols; x++)
 				{
 					out << (*this)[y * Cols + x]
-						<< ((x < Cols - 1) ? ", " : "");
+						<< ((x < Cols - 1) ? ", " : " }");
 				}
 				if (y < Rows - 1)
 				{
@@ -138,6 +138,7 @@ namespace ml
 			}
 		}
 
+	public:
 		inline virtual bool equals(const self_type & value) const override
 		{
 			for (std::size_t i = 0; i < Size; i++)
@@ -154,7 +155,7 @@ namespace ml
 		{
 			for (std::size_t i = 0; i < Size; i++)
 			{
-				if ((*this)[i] >= value[i])
+				if ((*this)[i] > value[i])
 				{
 					return false;
 				}

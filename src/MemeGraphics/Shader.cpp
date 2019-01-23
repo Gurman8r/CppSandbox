@@ -7,20 +7,20 @@ namespace ml
 {
 	struct Shader::UniformBinder
 	{
-		uint32_t	cache;
+		uint32_t	cached;
 		uint32_t	program;
 		int32_t		location;
 
 		UniformBinder(const Shader * shader, const std::string & name)
-			: cache(0)
+			: cached(0)
 			, program(shader->id())
 			, location(-1)
 		{
 			if (program)
 			{
-				cache = OpenGL::getProgramHandle(GL::ProgramObject);
+				cached = OpenGL::getProgramHandle(GL::ProgramObject);
 
-				if (program != cache)
+				if (program != cached)
 				{
 					OpenGL::useShader(program);
 				}
@@ -30,9 +30,9 @@ namespace ml
 		}
 		~UniformBinder()
 		{
-			if (program && (program != cache))
+			if (program && (program != cached))
 			{
-				OpenGL::useShader(cache);
+				OpenGL::useShader(cached);
 			}
 		}
 
@@ -406,10 +406,10 @@ namespace ml
 			return ml::Debug::LogError("Geometry shaders are not available on your system.");
 		}
 
-		if (id())
+		if (handle())
 		{
-			OpenGL::deleteShader(id());
-			id() = 0;
+			OpenGL::deleteShader(handle());
+			handle() = 0;
 		}
 
 		m_textures.clear();
@@ -494,7 +494,7 @@ namespace ml
 			return Debug::LogError("Failed to link source: {0}", log);
 		}
 
-		id() = shaderProgram;
+		handle() = shaderProgram;
 
 		OpenGL::flush();
 
