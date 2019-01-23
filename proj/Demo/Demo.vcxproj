@@ -175,7 +175,7 @@
     <None Include="..\..\assets\shaders\geometry.shader" />
     <None Include="..\..\assets\shaders\gs\basic\drawCurve_gs4x.shader" />
     <None Include="..\..\assets\shaders\gs\basic\drawCurve_morphing_gs4x.shader" />
-    <None Include="..\..\assets\shaders\basic.shader" />
+    <None Include="..\..\assets\shaders\basic3D.shader" />
     <None Include="..\..\assets\shaders\text.shader" />
     <None Include="..\..\assets\shaders\vs\animation\drawBone_vs4x.shader" />
     <None Include="..\..\assets\shaders\vs\animation\morphing_passKeyframes_vs4x.shader" />

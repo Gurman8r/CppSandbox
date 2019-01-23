@@ -344,7 +344,7 @@ namespace ml
 			m_actualSize	= actualSize;
 			m_smooth		= smooth;
 			m_sRGB			= false;
-			m_repeated	= repeat;
+			m_repeated		= repeat;
 			m_mipmapped		= false;
 		
 			Texture::bind(this);

@@ -97,7 +97,7 @@ enum : int32_t
 	/* Shaders
 	* * * * * * * * * * * * * * * * * * * * */
 	MIN_SHADER = -1,
-	GL_basic,
+	GL_basic3D,
 	GL_text,
 	GL_geometry,
 	MAX_SHADER,
@@ -258,9 +258,9 @@ inline static bool loadAssets()
 	// Load Shaders
 	if(ml::Debug::Log("Loading Shaders..."))
 	{
-		if (!shaders[GL_basic].loadFromFile(settings.pathTo("/shaders/basic.shader")))
+		if (!shaders[GL_basic3D].loadFromFile(settings.pathTo("/shaders/basic3D.shader")))
 		{
-			return ml::Debug::LogError("Failed Loading Shader: {0}", "Basic");
+			return ml::Debug::LogError("Failed Loading Shader: {0}", "Basic3D");
 		}
 
 		if (!shaders[GL_text].loadFromFile(settings.pathTo("/shaders/text.shader")))
@@ -276,6 +276,8 @@ inline static bool loadAssets()
 
 	return true;
 }
+
+/* * * * * * * * * * * * * * * * * * * * */
 
 inline static bool loadGeometry()
 {
@@ -483,7 +485,7 @@ int main(int argc, char** argv)
 			ml::OpenGL::enable(ml::GL::DepthTest);
 
 			// Cube
-			if (ml::Shader & shader = shaders[GL_basic])
+			if (ml::Shader & shader = shaders[GL_basic3D])
 			{
 				model[M_cube]
 					.translate(ml::vec3f::Zero)
@@ -517,7 +519,7 @@ int main(int argc, char** argv)
 			ml::OpenGL::disable(ml::GL::DepthTest);
 
 			// Quad
-			if (ml::Shader & shader = shaders[GL_basic])
+			if (ml::Shader & shader = shaders[GL_basic3D])
 			{
 				model[M_quad]
 					.translate(ml::vec3f::Zero)
