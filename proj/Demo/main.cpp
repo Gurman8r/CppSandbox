@@ -204,7 +204,6 @@ inline static bool loadAssets()
 		{
 			return ml::Debug::LogError("Failed Loading Font");
 		}
-		\
 		if (!fonts[FNT_lucida_console].loadFromFile(settings.pathTo("/fonts/lucida_console.ttf")))
 		{
 			return ml::Debug::LogError("Failed Loading Font");
