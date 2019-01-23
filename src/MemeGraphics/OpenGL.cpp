@@ -334,6 +334,11 @@ namespace ml
 		glCheck(glDeleteBuffers(count, buffers));
 	}
 
+	void OpenGL::deleteVertexArrays(uint32_t count, const uint32_t * arrays)
+	{
+		glCheck(glDeleteVertexArrays(count, arrays));
+	}
+
 	void OpenGL::vertexAttribPointer(uint32_t index, uint32_t size, GL::Type type, bool normalized, uint32_t stride, uint32_t offset, uint32_t width)
 	{
 		glCheck(glVertexAttribPointer(

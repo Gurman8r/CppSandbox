@@ -121,7 +121,7 @@ namespace ml
 				for (std::size_t x = 0; x < Cols; x++)
 				{
 					out << (*this)[y * Cols + x]
-						<< (x < Cols - 1 ? ", " : "");
+						<< ((x < Cols - 1) ? ", " : "");
 				}
 				if (y < Rows - 1)
 				{

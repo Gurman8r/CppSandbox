@@ -1,9 +1,9 @@
 #ifndef _IMAGE_H_
 #define _IMAGE_H_
 
-#include <MemeGraphics/Color.h>
-#include <MemeCore/Vector2.h>
 #include <MemeCore/IResource.h>
+#include <MemeCore/Vector2.h>
+#include <MemeGraphics/Color.h>
 #include <MemeWindow/Icon.h>
 
 namespace ml

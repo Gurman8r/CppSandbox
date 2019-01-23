@@ -2,13 +2,14 @@
 #define _VERTEX_BUFFER_H_
 
 #include <MemeGraphics/GL.h>
-#include <MemeCore/ITrackable.h>
-#include <vector>
+#include <MemeGraphics/Lists.h>
+#include <MemeGraphics/IHandle.h>
 
 namespace ml
 {
 	class ML_GRAPHICS_API VertexBuffer final
 		: public ITrackable
+		, public IHandle
 	{
 	public:
 		VertexBuffer();
@@ -22,21 +23,17 @@ namespace ml
 		VertexBuffer & unbind();
 
 		VertexBuffer & bufferData(const void * data, uint32_t size);
-		VertexBuffer & bufferData(const std::vector<float> & data);
+		VertexBuffer & bufferData(const FloatList & data);
 
-		VertexBuffer & bufferSubData(const void * data, uint32_t size, uint32_t offset = 0);
-		VertexBuffer & bufferSubData(const std::vector<float> & data, uint32_t offset = 0);
+		VertexBuffer & bufferSubData(const void * data, uint32_t size, uint32_t offset);
+		VertexBuffer & bufferSubData(const FloatList & data, uint32_t offset);
 
-		inline const uint32_t &		id()	const { return m_id; }
 		inline const void *			data()	const { return m_data;}
 		inline const GL::Usage &	usage() const { return m_usage; }
 		inline const uint32_t &		size()	const { return m_size; }
 		inline const int32_t &		count() const { return m_count; }
 
-		inline operator bool() const { return (bool)id(); }
-
 	private:
-		uint32_t		m_id;
 		const void *	m_data;
 		GL::Usage		m_usage;
 		uint32_t		m_size;		// total length of data

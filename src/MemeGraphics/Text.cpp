@@ -90,14 +90,14 @@ namespace ml
 					glyph.size() * m_scale
 				);
 
-				m_vertices[i] = Vertex::Flatten({
+				m_vertices[i] = VertexList({
 					{{ rect.left(),  rect.bot(), 0.f }, vec2f::Zero	},
 					{{ rect.left(),  rect.top(), 0.f }, vec2f::Up	},
 					{{ rect.right(), rect.top(), 0.f }, vec2f::One	},
 					{{ rect.left(),  rect.bot(), 0.f }, vec2f::Zero	},
 					{{ rect.right(), rect.top(), 0.f }, vec2f::One	},
 					{{ rect.right(), rect.bot(), 0.f }, vec2f::Right},
-				});
+				}).contiguous();
 
 				m_textures[i] = (&glyph.texture);
 				

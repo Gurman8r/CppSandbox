@@ -100,26 +100,4 @@ namespace ml
 		(*this)[8] = value[1];
 		return (*this);
 	}
-
-
-	const FloatList & Vertex::Flatten(const VertexList & value)
-	{
-		static FloatList out;
-		if (const std::size_t imax = value.size() * Vertex::Size)
-		{
-			if (out.size() != imax)
-			{
-				out.resize(imax);
-			}
-			for (std::size_t i = 0; i < imax; i++)
-			{
-				out[i] = value[i / Vertex::Size][i % Vertex::Size];
-			}
-		}
-		else if (!out.empty())
-		{
-			out.clear();
-		}
-		return out;
-	}
 }

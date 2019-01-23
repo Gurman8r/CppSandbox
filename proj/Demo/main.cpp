@@ -14,6 +14,7 @@
 #include <MemeGraphics/FrameBuffer.h>
 #include <MemeGraphics/BufferLayout.h>
 #include <MemeGraphics/OpenGL.h>
+#include <MemeGraphics/Mesh.h>
 #include <MemeAudio/Sound.h>
 #include <MemeNet/Client.h>
 #include <MemeScript/Interpreter.h>
@@ -150,6 +151,13 @@ enum : int32_t
 	FBO_test,
 	MAX_FBO,
 
+	/* Meshes
+	* * * * * * * * * * * * * * * * * * * * */
+	MIN_MESH = -1,
+	MESH_sphere8x6,
+	MESH_sphere32x24,
+	MAX_MESH,
+
 	/* Sounds
 	* * * * * * * * * * * * * * * * * * * * */
 	MIN_SOUND = -1,
@@ -177,6 +185,7 @@ ml::VAO			vao		[MAX_VAO];
 ml::VBO			vbo		[MAX_VBO];
 ml::IBO			ibo		[MAX_IBO];
 ml::FBO			fbo		[MAX_FBO];
+ml::Mesh		meshes	[MAX_MESH];
 ml::Sound		sounds	[MAX_SOUND];
 ml::Text		text	[MAX_TEXT];
 
@@ -267,10 +276,19 @@ inline static bool loadAssets()
 
 inline static bool loadGeometry()
 {
+	// Load Meshes
+	if (ml::Debug::Log("Loading Meshes"))
+	{
+		if (!meshes[MESH_sphere8x6].loadFromFile(settings.pathTo("/meshes/sphere8x6.mesh")))
+		{
+			return ml::Debug::LogError("Failed Loading Mesh: {0}", "sphere8x6");
+		}
+	}
+
 	// Load Geometry
 	if (ml::Debug::Log("Loading Geometry..."))
 	{
-		static ml::BufferLayout layout({
+		static const ml::BufferLayout layout({
 			{ 0, 3, ml::GL::Float, false, ml::Vertex::Size, 0, sizeof(float) },
 			{ 1, 4, ml::GL::Float, false, ml::Vertex::Size, 3, sizeof(float) },
 			{ 2, 2, ml::GL::Float, false, ml::Vertex::Size, 7, sizeof(float) },
@@ -283,7 +301,7 @@ inline static bool loadGeometry()
 		vbo[VBO_cube]
 			.create(ml::GL::StaticDraw)
 			.bind()
-			.bufferData(ml::Vertex::Flatten(ml::Shapes::Cube::Vertices));
+			.bufferData(ml::Shapes::Cube::Vertices.contiguous());
 		ibo[IBO_cube]
 			.create(ml::GL::StaticDraw, ml::GL::UnsignedInt)
 			.bind()
@@ -301,7 +319,7 @@ inline static bool loadGeometry()
 		vbo[VBO_quad]
 			.create(ml::GL::StaticDraw)
 			.bind()
-			.bufferData(ml::Vertex::Flatten(ml::Shapes::Quad::Vertices));
+			.bufferData(ml::Shapes::Quad::Vertices.contiguous());
 		ibo[IBO_quad]
 			.create(ml::GL::StaticDraw, ml::GL::UnsignedInt)
 			.bind()

@@ -23,6 +23,7 @@
     <ClInclude Include="..\..\include\MemeGraphics\FrameBuffer.h" />
     <ClInclude Include="..\..\include\MemeGraphics\GL.h" />
     <ClInclude Include="..\..\include\MemeGraphics\Gizmos.h" />
+    <ClInclude Include="..\..\include\MemeGraphics\IHandle.h" />
     <ClInclude Include="..\..\include\MemeGraphics\IRenderer.h" />
     <ClInclude Include="..\..\include\MemeGraphics\Export.h" />
     <ClInclude Include="..\..\include\MemeGraphics\Font.h" />
@@ -30,6 +31,7 @@
     <ClInclude Include="..\..\include\MemeGraphics\Image.h" />
     <ClInclude Include="..\..\include\MemeGraphics\IndexBuffer.h" />
     <ClInclude Include="..\..\include\MemeGraphics\ITransformable.h" />
+    <ClInclude Include="..\..\include\MemeGraphics\Lists.h" />
     <ClInclude Include="..\..\include\MemeGraphics\Mesh.h" />
     <ClInclude Include="..\..\include\MemeGraphics\OpenGL.h" />
     <ClInclude Include="..\..\include\MemeGraphics\RenderBatch.h" />

@@ -4,12 +4,12 @@
 namespace ml
 {
 	IndexBuffer::IndexBuffer()
-		: m_id(NULL)
+		: IHandle()
 	{
 	}
 
 	IndexBuffer::IndexBuffer(const IndexBuffer & copy)
-		: m_id(copy.m_id)
+		: IHandle(copy.m_id)
 		, m_usage(copy.m_usage)
 		, m_data(copy.m_data)
 		, m_count(copy.m_count)
@@ -24,13 +24,16 @@ namespace ml
 
 	IndexBuffer & IndexBuffer::clean()
 	{
-		OpenGL::deleteBuffers(1, &m_id);
+		if (*this)
+		{
+			OpenGL::deleteBuffers(1, (*this));
+		}
 		return (*this);
 	}
 
 	IndexBuffer & IndexBuffer::create(GL::Usage usage, GL::Type type)
 	{
-		if (!m_id && (m_id = OpenGL::genBuffers(1)))
+		if (!(*this) && (m_id = OpenGL::genBuffers(1)))
 		{
 			m_usage = usage;
 			m_type = type;
@@ -41,7 +44,7 @@ namespace ml
 
 	IndexBuffer & IndexBuffer::bind()
 	{
-		OpenGL::bindBuffer(GL::ElementArrayBuffer, m_id);
+		OpenGL::bindBuffer(GL::ElementArrayBuffer, (*this));
 		return (*this);
 	}
 
@@ -52,7 +55,7 @@ namespace ml
 	}
 
 
-	IndexBuffer & IndexBuffer::bufferData(const std::vector<uint32_t>& data)
+	IndexBuffer & IndexBuffer::bufferData(const IndexList & data)
 	{
 		return bufferData(&data[0], (uint32_t)data.size());
 	}

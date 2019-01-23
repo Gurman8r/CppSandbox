@@ -3,6 +3,7 @@
 
 #include <MemeGraphics/Export.h>
 #include <MemeGraphics/Vertex.h>
+#include <MemeGraphics/Lists.h>
 
 namespace ml
 {

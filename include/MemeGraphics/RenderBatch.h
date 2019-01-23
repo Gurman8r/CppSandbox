@@ -6,7 +6,7 @@
 #include <MemeGraphics/IndexBuffer.h>
 #include <MemeGraphics/FrameBuffer.h>
 #include <MemeGraphics/Shader.h>
-#include <MemeGraphics/Mesh.h>
+#include <MemeGraphics/Lists.h>
 
 namespace ml
 {
@@ -16,39 +16,45 @@ namespace ml
 			VAO * vao, VBO * vbo,
 			const mat4f * proj, const mat4f * view,
 			Shader * shader)
-			: vao(vao)
-			, vbo(vbo)
-			, ibo(NULL)
-			, fbo(NULL)
-			, shader(shader)
-			, proj(proj)
-			, view(view)
-			, model(NULL)
-			, color(NULL)
-			, texture(NULL)
-			, vertices(NULL)
-		{
-		}
-		RenderBatch(VAO * vao, VBO * vbo)
-			: RenderBatch(vao, vbo, NULL, NULL, NULL)
+			: vao		(vao)
+			, vbo		(vbo)
+			, ibo		(NULL)
+			, fbo		(NULL)
+			, shader	(shader)
+			, proj		(proj)
+			, view		(view)
+			, model		(NULL)
+			, color		(NULL)
+			, texture	(NULL)
+			, vertices	(NULL)
 		{
 		}
 		RenderBatch()
-			: RenderBatch(NULL, NULL)
+			: vao		(NULL)
+			, vbo		(NULL)
+			, ibo		(NULL)
+			, fbo		(NULL)
+			, shader	(NULL)
+			, proj		(NULL)
+			, view		(NULL)
+			, model		(NULL)
+			, color		(NULL)
+			, texture	(NULL)
+			, vertices	(NULL)
 		{
 		}
 		RenderBatch(const RenderBatch & copy)
-			: vao(copy.vao)
-			, vbo(copy.vbo)
-			, ibo(copy.ibo)
-			, fbo(copy.fbo)
-			, shader(copy.shader)
-			, proj(copy.proj)
-			, view(copy.view)
-			, model(copy.model)
-			, color(copy.color)
-			, texture(copy.texture)
-			, vertices(copy.vertices)
+			: vao		(copy.vao)
+			, vbo		(copy.vbo)
+			, ibo		(copy.ibo)
+			, fbo		(copy.fbo)
+			, shader	(copy.shader)
+			, proj		(copy.proj)
+			, view		(copy.view)
+			, model		(copy.model)
+			, color		(copy.color)
+			, texture	(copy.texture)
+			, vertices	(copy.vertices)
 		{
 		}
 

@@ -4,6 +4,7 @@
 #include <MemeCore/IResource.h>
 #include <MemeGraphics/Vertex.h>
 #include <MemeGraphics/Texture.h>
+#include <MemeGraphics/Lists.h>
 
 namespace ml
 {
@@ -23,26 +24,20 @@ namespace ml
 		Mesh & indices(const IndexList & value);
 		Mesh & textures(const TextureList & value);
 
-		inline const VertexList		&vertices()		const { return m_vertices; }
-		inline const IndexList		&indices()		const { return m_indices; }
-		inline const TextureList	&textures()		const { return m_textures; }
-		inline const FloatList		&contiguous()	const { return update(); }
+		inline const VertexList	&	vertices()		const { return m_vertices; }
+		inline const IndexList &	indices()		const { return m_indices; }
+		inline const TextureList &	textures()		const { return m_textures; }
 
-		const FloatList & update() const;
+		void serialize(std::ostream & out) const override;
+		void deserialize(std::istream & in) override;
 
 	private:
+		mutable bool m_requiresUpdate;
+
 		VertexList	m_vertices;
 		IndexList	m_indices;
 		TextureList m_textures;
 
-		mutable bool		m_changed;
-		mutable FloatList	m_contiguous;
-
-		inline Mesh & changed(bool value)
-		{
-			m_changed = value;
-			return (*this);
-		}
 	};
 }
 

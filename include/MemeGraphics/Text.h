@@ -4,6 +4,7 @@
 #include <MemeGraphics/IRenderer.h>
 #include <MemeGraphics/Font.h>
 #include <MemeGraphics/RenderTarget.h>
+#include <MemeGraphics/Lists.h>
 
 namespace ml
 {
@@ -29,9 +30,9 @@ namespace ml
 		void draw(RenderTarget & target, RenderBatch batch) const override;
 
 	private:
-		mutable bool m_requiresUpdate;
+		mutable bool		m_requiresUpdate;
+		mutable TextureList	m_textures;
 		mutable std::vector<FloatList> m_vertices;
-		mutable std::vector<const Texture*>	m_textures;
 
 		const Font* m_font;
 		uint32_t	m_fontSize;

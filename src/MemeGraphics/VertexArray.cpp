@@ -4,12 +4,12 @@
 namespace ml
 {
 	VertexArray::VertexArray()
-		: m_id(NULL)
+		: IHandle()
 	{
 	}
 
 	VertexArray::VertexArray(const VertexArray & copy)
-		: m_id(copy.m_id)
+		: IHandle(copy.m_id)
 	{
 	}
 
@@ -21,12 +21,16 @@ namespace ml
 
 	VertexArray & VertexArray::clean()
 	{
+		if (*this)
+		{
+			OpenGL::deleteVertexArrays(1, (*this));
+		}
 		return (*this);
 	}
 
 	VertexArray & VertexArray::create(GL::Mode mode)
 	{
-		if (!m_id && (m_id = OpenGL::genVertexArrays(1)))
+		if (!(*this) && (m_id = OpenGL::genVertexArrays(1)))
 		{
 			m_mode = mode;
 		}
@@ -36,7 +40,7 @@ namespace ml
 
 	VertexArray & VertexArray::bind()
 	{
-		OpenGL::bindVertexArray(m_id);
+		OpenGL::bindVertexArray((*this));
 		return (*this);
 	}
 

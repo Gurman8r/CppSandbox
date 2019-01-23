@@ -18,10 +18,6 @@ namespace ml
 		using iterator			= ForwardIterator<value_type>;
 		using const_iterator	= ForwardIterator<const value_type>;
 
-	protected:
-		pointer m_first;
-		pointer m_last;
-
 	public:
 		IEnumerable(pointer first, pointer last)
 			: m_first(first)
@@ -82,7 +78,10 @@ namespace ml
 		{
 			return (begin() == end());
 		}
-		
+
+	private:
+		pointer m_first;
+		pointer m_last;
 	};
 }
 

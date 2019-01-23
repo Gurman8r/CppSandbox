@@ -78,6 +78,7 @@ namespace ml
 		static void		bufferData(GL::Target type, uint32_t size, const void * data, GL::Usage usage);
 		static void		bufferSubData(GL::Target target, ptrdiff_t offset, ptrdiff_t size, const void * data);
 		static void		deleteBuffers(uint32_t count, const uint32_t * buffers);
+		static void		deleteVertexArrays(uint32_t count, const uint32_t * arrays);
 		static void		vertexAttribPointer(uint32_t index, uint32_t size, GL::Type type, bool normalized, uint32_t stride, uint32_t offset, uint32_t width);
 		static void		enableVertexAttribArray(uint32_t index);
 

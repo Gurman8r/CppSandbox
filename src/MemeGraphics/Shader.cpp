@@ -46,14 +46,14 @@ namespace ml
 namespace ml
 {
 	Shader::Shader()
-		: m_id(0)
+		: IHandle()
 		, m_textures()
 		, m_uniforms()
 	{
 	}
 
 	Shader::Shader(const Shader & copy)
-		: m_id(copy.m_id)
+		: IHandle(copy.m_id)
 		, m_textures(copy.m_textures)
 		, m_uniforms(copy.m_uniforms)
 	{
@@ -385,32 +385,6 @@ namespace ml
 			OpenGL::uniformMatrixArray4f(u.location, count, false, &mat4f::Flatten(value, count)[0]);
 		}
 		return (*this);
-	}
-
-
-	Shader & Shader::setUniformArray(const std::string & name, const std::vector<float> & value)
-	{
-		return setUniformArray(name, (int32_t)value.size(), &value[0]);
-	}
-	Shader & Shader::setUniformArray(const std::string & name, const std::vector<vec2f> & value)
-	{
-		return setUniformArray(name, (int32_t)value.size(), &value[0]);
-	}
-	Shader & Shader::setUniformArray(const std::string & name, const std::vector<vec3f> & value)
-	{
-		return setUniformArray(name, (int32_t)value.size(), &value[0]);
-	}
-	Shader & Shader::setUniformArray(const std::string & name, const std::vector<vec4f> & value)
-	{
-		return setUniformArray(name, (int32_t)value.size(), &value[0]);
-	}
-	Shader & Shader::setUniformArray(const std::string & name, const std::vector<mat3f> & value)
-	{
-		return setUniformArray(name, (int32_t)value.size(), &value[0]);
-	}
-	Shader & Shader::setUniformArray(const std::string & name, const std::vector<mat4f> & value)
-	{
-		return setUniformArray(name, (int32_t)value.size(), &value[0]);
 	}
 
 

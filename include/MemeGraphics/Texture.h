@@ -1,15 +1,17 @@
 #ifndef _TEXTURE_H_
 #define _TEXTURE_H_
 
-#include <MemeGraphics/Image.h>
 #include <MemeCore/Rect.h>
 #include <MemeGraphics/GL.h>
+#include <MemeGraphics/Image.h>
+#include <MemeGraphics/IHandle.h>
 
 namespace ml
 {
 	class ML_GRAPHICS_API Texture final
 		: public ITrackable
 		, public IResource
+		, public IHandle
 	{
 	public:
 		enum CoordinateType
@@ -59,7 +61,6 @@ namespace ml
 		static void	bind(const Texture * value);
 
 	public:
-		inline const uint32_t & id()			const { return m_id; }
 		inline const vec2u &	size()			const { return m_size; }
 		inline const vec2u &	actualSize()	const { return m_actualSize; }
 		inline const bool &		isSmooth()		const { return m_isSmooth; }
@@ -71,21 +72,15 @@ namespace ml
 		inline const uint32_t & width()  const { return size()[0]; }
 		inline const uint32_t & height() const { return size()[1]; }
 
-		inline operator bool() const { return (bool)id(); }
-
 	private:
-
-		uint32_t	m_id;
-		vec2u		m_size;
-		vec2u		m_actualSize;
-		bool		m_isSmooth;
-		bool		m_sRgb;
-		bool		m_isRepeated;
-		bool		m_pixelsFlipped;
-		bool		m_hasMipmap;
+		vec2u	m_size;
+		vec2u	m_actualSize;
+		bool	m_isSmooth;
+		bool	m_sRgb;
+		bool	m_isRepeated;
+		bool	m_pixelsFlipped;
+		bool	m_hasMipmap;
 	};
-
-	using TextureList = std::vector<const Texture *>;
 }
 
 #endif // !_TEXTURE_H_

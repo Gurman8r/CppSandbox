@@ -8,12 +8,6 @@
 
 namespace ml
 {
-	class Vertex;
-
-	using VertexList = std::vector<Vertex>;
-	using FloatList = std::vector<float>;
-	using IndexList = std::vector<uint32_t>;
-
 	class ML_GRAPHICS_API Vertex final
 		: public ITrackable
 		, public IComparable<Vertex>
@@ -38,12 +32,19 @@ namespace ml
 		Vertex & color(const vec4f & value);
 		Vertex & texcoords(const vec2f & value);
 
-		inline const float * ptr() const { return m_data; }
-
 		inline const float &operator[](std::size_t index) const { return m_data[index]; }
 		inline float &		operator[](std::size_t index)		{ return m_data[index]; }
 
-		static const FloatList & Flatten(const VertexList & value);
+	public:
+		inline void serialize(std::ostream & out) const override
+		{
+			out << "{ ";
+			for (uint32_t i = 0; i < Size; i++)
+			{
+				out << (*this)[i]
+					<< ((i < Size - 1) ? ", " : " }");
+			}
+		}
 
 	public:
 		inline bool equals(const Vertex & other) const override

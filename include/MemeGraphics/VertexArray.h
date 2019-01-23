@@ -1,13 +1,15 @@
 #ifndef _VERTEX_ARRAY_H_
 #define _VERTEX_ARRAY_H_
 
-#include <MemeGraphics/Vertex.h>
 #include <MemeGraphics/GL.h>
+#include <MemeGraphics/Lists.h>
+#include <MemeGraphics/IHandle.h>
 
 namespace ml
 {
 	class ML_GRAPHICS_API VertexArray final
 		: public ITrackable
+		, public IHandle
 	{
 	public:
 		VertexArray();
@@ -20,13 +22,9 @@ namespace ml
 		VertexArray & bind();
 		VertexArray & unbind();
 
-		inline const uint32_t &	id() const { return m_id; }
-		inline const GL::Mode & mode() const { return m_mode; }
-
-		inline operator bool() const { return (bool)id(); }
+		inline const GL::Mode & mode()	const { return m_mode; }
 
 	private:
-		uint32_t	m_id;
 		GL::Mode	m_mode;
 	};
 

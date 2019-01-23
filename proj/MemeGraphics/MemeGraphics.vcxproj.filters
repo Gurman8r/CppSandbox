@@ -117,8 +117,14 @@
     <ClInclude Include="..\..\include\MemeGraphics\IRenderer.h">
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\IHandle.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Text.h">
-      <Filter>Header Files\DS</Filter>
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\Lists.h">
+      <Filter>Header Files\Buffers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -180,7 +186,7 @@
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Text.cpp">
-      <Filter>Source Files\DS</Filter>
+      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

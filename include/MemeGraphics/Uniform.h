@@ -17,10 +17,6 @@ namespace ml
 			
 			Color,
 			Texture,
-
-			LightPos,
-			EyePos,
-			NormalScale,
 			
 			CurveMode,
 

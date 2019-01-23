@@ -66,7 +66,7 @@ namespace ml
 
 			(*batch.vbo)
 				.bind()
-				.bufferSubData(*batch.vertices)
+				.bufferSubData((*batch.vertices), 0)
 				.unbind();
 
 			OpenGL::drawArrays((*batch.vao).mode(), 0, (uint32_t)(*batch.vertices).size());

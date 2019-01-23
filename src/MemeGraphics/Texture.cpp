@@ -6,9 +6,9 @@
 namespace ml
 {
 	Texture::Texture()
-		: m_size(0, 0)
+		: IHandle()
+		, m_size(0, 0)
 		, m_actualSize(0, 0)
-		, m_id(0)
 		, m_isSmooth(false)
 		, m_sRgb(false)
 		, m_isRepeated(false)
@@ -18,9 +18,9 @@ namespace ml
 	}
 
 	Texture::Texture(const Texture & copy)
-		: m_size(0, 0)
+		: IHandle()
+		, m_size(0, 0)
 		, m_actualSize(0, 0)
-		, m_id(0)
 		, m_isSmooth(copy.m_isSmooth)
 		, m_sRgb(copy.m_sRgb)
 		, m_isRepeated(copy.m_isRepeated)
@@ -231,7 +231,7 @@ namespace ml
 		m_size = vec2u(width, height);
 		m_pixelsFlipped = false;
 
-		if (!m_id)
+		if (!(*this))
 		{
 			m_id = OpenGL::genTextures(1);
 		}

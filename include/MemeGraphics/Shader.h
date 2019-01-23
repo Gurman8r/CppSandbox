@@ -14,6 +14,7 @@ namespace ml
 	class ML_GRAPHICS_API Shader final
 		: public ITrackable
 		, public IResource
+		, public IHandle
 	{
 	public:
 		Shader();
@@ -54,13 +55,6 @@ namespace ml
 		Shader & setUniformArray(const std::string & name, int32_t count, const mat3f * value);
 		Shader & setUniformArray(const std::string & name, int32_t count, const mat4f * value);
 
-		Shader & setUniformArray(const std::string & name, const std::vector<float> & value);
-		Shader & setUniformArray(const std::string & name, const std::vector<vec2f> & value);
-		Shader & setUniformArray(const std::string & name, const std::vector<vec3f> & value);
-		Shader & setUniformArray(const std::string & name, const std::vector<vec4f> & value);
-		Shader & setUniformArray(const std::string & name, const std::vector<mat3f> & value);
-		Shader & setUniformArray(const std::string & name, const std::vector<mat4f> & value);
-
 	public:
 		template <typename T>
 		Shader & setUniform(Uniform::ID id, const T & value)
@@ -77,26 +71,20 @@ namespace ml
 		template <typename T>
 		Shader & setUniformArray(Uniform::ID id, const std::vector<T> & value)
 		{
-			return setUniformArray(Uniform::Names[id], value);
+			return setUniformArray(Uniform::Names[id], (int32_t)value.size(), &value[0]);
 		};
 
-	public:
-		inline const uint32_t & id() const { return m_id; }
-		inline operator bool() const { return (bool)id(); }
-
+	private:
+		bool		compile(const char* vs, const char* gs, const char* fs);
+		int32_t		getUniformLocation(const std::string & value) const;
+	
 	private:
 		struct	UniformBinder;
 		using	TextureTable = std::map<int32_t, const Texture*>;
 		using	UniformTable = std::map<std::string, int32_t>;
 
-	private:
-		uint32_t m_id;
-		TextureTable m_textures;
+		mutable TextureTable m_textures;
 		mutable UniformTable m_uniforms;
-		
-		bool		compile(const char* vs, const char* gs, const char* fs);
-		int32_t		getUniformLocation(const std::string & value) const;
-
 	};
 }
 
