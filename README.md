@@ -1,7 +1,9 @@
 # CppSandbox
-Whatever C++ things I feel like experimenting with at any given moment.
 
-Primarily just for practice and messing around ;)
+Not Building? Try This:
+- Retargeting the solution to a different Windows SDK version.
+- Running OpenAL installer "/thirdparty/oalinst.exe"
+- Updating your graphics drivers, never know.
 
 - Projects
 	- Demo
