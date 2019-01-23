@@ -49,30 +49,36 @@ namespace ml
 
 	public: // Templates
 		template<typename T, typename ... A>
-		inline static std::string Format(const std::string& fmt, const T& arg0, const A&... args)
+		inline static std::string Format(const std::string & fmt, const T & first, const A & ...args)
 		{
-			std::stringstream ss;
-			ss << arg0 << std::endl;
+			std::stringstream stream;
+			stream << first << std::endl;
 
-			int32_t sink[] = { 0, ((void)(ss << args << std::endl), 0)... };
+			int32_t sink[] = { 0, ((void)(stream << args << std::endl), 0)... };
 			(void)sink;
 
-			std::string	out = fmt;
-			for (std::size_t pos = 0; ss.good();)
+			std::string	tmp = fmt;
+			for (std::size_t index = 0; stream.good(); index++)
 			{
-				std::string find = StringUtility::Sprintf("{%i}", pos);
-				std::string replace;
-				std::getline(ss, replace);
-				out = StringUtility::Replace(out, find, replace);
-				pos++;
+				const std::string find = "{" + std::to_string(index) + "}";
+				
+				std::string arg;
+				if (std::getline(stream, arg))
+				{
+					for (std::size_t i = 0; (i = tmp.find(find, i)) != std::string::npos;)
+					{
+						tmp.replace(i, find.size(), arg);
+						i += arg.size();
+					}
+				}
 			}
-			return out;
+			return tmp;
 		}
 
 		template <typename T>
 		inline static std::string Format(const T & value)
 		{
-			return Format("{0}", value);
+			return Format(value, "");
 		}
 	};
 }
