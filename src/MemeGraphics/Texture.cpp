@@ -3,10 +3,11 @@
 #include <MemeCore/DebugUtility.h>
 #include <cassert>
 #include <algorithm>
+
 namespace ml
 {
 	Texture::Texture()
-		: IHandle()
+		: IHandle(NULL)
 		, m_size(0, 0)
 		, m_actualSize(0, 0)
 		, m_isSmooth(false)
@@ -18,7 +19,7 @@ namespace ml
 	}
 
 	Texture::Texture(const Texture & copy)
-		: IHandle()
+		: IHandle(NULL)
 		, m_size(0, 0)
 		, m_actualSize(0, 0)
 		, m_isSmooth(copy.m_isSmooth)
@@ -27,7 +28,7 @@ namespace ml
 		, m_pixelsFlipped(false)
 		, m_hasMipmap(false)
 	{
-		if (copy.m_id)
+		if (copy)
 		{
 			if (create(copy.size()[0], copy.size()[1]))
 			{
@@ -50,9 +51,9 @@ namespace ml
 
 	bool Texture::cleanup()
 	{
-		if (m_id)
+		if ((*this))
 		{
-			OpenGL::deleteTextures(1, &m_id);
+			OpenGL::deleteTextures(1, (*this));
 			return true;
 		}
 		return false;
@@ -171,7 +172,7 @@ namespace ml
 		assert(x + width <= m_size[0]);
 		assert(y + height <= m_size[1]);
 
-		if (pixels && m_id)
+		if ((*this) && pixels)
 		{
 			Texture::bind(this);
 
@@ -233,7 +234,7 @@ namespace ml
 
 		if (!(*this))
 		{
-			m_id = OpenGL::genTextures(1);
+			id() = OpenGL::genTextures(1);
 		}
 
 		if (!m_isRepeated && !OpenGL::edgeClampAvailable())
@@ -333,7 +334,7 @@ namespace ml
 		bool smooth, 
 		bool repeat)
 	{
-		if (!m_id && (m_id = OpenGL::genTextures(1)))
+		if (!(*this) && (id() = OpenGL::genTextures(1)))
 		{
 			if (!width || !height)
 			{
@@ -419,7 +420,7 @@ namespace ml
 
 	Texture & Texture::swap(Texture & other)
 	{
-		std::swap(m_id,				other.m_id);
+		std::swap(id(),				other.id());
 		std::swap(m_size,			other.m_size);
 		std::swap(m_actualSize,		other.m_actualSize);
 		std::swap(m_isSmooth,		other.m_isSmooth);
@@ -433,7 +434,7 @@ namespace ml
 
 	Texture & Texture::setRepeated(bool value)
 	{
-		if (m_id && (m_isRepeated != value))
+		if ((*this) && (m_isRepeated != value))
 		{
 			if ((m_isRepeated = value) && !OpenGL::edgeClampAvailable())
 			{
@@ -474,7 +475,7 @@ namespace ml
 
 	Texture & Texture::setSmooth(bool value)
 	{
-		if (m_id && (m_isSmooth != value))
+		if ((*this) && (m_isSmooth != value))
 		{
 			if ((m_isSmooth = value) /*&& !isAvailable()*/)
 			{
@@ -516,7 +517,7 @@ namespace ml
 
 	Texture & Texture::setSrgb(bool value)
 	{
-		if (m_id && (m_sRgb != value))
+		if ((*this) && (m_sRgb != value))
 		{
 			if ((m_sRgb = value) && !OpenGL::textureSrgbAvailable())
 			{
@@ -528,8 +529,8 @@ namespace ml
 					warned = true;
 				}
 			}
-			
 			//Texture::bind(this);
+			//{}
 			//Texture::bind(NULL);
 		}
 		return (*this);
@@ -537,7 +538,7 @@ namespace ml
 
 	Texture & Texture::generateMipmap()
 	{
-		if (m_id && (m_hasMipmap = OpenGL::framebuffersAvailable()))
+		if ((*this) && (m_hasMipmap = OpenGL::framebuffersAvailable()))
 		{
 			Texture::bind(this);
 
@@ -559,7 +560,7 @@ namespace ml
 
 	Texture & Texture::invalidateMipmap()
 	{
-		if (m_id && m_hasMipmap)
+		if ((*this) && m_hasMipmap)
 		{
 			Texture::bind(this);
 
@@ -581,7 +582,7 @@ namespace ml
 	const Image Texture::copyToImage() const
 	{
 		// Easy case: empty texture
-		if (!m_id)
+		if (!(*this))
 		{
 			return Image();
 		}
@@ -646,13 +647,13 @@ namespace ml
 		return image;
 	}
 
-	
 	void Texture::bind(const Texture * value)
 	{
-		OpenGL::bindTexture(GL::Texture2D, 
-			value && (*value)
-				? value->m_id
-				: NULL);
+		OpenGL::bindTexture(
+			GL::Texture2D,
+			((value && (*value)) 
+				? value->id() 
+				: NULL));
 	}
 	
 }

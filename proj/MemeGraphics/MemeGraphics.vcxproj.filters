@@ -28,17 +28,17 @@
     <Filter Include="Header Files\Interfaces">
       <UniqueIdentifier>{0bee5786-4dbe-41db-81dd-9cad85974a90}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\GL">
-      <UniqueIdentifier>{18eb3d43-0a77-4af5-9975-896e67ff95dc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\GL">
-      <UniqueIdentifier>{e6925aeb-bae2-4cf0-bfbb-70aba96f9b5e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Buffers">
       <UniqueIdentifier>{b05bb526-d2bd-4bc7-aa76-f105027d8beb}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Buffers">
       <UniqueIdentifier>{6652bc3a-a5fa-44ca-8400-ad6093276177}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GL">
+      <UniqueIdentifier>{18eb3d43-0a77-4af5-9975-896e67ff95dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GL">
+      <UniqueIdentifier>{e6925aeb-bae2-4cf0-bfbb-70aba96f9b5e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -124,7 +124,7 @@
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Lists.h">
-      <Filter>Header Files\Buffers</Filter>
+      <Filter>Header Files\DS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

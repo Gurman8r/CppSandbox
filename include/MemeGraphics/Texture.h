@@ -25,12 +25,6 @@ namespace ml
 		Texture(const Texture & copy);
 		~Texture();
 
-		inline Texture & operator=(const Texture & value)
-		{
-			static Texture temp;
-			return swap(temp);
-		}
-
 	public:
 		bool cleanup() override;
 		bool loadFromFile(const std::string & filename) override;
@@ -56,6 +50,12 @@ namespace ml
 		Texture & invalidateMipmap();
 		
 		const Image copyToImage() const;
+
+		inline Texture & operator=(const Texture & value)
+		{
+			static Texture temp;
+			return swap(temp);
+		}
 
 	public:
 		static void	bind(const Texture * value);

@@ -21,7 +21,7 @@ namespace ml
 		
 		void start();
 
-		static uint64_t calcStableFPS(float deltaTime);
+		static uint64_t calculateFPS(float deltaTime);
 	
 	private:
 		Time() { start(); }

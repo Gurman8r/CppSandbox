@@ -4,12 +4,12 @@
 namespace ml
 {
 	IndexBuffer::IndexBuffer()
-		: IHandle()
+		: IHandle(NULL)
 	{
 	}
 
 	IndexBuffer::IndexBuffer(const IndexBuffer & copy)
-		: IHandle(copy.m_id)
+		: IHandle(copy.id())
 		, m_usage(copy.m_usage)
 		, m_data(copy.m_data)
 		, m_count(copy.m_count)
@@ -24,7 +24,7 @@ namespace ml
 
 	IndexBuffer & IndexBuffer::clean()
 	{
-		if (*this)
+		if ((*this))
 		{
 			OpenGL::deleteBuffers(1, (*this));
 		}
@@ -33,7 +33,7 @@ namespace ml
 
 	IndexBuffer & IndexBuffer::create(GL::Usage usage, GL::Type type)
 	{
-		if (!(*this) && (m_id = OpenGL::genBuffers(1)))
+		if (!(*this) && (id() = OpenGL::genBuffers(1)))
 		{
 			m_usage = usage;
 			m_type = type;

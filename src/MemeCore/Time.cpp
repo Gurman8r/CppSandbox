@@ -17,7 +17,7 @@ namespace ml
 		m_timer.start();
 	}
 
-	uint64_t Time::calcStableFPS(float deltaTime)
+	uint64_t Time::calculateFPS(float deltaTime)
 	{
 		static uint64_t	frameCounter = 0;
 		static uint64_t	fps = 0;

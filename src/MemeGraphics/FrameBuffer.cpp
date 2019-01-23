@@ -4,12 +4,12 @@
 namespace ml
 {
 	FrameBuffer::FrameBuffer()
-		: IHandle()
+		: IHandle(NULL)
 	{
 	}
 
 	FrameBuffer::FrameBuffer(const FrameBuffer & copy)
-		: IHandle(copy.m_id)
+		: IHandle(copy.id())
 	{
 	}
 
@@ -21,7 +21,7 @@ namespace ml
 
 	FrameBuffer & FrameBuffer::clean()
 	{
-		if (*this)
+		if ((*this))
 		{
 			OpenGL::deleteFramebuffers(1, (*this));
 		}
@@ -30,7 +30,7 @@ namespace ml
 
 	FrameBuffer & FrameBuffer::create()
 	{
-		if (!(*this) && (m_id = OpenGL::genFramebuffers(1)))
+		if (!(*this) && (id() = OpenGL::genFramebuffers(1)))
 		{
 
 		}

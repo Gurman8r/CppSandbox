@@ -149,7 +149,7 @@ namespace ml
 
 	Image & Image::flipHorizontally()
 	{
-		if (*this)
+		if ((*this))
 		{
 			uint32_t rowSize = m_size[0] * 4;
 
@@ -171,7 +171,7 @@ namespace ml
 
 	Image & Image::flipVertically()
 	{
-		if (*this)
+		if ((*this))
 		{
 			uint32_t rowSize = m_size[0] * 4;
 

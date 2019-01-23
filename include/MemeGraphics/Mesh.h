@@ -24,9 +24,9 @@ namespace ml
 		Mesh & indices(const IndexList & value);
 		Mesh & textures(const TextureList & value);
 
-		inline const VertexList	&	vertices()		const { return m_vertices; }
-		inline const IndexList &	indices()		const { return m_indices; }
-		inline const TextureList &	textures()		const { return m_textures; }
+		inline const VertexList	&	vertices()	const { return m_vertices; }
+		inline const IndexList &	indices()	const { return m_indices; }
+		inline const TextureList &	textures()	const { return m_textures; }
 
 		void serialize(std::ostream & out) const override;
 		void deserialize(std::istream & in) override;

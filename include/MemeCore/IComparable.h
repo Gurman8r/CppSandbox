@@ -10,12 +10,12 @@ namespace ml
 		virtual bool equals(const T & value) const = 0;
 		virtual bool lessThan(const T & value) const = 0;
 
-		inline virtual bool notEquals(const T & value) const
+	public:
+		inline bool notEquals(const T & value) const
 		{
 			return !equals(value);
 		}
-
-		inline virtual bool greaterThan(const T & value) const
+		inline bool greaterThan(const T & value) const
 		{
 			return !lessThan(value);
 		}

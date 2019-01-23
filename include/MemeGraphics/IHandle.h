@@ -11,25 +11,23 @@ namespace ml
 		using ID = uint32_t;
 
 	public:
-		IHandle() 
-			: IHandle(NULL) 
-		{}
-		IHandle(ID id)
-			: m_id(id) 
-		{}
+		IHandle(ID value) : m_id(value) {}
 		virtual ~IHandle() {}
 
 	public:
 		inline const ID *	ptr()	const { return (&m_id); }
-		inline const ID &	id()	const { return (m_id); }
-		inline bool			good()	const { return (m_id != NULL); }
+		inline const ID &	id()	const { return (m_id);	}
+		inline bool			good()	const { return (m_id);	}
 
 	public:
-		inline operator const ID *() const { return ptr(); }
-		inline operator const ID &() const { return id(); }
-		inline operator bool()		 const { return good(); }
+		inline operator const ID *()const { return ptr();	}
+		inline operator const ID &()const { return id();	}
+		inline operator bool()		const { return good();	}
 
 	protected:
+		inline ID & id() { return m_id; }
+
+	private:
 		ID m_id;
 	};
 }

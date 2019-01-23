@@ -5,12 +5,12 @@
 namespace ml
 {
 	VertexBuffer::VertexBuffer()
-		: IHandle()
+		: IHandle(NULL)
 	{
 	}
 
 	VertexBuffer::VertexBuffer(const VertexBuffer & copy)
-		: IHandle(copy.m_id)
+		: IHandle(copy.id())
 		, m_usage(copy.m_usage)
 		, m_data(copy.m_data)
 		, m_size(copy.m_size)
@@ -26,7 +26,7 @@ namespace ml
 
 	VertexBuffer & VertexBuffer::clean()
 	{
-		if (*this)
+		if ((*this))
 		{
 			OpenGL::deleteBuffers(1, (*this));
 		}
@@ -35,7 +35,7 @@ namespace ml
 
 	VertexBuffer & VertexBuffer::create(GL::Usage usage)
 	{
-		if (!(*this) && (m_id = OpenGL::genBuffers(1)))
+		if (!(*this) && (id() = OpenGL::genBuffers(1)))
 		{
 			m_usage = usage;
 		}

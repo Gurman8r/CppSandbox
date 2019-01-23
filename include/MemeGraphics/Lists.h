@@ -66,11 +66,11 @@ namespace ml
 		using base_type = BaseList<data_type>;
 		using self_type = VertexList;
 	public:
-		VertexList() : base_type() { }
+		VertexList() : base_type() {}
 		VertexList(const base_type & value) : base_type(value) {}
 		VertexList(const init_type & value) : base_type(value) {}
 		VertexList(const self_type & value) : base_type(value) {}
-		~VertexList() { }
+		~VertexList() {}
 
 	public:
 		inline const FloatList & contiguous() const

@@ -283,6 +283,11 @@ inline static bool loadGeometry()
 		{
 			return ml::Debug::LogError("Failed Loading Mesh: {0}", "sphere8x6");
 		}
+
+		//if (!meshes[MESH_sphere32x24].loadFromFile(settings.pathTo("/meshes/sphere32x24.mesh")))
+		//{
+		//	return ml::Debug::LogError("Failed Loading Mesh: {0}", "sphere32x24");
+		//}
 	}
 
 	// Load Geometry
@@ -458,7 +463,7 @@ int main(int argc, char** argv)
 				settings.title,
 				ML_Time.elapsed(),
 				elapsed.delta(),
-				ml::Time::calcStableFPS(elapsed.delta())
+				ml::Time::calculateFPS(elapsed.delta())
 			));
 
 			// Handle Input
