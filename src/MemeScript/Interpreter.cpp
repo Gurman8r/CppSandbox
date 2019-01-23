@@ -1,6 +1,6 @@
 #include <MemeScript/Interpreter.h>	
 #include <MemeCore/FileSystem.h>
-#include <MemeCore/ConsoleUtility.h>
+
 #include <dirent.h>
 #include <MemeCore/DebugUtility.h>
 

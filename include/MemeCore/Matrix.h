@@ -18,26 +18,26 @@ namespace ml
 
 	{
 	public:
-		using value_type	= T;
-		using self_type		= Matrix<value_type, _Cols, _Rows>;
+		using data_type	= T;
+		using self_type	= Matrix<data_type, _Cols, _Rows>;
 
 		enum
-		{ 
+		{
 			Cols = _Cols,
 			Rows = _Rows,
 			Size = Cols * Rows 
 		};
 
 	private:
-		value_type m_data[Size];
+		data_type m_data[Size];
 
 	public:
 		Matrix()
-			: IEnumerable<value_type>(&m_data[0], &m_data[Size])
+			: IEnumerable<data_type>(&m_data[0], &m_data[Size])
 		{
 		}
 		
-		Matrix(const value_type & value)
+		Matrix(const data_type & value)
 			: self_type()
 		{
 			for (std::size_t i = 0; i < Size; i++)
@@ -46,7 +46,7 @@ namespace ml
 			}
 		}
 		
-		Matrix(const value_type * value)
+		Matrix(const data_type * value)
 			: self_type()
 		{
 			for (std::size_t i = 0; i < Size; i++)
@@ -55,7 +55,7 @@ namespace ml
 			}
 		}
 		
-		Matrix(const std::initializer_list<value_type> & value)
+		Matrix(const std::initializer_list<data_type> & value)
 			: self_type()
 		{
 			for (auto it = value.begin(); it != value.end(); it++)
@@ -77,24 +77,24 @@ namespace ml
 
 			for (std::size_t i = 0; i < imax; i++)
 			{
-				(*this)[i] = static_cast<value_type>(copy[i]);
+				(*this)[i] = static_cast<data_type>(copy[i]);
 			}
 		}
 
 		virtual ~Matrix() {}
 
 	public:
-		inline const value_type * ptr() const
+		inline const data_type * ptr() const
 		{
 			return m_data;
 		}
 		
-		inline const value_type & operator[](std::size_t index) const
+		inline const data_type & operator[](std::size_t index) const
 		{
 			return m_data[index];
 		}
 		
-		inline value_type & operator[](std::size_t index)
+		inline data_type & operator[](std::size_t index)
 		{
 			return m_data[index];
 		}
@@ -106,7 +106,7 @@ namespace ml
 			{
 				for (std::size_t x = 0; x < Cols; x++)
 				{
-					value[y * Cols + x] = (x == y) ? (value_type)1 : (value_type)0;
+					value[y * Cols + x] = (x == y) ? (data_type)1 : (data_type)0;
 				}
 			}
 			return value;
@@ -134,7 +134,14 @@ namespace ml
 		{
 			for (std::size_t i = 0; i < Size; i++)
 			{
-				in >> (*this)[i];
+				if (in.good())
+				{
+					in >> (*this)[i];
+				}
+				else
+				{
+					(*this)[i] = data_type();
+				}
 			}
 		}
 
@@ -155,7 +162,7 @@ namespace ml
 		{
 			for (std::size_t i = 0; i < Size; i++)
 			{
-				if ((*this)[i] > value[i])
+				if ((*this)[i] >= value[i])
 				{
 					return false;
 				}

@@ -14,6 +14,7 @@ namespace ml
 
 	Mesh::~Mesh()
 	{
+		cleanup();
 	}
 
 	
@@ -24,6 +25,34 @@ namespace ml
 	
 	bool Mesh::loadFromFile(const std::string & filename)
 	{
+		m_vp.clear();
+		m_vt.clear();
+		m_vn.clear();
+		m_vf.clear();
+
+		std::stringstream file;
+		if (ML_FileSystem.getFileContents(filename, file))
+		{
+			file >> (*this);
+			//Debug::out() << (*this);
+			return true;
+		}
+		return false;
+	}
+
+
+	void Mesh::serialize(std::ostream & out) const
+	{
+		out << "VP: " << m_vp.size() << std::endl << m_vp << std::endl
+			<< "VT: " << m_vt.size() << std::endl << m_vt << std::endl
+			<< "VN: " << m_vn.size() << std::endl << m_vn << std::endl
+			<< "VF: " << m_vf.size() << std::endl << m_vf << std::endl;
+	}
+
+	void Mesh::deserialize(std::istream & in)
+	{
+		/* * * * * * * * * * * * * * * * * * * * */
+
 		auto parseLine = [](
 			const std::string & line,
 			const std::string & find,
@@ -35,62 +64,46 @@ namespace ml
 				data.str(line.substr((i + find.size()), (line.size() - find.size() - 1)));
 				return true;
 			}
-			data.str(std::string());
 			return false;
 		};
+		
+		/* * * * * * * * * * * * * * * * * * * * */
 
-		std::stringstream file;
-		if (ML_FileSystem.getFileContents(filename, file))
+		std::string line;
+		while (std::getline(in, line))
 		{
-			std::string line;
-			while (std::getline(file, line))
+			std::stringstream data;
+			if (parseLine(line, "v ", data))
 			{
-				std::stringstream data;
-				if (parseLine(line, "v ", data)) // Position
+				// Position
+				vec3f tmp;
+				data >> tmp;
+				m_vp.push_back(tmp);
+			}
+			else if (parseLine(line, "vt ", data))
+			{
+				// Texcoord
+				vec2f tmp;
+				data >> tmp;
+				m_vt.push_back(tmp);
+			}
+			else if (parseLine(line, "vn ", data))
+			{
+				// Normal
+				vec3f tmp;
+				data >> tmp;
+				m_vn.push_back(tmp);
+			}
+			else if (parseLine(line, "f ", data))
+			{
+				// Index
+				std::string tmp;
+				while (std::getline(data, tmp, '/'))
 				{
-					vec3f tmp;
-					data >> tmp;
-
-					Debug::out() << "Position: " << tmp << std::endl;
-				}
-				else if (parseLine(line, "vt ", data)) // Texcoord
-				{
-					vec2f tmp;
-					data >> tmp;
-
-					Debug::out() << "Texcoord: " << tmp << std::endl;
-				}
-				else if (parseLine(line, "vn ", data)) // Normal
-				{
-					vec3f tmp;
-					data >> tmp;
-
-					Debug::out() << "Normal: " << tmp << std::endl;
-				}
-				else if (parseLine(line, "f ", data)) // Index
-				{
-					IndexList tmp;
-					std::string i;
-					while (std::getline(data, i, '/'))
-					{
-						tmp.push_back(std::stoi(i));
-					}
-
-					Debug::out() << "Index: " << tmp << std::endl;
+					m_vf.push_back(std::stoi(tmp));
 				}
 			}
-			return true;
 		}
-		return false;
-	}
-
-
-	void Mesh::serialize(std::ostream & out) const
-	{
-	}
-
-	void Mesh::deserialize(std::istream & in)
-	{
 	}
 
 }

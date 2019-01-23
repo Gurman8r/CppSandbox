@@ -1,5 +1,5 @@
 #include <MemeScript/Memory.h>
-#include <MemeCore/ConsoleUtility.h>
+#include <MemeCore/DebugUtility.h>
 
 namespace ml
 {

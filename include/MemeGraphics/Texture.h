@@ -24,12 +24,11 @@ namespace ml
 		bool loadFromImage(const Image & value);
 		bool loadFromImage(const Image & value, const IntRect & area);
 
-		bool update(const Texture& texture);
-		bool update(const Image& image);
-		bool update(const uint8_t* pixels, uint32_t width, uint32_t height, uint32_t x, uint32_t y);
+		bool update(const Texture & texture);
+		bool update(const Image & image);
+		bool update(const uint8_t * pixels, uint32_t width, uint32_t height, uint32_t x, uint32_t y);
 
 		bool create(uint32_t width, uint32_t height);
-		bool create(uint32_t width, uint32_t height, const vec4f & color);
 		bool create(uint32_t width, uint32_t height, const uint8_t * pixels, GL::Format colFmt, GL::Format intFmt, bool smooth, bool repeat, bool mipmapped);
 
 		Texture & swap(Texture & value);

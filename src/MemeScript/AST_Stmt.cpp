@@ -1,7 +1,7 @@
 #include <MemeScript/AST_Stmt.h>
 #include <MemeScript/AST_Expr.h>
 #include <MemeScript/Interpreter.h>
-#include <MemeCore/ConsoleUtility.h>
+
 #include <MemeCore/DebugUtility.h>
 #include <MemeCore/FileSystem.h>
 

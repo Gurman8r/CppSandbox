@@ -1,6 +1,7 @@
 #ifndef _DEBUG_UTILITY_H_
 #define _DEBUG_UTILITY_H_
 
+#include <MemeCore/ConsoleUtility.h>
 #include <MemeCore/StringUtility.h>
 #include <iostream>
 #include <unordered_map>

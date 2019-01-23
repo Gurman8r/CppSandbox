@@ -1,6 +1,6 @@
 #include <MemeScript/Var.h>
 #include <MemeCore/DebugUtility.h>
-#include <MemeCore/ConsoleUtility.h>
+
 #include <MemeCore/StringUtility.h>
 #include <MemeScript/Operator.h>
 #include <MemeScript/Interpreter.h>

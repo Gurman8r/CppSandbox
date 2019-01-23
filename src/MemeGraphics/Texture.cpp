@@ -71,16 +71,15 @@ namespace ml
 	bool Texture::loadFromImage(const Image & image, const IntRect & area)
 	{
 		// Image size
-		int32_t width = static_cast<int32_t>(image.size()[0]);
-		int32_t height = static_cast<int32_t>(image.size()[1]);
+		const int32_t w = (int32_t)image.width();
+		const int32_t h = (int32_t)image.height();
 
-		// Load the entire image if the source area
-		// is either empty or contains the whole image
+		// Load the entire image if the source area is empty or the whole image
 		if ((area.width() == 0 || area.height() == 0) || (
 			area.left() <= 0 && 
 			area.top() <= 0 && 
-			area.width() >= width && 
-			area.height() >= height))
+			area.width() >= w && 
+			area.height() >= h))
 		{
 			if (create(image.size()[0], image.size()[1]))
 			{
@@ -94,17 +93,17 @@ namespace ml
 		{
 			// Adjust the rectangle to the size of the image
 			IntRect rect = area;
-			if (rect.left() < 0)		rect.left(0);
-			if (rect.top() < 0)			rect.top(0);
-			if (rect.right() > width)	rect.right(width);
-			if (rect.bot() > height)	rect.bot(height);
+			if (rect.left()  < 0) rect.left(0);
+			if (rect.top()	 < 0) rect.top(0);
+			if (rect.right() > w) rect.right(w);
+			if (rect.bot()	 > h) rect.bot(h);
 
 			// Create the texture and upload the pixels
 			if (create(rect.width(), rect.height()))
 			{
 				// Copy the pixels to the texture, row by row
 				const uint8_t * pixels = 
-					image.ptr() + 4 * (rect.left() + (width * rect.top()));
+					image.ptr() + 4 * (rect.left() + (w * rect.top()));
 
 				Texture::bind(this);
 
@@ -118,7 +117,7 @@ namespace ml
 						GL::UnsignedByte, 
 						pixels);
 
-					pixels += 4 * width;
+					pixels += 4 * w;
 				}
 
 				OpenGL::texParameter(
@@ -297,13 +296,6 @@ namespace ml
 		Texture::bind(NULL);
 		
 		return true;
-	}
-
-	bool Texture::create(uint32_t width, uint32_t height, const vec4f & color)
-	{
-		static Image image;
-		image.create(width, height, color);
-		return loadFromImage(image);
 	}
 
 	bool Texture::create(

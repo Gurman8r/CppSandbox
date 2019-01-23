@@ -1,6 +1,6 @@
 #include <MemeGraphics/OpenGL.h>
 #include <MemeCore/DebugUtility.h>
-#include <MemeCore/ConsoleUtility.h>
+
 #include <cassert>
 
 #define GLEW_STATIC

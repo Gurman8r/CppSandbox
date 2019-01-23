@@ -23,13 +23,11 @@ namespace ml
 		void serialize(std::ostream & out) const override;
 		void deserialize(std::istream & in) override;
 
-		inline const VertexList &	vertices()	const { return m_vertices; }
-		inline const IndexList &	indices()	const { return m_indices; }
-
 	private:
-		VertexList	m_vertices;
-		IndexList	m_indices;
-
+		List<vec3f> m_vp;
+		List<vec2f> m_vt;
+		List<vec3f> m_vn;
+		IndexList	m_vf;
 	};
 }
 

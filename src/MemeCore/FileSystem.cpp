@@ -47,6 +47,8 @@ namespace ml
 
 				buffer.push_back('\0');
 
+				file.close();
+
 				return true;
 			}
 			else

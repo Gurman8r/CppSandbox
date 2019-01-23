@@ -8,12 +8,13 @@
 namespace ml
 {
 	// Wrapper for custom std::vector<T, Alloc>
+	// Adds serialization & memory tracking
 	template <class T, class Alloc = std::allocator<T>>
-	class BaseList
+	class List
 		: public std::vector<T, Alloc>
 		, public ITrackable
 		, public IComparable<std::vector<T, Alloc>>
-		, public IComparable<BaseList<T, Alloc>>
+		, public IComparable<List<T, Alloc>>
 	{
 	public:
 		using size_type = std::size_t;
@@ -24,14 +25,14 @@ namespace ml
 
 		using base_type = std::vector<data_type, allocator>;
 		using init_type = std::initializer_list<data_type>;
-		using self_type = BaseList<data_type, allocator>;
+		using self_type = List<data_type, allocator>;
 
 	public:
-		BaseList() : base_type() {}
-		BaseList(const base_type & value) : base_type(value) {}
-		BaseList(const init_type & value) : base_type(value) {}
-		BaseList(const self_type & value) : base_type(value) {}
-		virtual ~BaseList() {}
+		List() : base_type() {}
+		List(const base_type & value) : base_type(value) {}
+		List(const init_type & value) : base_type(value) {}
+		List(const self_type & value) : base_type(value) {}
+		virtual ~List() {}
 
 	public:
 		inline operator base_type() const

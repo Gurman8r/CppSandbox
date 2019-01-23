@@ -155,7 +155,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeCore\Axis.h" />
-    <ClInclude Include="..\..\include\MemeCore\BaseList.h" />
+    <ClInclude Include="..\..\include\MemeCore\List.h" />
     <ClInclude Include="..\..\include\MemeCore\BitHelper.h" />
     <ClInclude Include="..\..\include\MemeCore\Component.h" />
     <ClInclude Include="..\..\include\MemeCore\ComponentMap.h" />

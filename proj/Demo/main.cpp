@@ -3,7 +3,7 @@
 #include <INIReader.h>
 #include <MemeCore/Time.h>
 #include <MemeCore/DebugUtility.h>
-#include <MemeCore/ConsoleUtility.h>
+
 #include <MemeCore/InputState.h>
 #include <MemeCore/FileSystem.h>
 #include <MemeGraphics/Text.h>
@@ -284,10 +284,10 @@ inline static bool loadGeometry()
 	// Load Meshes
 	if (ml::Debug::Log("Loading Meshes"))
 	{
-		//if (!meshes[MESH_sphere8x6].loadFromFile(settings.pathTo("/meshes/sphere8x6.mesh")))
-		//{
-		//	return ml::Debug::LogError("Failed Loading Mesh: {0}", "sphere8x6");
-		//}
+		if (!meshes[MESH_sphere8x6].loadFromFile(settings.pathTo("/meshes/sphere8x6.mesh")))
+		{
+			return ml::Debug::LogError("Failed Loading Mesh: {0}", "sphere8x6");
+		}
 
 		//if (!meshes[MESH_sphere32x24].loadFromFile(settings.pathTo("/meshes/sphere32x24.mesh")))
 		//{
@@ -481,21 +481,20 @@ int main(int argc, char** argv)
 		// Draw
 		window.clear(ml::Color::Violet);
 		{
+			// Begin 3D
 			ml::OpenGL::enable(ml::GL::CullFace);
 			ml::OpenGL::enable(ml::GL::DepthTest);
 
 			// Cube
 			if (ml::Shader & shader = shaders[GL_basic3D])
 			{
-				model[M_cube]
-					.translate(ml::vec3f::Zero)
-					.rotate(elapsed.delta(), ml::vec3f::One)
-					.scale(ml::vec3f::One);
-
 				(shader)
 					.setUniform(ml::Uniform::Proj, proj[P_persp])
 					.setUniform(ml::Uniform::View, view[V_camera])
-					.setUniform(ml::Uniform::Model, model[M_cube])
+					.setUniform(ml::Uniform::Model, model[M_cube]
+						.translate(ml::vec3f::Zero)
+						.rotate(elapsed.delta(), ml::vec3f::One)
+						.scale(ml::vec3f::One))
 					.setUniform(ml::Uniform::Color, ml::Color::White)
 					.setUniform(ml::Uniform::Texture, textures[TEX_stone_dm])
 					.bind();
@@ -515,21 +514,20 @@ int main(int argc, char** argv)
 				vao[VAO_cube].unbind();
 			}
 
+			// Begin 2D
 			ml::OpenGL::disable(ml::GL::CullFace);
 			ml::OpenGL::disable(ml::GL::DepthTest);
 
 			// Quad
 			if (ml::Shader & shader = shaders[GL_basic3D])
 			{
-				model[M_quad]
-					.translate(ml::vec3f::Zero)
-					.rotate(-elapsed.delta(), ml::vec3f::Forward)
-					.scale(ml::vec3f::One);
-
 				(shader)
 					.setUniform(ml::Uniform::Proj, proj[P_persp])
 					.setUniform(ml::Uniform::View, view[V_camera])
-					.setUniform(ml::Uniform::Model, model[M_quad])
+					.setUniform(ml::Uniform::Model, model[M_quad]
+						.translate(ml::vec3f::Zero)
+						.rotate(-elapsed.delta(), ml::vec3f::Forward)
+						.scale(ml::vec3f::One))
 					.setUniform(ml::Uniform::Color, ml::Color::White)
 					.setUniform(ml::Uniform::Texture, textures[TEX_sanic])
 					.bind();
