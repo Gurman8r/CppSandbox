@@ -17,18 +17,13 @@ namespace ml
 
 	InputState & InputState::beginStep()
 	{
-		auto checkKey = [](uint32_t key)
-		{
-#ifdef ML_SYSTEM_WINDOWS
-			return (bool)GetAsyncKeyState((int32_t)key);
-#else
-			return false;
-#endif
-		};
-
 		for (uint32_t i = 0; i < KeyCode::MAX_KEYCODE; i++)
 		{
-			m_new[i] = checkKey(i);
+#ifdef ML_SYSTEM_WINDOWS
+			m_new[i] = (bool)GetAsyncKeyState((int32_t)i);
+#else
+			m_new[i] = false;
+#endif
 		}
 		return (*this);
 	}
@@ -36,10 +31,6 @@ namespace ml
 	InputState & InputState::endStep()
 	{
 		memcpy(m_old, m_new, KeyCode::MAX_KEYCODE);
-		//for (uint32_t i = 0; i < KeyCode::MAX_KEYCODE; i++)
-		//{
-		//	m_old[i] = m_new[i];
-		//}
 		return (*this);
 	}
 

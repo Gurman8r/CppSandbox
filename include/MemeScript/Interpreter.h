@@ -19,7 +19,8 @@ namespace ml
 		friend ISingleton<Interpreter>;
 
 	public:
-		using CommandMap = std::unordered_map<std::string, Command>;
+		using CmdTable = std::unordered_map<std::string, Command>;
+		using CmdNames = std::vector<std::string>;
 
 	private:
 		Interpreter();
@@ -38,10 +39,10 @@ namespace ml
 		Var	execTokens(const TokenList & value);
 		Var	execAST(AST_Block * value);
 
-		Command * addCommand(const Command & value);
-		Command * getCommand(const std::string & value);
+		Command * addCmd(const Command & value);
+		Command * getCmd(const std::string & value);
 
-		const std::vector<std::string> & getCmdNames() const;
+		const CmdNames & cmdNames() const { return m_cmdNames; }
 
 		const Lexer*	lexer()  const	{ return m_lexer;  }
 		const Memory*	memory() const	{ return m_memory; }
@@ -51,11 +52,10 @@ namespace ml
 		Memory*			memory()		{ return m_memory; }
 		Parser*			parser()		{ return m_parser; }
 
-	public:
-		static void LoadBuiltinCommands();
-
 	private:
-		CommandMap	m_commands;
+		CmdTable m_cmdTable;
+		CmdNames m_cmdNames;
+
 		Memory*		m_memory;
 		Lexer*		m_lexer;
 		Parser*		m_parser;

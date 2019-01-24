@@ -27,9 +27,9 @@ namespace ml
 		{
 			Args args(value, " ");
 
-			CommandMap::iterator it = m_commands.find(args.front());
+			CmdTable::iterator it = m_cmdTable.find(args.front());
 
-			if (it != m_commands.end())
+			if (it != m_cmdTable.end())
 			{
 				return it->second(args);
 			}
@@ -104,114 +104,29 @@ namespace ml
 	}
 
 
-	Command*Interpreter::addCommand(const Command & value)
+	Command*Interpreter::addCmd(const Command & value)
 	{
 		if (!value.name().empty())
 		{
-			if (m_commands.find(value.name()) == m_commands.end())
+			if (m_cmdTable.find(value.name()) == m_cmdTable.end())
 			{
-				m_commands.insert({ value.name(), value });
+				m_cmdTable.insert({ value.name(), value });
 
-				return &m_commands[value.name()];
+				m_cmdNames.push_back(value.name());
+
+				return &m_cmdTable[value.name()];
 			}
 		}
-
 		return NULL;
 	}
 
-	Command*Interpreter::getCommand(const std::string & value)
+	Command*Interpreter::getCmd(const std::string & value)
 	{
-		CommandMap::iterator it = m_commands.find(value);
-		if (it != m_commands.begin())
+		CmdTable::iterator it;
+		if ((it = m_cmdTable.find(value)) != m_cmdTable.begin())
 		{
 			return &it->second;
 		}
-
 		return NULL;
-	}
-	
-	
-	const std::vector<std::string> & Interpreter::getCmdNames() const
-	{
-		static std::vector<std::string> names;
-
-		std::size_t size = m_commands.size();
-
-		if (names.size() != size)
-		{
-			names.resize(size);
-
-			std::size_t i = 0;
-			for (const auto & pair : m_commands)
-			{
-				names[i++] = pair.first;
-			}
-		}
-
-		return names;
-	}
-
-
-	void Interpreter::LoadBuiltinCommands()
-	{
-		ML_Interpreter.addCommand(ml::Command("help", [](ml::Args & args)
-		{
-			for (auto n : ML_Interpreter.getCmdNames())
-				Debug::out() << n << std::endl;
-			return ml::Var().boolValue(true);
-		}));
-
-		ML_Interpreter.addCommand(ml::Command("pause", [](ml::Args & args)
-		{
-			return ml::Var().intValue(ml::Debug::pause());
-		}));
-
-		ML_Interpreter.addCommand(ml::Command("clear", [](ml::Args & args)
-		{
-			return ml::Var().intValue(Debug::clear());
-		}));
-
-		ML_Interpreter.addCommand(ml::Command("cd", [](ml::Args & args)
-		{
-			return ml::Var().boolValue(ML_FileSystem.changeDir(args.pop_front().front()));
-		}));
-
-		ML_Interpreter.addCommand(ml::Command("exist", [](ml::Args & args)
-		{
-			return ml::Var().boolValue(ML_FileSystem.fileExists(args.pop_front().front()));
-		}));
-
-		ML_Interpreter.addCommand(ml::Command("dir", [](ml::Args & args)
-		{
-			std::string dName = args.pop_front().empty() ? "./" : args.str();
-
-			if (DIR* dir = opendir(dName.c_str()))
-			{
-				dirent* e;
-				while ((e = readdir(dir)))
-				{
-					switch (e->d_type)
-					{
-					case DT_REG:
-						Debug::out() << (ml::FG::Green | ml::BG::Black) << e->d_name << "";
-						break;
-					case DT_DIR:
-						Debug::out() << (ml::FG::Blue | ml::BG::Green) << e->d_name << "/";
-						break;
-					case DT_LNK:
-						Debug::out() << (ml::FG::Green | ml::BG::Black) << e->d_name << "@";
-						break;
-					default:
-						Debug::out() << (ml::FG::Green | ml::BG::Black) << e->d_name << "*";
-						break;
-					}
-					Debug::out() << ml::FMT() << std::endl;
-				}
-				closedir(dir);
-				return ml::Var().boolValue(true);
-			}
-			Debug::out() << "Dir \'" << dName << "\' does not exist." << std::endl;
-			return ml::Var().boolValue(false);
-		}));
 	}
 }

@@ -3,6 +3,7 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
+#include <dirent.h>
 #include <INIReader.h>
 #include <MemeCore/Time.h>
 #include <MemeCore/DebugUtility.h>
@@ -22,86 +23,96 @@
 #include <MemeNet/Server.h>
 #include <MemeScript/Interpreter.h>
 
+
+// Settings
 /* * * * * * * * * * * * * * * * * * * * */
-
-namespace demo // Settings
+namespace demo
 {
-	struct Settings final
+	class Settings final
+		: public ml::ITrackable
+		, public ml::ISingleton<Settings>
 	{
-		// [Assets]
-		std::string		assetPath;		// Where's all the data?
-		
+		friend class ml::ISingleton<Settings>;
+	public:
+		// [General]
+		std::string	rootPath;	// Where's all the data?
+
 		// [Window]
-		std::string		title;			// Window Title
-		uint32_t		width;			// Window Width
-		uint32_t		height;			// Window Height
-		
-		// [Graphics]
-		float			fieldOfView;	// Field of View
-		float			minClipPersp;	// Min Clipping Range Perspective
-		float			maxClipPersp;	// Max Clipping Range Perspective
-		float			minClipOrtho;	// Min Clipping Range Orthographic
-		float			maxClipOrtho;	// Max Clipping Range Orthographic
-		
+		std::string	winTitle;	// Window Title
+		uint32_t winWidth;		// Window Width
+		uint32_t winHeight;		// Window Height
+
 		// [Script]
-		std::string		script;			// Script to run on start
-		bool			showToks;		// Show Script Tokens
-		bool			showTree;		// Show Script Syntax Tree
-		bool			showItoP;		// Show Script Infix to Postfix
+		std::string	scrFile;	// Script to run on start
+		bool scrShowToks;		// Show Script Tokens
+		bool scrShowTree;		// Show Script Syntax Tree
+		bool scrShowItoP;		// Show Script Infix to Postfix
 
+		// [Graphics]
+		float fieldOfView;		// Field of View
+		float perspNear;		// Persp Near Clipping Range 
+		float perspFar;			// Persp Far  Clipping Range 
+		float orthoNear;		// Ortho Near Clipping Range 
+		float orthoFar;			// Ortho Far  Clipping Range 
+
+		// [Audio]
+		bool isMuted;			// Is Muted?
+		
 		// [Network]
-		bool			isServer;		// Is Server?
+		bool isServer;			// Is Server?
 
-		/* * * * * * * * * * * * * * * * * * * * */
-
+	public:
 		inline bool loadFromFile(const std::string & filename)
 		{
 			INIReader ini(filename.c_str());
 			if (ini.ParseError() == 0)
 			{
-				// [Assets]
-				assetPath	= ini.Get("Assets", "sAssetPath", "../../../assets");
+				// [General]
+				rootPath	= ini.Get("General", "rootPath", "../../../assets");
 				
 				// [Window]
-				title		= ini.Get("Window", "sTitle", "Title");
-				width		= ini.GetInteger("Window", "iWidth", 640);
-				height		= ini.GetInteger("Window", "iHeight", 480);
-				
-				// [Graphics]
-				fieldOfView = (float)ini.GetReal("Graphics", "dFieldOfView",  90.0);
-				minClipPersp= (float)ini.GetReal("Graphics", "dMinClipPersp", 0.1);
-				maxClipPersp= (float)ini.GetReal("Graphics", "dMaxClipPersp", 1000.0);
-				minClipOrtho= (float)ini.GetReal("Graphics", "dMinClipOrtho", -1.0);
-				maxClipOrtho= (float)ini.GetReal("Graphics", "dMaxClipOrtho", +1.0);
+				winTitle	= ini.Get("Window", "title", "MemeLib");
+				winWidth	= ini.GetInteger("Window", "width", 640);
+				winHeight	= ini.GetInteger("Window", "height", 480);
 				
 				// [Script]
-				script		= ini.Get("Script", "sScript", "/scripts/hello.script");
-				showToks	= ini.GetBoolean("Script", "bShowToks", false);
-				showTree	= ini.GetBoolean("Script", "bShowTree", false);
-				showItoP	= ini.GetBoolean("Script", "bShowItoP", false);
+				scrFile		= ini.Get("Script", "scrFile", "");
+				scrShowToks = ini.GetBoolean("Script", "scrShowToks", false);
+				scrShowTree = ini.GetBoolean("Script", "scrShowTree", false);
+				scrShowItoP = ini.GetBoolean("Script", "scrShowItoP", false);
+				
+				// [Graphics]
+				fieldOfView = (float)ini.GetReal("Graphics", "fieldOfView", 90.0);
+				perspNear	= (float)ini.GetReal("Graphics", "perspNear",	0.1);
+				perspFar	= (float)ini.GetReal("Graphics", "perspFar",	1000.0);
+				orthoNear	= (float)ini.GetReal("Graphics", "orthoNear",	-1.0);
+				orthoFar	= (float)ini.GetReal("Graphics", "orthoFar",	+1.0);
 
+				// [Audio]
+				isMuted		= ini.GetBoolean("Audio", "isMuted", false);
+				
 				// [Network]
-				isServer	= ini.GetBoolean("Network", "bIsServer", false);
+				isServer	= ini.GetBoolean("Network", "isServer", false);
 
-				return ml::Debug::Success;
+				return true;
 			}
 			return ml::Debug::LogError("Failed Loading Settings \"{0}\"", filename);
 		}
 
 		inline const std::string pathTo(const std::string & filename) const
 		{
-			return assetPath + filename;
+			return rootPath + filename;
 		}
 	};
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	static Settings settings;
 }
 
-/* * * * * * * * * * * * * * * * * * * * */
+// Singleton to store program properties/settings (INIReader)
+#define SETTINGS demo::Settings::getInstance()
 
-namespace demo // Resource Registry
+
+// Resources
+/* * * * * * * * * * * * * * * * * * * * */
+namespace demo
 {
 	enum : int32_t
 	{
@@ -212,122 +223,236 @@ namespace demo // Resource Registry
 	ml::Sound		sounds	[MAX_SOUND];
 	ml::Client		client;
 	ml::Server		server;
-}
 
-/* * * * * * * * * * * * * * * * * * * * */
+	/* * * * * * * * * * * * * * * * * * * * */
 
-namespace demo // Resource Loading
-{
+	inline static void loadCommands()
+	{
+		static bool onlyOnce = true;
+		if (onlyOnce)
+		{	onlyOnce = false;
+
+			ML_Interpreter.addCmd({ "help", [](ml::Args & args)
+			{
+				for (auto n : ML_Interpreter.cmdNames())
+				{
+					ml::Debug::out() << n << std::endl;
+				}
+				return ml::Var().boolValue(true);
+			} });
+
+			ML_Interpreter.addCmd({ "terminate", [](ml::Args & args)
+			{
+				ml::Debug::terminate(true);
+				return ml::Var();
+			} });
+
+			ML_Interpreter.addCmd({ "pause", [](ml::Args & args)
+			{
+				return ml::Var().intValue(ml::Debug::pause());
+			} });
+
+			ML_Interpreter.addCmd({ "clear", [](ml::Args & args)
+			{
+				return ml::Var().intValue(ml::Debug::clear());
+			} });
+
+			ML_Interpreter.addCmd({ "dir", [](ml::Args & args)
+			{
+				return ml::Var().stringValue(ML_FileSystem.getWorkingDir());
+			} });
+
+			ML_Interpreter.addCmd({ "cd", [](ml::Args & args)
+			{
+				return ml::Var().boolValue(
+					ML_FileSystem.setWorkingDir(args.pop_front().front()));
+			} });
+
+			ML_Interpreter.addCmd({ "exists", [](ml::Args & args)
+			{
+				return ml::Var().boolValue(
+					ML_FileSystem.fileExists(args.pop_front().front()));
+			} });
+
+			ML_Interpreter.addCmd({ "ls", [](ml::Args & args)
+			{
+				const std::string dirName = args.pop_front().empty() ? "./" : args.str();
+
+				if (DIR* dir = opendir(dirName.c_str()))
+				{
+					while (dirent* e = readdir(dir))
+					{
+						switch (e->d_type)
+						{
+						case DT_REG:
+							ml::Debug::out() << (ml::FG::Green | ml::BG::Black) << e->d_name << "";
+							break;
+						case DT_DIR:
+							ml::Debug::out() << (ml::FG::Blue | ml::BG::Green) << e->d_name << "/";
+							break;
+						case DT_LNK:
+							ml::Debug::out() << (ml::FG::Green | ml::BG::Black) << e->d_name << "@";
+							break;
+						default:
+							ml::Debug::out() << (ml::FG::Green | ml::BG::Black) << e->d_name << "*";
+							break;
+						}
+						ml::Debug::out() << ml::FMT() << std::endl;
+					}
+					closedir(dir);
+					return ml::Var().boolValue(true);
+				}
+				ml::Debug::out() << "Directory \'" << dirName << "\' does not exist." << std::endl;
+				return ml::Var().boolValue(false);
+			} });
+
+			ML_Interpreter.addCmd({ "window_title", [](ml::Args & args)
+			{
+				return ml::Var().stringValue(SETTINGS.winTitle);
+			} });
+
+			ML_Interpreter.addCmd({ "build_config", [](ml::Args & args)
+			{
+			#ifdef ML_DEBUG
+				return ml::Var().stringValue("Debug");
+			#else
+				return ml::Var().stringValue("Release");
+			#endif
+			} });
+
+			ML_Interpreter.addCmd({ "build_platform", [](ml::Args & args)
+			{
+			#if defined(_WIN64)
+				return ml::Var().stringValue("x64");
+			#elif defined(_WIN32)
+				return ml::Var().stringValue("x86");
+			#else
+				return ml::Var().errorValue("Unknown");
+			#endif
+			} });
+		}
+	};
+
 	inline static bool loadFonts()
 	{
 		// Load Fonts
 		if (ml::Debug::Log("Loading Fonts..."))
-		{
-			if (!fonts[FNT_clacon].loadFromFile(settings.pathTo("/fonts/clacon.ttf")))
+		{	
+			if (!fonts[FNT_clacon].loadFromFile(SETTINGS.pathTo("/fonts/clacon.ttf")))
 			{
 				return ml::Debug::LogError("Failed Loading Font");
 			}
-			if (!fonts[FNT_consolas].loadFromFile(settings.pathTo("/fonts/consolas.ttf")))
+
+			if (!fonts[FNT_consolas].loadFromFile(SETTINGS.pathTo("/fonts/consolas.ttf")))
 			{
 				return ml::Debug::LogError("Failed Loading Font");
 			}
-			if (!fonts[FNT_lucida_console].loadFromFile(settings.pathTo("/fonts/lucida_console.ttf")))
+
+			if (!fonts[FNT_lucida_console].loadFromFile(SETTINGS.pathTo("/fonts/lucida_console.ttf")))
 			{
 				return ml::Debug::LogError("Failed Loading Font");
 			}
-			if (!fonts[FNT_minecraft].loadFromFile(settings.pathTo("/fonts/minecraft.ttf")))
+
+			if (!fonts[FNT_minecraft].loadFromFile(SETTINGS.pathTo("/fonts/minecraft.ttf")))
 			{
 				return ml::Debug::LogError("Failed Loading Font");
 			}
 		}
-		return ml::Debug::Success;
+		return true;
 	}
 
 	inline static bool loadImages()
 	{
 		// Load Images
 		if (ml::Debug::Log("Loading Images..."))
-		{
-			if (!images[IMG_icon].loadFromFile(settings.pathTo("/images/dean.png")))
+		{	
+			if (!images[IMG_icon].loadFromFile(SETTINGS.pathTo("/images/dean.png")))
 			{
 				return ml::Debug::LogError("Failed Loading Icon");
 			}
 		}
-		return ml::Debug::Success;
+		return true;
 	}
 
 	inline static bool loadTextures()
 	{
 		// Load Textures
 		if (ml::Debug::Log("Loading Textures..."))
-		{
-			if (!textures[TEX_dean].loadFromFile(settings.pathTo("/images/dean.png")))
+		{	
+			if (!textures[TEX_dean].loadFromFile(SETTINGS.pathTo("/images/dean.png")))
 			{
 				return ml::Debug::LogError("Failed Loading Texture");
 			}
-			if (!textures[TEX_sanic].loadFromFile(settings.pathTo("/images/sanic.png")))
+
+			if (!textures[TEX_sanic].loadFromFile(SETTINGS.pathTo("/images/sanic.png")))
 			{
 				return ml::Debug::LogError("Failed Loading Texture");
 			}
-			if (!textures[TEX_stone_dm].loadFromFile(settings.pathTo("/textures/stone/stone_dm.png")))
+
+			if (!textures[TEX_stone_dm].loadFromFile(SETTINGS.pathTo("/textures/stone/stone_dm.png")))
 			{
 				return ml::Debug::LogError("Failed Loading Texture");
 			}
-			if (!textures[TEX_stone_hm].loadFromFile(settings.pathTo("/textures/stone/stone_hm.png")))
+
+			if (!textures[TEX_stone_hm].loadFromFile(SETTINGS.pathTo("/textures/stone/stone_hm.png")))
 			{
 				return ml::Debug::LogError("Failed Loading Texture");
 			}
-			if (!textures[TEX_stone_nm].loadFromFile(settings.pathTo("/textures/stone/stone_nm.png")))
+
+			if (!textures[TEX_stone_nm].loadFromFile(SETTINGS.pathTo("/textures/stone/stone_nm.png")))
 			{
 				return ml::Debug::LogError("Failed Loading Texture");
 			}
 		}
-		return ml::Debug::Success;
+		return true;
 	}
 
 	inline static bool loadShaders()
 	{
 		// Load Shaders
 		if (ml::Debug::Log("Loading Shaders..."))
-		{
-			if (!shaders[GL_basic3D].loadFromFile(settings.pathTo("/shaders/basic3D.shader")))
+		{	
+			if (!shaders[GL_basic3D].loadFromFile(SETTINGS.pathTo("/shaders/basic3D.shader")))
 			{
 				return ml::Debug::LogError("Failed Loading Shader: {0}", "Basic3D");
 			}
-			if (!shaders[GL_text].loadFromFile(settings.pathTo("/shaders/text.shader")))
+
+			if (!shaders[GL_text].loadFromFile(SETTINGS.pathTo("/shaders/text.shader")))
 			{
 				return ml::Debug::LogError("Failed Loading Shader: {0}", "Text");
 			}
-			if (!shaders[GL_geometry].loadFromFile(settings.pathTo("/shaders/geometry.shader")))
+
+			if (!shaders[GL_geometry].loadFromFile(SETTINGS.pathTo("/shaders/geometry.shader")))
 			{
 				return ml::Debug::LogError("Failed Loading Shader: {0}", "Geometry");
 			}
 		}
-		return ml::Debug::Success;
+		return true;
 	}
 
 	inline static bool loadMeshes()
 	{
 		// Load Meshes
 		if (ml::Debug::Log("Loading Meshes..."))
-		{
-			if (!mesh[MESH_sphere8x6].loadFromFile(settings.pathTo("/meshes/sphere8x6.mesh")))
+		{	
+			if (!mesh[MESH_sphere8x6].loadFromFile(SETTINGS.pathTo("/meshes/sphere8x6.mesh")))
 			{
 				return ml::Debug::LogError("Failed Loading Mesh: {0}", "sphere8x6");
 			}
-			if (!mesh[MESH_sphere32x24].loadFromFile(settings.pathTo("/meshes/sphere32x24.mesh")))
+
+			if (!mesh[MESH_sphere32x24].loadFromFile(SETTINGS.pathTo("/meshes/sphere32x24.mesh")))
 			{
 				return ml::Debug::LogError("Failed Loading Mesh: {0}", "sphere32x24");
 			}
 		}
-		return ml::Debug::Success;
+		return true;
 	}
 
 	inline static bool loadBuffers()
 	{
 		// Load Buffers
 		if (ml::Debug::Log("Loading Buffers..."))
-		{
+		{	
 			static const ml::BufferLayout layout({
 				{ 0, 3, ml::GL::Float, false, ml::Vertex::Size, 0, sizeof(float) },
 				{ 1, 4, ml::GL::Float, false, ml::Vertex::Size, 3, sizeof(float) },
@@ -382,133 +507,170 @@ namespace demo // Resource Loading
 			vbo[VBO_text].unbind();
 			vao[VAO_text].unbind();
 		}
-		return ml::Debug::Success;
+		return true;
 	}
 
 	inline static bool loadAudio()
 	{
-		// disabled
 		if (0 && ml::Debug::Log("Loading Audio..."))
 		{
-
+			// ...
 		}
-		return ml::Debug::Success;
+		return true;
 	}
 
 	inline static bool loadNetwork()
 	{
-		// disabled
 		if (0 && ml::Debug::Log("Loading Network..."))
-		{
-
+		{	
+			if (SETTINGS.isServer)
+			{
+				// ...
+			}
+			else
+			{
+				// ...
+			}
 		}
-		return ml::Debug::Success;
+		return true;
 	}
 }
 
+
+// Events
 /* * * * * * * * * * * * * * * * * * * * */
-
-namespace demo // Game Loop
+namespace demo
 {
-	// Load
-	struct LoadEvent final
+	// Program Enter
+	/* * * * * * * * * * * * * * * * * * * * */
+	struct ProgramEnterEvent final
 	{
-
+		int32_t argc;
+		char ** argv;
 	};
-	inline static bool onLoad(const LoadEvent & ev)
+	// Called once at the top of main, after settings are loaded
+	inline static bool onProgramEnter(const ProgramEnterEvent & ev)
 	{
-		if (ml::Debug::Log("Loading Resources..."))
-		{
-			return
-				loadFonts()		&&
-				loadImages()	&&
-				loadTextures()	&&
-				loadShaders()	&&
-				loadMeshes()	&&
-				loadBuffers()	&&
-				loadAudio()		&&
-				loadNetwork()	&&
-				ml::Debug::Log("OK.");
-		}
-		return ml::Debug::Success;
+		// Start Master Timer
+		ML_Time.start();
+
+		// Load Commands
+		loadCommands();
+		
+		// Setup Parser
+		(*ML_Interpreter.parser())
+			.showToks(SETTINGS.scrShowToks)
+			.showTree(SETTINGS.scrShowTree)
+			.showItoP(SETTINGS.scrShowItoP);
+
+		// Run Script
+		ML_Interpreter.execScript(SETTINGS.pathTo(SETTINGS.scrFile));
+
+		return true;
 	}
 
-	// Init
-	struct InitEvent final
+
+	// Load Resources
+	/* * * * * * * * * * * * * * * * * * * * */
+	struct LoadResourcesEvent final
 	{
-		ml::RenderWindow &		window;
 	};
-	inline static bool onInit(const InitEvent & ev)
+	// Called once after the window is created
+	inline static bool onLoadResources(const LoadResourcesEvent & ev)
 	{
-		if (ml::Debug::Log("Initializing..."))
+		return ml::Debug::Log("Loading...") 
+			&& loadFonts	()
+			&& loadImages	()
+			&& loadTextures	()
+			&& loadShaders	()
+			&& loadMeshes	()
+			&& loadBuffers	()
+			&& loadAudio	()
+			&& loadNetwork	()
+			;
+	}
+
+
+	// Start
+	/* * * * * * * * * * * * * * * * * * * * */
+	struct StartEvent final
+	{
+		ml::RenderWindow & window;
+	};
+	// Called once before entering the main loop, after onLoad
+	inline static bool onStart(const StartEvent & ev)
+	{
+		// Setup Window
+		ev.window.setCursor(ml::Window::Cursor::Normal);
+		ev.window.setPosition((ml::VideoMode::desktop().size - ev.window.size()) / 2);
+		ev.window.setViewport(ml::vec2i::Zero, ev.window.size());
+		if (ml::Image icon = images[IMG_icon])
 		{
-			// Setup Window
-			ev.window.setCursor(ml::Window::Cursor::Normal);
-			ev.window.setPosition((ml::VideoMode::desktop().size - ev.window.size()) / 2);
-			ev.window.setViewport(ml::vec2i::Zero, ev.window.size());
-			
-			if(ml::Image & icon = (images[IMG_icon]))
-			{
-				ev.window.setIcons({ icon.flipVertically() });
-			}
-
-			// Orthographic
-			proj[P_ortho] = ml::Transform::Ortho(
-				0.0f, (float)ev.window.width(),
-				0.0f, (float)ev.window.height(),
-				settings.minClipOrtho, 
-				settings.maxClipOrtho);
-
-			// Perspective
-			proj[P_persp] = ml::Transform::Perspective(
-				settings.fieldOfView, 
-				ev.window.aspect(), 
-				settings.minClipPersp, 
-				settings.maxClipPersp);
-
-			// Views
-			ml::vec3f camPos = { 0.0f, 0.0f, 3.0f };
-			view[V_camera] = ml::Transform::LookAt(camPos, camPos + ml::vec3f::Back, ml::vec3f::Up);
-
-
-			// Cube
-			model[M_cube]
-				.translate({ +3.0f, 0.0f, 0.0f })
-				.rotate(0.0f, ml::vec3f::Up)
-				.scale(ml::vec3f::One);
-
-			// Quad
-			model[M_quad]
-				.translate({ -3.0f, 0.0f, 0.0f })
-				.rotate(0.0f, ml::vec3f::Up)
-				.scale(ml::vec3f::One * 5.f);
-
-			// Static Text
-			text[TXT_static]
-				.setFont(&fonts[FNT_minecraft])
-				.setFontSize(72)
-				.setScale(ml::vec2f::One)
-				.setPosition({ 32, 128 })
-				.setColor(ml::Color::White)
-				.setText("there is no need\nto be upset");
+			ev.window.setIcons({ icon.flipVertically() });
 		}
-		return ml::Debug::Log("{0}", ML_Time.elapsed());
+
+		// Orthographic
+		proj[P_ortho] = ml::Transform::Ortho(
+			0.0f, (float)ev.window.width(),
+			0.0f, (float)ev.window.height(),
+			SETTINGS.orthoNear,
+			SETTINGS.orthoFar);
+
+		// Perspective
+		proj[P_persp] = ml::Transform::Perspective(
+			SETTINGS.fieldOfView,
+			ev.window.aspect(),
+			SETTINGS.perspNear,
+			SETTINGS.perspFar);
+
+		// Views
+		ml::vec3f cameraPos = { 0.0f, 0.0f, 3.0f };
+		view[V_camera].lookAt(
+			cameraPos,
+			cameraPos + ml::vec3f::Back,
+			ml::vec3f::Up);
+
+
+		// Cube
+		model[M_cube]
+			.translate({ +3.0f, 0.0f, 0.0f })
+			.rotate(0.0f, ml::vec3f::Up)
+			.scale(ml::vec3f::One);
+
+		// Quad
+		model[M_quad]
+			.translate({ -3.0f, 0.0f, 0.0f })
+			.rotate(0.0f, ml::vec3f::Up)
+			.scale(ml::vec3f::One * 5.f);
+
+		// Static Text
+		text[TXT_static]
+			.setFont(&fonts[FNT_minecraft])
+			.setFontSize(72)
+			.setScale(ml::vec2f::One)
+			.setPosition({ 32, 128 })
+			.setColor(ml::Color::White)
+			.setText("there is no need\nto be upset");
+
+		return ml::Debug::Log("Starting...");
 	}
 
 	
 	// Update
+	/* * * * * * * * * * * * * * * * * * * * */
 	struct UpdateEvent final
 	{
-		ml::RenderWindow &		window;
-		const ml::Duration &	elapsed;
-		const ml::InputState &	input;
+		ml::RenderWindow & window;
+		const ml::Duration & elapsed;
+		const ml::InputState & input;
 	};
+	// Called once per frame, before draw
 	inline static void onUpdate(const UpdateEvent & ev)
 	{
-		// Window Title
+		// Set Window Title
 		ev.window.setTitle(ml::StringUtility::Format(
 			"{0} | {1} | {2} ({3} fps)",
-			settings.title,
+			SETTINGS.winTitle,
 			ML_Time.elapsed(),
 			ev.elapsed.delta(),
 			ml::Time::calculateFPS(ev.elapsed.delta())
@@ -523,11 +685,13 @@ namespace demo // Game Loop
 
 	
 	// Draw
+	/* * * * * * * * * * * * * * * * * * * * */
 	struct DrawEvent final
 	{
-		ml::RenderWindow &		window;
-		const ml::Duration &	elapsed;
+		ml::RenderWindow & window;
+		const ml::Duration & elapsed;
 	};
+	// Called once per frame, after update
 	inline static void onDraw(const DrawEvent & ev)
 	{
 		ev.window.clear(ml::Color::Violet);
@@ -639,16 +803,17 @@ namespace demo // Game Loop
 	}
 
 	
-	// Exit
-	struct ExitEvent final
+	// Program Exit
+	/* * * * * * * * * * * * * * * * * * * * */
+	struct ProgramExitEvent final
 	{
+		int32_t exitCode;
 	};
-	inline static bool onExit(const ExitEvent & ev)
+	// Called once at the end of main
+	inline static int32_t onProgramExit(const ProgramExitEvent & ev)
 	{
-		return ml::Debug::Log("{0}", ML_Time.elapsed());
+		return ev.exitCode;
 	}
 }
-
-/* * * * * * * * * * * * * * * * * * * * */
 
 #endif // !_DEMO_H_

@@ -61,7 +61,7 @@ namespace ml
 		out()
 			<< FMT()
 			<< FG::White << "["
-			<< FG::Green << "  INFO  "
+			<< FG::Green << "   OK   "
 			<< FG::White << "]"
 			<< FMT() << " " << message
 			<< std::endl;

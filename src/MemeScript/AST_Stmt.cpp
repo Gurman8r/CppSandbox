@@ -342,7 +342,6 @@ namespace ml
 				if (*it == '{')
 				{
 					std::string name;
-
 					while (++it != str->value.end())
 					{
 						if (*it == '}')
@@ -355,7 +354,7 @@ namespace ml
 
 					if (Var * v = block()->getv(name))
 					{
-						Debug::out() << (*v);
+						Debug::out() << (*v).textValue();
 					}
 					else
 					{
@@ -370,7 +369,7 @@ namespace ml
 		}
 		else
 		{
-			Debug::out() << expr->evaluate();
+			Debug::out() << expr->evaluate().textValue();
 		}
 		
 		Debug::out() << FMT() << std::endl;

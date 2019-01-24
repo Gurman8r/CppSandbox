@@ -49,7 +49,6 @@ namespace ml
 		return mat4f(glm::value_ptr(glm::perspective(fov, aspect, near, far)));
 	}
 
-
 	mat4f Transform::LookAt(const vec3f & eye, const vec3f & pos, const vec3f & up)
 	{
 		return mat4f(glm::value_ptr(glm::lookAt(
@@ -57,7 +56,6 @@ namespace ml
 			glm::vec3(pos[0], pos[1], pos[2]),
 			glm::vec3( up[0],  up[1],  up[2]))));
 	}
-
 
 	mat4f Transform::Rotate(const mat4f & value, float angle, const vec3f & axis)
 	{
@@ -96,6 +94,12 @@ namespace ml
 			glm::vec3(vec[0], vec[1], vec[2]))));
 	}
 
+
+	Transform & Transform::lookAt(const vec3f & eye, const vec3f & pos, const vec3f & up)
+	{
+		m_matrix = LookAt(eye, pos, up);
+		return (*this);
+	}
 
 	Transform & Transform::rotate(float angle, const vec3f & axis)
 	{

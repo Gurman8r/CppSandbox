@@ -660,8 +660,6 @@ namespace ml
 		{
 			if (toks.front("input"))
 			{
-				// new AST_Name(toks.front().data)
-				// genCallParams(toks.after(1))
 				return new AST_Input();
 			}
 		}

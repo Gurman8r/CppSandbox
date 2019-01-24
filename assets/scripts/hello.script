@@ -1,6 +1,33 @@
-main = []();
+# Script to run on start
+# Displays some system information
 {
-	print("Hello, World!");
-	return true;
-};
-return main();
+	getExeName = []();
+	{
+		t = sys("window_title");
+		c = sys("build_config");
+		p = sys("build_platform");
+		return (t + "_" + c + "_" + p + ".exe");
+	};
+
+	hello = []();
+	{
+		dir	= sys("dir");
+		exe = getExeName();
+		msg	= "Hello, World!";
+		lib	= "MemeScript Version 1.0";
+		url	= "https://github.com/Gurman8r/CppSandbox";
+
+		print("{dir}\{exe}");
+		print("* * * * * * * * * * * * * * * * * * * * * * *");
+		print("*                                           *");
+		print("*   {msg}                           *");
+		print("*   {lib}                  *");
+		print("*   {url}  *");
+		print("*                                           *");
+		print("* * * * * * * * * * * * * * * * * * * * * * *");
+	};
+	hello();
+
+	#sys("pause");
+	#sys("terminate");
+}

@@ -85,7 +85,7 @@
       <Filter>Source Files\Commands</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeScript\AST_Stmt.cpp">
-      <Filter>Source Files\Commands</Filter>
+      <Filter>Source Files\AST</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

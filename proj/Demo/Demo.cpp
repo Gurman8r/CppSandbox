@@ -8,35 +8,29 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-int main(int argc, char** argv)
+int main(int32_t argc, char ** argv)
 {
 	// Load Settings
-	if (!demo::settings.loadFromFile(CONFIG_INI))
+	if (!SETTINGS.loadFromFile(CONFIG_INI))
 	{
 		return ml::Debug::pause(EXIT_FAILURE);
 	}
 
-	// Start Master Timer
-	ML_Time.start();
-	ml::Debug::Log("{0}", ML_Time.elapsed());
+	// Program Enter
+	if (!demo::onProgramEnter({ argc, argv }))
+	{
+		return ml::Debug::pause(EXIT_FAILURE);
+	}
 
-	// Run Boot Script
-	ml::Interpreter::LoadBuiltinCommands();
-	(*ML_Interpreter.parser())
-		.showToks(demo::settings.showToks)
-		.showTree(demo::settings.showTree)
-		.showItoP(demo::settings.showItoP);
-	ML_Interpreter.execScript(demo::settings.pathTo(demo::settings.script));
-
-	// Enable GL Error Pause
+	// Enable OpenGL Error Pause
 	ml::OpenGL::errorPause(true);
 
 	// Create Window
 	ml::Debug::Log("Creating Window...");
 	ml::RenderWindow window;
 	if (!window.create(
-		demo::settings.title,
-		ml::VideoMode({ demo::settings.width, demo::settings.height }, 32),
+		SETTINGS.winTitle,
+		ml::VideoMode({ SETTINGS.winWidth, SETTINGS.winHeight }, 32),
 		ml::Window::Style::Default,
 		ml::Context(3, 3, 24, 8, ml::Context::Compat, false, false)))
 	{
@@ -44,18 +38,15 @@ int main(int argc, char** argv)
 	}
 
 	// Load Resources
-	if (!demo::onLoad({ }))
+	if (!demo::onLoadResources({ }))
 	{
 		return ml::Debug::pause(EXIT_FAILURE);
 	}
 
-	// Initialize
-	if (!demo::onInit({ window }))
-	{
-		return ml::Debug::pause(EXIT_FAILURE);
-	}
+	// Start
+	demo::onStart({ window });
 
-	// Game Loop
+	// Loop
 	ml::Timer		loopTimer;
 	ml::Duration	elapsed;
 	ml::InputState	input;
@@ -76,9 +67,8 @@ int main(int argc, char** argv)
 	}
 	while (window.isOpen());
 
-	demo::onExit({ });
-
-	return EXIT_SUCCESS;
+	// Program Exit
+	return demo::onProgramExit({ EXIT_SUCCESS });
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

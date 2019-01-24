@@ -10,15 +10,6 @@
 
 namespace ml
 {
-	bool FileSystem::changeDir(const std::string & value)
-	{
-#ifdef ML_SYSTEM_WINDOWS
-		return (_chdir(value.c_str()) == EXIT_SUCCESS) ? true : false;
-#else
-		return false;
-#endif
-	}
-
 	bool FileSystem::fileExists(const std::string & filename)
 	{
 		return (bool)(std::ifstream(filename));
@@ -86,4 +77,28 @@ namespace ml
 		return false;
 	}
 	
+
+	bool FileSystem::setWorkingDir(const std::string & value)
+	{
+#ifdef ML_SYSTEM_WINDOWS
+		return (_chdir(value.c_str()) == EXIT_SUCCESS) ? true : false;
+#else
+		return false;
+#endif
+	}
+
+	std::string FileSystem::getWorkingDir() const
+	{
+		char * buffer = NULL;
+
+#ifdef ML_SYSTEM_WINDOWS
+		return ((buffer = _getcwd(NULL, 0))
+			? buffer
+			: "");
+#else
+		return buffer;
+#endif
+	}
+
+
 }

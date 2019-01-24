@@ -1,7 +1,6 @@
 #ifndef _COMMAND_H_
 #define _COMMAND_H_
 
-#include <MemeScript/CommandInfo.h>
 #include <MemeScript/Var.h>
 
 namespace ml
@@ -15,23 +14,17 @@ namespace ml
 
 	public:
 		Command();
-		Command(const std::string& name, fn_type func);
-		Command(const std::string& name, fn_type func, const CommandInfo& info);
-		Command(fn_type func, const CommandInfo& info);
-		Command(const Command& copy);
+		Command(const std::string & name, fn_type func);
+		Command(const Command & copy);
 		~Command() {};
 
-		std::string	name() const;
-		CommandInfo info() const;
-
-		Var	operator()(fn_args args);
-
-		friend std::ostream& operator<<(std::ostream& out, const Command& cmd);
+		inline const std::string & name() const { return m_name; }
+		
+		inline Var operator()(fn_args args)	{ return m_func(args); }
 
 	private:
 		std::string m_name;
 		fn_type		m_func;
-		CommandInfo	m_info;
 	};
 }
 

@@ -57,9 +57,9 @@ namespace ml
 		"void",
 		"bool",
 		"float",
-		"int32_t",
+		"int",
 		"ptr",
-		"std::string",
+		"string",
 		"array"
 		"func",
 	};
@@ -106,8 +106,7 @@ namespace ml
 	bool Var::isValid() const
 	{
 		if (m_changed)
-		{
-			m_changed = false;
+		{	m_changed = false;
 
 			switch (getType())
 			{
@@ -251,7 +250,7 @@ namespace ml
 		return isErrorType() ? (textValue()) : std::string();
 	}
 
-	int32_t			Var::intValue() const
+	int32_t		Var::intValue() const
 	{
 		return isValid() ? StringUtility::ToInt((textValue())) : 0;
 	}
@@ -1178,7 +1177,7 @@ namespace ml
 
 		case Var::Pointer:
 			out << (FG::Gray | BG::Black)
-				<< "" << pointerValue()
+				<< pointerValue()
 				<< FMT();
 			break;
 
@@ -1209,7 +1208,7 @@ namespace ml
 	std::ostream & Var::PrintList(std::ostream & out, const Var & value)
 	{
 		out << FMT();
-		const TokenList& data = value.tokensValue();
+		const TokenList & data = value.tokensValue();
 		for (TokenList::const_iterator it = data.cbegin(); it != data.cend(); it++)
 		{
 			out << Var::makeSingle(*it) << (it != data.cend() - 1 ? ", " : "") << FMT();

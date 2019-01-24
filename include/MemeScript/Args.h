@@ -123,7 +123,6 @@ namespace ml
 			{
 				return m_values.at(index);
 			}
-
 			return value_type();
 		};
 		inline Args &		operator=(const Args& copy)

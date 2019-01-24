@@ -188,11 +188,13 @@ namespace ml
 
 			while (++it != m_buffer.end())
 			{
-				if (*it == '\\')
-				{
-					continue;
-				}
-				else if (*(it - 1) != '\\' && *it == '\"')
+				//if (*it == '\\')
+				//{
+				//	continue;
+				//}
+				//else if (*(it - 1) != '\\' && *it == '\"')
+
+				if (*it == '\"')
 				{
 					break;
 				}

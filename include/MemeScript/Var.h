@@ -195,7 +195,7 @@ namespace ml
 
 	private:
 		TokenList	m_tokens;
-		int32_t			m_scope;
+		int32_t		m_scope;
 		Type		m_type;
 
 		mutable bool m_changed = true;
