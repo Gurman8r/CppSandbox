@@ -42,7 +42,7 @@ namespace ml
 		AST_Call*	genCall(const TokenList& toks) const;
 		AST_Func*	genFunc(const TokenList& toks) const;
 		AST_Input*	genInput(const TokenList& toks) const;
-		AST_Oper*	genOper(const TokenList& toks) const;
+		AST_BinOp*	genBinOp(const TokenList& toks) const;
 		AST_Subscr*	genSubscr(const TokenList& toks) const;
 
 		// Expression Containers

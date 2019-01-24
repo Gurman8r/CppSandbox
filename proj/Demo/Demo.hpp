@@ -1,8 +1,6 @@
 #ifndef _DEMO_H_
 #define _DEMO_H_
 
-/* * * * * * * * * * * * * * * * * * * * */
-
 #include "Settings.hpp"
 
 #include <dirent.h>
@@ -24,9 +22,10 @@
 #include <MemeNet/Server.h>
 #include <MemeScript/Interpreter.h>
 
+// Resources
+/* * * * * * * * * * * * * * * * * * * * */
 namespace demo
 {
-	// Resources
 	enum : int32_t
 	{
 		// Fonts
@@ -120,20 +119,20 @@ namespace demo
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	ml::Font		fonts	[MAX_FONT];
-	ml::Image		images	[MAX_IMAGE];
+	ml::Font		fonts[MAX_FONT];
+	ml::Image		images[MAX_IMAGE];
 	ml::Texture		textures[MAX_TEXTURE];
-	ml::Shader		shaders	[MAX_SHADER];
-	ml::Transform	proj	[MAX_PROJ];
-	ml::Transform	view	[MAX_VIEW];
-	ml::Transform	model	[MAX_MODEL];
-	ml::VAO			vao		[MAX_VAO];
-	ml::VBO			vbo		[MAX_VBO];
-	ml::IBO			ibo		[MAX_IBO];
-	ml::FBO			fbo		[MAX_FBO];
-	ml::Mesh		mesh	[MAX_MESH];
-	ml::Text		text	[MAX_TEXT];
-	ml::Sound		sounds	[MAX_SOUND];
+	ml::Shader		shaders[MAX_SHADER];
+	ml::Transform	proj[MAX_PROJ];
+	ml::Transform	view[MAX_VIEW];
+	ml::Transform	model[MAX_MODEL];
+	ml::VAO			vao[MAX_VAO];
+	ml::VBO			vbo[MAX_VBO];
+	ml::IBO			ibo[MAX_IBO];
+	ml::FBO			fbo[MAX_FBO];
+	ml::Mesh		mesh[MAX_MESH];
+	ml::Text		text[MAX_TEXT];
+	ml::Sound		sounds[MAX_SOUND];
 	ml::Client		client;
 	ml::Server		server;
 
@@ -143,7 +142,8 @@ namespace demo
 	{
 		static bool onlyOnce = true;
 		if (onlyOnce)
-		{	onlyOnce = false;
+		{
+			onlyOnce = false;
 
 			ML_Interpreter.addCmd({ "help", [](ml::Args & args)
 			{
@@ -152,12 +152,6 @@ namespace demo
 					ml::Debug::out() << n << std::endl;
 				}
 				return ml::Var().boolValue(true);
-			} });
-
-			ML_Interpreter.addCmd({ "terminate", [](ml::Args & args)
-			{
-				ml::Debug::terminate(true);
-				return ml::Var();
 			} });
 
 			ML_Interpreter.addCmd({ "pause", [](ml::Args & args)
@@ -170,7 +164,7 @@ namespace demo
 				return ml::Var().intValue(ml::Debug::clear());
 			} });
 
-			ML_Interpreter.addCmd({ "dir", [](ml::Args & args)
+			ML_Interpreter.addCmd({ "cwd", [](ml::Args & args)
 			{
 				return ml::Var().stringValue(ML_FileSystem.getWorkingDir());
 			} });
@@ -180,15 +174,46 @@ namespace demo
 				return ml::Var().boolValue(ML_FileSystem.setWorkingDir(args.pop_front().front()));
 			} });
 
+			ML_Interpreter.addCmd({ "cat", [](ml::Args & args)
+			{
+				std::string buf;
+				if (ML_FileSystem.getFileContents(args.pop_front().front(), buf))
+				{
+					ml::Debug::out() << buf << std::endl;
+
+					return ml::Var().boolValue(true);
+				}
+				return ml::Var().boolValue(false);
+			} });
+
+			ML_Interpreter.addCmd({ "read", [](ml::Args & args)
+			{
+				std::string buf;
+				if (ML_FileSystem.getFileContents(args.pop_front().front(), buf))
+				{
+					return ml::Var().stringValue(buf);
+				}
+				return ml::Var().stringValue(std::string());
+			} });
+
 			ML_Interpreter.addCmd({ "exists", [](ml::Args & args)
 			{
 				return ml::Var().boolValue(ML_FileSystem.fileExists(args.pop_front().front()));
 			} });
 
+			ML_Interpreter.addCmd({ "exec", [](ml::Args & args)
+			{
+				return ML_Interpreter.execFile(args.pop_front().front());
+			} });
+
+			ML_Interpreter.addCmd({ "system", [](ml::Args & args)
+			{
+				return ml::Var().intValue(system(args.pop_front().str().c_str()));
+			} });
+
 			ML_Interpreter.addCmd({ "ls", [](ml::Args & args)
 			{
 				const std::string dirName = args.pop_front().empty() ? "./" : args.str();
-
 				if (DIR* dir = opendir(dirName.c_str()))
 				{
 					while (dirent* e = readdir(dir))
@@ -213,33 +238,36 @@ namespace demo
 					closedir(dir);
 					return ml::Var().boolValue(true);
 				}
-				ml::Debug::out() << "Directory \'" << dirName << "\' does not exist." << std::endl;
 				return ml::Var().boolValue(false);
 			} });
 
-			ML_Interpreter.addCmd({ "window_title", [](ml::Args & args)
+			ML_Interpreter.addCmd({ "target", [](ml::Args & args)
 			{
-				return ml::Var().stringValue(SETTINGS.winTitle);
-			} });
-
-			ML_Interpreter.addCmd({ "build_config", [](ml::Args & args)
-			{
-			#ifdef ML_DEBUG
-				return ml::Var().stringValue("Debug");
-			#else
-				return ml::Var().stringValue("Release");
-			#endif
-			} });
-
-			ML_Interpreter.addCmd({ "build_platform", [](ml::Args & args)
-			{
-			#if defined(_WIN64)
-				return ml::Var().stringValue("x64");
-			#elif defined(_WIN32)
-				return ml::Var().stringValue("x86");
-			#else
-				return ml::Var().errorValue("Unknown");
-			#endif
+				if(!args.pop_front().empty())
+				{
+					const std::string & opt = args.front();
+					if (opt == "name")
+					{
+						return ml::Var().stringValue(SETTINGS.winTitle);
+					}
+					else if (opt == "config")
+					{
+					#ifdef ML_DEBUG
+						return ml::Var().stringValue("Debug");
+					#else
+						return ml::Var().stringValue("Release");
+					#endif
+					}
+					else if (opt == "platform")
+					{
+					#if defined(ML_x64)
+						return ml::Var().stringValue("x64");
+					#elif defined(ML_x86)
+						return ml::Var().stringValue("x86");
+					#endif
+					}
+				}
+				return ml::Var().boolValue(true);
 			} });
 		}
 	};
@@ -248,7 +276,7 @@ namespace demo
 	{
 		// Load Fonts
 		if (ml::Debug::Log("Loading Fonts..."))
-		{	
+		{
 			if (!fonts[FNT_clacon].loadFromFile(SETTINGS.pathTo("/fonts/clacon.ttf")))
 			{
 				return ml::Debug::LogError("Failed Loading Font");
@@ -276,7 +304,7 @@ namespace demo
 	{
 		// Load Images
 		if (ml::Debug::Log("Loading Images..."))
-		{	
+		{
 			if (!images[IMG_icon].loadFromFile(SETTINGS.pathTo("/images/dean.png")))
 			{
 				return ml::Debug::LogError("Failed Loading Icon");
@@ -289,7 +317,7 @@ namespace demo
 	{
 		// Load Textures
 		if (ml::Debug::Log("Loading Textures..."))
-		{	
+		{
 			if (!textures[TEX_dean].loadFromFile(SETTINGS.pathTo("/images/dean.png")))
 			{
 				return ml::Debug::LogError("Failed Loading Texture");
@@ -322,7 +350,7 @@ namespace demo
 	{
 		// Load Shaders
 		if (ml::Debug::Log("Loading Shaders..."))
-		{	
+		{
 			if (!shaders[GL_basic3D].loadFromFile(SETTINGS.pathTo("/shaders/basic3D.shader")))
 			{
 				return ml::Debug::LogError("Failed Loading Shader: {0}", "Basic3D");
@@ -345,7 +373,7 @@ namespace demo
 	{
 		// Load Meshes
 		if (ml::Debug::Log("Loading Meshes..."))
-		{	
+		{
 			if (!mesh[MESH_sphere8x6].loadFromFile(SETTINGS.pathTo("/meshes/sphere8x6.mesh")))
 			{
 				return ml::Debug::LogError("Failed Loading Mesh: {0}", "sphere8x6");
@@ -363,7 +391,7 @@ namespace demo
 	{
 		// Load Buffers
 		if (ml::Debug::Log("Loading Buffers..."))
-		{	
+		{
 			static const ml::BufferLayout layout({
 				{ 0, 3, ml::GL::Float, false, ml::Vertex::Size, 0, sizeof(float) },
 				{ 1, 4, ml::GL::Float, false, ml::Vertex::Size, 3, sizeof(float) },
@@ -433,7 +461,7 @@ namespace demo
 	inline static bool loadNetwork()
 	{
 		if (0 && ml::Debug::Log("Loading Network..."))
-		{	
+		{
 			if (SETTINGS.isServer)
 			{
 				// ...
@@ -445,10 +473,13 @@ namespace demo
 		}
 		return true;
 	}
-	
-	/* * * * * * * * * * * * * * * * * * * * */
 
+}
 
+// Events
+/* * * * * * * * * * * * * * * * * * * * */
+namespace demo
+{
 	// Program Enter
 	/* * * * * * * * * * * * * * * * * * * * */
 	struct ProgramEnterEvent final
@@ -472,9 +503,7 @@ namespace demo
 			.showItoP(SETTINGS.scrShowItoP);
 
 		// Run Script
-		ML_Interpreter.execScript(SETTINGS.pathTo(SETTINGS.scrFile));
-
-		return true;
+		return ML_Interpreter.execFile(SETTINGS.pathTo(SETTINGS.scrFile));
 	}
 
 

@@ -6,22 +6,7 @@
 
 namespace ml
 {
-	Interpreter::Interpreter()
-	{
-		//m_runtime = new Runtime();
-		//m_lexer = new Lexer();
-		//m_parser = new Parser();
-	}
-
-	Interpreter::~Interpreter()
-	{
-		//delete m_runtime;
-		//delete m_parser;
-		//delete m_lexer;
-	}
-
-
-	Var	Interpreter::execCommand(const std::string& value)
+	Var	Interpreter::execCommand(const std::string & value)
 	{
 		if (!value.empty())
 		{
@@ -34,34 +19,34 @@ namespace ml
 				return it->second(args);
 			}
 
-			return execSyntax(value);
+			return execSource(value);
 		}
 		return Var().voidValue();
 	}
 
-	Var	Interpreter::execScript(const std::string & value)
+	Var	Interpreter::execFile(const std::string & value)
 	{
 		if (ML_FileSystem.fileExists(value.c_str()))
 		{
 			std::vector<char> buffer;
 			if (ML_FileSystem.getFileContents(value, buffer))
 			{
-				return execTokens(lexer()->setBuffer(buffer).splitTokens());
+				return execToks(lexer()->setBuffer(buffer).splitTokens());
 			}
 		}
 		return Var().errorValue("File not found {0}", value);
 	}
 
-	Var	Interpreter::execSyntax(const std::string & value)
+	Var	Interpreter::execSource(const std::string & value)
 	{
 		if (!value.empty())
 		{
-			return execTokens(lexer()->setBuffer(value).splitTokens());
+			return execToks(lexer()->setBuffer(value).splitTokens());
 		}
 		return Var().errorValue("Buffer cannot be empty");
 	}
 
-	Var	Interpreter::execTokens(const TokenList & value)
+	Var	Interpreter::execToks(const TokenList & value)
 	{
 		if (!value.empty())
 		{

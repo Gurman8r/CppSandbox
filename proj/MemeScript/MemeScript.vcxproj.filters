@@ -31,12 +31,6 @@
     <Filter Include="Source Files\AST">
       <UniqueIdentifier>{4b2e37b9-97fe-4253-aee8-aecf52b6932c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Commands">
-      <UniqueIdentifier>{d551898e-18a8-4c46-b363-8f33067693bc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Commands">
-      <UniqueIdentifier>{d55026f8-cf45-4d1f-8583-335d2efddc68}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeScript\Script.cpp">
@@ -75,17 +69,14 @@
     <ClCompile Include="..\..\src\MemeScript\Var.cpp">
       <Filter>Source Files\DS</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemeScript\Command.cpp">
-      <Filter>Source Files\Commands</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeScript\CommandInfo.cpp">
-      <Filter>Source Files\Commands</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemeScript\AST_Stmt.cpp">
       <Filter>Source Files\AST</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeScript\Runtime.cpp">
       <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeScript\Command.cpp">
+      <Filter>Source Files\DS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -131,14 +122,11 @@
     <ClInclude Include="..\..\include\MemeScript\Script.h">
       <Filter>Header Files\Interpreter</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeScript\Command.h">
-      <Filter>Header Files\Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeScript\CommandInfo.h">
-      <Filter>Header Files\Commands</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeScript\Runtime.h">
       <Filter>Header Files\Interpreter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\Command.h">
+      <Filter>Header Files\DS</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,0 +1,28 @@
+# MemeScript Core Library
+
+# Console
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+clear	= []();		{ return command("clear"); };
+pause	= []();		{ return command("pause"); };
+system	= [](arg0); { return command("system " + arg0); };
+
+
+# Directories
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+getcwd	= []();		{ return command("cwd");		};
+chdir	= [](arg0);	{ return command("cd " + arg0);	};
+lsdir	= [](arg0); { return command("ls " + arg0);	};
+
+
+# Files
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+exists	= [](arg0); { return command("exists " + arg0); };
+read	= [](arg0); { return command("read " + arg0);	};
+exec	= [](arg0); { return command("exec " + arg0);	};
+
+
+# Target
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+getTargetName		= []();	{ return command("target name");	 };
+getTargetConfig		= []();	{ return command("target config");	 };
+getTargetPlatform	= [](); { return command("target platform"); };

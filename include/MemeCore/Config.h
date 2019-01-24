@@ -1,16 +1,15 @@
 #ifndef _CONFIG_H_
 #define _CONFIG_H_
 
-/*	Debug Macro
-* * * * * * * * * * * * * * * * * * * */
+//	Configuration Macro
+/* * * * * * * * * * * * * * * * * * * */
 #if defined(_DEBUG)
 	#define ML_DEBUG
 #endif
 
-
-/*	Operating System Macro
-* * * * * * * * * * * * * * * * * * * */
-#if defined(_WIN32)
+//	Operating System Macro
+/* * * * * * * * * * * * * * * * * * * */
+#if defined(_WIN64) || defined(_WIN32)
 	// Windows
 	#define ML_SYSTEM_WINDOWS
 	#ifndef NOMINMAX
@@ -39,9 +38,24 @@
 	#error This operating system does not support memes.
 #endif
 
+//	Platform Macro
+/* * * * * * * * * * * * * * * * * * * */
+#if defined(ML_SYSTEM_WINDOWS)
+	#if defined(_WIN64)
+		#define ML_x64
+	#elif defined(_WIN32)
+		#define ML_x86
+	#endif
+#elif defined(__GNUC__)
+	#if defined( __x86_64__) || defined(__ppc64__)
+		#define ML_x64
+	#else
+		#define ML_x86
+	#endif
+#endif
 
-/*	Export / Import Macro
-* * * * * * * * * * * * * * * * * * * */
+//	Export / Import Macro
+/* * * * * * * * * * * * * * * * * * * */
 #if !defined(ML_STATIC)
 	#if defined(ML_SYSTEM_WINDOWS)
 		// Windows compilers need different keywords for exports and imports

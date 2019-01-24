@@ -410,19 +410,18 @@ namespace ml
 			Operator op;
 			if (MakeOperator(toks[1], toks[2], op))
 			{
-				return new AST_Oper(op, genSimple(toks.front()), genSimple(toks.back()));
+				return new AST_BinOp(op, genSimple(toks.front()), genSimple(toks.back()));
 			}
 		}
-		// System
-		else if (toks.matchData(toks.begin(), { "sys" }))
+		// Command
+		else if (toks.matchData(toks.begin(), { "command" }))
 		{
-			if (AST_Expr* expr = genComplex(toks.between('(', ')').pop_front()))
+			AST_Call::Params params = genCallParams(toks.after(1));
+			if (!params.empty())
 			{
-				if (AST_String* str = expr->As<AST_String>())
-				{
-					return new AST_Sys(str);
-				}
+				return new AST_Command(params.front());
 			}
+			return new AST_Command(new AST_String(std::string()));
 		}
 		// Function
 		else if (AST_Func* func = genFunc(toks))
@@ -458,7 +457,7 @@ namespace ml
 		TokenList ifx(toks), pfx;
 		if (InfixToPostfix(ifx, pfx, m_showItoP))
 		{
-			if (AST_Oper* oper = genOper(pfx))
+			if (AST_BinOp* oper = genBinOp(pfx))
 			{
 				return oper;
 			}
@@ -666,7 +665,7 @@ namespace ml
 		return NULL;
 	}
 
-	AST_Oper*	Parser::genOper(const TokenList & toks) const
+	AST_BinOp*	Parser::genBinOp(const TokenList & toks) const
 	{
 		std::stack<AST_Expr*> stk;
 
@@ -698,7 +697,7 @@ namespace ml
 				stk.pop();
 				AST_Expr* lhs = stk.top();
 				stk.pop();
-				stk.push(new AST_Oper(op, lhs, rhs));
+				stk.push(new AST_BinOp(op, lhs, rhs));
 			}
 			else
 			{
@@ -706,7 +705,7 @@ namespace ml
 			}
 		}
 
-		if (AST_Oper* oper = stk.top()->As<AST_Oper>())
+		if (AST_BinOp* oper = stk.top()->As<AST_BinOp>())
 		{
 			return oper;
 		}

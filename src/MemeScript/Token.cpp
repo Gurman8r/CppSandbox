@@ -36,6 +36,9 @@ namespace ml
 		{ TOK_LBKT, "LBKT" },{ TOK_RBKT, "RBKT" } , // [bracket]
 
 		{ TOK_DQTE, "DQTE" },{ TOK_SQTE, "SQTE" },
+
+		{ TOK_USCR, "USCR" },
+		{ TOK_TNRY, "TNRY" },
 		});
 
 	const Token::SymbolMap Token::Symbols({
@@ -69,6 +72,10 @@ namespace ml
 		{ "[", TOK_LBKT },{ "]", TOK_RBKT },
 
 		{ "\"", TOK_DQTE }, { "\'", TOK_SQTE},
+
+		{ "_", TOK_USCR },
+		{ "_", TOK_TNRY },
+
 		});
 
 

@@ -166,14 +166,14 @@ namespace ml
 
 
 	// Operation
-	struct ML_SCRIPT_API AST_Oper : public AST_Expr
+	struct ML_SCRIPT_API AST_BinOp : public AST_Expr
 	{
 		Operator op;
 		AST_Expr* lhs;
 		AST_Expr* rhs;
 
-		AST_Oper(const Operator& op, AST_Expr* lhs, AST_Expr* rhs);
-		~AST_Oper();
+		AST_BinOp(const Operator& op, AST_Expr* lhs, AST_Expr* rhs);
+		~AST_BinOp();
 
 		std::ostream& display(std::ostream& out) const override;
 		Var evaluate() const override;
@@ -214,13 +214,13 @@ namespace ml
 		Var evaluate() const override;
 	};
 
-	// System
-	struct ML_SCRIPT_API AST_Sys : public AST_Expr
+	// Command
+	struct ML_SCRIPT_API AST_Command : public AST_Expr
 	{
-		AST_String* str;
+		AST_Expr* expr;
 
-		AST_Sys(AST_String* str);
-		~AST_Sys();
+		AST_Command(AST_Expr* expr);
+		~AST_Command();
 
 		std::ostream& display(std::ostream& out) const override;
 		Var evaluate() const override;

@@ -23,8 +23,8 @@ namespace ml
 		using CmdNames = std::vector<std::string>;
 
 	private:
-		Interpreter();
-		~Interpreter();
+		Interpreter() {}
+		~Interpreter() {}
 
 	public:
 		template <typename T, typename ... A>
@@ -34,9 +34,9 @@ namespace ml
 		}
 
 		Var	execCommand(const std::string & value);
-		Var	execScript(const std::string & value);
-		Var	execSyntax(const std::string & value);
-		Var	execTokens(const TokenList & value);
+		Var	execFile(const std::string & value);
+		Var	execSource(const std::string & value);
+		Var	execToks(const TokenList & value);
 		Var	execAST(AST_Block * value);
 
 		Command * addCmd(const Command & value);

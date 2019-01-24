@@ -156,9 +156,9 @@
   <ItemGroup>
     <None Include="..\..\assets\meshes\sphere32x24.mesh" />
     <None Include="..\..\assets\meshes\sphere8x6.mesh" />
-    <None Include="..\..\assets\scripts\fib.meme" />
+    <None Include="..\..\assets\scripts\fibonacci.meme" />
     <None Include="..\..\assets\scripts\hello.meme" />
-    <None Include="..\..\assets\scripts\libTest.meme" />
+    <None Include="..\..\assets\scripts\core.meme" />
     <None Include="..\..\assets\scripts\stub.meme" />
     <None Include="..\..\assets\shaders\fs\basic\drawColor_fs4x.shader" />
     <None Include="..\..\assets\shaders\fs\basic\drawSolid_fs4x.shader" />

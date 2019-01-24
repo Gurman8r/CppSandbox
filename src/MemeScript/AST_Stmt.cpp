@@ -345,7 +345,6 @@ namespace ml
 						{
 							break;
 						}
-
 						name += (*it);
 					}
 

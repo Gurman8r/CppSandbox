@@ -432,7 +432,7 @@ namespace ml
 
 
 	// BinOp
-	AST_Oper::AST_Oper(const Operator & op, AST_Expr * lhs, AST_Expr * rhs)
+	AST_BinOp::AST_BinOp(const Operator & op, AST_Expr * lhs, AST_Expr * rhs)
 		: AST_Expr(AST_Expr::Type::EX_Oper)
 		, op(op)
 		, lhs(lhs)
@@ -442,17 +442,17 @@ namespace ml
 		addChild(rhs);
 	}
 
-	AST_Oper::~AST_Oper()
+	AST_BinOp::~AST_BinOp()
 	{
 	}
 
-	std::ostream & AST_Oper::display(std::ostream & out) const
+	std::ostream & AST_BinOp::display(std::ostream & out) const
 	{
 		out << "(" << *lhs << " " << op << " " << *rhs << ")";
 		return out;
 	}
 
-	Var AST_Oper::evaluate() const
+	Var AST_BinOp::evaluate() const
 	{
 		if (lhs && rhs)
 		{
@@ -505,8 +505,7 @@ namespace ml
 
 	std::ostream & AST_String::display(std::ostream & out) const
 	{
-		out << Var().stringValue(value);
-		return out;
+		return out << Var().stringValue(value);
 	}
 
 	Var AST_String::evaluate() const
@@ -579,33 +578,33 @@ namespace ml
 
 
 	// System
-	AST_Sys::AST_Sys(AST_String* str)
+	AST_Command::AST_Command(AST_Expr* expr)
 		: AST_Expr(AST_Expr::Type::EX_Sys)
-		, str(str)
+		, expr(expr)
 	{
-		addChild(str);
+		addChild(expr);
 	}
 
-	AST_Sys::~AST_Sys()
+	AST_Command::~AST_Command()
 	{
 	}
 
-	std::ostream & AST_Sys::display(std::ostream & out) const
+	std::ostream & AST_Command::display(std::ostream & out) const
 	{
-		return out << "sys(" << (*str) << ")";
+		return out << "command(" << (*expr) << ")";
 	}
 
-	Var AST_Sys::evaluate() const
+	Var AST_Command::evaluate() const
 	{
-		return ML_Interpreter.execCommand(str->evaluate().textValue());
+		return ML_Interpreter.execCommand(expr->evaluate().textValue());
 	}
 
-	bool AST_Sys::run()
+	bool AST_Command::run()
 	{
 		if (evaluate().isValid())
 		{
 			return runNext();
 		}
-		return Debug::LogError("AST_Sys : Failure {0}", str->value);
+		return Debug::LogError("AST_Sys : Call Failed");
 	}
 }

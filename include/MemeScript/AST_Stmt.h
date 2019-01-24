@@ -14,7 +14,7 @@ namespace ml
 	struct AST_Int;
 	struct AST_Name;
 	struct AST_Call;
-	struct AST_Oper;
+	struct AST_BinOp;
 	struct AST_String;
 
 	class ML_SCRIPT_API AST_Stmt : public AST_Node

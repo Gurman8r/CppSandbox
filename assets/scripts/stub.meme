@@ -198,8 +198,6 @@
 		testFuncs();
 
 		print("End of Stub");
-	
-		#sys("pause");
 
 		return true;
 	};

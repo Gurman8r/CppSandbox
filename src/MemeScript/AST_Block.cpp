@@ -132,7 +132,7 @@ namespace ml
 	}
 
 
-	bool		AST_Block::addFunc(const std::string & name, AST_Func * func)
+	bool AST_Block::addFunc(const std::string & name, AST_Func * func)
 	{
 		if (!getFunc(name))
 		{
@@ -146,7 +146,7 @@ namespace ml
 		return false;
 	}
 
-	AST_Func*	AST_Block::getFunc(const std::string & name)
+	AST_Func * AST_Block::getFunc(const std::string & name)
 	{
 		if (AST_Block* b = block())
 		{
@@ -171,7 +171,7 @@ namespace ml
 	}
 
 
-	AST_Block*	AST_Block::block() const
+	AST_Block *	AST_Block::block() const
 	{
 		AST_Node* p = getParent();
 		while (p)
@@ -185,12 +185,12 @@ namespace ml
 		return NULL;
 	}
 
-	Var			AST_Block::evaluate() const
+	Var	 AST_Block::evaluate() const
 	{
 		return (*getRet());
 	}
-
-	bool		AST_Block::run()
+		 
+	bool AST_Block::run()
 	{
 		// dont run block
 		if (prevAs<AST_If>() ||
@@ -205,8 +205,8 @@ namespace ml
 
 		return runFirst();
 	}
-
-	bool		AST_Block::runFirst()
+		 
+	bool AST_Block::runFirst()
 	{
 		if (AST_Node* n = getChild(0))
 		{

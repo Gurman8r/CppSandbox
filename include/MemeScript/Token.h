@@ -47,6 +47,9 @@ namespace ml
 		TOK_DQTE = '\"', // " - Double Quote
 		TOK_SQTE = '\'', // ' - Single Quote
 
+		TOK_USCR = '_',	// _ - Underscore
+		TOK_TNRY = '?', // ? - Ternary
+
 		MAX_TOKEN_TYPE
 	};
 

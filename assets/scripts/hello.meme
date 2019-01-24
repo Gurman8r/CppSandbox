@@ -1,12 +1,19 @@
 # Script to run on start
 # Displays some system information
 {
-	# Load some helper functions
-	include("../../../assets/scripts/libTest.meme");
+	include("../../../assets/scripts/core.meme");
 
+	getExeName = []();
+	{
+		return 
+			getTargetName() + "_" + 
+			getTargetConfig() + "_" + 
+			getTargetPlatform() + ".exe";
+	};
+	
 	hello = []();
 	{
-		dir	= sys("dir");
+		dir	= getcwd();
 		exe = getExeName();
 		msg	= "Hello, World!";
 		lib	= "MemeScript Version 1.0";

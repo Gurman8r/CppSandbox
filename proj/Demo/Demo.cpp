@@ -22,8 +22,6 @@ int main(int32_t argc, char ** argv)
 		return ml::Debug::pause(EXIT_FAILURE);
 	}
 
-	return 0;
-
 	// Enable OpenGL Error Pause
 	ml::OpenGL::errorPause(true);
 

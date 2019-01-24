@@ -46,16 +46,19 @@ namespace ml
 
 	void Runtime::clean()
 	{
-		for (auto sPair : (*m_values))
+		for (auto scopePair : (*m_values))
 		{
-			for (auto vPair : (*sPair.second))
+			for (auto varPair : (*scopePair.second))
 			{
-				delete vPair.second;
+				if (varPair.second)
+				{
+					delete varPair.second;
+				}
 			}
 
-			sPair.second->clear();
+			scopePair.second->clear();
 
-			delete sPair.second;
+			delete scopePair.second;
 		}
 	}
 

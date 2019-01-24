@@ -54,12 +54,10 @@ namespace ml
 	const Args::value_type	Args::str() const
 	{
 		value_type out;
-
 		for (const value_type& it : (*this))
 		{
 			out += it + " ";
 		}
-
 		return out;
 	}
 	const Args::value_type	Args::substr(std::size_t index, std::size_t count) const

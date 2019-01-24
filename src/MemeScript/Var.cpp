@@ -449,10 +449,11 @@ namespace ml
 			}
 		}
 
-		Debug::LogError("Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
-			getType(), (*this), OperatorType::OP_EQU, other.getType(), other);
+		return textValue() == other.textValue();
 
-		return false;
+		//Debug::LogError("Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
+		//	getType(), (*this), OperatorType::OP_EQU, other.getType(), other);
+		//return false;
 	}
 
 	bool	Var::GreaterThan(const Var & other) const
@@ -500,10 +501,11 @@ namespace ml
 			}
 		}
 
-		Debug::LogError("Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
-			getType(), (*this), OperatorType::OP_GT, other.getType(), other);
+		return textValue() > other.textValue();
 
-		return false;
+		//Debug::LogError("Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
+		//	getType(), (*this), OperatorType::OP_GT, other.getType(), other);
+		//return false;
 	}
 
 	bool	Var::LessThan(const Var & other) const
@@ -551,10 +553,11 @@ namespace ml
 			}
 		}
 
-		Debug::LogError("Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
-			getType(), (*this), OperatorType::OP_LT, other.getType(), other);
+		return textValue() < other.textValue();
 
-		return false;
+		//Debug::LogError("Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
+		//	getType(), (*this), OperatorType::OP_LT, other.getType(), other);
+		//return false;
 	}
 
 	bool	Var::Or(const Var & other) const
