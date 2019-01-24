@@ -1,7 +1,6 @@
 #include <MemeAudio/Sound.h>
 #include <AL/al.h>
 #include <AL/alc.h>
-#include <stdlib.h>
 
 namespace ml
 {
@@ -13,5 +12,15 @@ namespace ml
 	Sound::~Sound()
 	{
 		alcCloseDevice(static_cast<ALCdevice*>(m_device));
+	}
+
+	bool Sound::cleanup()
+	{
+		return false;
+	}
+
+	bool Sound::loadFromFile(const std::string & filename)
+	{
+		return false;
 	}
 }

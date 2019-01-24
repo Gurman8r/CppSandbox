@@ -1,0 +1,9 @@
+OpenAL
+freetype
+GLEW
+GLFW
+GLM
+RakNet
+dirent.h (windows)
+INIReader
+stb_image

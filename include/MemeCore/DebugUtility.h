@@ -24,6 +24,7 @@ namespace ml
 
 	public:
 		static int32_t	clear();
+		static void		exit(int32_t exitCode);
 		static int32_t	pause(int32_t exitCode = EXIT_SUCCESS);
 		static void		terminate(bool areYouSure);
 

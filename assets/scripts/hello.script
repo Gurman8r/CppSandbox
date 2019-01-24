@@ -28,6 +28,6 @@
 	};
 	hello();
 
-	#sys("pause");
-	#sys("terminate");
+	sys("pause");
+	sys("terminate");
 }

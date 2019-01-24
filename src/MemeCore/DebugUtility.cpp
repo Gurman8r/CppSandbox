@@ -13,6 +13,11 @@ namespace ml
 #endif
 	}
 
+	void Debug::exit(int32_t exitCode)
+	{
+		std::exit(exitCode);
+	}
+
 	int32_t Debug::pause(int32_t exitCode)
 	{
 #ifdef ML_SYSTEM_WINDOWS
@@ -24,6 +29,7 @@ namespace ml
 #endif
 		return exitCode;
 	}
+
 	void Debug::terminate(bool areYouSure)
 	{
 		if (areYouSure)
@@ -61,7 +67,7 @@ namespace ml
 		out()
 			<< FMT()
 			<< FG::White << "["
-			<< FG::Green << "   OK   "
+			<< FG::Green << "  INFO  "
 			<< FG::White << "]"
 			<< FMT() << " " << message
 			<< std::endl;
