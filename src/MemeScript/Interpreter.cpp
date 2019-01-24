@@ -8,16 +8,16 @@ namespace ml
 {
 	Interpreter::Interpreter()
 	{
-		m_memory = new Memory();
-		m_lexer = new Lexer();
-		m_parser = new Parser();
+		//m_runtime = new Runtime();
+		//m_lexer = new Lexer();
+		//m_parser = new Parser();
 	}
 
 	Interpreter::~Interpreter()
 	{
-		delete m_memory;
-		delete m_parser;
-		delete m_lexer;
+		//delete m_runtime;
+		//delete m_parser;
+		//delete m_lexer;
 	}
 
 
@@ -83,7 +83,7 @@ namespace ml
 
 				delete value;
 
-				if (memory()->setVar(0, "?", v))
+				if (runtime()->setVar(0, "?", v))
 				{
 					return v;
 				}

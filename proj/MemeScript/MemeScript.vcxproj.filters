@@ -75,9 +75,6 @@
     <ClCompile Include="..\..\src\MemeScript\Var.cpp">
       <Filter>Source Files\DS</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemeScript\Memory.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemeScript\Command.cpp">
       <Filter>Source Files\Commands</Filter>
     </ClCompile>
@@ -86,6 +83,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeScript\AST_Stmt.cpp">
       <Filter>Source Files\AST</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeScript\Runtime.cpp">
+      <Filter>Source Files\Interpreter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -125,9 +125,6 @@
     <ClInclude Include="..\..\include\MemeScript\Lexer.h">
       <Filter>Header Files\Interpreter</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeScript\Memory.h">
-      <Filter>Header Files\Interpreter</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeScript\Parser.h">
       <Filter>Header Files\Interpreter</Filter>
     </ClInclude>
@@ -139,6 +136,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeScript\CommandInfo.h">
       <Filter>Header Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\Runtime.h">
+      <Filter>Header Files\Interpreter</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -118,14 +118,7 @@ namespace ml
 				{
 					if (blck->runFirst())
 					{
-						if (stmt->run())
-						{
-							if (++count >= 100)
-							{
-								return Debug::LogError("AST_For : Loops Exceded {0}", count);
-							}
-						}
-						else
+						if (!stmt->run())
 						{
 							return Debug::LogError("AST_For : Statement Failure");
 						}
@@ -283,33 +276,37 @@ namespace ml
 	bool AST_Include::run()
 	{
 		const std::string& filename = str->evaluate().stringValue();
-		if (ML_FileSystem.fileExists(filename.c_str()))
+		
+		std::vector<char> buffer;
+		if (ML_FileSystem.getFileContents(filename, buffer))
 		{
-			std::vector<char> buffer;
-			if (ML_FileSystem.getFileContents(filename, buffer))
+			const TokenList toks = ML_Interpreter.lexer()->setBuffer(buffer).splitTokens();
+			if (AST_Block * root = ML_Interpreter.parser()->genAST(toks))
 			{
-				TokenList toks = ML_Interpreter.lexer()->setBuffer(buffer).splitTokens();
-				if (AST_Block* root = ML_Interpreter.parser()->genAST(toks))
+				if (!root->empty())
 				{
-					if (block()->insertChildAfter(this, root))
+					AST_Node * prev = this;
+
+					AST_Node::const_iterator it;
+					for (it = root->begin(); it != root->end(); it++)
 					{
-						for (auto pair : root->getFuncs())
+						if (!block()->insertChildAfter(prev, (*it)))
 						{
-							if (!block()->addFunc(pair.first, pair.second))
-							{
-								return Debug::LogError("AST_Include : Failed adding function {0}", pair.first);
-							}
+							Debug::LogError("AST_Include : Failed loading node");
 						}
 
-						Debug::out() 
-							<< FMT() << std::endl 
-							<< (*block()) 
-							<< FMT() << std::endl;
-
-						return runNext();
+						prev = (*it);
 					}
 				}
+				else
+				{
+					Debug::LogWarning("AST_Include : Nothing to load");
+				}
+
+				root->clear();
+				delete root;
 			}
+			return runNext();
 		}
 		return Debug::LogError("AST_Include : File Not Found");
 	}

@@ -88,15 +88,6 @@
     <None Include="..\..\config.ini">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\..\assets\scripts\fibonacci.script">
-      <Filter>Resource Files\assets\scripts</Filter>
-    </None>
-    <None Include="..\..\assets\scripts\hello.script">
-      <Filter>Resource Files\assets\scripts</Filter>
-    </None>
-    <None Include="..\..\assets\scripts\stub.script">
-      <Filter>Resource Files\assets\scripts</Filter>
-    </None>
     <None Include="..\..\assets\shaders\fs\basic\drawColor_fs4x.shader">
       <Filter>Resource Files\assets\shaders\fs\basic</Filter>
     </None>
@@ -195,6 +186,18 @@
     </None>
     <None Include="..\..\assets\shaders\basic3D.shader">
       <Filter>Resource Files\assets\shaders</Filter>
+    </None>
+    <None Include="..\..\assets\scripts\stub.meme">
+      <Filter>Resource Files\assets\scripts</Filter>
+    </None>
+    <None Include="..\..\assets\scripts\hello.meme">
+      <Filter>Resource Files\assets\scripts</Filter>
+    </None>
+    <None Include="..\..\assets\scripts\fib.meme">
+      <Filter>Resource Files\assets\scripts</Filter>
+    </None>
+    <None Include="..\..\assets\scripts\libTest.meme">
+      <Filter>Resource Files\assets\scripts</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -28,7 +28,7 @@
     <ClCompile Include="..\..\src\MemeScript\CommandInfo.cpp" />
     <ClCompile Include="..\..\src\MemeScript\Interpreter.cpp" />
     <ClCompile Include="..\..\src\MemeScript\Lexer.cpp" />
-    <ClCompile Include="..\..\src\MemeScript\Memory.cpp" />
+    <ClCompile Include="..\..\src\MemeScript\Runtime.cpp" />
     <ClCompile Include="..\..\src\MemeScript\Operator.cpp" />
     <ClCompile Include="..\..\src\MemeScript\Parser.cpp" />
     <ClCompile Include="..\..\src\MemeScript\Script.cpp" />
@@ -47,7 +47,7 @@
     <ClInclude Include="..\..\include\MemeScript\Export.h" />
     <ClInclude Include="..\..\include\MemeScript\Interpreter.h" />
     <ClInclude Include="..\..\include\MemeScript\Lexer.h" />
-    <ClInclude Include="..\..\include\MemeScript\Memory.h" />
+    <ClInclude Include="..\..\include\MemeScript\Runtime.h" />
     <ClInclude Include="..\..\include\MemeScript\Operator.h" />
     <ClInclude Include="..\..\include\MemeScript\Parser.h" />
     <ClInclude Include="..\..\include\MemeScript\Script.h" />

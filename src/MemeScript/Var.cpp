@@ -29,7 +29,7 @@ namespace ml
 	{
 		if (StringUtility::IsName(name))
 		{
-			if (Var * v = ML_Interpreter.memory()->getVar(index, name))
+			if (Var * v = ML_Interpreter.runtime()->getVar(index, name))
 			{
 				return v;
 			}

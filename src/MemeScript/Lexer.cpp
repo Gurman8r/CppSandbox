@@ -47,7 +47,9 @@ namespace ml
 	{
 		m_buffer.clear();
 		for (auto it = value.begin(); it != value.end(); it++)
+		{
 			m_buffer.push_back(*it);
+		}
 		return (*this);
 	}
 

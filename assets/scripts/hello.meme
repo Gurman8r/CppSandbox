@@ -1,13 +1,8 @@
 # Script to run on start
 # Displays some system information
 {
-	getExeName = []();
-	{
-		t = sys("window_title");
-		c = sys("build_config");
-		p = sys("build_platform");
-		return (t + "_" + c + "_" + p + ".exe");
-	};
+	# Load some helper functions
+	include("../../../assets/scripts/libTest.meme");
 
 	hello = []();
 	{
@@ -26,8 +21,7 @@
 		print("*                                           *");
 		print("* * * * * * * * * * * * * * * * * * * * * * *");
 	};
-	hello();
 
-	sys("pause");
-	sys("terminate");
+	hello();
+	pause();
 }

@@ -1,204 +1,209 @@
-testIf = [](value);
+# Script for testing the Interpreter
 {
-	print("Test If: {value}");
-	if(value == 0);
+	testIf = [](value);
 	{
-		print("if == 0");
-	};
-	elif (value == 1);
-	{
-		print("elif == 1");
-		
-		if(true);
+		print("Test If: {value}");
+		if(value == 0);
 		{
-			print("Here!");
+			print("if == 0");
 		};
+		elif (value == 1);
+		{
+			print("elif == 1");
+		
+			if(true);
+			{
+				print("Here!");
+			};
+		};
+		elif (value != 2);
+		{
+			print("elif != 2");
+		};
+		else;
+		{
+			print("else");
+		};
+		print("End of If");
+		print("");
+		return true;
 	};
-	elif (value != 2);
+
+	testFor = [](min, max, it);
 	{
-		print("elif != 2");
+		print("Test For: i = {min}; i < {max}; i += {it}");
+		for(i = min; i < max; i = i + it);
+		{
+			print("for: {i}");
+		};
+		free(i);
+		print("End of For");
+		print("");
+		return true;
 	};
-	else;
+
+	testWhile = [](value);
 	{
-		print("else");
+		print("Test While: {value} > 0");
+		i = value;
+		while(i > 0);
+		{	
+			print("while: {i}");
+			i = i - 1;
+		};
+		free(i);
+		print("End of While");
+		print("");
+		return true;
 	};
-	print("End of If");
-	print("");
-	return true;
-};
 
-testFor = [](min, max, it);
-{
-	print("Test For: i = {min}; i < {max}; i += {it}");
-	for(i = min; i < max; i = i + it);
+	getFn = []();
 	{
-		print("for: {i}");
+		return 3.33;
 	};
-	free(i);
-	print("End of For");
-	print("");
-	return true;
-};
 
-testWhile = [](value);
-{
-	print("Test While: {value} > 0");
-	i = value;
-	while(i > 0);
-	{	
-		print("while: {i}");
-		i = i - 1;
+	thruFn = [](value);
+	{
+		return value;
 	};
-	free(i);
-	print("End of While");
-	print("");
-	return true;
-};
 
-getFn = []();
-{
-	return 3.33;
-};
+	addFn = [](lhs, rhs);
+	{
+		return lhs + rhs;
+	};
 
-thruFn = [](value);
-{
-	return value;
-};
+	subFn = [](lhs, rhs);
+	{
+		return lhs - rhs;
+	};
 
-addFn = [](lhs, rhs);
-{
-	return lhs + rhs;
-};
+	testVars = []();
+	{
+		print("Test Vars");
 
-subFn = [](lhs, rhs);
-{
-	return lhs - rhs;
-};
+		a = 1;
+		b = 2.0;
+		c = 1 + 2;
+		d = a + b + a;
+		e = b + 3;
+		f = 2 + b + 2;
 
-testVars = []();
-{
-	print("Test Vars");
+		x = getFn();
+		y = thruFn(x);
+		z = addFn(y, 1);
+		w = subFn(1, z);
 
-	a = 1;
-	b = 2.0;
-	c = 1 + 2;
-	d = a + b + a;
-	e = b + 3;
-	f = 2 + b + 2;
+		print("a = {a}");
+		print("b = {b}");
+		print("c = {c}");
+		print("d = {d}");
+		print("e = {e}");
+		print("f = {f}");
+		print("x = {x}");
+		print("y = {y}");
+		print("z = {z}");
+		print("w = {w}");
 
-	x = getFn();
-	y = thruFn(x);
-	z = addFn(y, 1);
-	w = subFn(1, z);
+		print("End of Vars");
+		print("");
+	};
 
-	print("a = {a}");
-	print("b = {b}");
-	print("c = {c}");
-	print("d = {d}");
-	print("e = {e}");
-	print("f = {f}");
-	print("x = {x}");
-	print("y = {y}");
-	print("z = {z}");
-	print("w = {w}");
+	testArrays = []();
+	{
+		print("Test Arrays");
 
-	print("End of Vars");
-	print("");
-};
+		a = [ "a", "bb", "ccc", "dddd" ];
+		print(a);
 
-testArrays = []();
-{
-	print("Test Arrays");
-
-	a = [ "a", "bb", "ccc", "dddd" ];
-	print(a);
-
-	str = "Hello, World!";
+		str = "Hello, World!";
 	
-	print("Forward");
-	for(i = 0; i < 4; i = i + 1);
-	{
-		print(a[i]);
+		print("Forward");
+		for(i = 0; i < 4; i = i + 1);
+		{
+			print(a[i]);
+		};
+
+		print("Reverse");
+		for(j = 3; j >= 0; j = j - 1);
+		{
+			tmp = a[j];
+			print("{tmp}");
+		};
+
+		print("End of Arrays");
+		print("");
+		return a;
 	};
 
-	print("Reverse");
-	for(j = 3; j >= 0; j = j - 1);
+	test1 = []();
 	{
-		tmp = a[j];
-		print("{tmp}");
+		return "Test";
+	};
+	test2 = [](value);
+	{
+		return value;
 	};
 
-	print("End of Arrays");
-	print("");
-	return a;
-};
-
-test1 = []();
-{
-	return "Test";
-};
-test2 = [](value);
-{
-	return value;
-};
-
-testFuncs = []();
-{
-
-	print("Start of Funcs");
-
-	a = "A"; 
-	b = a + test2("B") + test2("b");
-	c = a + test1();
-	d = test1() + a;
-	e = test2("E") + a;
-	f = a + test1() + test2("F") + "f";
-	g = a + test1() + f + test2("G");
-	h = "" + test1();
-	h = test2(h);
-
-	print(a);
-	print(b);
-	print(c);
-	print(d);
-	print(e);
-	print(f);
-	print(g);
-	print(h);
-
-	print("End of Funcs");
-};
-
-testInput = []();
-{
-	print("What is your name?");
-	name = input();
-	print("Hello, {name}");
-};
-
-stub = []();
-{
-	print("Start of Stub");
-
-	for(i = 0; i < 4; i = i + 1);
+	testFuncs = []();
 	{
-		testIf(i);
+
+		print("Start of Funcs");
+
+		a = "A"; 
+		b = a + test2("B") + test2("b");
+		c = a + test1();
+		d = test1() + a;
+		e = test2("E") + a;
+		f = a + test1() + test2("F") + "f";
+		g = a + test1() + f + test2("G");
+		h = "" + test1();
+		h = test2(h);
+
+		print(a);
+		print(b);
+		print(c);
+		print(d);
+		print(e);
+		print(f);
+		print(g);
+		print(h);
+
+		print("End of Funcs");
 	};
 
-	testFor(0, 8, 2);
+	testInput = []();
+	{
+		print("What is your name?");
+		name = input();
+		print("Hello, {name}");
+	};
 
-	testWhile(5);
+	stub = []();
+	{
+		print("Start of Stub");
 
-	testVars();
+		for(i = 0; i < 4; i = i + 1);
+		{
+			testIf(i);
+		};
 
-	testArrays();
+		testFor(0, 8, 2);
 
-	testFuncs();
+		testWhile(5);
 
-	print("End of Stub");
+		testVars();
+
+		testArrays();
+
+		testFuncs();
+
+		print("End of Stub");
 	
-	#sys("pause");
+		#sys("pause");
 
-	return true;
-};
-return stub();
+		return true;
+	};
+
+	# Run Stub
+	return stub();
+}

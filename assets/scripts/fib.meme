@@ -1,28 +1,30 @@
-fib = [](num);
+# Script to show a Fibonacci sequence
 {
-	print("Fibonacci: {num}");
-	
-	if(num >= 0);
+	fib = [](num);
 	{
-		a = 0;
-		print("{a}");
-		
-		if(num >= 1);
-		{
-			b = 1;
-			print("{b}");
+		print("Fibonacci: {num}");
 	
-			next = a + b;
-			while(next <= num);
+		if(num >= 0);
+		{
+			a = 0;
+			print("{a}");
+		
+			if(num >= 1);
 			{
-				print("{next}");
-				a = b;
-				b = next;
+				b = 1;
+				print("{b}");
+	
 				next = a + b;
+				while(next <= num);
+				{
+					print("{next}");
+					a = b;
+					b = next;
+					next = a + b;
+				};
 			};
 		};
 	};
-};
 
-fib(100);
-return true;
+	fib(100);
+}

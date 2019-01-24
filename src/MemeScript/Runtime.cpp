@@ -1,21 +1,21 @@
-#include <MemeScript/Memory.h>
+#include <MemeScript/Runtime.h>
 #include <MemeCore/DebugUtility.h>
 
 namespace ml
 {
-	Memory::Memory()
+	Runtime::Runtime()
 		: m_values(new ScopeMap())
 	{
 		makeScope(0);
 	}
 
-	Memory::~Memory()
+	Runtime::~Runtime()
 	{
 		clean();
 	}
 
 
-	std::ostream & Memory::display(std::ostream & out) const
+	std::ostream & Runtime::display(std::ostream & out) const
 	{
 		out << FG::White << "Memory:"
 			<< std::endl;
@@ -44,7 +44,7 @@ namespace ml
 	}
 
 
-	void Memory::clean()
+	void Runtime::clean()
 	{
 		for (auto sPair : (*m_values))
 		{
@@ -60,7 +60,7 @@ namespace ml
 	}
 
 
-	bool Memory::delVar(int32_t index, const std::string& name)
+	bool Runtime::delVar(int32_t index, const std::string& name)
 	{
 		if (values(index))
 		{
@@ -78,7 +78,7 @@ namespace ml
 		return false;
 	}
 
-	Var * Memory::getVar(int32_t index, const std::string& name) const
+	Var * Runtime::getVar(int32_t index, const std::string& name) const
 	{
 		if (values(index))
 		{
@@ -91,7 +91,7 @@ namespace ml
 		return NULL;
 	}
 
-	Var * Memory::newVar(int32_t index, const std::string & name, const Var & value)
+	Var * Runtime::newVar(int32_t index, const std::string & name, const Var & value)
 	{
 		if (values(index) || makeScope(index))
 		{
@@ -111,7 +111,7 @@ namespace ml
 		return NULL;
 	}
 
-	Var * Memory::setVar(int32_t index, const std::string & name, const Var & value)
+	Var * Runtime::setVar(int32_t index, const std::string & name, const Var & value)
 	{
 		if (Var * v = getVar(index, name))
 		{
@@ -123,7 +123,7 @@ namespace ml
 	}
 
 
-	const Memory::VarMap * Memory::values(int32_t index) const
+	const Runtime::VarMap * Runtime::values(int32_t index) const
 	{
 		ScopeMap::const_iterator it = m_values->find(index);
 		if (it != m_values->end())
@@ -133,7 +133,7 @@ namespace ml
 		return NULL;
 	}
 
-	Memory::VarMap * Memory::values(int32_t index)
+	Runtime::VarMap * Runtime::values(int32_t index)
 	{
 		ScopeMap::iterator it = m_values->find(index);
 		if (it != m_values->end())
@@ -144,7 +144,7 @@ namespace ml
 	}
 
 
-	Memory::VarMap* Memory::makeScope(int32_t index)
+	Runtime::VarMap* Runtime::makeScope(int32_t index)
 	{
 		if (!values(index))
 		{
@@ -155,9 +155,9 @@ namespace ml
 		return values(index);
 	}
 
-	bool Memory::clearScope(int32_t index)
+	bool Runtime::clearScope(int32_t index)
 	{
-		if (VarMap* vars = values(index))
+		if (VarMap * vars = values(index))
 		{
 			for (auto pair : (*vars))
 			{

@@ -9,16 +9,16 @@ namespace ml
 {
 	class AST_Node;
 
-	class ML_SCRIPT_API Memory final
+	class ML_SCRIPT_API Runtime final
 		: public ITrackable
 	{
 	public:
-		using VarMap = std::map<std::string, Var *>;
-		using ScopeMap = std::unordered_map<int32_t, VarMap*>;
+		using VarMap	= std::map<std::string, Var *>;
+		using ScopeMap	= std::unordered_map<int32_t, VarMap*>;
 
 	public:
-		Memory();
-		~Memory();
+		Runtime();
+		~Runtime();
 
 		std::ostream& display(std::ostream& out) const;
 

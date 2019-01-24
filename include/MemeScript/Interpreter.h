@@ -5,7 +5,7 @@
 #include <MemeCore/StringUtility.h>
 #include <MemeScript/Lexer.h>
 #include <MemeScript/Parser.h>
-#include <MemeScript/Memory.h>
+#include <MemeScript/Runtime.h>
 #include <MemeScript/Command.h>
 
 #define ML_Interpreter ml::Interpreter::getInstance()
@@ -42,23 +42,23 @@ namespace ml
 		Command * addCmd(const Command & value);
 		Command * getCmd(const std::string & value);
 
-		const CmdNames & cmdNames() const { return m_cmdNames; }
+		inline const CmdTable & cmdTable() const { return m_cmdTable; }
+		inline const CmdNames & cmdNames() const { return m_cmdNames; }
 
-		const Lexer*	lexer()  const	{ return m_lexer;  }
-		const Memory*	memory() const	{ return m_memory; }
-		const Parser*	parser() const	{ return m_parser; }
+		inline const Lexer *	lexer()  const	{ return &m_lexer;  }
+		inline const Runtime *	runtime() const	{ return &m_runtime; }
+		inline const Parser *	parser() const	{ return &m_parser; }
 
-		Lexer*			lexer()			{ return m_lexer;  }
-		Memory*			memory()		{ return m_memory; }
-		Parser*			parser()		{ return m_parser; }
+		inline Lexer *			lexer()			{ return &m_lexer;  }
+		inline Runtime *		runtime()		{ return &m_runtime; }
+		inline Parser *			parser()		{ return &m_parser; }
 
 	private:
-		CmdTable m_cmdTable;
-		CmdNames m_cmdNames;
-
-		Memory*		m_memory;
-		Lexer*		m_lexer;
-		Parser*		m_parser;
+		CmdTable	m_cmdTable;
+		CmdNames	m_cmdNames;
+		Lexer		m_lexer;
+		Runtime		m_runtime;
+		Parser		m_parser;
 	};
 }
 

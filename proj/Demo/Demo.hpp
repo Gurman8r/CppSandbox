@@ -177,14 +177,12 @@ namespace demo
 
 			ML_Interpreter.addCmd({ "cd", [](ml::Args & args)
 			{
-				return ml::Var().boolValue(
-					ML_FileSystem.setWorkingDir(args.pop_front().front()));
+				return ml::Var().boolValue(ML_FileSystem.setWorkingDir(args.pop_front().front()));
 			} });
 
 			ML_Interpreter.addCmd({ "exists", [](ml::Args & args)
 			{
-				return ml::Var().boolValue(
-					ML_FileSystem.fileExists(args.pop_front().front()));
+				return ml::Var().boolValue(ML_FileSystem.fileExists(args.pop_front().front()));
 			} });
 
 			ML_Interpreter.addCmd({ "ls", [](ml::Args & args)
