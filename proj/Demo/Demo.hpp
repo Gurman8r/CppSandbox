@@ -135,9 +135,12 @@ namespace demo
 	ml::Sound		sounds	[MAX_SOUND];
 	ml::Client		client;
 	ml::Server		server;
+}
 
-	/* * * * * * * * * * * * * * * * * * * * */
-
+// Loading
+/* * * * * * * * * * * * * * * * * * * * */
+namespace demo
+{
 	inline static void loadCommands()
 	{
 		static bool onlyOnce = true;
@@ -539,7 +542,7 @@ namespace demo
 	{
 		if(ml::Debug::Log("Starting..."))
 		{
-			// Set Window Icons
+			// Set Window Icon
 			if (ml::Image icon = images[IMG_icon])
 			{
 				ev.window.setIcons({ icon.flipVertically() });

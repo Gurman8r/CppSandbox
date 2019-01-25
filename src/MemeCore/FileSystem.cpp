@@ -4,7 +4,6 @@
 
 #ifdef ML_SYSTEM_WINDOWS
 #include <direct.h>
-#include <dirent.h>
 #endif
 
 
@@ -89,14 +88,10 @@ namespace ml
 
 	std::string FileSystem::getWorkingDir() const
 	{
-		char * buffer = NULL;
-
 #ifdef ML_SYSTEM_WINDOWS
-		return ((buffer = _getcwd(NULL, 0))
-			? buffer
-			: "");
+		return std::string(_getcwd(NULL, 0));
 #else
-		return buffer;
+		return std::string();
 #endif
 	}
 
