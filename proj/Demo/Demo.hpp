@@ -275,10 +275,10 @@ namespace demo
 		}
 	};
 
-	inline static bool loadFonts()
+	inline static bool loadFonts(bool en)
 	{
 		// Load Fonts
-		if (ml::Debug::Log("Loading Fonts..."))
+		if (en && ml::Debug::Log("Loading Fonts..."))
 		{
 			if (!fonts[FNT_clacon].loadFromFile(SETTINGS.pathTo("/fonts/clacon.ttf")))
 			{
@@ -303,10 +303,10 @@ namespace demo
 		return ml::Debug::Success;
 	}
 
-	inline static bool loadImages()
+	inline static bool loadImages(bool en)
 	{
 		// Load Images
-		if (ml::Debug::Log("Loading Images..."))
+		if (en && ml::Debug::Log("Loading Images..."))
 		{
 			if (!images[IMG_icon].loadFromFile(SETTINGS.pathTo("/images/dean.png")))
 			{
@@ -316,10 +316,10 @@ namespace demo
 		return ml::Debug::Success;
 	}
 
-	inline static bool loadTextures()
+	inline static bool loadTextures(bool en)
 	{
 		// Load Textures
-		if (ml::Debug::Log("Loading Textures..."))
+		if (en && ml::Debug::Log("Loading Textures..."))
 		{
 			if (!textures[TEX_dean].loadFromFile(SETTINGS.pathTo("/images/dean.png")))
 			{
@@ -349,10 +349,10 @@ namespace demo
 		return ml::Debug::Success;
 	}
 
-	inline static bool loadShaders()
+	inline static bool loadShaders(bool en)
 	{
 		// Load Shaders
-		if (ml::Debug::Log("Loading Shaders..."))
+		if (en && ml::Debug::Log("Loading Shaders..."))
 		{
 			if (!shaders[GL_basic3D].loadFromFile(SETTINGS.pathTo("/shaders/basic3D.shader")))
 			{
@@ -372,10 +372,10 @@ namespace demo
 		return ml::Debug::Success;
 	}
 
-	inline static bool loadMeshes()
+	inline static bool loadMeshes(bool en)
 	{
 		// Load Meshes
-		if (ml::Debug::Log("Loading Meshes..."))
+		if (en && ml::Debug::Log("Loading Meshes..."))
 		{
 			if (!mesh[MESH_sphere8x6].loadFromFile(SETTINGS.pathTo("/meshes/sphere8x6.mesh")))
 			{
@@ -390,10 +390,10 @@ namespace demo
 		return ml::Debug::Success;
 	}
 
-	inline static bool loadBuffers()
+	inline static bool loadBuffers(bool en)
 	{
 		// Load Buffers
-		if (ml::Debug::Log("Loading Buffers..."))
+		if (en && ml::Debug::Log("Loading Buffers..."))
 		{
 			static const ml::BufferLayout layout({
 				{ 0, 3, ml::GL::Float, false, ml::Vertex::Size, 0, sizeof(float) },
@@ -453,18 +453,18 @@ namespace demo
 		return ml::Debug::Success;
 	}
 
-	inline static bool loadAudio()
+	inline static bool loadAudio(bool en)
 	{
-		if (0 && ml::Debug::Log("Loading Audio..."))
+		if (en && ml::Debug::Log("Loading Audio..."))
 		{
 			// ...
 		}
 		return ml::Debug::Success;
 	}
 
-	inline static bool loadNetwork()
+	inline static bool loadNetwork(bool en)
 	{
-		if (0 && ml::Debug::Log("Loading Network..."))
+		if (en && ml::Debug::Log("Loading Network..."))
 		{
 			if (SETTINGS.isServer)
 			{
@@ -520,14 +520,14 @@ namespace demo
 	inline static bool onLoadResources(const LoadResourcesEvent & ev)
 	{
 		return ml::Debug::Log("Loading...") 
-			&& loadFonts	()
-			&& loadImages	()
-			&& loadTextures	()
-			&& loadShaders	()
-			&& loadMeshes	()
-			&& loadBuffers	()
-			&& loadAudio	()
-			&& loadNetwork	()
+			&& loadFonts	(1)
+			&& loadImages	(1)
+			&& loadTextures	(1)
+			&& loadShaders	(1)
+			&& loadMeshes	(1)
+			&& loadBuffers	(1)
+			&& loadAudio	(0)
+			&& loadNetwork	(0)
 			;
 	}
 
