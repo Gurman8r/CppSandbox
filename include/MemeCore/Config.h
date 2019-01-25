@@ -1,7 +1,7 @@
 #ifndef _CONFIG_H_
 #define _CONFIG_H_
 
-//	Configuration Macro
+//	Debug Macro
 /* * * * * * * * * * * * * * * * * * * */
 #if defined(_DEBUG)
 	#define ML_DEBUG
