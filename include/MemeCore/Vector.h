@@ -6,7 +6,7 @@
 namespace ml
 {
 	// One Dimensional Matrix
-	template <typename T, std::size_t N>
+	template <typename T, size_t N>
 	class Vector
 		: public Matrix<T, N, 1>
 		, public IComparable<Vector<T, N>>
@@ -41,7 +41,7 @@ namespace ml
 		{
 		}
 
-		template <std::size_t N>
+		template <size_t N>
 		Vector(const Vector<T, N> & copy)
 			: base_type(copy)
 		{
@@ -53,7 +53,7 @@ namespace ml
 		{
 		}
 
-		template <typename U, std::size_t N>
+		template <typename U, size_t N>
 		Vector(const Vector<U, N> & copy)
 			: base_type(copy)
 		{
@@ -64,7 +64,7 @@ namespace ml
 	public:
 		inline virtual bool equals(const self_type & value) const override
 		{
-			for (std::size_t i = 0; i < (*this).Size; i++)
+			for (size_t i = 0; i < (*this).Size; i++)
 			{
 				if ((*this)[i] != value[i])
 				{
@@ -76,7 +76,7 @@ namespace ml
 		
 		inline virtual bool lessThan(const self_type & value) const override
 		{
-			for (std::size_t i = 0; i < (*this).Size; i++)
+			for (size_t i = 0; i < (*this).Size; i++)
 			{
 				if ((*this)[i] >= value[i])
 				{
@@ -106,7 +106,7 @@ namespace ml
 		inline float sqrMagnitude() const
 		{
 			float value = 0;
-			for (std::size_t i = 0; i < (*this).Size; i++)
+			for (size_t i = 0; i < (*this).Size; i++)
 			{
 				value += (*this)[i] * (*this)[i];
 			}
@@ -133,7 +133,7 @@ namespace ml
 		inline static float dot(const self_type& a, const self_type& b)
 		{
 			float value = 0;
-			for (std::size_t i = 0; i < self_type::Size; i++)
+			for (size_t i = 0; i < self_type::Size; i++)
 			{
 				value += static_cast<float>(a[i]) * static_cast<float>(b[i]);
 			}
@@ -160,7 +160,7 @@ namespace ml
 		inline friend self_type operator+(const self_type& lhs, const self_type& rhs)
 		{
 			self_type tmp;
-			for (std::size_t i = 0; i < tmp.Size; i++)
+			for (size_t i = 0; i < tmp.Size; i++)
 			{
 				tmp[i] = lhs[i] + rhs[i];
 			}
@@ -170,7 +170,7 @@ namespace ml
 		inline friend self_type operator-(const self_type& lhs, const self_type& rhs)
 		{
 			self_type tmp;
-			for (std::size_t i = 0; i < tmp.Size; i++)
+			for (size_t i = 0; i < tmp.Size; i++)
 			{
 				tmp[i] = lhs[i] - rhs[i];
 			}
@@ -180,7 +180,7 @@ namespace ml
 		inline friend self_type operator*(const self_type& lhs, const self_type& rhs)
 		{
 			self_type tmp;
-			for (std::size_t i = 0; i < tmp.Size; i++)
+			for (size_t i = 0; i < tmp.Size; i++)
 			{
 				tmp[i] = lhs[i] * rhs[i];
 			}
@@ -190,7 +190,7 @@ namespace ml
 		inline friend self_type operator/(const self_type& lhs, const self_type& rhs)
 		{
 			self_type tmp;
-			for (std::size_t i = 0; i < tmp.Size; i++)
+			for (size_t i = 0; i < tmp.Size; i++)
 			{
 				tmp[i] = lhs[i] / rhs[i];
 			}
@@ -200,7 +200,7 @@ namespace ml
 		inline friend self_type operator*(const self_type& lhs, const T & rhs)
 		{
 			self_type tmp;
-			for (std::size_t i = 0; i < tmp.Size; i++)
+			for (size_t i = 0; i < tmp.Size; i++)
 			{
 				tmp[i] = lhs[i] * rhs;
 			}
@@ -210,7 +210,7 @@ namespace ml
 		inline friend self_type operator/(const self_type& lhs, const T & rhs)
 		{
 			self_type tmp;
-			for (std::size_t i = 0; i < tmp.Size; i++)
+			for (size_t i = 0; i < tmp.Size; i++)
 			{
 				tmp[i] = lhs[i] / rhs;
 			}

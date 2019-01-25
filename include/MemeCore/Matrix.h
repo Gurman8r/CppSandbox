@@ -10,7 +10,7 @@
 namespace ml
 {
 	// Template Fixed 2D Array
-	template <typename T, std::size_t _Cols, std::size_t _Rows>
+	template <typename T, size_t _Cols, size_t _Rows>
 	class Matrix
 		: public ITrackable
 		, public IComparable<Matrix<T, _Cols, _Rows>>
@@ -20,7 +20,7 @@ namespace ml
 	public:
 		using data_type	= T;
 		using self_type	= Matrix<data_type, _Cols, _Rows>;
-		using size_type = std::size_t;
+		using size_type = size_t;
 
 		enum
 		{
@@ -194,7 +194,7 @@ namespace ml
 		}
 	};
 
-	template <typename T, std::size_t N> 
+	template <typename T, size_t N> 
 	using MatrixNxN = Matrix<T, N, N>;
 	
 	template <typename T> 

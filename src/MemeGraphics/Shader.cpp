@@ -324,7 +324,7 @@ namespace ml
 			TextureTable::iterator it;
 			if ((it = m_textures.find(u.location)) == m_textures.end())
 			{
-				static std::size_t maxUnits = static_cast<std::size_t>(OpenGL::getMaxTextureUnits());
+				static size_t maxUnits = static_cast<size_t>(OpenGL::getMaxTextureUnits());
 
 				if ((m_textures.size() + 1) >= maxUnits)
 				{

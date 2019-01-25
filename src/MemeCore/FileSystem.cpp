@@ -30,7 +30,7 @@ namespace ml
 				{
 					file.seekg(0, std::ios_base::beg);
 
-					buffer.resize(static_cast<std::size_t>(size));
+					buffer.resize(static_cast<size_t>(size));
 
 					file.read(&buffer[0], size);
 				}

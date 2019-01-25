@@ -1,5 +1,5 @@
-#ifndef _MEMORY_H_
-#define _MEMORY_H_
+#ifndef _RUNTIME_H_
+#define _RUNTIME_H_
 
 #include <MemeScript/Operator.h>
 #include <MemeScript/Var.h>
@@ -39,4 +39,4 @@ namespace ml
 	};
 }
 
-#endif // !_MEMORY_H_
+#endif // !_RUNTIME_H_

@@ -91,7 +91,7 @@ namespace ml
 	public: // Data Functions
 		bool		boolValue() const;
 		float		floatValue() const;
-		Var			elemValue(std::size_t i) const;
+		Var			elemValue(size_t i) const;
 		std::string	errorValue() const;
 		int32_t		intValue() const;
 		Ptr			pointerValue() const;
@@ -101,7 +101,7 @@ namespace ml
 
 		Var &		arrayValue(const TokenList & value);
 		Var &		boolValue(const bool & value);
-		Var &		elemValue(std::size_t index, const Token & value);
+		Var &		elemValue(size_t index, const Token & value);
 		Var &		errorValue(const std::string & value);
 		Var &		floatValue(const float & value);
 		Var &		funcValue(const TokenList & value);

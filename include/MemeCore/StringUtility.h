@@ -58,14 +58,14 @@ namespace ml
 			(void)sink;
 
 			std::string	temp = fmt;
-			for (std::size_t index = 0; stream.good(); index++)
+			for (size_t index = 0; stream.good(); index++)
 			{
 				const std::string find = "{" + std::to_string(index) + "}";
 				
 				std::string arg;
 				if (std::getline(stream, arg))
 				{
-					for (std::size_t i = 0; (i = temp.find(find, i)) != std::string::npos;)
+					for (size_t i = 0; (i = temp.find(find, i)) != std::string::npos;)
 					{
 						temp.replace(i, find.size(), arg);
 						i += arg.size();

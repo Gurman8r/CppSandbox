@@ -79,6 +79,16 @@ namespace ml
 			return (begin() == end());
 		}
 
+		inline const_reference operator[](size_t i) const
+		{
+			return *(cbegin() + i);
+		}
+
+		inline reference operator[](size_t i)
+		{
+			return *(begin() + i);
+		}
+
 	private:
 		pointer m_first;
 		pointer m_last;

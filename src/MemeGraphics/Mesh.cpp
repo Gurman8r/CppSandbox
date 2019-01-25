@@ -54,7 +54,7 @@ namespace ml
 			const std::string & find,
 			std::stringstream & data)
 		{
-			std::size_t i;
+			size_t i;
 			if ((i = line.find(find)) != std::string::npos)
 			{
 				data.str(line.substr((i + find.size()), (line.size() - find.size() - 1)));

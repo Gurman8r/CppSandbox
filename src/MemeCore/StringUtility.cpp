@@ -12,7 +12,7 @@ namespace ml
 		std::string copy = src;
 		if (src != "" && find != "")
 		{
-			for (std::size_t i = 0; (i = copy.find(find, i)) != std::string::npos;)
+			for (size_t i = 0; (i = copy.find(find, i)) != std::string::npos;)
 			{
 				copy.replace(i, find.size(), replace);
 				i += replace.size();
@@ -70,7 +70,7 @@ namespace ml
 		std::vector<std::string> list;
 
 		std::string	cpy = src;
-		std::size_t	pos = 0;
+		size_t	pos = 0;
 		std::string	tok;
 
 		while ((pos = cpy.find(delims)) != std::string::npos)
@@ -186,7 +186,7 @@ namespace ml
 		{
 			if (isalpha(src[0]) || src[0] == '_')
 			{
-				for (std::size_t i = 1; i < src.size(); i++)
+				for (size_t i = 1; i < src.size(); i++)
 				{
 					if (src[i] == '_')
 					{

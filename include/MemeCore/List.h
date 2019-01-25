@@ -16,7 +16,7 @@ namespace ml
 		, public IComparable<List<_T, _Alloc>>
 	{
 	public:
-		using size_type = std::size_t;
+		using size_type = size_t;
 		using data_type = _T;
 		using Allocator = _Alloc;
 

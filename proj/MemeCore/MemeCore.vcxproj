@@ -154,6 +154,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\include\MemeCore\Chunk.h" />
+    <ClInclude Include="..\..\include\MemeCore\MemoryPool.h" />
     <ClInclude Include="..\..\include\MemeCore\List.h" />
     <ClInclude Include="..\..\include\MemeCore\BitHelper.h" />
     <ClInclude Include="..\..\include\MemeCore\Component.h" />

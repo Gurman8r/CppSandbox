@@ -29,7 +29,7 @@ namespace ml
 		{
 		}
 		
-		template <std::size_t N>
+		template <size_t N>
 		Vector2(const Vector<T, N> & copy)
 			: base_type(copy)
 		{
@@ -41,7 +41,7 @@ namespace ml
 		{
 		}
 
-		template <typename U, std::size_t N>
+		template <typename U, size_t N>
 		Vector2(const Vector<U, N> & copy)
 			: base_type(copy)
 		{

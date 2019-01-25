@@ -209,7 +209,7 @@ namespace ml
 			{
 				if (f->args.size() == args.size())
 				{
-					for (std::size_t i = 0; i < f->args.size(); i++)
+					for (size_t i = 0; i < f->args.size(); i++)
 					{
 						if (!b->setv(f->args[i]->value, args[i]->evaluate()))
 						{
@@ -220,7 +220,7 @@ namespace ml
 
 					if (b->runFirst())
 					{
-						for (std::size_t i = 0; i < f->args.size(); i++)
+						for (size_t i = 0; i < f->args.size(); i++)
 						{
 							if (!b->delv(f->args[i]->value))
 							{

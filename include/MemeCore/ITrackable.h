@@ -11,24 +11,24 @@ namespace ml
 	public:
 		virtual ~ITrackable() {}
 
-		inline void * operator new(std::size_t size)
+		inline void * operator new(size_t size)
 		{
-			return ML_MemoryTracker.newAllocation(static_cast<ITrackable*>(malloc(size)), size);
+			return ML_Tracker.newAllocation(size);
 		}
 		
-		inline void * operator new[](std::size_t size)
+		inline void * operator new[](size_t size)
 		{
-			return ML_MemoryTracker.newAllocation(static_cast<ITrackable*>(malloc(size)), size);
+			return ML_Tracker.newAllocation(size);
 		}
 		
 		inline void operator delete(void * ptr)
 		{
-			return ML_MemoryTracker.deleteAllocation(static_cast<ITrackable*>(ptr));
+			return ML_Tracker.freeAllocation(ptr);
 		}
 		
 		inline void operator delete[](void * ptr)
 		{
-			return ML_MemoryTracker.deleteAllocation(static_cast<ITrackable*>(ptr));
+			return ML_Tracker.freeAllocation(ptr);
 		}
 	};
 }

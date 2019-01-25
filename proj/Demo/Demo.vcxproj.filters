@@ -273,6 +273,7 @@
   <ItemGroup>
     <ClInclude Include="Settings.hpp" />
     <ClInclude Include="Demo.hpp" />
+    <ClInclude Include="Testing.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />

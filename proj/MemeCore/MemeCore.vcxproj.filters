@@ -49,6 +49,12 @@
     <Filter Include="Source Files\Events">
       <UniqueIdentifier>{5a5d991b-8f10-4633-8a19-e25a1692d05c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Memory">
+      <UniqueIdentifier>{c3db8fef-a046-47c0-93ce-fffddae2ad04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Memory">
+      <UniqueIdentifier>{dfa1a930-d4c4-4209-a9b4-51b3d1a085c9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeCore\ITrackable.h">
@@ -67,9 +73,6 @@
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\ConsoleUtility.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\MemoryTracker.h">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Timer.h">
@@ -156,12 +159,18 @@
     <ClInclude Include="..\..\include\MemeCore\Iterator.h">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\MemoryTracker.h">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\MemoryPool.h">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Chunk.h">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeCore\ConsoleUtility.cpp">
-      <Filter>Source Files\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeCore\MemoryTracker.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\StringUtility.cpp">
@@ -193,6 +202,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\Duration.cpp">
       <Filter>Source Files\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeCore\MemoryTracker.cpp">
+      <Filter>Source Files\Memory</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

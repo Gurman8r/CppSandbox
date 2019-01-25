@@ -174,7 +174,7 @@ namespace ml
 
 			temp.resize(value.size());
 
-			for (std::size_t i = 0; i < count; i++)
+			for (size_t i = 0; i < count; i++)
 			{
 				temp[i] = GLFWimage {
 					(int32_t)value[i].width,

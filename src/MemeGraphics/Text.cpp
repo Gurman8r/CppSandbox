@@ -81,7 +81,7 @@ namespace ml
 			m_textures.resize(m_text.size());
 			
 			vec2f drawPos = m_position;
-			for (std::size_t i = 0, imax = m_text.size(); i < imax; i++)
+			for (size_t i = 0, imax = m_text.size(); i < imax; i++)
 			{
 				const Glyph & glyph = (*m_font).getGlyph(m_text[i], m_fontSize);
 				
@@ -119,7 +119,7 @@ namespace ml
 	{
 		update();
 		batch.color = &m_color;
-		for (std::size_t i = 0, imax = m_text.size(); i < imax; i++)
+		for (size_t i = 0, imax = m_text.size(); i < imax; i++)
 		{
 			batch.texture = m_textures[i];
 			batch.vertices = &m_vertices[i];

@@ -35,17 +35,17 @@ namespace ml
 		bool	isChildOf(AST_Node* node) const;
 		bool	isParentOf(AST_Node* node) const;
 
-		std::size_t	getDepth() const;
+		size_t	getDepth() const;
 
-		std::size_t	childCount() const;
-		std::size_t	siblingCount() const;
-		std::size_t	siblingIndex() const;
+		size_t	childCount() const;
+		size_t	siblingCount() const;
+		size_t	siblingIndex() const;
 
 		AST_Node*	addChild(AST_Node* value);
-		AST_Node*	getChild(std::size_t index) const;
+		AST_Node*	getChild(size_t index) const;
 		AST_Node*	getParent() const;
-		AST_Node*	getSibling(std::size_t index) const;
-		AST_Node*	insertChild(std::size_t index, AST_Node* value);
+		AST_Node*	getSibling(size_t index) const;
+		AST_Node*	insertChild(size_t index, AST_Node* value);
 		AST_Node*	insertChildAfter(AST_Node* pos, AST_Node* value);
 		AST_Node*	insertChildBefore(AST_Node* pos, AST_Node* value);
 		AST_Node*	getNext() const;
@@ -65,9 +65,9 @@ namespace ml
 		const_reverse_iterator	crend() const;
 
 	public: // Search
-		const_iterator	find(const value_type& value, std::size_t index = 0) const;
+		const_iterator	find(const value_type& value, size_t index = 0) const;
 		const_iterator	find_first(const value_type& value) const;
-		const_iterator	find_first_not_of(const value_type& value, std::size_t index = 0) const;
+		const_iterator	find_first_not_of(const value_type& value, size_t index = 0) const;
 		const_iterator	find_last(const value_type& value) const;
 		const_iterator	find_last_not_of(const value_type& value) const;
 
@@ -134,7 +134,7 @@ namespace ml
 		}
 
 		template <typename T>
-		T* childAs(std::size_t index) const
+		T* childAs(size_t index) const
 		{
 			if (AST_Node* c = getChild(index))
 			{

@@ -26,7 +26,7 @@ namespace ml
 
 	std::ostream & AST_Block::display(std::ostream & out) const
 	{
-		auto tab = [](std::size_t n)
+		auto tab = [](size_t n)
 		{
 			return (n == 0)
 				? std::string()

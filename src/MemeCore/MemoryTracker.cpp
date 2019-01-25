@@ -4,45 +4,87 @@
 
 namespace ml
 {
-	ITrackable * MemoryTracker::newAllocation(ITrackable * ptr, std::size_t size)
+	struct MemoryTracker::Record
+		: public ISerializable
 	{
-		AllocationMap::iterator it;
-		if ((it = m_records.find(ptr)) == m_records.end())
+		void *	addr;
+		size_t	index;
+		size_t	size;
+
+		Record(void* addr, size_t index, size_t size)
+			: addr(addr)
+			, index(index)
+			, size(size)
 		{
-			m_records.insert({ ptr, Allocation(ptr, m_guid++, size) });
 		}
-		return ptr;
+
+		void serialize(std::ostream & out) const override
+		{
+			out << " { addr: " << addr
+				<< " | size: " << size
+				<< " | indx: " << index
+				<< " }";
+		}
+	};
+}
+
+namespace ml
+{
+	MemoryTracker::MemoryTracker()
+		: m_map()
+		, m_guid(0)
+	{
 	}
 
-	void MemoryTracker::deleteAllocation(ITrackable * ptr)
+	MemoryTracker::~MemoryTracker() 
 	{
-		AllocationMap::iterator it;
-		if ((it = m_records.find(ptr)) != m_records.end())
+		Debug::Log("Deleting Memory Tracker...");
+		if (!m_map.empty())
 		{
-			m_records.erase(it);
-		}
-		free(ptr);
-	}
-
-
-	void MemoryTracker::displayFinalAllocations()
-	{
-		Debug::out() << ("Deleting Memory Tracker...")  << std::endl;
-		if (m_records.size() > 0)
-		{
-			Debug::out() << ("Final allocations follow:") << std::endl;
-			displayAllAllocations();
+			Debug::LogWarning("Final allocations follow:");
+			
+			Debug::err() << (*this);
+			
 			Debug::pause(EXIT_FAILURE);
 		}
 	}
 
-	void MemoryTracker::displayAllAllocations()
+
+	ITrackable * MemoryTracker::newAllocation(size_t size)
 	{
-		for (AllocationMap::iterator it = m_records.begin(); it != m_records.end(); ++it)
+		if (ITrackable * ptr = static_cast<ITrackable*>(malloc(size)))
 		{
-			Debug::out() << (*it->first) << (it->second) << std::endl;
+			RecordMap::iterator it;
+			if ((it = m_map.find(ptr)) == m_map.end())
+			{
+				m_map.insert({ ptr, Record(ptr, m_guid++, size) });
+			}
+			return ptr;
 		}
-		Debug::out() << std::endl;
+		return NULL;
+	}
+
+	void MemoryTracker::freeAllocation(void * value)
+	{
+		if (ITrackable * ptr = static_cast<ITrackable*>(value))
+		{
+			RecordMap::iterator it;
+			if ((it = m_map.find(ptr)) != m_map.end())
+			{
+				m_map.erase(it);
+			}
+			return free(ptr);
+		}
+	}
+
+	void MemoryTracker::serialize(std::ostream & out) const
+	{
+		RecordMap::const_iterator it;
+		for (it = m_map.begin(); it != m_map.end(); ++it)
+		{
+			out << (*it->first) << (it->second) << std::endl;
+		}
+		out << std::endl;
 	}
 
 }

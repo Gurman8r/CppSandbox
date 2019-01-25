@@ -7,11 +7,11 @@ namespace ml
 {
 	Parser::ToksList Parser::SplitStatements(const TokenList & tokens)
 	{
-		static std::size_t id = 0;
+		static size_t id = 0;
 
 		ToksList out = { TokenList() };
 
-		std::size_t i = 0;
+		size_t i = 0;
 
 		TokenList::const_iterator it;
 		for (it = tokens.begin(); it != tokens.end(); it++)
@@ -68,7 +68,7 @@ namespace ml
 
 			if (arg.isOperator())
 			{
-				std::size_t count = 0;
+				size_t count = 0;
 
 				while (!stk.empty() && (stk.front() <= arg))
 				{
@@ -101,7 +101,7 @@ namespace ml
 			}
 			else if (arg == TokenType::TOK_RPRN) // )
 			{
-				std::size_t count = 0;
+				size_t count = 0;
 				while (!stk.empty())
 				{
 					if (stk.front() == TokenType::TOK_LPRN)
@@ -155,10 +155,10 @@ namespace ml
 		stk.erase(stk.begin());
 
 		// Final Error Checking
-		std::size_t numOperators = 0;
-		std::size_t numOperands = 0;
+		size_t numOperators = 0;
+		size_t numOperands = 0;
 
-		for (std::size_t i = 0; i < pfx.size(); i++)
+		for (size_t i = 0; i < pfx.size(); i++)
 		{
 			const Token& arg = pfx[i];
 

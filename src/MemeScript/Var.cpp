@@ -216,7 +216,7 @@ namespace ml
 		return isValid() ? StringUtility::ToFloat((textValue())) : 0;
 	}
 
-	Var			Var::elemValue(std::size_t i) const
+	Var			Var::elemValue(size_t i) const
 	{
 		if (!isEmptyValue())
 		{
@@ -297,7 +297,7 @@ namespace ml
 		return setType(Var::Bool).tokensValue({ { TokenType::TOK_NAME, (value ? "true" : "false") } });
 	}
 
-	Var &	Var::elemValue(std::size_t index, const Token & value)
+	Var &	Var::elemValue(size_t index, const Token & value)
 	{
 		if (tokensValue().inRange(index))
 		{

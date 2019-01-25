@@ -5,54 +5,35 @@
 #include <MemeCore/ISerializable.h>
 #include <map>
 
-#define ML_MemoryTracker ml::MemoryTracker::getInstance()
+#define ML_Tracker ml::MemoryTracker::getInstance()
 
 namespace ml
 {
 	class ITrackable;
 
+	// Singleton to keep track of dynamically allocated ITrackables
 	class ML_CORE_API MemoryTracker final
 		: public ISingleton<MemoryTracker>
-	{	friend ISingleton<MemoryTracker>;
-	public:
-		struct Allocation final
-			: public ISerializable
-		{
-			void *		addr;
-			std::size_t	index;
-			std::size_t	size;
-
-			Allocation(void* addr, std::size_t index, std::size_t size)
-				: addr(addr)
-				, index(index)
-				, size(size) 
-			{}
-			
-			void serialize(std::ostream & out)
-			{
-				out << " { addr: " << addr
-					<< " | size: " << size
-					<< " | indx: " << index
-					<< " }";
-			}
-		};
+		, public ISerializable
+	{	
+		friend ISingleton<MemoryTracker>;
 
 	public:
-		using AllocationMap = std::map<ITrackable*, Allocation>;
+		ITrackable * newAllocation(size_t size);
 
-	public:		
-		ITrackable* newAllocation(ITrackable* ptr, std::size_t size);
-		void		deleteAllocation(ITrackable* ptr);
+		void freeAllocation(void * ptr);
 
-		void displayFinalAllocations();
-		void displayAllAllocations();
+		void serialize(std::ostream & out) const override;
 
 	private:
-		MemoryTracker() {}
-		~MemoryTracker() { displayFinalAllocations(); }
+		MemoryTracker();
+		~MemoryTracker();
 
-		AllocationMap	m_records;
-		std::size_t		m_guid;
+		struct Record;
+		using RecordMap = std::map<ITrackable *, Record>;
+
+		RecordMap	m_map;
+		size_t		m_guid;
 	};
 }
 
