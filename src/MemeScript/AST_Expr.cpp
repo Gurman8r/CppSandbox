@@ -351,7 +351,7 @@ namespace ml
 
 		Debug::out() << "$: ";
 		std::string line;
-		std::getline(std::cin, line);
+		std::getline(Debug::in(), line);
 		return Var().stringValue(line);
 #else
 		return Var();

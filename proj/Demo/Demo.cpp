@@ -13,34 +13,49 @@ int main(int32_t argc, char ** argv)
 	// Load Settings
 	if (!SETTINGS.loadFromFile(CONFIG_INI))
 	{
-		return ml::Debug::pause(EXIT_FAILURE);
+		return ml::Debug::LogError("Failed Loading Settings")
+			|| ml::Debug::pause(EXIT_FAILURE);
 	}
 
 	// Program Enter
 	if (!demo::onProgramEnter({ argc, argv }))
 	{
-		return ml::Debug::pause(EXIT_FAILURE);
+		return ml::Debug::LogError("Failed Entering Program")
+			|| ml::Debug::pause(EXIT_FAILURE);
 	}
 
-	// Enable OpenGL Error Pause
-	ml::OpenGL::errorPause(true);
-
 	// Create Window
-	ml::Debug::Log("Creating Window...");
 	ml::RenderWindow window;
-	if (!window.create(
-		SETTINGS.winTitle,
-		ml::VideoMode({ SETTINGS.winWidth, SETTINGS.winHeight }, 32),
-		ml::Window::Style::Default,
-		ml::Context(3, 3, 24, 8, ml::Context::Compat, false, false)))
+	if (ml::Debug::Log("Creating Window..."))
 	{
-		return ml::Debug::pause(EXIT_FAILURE);
+		if (!window.create(
+			SETTINGS.title,
+			ml::VideoMode({ SETTINGS.width, SETTINGS.height }, SETTINGS.bitsPerPixel),
+			ml::Window::Style::Default,
+			ml::Context(
+				SETTINGS.majorVersion,
+				SETTINGS.minorVersion,
+				SETTINGS.depthBits,
+				SETTINGS.stencilBits,
+				SETTINGS.profile, 
+				SETTINGS.multisample,
+				SETTINGS.sRgbCapable)
+		))
+		{
+			return ml::Debug::LogError("Failed Creating Window")
+				|| ml::Debug::pause(EXIT_FAILURE);
+		}
+
+		window.setCursor(ml::Window::Cursor::Normal);
+		window.setPosition((ml::VideoMode::desktop().size - window.size()) / 2);
+		window.setViewport(ml::vec2i::Zero, window.size());
 	}
 
 	// Load Resources
 	if (!demo::onLoadResources({ }))
 	{
-		return ml::Debug::pause(EXIT_FAILURE);
+		return ml::Debug::LogError("Failed Loading Resources")
+			|| ml::Debug::pause(EXIT_FAILURE);
 	}
 
 	// Start

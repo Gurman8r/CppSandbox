@@ -33,9 +33,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\MemeScript\Script.cpp">
-      <Filter>Source Files\Interpreter</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemeScript\Args.cpp">
       <Filter>Source Files\DS</Filter>
     </ClCompile>
@@ -117,9 +114,6 @@
       <Filter>Header Files\Interpreter</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeScript\Parser.h">
-      <Filter>Header Files\Interpreter</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeScript\Script.h">
       <Filter>Header Files\Interpreter</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeScript\Runtime.h">

@@ -1,9 +1,6 @@
 #include <MemeScript/Interpreter.h>	
 #include <MemeCore/FileSystem.h>
 
-#include <dirent.h>
-#include <MemeCore/DebugUtility.h>
-
 namespace ml
 {
 	Var	Interpreter::execCommand(const std::string & value)
@@ -31,7 +28,7 @@ namespace ml
 			std::vector<char> buffer;
 			if (ML_FileSystem.getFileContents(value, buffer))
 			{
-				return execToks(lexer()->setBuffer(buffer).splitTokens());
+				return execToks(lexer().setBuffer(buffer).splitTokens());
 			}
 		}
 		return Var().errorValue("File not found {0}", value);
@@ -41,7 +38,7 @@ namespace ml
 	{
 		if (!value.empty())
 		{
-			return execToks(lexer()->setBuffer(value).splitTokens());
+			return execToks(lexer().setBuffer(value).splitTokens());
 		}
 		return Var().errorValue("Buffer cannot be empty");
 	}
@@ -50,7 +47,7 @@ namespace ml
 	{
 		if (!value.empty())
 		{
-			if (AST_Block* root = parser()->genAST(value))
+			if (AST_Block* root = parser().genAST(value))
 			{
 				return execAST(root);
 			}
@@ -68,7 +65,7 @@ namespace ml
 
 				delete value;
 
-				if (runtime()->setVar(0, "?", v))
+				if (runtime().setVar(0, "?", v))
 				{
 					return v;
 				}

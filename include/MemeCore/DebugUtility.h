@@ -11,8 +11,9 @@ namespace ml
 	class ML_CORE_API Debug final
 	{
 	public:
-		inline static std::ostream & out() { return std::cout; }
-		inline static std::ostream & err() { return std::cerr; }
+		inline static std::ostream & out()	{ return std::cout; }
+		inline static std::ostream & err()	{ return std::cerr; }
+		inline static std::istream & in()	{ return std::cin;	}
 
 	public:
 		enum Status : int32_t

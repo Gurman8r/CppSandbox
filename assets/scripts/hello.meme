@@ -6,8 +6,8 @@
 	getExeName = []();
 	{
 		return 
-			getTargetName() + "_" + 
-			getTargetConfig() + "_" + 
+			getTargetName()		+ "_" + 
+			getTargetConfig()	+ "_" + 
 			getTargetPlatform() + ".exe";
 	};
 	
@@ -30,5 +30,5 @@
 	};
 
 	hello();
-	pause();
+	#pause();
 }

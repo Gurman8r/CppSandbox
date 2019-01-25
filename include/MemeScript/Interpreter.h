@@ -45,13 +45,9 @@ namespace ml
 		inline const CmdTable & cmdTable() const { return m_cmdTable; }
 		inline const CmdNames & cmdNames() const { return m_cmdNames; }
 
-		inline const Lexer *	lexer()  const	{ return &m_lexer;  }
-		inline const Runtime *	runtime() const	{ return &m_runtime; }
-		inline const Parser *	parser() const	{ return &m_parser; }
-
-		inline Lexer *			lexer()			{ return &m_lexer;  }
-		inline Runtime *		runtime()		{ return &m_runtime; }
-		inline Parser *			parser()		{ return &m_parser; }
+		inline Lexer   & lexer()	{ return m_lexer; }
+		inline Runtime & runtime()	{ return m_runtime; }
+		inline Parser  & parser()	{ return m_parser; }
 
 	private:
 		CmdTable	m_cmdTable;

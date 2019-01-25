@@ -280,8 +280,8 @@ namespace ml
 		std::vector<char> buffer;
 		if (ML_FileSystem.getFileContents(filename, buffer))
 		{
-			const TokenList toks = ML_Interpreter.lexer()->setBuffer(buffer).splitTokens();
-			if (AST_Block * root = ML_Interpreter.parser()->genAST(toks))
+			const TokenList toks = ML_Interpreter.lexer().setBuffer(buffer).splitTokens();
+			if (AST_Block * root = ML_Interpreter.parser().genAST(toks))
 			{
 				if (!root->empty())
 				{

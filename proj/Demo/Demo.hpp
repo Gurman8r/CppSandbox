@@ -119,20 +119,20 @@ namespace demo
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	ml::Font		fonts[MAX_FONT];
-	ml::Image		images[MAX_IMAGE];
+	ml::Font		fonts	[MAX_FONT];
+	ml::Image		images	[MAX_IMAGE];
 	ml::Texture		textures[MAX_TEXTURE];
-	ml::Shader		shaders[MAX_SHADER];
-	ml::Transform	proj[MAX_PROJ];
-	ml::Transform	view[MAX_VIEW];
-	ml::Transform	model[MAX_MODEL];
-	ml::VAO			vao[MAX_VAO];
-	ml::VBO			vbo[MAX_VBO];
-	ml::IBO			ibo[MAX_IBO];
-	ml::FBO			fbo[MAX_FBO];
-	ml::Mesh		mesh[MAX_MESH];
-	ml::Text		text[MAX_TEXT];
-	ml::Sound		sounds[MAX_SOUND];
+	ml::Shader		shaders	[MAX_SHADER];
+	ml::Transform	proj	[MAX_PROJ];
+	ml::Transform	view	[MAX_VIEW];
+	ml::Transform	model	[MAX_MODEL];
+	ml::VAO			vao		[MAX_VAO];
+	ml::VBO			vbo		[MAX_VBO];
+	ml::IBO			ibo		[MAX_IBO];
+	ml::FBO			fbo		[MAX_FBO];
+	ml::Mesh		mesh	[MAX_MESH];
+	ml::Text		text	[MAX_TEXT];
+	ml::Sound		sounds	[MAX_SOUND];
 	ml::Client		client;
 	ml::Server		server;
 
@@ -142,8 +142,7 @@ namespace demo
 	{
 		static bool onlyOnce = true;
 		if (onlyOnce)
-		{
-			onlyOnce = false;
+		{	onlyOnce = false;
 
 			ML_Interpreter.addCmd({ "help", [](ml::Args & args)
 			{
@@ -248,7 +247,7 @@ namespace demo
 					const std::string & opt = args.front();
 					if (opt == "name")
 					{
-						return ml::Var().stringValue(SETTINGS.winTitle);
+						return ml::Var().stringValue(SETTINGS.title);
 					}
 					else if (opt == "config")
 					{
@@ -279,25 +278,25 @@ namespace demo
 		{
 			if (!fonts[FNT_clacon].loadFromFile(SETTINGS.pathTo("/fonts/clacon.ttf")))
 			{
-				return ml::Debug::LogError("Failed Loading Font");
+				return ml::Debug::LogError("Failed Loading Font {0}", "clacon.ttf");
 			}
 
 			if (!fonts[FNT_consolas].loadFromFile(SETTINGS.pathTo("/fonts/consolas.ttf")))
 			{
-				return ml::Debug::LogError("Failed Loading Font");
+				return ml::Debug::LogError("Failed Loading Font {0}", "consolas.ttf");
 			}
 
 			if (!fonts[FNT_lucida_console].loadFromFile(SETTINGS.pathTo("/fonts/lucida_console.ttf")))
 			{
-				return ml::Debug::LogError("Failed Loading Font");
+				return ml::Debug::LogError("Failed Loading Font {0}", "lucida_console.ttf");
 			}
 
 			if (!fonts[FNT_minecraft].loadFromFile(SETTINGS.pathTo("/fonts/minecraft.ttf")))
 			{
-				return ml::Debug::LogError("Failed Loading Font");
+				return ml::Debug::LogError("Failed Loading Font {0}", "minecraft.ttf");
 			}
 		}
-		return true;
+		return ml::Debug::Success;
 	}
 
 	inline static bool loadImages()
@@ -307,10 +306,10 @@ namespace demo
 		{
 			if (!images[IMG_icon].loadFromFile(SETTINGS.pathTo("/images/dean.png")))
 			{
-				return ml::Debug::LogError("Failed Loading Icon");
+				return ml::Debug::LogError("Failed Loading Image {0}", "dean.png");
 			}
 		}
-		return true;
+		return ml::Debug::Success;
 	}
 
 	inline static bool loadTextures()
@@ -320,30 +319,30 @@ namespace demo
 		{
 			if (!textures[TEX_dean].loadFromFile(SETTINGS.pathTo("/images/dean.png")))
 			{
-				return ml::Debug::LogError("Failed Loading Texture");
+				return ml::Debug::LogError("Failed Loading Texture {0}", "dean.png");
 			}
 
 			if (!textures[TEX_sanic].loadFromFile(SETTINGS.pathTo("/images/sanic.png")))
 			{
-				return ml::Debug::LogError("Failed Loading Texture");
+				return ml::Debug::LogError("Failed Loading Texture {0}", "sanic.png");
 			}
 
 			if (!textures[TEX_stone_dm].loadFromFile(SETTINGS.pathTo("/textures/stone/stone_dm.png")))
 			{
-				return ml::Debug::LogError("Failed Loading Texture");
+				return ml::Debug::LogError("Failed Loading Texture {0}", "stone_dm.png");
 			}
 
 			if (!textures[TEX_stone_hm].loadFromFile(SETTINGS.pathTo("/textures/stone/stone_hm.png")))
 			{
-				return ml::Debug::LogError("Failed Loading Texture");
+				return ml::Debug::LogError("Failed Loading Texture {0}", "stone_hm.png");
 			}
 
 			if (!textures[TEX_stone_nm].loadFromFile(SETTINGS.pathTo("/textures/stone/stone_nm.png")))
 			{
-				return ml::Debug::LogError("Failed Loading Texture");
+				return ml::Debug::LogError("Failed Loading Texture {0}", "stone_nm.png");
 			}
 		}
-		return true;
+		return ml::Debug::Success;
 	}
 
 	inline static bool loadShaders()
@@ -366,7 +365,7 @@ namespace demo
 				return ml::Debug::LogError("Failed Loading Shader: {0}", "Geometry");
 			}
 		}
-		return true;
+		return ml::Debug::Success;
 	}
 
 	inline static bool loadMeshes()
@@ -384,7 +383,7 @@ namespace demo
 				return ml::Debug::LogError("Failed Loading Mesh: {0}", "sphere32x24");
 			}
 		}
-		return true;
+		return ml::Debug::Success;
 	}
 
 	inline static bool loadBuffers()
@@ -445,8 +444,9 @@ namespace demo
 			layout.bind();
 			vbo[VBO_text].unbind();
 			vao[VAO_text].unbind();
+
 		}
-		return true;
+		return ml::Debug::Success;
 	}
 
 	inline static bool loadAudio()
@@ -455,7 +455,7 @@ namespace demo
 		{
 			// ...
 		}
-		return true;
+		return ml::Debug::Success;
 	}
 
 	inline static bool loadNetwork()
@@ -471,7 +471,7 @@ namespace demo
 				// ...
 			}
 		}
-		return true;
+		return ml::Debug::Success;
 	}
 
 }
@@ -497,7 +497,7 @@ namespace demo
 		loadCommands();
 		
 		// Setup Parser
-		(*ML_Interpreter.parser())
+		ML_Interpreter.parser()
 			.showToks(SETTINGS.scrShowToks)
 			.showTree(SETTINGS.scrShowTree)
 			.showItoP(SETTINGS.scrShowItoP);
@@ -535,61 +535,58 @@ namespace demo
 		ml::RenderWindow & window;
 	};
 	// Called once before entering the main loop, after resources are loaded
-	inline static bool onStart(const StartEvent & ev)
+	inline static void onStart(const StartEvent & ev)
 	{
-		// Setup Window
-		ev.window.setCursor(ml::Window::Cursor::Normal);
-		ev.window.setPosition((ml::VideoMode::desktop().size - ev.window.size()) / 2);
-		ev.window.setViewport(ml::vec2i::Zero, ev.window.size());
-		if (ml::Image icon = images[IMG_icon])
+		if(ml::Debug::Log("Starting..."))
 		{
-			ev.window.setIcons({ icon.flipVertically() });
+			// Set Window Icons
+			if (ml::Image icon = images[IMG_icon])
+			{
+				ev.window.setIcons({ icon.flipVertically() });
+			}
+
+			// Orthographic
+			proj[P_ortho] = ml::Transform::Ortho(
+				0.0f, (float)ev.window.width(),
+				0.0f, (float)ev.window.height(),
+				SETTINGS.orthoNear,
+				SETTINGS.orthoFar);
+
+			// Perspective
+			proj[P_persp] = ml::Transform::Perspective(
+				SETTINGS.fieldOfView,
+				ev.window.aspect(),
+				SETTINGS.perspNear,
+				SETTINGS.perspFar);
+
+			// Views
+			ml::vec3f cameraPos = { 0.0f, 0.0f, 3.0f };
+			view[V_camera].lookAt(
+				cameraPos,
+				cameraPos + ml::vec3f::Back,
+				ml::vec3f::Up);
+
+			// Cube
+			model[M_cube]
+				.translate({ +3.0f, 0.0f, 0.0f })
+				.rotate(0.0f, ml::vec3f::Up)
+				.scale(ml::vec3f::One);
+
+			// Quad
+			model[M_quad]
+				.translate({ -3.0f, 0.0f, 0.0f })
+				.rotate(0.0f, ml::vec3f::Up)
+				.scale(ml::vec3f::One * 5.f);
+
+			// Static Text
+			text[TXT_static]
+				.setFont(&fonts[FNT_minecraft])
+				.setFontSize(72)
+				.setScale(ml::vec2f::One)
+				.setPosition({ 32, 128 })
+				.setColor(ml::Color::White)
+				.setText("there is no need\nto be upset");
 		}
-
-		// Orthographic
-		proj[P_ortho] = ml::Transform::Ortho(
-			0.0f, (float)ev.window.width(),
-			0.0f, (float)ev.window.height(),
-			SETTINGS.orthoNear,
-			SETTINGS.orthoFar);
-
-		// Perspective
-		proj[P_persp] = ml::Transform::Perspective(
-			SETTINGS.fieldOfView,
-			ev.window.aspect(),
-			SETTINGS.perspNear,
-			SETTINGS.perspFar);
-
-		// Views
-		ml::vec3f cameraPos = { 0.0f, 0.0f, 3.0f };
-		view[V_camera].lookAt(
-			cameraPos,
-			cameraPos + ml::vec3f::Back,
-			ml::vec3f::Up);
-
-
-		// Cube
-		model[M_cube]
-			.translate({ +3.0f, 0.0f, 0.0f })
-			.rotate(0.0f, ml::vec3f::Up)
-			.scale(ml::vec3f::One);
-
-		// Quad
-		model[M_quad]
-			.translate({ -3.0f, 0.0f, 0.0f })
-			.rotate(0.0f, ml::vec3f::Up)
-			.scale(ml::vec3f::One * 5.f);
-
-		// Static Text
-		text[TXT_static]
-			.setFont(&fonts[FNT_minecraft])
-			.setFontSize(72)
-			.setScale(ml::vec2f::One)
-			.setPosition({ 32, 128 })
-			.setColor(ml::Color::White)
-			.setText("there is no need\nto be upset");
-
-		return ml::Debug::Log("Starting...");
 	}
 
 	
@@ -607,7 +604,7 @@ namespace demo
 		// Set Window Title
 		ev.window.setTitle(ml::StringUtility::Format(
 			"{0} | {1} | {2} ({3} fps)",
-			SETTINGS.winTitle,
+			SETTINGS.title,
 			ML_Time.elapsed(),
 			ev.elapsed.delta(),
 			ml::Time::calculateFPS(ev.elapsed.delta())
