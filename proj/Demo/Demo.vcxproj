@@ -222,7 +222,7 @@
     <Image Include="..\..\assets\textures\stone\stone_nm.png" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Demo.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Demo.hpp" />

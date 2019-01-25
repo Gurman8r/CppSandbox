@@ -4,6 +4,7 @@
 #include <INIReader.h>
 #include <MemeCore/ITrackable.h>
 #include <MemeCore/ISingleton.h>
+#include <MemeCore/IResource.h>
 #include <MemeCore/DebugUtility.h>
 #include <MemeWindow/Context.h>
 
@@ -14,10 +15,9 @@ namespace demo
 {
 	class Settings final
 		: public ml::ITrackable
+		, public ml::IResource
 		, public ml::ISingleton<Settings>
-	{
-		friend class ml::ISingleton<Settings>;
-
+	{	friend class ml::ISingleton<Settings>;
 	public:
 		// [General]
 		std::string	rootPath;		// Where's all the data?
@@ -57,7 +57,9 @@ namespace demo
 		bool		isServer;		// Is Server?
 
 	public:
-		inline bool loadFromFile(const std::string & filename)
+		inline bool cleanup() override { return true; }
+
+		inline bool loadFromFile(const std::string & filename) override
 		{
 			INIReader ini(filename.c_str());
 			if (ini.ParseError() == 0)

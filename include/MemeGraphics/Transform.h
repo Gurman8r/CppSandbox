@@ -18,8 +18,8 @@ namespace ml
 		Transform(const Transform & copy);
 		~Transform();
 
-		static mat4f Ortho(float left, float right, float top, float bottom, float near, float far);
-		static mat4f Ortho(float left, float right, float top, float bottom);
+		static mat4f Orthographic(float left, float right, float top, float bottom, float near, float far);
+		static mat4f Orthographic(float left, float right, float top, float bottom);
 		static mat4f Perspective(float fov, float aspect, float near, float far);
 		static mat4f LookAt(const vec3f & eye, const vec3f & pos, const vec3f & up);
 		static mat4f Rotate(const mat4f & value, float angle, const vec3f & axis);

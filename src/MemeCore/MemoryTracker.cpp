@@ -32,11 +32,7 @@ namespace ml
 		{
 			Debug::out() << ("Final allocations follow:") << std::endl;
 			displayAllAllocations();
-#ifdef ML_SYSTEM_WINDOWS
-			system("pause");
-#else
-			// pause ?
-#endif
+			Debug::pause(EXIT_FAILURE);
 		}
 	}
 

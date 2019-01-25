@@ -22,9 +22,6 @@
     <Filter Include="Source Files\Utility">
       <UniqueIdentifier>{53169a05-2aa2-4f63-946b-1f27b92afd23}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Interfaces">
-      <UniqueIdentifier>{83d5cc2b-444b-48eb-a30e-155d082d84c6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Components">
       <UniqueIdentifier>{13ee360c-6001-4db0-9640-32f0da0d317c}</UniqueIdentifier>
     </Filter>
@@ -169,9 +166,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\StringUtility.cpp">
       <Filter>Source Files\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeCore\ITrackable.cpp">
-      <Filter>Source Files\Interfaces</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\InputState.cpp">
       <Filter>Source Files\Input</Filter>

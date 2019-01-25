@@ -170,7 +170,7 @@ namespace ml
 
 			if (m_errorPause)
 			{
-				Debug::pause();
+				Debug::pause(EXIT_FAILURE);
 			}
 		}
 	}

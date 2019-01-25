@@ -17,15 +17,15 @@ namespace ml
 			: Quaternion(0.0f, 0.0f, 0.0f)
 		{
 		}
-		Quaternion(const float & xyzw)
+		Quaternion(float xyzw)
 			: Quaternion(xyzw, xyzw, xyzw)
 		{
 		}
-		Quaternion(const float & x, const float & y, const float & z)
+		Quaternion(float x, float y, float z)
 			: Quaternion(x, y, z, 1.0f)
 		{
 		}
-		Quaternion(const float & x, const float & y, const float & z, const float & w)
+		Quaternion(float x, float y, float z, float w)
 			: base_type(x, y, z, w)
 		{
 		}

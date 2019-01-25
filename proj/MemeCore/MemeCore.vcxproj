@@ -197,7 +197,6 @@
     <ClCompile Include="..\..\src\MemeCore\EventSystem.cpp" />
     <ClCompile Include="..\..\src\MemeCore\FileSystem.cpp" />
     <ClCompile Include="..\..\src\MemeCore\InputState.cpp" />
-    <ClCompile Include="..\..\src\MemeCore\ITrackable.cpp" />
     <ClCompile Include="..\..\src\MemeCore\MemoryTracker.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Maths.cpp" />
     <ClCompile Include="..\..\src\MemeCore\StringUtility.cpp" />

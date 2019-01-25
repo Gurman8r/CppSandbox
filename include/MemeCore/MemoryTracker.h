@@ -1,10 +1,9 @@
 #ifndef _MEMORY_TRACKER_H_
 #define _MEMORY_TRACKER_H_
 
-#include <MemeCore/Export.h>
 #include <MemeCore/ISingleton.h>
+#include <MemeCore/ISerializable.h>
 #include <map>
-#include <iostream>
 
 #define ML_MemoryTracker ml::MemoryTracker::getInstance()
 
@@ -14,13 +13,12 @@ namespace ml
 
 	class ML_CORE_API MemoryTracker final
 		: public ISingleton<MemoryTracker>
-	{
-		friend ISingleton<MemoryTracker>;
-
+	{	friend ISingleton<MemoryTracker>;
 	public:
 		struct Allocation final
+			: public ISerializable
 		{
-			void*		addr;
+			void *		addr;
 			std::size_t	index;
 			std::size_t	size;
 
@@ -29,18 +27,17 @@ namespace ml
 				, index(index)
 				, size(size) 
 			{}
-
+			
+			void serialize(std::ostream & out)
+			{
+				out << " { addr: " << addr
+					<< " | size: " << size
+					<< " | indx: " << index
+					<< " }";
+			}
 		};
 
-		inline friend std::ostream & operator<<(std::ostream & out, const Allocation & rhs)
-		{
-			return (out)
-				<< " { addr: " << rhs.addr
-				<< " | size: " << rhs.size
-				<< " | indx: " << rhs.index
-				<< " }";
-		}
-
+	public:
 		using AllocationMap = std::map<ITrackable*, Allocation>;
 
 	public:		

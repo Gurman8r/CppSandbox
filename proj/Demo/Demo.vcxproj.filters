@@ -277,16 +277,16 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Demo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="Demo.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Settings.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

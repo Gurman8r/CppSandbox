@@ -1,11 +1,13 @@
 #ifndef _DEMO_H_
 #define _DEMO_H_
 
+/* * * * * * * * * * * * * * * * * * * * */
+
 #include "Settings.hpp"
 
 #include <dirent.h>
+#include <MemeAudio/Sound.h>
 #include <MemeCore/Time.h>
-#include <MemeCore/DebugUtility.h>
 #include <MemeCore/InputState.h>
 #include <MemeCore/FileSystem.h>
 #include <MemeGraphics/Text.h>
@@ -17,7 +19,6 @@
 #include <MemeGraphics/BufferLayout.h>
 #include <MemeGraphics/OpenGL.h>
 #include <MemeGraphics/Mesh.h>
-#include <MemeAudio/Sound.h>
 #include <MemeNet/Client.h>
 #include <MemeNet/Server.h>
 #include <MemeScript/Interpreter.h>
@@ -158,7 +159,7 @@ namespace demo
 
 			ML_Interpreter.addCmd({ "pause", [](ml::Args & args)
 			{
-				return ml::Var().intValue(ml::Debug::pause());
+				return ml::Var().intValue(ml::Debug::pause(EXIT_SUCCESS));
 			} });
 
 			ML_Interpreter.addCmd({ "clear", [](ml::Args & args)
@@ -216,9 +217,9 @@ namespace demo
 			ML_Interpreter.addCmd({ "ls", [](ml::Args & args)
 			{
 				const std::string dirName = args.pop_front().empty() ? "./" : args.str();
-				if (DIR* dir = opendir(dirName.c_str()))
+				if (DIR * dir = opendir(dirName.c_str()))
 				{
-					while (dirent* e = readdir(dir))
+					while (dirent * e = readdir(dir))
 					{
 						switch (e->d_type)
 						{
@@ -549,7 +550,7 @@ namespace demo
 			}
 
 			// Orthographic
-			proj[P_ortho] = ml::Transform::Ortho(
+			proj[P_ortho] = ml::Transform::Orthographic(
 				0.0f, (float)ev.window.width(),
 				0.0f, (float)ev.window.height(),
 				SETTINGS.orthoNear,
@@ -562,7 +563,7 @@ namespace demo
 				SETTINGS.perspNear,
 				SETTINGS.perspFar);
 
-			// Views
+			// Camera
 			ml::vec3f cameraPos = { 0.0f, 0.0f, 3.0f };
 			view[V_camera].lookAt(
 				cameraPos,
@@ -752,5 +753,7 @@ namespace demo
 		return ev.exitCode;
 	}
 }
+
+/* * * * * * * * * * * * * * * * * * * * */
 
 #endif // !_DEMO_H_

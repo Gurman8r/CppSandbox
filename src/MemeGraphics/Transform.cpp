@@ -34,12 +34,12 @@ namespace ml
 	}
 
 
-	mat4f Transform::Ortho(float left, float right, float top, float bottom, float near, float far)
+	mat4f Transform::Orthographic(float left, float right, float top, float bottom, float near, float far)
 	{
 		return mat4f(glm::value_ptr(glm::ortho(left, right, top, bottom, near, far)));
 	}
 
-	mat4f Transform::Ortho(float left, float right, float top, float bottom)
+	mat4f Transform::Orthographic(float left, float right, float top, float bottom)
 	{
 		return mat4f(glm::value_ptr(glm::ortho(left, right, top, bottom)));
 	}
