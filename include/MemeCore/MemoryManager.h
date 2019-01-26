@@ -1,12 +1,13 @@
 #ifndef _MEMORY_MANAGER_H_
 #define _MEMORY_MANAGER_H_
 
+#include <MemeCore/ITrackable.h>
 #include <MemeCore/ISingleton.h>
 #include <MemeCore/Chunk.h>
 
-#ifndef ML_POOL_CAPACITY
-#define ML_POOL_CAPACITY 65535
-#endif // !ML_POOL_CAPACITY
+#ifndef ML_MEMORY_MAX_BYTES
+#define ML_MEMORY_MAX_BYTES 4096
+#endif
 
 #define ML_Memory ml::MemoryManager::getInstance()
 
@@ -25,7 +26,7 @@ namespace ml
 		using const_pointer		= const data_type *;
 		using const_reference	= const data_type &;
 
-		enum : size_t { Capacity = ML_POOL_CAPACITY };
+		enum : size_t { MaxBytes = ML_MEMORY_MAX_BYTES };
 
 	public:
 		void *	allocate(size_t size);
@@ -33,7 +34,8 @@ namespace ml
 
 	private:
 		bool	hasSpace(size_t size) const;
-		size_t	incrementAllocation(size_t value);
+		size_t	increment(size_t value);
+
 		Chunk *	createChunk(size_t size);
 		Chunk *	findChunk(size_t size) const;
 
@@ -44,11 +46,10 @@ namespace ml
 		MemoryManager();
 		~MemoryManager();
 
-		data_type	m_data[Capacity];
+		data_type	m_data[MaxBytes];
 		size_t		m_size;
 		Chunk *		m_head;
 		Chunk *		m_tail;
-
 	};
 }
 

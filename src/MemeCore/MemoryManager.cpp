@@ -7,9 +7,8 @@ namespace ml
 	MemoryManager::MemoryManager()
 		: m_size(0)
 		, m_head(NULL)
-		, m_tail(NULL)
 	{
-		memset(m_data, NULL, Capacity);
+		memset(m_data, NULL, MaxBytes);
 	}
 
 	MemoryManager::~MemoryManager()
@@ -17,32 +16,40 @@ namespace ml
 	}
 	
 	
-	void *	MemoryManager::allocate(size_t size)
+	void * MemoryManager::allocate(size_t size)
 	{
 		if (!m_head && (m_head = createChunk(size)))
 		{
+			m_tail = m_head;
+
 			return m_head->npos;
 		}
-		else if(Chunk * empty = findChunk(size))
+		//else if(Chunk * empty = findChunk(size))
+		//{
+		//	empty->size = size;
+		//	empty->free = false;
+		//	return empty->npos;
+		//}
+		else if(Chunk * chunk = createChunk(size))
 		{
-			empty->size = size;
-			empty->free = false;
-			return empty->npos;
-		}
-		else if(Chunk * alloc = createChunk(size))
-		{
-			return alloc->npos;
+			m_tail->next = chunk;
+
+			chunk->prev = m_tail;
+
+			m_tail = chunk;
+
+			return m_tail->npos;
 		}
 		return NULL;
 	}
 
-	bool	MemoryManager::free(void * ptr)
+	bool MemoryManager::free(void * ptr)
 	{
 		if (ptr)
 		{
 			if (Chunk * toFree = ((Chunk *)ptr - sizeof(Chunk)))
 			{
-				if (toFree >= m_head)
+				if ((toFree >= m_head) && (toFree < m_tail))
 				{
 					toFree->free = true;
 					toFree->mergeNext();
@@ -55,12 +62,12 @@ namespace ml
 	}
 	
 	
-	bool	MemoryManager::hasSpace(size_t size) const
+	bool MemoryManager::hasSpace(size_t size) const
 	{
-		return ((m_size + (size + sizeof(Chunk))) < Capacity);
+		return ((m_size + (size + sizeof(Chunk))) < MaxBytes);
 	}
 
-	size_t	MemoryManager::incrementAllocation(size_t size)
+	size_t MemoryManager::increment(size_t size)
 	{
 		return (m_size += (size + sizeof(Chunk)));
 	}
@@ -70,16 +77,16 @@ namespace ml
 	{
 		if (hasSpace(size))
 		{
-			if (Chunk * chunk = (Chunk *)(&m_data[incrementAllocation(size)]))
+			if (Chunk * chunk = (Chunk *)(&m_data[increment(size)]))
 			{
-				chunk->size = size;
-				chunk->free = false;
-				chunk->next = NULL;
+				chunk->size = (size + sizeof(Chunk));
+				chunk->free = (!size);
 				chunk->prev = NULL;
-				return (m_tail = chunk);
+				chunk->next = NULL;
+				return chunk;
 			}
 		}
-		return nullptr;
+		return NULL;
 	}
 
 	Chunk * MemoryManager::findChunk(size_t size) const
@@ -104,7 +111,7 @@ namespace ml
 		{
 			while (ptr)
 			{
-				out << ptr << std::endl;
+				out << (*ptr) << std::endl;
 
 				ptr = ptr->next;
 			}

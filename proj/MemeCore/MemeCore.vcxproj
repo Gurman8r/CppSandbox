@@ -195,6 +195,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\include\MemeCore\IEnumerable.h" />
+    <ClCompile Include="..\..\src\MemeCore\Chunk.cpp" />
     <ClCompile Include="..\..\src\MemeCore\ConsoleUtility.cpp" />
     <ClCompile Include="..\..\src\MemeCore\DebugUtility.cpp" />
     <ClCompile Include="..\..\src\MemeCore\EventSystem.cpp" />

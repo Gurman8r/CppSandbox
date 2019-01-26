@@ -6,7 +6,7 @@
 
 namespace ml
 {
-	template <typename T, size_t Capacity>
+	template <typename T, size_t MaxBytes>
 	class MemoryPool final
 		: public ITrackable
 		, public IEnumerable<T>
@@ -16,11 +16,11 @@ namespace ml
 		using data_type	= T;
 		using pointer	= data_type * ;
 		using reference	= data_type & ;
-		using self_type	= MemoryPool<T, Capacity>;
+		using self_type	= MemoryPool<T, MaxBytes>;
 		
 	public:
 		MemoryPool()
-			: IEnumerable<T>(&m_data[0], &m_data[Capacity])
+			: IEnumerable<T>(&m_data[0], &m_data[MaxBytes])
 			, m_size(0)
 		{
 		}
@@ -43,7 +43,7 @@ namespace ml
 
 	public:
 		inline const size_type	index()		const { return m_size; }
-		inline const size_type	capacity()	const { return Capacity; }
+		inline const size_type	capacity()	const { return MaxBytes; }
 
 	public:
 		inline const reference operator[](size_type i) const { return m_data[i]; }
@@ -60,7 +60,7 @@ namespace ml
 		}
 
 	private:
-		data_type	m_data[Capacity];
+		data_type	m_data[MaxBytes];
 		size_type	m_size;
 	};
 

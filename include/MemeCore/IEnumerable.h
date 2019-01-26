@@ -21,7 +21,7 @@ namespace ml
 	public:
 		IEnumerable(pointer first, pointer last)
 			: m_first(first)
-			, m_last(last)
+			, m_tail(last)
 		{
 		}		
 		virtual ~IEnumerable() {}
@@ -33,7 +33,7 @@ namespace ml
 		}
 		inline iterator end()
 		{
-			return iterator(m_last);
+			return iterator(m_tail);
 		}
 
 		inline const_iterator begin() const
@@ -42,7 +42,7 @@ namespace ml
 		}
 		inline const_iterator end() const
 		{
-			return const_iterator(m_last);
+			return const_iterator(m_tail);
 		}
 
 		inline const_iterator cbegin() const
@@ -91,7 +91,7 @@ namespace ml
 
 	private:
 		pointer m_first;
-		pointer m_last;
+		pointer m_tail;
 	};
 }
 

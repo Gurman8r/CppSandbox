@@ -6,7 +6,7 @@ namespace ml
 		: m_paused(true)
 		, m_elapsed(0)
 		, m_clock()
-		, m_prev()
+		, m_tail()
 		, m_next()
 	{
 	}
@@ -15,7 +15,7 @@ namespace ml
 		: m_paused(copy.m_paused)
 		, m_elapsed(copy.m_elapsed)
 		, m_clock(copy.m_clock)
-		, m_prev(copy.m_prev)
+		, m_tail(copy.m_tail)
 		, m_next(copy.m_next)
 	{
 	}
@@ -31,12 +31,12 @@ namespace ml
 		{
 			m_paused = true;
 			m_next = m_clock.now();
-			m_elapsed = (m_next - m_prev);
+			m_elapsed = (m_next - m_tail);
 		}
 		else if (!pause && m_paused)
 		{
 			m_paused = false;
-			m_prev = m_clock.now();
+			m_tail = m_clock.now();
 		}
 		return (*this);
 	}
@@ -48,7 +48,7 @@ namespace ml
 
 	Timer& Timer::start()
 	{
-		m_prev = m_next = m_clock.now();
+		m_tail = m_next = m_clock.now();
 		m_elapsed = 0UL;
 		return pause(false);
 	}
@@ -56,7 +56,7 @@ namespace ml
 	Timer& Timer::stop()
 	{
 		m_next = m_clock.now();
-		m_elapsed = (m_next - m_prev);
+		m_elapsed = (m_next - m_tail);
 		return (*this);
 	}
 
@@ -65,7 +65,7 @@ namespace ml
 	{
 		return (m_paused)
 			? m_elapsed
-			: m_elapsed = (m_clock.now() - m_prev);
+			: m_elapsed = (m_clock.now() - m_tail);
 	}
 
 	const bool & Timer::paused() const
