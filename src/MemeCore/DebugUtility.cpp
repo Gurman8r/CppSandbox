@@ -1,5 +1,4 @@
 #include <MemeCore/DebugUtility.h>
-
 #include <MemeCore/InputState.h>
 
 namespace ml

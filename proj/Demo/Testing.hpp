@@ -47,7 +47,6 @@ namespace
 		ml::Debug::Log("Test Struct Size: {0}", sizeof(Test));
 		ml::Debug::out() << std::endl;
 
-
 		// Data
 		/* * * * * * * * * * * * * * * * * * * * */
 		enum : size_t 
@@ -90,8 +89,8 @@ namespace
 				ml::Debug::LogError("Allocation Failure: {0}", (Tags[i]));
 			}
 		}
-
 		ml::Debug::out() << std::endl << ML_Memory << std::endl;
+
 
 		// Free
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -106,8 +105,8 @@ namespace
 				ml::Debug::LogError("Free Failure: {0}", (test[i]));
 			}
 		}
-
 		ml::Debug::out() << std::endl << ML_Memory << std::endl;
+
 
 		return ml::Debug::pause(EXIT_SUCCESS);
 	}
