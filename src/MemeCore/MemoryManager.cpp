@@ -1,6 +1,7 @@
 #include <MemeCore/MemoryManager.h>
 #include <MemeCore/BitHelper.h>
 #include <MemeCore/DebugUtility.h>
+#include <MemeCore/ML_Memory.h>
 
 namespace ml
 {
@@ -9,6 +10,8 @@ namespace ml
 		, m_head(NULL)
 	{
 		memset(m_data, NULL, MaxBytes);
+
+		ml_prime(m_data, MaxBytes);
 	}
 
 	MemoryManager::~MemoryManager()
@@ -74,7 +77,7 @@ namespace ml
 		return ((m_size + (size + sizeof(Chunk))) < MaxBytes);
 	}
 
-	size_t	MemoryManager::increment(size_t size)
+	size_t	MemoryManager::incrementAllocation(size_t size)
 	{
 		return (m_size += (size + sizeof(Chunk)));
 	}
@@ -84,7 +87,7 @@ namespace ml
 	{
 		if (hasSpace(size))
 		{
-			if (Chunk * chunk = (Chunk *)(&m_data[increment(size)]))
+			if (Chunk * chunk = (Chunk *)(&m_data[incrementAllocation(size)]))
 			{
 				chunk->size = size + sizeof(Chunk);
 				chunk->free = (!size);

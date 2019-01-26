@@ -30,7 +30,7 @@ namespace ml
 
 	private:
 		bool	hasSpace(size_t size) const;
-		size_t	increment(size_t value);
+		size_t	incrementAllocation(size_t value);
 
 		Chunk *	createNewChunk(size_t size);
 		Chunk *	findEmptyChunk(size_t size) const;

@@ -7,6 +7,12 @@
 	#define ML_DEBUG
 #endif
 
+// C++ Macro
+/* * * * * * * * * * * * * * * * * * * */
+#if defined(__cplusplus)
+#define ML_CPP
+#endif
+
 //	Operating System Macro
 /* * * * * * * * * * * * * * * * * * * */
 #if defined(_WIN64) || defined(_WIN32)

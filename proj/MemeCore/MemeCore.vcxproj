@@ -183,6 +183,7 @@
     <ClInclude Include="..\..\include\MemeCore\Maths.h" />
     <ClInclude Include="..\..\include\MemeCore\Matrix.h" />
     <ClInclude Include="..\..\include\MemeCore\MemoryTracker.h" />
+    <ClInclude Include="..\..\include\MemeCore\ML_Memory.h" />
     <ClInclude Include="..\..\include\MemeCore\Rect.h" />
     <ClInclude Include="..\..\include\MemeCore\StringUtility.h" />
     <ClInclude Include="..\..\include\MemeCore\Time.h" />
@@ -204,10 +205,14 @@
     <ClCompile Include="..\..\src\MemeCore\MemoryManager.cpp" />
     <ClCompile Include="..\..\src\MemeCore\MemoryTracker.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Maths.cpp" />
+    <ClCompile Include="..\..\src\MemeCore\ML_Memory.c" />
     <ClCompile Include="..\..\src\MemeCore\StringUtility.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Time.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Duration.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Timer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

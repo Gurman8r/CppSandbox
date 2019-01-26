@@ -22,6 +22,7 @@ namespace ml
 			<< FG::White << " | " << FG::Green << "prev: " << FG::Yellow << (c.prev)
 			<< FG::White << " | " << FG::Green << "next: " << FG::Yellow << (c.next)
 			<< FG::White << " | " << FG::Green << "npos: " << FG::Yellow << (&c.npos)
+			<< FG::White << " | " << FG::Green << "indx: " << FG::Yellow << ((int)c.npos[0])
 			<< FG::White << " }"
 			<< FMT();
 	}
