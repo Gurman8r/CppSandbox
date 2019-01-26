@@ -19,7 +19,42 @@ namespace ml
 			, next(NULL)
 			, prev(NULL)
 		{
-			(*npos) = NULL;
+		}
+
+		inline bool mergePrev()
+		{
+			if (this->prev && (this->prev)->free)
+			{
+				(this->prev)->size += this->size + sizeof(Chunk);
+
+				(this->prev)->next = this->next;
+
+				if (this->next)
+				{
+					(this->next)->prev = this->prev;
+					
+					return true;
+				}
+			}
+			return false;
+		}
+
+		inline bool mergeNext()
+		{
+			if (this->next && (this->next)->free)
+			{
+				this->size += (this->next)->size + sizeof(Chunk);
+
+				this->next = (this->next)->next;
+
+				if ((this->next)->next)
+				{
+					((this->next)->next)->prev = this;
+
+					return true;
+				}
+			}
+			return false;
 		}
 
 		inline friend std::ostream & operator<<(std::ostream & out, const Chunk & value)
@@ -27,9 +62,9 @@ namespace ml
 			return (out)
 				<< "[ Chunk ]"
 				<< " { size: " << (value.size)
-				<< " | free: " << (value.free ? "true" : "false")
-				<< " | next: " << (value.next ? "Good" : "NULL")
-				<< " | prev: " << (value.prev ? "Good" : "NULL")
+				<< " | free: " << (value.free ? "Yes" : "No ")
+				<< " | next: " << (value.next ? "Yes" : "No ")
+				<< " | prev: " << (value.prev ? "Yes" : "No ")
 				<< " | npos: " << (value.npos ? (*value.npos) : NULL)
 				<< " }";
 		}

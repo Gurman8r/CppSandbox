@@ -11,6 +11,8 @@
 
 int32_t main(int32_t argc, char ** argv)
 {
+	//return testMemoryManager();
+
 	// Load Settings
 	if (!SETTINGS.loadFromFile(CONFIG_INI))
 	{

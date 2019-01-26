@@ -155,6 +155,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeCore\Chunk.h" />
+    <ClInclude Include="..\..\include\MemeCore\MemoryManager.h" />
     <ClInclude Include="..\..\include\MemeCore\MemoryPool.h" />
     <ClInclude Include="..\..\include\MemeCore\List.h" />
     <ClInclude Include="..\..\include\MemeCore\BitHelper.h" />
@@ -199,6 +200,7 @@
     <ClCompile Include="..\..\src\MemeCore\EventSystem.cpp" />
     <ClCompile Include="..\..\src\MemeCore\FileSystem.cpp" />
     <ClCompile Include="..\..\src\MemeCore\InputState.cpp" />
+    <ClCompile Include="..\..\src\MemeCore\MemoryManager.cpp" />
     <ClCompile Include="..\..\src\MemeCore\MemoryTracker.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Maths.cpp" />
     <ClCompile Include="..\..\src\MemeCore\StringUtility.cpp" />

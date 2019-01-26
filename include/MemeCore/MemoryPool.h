@@ -6,24 +6,22 @@
 
 namespace ml
 {
-	template <typename T, size_t N>
+	template <typename T, size_t Capacity>
 	class MemoryPool final
 		: public ITrackable
 		, public IEnumerable<T>
 	{
 	public:
 		using size_type	= size_t;
-		enum : size_type { Size = N };
-
-		using data_type			= T;
-		using pointer			= data_type * ;
-		using reference			= data_type & ;
-		using self_type			= MemoryPool<data_type, Size>;
-
+		using data_type	= T;
+		using pointer	= data_type * ;
+		using reference	= data_type & ;
+		using self_type	= MemoryPool<T, Capacity>;
+		
 	public:
 		MemoryPool()
-			: IEnumerable<T>(&m_data[0], &m_data[Size])
-			, m_index(0)
+			: IEnumerable<T>(&m_data[0], &m_data[Capacity])
+			, m_size(0)
 		{
 		}
 		~MemoryPool()
@@ -33,26 +31,19 @@ namespace ml
 	public:
 		inline bool initialize(T value)
 		{
-			return size() && memset(&m_data, value, size());
+			return capacity() && memset(&m_data, value, capacity());
 		}
 
 		inline void * allocate(size_type value)
 		{
-			return ((size() && ((value + m_index) > size()))
-				? (NULL)
-				: (&m_data[m_index += value]));
-		}
-
-		template <typename U>
-		inline U * allocate()
-		{
-			return static_cast<U*>(allocate(sizeof(U)));
+			return (value && ((value + m_size) > capacity()))
+				? NULL
+				: (&m_data[m_size += value]);
 		}
 
 	public:
-		inline const pointer	ptr()	const { return m_data; }
-		inline const size_type	index()	const { return m_index; }
-		inline const size_type	size()	const { return Size; }
+		inline const size_type	index()		const { return m_size; }
+		inline const size_type	capacity()	const { return Capacity; }
 
 	public:
 		inline const reference operator[](size_type i) const { return m_data[i]; }
@@ -69,8 +60,8 @@ namespace ml
 		}
 
 	private:
-		data_type	m_data[Size];
-		size_type	m_index;
+		data_type	m_data[Capacity];
+		size_type	m_size;
 	};
 
 	template <size_t N>

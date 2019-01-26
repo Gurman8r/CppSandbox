@@ -2,151 +2,108 @@
 #define _TESTING_H_
 
 #include "Demo.hpp"
-#include <MemeCore/MemoryPool.h>
-#include <MemeCore/Chunk.h>
+#include <MemeCore/MemoryManager.h>
 
-// Test Struct
 /* * * * * * * * * * * * * * * * * * * * */
+
 namespace
 {
 	struct Test final
 	{
-		uint64_t	index;
 		const char* name;
+		uint64_t	index;
+
+		Test() 
+			: index(0)
+			, name("") 
+		{}
+
+		Test(const Test & copy)
+			: index(copy.index)
+			, name(copy.name) 
+		{}
 
 		inline friend std::ostream & operator<<(std::ostream & out, const Test & value)
 		{
-			return (out) << "{ " << value.index << ", " << value.name << " }";
+			return (out) << "{ [" << value.index << "] : \"" << value.name << "\" }";
 		}
 	};
 }
 
-
-// Tests
 /* * * * * * * * * * * * * * * * * * * * */
-#define MAX_POOL 256
 
 namespace
 {
-	inline static int32_t testStackMalloc()
+	inline static int32_t testMemoryManager()
 	{
-		ml::Debug::Log("Testing Stack Malloc");
+		ml::Debug::Log("Testing Memory Manager");
+		ml::Debug::Log("Max Bits: {0}", ml::MemoryManager::Capacity);
+		ml::Debug::Log("Chunk Size: {0}", sizeof(ml::Chunk));
+		ml::Debug::Log("Test Struct Size: {0}", sizeof(Test));
+		ml::Debug::out() << std::endl;
 
-		static uint8_t	pool[MAX_POOL];
-		static size_t	index;
 
-		auto stack_malloc = [](size_t size)
-		{
-			return ((size + index) > MAX_POOL)
-				? NULL
-				: &pool[index += size];
+		// Data
+		enum : size_t 
+		{ 
+			A, 
+			B, 
+			C, 
+			//D, 
+			//E, 
+			//F,
+			MAX 
 		};
 
-		ml::Debug::out()
-			<< "Index: " << index << std::endl
-			<< "Size:  " << sizeof(Test) << std::endl
-			<< std::endl;
-
-		if (Test * test = (Test *)stack_malloc(sizeof(Test)))
+		static const std::string Names[MAX] = 
 		{
-			test->index = 1;
-			test->name = "Foo";
-			ml::Debug::out()
-				<< "Value: " << (*test) << std::endl
-				<< "Index: " << index << std::endl
-				<< std::endl;
+			"Test A",
+			"Test B",
+			"Test C",
+			//"Test D",
+			//"Test E",
+			//"Test F",
+		};
+
+		static Test * test[MAX] = { NULL };
+
+
+		// Allocate
+		for (size_t i = 0; i < MAX; i++)
+		{
+			if (test[i] = (Test *)ML_Memory.allocate(sizeof(Test)))
+			{
+				test[i]->index = i;
+				test[i]->name = Names[i].c_str();
+				ml::Debug::Log("Allocation Success | {0}", (*test[i]));
+			}
+			else
+			{
+				ml::Debug::LogWarning("Allocation Failure: {0}", Names[i]);
+			}
 		}
 
-		if (Test * test = (Test *)stack_malloc(sizeof(Test)))
+		//ml::Debug::out() << ML_Memory << std::endl;
+		//ml::Debug::pause(EXIT_SUCCESS);
+
+
+		// Free
+		for (size_t i = 0; i < MAX; i++)
 		{
-			test->index = 2;
-			test->name = "Bar";
-			ml::Debug::out()
-				<< "Value: " << (*test) << std::endl
-				<< "Index: " << index << std::endl
-				<< std::endl;
+			if (ML_Memory.free(test[i]))
+			{
+				ml::Debug::Log("{0} | Free Success", Names[i]);
+			}
+			else
+			{
+				ml::Debug::LogWarning("{0} | Free Failure", Names[i]);
+			}
 		}
 
 		return ml::Debug::pause(EXIT_SUCCESS);
-	}
-
-	inline static int32_t testMemoryPool()
-	{
-		ml::Debug::Log("Testing Memory Pool");
-
-		ml::BytePool<MAX_POOL> pool;
-		if (pool.initialize(NULL))
-		{
-			ml::Debug::out()
-				<< "Index: " << pool.index() << std::endl
-				<< "Size:  " << pool.size()  << std::endl
-				<< "Step:  " << sizeof(Test) << std::endl
-				<< std::endl;
-
-			if (Test * test = pool.allocate<Test>())
-			{
-				test->index = 1;
-				test->name = "Foo";
-				ml::Debug::out()
-					<< "Value: " << (*test) << std::endl
-					<< "Index: " << pool.index() << std::endl
-					<< std::endl;
-			}
-
-			if (Test * test = (Test *)pool.allocate(sizeof(Test)))
-			{
-				test->index = 2;
-				test->name = "Bar";
-				ml::Debug::out()
-					<< "Value: " << (*test) << std::endl
-					<< "Index: " << pool.index() << std::endl
-					<< std::endl;
-			}
-
-			if (Test * test = (Test *)pool.allocate(sizeof(Test)))
-			{
-				test->index = 3;
-				test->name = "FooBar";
-				ml::Debug::out()
-					<< "Value: " << (*test) << std::endl
-					<< "Index: " << pool.index() << std::endl
-					<< std::endl;
-			}
-
-			return ml::Debug::pause(EXIT_SUCCESS);
-		}
-		return ml::Debug::LogError("Failed Initializing Pool")
-			|| ml::Debug::pause(EXIT_FAILURE);
-	}
-
-	inline static int32_t testChunks()
-	{
-		ml::Debug::Log("Testing Chunks");
-
-		ml::BytePool<MAX_POOL> pool;
-		if (pool.initialize(NULL))
-		{
-			if (ml::Chunk * chunk = pool.allocate<ml::Chunk>())
-			{
-				ml::Debug::Log("{0}", (*chunk));
-			}
-		}
-		return ml::Debug::pause(EXIT_SUCCESS);
-	}
-
-	inline static int32_t runTests(int32_t index)
-	{
-		switch (index)
-		{
-		case 0: return testStackMalloc();
-		case 1: return testMemoryPool();
-		case 2: return testChunks();
-		}
-		return EXIT_FAILURE;
 	}
 }
 
 /* * * * * * * * * * * * * * * * * * * * */
-
 
 #endif // !_TESTING_H_

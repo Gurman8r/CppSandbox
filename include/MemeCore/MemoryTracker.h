@@ -5,13 +5,14 @@
 #include <MemeCore/ISerializable.h>
 #include <map>
 
+// Singleton to keep track of dynamically allocated ITrackables
+// Handles memory allocation/deallocation
 #define ML_Tracker ml::MemoryTracker::getInstance()
 
 namespace ml
 {
 	class ITrackable;
 
-	// Singleton to keep track of dynamically allocated ITrackables
 	class ML_CORE_API MemoryTracker final
 		: public ISingleton<MemoryTracker>
 		, public ISerializable
