@@ -24,12 +24,12 @@ namespace ml
 
 			return m_head->npos;
 		}
-		//else if(Chunk * empty = findChunk(size))
-		//{
-		//	empty->size = size;
-		//	empty->free = false;
-		//	return empty->npos;
-		//}
+		else if(Chunk * empty = findChunk(size))
+		{
+			empty->size = size;
+			empty->free = false;
+			return empty->npos;
+		}
 		else if(Chunk * chunk = createChunk(size))
 		{
 			m_tail->next = chunk;
@@ -94,7 +94,7 @@ namespace ml
 		Chunk * ptr = (m_head);
 		while (ptr)
 		{
-			if (ptr->free && (ptr->size >= (size + sizeof(Chunk))))
+			if (ptr->free)
 			{
 				return ptr;
 			}

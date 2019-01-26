@@ -78,7 +78,7 @@ namespace
 		/* * * * * * * * * * * * * * * * * * * * */
 		for (size_t i = 0; i < MAX; i++)
 		{
-			if (test[i] = (Test *)ML_Memory.allocate(i % 2 ? 0 : sizeof(Test)))
+			if (test[i] = (Test *)ML_Memory.allocate(sizeof(Test)))
 			{
 				test[i]->index	= i;
 				test[i]->name	= "Test";
