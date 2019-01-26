@@ -80,7 +80,7 @@ namespace
 			if (test[i] = (Test *)ML_Memory.allocate(sizeof(Test)))
 			{
 				test[i]->index	= i;
-				test[i]->name	= "Test";
+				test[i]->name	= "Test Name";
 				test[i]->tag	= Tags[i].c_str();
 				ml::Debug::Log("Allocation Success: {0}", (*test[i]));
 			}

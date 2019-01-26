@@ -14,14 +14,14 @@ namespace ml
 	public:
 		inline virtual void serialize(std::ostream & out) const
 		{
-			out << "[" << type_info().name() << "]";
+			out << "[" << get_type().name() << "]";
 		}
 		inline virtual void deserialize(std::istream & in) 
 		{
 		}
 
 	public:
-		inline const std::type_info &	type_info()	const { return typeid(*this); }
+		inline const std::type_info &	get_type()	const { return typeid(*this); }
 		inline const std::string		to_string()	const { return to_stream().str(); }
 		inline const std::stringstream	to_stream() const { return std::stringstream() << (*this); }
 

@@ -11,49 +11,13 @@ namespace ml
 	{
 	}
 
-	bool Chunk::mergePrev()
-	{
-		if (this->prev && (this->prev)->free)
-		{
-			(this->prev)->size += this->size + sizeof(Chunk);
-
-			(this->prev)->next = this->next;
-
-			if (this->next)
-			{
-				(this->next)->prev = this->prev;
-
-				return true;
-			}
-		}
-		return false;
-	}
-
-	bool Chunk::mergeNext()
-	{
-		if (this->next && (this->next)->free)
-		{
-			this->size += (this->next)->size + sizeof(Chunk);
-
-			this->next = (this->next)->next;
-
-			if ((this->next)->next)
-			{
-				((this->next)->next)->prev = this;
-
-				return true;
-			}
-		}
-		return false;
-	}
-
 	std::ostream & operator<<(std::ostream & out, const Chunk & c)
 	{
 		const std::type_info & info(typeid(c));
 		return (out)
 			<< FG::White << "[ " << FG::Gray << info.name() << FG::White << " ]"
 			<< FG::White << " { " << FG::Green << "size: " << FG::Yellow << std::setw(3) << (c.size)
-			<< FG::White << " | " << FG::Green << "free: " << FG::Yellow << c.free
+			<< FG::White << " | " << (c.free ? FG::Magenta : FG::Cyan) << (c.free ? "free" : "used")
 			<< FG::White << " | " << FG::Green << "addr: " << FG::Yellow << (&c)
 			<< FG::White << " | " << FG::Green << "prev: " << FG::Yellow << (c.prev)
 			<< FG::White << " | " << FG::Green << "next: " << FG::Yellow << (c.next)

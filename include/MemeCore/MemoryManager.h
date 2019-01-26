@@ -11,6 +11,8 @@
 
 #define ML_Memory ml::MemoryManager::getInstance()
 
+// https://github.com/miguelperes/custom-malloc
+
 namespace ml
 {
 	class ML_CORE_API MemoryManager final
@@ -32,6 +34,9 @@ namespace ml
 
 		Chunk *	createNewChunk(size_t size);
 		Chunk *	findEmptyChunk(size_t size) const;
+
+		bool	mergeChunkPrev(Chunk * value);
+		bool	mergeChunkNext(Chunk * value);
 
 	public:
 		void serialize(std::ostream & out) const override;

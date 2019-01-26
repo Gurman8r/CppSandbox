@@ -16,9 +16,6 @@ namespace ml
 
 		Chunk();
 
-		bool mergePrev();
-		bool mergeNext();
-
 		friend std::ostream & operator<<(std::ostream & out, const Chunk & c);
 	};
 }

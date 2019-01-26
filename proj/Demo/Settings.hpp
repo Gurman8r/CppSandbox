@@ -21,6 +21,7 @@ namespace demo
 	public:
 		// [General]
 		std::string	rootPath;		// Where's all the data?
+		bool		runTests;		// Run test functions
 
 		// [Script]
 		std::string	scrFile;		// Script to run on start
@@ -66,6 +67,7 @@ namespace demo
 			{
 				// [General]
 				rootPath	= ini.Get("General", "rootPath", "../../../assets");
+				runTests	= ini.GetBoolean("General", "runTests", false);
 
 				// [Script]
 				scrFile		= ini.Get("Script", "scrFile", "");

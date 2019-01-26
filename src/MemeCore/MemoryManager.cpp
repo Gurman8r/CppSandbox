@@ -16,7 +16,7 @@ namespace ml
 	}
 	
 	
-	void * MemoryManager::allocate(size_t size)
+	void *	MemoryManager::allocate(size_t size)
 	{
 		if (!m_head && (m_head = createNewChunk(size)))
 		{
@@ -45,7 +45,7 @@ namespace ml
 		return NULL;
 	}
 
-	bool MemoryManager::free(void * value)
+	bool	MemoryManager::free(void * value)
 	{
 		if (value)
 		{
@@ -56,8 +56,11 @@ namespace ml
 				if ((void *)ptr <= (&m_tail->npos))
 				{
 					ptr->free = true;
-					//ptr->mergeNext();
-					//ptr->mergePrev();
+					
+					mergeChunkNext(ptr);
+					
+					mergeChunkPrev(ptr);
+					
 					return true;
 				}
 			}
@@ -66,12 +69,12 @@ namespace ml
 	}
 	
 	
-	bool MemoryManager::hasSpace(size_t size) const
+	bool	MemoryManager::hasSpace(size_t size) const
 	{
 		return ((m_size + (size + sizeof(Chunk))) < MaxBytes);
 	}
 
-	size_t MemoryManager::increment(size_t size)
+	size_t	MemoryManager::increment(size_t size)
 	{
 		return (m_size += (size + sizeof(Chunk)));
 	}
@@ -109,8 +112,50 @@ namespace ml
 	}
 	
 
-	void MemoryManager::serialize(std::ostream & out) const
+	bool	MemoryManager::mergeChunkPrev(Chunk * value)
 	{
+		if (value->prev && (value->prev)->free)
+		{
+			(value->prev)->size += value->size + sizeof(Chunk);
+
+			(value->prev)->next = value->next;
+
+			if (value->next)
+			{
+				(value->next)->prev = value->prev;
+
+				return true;
+			}
+		}
+		return false;
+	}
+
+	bool	MemoryManager::mergeChunkNext(Chunk * value)
+	{
+		if (value->next && (value->next)->free)
+		{
+			value->size += (value->next)->size + sizeof(Chunk);
+
+			value->next = (value->next)->next;
+
+			if ((value->next)->next)
+			{
+				((value->next)->next)->prev = value;
+
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+	void	MemoryManager::serialize(std::ostream & out) const
+	{
+		out << "Memory: " 
+			<< "( " << m_size << " / " << MaxBytes << " ) " 
+			<< "( " << ((double)m_size / (double)MaxBytes) << " % )"
+			<< std::endl;
+
 		if (Chunk * ptr = (Chunk *)m_head)
 		{
 			while (ptr)

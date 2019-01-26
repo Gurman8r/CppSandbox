@@ -11,8 +11,6 @@
 
 int32_t main(int32_t argc, char ** argv)
 {
-	return testMemoryManager();
-
 	// Load Settings
 	if (!SETTINGS.loadFromFile(CONFIG_INI))
 	{
@@ -25,6 +23,12 @@ int32_t main(int32_t argc, char ** argv)
 	{
 		return ml::Debug::LogError("Failed Entering Program")
 			|| ml::Debug::pause(EXIT_FAILURE);
+	}
+
+	// Run Tests
+	if (SETTINGS.runTests)
+	{
+		return testMemoryManager();
 	}
 
 	// Create Window
