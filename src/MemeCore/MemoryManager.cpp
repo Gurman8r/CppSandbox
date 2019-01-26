@@ -18,42 +18,46 @@ namespace ml
 	
 	void * MemoryManager::allocate(size_t size)
 	{
-		if (!m_head && (m_head = createChunk(size)))
+		if (!m_head && (m_head = createNewChunk(size)))
 		{
 			m_tail = m_head;
-
+			
 			return m_head->npos;
 		}
-		else if(Chunk * empty = findChunk(size))
+		else if(Chunk * eChunk = findEmptyChunk(size))
 		{
-			empty->size = size;
-			empty->free = false;
-			return empty->npos;
+			eChunk->size = size;
+			
+			eChunk->free = false;
+			
+			return eChunk->npos;
 		}
-		else if(Chunk * chunk = createChunk(size))
+		else if(Chunk * nChunk = createNewChunk(size))
 		{
-			m_tail->next = chunk;
-
-			chunk->prev = m_tail;
-
-			m_tail = chunk;
-
+			m_tail->next = nChunk;
+			
+			nChunk->prev = m_tail;
+			
+			m_tail = nChunk;
+			
 			return m_tail->npos;
 		}
 		return NULL;
 	}
 
-	bool MemoryManager::free(void * ptr)
+	bool MemoryManager::free(void * value)
 	{
-		if (ptr)
+		if (value)
 		{
-			if (Chunk * toFree = ((Chunk *)ptr - sizeof(Chunk)))
+			Chunk * ptr = (Chunk *)((size_t)value - sizeof(Chunk));
+
+			if (ptr >= m_head)
 			{
-				if ((toFree >= m_head) && (toFree < m_tail))
+				if ((void *)ptr <= (&m_tail->npos))
 				{
-					toFree->free = true;
-					toFree->mergeNext();
-					toFree->mergePrev();
+					ptr->free = true;
+					//ptr->mergeNext();
+					//ptr->mergePrev();
 					return true;
 				}
 			}
@@ -73,13 +77,13 @@ namespace ml
 	}
 
 	
-	Chunk * MemoryManager::createChunk(size_t size)
+	Chunk * MemoryManager::createNewChunk(size_t size)
 	{
 		if (hasSpace(size))
 		{
 			if (Chunk * chunk = (Chunk *)(&m_data[increment(size)]))
 			{
-				chunk->size = size;
+				chunk->size = size + sizeof(Chunk);
 				chunk->free = (!size);
 				chunk->prev = NULL;
 				chunk->next = NULL;
@@ -89,12 +93,12 @@ namespace ml
 		return NULL;
 	}
 
-	Chunk * MemoryManager::findChunk(size_t size) const
+	Chunk * MemoryManager::findEmptyChunk(size_t size) const
 	{
 		Chunk * ptr = (m_head);
 		while (ptr)
 		{
-			if (ptr->free)
+			if (ptr->free && (ptr->size >= (size + sizeof(Chunk))))
 			{
 				return ptr;
 			}

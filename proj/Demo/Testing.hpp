@@ -83,14 +83,13 @@ namespace
 				test[i]->index	= i;
 				test[i]->name	= "Test";
 				test[i]->tag	= Tags[i].c_str();
-				ml::Debug::Log("Allocation Success | {0}", (*test[i]));
+				ml::Debug::Log("Allocation Success: {0}", (*test[i]));
 			}
 			else
 			{
-				ml::Debug::LogWarning("Allocation Failure: {0}", Tags[i]);
+				ml::Debug::LogError("Allocation Failure: {0}", (Tags[i]));
 			}
 		}
-
 
 		ml::Debug::out() << std::endl << ML_Memory << std::endl;
 
@@ -100,11 +99,11 @@ namespace
 		{
 			if (ML_Memory.free(test[i]))
 			{
-				ml::Debug::Log("Free Success | {0}", Tags[i]);
+				ml::Debug::Log("Free Success: {0}", (test[i]));
 			}
 			else
 			{
-				ml::Debug::LogWarning("Free Failure | {0}", Tags[i]);
+				ml::Debug::LogError("Free Failure: {0}", (test[i]));
 			}
 		}
 

@@ -53,11 +53,11 @@ namespace ml
 		return (out)
 			<< FG::White << "[ " << FG::Gray << info.name() << FG::White << " ]"
 			<< FG::White << " { " << FG::Green << "size: " << FG::Yellow << std::setw(3) << (c.size)
-			<< FG::White << " | " << FG::Green << "free: " << FG::Yellow << (c.free ? "Y" : "N")
+			<< FG::White << " | " << FG::Green << "free: " << FG::Yellow << c.free
 			<< FG::White << " | " << FG::Green << "addr: " << FG::Yellow << (&c)
 			<< FG::White << " | " << FG::Green << "prev: " << FG::Yellow << (c.prev)
 			<< FG::White << " | " << FG::Green << "next: " << FG::Yellow << (c.next)
-			<< FG::White << " | " << FG::Green << "npos: " << FG::Yellow << (c.npos ? (*c.npos) : (-1))
+			<< FG::White << " | " << FG::Green << "npos: " << FG::Yellow << (&c.npos)
 			<< FG::White << " }"
 			<< FMT();
 	}

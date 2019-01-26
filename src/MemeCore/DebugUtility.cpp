@@ -43,7 +43,7 @@ namespace ml
 		err()
 			<< FMT()
 			<< FG::White << "["
-			<< FG::Yellow << "  WARN  "
+			<< FG::Yellow << " WRN "
 			<< FG::White << "]"
 			<< FMT() << " " << message
 			<< std::endl;
@@ -55,7 +55,7 @@ namespace ml
 		err()
 			<< FMT()
 			<< FG::White << "["
-			<< FG::Red << " ERROR! "
+			<< FG::Red << " ERR "
 			<< FG::White << "]"
 			<< FMT() << " " << message
 			<< std::endl;
@@ -67,7 +67,7 @@ namespace ml
 		out()
 			<< FMT()
 			<< FG::White << "["
-			<< FG::Green << "  INFO  "
+			<< FG::Green << " LOG "
 			<< FG::White << "]"
 			<< FMT() << " " << message
 			<< std::endl;
