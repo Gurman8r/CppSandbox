@@ -3,7 +3,6 @@
 
 #include "Demo.hpp"
 
-#define ML_MEMORY_MAX_BYTES 65535U
 #include <MemeCore/MemoryManager.h>
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -79,7 +78,7 @@ namespace
 		/* * * * * * * * * * * * * * * * * * * * */
 		for (size_t i = 0; i < MAX; i++)
 		{
-			if (test[i] = (Test *)ML_Memory.allocate(sizeof(Test)))
+			if (test[i] = (Test *)ML_Memory.allocate(i % 2 ? 0 : sizeof(Test)))
 			{
 				test[i]->index	= i;
 				test[i]->name	= "Test";

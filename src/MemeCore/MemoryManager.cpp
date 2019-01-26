@@ -79,7 +79,7 @@ namespace ml
 		{
 			if (Chunk * chunk = (Chunk *)(&m_data[increment(size)]))
 			{
-				chunk->size = (size + sizeof(Chunk));
+				chunk->size = size;
 				chunk->free = (!size);
 				chunk->prev = NULL;
 				chunk->next = NULL;

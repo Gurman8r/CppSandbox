@@ -6,7 +6,7 @@
 #include <MemeCore/Chunk.h>
 
 #ifndef ML_MEMORY_MAX_BYTES
-#define ML_MEMORY_MAX_BYTES 4096
+#define ML_MEMORY_MAX_BYTES 65535
 #endif
 
 #define ML_Memory ml::MemoryManager::getInstance()
