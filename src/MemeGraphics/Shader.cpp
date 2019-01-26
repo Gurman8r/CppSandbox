@@ -80,14 +80,10 @@ namespace ml
 		std::stringstream stream;
 		if (ML_FileSystem.getFileContents(filename, stream))
 		{
-			enum SourceType
-			{
-				NONE = -1, VERT, FRAG, GEOM, MAX
-			};
+			enum : int8_t { NONE = -1, VERT, FRAG, GEOM, MAX };
 
-			std::stringstream	source[SourceType::MAX];
-			SourceType			type = SourceType::NONE;
-
+			std::stringstream source[MAX];
+			int8_t type = NONE;
 			std::string line;
 			while (std::getline(stream, line))
 			{
@@ -95,26 +91,26 @@ namespace ml
 				{
 					if (line.find("vertex") != std::string::npos)
 					{
-						type = SourceType::VERT;
+						type = VERT;
 					}
 					else if (line.find("fragment") != std::string::npos)
 					{
-						type = SourceType::FRAG;
+						type = FRAG;
 					}
 					else if (line.find("geometry") != std::string::npos)
 					{
-						type = SourceType::GEOM;
+						type = GEOM;
 					}
 				}
-				else if(type > SourceType::NONE)
+				else if(type > NONE)
 				{
 					source[type] << line << '\n';
 				}
 			}
 
-			const std::string & vs = source[SourceType::VERT].str();
-			const std::string & gs = source[SourceType::GEOM].str();
-			const std::string & fs = source[SourceType::FRAG].str();
+			const std::string & vs = source[VERT].str();
+			const std::string & gs = source[GEOM].str();
+			const std::string & fs = source[FRAG].str();
 
 			if (!gs.empty())
 			{
