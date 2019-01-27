@@ -37,6 +37,7 @@ namespace ml
 		}
 	}
 
+
 	Debug::Status Debug::LogWarning(const std::string & message)
 	{
 		err()
@@ -70,6 +71,13 @@ namespace ml
 			<< FG::White << "]"
 			<< FMT() << " " << message
 			<< std::endl;
+		return Debug::Success;
+	}
+
+
+	Debug::Status Debug::endl()
+	{
+		out() << std::endl;
 		return Debug::Success;
 	}
 }

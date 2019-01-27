@@ -12,9 +12,9 @@ namespace ml
 		enum Profile : uint32_t
 		{
 			Any		= 0,
-			Compat	= 0x32002, // Compatibility
-			Core    = 0x32001, // Core
-			Debug   = 0x22007  // Debug
+			Debug   = 0x22007, // Debug	 | 139271
+			Core    = 0x32001, // Core	 | 204801
+			Compat	= 0x32002, // Compat | 204802
 		};
 
 		uint32_t	majorVersion;
@@ -23,7 +23,7 @@ namespace ml
 		uint32_t	stencilBits;
 		uint32_t	profile;
 		bool		multisample;
-		bool		sRgbCapable;
+		bool		srgbCapable;
 
 		Context(
 			uint32_t		majorVersion	= 1,
@@ -32,14 +32,14 @@ namespace ml
 			uint32_t		stencilBits		= 8,
 			uint32_t		profile			= Profile::Compat,
 			bool			multisample		= false,
-			bool			sRgbCapable		= false)
+			bool			srgbCapable		= false)
 			: majorVersion	(majorVersion)
 			, minorVersion	(minorVersion)
 			, depthBits		(depthBits)
 			, stencilBits	(stencilBits)
 			, profile		(profile)
 			, multisample	(multisample)
-			, sRgbCapable	(sRgbCapable)
+			, srgbCapable	(srgbCapable)
 		{};
 
 		Context(const Context & copy)
@@ -49,7 +49,7 @@ namespace ml
 			, stencilBits(	copy.stencilBits)
 			, profile(		copy.profile)
 			, multisample(	copy.multisample)
-			, sRgbCapable(	copy.sRgbCapable)
+			, srgbCapable(	copy.srgbCapable)
 		{};
 	};
 }

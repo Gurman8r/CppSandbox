@@ -54,7 +54,7 @@ namespace ml
 			glfwWindowHint(GLFW_OPENGL_PROFILE, m_context.profile);
 			glfwWindowHint(GLFW_DEPTH_BITS,		m_context.depthBits);
 			glfwWindowHint(GLFW_STENCIL_BITS,	m_context.stencilBits);
-			glfwWindowHint(GLFW_SRGB_CAPABLE,	m_context.sRgbCapable);
+			glfwWindowHint(GLFW_SRGB_CAPABLE,	m_context.srgbCapable);
 
 			glfwWindowHint(GLFW_RESIZABLE,		(m_style & Style::Resizable));
 			glfwWindowHint(GLFW_VISIBLE,		(m_style & Style::Visible));

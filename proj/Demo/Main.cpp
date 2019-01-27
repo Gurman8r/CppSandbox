@@ -46,7 +46,7 @@ int32_t main(int32_t argc, char ** argv)
 				SETTINGS.stencilBits,
 				SETTINGS.profile,
 				SETTINGS.multisample,
-				SETTINGS.sRgbCapable)
+				SETTINGS.srgbCapable)
 		))
 		{
 			return ml::Debug::LogError("Failed Creating Window")
@@ -59,7 +59,7 @@ int32_t main(int32_t argc, char ** argv)
 	}
 
 	// Load Resources
-	if (!demo::onLoadResources({ }))
+	if (!demo::onLoad({ true }))
 	{
 		return ml::Debug::LogError("Failed Loading Resources")
 			|| ml::Debug::pause(EXIT_FAILURE);

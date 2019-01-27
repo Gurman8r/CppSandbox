@@ -1,8 +1,8 @@
 #include <MemeCore/MemoryManager.h>
 #include <MemeCore/DebugUtility.h>
 
-#define ML_CHUNK_SIZE sizeof(ml::Chunk)
-#define ML_NPOS_SIZE sizeof(ml::byte *)
+#define ML_CHUNK_SIZE	sizeof(ml::Chunk)	// Size of Chunk
+#define ML_ENDPTR_SIZE	sizeof(ml::byte *)	// Size of data pointer
 
 namespace ml
 {
@@ -117,7 +117,7 @@ namespace ml
 	{
 		if (good() && size)
 		{
-			const size_t need = (size + ML_CHUNK_SIZE + ML_NPOS_SIZE);
+			const size_t need = (size + ML_CHUNK_SIZE + ML_ENDPTR_SIZE);
 
 			if ((addr + need) < m_size)
 			{
@@ -144,7 +144,7 @@ namespace ml
 	{
 		if (Chunk * chunk = writeChunk(m_used, size))
 		{
-			m_used += (size + (ML_CHUNK_SIZE + ML_NPOS_SIZE));
+			m_used += (size + (ML_CHUNK_SIZE + ML_ENDPTR_SIZE));
 
 			return chunk;
 		}
@@ -174,7 +174,7 @@ namespace ml
 	{
 		if (good() && addr)
 		{
-			if (Chunk * chunk = (Chunk *)((((size_t)addr) - ML_CHUNK_SIZE) + ML_NPOS_SIZE))
+			if (Chunk * chunk = (Chunk *)((((size_t)addr) - ML_CHUNK_SIZE) + ML_ENDPTR_SIZE))
 			{
 				if (isValidChunk(chunk))
 				{

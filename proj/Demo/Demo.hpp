@@ -33,7 +33,7 @@ namespace demo
 		MIN_FONT = -1,
 		FNT_clacon,
 		FNT_consolas,
-		FNT_lucida_console,
+		FNT_lconsole,
 		FNT_minecraft,
 		MAX_FONT,
 
@@ -142,11 +142,14 @@ namespace demo
 /* * * * * * * * * * * * * * * * * * * * */
 namespace demo
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+	
 	inline static void loadCommands()
 	{
 		static bool onlyOnce = true;
 		if (onlyOnce)
-		{	onlyOnce = false;
+		{
+			onlyOnce = false;
 
 			ML_Interpreter.addCmd({ "help", [](ml::Args & args)
 			{
@@ -246,7 +249,7 @@ namespace demo
 
 			ML_Interpreter.addCmd({ "target", [](ml::Args & args)
 			{
-				if(!args.pop_front().empty())
+				if (!args.pop_front().empty())
 				{
 					const std::string & opt = args.front();
 					if (opt == "name")
@@ -274,123 +277,87 @@ namespace demo
 			} });
 		}
 	};
+	
+	/* * * * * * * * * * * * * * * * * * * * */
 
-	inline static bool loadFonts(bool en)
+	template <class T>
+	inline static bool ml_load(ml::IResource & res, const std::string & file, bool log)
+	{
+		const std::type_info & info(typeid(res));
+
+		if (res.loadFromFile(SETTINGS.pathTo(file)))
+		{
+			return log
+				? ml::Debug::Log("Loaded [{0}]: \"{1}\"", info.name(), file)
+				: true;
+		}
+
+		return ml::Debug::LogError("Failed Loading [{0}]: \"{1}\"", info.name(), file);
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	inline static bool loadFonts(bool en, bool log)
 	{
 		// Load Fonts
-		if (en && ml::Debug::Log("Loading Fonts..."))
-		{
-			if (!fonts[FNT_clacon].loadFromFile(SETTINGS.pathTo("/fonts/clacon.ttf")))
-			{
-				return ml::Debug::LogError("Failed Loading Font {0}", "clacon.ttf");
-			}
+		return (!en || (en && ml::Debug::Log("Loading Fonts...")
 
-			if (!fonts[FNT_consolas].loadFromFile(SETTINGS.pathTo("/fonts/consolas.ttf")))
-			{
-				return ml::Debug::LogError("Failed Loading Font {0}", "consolas.ttf");
-			}
+			&& ml_load<ml::Font>(fonts[FNT_clacon], "/fonts/clacon.ttf", log)
+			&& ml_load<ml::Font>(fonts[FNT_consolas], "/fonts/consolas.ttf", log)
+			&& ml_load<ml::Font>(fonts[FNT_lconsole], "/fonts/lucida_console.ttf", log)
+			&& ml_load<ml::Font>(fonts[FNT_minecraft], "/fonts/minecraft.ttf", log)
 
-			if (!fonts[FNT_lucida_console].loadFromFile(SETTINGS.pathTo("/fonts/lucida_console.ttf")))
-			{
-				return ml::Debug::LogError("Failed Loading Font {0}", "lucida_console.ttf");
-			}
-
-			if (!fonts[FNT_minecraft].loadFromFile(SETTINGS.pathTo("/fonts/minecraft.ttf")))
-			{
-				return ml::Debug::LogError("Failed Loading Font {0}", "minecraft.ttf");
-			}
-		}
-		return ml::Debug::Success;
+			&& (!log || ml::Debug::endl())));
 	}
 
-	inline static bool loadImages(bool en)
+	inline static bool loadImages(bool en, bool log)
 	{
 		// Load Images
-		if (en && ml::Debug::Log("Loading Images..."))
-		{
-			if (!images[IMG_icon].loadFromFile(SETTINGS.pathTo("/images/dean.png")))
-			{
-				return ml::Debug::LogError("Failed Loading Image {0}", "dean.png");
-			}
-		}
-		return ml::Debug::Success;
+		return (!en || (en && ml::Debug::Log("Loading Images...")
+			
+			&& ml_load<ml::Image>(images[IMG_icon], "/images/dean.png", log)
+			
+			&& (!log || ml::Debug::endl())));
 	}
 
-	inline static bool loadTextures(bool en)
+	inline static bool loadTextures(bool en, bool log)
 	{
 		// Load Textures
-		if (en && ml::Debug::Log("Loading Textures..."))
-		{
-			if (!textures[TEX_dean].loadFromFile(SETTINGS.pathTo("/images/dean.png")))
-			{
-				return ml::Debug::LogError("Failed Loading Texture {0}", "dean.png");
-			}
-
-			if (!textures[TEX_sanic].loadFromFile(SETTINGS.pathTo("/images/sanic.png")))
-			{
-				return ml::Debug::LogError("Failed Loading Texture {0}", "sanic.png");
-			}
-
-			if (!textures[TEX_stone_dm].loadFromFile(SETTINGS.pathTo("/textures/stone/stone_dm.png")))
-			{
-				return ml::Debug::LogError("Failed Loading Texture {0}", "stone_dm.png");
-			}
-
-			if (!textures[TEX_stone_hm].loadFromFile(SETTINGS.pathTo("/textures/stone/stone_hm.png")))
-			{
-				return ml::Debug::LogError("Failed Loading Texture {0}", "stone_hm.png");
-			}
-
-			if (!textures[TEX_stone_nm].loadFromFile(SETTINGS.pathTo("/textures/stone/stone_nm.png")))
-			{
-				return ml::Debug::LogError("Failed Loading Texture {0}", "stone_nm.png");
-			}
-		}
-		return ml::Debug::Success;
+		return (!en || (en && ml::Debug::Log("Loading Textures...")
+			
+			&& ml_load<ml::Texture>(textures[TEX_dean], "/images/dean.png", log)
+			&& ml_load<ml::Texture>(textures[TEX_sanic], "/images/sanic.png", log)
+			&& ml_load<ml::Texture>(textures[TEX_stone_dm], "/textures/stone/stone_dm.png", log)
+			&& ml_load<ml::Texture>(textures[TEX_stone_hm], "/textures/stone/stone_hm.png", log)
+			&& ml_load<ml::Texture>(textures[TEX_stone_nm], "/textures/stone/stone_nm.png", log)
+			
+			&& (!log || ml::Debug::endl())));
 	}
 
-	inline static bool loadShaders(bool en)
+	inline static bool loadShaders(bool en, bool log)
 	{
 		// Load Shaders
-		if (en && ml::Debug::Log("Loading Shaders..."))
-		{
-			if (!shaders[GL_basic3D].loadFromFile(SETTINGS.pathTo("/shaders/basic3D.shader")))
-			{
-				return ml::Debug::LogError("Failed Loading Shader: {0}", "Basic3D");
-			}
-
-			if (!shaders[GL_text].loadFromFile(SETTINGS.pathTo("/shaders/text.shader")))
-			{
-				return ml::Debug::LogError("Failed Loading Shader: {0}", "Text");
-			}
-
-			if (!shaders[GL_geometry].loadFromFile(SETTINGS.pathTo("/shaders/geometry.shader")))
-			{
-				return ml::Debug::LogError("Failed Loading Shader: {0}", "Geometry");
-			}
-		}
-		return ml::Debug::Success;
+		return (!en || (en && ml::Debug::Log("Loading Shaders...")
+			
+			&& ml_load<ml::Shader>(shaders[GL_basic3D], "/shaders/basic3D.shader", log)
+			&& ml_load<ml::Shader>(shaders[GL_text], "/shaders/text.shader", log)
+			&& ml_load<ml::Shader>(shaders[GL_geometry], "/shaders/geometry.shader", log)
+			
+			&& (!log || ml::Debug::endl())));
 	}
 
-	inline static bool loadMeshes(bool en)
+	inline static bool loadMeshes(bool en, bool log)
 	{
 		// Load Meshes
-		if (en && ml::Debug::Log("Loading Meshes..."))
-		{
-			if (!mesh[MESH_sphere8x6].loadFromFile(SETTINGS.pathTo("/meshes/sphere8x6.mesh")))
-			{
-				return ml::Debug::LogError("Failed Loading Mesh: {0}", "sphere8x6");
-			}
-
-			if (!mesh[MESH_sphere32x24].loadFromFile(SETTINGS.pathTo("/meshes/sphere32x24.mesh")))
-			{
-				return ml::Debug::LogError("Failed Loading Mesh: {0}", "sphere32x24");
-			}
-		}
-		return ml::Debug::Success;
+		return (!en || (en && ml::Debug::Log("Loading Meshes...")
+			
+			&& ml_load<ml::Mesh>(mesh[MESH_sphere8x6], "/meshes/sphere8x6.mesh", log)
+			&& ml_load<ml::Mesh>(mesh[MESH_sphere32x24], "/meshes/sphere32x24.mesh", log)
+			
+			&& (!log || ml::Debug::endl())));
 	}
 
-	inline static bool loadBuffers(bool en)
+	inline static bool loadBuffers(bool en, bool log)
 	{
 		// Load Buffers
 		if (en && ml::Debug::Log("Loading Buffers..."))
@@ -450,34 +417,37 @@ namespace demo
 			vao[VAO_text].unbind();
 
 		}
-		return ml::Debug::Success;
+		return (!en || (!log || ml::Debug::endl()));
 	}
 
-	inline static bool loadAudio(bool en)
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	inline static bool loadAudio(bool en, bool log)
 	{
-		if (en && ml::Debug::Log("Loading Audio..."))
-		{
-			// ...
-		}
-		return ml::Debug::Success;
+		return (!en || (en && ml::Debug::Log("Loading Sounds...")
+			
+			&& ml_load<ml::Sound>(sounds[SND_test], "/sounds/example.wav", log)
+
+			&& (!log || ml::Debug::endl())));
 	}
 
-	inline static bool loadNetwork(bool en)
+	inline static bool loadNetwork(bool en, bool log)
 	{
 		if (en && ml::Debug::Log("Loading Network..."))
 		{
 			if (SETTINGS.isServer)
 			{
-				// ...
+				// Server setup...
 			}
 			else
 			{
-				// ...
+				// Client setup...
 			}
 		}
-		return ml::Debug::Success;
+		return (!en || (!log || ml::Debug::endl()));
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 // Events
@@ -507,27 +477,33 @@ namespace demo
 			.showItoP(SETTINGS.scrShowItoP);
 
 		// Run Script
-		return ML_Interpreter.execFile(SETTINGS.pathTo(SETTINGS.scrFile));
+		auto path = SETTINGS.pathTo(SETTINGS.scrPath + SETTINGS.scrFile);
+		if (ml::Var var = ML_Interpreter.execFile(path))
+		{
+			return (bool)var;
+		}
+		return ml::Debug::LogError("Path {0}", path);
 	}
 
 
-	// Load Resources
+	// Load
 	/* * * * * * * * * * * * * * * * * * * * */
-	struct LoadResourcesEvent final
+	struct LoadEvent final
 	{
+		bool log;
 	};
 	// Called once after the window is created
-	inline static bool onLoadResources(const LoadResourcesEvent & ev)
+	inline static bool onLoad(const LoadEvent & ev)
 	{
-		return ml::Debug::Log("Loading...") 
-			&& loadFonts	(1)
-			&& loadImages	(1)
-			&& loadTextures	(1)
-			&& loadShaders	(1)
-			&& loadMeshes	(1)
-			&& loadBuffers	(1)
-			&& loadAudio	(0)
-			&& loadNetwork	(0)
+		return (ml::Debug::Log("Loading..."))
+			&& loadFonts	(true,	ev.log)
+			&& loadImages	(true,	ev.log)
+			&& loadTextures	(true,	ev.log)
+			&& loadShaders	(true,	ev.log)
+			&& loadMeshes	(true,	ev.log)
+			&& loadBuffers	(true,	ev.log)
+			&& loadAudio	(false,	ev.log)
+			&& loadNetwork	(false,	ev.log)
 			;
 	}
 

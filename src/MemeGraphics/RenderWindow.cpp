@@ -32,12 +32,12 @@ namespace ml
 				OpenGL::enable(GL::Multisample);
 			}
 
-			if (m_context.sRgbCapable)
+			if (m_context.srgbCapable)
 			{
 				if (!OpenGL::enable(GL::FramebufferSRGB, true))
 				{
 					ml::Debug::LogWarning("Failed to enable Framebuffer SRGB");
-					m_context.sRgbCapable = false;
+					m_context.srgbCapable = false;
 				}
 			}
 

@@ -20,10 +20,12 @@ namespace demo
 	{	friend class ml::ISingleton<Settings>;
 	public:
 		// [General]
-		std::string	rootPath;		// Where's all the data?
-		uint32_t		runTests;		// Run test functions
+		std::string rootPath;		// Solution Dir
+		std::string	assetPath;		// Where's all the data?
+		uint32_t	runTests;		// Run test functions
 
 		// [Script]
+		std::string	scrPath;		// Location of scripts
 		std::string	scrFile;		// Script to run on start
 		bool		scrShowToks;	// Show Script Tokens
 		bool		scrShowTree;	// Show Script Syntax Tree
@@ -42,7 +44,7 @@ namespace demo
 		uint32_t	stencilBits;	// Stencil Bits
 		uint32_t	profile;		// Profile
 		bool		multisample;	// Multisample
-		bool		sRgbCapable;	// sRGB Capable
+		bool		srgbCapable;	// sRGB Capable
 
 		// [Graphics]
 		float		fieldOfView;	// Field of View
@@ -66,11 +68,13 @@ namespace demo
 			if (ini.ParseError() == 0)
 			{
 				// [General]
-				rootPath	= ini.Get("General", "rootPath", "../../../assets");
+				rootPath	= ini.Get("General", "rootPath", "../../../");
+				assetPath	= ini.Get("General", "assetPath", "assets/");
 				runTests	= ini.GetInteger("General", "runTests", false);
 
 				// [Script]
-				scrFile		= ini.Get("Script", "scrFile", "");
+				scrPath		= ini.Get("Script", "scrPath", "scripts/");
+				scrFile		= ini.Get("Script", "scrFile", "hello.meme");
 				scrShowToks = ini.GetBoolean("Script", "scrShowToks", false);
 				scrShowTree = ini.GetBoolean("Script", "scrShowTree", false);
 				scrShowItoP = ini.GetBoolean("Script", "scrShowItoP", false);
@@ -88,7 +92,7 @@ namespace demo
 				stencilBits = ini.GetInteger("Context", "stencilBits",	8);
 				profile		= ini.GetInteger("Context", "profile",		ml::Context::Compat);
 				multisample = ini.GetBoolean("Context", "multisample",	false);
-				sRgbCapable = ini.GetBoolean("Context", "sRgbCapable",	false);
+				srgbCapable = ini.GetBoolean("Context", "srgbCapable",	false);
 
 				// [Graphics]
 				fieldOfView = (float)ini.GetReal("Graphics", "fieldOfView", 90.0);
@@ -110,7 +114,7 @@ namespace demo
 
 		inline const std::string pathTo(const std::string & filename) const
 		{
-			return rootPath + filename;
+			return rootPath + assetPath + filename;
 		}
 	};
 }

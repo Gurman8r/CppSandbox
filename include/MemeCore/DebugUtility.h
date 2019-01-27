@@ -29,6 +29,8 @@ namespace ml
 		static Status LogError(const std::string & message);	//   0
 		static Status Log(const std::string & message);			// + 1
 
+		static Status endl();
+
 	public:
 		template<typename T, typename ... A>
 		inline static Status LogWarning(const std::string & fmt, const T & arg0, const A &... args)
