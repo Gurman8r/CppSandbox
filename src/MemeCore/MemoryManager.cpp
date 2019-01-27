@@ -185,35 +185,6 @@ namespace ml
 			&& (((void *)value) <= (&m_tail->npos));
 	}
 	
-	Chunk *	MemoryManager::splitChunk(Chunk * value, size_t size)
-	{
-		if (0 && good() && (value && size))
-		{
-			void * addr = (value->npos + size);
-
-			if (Chunk * chunk = readChunk(addr))
-			{
-				chunk->size = value->size - size;
-				chunk->free = true;
-				chunk->next = value->next;
-				chunk->prev = value;
-
-				if (chunk->next)
-				{
-					(chunk->next)->prev = chunk;
-				}
-
-				value->size = size;
-				value->free = false;
-				value->next = chunk;
-
-				return chunk;
-			}
-		}
-		return NULL;
-	}
-
-
 	Chunk *	MemoryManager::mergePrev(Chunk * value) const
 	{
 		if (good())
@@ -251,6 +222,35 @@ namespace ml
 				}
 
 				return value;
+			}
+		}
+		return NULL;
+	}
+
+	Chunk *	MemoryManager::splitChunk(Chunk * value, size_t size)
+	{
+		if (0 && good() && (value && size))
+		{
+			void * addr = (value + size);
+
+			if (Chunk * chunk = readChunk(addr))
+			{
+				chunk->size = value->size - size;
+				chunk->free = true;
+				chunk->next = value->next;
+				chunk->prev = value;
+
+				if (chunk->next)
+				{
+					(chunk->next)->prev = chunk;
+				}
+
+				value->size = size;
+				value->free = false;
+				value->next = chunk;
+
+				Debug::Log("Split");
+				return chunk;
 			}
 		}
 		return NULL;

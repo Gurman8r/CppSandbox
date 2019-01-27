@@ -74,9 +74,7 @@ namespace
 		ml::Debug::Log("Test Size: {0}", sizeof(Test));
 		ml::Debug::out() << std::endl;
 
-
 		enum : size_t { MaxBytes = 4096 };
-
 		ml::byte data[MaxBytes];
 
 		if (!ML_Memory.prime(data, MaxBytes))
@@ -84,6 +82,8 @@ namespace
 			return ml::Debug::LogError("Failed priming Memory Manager")
 				|| ml::Debug::pause(EXIT_FAILURE);
 		}
+		ml::Debug::out() << std::endl << ML_Memory << std::endl;
+
 
 		// Write
 		/* * * * * * * * * * * * * * * * * * * * */

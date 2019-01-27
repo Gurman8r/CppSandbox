@@ -34,10 +34,9 @@ namespace ml
 		Chunk * readChunk(void * addr) const;
 
 		bool	isValidChunk(Chunk * value) const;
-		Chunk *	splitChunk(Chunk * value, size_t size);
-
 		Chunk * mergePrev(Chunk * value) const;
 		Chunk * mergeNext(Chunk * value) const;
+		Chunk *	splitChunk(Chunk * value, size_t size);
 
 	public:
 		inline bool		good() const { return (m_data && m_size); }
