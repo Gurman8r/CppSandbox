@@ -10,7 +10,7 @@
 /* * * * * * * * * * * * * * * * * * * * */
 
 #ifndef ML_CORE_API
-	#define ML_CORE_API
+	#define ML_CORE_API __declspec(dllexport)
 	#ifdef __cplusplus
 		#define ML_CPP
 	#endif
@@ -33,6 +33,7 @@ typedef struct Block
 	bool			free; // Is free?
 	struct Block *	prev; // Previous node in list
 	struct Block *	next; // Next node in list
+	byte npos[1]; // End of metadata
 
 } Block;
 
@@ -43,26 +44,30 @@ extern "C"
 {
 #endif
 
-	// Core
 	/* * * * * * * * * * * * * * * * * * * * */
+	
 	ML_CORE_API void *	ml_allocate(size_t size);
 	ML_CORE_API bool	ml_free(void * value);
-
-
-	// Utility
-	/* * * * * * * * * * * * * * * * * * * * */
 	ML_CORE_API bool	ml_prime(byte * data, size_t size);
-	ML_CORE_API size_t	ml_increment(size_t size);
-	ML_CORE_API bool	ml_mergeBlockPrev(Block * value);
-	ML_CORE_API bool	ml_mergeBlockNext(Block * value);
-	ML_CORE_API bool	ml_splitBlock(Block * value, size_t size);
 	
 	ML_CORE_API void	ml_displayMemory();
-	ML_CORE_API bool	ml_displayBlock(Block * value);
+	ML_CORE_API bool	ml_displayBlock(Block * block);
 
-	ML_CORE_API struct Block * ml_createBlock(size_t size);
-	ML_CORE_API struct Block * ml_findEmptyBlock(size_t size);
-	ML_CORE_API struct Block * ml_findBlockByValue(void * value);
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	ML_CORE_API bool	ml_isValidBlock(Block * block);
+
+	ML_CORE_API struct Block * ml_writeBlock(size_t addr, size_t size);
+	ML_CORE_API struct Block * ml_appendBlock(size_t size);
+
+	ML_CORE_API struct Block * ml_findBlock(size_t size);
+	ML_CORE_API struct Block * ml_readBlock(void * addr);
+
+	ML_CORE_API struct Block * ml_mergeBlockPrev(Block * value);
+	ML_CORE_API struct Block * ml_mergeBlockNext(Block * value);
+	ML_CORE_API struct Block * ml_splitBlock(Block * value, size_t size);
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 #ifdef ML_CPP
 }

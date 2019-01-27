@@ -27,13 +27,14 @@ namespace ml
 		void	serialize(std::ostream & out) const override;
 
 	private:
+		bool	isValidChunk(Chunk * value) const;
+
 		Chunk * writeChunk(size_t addr, size_t size);
-		Chunk *	insertChunk(size_t size);
+		Chunk *	appendChunk(size_t size);
 
 		Chunk *	findEmpty(size_t size) const;
 		Chunk * readChunk(void * addr) const;
 
-		bool	isValidChunk(Chunk * value) const;
 		Chunk * mergePrev(Chunk * value) const;
 		Chunk * mergeNext(Chunk * value) const;
 		Chunk *	splitChunk(Chunk * value, size_t size);

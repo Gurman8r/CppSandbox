@@ -15,6 +15,8 @@
 // Size of struct Block
 #define BLOCK_SIZE (size_t)(sizeof(Block))
 
+#define NPOS_SIZE (size_t)(sizeof(byte *))
+
 // Returns the space needed to store a Block and some data
 #define SPACE_NEED(size) (size_t)(size + BLOCK_SIZE)
 
@@ -37,152 +39,82 @@ struct Block *	m_tail;	// Last block in list
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-void *	ml_allocate(size_t size)
+inline static bool good()
 {
-	if (m_head)
-	{
-		Block * block = NULL;
-
-		if (block = ml_findEmptyBlock(size))
-		{
-			block->size = size;
-			
-			block->free = false;
-			
-			return BLOCK_DATA(block);
-		}
-		else if (block = ml_createBlock(size))
-		{
-			m_tail->next = block;
-			
-			block->prev = m_tail;
-			
-			m_tail = block;
-			
-			return BLOCK_DATA(m_tail);
-		}
-	}
-	return NULL;
-}
-
-bool	ml_free(void * value)
-{
-	if (value)
-	{
-		Block * block;
-		if (block = FIND_BLOCK(value))
-		{
-			if ((block >= m_head) && (block <= (m_tail + BLOCK_SIZE)))
-			{
-				block->free = true;
-				
-				ml_mergeBlockNext(block);
-				
-				ml_mergeBlockPrev(block);
-				
-				return true;
-			}
-		}
-	}
-	return false;
+	return m_data && m_size;
 }
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-bool	ml_prime(byte * data, size_t size)
+ML_CORE_API void * ml_allocate(size_t size)
 {
-	static bool checked = false;
-	if (!checked && (!m_head && data && size))
+	if (!m_head && (m_head = ml_appendBlock(size)))
 	{
-		checked = true;
-		
-		m_data	= data;
-		m_size	= size;
-		m_used	= 0;
-		m_head	= ml_createBlock(size);
-		m_tail	= m_head;
+		m_tail = m_head;
 
-		size_t i;
-		for (i = BLOCK_SIZE; i < m_size; i++)
-		{
-			m_data[i] = 0;
-		}
+		return m_head->npos;
 	}
-	return checked;
-}
 
-size_t	ml_increment(size_t size)
-{
-	return (m_used += SPACE_NEED(size));
-}
-
-bool	ml_mergeBlockPrev(Block * value)
-{
-	if (value->prev && (value->prev)->free)
+	Block * block;
+	if (block = ml_findBlock(size))
 	{
-		(value->prev)->size += value->size;
+		block->size = size;
 
-		(value->prev)->next = value->next;
+		block->free = false;
 
-		if (value->next)
+		if (block->size > size)
 		{
-			(value->next)->prev = value->prev;
+			ml_splitBlock(block, size);
 		}
+
+		return block->npos;
+	}
+	else if (block = ml_appendBlock(size))
+	{
+		m_tail->next = block;
+
+		block->prev = m_tail;
+
+		m_tail = block;
+
+		return m_tail->npos;
+	}
+	return NULL;
+}
+
+ML_CORE_API bool ml_free(void * value)
+{
+	Block * block;
+	if (block = ml_readBlock(value))
+	{
+		block->free = true;
+
+		ml_mergeBlockNext(block);
+
+		ml_mergeBlockPrev(block);
 
 		return true;
 	}
 	return false;
 }
 
-bool	ml_mergeBlockNext(Block * value)
+ML_CORE_API bool ml_prime(byte * data, size_t size)
 {
-	if (value->next && (value->next)->free)
+	if (!good() && (data && size))
 	{
-		value->size += (value->next)->size;
-
-		value->next = (value->next)->next;
-
-		if ((value->next)->next)
-		{
-			((value->next)->next)->prev = value;
-		}
-
-		return true;
+		m_data = data;
+		m_size = size;
 	}
-	return false;
-}
-
-bool	ml_splitBlock(Block * value, size_t size)
-{
-	if (value)
-	{
-		Block * block;
-		if (block = (Block *)(BLOCK_NPOS(value) + size))
-		{
-			block->size = (value->size - size);
-			block->free = true;
-			block->prev = value;
-			block->next = value->next;
-
-			if (block->next)
-			{
-				(block->next)->prev = block;
-			}
-
-			value->size = size;
-			value->free = false;
-			value->next = block;
-
-			return true;
-		}
-	}
-	return false;
+	return good();
 }
 
 
-void	ml_displayMemory()
+ML_CORE_API void ml_displayMemory()
 {
-	printf("Bytes Used: ( %u / %u )\n", m_used, m_size);
+	printf("Bytes Used: ( %u / %u ) ( %f %% )\n",
+		m_used, 
+		m_size,
+		(((double)m_used / m_size) * 100.0));
 
 	Block * block;
 	if (block = (m_head))
@@ -196,61 +128,177 @@ void	ml_displayMemory()
 	printf("\n");
 }
 
-bool	ml_displayBlock(Block * value)
+ML_CORE_API bool ml_displayBlock(Block * value)
 {
 	if (value)
 	{
-		printf("[ size: %d | %s | addr: %p | prev: %p | next: %p | npos: %p ]\n", 
+		printf("[ struct Block ] ");
+		printf("{ size: %d | %s | addr: %p | prev: %p | next: %p | npos: %p | indx: %d }\n",
 			value->size,
 			(value->free ? "free" : "used"),
 			(void *)value,
 			(void *)value->prev,
 			(void *)value->next,
-			BLOCK_DATA(value));
+			BLOCK_DATA(value),
+			(int)value->npos[1]);
 
 		return true;
 	}
 	return false;
 }
 
+/* * * * * * * * * * * * * * * * * * * * */
 
-Block * ml_createBlock(size_t size)
+ML_CORE_API bool ml_isValidBlock(Block * value)
 {
-	if ((m_used + size) <= m_size)
+	return good()
+		&& (value)
+		&& (value >= m_head)
+		&& (((void *)value) <= (void *)(&m_tail->npos));
+}
+
+
+ML_CORE_API Block * ml_writeBlock(size_t addr, size_t size)
+{
+	if (good() && size)
 	{
-		Block * block;
-		if (block = (Block *)(&m_data[ml_increment(size)]))
+		const size_t need = (size + BLOCK_SIZE);
+
+		if ((addr + need) < m_size)
 		{
-			block->size = size;
-			block->free = false;
-			block->prev = NULL;
-			block->next = NULL;
-			return m_tail;
+			Block * block;
+			if (block = (Block *)(&m_data[(addr + need)]))
+			{
+				block->size = need;
+				block->free = false;
+				block->prev = NULL;
+				block->next = NULL;
+
+				if (block->size > size)
+				{
+					ml_splitBlock(block, size);
+				}
+
+				return block;
+			}
 		}
 	}
 	return NULL;
 }
 
-Block * ml_findEmptyBlock(size_t size)
+ML_CORE_API Block * ml_appendBlock(size_t size)
 {
-	Block * block = (m_head);
-	while (block)
+	Block * block;
+	if (block = ml_writeBlock(m_used, size))
 	{
-		if (block->free && (block->size >= SPACE_NEED(size)))
-		{
-			return block;
-		}
-		block = block->next;
+		m_used += (size + BLOCK_SIZE);
+
+		return block;
 	}
-	return block;
+	return NULL;
 }
 
-Block * ml_findBlockByValue(void * value)
-{
-	if (value)
-	{
-		Block * found = NULL;
 
+ML_CORE_API Block * ml_findBlock(size_t size)
+{
+	if (good() && size)
+	{
+		Block * block = m_head;
+		while (block)
+		{
+			if (block->free && (block->size >= (size + BLOCK_SIZE)))
+			{
+				return block;
+			}
+			block = block->next;
+		}
+		return block;
+	}
+	return NULL;
+}
+
+ML_CORE_API Block * ml_readBlock(void * addr)
+{
+	if (good() && addr)
+	{
+		Block * block;
+		if (block = (Block *)((((size_t)addr) - BLOCK_SIZE) + NPOS_SIZE))
+		{
+			if (ml_isValidBlock(block))
+			{
+				return block;
+			}
+		}
+	}
+	return NULL;
+}
+
+
+ML_CORE_API Block * ml_mergeBlockPrev(Block * value)
+{
+	if (good())
+	{
+		if (value && (value->prev && (value->prev)->free))
+		{
+			(value->prev)->size += value->size;
+
+			(value->prev)->next = value->next;
+
+			if (value->next)
+			{
+				(value->next)->prev = value->prev;
+			}
+
+			return value;
+		}
+	}
+	return NULL;
+}
+
+ML_CORE_API Block * ml_mergeBlockNext(Block * value)
+{
+	if (good())
+	{
+		if (value && (value->next && (value->next)->free))
+		{
+			value->size += (value->next)->size;
+
+			value->next = (value->next)->next;
+
+			if ((value->next)->next)
+			{
+				((value->next)->next)->prev = value;
+			}
+
+			return value;
+		}
+	}
+	return NULL;
+}
+
+ML_CORE_API Block * ml_splitBlock(Block * value, size_t size)
+{
+	if (0 && good() && (value && size))
+	{
+		Block * block;
+		if (block = ml_readBlock(value + size))
+		{
+			block->size = value->size - size;
+			block->free = true;
+			block->next = value->next;
+			block->prev = value;
+
+			if (block->next)
+			{
+				(block->next)->prev = block;
+			}
+
+			value->size = size;
+			value->free = false;
+			value->next = block;
+
+			return block;
+		}
 	}
 	return NULL;
 }

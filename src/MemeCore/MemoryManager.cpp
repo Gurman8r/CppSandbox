@@ -24,7 +24,7 @@ namespace ml
 {
 	void *	MemoryManager::allocate(size_t size)
 	{
-		if (!m_head && (m_head = insertChunk(size))) // create head
+		if (!m_head && (m_head = appendChunk(size))) // create head
 		{
 			m_tail = m_head;
 
@@ -43,7 +43,7 @@ namespace ml
 
 			return e->npos;
 		}
-		else if (Chunk * n = insertChunk(size)) // push back new chunk
+		else if (Chunk * n = appendChunk(size)) // push back new chunk
 		{
 			m_tail->next = n;
 
@@ -104,6 +104,15 @@ namespace ml
 	}
 
 	
+	bool	MemoryManager::isValidChunk(Chunk * value) const
+	{
+		return good()
+			&& (value) 
+			&& (value >= m_head)
+			&& (((void *)value) <= (&m_tail->npos));
+	}
+	
+
 	Chunk * MemoryManager::writeChunk(size_t addr, size_t size)
 	{
 		if (good() && size)
@@ -131,7 +140,7 @@ namespace ml
 		return NULL;
 	}
 
-	Chunk * MemoryManager::insertChunk(size_t size)
+	Chunk * MemoryManager::appendChunk(size_t size)
 	{
 		if (Chunk * chunk = writeChunk(m_used, size))
 		{
@@ -176,14 +185,6 @@ namespace ml
 		return NULL;
 	}
 
-	
-	bool	MemoryManager::isValidChunk(Chunk * value) const
-	{
-		return good()
-			&& (value) 
-			&& (value >= m_head)
-			&& (((void *)value) <= (&m_tail->npos));
-	}
 	
 	Chunk *	MemoryManager::mergePrev(Chunk * value) const
 	{
