@@ -10,11 +10,10 @@
 /* * * * * * * * * * * * * * * * * * * * */
 
 #ifndef ML_CORE_API
-#define ML_CORE_API __declspec(dllexport)
-#endif
-
-#ifdef __cplusplus
-#define ML_CPP
+	#define ML_CORE_API __declspec(dllexport)
+	#ifdef __cplusplus
+		#define ML_CPP
+	#endif
 #endif
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -37,7 +36,6 @@ typedef struct Block
 
 } Block;
 
-#define BLOCK_SIZE sizeof(Block)
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -50,11 +48,10 @@ extern "C"
 	ML_CORE_API bool	ml_free(void * value);
 
 	ML_CORE_API size_t	ml_increment(size_t size);
-	ML_CORE_API bool	ml_prime(byte * data, size_t capacity);
+	ML_CORE_API bool	ml_prime(byte * data, size_t size);
 
 	ML_CORE_API struct Block * ml_createBlock(size_t size);
 	ML_CORE_API struct Block * ml_findEmptyBlock(size_t size);
-	ML_CORE_API struct Block * ml_getBlockAt(size_t index);
 
 #ifdef ML_CPP
 }
