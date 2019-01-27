@@ -21,6 +21,12 @@
 // Not yet implemented
 #define NYI false
 
+// Returns the end position of the given Block
+#define BLOCK_NPOS(blck) (size_t)(((size_t)blck) + BLOCK_SIZE)
+
+// Returns the address of the given block's data
+#define BLOCK_DATA(blck) (void *)(BLOCK_NPOS(blck))
+
 /* * * * * * * * * * * * * * * * * * * * */
 
 byte *			m_data;	// Pointer to byte array
@@ -131,8 +137,8 @@ ML_CORE_API bool ml_displayBlock(Block * value)
 			(void *)value,
 			(void *)value->prev,
 			(void *)value->next,
-			BLOCK_DATA(value),
-			(int)value->npos[1]);
+			(void *)value->npos,
+			(int)value->npos[0]);
 
 		return true;
 	}
