@@ -11,17 +11,20 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-// Size of block
-#define BLOCK_SIZE sizeof(Block)
+// Size of struct Block
+#define BLOCK_SIZE ((size_t)(sizeof(Block)))
 
-// Returns the given size plus sizeof(Block) ( BLOCK_SIZE )
-#define SPACE_NEED(size) (size + BLOCK_SIZE)
+// Space needed for a Block plus the given size
+#define SPACE_NEED(size) ((size_t)(size + BLOCK_SIZE))
 
-// Returns the data of the given block_ptr
-#define BLOCK_DATA(block_ptr) ((void *)(block_ptr + BLOCK_SIZE))
+// Returns the end position of the given Block
+#define BLOCK_NPOS(block) ((size_t)((size_t)(block)) + BLOCK_SIZE)
 
-// Returns the block at the given data_ptr
-#define BLOCK_ADDR(data_ptr) ((Block *)((size_t)data_ptr) - BLOCK_SIZE)
+// Returns the address of the given block's data
+#define BLOCK_DATA(block) ((void *)(BLOCK_NPOS(block)))
+
+// Returns the Block at the given address
+#define FIND_BLOCK(addr) ((Block *)((size_t)(addr)) - BLOCK_SIZE)
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -66,7 +69,7 @@ bool	ml_free(void * value)
 	if (value)
 	{
 		Block * block;
-		if (block = BLOCK_ADDR(value))
+		if (block = FIND_BLOCK(value))
 		{
 			if ((block >= m_head) && (block <= (m_tail + BLOCK_SIZE)))
 			{
@@ -88,7 +91,7 @@ size_t	ml_increment(size_t size)
 bool	ml_prime(byte * data, size_t size)
 {
 	static bool checked = false;
-	if (!checked && (!m_head && (data && size)))
+	if (!checked && (!m_head && data && size))
 	{
 		checked = true;
 		
@@ -108,11 +111,84 @@ bool	ml_prime(byte * data, size_t size)
 }
 
 
+bool	ml_mergeBlockPrev(Block * value)
+{
+	if (value->prev && (value->prev)->free)
+	{
+		(value->prev)->size += value->size;
+
+		(value->prev)->next = value->next;
+
+		if (value->next)
+		{
+			(value->next)->prev = value->prev;
+		}
+
+		return true;
+	}
+	return false;
+}
+
+bool	ml_mergeBlockNext(Block * value)
+{
+	if (value->next && (value->next)->free)
+	{
+		value->size += (value->next)->size;
+
+		value->next = (value->next)->next;
+
+		if ((value->next)->next)
+		{
+			((value->next)->next)->prev = value;
+		}
+
+		return true;
+	}
+	return false;
+}
+
+bool	ml_splitBlock(Block * value, size_t size)
+{
+	if (value)
+	{
+		Block * block;
+
+		if (block = (Block *)(BLOCK_NPOS(value) + size))
+		{
+			block->size = (value->size - size - BLOCK_SIZE);
+			block->free = true;
+			block->prev = value;
+			block->next = value->next;
+
+			if (block->next)
+			{
+				(block->next)->prev = block;
+			}
+
+			value->size = size;
+			value->free = false;
+			value->next = block;
+
+			return true;
+		}
+	}
+	return false;
+}
+
+
 Block * ml_createBlock(size_t size)
 {
 	if ((m_used + SPACE_NEED(size)) < m_size)
 	{
-		return (Block *)(&m_data[ml_increment(size)]);
+		Block * block;
+		if (block = (Block *)(&m_data[ml_increment(size)]))
+		{
+			block->size = size;
+			block->free = false;
+			block->prev = NULL;
+			block->next = NULL;
+			return block;
+		}
 	}
 	return NULL;
 }
@@ -130,5 +206,6 @@ Block * ml_findEmptyBlock(size_t size)
 	}
 	return block;
 }
+
 
 /* * * * * * * * * * * * * * * * * * * * */

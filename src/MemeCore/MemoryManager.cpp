@@ -10,8 +10,6 @@ namespace ml
 		, m_head(NULL)
 	{
 		memset(m_data, NULL, MaxBytes);
-
-		ml_prime(m_data, MaxBytes);
 	}
 
 	MemoryManager::~MemoryManager()

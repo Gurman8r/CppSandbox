@@ -50,6 +50,10 @@ extern "C"
 	ML_CORE_API size_t	ml_increment(size_t size);
 	ML_CORE_API bool	ml_prime(byte * data, size_t size);
 
+	ML_CORE_API bool	ml_mergeBlockPrev(Block * value);
+	ML_CORE_API bool	ml_mergeBlockNext(Block * value);
+	ML_CORE_API bool	ml_splitBlock(Block * value, size_t size);
+
 	ML_CORE_API struct Block * ml_createBlock(size_t size);
 	ML_CORE_API struct Block * ml_findEmptyBlock(size_t size);
 
