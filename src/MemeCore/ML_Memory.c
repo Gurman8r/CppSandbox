@@ -18,6 +18,9 @@
 // Size of data pointer
 #define NPOS_SIZE (size_t)(sizeof(byte *))
 
+// Not yet implemented
+#define NYI false
+
 /* * * * * * * * * * * * * * * * * * * * */
 
 byte *			m_data;	// Pointer to byte array
@@ -267,7 +270,7 @@ ML_CORE_API Block * ml_mergeBlockNext(Block * value)
 
 ML_CORE_API Block * ml_splitBlock(Block * value, size_t size)
 {
-	if (0 && good() && (value && size))
+	if (NYI && good() && (value && size))
 	{
 		Block * block;
 		if (block = ml_readBlock(value + size))
