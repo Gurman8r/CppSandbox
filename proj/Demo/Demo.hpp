@@ -152,7 +152,7 @@ namespace demo
 			{
 				for (auto n : ML_Interpreter.cmdNames())
 				{
-					ml::Debug::out() << n << std::endl;
+					ml::cout << n << std::endl;
 				}
 				return ml::Var().boolValue(true);
 			} });
@@ -182,7 +182,7 @@ namespace demo
 				std::string buf;
 				if (ML_FileSystem.getFileContents(args.pop_front().front(), buf))
 				{
-					ml::Debug::out() << buf << std::endl;
+					ml::cout << buf << std::endl;
 
 					return ml::Var().boolValue(true);
 				}
@@ -224,19 +224,19 @@ namespace demo
 						switch (e->d_type)
 						{
 						case DT_REG:
-							ml::Debug::out() << (ml::FG::Green | ml::BG::Black) << e->d_name << "";
+							ml::cout << (ml::FG::Green | ml::BG::Black) << e->d_name << "";
 							break;
 						case DT_DIR:
-							ml::Debug::out() << (ml::FG::Blue | ml::BG::Green) << e->d_name << "/";
+							ml::cout << (ml::FG::Blue | ml::BG::Green) << e->d_name << "/";
 							break;
 						case DT_LNK:
-							ml::Debug::out() << (ml::FG::Green | ml::BG::Black) << e->d_name << "@";
+							ml::cout << (ml::FG::Green | ml::BG::Black) << e->d_name << "@";
 							break;
 						default:
-							ml::Debug::out() << (ml::FG::Green | ml::BG::Black) << e->d_name << "*";
+							ml::cout << (ml::FG::Green | ml::BG::Black) << e->d_name << "*";
 							break;
 						}
-						ml::Debug::out() << ml::FMT() << std::endl;
+						ml::cout << ml::FMT() << std::endl;
 					}
 					closedir(dir);
 					return ml::Var().boolValue(true);

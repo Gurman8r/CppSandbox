@@ -11,11 +11,6 @@ namespace ml
 	class ML_CORE_API Debug final
 	{
 	public:
-		inline static std::ostream & out()	{ return std::cout; }
-		inline static std::ostream & err()	{ return std::cerr; }
-		inline static std::istream & in()	{ return std::cin;	}
-
-	public:
 		enum Status : int32_t
 		{
 			Warning = -1,
@@ -52,7 +47,16 @@ namespace ml
 		{
 			return Debug::Log(StringUtility::Format(fmt, arg0, (args)...));
 		}
+
+	public:
+		inline static std::ostream & out()	{ return std::cout; }
+		inline static std::ostream & err()	{ return std::cerr; }
+		inline static std::istream & in()	{ return std::cin; }
 	};
+
+	static std::ostream & cout	= Debug::out(); // std::cout
+	static std::ostream & cerr	= Debug::err(); // std::cerr
+	static std::istream & cin	= Debug::in();	// std::cin
 }
 
 #endif // !_DEBUG_UTILITY_H_

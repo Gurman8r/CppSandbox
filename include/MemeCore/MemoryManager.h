@@ -7,9 +7,6 @@
 
 // https://github.com/miguelperes/custom-malloc
 
-#define ML_CHUNK_SIZE	sizeof(ml::Chunk)	// size of struct Chunk
-#define ML_NPOS_SIZE	sizeof(ml::byte *)	// size of data pointer
-
 #define ML_Memory ml::MemoryManager::getInstance()
 
 namespace ml
@@ -25,8 +22,15 @@ namespace ml
 		bool	free(void * value);
 		bool	prime(byte * data, size_t size);
 		void	serialize(std::ostream & out) const override;
+		void	serializeChunk(std::ostream & out, const Chunk & c) const;
 
-	private:
+		template <typename T>
+		inline T * allocate()
+		{
+			return static_cast<T *>(allocate(sizeof(T)));
+		}
+
+	//private:
 		bool	isValidChunk(Chunk * value) const;
 
 		Chunk * writeChunk(size_t addr, size_t size);

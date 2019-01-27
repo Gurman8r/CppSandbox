@@ -349,9 +349,9 @@ namespace ml
 	{
 #ifdef ML_DEBUG
 
-		Debug::out() << "$: ";
+		cout << "$: ";
 		std::string line;
-		std::getline(Debug::in(), line);
+		std::getline(cin, line);
 		return Var().stringValue(line);
 #else
 		return Var();

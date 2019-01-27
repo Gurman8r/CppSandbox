@@ -350,25 +350,25 @@ namespace ml
 
 					if (Var * v = block()->getv(name))
 					{
-						Debug::out() << (*v).textValue();
+						cout << (*v).textValue();
 					}
 					else
 					{
-						Debug::out() << name;
+						cout << name;
 					}
 				}
 				else
 				{
-					Debug::out() << (*it);
+					cout << (*it);
 				}
 			}
 		}
 		else
 		{
-			Debug::out() << expr->evaluate().textValue();
+			cout << expr->evaluate().textValue();
 		}
 		
-		Debug::out() << FMT() << std::endl;
+		cout << FMT() << std::endl;
 		
 		return runNext();
 	}

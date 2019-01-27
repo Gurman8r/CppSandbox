@@ -13,19 +13,13 @@
 /* * * * * * * * * * * * * * * * * * * * */
 
 // Size of struct Block
-#define BLOCK_SIZE (size_t)(sizeof(Block))
+#define BLOCK_SIZE (size_t)(sizeof(Block)) // 20
 
 // Size of data pointer
-#define NPOS_SIZE (size_t)(sizeof(byte *))
+#define NPOS_SIZE (size_t)(sizeof(byte *)) // 4
 
 // Not yet implemented
 #define NYI false
-
-// Returns the end position of the given Block
-#define BLOCK_NPOS(blck) (size_t)(((size_t)blck) + BLOCK_SIZE)
-
-// Returns the address of the given block's data
-#define BLOCK_DATA(blck) (void *)(BLOCK_NPOS(blck))
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -220,7 +214,7 @@ ML_CORE_API Block * ml_readBlock(void * addr)
 	if (good() && addr)
 	{
 		Block * block;
-		if (block = (Block *)((((size_t)addr) - BLOCK_SIZE) + NPOS_SIZE))
+		if (block = (Block *)(((size_t)addr - BLOCK_SIZE) + NPOS_SIZE))
 		{
 			if (ml_isValidBlock(block))
 			{

@@ -1,24 +1,8 @@
 #include <MemeCore/MemoryManager.h>
 #include <MemeCore/DebugUtility.h>
 
-namespace ml
-{
-	inline static void serializeChunk(std::ostream & out, const Chunk & c)
-	{
-		const std::type_info & info(typeid(c));
-		out << FG::White << "[ " << FG::Gray << info.name() << FG::White << " ]"
-			<< FG::White << " { " << FG::Green << "size: " << FG::Yellow << std::setw(4) << (c.size)
-			<< FG::White << " | " << (c.free ? FG::Cyan : FG::Red) << (c.free ? "free" : "used")
-			<< FG::White << " | " << FG::Green << "addr: " << FG::Yellow << (&c)
-			<< FG::White << " | " << FG::Green << "prev: " << FG::Yellow << (c.prev)
-			<< FG::White << " | " << FG::Green << "next: " << FG::Yellow << (c.next)
-			<< FG::White << " | " << FG::Green << "npos: " << FG::Yellow << (&c.npos)
-			<< FG::White << " | " << FG::Green << "indx: " << FG::Yellow << ((int)c.npos[0])
-			<< FG::White << " }"
-			<< FMT() 
-			<< std::endl;
-	}
-}
+#define ML_CHUNK_SIZE sizeof(ml::Chunk)
+#define ML_NPOS_SIZE sizeof(ml::byte *)
 
 namespace ml
 {
@@ -28,7 +12,7 @@ namespace ml
 		{
 			m_tail = m_head;
 
-			return m_head->npos;
+			return m_head->data;
 		}
 		else if (Chunk * e = findEmpty(size)) // return free empty chunk
 		{
@@ -41,7 +25,7 @@ namespace ml
 				splitChunk(e, size);
 			}
 
-			return e->npos;
+			return e->data;
 		}
 		else if (Chunk * n = appendChunk(size)) // push back new chunk
 		{
@@ -51,7 +35,7 @@ namespace ml
 
 			m_tail = n;
 
-			return m_tail->npos;
+			return m_tail->data;
 		}
 		return NULL;
 	}
@@ -103,13 +87,29 @@ namespace ml
 		}
 	}
 
+	void	MemoryManager::serializeChunk(std::ostream & out, const Chunk & c) const
+	{
+		const std::type_info & info(typeid(c));
+		out << FG::White << "[ " << FG::Gray << info.name() << FG::White << " ]"
+			<< FG::White << " { " << FG::Green << "size: " << FG::Yellow << std::setw(4) << (c.size)
+			<< FG::White << " | " << (c.free ? FG::Cyan : FG::Red) << (c.free ? "free" : "used")
+			<< FG::White << " | " << FG::Green << "addr: " << FG::Yellow << (&c)
+			<< FG::White << " | " << FG::Green << "prev: " << FG::Yellow << (c.prev)
+			<< FG::White << " | " << FG::Green << "next: " << FG::Yellow << (c.next)
+			<< FG::White << " | " << FG::Green << "npos: " << FG::Yellow << (&c.data)
+			<< FG::White << " | " << FG::Green << "indx: " << FG::Yellow << ((int)c.data[0])
+			<< FG::White << " }"
+			<< FMT()
+			<< std::endl;
+	}
+
 	
 	bool	MemoryManager::isValidChunk(Chunk * value) const
 	{
 		return good()
 			&& (value) 
 			&& (value >= m_head)
-			&& (((void *)value) <= (&m_tail->npos));
+			&& (((void *)value) <= (&m_tail->data));
 	}
 	
 
@@ -117,7 +117,7 @@ namespace ml
 	{
 		if (good() && size)
 		{
-			const size_t need = (size + ML_CHUNK_SIZE);
+			const size_t need = (size + ML_CHUNK_SIZE + ML_NPOS_SIZE);
 
 			if ((addr + need) < m_size)
 			{
@@ -144,7 +144,7 @@ namespace ml
 	{
 		if (Chunk * chunk = writeChunk(m_used, size))
 		{
-			m_used += (size + ML_CHUNK_SIZE);
+			m_used += (size + (ML_CHUNK_SIZE + ML_NPOS_SIZE));
 
 			return chunk;
 		}
@@ -232,9 +232,7 @@ namespace ml
 	{
 		if (0 && good() && (value && size))
 		{
-			void * addr = (value + size);
-
-			if (Chunk * chunk = readChunk(addr))
+			if (Chunk * chunk = readChunk(value->data))
 			{
 				chunk->size = value->size - size;
 				chunk->free = true;
@@ -250,7 +248,8 @@ namespace ml
 				value->free = false;
 				value->next = chunk;
 
-				Debug::Log("Split");
+				Debug::Log("Split: Success");
+
 				return chunk;
 			}
 		}

@@ -43,7 +43,7 @@ namespace ml
 		{
 			Debug::LogWarning("Final allocations follow:");
 			
-			Debug::err() << (*this);
+			cerr << (*this);
 			
 			Debug::pause(EXIT_FAILURE);
 		}

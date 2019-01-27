@@ -14,7 +14,7 @@ namespace ml
 		bool	free;	// Is free?
 		Chunk *	prev;	// Prev chunk in list
 		Chunk *	next;	// Next chunk in list
-		byte	npos[1];// End of metadata
+		byte	data[1];// End of metadata struct, pointer to data
 
 		Chunk()
 			: size(NULL)

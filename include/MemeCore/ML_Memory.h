@@ -29,11 +29,11 @@ typedef uint8_t bool;
 
 typedef struct Block
 {
-	size_t			size; // Size of data
-	bool			free; // Is free?
-	struct Block *	prev; // Previous node in list
-	struct Block *	next; // Next node in list
-	byte npos[1]; // End of metadata
+	size_t			size;	// Size of data
+	bool			free;	// Is free?
+	struct Block *	prev;	// Previous node in list
+	struct Block *	next;	// Next node in list
+	byte			npos[1];// End of metadata
 
 } Block;
 
@@ -44,6 +44,7 @@ extern "C"
 {
 #endif
 
+	// Core
 	/* * * * * * * * * * * * * * * * * * * * */
 	
 	ML_CORE_API void *	ml_allocate(size_t size);
@@ -53,6 +54,7 @@ extern "C"
 	ML_CORE_API void	ml_displayMemory();
 	ML_CORE_API bool	ml_displayBlock(Block * block);
 
+	// Internal
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	ML_CORE_API bool	ml_isValidBlock(Block * block);

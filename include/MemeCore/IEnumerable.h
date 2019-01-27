@@ -1,5 +1,5 @@
-#ifndef _IENUMERATOR_H_
-#define _IENUMERATOR_H_
+#ifndef _IENUMERABLE_H_
+#define _IENUMERABLE_H_
 
 #include <MemeCore/Iterator.h>
 
@@ -95,4 +95,4 @@ namespace ml
 	};
 }
 
-#endif // !_IENUMERATOR_H_
+#endif // !_IENUMERABLE_H_
