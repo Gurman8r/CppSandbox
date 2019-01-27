@@ -15,19 +15,8 @@
 // Size of struct Block
 #define BLOCK_SIZE (size_t)(sizeof(Block))
 
+// Size of data pointer
 #define NPOS_SIZE (size_t)(sizeof(byte *))
-
-// Returns the space needed to store a Block and some data
-#define SPACE_NEED(size) (size_t)(size + BLOCK_SIZE)
-
-// Returns the end position of the given Block
-#define BLOCK_NPOS(blck) (size_t)(((size_t)blck) + BLOCK_SIZE)
-
-// Returns the address of the given block's data
-#define BLOCK_DATA(blck) (void *)(BLOCK_NPOS(blck))
-
-// Returns the address of a Block given the address of some data
-#define FIND_BLOCK(data) (Block *)(((size_t)data) - BLOCK_SIZE)
 
 /* * * * * * * * * * * * * * * * * * * * */
 
