@@ -41,12 +41,6 @@ namespace
 {
 	inline static int32_t testMemoryManager()
 	{
-		ml::Debug::Log("Testing Memory Manager");
-		ml::Debug::Log("Max Bytes: {0}", ml::MemoryManager::MaxBytes);
-		ml::Debug::Log("Chunk Size: {0}", sizeof(ml::Chunk));
-		ml::Debug::Log("Test Struct Size: {0}", sizeof(Test));
-		ml::Debug::out() << std::endl;
-
 		// Data
 		/* * * * * * * * * * * * * * * * * * * * */
 		enum : size_t 
@@ -72,6 +66,22 @@ namespace
 
 		static Test * test[MAX] = { NULL };
 
+
+		// Initialize
+		/* * * * * * * * * * * * * * * * * * * * */
+		ml::Debug::Log("Testing Memory");
+		ml::Debug::Log("Max Bytes: {0}", ML_MAX_BYTES);
+		ml::Debug::Log("Chunk Size: {0}", sizeof(ml::Chunk));
+		ml::Debug::Log("Test Struct Size: {0}", sizeof(Test));
+		ml::Debug::out() << std::endl;
+
+		ml::byte data[ML_MAX_BYTES];
+
+		if (!ML_Memory.prime(data, ML_MAX_BYTES))
+		{
+			return ml::Debug::LogError("Failed priming Memory Manager")
+				|| ml::Debug::pause(EXIT_FAILURE);
+		}
 
 		// Allocate
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -107,8 +117,16 @@ namespace
 		}
 		ml::Debug::out() << std::endl << ML_Memory << std::endl;
 
-
 		return ml::Debug::pause(EXIT_SUCCESS);
+	}
+
+	inline static int32_t runTests(uint32_t id)
+	{
+		switch (id)
+		{
+		case 1: return testMemoryManager();
+		}
+		return EXIT_FAILURE;
 	}
 }
 

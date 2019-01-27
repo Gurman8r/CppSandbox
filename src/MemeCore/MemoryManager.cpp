@@ -1,31 +1,17 @@
 #include <MemeCore/MemoryManager.h>
-#include <MemeCore/BitHelper.h>
 #include <MemeCore/DebugUtility.h>
-#include <MemeCore/ML_Memory.h>
 
 namespace ml
 {
-	MemoryManager::MemoryManager()
-		: m_size(0)
-		, m_head(NULL)
-	{
-		memset(m_data, NULL, MaxBytes);
-	}
-
-	MemoryManager::~MemoryManager()
-	{
-	}
-	
-	
 	void *	MemoryManager::allocate(size_t size)
 	{
-		if (!m_head && (m_head = createNewChunk(size)))
+		if (!m_head && (m_head = createChunk(size)))
 		{
 			m_tail = m_head;
 			
 			return m_head->npos;
 		}
-		else if(Chunk * eChunk = findEmptyChunk(size))
+		else if(Chunk * eChunk = findAvailableChunk(size))
 		{
 			eChunk->size = size;
 			
@@ -33,7 +19,7 @@ namespace ml
 			
 			return eChunk->npos;
 		}
-		else if(Chunk * nChunk = createNewChunk(size))
+		else if(Chunk * nChunk = createChunk(size))
 		{
 			m_tail->next = nChunk;
 			
@@ -48,76 +34,96 @@ namespace ml
 
 	bool	MemoryManager::free(void * value)
 	{
-		if (value)
+		if (Chunk * chunk = findChunkByValue(value))
 		{
-			Chunk * ptr = (Chunk *)((size_t)value - sizeof(Chunk));
-
-			if (ptr >= m_head)
+			if (chunk >= m_head)
 			{
-				if ((void *)ptr <= (&m_tail->npos))
+				if (((void *)chunk) <= (&m_tail->npos))
 				{
-					ptr->free = true;
-					
-					mergeChunkNext(ptr);
-					
-					mergeChunkPrev(ptr);
-					
+					chunk->free = true;
+
+					mergeChunkNext(chunk);
+
+					mergeChunkPrev(chunk);
+
 					return true;
 				}
 			}
 		}
 		return false;
 	}
-	
-	
-	bool	MemoryManager::hasSpace(size_t size) const
-	{
-		return ((m_size + (size + sizeof(Chunk))) < MaxBytes);
-	}
 
-	size_t	MemoryManager::incrementAllocation(size_t size)
+	bool	MemoryManager::prime(byte * data, size_t size)
 	{
-		return (m_size += (size + sizeof(Chunk)));
-	}
-
-	
-	Chunk * MemoryManager::createNewChunk(size_t size)
-	{
-		if (hasSpace(size))
+		if (!m_data && (data && size))
 		{
-			if (Chunk * chunk = (Chunk *)(&m_data[incrementAllocation(size)]))
+			m_data = data;
+			m_size = size;
+			m_used = 0;
+			m_head = NULL;
+			m_tail = NULL;
+			
+			return true;
+		}
+		return false;
+	}
+
+	
+	Chunk * MemoryManager::createChunk(size_t size)
+	{
+		if (size)
+		{
+			const size_t need = (size + sizeof(Chunk));
+
+			if ((m_used + need) < m_size)
 			{
-				chunk->size = size + sizeof(Chunk);
-				chunk->free = (!size);
-				chunk->prev = NULL;
-				chunk->next = NULL;
-				return chunk;
+				if (Chunk * chunk = (Chunk *)(&m_data[(m_used += need)]))
+				{
+					chunk->size = need;
+					chunk->free = false;
+					chunk->prev = NULL;
+					chunk->next = NULL;
+					return chunk;
+				}
 			}
 		}
 		return NULL;
 	}
 
-	Chunk * MemoryManager::findEmptyChunk(size_t size) const
+	Chunk * MemoryManager::findChunkByValue(void * value) const
 	{
-		Chunk * ptr = (m_head);
-		while (ptr)
+		if (value)
 		{
-			if (ptr->free && (ptr->size >= (size + sizeof(Chunk))))
-			{
-				return ptr;
-			}
-
-			ptr = ptr->next;
+			return (Chunk *)((size_t)value - sizeof(Chunk) + sizeof(uint8_t *));
 		}
-		return ptr;
+		return NULL;
+	}
+
+	Chunk * MemoryManager::findAvailableChunk(size_t size) const
+	{
+		if (size)
+		{
+			Chunk * ptr = m_head;
+			while (ptr)
+			{
+				if (ptr->free && (ptr->size >= (size + sizeof(Chunk))))
+				{
+					return ptr;
+				}
+
+				ptr = ptr->next;
+			}
+			return ptr;
+		}
+		return NULL;
 	}
 	
 
 	bool	MemoryManager::mergeChunkPrev(Chunk * value)
 	{
-		if (value->prev && (value->prev)->free)
+		if (value && (value->prev && (value->prev)->free))
 		{
-			(value->prev)->size += value->size + sizeof(Chunk);
+			(value->prev)->size += value->size;
 
 			(value->prev)->next = value->next;
 
@@ -133,9 +139,9 @@ namespace ml
 
 	bool	MemoryManager::mergeChunkNext(Chunk * value)
 	{
-		if (value->next && (value->next)->free)
+		if (value && (value->next && (value->next)->free))
 		{
-			value->size += (value->next)->size + sizeof(Chunk);
+			value->size += (value->next)->size;
 
 			value->next = (value->next)->next;
 
@@ -149,12 +155,21 @@ namespace ml
 		return false;
 	}
 
+	bool	MemoryManager::splitChunk(Chunk * value, size_t size)
+	{
+		if (value && size)
+		{
 
+		}
+		return false;
+	}
+
+	
 	void	MemoryManager::serialize(std::ostream & out) const
 	{
-		out << "Memory: " 
-			<< "( " << m_size << " / " << MaxBytes << " ) " 
-			<< "( " << ((double)m_size / (double)MaxBytes) << " % )"
+		out << "Memory Usage: " 
+			<< "( " << m_used << " / " << m_size << " ) " 
+			<< "( " << ((double)m_used / (double)m_size) << "% )"
 			<< std::endl;
 
 		if (Chunk * ptr = (Chunk *)m_head)
@@ -171,4 +186,5 @@ namespace ml
 			out << "Empty" << std::endl;
 		}
 	}
+
 }

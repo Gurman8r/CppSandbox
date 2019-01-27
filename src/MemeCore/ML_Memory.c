@@ -1,6 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * */
 
 #include <MemeCore/ML_Memory.h>
+#include <stdio.h>
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -12,27 +13,27 @@
 /* * * * * * * * * * * * * * * * * * * * */
 
 // Size of struct Block
-#define BLOCK_SIZE ((size_t)(sizeof(Block)))
+#define BLOCK_SIZE (size_t)(sizeof(Block))
 
-// Space needed for a Block plus the given size
-#define SPACE_NEED(size) ((size_t)(size + BLOCK_SIZE))
+// Returns the space needed to store a Block and some data
+#define SPACE_NEED(size) (size_t)(size + BLOCK_SIZE)
 
 // Returns the end position of the given Block
-#define BLOCK_NPOS(block) ((size_t)((size_t)(block)) + BLOCK_SIZE)
+#define BLOCK_NPOS(blck) (size_t)(((size_t)blck) + BLOCK_SIZE)
 
 // Returns the address of the given block's data
-#define BLOCK_DATA(block) ((void *)(BLOCK_NPOS(block)))
+#define BLOCK_DATA(blck) (void *)(BLOCK_NPOS(blck))
 
-// Returns the Block at the given address
-#define FIND_BLOCK(addr) ((Block *)((size_t)(addr)) - BLOCK_SIZE)
+// Returns the address of a Block given the address of some data
+#define FIND_BLOCK(data) (Block *)(((size_t)data) - BLOCK_SIZE)
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-byte *			m_data;		// Pointer to byte array
-size_t			m_size;		// Total bytes available
-size_t			m_used;		// Number of bytes used
-struct Block *	m_head;		// First block in list
-struct Block *	m_tail;		// Last block in list
+byte *			m_data;	// Pointer to byte array
+size_t			m_size;	// Total bytes available
+size_t			m_used;	// Number of bytes used
+struct Block *	m_head;	// First block in list
+struct Block *	m_tail;	// Last block in list
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -75,6 +76,10 @@ bool	ml_free(void * value)
 			{
 				block->free = true;
 				
+				ml_mergeBlockNext(block);
+				
+				ml_mergeBlockPrev(block);
+				
 				return true;
 			}
 		}
@@ -82,11 +87,7 @@ bool	ml_free(void * value)
 	return false;
 }
 
-
-size_t	ml_increment(size_t size)
-{
-	return (m_used += SPACE_NEED(size));
-}
+/* * * * * * * * * * * * * * * * * * * * */
 
 bool	ml_prime(byte * data, size_t size)
 {
@@ -110,6 +111,10 @@ bool	ml_prime(byte * data, size_t size)
 	return checked;
 }
 
+size_t	ml_increment(size_t size)
+{
+	return (m_used += SPACE_NEED(size));
+}
 
 bool	ml_mergeBlockPrev(Block * value)
 {
@@ -152,10 +157,9 @@ bool	ml_splitBlock(Block * value, size_t size)
 	if (value)
 	{
 		Block * block;
-
 		if (block = (Block *)(BLOCK_NPOS(value) + size))
 		{
-			block->size = (value->size - size - BLOCK_SIZE);
+			block->size = (value->size - size);
 			block->free = true;
 			block->prev = value;
 			block->next = value->next;
@@ -176,9 +180,43 @@ bool	ml_splitBlock(Block * value, size_t size)
 }
 
 
+void	ml_displayMemory()
+{
+	printf("Bytes Used: ( %u / %u )\n", m_used, m_size);
+
+	Block * block;
+	if (block = (m_head))
+	{
+		while (ml_displayBlock(block))
+		{
+			block = block->next;
+		}
+	}
+
+	printf("\n");
+}
+
+bool	ml_displayBlock(Block * value)
+{
+	if (value)
+	{
+		printf("[ size: %d | %s | addr: %p | prev: %p | next: %p | npos: %p ]\n", 
+			value->size,
+			(value->free ? "free" : "used"),
+			(void *)value,
+			(void *)value->prev,
+			(void *)value->next,
+			BLOCK_DATA(value));
+
+		return true;
+	}
+	return false;
+}
+
+
 Block * ml_createBlock(size_t size)
 {
-	if ((m_used + SPACE_NEED(size)) < m_size)
+	if ((m_used + size) <= m_size)
 	{
 		Block * block;
 		if (block = (Block *)(&m_data[ml_increment(size)]))
@@ -187,7 +225,7 @@ Block * ml_createBlock(size_t size)
 			block->free = false;
 			block->prev = NULL;
 			block->next = NULL;
-			return block;
+			return m_tail;
 		}
 	}
 	return NULL;
@@ -207,5 +245,14 @@ Block * ml_findEmptyBlock(size_t size)
 	return block;
 }
 
+Block * ml_findBlockByValue(void * value)
+{
+	if (value)
+	{
+		Block * found = NULL;
+
+	}
+	return NULL;
+}
 
 /* * * * * * * * * * * * * * * * * * * * */

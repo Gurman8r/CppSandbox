@@ -135,9 +135,6 @@
     <ClInclude Include="..\..\include\MemeCore\Rect.h">
       <Filter>Header Files\Maths</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\ML_Enum.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Time.h">
       <Filter>Header Files\Time</Filter>
     </ClInclude>
@@ -173,6 +170,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\ML_Memory.h">
       <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Enum.h">
+      <Filter>Header Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -221,8 +221,5 @@
     <ClCompile Include="..\..\src\MemeCore\ML_Memory.c">
       <Filter>Source Files\Memory</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

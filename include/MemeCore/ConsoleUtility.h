@@ -2,7 +2,7 @@
 #define _CONSOLE_UTILITY_H_
 
 #include <MemeCore/Export.h>
-#include <MemeCore/ML_Enum.h>
+#include <MemeCore/Enum.h>
 #include <iostream>
 #include <iomanip>
 

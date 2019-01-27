@@ -6,13 +6,15 @@
 
 namespace ml
 {
+	using byte = uint8_t;
+
 	struct ML_CORE_API Chunk final
 	{
 		size_t	size;
 		bool	free;
 		Chunk *	prev;
 		Chunk *	next;
-		uint8_t	npos[1];
+		byte	npos[1];
 
 		Chunk();
 

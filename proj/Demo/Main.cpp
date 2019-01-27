@@ -28,7 +28,7 @@ int32_t main(int32_t argc, char ** argv)
 	// Run Tests
 	if (SETTINGS.runTests)
 	{
-		return testMemoryManager();
+		return runTests(SETTINGS.runTests);
 	}
 
 	// Create Window
