@@ -29,7 +29,7 @@ namespace ml
 	private:
 		Chunk *	createChunk(size_t size);
 		Chunk * findChunkByValue(void * value) const;
-		Chunk *	findAvailableChunk(size_t size) const;
+		Chunk *	findEmptyChunk(size_t size) const;
 
 		bool	mergeChunkPrev(Chunk * value);
 		bool	mergeChunkNext(Chunk * value);

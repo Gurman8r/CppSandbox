@@ -11,7 +11,7 @@ namespace ml
 			
 			return m_head->npos;
 		}
-		else if(Chunk * eChunk = findAvailableChunk(size))
+		else if(Chunk * eChunk = findEmptyChunk(size))
 		{
 			eChunk->size = size;
 			
@@ -55,23 +55,23 @@ namespace ml
 
 	bool	MemoryManager::prime(byte * data, size_t size)
 	{
-		if (!m_data && (data && size))
+		static bool doOnce = false;
+		if (!doOnce && (!m_data && (data && size)))
 		{
+			doOnce = true;
 			m_data = data;
 			m_size = size;
-			m_used = 0;
+			m_used = 0x00;
 			m_head = NULL;
 			m_tail = NULL;
-			
-			return true;
 		}
-		return false;
+		return doOnce;
 	}
 
 	
 	Chunk * MemoryManager::createChunk(size_t size)
 	{
-		if (size)
+		if (m_data && size)
 		{
 			const size_t need = (size + sizeof(Chunk));
 
@@ -92,16 +92,16 @@ namespace ml
 
 	Chunk * MemoryManager::findChunkByValue(void * value) const
 	{
-		if (value)
+		if (m_data && value)
 		{
-			return (Chunk *)((size_t)value - sizeof(Chunk) + sizeof(uint8_t *));
+			return (Chunk *)((size_t)value - sizeof(Chunk) + sizeof(byte *));
 		}
 		return NULL;
 	}
 
-	Chunk * MemoryManager::findAvailableChunk(size_t size) const
+	Chunk * MemoryManager::findEmptyChunk(size_t size) const
 	{
-		if (size)
+		if (m_data && size)
 		{
 			Chunk * ptr = m_head;
 			while (ptr)
@@ -167,9 +167,9 @@ namespace ml
 	
 	void	MemoryManager::serialize(std::ostream & out) const
 	{
-		out << "Memory Usage: " 
+		out << "Bytes Used: " 
 			<< "( " << m_used << " / " << m_size << " ) " 
-			<< "( " << ((double)m_used / (double)m_size) << "% )"
+			<< "( " << (((double)m_used / m_size) * 100.0) << " % )"
 			<< std::endl;
 
 		if (Chunk * ptr = (Chunk *)m_head)

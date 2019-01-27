@@ -75,8 +75,8 @@ namespace
 		ml::Debug::Log("Test Struct Size: {0}", sizeof(Test));
 		ml::Debug::out() << std::endl;
 
-		ml::byte data[ML_MAX_BYTES];
 
+		ml::byte data[ML_MAX_BYTES];
 		if (!ML_Memory.prime(data, ML_MAX_BYTES))
 		{
 			return ml::Debug::LogError("Failed priming Memory Manager")

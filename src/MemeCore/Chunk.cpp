@@ -17,7 +17,7 @@ namespace ml
 		return (out)
 			<< FG::White << "[ " << FG::Gray << info.name() << FG::White << " ]"
 			<< FG::White << " { " << FG::Green << "size: " << FG::Yellow << std::setw(3) << (c.size)
-			<< FG::White << " | " << (c.free ? FG::Magenta : FG::Cyan) << (c.free ? "free" : "used")
+			<< FG::White << " | " << (c.free ? FG::Cyan : FG::Red) << (c.free ? "free" : "used")
 			<< FG::White << " | " << FG::Green << "addr: " << FG::Yellow << (&c)
 			<< FG::White << " | " << FG::Green << "prev: " << FG::Yellow << (c.prev)
 			<< FG::White << " | " << FG::Green << "next: " << FG::Yellow << (c.next)
