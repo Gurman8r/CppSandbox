@@ -21,7 +21,7 @@
     <ClInclude Include="..\..\include\MemeAudio\Sound.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeAudio\AudioDevice.h">
+    <ClInclude Include="..\..\include\MemeAudio\Audio.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -29,7 +29,7 @@
     <ClCompile Include="..\..\src\MemeAudio\Sound.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemeAudio\AudioDevice.cpp">
+    <ClCompile Include="..\..\src\MemeAudio\Audio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

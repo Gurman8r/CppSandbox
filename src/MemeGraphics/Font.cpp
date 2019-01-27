@@ -47,7 +47,7 @@ namespace ml
 		FT_Library library;
 		if (FT_Init_FreeType(&library) != EXIT_SUCCESS)
 		{
-			return Debug::LogError("Failed to load font \"{0}\" (failed to initialize FreeType)", 
+			return Debug::LogError("Failed to load font \"{0}\" (failed to open FreeType)", 
 				filename);
 		}
 		m_library = library;

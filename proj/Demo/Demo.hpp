@@ -6,7 +6,7 @@
 #include "Settings.hpp"
 
 #include <dirent.h>
-#include <MemeAudio/Sound.h>
+#include <MemeAudio/Audio.h>
 #include <MemeCore/Time.h>
 #include <MemeCore/InputState.h>
 #include <MemeCore/FileSystem.h>
@@ -143,6 +143,25 @@ namespace demo
 namespace demo
 {
 	/* * * * * * * * * * * * * * * * * * * * */
+
+	template <class T>
+	inline static bool ml_load(ml::IResource & res, const std::string & file, bool log)
+	{
+		const std::type_info & info(typeid(res));
+
+		if (res.loadFromFile(SETTINGS.pathTo(file)))
+		{
+			return log
+				? ml::Debug::Log("Loaded [{0}]: \"{1}\"", info.name(), file)
+				: true;
+		}
+
+		return ml::Debug::LogError("Failed Loading [{0}]: \"{1}\"", info.name(), file);
+	}
+	
+
+	// Commands
+	/* * * * * * * * * * * * * * * * * * * * */
 	
 	inline static void loadCommands()
 	{
@@ -277,24 +296,9 @@ namespace demo
 			} });
 		}
 	};
-	
-	/* * * * * * * * * * * * * * * * * * * * */
 
-	template <class T>
-	inline static bool ml_load(ml::IResource & res, const std::string & file, bool log)
-	{
-		const std::type_info & info(typeid(res));
 
-		if (res.loadFromFile(SETTINGS.pathTo(file)))
-		{
-			return log
-				? ml::Debug::Log("Loaded [{0}]: \"{1}\"", info.name(), file)
-				: true;
-		}
-
-		return ml::Debug::LogError("Failed Loading [{0}]: \"{1}\"", info.name(), file);
-	}
-
+	// Graphics
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	inline static bool loadFonts(bool en, bool log)
@@ -420,16 +424,25 @@ namespace demo
 		return (!en || (!log || ml::Debug::endl()));
 	}
 
+
+	// Audio
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	inline static bool loadAudio(bool en, bool log)
 	{
+		if (en && ml::Debug::Log("Loading Audio..."))
+		{
+			return ML_Audio.init() || ml::Debug::LogError("Failed Loading Audio");
+		}
 		return (!en || (en && ml::Debug::Log("Loading Sounds...")
 			
-			&& ml_load<ml::Sound>(sounds[SND_test], "/sounds/example.wav", log)
+			//&& ml_load<ml::Sound>(sounds[SND_test], "/sounds/example.wav", log)
 
 			&& (!log || ml::Debug::endl())));
 	}
+
+	// Network
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	inline static bool loadNetwork(bool en, bool log)
 	{
@@ -502,7 +515,7 @@ namespace demo
 			&& loadShaders	(true,	ev.log)
 			&& loadMeshes	(true,	ev.log)
 			&& loadBuffers	(true,	ev.log)
-			&& loadAudio	(false,	ev.log)
+			&& loadAudio	(true,	ev.log)
 			&& loadNetwork	(false,	ev.log)
 			;
 	}

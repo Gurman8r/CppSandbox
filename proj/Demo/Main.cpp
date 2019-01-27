@@ -59,7 +59,7 @@ int32_t main(int32_t argc, char ** argv)
 	}
 
 	// Load Resources
-	if (!demo::onLoad({ true }))
+	if (!demo::onLoad({ 0 }))
 	{
 		return ml::Debug::LogError("Failed Loading Resources")
 			|| ml::Debug::pause(EXIT_FAILURE);
