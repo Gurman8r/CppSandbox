@@ -162,9 +162,6 @@
     <ClInclude Include="..\..\include\MemeCore\MemoryPool.h">
       <Filter>Header Files\Memory</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Chunk.h">
-      <Filter>Header Files\Memory</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\MemoryManager.h">
       <Filter>Header Files\Memory</Filter>
     </ClInclude>
@@ -173,6 +170,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Enum.h">
       <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Chunk.h">
+      <Filter>Header Files\Memory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -213,9 +213,6 @@
       <Filter>Source Files\Memory</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\MemoryManager.cpp">
-      <Filter>Source Files\Memory</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeCore\Chunk.cpp">
       <Filter>Source Files\Memory</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\ML_Memory.c">

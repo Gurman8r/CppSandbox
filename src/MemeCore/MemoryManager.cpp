@@ -3,30 +3,54 @@
 
 namespace ml
 {
+	inline static void serializeChunk(std::ostream & out, const Chunk & c)
+	{
+		const std::type_info & info(typeid(c));
+		out << FG::White << "[ " << FG::Gray << info.name() << FG::White << " ]"
+			<< FG::White << " { " << FG::Green << "size: " << FG::Yellow << std::setw(4) << (c.size)
+			<< FG::White << " | " << (c.free ? FG::Cyan : FG::Red) << (c.free ? "free" : "used")
+			<< FG::White << " | " << FG::Green << "addr: " << FG::Yellow << (&c)
+			<< FG::White << " | " << FG::Green << "prev: " << FG::Yellow << (c.prev)
+			<< FG::White << " | " << FG::Green << "next: " << FG::Yellow << (c.next)
+			<< FG::White << " | " << FG::Green << "npos: " << FG::Yellow << (&c.npos)
+			<< FG::White << " | " << FG::Green << "indx: " << FG::Yellow << ((int)c.npos[0])
+			<< FG::White << " }"
+			<< FMT() 
+			<< std::endl;
+	}
+}
+
+namespace ml
+{
 	void *	MemoryManager::allocate(size_t size)
 	{
-		if (!m_head && (m_head = createChunk(size)))
+		if (!m_head && (m_head = insertChunk(size))) // create head
 		{
 			m_tail = m_head;
-			
+
 			return m_head->npos;
 		}
-		else if(Chunk * eChunk = findEmptyChunk(size))
+		else if (Chunk * e = findEmpty(size)) // return free empty chunk
 		{
-			eChunk->size = size;
-			
-			eChunk->free = false;
-			
-			return eChunk->npos;
+			e->size = size;
+
+			e->free = false;
+
+			if (e->size > size)
+			{
+				splitChunk(e, size);
+			}
+
+			return e->npos;
 		}
-		else if(Chunk * nChunk = createChunk(size))
+		else if (Chunk * n = insertChunk(size)) // push back new chunk
 		{
-			m_tail->next = nChunk;
-			
-			nChunk->prev = m_tail;
-			
-			m_tail = nChunk;
-			
+			m_tail->next = n;
+
+			n->prev = m_tail;
+
+			m_tail = n;
+
 			return m_tail->npos;
 		}
 		return NULL;
@@ -34,55 +58,72 @@ namespace ml
 
 	bool	MemoryManager::free(void * value)
 	{
-		if (Chunk * chunk = findChunkByValue(value))
+		if (Chunk * chunk = readChunk(value))
 		{
-			if (chunk >= m_head)
-			{
-				if (((void *)chunk) <= (&m_tail->npos))
-				{
-					chunk->free = true;
+			chunk->free = true;
 
-					mergeChunkNext(chunk);
+			mergeNext(chunk);
 
-					mergeChunkPrev(chunk);
+			mergePrev(chunk);
 
-					return true;
-				}
-			}
+			return true;
 		}
 		return false;
 	}
 
 	bool	MemoryManager::prime(byte * data, size_t size)
 	{
-		static bool doOnce = false;
-		if (!doOnce && (!m_data && (data && size)))
+		if (!good() && (data && size))
 		{
-			doOnce = true;
 			m_data = data;
 			m_size = size;
-			m_used = 0x00;
-			m_head = NULL;
-			m_tail = NULL;
 		}
-		return doOnce;
+		return good();
+	}
+	
+	void	MemoryManager::serialize(std::ostream & out) const
+	{
+		out << "Bytes Used: "
+			<< "( " << m_used << " / " << m_size << " ) "
+			<< "( " << (((double)m_used / m_size) * 100.0) << " % )"
+			<< std::endl;
+
+		if (Chunk * chunk = m_head)
+		{
+			while (chunk)
+			{
+				serializeChunk(out, (*chunk));
+
+				chunk = chunk->next;
+			}
+		}
+		else
+		{
+			out << "Empty" << std::endl;
+		}
 	}
 
 	
-	Chunk * MemoryManager::createChunk(size_t size)
+	Chunk * MemoryManager::writeChunk(size_t addr, size_t size)
 	{
-		if (m_data && size)
+		if (good() && size)
 		{
-			const size_t need = (size + sizeof(Chunk));
+			const size_t need = (size + ML_CHUNK_SIZE);
 
-			if ((m_used + need) < m_size)
+			if ((addr + need) < m_size)
 			{
-				if (Chunk * chunk = (Chunk *)(&m_data[(m_used += need)]))
+				if (Chunk * chunk = (Chunk *)(&m_data[(addr + need)]))
 				{
 					chunk->size = need;
 					chunk->free = false;
 					chunk->prev = NULL;
 					chunk->next = NULL;
+
+					if (chunk->size > size)
+					{
+						splitChunk(chunk, size);
+					}
+
 					return chunk;
 				}
 			}
@@ -90,101 +131,129 @@ namespace ml
 		return NULL;
 	}
 
-	Chunk * MemoryManager::findChunkByValue(void * value) const
+	Chunk * MemoryManager::insertChunk(size_t size)
 	{
-		if (m_data && value)
+		if (Chunk * chunk = writeChunk(m_used, size))
 		{
-			return (Chunk *)((size_t)value - sizeof(Chunk) + sizeof(byte *));
+			m_used += (size + ML_CHUNK_SIZE);
+
+			return chunk;
 		}
 		return NULL;
 	}
 
-	Chunk * MemoryManager::findEmptyChunk(size_t size) const
+
+	Chunk * MemoryManager::findEmpty(size_t size) const
 	{
-		if (m_data && size)
+		if (good() && size)
 		{
-			Chunk * ptr = m_head;
-			while (ptr)
+			Chunk * chunk = m_head;
+			while (chunk)
 			{
-				if (ptr->free && (ptr->size >= (size + sizeof(Chunk))))
+				if (chunk->free && (chunk->size >= (size + ML_CHUNK_SIZE)))
 				{
-					return ptr;
+					return chunk;
+				}
+				chunk = chunk->next;
+			}
+			return chunk;
+		}
+		return NULL;
+	}
+
+	Chunk * MemoryManager::readChunk(void * addr) const
+	{
+		if (good() && addr)
+		{
+			if (Chunk * chunk = (Chunk *)((((size_t)addr) - ML_CHUNK_SIZE) + ML_NPOS_SIZE))
+			{
+				if (isValidChunk(chunk))
+				{
+					return chunk;
+				}
+			}
+		}
+		return NULL;
+	}
+
+	
+	bool	MemoryManager::isValidChunk(Chunk * value) const
+	{
+		return good()
+			&& (value) 
+			&& (value >= m_head)
+			&& (((void *)value) <= (&m_tail->npos));
+	}
+	
+	Chunk *	MemoryManager::splitChunk(Chunk * value, size_t size)
+	{
+		if (0 && good() && (value && size))
+		{
+			void * addr = (value->npos + size);
+
+			if (Chunk * chunk = readChunk(addr))
+			{
+				chunk->size = value->size - size;
+				chunk->free = true;
+				chunk->next = value->next;
+				chunk->prev = value;
+
+				if (chunk->next)
+				{
+					(chunk->next)->prev = chunk;
 				}
 
-				ptr = ptr->next;
+				value->size = size;
+				value->free = false;
+				value->next = chunk;
+
+				return chunk;
 			}
-			return ptr;
 		}
 		return NULL;
 	}
-	
 
-	bool	MemoryManager::mergeChunkPrev(Chunk * value)
+
+	Chunk *	MemoryManager::mergePrev(Chunk * value) const
 	{
-		if (value && (value->prev && (value->prev)->free))
+		if (good())
 		{
-			(value->prev)->size += value->size;
-
-			(value->prev)->next = value->next;
-
-			if (value->next)
+			if (value && (value->prev && (value->prev)->free))
 			{
-				(value->next)->prev = value->prev;
+				(value->prev)->size += value->size;
 
-				return true;
+				(value->prev)->next = value->next;
+
+				if (value->next)
+				{
+					(value->next)->prev = value->prev;
+				}
+				
+				return value;
 			}
 		}
-		return false;
+		return NULL;
 	}
 
-	bool	MemoryManager::mergeChunkNext(Chunk * value)
+	Chunk *	MemoryManager::mergeNext(Chunk * value) const
 	{
-		if (value && (value->next && (value->next)->free))
+		if (good())
 		{
-			value->size += (value->next)->size;
-
-			value->next = (value->next)->next;
-
-			if ((value->next)->next)
+			if (value && (value->next && (value->next)->free))
 			{
-				((value->next)->next)->prev = value;
+				value->size += (value->next)->size;
 
-				return true;
+				value->next = (value->next)->next;
+
+				if ((value->next)->next)
+				{
+					((value->next)->next)->prev = value;
+				}
+
+				return value;
 			}
 		}
-		return false;
-	}
-
-	bool	MemoryManager::splitChunk(Chunk * value, size_t size)
-	{
-		if (value && size)
-		{
-
-		}
-		return false;
-	}
-
-	
-	void	MemoryManager::serialize(std::ostream & out) const
-	{
-		out << "Bytes Used: " 
-			<< "( " << m_used << " / " << m_size << " ) " 
-			<< "( " << (((double)m_used / m_size) * 100.0) << " % )"
-			<< std::endl;
-
-		if (Chunk * ptr = (Chunk *)m_head)
-		{
-			while (ptr)
-			{
-				out << (*ptr) << std::endl;
-
-				ptr = ptr->next;
-			}
-		}
-		else
-		{
-			out << "Empty" << std::endl;
-		}
+		return NULL;
 	}
 
 }

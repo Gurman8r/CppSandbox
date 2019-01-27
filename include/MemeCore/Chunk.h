@@ -10,15 +10,19 @@ namespace ml
 
 	struct ML_CORE_API Chunk final
 	{
-		size_t	size;
-		bool	free;
-		Chunk *	prev;
-		Chunk *	next;
-		byte	npos[1];
+		size_t	size;	// Size of data
+		bool	free;	// Is free?
+		Chunk *	prev;	// Prev chunk in list
+		Chunk *	next;	// Next chunk in list
+		byte	npos[1];// Pointer to data
 
-		Chunk();
-
-		friend std::ostream & operator<<(std::ostream & out, const Chunk & c);
+		Chunk()
+			: size(NULL)
+			, free(NULL)
+			, prev(NULL)
+			, next(NULL)
+		{
+		};
 	};
 }
 

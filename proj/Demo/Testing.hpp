@@ -43,15 +43,15 @@ namespace
 	{
 		// Data
 		/* * * * * * * * * * * * * * * * * * * * */
-		enum : size_t 
-		{ 
-			A, 
-			B, 
-			C, 
-			D, 
-			E, 
+		enum : size_t
+		{
+			A,
+			B,
+			C,
+			D,
+			E,
 			F,
-			MAX 
+			MAX
 		};
 
 		static const std::string Tags[MAX] =
@@ -69,29 +69,31 @@ namespace
 
 		// Initialize
 		/* * * * * * * * * * * * * * * * * * * * */
-		ml::Debug::Log("Testing Memory");
-		ml::Debug::Log("Max Bytes: {0}", ML_MAX_BYTES);
-		ml::Debug::Log("Chunk Size: {0}", sizeof(ml::Chunk));
-		ml::Debug::Log("Test Struct Size: {0}", sizeof(Test));
+		ml::Debug::Log("Chunk Size: {0}", ML_CHUNK_SIZE);
+		ml::Debug::Log("NPos Size: {0}", ML_NPOS_SIZE);
+		ml::Debug::Log("Test Size: {0}", sizeof(Test));
 		ml::Debug::out() << std::endl;
 
 
-		ml::byte data[ML_MAX_BYTES];
-		if (!ML_Memory.prime(data, ML_MAX_BYTES))
+		enum : size_t { MaxBytes = 4096 };
+
+		ml::byte data[MaxBytes];
+
+		if (!ML_Memory.prime(data, MaxBytes))
 		{
 			return ml::Debug::LogError("Failed priming Memory Manager")
 				|| ml::Debug::pause(EXIT_FAILURE);
 		}
 
-		// Allocate
+		// Write
 		/* * * * * * * * * * * * * * * * * * * * */
 		for (size_t i = 0; i < MAX; i++)
 		{
 			if (test[i] = (Test *)ML_Memory.allocate(sizeof(Test)))
 			{
-				test[i]->index	= i;
-				test[i]->name	= "Test Name";
-				test[i]->tag	= Tags[i].c_str();
+				test[i]->index = i;
+				test[i]->name = "Test Name";
+				test[i]->tag = Tags[i].c_str();
 				ml::Debug::Log("Allocation Success: {0}", (*test[i]));
 			}
 			else
@@ -119,7 +121,12 @@ namespace
 
 		return ml::Debug::pause(EXIT_SUCCESS);
 	}
+}
 
+/* * * * * * * * * * * * * * * * * * * * */
+
+namespace
+{
 	inline static int32_t runTests(uint32_t id)
 	{
 		switch (id)
