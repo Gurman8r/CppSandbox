@@ -74,9 +74,11 @@ namespace ml
 		Window & setTitle(const std::string & value);
 
 		bool	isOpen() const;
+		bool	isFocused() const;
 		float	getTime() const;
-		vec2d	getCursorPos() const;
+		vec2f	getCursorPos() const;
 		char	getChar() const;
+		vec2f	getScroll() const;
 
 		inline const Context &		context()	const { return m_context; }
 		inline const VideoMode &	videoMode()	const { return m_videoMode; }
@@ -99,7 +101,10 @@ namespace ml
 		vec2i		m_position;
 		std::string	m_title;
 		
+		// runtime
 		mutable char m_char;
+		vec2d		 m_scroll;
+		bool		 m_focused;
 	};
 
 }

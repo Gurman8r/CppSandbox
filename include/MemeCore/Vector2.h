@@ -47,6 +47,12 @@ namespace ml
 		{
 		}
 
+		//template <typename TX, typename TY>
+		//explicit Vector(const TX & x, const TY & y)
+		//	: base_type({ static_cast<T>(x), static_cast<T>(y) })
+		//{
+		//}
+
 		virtual ~Vector2() {}
 		
 	public:

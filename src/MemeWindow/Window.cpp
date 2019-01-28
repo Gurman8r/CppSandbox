@@ -145,14 +145,18 @@ namespace ml
 			if (auto ev = dynamic_cast<const WindowResizedEvent *>(value))
 			{
 				m_videoMode.size = {
-					ev->width,
-					ev->height
+					(uint32_t)ev->width,
+					(uint32_t)ev->height
 				};
 			}
 			break;
 		case WindowEventID::EV_WindowMoved:
 			if (auto ev = dynamic_cast<const WindowMovedEvent *>(value))
 			{
+				m_position = {
+					ev->x,
+					ev->y
+				};
 			}
 			break;
 		case WindowEventID::EV_WindowChar:
@@ -164,6 +168,10 @@ namespace ml
 		case WindowEventID::EV_WindowScroll:
 			if (auto ev = dynamic_cast<const WindowScrollEvent *>(value))
 			{
+				m_scroll = {
+					ev->x,
+					ev->y
+				};
 			}
 			break;
 		case WindowEventID::EV_WindowClosed:
@@ -174,6 +182,7 @@ namespace ml
 		case WindowEventID::EV_WindowFocused:
 			if (auto ev = dynamic_cast<const WindowFocusedEvent *>(value))
 			{
+				m_focused = ev->value;
 			}
 			break;
 		case WindowEventID::EV_WindowMouseMove:
@@ -286,16 +295,21 @@ namespace ml
 		return !glfwWindowShouldClose(ML_WINDOW(m_window));
 	}
 
+	bool Window::isFocused() const
+	{
+		return m_focused;
+	}
+
 	float Window::getTime() const
 	{
 		return static_cast<float>(glfwGetTime());
 	}
 
-	vec2d Window::getCursorPos() const
+	vec2f Window::getCursorPos() const
 	{
 		static double x, y;
 		glfwGetCursorPos(ML_WINDOW(m_window), &x, &y);
-		return vec2d(x, y);
+		return vec2f((float)x, (float)y);
 	}
 
 	char Window::getChar() const
@@ -304,6 +318,11 @@ namespace ml
 		temp = m_char;
 		m_char = 0;
 		return temp;
+	}
+
+	vec2f Window::getScroll() const
+	{
+		return (vec2f)m_scroll;
 	}
 	
 }
