@@ -21,5 +21,5 @@ Help
 __________
 - Solution Not Building?
 	- Retarget the solution to a different Windows SDK version.
-	- Run the OpenAL SDK installer "/thirdparty/oalinst.exe"
+	- Run the OpenAL SDK installer "/thirdparty/tools/oalinst.exe"
 	- Try updating your graphics drivers.
