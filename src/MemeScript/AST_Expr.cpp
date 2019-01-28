@@ -34,7 +34,7 @@ namespace ml
 
 
 	//	Expressions
-	/* * * * * * * * * * * * * * * * */
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	// Array
 	AST_Array::AST_Array(const Values & values)
@@ -63,7 +63,7 @@ namespace ml
 
 		for (auto it = values.begin(); it != values.end(); it++)
 		{
-			items.push_back((*it)->evaluate().tokensValue());
+			items.push_back(( * it)->evaluate().tokensValue());
 		}
 
 		return Var().arrayValue(items);
@@ -87,7 +87,7 @@ namespace ml
 
 	std::ostream & AST_Assign::display(std::ostream & out) const
 	{
-		return out << (*name) << " " << op << " " << (*expr);
+		return out << ( * name) << " " << op << " " << ( * expr);
 	}
 
 	Var AST_Assign::evaluate() const
@@ -96,7 +96,7 @@ namespace ml
 		{
 			if (Var * v = block()->setv(name->value, expr->evaluate()))
 			{
-				return (*v);
+				return ( * v);
 			}
 		}
 		else if (Var * v = block()->getv(name->value))
@@ -179,7 +179,7 @@ namespace ml
 		Params::const_iterator it;
 		for (it = args.begin(); it != args.end(); it++)
 		{
-			out << *(*it) << ((it != args.end() - 1) ? ", " : "");
+			out << * ( * it) << ((it != args.end() - 1) ? ", " : "");
 		}
 		out << (FG::Green | BG::Black) << ")"
 			<< FMT();
@@ -188,7 +188,7 @@ namespace ml
 
 	AST_Func * AST_Call::getFunc() const
 	{
-		if (AST_Block* b = block())
+		if (AST_Block * b = block())
 		{
 			if (Var * v = b->getv(name->value))
 			{
@@ -203,9 +203,9 @@ namespace ml
 
 	Var AST_Call::evaluate() const
 	{
-		if (AST_Func* f = getFunc())
+		if (AST_Func * f = getFunc())
 		{
-			if (AST_Block* b = f->nextAs<AST_Block>())
+			if (AST_Block * b = f->nextAs<AST_Block>())
 			{
 				if (f->args.size() == args.size())
 				{
@@ -267,7 +267,7 @@ namespace ml
 
 	// Float
 	AST_Flt::AST_Flt(float value)
-		: AST_Expr(AST_Expr::Type::EX_Flt)
+		: AST_Expr(AST_Expr::Type::EX_Float)
 		, value(value)
 	{
 	}
@@ -308,7 +308,7 @@ namespace ml
 		Params::const_iterator it;
 		for (it = args.begin(); it != args.end(); it++)
 		{
-			out << *(*it) << ((it != args.end() - 1) ? ", " : "");
+			out << * ( * it) << ((it != args.end() - 1) ? ", " : "");
 		}
 		out << ")";
 		return out;
@@ -395,11 +395,11 @@ namespace ml
 
 	std::ostream & AST_Name::display(std::ostream & out) const
 	{
-		if (AST_Block* b = block())
+		if (AST_Block * b = block())
 		{
 			if (Var * v = block()->getv(value))
 			{
-				out << (*v);
+				out << ( * v);
 			}
 			else
 			{
@@ -415,15 +415,15 @@ namespace ml
 
 	Var AST_Name::evaluate() const
 	{
-		if (AST_Block* b = block())
+		if (AST_Block * b = block())
 		{
 			if (Var * v = block()->getv(value))
 			{
-				return (*v);
+				return ( * v);
 			}
 			else
 			{
-				return *block()->setv(value, Var().pointerValue({ block()->getID(), value }));
+				return * block()->setv(value, Var().pointerValue({ block()->getID(), value }));
 			}
 		}
 
@@ -433,7 +433,7 @@ namespace ml
 
 	// BinOp
 	AST_BinOp::AST_BinOp(const Operator & op, AST_Expr * lhs, AST_Expr * rhs)
-		: AST_Expr(AST_Expr::Type::EX_Oper)
+		: AST_Expr(AST_Expr::Type::EX_BinOp)
 		, op(op)
 		, lhs(lhs)
 		, rhs(rhs)
@@ -448,7 +448,7 @@ namespace ml
 
 	std::ostream & AST_BinOp::display(std::ostream & out) const
 	{
-		out << "(" << *lhs << " " << op << " " << *rhs << ")";
+		out << "(" << * lhs << " " << op << " " << * rhs << ")";
 		return out;
 	}
 
@@ -488,13 +488,13 @@ namespace ml
 				return Var().boolValue(lhs->evaluate() || rhs->evaluate());
 			}
 		}
-		return Var().errorValue("AST_Oper : Invalid Operation {0} {1} {2}", *lhs, op, *rhs);
+		return Var().errorValue("AST_Oper : Invalid Operation {0} {1} {2}", * lhs, op, * rhs);
 	}
 
 
 	// String
 	AST_String::AST_String(const std::string & value)
-		: AST_Expr(AST_Expr::Type::EX_Str)
+		: AST_Expr(AST_Expr::Type::EX_String)
 		, value(value)
 	{
 	}
@@ -536,7 +536,7 @@ namespace ml
 
 
 	// Subscript
-	AST_Subscr::AST_Subscr(AST_Name* name, AST_Expr * index)
+	AST_Subscr::AST_Subscr(AST_Name * name, AST_Expr * index)
 		: AST_Expr(AST_Expr::Type::EX_Subscr)
 		, name(name)
 		, index(index)
@@ -551,13 +551,13 @@ namespace ml
 
 	std::ostream & AST_Subscr::display(std::ostream & out) const
 	{
-		out << "" << name->value << "[" << *index << "]";
+		out << "" << name->value << "[" << * index << "]";
 		return out;
 	}
 
 	Var AST_Subscr::evaluate() const
 	{
-		if (AST_Block* b = block())
+		if (AST_Block * b = block())
 		{
 			if (Var * a = b->getv(name->value))
 			{
@@ -577,9 +577,9 @@ namespace ml
 	}
 
 
-	// System
-	AST_Command::AST_Command(AST_Expr* expr)
-		: AST_Expr(AST_Expr::Type::EX_Sys)
+	// Command
+	AST_Command::AST_Command(AST_Expr * expr)
+		: AST_Expr(AST_Expr::Type::EX_Command)
 		, expr(expr)
 	{
 		addChild(expr);
@@ -591,7 +591,7 @@ namespace ml
 
 	std::ostream & AST_Command::display(std::ostream & out) const
 	{
-		return out << "command(" << (*expr) << ")";
+		return out << "command(" << ( * expr) << ")";
 	}
 
 	Var AST_Command::evaluate() const
@@ -606,5 +606,28 @@ namespace ml
 			return runNext();
 		}
 		return Debug::LogError("AST_Sys : Call Failed");
+	}
+
+
+	// Size Of
+	AST_SizeOf::AST_SizeOf(AST_Expr * expr)
+		: AST_Expr(EX_SizeOf)
+		, expr(expr)
+	{
+		addChild(expr);
+	}
+
+	AST_SizeOf::~AST_SizeOf()
+	{
+	}
+
+	std::ostream & AST_SizeOf::display(std::ostream & out) const
+	{
+		return out << "sizeof(" << (*expr) << ")";
+	}
+
+	Var AST_SizeOf::evaluate() const
+	{
+		return Var().intValue(expr->evaluate().sizeOfValue());
 	}
 }

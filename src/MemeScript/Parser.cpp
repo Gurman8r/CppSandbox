@@ -334,7 +334,6 @@ namespace ml
 			{
 			case 1:
 				return new AST_Print(params.front());
-			case 0:
 			default:
 				return new AST_Print(new AST_String(std::string()));
 			}
@@ -422,6 +421,16 @@ namespace ml
 				return new AST_Command(params.front());
 			}
 			return new AST_Command(new AST_String(std::string()));
+		}
+		// Len
+		else if (toks.matchData(toks.begin(), { "sizeof" }))
+		{
+			AST_Call::Params params = genCallParams(toks.after(1));
+			if (!params.empty())
+			{
+				return new AST_SizeOf(params.front());
+			}
+			return new AST_SizeOf(new AST_String(std::string()));
 		}
 		// Function
 		else if (AST_Func* func = genFunc(toks))

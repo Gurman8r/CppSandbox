@@ -16,16 +16,17 @@ namespace ml
 			EX_Assign,
 			EX_Bool = AST_Stmt::Type::MAX_STMT_TYPE + 1,
 			EX_Call,
-			EX_Flt,
+			EX_Float,
 			EX_Func,
 			EX_Input,
 			EX_Int,
 			EX_Name,
-			EX_Oper,
-			EX_Str,
+			EX_BinOp,
+			EX_String,
 			EX_Struct,
 			EX_Subscr,
-			EX_Sys,
+			EX_Command,
+			EX_SizeOf,
 			MAX_EXPR_TYPE
 		};
 
@@ -225,6 +226,16 @@ namespace ml
 		std::ostream& display(std::ostream& out) const override;
 		Var evaluate() const override;
 		bool run() override;
+	};
+
+	// Size Of
+	struct ML_SCRIPT_API AST_SizeOf : public AST_Expr
+	{
+		AST_Expr * expr;
+		AST_SizeOf(AST_Expr * expr);
+		~AST_SizeOf();
+		std::ostream& display(std::ostream& out) const override;
+		Var evaluate() const override;
 	};
 }
 

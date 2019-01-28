@@ -103,6 +103,7 @@ namespace ml
 		bool	isIntType() const;
 		bool	isNameType() const;
 		bool	isNullValue() const;
+		bool	isNumericType() const;
 		bool	isPointerType() const;
 		bool	isStringType() const;
 		bool	isVoidType() const;
@@ -114,6 +115,7 @@ namespace ml
 		std::string	errorValue() const;
 		int32_t		intValue() const;
 		Ptr			pointerValue() const;
+		size_t		sizeOfValue() const;
 		std::string	stringValue() const;
 		std::string	textValue() const;
 		TokenList	tokensValue() const;
@@ -149,9 +151,10 @@ namespace ml
 
 	public: // Operator Functions
 		bool	And(const Var & other) const;	// &&
+		bool	Or(const Var & other) const;	// ||
+
 		bool	Equals(const Var & other) const;// ==
 		bool	Less(const Var & other) const;	// <
-		bool	Or(const Var & other) const;	// ||
 
 		Var &	Add(const Var & other); // +
 		Var &	Div(const Var & other); // -
@@ -160,6 +163,7 @@ namespace ml
 		Var &	Pow(const Var & other); // ^
 		Var &	Sub(const Var & other); // -
 		Var &	Set(const Var & other); // =
+
 
 	public: // IComparable
 		inline bool equals(const Var & other)	const override { return Equals(other); }

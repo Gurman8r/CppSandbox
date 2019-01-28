@@ -1,11 +1,14 @@
 #include <MemeScript/Var.h>
 #include <MemeCore/DebugUtility.h>
-
 #include <MemeCore/StringUtility.h>
 #include <MemeScript/Operator.h>
 #include <MemeScript/Interpreter.h>
+#include <MemeCore/BitHelper.h>
 
-using namespace std;
+namespace ml
+{
+	using string = std::string;
+}
 
 namespace ml
 {
@@ -189,6 +192,11 @@ namespace ml
 	{
 		return isVoidType() || tokensValue().empty();
 	}
+
+	bool Var::isNumericType() const
+	{
+		return isBoolType() || isIntType() || isFloatType();
+	}
 		 
 	bool Var::isPointerType() const
 	{
@@ -263,6 +271,10 @@ namespace ml
 					return Var().stringValue(string(1, str[i]));
 				}
 			}
+			else if (isIntType())
+			{
+				return Var().boolValue(bitRead(intValue(), i));
+			}
 		}
 		return Var().errorValue("Var : Cannot access element {0}[{1}]", *this, i);
 	}
@@ -280,6 +292,23 @@ namespace ml
 	Var::Ptr	Var::pointerValue() const
 	{
 		return Ptr(m_scope, (textValue()));
+	}
+
+	size_t		Var::sizeOfValue() const
+	{
+		if (isArrayType())
+		{
+			return tokensValue().size();
+		}
+		else if (isStringType())
+		{
+			return stringValue().size();
+		}
+		else if (isNumericType())
+		{
+			return intValue();
+		}
+		return 0;
 	}
 	
 	string		Var::stringValue() const
@@ -321,10 +350,13 @@ namespace ml
 		  
 	Var & Var::elemValue(size_t index, const Token & value)
 	{
-		if (tokensValue().inRange(index))
+		if (isArrayType() || isStringType())
 		{
-			m_changed = true;
-			m_tokens[index] = value;
+			if (tokensValue().inRange(index))
+			{
+				m_changed = true;
+				m_tokens[index] = value;
+			}
 		}
 		return (*this);
 	}
@@ -490,50 +522,14 @@ namespace ml
 
 	bool	Var::And(const Var & other) const
 	{
-		bool lp = isPointerType() && isValid();
-		bool rp = other.compareType(Var::Pointer) && other.isValid();
-		if (lp && rp)
-		{
-			return pointerValue()->And(*(*other.pointerValue()));
-		}
-		else if (!lp && rp)
-		{
-			return pointerValue()->And(*(*other.pointerValue()));
-		}
-		else if (lp && !rp)
-		{
-			return pointerValue()->And(other);
-		}
-
-		switch (getType())
-		{
-			// Bool
-		case Type::Bool:
-			switch (other.getType())
-			{
-			case Type::Integer:
-				return boolValue() && other.intValue();
-
-			case Type::Bool:
-				return boolValue() && other.boolValue();
-			}
-
-			// Int
-		case Type::Integer:
-			switch (other.getType())
-			{
-			case Type::Integer:
-				return intValue() && other.intValue();
-
-			case Type::Bool:
-				return intValue() && other.boolValue();
-			}
-		}
-
-		Debug::LogError("Invalid Operation: \'{0}\' {1} \'{2}\'",
-			(*this), OperatorType::OP_AND, other);
-		return false;
+		return boolValue() && other.boolValue();
 	}
+
+	bool	Var::Or(const Var & other) const
+	{
+		return boolValue() && other.boolValue();
+	}
+
 
 	bool	Var::Equals(const Var & other) const
 	{
@@ -581,10 +577,6 @@ namespace ml
 		}
 
 		return textValue() == other.textValue();
-
-		//Debug::LogError("Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
-		//	getType(), (*this), OperatorType::OP_EQU, other.getType(), other);
-		//return false;
 	}
 
 	bool	Var::Less(const Var & other) const
@@ -633,57 +625,6 @@ namespace ml
 		}
 
 		return textValue() < other.textValue();
-
-		//Debug::LogError("Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
-		//	getType(), (*this), OperatorType::OP_LT, other.getType(), other);
-		//return false;
-	}
-
-	bool	Var::Or(const Var & other) const
-	{
-		bool lp = compareType(Var::Pointer) && isValid();
-		bool rp = other.compareType(Var::Pointer) && other.isValid();
-		if (lp && rp)
-		{
-			return pointerValue()->Or(*(*other.pointerValue()));
-		}
-		else if (!lp && rp)
-		{
-			return pointerValue()->Or(*(*other.pointerValue()));
-		}
-		else if (lp && !rp)
-		{
-			return pointerValue()->Or(other);
-
-		}
-		switch (getType())
-		{
-			// Bool
-		case Type::Bool:
-			switch (other.getType())
-			{
-			case Type::Integer:
-				return boolValue() || other.intValue();
-
-			case Type::Bool:
-				return boolValue() || other.boolValue();
-			}
-
-			// Int
-		case Type::Integer:
-			switch (other.getType())
-			{
-			case Type::Integer:
-				return intValue() || other.intValue();
-
-			case Type::Bool:
-				return intValue() || other.boolValue();
-			}
-		}
-
-		Debug::LogError("Invalid Operation: \'{0}\' {1} \'{2}\'",
-			(*this), OperatorType::OP_OR, other);
-		return false;
 	}
 
 

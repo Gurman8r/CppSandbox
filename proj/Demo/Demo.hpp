@@ -217,16 +217,54 @@ namespace demo
 
 			ML_Interpreter.addCmd({ "read", [](ml::Args & args)
 			{
-				std::string buf;
+
+				std::string name = args.pop_front().front();
 				
-				if (ML_FileSystem.getFileContents(args.pop_front().front(), buf)) { }
-				
-				return ml::Var().stringValue(buf);
+				if (ML_FileSystem.fileExists(name))
+				{
+					std::string buf;
+					if (ML_FileSystem.getFileContents(name, buf))
+					{
+						return ml::Var().stringValue(buf);
+					}
+				}
+				else if (DIR * dir = opendir(name.c_str()))
+				{
+					std::stringstream ss;
+					while (dirent * e = readdir(dir))
+					{
+						switch (e->d_type)
+						{
+						case DT_REG:
+							ss << e->d_name << "";
+							break;
+						case DT_DIR:
+							ss << e->d_name << "/";
+							break;
+						case DT_LNK:
+							ss << e->d_name << "@";
+							break;
+						default:
+							ss << e->d_name << "*";
+							break;
+						}
+						ss << ml::endl;
+					}
+					closedir(dir);
+					return ml::Var().stringValue(ss.str());
+				}
+
+				return ml::Var().boolValue(false);
 			} });
 
 			ML_Interpreter.addCmd({ "exists", [](ml::Args & args)
 			{
-				return ml::Var().boolValue(ML_FileSystem.fileExists(args.pop_front().front()));
+				auto name = args.pop_front().front();
+				if (name == "." || name == "..")
+				{
+					return ml::Var().boolValue(true);
+				}
+				return ml::Var().boolValue(ML_FileSystem.fileExists(name));
 			} });
 
 			ML_Interpreter.addCmd({ "exec", [](ml::Args & args)

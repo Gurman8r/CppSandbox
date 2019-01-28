@@ -20,16 +20,24 @@
 		{
 			dir	= getcwd();
 			print(dir);
-			lsdir(".");
+			
+			list = read(".");
+			size = sizeof(list);
+			print("list size: {size}");
+			print(list);
 
 			if(file = read("README.md"));
 			{
+				size = sizeof(file);
+				print("file size: {size}");
+
 				print(file);
 				free(file);
 			};
 		};
+
+		return true;
 	};
 
-	main();
-	return true;
+	return main();
 }
