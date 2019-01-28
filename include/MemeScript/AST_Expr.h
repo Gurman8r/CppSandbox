@@ -27,6 +27,8 @@ namespace ml
 			EX_Subscr,
 			EX_Command,
 			EX_SizeOf,
+			EX_TypeID,
+			EX_TypeName,
 			MAX_EXPR_TYPE
 		};
 
@@ -232,8 +234,34 @@ namespace ml
 	struct ML_SCRIPT_API AST_SizeOf : public AST_Expr
 	{
 		AST_Expr * expr;
+
 		AST_SizeOf(AST_Expr * expr);
 		~AST_SizeOf();
+
+		std::ostream& display(std::ostream& out) const override;
+		Var evaluate() const override;
+	};
+
+	// Type ID
+	struct ML_SCRIPT_API AST_TypeID : public AST_Expr
+	{
+		AST_Expr * expr;
+		
+		AST_TypeID(AST_Expr * expr);
+		~AST_TypeID();
+		
+		std::ostream& display(std::ostream& out) const override;
+		Var evaluate() const override;
+	};
+
+	// Type Name
+	struct ML_SCRIPT_API AST_TypeName : public AST_Expr
+	{
+		AST_Expr * expr;
+		
+		AST_TypeName(AST_Expr * expr);
+		~AST_TypeName();
+		
 		std::ostream& display(std::ostream& out) const override;
 		Var evaluate() const override;
 	};

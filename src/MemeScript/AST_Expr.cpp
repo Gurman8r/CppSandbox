@@ -492,7 +492,7 @@ namespace ml
 	}
 
 
-	// String
+	// String 
 	AST_String::AST_String(const std::string & value)
 		: AST_Expr(AST_Expr::Type::EX_String)
 		, value(value)
@@ -629,5 +629,51 @@ namespace ml
 	Var AST_SizeOf::evaluate() const
 	{
 		return Var().intValue(expr->evaluate().sizeOfValue());
+	}
+
+
+	// Type ID
+	AST_TypeID::AST_TypeID(AST_Expr * expr)
+		: AST_Expr(EX_TypeID)
+		, expr(expr)
+	{
+		addChild(expr);
+	}
+
+	AST_TypeID::~AST_TypeID()
+	{
+	}
+
+	std::ostream & AST_TypeID::display(std::ostream & out) const
+	{
+		return out << "typeid(" << (*expr) << ")";
+	}
+
+	Var AST_TypeID::evaluate() const
+	{
+		return Var().intValue(expr->evaluate().getType());
+	}
+
+
+	// Type Name
+	AST_TypeName::AST_TypeName(AST_Expr * expr)
+		: AST_Expr(EX_TypeName)
+		, expr(expr)
+	{
+		addChild(expr);
+	}
+
+	AST_TypeName::~AST_TypeName()
+	{
+	}
+
+	std::ostream & AST_TypeName::display(std::ostream & out) const
+	{
+		return out << "typename(" << (*expr) << ")";
+	}
+
+	Var AST_TypeName::evaluate() const
+	{
+		return Var().stringValue(expr->evaluate().getTypeName());
 	}
 }

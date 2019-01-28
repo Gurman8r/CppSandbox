@@ -27,7 +27,7 @@ namespace ml
 			ST_Else,
 			ST_Expr,
 			ST_For,
-			ST_Free,
+			ST_Delete,
 			ST_If,
 			ST_Include,
 			ST_Print,
@@ -89,12 +89,12 @@ namespace ml
 	};
 
 	// Free
-	struct ML_SCRIPT_API AST_Free : public AST_Stmt
+	struct ML_SCRIPT_API AST_Delete : public AST_Stmt
 	{
 		AST_Name* name;
 
-		AST_Free(AST_Name* name);
-		~AST_Free();
+		AST_Delete(AST_Name* name);
+		~AST_Delete();
 
 		std::ostream& display(std::ostream& out) const override;
 		bool run() override;
@@ -128,8 +128,10 @@ namespace ml
 	struct ML_SCRIPT_API AST_Print : public AST_Stmt
 	{
 		AST_Expr* expr;
+		bool endl;
 
 		AST_Print(AST_Expr* expr);
+		AST_Print(AST_Expr* expr, bool endl);
 		~AST_Print();
 
 		std::ostream& display(std::ostream& out) const override;

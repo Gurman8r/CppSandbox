@@ -670,6 +670,10 @@ namespace ml
 			default:
 				return stringValue(stringValue() + other.stringValue());
 			}
+
+		//case Type::Array:
+		//	tokensValue().push_back(other.tokensValue());
+		//	return (*this);
 		}
 
 		bool lp = compareType(Var::Pointer);

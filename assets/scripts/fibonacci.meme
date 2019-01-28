@@ -2,22 +2,22 @@
 {
 	fib = [](num);
 	{
-		print("Fibonacci: {num}");
+		printl("Fibonacci: {num}");
 	
 		if(num >= 0);
 		{
 			a = 0;
-			print("{a}");
+			printl("{a}");
 		
 			if(num >= 1);
 			{
 				b = 1;
-				print("{b}");
+				printl("{b}");
 	
 				next = a + b;
 				while(next <= num);
 				{
-					print("{next}");
+					printl("{next}");
 					a = b;
 					b = next;
 					next = a + b;

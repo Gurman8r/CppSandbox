@@ -1,43 +1,59 @@
-# File System Functions
+#// File Functions
 {
 	include("../../../assets/scripts/core.meme");
 
-	getExeName = []();
-	{
-		return 
-			getTargetName()		+ "_" + 
-			getTargetConfig()	+ "_" + 
-			getTargetPlatform() + ".exe";
-	};
-	
 	main = []();
 	{
-		dir	= getcwd();
-		exe = getExeName();
-		print("{dir}\{exe}");
+		cwd	= getcwd();
+		exe = getTargetExeName();
+		printl("{cwd}\{exe}");
 
 		if(chdir("../../../"));
 		{
-			dir	= getcwd();
-			print(dir);
-			
-			list = read(".");
-			size = sizeof(list);
-			print("list size: {size}");
-			print(list);
+			#// read directory
+			if (dir = read("."));
+			{
+				size = sizeof(dir);
+				type = typeid(dir);
+				name = typename(dir);
 
+				printl("size of dir: {size}");
+				printl("type id dir: {type}");
+				printl("type name dir: {name}");
+				printl();
+
+				for (i = 0; i < size; i = i + 1);
+				{
+					print(dir[i]);
+				};
+				
+				delete(dir);
+			};
+
+			printl();
+
+			#// read file
 			if(file = read("README.md"));
 			{
 				size = sizeof(file);
-				print("file size: {size}");
+				type = typeid(file);
+				name = typename(file);
 
-				print(file);
-				free(file);
+				printl("size of file: {size}");
+				printl("type id file: {type}");
+				printl("type name file: {name}");
+				printl();
+
+				for (i = 0; i < size; i = i + 1);
+				{
+					print(file[i]);
+				};
+				
+				delete(file);
 			};
 		};
-
 		return true;
 	};
 
 	return main();
-}
+};

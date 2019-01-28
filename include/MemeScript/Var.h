@@ -13,14 +13,17 @@ namespace ml
 		, public IComparable<Var>
 	{
 	public:
+		using string = std::string;
+
+	public:
 		struct ML_SCRIPT_API Ptr
 			: public ITrackable
 		{
-			std::string	name;
+			string	name;
 			int32_t		index;
 
 			Ptr();
-			Ptr(int32_t index, const std::string& name);
+			Ptr(int32_t index, const string& name);
 			Ptr(const Ptr& copy);
 
 			Var * get() const;
@@ -56,7 +59,7 @@ namespace ml
 			MAX_VAR_TYPE
 		};
 		
-		static const std::string TypeNames[Type::MAX_VAR_TYPE];
+		static const string TypeNames[Type::MAX_VAR_TYPE];
 		
 		inline friend std::ostream & operator<<(std::ostream & out, const Type & rhs)
 		{
@@ -71,8 +74,9 @@ namespace ml
 		~Var();
 
 	public:
-		inline int32_t	getScope()	const { return m_scope; }
-		inline Type		getType()	const { return m_type; }
+		inline int32_t	getScope()		const { return m_scope; }
+		inline Type		getType()		const { return m_type; }
+		inline string	getTypeName()	const { return TypeNames[getType()]; }
 
 		inline Var & setScope(int32_t value)
 		{
@@ -112,29 +116,29 @@ namespace ml
 		bool		boolValue() const;
 		float		floatValue() const;
 		Var			elemValue(size_t i) const;
-		std::string	errorValue() const;
+		string	errorValue() const;
 		int32_t		intValue() const;
 		Ptr			pointerValue() const;
 		size_t		sizeOfValue() const;
-		std::string	stringValue() const;
-		std::string	textValue() const;
+		string	stringValue() const;
+		string	textValue() const;
 		TokenList	tokensValue() const;
 
 		Var & arrayValue(const TokenList & value);
 		Var & boolValue(const bool & value);
 		Var & elemValue(size_t index, const Token & value);
-		Var & errorValue(const std::string & value);
+		Var & errorValue(const string & value);
 		Var & floatValue(const float & value);
 		Var & funcValue(const TokenList & value);
 		Var & intValue(const int32_t & value);
 		Var & nullValue();
 		Var & pointerValue(const Ptr & value);
-		Var & stringValue(const std::string & value);
+		Var & stringValue(const string & value);
 		Var & tokensValue(const TokenList & value);
 		Var & voidValue();
 		
 		template<typename T, typename ... A>
-		inline Var & errorValue(const std::string & fmt, const T & arg0, const A &... args)
+		inline Var & errorValue(const string & fmt, const T & arg0, const A &... args)
 		{
 			return errorValue(StringUtility::Format(fmt, arg0, (args)...));
 		};
@@ -193,7 +197,7 @@ namespace ml
 		Var & operator=(double value);
 		Var & operator=(int32_t value);
 		Var & operator=(const Ptr & value);
-		Var & operator=(const std::string & value);
+		Var & operator=(const string & value);
 		Var & operator=(const char * value);
 		Var & operator=(char value);
 
@@ -202,7 +206,7 @@ namespace ml
 		inline operator double		() const { return (double)floatValue(); }
 		inline operator int32_t		() const { return intValue(); }
 		inline operator Ptr			() const { return pointerValue(); }
-		inline operator std::string	() const { return stringValue(); }
+		inline operator string	() const { return stringValue(); }
 		inline operator const char *() const { return stringValue().c_str(); }
 
 	private:

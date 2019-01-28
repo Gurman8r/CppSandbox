@@ -57,7 +57,7 @@ namespace
 		using namespace ml;
 
 		AST_Block program({
-			new AST_Print(new AST_String("Hello, World!")),
+			new AST_Print(new AST_String("Hello, World!"), true),
 		});
 
 		if (!program.run())

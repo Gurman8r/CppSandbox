@@ -1,34 +1,25 @@
-# Script to run on start
-# Displays some system information
+#// Script to run on start
+#// Displays some system information
 {
 	include("../../../assets/scripts/core.meme");
 
-	getExeName = []();
-	{
-		return 
-			getTargetName()		+ "_" + 
-			getTargetConfig()	+ "_" + 
-			getTargetPlatform() + ".exe";
-	};
-	
 	hello = []();
 	{
 		dir	= getcwd();
-		exe = getExeName();
+		exe = getTargetExeName();
 		msg	= "Hello, World!";
 		lib	= "MemeScript Version 1.0";
 		url	= "https://github.com/Gurman8r/CppSandbox";
 
-		print("{dir}\{exe}");
-		print("* * * * * * * * * * * * * * * * * * * * * * *");
-		print("*                                           *");
-		print("*   {msg}                           *");
-		print("*   {lib}                  *");
-		print("*   {url}  *");
-		print("*                                           *");
-		print("* * * * * * * * * * * * * * * * * * * * * * *");
+		printl("{dir}\{exe}");
+		printl("* * * * * * * * * * * * * * * * * * * * * * *");
+		printl("*                                           *");
+		printl("*   {msg}                           *");
+		printl("*   {lib}                  *");
+		printl("*   {url}  *");
+		printl("*                                           *");
+		printl("* * * * * * * * * * * * * * * * * * * * * * *");
 	};
 
 	hello();
-	#pause();
 }

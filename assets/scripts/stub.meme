@@ -1,59 +1,54 @@
-# Script for testing the Interpreter
+#// Script for testing the Interpreter
 {
 	testIf = [](value);
 	{
-		print("Test If: {value}");
+		printl("Test If: {value}");
 		if(value == 0);
 		{
-			print("if == 0");
+			printl("if == 0");
 		};
 		elif (value == 1);
 		{
-			print("elif == 1");
-		
-			if(true);
-			{
-				print("Here!");
-			};
+			printl("elif == 1");
 		};
 		elif (value != 2);
 		{
-			print("elif != 2");
+			printl("elif != 2");
 		};
 		else;
 		{
-			print("else");
+			printl("else");
 		};
-		print("End of If");
-		print("");
+		printl("End of If");
+		printl("");
 		return true;
 	};
 
 	testFor = [](min, max, it);
 	{
-		print("Test For: i = {min}; i < {max}; i += {it}");
+		printl("Test For: i = {min}; i < {max}; i += {it}");
 		for(i = min; i < max; i = i + it);
 		{
-			print("for: {i}");
+			printl("for: {i}");
 		};
-		free(i);
-		print("End of For");
-		print("");
+		delete(i);
+		printl("End of For");
+		printl("");
 		return true;
 	};
 
 	testWhile = [](value);
 	{
-		print("Test While: {value} > 0");
+		printl("Test While: {value} > 0");
 		i = value;
 		while(i > 0);
 		{	
-			print("while: {i}");
+			printl("while: {i}");
 			i = i - 1;
 		};
-		free(i);
-		print("End of While");
-		print("");
+		delete(i);
+		printl("End of While");
+		printl("");
 		return true;
 	};
 
@@ -79,7 +74,7 @@
 
 	testVars = []();
 	{
-		print("Test Vars");
+		printl("Test Vars");
 
 		a = 1;
 		b = 2.0;
@@ -93,45 +88,45 @@
 		z = addFn(y, 1);
 		w = subFn(1, z);
 
-		print("a = {a}");
-		print("b = {b}");
-		print("c = {c}");
-		print("d = {d}");
-		print("e = {e}");
-		print("f = {f}");
-		print("x = {x}");
-		print("y = {y}");
-		print("z = {z}");
-		print("w = {w}");
+		printl("a = {a}");
+		printl("b = {b}");
+		printl("c = {c}");
+		printl("d = {d}");
+		printl("e = {e}");
+		printl("f = {f}");
+		printl("x = {x}");
+		printl("y = {y}");
+		printl("z = {z}");
+		printl("w = {w}");
 
-		print("End of Vars");
-		print("");
+		printl("End of Vars");
+		printl("");
 	};
 
 	testArrays = []();
 	{
-		print("Test Arrays");
+		printl("Test Arrays");
 
 		a = [ "a", "bb", "ccc", "dddd" ];
-		print(a);
+		printl(a);
 
 		str = "Hello, World!";
 	
-		print("Forward");
+		printl("Forward");
 		for(i = 0; i < 4; i = i + 1);
 		{
-			print(a[i]);
+			printl(a[i]);
 		};
 
-		print("Reverse");
+		printl("Reverse");
 		for(j = 3; j >= 0; j = j - 1);
 		{
 			tmp = a[j];
-			print("{tmp}");
+			printl("{tmp}");
 		};
 
-		print("End of Arrays");
-		print("");
+		printl("End of Arrays");
+		printl("");
 		return a;
 	};
 
@@ -147,7 +142,7 @@
 	testFuncs = []();
 	{
 
-		print("Start of Funcs");
+		printl("Start of Funcs");
 
 		a = "A"; 
 		b = a + test2("B") + test2("b");
@@ -159,28 +154,28 @@
 		h = "" + test1();
 		h = test2(h);
 
-		print(a);
-		print(b);
-		print(c);
-		print(d);
-		print(e);
-		print(f);
-		print(g);
-		print(h);
+		printl(a);
+		printl(b);
+		printl(c);
+		printl(d);
+		printl(e);
+		printl(f);
+		printl(g);
+		printl(h);
 
-		print("End of Funcs");
+		printl("End of Funcs");
 	};
 
 	testInput = []();
 	{
-		print("What is your name?");
+		printl("What is your name?");
 		name = input();
-		print("Hello, {name}");
+		printl("Hello, {name}");
 	};
 
 	stub = []();
 	{
-		print("Start of Stub");
+		printl("Start of Stub");
 
 		for(i = 0; i < 4; i = i + 1);
 		{
@@ -197,11 +192,11 @@
 
 		testFuncs();
 
-		print("End of Stub");
+		printl("End of Stub");
 
 		return true;
 	};
 
-	# Run Stub
+	#// Run Stub
 	return stub();
 }

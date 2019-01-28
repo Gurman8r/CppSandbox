@@ -22,25 +22,34 @@ namespace ml
 				continue;
 
 			case '#':
+			{
+				std::string line;
 				while (*it != TokenType::TOK_ENDL)
 				{
-					it++;
+					line += (*it++).data;
 				}
-				break;
+			}
+			break;
 
 			case '{':
+			{
 				out[i].push_back(*it);
+			}
 			case ';':
+			{
 				if (!out[i].empty())
 				{
 					out.push_back(TokenList());
 					i++;
 				}
-				break;
+			}
+			break;
 
 			default:
+			{
 				out[i].push_back(*it);
-				break;
+			}
+			break;
 			}
 		}
 
@@ -326,16 +335,24 @@ namespace ml
 		{
 			return new AST_Else();
 		}
+		// Printl
+		else if (toks.matchData(toks.begin(), { "printl" }))
+		{
+			AST_Call::Params params = genCallParams(toks.after(1));
+			switch (params.size())
+			{
+			case 1:	 return new AST_Print(params.front(), true);
+			default: return new AST_Print(new AST_String(std::string()), true);
+			}
+		}
 		// Print
 		else if (toks.matchData(toks.begin(), { "print" }))
 		{
 			AST_Call::Params params = genCallParams(toks.after(1));
 			switch (params.size())
 			{
-			case 1:
-				return new AST_Print(params.front());
-			default:
-				return new AST_Print(new AST_String(std::string()));
+			case 1:	 return new AST_Print(params.front(), false);
+			default: return new AST_Print(new AST_String(std::string()), false);
 			}
 		}
 		// Return
@@ -358,14 +375,14 @@ namespace ml
 				return new AST_While(expr);
 			}
 		}
-		// Free
-		else if (toks.matchData(toks.begin(), { "free" }))
+		// Delete
+		else if (toks.matchData(toks.begin(), { "delete" }))
 		{
 			if (AST_Expr* expr = genComplex(toks.between('(', ')').pop_front()))
 			{
 				if (AST_Name* name = expr->As<AST_Name>())
 				{
-					return new AST_Free(name);
+					return new AST_Delete(name);
 				}
 				else
 				{
@@ -420,9 +437,9 @@ namespace ml
 			{
 				return new AST_Command(params.front());
 			}
-			return new AST_Command(new AST_String(std::string()));
+			return new AST_TypeID(new AST_Int(0));
 		}
-		// Len
+		// Size Of
 		else if (toks.matchData(toks.begin(), { "sizeof" }))
 		{
 			AST_Call::Params params = genCallParams(toks.after(1));
@@ -430,7 +447,27 @@ namespace ml
 			{
 				return new AST_SizeOf(params.front());
 			}
-			return new AST_SizeOf(new AST_String(std::string()));
+			return new AST_TypeID(new AST_Int(0));
+		}
+		// Type ID
+		else if (toks.matchData(toks.begin(), { "typeid" }))
+		{
+			AST_Call::Params params = genCallParams(toks.after(1));
+			if (!params.empty())
+			{
+				return new AST_TypeID(params.front());
+			}
+			return new AST_TypeID(new AST_Int(0));
+		}
+		// Type Name
+		else if (toks.matchData(toks.begin(), { "typename" }))
+		{
+			AST_Call::Params params = genCallParams(toks.after(1));
+			if (!params.empty())
+			{
+				return new AST_TypeName(params.front());
+			}
+			return new AST_TypeName(new AST_Int(0));
 		}
 		// Function
 		else if (AST_Func* func = genFunc(toks))

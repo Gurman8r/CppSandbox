@@ -141,29 +141,29 @@ namespace ml
 
 
 	// Free
-	AST_Free::AST_Free(AST_Name* name)
-		: AST_Stmt(ST_Free)
+	AST_Delete::AST_Delete(AST_Name* name)
+		: AST_Stmt(ST_Delete)
 		, name(name)
 	{
 		addChild(name);
 	}
 
-	AST_Free::~AST_Free()
+	AST_Delete::~AST_Delete()
 	{
 	}
 
-	std::ostream & AST_Free::display(std::ostream & out) const
+	std::ostream & AST_Delete::display(std::ostream & out) const
 	{
-		return out << "free(" << (*name) << ")";
+		return out << "delete(" << (*name) << ")";
 	}
 
-	bool AST_Free::run()
+	bool AST_Delete::run()
 	{
 		if (block()->delv(name->value))
 		{
 			return runNext();
 		}
-		return Debug::LogError("AST_Free : Failure {0}", name->value);
+		return Debug::LogError("AST_Delete : Failure {0}", name->value);
 	}
 
 
@@ -313,9 +313,10 @@ namespace ml
 
 
 	// Print
-	AST_Print::AST_Print(AST_Expr * expr)
+	AST_Print::AST_Print(AST_Expr * expr, bool endl)
 		: AST_Stmt(ST_Print)
 		, expr(expr)
+		, endl(endl)
 	{
 		addChild(expr);
 	}
@@ -326,7 +327,7 @@ namespace ml
 
 	std::ostream & AST_Print::display(std::ostream & out) const
 	{
-		return out << "print(" << *expr << ") ";// << (getParent() ? getParent()->getID() : 0);
+		return out << (endl ? "printl" : "print") << "(" << *expr << ") ";
 	}
 
 	bool AST_Print::run()
@@ -368,7 +369,9 @@ namespace ml
 			cout << expr->evaluate().textValue();
 		}
 		
-		cout << FMT() << std::endl;
+		cout << FMT();
+		
+		if(endl) { cout << std::endl; }
 		
 		return runNext();
 	}
