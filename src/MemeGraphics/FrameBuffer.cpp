@@ -9,7 +9,7 @@ namespace ml
 	}
 
 	FrameBuffer::FrameBuffer(const FrameBuffer & copy)
-		: IHandle(copy.id())
+		: IHandle(copy)
 	{
 	}
 

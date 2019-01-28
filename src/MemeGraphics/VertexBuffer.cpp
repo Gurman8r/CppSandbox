@@ -10,7 +10,7 @@ namespace ml
 	}
 
 	VertexBuffer::VertexBuffer(const VertexBuffer & copy)
-		: IHandle(copy.id())
+		: IHandle(copy)
 		, m_usage(copy.m_usage)
 		, m_data(copy.m_data)
 		, m_size(copy.m_size)

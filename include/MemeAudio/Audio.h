@@ -3,6 +3,9 @@
 
 #include <MemeCore/ISingleton.h>
 #include <MemeAudio/Sound.h>
+#include <MemeCore/IHandle.h>
+
+/* * * * * * * * * * * * * * * * * * * * */
 
 #define ML_Audio ml::Audio::getInstance()
 
@@ -12,6 +15,68 @@
 	#define alCheck(expr) (expr)
 #endif // ML_DEBUG
 
+/* * * * * * * * * * * * * * * * * * * * */
+
+namespace ml
+{
+	struct ML_AUDIO_API SoundBuffer
+		: public ITrackable
+		, public IHandle<uint32_t>
+	{
+		size_t count;
+		size_t size;
+
+		SoundBuffer()
+			: IHandle(NULL)
+			, count(0)
+			, size(0)
+		{
+		}
+		SoundBuffer(size_t count, size_t size)
+			: IHandle(NULL)
+			, count(count)
+			, size(size)
+		{
+		}
+		SoundBuffer(const SoundBuffer & copy)
+			: IHandle(copy)
+			, count(copy.count)
+			, size(copy.size)
+		{
+		}
+	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	struct ML_AUDIO_API SoundSource
+		: public ITrackable
+		, public IHandle<uint32_t>
+	{
+		size_t count;
+		size_t size;
+
+		SoundSource()
+			: IHandle(NULL)
+			, count(0)
+			, size(0)
+		{
+		}
+		SoundSource(size_t count, size_t size)
+			: IHandle(NULL)
+			, count(count)
+			, size(size)
+		{
+		}
+		SoundSource(const SoundSource & copy)
+			: IHandle(copy)
+			, count(copy.count)
+			, size(copy.size)
+		{
+		}
+	};
+}
+
+/* * * * * * * * * * * * * * * * * * * * */
 
 namespace ml
 {
@@ -45,6 +110,14 @@ namespace ml
 		bool makeContextCurrent();
 		bool init();
 
+		bool createBuffer(SoundBuffer & buf, size_t count, size_t size);
+		bool createSource(SoundSource & src, size_t count, size_t size);
+
+		void serialize(std::ostream & out) const override;
+
+	public:
+		inline bool	good() const { return (m_device && m_context); }
+
 	private:
 		Audio();
 		~Audio();
@@ -53,5 +126,7 @@ namespace ml
 		void * m_context;
 	};
 }
+
+/* * * * * * * * * * * * * * * * * * * * */
 
 #endif // !_AUDIO_MANAGER_H_

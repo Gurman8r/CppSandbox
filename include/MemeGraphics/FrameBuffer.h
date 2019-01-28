@@ -3,13 +3,13 @@
 
 #include <MemeGraphics/GL.h>
 #include <MemeGraphics/Lists.h>
-#include <MemeGraphics/IHandle.h>
+#include <MemeCore/IHandle.h>
 
 namespace ml
 {
 	class ML_GRAPHICS_API FrameBuffer
 		: public ITrackable
-		, public IHandle
+		, public IHandle<uint32_t>
 	{
 	public:
 		FrameBuffer();

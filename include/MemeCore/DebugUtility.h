@@ -29,7 +29,7 @@ namespace ml
 		static Status LogError(const std::string & message);	//   0
 		static Status Log(const std::string & message);			// + 1
 
-		static Status endl();
+		static Status Endl();
 
 	public:
 		template<typename T, typename ... A>
@@ -56,9 +56,15 @@ namespace ml
 		inline static std::istream & in()	{ return std::cin; }
 	};
 
-	static std::ostream & cout	= Debug::out(); // std::cout
-	static std::ostream & cerr	= Debug::err(); // std::cerr
-	static std::istream & cin	= Debug::in();	// std::cin
+	static std::ostream & cout	= Debug::out();
+	static std::ostream & cerr	= Debug::err();
+	static std::istream & cin	= Debug::in();
+
+	inline static std::ostream & endl(std::ostream & out)
+	{
+		return out << std::endl;
+	}
+	
 }
 
 #endif // !_DEBUG_UTILITY_H_

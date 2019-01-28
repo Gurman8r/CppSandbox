@@ -82,52 +82,99 @@ namespace ml
 
 	bool Audio::openDevice()
 	{
-		static bool good = false;
-		if (!good && !m_device)
+		static bool check = false;
+		if (!check && !m_device)
 		{
-			alCheck(good = (m_device = DEVICE(alcOpenDevice(NULL))));
+			alCheck(check = (m_device = DEVICE(alcOpenDevice(NULL))));
 		}
-		return good;
+		return check;
 	}
 
 	bool Audio::closeDevice()
 	{
-		static bool good = false;
-		if (!good && m_device)
+		static bool check = false;
+		if (!check && m_device)
 		{
-			alCheck(good = alcCloseDevice(DEVICE(m_device)));
+			alCheck(check = alcCloseDevice(DEVICE(m_device)));
 		}
-		return good;
+		return check;
 	}
 
 	bool Audio::createContext()
 	{
-		static bool good = false;
-		if (!good && m_device && !m_context)
+		static bool check = false;
+		if (!check && m_device && !m_context)
 		{
-			alCheck(good = (m_context = CONTEXT(alcCreateContext(DEVICE(m_device), NULL))));
+			alCheck(check = (m_context = CONTEXT(alcCreateContext(DEVICE(m_device), NULL))));
 		}
-		return good;
+		return check;
 	}
 
 	bool Audio::makeContextCurrent()
 	{
-		static bool good = false;
-		if (!good && m_context)
+		static bool check = false;
+		if (!check && m_context)
 		{
-			alCheck(good = alcMakeContextCurrent(CONTEXT(m_context)));
+			alCheck(check = alcMakeContextCurrent(CONTEXT(m_context)));
 		}
-		return good;
+		return check;
 	}
 
 	bool Audio::init()
 	{
-		static bool good = false;
-		if (!good)
+		static bool check = false;
+		if (!check && !good())
 		{
-			good = openDevice() && createContext() && makeContextCurrent();
+			check =
+				openDevice() && 
+				createContext() && 
+				makeContextCurrent();
 		}
-		return good;
+		return check;
+	}
+
+
+	bool Audio::createBuffer(SoundBuffer & value, size_t count, size_t size)
+	{
+		if (good() && size)
+		{
+			value.count = count;
+			value.size = size;
+			for (size_t i = 0; i < size; i++)
+			{
+				alCheck(alGenBuffers(count, &value.handle()));
+			}
+			return true;
+		}
+		return false;
+	}
+
+	bool Audio::createSource(SoundSource & value, size_t count, size_t size)
+	{
+		if (good() && size)
+		{
+			for (size_t i = 0; i < size; i++)
+			{
+				value.count = count;
+				value.size = size;
+				alCheck(alGenSources(count, &value.handle()));
+			}
+			return true;
+		}
+		return false;
+	}
+
+
+	void Audio::serialize(std::ostream & out) const
+	{
+		if (good())
+		{
+
+		}
+		else
+		{
+			out << "" << endl;
+		}
 	}
 
 }

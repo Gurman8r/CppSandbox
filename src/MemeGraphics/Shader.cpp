@@ -13,7 +13,7 @@ namespace ml
 
 		UniformBinder(const Shader * shader, const std::string & name)
 			: cached(0)
-			, program(shader->id())
+			, program(*shader)
 			, location(-1)
 		{
 			if (program)
@@ -53,7 +53,7 @@ namespace ml
 	}
 
 	Shader::Shader(const Shader & copy)
-		: IHandle(copy.id())
+		: IHandle(copy)
 		, m_textures(copy.m_textures)
 		, m_uniforms(copy.m_uniforms)
 	{
@@ -192,9 +192,9 @@ namespace ml
 	{
 		if (shader && OpenGL::shadersAvailable())
 		{
-			if (shader->id())
+			if (*shader)
 			{
-				OpenGL::useShader(shader->id());
+				OpenGL::useShader(*shader);
 			}
 
 			if (bindTextures)
@@ -508,7 +508,7 @@ namespace ml
 		else
 		{
 			// Not in cache, request the location from OpenGL
-			int32_t location = OpenGL::getUniformLocation(id(), value.c_str());
+			int32_t location = OpenGL::getUniformLocation((*this), value.c_str());
 			
 			m_uniforms.insert({ value, location });
 			

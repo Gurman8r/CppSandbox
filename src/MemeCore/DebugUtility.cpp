@@ -22,7 +22,7 @@ namespace ml
 #ifdef ML_SYSTEM_WINDOWS
 		system("pause");
 #else
-		cout << "Press any key to continue..." << std::endl;
+		cout << "Press any key to continue..." << std::Endl;
 		ml::InputState input;
 		while (!input.beginStep().getAnyKey());
 #endif
@@ -75,7 +75,7 @@ namespace ml
 	}
 
 
-	Debug::Status Debug::endl()
+	Debug::Status Debug::Endl()
 	{
 		out() << std::endl;
 		return Debug::Success;

@@ -174,7 +174,7 @@ namespace demo
 			{
 				for (auto n : ML_Interpreter.cmdNames())
 				{
-					ml::cout << n << std::endl;
+					ml::cout << n << ml::endl;
 				}
 				return ml::Var().boolValue(true);
 			} });
@@ -204,7 +204,7 @@ namespace demo
 				std::string buf;
 				if (ML_FileSystem.getFileContents(args.pop_front().front(), buf))
 				{
-					ml::cout << buf << std::endl;
+					ml::cout << buf << ml::endl;
 
 					return ml::Var().boolValue(true);
 				}
@@ -258,7 +258,7 @@ namespace demo
 							ml::cout << (ml::FG::Green | ml::BG::Black) << e->d_name << "*";
 							break;
 						}
-						ml::cout << ml::FMT() << std::endl;
+						ml::cout << ml::FMT() << ml::endl;
 					}
 					closedir(dir);
 					return ml::Var().boolValue(true);
@@ -311,7 +311,7 @@ namespace demo
 			&& ml_load<ml::Font>(fonts[FNT_lconsole], "/fonts/lucida_console.ttf", log)
 			&& ml_load<ml::Font>(fonts[FNT_minecraft], "/fonts/minecraft.ttf", log)
 
-			&& (!log || ml::Debug::endl())));
+			&& (!log || ml::Debug::Endl())));
 	}
 
 	inline static bool loadImages(bool en, bool log)
@@ -321,7 +321,7 @@ namespace demo
 			
 			&& ml_load<ml::Image>(images[IMG_icon], "/images/dean.png", log)
 			
-			&& (!log || ml::Debug::endl())));
+			&& (!log || ml::Debug::Endl())));
 	}
 
 	inline static bool loadTextures(bool en, bool log)
@@ -335,7 +335,7 @@ namespace demo
 			&& ml_load<ml::Texture>(textures[TEX_stone_hm], "/textures/stone/stone_hm.png", log)
 			&& ml_load<ml::Texture>(textures[TEX_stone_nm], "/textures/stone/stone_nm.png", log)
 			
-			&& (!log || ml::Debug::endl())));
+			&& (!log || ml::Debug::Endl())));
 	}
 
 	inline static bool loadShaders(bool en, bool log)
@@ -347,7 +347,7 @@ namespace demo
 			&& ml_load<ml::Shader>(shaders[GL_text], "/shaders/text.shader", log)
 			&& ml_load<ml::Shader>(shaders[GL_geometry], "/shaders/geometry.shader", log)
 			
-			&& (!log || ml::Debug::endl())));
+			&& (!log || ml::Debug::Endl())));
 	}
 
 	inline static bool loadMeshes(bool en, bool log)
@@ -358,7 +358,7 @@ namespace demo
 			&& ml_load<ml::Mesh>(mesh[MESH_sphere8x6], "/meshes/sphere8x6.mesh", log)
 			&& ml_load<ml::Mesh>(mesh[MESH_sphere32x24], "/meshes/sphere32x24.mesh", log)
 			
-			&& (!log || ml::Debug::endl())));
+			&& (!log || ml::Debug::Endl())));
 	}
 
 	inline static bool loadBuffers(bool en, bool log)
@@ -421,7 +421,7 @@ namespace demo
 			vao[VAO_text].unbind();
 
 		}
-		return (!en || (!log || ml::Debug::endl()));
+		return (!en || (!log || ml::Debug::Endl()));
 	}
 
 
@@ -432,13 +432,17 @@ namespace demo
 	{
 		if (en && ml::Debug::Log("Loading Audio..."))
 		{
-			return ML_Audio.init() || ml::Debug::LogError("Failed Loading Audio");
+			if (ML_Audio.init())
+			{
+
+			}
+			//return ml::Debug::LogError("Failed Loading Audio");
 		}
 		return (!en || (en && ml::Debug::Log("Loading Sounds...")
 			
 			//&& ml_load<ml::Sound>(sounds[SND_test], "/sounds/example.wav", log)
 
-			&& (!log || ml::Debug::endl())));
+			&& (!log || ml::Debug::Endl())));
 	}
 
 	// Network
@@ -457,7 +461,7 @@ namespace demo
 				// Client setup...
 			}
 		}
-		return (!en || (!log || ml::Debug::endl()));
+		return (!en || (!log || ml::Debug::Endl()));
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

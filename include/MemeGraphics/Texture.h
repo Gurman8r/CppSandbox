@@ -4,14 +4,14 @@
 #include <MemeCore/Rect.h>
 #include <MemeGraphics/GL.h>
 #include <MemeGraphics/Image.h>
-#include <MemeGraphics/IHandle.h>
+#include <MemeCore/IHandle.h>
 
 namespace ml
 {
 	class ML_GRAPHICS_API Texture final
 		: public ITrackable
 		, public IResource
-		, public IHandle
+		, public IHandle<uint32_t>
 	{
 	public:
 		Texture();

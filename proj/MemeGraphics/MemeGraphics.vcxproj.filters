@@ -117,9 +117,6 @@
     <ClInclude Include="..\..\include\MemeGraphics\IRenderer.h">
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\IHandle.h">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Text.h">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
