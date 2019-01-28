@@ -157,6 +157,7 @@
     <None Include="..\..\assets\meshes\sphere32x24.mesh" />
     <None Include="..\..\assets\meshes\sphere8x6.mesh" />
     <None Include="..\..\assets\scripts\fibonacci.meme" />
+    <None Include="..\..\assets\scripts\files.meme" />
     <None Include="..\..\assets\scripts\hello.meme" />
     <None Include="..\..\assets\scripts\core.meme" />
     <None Include="..\..\assets\scripts\stub.meme" />

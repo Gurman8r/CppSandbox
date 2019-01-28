@@ -210,7 +210,7 @@ namespace ml
 		m_actualSize = actualSize;
 		m_size = vec2u(width, height);
 
-		if (!(*this) && (handle() = OpenGL::genTextures(1)))
+		if (!(*this) && (get_ref() = OpenGL::genTextures(1)))
 		{
 			
 		}
@@ -307,7 +307,7 @@ namespace ml
 		bool		srgb,
 		bool		mipmapped)
 	{
-		if (!(*this) && (handle() = OpenGL::genTextures(1)))
+		if (!(*this) && (get_ref() = OpenGL::genTextures(1)))
 		{
 			if (!width || !height)
 			{
@@ -390,7 +390,7 @@ namespace ml
 
 	Texture & Texture::swap(Texture & other)
 	{
-		std::swap(handle(),		other.handle());
+		std::swap(get_ref(),	other.get_ref());
 		std::swap(m_size,		other.m_size);
 		std::swap(m_actualSize,	other.m_actualSize);
 		std::swap(m_smooth,		other.m_smooth);

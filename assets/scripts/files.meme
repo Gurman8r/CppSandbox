@@ -1,2 +1,35 @@
 # File System Functions
+{
+	include("../../../assets/scripts/core.meme");
 
+	getExeName = []();
+	{
+		return 
+			getTargetName()		+ "_" + 
+			getTargetConfig()	+ "_" + 
+			getTargetPlatform() + ".exe";
+	};
+	
+	main = []();
+	{
+		dir	= getcwd();
+		exe = getExeName();
+		print("{dir}\{exe}");
+
+		if(chdir("../../../"));
+		{
+			dir	= getcwd();
+			print(dir);
+			lsdir(".");
+
+			if(file = read("README.md"));
+			{
+				print(file);
+				free(file);
+			};
+		};
+	};
+
+	main();
+	return true;
+}

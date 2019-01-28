@@ -30,7 +30,7 @@ namespace ml
 
 	FrameBuffer & FrameBuffer::create()
 	{
-		if (!(*this) && (handle() = OpenGL::genFramebuffers(1)))
+		if (!(*this) && (get_ref() = OpenGL::genFramebuffers(1)))
 		{
 
 		}

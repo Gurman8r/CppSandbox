@@ -58,8 +58,8 @@ int32_t main(int32_t argc, char ** argv)
 		window.setViewport(ml::vec2i::Zero, window.size());
 	}
 
-	// Load Resources
-	if (!demo::onLoad({ 0 }))
+	// Load
+	if (!demo::onLoad({ false }))
 	{
 		return ml::Debug::LogError("Failed Loading Resources")
 			|| ml::Debug::pause(EXIT_FAILURE);

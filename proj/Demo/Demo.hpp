@@ -138,37 +138,41 @@ namespace demo
 	ml::Server		server;
 }
 
-// Loading
+// Loading / Setup
 /* * * * * * * * * * * * * * * * * * * * */
 namespace demo
 {
-	/* * * * * * * * * * * * * * * * * * * * */
 
+	// Resource Loader
+	/* * * * * * * * * * * * * * * * * * * * */
 	template <class T>
-	inline static bool ml_load(ml::IResource & res, const std::string & file, bool log)
+	inline static bool load(ml::IResource & res, const std::string & file, bool log)
 	{
 		const std::type_info & info(typeid(res));
-
-		if (res.loadFromFile(SETTINGS.pathTo(file)))
-		{
-			return log
+		return (res.loadFromFile(SETTINGS.pathTo(file))
+			? (log
 				? ml::Debug::Log("Loaded [{0}]: \"{1}\"", info.name(), file)
-				: true;
-		}
-
-		return ml::Debug::LogError("Failed Loading [{0}]: \"{1}\"", info.name(), file);
+				: true)
+			: ml::Debug::LogError("Failed Loading [{0}]: \"{1}\"", info.name(), file)
+			);
 	}
 	
 
-	// Commands
+	// Interpreter
 	/* * * * * * * * * * * * * * * * * * * * */
 	
-	inline static void loadCommands()
+	inline static bool setupInterpreter()
 	{
-		static bool onlyOnce = true;
-		if (onlyOnce)
+		static bool good = false;
+		if (!good)
 		{
-			onlyOnce = false;
+			// Setup Parser
+			ML_Interpreter.parser()
+				.showToks(SETTINGS.scrShowToks)
+				.showTree(SETTINGS.scrShowTree)
+				.showItoP(SETTINGS.scrShowItoP);
+
+			// Load Commands
 
 			ML_Interpreter.addCmd({ "help", [](ml::Args & args)
 			{
@@ -214,11 +218,10 @@ namespace demo
 			ML_Interpreter.addCmd({ "read", [](ml::Args & args)
 			{
 				std::string buf;
-				if (ML_FileSystem.getFileContents(args.pop_front().front(), buf))
-				{
-					return ml::Var().stringValue(buf);
-				}
-				return ml::Var().stringValue(std::string());
+				
+				if (ML_FileSystem.getFileContents(args.pop_front().front(), buf)) { }
+				
+				return ml::Var().stringValue(buf);
 			} });
 
 			ML_Interpreter.addCmd({ "exists", [](ml::Args & args)
@@ -294,7 +297,10 @@ namespace demo
 				}
 				return ml::Var().boolValue(true);
 			} });
+
+			good = true;
 		}
+		return good;
 	};
 
 
@@ -306,12 +312,12 @@ namespace demo
 		// Load Fonts
 		return (!en || (en && ml::Debug::Log("Loading Fonts...")
 
-			&& ml_load<ml::Font>(fonts[FNT_clacon], "/fonts/clacon.ttf", log)
-			&& ml_load<ml::Font>(fonts[FNT_consolas], "/fonts/consolas.ttf", log)
-			&& ml_load<ml::Font>(fonts[FNT_lconsole], "/fonts/lucida_console.ttf", log)
-			&& ml_load<ml::Font>(fonts[FNT_minecraft], "/fonts/minecraft.ttf", log)
+			&& load<ml::Font>(fonts[FNT_clacon], "/fonts/clacon.ttf", log)
+			&& load<ml::Font>(fonts[FNT_consolas], "/fonts/consolas.ttf", log)
+			&& load<ml::Font>(fonts[FNT_lconsole], "/fonts/lucida_console.ttf", log)
+			&& load<ml::Font>(fonts[FNT_minecraft], "/fonts/minecraft.ttf", log)
 
-			&& (!log || ml::Debug::Endl())));
+			&& ml::Debug::Endl()));
 	}
 
 	inline static bool loadImages(bool en, bool log)
@@ -319,9 +325,9 @@ namespace demo
 		// Load Images
 		return (!en || (en && ml::Debug::Log("Loading Images...")
 			
-			&& ml_load<ml::Image>(images[IMG_icon], "/images/dean.png", log)
+			&& load<ml::Image>(images[IMG_icon], "/images/dean.png", log)
 			
-			&& (!log || ml::Debug::Endl())));
+			&& ml::Debug::Endl()));
 	}
 
 	inline static bool loadTextures(bool en, bool log)
@@ -329,13 +335,13 @@ namespace demo
 		// Load Textures
 		return (!en || (en && ml::Debug::Log("Loading Textures...")
 			
-			&& ml_load<ml::Texture>(textures[TEX_dean], "/images/dean.png", log)
-			&& ml_load<ml::Texture>(textures[TEX_sanic], "/images/sanic.png", log)
-			&& ml_load<ml::Texture>(textures[TEX_stone_dm], "/textures/stone/stone_dm.png", log)
-			&& ml_load<ml::Texture>(textures[TEX_stone_hm], "/textures/stone/stone_hm.png", log)
-			&& ml_load<ml::Texture>(textures[TEX_stone_nm], "/textures/stone/stone_nm.png", log)
+			&& load<ml::Texture>(textures[TEX_dean], "/images/dean.png", log)
+			&& load<ml::Texture>(textures[TEX_sanic], "/images/sanic.png", log)
+			&& load<ml::Texture>(textures[TEX_stone_dm], "/textures/stone/stone_dm.png", log)
+			&& load<ml::Texture>(textures[TEX_stone_hm], "/textures/stone/stone_hm.png", log)
+			&& load<ml::Texture>(textures[TEX_stone_nm], "/textures/stone/stone_nm.png", log)
 			
-			&& (!log || ml::Debug::Endl())));
+			&& ml::Debug::Endl()));
 	}
 
 	inline static bool loadShaders(bool en, bool log)
@@ -343,11 +349,11 @@ namespace demo
 		// Load Shaders
 		return (!en || (en && ml::Debug::Log("Loading Shaders...")
 			
-			&& ml_load<ml::Shader>(shaders[GL_basic3D], "/shaders/basic3D.shader", log)
-			&& ml_load<ml::Shader>(shaders[GL_text], "/shaders/text.shader", log)
-			&& ml_load<ml::Shader>(shaders[GL_geometry], "/shaders/geometry.shader", log)
+			&& load<ml::Shader>(shaders[GL_basic3D], "/shaders/basic3D.shader", log)
+			&& load<ml::Shader>(shaders[GL_text], "/shaders/text.shader", log)
+			&& load<ml::Shader>(shaders[GL_geometry], "/shaders/geometry.shader", log)
 			
-			&& (!log || ml::Debug::Endl())));
+			&& ml::Debug::Endl()));
 	}
 
 	inline static bool loadMeshes(bool en, bool log)
@@ -355,10 +361,10 @@ namespace demo
 		// Load Meshes
 		return (!en || (en && ml::Debug::Log("Loading Meshes...")
 			
-			&& ml_load<ml::Mesh>(mesh[MESH_sphere8x6], "/meshes/sphere8x6.mesh", log)
-			&& ml_load<ml::Mesh>(mesh[MESH_sphere32x24], "/meshes/sphere32x24.mesh", log)
+			&& load<ml::Mesh>(mesh[MESH_sphere8x6], "/meshes/sphere8x6.mesh", log)
+			&& load<ml::Mesh>(mesh[MESH_sphere32x24], "/meshes/sphere32x24.mesh", log)
 			
-			&& (!log || ml::Debug::Endl())));
+			&& ml::Debug::Endl()));
 	}
 
 	inline static bool loadBuffers(bool en, bool log)
@@ -421,7 +427,7 @@ namespace demo
 			vao[VAO_text].unbind();
 
 		}
-		return (!en || (!log || ml::Debug::Endl()));
+		return ml::Debug::Endl();
 	}
 
 
@@ -434,16 +440,30 @@ namespace demo
 		{
 			if (ML_Audio.init())
 			{
+				ml::AudioBuffer buffer;
+				if (!ML_Audio.genBuffer(buffer, 1, 512))
+				{
+					return ml::Debug::LogError("Failed Loading Audio Buffers");
+				}
 
+				ml::AudioSource source;
+				if (!ML_Audio.genSource(source, 1, 16))
+				{
+					return ml::Debug::LogError("Failed Loading Audio Sources");
+				}
+
+				return ml::Debug::Endl();
 			}
-			//return ml::Debug::LogError("Failed Loading Audio");
+			else
+			{
+				return ml::Debug::LogError("Failed Loading Audio");
+			}
 		}
 		return (!en || (en && ml::Debug::Log("Loading Sounds...")
-			
-			//&& ml_load<ml::Sound>(sounds[SND_test], "/sounds/example.wav", log)
-
-			&& (!log || ml::Debug::Endl())));
+			//&& load<ml::Sound>(sounds[SND_test], "/sounds/example.wav", log)
+			&& ml::Debug::Endl()));
 	}
+
 
 	// Network
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -461,10 +481,9 @@ namespace demo
 				// Client setup...
 			}
 		}
-		return (!en || (!log || ml::Debug::Endl()));
+		return ml::Debug::Endl();
 	}
 
-	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 // Events
@@ -484,22 +503,21 @@ namespace demo
 		// Start Master Timer
 		ML_Time.start();
 
-		// Load Commands
-		loadCommands();
-		
-		// Setup Parser
-		ML_Interpreter.parser()
-			.showToks(SETTINGS.scrShowToks)
-			.showTree(SETTINGS.scrShowTree)
-			.showItoP(SETTINGS.scrShowItoP);
+		// Setup Interpreter
+		if (!setupInterpreter())
+		{
+			return false;
+		}
 
 		// Run Script
-		auto path = SETTINGS.pathTo(SETTINGS.scrPath + SETTINGS.scrFile);
-		if (ml::Var var = ML_Interpreter.execFile(path))
+		std::string path = SETTINGS.pathTo(SETTINGS.scrPath + SETTINGS.scrFile);
+		ml::Var	var = ML_Interpreter.execFile(path);
+		if (var.isErrorType())
 		{
-			return (bool)var;
+			return ml::Debug::LogError("Path {0}", path);
 		}
-		return ml::Debug::LogError("Path {0}", path);
+
+		return true;
 	}
 
 
@@ -607,7 +625,7 @@ namespace demo
 			ml::Time::calculateFPS(ev.elapsed.delta())
 		));
 
-		// Handle Input
+		// Value Input
 		if (ev.input.getKeyDown(ml::KeyCode::Escape))
 		{
 			ev.window.close();

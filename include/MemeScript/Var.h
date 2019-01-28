@@ -26,6 +26,9 @@ namespace ml
 			Var * get() const;
 
 			void serialize(std::ostream & out) const override;
+
+			inline Var * operator->() const { return get(); }
+			inline Var * operator*() const { return get(); }
 		};
 
 	public:
@@ -67,6 +70,22 @@ namespace ml
 		Var(const Var & other);
 		~Var();
 
+	public:
+		inline int32_t	getScope()	const { return m_scope; }
+		inline Type		getType()	const { return m_type; }
+
+		inline Var & setScope(int32_t value)
+		{
+			m_scope = value;
+			return (*this);
+		}
+		inline Var & setType(const Type & value)
+		{
+			m_changed = !compareType(value);
+			m_type = value;
+			return (*this);
+		}
+
 	public: // Check Functions
 
 		bool	compareTokens(const TokenList& value) const;
@@ -99,18 +118,18 @@ namespace ml
 		std::string	textValue() const;
 		TokenList	tokensValue() const;
 
-		Var &		arrayValue(const TokenList & value);
-		Var &		boolValue(const bool & value);
-		Var &		elemValue(size_t index, const Token & value);
-		Var &		errorValue(const std::string & value);
-		Var &		floatValue(const float & value);
-		Var &		funcValue(const TokenList & value);
-		Var &		intValue(const int32_t & value);
-		Var &		nullValue();
-		Var &		pointerValue(const Ptr & value);
-		Var &		stringValue(const std::string & value);
-		Var &		tokensValue(const TokenList & value);
-		Var &		voidValue();
+		Var & arrayValue(const TokenList & value);
+		Var & boolValue(const bool & value);
+		Var & elemValue(size_t index, const Token & value);
+		Var & errorValue(const std::string & value);
+		Var & floatValue(const float & value);
+		Var & funcValue(const TokenList & value);
+		Var & intValue(const int32_t & value);
+		Var & nullValue();
+		Var & pointerValue(const Ptr & value);
+		Var & stringValue(const std::string & value);
+		Var & tokensValue(const TokenList & value);
+		Var & voidValue();
 		
 		template<typename T, typename ... A>
 		inline Var & errorValue(const std::string & fmt, const T & arg0, const A &... args)
@@ -118,25 +137,33 @@ namespace ml
 			return errorValue(StringUtility::Format(fmt, arg0, (args)...));
 		};
 
-	
+
+	public: // Serialization
+		void serialize(std::ostream & out) const override;
+
+		static std::ostream& PrintList(std::ostream & out, const Var & value);
+		
+	public: // Factory
+		static Var makeSingle(const Token & tok);
+		static Var makeRecursive(const TokenList & toks);
+
 	public: // Operator Functions
-		bool	And(const Var & other) const;
-		bool	Equals(const Var & other) const;
-		bool	GreaterThan(const Var & other) const;
-		bool	LessThan(const Var & other) const;
-		bool	Or(const Var & other) const;
+		bool	And(const Var & other) const;	// &&
+		bool	Equals(const Var & other) const;// ==
+		bool	Less(const Var & other) const;	// <
+		bool	Or(const Var & other) const;	// ||
 
-		Var &	Add(const Var & other);
-		Var &	Div(const Var & other);
-		Var &	Mod(const Var & other);
-		Var &	Mul(const Var & other);
-		Var &	Pow(const Var & other);
-		Var &	Set(const Var & other);
-		Var &	Sub(const Var & other);
+		Var &	Add(const Var & other); // +
+		Var &	Div(const Var & other); // -
+		Var &	Mod(const Var & other); // %
+		Var &	Mul(const Var & other); // *
+		Var &	Pow(const Var & other); // ^
+		Var &	Sub(const Var & other); // -
+		Var &	Set(const Var & other); // =
 
-		inline bool equals(const Var & other) const { return Equals(other); }
-		inline bool lessThan(const Var & other) const { return LessThan(other); }
-		inline bool greaterThan(const Var & other) const { return GreaterThan(other); }
+	public: // IComparable
+		inline bool equals(const Var & other)	const override { return Equals(other); }
+		inline bool lessThan(const Var & other)	const override { return Less(other); }
 
 	public: // Operators
 		friend bool operator&&(const Var & lhs, const Var & rhs);
@@ -166,32 +193,13 @@ namespace ml
 		Var & operator=(const char * value);
 		Var & operator=(char value);
 
-		inline operator bool() const { return !isErrorType(); }
-
-	public: // Serialization
-		void serialize(std::ostream & out) const override;
-
-		static std::ostream& PrintList(std::ostream & out, const Var & value);
-		
-	public: // Factory
-		static Var makeSingle(const Token & tok);
-		static Var makeRecursive(const TokenList & toks);
-
-	public: // Helper Functions
-		inline int32_t	getScope()	const { return m_scope; }
-		inline Type		getType()	const { return m_type; }
-
-		inline Var & setScope(int32_t value)
-		{
-			m_scope = value;
-			return (*this);
-		}
-		inline Var & setType(const Type & value)
-		{
-			m_changed = !compareType(value);
-			m_type = value;
-			return (*this);
-		}
+		inline operator bool		() const { return boolValue(); }
+		inline operator float		() const { return floatValue(); }
+		inline operator double		() const { return (double)floatValue(); }
+		inline operator int32_t		() const { return intValue(); }
+		inline operator Ptr			() const { return pointerValue(); }
+		inline operator std::string	() const { return stringValue(); }
+		inline operator const char *() const { return stringValue().c_str(); }
 
 	private:
 		TokenList	m_tokens;

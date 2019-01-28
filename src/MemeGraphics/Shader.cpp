@@ -402,10 +402,9 @@ namespace ml
 			return ml::Debug::LogError("Geometry shaders are not available on your system.");
 		}
 
-		if (handle())
+		if ((*this))
 		{
-			OpenGL::deleteShader(handle());
-			handle() = 0;
+			OpenGL::deleteShader((*this));
 		}
 
 		m_textures.clear();
@@ -490,7 +489,7 @@ namespace ml
 			return Debug::LogError("Failed to link source: {0}", log);
 		}
 
-		handle() = shaderProgram;
+		get_ref() = shaderProgram;
 
 		OpenGL::flush();
 

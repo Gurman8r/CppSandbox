@@ -5,32 +5,39 @@
 
 namespace ml
 {
-	template <typename ID = uint32_t>
+	template <typename T = uint32_t>
 	class IHandle
 	{
-	private:
-		ID m_ID;
-
 	public:
-		IHandle(ID value)
+		using id_type = T;
+	
+	public:
+		IHandle(id_type value)
 			: m_ID(value)
 		{
 		}
 		virtual ~IHandle() {}
 
 	public:
-		inline ID & handle() { return m_ID; }
+		inline bool	good() const { return m_ID; }
+
+		inline id_type & get_ref() { return m_ID; }
+		inline id_type * get_ptr() { return &m_ID; }
+	 							  
+		inline const id_type * get_const_ptr() const { return &m_ID; }
+		inline const id_type & get_const_ref() const { return  m_ID; }
 
 	public:
-		inline const ID *	const_ptr()	const { return &m_ID; }
-		inline const ID &	const_ref()	const { return  m_ID; }
-		inline bool			good()		const { return  m_ID; }
+		inline operator bool() const { return good(); }
+		
+		inline operator id_type &() { return get_ref(); }
+		inline operator id_type *() { return get_ptr(); }
 
-	public:
-		inline operator const ID *()	const { return const_ptr();	}
-		inline operator const ID &()	const { return const_ref();	}
-		inline operator bool()			const { return good();		}
-
+		inline operator const id_type *() const { return get_const_ptr(); }
+		inline operator const id_type &() const { return get_const_ref(); }
+	
+	private:
+		id_type m_ID;
 	};
 }
 

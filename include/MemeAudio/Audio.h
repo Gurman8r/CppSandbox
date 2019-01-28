@@ -7,8 +7,6 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-#define ML_Audio ml::Audio::getInstance()
-
 #ifdef ML_DEBUG
 	#define alCheck(expr) do { expr; ml::Audio::checkError(__FILE__, __LINE__, #expr); } while (false)
 #else
@@ -19,26 +17,26 @@
 
 namespace ml
 {
-	struct ML_AUDIO_API SoundBuffer
+	struct ML_AUDIO_API AudioBuffer
 		: public ITrackable
 		, public IHandle<uint32_t>
 	{
 		size_t count;
 		size_t size;
 
-		SoundBuffer()
+		AudioBuffer()
 			: IHandle(NULL)
 			, count(0)
 			, size(0)
 		{
 		}
-		SoundBuffer(size_t count, size_t size)
+		AudioBuffer(size_t count, size_t size)
 			: IHandle(NULL)
 			, count(count)
 			, size(size)
 		{
 		}
-		SoundBuffer(const SoundBuffer & copy)
+		AudioBuffer(const AudioBuffer & copy)
 			: IHandle(copy)
 			, count(copy.count)
 			, size(copy.size)
@@ -48,26 +46,26 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_AUDIO_API SoundSource
+	struct ML_AUDIO_API AudioSource
 		: public ITrackable
 		, public IHandle<uint32_t>
 	{
 		size_t count;
 		size_t size;
 
-		SoundSource()
+		AudioSource()
 			: IHandle(NULL)
 			, count(0)
 			, size(0)
 		{
 		}
-		SoundSource(size_t count, size_t size)
+		AudioSource(size_t count, size_t size)
 			: IHandle(NULL)
 			, count(count)
 			, size(size)
 		{
 		}
-		SoundSource(const SoundSource & copy)
+		AudioSource(const AudioSource & copy)
 			: IHandle(copy)
 			, count(copy.count)
 			, size(copy.size)
@@ -77,6 +75,8 @@ namespace ml
 }
 
 /* * * * * * * * * * * * * * * * * * * * */
+
+#define ML_Audio ml::Audio::getInstance()
 
 namespace ml
 {
@@ -110,8 +110,8 @@ namespace ml
 		bool makeContextCurrent();
 		bool init();
 
-		bool createBuffer(SoundBuffer & buf, size_t count, size_t size);
-		bool createSource(SoundSource & src, size_t count, size_t size);
+		bool genBuffer(AudioBuffer & buf, size_t count, size_t size);
+		bool genSource(AudioSource & src, size_t count, size_t size);
 
 		void serialize(std::ostream & out) const override;
 

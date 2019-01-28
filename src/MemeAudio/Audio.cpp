@@ -134,30 +134,30 @@ namespace ml
 	}
 
 
-	bool Audio::createBuffer(SoundBuffer & value, size_t count, size_t size)
+	bool Audio::genBuffer(AudioBuffer & value, size_t count, size_t size)
 	{
-		if (good() && size)
+		if (good() && count &&  size)
 		{
 			value.count = count;
 			value.size = size;
 			for (size_t i = 0; i < size; i++)
 			{
-				alCheck(alGenBuffers(count, &value.handle()));
+				alCheck(alGenBuffers(count, value));
 			}
 			return true;
 		}
 		return false;
 	}
 
-	bool Audio::createSource(SoundSource & value, size_t count, size_t size)
+	bool Audio::genSource(AudioSource & value, size_t count, size_t size)
 	{
-		if (good() && size)
+		if (good() && count &&  size)
 		{
 			for (size_t i = 0; i < size; i++)
 			{
 				value.count = count;
 				value.size = size;
-				alCheck(alGenSources(count, &value.handle()));
+				alCheck(alGenSources(count, value));
 			}
 			return true;
 		}

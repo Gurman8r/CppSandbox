@@ -52,6 +52,22 @@ namespace
 
 namespace
 {
+	inline static int32_t testScripts()
+	{
+		using namespace ml;
+
+		AST_Block program({
+			new AST_Print(new AST_String("Hello, World!")),
+		});
+
+		if (!program.run())
+		{
+			Debug::LogError("Failed");
+		}
+
+		return Debug::pause(EXIT_SUCCESS);
+	}
+
 	inline static int32_t testMemoryManager()
 	{
 		// Data
@@ -397,7 +413,6 @@ namespace
 	}
 }
 
-
 /* * * * * * * * * * * * * * * * * * * * */
 
 namespace
@@ -406,10 +421,11 @@ namespace
 	{
 		switch (id)
 		{
-		case 1: return testMemoryManager();
-		case 2: return testMemoryC();
-		case 3: return testManualMemory1();
-		case 4: return testManualMemory2();
+		case 1: return testScripts();
+		case 2: return testMemoryManager();
+		case 3: return testMemoryC();
+		case 4: return testManualMemory1();
+		case 5: return testManualMemory2();
 		}
 		return EXIT_FAILURE;
 	}

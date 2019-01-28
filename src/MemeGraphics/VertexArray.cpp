@@ -30,7 +30,7 @@ namespace ml
 
 	VertexArray & VertexArray::create(GL::Mode mode)
 	{
-		if (!(*this) && (handle() = OpenGL::genVertexArrays(1)))
+		if (!(*this) && (get_ref() = OpenGL::genVertexArrays(1)))
 		{
 			m_mode = mode;
 		}
