@@ -9,14 +9,15 @@
 
 namespace ml
 {
-	class EventSystem final
+	class ML_CORE_API EventSystem final
 		: public ISingleton<EventSystem>
+		, public ITrackable
 	{
 		friend class ISingleton<EventSystem>;
 
 	public:
 		void addListener(const int32_t & type, EventListener * listener);
-		void fireEvent(const EventBase & ev);
+		void fireEvent(const Event & ev);
 		void removeListener(const int32_t & type, EventListener * listener);
 		void removeListenerFromAllEvents(EventListener * listener);
 
@@ -24,7 +25,7 @@ namespace ml
 		EventSystem() {}
 		~EventSystem() {}
 
-		void dispatchAllEvents(const EventBase * ev);
+		void dispatchAllEvents(const Event * ev);
 
 		std::multimap<int32_t, EventListener*> m_listeners;
 	};

@@ -73,11 +73,4 @@ namespace ml
 			<< std::endl;
 		return Debug::Success;
 	}
-
-
-	Debug::Status Debug::Endl()
-	{
-		out() << std::endl;
-		return Debug::Success;
-	}
 }

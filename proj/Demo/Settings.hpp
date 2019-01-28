@@ -17,12 +17,15 @@ namespace demo
 		: public ml::ITrackable
 		, public ml::IResource
 		, public ml::ISingleton<Settings>
-	{	friend class ml::ISingleton<Settings>;
+	{	
+		friend class ml::ISingleton<Settings>;
+
 	public:
 		// [General]
 		std::string rootPath;		// Solution Dir
 		std::string	assetPath;		// Where's all the data?
 		uint32_t	runTests;		// Run test functions
+		bool		logLoading;		// Verbose loading output
 
 		// [Script]
 		std::string	scrPath;		// Location of scripts
@@ -71,6 +74,7 @@ namespace demo
 				rootPath	= ini.Get("General", "rootPath", "../../../");
 				assetPath	= ini.Get("General", "assetPath", "assets/");
 				runTests	= ini.GetInteger("General", "runTests", false);
+				logLoading	= ini.GetBoolean("General", "logLoading", false);
 
 				// [Script]
 				scrPath		= ini.Get("Script", "scrPath", "scripts/");

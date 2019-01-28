@@ -1,14 +1,14 @@
 #ifndef _EVENT_LISTENER_H_
 #define _EVENT_LISTENER_H_
 
-#include <MemeCore/EventBase.h>
+#include <MemeCore/Event.h>
 
 namespace ml
 {
 	class ML_CORE_API EventListener
 	{
 	public:
-		virtual void handleEvent(const EventBase * ev) = 0;
+		virtual void onEvent(const Event * ev) = 0;
 
 	private:
 

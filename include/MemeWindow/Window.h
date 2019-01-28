@@ -1,15 +1,19 @@
 #ifndef _WINDOW_H_
 #define _WINDOW_H_
 
+#include <MemeCore/Vector4.h>
+#include <MemeCore/EventListener.h>
+#include <MemeCore/INonCopyable.h>
 #include <MemeWindow/Context.h>
 #include <MemeWindow/Icon.h>
 #include <MemeWindow/VideoMode.h>
-#include <MemeCore/Vector4.h>
 
 namespace ml
 {
 	class ML_WINDOW_API Window
 		: public ITrackable
+		, public EventListener
+		, public INonCopyable
 	{
 	public:
 		enum Cursor : uint32_t
@@ -45,7 +49,6 @@ namespace ml
 
 	public:
 		Window();
-		Window(const Window & copy);
 		virtual ~Window();
 
 	public:
@@ -56,6 +59,7 @@ namespace ml
 			const Context		& context);
 
 		virtual bool initialize();
+		virtual void onEvent(const Event * ev) override;
 
 		Window & close();
 		Window & maximize();
@@ -71,6 +75,8 @@ namespace ml
 
 		bool	isOpen() const;
 		float	getTime() const;
+		vec2d	getCursorPos() const;
+		char	getChar() const;
 
 		inline const Context &		context()	const { return m_context; }
 		inline const VideoMode &	videoMode()	const { return m_videoMode; }
@@ -92,6 +98,8 @@ namespace ml
 		Cursor		m_cursorMode;
 		vec2i		m_position;
 		std::string	m_title;
+		
+		mutable char m_char;
 	};
 
 }

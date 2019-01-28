@@ -114,9 +114,6 @@
     <ClInclude Include="..\..\include\MemeCore\INonCopyable.h">
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\EventBase.h">
-      <Filter>Header Files\Events</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\EventListener.h">
       <Filter>Header Files\Events</Filter>
     </ClInclude>
@@ -176,6 +173,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\IHandle.h">
       <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Event.h">
+      <Filter>Header Files\Events</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

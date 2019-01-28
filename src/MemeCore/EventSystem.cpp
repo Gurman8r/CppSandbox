@@ -7,7 +7,7 @@ namespace ml
 		m_listeners.insert({ type, listener });
 	}
 	
-	void EventSystem::fireEvent(const EventBase & ev)
+	void EventSystem::fireEvent(const Event & ev)
 	{
 		dispatchAllEvents(&ev);
 	}
@@ -57,19 +57,19 @@ namespace ml
 		}
 	}
 
-	void EventSystem::dispatchAllEvents(const EventBase * ev)
+	void EventSystem::dispatchAllEvents(const Event * ev)
 	{
 		std::pair<
 			std::multimap<int32_t, EventListener*>::iterator,
 			std::multimap<int32_t, EventListener*>::iterator> ret;
 
-		ret = m_listeners.equal_range(ev->id());
+		ret = m_listeners.equal_range(ev->eventID());
 
 		std::multimap<int32_t, EventListener*>::iterator it;
 
 		for (it = ret.first; it != ret.second; ++it)
 		{
-			it->second->handleEvent(ev);
+			it->second->onEvent(ev);
 		}
 	}
 }

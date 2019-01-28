@@ -2,6 +2,7 @@
 
 #include "Demo.hpp"
 #include "Testing.hpp"
+#include <MemeCore/EventSystem.h>
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -19,7 +20,7 @@ int32_t main(int32_t argc, char ** argv)
 	}
 
 	// Program Enter
-	if (!demo::onProgramEnter({ argc, argv }))
+	if (!demo::onEnter({ argc, argv }))
 	{
 		return ml::Debug::LogError("Failed Entering Program")
 			|| ml::Debug::pause(EXIT_FAILURE);
@@ -59,7 +60,7 @@ int32_t main(int32_t argc, char ** argv)
 	}
 
 	// Load
-	if (!demo::onLoad({ false }))
+	if (!demo::onLoad({ SETTINGS.logLoading }))
 	{
 		return ml::Debug::LogError("Failed Loading Resources")
 			|| ml::Debug::pause(EXIT_FAILURE);
@@ -90,7 +91,7 @@ int32_t main(int32_t argc, char ** argv)
 	} while (window.isOpen());
 
 	// Program Exit
-	return demo::onProgramExit({ EXIT_SUCCESS });
+	return demo::onExit({ EXIT_SUCCESS });
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

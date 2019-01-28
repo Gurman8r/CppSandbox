@@ -6,20 +6,16 @@
 
 namespace ml
 {
-	class ML_GRAPHICS_API Uniform final
+	struct ML_GRAPHICS_API Uniform final
 	{
-	public:
 		enum ID : uint16_t
 		{
 			Model,
 			Proj,
 			View,
-			
 			Color,
 			Texture,
-			
 			CurveMode,
-
 			MAX_UNIFORM_ID
 		};
 		static const std::string Names[Uniform::ID::MAX_UNIFORM_ID];

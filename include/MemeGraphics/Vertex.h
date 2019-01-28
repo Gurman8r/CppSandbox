@@ -32,8 +32,8 @@ namespace ml
 		Vertex & color(const vec4f & value);
 		Vertex & texcoords(const vec2f & value);
 
-		inline const float &operator[](size_t index) const { return m_data[index]; }
-		inline float &		operator[](size_t index)		{ return m_data[index]; }
+		inline const float & operator[](size_t index) const	{ return m_data[index]; }
+		inline float &		 operator[](size_t index)		{ return m_data[index]; }
 
 	public:
 		inline void serialize(std::ostream & out) const override

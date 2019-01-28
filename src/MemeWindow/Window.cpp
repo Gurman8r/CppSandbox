@@ -1,4 +1,5 @@
 #include <MemeWindow/Window.h>
+#include <MemeWindow/Events.h>
 #include <MemeCore/DebugUtility.h>
 
 #include <GLFW/glfw3.h>
@@ -11,25 +12,22 @@ namespace ml
 		: m_window		(NULL)
 		, m_monitor		(NULL)
 		, m_share		(NULL)
-		, m_title		("Meme Window")
+		, m_title		("Window")
 		, m_context		()
 		, m_videoMode	()
 		, m_style		(Window::Style::Default)
 		, m_cursorMode	(Window::Cursor::Hidden)
 		, m_position	(vec2i::Zero)
 	{
-	}
-	Window::Window(const Window & copy)
-		: m_window		(copy.m_window)
-		, m_monitor		(copy.m_monitor)
-		, m_share		(copy.m_share)
-		, m_title		(copy.m_title)
-		, m_context		(copy.m_context)
-		, m_videoMode	(copy.m_videoMode)
-		, m_style		(copy.m_style)
-		, m_cursorMode	(copy.m_cursorMode)
-		, m_position	(copy.m_position)
-	{
+		ML_EventSystem.addListener(WindowEventID::EV_WindowResized,		this);
+		ML_EventSystem.addListener(WindowEventID::EV_WindowMoved,		this);
+		ML_EventSystem.addListener(WindowEventID::EV_WindowChar,		this);
+		ML_EventSystem.addListener(WindowEventID::EV_WindowScroll,		this);
+		ML_EventSystem.addListener(WindowEventID::EV_WindowClosed,		this);
+		ML_EventSystem.addListener(WindowEventID::EV_WindowFocused,		this);
+		ML_EventSystem.addListener(WindowEventID::EV_WindowMouseMove,	this);
+		ML_EventSystem.addListener(WindowEventID::EV_WindowMouseEnter,	this);
+		ML_EventSystem.addListener(WindowEventID::EV_WindowMouseButton,	this);
 	}
 	Window::~Window()
 	{
@@ -83,48 +81,117 @@ namespace ml
 	bool Window::initialize()
 	{
 		glfwSetWindowSizeCallback(ML_WINDOW(m_window),
-			[](GLFWwindow * window, int32_t width, int32_t height)
+			[](GLFWwindow * window, int32_t w, int32_t h)
 		{
-			// Window Size Callback
+			ML_EventSystem.fireEvent(WindowResizedEvent(w, h));
 		});
 
 		glfwSetWindowPosCallback(ML_WINDOW(m_window),
-			[](GLFWwindow * window, int32_t width, int32_t h)
+			[](GLFWwindow * window, int32_t x, int32_t y)
 		{
-			// Window Pos Callback
+			ML_EventSystem.fireEvent(WindowMovedEvent(x, y));
 		});
 
 		glfwSetCharCallback(ML_WINDOW(m_window),
 			[](GLFWwindow * window, uint32_t c)
 		{
-			// Char (Typed) Callback
+			ML_EventSystem.fireEvent(WindowCharEvent(c));
 		});
 
 		glfwSetScrollCallback(ML_WINDOW(m_window),
 			[](GLFWwindow * window, double x, double y)
 		{
-			// Scroll Callback
+			ML_EventSystem.fireEvent(WindowScrollEvent(x, y));
 		});
 
 		glfwSetWindowCloseCallback(ML_WINDOW(m_window),
 			[](GLFWwindow * window)
 		{
-			// Window Closed Callback
-		});
-
-		glfwSetFramebufferSizeCallback(ML_WINDOW(m_window),
-			[](GLFWwindow * window, int32_t width, int32_t height)
-		{
-			// Framebuffer Resized Callback
+			ML_EventSystem.fireEvent(WindowClosedEvent());
 		});
 
 		glfwSetWindowFocusCallback(ML_WINDOW(m_window),
 			[](GLFWwindow * window, int32_t focused)
 		{
-			// Window Focused Callback
+			ML_EventSystem.fireEvent(WindowFocusedEvent(focused));
+		});
+
+		glfwSetCursorPosCallback(ML_WINDOW(m_window),
+			[](GLFWwindow * window, double x, double y) 
+		{
+			ML_EventSystem.fireEvent(WindowMouseMoveEvent(x, y));
+		});
+
+		glfwSetCursorEnterCallback(ML_WINDOW(m_window),
+			[](GLFWwindow * window, int32_t entered)
+		{
+			ML_EventSystem.fireEvent(WindowMouseEnterEvent(entered));
+		});
+
+		glfwSetMouseButtonCallback(ML_WINDOW(m_window),
+			[](GLFWwindow * window, int32_t button, int32_t action, int32_t mods)
+		{
+			ML_EventSystem.fireEvent(WindowMouseButtonEvent(button, action, mods));
 		});
 
 		return true;
+	}
+
+	void Window::onEvent(const Event * value)
+	{
+		switch (value->eventID())
+		{
+		case WindowEventID::EV_WindowResized:
+			if (auto ev = dynamic_cast<const WindowResizedEvent *>(value))
+			{
+				m_videoMode.size = {
+					ev->width,
+					ev->height
+				};
+			}
+			break;
+		case WindowEventID::EV_WindowMoved:
+			if (auto ev = dynamic_cast<const WindowMovedEvent *>(value))
+			{
+			}
+			break;
+		case WindowEventID::EV_WindowChar:
+			if (auto ev = dynamic_cast<const WindowCharEvent *>(value))
+			{
+				m_char = (char)ev->value;
+			}
+			break;
+		case WindowEventID::EV_WindowScroll:
+			if (auto ev = dynamic_cast<const WindowScrollEvent *>(value))
+			{
+			}
+			break;
+		case WindowEventID::EV_WindowClosed:
+			if (auto ev = dynamic_cast<const WindowClosedEvent *>(value))
+			{
+			}
+			break;
+		case WindowEventID::EV_WindowFocused:
+			if (auto ev = dynamic_cast<const WindowFocusedEvent *>(value))
+			{
+			}
+			break;
+		case WindowEventID::EV_WindowMouseMove:
+			if (auto ev = dynamic_cast<const WindowMouseMoveEvent *>(value))
+			{
+			}
+			break;
+		case WindowEventID::EV_WindowMouseEnter:
+			if (auto ev = dynamic_cast<const WindowMouseEnterEvent *>(value))
+			{
+			}
+			break;
+		case WindowEventID::EV_WindowMouseButton:
+			if (auto ev = dynamic_cast<const WindowMouseButtonEvent *>(value))
+			{
+			}
+			break;
+		}
 	}
 
 
@@ -222,6 +289,21 @@ namespace ml
 	float Window::getTime() const
 	{
 		return static_cast<float>(glfwGetTime());
+	}
+
+	vec2d Window::getCursorPos() const
+	{
+		static double x, y;
+		glfwGetCursorPos(ML_WINDOW(m_window), &x, &y);
+		return vec2d(x, y);
+	}
+
+	char Window::getChar() const
+	{
+		static char temp = 0;
+		temp = m_char;
+		m_char = 0;
+		return temp;
 	}
 	
 }

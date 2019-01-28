@@ -30,6 +30,9 @@
     <ClInclude Include="..\..\include\MemeWindow\Context.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeWindow\Events.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeWindow\Window.cpp">

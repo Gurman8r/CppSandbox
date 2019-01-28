@@ -46,6 +46,19 @@ namespace demo
 		MIN_TEXTURE = -1,
 		TEX_dean,
 		TEX_sanic,
+		TEX_bg_clouds,
+		TEX_sky_clouds,
+		TEX_sky_water,
+		TEX_earth_cm,
+		TEX_earth_dm,
+		TEX_earth_hm,
+		TEX_earth_lm,
+		TEX_earth_nm,
+		TEX_earth_sm,
+		TEX_mars_dm,
+		TEX_mars_nm,
+		TEX_moon_dm,
+		TEX_moon_nm,
 		TEX_stone_dm,
 		TEX_stone_hm,
 		TEX_stone_nm,
@@ -142,7 +155,6 @@ namespace demo
 /* * * * * * * * * * * * * * * * * * * * */
 namespace demo
 {
-
 	// Resource Loader
 	/* * * * * * * * * * * * * * * * * * * * */
 	template <class T>
@@ -152,15 +164,13 @@ namespace demo
 		return (res.loadFromFile(SETTINGS.pathTo(file))
 			? (log
 				? ml::Debug::Log("Loaded [{0}]: \"{1}\"", info.name(), file)
-				: true)
+				: ml::Debug::Success)
 			: ml::Debug::LogError("Failed Loading [{0}]: \"{1}\"", info.name(), file)
 			);
 	}
 	
-
-	// Interpreter
+	// On Enter
 	/* * * * * * * * * * * * * * * * * * * * */
-	
 	inline static bool setupInterpreter()
 	{
 		static bool good = false;
@@ -219,7 +229,7 @@ namespace demo
 			{
 
 				std::string name = args.pop_front().front();
-				
+
 				if (ML_FileSystem.fileExists(name))
 				{
 					std::string buf;
@@ -342,9 +352,8 @@ namespace demo
 	};
 
 
-	// Graphics
+	// On Load
 	/* * * * * * * * * * * * * * * * * * * * */
-
 	inline static bool loadFonts(bool en, bool log)
 	{
 		// Load Fonts
@@ -355,54 +364,74 @@ namespace demo
 			&& load<ml::Font>(fonts[FNT_lconsole], "/fonts/lucida_console.ttf", log)
 			&& load<ml::Font>(fonts[FNT_minecraft], "/fonts/minecraft.ttf", log)
 
-			&& ml::Debug::Endl()));
+			));
 	}
 
 	inline static bool loadImages(bool en, bool log)
 	{
 		// Load Images
 		return (!en || (en && ml::Debug::Log("Loading Images...")
-			
+
 			&& load<ml::Image>(images[IMG_icon], "/images/dean.png", log)
-			
-			&& ml::Debug::Endl()));
+
+			));
 	}
 
 	inline static bool loadTextures(bool en, bool log)
 	{
+		ml::Debug::Log("Max Texture Size: {0}", ml::vec2u(ml::OpenGL::getMaxTextureSize()));
+
 		// Load Textures
 		return (!en || (en && ml::Debug::Log("Loading Textures...")
-			
+
 			&& load<ml::Texture>(textures[TEX_dean], "/images/dean.png", log)
 			&& load<ml::Texture>(textures[TEX_sanic], "/images/sanic.png", log)
+
+			//&& load<ml::Texture>(textures[TEX_bg_clouds], "/textures/bg/bg_clouds.png", log)
+			//&& load<ml::Texture>(textures[TEX_sky_clouds], "/textures/bg/sky_clouds.png", log)
+			//&& load<ml::Texture>(textures[TEX_sky_water], "/textures/bg/sky_water.png", log)
+
+			//&& load<ml::Texture>(textures[TEX_earth_cm], "/textures/earth/earth_cm_2k.png", log)
+			//&& load<ml::Texture>(textures[TEX_earth_dm], "/textures/earth/earth_dm_2k.png", log)
+			//&& load<ml::Texture>(textures[TEX_earth_hm], "/textures/earth/earth_hm_2k.png", log)
+			//&& load<ml::Texture>(textures[TEX_earth_lm], "/textures/earth/earth_lm_2k.png", log)
+			//&& load<ml::Texture>(textures[TEX_earth_nm], "/textures/earth/earth_nm_2k.png", log)
+			//&& load<ml::Texture>(textures[TEX_earth_sm], "/textures/earth/earth_sm_2k.png", log)
+
+			//&& load<ml::Texture>(textures[TEX_mars_dm], "/textures/mars/mars_dm_2k.png", log)
+			//&& load<ml::Texture>(textures[TEX_mars_nm], "/textures/mars/mars_nm_2k.png", log)
+
+			//&& load<ml::Texture>(textures[TEX_moon_dm], "/textures/moon/moon_dm_2k.png", log)
+			//&& load<ml::Texture>(textures[TEX_moon_nm], "/textures/moon/moon_nm_2k.png", log)
+
 			&& load<ml::Texture>(textures[TEX_stone_dm], "/textures/stone/stone_dm.png", log)
 			&& load<ml::Texture>(textures[TEX_stone_hm], "/textures/stone/stone_hm.png", log)
 			&& load<ml::Texture>(textures[TEX_stone_nm], "/textures/stone/stone_nm.png", log)
-			
-			&& ml::Debug::Endl()));
+
+			));
 	}
 
 	inline static bool loadShaders(bool en, bool log)
 	{
 		// Load Shaders
 		return (!en || (en && ml::Debug::Log("Loading Shaders...")
-			
+
 			&& load<ml::Shader>(shaders[GL_basic3D], "/shaders/basic3D.shader", log)
 			&& load<ml::Shader>(shaders[GL_text], "/shaders/text.shader", log)
 			&& load<ml::Shader>(shaders[GL_geometry], "/shaders/geometry.shader", log)
-			
-			&& ml::Debug::Endl()));
+
+			));
 	}
 
 	inline static bool loadMeshes(bool en, bool log)
 	{
 		// Load Meshes
 		return (!en || (en && ml::Debug::Log("Loading Meshes...")
-			
+
 			&& load<ml::Mesh>(mesh[MESH_sphere8x6], "/meshes/sphere8x6.mesh", log)
 			&& load<ml::Mesh>(mesh[MESH_sphere32x24], "/meshes/sphere32x24.mesh", log)
-			
-			&& ml::Debug::Endl()));
+
+			));
 	}
 
 	inline static bool loadBuffers(bool en, bool log)
@@ -464,13 +493,14 @@ namespace demo
 			vbo[VBO_text].unbind();
 			vao[VAO_text].unbind();
 
+
+			// FBO
+			fbo[FBO_test].create();
+
+
 		}
-		return ml::Debug::Endl();
+		return true;
 	}
-
-
-	// Audio
-	/* * * * * * * * * * * * * * * * * * * * */
 
 	inline static bool loadAudio(bool en, bool log)
 	{
@@ -490,7 +520,7 @@ namespace demo
 					return ml::Debug::LogError("Failed Loading Audio Sources");
 				}
 
-				return ml::Debug::Endl();
+				return true;
 			}
 			else
 			{
@@ -499,12 +529,8 @@ namespace demo
 		}
 		return (!en || (en && ml::Debug::Log("Loading Sounds...")
 			//&& load<ml::Sound>(sounds[SND_test], "/sounds/example.wav", log)
-			&& ml::Debug::Endl()));
+			));
 	}
-
-
-	// Network
-	/* * * * * * * * * * * * * * * * * * * * */
 
 	inline static bool loadNetwork(bool en, bool log)
 	{
@@ -519,24 +545,68 @@ namespace demo
 				// Client setup...
 			}
 		}
-		return ml::Debug::Endl();
+		return true;
 	}
 
 }
 
-// Events
+// Event Data
 /* * * * * * * * * * * * * * * * * * * * */
 namespace demo
 {
-	// Program Enter
+	// On Enter
 	/* * * * * * * * * * * * * * * * * * * * */
-	struct ProgramEnterEvent final
+	struct EnterEvent final
 	{
 		int32_t argc;
 		char ** argv;
 	};
+
+	// On Load
+	/* * * * * * * * * * * * * * * * * * * * */
+	struct LoadEvent final
+	{
+		bool log;
+	};
+
+	// On Start
+	/* * * * * * * * * * * * * * * * * * * * */
+	struct StartEvent final
+	{
+		ml::RenderWindow & window;
+	};
+
+	// On Update
+	/* * * * * * * * * * * * * * * * * * * * */
+	struct UpdateEvent final
+	{
+		ml::RenderWindow & window;
+		const ml::Duration & elapsed;
+		const ml::InputState & input;
+	};
+
+	// On Draw
+	/* * * * * * * * * * * * * * * * * * * * */
+	struct DrawEvent final
+	{
+		ml::RenderWindow & window;
+		const ml::Duration & elapsed;
+	};
+
+	// On Exit
+	/* * * * * * * * * * * * * * * * * * * * */
+	struct ExitEvent final
+	{
+		int32_t exitCode;
+	};
+}
+
+// Event Listeners
+/* * * * * * * * * * * * * * * * * * * * */
+namespace demo
+{
 	// Called once at the top of main, after settings are loaded
-	inline static bool onProgramEnter(const ProgramEnterEvent & ev)
+	inline static bool onEnter	(const EnterEvent & ev)
 	{
 		// Start Master Timer
 		ML_Time.start();
@@ -558,39 +628,25 @@ namespace demo
 		return true;
 	}
 
-
-	// Load
-	/* * * * * * * * * * * * * * * * * * * * */
-	struct LoadEvent final
-	{
-		bool log;
-	};
 	// Called once after the window is created
-	inline static bool onLoad(const LoadEvent & ev)
+	inline static bool onLoad	(const LoadEvent & ev)
 	{
 		return (ml::Debug::Log("Loading..."))
-			&& loadFonts	(true,	ev.log)
-			&& loadImages	(true,	ev.log)
-			&& loadTextures	(true,	ev.log)
-			&& loadShaders	(true,	ev.log)
-			&& loadMeshes	(true,	ev.log)
-			&& loadBuffers	(true,	ev.log)
-			&& loadAudio	(true,	ev.log)
-			&& loadNetwork	(false,	ev.log)
+			&& loadFonts(true, ev.log)
+			&& loadImages(true, ev.log)
+			&& loadTextures(true, ev.log)
+			&& loadShaders(true, ev.log)
+			&& loadMeshes(true, ev.log)
+			&& loadBuffers(true, ev.log)
+			&& loadAudio(true, ev.log)
+			&& loadNetwork(false, ev.log)
 			;
 	}
-
-
-	// Start
-	/* * * * * * * * * * * * * * * * * * * * */
-	struct StartEvent final
-	{
-		ml::RenderWindow & window;
-	};
+	
 	// Called once before entering the main loop, after resources are loaded
-	inline static void onStart(const StartEvent & ev)
+	inline static void onStart	(const StartEvent & ev)
 	{
-		if(ml::Debug::Log("Starting..."))
+		if (ml::Debug::Log("Starting..."))
 		{
 			// Set Window Icon
 			if (ml::Image icon = images[IMG_icon])
@@ -641,26 +697,18 @@ namespace demo
 				.setText("there is no need\nto be upset");
 		}
 	}
-
 	
-	// Update
-	/* * * * * * * * * * * * * * * * * * * * */
-	struct UpdateEvent final
-	{
-		ml::RenderWindow & window;
-		const ml::Duration & elapsed;
-		const ml::InputState & input;
-	};
 	// Called once per frame, before draw
-	inline static void onUpdate(const UpdateEvent & ev)
+	inline static void onUpdate	(const UpdateEvent & ev)
 	{
 		// Set Window Title
 		ev.window.setTitle(ml::StringUtility::Format(
-			"{0} | {1} | {2} ({3} fps)",
+			"{0} | {1} | {2} ({3} fps) | {4}",
 			SETTINGS.title,
 			ML_Time.elapsed(),
 			ev.elapsed.delta(),
-			ml::Time::calculateFPS(ev.elapsed.delta())
+			ml::Time::calculateFPS(ev.elapsed.delta()),
+			ev.window.getCursorPos()
 		));
 
 		// Value Input
@@ -669,17 +717,9 @@ namespace demo
 			ev.window.close();
 		}
 	}
-
 	
-	// Draw
-	/* * * * * * * * * * * * * * * * * * * * */
-	struct DrawEvent final
-	{
-		ml::RenderWindow & window;
-		const ml::Duration & elapsed;
-	};
 	// Called once per frame, after update
-	inline static void onDraw(const DrawEvent & ev)
+	inline static void onDraw	(const DrawEvent & ev)
 	{
 		ev.window.clear(ml::Color::Violet);
 		{
@@ -691,14 +731,14 @@ namespace demo
 			if (ml::Shader & shader = shaders[GL_basic3D])
 			{
 				(shader)
+					.setUniform(ml::Uniform::Color, ml::Color::White)
+					.setUniform(ml::Uniform::Texture, textures[TEX_stone_dm])
+					.setUniform(ml::Uniform::Proj, proj[P_persp])
+					.setUniform(ml::Uniform::View, view[V_camera])
 					.setUniform(ml::Uniform::Model, model[M_cube]
 						.translate(ml::vec3f::Zero)
 						.rotate(+ev.elapsed.delta(), ml::vec3f::One)
 						.scale(ml::vec3f::One))
-					.setUniform(ml::Uniform::View, view[V_camera])
-					.setUniform(ml::Uniform::Proj, proj[P_persp])
-					.setUniform(ml::Uniform::Color, ml::Color::White)
-					.setUniform(ml::Uniform::Texture, textures[TEX_stone_dm])
 					.bind();
 
 				vao[VAO_cube].bind();
@@ -724,14 +764,14 @@ namespace demo
 			if (ml::Shader & shader = shaders[GL_basic3D])
 			{
 				(shader)
+					.setUniform(ml::Uniform::Color, ml::Color::White)
+					.setUniform(ml::Uniform::Texture, textures[TEX_sanic])
+					.setUniform(ml::Uniform::Proj, proj[P_persp])
+					.setUniform(ml::Uniform::View, view[V_camera])
 					.setUniform(ml::Uniform::Model, model[M_quad]
 						.translate(ml::vec3f::Zero)
 						.rotate(-ev.elapsed.delta(), ml::vec3f::Forward)
 						.scale(ml::vec3f::One))
-					.setUniform(ml::Uniform::View, view[V_camera])
-					.setUniform(ml::Uniform::Proj, proj[P_persp])
-					.setUniform(ml::Uniform::Color, ml::Color::White)
-					.setUniform(ml::Uniform::Texture, textures[TEX_sanic])
 					.bind();
 
 				vao[VAO_quad].bind();
@@ -759,7 +799,7 @@ namespace demo
 					NULL,
 					&shader);
 
-				static const uint32_t  fontSize = 32;
+				static const uint32_t  fontSize = 24;
 				static const ml::vec2f offset = { 0.0f, -(float)fontSize };
 				static const ml::vec2f origin = { (float)fontSize, (float)ev.window.height() };
 				static const ml::vec4f colors[MAX_FONT] = {
@@ -788,16 +828,9 @@ namespace demo
 		}
 		ev.window.swapBuffers().pollEvents();
 	}
-
 	
-	// Program Exit
-	/* * * * * * * * * * * * * * * * * * * * */
-	struct ProgramExitEvent final
-	{
-		int32_t exitCode;
-	};
 	// Called once at the end of main
-	inline static int32_t onProgramExit(const ProgramExitEvent & ev)
+	inline static int32_t onExit(const ExitEvent & ev)
 	{
 		return ev.exitCode;
 	}

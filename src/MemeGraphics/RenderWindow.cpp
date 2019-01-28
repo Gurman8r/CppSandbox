@@ -1,6 +1,7 @@
 #include <MemeGraphics/RenderWindow.h>
 #include <MemeGraphics/OpenGL.h>
 #include <MemeCore/DebugUtility.h>
+#include <MemeWindow/Events.h>
 
 namespace ml
 {
@@ -44,5 +45,20 @@ namespace ml
 			return true;
 		}
 		return ml::Debug::LogError("Failed to Initialize GLEW");
+	}
+
+	void RenderWindow::onEvent(const Event * value)
+	{
+		Window::onEvent(value);
+
+		switch (value->eventID())
+		{
+		case WindowEventID::EV_WindowResized:
+		if(auto ev = dynamic_cast<const WindowResizedEvent *>(value))
+		{
+			setViewport({ 0, 0 }, { ev->width, ev->height });
+		}
+		break;
+		}
 	}
 }

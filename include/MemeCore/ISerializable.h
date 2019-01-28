@@ -21,9 +21,22 @@ namespace ml
 		}
 
 	public:
-		inline const std::type_info &	get_type()	const { return typeid(*this); }
-		inline const std::string		to_string()	const { return to_stream().str(); }
-		inline const std::stringstream	to_stream() const { return std::stringstream() << (*this); }
+		inline const std::type_info & get_type()	const 
+		{
+			return typeid(*this);
+		}
+
+		inline const std::stringstream to_stream() const 
+		{ 
+			std::stringstream stream;
+			stream << (*this);
+			return stream; 
+		}
+
+		inline const std::string to_string() const 
+		{
+			return to_stream().str(); 
+		}
 
 	public:
 		inline friend std::ostream & operator<<(std::ostream & out, const ISerializable & value)

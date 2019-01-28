@@ -16,6 +16,8 @@ namespace ml
 
 		bool initialize() override;
 
+		void onEvent(const Event * ev) override;
+
 	private:
 
 	};

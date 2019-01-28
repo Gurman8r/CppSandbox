@@ -201,7 +201,6 @@
     <Font Include="..\..\assets\fonts\minecraft.ttf" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\assets\icon.ico" />
     <Image Include="..\..\assets\images\dean.png" />
     <Image Include="..\..\assets\images\icon.png" />
     <Image Include="..\..\assets\images\Sanic.png" />

@@ -8,7 +8,7 @@
 
 namespace ml
 {
-	class ML_GRAPHICS_API Text final
+	class ML_GRAPHICS_API Text
 		: public ITrackable
 		, public IRenderer
 	{
@@ -26,20 +26,28 @@ namespace ml
 		Text & setText(const std::string & value);
 
 	public:
+		inline const Font *			getFont()		const { return m_font;		}
+		inline const uint32_t &		getFontSize()	const { return m_fontSize;	}
+		inline const vec2f &		getPosition()	const { return m_position;	}
+		inline const vec2f &		getScale()		const { return m_scale;		}
+		inline const std::string &	getText()		const { return m_text;		}
+		inline const vec4f &		getColor()		const { return m_color;		}
+
+	public:
 		void update() const;
 		void draw(RenderTarget & target, RenderBatch batch) const override;
 
 	private:
-		mutable bool		m_requiresUpdate;
+		mutable bool m_requiresUpdate;
 		mutable TextureList	m_textures;
 		mutable std::vector<FloatList> m_vertices;
 
-		const Font* m_font;
-		uint32_t	m_fontSize;
-		vec2f		m_position;
-		vec2f		m_scale;
-		std::string m_text;
-		vec4f		m_color;
+		const Font *	m_font;
+		uint32_t		m_fontSize;
+		vec2f			m_position;
+		vec2f			m_scale;
+		std::string		m_text;
+		vec4f			m_color;
 	};
 }
 #endif // !_TEXT_H_
