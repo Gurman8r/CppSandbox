@@ -117,47 +117,47 @@ namespace ml
 		switch (value->eventID())
 		{
 		case WindowEvent::EV_WindowResized:
-			if (auto ev = dynamic_cast<const WindowResizedEvent *>(value))
+			if (auto ev = value->As<WindowResizedEvent>())
 			{
 				m_videoMode.size = { (uint32_t)ev->width, (uint32_t)ev->height };
 			}
 			break;
 		case WindowEvent::EV_WindowMoved:
-			if (auto ev = dynamic_cast<const WindowMovedEvent *>(value))
+			if (auto ev = value->As<WindowMovedEvent>())
 			{
 				m_position = { ev->x, ev->y };
 			}
 			break;
 		case WindowEvent::EV_WindowChar:
-			if (auto ev = dynamic_cast<const WindowCharEvent *>(value))
+			if (auto ev = value->As<WindowCharEvent>())
 			{
 				m_char = (char)ev->value;
 			}
 			break;
 		case WindowEvent::EV_WindowScroll:
-			if (auto ev = dynamic_cast<const WindowScrollEvent *>(value))
+			if (auto ev = value->As<WindowScrollEvent>())
 			{
 				m_scroll = { ev->x, ev->y };
 			}
 			break;
 		case WindowEvent::EV_WindowClosed:
-			if (auto ev = dynamic_cast<const WindowClosedEvent *>(value))
+			if (auto ev = value->As<WindowClosedEvent>())
 			{
 			}
 			break;
 		case WindowEvent::EV_WindowFocused:
-			if (auto ev = dynamic_cast<const WindowFocusedEvent *>(value))
+			if (auto ev = value->As<WindowFocusedEvent>())
 			{
 				m_focused = ev->value;
 			}
 			break;
 		case WindowEvent::EV_WindowMouseMove:
-			if (auto ev = dynamic_cast<const WindowMouseMoveEvent *>(value))
+			if (auto ev = value->As<WindowMouseMoveEvent>())
 			{
 			}
 			break;
 		case WindowEvent::EV_WindowMouseEnter:
-			if (auto ev = dynamic_cast<const WindowMouseEnterEvent *>(value))
+			if (auto ev = value->As<WindowMouseEnterEvent>())
 			{
 			}
 			break;

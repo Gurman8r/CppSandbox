@@ -1,18 +1,35 @@
 #ifndef _CLIENT_H_
 #define _CLIENT_H_
 
-#include <MemeNet/Export.h>
+#include <MemeCore/ISingleton.h>
+#include <MemeNet/NetworkInterface.h>
+
+#define ML_Client ml::Client::getInstance()
 
 namespace ml
 {
-	class ML_NETWORK_API Client
+	class ML_NETWORK_API Client final
+		: public ITrackable
+		, public NetworkInterface
+		, public ISingleton<Client>
 	{
-	public:
+		friend class ISingleton<Client>;
+
+	private:
 		Client();
 		~Client();
 
+	public:
+		void poll() override;
+		void onEvent(const Event * value) override;
+		
+		bool connect(const std::string & addr, uint16_t port, const std::string & pass);
+
+	public:
+		inline bool connected() const { return m_connected; }
+
 	private:
-		void * m_peer;
+		bool m_connected;
 	};
 }
 

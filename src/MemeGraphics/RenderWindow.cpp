@@ -54,7 +54,7 @@ namespace ml
 		switch (value->eventID())
 		{
 		case WindowEvent::EV_WindowResized:
-			if(auto ev = dynamic_cast<const WindowResizedEvent *>(value))
+			if(auto ev = value->As<WindowResizedEvent>())
 			{
 				setViewport({ 0, 0 }, { ev->width, ev->height });
 			}

@@ -1,21 +1,114 @@
 #include <MemeNet/Client.h>
+#include <MemeNet/NetworkEvents.h>
 #include <MemeCore/DebugUtility.h>
+#include <MemeCore/EventSystem.h>
 #include <RakNet/RakPeerInterface.h>
-#include <iostream>
+#include <RakNet/MessageIdentifiers.h>
+#include <RakNet/BitStream.h>
+#include <RakNet/RakNetTypes.h>
+
+#define ML_SERVER_RECIEVE (ID_USER_PACKET_ENUM + 1)
+#define ML_CLIENT_RECIEVE (ID_USER_PACKET_ENUM + 2)
+
+#define ML_PEER		static_cast<RakNet::RakPeerInterface*>
+#define ML_PACKET	static_cast<RakNet::Packet *>
 
 namespace ml
 {
 	Client::Client()
+		: NetworkInterface()
+		, m_connected(false)
 	{
-		using namespace RakNet;
-		m_peer = static_cast<RakPeerInterface*>(RakPeerInterface::GetInstance());
-		if (!m_peer)
-		{
-			Debug::LogError("Client: Failed Getting RakPeerInterface Instance");
-		}
+		ML_EventSystem.addListener(NetworkEvent::EV_ClientRecievePacket, this);
 	}
 
 	Client::~Client()
 	{
+		cleanup();
+	}
+
+
+	bool Client::connect(const std::string & addr, uint16_t port, const std::string & pass)
+	{
+		if (m_peer)
+		{
+			switch (ML_PEER(m_peer)->Connect(addr.c_str(), port, pass.c_str(), pass.size()))
+			{
+			case RakNet::CONNECTION_ATTEMPT_STARTED:
+				return Debug::Log("CONNECTION_ATTEMPT_STARTED");
+
+			case RakNet::INVALID_PARAMETER:
+				return Debug::LogError("INVALID_PARAMETER");
+
+			case RakNet::CANNOT_RESOLVE_DOMAIN_NAME:
+				return Debug::LogError("CANNOT_RESOLVE_DOMAIN_NAME");
+
+			case RakNet::ALREADY_CONNECTED_TO_ENDPOINT:
+				return Debug::LogError("ALREADY_CONNECTED_TO_ENDPOINT");
+
+			case RakNet::CONNECTION_ATTEMPT_ALREADY_IN_PROGRESS:
+				return Debug::LogError("CONNECTION_ATTEMPT_ALREADY_IN_PROGRESS");
+
+			case RakNet::SECURITY_INITIALIZATION_FAILED:
+				return Debug::LogError("SECURITY_INITIALIZATION_FAILED");
+			}
+		}
+		return false;
+	}
+
+	void Client::poll()
+	{
+		if (!m_connected)
+			return;
+
+		for (void * packet = ML_PEER(m_peer)->Receive();
+			(packet != NULL);
+			(ML_PEER(m_peer)->DeallocatePacket(ML_PACKET(packet))),
+			(packet = ML_PEER(m_peer)->Receive()))
+		{
+			switch (ML_PACKET(packet)->data[0])
+			{
+			case ID_CONNECTION_REQUEST_ACCEPTED: 
+				Debug::Log("Connection Request Accepted");
+				break;
+			case ID_NO_FREE_INCOMING_CONNECTIONS: 
+				Debug::LogError("No Free Incoming Connections");
+				break;
+			case ID_DISCONNECTION_NOTIFICATION: 
+				Debug::Log("Disconnected");
+				break;
+			case ID_CONNECTION_LOST: 
+				Debug::LogError("Connection Lost");
+				break;
+
+			case ML_CLIENT_RECIEVE:
+			{
+				RakNet::BitStream bitStream(
+					ML_PACKET(packet)->data,
+					ML_PACKET(packet)->length,
+					false);
+
+				RakNet::RakString str;
+				if (bitStream.Read(str))
+				{
+					ML_EventSystem.fireEvent(ClientRecievePacketEvent(str.C_String()));
+				}
+			}
+			break;
+			}
+		}
+	}
+
+	void Client::onEvent(const Event * value)
+	{
+		switch (value->eventID())
+		{
+		case NetworkEvent::EV_ClientRecievePacket:
+			if (auto ev = value->As<ClientRecievePacketEvent>())
+			{
+				Debug::Log("Client Recieve Packet Event");
+			}
+			break;
+		}
 	}
 }

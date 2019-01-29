@@ -113,7 +113,7 @@ namespace demo
 
 				return true;
 			}
-			return ml::Debug::LogError("Failed Loading Settings \"{0}\"", filename);
+			return ml::Debug::LogError("Failed Loading SendSettings \"{0}\"", filename);
 		}
 
 		inline const std::string pathTo(const std::string & filename) const

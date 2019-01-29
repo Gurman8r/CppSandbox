@@ -473,7 +473,6 @@ namespace
 			<< "\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n\n";
 
 		Foo * fa, *fb, *fc, *fd;
-		Bar * ba, *bb, *bc, *bd;
 
 		ml::Debug::Log("Allocate");
 		fa = ML_Memory.allocate<Foo>();
@@ -497,30 +496,6 @@ namespace
 			<< ML_Memory
 			<< ml::endl
 			<< "\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n\n";
-
-
-		//ml::Debug::Log("Allocate");
-		//ba = ML_Memory.allocate<Bar>();
-		//bb = ML_Memory.allocate<Bar>();
-		//bc = ML_Memory.allocate<Bar>();
-		//bd = ML_Memory.allocate<Bar>();
-		//ml::cout
-		//	<< ml::endl
-		//	<< ML_Memory
-		//	<< ml::endl
-		//	<< "\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n\n";
-		//
-		//
-		//ml::Debug::Log("Free");
-		//ML_Memory.free(ba);
-		//ML_Memory.free(bb);
-		//ML_Memory.free(bc);
-		//ML_Memory.free(bd);
-		//ml::cout
-		//	<< ml::endl
-		//	<< ML_Memory
-		//	<< ml::endl
-		//	<< "\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n\n";
 
 		return ml::Debug::pause(EXIT_SUCCESS);
 	}

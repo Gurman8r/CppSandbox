@@ -38,6 +38,11 @@ namespace ml
 			return to_stream().str(); 
 		}
 
+		inline const char * c_str() const
+		{
+			return to_string().c_str();
+		}
+
 	public:
 		inline friend std::ostream & operator<<(std::ostream & out, const ISerializable & value)
 		{

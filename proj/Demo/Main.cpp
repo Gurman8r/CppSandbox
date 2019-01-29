@@ -15,7 +15,7 @@ int32_t main(int32_t argc, char ** argv)
 	// Load Settings
 	if (!SETTINGS.loadFromFile(CONFIG_INI))
 	{
-		return ml::Debug::LogError("Failed Loading Settings")
+		return ml::Debug::LogError("Failed Loading SendSettings")
 			|| ml::Debug::pause(EXIT_FAILURE);
 	}
 

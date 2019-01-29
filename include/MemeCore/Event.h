@@ -63,6 +63,25 @@ namespace ml
 
 		inline operator bool() const { return eventID(); }
 
+	public:
+		template <class T>
+		inline const T* As() const
+		{
+			return dynamic_cast<const T*>(this);
+		}
+
+		template <class T>
+		inline T * As()
+		{
+			return dynamic_cast<T*>(this);
+		}
+
+		template <class T>
+		inline const bool Is() const
+		{
+			return bool(As<T>());
+		}
+
 	private:
 		int32_t m_eventID;
 

@@ -31,6 +31,10 @@ namespace ml
 			: Event(eventID)
 		{
 		}
+		inline void serialize(std::ostream & out) const override
+		{
+			out << "[" << get_type().name() << "] ";
+		}
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -49,9 +53,8 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			out << "[" << eventID() << "]"
-				<< "[" << get_type().name() << "] " 
-				<< width << " " << height;
+			WindowEvent::serialize(out);
+			out << width << " " << height;
 		}
 	};
 
@@ -71,9 +74,8 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			out << "[" << eventID() << "]"
-				<< "[" << get_type().name() << "] "
-				<< x << " " << y;
+			WindowEvent::serialize(out);
+			out << x << " " << y;
 		}
 	};
 
@@ -91,9 +93,8 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			out << "[" << eventID() << "]"
-				<< "[" << get_type().name() << "] "
-				<< (char)value;
+			WindowEvent::serialize(out);
+			out << (char)value;
 		}
 	};
 
@@ -113,9 +114,8 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			out << "[" << eventID() << "]"
-				<< "[" << get_type().name() << "] "
-				<< x << " " << y;
+			WindowEvent::serialize(out);
+			out << x << " " << y;
 		}
 	};
 
@@ -130,8 +130,7 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			out << "[" << eventID() << "]"
-				<< "[" << get_type().name() << "] ";
+			WindowEvent::serialize(out);
 		}
 	};
 
@@ -149,9 +148,8 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			out << "[" << eventID() << "]"
-				<< "[" << get_type().name() << "] "
-				<< value;
+			WindowEvent::serialize(out);
+			out << value;
 		}
 	};
 
@@ -171,9 +169,8 @@ namespace ml
 		
 		void serialize(std::ostream & out) const override
 		{
-			out << "[" << eventID() << "]"
-				<< "[" << get_type().name() << "] "
-				<< x << " " << y;
+			WindowEvent::serialize(out);
+			out << x << " " << y;
 		}
 	};
 
@@ -191,9 +188,8 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			out << "[" << eventID() << "]"
-				<< "[" << get_type().name() << "] "
-				<< value;
+			WindowEvent::serialize(out);
+			out << value;
 		}
 	};
 

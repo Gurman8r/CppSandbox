@@ -147,8 +147,6 @@ namespace demo
 	ml::Mesh		mesh	[MAX_MESH];
 	ml::Text		text	[MAX_TEXT];
 	ml::Sound		sounds	[MAX_SOUND];
-	ml::Client		client;
-	ml::Server		server;
 }
 
 // Loading / Setup
@@ -538,11 +536,17 @@ namespace demo
 		{
 			if (SETTINGS.isServer)
 			{
-				// Server setup...
+				if (ML_Server.setup())
+				{
+
+				}
 			}
 			else
 			{
-				// Client setup...
+				if (ML_Client.setup())
+				{
+
+				}
 			}
 		}
 		return true;
@@ -550,7 +554,7 @@ namespace demo
 
 }
 
-// Event Data
+// Events
 /* * * * * * * * * * * * * * * * * * * * */
 namespace demo
 {
@@ -561,50 +565,6 @@ namespace demo
 		int32_t argc;
 		char ** argv;
 	};
-
-	// On Load
-	/* * * * * * * * * * * * * * * * * * * * */
-	struct LoadEvent final
-	{
-		bool log;
-	};
-
-	// On Start
-	/* * * * * * * * * * * * * * * * * * * * */
-	struct StartEvent final
-	{
-		ml::RenderWindow & window;
-	};
-
-	// On Update
-	/* * * * * * * * * * * * * * * * * * * * */
-	struct UpdateEvent final
-	{
-		ml::RenderWindow & window;
-		const ml::Duration & elapsed;
-		const ml::InputState & input;
-	};
-
-	// On Draw
-	/* * * * * * * * * * * * * * * * * * * * */
-	struct DrawEvent final
-	{
-		ml::RenderWindow & window;
-		const ml::Duration & elapsed;
-	};
-
-	// On Exit
-	/* * * * * * * * * * * * * * * * * * * * */
-	struct ExitEvent final
-	{
-		int32_t exitCode;
-	};
-}
-
-// Event Listeners
-/* * * * * * * * * * * * * * * * * * * * */
-namespace demo
-{
 	// Called once at the top of main, after settings are loaded
 	inline static bool onEnter(const EnterEvent & ev)
 	{
@@ -619,10 +579,17 @@ namespace demo
 
 		// Run Script
 		std::string path = SETTINGS.pathTo(SETTINGS.scrPath + SETTINGS.scrFile);
-		
+
 		return !ML_Interpreter.execFile(path).isErrorType();
 	}
 
+
+	// On Load
+	/* * * * * * * * * * * * * * * * * * * * */
+	struct LoadEvent final
+	{
+		bool log;
+	};
 	// Called once after the window is created
 	inline static bool onLoad(const LoadEvent & ev)
 	{
@@ -637,7 +604,14 @@ namespace demo
 			&& loadNetwork(false, ev.log)
 			;
 	}
-	
+
+
+	// On Start
+	/* * * * * * * * * * * * * * * * * * * * */
+	struct StartEvent final
+	{
+		ml::RenderWindow & window;
+	};
 	// Called once before entering the main loop, after resources are loaded
 	inline static void onStart(const StartEvent & ev)
 	{
@@ -692,7 +666,16 @@ namespace demo
 				.setText("there is no need\nto be upset");
 		}
 	}
-	
+
+
+	// On Update
+	/* * * * * * * * * * * * * * * * * * * * */
+	struct UpdateEvent final
+	{
+		ml::RenderWindow & window;
+		const ml::Duration & elapsed;
+		const ml::InputState & input;
+	};
 	// Called once per frame, before draw
 	inline static void onUpdate(const UpdateEvent & ev)
 	{
@@ -712,7 +695,15 @@ namespace demo
 			ev.window.close();
 		}
 	}
-	
+
+
+	// On Draw
+	/* * * * * * * * * * * * * * * * * * * * */
+	struct DrawEvent final
+	{
+		ml::RenderWindow & window;
+		const ml::Duration & elapsed;
+	};
 	// Called once per frame, after update
 	inline static void onDraw(const DrawEvent & ev)
 	{
@@ -813,7 +804,7 @@ namespace demo
 						.setScale(ml::vec2f::One)
 						.setPosition(origin + (offset * (float)(i + 1)))
 						.setColor(colors[i])
-						.setText(fonts[i].to_string() + " | " + ev.window.title())
+						.setText(fonts[i].to_string())// + " | " + ev.window.title())
 					, batch);
 				}
 
@@ -823,12 +814,20 @@ namespace demo
 		}
 		ev.window.swapBuffers().pollEvents();
 	}
-	
+
+
+	// On Exit
+	/* * * * * * * * * * * * * * * * * * * * */
+	struct ExitEvent final
+	{
+		int32_t exitCode;
+	};
 	// Called once at the end of main
 	inline static int32_t onExit(const ExitEvent & ev)
 	{
 		return ev.exitCode;
 	}
+
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

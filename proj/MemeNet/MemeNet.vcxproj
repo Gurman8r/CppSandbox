@@ -171,10 +171,14 @@
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeNet\Client.h" />
     <ClInclude Include="..\..\include\MemeNet\Export.h" />
+    <ClInclude Include="..\..\include\MemeNet\NetworkEvents.h" />
+    <ClInclude Include="..\..\include\MemeNet\NetworkInterface.h" />
+    <ClInclude Include="..\..\include\MemeNet\NetworkTypes.h" />
     <ClInclude Include="..\..\include\MemeNet\Server.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeNet\Client.cpp" />
+    <ClCompile Include="..\..\src\MemeNet\NetworkInterface.cpp" />
     <ClCompile Include="..\..\src\MemeNet\Server.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

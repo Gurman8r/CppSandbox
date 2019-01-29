@@ -30,7 +30,7 @@ namespace ml
 
 		bool		m_paused;
 		Clock		m_clock;
-		TimePoint	m_tail;
+		TimePoint	m_prev;
 		TimePoint	m_next;
 	};
 }

@@ -13,7 +13,7 @@ namespace ml
 	{
 		//if (!m_head && (m_head = writeChunk(m_used, size))) // create head
 		//{
-		//	m_tail = m_head;
+		//	m_prev = m_head;
 		//
 		//	m_used += size;
 		//
