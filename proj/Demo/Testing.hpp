@@ -67,6 +67,8 @@ namespace
 				<< " }";
 		}
 	};
+
+
 }
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -116,21 +118,58 @@ namespace
 
 		static Foo * test[MAX] = { NULL };
 
+		enum : uint32_t
+		{
+			MaxBytes = 4096,
+			ChunkSize = sizeof(ml::Chunk),
+			ByteSize = sizeof(ml::byte *),
+			FooSize = sizeof(Foo),
+			BarSize = sizeof(Bar),
+			Offset = ChunkSize + ByteSize
+		};
 
-		// Initialize
-		/* * * * * * * * * * * * * * * * * * * * */
-		ml::Debug::Log("Test Size: {0}", sizeof(Foo));
+		ml::cout << "\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n\n";
+
+		ml::Debug::Log("sizeof(Chunk): {0}", ChunkSize);
+		ml::Debug::Log("sizeof(byte*): {0}", ByteSize);
+		ml::Debug::Log("Offset: {0}", Offset);
+		ml::Debug::Log("Max Bytes: {0}", MaxBytes);
 		ml::cout << ml::endl;
+		ml::Debug::Log("sizeof(Foo) : {0}", FooSize);
+		ml::Debug::Log("sizeof(Bar) : {0}", BarSize);
 
-		enum : size_t { MaxBytes = 4096 };
+		ml::cout << "\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n\n";
+
+		ml::Debug::Log("Prime");
 		ml::byte data[MaxBytes];
-
 		if (!ML_Memory.prime(data, MaxBytes))
 		{
-			return ml::Debug::LogError("Failed priming Memory Manager")
+			return ml::Debug::LogError("Failed Priming Memory")
 				|| ml::Debug::pause(EXIT_FAILURE);
 		}
-		ml::cout << ml::endl << ML_Memory << ml::endl;
+		ml::cout
+			<< ml::endl
+			<< ML_Memory
+			<< ml::endl
+			<< "\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n\n";
+
+
+		ml::Debug::Log("Allocate");
+		//void * fa = ML_Memory.allocate(MaxBytes - (Offset * FooSize));
+		ml::cout
+			<< ml::endl
+			<< ML_Memory
+			<< ml::endl
+			<< "\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n\n";
+
+
+		ml::Debug::Log("Free");
+		//ML_Memory.free(fa);
+		ml::cout
+			<< ml::endl
+			<< ML_Memory
+			<< ml::endl
+			<< "\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n\n";
 
 
 		// Allocate
@@ -182,6 +221,22 @@ namespace
 			else
 			{
 				ml::Debug::LogError("Allocation Failure: {0}", (Tags[i]));
+			}
+		}
+		ml::cout << ml::endl << ML_Memory << ml::endl;
+
+
+		// Free
+		/* * * * * * * * * * * * * * * * * * * * */
+		for (size_t i = 0; i < MAX; i++)
+		{
+			if (ML_Memory.free(test[i]))
+			{
+				ml::Debug::Log("Free Success: {0}", (test[i]));
+			}
+			else
+			{
+				ml::Debug::LogError("Free Failure: {0}", (test[i]));
 			}
 		}
 		ml::cout << ml::endl << ML_Memory << ml::endl;
@@ -352,9 +407,9 @@ namespace
 		ml::Chunk * cb = ML_Memory.readChunk(tb);
 		ml::Chunk * cc = ML_Memory.readChunk(tc);
 
-		ml::cout << (*((Foo *)ca->data)) << ml::endl;
-		ml::cout << (*((Foo *)cb->data)) << ml::endl;
-		ml::cout << (*((Foo *)cc->data)) << ml::endl;
+		ml::cout << (*((Foo *)ca->npos)) << ml::endl;
+		ml::cout << (*((Foo *)cb->npos)) << ml::endl;
+		ml::cout << (*((Foo *)cc->npos)) << ml::endl;
 
 		ML_Memory.serializeChunk(ml::cout, (*ML_Memory.readChunk(ta)));
 		ML_Memory.serializeChunk(ml::cout, (*ML_Memory.readChunk(tb)));
@@ -365,13 +420,13 @@ namespace
 
 		ml::Debug::Log("Free");
 
-		ML_Memory.free(ca->data);
+		ML_Memory.free(ca->npos);
 		ml::cout << ml::endl << ML_Memory << ml::endl;
 		
-		ML_Memory.free(cb->data);
+		ML_Memory.free(cb->npos);
 		ml::cout << ml::endl << ML_Memory << ml::endl;
 		
-		ML_Memory.free(cc->data);
+		ML_Memory.free(cc->npos);
 		ml::cout << ml::endl << ML_Memory << ml::endl;
 
 		
@@ -381,83 +436,91 @@ namespace
 	inline static int32_t testManualMemory2()
 	{
 		enum : uint32_t {
-			MaxBytes = 4096,
-			ChunkSize = sizeof(ml::Chunk),
-			ByteSize = sizeof(ml::byte *),
-			FooSize = sizeof(Foo),
-			BarSize = sizeof(Bar),
+			MaxBytes	= 4096,
+			ChunkSize	= sizeof(ml::Chunk),
+			ByteSize	= sizeof(ml::byte *),
+			FooSize		= sizeof(Foo),
+			BarSize		= sizeof(Bar),
+			Offset		= ChunkSize + ByteSize
 		};
+
+		ml::cout << "\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n\n";
 
 		ml::Debug::Log("sizeof(Chunk): {0}", ChunkSize);
 		ml::Debug::Log("sizeof(byte*): {0}", ByteSize);
+		ml::Debug::Log("Offset: {0}", Offset);
+		ml::Debug::Log("Max Bytes: {0}", MaxBytes);
+		ml::cout << ml::endl;
 		ml::Debug::Log("sizeof(Foo) : {0}", FooSize);
 		ml::Debug::Log("sizeof(Bar) : {0}", BarSize);
-		ml::Debug::Log("Max Bytes: {0}", MaxBytes);
 
+		ml::cout<< "\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n\n";
 
+		
 		ml::Debug::Log("Prime");
 		ml::byte data[MaxBytes];
-		if (!ML_Memory.prime(data, MaxBytes))
+		if (!ML_Memory.prime(data, MaxBytes) 
+			|| !ML_Memory.free(ML_Memory.allocate(MaxBytes - (Offset * 2)))
+			)
 		{
 			return ml::Debug::LogError("Failed Priming Memory")
 				|| ml::Debug::pause(EXIT_FAILURE);
 		}
-		ml::cout << ml::endl << ML_Memory << ml::endl;
+		ml::cout
+			<< ml::endl
+			<< ML_Memory
+			<< ml::endl
+			<< "\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n\n";
 
+		Foo * fa, *fb, *fc, *fd;
+		Bar * ba, *bb, *bc, *bd;
 
 		ml::Debug::Log("Allocate");
-		void * fa = ML_Memory.allocate<Foo>();
-		void * fb = ML_Memory.allocate<Foo>();
-		void * fc = ML_Memory.allocate<Foo>();
-		void * ba = ML_Memory.allocate<Bar>();
-		void * bb = ML_Memory.allocate<Bar>();
-		void * bc = ML_Memory.allocate<Bar>();
-		ml::cout << ml::endl << ML_Memory << ml::endl;
-
-
+		fa = ML_Memory.allocate<Foo>();
+		fb = ML_Memory.allocate<Foo>();
+		fc = ML_Memory.allocate<Foo>();
+		fd = ML_Memory.allocate<Foo>();
+		ml::cout 
+			<< ml::endl 
+			<< ML_Memory
+			<< ml::endl
+			<< "\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n\n";
+		
+		
 		ml::Debug::Log("Free");
-		ML_Memory.free(fa); ml::cout << ml::endl << ML_Memory << ml::endl;
-		ML_Memory.free(fb); ml::cout << ml::endl << ML_Memory << ml::endl;
-		ML_Memory.free(fc); ml::cout << ml::endl << ML_Memory << ml::endl;
-		ML_Memory.free(ba); ml::cout << ml::endl << ML_Memory << ml::endl;
-		ML_Memory.free(bb); ml::cout << ml::endl << ML_Memory << ml::endl;
-		ML_Memory.free(bc); ml::cout << ml::endl << ML_Memory << ml::endl;
+		ML_Memory.free(fa);
+		ML_Memory.free(fb);
+		ML_Memory.free(fc);
+		ML_Memory.free(fd);
+		ml::cout
+			<< ml::endl
+			<< ML_Memory
+			<< ml::endl
+			<< "\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n\n";
 
-		ml::Debug::Log("Split");
-		if (ml::Chunk * c = ML_Memory.findEmpty(100))
-		{
-			ML_Memory.splitChunk(c, 100);
-		}
-		ml::cout << ml::endl << ML_Memory << ml::endl;
-
-		size_t size = 188;
-		if (ml::Chunk * c = ML_Memory.findEmpty(size))
-		{
-			c->size = size;
-			c->free = false;
-			if (c->size > size)
-			{
-				ML_Memory.splitChunk(c, size);
-			}
-		}
-		ml::cout << ml::endl << ML_Memory << ml::endl;
 
 		//ml::Debug::Log("Allocate");
-		//fa = ML_Memory.allocate<Foo>();
-		//fb = ML_Memory.allocate<Foo>();
-		//fc = ML_Memory.allocate<Foo>();
 		//ba = ML_Memory.allocate<Bar>();
 		//bb = ML_Memory.allocate<Bar>();
 		//bc = ML_Memory.allocate<Bar>();
-		//ml::cout << ml::endl << ML_Memory << ml::endl;
+		//bd = ML_Memory.allocate<Bar>();
+		//ml::cout
+		//	<< ml::endl
+		//	<< ML_Memory
+		//	<< ml::endl
+		//	<< "\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n\n";
+		//
 		//
 		//ml::Debug::Log("Free");
-		//ML_Memory.free(fa); ml::cout << ml::endl << ML_Memory << ml::endl;
-		//ML_Memory.free(fb); ml::cout << ml::endl << ML_Memory << ml::endl;
-		//ML_Memory.free(fc); ml::cout << ml::endl << ML_Memory << ml::endl;
-		//ML_Memory.free(ba); ml::cout << ml::endl << ML_Memory << ml::endl;
-		//ML_Memory.free(bb); ml::cout << ml::endl << ML_Memory << ml::endl;
-		//ML_Memory.free(bc); ml::cout << ml::endl << ML_Memory << ml::endl;
+		//ML_Memory.free(ba);
+		//ML_Memory.free(bb);
+		//ML_Memory.free(bc);
+		//ML_Memory.free(bd);
+		//ml::cout
+		//	<< ml::endl
+		//	<< ML_Memory
+		//	<< ml::endl
+		//	<< "\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n\n";
 
 		return ml::Debug::pause(EXIT_SUCCESS);
 	}

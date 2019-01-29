@@ -29,7 +29,7 @@ typedef uint8_t bool;
 
 typedef struct Block
 {
-	size_t			size;	// Size of data
+	size_t			size;	// Size of npos
 	bool			free;	// Is free?
 	struct Block *	prev;	// Previous node in list
 	struct Block *	next;	// Next node in list

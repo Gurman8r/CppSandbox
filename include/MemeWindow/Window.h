@@ -12,8 +12,8 @@ namespace ml
 {
 	class ML_WINDOW_API Window
 		: public ITrackable
-		, public EventListener
 		, public INonCopyable
+		, public EventListener
 	{
 	public:
 		enum Cursor : uint32_t
@@ -73,12 +73,14 @@ namespace ml
 		Window & setSize(const vec2u & value);
 		Window & setTitle(const std::string & value);
 
-		bool	isOpen() const;
 		bool	isFocused() const;
-		float	getTime() const;
+		bool	isOpen() const;
 		vec2f	getCursorPos() const;
 		char	getChar() const;
+		bool	getKey(int32_t value) const;
+		bool	getMouseButton(int32_t button) const;
 		vec2f	getScroll() const;
+		float	getTime() const;
 
 		inline const Context &		context()	const { return m_context; }
 		inline const VideoMode &	videoMode()	const { return m_videoMode; }
@@ -100,11 +102,10 @@ namespace ml
 		Cursor		m_cursorMode;
 		vec2i		m_position;
 		std::string	m_title;
-		
-		// runtime
+		bool		m_focused;
+		vec2d		m_scroll;
+
 		mutable char m_char;
-		vec2d		 m_scroll;
-		bool		 m_focused;
 	};
 
 }

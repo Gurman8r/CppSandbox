@@ -1,15 +1,15 @@
-#ifndef _EVENT_BASE_H_
-#define _EVENT_BASE_H_
+#ifndef _EVENT_H_
+#define _EVENT_H_
 
 #include <MemeCore/ITrackable.h>
 
 #ifndef ML_MAX_SYSTEM_EVENTS
 #define ML_MAX_SYSTEM_EVENTS 32
-#endif // !ML_MAX_SYSTEM_EVENTS
+#endif
 
 #ifndef ML_MAX_CUSTOM_EVENTS
 #define ML_MAX_CUSTOM_EVENTS 256
-#endif // !ML_MAX_CUSTOM_EVENTS
+#endif
 
 namespace ml
 {
@@ -69,4 +69,4 @@ namespace ml
 	};
 }
 
-#endif // !_EVENT_BASE_H_
+#endif // !_EVENT_H_

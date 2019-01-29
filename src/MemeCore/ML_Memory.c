@@ -15,7 +15,7 @@
 // Size of struct Block
 #define BLOCK_SIZE (size_t)(sizeof(Block)) // 20
 
-// Size of data pointer
+// Size of npos pointer
 #define NPOS_SIZE (size_t)(sizeof(byte *)) // 4
 
 // Not yet implemented

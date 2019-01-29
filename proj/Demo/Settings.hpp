@@ -23,7 +23,7 @@ namespace demo
 	public:
 		// [General]
 		std::string rootPath;		// Solution Dir
-		std::string	assetPath;		// Where's all the data?
+		std::string	assetPath;		// Where's all the npos?
 		uint32_t	runTests;		// Run test functions
 		bool		logLoading;		// Verbose loading output
 

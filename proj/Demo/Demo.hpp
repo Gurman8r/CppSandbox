@@ -606,7 +606,7 @@ namespace demo
 namespace demo
 {
 	// Called once at the top of main, after settings are loaded
-	inline static bool onEnter	(const EnterEvent & ev)
+	inline static bool onEnter(const EnterEvent & ev)
 	{
 		// Start Master Timer
 		ML_Time.start();
@@ -619,17 +619,12 @@ namespace demo
 
 		// Run Script
 		std::string path = SETTINGS.pathTo(SETTINGS.scrPath + SETTINGS.scrFile);
-		ml::Var	var = ML_Interpreter.execFile(path);
-		if (var.isErrorType())
-		{
-			return ml::Debug::LogError("Path {0}", path);
-		}
-
-		return true;
+		
+		return !ML_Interpreter.execFile(path).isErrorType();
 	}
 
 	// Called once after the window is created
-	inline static bool onLoad	(const LoadEvent & ev)
+	inline static bool onLoad(const LoadEvent & ev)
 	{
 		return (ml::Debug::Log("Loading..."))
 			&& loadFonts(true, ev.log)
@@ -644,7 +639,7 @@ namespace demo
 	}
 	
 	// Called once before entering the main loop, after resources are loaded
-	inline static void onStart	(const StartEvent & ev)
+	inline static void onStart(const StartEvent & ev)
 	{
 		if (ml::Debug::Log("Starting..."))
 		{
@@ -699,7 +694,7 @@ namespace demo
 	}
 	
 	// Called once per frame, before draw
-	inline static void onUpdate	(const UpdateEvent & ev)
+	inline static void onUpdate(const UpdateEvent & ev)
 	{
 		// Set Window Title
 		ev.window.setTitle(ml::StringUtility::Format(
@@ -719,7 +714,7 @@ namespace demo
 	}
 	
 	// Called once per frame, after update
-	inline static void onDraw	(const DrawEvent & ev)
+	inline static void onDraw(const DrawEvent & ev)
 	{
 		ev.window.clear(ml::Color::Violet);
 		{

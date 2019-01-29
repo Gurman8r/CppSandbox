@@ -10,11 +10,11 @@ namespace ml
 
 	struct ML_CORE_API Chunk final
 	{
-		size_t	size;	// Size of data
+		size_t	size;	// Size of npos
 		bool	free;	// Is free?
 		Chunk *	prev;	// Prev chunk in list
 		Chunk *	next;	// Next chunk in list
-		byte	data[1];// End of metadata struct, pointer to data
+		byte	npos[1];// End of metadata struct, pointer to npos
 
 		Chunk()
 			: size(NULL)

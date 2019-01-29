@@ -30,7 +30,7 @@
     <ClInclude Include="..\..\include\MemeWindow\Context.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeWindow\Events.h">
+    <ClInclude Include="..\..\include\MemeWindow\WindowEvents.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

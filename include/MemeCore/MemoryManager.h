@@ -33,6 +33,7 @@ namespace ml
 
 	//private:
 		bool	isValidChunk(Chunk * value) const;
+		void *	getBytes(size_t addr, size_t total);
 
 		Chunk * writeChunk(size_t addr, size_t size);
 		Chunk *	appendChunk(size_t size);
