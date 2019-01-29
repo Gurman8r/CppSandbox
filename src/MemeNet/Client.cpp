@@ -7,11 +7,7 @@
 #include <RakNet/BitStream.h>
 #include <RakNet/RakNetTypes.h>
 
-#define ML_SERVER_RECIEVE (ID_USER_PACKET_ENUM + 1)
-#define ML_CLIENT_RECIEVE (ID_USER_PACKET_ENUM + 2)
-
-#define ML_PEER		static_cast<RakNet::RakPeerInterface*>
-#define ML_PACKET	static_cast<RakNet::Packet *>
+#define ML_PEER	static_cast<RakNet::RakPeerInterface *>
 
 namespace ml
 {
@@ -24,15 +20,62 @@ namespace ml
 
 	Client::~Client()
 	{
-		cleanup();
 	}
 
+	
+	void Client::onEvent(const Event * value)
+	{
+		switch (value->eventID())
+		{
+		case NetworkEvent::EV_ClientRecievePacket:
+			if (auto ev = value->As<ClientRecievePacketEvent>())
+			{
+				Debug::Log("CLIENT -> {0}", (*ev));
+			}
+			break;
+		}
+	}
 
-	bool Client::connect(const std::string & addr, uint16_t port, const std::string & pass)
+	void Client::onPacket(const Packet & value)
+	{
+		switch (value.data[0])
+		{
+		case ID_CONNECTION_REQUEST_ACCEPTED:
+			Debug::Log("Connection Request Accepted");
+			break;
+
+		case ID_NO_FREE_INCOMING_CONNECTIONS:
+			Debug::LogError("No Free Incoming Connections");
+			break;
+
+		case ID_DISCONNECTION_NOTIFICATION:
+			Debug::Log("Disconnected");
+			break;
+
+		case ID_CONNECTION_LOST:
+			Debug::LogError("Connection Lost");
+			break;
+
+		case ML_CLIENT_RECIEVE:
+			RakNet::BitStream bitStream(value.data, value.size, false);
+			RakNet::RakString str;
+			if (bitStream.Read(str))
+			{
+				ML_EventSystem.fireEvent(ClientRecievePacketEvent(str.C_String()));
+			}
+			break;
+		}
+	}
+
+	bool Client::connect(const Address & address, const std::string & pass)
 	{
 		if (m_peer)
 		{
-			switch (ML_PEER(m_peer)->Connect(addr.c_str(), port, pass.c_str(), pass.size()))
+			switch (ML_PEER(m_peer)->Connect(
+				address.addr.c_str(),
+				address.port,
+				pass.c_str(), 
+				pass.size()))
 			{
 			case RakNet::CONNECTION_ATTEMPT_STARTED:
 				return Debug::Log("CONNECTION_ATTEMPT_STARTED");
@@ -54,61 +97,5 @@ namespace ml
 			}
 		}
 		return false;
-	}
-
-	void Client::poll()
-	{
-		if (!m_connected)
-			return;
-
-		for (void * packet = ML_PEER(m_peer)->Receive();
-			(packet != NULL);
-			(ML_PEER(m_peer)->DeallocatePacket(ML_PACKET(packet))),
-			(packet = ML_PEER(m_peer)->Receive()))
-		{
-			switch (ML_PACKET(packet)->data[0])
-			{
-			case ID_CONNECTION_REQUEST_ACCEPTED: 
-				Debug::Log("Connection Request Accepted");
-				break;
-			case ID_NO_FREE_INCOMING_CONNECTIONS: 
-				Debug::LogError("No Free Incoming Connections");
-				break;
-			case ID_DISCONNECTION_NOTIFICATION: 
-				Debug::Log("Disconnected");
-				break;
-			case ID_CONNECTION_LOST: 
-				Debug::LogError("Connection Lost");
-				break;
-
-			case ML_CLIENT_RECIEVE:
-			{
-				RakNet::BitStream bitStream(
-					ML_PACKET(packet)->data,
-					ML_PACKET(packet)->length,
-					false);
-
-				RakNet::RakString str;
-				if (bitStream.Read(str))
-				{
-					ML_EventSystem.fireEvent(ClientRecievePacketEvent(str.C_String()));
-				}
-			}
-			break;
-			}
-		}
-	}
-
-	void Client::onEvent(const Event * value)
-	{
-		switch (value->eventID())
-		{
-		case NetworkEvent::EV_ClientRecievePacket:
-			if (auto ev = value->As<ClientRecievePacketEvent>())
-			{
-				Debug::Log("Client Recieve Packet Event");
-			}
-			break;
-		}
 	}
 }

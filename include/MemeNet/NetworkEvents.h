@@ -20,10 +20,12 @@ namespace ml
 
 			MAX_NETWORK_EVENT
 		};
+		
 		NetworkEvent(int32_t id)
 			: Event(id)
 		{
 		}
+		
 		inline void serialize(std::ostream & out) const override
 		{
 			out << "[" << get_type().name() << "] ";
@@ -43,9 +45,12 @@ namespace ml
 			, data(data)
 		{
 		}
+		
 		inline void serialize(std::ostream & out) const override
 		{
 			NetworkEvent::serialize(out);
+
+			out << data;
 		}
 	};
 
@@ -62,9 +67,12 @@ namespace ml
 			, data(data)
 		{
 		}
+		
 		inline void serialize(std::ostream & out) const override
 		{
 			NetworkEvent::serialize(out);
+
+			out << data;
 		}
 	};
 

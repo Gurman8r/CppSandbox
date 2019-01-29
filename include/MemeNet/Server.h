@@ -3,6 +3,7 @@
 
 #include <MemeCore/ISingleton.h>
 #include <MemeNet/NetworkInterface.h>
+#include <MemeNet/NetworkTypes.h>
 
 #define ML_Server ml::Server::getInstance()
 
@@ -20,8 +21,11 @@ namespace ml
 		~Server();
 
 	public:
-		void poll() override;
 		void onEvent(const Event * value) override;
+
+		void onPacket(const Packet & value) override;
+
+		bool start(uint32_t maxConnections);
 
 	public:
 		inline bool running() const { return m_running; }

@@ -7,14 +7,19 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	enum Priority : uint8_t
 	{
 		Immediate,
 		High,
 		Medium,
 		Low,
+
 		MAX_PRIORITY
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	enum Reliability : uint8_t
 	{
@@ -29,6 +34,8 @@ namespace ml
 
 		MAX_RELIABILITY
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	struct ML_NETWORK_API SendSettings final
 		: public ITrackable
@@ -56,6 +63,8 @@ namespace ml
 		{
 		}
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	struct ML_NETWORK_API Address final
 		: public ITrackable
@@ -90,6 +99,8 @@ namespace ml
 			return addr < copy.addr || port < copy.port;
 		}
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	struct ML_NETWORK_API GUID final
 		: public ITrackable
@@ -135,6 +146,8 @@ namespace ml
 		}
 	};
 
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	struct ML_NETWORK_API Packet final
 		: public ITrackable
 	{
@@ -159,6 +172,8 @@ namespace ml
 		{
 		}
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_PACKET_H_

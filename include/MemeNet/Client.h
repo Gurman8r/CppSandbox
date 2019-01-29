@@ -20,10 +20,11 @@ namespace ml
 		~Client();
 
 	public:
-		void poll() override;
 		void onEvent(const Event * value) override;
 		
-		bool connect(const std::string & addr, uint16_t port, const std::string & pass);
+		void onPacket(const Packet & value) override;
+
+		bool connect(const Address & address, const std::string & pass);
 
 	public:
 		inline bool connected() const { return m_connected; }

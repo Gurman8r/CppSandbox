@@ -65,7 +65,7 @@ namespace ml
 
 	public:
 		template <class T>
-		inline const T* As() const
+		inline const T * As() const
 		{
 			return dynamic_cast<const T*>(this);
 		}

@@ -17,7 +17,7 @@ namespace ml
 
 	InputState & InputState::beginStep()
 	{
-		for (uint32_t i = 0; i < KeyCode::MAX_KEYCODE; i++)
+		for (uint32_t i = 0; i < Key::Code::MAX_KEYCODE; i++)
 		{
 #ifdef ML_SYSTEM_WINDOWS
 			m_new[i] = (bool)GetAsyncKeyState((int32_t)i);
@@ -30,22 +30,22 @@ namespace ml
 
 	InputState & InputState::endStep()
 	{
-		memcpy(m_old, m_new, KeyCode::MAX_KEYCODE);
+		memcpy(m_old, m_new, Key::Code::MAX_KEYCODE);
 		return (*this);
 	}
 
 
-	bool InputState::getKey(KeyCode value) const
+	bool InputState::getKey(Key::Code value) const
 	{
 		return (m_new[value]);
 	}
 
-	bool InputState::getKeyDown(KeyCode value) const
+	bool InputState::getKeyDown(Key::Code value) const
 	{
 		return (m_new[value]) && (!m_old[value]);
 	}
 
-	bool InputState::getKeyUp(KeyCode value) const
+	bool InputState::getKeyUp(Key::Code value) const
 	{
 		return (!m_new[value]) && (m_old[value]);
 	}
@@ -53,10 +53,10 @@ namespace ml
 	
 	bool InputState::getAnyKey(bool allowMouse) const
 	{
-		uint32_t imin = (allowMouse ?  KeyCode::LeftMouse : KeyCode::Backspace);
-		for (uint32_t i = imin; i < KeyCode::MAX_KEYCODE; i++)
+		uint32_t imin = (allowMouse ?  Key::Code::LeftMouse : Key::Code::Backspace);
+		for (uint32_t i = imin; i < Key::Code::MAX_KEYCODE; i++)
 		{
-			if (getKey((KeyCode)i)) return true;
+			if (getKey((Key::Code)i)) return true;
 		}
 		return false;
 	}

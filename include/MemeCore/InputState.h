@@ -16,15 +16,15 @@ namespace ml
 		InputState & beginStep();
 		InputState & endStep();
 
-		bool getKey(KeyCode value) const;
-		bool getKeyDown(KeyCode value) const;
-		bool getKeyUp(KeyCode value) const;
+		bool getKey(Key::Code value) const;
+		bool getKeyDown(Key::Code value) const;
+		bool getKeyUp(Key::Code value) const;
 
 		bool getAnyKey(bool allowMouse = false) const;
 
 	private:
-		bool m_new[KeyCode::MAX_KEYCODE];
-		bool m_old[KeyCode::MAX_KEYCODE];
+		bool m_new[Key::Code::MAX_KEYCODE];
+		bool m_old[Key::Code::MAX_KEYCODE];
 	};
 }
 

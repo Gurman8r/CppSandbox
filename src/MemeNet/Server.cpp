@@ -7,11 +7,7 @@
 #include <RakNet/BitStream.h>
 #include <RakNet/RakNetTypes.h>
 
-#define ML_SERVER_RECIEVE (ID_USER_PACKET_ENUM + 1)
-#define ML_CLIENT_RECIEVE (ID_USER_PACKET_ENUM + 2)
-
-#define ML_PEER		static_cast<RakNet::RakPeerInterface*>
-#define ML_PACKET	static_cast<RakNet::Packet *>
+#define ML_PEER	static_cast<RakNet::RakPeerInterface *>
 
 namespace ml
 {
@@ -27,73 +23,6 @@ namespace ml
 	}
 
 
-	void Server::poll()
-	{
-		if (!m_running)
-			return;
-
-		for (void * packet = ML_PEER(m_peer)->Receive();
-			(packet != NULL);
-			(ML_PEER(m_peer)->DeallocatePacket(ML_PACKET(packet))),
-			(packet = ML_PEER(m_peer)->Receive()))
-		{
-			switch (ML_PACKET(packet)->data[0])
-			{
-			case ID_REMOTE_DISCONNECTION_NOTIFICATION:
-				Debug::Log("Remote Disconnection");
-				break;
-			case ID_REMOTE_CONNECTION_LOST:
-				Debug::LogError("Remote Connection List");
-				break;
-			case ID_REMOTE_NEW_INCOMING_CONNECTION:
-				Debug::Log("Remote New Incoming Connection");
-				break;
-			case ID_NEW_INCOMING_CONNECTION:
-				Debug::Log("New Incoming Connection");
-				break;
-			case ID_NO_FREE_INCOMING_CONNECTIONS:
-				Debug::LogError("No Free Incoming Connections");
-				break;
-			case ID_DISCONNECTION_NOTIFICATION:
-				Debug::Log("Disconnected");
-				break;
-			case ID_CONNECTION_LOST:
-				Debug::LogError("Connection Lost");
-				break;
-
-			case ML_SERVER_RECIEVE:
-			{
-				RakNet::BitStream bitStream(
-					ML_PACKET(packet)->data,
-					ML_PACKET(packet)->length,
-					false);
-
-				RakNet::RakString str;
-				if (bitStream.Read(str))
-				{
-					ML_EventSystem.fireEvent(ServerRecievePacketEvent(str.C_String()));
-				}
-			}
-			break;
-
-			case ML_CLIENT_RECIEVE:
-			{
-				RakNet::BitStream bitStream(
-					ML_PACKET(packet)->data,
-					ML_PACKET(packet)->length,
-					false);
-
-				RakNet::RakString str;
-				if (bitStream.Read(str))
-				{
-					ML_EventSystem.fireEvent(ClientRecievePacketEvent(str.C_String()));
-				}
-			}
-			break;
-			}
-		}
-	}
-
 	void Server::onEvent(const Event * value)
 	{
 		switch (value->eventID())
@@ -101,10 +30,103 @@ namespace ml
 		case NetworkEvent::EV_ServerRecievePacket:
 			if (auto ev = value->As<ServerRecievePacketEvent>())
 			{
-				Debug::Log("Server Recieve Packet Event");
+				Debug::Log("SERVER -> {0}", (*ev));
 			}
 			break;
 		}
+	}
+
+	void Server::onPacket(const Packet & value)
+	{
+		switch (value.data[0])
+		{
+		case ID_REMOTE_DISCONNECTION_NOTIFICATION:
+			Debug::Log("Remote Disconnection");
+			break;
+	
+		case ID_REMOTE_CONNECTION_LOST:
+			Debug::LogError("Remote Connection List");
+			break;
+	
+		case ID_REMOTE_NEW_INCOMING_CONNECTION:
+			Debug::Log("Remote New Incoming Connection");
+			break;
+	
+		case ID_NEW_INCOMING_CONNECTION:
+			Debug::Log("New Incoming Connection");
+			break;
+	
+		case ID_NO_FREE_INCOMING_CONNECTIONS:
+			Debug::LogError("No Free Incoming Connections");
+			break;
+	
+		case ID_DISCONNECTION_NOTIFICATION:
+			Debug::Log("Disconnected");
+			break;
+	
+		case ID_CONNECTION_LOST:
+			Debug::LogError("Connection Lost");
+			break;
+	
+		case ML_SERVER_RECIEVE:
+			RakNet::BitStream bitStream(value.data, value.size, false);
+			RakNet::RakString str;
+			if (bitStream.Read(str))
+			{
+				ML_EventSystem.fireEvent(ServerRecievePacketEvent(str.C_String()));
+			}
+			break;
+		}
+	}
+
+	
+	bool Server::start(uint32_t maxConnections)
+	{
+		if (m_peer)
+		{
+			RakNet::SocketDescriptor socket;
+
+			switch (ML_PEER(m_peer)->Startup(maxConnections, &socket, 1))
+			{
+			case RakNet::RAKNET_STARTED:
+				return Debug::Log("RAKNET_STARTED");
+
+			case RakNet::RAKNET_ALREADY_STARTED:
+				return Debug::LogWarning("RAKNET_ALREADY_STARTED");
+
+			case RakNet::INVALID_SOCKET_DESCRIPTORS:
+				return Debug::LogError("INVALID_SOCKET_DESCRIPTORS");
+
+			case RakNet::INVALID_MAX_CONNECTIONS:
+				return Debug::LogError("INVALID_MAX_CONNECTIONS");
+
+			case RakNet::SOCKET_FAMILY_NOT_SUPPORTED:
+				return Debug::LogError("SOCKET_FAMILY_NOT_SUPPORTED");
+
+			case RakNet::SOCKET_PORT_ALREADY_IN_USE:
+				return Debug::LogError("SOCKET_PORT_ALREADY_IN_USE");
+
+			case RakNet::SOCKET_FAILED_TO_BIND:
+				return Debug::LogError("SOCKET_FAILED_TO_BIND");
+
+			case RakNet::SOCKET_FAILED_TEST_SEND:
+				return Debug::LogError("SOCKET_FAILED_TEST_SEND");
+
+			case RakNet::PORT_CANNOT_BE_ZERO:
+				return Debug::LogError("PORT_CANNOT_BE_ZERO");
+
+			case RakNet::FAILED_TO_CREATE_NETWORK_THREAD:
+				return Debug::LogError("FAILED_TO_CREATE_NETWORK_THREAD");
+
+			case RakNet::COULD_NOT_GENERATE_GUID:
+				return Debug::LogError("COULD_NOT_GENERATE_GUID");
+
+			case RakNet::STARTUP_OTHER_FAILURE:
+			default:
+				return Debug::LogError("STARTUP_OTHER_FAILURE");
+			}
+		}
+		return false;
 	}
 
 	

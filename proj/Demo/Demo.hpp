@@ -538,14 +538,20 @@ namespace demo
 			{
 				if (ML_Server.setup())
 				{
+					if (ML_Server.start(ML_MAX_CLIENTS))
+					{
 
+					}
 				}
 			}
 			else
 			{
 				if (ML_Client.setup())
 				{
+					if (ML_Client.connect({ ML_LOCALHOST, ML_PORT }, ""))
+					{
 
+					}
 				}
 			}
 		}
@@ -594,14 +600,14 @@ namespace demo
 	inline static bool onLoad(const LoadEvent & ev)
 	{
 		return (ml::Debug::Log("Loading..."))
-			&& loadFonts(true, ev.log)
-			&& loadImages(true, ev.log)
-			&& loadTextures(true, ev.log)
-			&& loadShaders(true, ev.log)
-			&& loadMeshes(true, ev.log)
-			&& loadBuffers(true, ev.log)
-			&& loadAudio(true, ev.log)
-			&& loadNetwork(false, ev.log)
+			&& loadFonts	(true, ev.log)
+			&& loadImages	(true, ev.log)
+			&& loadTextures	(true, ev.log)
+			&& loadShaders	(true, ev.log)
+			&& loadMeshes	(true, ev.log)
+			&& loadBuffers	(true, ev.log)
+			&& loadAudio	(true, ev.log)
+			&& loadNetwork	(true, ev.log)
 			;
 	}
 
@@ -690,7 +696,7 @@ namespace demo
 		));
 
 		// Value Input
-		if (ev.input.getKeyDown(ml::KeyCode::Escape))
+		if (ev.input.getKeyDown(ml::Key::Code::Escape))
 		{
 			ev.window.close();
 		}
