@@ -1,6 +1,8 @@
 #include <MemeCore/MemoryManager.h>
 #include <MemeCore/DebugUtility.h>
 
+#include <MemeCore/BitHelper.h>
+
 #define ML_CHUNK_SIZE	sizeof(ml::Chunk)	// Size of Chunk
 #define ML_ENDPTR_SIZE	sizeof(ml::byte *)	// Size of data pointer
 
@@ -16,13 +18,14 @@ namespace ml
 		}
 		else if (Chunk * e = findEmpty(size)) // return free empty chunk
 		{
-			e->size = size;
-
-			e->free = false;
-
 			if (e->size > size)
 			{
 				splitChunk(e, size);
+			}
+			else
+			{
+				e->size = size;
+				e->free = false;
 			}
 
 			return e->data;
@@ -65,6 +68,7 @@ namespace ml
 		return good();
 	}
 	
+	
 	void	MemoryManager::serialize(std::ostream & out) const
 	{
 		out << "Bytes Used: "
@@ -96,8 +100,8 @@ namespace ml
 			<< FG::White << " | " << FG::Green << "addr: " << FG::Yellow << (&c)
 			<< FG::White << " | " << FG::Green << "prev: " << FG::Yellow << (c.prev)
 			<< FG::White << " | " << FG::Green << "next: " << FG::Yellow << (c.next)
-			<< FG::White << " | " << FG::Green << "npos: " << FG::Yellow << (&c.data)
-			<< FG::White << " | " << FG::Green << "indx: " << FG::Yellow << ((int)c.data[0])
+			<< FG::White << " | " << FG::Green << "data: " << FG::Yellow << (&c.data)
+			<< FG::White << " | " << FG::Green << "npos: " << FG::Yellow << (&c.data + c.size)
 			<< FG::White << " }"
 			<< FMT()
 			<< std::endl;
@@ -130,7 +134,7 @@ namespace ml
 
 					if (chunk->size > size)
 					{
-						splitChunk(chunk, size);
+						//splitChunk(chunk, size);
 					}
 
 					return chunk;
@@ -159,7 +163,7 @@ namespace ml
 			Chunk * chunk = m_head;
 			while (chunk)
 			{
-				if (chunk->free && (chunk->size >= (size + ML_CHUNK_SIZE)))
+				if (chunk->free && (chunk->size >= (size + ML_CHUNK_SIZE + ML_ENDPTR_SIZE)))
 				{
 					return chunk;
 				}
@@ -230,27 +234,30 @@ namespace ml
 
 	Chunk *	MemoryManager::splitChunk(Chunk * value, size_t size)
 	{
-		if (0 && good() && (value && size))
+		if (good() && (value && size))
 		{
-			if (Chunk * chunk = readChunk(value->data))
+			if(void * addr = value + ML_CHUNK_SIZE + ML_ENDPTR_SIZE)
 			{
-				chunk->size = value->size - size;
-				chunk->free = true;
-				chunk->next = value->next;
-				chunk->prev = value;
-
-				if (chunk->next)
+				if(Chunk * chunk = (Chunk *)(&addr + size))
 				{
-					(chunk->next)->prev = chunk;
+					chunk->size = value->size - size;
+					chunk->free = true;
+					chunk->next = value->next;
+					chunk->prev = value;
+
+					if (chunk->next)
+					{
+						(chunk->next)->prev = chunk;
+					}
+
+					value->size = size;
+					value->free = false;
+					value->next = chunk;
+
+					Debug::Log("SPLIT CHUNK");
+					
+					return chunk;
 				}
-
-				value->size = size;
-				value->free = false;
-				value->next = chunk;
-
-				Debug::Log("Split: Success");
-
-				return chunk;
 			}
 		}
 		return NULL;

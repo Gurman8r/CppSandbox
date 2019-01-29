@@ -21,6 +21,7 @@ namespace ml
 		void *	allocate(size_t size);
 		bool	free(void * value);
 		bool	prime(byte * data, size_t size);
+
 		void	serialize(std::ostream & out) const override;
 		void	serializeChunk(std::ostream & out, const Chunk & c) const;
 
