@@ -42,6 +42,7 @@ namespace ml
 		{
 		case ID_CONNECTION_REQUEST_ACCEPTED:
 			Debug::Log("Connection Request Accepted");
+			m_connected = true;
 			break;
 
 		case ID_NO_FREE_INCOMING_CONNECTIONS:
@@ -67,14 +68,14 @@ namespace ml
 		}
 	}
 
-	bool Client::connect(const Address & address, const std::string & pass)
+	bool Client::connect(const Address & addr, const std::string & pass)
 	{
 		if (m_peer)
 		{
 			switch (ML_PEER(m_peer)->Connect(
-				address.addr.c_str(),
-				address.port,
-				pass.c_str(), 
+				addr.c_str(),
+				addr.port,
+				pass.c_str(),
 				pass.size()))
 			{
 			case RakNet::CONNECTION_ATTEMPT_STARTED:
@@ -98,4 +99,5 @@ namespace ml
 		}
 		return false;
 	}
+
 }

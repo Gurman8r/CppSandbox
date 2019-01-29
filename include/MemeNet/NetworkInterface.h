@@ -32,6 +32,12 @@ namespace ml
 		virtual void onEvent(const Event * ev) override = 0;
 		virtual void onPacket(const Packet & value) = 0;
 
+		Address getMyAddress() const;
+		GUID	getMyGUID() const;
+		Address getAddressFromGUID(const GUID & value) const;
+		GUID	getGUIDFromAddress(const Address & value) const;
+
+
 	protected:
 		void *	m_peer;
 	};

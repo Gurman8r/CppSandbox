@@ -78,17 +78,16 @@ namespace ml
 			break;
 		}
 	}
-
 	
-	bool Server::start(uint32_t maxConnections)
+	bool Server::start(const Address & addr, uint32_t maxClients)
 	{
-		if (m_peer)
+		if (m_peer && (m_maxClients = maxClients))
 		{
-			RakNet::SocketDescriptor socket;
-
-			switch (ML_PEER(m_peer)->Startup(maxConnections, &socket, 1))
+			RakNet::SocketDescriptor socket(addr.port, addr.c_str());
+			switch (ML_PEER(m_peer)->Startup(m_maxClients, &socket, 1))
 			{
 			case RakNet::RAKNET_STARTED:
+				m_running = true;
 				return Debug::Log("RAKNET_STARTED");
 
 			case RakNet::RAKNET_ALREADY_STARTED:
@@ -128,6 +127,5 @@ namespace ml
 		}
 		return false;
 	}
-
 	
 }

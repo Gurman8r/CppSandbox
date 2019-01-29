@@ -25,13 +25,15 @@ namespace ml
 
 		void onPacket(const Packet & value) override;
 
-		bool start(uint32_t maxConnections);
+		bool start(const Address & addr, uint32_t maxClients);
 
 	public:
-		inline bool running() const { return m_running; }
+		inline bool		running()		const { return m_running; }
+		inline uint32_t maxClients()	const { return m_maxClients; }
 
 	private:
-		bool m_running;
+		bool		m_running;
+		uint32_t	m_maxClients;
 	};
 }
 

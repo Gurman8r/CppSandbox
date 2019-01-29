@@ -536,21 +536,24 @@ namespace demo
 		{
 			if (SETTINGS.isServer)
 			{
+				// Server Setup
 				if (ML_Server.setup())
 				{
-					if (ML_Server.start(ML_MAX_CLIENTS))
+					if (ML_Server.start({ ML_LOCALHOST, ML_PORT }, ML_MAX_CLIENTS))
 					{
-
+						ml::Debug::Log("Server Started: {0}", ML_Server.getMyAddress());
+						return true;
 					}
 				}
 			}
 			else
 			{
+				// Client Setup
 				if (ML_Client.setup())
 				{
 					if (ML_Client.connect({ ML_LOCALHOST, ML_PORT }, ""))
 					{
-
+						return ml::Debug::Log("Client Connected: ");
 					}
 				}
 			}
@@ -607,7 +610,7 @@ namespace demo
 			&& loadMeshes	(true, ev.log)
 			&& loadBuffers	(true, ev.log)
 			&& loadAudio	(true, ev.log)
-			&& loadNetwork	(true, ev.log)
+			&& loadNetwork	(false, ev.log)
 			;
 	}
 

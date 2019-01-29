@@ -54,6 +54,7 @@ namespace ml
 			copy.receiptNumber)
 		{
 		}
+		
 		SendSettings(Priority priority, Reliability reliability, char ordering, bool broadcast, uint32_t receiptNumber)
 			: priority(priority)
 			, reliability(reliability)
@@ -62,6 +63,7 @@ namespace ml
 			, receiptNumber(receiptNumber)
 		{
 		}
+		
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -77,26 +79,40 @@ namespace ml
 			: Address(NULL, NULL)
 		{
 		}
+		
 		Address(const std::string & addr)
 			: Address(addr, NULL)
 		{
 		}
+		
 		Address(const std::string & addr, uint16_t port)
 			: addr(addr)
 			, port(port)
 		{
 		}
+		
 		Address(const Address & copy)
 			: Address(copy.addr, copy.port)
 		{
 		}
+
+		inline void serialize(std::ostream & out) const override
+		{
+			out << addr;
+		}
+		
 		inline bool equals(const Address & copy) const override
 		{
-			return addr == copy.addr && port == copy.port;
+			return
+				addr == copy.addr &&
+				port == copy.port;
 		}
+		
 		inline bool lessThan(const Address & copy) const override
 		{
-			return addr < copy.addr || port < copy.port;
+			return
+				addr < copy.addr &&
+				port < copy.port;
 		}
 	};
 
@@ -107,42 +123,51 @@ namespace ml
 		, public IComparable<uint64_t>
 		, public IComparable<GUID>
 	{
-		uint64_t value;
+		uint64_t id;
 
 		GUID()
-			: GUID(NULL)
+			: GUID(0)
 		{
 		}
-		GUID(uint64_t value)
-			: value(value)
+		
+		GUID(uint64_t id)
+			: id(id)
 		{
 		}
+		
 		GUID(const GUID & copy)
-			: GUID(copy.value)
+			: GUID(copy.id)
 		{
 		}
 		
 		inline operator uint64_t() const
 		{
-			return value;
+			return id;
+		}
+
+		inline void serialize(std::ostream & out) const override
+		{
+			out << id << " ";
 		}
 		
-		inline bool equals(const uint64_t & copy) const override
+		inline bool equals(const uint64_t & value) const override
 		{
 			return (*this) == value;
 		}
-		inline bool lessThan(const uint64_t & copy) const override
+		
+		inline bool equals(const GUID & value) const override
+		{
+			return id == value.id;
+		}
+		
+		inline bool lessThan(const uint64_t & value) const override
 		{
 			return (*this) < value;
 		}
 		
-		inline bool equals(const GUID & copy) const override
+		inline bool lessThan(const GUID & value) const override
 		{
-			return value == copy.value;
-		}
-		inline bool lessThan(const GUID & copy) const override
-		{
-			return value < copy.value;
+			return id < value.id;
 		}
 	};
 
@@ -160,6 +185,7 @@ namespace ml
 			: Packet(Address(), GUID(), 0, NULL)
 		{
 		}
+		
 		Packet(const Address & addr, const GUID & guid, uint32_t size, uint8_t * data)
 			: addr(addr)
 			, guid(guid)
@@ -167,9 +193,18 @@ namespace ml
 			, data(data)
 		{
 		}
+		
 		Packet(const Packet & copy)
 			: Packet(copy.addr, copy.guid, copy.size, copy.data)
 		{
+		}
+
+		inline void serialize(std::ostream & out) const override
+		{
+			out << addr << " " 
+				<< guid << " " 
+				<< size << " " 
+				<< data << " ";
 		}
 	};
 
