@@ -77,6 +77,9 @@
     <Filter Include="Header Files">
       <UniqueIdentifier>{be380036-ab8e-4e79-914b-58a1398f147d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4bd9d2f2-14c9-4cac-a777-eee48dd31dd3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\assets\shaders\fs\basic\drawColor_fs4x.shader">
@@ -271,17 +274,25 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Demo.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Settings.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Testing.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DemoEvents.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Demo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Demo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

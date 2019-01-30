@@ -1,6 +1,6 @@
 /* * * * * * * * * * * * * * * * * * * * */
 
-#include "Demo.hpp"
+#include "Demo.h"
 #include "Testing.hpp"
 #include <MemeCore/EventSystem.h>
 
@@ -10,8 +10,12 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
+
 int32_t main(int32_t argc, char ** argv)
 {
+	// Create Demo
+	demo::Demo game;
+	
 	// Load Settings
 	if (!SETTINGS.loadFromFile(CONFIG_INI))
 	{
@@ -19,8 +23,8 @@ int32_t main(int32_t argc, char ** argv)
 			|| ml::Debug::pause(EXIT_FAILURE);
 	}
 
-	// Program Enter
-	if (!demo::onEnter({ argc, argv }))
+	// Enter
+	if (!game.onEnter({ argc, argv }))
 	{
 		return ml::Debug::LogError("Failed Entering Program")
 			|| ml::Debug::pause(EXIT_FAILURE);
@@ -29,14 +33,14 @@ int32_t main(int32_t argc, char ** argv)
 	// Run Tests
 	if (SETTINGS.runTests)
 	{
-		return runTests(SETTINGS.runTests);
+		return tests::runTests(SETTINGS.runTests);
 	}
 
 	// Create Window
 	ml::RenderWindow window;
 	if (ml::Debug::Log("Creating Window..."))
 	{
-		if (!window.create(
+		if (!window.good() && window.create(
 			SETTINGS.title,
 			ml::VideoMode({ SETTINGS.width, SETTINGS.height }, SETTINGS.bitsPerPixel),
 			ml::Window::Style::Default,
@@ -50,24 +54,26 @@ int32_t main(int32_t argc, char ** argv)
 				SETTINGS.srgbCapable)
 		))
 		{
+			window.setCursor(ml::Window::Cursor::Normal);
+			window.setPosition((ml::VideoMode::desktop().size - window.size()) / 2);
+			window.setViewport(ml::vec2i::Zero, window.size());
+		}
+		else
+		{
 			return ml::Debug::LogError("Failed Creating Window")
 				|| ml::Debug::pause(EXIT_FAILURE);
 		}
-
-		window.setCursor(ml::Window::Cursor::Normal);
-		window.setPosition((ml::VideoMode::desktop().size - window.size()) / 2);
-		window.setViewport(ml::vec2i::Zero, window.size());
 	}
-
+	
 	// Load
-	if (!demo::onLoad({ SETTINGS.logLoading }))
+	if (!game.onLoad({ SETTINGS.logLoading }))
 	{
 		return ml::Debug::LogError("Failed Loading Resources")
 			|| ml::Debug::pause(EXIT_FAILURE);
 	}
 
 	// Start
-	demo::onStart({ window });
+	game.onStart({ window });
 
 	// Loop
 	ml::Timer		loopTimer;
@@ -79,10 +85,10 @@ int32_t main(int32_t argc, char ** argv)
 		input.beginStep();
 		{
 			// Update
-			demo::onUpdate({ window, elapsed, input });
+			game.onUpdate({ window, elapsed, input });
 
 			// Draw
-			demo::onDraw({ window, elapsed });
+			game.onDraw({ window, elapsed });
 		}
 		// End Step
 		input.endStep();
@@ -90,8 +96,8 @@ int32_t main(int32_t argc, char ** argv)
 
 	} while (window.isOpen());
 
-	// Program Exit
-	return demo::onExit({ EXIT_SUCCESS });
+	// Exit
+	return game.onExit({ EXIT_SUCCESS });
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

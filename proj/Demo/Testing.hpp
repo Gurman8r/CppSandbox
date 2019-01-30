@@ -1,14 +1,12 @@
 #ifndef _TESTING_H_
 #define _TESTING_H_
 
-#include "Demo.hpp"
-
 #include <MemeCore/ML_Memory.h>
 #include <MemeCore/MemoryManager.h>
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-namespace
+namespace tests
 {
 	struct Foo final
 	{
@@ -73,7 +71,7 @@ namespace
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-namespace
+namespace tests
 {
 	inline static int32_t testScripts()
 	{
@@ -503,7 +501,7 @@ namespace
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-namespace
+namespace tests
 {
 	inline static int32_t runTests(uint32_t id)
 	{

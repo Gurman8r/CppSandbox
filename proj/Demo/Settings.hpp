@@ -61,6 +61,7 @@ namespace demo
 
 		// [Network]
 		bool		isServer;		// Is Server?
+		bool		isClient;
 
 	public:
 		inline bool cleanup() override { return true; }
@@ -106,10 +107,11 @@ namespace demo
 				orthoFar	= (float)ini.GetReal("Graphics", "orthoFar",	+1.0);
 
 				// [Audio]
-				isMuted = ini.GetBoolean("Audio", "isMuted", false);
+				isMuted		= ini.GetBoolean("Audio", "isMuted", false);
 
 				// [Network]
-				isServer = ini.GetBoolean("Network", "isServer", false);
+				isServer	= ini.GetBoolean("Network", "isServer", false);
+				isClient	= ini.GetBoolean("Network", "isClient", false);
 
 				return true;
 			}
