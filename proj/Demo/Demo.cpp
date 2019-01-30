@@ -18,6 +18,8 @@ namespace demo
 
 	bool Demo::onEnter(const EnterEvent & ev)
 	{
+		ml::cout << ML_FileSystem.getFileExtension("../../../config.ini") << ml::endl;
+
 		// Start Master Timer
 		ML_Time.start();
 
@@ -567,19 +569,13 @@ namespace demo
 	{
 		if (ml::Debug::Log("Loading Audio..."))
 		{
-			if (ML_Audio.init())
+			if (ml::OpenAL::init())
 			{
 				ml::AudioBuffer buffer;
-				if (!ML_Audio.genBuffer(buffer, 1, 512))
-				{
-					return ml::Debug::LogError("Failed Loading Audio Buffers");
-				}
+				buffer.generate(1, 512);
 
 				ml::AudioSource source;
-				if (!ML_Audio.genSource(source, 1, 16))
-				{
-					return ml::Debug::LogError("Failed Loading Audio Sources");
-				}
+				source.generate(1, 16);
 
 				return true;
 			}

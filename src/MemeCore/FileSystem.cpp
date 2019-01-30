@@ -9,12 +9,12 @@
 
 namespace ml
 {
-	bool FileSystem::fileExists(const String & filename)
+	bool FileSystem::fileExists(const String & filename) const
 	{
 		return (bool)(std::ifstream(filename));
 	}
 
-	bool FileSystem::getFileContents(const String & filename, std::vector<char> & buffer)
+	bool FileSystem::getFileContents(const String & filename, std::vector<char> & buffer) const
 	{
 		buffer.clear();
 		if (!filename.empty())
@@ -52,7 +52,7 @@ namespace ml
 		}
 	}
 
-	bool FileSystem::getFileContents(const String & filename, String & str)
+	bool FileSystem::getFileContents(const String & filename, String & str) const
 	{
 		static std::vector<char> buffer;
 		str.clear();
@@ -64,7 +64,7 @@ namespace ml
 		return false;
 	}
 
-	bool FileSystem::getFileContents(const String & filename, std::stringstream & stream)
+	bool FileSystem::getFileContents(const String & filename, std::stringstream & stream) const
 	{
 		static String buffer;
 		stream.str(String());
@@ -93,6 +93,20 @@ namespace ml
 #else
 		return String();
 #endif
+	}
+
+
+	String FileSystem::getFileExtension(const String & filename) const
+	{
+		if (fileExists(filename))
+		{
+			size_t i;
+			if ((i = filename.find_last_of('.')) != String::npos)
+			{
+				return filename.substr(i, filename.size() - i);
+			}
+		}
+		return String();
 	}
 
 

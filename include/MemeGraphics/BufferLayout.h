@@ -3,7 +3,6 @@
 
 #include <MemeGraphics/GL.h>
 #include <MemeCore/ITrackable.h>
-#include <vector>
 
 namespace ml
 {

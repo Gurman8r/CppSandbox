@@ -3,7 +3,6 @@
 
 #include <MemeScript/Export.h>
 #include <MemeCore/ITrackable.h>
-#include <vector>
 
 namespace ml
 {

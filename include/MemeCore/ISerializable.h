@@ -4,7 +4,6 @@
 #include <MemeCore/Export.h>
 #include <iostream>
 #include <MemeCore/String.h>
-#include <sstream>
 #include <type_traits>
 
 namespace ml

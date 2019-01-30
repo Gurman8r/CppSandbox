@@ -3,7 +3,6 @@
 
 #include <MemeCore/IEnumerable.h>
 #include <MemeCore/IComparable.h>
-#include <vector>
 #include <initializer_list>
 #include <algorithm>
 

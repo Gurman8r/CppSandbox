@@ -22,20 +22,20 @@ namespace demo
 
 	public:
 		// [General]
-		ml::String		rootPath;		// Solution Dir
-		ml::String		assetPath;		// Where's all the npos?
+		ml::String	rootPath;		// Solution Dir
+		ml::String	assetPath;		// Where's all the npos?
 		uint32_t	runTests;		// Run test functions
 		bool		logLoading;		// Verbose loading output
 
 		// [Script]
-		ml::String		scrPath;		// Location of scripts
-		ml::String		scrFile;		// Script to run on start
+		ml::String	scrPath;		// Location of scripts
+		ml::String	scrFile;		// Script to run on start
 		bool		scrShowToks;	// Show Script Tokens
 		bool		scrShowTree;	// Show Script Syntax Tree
 		bool		scrShowItoP;	// Show Script Infix to Postfix
 
 		// [Window]
-		ml::String		title;			// Window Title
+		ml::String	title;			// Window Title
 		uint32_t	width;			// Window Width
 		uint32_t	height;			// Window Height
 		uint32_t	bitsPerPixel;	// Bits Per Pixel

@@ -3,7 +3,6 @@
 
 #include <MemeCore/ITrackable.h>
 #include <MemeCore/IComparable.h>
-#include <vector>
 
 namespace ml
 {

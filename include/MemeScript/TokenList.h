@@ -2,8 +2,6 @@
 #define _TOKEN_LIST_H_
 
 #include <MemeScript/Token.h>
-#include <sstream>
-#include <initializer_list>
 
 namespace ml
 {

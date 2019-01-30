@@ -4,8 +4,6 @@
 #include <MemeCore/ITrackable.h>
 #include <MemeCore/IComparable.h>
 #include <MemeScript/Export.h>
-#include <vector>
-#include <sstream>
 
 namespace ml
 {

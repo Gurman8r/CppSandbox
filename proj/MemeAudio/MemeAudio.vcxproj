@@ -158,12 +158,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\include\MemeAudio\AL.h" />
     <ClInclude Include="..\..\include\MemeAudio\Audio.h" />
+    <ClInclude Include="..\..\include\MemeAudio\AudioBuffer.h" />
+    <ClInclude Include="..\..\include\MemeAudio\AudioSource.h" />
     <ClInclude Include="..\..\include\MemeAudio\Export.h" />
+    <ClInclude Include="..\..\include\MemeAudio\OpenAL.h" />
     <ClInclude Include="..\..\include\MemeAudio\Sound.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeAudio\Audio.cpp" />
+    <ClCompile Include="..\..\src\MemeAudio\AudioBuffer.cpp" />
+    <ClCompile Include="..\..\src\MemeAudio\AudioSource.cpp" />
+    <ClCompile Include="..\..\src\MemeAudio\OpenAL.cpp" />
     <ClCompile Include="..\..\src\MemeAudio\Sound.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

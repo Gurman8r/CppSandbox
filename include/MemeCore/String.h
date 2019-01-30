@@ -3,7 +3,10 @@
 
 #include <MemeCore/IComparable.h>
 #include <string>
+#include <sstream>
 #include <initializer_list>
+#include <vector>
+#include <iostream>
 
 namespace ml
 {
@@ -99,7 +102,6 @@ namespace ml
 	//using String16 = BasicString<char16_t>;
 	//using String32 = BasicString<char32_t>;
 
-	//using String = String;
 	using String = std::string;
 
 }
