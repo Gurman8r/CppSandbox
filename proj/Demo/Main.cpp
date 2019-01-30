@@ -2,7 +2,6 @@
 
 #include "Demo.h"
 #include "Testing.hpp"
-#include <MemeCore/EventSystem.h>
 
 /* * * * * * * * * * * * * * * * * * * * */
 

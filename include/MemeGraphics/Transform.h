@@ -6,6 +6,14 @@
 #include <MemeCore/Vector3.h>
 #include <MemeCore/Vector2.h>
 
+#ifdef near
+#undef near
+#endif
+
+#ifdef far
+#undef far
+#endif
+
 namespace ml
 {
 	class ML_GRAPHICS_API Transform final

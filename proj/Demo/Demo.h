@@ -1,7 +1,6 @@
 #ifndef _GAME_H_
 #define _GAME_H_
 
-#include <dirent.h>
 #include <MemeAudio/Audio.h>
 #include <MemeCore/Time.h>
 #include <MemeCore/InputState.h>

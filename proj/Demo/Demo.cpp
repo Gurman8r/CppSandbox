@@ -1,5 +1,6 @@
 #include "Demo.h"
 #include <MemeCore/EventSystem.h>
+#include <dirent.h>
 
 namespace demo
 {
@@ -246,9 +247,11 @@ namespace demo
 
 	bool Demo::setupInterpreter()
 	{
-		static bool good = false;
-		if (!good)
+		static bool checked = false;
+		if (!checked)
 		{
+			checked = true;
+
 			// Setup Parser
 			ML_Interpreter.parser()
 				.showToks(SETTINGS.scrShowToks)
@@ -418,10 +421,8 @@ namespace demo
 				}
 				return ml::Var().boolValue(true);
 			} });
-
-			good = true;
 		}
-		return good;
+		return checked;
 	}
 
 	bool Demo::loadFonts(bool log)
@@ -439,7 +440,6 @@ namespace demo
 	{
 		// Load Images
 		return ml::Debug::Log("Loading Images...")
-
 			&& load<ml::Image>(images[IMG_icon], "/images/dean.png", log)
 			;
 	}
@@ -451,27 +451,21 @@ namespace demo
 
 		// Load Textures
 		return ml::Debug::Log("Loading Textures...")
-
 			&& load<ml::Texture>(textures[TEX_dean], "/images/dean.png", log)
 			&& load<ml::Texture>(textures[TEX_sanic], "/images/sanic.png", log)
-
 			//&& load<ml::Texture>(textures[TEX_bg_clouds], "/textures/bg/bg_clouds.png", log)
 			//&& load<ml::Texture>(textures[TEX_sky_clouds], "/textures/bg/sky_clouds.png", log)
 			//&& load<ml::Texture>(textures[TEX_sky_water], "/textures/bg/sky_water.png", log)
-
 			//&& load<ml::Texture>(textures[TEX_earth_cm], "/textures/earth/earth_cm_2k.png", log)
 			//&& load<ml::Texture>(textures[TEX_earth_dm], "/textures/earth/earth_dm_2k.png", log)
 			//&& load<ml::Texture>(textures[TEX_earth_hm], "/textures/earth/earth_hm_2k.png", log)
 			//&& load<ml::Texture>(textures[TEX_earth_lm], "/textures/earth/earth_lm_2k.png", log)
 			//&& load<ml::Texture>(textures[TEX_earth_nm], "/textures/earth/earth_nm_2k.png", log)
 			//&& load<ml::Texture>(textures[TEX_earth_sm], "/textures/earth/earth_sm_2k.png", log)
-
 			//&& load<ml::Texture>(textures[TEX_mars_dm], "/textures/mars/mars_dm_2k.png", log)
 			//&& load<ml::Texture>(textures[TEX_mars_nm], "/textures/mars/mars_nm_2k.png", log)
-
 			//&& load<ml::Texture>(textures[TEX_moon_dm], "/textures/moon/moon_dm_2k.png", log)
 			//&& load<ml::Texture>(textures[TEX_moon_nm], "/textures/moon/moon_nm_2k.png", log)
-
 			&& load<ml::Texture>(textures[TEX_stone_dm], "/textures/stone/stone_dm.png", log)
 			&& load<ml::Texture>(textures[TEX_stone_hm], "/textures/stone/stone_hm.png", log)
 			&& load<ml::Texture>(textures[TEX_stone_nm], "/textures/stone/stone_nm.png", log)
@@ -482,7 +476,6 @@ namespace demo
 	{
 		// Load Shaders
 		return ml::Debug::Log("Loading Shaders...")
-
 			&& load<ml::Shader>(shaders[GL_basic3D], "/shaders/basic3D.shader", log)
 			&& load<ml::Shader>(shaders[GL_text], "/shaders/text.shader", log)
 			&& load<ml::Shader>(shaders[GL_geometry], "/shaders/geometry.shader", log)
@@ -493,7 +486,6 @@ namespace demo
 	{
 		// Load Meshes
 		return ml::Debug::Log("Loading Meshes...")
-
 			&& load<ml::Mesh>(mesh[MESH_sphere8x6], "/meshes/sphere8x6.mesh", log)
 			&& load<ml::Mesh>(mesh[MESH_sphere32x24], "/meshes/sphere32x24.mesh", log)
 			;
