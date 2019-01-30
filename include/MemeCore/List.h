@@ -7,7 +7,7 @@
 
 namespace ml
 {
-	// Wrapper for std::vector. Adds serialization and tracking.
+	// std::vector with serialization and tracking
 	template <class _T, class _Alloc = std::allocator<_T>>
 	class List
 		: public std::vector<_T, _Alloc>
@@ -18,11 +18,11 @@ namespace ml
 	public:
 		using size_type = size_t;
 		using data_type = _T;
-		using Allocator = _Alloc;
+		using allocator = _Alloc;
 
-		using base_type = std::vector<data_type, Allocator>;
+		using base_type = std::vector<data_type, allocator>;
 		using init_type = std::initializer_list<data_type>;
-		using self_type = List<data_type, Allocator>;
+		using self_type = List<data_type, allocator>;
 
 		using iterator				= base_type::iterator;
 		using const_iterator		= base_type::const_iterator;
@@ -31,27 +31,27 @@ namespace ml
 
 	public:
 		List()
-			: base_type(Allocator())
+			: base_type(allocator())
 		{
 		}
-		List(const Allocator & alloc)
+		List(const allocator & alloc)
 			: base_type(alloc)
 		{
 		}
-		List(const base_type & value, const Allocator & alloc = Allocator())
+		List(const base_type & value, const allocator & alloc = allocator())
 			: base_type(value, alloc)
 		{
 		}
-		List(const init_type & value, const Allocator & alloc = Allocator())
+		List(const init_type & value, const allocator & alloc = allocator())
 			: base_type(value, alloc)
 		{
 		}
-		List(const self_type & value, const Allocator & alloc = Allocator())
+		List(const self_type & value, const allocator & alloc = allocator())
 			: base_type(value, alloc)
 		{
 		}
 		template <class Iter>
-		List(Iter begin, Iter end, const Allocator & alloc = Allocator())
+		List(Iter begin, Iter end, const allocator & alloc = allocator())
 			: base_type(begin, end, alloc)
 		{
 		}

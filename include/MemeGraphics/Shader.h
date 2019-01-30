@@ -22,11 +22,11 @@ namespace ml
 		~Shader();
 
 		bool cleanup() override;
-		bool loadFromFile(const std::string & filename) override;
-		bool loadFromFile(const std::string & vs, const std::string & fs);
-		bool loadFromFile(const std::string & vs, const std::string & gs, const std::string & fs);
-		bool loadFromMemory(const std::string& vs, const std::string& fs);
-		bool loadFromMemory(const std::string& vs, const std::string& gs, const std::string& fs);
+		bool loadFromFile(const String & filename) override;
+		bool loadFromFile(const String & vs, const String & fs);
+		bool loadFromFile(const String & vs, const String & gs, const String & fs);
+		bool loadFromMemory(const String& vs, const String& fs);
+		bool loadFromMemory(const String& vs, const String& gs, const String& fs);
 
 	public:
 		Shader &	bind(bool bindTextures = true);
@@ -34,26 +34,26 @@ namespace ml
 
 	public:
 		// Set Uniform
-		Shader & setUniform(const std::string & name, const float & value);
-		Shader & setUniform(const std::string & name, const int32_t & value);
-		Shader & setUniform(const std::string & name, const uint32_t & value);
-		Shader & setUniform(const std::string & name, const vec2f & value);
-		Shader & setUniform(const std::string & name, const vec3f & value);
-		Shader & setUniform(const std::string & name, const vec4f & value);
-		Shader & setUniform(const std::string & name, const vec2i & value);
-		Shader & setUniform(const std::string & name, const vec3i & value);
-		Shader & setUniform(const std::string & name, const vec4i & value);
-		Shader & setUniform(const std::string & name, const mat3f & value);
-		Shader & setUniform(const std::string & name, const mat4f & value);
-		Shader & setUniform(const std::string & name, const Texture & value);
+		Shader & setUniform(const String & name, const float & value);
+		Shader & setUniform(const String & name, const int32_t & value);
+		Shader & setUniform(const String & name, const uint32_t & value);
+		Shader & setUniform(const String & name, const vec2f & value);
+		Shader & setUniform(const String & name, const vec3f & value);
+		Shader & setUniform(const String & name, const vec4f & value);
+		Shader & setUniform(const String & name, const vec2i & value);
+		Shader & setUniform(const String & name, const vec3i & value);
+		Shader & setUniform(const String & name, const vec4i & value);
+		Shader & setUniform(const String & name, const mat3f & value);
+		Shader & setUniform(const String & name, const mat4f & value);
+		Shader & setUniform(const String & name, const Texture & value);
 
 		// Set Uniform Array
-		Shader & setUniformArray(const std::string & name, int32_t count, const float * value);
-		Shader & setUniformArray(const std::string & name, int32_t count, const vec2f * value);
-		Shader & setUniformArray(const std::string & name, int32_t count, const vec3f * value);
-		Shader & setUniformArray(const std::string & name, int32_t count, const vec4f * value);
-		Shader & setUniformArray(const std::string & name, int32_t count, const mat3f * value);
-		Shader & setUniformArray(const std::string & name, int32_t count, const mat4f * value);
+		Shader & setUniformArray(const String & name, int32_t count, const float * value);
+		Shader & setUniformArray(const String & name, int32_t count, const vec2f * value);
+		Shader & setUniformArray(const String & name, int32_t count, const vec3f * value);
+		Shader & setUniformArray(const String & name, int32_t count, const vec4f * value);
+		Shader & setUniformArray(const String & name, int32_t count, const mat3f * value);
+		Shader & setUniformArray(const String & name, int32_t count, const mat4f * value);
 
 	public:
 		template <typename T>
@@ -76,12 +76,12 @@ namespace ml
 
 	private:
 		bool		compile(const char* vs, const char* gs, const char* fs);
-		int32_t		getUniformLocation(const std::string & value) const;
+		int32_t		getUniformLocation(const String & value) const;
 	
 	private:
 		struct	UniformBinder;
 		using	TextureTable = std::map<int32_t, const Texture*>;
-		using	UniformTable = std::map<std::string, int32_t>;
+		using	UniformTable = std::map<String, int32_t>;
 
 		mutable TextureTable m_textures;
 		mutable UniformTable m_uniforms;

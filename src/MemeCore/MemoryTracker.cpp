@@ -1,6 +1,6 @@
 #include <MemeCore/MemoryTracker.h>
 #include <MemeCore/ITrackable.h>
-#include <MemeCore/DebugUtility.h>
+#include <MemeCore/Debug.h>
 
 namespace ml
 {

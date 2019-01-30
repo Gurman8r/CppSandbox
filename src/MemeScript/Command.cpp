@@ -7,7 +7,7 @@ namespace ml
 		, m_func(NULL)
 	{
 	}
-	Command::Command(const std::string & name, fn_type func)
+	Command::Command(const String & name, fn_type func)
 		: m_name(name)
 		, m_func(func)
 	{

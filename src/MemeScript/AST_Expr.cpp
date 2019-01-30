@@ -1,7 +1,7 @@
 #include <MemeScript/AST_Expr.h>
 #include <MemeScript/Interpreter.h>
 
-#include <MemeCore/DebugUtility.h>
+#include <MemeCore/Debug.h>
 #include <iostream>
 
 namespace ml
@@ -289,7 +289,7 @@ namespace ml
 
 
 	// Function
-	AST_Func::AST_Func(const std::string& name, const Params& args)
+	AST_Func::AST_Func(const String& name, const Params& args)
 		: AST_Expr(AST_Expr::Type::EX_Func)
 		, name(name)
 		, args(args)
@@ -350,7 +350,7 @@ namespace ml
 #ifdef ML_DEBUG
 
 		cout << "$: ";
-		std::string line;
+		String line;
 		std::getline(cin, line);
 		return Var().stringValue(line);
 #else
@@ -383,7 +383,7 @@ namespace ml
 
 
 	// Name
-	AST_Name::AST_Name(const std::string & value)
+	AST_Name::AST_Name(const String & value)
 		: AST_Expr(AST_Expr::Type::EX_Name)
 		, value(value)
 	{
@@ -493,7 +493,7 @@ namespace ml
 
 
 	// String 
-	AST_String::AST_String(const std::string & value)
+	AST_String::AST_String(const String & value)
 		: AST_Expr(AST_Expr::Type::EX_String)
 		, value(value)
 	{

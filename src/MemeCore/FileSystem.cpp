@@ -1,5 +1,5 @@
 #include <MemeCore/FileSystem.h>
-#include <MemeCore/DebugUtility.h>
+#include <MemeCore/Debug.h>
 #include <fstream>
 
 #ifdef ML_SYSTEM_WINDOWS
@@ -9,12 +9,12 @@
 
 namespace ml
 {
-	bool FileSystem::fileExists(const std::string & filename)
+	bool FileSystem::fileExists(const String & filename)
 	{
 		return (bool)(std::ifstream(filename));
 	}
 
-	bool FileSystem::getFileContents(const std::string & filename, std::vector<char> & buffer)
+	bool FileSystem::getFileContents(const String & filename, std::vector<char> & buffer)
 	{
 		buffer.clear();
 		if (!filename.empty())
@@ -52,22 +52,22 @@ namespace ml
 		}
 	}
 
-	bool FileSystem::getFileContents(const std::string & filename, std::string & str)
+	bool FileSystem::getFileContents(const String & filename, String & str)
 	{
 		static std::vector<char> buffer;
 		str.clear();
 		if (getFileContents(filename, buffer))
 		{
-			str = std::string(buffer.begin(), buffer.end());
+			str = String(buffer.begin(), buffer.end());
 			return true;
 		}
 		return false;
 	}
 
-	bool FileSystem::getFileContents(const std::string & filename, std::stringstream & stream)
+	bool FileSystem::getFileContents(const String & filename, std::stringstream & stream)
 	{
-		static std::string buffer;
-		stream.str(std::string());
+		static String buffer;
+		stream.str(String());
 		if (getFileContents(filename, buffer))
 		{
 			stream.str(buffer);
@@ -77,7 +77,7 @@ namespace ml
 	}
 	
 
-	bool FileSystem::setWorkingDir(const std::string & value)
+	bool FileSystem::setWorkingDir(const String & value)
 	{
 #ifdef ML_SYSTEM_WINDOWS
 		return (_chdir(value.c_str()) == EXIT_SUCCESS) ? true : false;
@@ -86,12 +86,12 @@ namespace ml
 #endif
 	}
 
-	std::string FileSystem::getWorkingDir() const
+	String FileSystem::getWorkingDir() const
 	{
 #ifdef ML_SYSTEM_WINDOWS
-		return std::string(_getcwd(NULL, 0));
+		return String(_getcwd(NULL, 0));
 #else
-		return std::string();
+		return String();
 #endif
 	}
 

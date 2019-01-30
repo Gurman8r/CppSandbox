@@ -18,7 +18,7 @@ namespace ml
 		~Mesh();
 
 		bool cleanup() override;
-		bool loadFromFile(const std::string & filename) override;
+		bool loadFromFile(const String & filename) override;
 
 		void serialize(std::ostream & out) const override;
 		void deserialize(std::istream & in) override;

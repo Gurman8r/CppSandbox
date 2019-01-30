@@ -1,5 +1,5 @@
 #include <MemeGraphics/Image.h>
-#include <MemeCore/DebugUtility.h>
+#include <MemeCore/Debug.h>
 #include <algorithm>
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -37,7 +37,7 @@ namespace ml
 		return true;
 	}
 	
-	bool Image::loadFromFile(const std::string & filename)
+	bool Image::loadFromFile(const String & filename)
 	{
 		stbi_set_flip_vertically_on_load(true);
 		

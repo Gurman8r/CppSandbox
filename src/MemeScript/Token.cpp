@@ -1,6 +1,6 @@
 #include <MemeScript/Token.h>
 #include <MemeScript/Operator.h>
-#include <MemeCore/DebugUtility.h>
+#include <MemeCore/Debug.h>
 
 namespace ml
 {
@@ -93,17 +93,17 @@ namespace ml
 
 	Token::Token(char type)
 		: type((TokenType)type)
-		, data(std::string())
+		, data(String())
 	{
 	}
 
-	Token::Token(TokenType type, const std::string & data)
+	Token::Token(TokenType type, const String & data)
 		: type(type)
 		, data(data)
 	{
 	}
 
-	Token::Token(char type, const std::string & data)
+	Token::Token(char type, const String & data)
 		: type((TokenType)type)
 		, data(data)
 	{
@@ -170,7 +170,7 @@ namespace ml
 		return (char)type == value;
 	}
 
-	bool Token::equals(const std::string & value) const
+	bool Token::equals(const String & value) const
 	{
 		return data == value;
 	}
@@ -200,7 +200,7 @@ namespace ml
 		return (char)type < value;
 	}
 
-	bool Token::lessThan(const std::string & value) const
+	bool Token::lessThan(const String & value) const
 	{
 		return data < value;
 	}

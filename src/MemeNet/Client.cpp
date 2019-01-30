@@ -1,6 +1,6 @@
 #include <MemeNet/Client.h>
 #include <MemeNet/NetworkEvents.h>
-#include <MemeCore/DebugUtility.h>
+#include <MemeCore/Debug.h>
 #include <MemeCore/EventSystem.h>
 #include <RakNet/RakPeerInterface.h>
 #include <RakNet/MessageIdentifiers.h>
@@ -68,7 +68,7 @@ namespace ml
 		}
 	}
 
-	bool Client::connect(const Address & addr, const std::string & pass)
+	bool Client::connect(const Address & addr, const String & pass)
 	{
 		if (m_peer)
 		{

@@ -47,6 +47,10 @@ namespace ml
 		}
 		inline void deserialize(std::istream & in) override
 		{
+			for (size_t i = 0; i < Size; i++)
+			{
+				in >> (*this)[i];
+			}
 		}
 
 	public:

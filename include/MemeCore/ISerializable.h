@@ -3,7 +3,7 @@
 
 #include <MemeCore/Export.h>
 #include <iostream>
-#include <string>
+#include <MemeCore/String.h>
 #include <sstream>
 #include <type_traits>
 
@@ -33,7 +33,7 @@ namespace ml
 			return stream; 
 		}
 
-		inline virtual const std::string to_string() const
+		inline virtual const String to_string() const
 		{
 			return to_stream().str(); 
 		}

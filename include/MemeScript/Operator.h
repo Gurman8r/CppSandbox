@@ -46,9 +46,9 @@ namespace ml
 	{
 		
 
-		using OperMap = std::map<std::string, OperatorType>;
+		using OperMap = std::map<String, OperatorType>;
 
-		static const std::map<std::string, OperatorType> OpValues;
+		static const std::map<String, OperatorType> OpValues;
 
 		Operator();
 		Operator(OperatorType type);
@@ -57,7 +57,7 @@ namespace ml
 
 		OperatorType type;
 
-		static bool makeOperator(const std::string& str, Operator& op);
+		static bool makeOperator(const String& str, Operator& op);
 
 		bool equals(const Operator & value) const override;
 		bool equals(const OperatorType & value) const override;

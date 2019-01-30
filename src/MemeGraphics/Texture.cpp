@@ -1,6 +1,6 @@
 #include <MemeGraphics/Texture.h>
 #include <MemeGraphics/OpenGL.h>
-#include <MemeCore/DebugUtility.h>
+#include <MemeCore/Debug.h>
 #include <cassert>
 #include <algorithm>
 
@@ -57,7 +57,7 @@ namespace ml
 		return false;
 	}
 
-	bool Texture::loadFromFile(const std::string & filename)
+	bool Texture::loadFromFile(const String & filename)
 	{
 		Image image;
 		return image.loadFromFile(filename) && loadFromImage(image);

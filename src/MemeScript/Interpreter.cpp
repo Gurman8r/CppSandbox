@@ -3,7 +3,7 @@
 
 namespace ml
 {
-	Var	Interpreter::execCommand(const std::string & value)
+	Var	Interpreter::execCommand(const String & value)
 	{
 		if (!value.empty())
 		{
@@ -21,7 +21,7 @@ namespace ml
 		return Var().voidValue();
 	}
 
-	Var	Interpreter::execFile(const std::string & value)
+	Var	Interpreter::execFile(const String & value)
 	{
 		if (ML_FileSystem.fileExists(value.c_str()))
 		{
@@ -34,7 +34,7 @@ namespace ml
 		return Var().errorValue("File not found {0}", value);
 	}
 
-	Var	Interpreter::execSource(const std::string & value)
+	Var	Interpreter::execSource(const String & value)
 	{
 		if (!value.empty())
 		{
@@ -102,7 +102,7 @@ namespace ml
 		return NULL;
 	}
 
-	Command*Interpreter::getCmd(const std::string & value)
+	Command*Interpreter::getCmd(const String & value)
 	{
 		CmdTable::iterator it;
 		if ((it = m_cmdTable.find(value)) != m_cmdTable.begin())

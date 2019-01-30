@@ -1,4 +1,4 @@
-#include <MemeCore/DebugUtility.h>
+#include <MemeCore/Debug.h>
 #include <MemeCore/InputState.h>
 
 namespace ml
@@ -38,7 +38,7 @@ namespace ml
 	}
 
 
-	Debug::Status Debug::LogWarning(const std::string & message)
+	Debug::Status Debug::LogWarning(const String & message)
 	{
 		err()
 			<< FMT()
@@ -50,7 +50,7 @@ namespace ml
 		return Debug::Warning;
 	}
 
-	Debug::Status Debug::LogError(const std::string & message)
+	Debug::Status Debug::LogError(const String & message)
 	{
 		err()
 			<< FMT()
@@ -62,7 +62,7 @@ namespace ml
 		return Debug::Error;
 	}
 	
-	Debug::Status Debug::Log(const std::string & message)
+	Debug::Status Debug::Log(const String & message)
 	{
 		out()
 			<< FMT()

@@ -1,9 +1,9 @@
 #include <MemeScript/Operator.h>
-#include <MemeCore/DebugUtility.h>
+#include <MemeCore/Debug.h>
 
 namespace ml
 {
-	//const std::string Operator::OpCodes[Operator::MAX_OP_TYPE] =
+	//const String Operator::OpCodes[Operator::MAX_OP_TYPE] =
 	const Operator::OperMap Operator::OpValues = {
 	{ "=",	OperatorType::OP_SET },
 	{ "^=",	OperatorType::OP_POW_SET },
@@ -50,7 +50,7 @@ namespace ml
 	}
 
 
-	bool Operator::makeOperator(const std::string& str, Operator& op)
+	bool Operator::makeOperator(const String& str, Operator& op)
 	{
 		Operator::OperMap::const_iterator it = OpValues.find(str);
 		if (it != OpValues.end())

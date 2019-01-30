@@ -72,20 +72,20 @@ namespace ml
 		: public ITrackable
 		, public IComparable<Address>
 	{
-		std::string addr;
+		String		addr;
 		uint16_t	port;
 
 		Address()
-			: Address(NULL, NULL)
+			: Address(String(), 0)
 		{
 		}
 		
-		Address(const std::string & addr)
+		Address(const String & addr)
 			: Address(addr, NULL)
 		{
 		}
 		
-		Address(const std::string & addr, uint16_t port)
+		Address(const String & addr, uint16_t port)
 			: addr(addr)
 			, port(port)
 		{
@@ -94,6 +94,11 @@ namespace ml
 		Address(const Address & copy)
 			: Address(copy.addr, copy.port)
 		{
+		}
+
+		inline operator bool() const
+		{
+			return !addr.empty() && port;
 		}
 
 		inline void serialize(std::ostream & out) const override

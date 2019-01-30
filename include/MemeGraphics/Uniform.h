@@ -2,7 +2,7 @@
 #define	_UNIFORM_H_
 
 #include <MemeGraphics/Export.h>
-#include <string>
+#include <MemeCore/String.h>
 
 namespace ml
 {
@@ -18,7 +18,7 @@ namespace ml
 			CurveMode,
 			MAX_UNIFORM_ID
 		};
-		static const std::string Names[Uniform::ID::MAX_UNIFORM_ID];
+		static const String Names[Uniform::ID::MAX_UNIFORM_ID];
 	};
 }
 

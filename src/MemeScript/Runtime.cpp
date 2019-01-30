@@ -1,5 +1,5 @@
 #include <MemeScript/Runtime.h>
-#include <MemeCore/DebugUtility.h>
+#include <MemeCore/Debug.h>
 
 namespace ml
 {
@@ -63,7 +63,7 @@ namespace ml
 	}
 
 
-	bool Runtime::delVar(int32_t index, const std::string& name)
+	bool Runtime::delVar(int32_t index, const String& name)
 	{
 		if (values(index))
 		{
@@ -81,7 +81,7 @@ namespace ml
 		return false;
 	}
 
-	Var * Runtime::getVar(int32_t index, const std::string& name) const
+	Var * Runtime::getVar(int32_t index, const String& name) const
 	{
 		if (values(index))
 		{
@@ -94,7 +94,7 @@ namespace ml
 		return NULL;
 	}
 
-	Var * Runtime::newVar(int32_t index, const std::string & name, const Var & value)
+	Var * Runtime::newVar(int32_t index, const String & name, const Var & value)
 	{
 		if (values(index) || makeScope(index))
 		{
@@ -114,7 +114,7 @@ namespace ml
 		return NULL;
 	}
 
-	Var * Runtime::setVar(int32_t index, const std::string & name, const Var & value)
+	Var * Runtime::setVar(int32_t index, const String & name, const Var & value)
 	{
 		if (Var * v = getVar(index, name))
 		{

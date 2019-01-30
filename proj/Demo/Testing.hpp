@@ -104,7 +104,7 @@ namespace tests
 			MAX
 		};
 
-		static const std::string Tags[MAX] =
+		static const ml::String Tags[MAX] =
 		{
 			"A",
 			"B",
@@ -259,7 +259,7 @@ namespace tests
 			MAX
 		};
 
-		static const std::string Tags[MAX] =
+		static const ml::String Tags[MAX] =
 		{
 			"A",
 			"B",

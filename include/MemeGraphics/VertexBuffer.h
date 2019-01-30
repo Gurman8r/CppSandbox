@@ -36,7 +36,7 @@ namespace ml
 	private:
 		const void *	m_data;
 		GL::Usage		m_usage;
-		uint32_t		m_size;		// total length of npos
+		uint32_t		m_size;		// total length of data
 		int32_t			m_count;	// vertex count
 	};
 

@@ -14,16 +14,16 @@ namespace ml
 
 	public:
 		Command();
-		Command(const std::string & name, fn_type func);
+		Command(const String & name, fn_type func);
 		Command(const Command & copy);
 		~Command() {};
 
-		inline const std::string & name() const { return m_name; }
+		inline const String & name() const { return m_name; }
 		
 		inline Var operator()(fn_args args)	{ return m_func(args); }
 
 	private:
-		std::string m_name;
+		String m_name;
 		fn_type		m_func;
 	};
 }

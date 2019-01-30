@@ -1,6 +1,6 @@
 #include <MemeWindow/Window.h>
 #include <MemeWindow/WindowEvents.h>
-#include <MemeCore/DebugUtility.h>
+#include <MemeCore/Debug.h>
 #include <GLFW/glfw3.h>
 
 #define ML_WINDOW	static_cast<GLFWwindow*>
@@ -31,7 +31,7 @@ namespace ml
 	Window::~Window() {}
 
 	bool Window::create(
-		const std::string	& title, 
+		const String	& title, 
 		const VideoMode		& videoMode, 
 		const Style			& style, 
 		const Context		& context)
@@ -243,7 +243,7 @@ namespace ml
 		return (*this);
 	}
 
-	Window & Window::setTitle(const std::string & value)
+	Window & Window::setTitle(const String & value)
 	{
 		m_title = value;
 		glfwSetWindowTitle(ML_WINDOW(m_window), value.c_str());

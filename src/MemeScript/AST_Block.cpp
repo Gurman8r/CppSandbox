@@ -1,7 +1,7 @@
 #include <MemeScript/AST_Block.h>
 #include <MemeScript/AST_Expr.h>
 #include <MemeScript/Interpreter.h>
-#include <MemeCore/DebugUtility.h>
+#include <MemeCore/Debug.h>
 
 
 namespace ml
@@ -29,8 +29,8 @@ namespace ml
 		auto tab = [](size_t n)
 		{
 			return (n == 0)
-				? std::string()
-				: std::string(n, '\t');
+				? String()
+				: String(n, '\t');
 		};
 
 		out << "{\n";
@@ -47,7 +47,7 @@ namespace ml
 	}
 
 
-	bool	AST_Block::delv(const std::string & name)
+	bool	AST_Block::delv(const String & name)
 	{
 		if (ML_Interpreter.runtime().delVar(getID(), name))
 		{
@@ -63,7 +63,7 @@ namespace ml
 		}
 	}
 
-	Var *	AST_Block::getv(const std::string & name) const
+	Var *	AST_Block::getv(const String & name) const
 	{
 		if (Var * v = ML_Interpreter.runtime().getVar(getID(), name))
 		{
@@ -79,7 +79,7 @@ namespace ml
 		}
 	}
 
-	Var *	AST_Block::newv(const std::string & name, const Var & value)
+	Var *	AST_Block::newv(const String & name, const Var & value)
 	{
 		if (Var * v = ML_Interpreter.runtime().newVar(getID(), name, value))
 		{
@@ -95,7 +95,7 @@ namespace ml
 		}
 	}
 
-	Var *	AST_Block::setv(const std::string & name, const Var & value)
+	Var *	AST_Block::setv(const String & name, const Var & value)
 	{
 		if (Var * v = getv(name))
 		{
@@ -132,7 +132,7 @@ namespace ml
 	}
 
 
-	bool AST_Block::addFunc(const std::string & name, AST_Func * func)
+	bool AST_Block::addFunc(const String & name, AST_Func * func)
 	{
 		if (!getFunc(name))
 		{
@@ -146,7 +146,7 @@ namespace ml
 		return false;
 	}
 
-	AST_Func * AST_Block::getFunc(const std::string & name)
+	AST_Func * AST_Block::getFunc(const String & name)
 	{
 		if (AST_Block* b = block())
 		{

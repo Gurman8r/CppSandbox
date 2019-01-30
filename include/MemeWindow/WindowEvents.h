@@ -3,7 +3,7 @@
 
 #include <MemeWindow/Export.h>
 #include <MemeCore/EventSystem.h>
-#include <MemeCore/DebugUtility.h>
+#include <MemeCore/Debug.h>
 
 namespace ml
 {
@@ -31,10 +31,6 @@ namespace ml
 			: Event(eventID)
 		{
 		}
-		inline void serialize(std::ostream & out) const override
-		{
-			out << "[" << get_type().name() << "] ";
-		}
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -53,8 +49,7 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			WindowEvent::serialize(out);
-			out << width << " " << height;
+			out << "[" << get_type().name() << "] " << width << " " << height;
 		}
 	};
 
@@ -74,8 +69,7 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			WindowEvent::serialize(out);
-			out << x << " " << y;
+			out << "[" << get_type().name() << "] " << x << " " << y;
 		}
 	};
 
@@ -93,8 +87,7 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			WindowEvent::serialize(out);
-			out << (char)value;
+			out << "[" << get_type().name() << "] " << (char)value;
 		}
 	};
 
@@ -114,8 +107,7 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			WindowEvent::serialize(out);
-			out << x << " " << y;
+			out << "[" << get_type().name() << "] " << x << " " << y;
 		}
 	};
 
@@ -130,7 +122,7 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			WindowEvent::serialize(out);
+			out << "[" << get_type().name() << "] ";
 		}
 	};
 
@@ -148,8 +140,7 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			WindowEvent::serialize(out);
-			out << value;
+			out << "[" << get_type().name() << "] " << value;
 		}
 	};
 
@@ -169,8 +160,7 @@ namespace ml
 		
 		void serialize(std::ostream & out) const override
 		{
-			WindowEvent::serialize(out);
-			out << x << " " << y;
+			out << "[" << get_type().name() << "] " << x << " " << y;
 		}
 	};
 
@@ -188,8 +178,7 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			WindowEvent::serialize(out);
-			out << value;
+			out << "[" << get_type().name() << "] " << value;
 		}
 	};
 

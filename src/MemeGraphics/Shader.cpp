@@ -1,6 +1,6 @@
 #include <MemeGraphics/Shader.h>
 #include <MemeGraphics/OpenGL.h>
-#include <MemeCore/DebugUtility.h>
+#include <MemeCore/Debug.h>
 #include <MemeCore/FileSystem.h>
 
 namespace ml
@@ -11,7 +11,7 @@ namespace ml
 		uint32_t	program;
 		int32_t		location;
 
-		UniformBinder(const Shader * shader, const std::string & name)
+		UniformBinder(const Shader * shader, const String & name)
 			: cached(0)
 			, program(*shader)
 			, location(-1)
@@ -75,7 +75,7 @@ namespace ml
 		return false;
 	}
 
-	bool Shader::loadFromFile(const std::string & filename)
+	bool Shader::loadFromFile(const String & filename)
 	{
 		std::stringstream stream;
 		if (ML_FileSystem.getFileContents(filename, stream))
@@ -84,20 +84,20 @@ namespace ml
 
 			std::stringstream source[MAX];
 			int8_t type = NONE;
-			std::string line;
+			String line;
 			while (std::getline(stream, line))
 			{
-				if (line.find("#shader") != std::string::npos)
+				if (line.find("#shader") != String::npos)
 				{
-					if (line.find("vertex") != std::string::npos)
+					if (line.find("vertex") != String::npos)
 					{
 						type = VERT;
 					}
-					else if (line.find("fragment") != std::string::npos)
+					else if (line.find("fragment") != String::npos)
 					{
 						type = FRAG;
 					}
-					else if (line.find("geometry") != std::string::npos)
+					else if (line.find("geometry") != String::npos)
 					{
 						type = GEOM;
 					}
@@ -108,9 +108,9 @@ namespace ml
 				}
 			}
 
-			const std::string & vs = source[VERT].str();
-			const std::string & gs = source[GEOM].str();
-			const std::string & fs = source[FRAG].str();
+			const String & vs = source[VERT].str();
+			const String & gs = source[GEOM].str();
+			const String & fs = source[FRAG].str();
 
 			if (!gs.empty())
 			{
@@ -124,7 +124,7 @@ namespace ml
 		return Debug::LogError("Failed to open shader source file \"{0}\"", filename);
 	}
 
-	bool Shader::loadFromFile(const std::string & vs, const std::string & fs)
+	bool Shader::loadFromFile(const String & vs, const String & fs)
 	{
 		// Read the vertex shader file
 		std::vector<char> vertexShader;
@@ -144,7 +144,7 @@ namespace ml
 		return compile(&vertexShader[0], NULL, &fragmentShader[0]);
 	}
 
-	bool Shader::loadFromFile(const std::string & vs, const std::string & gs, const std::string & fs)
+	bool Shader::loadFromFile(const String & vs, const String & gs, const String & fs)
 	{
 		// Read the vertex shader file
 		std::vector<char> vertexShader;
@@ -171,12 +171,12 @@ namespace ml
 		return compile(&vertexShader[0], &geometryShader[0], &fragmentShader[0]);
 	}
 
-	bool Shader::loadFromMemory(const std::string & vs, const std::string & fs)
+	bool Shader::loadFromMemory(const String & vs, const String & fs)
 	{
 		return compile(vs.c_str(), NULL, fs.c_str());
 	}
 
-	bool Shader::loadFromMemory(const std::string & vs, const std::string & gs, const std::string & fs)
+	bool Shader::loadFromMemory(const String & vs, const String & gs, const String & fs)
 	{
 		return compile(vs.c_str(), gs.c_str(), fs.c_str());
 	}
@@ -213,7 +213,7 @@ namespace ml
 	}
 	
 	
-	Shader & Shader::setUniform(const std::string & name, const float & value)
+	Shader & Shader::setUniform(const String & name, const float & value)
 	{
 		UniformBinder u(this, name);
 		if (u)
@@ -222,7 +222,7 @@ namespace ml
 		}
 		return (*this);
 	}
-	Shader & Shader::setUniform(const std::string & name, const int32_t & value)
+	Shader & Shader::setUniform(const String & name, const int32_t & value)
 	{
 		UniformBinder u(this, name);
 		if (u)
@@ -231,7 +231,7 @@ namespace ml
 		}
 		return (*this);
 	}
-	Shader & Shader::setUniform(const std::string & name, const uint32_t & value)
+	Shader & Shader::setUniform(const String & name, const uint32_t & value)
 	{
 		UniformBinder u(this, name);
 		if (u)
@@ -240,7 +240,7 @@ namespace ml
 		}
 		return (*this);
 	}
-	Shader & Shader::setUniform(const std::string & name, const vec2f & value)
+	Shader & Shader::setUniform(const String & name, const vec2f & value)
 	{
 		UniformBinder u(this, name);
 		if (u)
@@ -249,7 +249,7 @@ namespace ml
 		}
 		return (*this);
 	}
-	Shader & Shader::setUniform(const std::string & name, const vec3f & value)
+	Shader & Shader::setUniform(const String & name, const vec3f & value)
 	{
 		UniformBinder u(this, name);
 		if (u)
@@ -258,7 +258,7 @@ namespace ml
 		}
 		return (*this);
 	}
-	Shader & Shader::setUniform(const std::string & name, const vec4f & value)
+	Shader & Shader::setUniform(const String & name, const vec4f & value)
 	{
 		UniformBinder u(this, name);
 		if (u)
@@ -267,7 +267,7 @@ namespace ml
 		}
 		return (*this);
 	}
-	Shader & Shader::setUniform(const std::string & name, const vec2i & value)
+	Shader & Shader::setUniform(const String & name, const vec2i & value)
 	{
 		UniformBinder u(this, name);
 		if (u)
@@ -276,7 +276,7 @@ namespace ml
 		}
 		return (*this);
 	}
-	Shader & Shader::setUniform(const std::string & name, const vec3i & value)
+	Shader & Shader::setUniform(const String & name, const vec3i & value)
 	{
 		UniformBinder u(this, name);
 		if (u)
@@ -285,7 +285,7 @@ namespace ml
 		}
 		return (*this);
 	}
-	Shader & Shader::setUniform(const std::string & name, const vec4i & value)
+	Shader & Shader::setUniform(const String & name, const vec4i & value)
 	{
 		UniformBinder u(this, name);
 		if (u)
@@ -294,7 +294,7 @@ namespace ml
 		}
 		return (*this);
 	}
-	Shader & Shader::setUniform(const std::string & name, const mat3f & value)
+	Shader & Shader::setUniform(const String & name, const mat3f & value)
 	{
 		UniformBinder u(this, name);
 		if (u)
@@ -303,7 +303,7 @@ namespace ml
 		}
 		return (*this);
 	}
-	Shader & Shader::setUniform(const std::string & name, const mat4f & value)
+	Shader & Shader::setUniform(const String & name, const mat4f & value)
 	{
 		UniformBinder u(this, name);
 		if (u)
@@ -312,7 +312,7 @@ namespace ml
 		}
 		return (*this);
 	}
-	Shader & Shader::setUniform(const std::string & name, const Texture & value)
+	Shader & Shader::setUniform(const String & name, const Texture & value)
 	{
 		UniformBinder u(this, name);
 		if (u)
@@ -334,7 +334,7 @@ namespace ml
 	}
 	
 	
-	Shader & Shader::setUniformArray(const std::string & name, int32_t count, const float * value)
+	Shader & Shader::setUniformArray(const String & name, int32_t count, const float * value)
 	{
 		UniformBinder u(this, name);
 		if (u)
@@ -343,7 +343,7 @@ namespace ml
 		}
 		return (*this);
 	}
-	Shader & Shader::setUniformArray(const std::string & name, int32_t count, const vec2f * value)
+	Shader & Shader::setUniformArray(const String & name, int32_t count, const vec2f * value)
 	{
 		UniformBinder u(this, name);
 		if (u)
@@ -352,7 +352,7 @@ namespace ml
 		}
 		return (*this);
 	}
-	Shader & Shader::setUniformArray(const std::string & name, int32_t count, const vec3f * value)
+	Shader & Shader::setUniformArray(const String & name, int32_t count, const vec3f * value)
 	{
 		UniformBinder u(this, name);
 		if (u)
@@ -361,7 +361,7 @@ namespace ml
 		}
 		return (*this);
 	}
-	Shader & Shader::setUniformArray(const std::string & name, int32_t count, const vec4f * value)
+	Shader & Shader::setUniformArray(const String & name, int32_t count, const vec4f * value)
 	{
 		UniformBinder u(this, name);
 		if (u)
@@ -370,7 +370,7 @@ namespace ml
 		}
 		return (*this);
 	}
-	Shader & Shader::setUniformArray(const std::string & name, int32_t count, const mat3f * value)
+	Shader & Shader::setUniformArray(const String & name, int32_t count, const mat3f * value)
 	{
 		UniformBinder u(this, name);
 		if (u)
@@ -379,7 +379,7 @@ namespace ml
 		}
 		return (*this);
 	}
-	Shader & Shader::setUniformArray(const std::string & name, int32_t count, const mat4f * value)
+	Shader & Shader::setUniformArray(const String & name, int32_t count, const mat4f * value)
 	{
 		UniformBinder u(this, name);
 		if (u)
@@ -496,7 +496,7 @@ namespace ml
 		return true;
 	}
 	
-	int32_t Shader::getUniformLocation(const std::string & value) const
+	int32_t Shader::getUniformLocation(const String & value) const
 	{
 		// Check the cache
 		UniformTable::const_iterator it;

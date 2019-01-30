@@ -1,6 +1,6 @@
 #include <MemeGraphics/Font.h>
 #include <MemeGraphics/OpenGL.h>
-#include <MemeCore/DebugUtility.h>
+#include <MemeCore/Debug.h>
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -42,7 +42,7 @@ namespace ml
 		return true;
 	}
 
-	bool Font::loadFromFile(const std::string & filename)
+	bool Font::loadFromFile(const String & filename)
 	{
 		FT_Library library;
 		if (FT_Init_FreeType(&library) != EXIT_SUCCESS)
@@ -83,7 +83,7 @@ namespace ml
 		m_face = face;
 
 		// Store the fonts information
-		m_info.family = face->family_name ? face->family_name : std::string();
+		m_info.family = face->family_name ? face->family_name : String();
 
 		return true;
 	}

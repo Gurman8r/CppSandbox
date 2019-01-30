@@ -50,15 +50,15 @@ namespace ml
 		return value_type();
 	}
 	
-	const std::string				TokenList::str() const
+	const String				TokenList::str() const
 	{
 		if (empty())
-			return std::string();
+			return String();
 
 		if (size() == 1)
 			return front().data;
 
-		std::string out;
+		String out;
 		for (const_iterator it = begin(); it != end(); it++)
 		{
 			out += it->data + (it != end() - 1 ? " " : "");
@@ -66,16 +66,16 @@ namespace ml
 		return out;
 	}
 	
-	const std::string				TokenList::substr(size_t index, size_t count) const
+	const String				TokenList::substr(size_t index, size_t count) const
 	{
 		auto from = (begin() + index);
 
 		if (!inRange(from) || !inRange(from + count))
 		{
-			return std::string();
+			return String();
 		}
 
-		std::string toStr;
+		String toStr;
 
 		for (size_t i = 0; i < count; i++)
 		{
@@ -270,12 +270,12 @@ namespace ml
 		return matchChar((it - begin()), c);
 	}
 	
-	const bool	TokenList::matchStr(size_t index, const std::string & str) const
+	const bool	TokenList::matchStr(size_t index, const String & str) const
 	{
 		return matchStr(begin() + index, str);
 	}
 	
-	const bool	TokenList::matchStr(const const_iterator & it, const std::string & str) const
+	const bool	TokenList::matchStr(const const_iterator & it, const String & str) const
 	{
 		return matchPat(it, char_list(str.begin(), str.end()));
 	}
@@ -778,12 +778,12 @@ namespace ml
 		return size() < value.size();
 	}
 
-	bool TokenList::equals(const std::string & value) const
+	bool TokenList::equals(const String & value) const
 	{
 		return matchStr(begin(), value);
 	}
 
-	bool TokenList::lessThan(const std::string & value) const
+	bool TokenList::lessThan(const String & value) const
 	{
 		if (!equals(value))
 		{

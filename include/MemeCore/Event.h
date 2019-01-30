@@ -3,9 +3,7 @@
 
 #include <MemeCore/ITrackable.h>
 
-#ifndef ML_MAX_SYSTEM_EVENTS
 #define ML_MAX_SYSTEM_EVENTS 32
-#endif
 
 #ifndef ML_MAX_CUSTOM_EVENTS
 #define ML_MAX_CUSTOM_EVENTS 256

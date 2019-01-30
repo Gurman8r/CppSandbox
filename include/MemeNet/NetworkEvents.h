@@ -38,9 +38,9 @@ namespace ml
 
 	struct ML_NETWORK_API ServerRecievePacketEvent final : public NetworkEvent
 	{
-		std::string data;
+		String data;
 
-		ServerRecievePacketEvent(const std::string & data)
+		ServerRecievePacketEvent(const String & data)
 			: NetworkEvent(EV_ServerRecievePacket)
 			, data(data)
 		{
@@ -60,9 +60,9 @@ namespace ml
 
 	struct ML_NETWORK_API ClientRecievePacketEvent final : public NetworkEvent
 	{
-		std::string data;
+		String data;
 
-		ClientRecievePacketEvent(const std::string & data)
+		ClientRecievePacketEvent(const String & data)
 			: NetworkEvent(EV_ClientRecievePacket)
 			, data(data)
 		{

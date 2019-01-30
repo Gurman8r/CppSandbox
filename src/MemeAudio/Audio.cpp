@@ -1,5 +1,5 @@
 #include <MemeAudio/Audio.h>
-#include <MemeCore/DebugUtility.h>
+#include <MemeCore/Debug.h>
 #include <AL/al.h>
 #include <AL/alc.h>
 
@@ -27,12 +27,12 @@ namespace ml
 	{
 		if (Error errorCode = getError())
 		{
-			std::string fileName(file);
+			String fileName(file);
 			fileName = fileName.substr(fileName.find_last_of("\\/") + 1);
 
 			// Decode the error code
-			std::string errorName;
-			std::string errorDesc;
+			String errorName;
+			String errorDesc;
 			switch (errorCode)
 			{
 			case Audio::InvalidName:

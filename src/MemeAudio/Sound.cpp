@@ -1,5 +1,5 @@
 #include <MemeAudio/Sound.h>
-#include <MemeCore/DebugUtility.h>
+#include <MemeCore/Debug.h>
 
 namespace ml
 {
@@ -18,7 +18,7 @@ namespace ml
 		return false;
 	}
 
-	bool Sound::loadFromFile(const std::string & filename)
+	bool Sound::loadFromFile(const String & filename)
 	{
 		return false;
 	}

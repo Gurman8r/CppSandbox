@@ -1,5 +1,5 @@
-#include <MemeCore/ConsoleUtility.h>
-#include <MemeCore/DebugUtility.h>
+#include <MemeCore/Console.h>
+#include <MemeCore/Debug.h>
 
 #ifdef ML_SYSTEM_WINDOWS
 #include <Windows.h>
@@ -8,6 +8,15 @@
 
 namespace ml
 {
+	void Console::setConsoleTextAttribute(const uint16_t & value)
+	{
+#ifdef ML_SYSTEM_WINDOWS
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), static_cast<WORD>(value));
+#else
+
+#endif
+	}
+
 	const FG::Color FG::Values[FG::MAX_COLOR] = {
 		Black,
 		DarkBlue,
@@ -45,13 +54,4 @@ namespace ml
 		Yellow,
 		White,
 	};
-
-	void ConsoleUtility::setConsoleTextAttribute(const uint16_t & value)
-	{
-#ifdef ML_SYSTEM_WINDOWS
-		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), static_cast<WORD>(value));
-#else
-
-#endif
-	}
 }

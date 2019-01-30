@@ -1,7 +1,7 @@
 #ifndef _DEBUG_UTILITY_H_
 #define _DEBUG_UTILITY_H_
 
-#include <MemeCore/ConsoleUtility.h>
+#include <MemeCore/Console.h>
 #include <MemeCore/StringUtility.h>
 #include <iostream>
 #include <unordered_map>
@@ -25,25 +25,25 @@ namespace ml
 		static void		terminate(bool areYouSure);
 
 	public:
-		static Status LogWarning(const std::string & message);	// - 1
-		static Status LogError(const std::string & message);	//   0
-		static Status Log(const std::string & message);			// + 1
+		static Status LogWarning(const String & message);	// - 1
+		static Status LogError(const String & message);	//   0
+		static Status Log(const String & message);			// + 1
 
 	public:
 		template<typename T, typename ... A>
-		inline static Status LogWarning(const std::string & fmt, const T & arg0, const A &... args)
+		inline static Status LogWarning(const String & fmt, const T & arg0, const A &... args)
 		{
 			return Debug::LogWarning(StringUtility::Format(fmt, arg0, (args)...));
 		}
 
 		template<typename T, typename ... A>
-		inline static Status LogError(const std::string & fmt, const T & arg0, const A &... args)
+		inline static Status LogError(const String & fmt, const T & arg0, const A &... args)
 		{
 			return Debug::LogError(StringUtility::Format(fmt, arg0, (args)...));
 		}
 
 		template<typename T, typename ... A>
-		inline static Status Log(const std::string & fmt, const T & arg0, const A &... args)
+		inline static Status Log(const String & fmt, const T & arg0, const A &... args)
 		{
 			return Debug::Log(StringUtility::Format(fmt, arg0, (args)...));
 		}

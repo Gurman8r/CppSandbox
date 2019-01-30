@@ -163,8 +163,8 @@
     <ClInclude Include="..\..\include\MemeCore\Component.h" />
     <ClInclude Include="..\..\include\MemeCore\ComponentMap.h" />
     <ClInclude Include="..\..\include\MemeCore\Config.h" />
-    <ClInclude Include="..\..\include\MemeCore\ConsoleUtility.h" />
-    <ClInclude Include="..\..\include\MemeCore\DebugUtility.h" />
+    <ClInclude Include="..\..\include\MemeCore\Console.h" />
+    <ClInclude Include="..\..\include\MemeCore\Debug.h" />
     <ClInclude Include="..\..\include\MemeCore\Entity.h" />
     <ClInclude Include="..\..\include\MemeCore\Enum.h" />
     <ClInclude Include="..\..\include\MemeCore\Event.h" />
@@ -186,6 +186,7 @@
     <ClInclude Include="..\..\include\MemeCore\MemoryTracker.h" />
     <ClInclude Include="..\..\include\MemeCore\ML_Memory.h" />
     <ClInclude Include="..\..\include\MemeCore\Rect.h" />
+    <ClInclude Include="..\..\include\MemeCore\String.h" />
     <ClInclude Include="..\..\include\MemeCore\StringUtility.h" />
     <ClInclude Include="..\..\include\MemeCore\Time.h" />
     <ClInclude Include="..\..\include\MemeCore\Duration.h" />
@@ -197,8 +198,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\include\MemeCore\IEnumerable.h" />
-    <ClCompile Include="..\..\src\MemeCore\ConsoleUtility.cpp" />
-    <ClCompile Include="..\..\src\MemeCore\DebugUtility.cpp" />
+    <ClCompile Include="..\..\src\MemeCore\Console.cpp" />
+    <ClCompile Include="..\..\src\MemeCore\Debug.cpp" />
     <ClCompile Include="..\..\src\MemeCore\EventSystem.cpp" />
     <ClCompile Include="..\..\src\MemeCore\FileSystem.cpp" />
     <ClCompile Include="..\..\src\MemeCore\InputState.cpp" />

@@ -9,13 +9,13 @@
 
 namespace ml
 {
-	// Wrapper for std::vector<std::string>
+	// Wrapper for std::vector<String>
 	class ML_SCRIPT_API Args final
 		: public ITrackable
 		, public IComparable<Args>
 	{
 	public:
-		using value_type			= std::string;
+		using value_type			= String;
 		using vector_type			= std::vector<value_type>;
 		using iterator				= vector_type::iterator;
 		using const_iterator		= vector_type::const_iterator;

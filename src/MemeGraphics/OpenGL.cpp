@@ -1,5 +1,5 @@
 #include <MemeGraphics/OpenGL.h>
-#include <MemeCore/DebugUtility.h>
+#include <MemeCore/Debug.h>
 
 #include <cassert>
 
@@ -110,12 +110,12 @@ namespace ml
 		// Get the last error
 		if (GL::Err errorCode = getError())
 		{
-			std::string fileName(file);
+			String fileName(file);
 			fileName = fileName.substr(fileName.find_last_of("\\/") + 1);
 
 			// Decode the error code
-			std::string errorName;
-			std::string errorDesc;
+			String errorName;
+			String errorDesc;
 			switch (errorCode)
 			{
 			case GL::InvalidEnum:

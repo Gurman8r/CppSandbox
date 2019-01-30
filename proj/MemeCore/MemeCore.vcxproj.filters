@@ -72,9 +72,6 @@
     <ClInclude Include="..\..\include\MemeCore\StringUtility.h">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\ConsoleUtility.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Timer.h">
       <Filter>Header Files\Time</Filter>
     </ClInclude>
@@ -119,9 +116,6 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\EventSystem.h">
       <Filter>Header Files\Events</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\DebugUtility.h">
-      <Filter>Header Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\FileSystem.h">
       <Filter>Header Files\Utility</Filter>
@@ -177,11 +171,17 @@
     <ClInclude Include="..\..\include\MemeCore\Event.h">
       <Filter>Header Files\Events</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\String.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Debug.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Console.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\MemeCore\ConsoleUtility.cpp">
-      <Filter>Source Files\Utility</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\StringUtility.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
@@ -196,9 +196,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\EventSystem.cpp">
       <Filter>Source Files\Events</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeCore\DebugUtility.cpp">
-      <Filter>Source Files\Utility</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\FileSystem.cpp">
       <Filter>Source Files\Utility</Filter>
@@ -220,6 +217,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\ML_Memory.c">
       <Filter>Source Files\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeCore\Debug.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeCore\Console.cpp">
+      <Filter>Source Files\Utility</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

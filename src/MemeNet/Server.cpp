@@ -1,6 +1,6 @@
 #include <MemeNet/Server.h>
 #include <MemeNet/NetworkEvents.h>
-#include <MemeCore/DebugUtility.h>
+#include <MemeCore/Debug.h>
 #include <MemeCore/EventSystem.h>
 #include <RakNet/RakPeerInterface.h>
 #include <RakNet/MessageIdentifiers.h>

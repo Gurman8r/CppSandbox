@@ -5,7 +5,7 @@
 #include <MemeCore/ITrackable.h>
 #include <MemeCore/ISingleton.h>
 #include <MemeCore/IResource.h>
-#include <MemeCore/DebugUtility.h>
+#include <MemeCore/Debug.h>
 #include <MemeWindow/Context.h>
 
 // Singleton to store program properties/settings (INIReader)
@@ -22,20 +22,20 @@ namespace demo
 
 	public:
 		// [General]
-		std::string rootPath;		// Solution Dir
-		std::string	assetPath;		// Where's all the npos?
+		ml::String		rootPath;		// Solution Dir
+		ml::String		assetPath;		// Where's all the npos?
 		uint32_t	runTests;		// Run test functions
 		bool		logLoading;		// Verbose loading output
 
 		// [Script]
-		std::string	scrPath;		// Location of scripts
-		std::string	scrFile;		// Script to run on start
+		ml::String		scrPath;		// Location of scripts
+		ml::String		scrFile;		// Script to run on start
 		bool		scrShowToks;	// Show Script Tokens
 		bool		scrShowTree;	// Show Script Syntax Tree
 		bool		scrShowItoP;	// Show Script Infix to Postfix
 
 		// [Window]
-		std::string	title;			// Window Title
+		ml::String		title;			// Window Title
 		uint32_t	width;			// Window Width
 		uint32_t	height;			// Window Height
 		uint32_t	bitsPerPixel;	// Bits Per Pixel
@@ -61,12 +61,12 @@ namespace demo
 
 		// [Network]
 		bool		isServer;		// Is Server?
-		bool		isClient;
+		bool		isClient;		// Is Client?
 
 	public:
 		inline bool cleanup() override { return true; }
 
-		inline bool loadFromFile(const std::string & filename) override
+		inline bool loadFromFile(const ml::String & filename) override
 		{
 			INIReader ini(filename.c_str());
 			if (ini.ParseError() == 0)
@@ -118,7 +118,7 @@ namespace demo
 			return ml::Debug::LogError("Failed Loading Settings \"{0}\"", filename);
 		}
 
-		inline const std::string pathTo(const std::string & filename) const
+		inline const ml::String pathTo(const ml::String & filename) const
 		{
 			return rootPath + assetPath + filename;
 		}

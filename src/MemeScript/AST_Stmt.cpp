@@ -2,7 +2,7 @@
 #include <MemeScript/AST_Expr.h>
 #include <MemeScript/Interpreter.h>
 
-#include <MemeCore/DebugUtility.h>
+#include <MemeCore/Debug.h>
 #include <MemeCore/FileSystem.h>
 
 namespace ml
@@ -275,7 +275,7 @@ namespace ml
 
 	bool AST_Include::run()
 	{
-		const std::string& filename = str->evaluate().stringValue();
+		const String& filename = str->evaluate().stringValue();
 		
 		std::vector<char> buffer;
 		if (ML_FileSystem.getFileContents(filename, buffer))
@@ -334,12 +334,12 @@ namespace ml
 	{
 		if (AST_String* str = expr->As<AST_String>())
 		{
-			std::string::const_iterator it;
+			String::const_iterator it;
 			for (it = str->value.begin(); it != str->value.end(); it++)
 			{
 				if (*it == '{')
 				{
-					std::string name;
+					String name;
 					while (++it != str->value.end())
 					{
 						if (*it == '}')

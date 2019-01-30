@@ -8,7 +8,7 @@
 
 namespace ml
 {
-	class ML_CORE_API ConsoleUtility final
+	class ML_CORE_API Console final
 	{
 	public:
 		static void	setConsoleTextAttribute(const uint16_t & value);
@@ -105,19 +105,19 @@ namespace ml
 
 	inline std::ostream& operator<<(std::ostream& out, const FG::Color& value)
 	{
-		ConsoleUtility::setConsoleTextAttribute(uint16_t(value));
+		Console::setConsoleTextAttribute(uint16_t(value));
 		return out;
 	};
 
 	inline std::ostream& operator<<(std::ostream& out, const BG::Color& value)
 	{
-		ConsoleUtility::setConsoleTextAttribute(uint16_t(value));
+		Console::setConsoleTextAttribute(uint16_t(value));
 		return out;
 	};
 
 	inline std::ostream& operator<<(std::ostream& out, const FMT& value)
 	{
-		ConsoleUtility::setConsoleTextAttribute(uint16_t(value.fg) | uint16_t(value.bg));
+		Console::setConsoleTextAttribute(uint16_t(value.fg) | uint16_t(value.bg));
 		return out;
 	};
 }

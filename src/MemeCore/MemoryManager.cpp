@@ -1,5 +1,5 @@
 #include <MemeCore/MemoryManager.h>
-#include <MemeCore/DebugUtility.h>
+#include <MemeCore/Debug.h>
 
 #include <MemeCore/BitHelper.h>
 

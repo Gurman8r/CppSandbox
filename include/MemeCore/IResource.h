@@ -1,7 +1,7 @@
 #ifndef _IRESOURCE_H_
 #define _IRESOURCE_H_
 
-#include <string>
+#include <MemeCore/String.h>
 
 namespace ml
 {
@@ -9,7 +9,7 @@ namespace ml
 	{
 	public:
 		virtual bool cleanup() = 0;
-		virtual bool loadFromFile(const std::string & filename) = 0;
+		virtual bool loadFromFile(const String & filename) = 0;
 	};
 }
 

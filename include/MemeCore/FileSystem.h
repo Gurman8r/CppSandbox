@@ -3,7 +3,7 @@
 
 #include <MemeCore/ISingleton.h>
 #include <MemeCore/ITrackable.h>
-#include <string>
+#include <MemeCore/String.h>
 #include <sstream>
 #include <vector>
 
@@ -22,13 +22,13 @@ namespace ml
 		~FileSystem() {}
 
 	public:
-		bool	fileExists(const std::string & filename);
-		bool	getFileContents(const std::string & filename, std::vector<char> & buffer);
-		bool	getFileContents(const std::string & filename, std::string & str);
-		bool	getFileContents(const std::string & filename, std::stringstream & stream);
+		bool	fileExists(const String & filename);
+		bool	getFileContents(const String & filename, std::vector<char> & buffer);
+		bool	getFileContents(const String & filename, String & str);
+		bool	getFileContents(const String & filename, std::stringstream & stream);
 
-		bool		setWorkingDir(const std::string & value);
-		std::string getWorkingDir() const;
+		bool		setWorkingDir(const String & value);
+		String getWorkingDir() const;
 	};
 }
 

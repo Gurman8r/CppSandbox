@@ -1,6 +1,6 @@
 #include <MemeGraphics/Mesh.h>
 #include <MemeCore/FileSystem.h>
-#include <MemeCore/DebugUtility.h>
+#include <MemeCore/Debug.h>
 
 namespace ml
 {
@@ -23,7 +23,7 @@ namespace ml
 		return false;
 	}
 	
-	bool Mesh::loadFromFile(const std::string & filename)
+	bool Mesh::loadFromFile(const String & filename)
 	{
 		std::stringstream file;
 		if (ML_FileSystem.getFileContents(filename, file))
@@ -50,12 +50,12 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		auto parseLine = [](
-			const std::string & line,
-			const std::string & find,
+			const String & line,
+			const String & find,
 			std::stringstream & data)
 		{
 			size_t i;
-			if ((i = line.find(find)) != std::string::npos)
+			if ((i = line.find(find)) != String::npos)
 			{
 				data.str(line.substr((i + find.size()), (line.size() - find.size() - 1)));
 				return true;
@@ -70,7 +70,7 @@ namespace ml
 		m_vn.clear();
 		m_vf.clear();
 
-		std::string line;
+		String line;
 		while (std::getline(in, line))
 		{
 			std::stringstream data;
@@ -98,7 +98,7 @@ namespace ml
 			else if (parseLine(line, "f ", data))
 			{
 				// Index
-				std::string temp;
+				String temp;
 				while (std::getline(data, temp, '/'))
 				{
 					m_vf.push_back(std::stoi(temp));

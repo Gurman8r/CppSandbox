@@ -25,9 +25,13 @@ namespace demo
 		if (setupInterpreter())
 		{
 			// Run Script
-			std::string path = SETTINGS.pathTo(SETTINGS.scrPath + SETTINGS.scrFile);
-
-			return !ML_Interpreter.execFile(path).isErrorType();
+			if (!SETTINGS.scrFile.empty())
+			{
+				return ML_Interpreter.execFile(
+					SETTINGS.pathTo(SETTINGS.scrPath + SETTINGS.scrFile)
+				);
+			}
+			return ml::Debug::LogWarning("No Script");
 		}
 		return false;
 	}
@@ -291,7 +295,7 @@ namespace demo
 
 			ML_Interpreter.addCmd({ "cat", [](ml::Args & args)
 			{
-				std::string buf;
+				ml::String buf;
 				if (ML_FileSystem.getFileContents(args.pop_front().front(), buf))
 				{
 					ml::cout << buf << ml::endl;
@@ -304,11 +308,11 @@ namespace demo
 			ML_Interpreter.addCmd({ "read", [](ml::Args & args)
 			{
 
-				std::string name = args.pop_front().front();
+				ml::String name = args.pop_front().front();
 
 				if (ML_FileSystem.fileExists(name))
 				{
-					std::string buf;
+					ml::String buf;
 					if (ML_FileSystem.getFileContents(name, buf))
 					{
 						return ml::Var().stringValue(buf);
@@ -365,7 +369,7 @@ namespace demo
 
 			ML_Interpreter.addCmd({ "ls", [](ml::Args & args)
 			{
-				const std::string dirName = args.pop_front().empty() ? "./" : args.str();
+				const ml::String dirName = args.pop_front().empty() ? "./" : args.str();
 				if (DIR * dir = opendir(dirName.c_str()))
 				{
 					while (dirent * e = readdir(dir))
@@ -397,7 +401,7 @@ namespace demo
 			{
 				if (!args.pop_front().empty())
 				{
-					const std::string & opt = args.front();
+					const ml::String & opt = args.front();
 					if (opt == "name")
 					{
 						return ml::Var().stringValue(SETTINGS.title);

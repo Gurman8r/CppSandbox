@@ -12,7 +12,7 @@ namespace ml
 		TOK_VOID = ' ',	// ' ' - Empty / Space
 		TOK_ENDL = '\n',// \n - End of line
 
-		TOK_NAME = 'n',	// n - std::string
+		TOK_NAME = 'n',	// n - String
 		TOK_FLT = 'f',	// f - Float / Decimal
 		TOK_INT = 'i',	// i - Integer
 		TOK_STR = 's',	// s - String
@@ -58,22 +58,22 @@ namespace ml
 		, public IComparable<Token>
 		, public IComparable<char>
 		, public IComparable<TokenType>
-		, public IComparable<std::string>
+		, public IComparable<String>
 	{
-		using SymbolMap = std::unordered_map<std::string, TokenType>;
-		using NameMap = std::unordered_map<TokenType, std::string>;
+		using SymbolMap = std::unordered_map<String, TokenType>;
+		using NameMap = std::unordered_map<TokenType, String>;
 
 		static const NameMap	TypeNames;
 		static const SymbolMap	Symbols;
 
 		TokenType		type;
-		std::string		data;
+		String		data;
 
 		Token();
 		Token(TokenType type);
 		Token(char type);
-		Token(TokenType type, const std::string & data);
-		Token(char type, const std::string & data);
+		Token(TokenType type, const String & data);
+		Token(char type, const String & data);
 		Token(const Token & copy);
 
 		Token & operator=(const Token & value);
@@ -85,12 +85,12 @@ namespace ml
 		bool equals(const Token & value) const override;
 		bool equals(const TokenType & value) const override;
 		bool equals(const char & value) const override;
-		bool equals(const std::string & value) const override;
+		bool equals(const String & value) const override;
 
 		bool lessThan(const Token & value) const override;
 		bool lessThan(const TokenType & value) const override;
 		bool lessThan(const char & value) const override;
-		bool lessThan(const std::string & value) const override;
+		bool lessThan(const String & value) const override;
 
 		void serialize(std::ostream & out) const override;
 	};
