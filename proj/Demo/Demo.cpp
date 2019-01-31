@@ -18,8 +18,6 @@ namespace demo
 
 	bool Demo::onEnter(const EnterEvent & ev)
 	{
-		ml::cout << ML_FileSystem.getFileExtension("../../../config.ini") << ml::endl;
-
 		// Start Master Timer
 		ML_Time.start();
 

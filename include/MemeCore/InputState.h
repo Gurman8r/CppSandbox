@@ -11,7 +11,9 @@ namespace ml
 	{
 	public:
 		InputState();
-		~InputState();
+		virtual ~InputState();
+
+		virtual bool checkKey(uint32_t value) const;
 
 		InputState & beginStep();
 		InputState & endStep();

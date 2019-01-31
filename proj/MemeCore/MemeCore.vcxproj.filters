@@ -55,6 +55,9 @@
     <Filter Include="Source Files\Memory">
       <UniqueIdentifier>{dfa1a930-d4c4-4209-a9b4-51b3d1a085c9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\DS">
+      <UniqueIdentifier>{485dbe29-b211-4cd5-b452-6ce26ff91e9e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeCore\ITrackable.h">
@@ -141,12 +144,6 @@
     <ClInclude Include="..\..\include\MemeCore\Maths.h">
       <Filter>Header Files\Maths</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\List.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Iterator.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\MemoryTracker.h">
       <Filter>Header Files\Memory</Filter>
     </ClInclude>
@@ -171,14 +168,20 @@
     <ClInclude Include="..\..\include\MemeCore\Event.h">
       <Filter>Header Files\Events</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\String.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Debug.h">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Console.h">
       <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\List.h">
+      <Filter>Header Files\DS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\String.h">
+      <Filter>Header Files\DS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Iterator.h">
+      <Filter>Header Files\DS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

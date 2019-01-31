@@ -5,7 +5,7 @@
 
 namespace ml
 {
-	enum ML_Enum : uint32_t
+	enum ML_Enum : uint16_t
 	{
 		ML_ENUM_0	= (0 << 0), // [0] |  0  | 0x0000 | (0 << 0)
 		ML_ENUM_1	= (1 << 0), // [1] |  1  | 0x0001 | (1 << 0)
@@ -43,6 +43,19 @@ namespace ml
 		ML_ENUM_64,
 		ML_ENUM_128,
 		ML_ENUM_256,
+	};
+
+	const ML_Enum ML_FlagValues[ML_Enum::ML_MAX_ENUM] = {
+		ML_FLAG_0,
+		ML_FLAG_1,
+		ML_FLAG_2,
+		ML_FLAG_3,
+		ML_FLAG_4,
+		ML_FLAG_5,
+		ML_FLAG_6,
+		ML_FLAG_7,
+		ML_FLAG_8,
+		ML_FLAG_9,
 	};
 }
 

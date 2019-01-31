@@ -2,9 +2,6 @@
 #define _MATRIX_H_
 
 #include <MemeCore/IEnumerable.h>
-#include <MemeCore/IComparable.h>
-#include <initializer_list>
-#include <algorithm>
 
 namespace ml
 {

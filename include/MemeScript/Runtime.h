@@ -3,7 +3,6 @@
 
 #include <MemeScript/Operator.h>
 #include <MemeScript/Var.h>
-#include <unordered_map>
 
 namespace ml
 {

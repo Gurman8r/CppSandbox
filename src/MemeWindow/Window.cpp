@@ -31,7 +31,7 @@ namespace ml
 	Window::~Window() {}
 
 	bool Window::create(
-		const String	& title, 
+		const String		& title, 
 		const VideoMode		& videoMode, 
 		const Style			& style, 
 		const Context		& context)

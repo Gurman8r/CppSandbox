@@ -7,49 +7,54 @@ namespace ml
 	class IComparable
 	{
 	public:
-		virtual bool equals(const T & value) const = 0;
-		virtual bool lessThan(const T & value) const = 0;
+		using comp_type = T;
+		using self_type = IComparable<comp_type>;
 
 	public:
-		inline bool notEquals(const T & value) const
+		virtual bool equals(const comp_type & value) const = 0;
+		virtual bool lessThan(const comp_type & value) const = 0;
+
+	public:
+		inline bool notEquals(const comp_type & value) const
 		{
 			return !equals(value);
 		}
-		inline bool greaterThan(const T & value) const
+
+		inline bool greaterThan(const comp_type & value) const
 		{
 			return !lessThan(value);
 		}
 
 	public:
-		inline friend bool operator==(const IComparable<T> & lhs, const T & rhs)
+		inline friend bool operator==(const self_type & lhs, const comp_type & rhs)
 		{
 			return lhs.equals(rhs);
-		};
+		}
 		
-		inline friend bool operator!=(const IComparable<T> & lhs, const T & rhs)
+		inline friend bool operator!=(const self_type & lhs, const comp_type & rhs)
 		{
 			return lhs.notEquals(rhs);
-		};
+		}
 		
-		inline friend bool operator >(const IComparable<T> & lhs, const T & rhs)
+		inline friend bool operator >(const self_type & lhs, const comp_type & rhs)
 		{
 			return lhs.greaterThan(rhs);
-		};
+		}
 		
-		inline friend bool operator <(const IComparable<T> & lhs, const T & rhs)
+		inline friend bool operator <(const self_type & lhs, const comp_type & rhs)
 		{
 			return lhs.lessThan(rhs);
-		};
+		}
 
-		inline friend bool operator>=(const IComparable<T> & lhs, const T & rhs)
+		inline friend bool operator>=(const self_type & lhs, const comp_type & rhs)
 		{
 			return lhs.equals(rhs) || lhs.greaterThan(rhs);
-		};
+		}
 
-		inline friend bool operator<=(const IComparable<T> & lhs, const T & rhs)
+		inline friend bool operator<=(const self_type & lhs, const comp_type & rhs)
 		{
 			return lhs.equals(rhs) || lhs.lessThan(rhs);
-		};
+		}
 
 	};
 

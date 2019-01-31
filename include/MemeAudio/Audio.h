@@ -2,6 +2,7 @@
 #define _AUDIO_MANAGER_H_
 
 #include <MemeCore/ISingleton.h>
+#include <MemeAudio/OpenAL.h>
 #include <MemeAudio/Sound.h>
 #include <MemeAudio/AudioBuffer.h>
 #include <MemeAudio/AudioSource.h>

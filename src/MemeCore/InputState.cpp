@@ -15,15 +15,21 @@ namespace ml
 	}
 
 
+	bool InputState::checkKey(uint32_t value) const
+	{
+#ifdef ML_SYSTEM_WINDOWS
+		return (bool)GetAsyncKeyState(value);
+#else
+		return false;
+#endif
+	}
+
+
 	InputState & InputState::beginStep()
 	{
 		for (uint32_t i = 0; i < Key::Code::MAX_KEYCODE; i++)
 		{
-#ifdef ML_SYSTEM_WINDOWS
-			m_new[i] = (bool)GetAsyncKeyState((int32_t)i);
-#else
-			m_new[i] = false;
-#endif
+			m_new[i] = checkKey(i);
 		}
 		return (*this);
 	}

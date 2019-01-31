@@ -1,5 +1,4 @@
 #include <MemeAudio/Audio.h>
-#include <MemeAudio/OpenAL.h>
 #include <MemeCore/Debug.h>
 
 #define DEVICE(ptr) static_cast<ALCdevice *>(ptr)

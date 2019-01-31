@@ -3,10 +3,9 @@
 
 #include <MemeCore/ITrackable.h>
 #include <MemeCore/IComparable.h>
-#include <algorithm>
+#include <iterator>
 #include <cassert>
 #include <cstddef>
-#include <iterator>
 #include <utility>
 
 // https://codereview.stackexchange.com/a/74647/86601

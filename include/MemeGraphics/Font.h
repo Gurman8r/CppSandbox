@@ -15,10 +15,14 @@ namespace ml
 		using GlyphTable = std::map<uint32_t, Glyph>;
 		using PageTable  = std::map<uint32_t, GlyphTable>;
 
-		struct Info final
-			: public ITrackable
+		struct Info final : public ITrackable
 		{
 			String family;
+
+			inline void serialize(std::ostream & out) const override
+			{
+				out << family;
+			}
 		};
 
 	public:
@@ -35,15 +39,16 @@ namespace ml
 	public:
 		inline void serialize(std::ostream & out) const override
 		{
-			out << getInfo().family;
+			out << getInfo();
 		}
 
 	private:
 		mutable PageTable m_pages;
-		Info			  m_info;
-		void*			  m_library;
-		void*			  m_face;
-		void*			  m_stroker;
+		
+		Info  m_info;
+		void* m_library;
+		void* m_face;
+		void* m_stroker;
 
 		Glyph loadGlyph(uint32_t value, uint32_t size) const;
 	};

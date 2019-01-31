@@ -25,11 +25,6 @@ namespace ml
 			: Event(id)
 		{
 		}
-		
-		inline void serialize(std::ostream & out) const override
-		{
-			out << "[" << get_type().name() << "] ";
-		}
 	};
 
 
@@ -45,12 +40,9 @@ namespace ml
 			, data(data)
 		{
 		}
-		
 		inline void serialize(std::ostream & out) const override
 		{
-			NetworkEvent::serialize(out);
-
-			out << data;
+			out << "[" << get_type().name() << "] " << data;
 		}
 	};
 
@@ -67,12 +59,9 @@ namespace ml
 			, data(data)
 		{
 		}
-		
 		inline void serialize(std::ostream & out) const override
 		{
-			NetworkEvent::serialize(out);
-
-			out << data;
+			out << "[" << get_type().name() << "] " << data;
 		}
 	};
 
