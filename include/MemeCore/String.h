@@ -249,10 +249,10 @@ namespace std
 namespace ml
 {
 #ifdef ML_STD_STRING
-	using string	= typename std::string;
-	using wstring	= typename std::wstring;
-	using u16string = typename std::u16string;
-	using u32string	= typename std::u32string;
+	using string	= std::string;
+	using wstring	= std::wstring;
+	using u16string = std::u16string;
+	using u32string	= std::u32string;
 #else
 	using string	= BasicString<char>;
 	using wstring	= BasicString<wchar_t>;
