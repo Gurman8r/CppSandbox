@@ -4,7 +4,7 @@
 #include <MemeScript/Export.h>
 #include <MemeCore/ITrackable.h>
 #include <MemeCore/IComparable.h>
-#include <map>
+#include <unordered_map>
 
 namespace ml
 {
@@ -44,11 +44,9 @@ namespace ml
 		, public IComparable<Operator>
 		, public IComparable<OperatorType>
 	{
-		
+		using OperMap = std::unordered_map<string, OperatorType>;
 
-		using OperMap = std::map<String, OperatorType>;
-
-		static const std::map<String, OperatorType> OpValues;
+		static const std::unordered_map<string, OperatorType> OpValues;
 
 		Operator();
 		Operator(OperatorType type);
@@ -57,7 +55,7 @@ namespace ml
 
 		OperatorType type;
 
-		static bool makeOperator(const String& str, Operator& op);
+		static bool makeOperator(const string& str, Operator& op);
 
 		bool equals(const Operator & value) const override;
 		bool equals(const OperatorType & value) const override;

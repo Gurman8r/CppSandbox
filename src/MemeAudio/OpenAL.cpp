@@ -46,12 +46,12 @@ namespace ml
 	{
 		if (AL::Err errorCode = getError())
 		{
-			String fileName(file);
+			string fileName(file);
 			fileName = fileName.substr(fileName.find_last_of("\\/") + 1);
 
 			// Decode the error code
-			String errorName;
-			String errorDesc;
+			string errorName;
+			string errorDesc;
 			switch (errorCode)
 			{
 			case AL::InvalidName:

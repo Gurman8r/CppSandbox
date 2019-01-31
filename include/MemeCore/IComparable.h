@@ -55,7 +55,6 @@ namespace ml
 		{
 			return lhs.equals(rhs) || lhs.lessThan(rhs);
 		}
-
 	};
 
 }

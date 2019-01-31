@@ -49,7 +49,7 @@ namespace ml
 			
 			if (getError() == GL::InvalidEnum)
 			{
-				if (GL::CStr version = getString(GL::Version))
+				if (GL::Str version = getString(GL::Version))
 				{
 					majorVersion = version[0] - '0';
 					minorVersion = version[2] - '0';
@@ -107,17 +107,17 @@ namespace ml
 		m_errorPause = value;
 	}
 
-	void OpenGL::checkError(GL::CStr file, uint32_t line, GL::CStr expression)
+	void OpenGL::checkError(GL::Str file, uint32_t line, GL::Str expression)
 	{
 		// Get the last error
 		if (GL::Err errorCode = getError())
 		{
-			String fileName(file);
+			string fileName(file);
 			fileName = fileName.substr(fileName.find_last_of("\\/") + 1);
 
 			// Decode the error code
-			String errorName;
-			String errorDesc;
+			string errorName;
+			string errorDesc;
 			switch (errorCode)
 			{
 			case GL::InvalidEnum:
@@ -180,17 +180,17 @@ namespace ml
 
 	// Get
 
-	GL::CStr OpenGL::getString(GL::Enum name)
+	GL::Str OpenGL::getString(GL::Enum name)
 	{
 		static const char* temp;
-		glCheck(temp = reinterpret_cast<GL::CStr>(glGetString(name)));
+		glCheck(temp = reinterpret_cast<GL::Str>(glGetString(name)));
 		return temp;
 	}
 
-	GL::CStr OpenGL::getString(GL::Enum name, uint32_t index)
+	GL::Str OpenGL::getString(GL::Enum name, uint32_t index)
 	{
 		static const char* temp;
-		glCheck(temp = reinterpret_cast<GL::CStr>(glGetStringi(name, index)));
+		glCheck(temp = reinterpret_cast<GL::Str>(glGetStringi(name, index)));
 		return temp;
 	}
 
@@ -374,13 +374,17 @@ namespace ml
 
 	void OpenGL::vertexAttribPointer(uint32_t index, uint32_t size, GL::Type type, bool normalized, uint32_t stride, uint32_t offset, uint32_t width)
 	{
+#pragma warning(push)
+#pragma warning(disable: 4312)
 		glCheck(glVertexAttribPointer(
 			index,
 			size,
 			type,
 			normalized,
 			(stride * width),
-			reinterpret_cast<const uint32_t *>(offset * width))); // this causes a warning in x64
+			// this causes a warning in x64
+			reinterpret_cast<const uint32_t *>(offset * width)));
+#pragma warning(pop)
 	}
 
 	void OpenGL::enableVertexAttribArray(uint32_t index)
@@ -597,7 +601,7 @@ namespace ml
 	}
 
 
-	GL::CStr OpenGL::getInfoLog(uint32_t obj)
+	GL::Str OpenGL::getInfoLog(uint32_t obj)
 	{
 		static char log[ML_BUFFER_SIZE];
 		glCheck(glGetInfoLogARB(obj, sizeof(log), 0, log));
@@ -632,7 +636,7 @@ namespace ml
 		return temp;
 	}
 
-	int32_t OpenGL::getUniformLocation(uint32_t obj, GL::CStr name)
+	int32_t OpenGL::getUniformLocation(uint32_t obj, GL::Str name)
 	{
 		static int32_t temp;
 		glCheck(temp = glGetUniformLocation(obj, name));
@@ -655,7 +659,7 @@ namespace ml
 		glCheck(glAttachObjectARB(containerObj, obj));
 	}
 
-	void OpenGL::shaderSource(uint32_t obj, int32_t count, GL::CStr const * src, const int32_t * length)
+	void OpenGL::shaderSource(uint32_t obj, int32_t count, GL::Str const * src, const int32_t * length)
 	{
 		glCheck(glShaderSource(obj, count, src, length));
 	}

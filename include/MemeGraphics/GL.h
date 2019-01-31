@@ -2,14 +2,14 @@
 #define _GRAPHICS_ENUM_H_
 
 #include <MemeGraphics/Export.h>
-#include <inttypes.h>
+#include <MemeCore/Enum.h>
 
 namespace ml
 {
 	struct ML_GRAPHICS_API GL final
 	{
-		using Enum		= uint32_t;
-		using CStr		= const char *;
+		using Enum	= typename uint32_t;
+		using Str	= typename const char *;
 
 		enum Flag : Enum
 		{
@@ -279,39 +279,52 @@ namespace ml
 		};
 	};
 
-	// Operators
-
+	// Attachment Operators
 	template <typename T>
-	inline GL::TextureID operator+(GL::TextureID lhs, T rhs)
+	inline GL::Attachment operator+(const GL::Attachment lhs, const T rhs)
 	{
-		uint32_t temp = static_cast<uint32_t>(lhs) - static_cast<uint32_t>(rhs);
-		return (temp <= GL::Texture31)
-			? static_cast<GL::TextureID>(temp)
-			: GL::Texture31;
+		return ML_ENUM_CLAMP(
+			GL::Attachment,
+			static_cast<GL::Enum>(lhs) + static_cast<GL::Enum>(rhs),
+			GL::ColorAttachment0,
+			GL::ColorAttachment15);
 	}
-
 	template <typename T>
-	inline GL::TextureID operator-(GL::TextureID lhs, T rhs)
+	inline GL::Attachment operator-(const GL::Attachment lhs, const T rhs)
 	{
-		uint32_t temp = static_cast<uint32_t>(lhs) - static_cast<uint32_t>(rhs);
-		return (temp >= GL::Texture0)
-			? static_cast<GL::TextureID>(temp)
-			: GL::Texture0;
+		return (lhs + (-rhs));
 	}
 
-	inline GL::Mask operator&(GL::Mask lhs, GL::Mask rhs)
+	// TextureID Operators
+	template <typename T>
+	inline GL::TextureID operator+(const GL::TextureID lhs, const T rhs)
 	{
-		return static_cast<GL::Mask>(static_cast<uint32_t>(lhs) & static_cast<uint32_t>(rhs));
+		return ML_ENUM_CLAMP(
+			GL::TextureID,
+			static_cast<GL::Enum>(lhs) + static_cast<GL::Enum>(rhs),
+			GL::Texture0,
+			GL::Texture31);
 	}
-	inline GL::Mask operator|(GL::Mask lhs, GL::Mask rhs)
+	template <typename T>
+	inline GL::TextureID operator-(const GL::TextureID lhs, const T rhs)
 	{
-		return static_cast<GL::Mask>(static_cast<uint32_t>(lhs) | static_cast<uint32_t>(rhs));
+		return (lhs + (-rhs));
 	}
-	inline GL::Mask & operator&=(GL::Mask lhs, GL::Mask rhs)
+
+	// Mask Operators
+	inline GL::Mask operator&(const GL::Mask lhs, const GL::Mask rhs)
+	{
+		return static_cast<GL::Mask>(static_cast<GL::Enum>(lhs) & static_cast<GL::Enum>(rhs));
+	}
+	inline GL::Mask operator|(const GL::Mask lhs, const GL::Mask rhs)
+	{
+		return static_cast<GL::Mask>(static_cast<GL::Enum>(lhs) | static_cast<GL::Enum>(rhs));
+	}
+	inline GL::Mask & operator&=(GL::Mask & lhs, const GL::Mask rhs)
 	{
 		return (lhs = (lhs & rhs));
 	}
-	inline GL::Mask & operator|=(GL::Mask lhs, GL::Mask rhs)
+	inline GL::Mask & operator|=(GL::Mask & lhs, const GL::Mask rhs)
 	{
 		return (lhs = (lhs | rhs));
 	}

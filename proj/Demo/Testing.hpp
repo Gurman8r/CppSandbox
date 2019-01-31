@@ -101,7 +101,7 @@ namespace tests
 			MAX
 		};
 
-		static const ml::String Tags[MAX] =
+		static const ml::string Tags[MAX] =
 		{
 			"A",
 			"B",

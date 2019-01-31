@@ -89,10 +89,10 @@ namespace ml
 	{
 		using Params = std::vector<AST_Name*>;
 
-		String name;
+		string name;
 		Params	args;
 
-		AST_Func(const String& name, const Params& args);
+		AST_Func(const string& name, const Params& args);
 		~AST_Func();
 
 		std::ostream& display(std::ostream& out) const override;
@@ -126,9 +126,9 @@ namespace ml
 	// Name
 	struct ML_SCRIPT_API AST_Name : public AST_Expr
 	{
-		String value;
+		string value;
 
-		AST_Name(const String& value);
+		AST_Name(const string& value);
 		~AST_Name();
 
 		std::ostream& display(std::ostream& out) const override;
@@ -185,9 +185,9 @@ namespace ml
 	// String
 	struct ML_SCRIPT_API AST_String : public AST_Expr
 	{
-		String value;
+		string value;
 
-		AST_String(const String& value);
+		AST_String(const string& value);
 		~AST_String();
 
 		std::ostream& display(std::ostream& out) const override;

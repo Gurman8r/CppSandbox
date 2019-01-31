@@ -93,17 +93,17 @@ namespace ml
 
 	Token::Token(char type)
 		: type((TokenType)type)
-		, data(String())
+		, data(string())
 	{
 	}
 
-	Token::Token(TokenType type, const String & data)
+	Token::Token(TokenType type, const string & data)
 		: type(type)
 		, data(data)
 	{
 	}
 
-	Token::Token(char type, const String & data)
+	Token::Token(char type, const string & data)
 		: type((TokenType)type)
 		, data(data)
 	{
@@ -170,7 +170,7 @@ namespace ml
 		return (char)type == value;
 	}
 
-	bool Token::equals(const String & value) const
+	bool Token::equals(const string & value) const
 	{
 		return data == value;
 	}
@@ -200,7 +200,7 @@ namespace ml
 		return (char)type < value;
 	}
 
-	bool Token::lessThan(const String & value) const
+	bool Token::lessThan(const string & value) const
 	{
 		return data < value;
 	}

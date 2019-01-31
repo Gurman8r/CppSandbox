@@ -13,7 +13,7 @@ namespace ml
 		, public IComparable<Args>
 	{
 	public:
-		using value_type			= String;
+		using value_type			= string;
 		using vector_type			= std::vector<value_type>;
 		using iterator				= vector_type::iterator;
 		using const_iterator		= vector_type::const_iterator;

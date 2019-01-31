@@ -18,7 +18,7 @@ namespace ml
 			CurveMode,
 			MAX_UNIFORM_ID
 		};
-		static const String Names[Uniform::ID::MAX_UNIFORM_ID];
+		static const string Names[Uniform::ID::MAX_UNIFORM_ID];
 	};
 }
 

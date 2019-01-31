@@ -23,7 +23,7 @@ namespace ml
 
 			case '#':
 			{
-				String line;
+				string line;
 				while (*it != TokenType::TOK_ENDL)
 				{
 					line += (*it++).data;
@@ -342,7 +342,7 @@ namespace ml
 			switch (params.size())
 			{
 			case 1:	 return new AST_Print(params.front(), true);
-			default: return new AST_Print(new AST_String(String()), true);
+			default: return new AST_Print(new AST_String(string()), true);
 			}
 		}
 		// Print
@@ -352,7 +352,7 @@ namespace ml
 			switch (params.size())
 			{
 			case 1:	 return new AST_Print(params.front(), false);
-			default: return new AST_Print(new AST_String(String()), false);
+			default: return new AST_Print(new AST_String(string()), false);
 			}
 		}
 		// Return

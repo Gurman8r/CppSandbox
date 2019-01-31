@@ -18,11 +18,11 @@ namespace ml
 		using self_type	= Matrix<data_type, _Cols, _Rows>;
 		using size_type = size_t;
 
-		enum
+		enum : size_type
 		{
 			Cols = _Cols,
 			Rows = _Rows,
-			Size = Cols * Rows 
+			Size = Cols * Rows
 		};
 
 	private:
@@ -168,7 +168,7 @@ namespace ml
 		}
 
 	public:
-		inline static const std::vector<T> & Flatten(const self_type * value, size_type length)
+		inline static const std::vector<T> & contiguous(const self_type * value, size_type length)
 		{
 			static std::vector<T> out;
 			if (const size_type imax = (length * Size))

@@ -20,8 +20,8 @@ namespace ml
 	>
 	class BasicString
 		: public std::basic_string<_Elem, _Traits, _Alloc>
-		, public IComparable<BasicString<_Elem, _Traits, _Alloc>>
 		, public IComparable<std::basic_string<_Elem, _Traits, _Alloc>>
+		, public IComparable<BasicString<_Elem, _Traits, _Alloc>>
 	{
 	public:
 		using value_type			= _Elem;
@@ -36,12 +36,15 @@ namespace ml
 		using pointer				= typename base_type::pointer;
 		using const_reference		= typename base_type::const_reference;
 		using const_pointer			= typename base_type::const_pointer;
+		
 		using size_type				= typename base_type::size_type;
 		using difference_type		= typename base_type::difference_type;
+		
 		using iterator				= typename base_type::iterator;
 		using const_iterator		= typename base_type::const_iterator;
 		using reverse_iterator		= typename base_type::reverse_iterator;
 		using const_reverse_iterator= typename base_type::const_reverse_iterator;
+		
 		using _Alty					= typename base_type::_Alty;
 		using _Alty_traits			= typename base_type::_Alty_traits;
 
@@ -49,6 +52,16 @@ namespace ml
 	public: // Constructors
 		BasicString()
 			: base_type()
+		{
+		}
+
+		BasicString(self_type && value) noexcept
+			: base_type(value)
+		{
+		}
+
+		BasicString(self_type && value, const allocator_type & alloc)
+			: base_type(value, alloc)
 		{
 		}
 		
@@ -61,8 +74,13 @@ namespace ml
 			: base_type(value, alloc)
 		{
 		}
+
+		BasicString(const base_type & value)
+			: base_type(value)
+		{
+		}
 		
-		explicit BasicString(const allocator_type & alloc)
+		explicit BasicString(const allocator_type & alloc) noexcept
 			: base_type(alloc)
 		{
 		}
@@ -121,40 +139,11 @@ namespace ml
 		}
 		
 		BasicString(value_type * const first, value_type * const last, std::random_access_iterator_tag)
-			: base_type(first, last, std::random_access_iterator_tag)
+			: base_type(first, last, std::random_access_iterator_tag())
 		{
 		}
 		
-		BasicString(self_type && value) noexcept
-			: base_type(value)
-		{
-		}
-		
-		BasicString(self_type && value, const allocator_type & alloc)
-			: base_type(value, alloc)
-		{
-		}
-		
-		BasicString(const base_type & value)
-			: base_type(value)
-		{
-		}
-
-		virtual ~BasicString() noexcept
-		{
-		}
-
-
-	public: // Cast Operators
-		inline operator base_type() const
-		{
-			return static_cast<base_type>(*this);
-		}
-		
-		inline operator const base_type &() const
-		{
-			return static_cast<const base_type &>(*this);
-		}
+		virtual ~BasicString() noexcept {}
 
 
 	public: // Assignment Operators
@@ -171,7 +160,6 @@ namespace ml
 					this->_Tidy_deallocate();
 				}
 #pragma warning(pop)
-
 				this->_Copy_alloc(other._Getal());
 
 				auto & otherData = other._Get_data();
@@ -196,7 +184,19 @@ namespace ml
 			}
 			return (*this);
 		}
-		
+	
+
+	public: // Cast Operators
+		inline operator base_type() const
+		{
+			return static_cast<base_type>(*this);
+		}
+
+		inline operator const base_type &() const
+		{
+			return static_cast<const base_type &>(*this);
+		}
+
 
 	public: // Base Comparison
 		inline bool equals(const base_type & value) const override
@@ -225,23 +225,6 @@ namespace ml
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-namespace ml
-{
-#ifdef ML_STD_STRING
-	using String	= std::string;
-	using WString	= std::wstring;
-	using String16	= std::u16string;
-	using String32	= std::u32string;
-#else
-	using String	= BasicString<char>;
-	using WString	= BasicString<wchar_t>;
-	using String16	= BasicString<char16_t>;
-	using String32	= BasicString<char32_t>;
-#endif
-}
-
-/* * * * * * * * * * * * * * * * * * * * */
-
 namespace std
 {
 	template <
@@ -259,6 +242,23 @@ namespace std
 			return _Hash_array_representation(value.c_str(), value.size());
 		}
 	};
+}
+
+/* * * * * * * * * * * * * * * * * * * * */
+
+namespace ml
+{
+#ifdef ML_STD_STRING
+	using string	= typename std::string;
+	using wstring	= typename std::wstring;
+	using u16string = typename std::u16string;
+	using u32string	= typename std::u32string;
+#else
+	using string	= BasicString<char>;
+	using wstring	= BasicString<wchar_t>;
+	using u16string = BasicString<char16_t>;
+	using u32string	= BasicString<char32_t>;
+#endif
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

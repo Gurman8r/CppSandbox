@@ -20,7 +20,7 @@ namespace ml
 	class Iterator
 		: public ITrackable
 		, public IComparable<Iterator<IC, VT, UT, DT>>
-		, public std::iterator<IC, UT, DT, VT*, VT&>
+		, public std::iterator<IC, UT, DT, VT *, VT &>
 	{
 	public:
 		using iterator_category = IC;

@@ -9,11 +9,11 @@ namespace ml
 {
 	Var::Ptr::Ptr()
 		: index(0)
-		, name(String())
+		, name(string())
 	{
 	}
 	
-	Var::Ptr::Ptr(int32_t index, const String & name)
+	Var::Ptr::Ptr(int32_t index, const string & name)
 		: index(index)
 		, name(name)
 	{
@@ -52,14 +52,14 @@ namespace ml
 
 namespace ml
 {
-	const String Var::TypeNames[Type::MAX_VAR_TYPE] =
+	const string Var::TypeNames[Type::MAX_VAR_TYPE] =
 	{
 		"void",
 		"bool",
 		"float",
 		"int",
 		"ptr",
-		"String",
+		"string",
 		"array"
 		"func",
 	};
@@ -260,10 +260,10 @@ namespace ml
 			}
 			else if (isStringType())
 			{
-				const String str = stringValue();
+				const string str = stringValue();
 				if (i < str.size())
 				{
-					return Var().stringValue(String(1, str[i]));
+					return Var().stringValue(string(1, str[i]));
 				}
 			}
 			else if (isIntType())
@@ -274,9 +274,9 @@ namespace ml
 		return Var().errorValue("Var : Cannot access element {0}[{1}]", *this, i);
 	}
 
-	String		Var::errorValue() const
+	string		Var::errorValue() const
 	{
-		return isErrorType() ? (textValue()) : String();
+		return isErrorType() ? (textValue()) : string();
 	}
 
 	size_t		Var::intValue() const
@@ -306,12 +306,12 @@ namespace ml
 		return 0;
 	}
 	
-	String		Var::stringValue() const
+	string		Var::stringValue() const
 	{
-		return isValid() ? (textValue()) : String();
+		return isValid() ? (textValue()) : string();
 	}
 
-	String		Var::textValue() const
+	string		Var::textValue() const
 	{
 		return m_tokens.str();
 	}
@@ -356,7 +356,7 @@ namespace ml
 		return (*this);
 	}
 		  
-	Var & Var::errorValue(const String & value)
+	Var & Var::errorValue(const string & value)
 	{
 		return voidValue().tokensValue({ { TokenType::TOK_ERR, value } });
 	}
@@ -386,7 +386,7 @@ namespace ml
 		return setType(Var::Pointer).tokensValue({ { TokenType::TOK_NAME, value.name } });
 	}
 		  
-	Var & Var::stringValue(const String & value)
+	Var & Var::stringValue(const string & value)
 	{
 		return setType(Var::Str).tokensValue({ { TokenType::TOK_STR, value } });
 	}
@@ -1075,9 +1075,9 @@ namespace ml
 	Var & Var::operator=(double value)			{ return floatValue((float)value); }
 	Var & Var::operator=(int32_t value)			{ return intValue(value); }
 	Var & Var::operator=(const Ptr & value)		{ return pointerValue(value); }
-	Var & Var::operator=(const String & value)	{ return stringValue(value); }
+	Var & Var::operator=(const string & value)	{ return stringValue(value); }
 	Var & Var::operator=(const char * value)	{ return stringValue(value); }
-	Var & Var::operator=(char value)			{ return stringValue(String(1, value)); }
+	Var & Var::operator=(char value)			{ return stringValue(string(1, value)); }
 	
 
 	

@@ -12,8 +12,8 @@ namespace ml
 		~INonCopyable() {}
 
 	private:
-		INonCopyable(const INonCopyable&) = delete;
-		INonCopyable & operator=(const INonCopyable&) = delete;
+		INonCopyable(const INonCopyable &) = delete;
+		INonCopyable & operator=(const INonCopyable &) = delete;
 	};
 }
 

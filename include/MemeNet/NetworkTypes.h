@@ -72,20 +72,20 @@ namespace ml
 		: public ITrackable
 		, public IComparable<Address>
 	{
-		String		addr;
+		string		addr;
 		uint16_t	port;
 
 		Address()
-			: Address(String(), 0)
+			: Address(string(), 0)
 		{
 		}
 		
-		Address(const String & addr)
+		Address(const string & addr)
 			: Address(addr, NULL)
 		{
 		}
 		
-		Address(const String & addr, uint16_t port)
+		Address(const string & addr, uint16_t port)
 			: addr(addr)
 			, port(port)
 		{

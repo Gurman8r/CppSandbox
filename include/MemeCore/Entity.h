@@ -9,7 +9,10 @@ namespace ml
 		: public ITrackable
 	{
 	public:
-		Entity() : m_components() {};
+		Entity() 
+			: m_components() 
+		{
+		}
 		virtual ~Entity() {}
 
 	protected:
@@ -23,32 +26,32 @@ namespace ml
 		}
 
 	public:
-		template <typename T> 
-		inline T* addComponent()
+		template <class T> 
+		inline T * addComponent()
 		{
 			return components().add<T>();
 		}
 		
-		template <typename T> 
-		inline T* getComponent()
+		template <class T> 
+		inline T * getComponent()
 		{
 			return components().get<T>();
 		}
 		
-		template <typename T> 
-		inline const T* getComponent() const
+		template <class T> 
+		inline const T * getComponent() const
 		{
 			return components().get<T>();
 		}
 		
-		template <typename T>
+		template <class T>
 		inline bool hasComponent() const
 		{
 			return components().contains<T>();
 		}
 		
-		template <typename T> 
-		inline T* setComponent(const T& value)
+		template <class T> 
+		inline T * setComponent(const T & value)
 		{
 			return components().set<T>(value);
 		}

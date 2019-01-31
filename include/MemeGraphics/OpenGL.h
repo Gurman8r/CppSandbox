@@ -36,11 +36,11 @@ namespace ml
 	public: // Errors
 		static GL::Err	getError();
 		static void		errorPause(bool value);
-		static void		checkError(GL::CStr file, uint32_t line, GL::CStr expression);
+		static void		checkError(GL::Str file, uint32_t line, GL::Str expression);
 		
 	public: // Get
-		static GL::CStr getString(GL::Enum name);
-		static GL::CStr getString(GL::Enum name, uint32_t index);
+		static GL::Str	getString(GL::Enum name);
+		static GL::Str	getString(GL::Enum name, uint32_t index);
 		static bool		getBool(GL::Enum name);
 		static double	getDouble(GL::Enum name);
 		static float	getFloat(GL::Enum name);
@@ -114,17 +114,17 @@ namespace ml
 		static bool		shadersAvailable();
 		static bool		geometryShadersAvailable();
 
-		static GL::CStr getInfoLog(uint32_t obj);
+		static GL::Str	getInfoLog(uint32_t obj);
 		static uint32_t getProgramHandle(uint32_t name);
 		static uint32_t createProgramObject();
 		static uint32_t createShaderObject(GL::ShaderType type);
 		static int32_t	getProgramParameter(int32_t obj, GL::Status param);
-		static int32_t	getUniformLocation(uint32_t obj, GL::CStr name);
+		static int32_t	getUniformLocation(uint32_t obj, GL::Str name);
 
 		static void		useShader(uint32_t obj);
 		static void		deleteShader(uint32_t obj);
 		static void		attachShader(uint32_t containerObj, uint32_t obj);
-		static void		shaderSource(uint32_t obj, int32_t count, GL::CStr const * src, const int32_t * length);
+		static void		shaderSource(uint32_t obj, int32_t count, GL::Str const * src, const int32_t * length);
 		static void		compileShader(uint32_t obj);
 		static void		linkShader(uint32_t obj);
 

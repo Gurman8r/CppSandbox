@@ -20,7 +20,7 @@ namespace ml
 		}
 
 	public:
-		inline const std::type_info & get_type()	const 
+		inline const std::type_info & get_type() const 
 		{
 			return typeid(*this);
 		}
@@ -32,7 +32,7 @@ namespace ml
 			return stream; 
 		}
 
-		inline virtual const String to_string() const
+		inline virtual const string to_string() const
 		{
 			return to_stream().str(); 
 		}

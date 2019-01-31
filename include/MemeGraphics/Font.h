@@ -17,7 +17,7 @@ namespace ml
 
 		struct Info final : public ITrackable
 		{
-			String family;
+			string family;
 
 			inline void serialize(std::ostream & out) const override
 			{
@@ -31,7 +31,7 @@ namespace ml
 		~Font();
 
 		bool cleanup() override;
-		bool loadFromFile(const String & filename) override;
+		bool loadFromFile(const string & filename) override;
 
 		const Glyph & getGlyph(uint32_t value, uint32_t size) const;
 		const Info	& getInfo() const;

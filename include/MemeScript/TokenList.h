@@ -8,11 +8,11 @@ namespace ml
 	class ML_SCRIPT_API TokenList final
 		: public ITrackable
 		, public IComparable<TokenList>
-		, public IComparable<String>
+		, public IComparable<string>
 	{
 	public:
 		using value_type			= Token;
-		using string_type			= String;
+		using string_type			= string;
 		using vector_type			= std::vector<value_type>;
 		using initializer_type		= std::initializer_list<value_type>;
 		using iterator				= vector_type::iterator;
@@ -34,8 +34,8 @@ namespace ml
 		const value_type	at(size_t index) const;
 		const value_type	back() const;
 		const value_type	front() const;
-		const String	str() const;
-		const String	substr(size_t index, size_t count) const;
+		const string	str() const;
+		const string	substr(size_t index, size_t count) const;
 		const vector_type	subvec(size_t index, size_t count) const;
 		const vector_type&	values() const;
 		const stream_type	sstream() const;
@@ -61,8 +61,8 @@ namespace ml
 
 		const bool	matchChar(size_t index, char c) const;
 		const bool	matchChar(const const_iterator& it, char c) const;
-		const bool	matchStr(size_t index, const String& str) const;
-		const bool	matchStr(const const_iterator& it, const String& str) const;
+		const bool	matchStr(size_t index, const string& str) const;
+		const bool	matchStr(const const_iterator& it, const string& str) const;
 		const bool	matchPat(size_t index, const char_list& pattern) const;
 		const bool	matchPat(const const_iterator& it, const char_list& pattern) const;
 		const bool	matchData(size_t index, const cstring_list& data) const;
@@ -163,8 +163,8 @@ namespace ml
 		bool equals(const TokenList & value) const override;
 		bool lessThan(const TokenList & value) const override;
 
-		bool equals(const String & value) const override;
-		bool lessThan(const String & value) const override;
+		bool equals(const string & value) const override;
+		bool lessThan(const string & value) const override;
 
 	private:
 		vector_type m_values;

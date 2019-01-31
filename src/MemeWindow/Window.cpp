@@ -31,7 +31,7 @@ namespace ml
 	Window::~Window() {}
 
 	bool Window::create(
-		const String		& title, 
+		const string		& title, 
 		const VideoMode		& videoMode, 
 		const Style			& style, 
 		const Context		& context)
@@ -243,7 +243,7 @@ namespace ml
 		return (*this);
 	}
 
-	Window & Window::setTitle(const String & value)
+	Window & Window::setTitle(const string & value)
 	{
 		m_title = value;
 		glfwSetWindowTitle(ML_WINDOW(m_window), value.c_str());

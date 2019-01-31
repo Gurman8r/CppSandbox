@@ -18,9 +18,9 @@ namespace ml
 		, public IComparable<List<_Elem, _Alloc>>
 	{
 	public:
-		using size_type = size_t;
 		using value_type = _Elem;
 		using allocator = _Alloc;
+		using size_type = size_t;
 
 		using base_type = std::vector<value_type, allocator>;
 		using init_type = std::initializer_list<value_type>;
@@ -33,7 +33,7 @@ namespace ml
 
 	public:
 		List()
-			: base_type(allocator())
+			: base_type()
 		{
 		}
 		List(const allocator & alloc)

@@ -161,7 +161,7 @@ namespace demo
 		bool	loadNetwork(bool log);
 
 		template <class T>
-		inline static bool load(ml::IResource & res, const ml::String & file, bool log)
+		inline static bool load(ml::IResource & res, const ml::string & file, bool log)
 		{
 			const std::type_info & info(typeid(res));
 			return (res.loadFromFile(SETTINGS.pathTo(file))

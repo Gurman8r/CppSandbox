@@ -4,10 +4,7 @@
 #include <MemeCore/ITrackable.h>
 
 #define ML_MAX_SYSTEM_EVENTS 32
-
-#ifndef ML_MAX_CUSTOM_EVENTS
 #define ML_MAX_CUSTOM_EVENTS 256
-#endif
 
 namespace ml
 {
@@ -30,7 +27,8 @@ namespace ml
 			EV_NETWORK	= MIN_SYSTEM + (SIZE_SYSTEM * 4),
 			EV_WINDOW	= MIN_SYSTEM + (SIZE_SYSTEM * 5),
 			
-			MAX_SYSTEM	= EV_WINDOW + (SIZE_SYSTEM + 1),
+			MAX_SYSTEM	= MIN_SYSTEM + (SIZE_SYSTEM * 6),
+
 
 			// Custom
 			/* * * * * * * * * * * * * * */
@@ -48,7 +46,7 @@ namespace ml
 			EV_CUSTOM_8 = MIN_CUSTOM + (SIZE_CUSTOM * 8),
 			EV_CUSTOM_9 = MIN_CUSTOM + (SIZE_CUSTOM * 9),
 			
-			MAX_CUSTOM = EV_CUSTOM_4 + (SIZE_CUSTOM + 1),
+			MAX_CUSTOM = MIN_CUSTOM + (SIZE_CUSTOM * 10),
 
 			/* * * * * * * * * * * * * * */
 
@@ -62,21 +60,27 @@ namespace ml
 		}
 		virtual ~Event() {}
 
-		inline const int32_t & eventID() const { return m_eventID; }
+		inline const int32_t & eventID() const 
+		{ 
+			return m_eventID;
+		}
 
-		inline operator bool() const { return eventID(); }
+		inline operator bool() const 
+		{ 
+			return eventID(); 
+		}
 
 	public:
 		template <class T>
 		inline const T * As() const
 		{
-			return dynamic_cast<const T*>(this);
+			return dynamic_cast<const T *>(this);
 		}
 
 		template <class T>
 		inline T * As()
 		{
-			return dynamic_cast<T*>(this);
+			return dynamic_cast<T *>(this);
 		}
 
 		template <class T>

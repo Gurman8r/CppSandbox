@@ -14,17 +14,17 @@ namespace ml
 		: public ITrackable
 	{
 	public:
-		using key_type		= const std::type_info*;
-		using map_type		= std::unordered_map<key_type, Component*>;
-		using iterator		= map_type::iterator;
-		using const_iterator= map_type::const_iterator;
+		using key_type		= const std::type_info *;
+		using map_type		= std::unordered_map<key_type, Component *>;
+		using iterator		= typename map_type::iterator;
+		using const_iterator= typename map_type::const_iterator;
 
 	public:
 		ComponentMap()
 			: m_map()
 		{
 		}
-		ComponentMap(const ComponentMap& copy)
+		ComponentMap(const ComponentMap & copy)
 			: m_map(copy.m_map)
 		{
 		}
@@ -45,7 +45,7 @@ namespace ml
 		}
 
 	public:
-		template <typename T> 
+		template <class T> 
 		inline T * add()
 		{
 			assert_typeof_component(T);
@@ -57,18 +57,18 @@ namespace ml
 			return NULL;
 		}
 		
-		template <typename T> 
+		template <class T> 
 		inline bool	contains() const
 		{
 			assert_typeof_component(T);
 			return find<T>() != end();
 		}
 		
-		template <typename T> 
+		template <class T> 
 		inline bool	erase()
 		{
 			assert_typeof_component(T);
-			if (T* temp = get<T>())
+			if (T * temp = get<T>())
 			{
 				delete temp;
 				m_map.erase(&typeid(T));
@@ -77,40 +77,40 @@ namespace ml
 			return false;
 		}
 		
-		template <typename T> 
+		template <class T> 
 		inline iterator	find()
 		{
 			assert_typeof_component(T);
 			return m_map.find(&typeid(T));
 		}
 		
-		template <typename T> 
+		template <class T> 
 		inline const_iterator find() const
 		{
 			assert_typeof_component(T);
 			return m_map.find(&typeid(T));
 		}
 		
-		template <typename T> 
+		template <class T> 
 		inline T * get()
 		{
 			assert_typeof_component(T);
 			iterator it;
 			if ((it = find<T>()) != end())
 			{
-				return static_cast<T*>(it->second);
+				return static_cast<T *>(it->second);
 			}
 			return NULL;
 		}
 		
-		template <typename T> 
+		template <class T> 
 		inline const T * get() const
 		{
 			assert_typeof_component(T);
 			const_iterator it;
 			if ((it = find<T>()) != end())
 			{
-				return static_cast<T*>(it->second);
+				return static_cast<T *>(it->second);
 			}
 			return NULL;
 		}

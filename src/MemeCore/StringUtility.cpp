@@ -7,12 +7,12 @@
 
 namespace ml
 {
-	String StringUtility::Replace(const String & src, const String & find, const String & replace)
+	string StringUtility::Replace(const string & src, const string & find, const string & replace)
 	{
-		String copy = src;
+		string copy = src;
 		if (src != "" && find != "")
 		{
-			for (size_t i = 0; (i = copy.find(find, i)) != String::npos;)
+			for (size_t i = 0; (i = copy.find(find, i)) != string::npos;)
 			{
 				copy.replace(i, find.size(), replace);
 				i += replace.size();
@@ -21,7 +21,7 @@ namespace ml
 		return copy;
 	}
 
-	String StringUtility::Sprintf(const String fmt, ...)
+	string StringUtility::Sprintf(const string fmt, ...)
 	{
 		std::vector<char> buf(BUFFER_SIZE);
 		va_list args;
@@ -35,29 +35,29 @@ namespace ml
 				args);
 		}
 		va_end(args);
-		return String(&buf[0]);
+		return string(&buf[0]);
 	}
 	
-	String	StringUtility::ToLower(const String& src)
+	string	StringUtility::ToLower(const string & src)
 	{
 		std::locale loc;
 
-		String toStr = src;
+		string toStr = src;
 
-		for (String::size_type i = 0; i < src.length(); i++)
+		for (string::size_type i = 0; i < src.length(); i++)
 		{
 			toStr[i] = std::tolower(src[i], loc);
 		}
 
 		return toStr;
 	}
-	String	StringUtility::ToUpper(const String& src)
+	string	StringUtility::ToUpper(const string & src)
 	{
 		std::locale loc;
 
-		String toStr = src;
+		string toStr = src;
 
-		for (String::size_type i = 0; i < src.length(); i++)
+		for (string::size_type i = 0; i < src.length(); i++)
 		{
 			toStr[i] = std::toupper(src[i], loc);
 		}
@@ -65,15 +65,15 @@ namespace ml
 		return toStr;
 	}
 
-	std::vector<String> StringUtility::Split(const String & src, const String & delims)
+	std::vector<string> StringUtility::Split(const string & src, const string & delims)
 	{
-		std::vector<String> list;
+		std::vector<string> list;
 
-		String	cpy = src;
+		string	cpy = src;
 		size_t	pos = 0;
-		String	tok;
+		string	tok;
 
-		while ((pos = cpy.find(delims)) != String::npos)
+		while ((pos = cpy.find(delims)) != string::npos)
 		{
 			tok = cpy.substr(0, pos);
 
@@ -89,12 +89,12 @@ namespace ml
 
 
 
-	bool	StringUtility::Contains(const String& src, char c)
+	bool	StringUtility::Contains(const string & src, char c)
 	{
-		return (src.find(c) != String::npos);
+		return (src.find(c) != string::npos);
 	}
 	
-	bool	StringUtility::IsAlpha(const String& src)
+	bool	StringUtility::IsAlpha(const string & src)
 	{
 		for (char c : src)
 		{
@@ -107,7 +107,7 @@ namespace ml
 		return true;
 	}
 	
-	bool	StringUtility::IsAlnum(const String & src)
+	bool	StringUtility::IsAlnum(const string & src)
 	{
 		for (char c : src)
 		{
@@ -120,9 +120,9 @@ namespace ml
 		return true;
 	}
 	
-	bool	StringUtility::IsBool(const String& src)
+	bool	StringUtility::IsBool(const string & src)
 	{
-		const String low = ToLower(src);
+		const string low = ToLower(src);
 		return
 			low == "true" ||
 			low == "false" ||
@@ -130,7 +130,7 @@ namespace ml
 			low == "0";
 	}
 	
-	bool	StringUtility::IsDecimal(const String& src)
+	bool	StringUtility::IsDecimal(const string & src)
 	{
 		if (!src.empty())
 		{
@@ -145,11 +145,11 @@ namespace ml
 		return false;
 	}
 	
-	bool	StringUtility::IsInt(const String& src)
+	bool	StringUtility::IsInt(const string & src)
 	{
 		if (!src.empty())
 		{
-			String::const_iterator it = src.begin();
+			string::const_iterator it = src.begin();
 
 			if (*it == '-')
 				it++;
@@ -162,7 +162,7 @@ namespace ml
 		return false;
 	}
 	
-	bool	StringUtility::IsLower(const String & src)
+	bool	StringUtility::IsLower(const string & src)
 	{
 		for (auto c : src)
 		{
@@ -172,7 +172,7 @@ namespace ml
 		return true;
 	}
 	
-	bool	StringUtility::IsName(const String& src)
+	bool	StringUtility::IsName(const string & src)
 	{
 		if (src.empty())
 		{
@@ -207,17 +207,17 @@ namespace ml
 		return true;
 	}
 	
-	bool	StringUtility::IsNumber(const String& src)
+	bool	StringUtility::IsNumber(const string & src)
 	{
 		return IsInt(src) || IsDecimal(src);
 	}
 	
-	bool	StringUtility::IsText(const String& src)
+	bool	StringUtility::IsText(const string & src)
 	{
 		return IsWrap(src, '\"');
 	}
 	
-	bool	StringUtility::IsUpper(const String & src)
+	bool	StringUtility::IsUpper(const string & src)
 	{
 		for (auto c : src)
 		{
@@ -227,12 +227,12 @@ namespace ml
 		return true;
 	}
 	
-	bool	StringUtility::IsWrap(const String& src, char c)
+	bool	StringUtility::IsWrap(const string & src, char c)
 	{
 		return IsWrap(src, c, c);
 	}
 	
-	bool	StringUtility::IsWrap(const String& src, char front, char back)
+	bool	StringUtility::IsWrap(const string & src, char front, char back)
 	{
 		return
 			src.length() > 2 &&
@@ -240,12 +240,12 @@ namespace ml
 			src.back() == back;
 	}
 	
-	bool	StringUtility::IsWrap(const String & src, const String & s)
+	bool	StringUtility::IsWrap(const string & src, const string & s)
 	{
 		return IsWrap(src, s, s);
 	}
 	
-	bool	StringUtility::IsWrap(const String & src, const String & front, const String & back)
+	bool	StringUtility::IsWrap(const string & src, const string & front, const string & back)
 	{
 		if (src.length() >= (front.length() + back.length()))
 		{
@@ -258,28 +258,28 @@ namespace ml
 	}
 
 
-	bool	StringUtility::ToBool(const String& src)
+	bool	StringUtility::ToBool(const string & src)
 	{
 		return (src == "1" || ToLower(src) == "true");
 	}
 	
-	int32_t	StringUtility::ToInt(const String& src)
+	int32_t	StringUtility::ToInt(const string & src)
 	{
 		return std::stoi(src);
 	}
 	
-	double	StringUtility::ToDecimal(const String& src)
+	double	StringUtility::ToDecimal(const string & src)
 	{
 		return std::stod(src);
 	}
 	
-	float	StringUtility::ToFloat(const String & src)
+	float	StringUtility::ToFloat(const string & src)
 	{
 		return std::stof(src);
 	}
 
 
-	bool	StringUtility::MakeBool(const String& src, bool & value)
+	bool	StringUtility::MakeBool(const string & src, bool & value)
 	{
 		if (IsBool(src))
 		{
@@ -290,7 +290,7 @@ namespace ml
 		return false;
 	}
 	
-	bool	StringUtility::MakeInt(const String& src, int32_t & value)
+	bool	StringUtility::MakeInt(const string & src, int32_t & value)
 	{
 		if (IsInt(src))
 		{
@@ -301,7 +301,7 @@ namespace ml
 		return false;
 	}
 	
-	bool	StringUtility::MakeDecimal(const String& src, double & value)
+	bool	StringUtility::MakeDecimal(const string & src, double & value)
 	{
 		if (IsDecimal(src))
 		{
@@ -312,7 +312,7 @@ namespace ml
 		return false;
 	}
 	
-	bool	StringUtility::MakeFloat(const String& src, float & value)
+	bool	StringUtility::MakeFloat(const string & src, float & value)
 	{
 		if (IsDecimal(src))
 		{

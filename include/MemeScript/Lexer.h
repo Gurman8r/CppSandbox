@@ -26,18 +26,18 @@ namespace ml
 		~Lexer();
 
 		CharBuffer	getBuffer() const;
-		String getString() const;
+		string getString() const;
 
 		Lexer&		clearBuffer();
-		Lexer&		setBuffer(const String& value);
+		Lexer&		setBuffer(const string& value);
 		Lexer&		setBuffer(const CharBuffer& value);
 
 		TokenList	splitTokens() const;
 
-		bool scanName(const_iterator& it, String& text) const;
-		bool scanNumber(const_iterator& it, String& text) const;
-		bool scanString(const_iterator& it, String& text) const;
-		bool scanSymbol(const_iterator& it, String& text) const;
+		bool scanName(const_iterator& it, string& text) const;
+		bool scanNumber(const_iterator& it, string& text) const;
+		bool scanString(const_iterator& it, string& text) const;
+		bool scanSymbol(const_iterator& it, string& text) const;
 
 		inline Flags getFlags() const { return m_flags; }
 		inline void	 setFlags(Flags value) { m_flags = value; }

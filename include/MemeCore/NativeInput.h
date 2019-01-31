@@ -13,12 +13,12 @@ namespace ml
 	{
 	public:
 		NativeInput() {}
+
 		~NativeInput() {}
 
 		bool checkKey(int32_t value) const override;
 
 		bool getAnyKey() const;
-
 	};
 }
 

@@ -295,7 +295,7 @@ namespace demo
 
 			ML_Interpreter.addCmd({ "cat", [](ml::Args & args)
 			{
-				ml::String buf;
+				ml::string buf;
 				if (ML_FileSystem.getFileContents(args.pop_front().front(), buf))
 				{
 					ml::cout << buf << ml::endl;
@@ -308,11 +308,11 @@ namespace demo
 			ML_Interpreter.addCmd({ "read", [](ml::Args & args)
 			{
 
-				ml::String name = args.pop_front().front();
+				ml::string name = args.pop_front().front();
 
 				if (ML_FileSystem.fileExists(name))
 				{
-					ml::String buf;
+					ml::string buf;
 					if (ML_FileSystem.getFileContents(name, buf))
 					{
 						return ml::Var().stringValue(buf);
@@ -369,7 +369,7 @@ namespace demo
 
 			ML_Interpreter.addCmd({ "ls", [](ml::Args & args)
 			{
-				const ml::String dirName = args.pop_front().empty() ? "./" : args.str();
+				const ml::string dirName = args.pop_front().empty() ? "./" : args.str();
 				if (DIR * dir = opendir(dirName.c_str()))
 				{
 					while (dirent * e = readdir(dir))
@@ -401,7 +401,7 @@ namespace demo
 			{
 				if (!args.pop_front().empty())
 				{
-					const ml::String & opt = args.front();
+					const ml::string & opt = args.front();
 					if (opt == "name")
 					{
 						return ml::Var().stringValue(SETTINGS.title);

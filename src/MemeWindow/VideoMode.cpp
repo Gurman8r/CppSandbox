@@ -48,7 +48,7 @@ namespace ml
 				win32Mode.dmPelsHeight,
 				win32Mode.dmBitsPerPel);
 #else
-			temp = VideoMode()
+			temp = VideoMode();
 #endif
 		}
 		return temp;

@@ -4,7 +4,6 @@
 #include <MemeCore/ISingleton.h>
 #include <MemeCore/ISerializable.h>
 #include <map>
-#include <unordered_map>
 
 // Singleton to keep track of dynamically allocated ITrackables
 // Handles memory allocation/deallocation
@@ -32,6 +31,7 @@ namespace ml
 		~MemoryTracker();
 
 		struct Record;
+
 		using RecordMap = std::map<ITrackable *, Record>;
 
 		RecordMap	m_map;

@@ -52,13 +52,15 @@ namespace ml
 
 	ITrackable * MemoryTracker::newAllocation(size_t size)
 	{
-		if (ITrackable * ptr = static_cast<ITrackable*>(malloc(size)))
+		if (ITrackable * ptr = static_cast<ITrackable *>(malloc(size)))
 		{
+#ifdef ML_DEBUG
 			RecordMap::iterator it;
 			if ((it = m_map.find(ptr)) == m_map.end())
 			{
 				m_map.insert({ ptr, Record(ptr, m_guid++, size) });
 			}
+#endif // ML_DEBUG
 			return ptr;
 		}
 		return NULL;
@@ -66,13 +68,15 @@ namespace ml
 
 	void MemoryTracker::freeAllocation(void * value)
 	{
-		if (ITrackable * ptr = static_cast<ITrackable*>(value))
+		if (ITrackable * ptr = static_cast<ITrackable *>(value))
 		{
+#ifdef ML_DEBUG
 			RecordMap::iterator it;
 			if ((it = m_map.find(ptr)) != m_map.end())
 			{
 				m_map.erase(it);
 			}
+#endif // ML_DEBUG
 			return free(ptr);
 		}
 	}
