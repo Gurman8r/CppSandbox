@@ -75,6 +75,9 @@
     <ClCompile Include="..\..\src\MemeScript\Command.cpp">
       <Filter>Source Files\DS</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\MemeScript\StringUtility.cpp">
+      <Filter>Source Files\Interpreter</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeScript\Export.h">
@@ -121,6 +124,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeScript\Command.h">
       <Filter>Header Files\DS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\StringUtility.h">
+      <Filter>Header Files\Interpreter</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

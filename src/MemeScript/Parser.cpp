@@ -1,5 +1,5 @@
 #include <MemeScript/Parser.h>
-#include <MemeCore/StringUtility.h>
+#include <MemeScript/StringUtility.h>
 #include <MemeCore/Debug.h>
 #include <stack>
 

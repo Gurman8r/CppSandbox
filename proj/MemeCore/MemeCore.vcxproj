@@ -187,7 +187,6 @@
     <ClInclude Include="..\..\include\MemeCore\MemoryTracker.h" />
     <ClInclude Include="..\..\include\MemeCore\Rect.h" />
     <ClInclude Include="..\..\include\MemeCore\String.h" />
-    <ClInclude Include="..\..\include\MemeCore\StringUtility.h" />
     <ClInclude Include="..\..\include\MemeCore\Time.h" />
     <ClInclude Include="..\..\include\MemeCore\Duration.h" />
     <ClInclude Include="..\..\include\MemeCore\Timer.h" />
@@ -206,7 +205,6 @@
     <ClCompile Include="..\..\src\MemeCore\MemoryManager.cpp" />
     <ClCompile Include="..\..\src\MemeCore\MemoryTracker.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Maths.cpp" />
-    <ClCompile Include="..\..\src\MemeCore\StringUtility.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Time.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Duration.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Timer.cpp" />

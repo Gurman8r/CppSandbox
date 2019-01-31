@@ -2,7 +2,7 @@
 #define _DEBUG_UTILITY_H_
 
 #include <MemeCore/Console.h>
-#include <MemeCore/StringUtility.h>
+#include <MemeCore/String.h>
 
 namespace ml
 {
@@ -31,19 +31,19 @@ namespace ml
 		template<typename T, typename ... A>
 		inline static Status LogWarning(const string & fmt, const T & arg0, const A &... args)
 		{
-			return Debug::LogWarning(StringUtility::Format(fmt, arg0, (args)...));
+			return Debug::LogWarning(string::Format(fmt, arg0, (args)...));
 		}
 
 		template<typename T, typename ... A>
 		inline static Status LogError(const string & fmt, const T & arg0, const A &... args)
 		{
-			return Debug::LogError(StringUtility::Format(fmt, arg0, (args)...));
+			return Debug::LogError(string::Format(fmt, arg0, (args)...));
 		}
 
 		template<typename T, typename ... A>
 		inline static Status Log(const string & fmt, const T & arg0, const A &... args)
 		{
-			return Debug::Log(StringUtility::Format(fmt, arg0, (args)...));
+			return Debug::Log(string::Format(fmt, arg0, (args)...));
 		}
 
 	public:

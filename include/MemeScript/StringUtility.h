@@ -1,12 +1,12 @@
 #ifndef _STRING_UTILITY_H_
 #define _STRING_UTILITY_H_
 
-#include <MemeCore/Export.h>
+#include <MemeScript/Export.h>
 #include <MemeCore/String.h>
 
 namespace ml
 {
-	class ML_CORE_API StringUtility final
+	class ML_SCRIPT_API StringUtility final
 	{
 	public:
 		static string	Replace(const string & src, const string & find, const string & replace);
@@ -43,40 +43,6 @@ namespace ml
 		static bool		MakeInt(const string & src, int32_t& value);
 		static bool		MakeDecimal(const string & src, double& value);
 		static bool		MakeFloat(const string & src, float& value);
-
-	public: // Templates
-		template<typename T, typename ... A>
-		inline static string Format(const string & fmt, const T & first, const A & ...args)
-		{
-			std::stringstream stream;
-			stream << first << std::endl;
-
-			int32_t sink[] = { 0, ((void)(stream << args << std::endl), 0)... };
-			(void)sink;
-
-			string	temp = fmt;
-			for (size_t index = 0; stream.good(); index++)
-			{
-				const string find = "{" + std::to_string(index) + "}";
-				
-				string arg;
-				if (std::getline(stream, arg))
-				{
-					for (size_t i = 0; (i = temp.find(find, i)) != string::npos;)
-					{
-						temp.replace(i, find.size(), arg);
-						i += arg.size();
-					}
-				}
-			}
-			return temp;
-		}
-
-		template <typename T>
-		inline static string Format(const T & value)
-		{
-			return Format(value, "");
-		}
 	};
 }
 

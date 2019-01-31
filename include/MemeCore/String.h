@@ -220,6 +220,41 @@ namespace ml
 		{
 			return lessThan((const base_type &)(value));
 		}
+
+
+	public: // Custom
+		template<typename T, typename ... A>
+		inline static self_type Format(self_type value, const T & first, const A & ...args)
+		{
+			std::stringstream stream;
+			stream << first << std::endl;
+			
+			int32_t sink[] = { 0, ((void)(stream << args << std::endl), 0)... };
+			(void)sink;
+
+			for (size_t a = 0; stream.good(); a++)
+			{
+				const self_type fmt = ("{" + std::to_string(a) + "}");
+
+				self_type arg;
+				if (std::getline(stream, arg))
+				{
+					for (size_t i = 0;
+						(i = value.find(fmt, i)) != self_type::npos;
+						(i += arg.size()))
+					{
+						value.replace(i, fmt.size(), arg);
+					}
+				}
+			}
+			return value;
+		}
+
+		template <typename T>
+		inline static self_type Format(const self_type & value)
+		{
+			return Format(value, self_type());
+		}
 	};
 }
 

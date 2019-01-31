@@ -30,6 +30,7 @@
     <ClCompile Include="..\..\src\MemeScript\Runtime.cpp" />
     <ClCompile Include="..\..\src\MemeScript\Operator.cpp" />
     <ClCompile Include="..\..\src\MemeScript\Parser.cpp" />
+    <ClCompile Include="..\..\src\MemeScript\StringUtility.cpp" />
     <ClCompile Include="..\..\src\MemeScript\Token.cpp" />
     <ClCompile Include="..\..\src\MemeScript\TokenList.cpp" />
     <ClCompile Include="..\..\src\MemeScript\Var.cpp" />
@@ -47,6 +48,7 @@
     <ClInclude Include="..\..\include\MemeScript\Runtime.h" />
     <ClInclude Include="..\..\include\MemeScript\Operator.h" />
     <ClInclude Include="..\..\include\MemeScript\Parser.h" />
+    <ClInclude Include="..\..\include\MemeScript\StringUtility.h" />
     <ClInclude Include="..\..\include\MemeScript\Token.h" />
     <ClInclude Include="..\..\include\MemeScript\TokenList.h" />
     <ClInclude Include="..\..\include\MemeScript\Var.h" />

@@ -107,7 +107,7 @@ namespace demo
 	void Demo::onUpdate(const UpdateEvent & ev)
 	{
 		// Set Window Title
-		ev.window.setTitle(ml::StringUtility::Format(
+		ev.window.setTitle(ml::string::Format(
 			"{0} | {1} | {2} ({3} fps) | {4}",
 			SETTINGS.title,
 			ML_Time.elapsed(),

@@ -1,5 +1,5 @@
 #include <MemeScript/Lexer.h>
-#include <MemeCore/StringUtility.h>
+#include <MemeScript/StringUtility.h>
 
 namespace
 {

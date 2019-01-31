@@ -3,7 +3,7 @@
 
 #include <MemeCore/IComparable.h>
 #include <MemeScript/TokenList.h>
-#include <MemeCore/StringUtility.h>
+#include <MemeScript/StringUtility.h>
 #include <iostream>
 
 namespace ml
@@ -139,7 +139,7 @@ namespace ml
 		template<typename T, typename ... A>
 		inline Var & errorValue(const string & fmt, const T & arg0, const A &... args)
 		{
-			return errorValue(StringUtility::Format(fmt, arg0, (args)...));
+			return errorValue(string::Format(fmt, arg0, (args)...));
 		};
 
 

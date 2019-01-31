@@ -1,6 +1,6 @@
 #include <MemeScript/Var.h>
 #include <MemeCore/Debug.h>
-#include <MemeCore/StringUtility.h>
+#include <MemeScript/StringUtility.h>
 #include <MemeScript/Operator.h>
 #include <MemeScript/Interpreter.h>
 #include <MemeCore/BitHelper.h>
@@ -693,7 +693,7 @@ namespace ml
 
 		//return (*this);
 
-		return errorValue(StringUtility::Format(
+		return errorValue(string::Format(
 			"Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
 			getType(), (*this), OperatorType::OP_ADD, other.getType(), other));
 	}
@@ -765,7 +765,7 @@ namespace ml
 			}
 		}
 
-		return errorValue(StringUtility::Format(
+		return errorValue(string::Format(
 			"Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
 			getType(), (*this), OperatorType::OP_DIV, other.getType(), other));
 	}
@@ -828,7 +828,7 @@ namespace ml
 			}
 		}
 
-		return errorValue(StringUtility::Format(
+		return errorValue(string::Format(
 			"Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
 			getType(), (*this), OperatorType::OP_MOD, other.getType(), other));
 	}
@@ -900,7 +900,7 @@ namespace ml
 			}
 		}
 
-		return errorValue(StringUtility::Format(
+		return errorValue(string::Format(
 			"Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
 			getType(), (*this), OperatorType::OP_MUL, other.getType(), other));
 	}
@@ -963,7 +963,7 @@ namespace ml
 			}
 		}
 
-		return errorValue(StringUtility::Format(
+		return errorValue(string::Format(
 			"Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
 			getType(), (*this), OperatorType::OP_POW, other.getType(), other));
 	}
@@ -1035,7 +1035,7 @@ namespace ml
 			}
 		}
 
-		return errorValue(StringUtility::Format(
+		return errorValue(string::Format(
 			"Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
 			getType(), (*this), OperatorType::OP_SUB, other.getType(), other));
 	}

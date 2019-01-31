@@ -72,9 +72,6 @@
     <ClInclude Include="..\..\include\MemeCore\ISingleton.h">
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\StringUtility.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Timer.h">
       <Filter>Header Files\Time</Filter>
     </ClInclude>
@@ -185,9 +182,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\MemeCore\StringUtility.cpp">
-      <Filter>Source Files\Utility</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\Maths.cpp">
       <Filter>Source Files\Maths</Filter>
     </ClCompile>

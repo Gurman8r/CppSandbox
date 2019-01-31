@@ -2,7 +2,7 @@
 #define _INTERPRETER_H_
 
 #include <MemeCore/ISingleton.h>
-#include <MemeCore/StringUtility.h>
+#include <MemeScript/StringUtility.h>
 #include <MemeScript/Lexer.h>
 #include <MemeScript/Parser.h>
 #include <MemeScript/Runtime.h>
@@ -30,7 +30,7 @@ namespace ml
 		template <typename T, typename ... A>
 		inline Var execCommand(const string& fmt, const T& arg0, const A&... args)
 		{
-			return execCommand(StringUtility::Format(fmt, arg0, (args)...));
+			return execCommand(string::Format(fmt, arg0, (args)...));
 		}
 
 		Var	execCommand(const string & value);
