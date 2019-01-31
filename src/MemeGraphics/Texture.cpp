@@ -57,7 +57,7 @@ namespace ml
 		return false;
 	}
 
-	bool Texture::loadFromFile(const string & filename)
+	bool Texture::loadFromFile(const String & filename)
 	{
 		Image image;
 		return image.loadFromFile(filename) && loadFromImage(image);

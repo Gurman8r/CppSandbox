@@ -180,6 +180,12 @@
     <ClInclude Include="..\..\include\MemeCore\InputState.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\LibLoader.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\IOStream.hpp">
+      <Filter>Header Files\STD</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeCore\Maths.cpp">
@@ -217,6 +223,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\NativeInput.cpp">
       <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeCore\LibLoader.cpp">
+      <Filter>Source Files\Utility</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

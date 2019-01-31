@@ -20,7 +20,7 @@ namespace ml
 
 	public:
 		bool cleanup() override;
-		bool loadFromFile(const string & filename) override;
+		bool loadFromFile(const String & filename) override;
 		bool loadFromImage(const Image & value);
 		bool loadFromImage(const Image & value, const IntRect & area);
 

@@ -18,8 +18,7 @@ namespace ml
 	// DT : difference type
 	template <class IC, class VT, class UT, class DT>
 	class Iterator
-		: public ITrackable
-		, public IComparable<Iterator<IC, VT, UT, DT>>
+		: public IComparable<Iterator<IC, VT, UT, DT>>
 		, public std::iterator<IC, UT, DT, VT *, VT &>
 	{
 	public:

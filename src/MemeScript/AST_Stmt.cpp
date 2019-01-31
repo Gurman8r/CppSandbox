@@ -275,7 +275,7 @@ namespace ml
 
 	bool AST_Include::run()
 	{
-		const string& filename = str->evaluate().stringValue();
+		const String& filename = str->evaluate().stringValue();
 		
 		std::vector<char> buffer;
 		if (ML_FileSystem.getFileContents(filename, buffer))
@@ -334,12 +334,12 @@ namespace ml
 	{
 		if (AST_String* str = expr->As<AST_String>())
 		{
-			string::const_iterator it;
+			String::const_iterator it;
 			for (it = str->value.begin(); it != str->value.end(); it++)
 			{
 				if (*it == '{')
 				{
-					string name;
+					String name;
 					while (++it != str->value.end())
 					{
 						if (*it == '}')

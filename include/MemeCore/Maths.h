@@ -3,6 +3,23 @@
 
 #include <MemeCore/Export.h>
 
+#define ML_CLAMP(value, min, max) \
+((value) < (min)) \
+? (min) \
+	: ((value) > (max)) \
+	? (max) \
+	: (value) \
+
+#define ML_MAP(value, min1, max1, min2, max2) \
+(min2 + (value - min1) * (max2 - min2) / (max1 - min1)) \
+
+#define ML_SIGN(value) \
+(((value) == (0)) \
+	? (0) \
+	: (((value) > (0)) \
+		? (+1) \
+		: (-1))) \
+
 namespace ml
 {
 	class ML_CORE_API Maths
@@ -13,42 +30,22 @@ namespace ml
 		static const float Rad2Deg;
 
 	public:
-		inline static float toRadians(float degrees)
-		{
-			return degrees * Deg2Rad;
-		}
-
-		inline static float toDegrees(float radians)
-		{
-			return radians * Rad2Deg;
-		}
-
-
-	public:
 		template <typename T>
 		inline static const T clamp(T value, T min, T max)
 		{
-			return (value < min)
-				? (min)
-				: (value > max)
-					? (max)
-					: (value);
+			return static_cast<T>(ML_CLAMP(value, min, max));
 		}
 
 		template <typename T>
 		inline static T mapRange(T value, T min1, T max1, T min2, T max2)
 		{
-			return (min2 + (value - min1) * (max2 - min2) / (max1 - min1));
+			return static_cast<T>(ML_MAP(value, min1, max1, min2, max2));
 		}
 
 		template <typename T>
 		inline static const T sign(const T & value)
 		{
-			return (value == (T)0)
-				? ((T)0)
-				: (value > (T)0)
-					? ((T)1)
-					: ((T)-1);
+			return static_cast<T>(ML_SIGN(value));
 		}
 
 	};

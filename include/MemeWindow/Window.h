@@ -53,7 +53,7 @@ namespace ml
 
 	public:
 		bool create(
-			const string	& title, 
+			const String	& title, 
 			const VideoMode		& mode, 
 			const Style			& style, 
 			const Context		& context);
@@ -71,7 +71,7 @@ namespace ml
 		Window & setIcons(const std::vector<Icon> & value);
 		Window & setPosition(const vec2i & value);
 		Window & setSize(const vec2u & value);
-		Window & setTitle(const string & value);
+		Window & setTitle(const String & value);
 
 		bool	isFocused() const;
 		bool	isOpen() const;
@@ -87,7 +87,7 @@ namespace ml
 		inline const Style &		style()		const { return m_style; }
 		inline const vec2i &		position()	const { return m_position; }
 		inline const vec2u &		size()		const { return videoMode().size; }
-		inline const string &	title()		const { return m_title; }
+		inline const String &	title()		const { return m_title; }
 		inline const uint32_t &		width()		const { return size()[0]; }
 		inline const uint32_t &		height()	const { return size()[1]; }
 		inline const float			aspect()	const { return (float)width() / (float)height(); };
@@ -103,7 +103,7 @@ namespace ml
 		Style		m_style;
 		Cursor		m_cursorMode;
 		vec2i		m_position;
-		string	m_title;
+		String	m_title;
 		bool		m_focused;
 		vec2d		m_scroll;
 

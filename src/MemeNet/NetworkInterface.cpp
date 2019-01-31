@@ -55,7 +55,7 @@ namespace ml
 	}
 
 
-	uint32_t NetworkInterface::send(const GUID & guid, const string & data, const SendSettings & settings)
+	uint32_t NetworkInterface::send(const GUID & guid, const String & data, const SendSettings & settings)
 	{
 		RakNet::BitStream bitStream;
 		bitStream.Write(data.c_str());
@@ -69,7 +69,7 @@ namespace ml
 			settings.receiptNumber);
 	}
 
-	uint32_t NetworkInterface::send(const Address & addr, const string & data, const SendSettings & settings)
+	uint32_t NetworkInterface::send(const Address & addr, const String & data, const SendSettings & settings)
 	{
 		RakNet::BitStream bitStream;
 		bitStream.Write(data.c_str());

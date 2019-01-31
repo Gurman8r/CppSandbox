@@ -1,6 +1,7 @@
 #ifndef _MATRIX_H_
 #define _MATRIX_H_
 
+#include <MemeCore/ITrackable.h>
 #include <MemeCore/IEnumerable.h>
 
 namespace ml

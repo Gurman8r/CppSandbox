@@ -22,20 +22,20 @@ namespace demo
 
 	public:
 		// [General]
-		ml::string	rootPath;		// Solution Dir
-		ml::string	assetPath;		// Where's all the npos?
+		ml::String	rootPath;		// Solution Dir
+		ml::String	assetPath;		// Where's all the npos?
 		uint32_t	runTests;		// Run test functions
 		bool		logLoading;		// Verbose loading output
 
 		// [Script]
-		ml::string	scrPath;		// Location of scripts
-		ml::string	scrFile;		// Script to run on start
+		ml::String	scrPath;		// Location of scripts
+		ml::String	scrFile;		// Script to run on start
 		bool		scrShowToks;	// Show Script Tokens
 		bool		scrShowTree;	// Show Script Syntax Tree
 		bool		scrShowItoP;	// Show Script Infix to Postfix
 
 		// [Window]
-		ml::string	title;			// Window Title
+		ml::String	title;			// Window Title
 		uint32_t	width;			// Window Width
 		uint32_t	height;			// Window Height
 		uint32_t	bitsPerPixel;	// Bits Per Pixel
@@ -66,7 +66,7 @@ namespace demo
 	public:
 		inline bool cleanup() override { return true; }
 
-		inline bool loadFromFile(const ml::string & filename) override
+		inline bool loadFromFile(const ml::String & filename) override
 		{
 			INIReader ini(filename.c_str());
 			if (ini.ParseError() == 0)
@@ -118,7 +118,7 @@ namespace demo
 			return ml::Debug::LogError("Failed Loading Settings \"{0}\"", filename);
 		}
 
-		inline const ml::string pathTo(const ml::string & filename) const
+		inline const ml::String pathTo(const ml::String & filename) const
 		{
 			return rootPath + assetPath + filename;
 		}

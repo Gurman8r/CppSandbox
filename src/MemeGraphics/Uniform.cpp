@@ -2,7 +2,7 @@
 
 namespace ml
 {
-	const string Uniform::Names[Uniform::ID::MAX_UNIFORM_ID] =
+	const String Uniform::Names[Uniform::ID::MAX_UNIFORM_ID] =
 	{
 		"u_model",
 		"u_proj",

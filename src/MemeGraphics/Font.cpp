@@ -50,7 +50,7 @@ namespace ml
 		return true;
 	}
 
-	bool Font::loadFromFile(const string & filename)
+	bool Font::loadFromFile(const String & filename)
 	{
 		FT_Library library;
 		if (FT_Init_FreeType(&library) != EXIT_SUCCESS)
@@ -91,7 +91,7 @@ namespace ml
 		m_face = face;
 
 		// Store the fonts information
-		m_info.family = face->family_name ? face->family_name : string();
+		m_info.family = face->family_name ? face->family_name : String();
 
 		return true;
 	}

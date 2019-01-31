@@ -23,9 +23,9 @@ namespace ml
 		return false;
 	}
 	
-	bool Mesh::loadFromFile(const string & filename)
+	bool Mesh::loadFromFile(const String & filename)
 	{
-		std::stringstream file;
+		String::Stream file;
 		if (ML_FileSystem.getFileContents(filename, file))
 		{
 			file >> (*this);
@@ -50,12 +50,12 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		auto parseLine = [](
-			const string & line,
-			const string & find,
-			std::stringstream & data)
+			const String & line,
+			const String & find,
+			String::Stream & data)
 		{
 			size_t i;
-			if ((i = line.find(find)) != string::npos)
+			if ((i = line.find(find)) != String::npos)
 			{
 				data.str(line.substr((i + find.size()), (line.size() - find.size() - 1)));
 				return true;
@@ -70,10 +70,10 @@ namespace ml
 		m_vn.clear();
 		m_vf.clear();
 
-		string line;
+		String line;
 		while (std::getline(in, line))
 		{
-			std::stringstream data;
+			String::Stream data;
 			if (parseLine(line, "v ", data))
 			{
 				// Position
@@ -98,7 +98,7 @@ namespace ml
 			else if (parseLine(line, "f ", data))
 			{
 				// Index
-				string temp;
+				String temp;
 				while (std::getline(data, temp, '/'))
 				{
 					m_vf.push_back(std::stoi(temp));

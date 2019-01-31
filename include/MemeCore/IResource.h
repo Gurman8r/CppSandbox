@@ -9,7 +9,7 @@ namespace ml
 	{
 	public:
 		virtual bool cleanup() = 0;
-		virtual bool loadFromFile(const string & filename) = 0;
+		virtual bool loadFromFile(const String & filename) = 0;
 	};
 }
 

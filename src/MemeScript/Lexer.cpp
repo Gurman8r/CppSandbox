@@ -29,9 +29,9 @@ namespace ml
 		return m_buffer;
 	}
 
-	string Lexer::getString() const
+	String Lexer::getString() const
 	{
-		string out;
+		String out;
 		for (const char& c : m_buffer)
 			out += c;
 		return out;
@@ -43,7 +43,7 @@ namespace ml
 		return (*this);
 	}
 
-	Lexer & Lexer::setBuffer(const string & value)
+	Lexer & Lexer::setBuffer(const String & value)
 	{
 		m_buffer.clear();
 		for (auto it = value.begin(); it != value.end(); it++)
@@ -67,7 +67,7 @@ namespace ml
 		CharBuffer::const_iterator it;
 		for (it = m_buffer.begin(); it != m_buffer.end(); it++)
 		{
-			string text;
+			String text;
 
 			// End of line
 			if (*it == '\n')
@@ -126,11 +126,11 @@ namespace ml
 	}
 
 
-	bool Lexer::scanName(const_iterator & it, string & text) const
+	bool Lexer::scanName(const_iterator & it, String & text) const
 	{
 		if (isalpha(*it))
 		{
-			string out;
+			String out;
 
 			while (it != m_buffer.end())
 			{
@@ -150,15 +150,15 @@ namespace ml
 			return true;
 		}
 
-		text = string();
+		text = String();
 		return false;
 	}
 
-	bool Lexer::scanNumber(const_iterator& it, string & text) const
+	bool Lexer::scanNumber(const_iterator& it, String & text) const
 	{
 		if (isdigit(*it))
 		{
-			string out;
+			String out;
 
 			while (it != m_buffer.end())
 			{
@@ -178,15 +178,15 @@ namespace ml
 			return true;
 		}
 
-		text = string();
+		text = String();
 		return false;
 	}
 
-	bool Lexer::scanString(const_iterator& it, string & text) const
+	bool Lexer::scanString(const_iterator& it, String & text) const
 	{
 		if (*it == '\"')
 		{
-			string out;
+			String out;
 
 			while (++it != m_buffer.end())
 			{
@@ -210,19 +210,19 @@ namespace ml
 			return true;
 		}
 
-		text = string();
+		text = String();
 		return false;
 	}
 
-	bool Lexer::scanSymbol(const_iterator & it, string & text) const
+	bool Lexer::scanSymbol(const_iterator & it, String & text) const
 	{
 		if (issymbol(*it))
 		{
-			text = string(1, *it);
+			text = String(1, *it);
 			return true;
 		}
 
-		text = string();
+		text = String();
 		return false;
 	}
 

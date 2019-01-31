@@ -157,6 +157,8 @@
     <ClInclude Include="..\..\include\MemeCore\Chunk.h" />
     <ClInclude Include="..\..\include\MemeCore\IHandle.h" />
     <ClInclude Include="..\..\include\MemeCore\InputState.h" />
+    <ClInclude Include="..\..\include\MemeCore\IOStream.hpp" />
+    <ClInclude Include="..\..\include\MemeCore\LibLoader.h" />
     <ClInclude Include="..\..\include\MemeCore\MemoryManager.h" />
     <ClInclude Include="..\..\include\MemeCore\MemoryPool.h" />
     <ClInclude Include="..\..\include\MemeCore\List.h" />
@@ -201,6 +203,7 @@
     <ClCompile Include="..\..\src\MemeCore\Debug.cpp" />
     <ClCompile Include="..\..\src\MemeCore\EventSystem.cpp" />
     <ClCompile Include="..\..\src\MemeCore\FileSystem.cpp" />
+    <ClCompile Include="..\..\src\MemeCore\LibLoader.cpp" />
     <ClCompile Include="..\..\src\MemeCore\NativeInput.cpp" />
     <ClCompile Include="..\..\src\MemeCore\MemoryManager.cpp" />
     <ClCompile Include="..\..\src\MemeCore\MemoryTracker.cpp" />

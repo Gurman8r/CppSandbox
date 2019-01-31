@@ -23,43 +23,29 @@ namespace ml
 		static void		terminate(bool areYouSure);
 
 	public:
-		static Status LogWarning(const string & message);	// - 1 true
-		static Status LogError(const string & message);		//   0 false
-		static Status Log(const string & message);			// + 1 true
+		static Status LogWarning(const String & message);	// - 1 true
+		static Status LogError(const String & message);		//   0 false
+		static Status Log(const String & message);			// + 1 true
 
 	public:
 		template<typename T, typename ... A>
-		inline static Status LogWarning(const string & fmt, const T & arg0, const A &... args)
+		inline static Status LogWarning(const String & fmt, const T & arg0, const A &... args)
 		{
-			return Debug::LogWarning(string::Format(fmt, arg0, (args)...));
+			return Debug::LogWarning(String::Format(fmt, arg0, (args)...));
 		}
 
 		template<typename T, typename ... A>
-		inline static Status LogError(const string & fmt, const T & arg0, const A &... args)
+		inline static Status LogError(const String & fmt, const T & arg0, const A &... args)
 		{
-			return Debug::LogError(string::Format(fmt, arg0, (args)...));
+			return Debug::LogError(String::Format(fmt, arg0, (args)...));
 		}
 
 		template<typename T, typename ... A>
-		inline static Status Log(const string & fmt, const T & arg0, const A &... args)
+		inline static Status Log(const String & fmt, const T & arg0, const A &... args)
 		{
-			return Debug::Log(string::Format(fmt, arg0, (args)...));
+			return Debug::Log(String::Format(fmt, arg0, (args)...));
 		}
-
-	public:
-		inline static std::ostream & out()	{ return std::cout; }
-		inline static std::ostream & err()	{ return std::cerr; }
-		inline static std::istream & in()	{ return std::cin; }
 	};
-
-	static std::ostream & cout	= Debug::out();
-	static std::ostream & cerr	= Debug::err();
-	static std::istream & cin	= Debug::in();
-
-	inline static std::ostream & endl(std::ostream & out)
-	{
-		return out << std::endl;
-	}
 	
 }
 

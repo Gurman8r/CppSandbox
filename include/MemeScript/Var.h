@@ -16,11 +16,11 @@ namespace ml
 		struct ML_SCRIPT_API Ptr
 			: public ITrackable
 		{
-			string		name;
+			String		name;
 			int32_t		index;
 
 			Ptr();
-			Ptr(int32_t index, const string& name);
+			Ptr(int32_t index, const String& name);
 			Ptr(const Ptr& copy);
 
 			Var * get() const;
@@ -56,7 +56,7 @@ namespace ml
 			MAX_VAR_TYPE
 		};
 		
-		static const string TypeNames[Type::MAX_VAR_TYPE];
+		static const String TypeNames[Type::MAX_VAR_TYPE];
 		
 		inline friend std::ostream & operator<<(std::ostream & out, const Type & rhs)
 		{
@@ -73,7 +73,7 @@ namespace ml
 	public:
 		inline int32_t	getScope()		const { return m_scope; }
 		inline Type		getType()		const { return m_type; }
-		inline string	getTypeName()	const { return TypeNames[getType()]; }
+		inline String	getTypeName()	const { return TypeNames[getType()]; }
 
 		inline Var & setScope(int32_t value)
 		{
@@ -115,31 +115,31 @@ namespace ml
 		bool		boolValue() const;
 		float		floatValue() const;
 		Var			elemValue(size_t i) const;
-		string		errorValue() const;
+		String		errorValue() const;
 		size_t		intValue() const;
 		Ptr			pointerValue() const;
 		size_t		sizeOfValue() const;
-		string		stringValue() const;
-		string		textValue() const;
+		String		stringValue() const;
+		String		textValue() const;
 		TokenList	tokensValue() const;
 
 		Var & arrayValue(const TokenList & value);
 		Var & boolValue(const bool & value);
 		Var & elemValue(size_t index, const Token & value);
-		Var & errorValue(const string & value);
+		Var & errorValue(const String & value);
 		Var & floatValue(const float & value);
 		Var & funcValue(const TokenList & value);
 		Var & intValue(const size_t & value);
 		Var & nullValue();
 		Var & pointerValue(const Ptr & value);
-		Var & stringValue(const string & value);
+		Var & stringValue(const String & value);
 		Var & tokensValue(const TokenList & value);
 		Var & voidValue();
 		
 		template<typename T, typename ... A>
-		inline Var & errorValue(const string & fmt, const T & arg0, const A &... args)
+		inline Var & errorValue(const String & fmt, const T & arg0, const A &... args)
 		{
-			return errorValue(string::Format(fmt, arg0, (args)...));
+			return errorValue(String::Format(fmt, arg0, (args)...));
 		};
 
 
@@ -196,7 +196,7 @@ namespace ml
 		Var & operator=(double value);
 		Var & operator=(int32_t value);
 		Var & operator=(const Ptr & value);
-		Var & operator=(const string & value);
+		Var & operator=(const String & value);
 		Var & operator=(const char * value);
 		Var & operator=(char value);
 

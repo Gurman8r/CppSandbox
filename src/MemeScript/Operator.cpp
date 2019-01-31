@@ -50,7 +50,7 @@ namespace ml
 	}
 
 
-	bool Operator::makeOperator(const string& str, Operator& op)
+	bool Operator::makeOperator(const String& str, Operator& op)
 	{
 		Operator::OperMap::const_iterator it = OpValues.find(str);
 		if (it != OpValues.end())

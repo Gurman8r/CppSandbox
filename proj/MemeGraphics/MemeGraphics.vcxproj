@@ -39,6 +39,7 @@
     <ClInclude Include="..\..\include\MemeGraphics\RenderWindow.h" />
     <ClInclude Include="..\..\include\MemeGraphics\Shader.h" />
     <ClInclude Include="..\..\include\MemeGraphics\Shapes.h" />
+    <ClInclude Include="..\..\include\MemeGraphics\Sprite.h" />
     <ClInclude Include="..\..\include\MemeGraphics\Text.h" />
     <ClInclude Include="..\..\include\MemeGraphics\Texture.h" />
     <ClInclude Include="..\..\include\MemeGraphics\Transform.h" />
@@ -62,6 +63,7 @@
     <ClCompile Include="..\..\src\MemeGraphics\RenderWindow.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Shader.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Shapes.cpp" />
+    <ClCompile Include="..\..\src\MemeGraphics\Sprite.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Text.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Texture.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Transform.cpp" />

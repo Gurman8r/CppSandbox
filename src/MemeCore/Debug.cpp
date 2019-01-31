@@ -1,5 +1,6 @@
 #include <MemeCore/Debug.h>
-#include <MemeCore/InputState.h>
+#include <MemeCore/NativeInput.h>
+#include <MemeCore/IOStream.hpp>
 
 namespace ml
 {
@@ -14,7 +15,7 @@ namespace ml
 
 	void Debug::exit(int32_t exitCode)
 	{
-		std::exit(exitCode);
+		return std::exit(exitCode);
 	}
 
 	int32_t Debug::pause(int32_t exitCode)
@@ -31,16 +32,15 @@ namespace ml
 
 	void Debug::terminate(bool areYouSure)
 	{
-		if (areYouSure)
-		{
-			std::terminate();
-		}
+		return ((areYouSure)
+			? std::terminate()
+			: void());
 	}
 
 
-	Debug::Status Debug::LogWarning(const string & message)
+	Debug::Status Debug::LogWarning(const String & message)
 	{
-		err()
+		ml::cerr
 			<< FMT()
 			<< FG::White << "["
 			<< FG::Yellow << " WRN "
@@ -50,9 +50,9 @@ namespace ml
 		return Debug::Warning;
 	}
 
-	Debug::Status Debug::LogError(const string & message)
+	Debug::Status Debug::LogError(const String & message)
 	{
-		err()
+		ml::cerr
 			<< FMT()
 			<< FG::White << "["
 			<< FG::Red << " ERR "
@@ -62,9 +62,9 @@ namespace ml
 		return Debug::Error;
 	}
 	
-	Debug::Status Debug::Log(const string & message)
+	Debug::Status Debug::Log(const String & message)
 	{
-		out()
+		ml::cout
 			<< FMT()
 			<< FG::White << "["
 			<< FG::Green << " LOG "

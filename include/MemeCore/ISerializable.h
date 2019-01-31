@@ -25,14 +25,14 @@ namespace ml
 			return typeid(*this);
 		}
 
-		inline virtual const std::stringstream to_stream() const
+		inline virtual const String::Stream to_stream() const
 		{ 
-			std::stringstream stream;
+			String::Stream stream;
 			stream << (*this);
 			return stream; 
 		}
 
-		inline virtual const string to_string() const
+		inline virtual const String to_string() const
 		{
 			return to_stream().str(); 
 		}

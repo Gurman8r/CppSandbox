@@ -13,7 +13,7 @@ namespace ml
 		, public IComparable<Args>
 	{
 	public:
-		using value_type			= string;
+		using value_type			= String;
 		using vector_type			= std::vector<value_type>;
 		using iterator				= vector_type::iterator;
 		using const_iterator		= vector_type::const_iterator;
@@ -40,7 +40,7 @@ namespace ml
 		const vector_type	subvec(size_t index, size_t count) const;
 		const vector_type&	values() const;
 
-		std::stringstream	sstream() const;
+		String::Stream	sstream() const;
 
 		const size_t	count(const value_type& value) const;
 		const size_t	count(const_iterator first, const_iterator last, const value_type& value) const;

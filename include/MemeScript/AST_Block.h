@@ -12,7 +12,7 @@ namespace ml
 		: public AST_Node
 	{
 	public:
-		using FuncMap = std::unordered_map<string, AST_Func*>;
+		using FuncMap = std::unordered_map<String, AST_Func*>;
 
 	public:
 		AST_Block();
@@ -21,16 +21,16 @@ namespace ml
 
 		virtual std::ostream& display(std::ostream& out) const;
 
-		bool	delv(const string & name);
-		Var *	getv(const string & name) const;
-		Var *	newv(const string & name, const Var & value);
-		Var *	setv(const string & name, const Var & value);
+		bool	delv(const String & name);
+		Var *	getv(const String & name) const;
+		Var *	newv(const String & name, const Var & value);
+		Var *	setv(const String & name, const Var & value);
 
 		Var *	getRet() const;
 		Var *	setRet(const Var & value) const;
 
-		bool		addFunc(const string & name, AST_Func * func);
-		AST_Func*	getFunc(const string & name);
+		bool		addFunc(const String & name, AST_Func * func);
+		AST_Func*	getFunc(const String & name);
 		FuncMap		getFuncs() const;
 
 		AST_Block*	block() const;

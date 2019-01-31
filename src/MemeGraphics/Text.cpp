@@ -61,7 +61,7 @@ namespace ml
 		return (*this);
 	}
 	
-	Text & Text::setText(const string & value)
+	Text & Text::setText(const String & value)
 	{
 		if (m_text != value)
 		{

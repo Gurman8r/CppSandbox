@@ -107,7 +107,7 @@ namespace demo
 	void Demo::onUpdate(const UpdateEvent & ev)
 	{
 		// Set Window Title
-		ev.window.setTitle(ml::string::Format(
+		ev.window.setTitle(ml::String::Format(
 			"{0} | {1} | {2} ({3} fps) | {4}",
 			SETTINGS.title,
 			ML_Time.elapsed(),
@@ -295,7 +295,7 @@ namespace demo
 
 			ML_Interpreter.addCmd({ "cat", [](ml::Args & args)
 			{
-				ml::string buf;
+				ml::String buf;
 				if (ML_FileSystem.getFileContents(args.pop_front().front(), buf))
 				{
 					ml::cout << buf << ml::endl;
@@ -308,11 +308,11 @@ namespace demo
 			ML_Interpreter.addCmd({ "read", [](ml::Args & args)
 			{
 
-				ml::string name = args.pop_front().front();
+				ml::String name = args.pop_front().front();
 
 				if (ML_FileSystem.fileExists(name))
 				{
-					ml::string buf;
+					ml::String buf;
 					if (ML_FileSystem.getFileContents(name, buf))
 					{
 						return ml::Var().stringValue(buf);
@@ -320,7 +320,7 @@ namespace demo
 				}
 				else if (DIR * dir = opendir(name.c_str()))
 				{
-					std::stringstream ss;
+					ml::String::Stream ss;
 					while (dirent * e = readdir(dir))
 					{
 						switch (e->d_type)
@@ -369,7 +369,7 @@ namespace demo
 
 			ML_Interpreter.addCmd({ "ls", [](ml::Args & args)
 			{
-				const ml::string dirName = args.pop_front().empty() ? "./" : args.str();
+				const ml::String dirName = args.pop_front().empty() ? "./" : args.str();
 				if (DIR * dir = opendir(dirName.c_str()))
 				{
 					while (dirent * e = readdir(dir))
@@ -401,7 +401,7 @@ namespace demo
 			{
 				if (!args.pop_front().empty())
 				{
-					const ml::string & opt = args.front();
+					const ml::String & opt = args.front();
 					if (opt == "name")
 					{
 						return ml::Var().stringValue(SETTINGS.title);

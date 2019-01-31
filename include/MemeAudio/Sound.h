@@ -16,7 +16,7 @@ namespace ml
 		~Sound();
 
 		bool cleanup() override;
-		bool loadFromFile(const string & filename) override;
+		bool loadFromFile(const String & filename) override;
 
 	private:
 		void * m_device;

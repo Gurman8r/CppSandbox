@@ -19,8 +19,8 @@ namespace ml
 		friend ISingleton<Interpreter>;
 
 	public:
-		using CmdTable = std::unordered_map<string, Command>;
-		using CmdNames = std::vector<string>;
+		using CmdTable = std::unordered_map<String, Command>;
+		using CmdNames = std::vector<String>;
 
 	private:
 		Interpreter() {}
@@ -28,19 +28,19 @@ namespace ml
 
 	public:
 		template <typename T, typename ... A>
-		inline Var execCommand(const string& fmt, const T& arg0, const A&... args)
+		inline Var execCommand(const String& fmt, const T& arg0, const A&... args)
 		{
-			return execCommand(string::Format(fmt, arg0, (args)...));
+			return execCommand(String::Format(fmt, arg0, (args)...));
 		}
 
-		Var	execCommand(const string & value);
-		Var	execFile(const string & value);
-		Var	execSource(const string & value);
+		Var	execCommand(const String & value);
+		Var	execFile(const String & value);
+		Var	execSource(const String & value);
 		Var	execToks(const TokenList & value);
 		Var	execAST(AST_Block * value);
 
 		Command * addCmd(const Command & value);
-		Command * getCmd(const string & value);
+		Command * getCmd(const String & value);
 
 		inline const CmdTable & cmdTable() const { return m_cmdTable; }
 		inline const CmdNames & cmdNames() const { return m_cmdNames; }

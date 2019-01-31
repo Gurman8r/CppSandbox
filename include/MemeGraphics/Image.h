@@ -22,7 +22,7 @@ namespace ml
 		~Image();
 
 		bool cleanup() override;
-		bool loadFromFile(const string & filename) override;		
+		bool loadFromFile(const String & filename) override;		
 
 		Image & create(uint32_t width, uint32_t height, const vec4b & color);
 		Image & create(uint32_t width, uint32_t height, const uint8_t * pixels);

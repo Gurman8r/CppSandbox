@@ -112,9 +112,9 @@ namespace ml
 		return m_values;
 	}
 
-	std::stringstream Args::sstream() const
+	String::Stream Args::sstream() const
 	{
-		std::stringstream stream;
+		String::Stream stream;
 
 		if (!empty())
 		{

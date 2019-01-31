@@ -58,22 +58,22 @@ namespace ml
 		, public IComparable<Token>
 		, public IComparable<char>
 		, public IComparable<TokenType>
-		, public IComparable<string>
+		, public IComparable<String>
 	{
-		using SymbolMap = std::unordered_map<string, TokenType>;
-		using NameMap = std::unordered_map<TokenType, string>;
+		using SymbolMap = std::unordered_map<String, TokenType>;
+		using NameMap = std::unordered_map<TokenType, String>;
 
 		static const NameMap	TypeNames;
 		static const SymbolMap	Symbols;
 
 		TokenType		type;
-		string		data;
+		String		data;
 
 		Token();
 		Token(TokenType type);
 		Token(char type);
-		Token(TokenType type, const string & data);
-		Token(char type, const string & data);
+		Token(TokenType type, const String & data);
+		Token(char type, const String & data);
 		Token(const Token & copy);
 
 		Token & operator=(const Token & value);
@@ -85,12 +85,12 @@ namespace ml
 		bool equals(const Token & value) const override;
 		bool equals(const TokenType & value) const override;
 		bool equals(const char & value) const override;
-		bool equals(const string & value) const override;
+		bool equals(const String & value) const override;
 
 		bool lessThan(const Token & value) const override;
 		bool lessThan(const TokenType & value) const override;
 		bool lessThan(const char & value) const override;
-		bool lessThan(const string & value) const override;
+		bool lessThan(const String & value) const override;
 
 		void serialize(std::ostream & out) const override;
 	};

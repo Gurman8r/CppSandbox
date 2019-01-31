@@ -9,12 +9,12 @@
 
 namespace ml
 {
-	bool FileSystem::fileExists(const string & filename) const
+	bool FileSystem::fileExists(const String & filename) const
 	{
 		return (bool)(std::ifstream(filename));
 	}
 
-	bool FileSystem::getFileContents(const string & filename, std::vector<char> & buffer) const
+	bool FileSystem::getFileContents(const String & filename, std::vector<char> & buffer) const
 	{
 		buffer.clear();
 		if (!filename.empty())
@@ -52,22 +52,22 @@ namespace ml
 		}
 	}
 
-	bool FileSystem::getFileContents(const string & filename, string & str) const
+	bool FileSystem::getFileContents(const String & filename, String & str) const
 	{
 		static std::vector<char> buffer;
 		str.clear();
 		if (getFileContents(filename, buffer))
 		{
-			str = string(buffer.begin(), buffer.end());
+			str = String(buffer.begin(), buffer.end());
 			return true;
 		}
 		return false;
 	}
 
-	bool FileSystem::getFileContents(const string & filename, std::stringstream & stream) const
+	bool FileSystem::getFileContents(const String & filename, String::Stream & stream) const
 	{
-		static string buffer;
-		stream.str(string());
+		static String buffer;
+		stream.str(String());
 		if (getFileContents(filename, buffer))
 		{
 			stream.str(buffer);
@@ -77,7 +77,7 @@ namespace ml
 	}
 	
 
-	bool FileSystem::setWorkingDir(const string & value)
+	bool FileSystem::setWorkingDir(const String & value)
 	{
 #ifdef ML_SYSTEM_WINDOWS
 		return (_chdir(value.c_str()) == EXIT_SUCCESS) ? true : false;
@@ -86,27 +86,27 @@ namespace ml
 #endif
 	}
 
-	string FileSystem::getWorkingDir() const
+	String FileSystem::getWorkingDir() const
 	{
 #ifdef ML_SYSTEM_WINDOWS
-		return string(_getcwd(NULL, 0));
+		return String(_getcwd(NULL, 0));
 #else
-		return string();
+		return String();
 #endif
 	}
 
 
-	string FileSystem::getFileExtension(const string & filename) const
+	String FileSystem::getFileExtension(const String & filename) const
 	{
 		if (fileExists(filename))
 		{
 			size_t i;
-			if ((i = filename.find_last_of('.')) != string::npos)
+			if ((i = filename.find_last_of('.')) != String::npos)
 			{
 				return filename.substr(i, filename.size() - i);
 			}
 		}
-		return string();
+		return String();
 	}
 
 

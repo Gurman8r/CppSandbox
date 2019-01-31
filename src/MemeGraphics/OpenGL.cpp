@@ -112,12 +112,12 @@ namespace ml
 		// Get the last error
 		if (GL::Err errorCode = getError())
 		{
-			string fileName(file);
+			String fileName(file);
 			fileName = fileName.substr(fileName.find_last_of("\\/") + 1);
 
 			// Decode the error code
-			string errorName;
-			string errorDesc;
+			String errorName;
+			String errorDesc;
 			switch (errorCode)
 			{
 			case GL::InvalidEnum:

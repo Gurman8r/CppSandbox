@@ -20,15 +20,15 @@ namespace ml
 		~FileSystem() {}
 
 	public:
-		bool	fileExists(const string & filename) const;
-		bool	getFileContents(const string & filename, std::vector<char> & buffer) const;
-		bool	getFileContents(const string & filename, string & str) const;
-		bool	getFileContents(const string & filename, std::stringstream & stream) const;
+		bool	fileExists(const String & filename) const;
+		bool	getFileContents(const String & filename, std::vector<char> & buffer) const;
+		bool	getFileContents(const String & filename, String & str) const;
+		bool	getFileContents(const String & filename, String::Stream & stream) const;
 
-		bool	setWorkingDir(const string & value);
-		string	getWorkingDir() const;
+		bool	setWorkingDir(const String & value);
+		String	getWorkingDir() const;
 
-		string	getFileExtension(const string & filename) const;
+		String	getFileExtension(const String & filename) const;
 	};
 }
 
