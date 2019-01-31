@@ -1,5 +1,5 @@
-#ifndef _STRING_H_
-#define _STRING_H_
+#ifndef _ML_STRING_H_
+#define _ML_STRING_H_
 
 #include <MemeCore/IComparable.h>
 #include <algorithm>
@@ -24,28 +24,26 @@ namespace ml
 		, public IComparable<std::basic_string<_Elem, _Traits, _Alloc>>
 	{
 	public:
-		using value_type		= _Elem;
-		using traits_type		= _Traits;
-		using allocator_type	= _Alloc;
-		using size_type			= size_t;
+		using value_type			= _Elem;
+		using traits_type			= _Traits;
+		using allocator_type		= _Alloc;
 
-		using base_type			= std::basic_string<value_type, traits_type, allocator_type>;
-		using self_type			= BasicString<value_type, traits_type, allocator_type>;
-		using init_type			= std::initializer_list<value_type>;
+		using base_type				= std::basic_string<value_type, traits_type, allocator_type>;
+		using init_type				= std::initializer_list<value_type>;
+		using self_type				= BasicString<value_type, traits_type, allocator_type>;
 		
-		using reference			= value_type &;
-		using pointer			= value_type *;
-		using const_reference	= const value_type &;
-		using const_pointer		= const value_type *;
-
-		using iterator				= base_type::iterator;
-		using const_iterator		= base_type::const_iterator;
-		using reverse_iterator		= base_type::reverse_iterator;
-		using const_reverse_iterator= base_type::const_reverse_iterator;
-
-		// types needed for a container base
-		using _Alty			= base_type::_Alty;
-		using _Alty_traits	= base_type::_Alty_traits;
+		using reference				= typename base_type::reference;
+		using pointer				= typename base_type::pointer;
+		using const_reference		= typename base_type::const_reference;
+		using const_pointer			= typename base_type::const_pointer;
+		using size_type				= typename base_type::size_type;
+		using difference_type		= typename base_type::difference_type;
+		using iterator				= typename base_type::iterator;
+		using const_iterator		= typename base_type::const_iterator;
+		using reverse_iterator		= typename base_type::reverse_iterator;
+		using const_reverse_iterator= typename base_type::const_reverse_iterator;
+		using _Alty					= typename base_type::_Alty;
+		using _Alty_traits			= typename base_type::_Alty_traits;
 
 
 	public: // Constructors
@@ -142,30 +140,15 @@ namespace ml
 		{
 		}
 
-		BasicString(const value_type value)
-			: self_type(1, value)
-		{
-		}
-		
 		virtual ~BasicString() noexcept
 		{
 		}
 
 
-	public: // Base Cast
+	public: // Cast Operators
 		inline operator base_type() const
 		{
 			return static_cast<base_type>(*this);
-		}
-		
-		inline operator base_type &() const
-		{
-			return static_cast<base_type &>(*this);
-		}
-		
-		inline operator base_type &&() const
-		{
-			return static_cast<base_type &&>(*this);
 		}
 		
 		inline operator const base_type &() const
@@ -174,18 +157,17 @@ namespace ml
 		}
 
 
-	public: // Assignment Operators (from xstring)
+	public: // Assignment Operators
 		inline self_type & operator=(const self_type & other)
 		{
 			using namespace std;
-
 			if (this != _STD addressof(other))
 			{
 #pragma warning(push)
-#pragma warning(disable: 4127)	// conditional expression is constant
+#pragma warning(disable: 4127)
 				if (_Alty_traits::propagate_on_container_copy_assignment::value
 					&& this->_Getal() != other._Getal())
-				{	// change allocator before copying
+				{
 					this->_Tidy_deallocate();
 				}
 #pragma warning(pop)
@@ -202,13 +184,12 @@ namespace ml
 		inline self_type & operator=(self_type && other) noexcept
 		{
 			using namespace std;
-
 			if (this != _STD addressof(other))
 			{
 				this->_Tidy_deallocate();
-
+				
 				this->_Move_alloc(other._Getal());
-
+				
 				this->_Assign_rv_contents(
 					_STD move(other),
 					bool_constant<_Always_equal_after_move<_Alty>>{});
@@ -256,7 +237,7 @@ namespace ml
 	using WString	= BasicString<wchar_t>;
 	using String16	= BasicString<char16_t>;
 	using String32	= BasicString<char32_t>;
-#endif // !ML_STRING
+#endif
 }
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -282,4 +263,4 @@ namespace std
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-#endif // !_STRING_H_
+#endif // !_ML_STRING_H_

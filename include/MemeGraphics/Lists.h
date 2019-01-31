@@ -20,7 +20,7 @@ namespace ml
 		: public List<Vertex>
 	{
 	public:
-		using base_type = List<data_type>;
+		using base_type = List<value_type>;
 		using self_type = VertexList;
 
 	public:

@@ -495,29 +495,6 @@ namespace tests
 
 		return ml::Debug::pause(EXIT_SUCCESS);
 	}
-
-	inline static int32_t testStrings()
-	{
-		ml::BasicString<char> a = "Hello,";
-		ml::BasicString<char> b = " World!";
-
-		std::unordered_map<ml::BasicString<char>, int32_t> m = 
-		{
-			{ "A" , 0 },
-			{ "B" , 1 },
-			{ "C" , 2 },
-			{ "D" , 3 },
-		};
-
-		for (auto pair : m)
-		{
-			ml::cout 
-				<< "{" << pair.first << ", " << pair.second << "} "
-				<< ml::endl;
-		}
-
-		return ml::Debug::pause(EXIT_SUCCESS);
-	}
 }
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -533,7 +510,6 @@ namespace tests
 		case 3: return testMemoryC();
 		case 4: return testManualMemory1();
 		case 5: return testManualMemory2();
-		case 6: return testStrings();
 		}
 		return EXIT_FAILURE;
 	}

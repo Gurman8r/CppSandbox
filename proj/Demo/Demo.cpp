@@ -569,12 +569,6 @@ namespace demo
 		{
 			if (ml::OpenAL::init())
 			{
-				ml::AudioBuffer buffer;
-				buffer.generate(1, 512);
-
-				ml::AudioSource source;
-				source.generate(1, 16);
-
 				return true;
 			}
 			else

@@ -14,12 +14,13 @@ namespace ml
 	public:
 		AudioSource();
 		AudioSource(const AudioSource & copy);
+		~AudioSource();
 
-		AudioSource & generate(size_t count, size_t size);
+		AudioSource & clean();
+		AudioSource & create();
 
 	private:
 		size_t m_count;
-		size_t m_size;
 	};
 }
 

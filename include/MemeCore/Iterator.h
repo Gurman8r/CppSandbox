@@ -29,6 +29,8 @@ namespace ml
 		using difference_type	= DT;
 		using pointer			= value_type * ;
 		using reference			= value_type & ;
+		using const_pointer		= const value_type * ;
+		using const_reference	= const value_type & ;
 		using self_type			= Iterator<iterator_category, value_type, unqualified_type, difference_type>;
 		using const_self_type	= Iterator<iterator_category, const value_type, unqualified_type, difference_type>;
 

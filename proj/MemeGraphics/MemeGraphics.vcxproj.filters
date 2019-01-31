@@ -34,11 +34,11 @@
     <Filter Include="Header Files\Buffers">
       <UniqueIdentifier>{6652bc3a-a5fa-44ca-8400-ad6093276177}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\GL">
-      <UniqueIdentifier>{18eb3d43-0a77-4af5-9975-896e67ff95dc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\GL">
+    <Filter Include="Header Files\Wrapper">
       <UniqueIdentifier>{e6925aeb-bae2-4cf0-bfbb-70aba96f9b5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Wrapper">
+      <UniqueIdentifier>{18eb3d43-0a77-4af5-9975-896e67ff95dc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -106,10 +106,10 @@
       <Filter>Header Files\Buffers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\GL.h">
-      <Filter>Header Files\GL</Filter>
+      <Filter>Header Files\Wrapper</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\OpenGL.h">
-      <Filter>Header Files\GL</Filter>
+      <Filter>Header Files\Wrapper</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\RenderBatch.h">
       <Filter>Header Files\Rendering</Filter>
@@ -150,7 +150,7 @@
       <Filter>Source Files\DS</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\OpenGL.cpp">
-      <Filter>Source Files\GL</Filter>
+      <Filter>Source Files\Wrapper</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Uniform.cpp">
       <Filter>Source Files\DS</Filter>

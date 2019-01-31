@@ -13,17 +13,17 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\AL">
-      <UniqueIdentifier>{b891ca2e-b5bd-479a-b30a-9e04e215cb13}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\AL">
-      <UniqueIdentifier>{c0b656a8-1013-4cc1-b90c-7a59b2747737}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Buffers">
       <UniqueIdentifier>{f442ec10-6795-48f3-a90b-484e137cb821}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Buffers">
       <UniqueIdentifier>{d8b1bc38-acbb-4e83-b7b1-954000c6f7dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Wrapper">
+      <UniqueIdentifier>{b891ca2e-b5bd-479a-b30a-9e04e215cb13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Wrapper">
+      <UniqueIdentifier>{c0b656a8-1013-4cc1-b90c-7a59b2747737}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -37,10 +37,10 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeAudio\AL.h">
-      <Filter>Header Files\AL</Filter>
+      <Filter>Header Files\Wrapper</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeAudio\OpenAL.h">
-      <Filter>Header Files\AL</Filter>
+      <Filter>Header Files\Wrapper</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeAudio\AudioBuffer.h">
       <Filter>Header Files\Buffers</Filter>
@@ -63,7 +63,7 @@
       <Filter>Source Files\Buffers</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeAudio\OpenAL.cpp">
-      <Filter>Source Files\AL</Filter>
+      <Filter>Source Files\Wrapper</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

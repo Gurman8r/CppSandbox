@@ -6,23 +6,32 @@ namespace ml
 	AudioSource::AudioSource()
 		: IHandle(NULL)
 		, m_count(0)
-		, m_size(0)
 	{
 	}
 	AudioSource::AudioSource(const AudioSource & copy)
 		: IHandle(copy)
 		,m_count(copy.m_count)
-		,m_size(copy.m_size)
 	{
 	}
-
-	AudioSource & AudioSource::generate(size_t count, size_t size)
+	AudioSource::~AudioSource()
 	{
-		if (!(*this) && (count && size))
+		clean();
+	}
+
+	AudioSource & AudioSource::clean()
+	{
+		if ((*this))
 		{
-			m_count = count;
-			m_size = size;
-			OpenAL::genSources(count, size, (*this));
+
+		}
+		return (*this);
+	}
+
+	AudioSource & AudioSource::create()
+	{
+		if (!(*this) && (get_ref() = OpenAL::genSources(1)))
+		{
+
 		}
 		return (*this);
 	}

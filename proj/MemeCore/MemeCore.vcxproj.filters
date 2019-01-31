@@ -138,9 +138,6 @@
     <ClInclude Include="..\..\include\MemeCore\ComponentMap.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\BitHelper.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Maths.h">
       <Filter>Header Files\Maths</Filter>
     </ClInclude>
@@ -182,6 +179,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Iterator.h">
       <Filter>Header Files\DS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\BitHelper.h">
+      <Filter>Header Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

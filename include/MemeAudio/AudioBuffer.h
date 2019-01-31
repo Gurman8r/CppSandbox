@@ -12,16 +12,15 @@ namespace ml
 		, public IHandle<uint32_t>
 	{
 	public:
-
 		AudioBuffer();
 		AudioBuffer(const AudioBuffer & copy);
 		~AudioBuffer();
 
-		AudioBuffer & generate(size_t count, size_t size);
+		AudioBuffer & clean();
+		AudioBuffer & create();
 
 	private:
 		size_t m_count;
-		size_t m_size;
 	};
 }
 
