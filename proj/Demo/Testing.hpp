@@ -1,7 +1,7 @@
 #ifndef _TESTING_H_
 #define _TESTING_H_
 
-#include <MemeCore/MemoryManager.h>
+#include <MemeCore/MemoryManager.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * */
 

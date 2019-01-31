@@ -1,4 +1,4 @@
-#include <MemeGraphics/Color.h>
+#include <MemeGraphics/Color.hpp>
 
 namespace ml
 {

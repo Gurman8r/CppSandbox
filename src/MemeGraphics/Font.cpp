@@ -1,6 +1,6 @@
-#include <MemeGraphics/Font.h>
-#include <MemeGraphics/OpenGL.h>
-#include <MemeCore/Debug.h>
+#include <MemeGraphics/Font.hpp>
+#include <MemeGraphics/OpenGL.hpp>
+#include <MemeCore/Debug.hpp>
 
 #include <ft2build.h>
 #include FT_FREETYPE_H

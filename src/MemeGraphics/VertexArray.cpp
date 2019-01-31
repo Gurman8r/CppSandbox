@@ -1,5 +1,5 @@
-#include <MemeGraphics/VertexArray.h>
-#include <MemeGraphics/OpenGL.h>
+#include <MemeGraphics/VertexArray.hpp>
+#include <MemeGraphics/OpenGL.hpp>
 
 namespace ml
 {

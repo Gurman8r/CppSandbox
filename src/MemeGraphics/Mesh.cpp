@@ -1,6 +1,6 @@
-#include <MemeGraphics/Mesh.h>
-#include <MemeCore/FileSystem.h>
-#include <MemeCore/Debug.h>
+#include <MemeGraphics/Mesh.hpp>
+#include <MemeCore/FileSystem.hpp>
+#include <MemeCore/Debug.hpp>
 
 namespace ml
 {

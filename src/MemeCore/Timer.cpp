@@ -1,4 +1,4 @@
-#include <MemeCore/Timer.h>
+#include <MemeCore/Timer.hpp>
 
 namespace ml
 {

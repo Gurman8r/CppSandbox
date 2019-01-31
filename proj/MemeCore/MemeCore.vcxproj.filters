@@ -60,139 +60,136 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\MemeCore\ITrackable.h">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\IComparable.h">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\ISerializable.h">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\ISingleton.h">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Timer.h">
-      <Filter>Header Files\Time</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Export.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Config.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Component.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Entity.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Matrix.h">
-      <Filter>Header Files\Maths</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Vector.h">
-      <Filter>Header Files\Maths</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Vector2.h">
-      <Filter>Header Files\Maths</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Vector3.h">
-      <Filter>Header Files\Maths</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Vector4.h">
-      <Filter>Header Files\Maths</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\INonCopyable.h">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\EventListener.h">
-      <Filter>Header Files\Events</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\EventSystem.h">
-      <Filter>Header Files\Events</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\FileSystem.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\IResource.h">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Rect.h">
-      <Filter>Header Files\Maths</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Time.h">
-      <Filter>Header Files\Time</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Duration.h">
-      <Filter>Header Files\Time</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\ComponentMap.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Maths.h">
-      <Filter>Header Files\Maths</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\MemoryTracker.h">
-      <Filter>Header Files\Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\MemoryPool.h">
-      <Filter>Header Files\Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\MemoryManager.h">
-      <Filter>Header Files\Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Enum.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Chunk.h">
-      <Filter>Header Files\Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\IHandle.h">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Event.h">
-      <Filter>Header Files\Events</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Debug.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Console.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\List.h">
-      <Filter>Header Files\STD</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\String.h">
-      <Filter>Header Files\STD</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Iterator.h">
-      <Filter>Header Files\STD</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\BitHelper.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\NativeInput.h">
-      <Filter>Header Files\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\NativeKey.h">
-      <Filter>Header Files\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\InputState.h">
-      <Filter>Header Files\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\LibLoader.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\IOStream.hpp">
       <Filter>Header Files\STD</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Component.hpp">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\ComponentMap.hpp">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Entity.hpp">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Event.hpp">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\EventListener.hpp">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\EventSystem.hpp">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\InputState.hpp">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\NativeInput.hpp">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\NativeKey.hpp">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\IComparable.hpp">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\IHandle.hpp">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\INonCopyable.hpp">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\IResource.hpp">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\ISerializable.hpp">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\ISingleton.hpp">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\ITrackable.hpp">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Maths.hpp">
+      <Filter>Header Files\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Matrix.hpp">
+      <Filter>Header Files\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Rect.hpp">
+      <Filter>Header Files\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Vector.hpp">
+      <Filter>Header Files\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Vector2.hpp">
+      <Filter>Header Files\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Vector3.hpp">
+      <Filter>Header Files\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Vector4.hpp">
+      <Filter>Header Files\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Chunk.hpp">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\MemoryManager.hpp">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\MemoryPool.hpp">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\MemoryTracker.hpp">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Iterator.hpp">
+      <Filter>Header Files\STD</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\List.hpp">
+      <Filter>Header Files\STD</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\String.hpp">
+      <Filter>Header Files\STD</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Duration.hpp">
+      <Filter>Header Files\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Time.hpp">
+      <Filter>Header Files\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Timer.hpp">
+      <Filter>Header Files\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\BitHelper.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Console.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Debug.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Enum.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\FileSystem.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\LibLoader.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Config.hpp">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Export.hpp">
+      <Filter>Resource Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeCore\Maths.cpp">
       <Filter>Source Files\Maths</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\include\MemeCore\IEnumerable.h">
-      <Filter>Header Files\Interfaces</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\EventSystem.cpp">
       <Filter>Source Files\Events</Filter>
@@ -226,6 +223,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\LibLoader.cpp">
       <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\MemeCore\IEnumerable.hpp">
+      <Filter>Header Files\Interfaces</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

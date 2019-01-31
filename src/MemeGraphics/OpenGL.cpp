@@ -1,5 +1,5 @@
-#include <MemeGraphics/OpenGL.h>
-#include <MemeCore/Debug.h>
+#include <MemeGraphics/OpenGL.hpp>
+#include <MemeCore/Debug.hpp>
 
 #include <cassert>
 

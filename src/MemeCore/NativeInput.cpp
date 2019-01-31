@@ -1,4 +1,4 @@
-#include <MemeCore/NativeInput.h>
+#include <MemeCore/NativeInput.hpp>
 
 #ifdef ML_SYSTEM_WINDOWS
 #include <Windows.h>

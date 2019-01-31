@@ -42,92 +42,92 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\MemeGraphics\Export.h">
+    <ClInclude Include="..\..\include\MemeGraphics\Export.hpp">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\RenderTarget.h">
-      <Filter>Header Files\Rendering</Filter>
+    <ClInclude Include="..\..\include\MemeGraphics\BufferLayout.hpp">
+      <Filter>Header Files\Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\RenderWindow.h">
-      <Filter>Header Files\Rendering</Filter>
+    <ClInclude Include="..\..\include\MemeGraphics\FrameBuffer.hpp">
+      <Filter>Header Files\Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Color.h">
+    <ClInclude Include="..\..\include\MemeGraphics\IndexBuffer.hpp">
+      <Filter>Header Files\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\VertexArray.hpp">
+      <Filter>Header Files\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\VertexBuffer.hpp">
+      <Filter>Header Files\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\Color.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Font.h">
+    <ClInclude Include="..\..\include\MemeGraphics\Font.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Glyph.h">
+    <ClInclude Include="..\..\include\MemeGraphics\Glyph.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Image.h">
+    <ClInclude Include="..\..\include\MemeGraphics\Image.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Mesh.h">
+    <ClInclude Include="..\..\include\MemeGraphics\Lists.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Texture.h">
+    <ClInclude Include="..\..\include\MemeGraphics\Mesh.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Vertex.h">
+    <ClInclude Include="..\..\include\MemeGraphics\Quaternion.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Uniform.h">
+    <ClInclude Include="..\..\include\MemeGraphics\Shader.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Transform.h">
+    <ClInclude Include="..\..\include\MemeGraphics\Shapes.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\ITransformable.h">
+    <ClInclude Include="..\..\include\MemeGraphics\Texture.hpp">
+      <Filter>Header Files\DS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\Transform.hpp">
+      <Filter>Header Files\DS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\Uniform.hpp">
+      <Filter>Header Files\DS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\Vertex.hpp">
+      <Filter>Header Files\DS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\IRenderer.hpp">
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Shapes.h">
-      <Filter>Header Files\DS</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Shader.h">
-      <Filter>Header Files\DS</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\VertexBuffer.h">
-      <Filter>Header Files\Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\VertexArray.h">
-      <Filter>Header Files\Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\IndexBuffer.h">
-      <Filter>Header Files\Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\BufferLayout.h">
-      <Filter>Header Files\Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Gizmos.h">
-      <Filter>Header Files\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\FrameBuffer.h">
-      <Filter>Header Files\Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\GL.h">
-      <Filter>Header Files\Wrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\OpenGL.h">
-      <Filter>Header Files\Wrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\RenderBatch.h">
-      <Filter>Header Files\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\IRenderer.h">
+    <ClInclude Include="..\..\include\MemeGraphics\ITransformable.hpp">
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Text.h">
+    <ClInclude Include="..\..\include\MemeGraphics\Gizmos.hpp">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Lists.h">
-      <Filter>Header Files\DS</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Quaternion.h">
-      <Filter>Header Files\DS</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Sprite.h">
+    <ClInclude Include="..\..\include\MemeGraphics\RenderBatch.hpp">
       <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\RenderTarget.hpp">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\RenderWindow.hpp">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\Sprite.hpp">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\Text.hpp">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\GL.hpp">
+      <Filter>Header Files\Wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\OpenGL.hpp">
+      <Filter>Header Files\Wrapper</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

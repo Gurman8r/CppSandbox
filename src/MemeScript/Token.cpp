@@ -1,6 +1,6 @@
-#include <MemeScript/Token.h>
-#include <MemeScript/Operator.h>
-#include <MemeCore/Debug.h>
+#include <MemeScript/Token.hpp>
+#include <MemeScript/Operator.hpp>
+#include <MemeCore/Debug.hpp>
 
 namespace ml
 {

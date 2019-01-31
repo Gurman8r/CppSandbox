@@ -80,53 +80,53 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\MemeScript\Export.h">
+    <ClInclude Include="..\..\include\MemeScript\AST_Block.hpp">
+      <Filter>Header Files\AST</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\AST_Expr.hpp">
+      <Filter>Header Files\AST</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\AST_Node.hpp">
+      <Filter>Header Files\AST</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\AST_Stmt.hpp">
+      <Filter>Header Files\AST</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\Args.hpp">
+      <Filter>Header Files\DS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\Command.hpp">
+      <Filter>Header Files\DS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\Operator.hpp">
+      <Filter>Header Files\DS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\Token.hpp">
+      <Filter>Header Files\DS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\TokenList.hpp">
+      <Filter>Header Files\DS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\Var.hpp">
+      <Filter>Header Files\DS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\Interpreter.hpp">
+      <Filter>Header Files\Interpreter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\Lexer.hpp">
+      <Filter>Header Files\Interpreter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\Parser.hpp">
+      <Filter>Header Files\Interpreter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\Runtime.hpp">
+      <Filter>Header Files\Interpreter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\StringUtility.hpp">
+      <Filter>Header Files\Interpreter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\Export.hpp">
       <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeScript\AST_Block.h">
-      <Filter>Header Files\AST</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeScript\AST_Expr.h">
-      <Filter>Header Files\AST</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeScript\AST_Node.h">
-      <Filter>Header Files\AST</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeScript\AST_Stmt.h">
-      <Filter>Header Files\AST</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeScript\Args.h">
-      <Filter>Header Files\DS</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeScript\Var.h">
-      <Filter>Header Files\DS</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeScript\TokenList.h">
-      <Filter>Header Files\DS</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeScript\Token.h">
-      <Filter>Header Files\DS</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeScript\Operator.h">
-      <Filter>Header Files\DS</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeScript\Interpreter.h">
-      <Filter>Header Files\Interpreter</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeScript\Lexer.h">
-      <Filter>Header Files\Interpreter</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeScript\Parser.h">
-      <Filter>Header Files\Interpreter</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeScript\Runtime.h">
-      <Filter>Header Files\Interpreter</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeScript\Command.h">
-      <Filter>Header Files\DS</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeScript\StringUtility.h">
-      <Filter>Header Files\Interpreter</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

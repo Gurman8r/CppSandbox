@@ -1,7 +1,7 @@
-#include <MemeNet/Client.h>
-#include <MemeNet/NetworkEvents.h>
-#include <MemeCore/Debug.h>
-#include <MemeCore/EventSystem.h>
+#include <MemeNet/Client.hpp>
+#include <MemeNet/NetworkEvents.hpp>
+#include <MemeCore/Debug.hpp>
+#include <MemeCore/EventSystem.hpp>
 #include <RakNet/RakPeerInterface.h>
 #include <RakNet/MessageIdentifiers.h>
 #include <RakNet/BitStream.h>

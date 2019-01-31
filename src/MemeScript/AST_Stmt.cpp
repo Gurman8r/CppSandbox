@@ -1,9 +1,9 @@
-#include <MemeScript/AST_Stmt.h>
-#include <MemeScript/AST_Expr.h>
-#include <MemeScript/Interpreter.h>
+#include <MemeScript/AST_Stmt.hpp>
+#include <MemeScript/AST_Expr.hpp>
+#include <MemeScript/Interpreter.hpp>
 
-#include <MemeCore/Debug.h>
-#include <MemeCore/FileSystem.h>
+#include <MemeCore/Debug.hpp>
+#include <MemeCore/FileSystem.hpp>
 
 namespace ml
 {

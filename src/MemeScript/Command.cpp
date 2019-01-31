@@ -1,4 +1,4 @@
-#include <MemeScript/Command.h>
+#include <MemeScript/Command.hpp>
 
 namespace ml
 {

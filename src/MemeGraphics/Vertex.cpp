@@ -1,4 +1,4 @@
-#include <MemeGraphics/Vertex.h>
+#include <MemeGraphics/Vertex.hpp>
 
 namespace ml
 {

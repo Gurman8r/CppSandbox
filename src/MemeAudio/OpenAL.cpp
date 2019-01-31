@@ -1,5 +1,5 @@
-#include <MemeAudio/OpenAL.h>
-#include <MemeCore/Debug.h>
+#include <MemeAudio/OpenAL.hpp>
+#include <MemeCore/Debug.hpp>
 #include <AL/al.h>
 #include <AL/alc.h>
 

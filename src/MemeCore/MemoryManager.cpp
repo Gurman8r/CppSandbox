@@ -1,7 +1,7 @@
-#include <MemeCore/MemoryManager.h>
-#include <MemeCore/Debug.h>
+#include <MemeCore/MemoryManager.hpp>
+#include <MemeCore/Debug.hpp>
 
-#include <MemeCore/BitHelper.h>
+#include <MemeCore/BitHelper.hpp>
 
 #define CHUNK_SIZE	sizeof(ml::Chunk)	// Size of Chunk
 #define PTR_SIZE	sizeof(ml::byte *)	// Size of npos pointer

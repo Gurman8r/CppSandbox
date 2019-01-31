@@ -1,5 +1,5 @@
-#include <MemeGraphics/FrameBuffer.h>
-#include <MemeGraphics/OpenGL.h>
+#include <MemeGraphics/FrameBuffer.hpp>
+#include <MemeGraphics/OpenGL.hpp>
 
 namespace ml
 {

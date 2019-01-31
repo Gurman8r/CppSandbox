@@ -1,6 +1,6 @@
-#include <MemeGraphics/VertexBuffer.h>
-#include <MemeGraphics/OpenGL.h>
-#include <MemeGraphics/Vertex.h>
+#include <MemeGraphics/VertexBuffer.hpp>
+#include <MemeGraphics/OpenGL.hpp>
+#include <MemeGraphics/Vertex.hpp>
 
 namespace ml
 {

@@ -226,8 +226,8 @@
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DemoEvents.h" />
-    <ClInclude Include="Demo.h" />
+    <ClInclude Include="DemoEvents.hpp" />
+    <ClInclude Include="Demo.hpp" />
     <ClInclude Include="Settings.hpp" />
     <ClInclude Include="Testing.hpp" />
   </ItemGroup>

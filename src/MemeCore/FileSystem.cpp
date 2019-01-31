@@ -1,5 +1,5 @@
-#include <MemeCore/FileSystem.h>
-#include <MemeCore/Debug.h>
+#include <MemeCore/FileSystem.hpp>
+#include <MemeCore/Debug.hpp>
 #include <fstream>
 
 #ifdef ML_SYSTEM_WINDOWS

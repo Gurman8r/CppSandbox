@@ -1,4 +1,4 @@
-#include <MemeCore/Duration.h>
+#include <MemeCore/Duration.hpp>
 
 namespace ml
 {

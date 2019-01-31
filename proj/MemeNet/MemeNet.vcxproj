@@ -169,12 +169,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\MemeNet\Client.h" />
-    <ClInclude Include="..\..\include\MemeNet\Export.h" />
-    <ClInclude Include="..\..\include\MemeNet\NetworkEvents.h" />
-    <ClInclude Include="..\..\include\MemeNet\NetworkInterface.h" />
-    <ClInclude Include="..\..\include\MemeNet\NetworkTypes.h" />
-    <ClInclude Include="..\..\include\MemeNet\Server.h" />
+    <ClInclude Include="..\..\include\MemeNet\Client.hpp" />
+    <ClInclude Include="..\..\include\MemeNet\Export.hpp" />
+    <ClInclude Include="..\..\include\MemeNet\NetworkEvents.hpp" />
+    <ClInclude Include="..\..\include\MemeNet\NetworkInterface.hpp" />
+    <ClInclude Include="..\..\include\MemeNet\NetworkTypes.hpp" />
+    <ClInclude Include="..\..\include\MemeNet\Server.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeNet\Client.cpp" />

@@ -1,4 +1,4 @@
-#include <MemeGraphics/Uniform.h>
+#include <MemeGraphics/Uniform.hpp>
 
 namespace ml
 {

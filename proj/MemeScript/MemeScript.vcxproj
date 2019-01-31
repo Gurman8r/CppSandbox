@@ -36,22 +36,22 @@
     <ClCompile Include="..\..\src\MemeScript\Var.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\MemeScript\Args.h" />
-    <ClInclude Include="..\..\include\MemeScript\AST_Block.h" />
-    <ClInclude Include="..\..\include\MemeScript\AST_Expr.h" />
-    <ClInclude Include="..\..\include\MemeScript\AST_Node.h" />
-    <ClInclude Include="..\..\include\MemeScript\AST_Stmt.h" />
-    <ClInclude Include="..\..\include\MemeScript\Command.h" />
-    <ClInclude Include="..\..\include\MemeScript\Export.h" />
-    <ClInclude Include="..\..\include\MemeScript\Interpreter.h" />
-    <ClInclude Include="..\..\include\MemeScript\Lexer.h" />
-    <ClInclude Include="..\..\include\MemeScript\Runtime.h" />
-    <ClInclude Include="..\..\include\MemeScript\Operator.h" />
-    <ClInclude Include="..\..\include\MemeScript\Parser.h" />
-    <ClInclude Include="..\..\include\MemeScript\StringUtility.h" />
-    <ClInclude Include="..\..\include\MemeScript\Token.h" />
-    <ClInclude Include="..\..\include\MemeScript\TokenList.h" />
-    <ClInclude Include="..\..\include\MemeScript\Var.h" />
+    <ClInclude Include="..\..\include\MemeScript\Args.hpp" />
+    <ClInclude Include="..\..\include\MemeScript\AST_Block.hpp" />
+    <ClInclude Include="..\..\include\MemeScript\AST_Expr.hpp" />
+    <ClInclude Include="..\..\include\MemeScript\AST_Node.hpp" />
+    <ClInclude Include="..\..\include\MemeScript\AST_Stmt.hpp" />
+    <ClInclude Include="..\..\include\MemeScript\Command.hpp" />
+    <ClInclude Include="..\..\include\MemeScript\Export.hpp" />
+    <ClInclude Include="..\..\include\MemeScript\Interpreter.hpp" />
+    <ClInclude Include="..\..\include\MemeScript\Lexer.hpp" />
+    <ClInclude Include="..\..\include\MemeScript\Runtime.hpp" />
+    <ClInclude Include="..\..\include\MemeScript\Operator.hpp" />
+    <ClInclude Include="..\..\include\MemeScript\Parser.hpp" />
+    <ClInclude Include="..\..\include\MemeScript\StringUtility.hpp" />
+    <ClInclude Include="..\..\include\MemeScript\Token.hpp" />
+    <ClInclude Include="..\..\include\MemeScript\TokenList.hpp" />
+    <ClInclude Include="..\..\include\MemeScript\Var.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

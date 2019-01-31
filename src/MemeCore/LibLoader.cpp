@@ -1,5 +1,5 @@
-#include <MemeCore/LibLoader.h>
-#include <MemeCore/FileSystem.h>
+#include <MemeCore/LibLoader.hpp>
+#include <MemeCore/FileSystem.hpp>
 
 #ifdef ML_SYSTEM_WINDOWS
 #include <Windows.h>

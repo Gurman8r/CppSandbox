@@ -1,4 +1,4 @@
-#include <MemeGraphics/Shapes.h>
+#include <MemeGraphics/Shapes.hpp>
 
 namespace ml
 {

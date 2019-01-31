@@ -1,5 +1,5 @@
-#include <MemeGraphics/RenderTarget.h>
-#include <MemeGraphics/OpenGL.h>
+#include <MemeGraphics/RenderTarget.hpp>
+#include <MemeGraphics/OpenGL.hpp>
 
 namespace ml
 {

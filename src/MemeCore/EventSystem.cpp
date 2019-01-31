@@ -1,4 +1,4 @@
-#include <MemeCore/EventSystem.h>
+#include <MemeCore/EventSystem.hpp>
 
 namespace ml
 {

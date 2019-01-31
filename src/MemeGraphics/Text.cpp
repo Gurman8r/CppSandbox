@@ -1,4 +1,4 @@
-#include <MemeGraphics/Text.h>
+#include <MemeGraphics/Text.hpp>
 
 namespace ml
 {

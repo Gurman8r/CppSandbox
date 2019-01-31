@@ -1,6 +1,6 @@
-#include <MemeScript/Parser.h>
-#include <MemeScript/StringUtility.h>
-#include <MemeCore/Debug.h>
+#include <MemeScript/Parser.hpp>
+#include <MemeScript/StringUtility.hpp>
+#include <MemeCore/Debug.hpp>
 #include <stack>
 
 namespace ml

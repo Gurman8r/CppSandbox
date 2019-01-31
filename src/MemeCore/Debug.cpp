@@ -1,5 +1,5 @@
-#include <MemeCore/Debug.h>
-#include <MemeCore/NativeInput.h>
+#include <MemeCore/Debug.hpp>
+#include <MemeCore/NativeInput.hpp>
 #include <MemeCore/IOStream.hpp>
 
 namespace ml

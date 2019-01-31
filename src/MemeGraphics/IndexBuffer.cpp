@@ -1,5 +1,5 @@
-#include <MemeGraphics/IndexBuffer.h>
-#include <MemeGraphics/OpenGL.h>
+#include <MemeGraphics/IndexBuffer.hpp>
+#include <MemeGraphics/OpenGL.hpp>
 
 namespace ml
 {

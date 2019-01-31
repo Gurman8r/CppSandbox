@@ -1,7 +1,7 @@
-#include <MemeGraphics/RenderWindow.h>
-#include <MemeGraphics/OpenGL.h>
-#include <MemeCore/Debug.h>
-#include <MemeWindow/WindowEvents.h>
+#include <MemeGraphics/RenderWindow.hpp>
+#include <MemeGraphics/OpenGL.hpp>
+#include <MemeCore/Debug.hpp>
+#include <MemeWindow/WindowEvents.hpp>
 
 namespace ml
 {

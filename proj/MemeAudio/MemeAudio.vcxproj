@@ -158,13 +158,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\MemeAudio\AL.h" />
-    <ClInclude Include="..\..\include\MemeAudio\Audio.h" />
-    <ClInclude Include="..\..\include\MemeAudio\AudioBuffer.h" />
-    <ClInclude Include="..\..\include\MemeAudio\AudioSource.h" />
-    <ClInclude Include="..\..\include\MemeAudio\Export.h" />
-    <ClInclude Include="..\..\include\MemeAudio\OpenAL.h" />
-    <ClInclude Include="..\..\include\MemeAudio\Sound.h" />
+    <ClInclude Include="..\..\include\MemeAudio\AL.hpp" />
+    <ClInclude Include="..\..\include\MemeAudio\Audio.hpp" />
+    <ClInclude Include="..\..\include\MemeAudio\AudioBuffer.hpp" />
+    <ClInclude Include="..\..\include\MemeAudio\AudioSource.hpp" />
+    <ClInclude Include="..\..\include\MemeAudio\Export.hpp" />
+    <ClInclude Include="..\..\include\MemeAudio\OpenAL.hpp" />
+    <ClInclude Include="..\..\include\MemeAudio\Sound.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeAudio\Audio.cpp" />

@@ -1,5 +1,5 @@
-#include <MemeScript/Interpreter.h>	
-#include <MemeCore/FileSystem.h>
+#include <MemeScript/Interpreter.hpp>	
+#include <MemeCore/FileSystem.hpp>
 
 namespace ml
 {

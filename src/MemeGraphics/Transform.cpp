@@ -1,4 +1,4 @@
-#include <MemeGraphics/Transform.h>
+#include <MemeGraphics/Transform.hpp>
 
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/type_ptr.hpp>

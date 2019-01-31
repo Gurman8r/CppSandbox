@@ -1,6 +1,6 @@
-#include <MemeGraphics/Texture.h>
-#include <MemeGraphics/OpenGL.h>
-#include <MemeCore/Debug.h>
+#include <MemeGraphics/Texture.hpp>
+#include <MemeGraphics/OpenGL.hpp>
+#include <MemeCore/Debug.hpp>
 #include <cassert>
 #include <algorithm>
 

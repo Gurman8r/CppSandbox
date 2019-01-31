@@ -1,7 +1,7 @@
 #ifndef _ML_OSTREAM_H_
 #define _ML_OSTREAM_H_
 
-#include <MemeCore/Export.h>
+#include <MemeCore/Export.hpp>
 #include <iostream>
 
 namespace ml

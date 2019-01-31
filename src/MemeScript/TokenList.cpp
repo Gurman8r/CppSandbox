@@ -1,4 +1,4 @@
-#include <MemeScript/TokenList.h>
+#include <MemeScript/TokenList.hpp>
 
 namespace ml
 {

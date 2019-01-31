@@ -2,11 +2,11 @@
 #define _SETTINGS_H_
 
 #include <INIReader.h>
-#include <MemeCore/ITrackable.h>
-#include <MemeCore/ISingleton.h>
-#include <MemeCore/IResource.h>
-#include <MemeCore/Debug.h>
-#include <MemeWindow/Context.h>
+#include <MemeCore/ITrackable.hpp>
+#include <MemeCore/ISingleton.hpp>
+#include <MemeCore/IResource.hpp>
+#include <MemeCore/Debug.hpp>
+#include <MemeWindow/Context.hpp>
 
 // Singleton to store program properties/settings (INIReader)
 #define SETTINGS demo::Settings::getInstance()

@@ -1,4 +1,4 @@
-#include <MemeGraphics/Sprite.h>
+#include <MemeGraphics/Sprite.hpp>
 
 namespace ml
 {

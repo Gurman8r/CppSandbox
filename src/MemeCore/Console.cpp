@@ -1,5 +1,5 @@
-#include <MemeCore/Console.h>
-#include <MemeCore/Debug.h>
+#include <MemeCore/Console.hpp>
+#include <MemeCore/Debug.hpp>
 
 #ifdef ML_SYSTEM_WINDOWS
 #include <Windows.h>

@@ -1,4 +1,4 @@
-#include <MemeWindow/VideoMode.h>
+#include <MemeWindow/VideoMode.hpp>
 
 #ifdef ML_SYSTEM_WINDOWS
 #include <Windows.h>

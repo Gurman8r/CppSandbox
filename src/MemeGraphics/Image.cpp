@@ -1,5 +1,5 @@
-#include <MemeGraphics/Image.h>
-#include <MemeCore/Debug.h>
+#include <MemeGraphics/Image.hpp>
+#include <MemeCore/Debug.hpp>
 #include <algorithm>
 
 #define STB_IMAGE_IMPLEMENTATION

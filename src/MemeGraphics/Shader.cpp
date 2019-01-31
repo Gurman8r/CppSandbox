@@ -1,7 +1,7 @@
-#include <MemeGraphics/Shader.h>
-#include <MemeGraphics/OpenGL.h>
-#include <MemeCore/Debug.h>
-#include <MemeCore/FileSystem.h>
+#include <MemeGraphics/Shader.hpp>
+#include <MemeGraphics/OpenGL.hpp>
+#include <MemeCore/Debug.hpp>
+#include <MemeCore/FileSystem.hpp>
 
 namespace ml
 {

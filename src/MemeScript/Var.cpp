@@ -1,9 +1,9 @@
-#include <MemeScript/Var.h>
-#include <MemeCore/Debug.h>
-#include <MemeScript/StringUtility.h>
-#include <MemeScript/Operator.h>
-#include <MemeScript/Interpreter.h>
-#include <MemeCore/BitHelper.h>
+#include <MemeScript/Var.hpp>
+#include <MemeCore/Debug.hpp>
+#include <MemeScript/StringUtility.hpp>
+#include <MemeScript/Operator.hpp>
+#include <MemeScript/Interpreter.hpp>
+#include <MemeCore/BitHelper.hpp>
 
 namespace ml
 {

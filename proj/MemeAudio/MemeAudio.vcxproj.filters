@@ -27,26 +27,26 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\MemeAudio\Export.h">
+    <ClInclude Include="..\..\include\MemeAudio\Sound.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeAudio\Audio.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeAudio\AL.hpp">
+      <Filter>Header Files\Wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeAudio\OpenAL.hpp">
+      <Filter>Header Files\Wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeAudio\AudioBuffer.hpp">
+      <Filter>Header Files\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeAudio\AudioSource.hpp">
+      <Filter>Header Files\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeAudio\Export.hpp">
       <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeAudio\Sound.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeAudio\Audio.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeAudio\AL.h">
-      <Filter>Header Files\Wrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeAudio\OpenAL.h">
-      <Filter>Header Files\Wrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeAudio\AudioBuffer.h">
-      <Filter>Header Files\Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeAudio\AudioSource.h">
-      <Filter>Header Files\Buffers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

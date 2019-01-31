@@ -1,5 +1,5 @@
-#include <MemeAudio/AudioSource.h>
-#include <MemeAudio/OpenAL.h>
+#include <MemeAudio/AudioSource.hpp>
+#include <MemeAudio/OpenAL.hpp>
 
 namespace ml
 {

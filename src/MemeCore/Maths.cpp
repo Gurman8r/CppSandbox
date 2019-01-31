@@ -1,4 +1,4 @@
-#include <MemeCore/Maths.h>
+#include <MemeCore/Maths.hpp>
 
 namespace ml
 {

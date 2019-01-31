@@ -1,4 +1,4 @@
-#include <MemeScript/StringUtility.h>
+#include <MemeScript/StringUtility.hpp>
 #include <stdarg.h>
 #include <locale>
 #include <cctype>

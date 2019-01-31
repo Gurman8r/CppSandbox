@@ -1,5 +1,5 @@
-#include <MemeAudio/Sound.h>
-#include <MemeCore/Debug.h>
+#include <MemeAudio/Sound.hpp>
+#include <MemeCore/Debug.hpp>
 
 namespace ml
 {

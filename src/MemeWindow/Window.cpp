@@ -1,6 +1,6 @@
-#include <MemeWindow/Window.h>
-#include <MemeWindow/WindowEvents.h>
-#include <MemeCore/Debug.h>
+#include <MemeWindow/Window.hpp>
+#include <MemeWindow/WindowEvents.hpp>
+#include <MemeCore/Debug.hpp>
 #include <GLFW/glfw3.h>
 
 #define ML_WINDOW	static_cast<GLFWwindow*>

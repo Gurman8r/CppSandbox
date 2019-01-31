@@ -1,7 +1,7 @@
-#include <MemeScript/AST_Block.h>
-#include <MemeScript/AST_Expr.h>
-#include <MemeScript/Interpreter.h>
-#include <MemeCore/Debug.h>
+#include <MemeScript/AST_Block.hpp>
+#include <MemeScript/AST_Expr.hpp>
+#include <MemeScript/Interpreter.hpp>
+#include <MemeCore/Debug.hpp>
 
 
 namespace ml

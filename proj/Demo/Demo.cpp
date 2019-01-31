@@ -1,5 +1,5 @@
-#include "Demo.h"
-#include <MemeCore/EventSystem.h>
+#include "Demo.hpp"
+#include <MemeCore/EventSystem.hpp>
 #include <dirent.h>
 
 namespace demo
