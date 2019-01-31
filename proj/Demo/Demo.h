@@ -3,7 +3,7 @@
 
 #include <MemeAudio/Audio.h>
 #include <MemeCore/Time.h>
-#include <MemeCore/InputState.h>
+#include <MemeCore/NativeInput.h>
 #include <MemeCore/FileSystem.h>
 #include <MemeGraphics/Text.h>
 #include <MemeGraphics/RenderWindow.h>

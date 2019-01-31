@@ -102,12 +102,6 @@
     <ClInclude Include="..\..\include\MemeCore\Vector3.h">
       <Filter>Header Files\Maths</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\InputState.h">
-      <Filter>Header Files\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\KeyCode.h">
-      <Filter>Header Files\Input</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Vector4.h">
       <Filter>Header Files\Maths</Filter>
     </ClInclude>
@@ -150,9 +144,6 @@
     <ClInclude Include="..\..\include\MemeCore\MemoryManager.h">
       <Filter>Header Files\Memory</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\ML_Memory.h">
-      <Filter>Header Files\Memory</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Enum.h">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
@@ -183,13 +174,19 @@
     <ClInclude Include="..\..\include\MemeCore\BitHelper.h">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\NativeInput.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\NativeKey.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\InputState.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeCore\StringUtility.cpp">
       <Filter>Source Files\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeCore\InputState.cpp">
-      <Filter>Source Files\Input</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\Maths.cpp">
       <Filter>Source Files\Maths</Filter>
@@ -218,14 +215,14 @@
     <ClCompile Include="..\..\src\MemeCore\MemoryManager.cpp">
       <Filter>Source Files\Memory</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemeCore\ML_Memory.c">
-      <Filter>Source Files\Memory</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\Debug.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\Console.cpp">
       <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeCore\NativeInput.cpp">
+      <Filter>Source Files\Input</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,33 +1,63 @@
-#ifndef _INPUT_H_
-#define _INPUT_H_
+#ifndef _INPUT_STATE_H_
+#define _INPUT_STATE_H_
 
-#include <MemeCore/KeyCode.h>
-#include <MemeCore/ITrackable.h>
+#include <inttypes.h>
+#include <stdlib.h>
 
 namespace ml
 {
-	class ML_CORE_API InputState
-		: public ITrackable
+	template <size_t N>
+	class InputState
 	{
 	public:
-		InputState();
-		virtual ~InputState();
+		using size_type = size_t;
 
-		virtual bool checkKey(uint32_t value) const;
+		enum : size_t { Size = N };
+		
+		using self_type = InputState<Size>;
 
-		InputState & beginStep();
-		InputState & endStep();
+	public:
+		virtual ~InputState() { }
 
-		bool getKey(Key::Code value) const;
-		bool getKeyDown(Key::Code value) const;
-		bool getKeyUp(Key::Code value) const;
+	public:
+		virtual bool checkKey(int32_t value) const = 0;
 
-		bool getAnyKey(bool allowMouse = false) const;
+	public:
+		self_type & beginStep()
+		{
+			for (size_t i = 0; i < Size; i++)
+			{
+				m_new[i] = checkKey((int32_t)i);
+			}
+			return (*this);
+		}
 
-	private:
-		bool m_new[Key::Code::MAX_KEYCODE];
-		bool m_old[Key::Code::MAX_KEYCODE];
+		self_type & endStep()
+		{
+			memcpy(m_old, m_new, Size);
+			return (*this);
+		}
+
+	public:
+		inline bool getKey(int32_t value) const
+		{
+			return (m_new[value]);
+		}
+
+		inline bool getKeyDown(int32_t value) const
+		{
+			return (m_new[value]) && (!m_old[value]);
+		}
+
+		inline bool getKeyUp(int32_t value) const
+		{
+			return (!m_new[value]) && (m_old[value]);
+		}
+
+	protected:
+		bool m_new[N];
+		bool m_old[N];
 	};
 }
 
-#endif // !_INPUT_H_
+#endif // !_INPUT_STATE_H_

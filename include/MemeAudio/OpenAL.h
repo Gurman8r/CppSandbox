@@ -13,6 +13,11 @@ namespace ml
 {
 	class ML_AUDIO_API OpenAL final
 	{
+	private:
+		/* Members */
+		static void * m_device;
+		static void * m_context;
+
 	public:
 		/* Initialization */
 		static bool init();
@@ -35,10 +40,10 @@ namespace ml
 
 	public:
 		/* Buffers */
-		static uint32_t	genBuffers(int32_t count);
-		static void		deleteBuffers(size_t count, const uint32_t * buffers);
+		static uint32_t	genBuffers(AL::Size count);
+		static void		deleteBuffers(AL::Size count, const uint32_t * buffers);
 		static bool		isBuffer(uint32_t id);
-		static void		bufferData(uint32_t id, AL::Enum format, const void * data, int32_t size, int32_t freq);
+		static void		bufferData(uint32_t id, AL::Enum format, const void * data, AL::Size size, int32_t freq);
 		
 		/* Set Buffer parameters */
 		static void		bufferf(uint32_t id, AL::Enum param, float value);
@@ -64,8 +69,8 @@ namespace ml
 
 	public:
 		/* Sources */
-		static uint32_t	genSources(int32_t count);
-		static void		deleteSources(int32_t count, const uint32_t * sources);
+		static uint32_t	genSources(AL::Size count);
+		static void		deleteSources(AL::Size count, const uint32_t * sources);
 		static bool		isSource(uint32_t id);
 
 		/* Set Source parameters */
@@ -91,10 +96,10 @@ namespace ml
 		static void		sourcePause(uint32_t id);
 
 		/* Source vector based playback calls */
-		static void		sourcePlay(int32_t count, const uint32_t * ids);
-		static void		sourceStop(int32_t count, const uint32_t * ids);
-		static void		sourceRewind(int32_t count, const uint32_t * ids);
-		static void		sourcePause(int32_t count, const uint32_t * ids);
+		static void		sourcePlay(AL::Size count, const uint32_t * ids);
+		static void		sourceStop(AL::Size count, const uint32_t * ids);
+		static void		sourceRewind(AL::Size count, const uint32_t * ids);
+		static void		sourcePause(AL::Size count, const uint32_t * ids);
 
 	public:
 		/* Set Listener parameters */
@@ -113,9 +118,6 @@ namespace ml
 		static int32_t *getListener3i(AL::Enum param);
 		static int32_t *getListeneriv(AL::Enum param);
 		
-	private:
-		static void * m_device;
-		static void * m_context;
 	};
 }
 

@@ -23,7 +23,7 @@ namespace ml
 		system("pause");
 #else
 		cout << "Press any key to continue..." << std::Endl;
-		ml::InputState input;
+		ml::NativeInput input;
 		while (!input.beginStep().getAnyKey());
 #endif
 		return exitCode;

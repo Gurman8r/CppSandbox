@@ -76,7 +76,7 @@ namespace ml
 				addr.c_str(),
 				addr.port,
 				pass.c_str(),
-				pass.size()))
+				(int32_t)pass.size()))
 			{
 			case RakNet::CONNECTION_ATTEMPT_STARTED:
 				return Debug::Log("CONNECTION_ATTEMPT_STARTED");

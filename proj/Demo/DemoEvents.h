@@ -79,12 +79,12 @@ namespace demo
 	{
 		ml::RenderWindow &	window;
 		ml::Duration		elapsed;
-		ml::InputState		input;
+		ml::NativeInput		input;
 
 		UpdateEvent(
 			ml::RenderWindow & window, 
 			const ml::Duration & elapsed,
-			const ml::InputState & input)
+			const ml::NativeInput & input)
 			: DemoEvent(EV_Update)
 			, window(window)
 			, elapsed(elapsed)

@@ -1,7 +1,6 @@
 #ifndef _TESTING_H_
 #define _TESTING_H_
 
-#include <MemeCore/ML_Memory.h>
 #include <MemeCore/MemoryManager.h>
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -242,118 +241,6 @@ namespace tests
 		return ml::Debug::pause(EXIT_SUCCESS);
 	}
 
-	inline static int32_t testMemoryC()
-	{
-		// Data
-		/* * * * * * * * * * * * * * * * * * * * */
-		enum : size_t
-		{
-			A,
-			B,
-			C,
-			D,
-			E,
-			F,
-			MAX
-		};
-
-		static const ml::String Tags[MAX] =
-		{
-			"A",
-			"B",
-			"C",
-			"D",
-			"E",
-			"F",
-		};
-
-		static Foo * test[MAX] = { NULL };
-
-
-		// Initialize
-		/* * * * * * * * * * * * * * * * * * * * */
-		ml::Debug::Log("Block Size: {0}", sizeof(Block));
-		ml::Debug::Log("byte* Size: {0}", sizeof(ml::byte *));
-		ml::Debug::Log("Test Size: {0}", sizeof(Foo));
-		ml::cout << ml::endl;
-
-		enum : size_t { MaxBytes = 4096 };
-		ml::byte data[MaxBytes];
-
-		if (!ml_prime(data, MaxBytes))
-		{
-			return ml::Debug::LogError("Failed priming Memory Manager")
-				|| ml::Debug::pause(EXIT_FAILURE);
-		}
-		ml::cout << ml::endl;
-		ml_displayMemory();
-		ml::cout << ml::endl;
-
-
-		// Allocate
-		/* * * * * * * * * * * * * * * * * * * * */
-		for (size_t i = 0; i < MAX; i++)
-		{
-			if (test[i] = (Foo *)ml_allocate(sizeof(Foo)))
-			{
-				test[i]->index = i;
-				test[i]->name = "Test Name";
-				test[i]->tag = Tags[i].c_str();
-				ml::Debug::Log("Allocation Success: {0}", (*test[i]));
-			}
-			else
-			{
-				ml::Debug::LogError("Allocation Failure: {0}", (Tags[i]));
-			}
-		}
-		ml::cout << ml::endl;
-		ml_displayMemory();
-		ml::cout << ml::endl;
-
-
-		// Free
-		/* * * * * * * * * * * * * * * * * * * * */
-		for (size_t i = 0; i < MAX; i++)
-		{
-			if (ml_free(test[i]))
-			{
-				ml::Debug::Log("Free Success: {0}", (test[i]));
-			}
-			else
-			{
-				ml::Debug::LogError("Free Failure: {0}", (test[i]));
-			}
-		}
-		ml::cout << ml::endl;
-		ml_displayMemory();
-		ml::cout << ml::endl;
-
-
-		// Allocate
-		/* * * * * * * * * * * * * * * * * * * * */
-		for (size_t i = 0; i < MAX; i++)
-		{
-			if (test[i] = (Foo *)ml_allocate(sizeof(Foo)))
-			{
-				test[i]->index = i;
-				test[i]->name = "Test Name";
-				test[i]->tag = Tags[i].c_str();
-				ml::Debug::Log("Allocation Success: {0}", (*test[i]));
-			}
-			else
-			{
-				ml::Debug::LogError("Allocation Failure: {0}", (Tags[i]));
-			}
-		}
-		ml::cout << ml::endl;
-		ml_displayMemory();
-		ml::cout << ml::endl;
-
-
-
-		return ml::Debug::pause(EXIT_SUCCESS);
-	}
-
 	inline static int32_t testManualMemory1()
 	{
 		enum : uint32_t { 
@@ -507,9 +394,8 @@ namespace tests
 		{
 		case 1: return testScripts();
 		case 2: return testMemoryManager();
-		case 3: return testMemoryC();
-		case 4: return testManualMemory1();
-		case 5: return testManualMemory2();
+		case 3: return testManualMemory1();
+		case 4: return testManualMemory2();
 		}
 		return EXIT_FAILURE;
 	}

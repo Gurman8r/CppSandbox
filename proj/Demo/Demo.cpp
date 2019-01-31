@@ -117,7 +117,7 @@ namespace demo
 		));
 
 		// Value Input
-		if (ev.input.getKeyDown(ml::Key::Code::Escape))
+		if (ev.input.getKeyDown(ml::NativeKey::Escape))
 		{
 			ev.window.close();
 		}

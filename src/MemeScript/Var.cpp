@@ -279,7 +279,7 @@ namespace ml
 		return isErrorType() ? (textValue()) : String();
 	}
 
-	int32_t		Var::intValue() const
+	size_t		Var::intValue() const
 	{
 		return isValid() ? StringUtility::ToInt((textValue())) : 0;
 	}
@@ -371,7 +371,7 @@ namespace ml
 		return setType(Var::Func).tokensValue(value);
 	}
 		  
-	Var & Var::intValue(const int32_t & value)
+	Var & Var::intValue(const size_t & value)
 	{
 		return setType(Var::Integer).tokensValue({ { TokenType::TOK_INT, std::to_string(value) } });
 	}

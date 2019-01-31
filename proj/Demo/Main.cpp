@@ -76,7 +76,7 @@ int32_t main(int32_t argc, char ** argv)
 	// Loop
 	ml::Timer		loopTimer;
 	ml::Duration	elapsed;
-	ml::InputState	input;
+	ml::NativeInput	input;
 	do
 	{	// Begin Step
 		loopTimer.start();

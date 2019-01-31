@@ -156,6 +156,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeCore\Chunk.h" />
     <ClInclude Include="..\..\include\MemeCore\IHandle.h" />
+    <ClInclude Include="..\..\include\MemeCore\InputState.h" />
     <ClInclude Include="..\..\include\MemeCore\MemoryManager.h" />
     <ClInclude Include="..\..\include\MemeCore\MemoryPool.h" />
     <ClInclude Include="..\..\include\MemeCore\List.h" />
@@ -175,16 +176,15 @@
     <ClInclude Include="..\..\include\MemeCore\FileSystem.h" />
     <ClInclude Include="..\..\include\MemeCore\IComparable.h" />
     <ClInclude Include="..\..\include\MemeCore\INonCopyable.h" />
-    <ClInclude Include="..\..\include\MemeCore\InputState.h" />
+    <ClInclude Include="..\..\include\MemeCore\NativeInput.h" />
     <ClInclude Include="..\..\include\MemeCore\IResource.h" />
     <ClInclude Include="..\..\include\MemeCore\ISerializable.h" />
     <ClInclude Include="..\..\include\MemeCore\ISingleton.h" />
     <ClInclude Include="..\..\include\MemeCore\ITrackable.h" />
-    <ClInclude Include="..\..\include\MemeCore\KeyCode.h" />
+    <ClInclude Include="..\..\include\MemeCore\NativeKey.h" />
     <ClInclude Include="..\..\include\MemeCore\Maths.h" />
     <ClInclude Include="..\..\include\MemeCore\Matrix.h" />
     <ClInclude Include="..\..\include\MemeCore\MemoryTracker.h" />
-    <ClInclude Include="..\..\include\MemeCore\ML_Memory.h" />
     <ClInclude Include="..\..\include\MemeCore\Rect.h" />
     <ClInclude Include="..\..\include\MemeCore\String.h" />
     <ClInclude Include="..\..\include\MemeCore\StringUtility.h" />
@@ -202,11 +202,10 @@
     <ClCompile Include="..\..\src\MemeCore\Debug.cpp" />
     <ClCompile Include="..\..\src\MemeCore\EventSystem.cpp" />
     <ClCompile Include="..\..\src\MemeCore\FileSystem.cpp" />
-    <ClCompile Include="..\..\src\MemeCore\InputState.cpp" />
+    <ClCompile Include="..\..\src\MemeCore\NativeInput.cpp" />
     <ClCompile Include="..\..\src\MemeCore\MemoryManager.cpp" />
     <ClCompile Include="..\..\src\MemeCore\MemoryTracker.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Maths.cpp" />
-    <ClCompile Include="..\..\src\MemeCore\ML_Memory.c" />
     <ClCompile Include="..\..\src\MemeCore\StringUtility.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Time.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Duration.cpp" />

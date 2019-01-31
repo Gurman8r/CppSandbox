@@ -113,9 +113,9 @@ namespace ml
 	// Int
 	struct ML_SCRIPT_API AST_Int : public AST_Expr
 	{
-		int32_t value;
+		size_t value;
 
-		AST_Int(int32_t value);
+		AST_Int(size_t value);
 		~AST_Int();
 
 		std::ostream& display(std::ostream& out) const override;

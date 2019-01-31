@@ -168,6 +168,7 @@
     <ClInclude Include="..\..\include\MemeWindow\Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\include\MemeWindow\WindowInput.h" />
     <ClCompile Include="..\..\src\MemeWindow\VideoMode.cpp" />
     <ClCompile Include="..\..\src\MemeWindow\Window.cpp" />
   </ItemGroup>

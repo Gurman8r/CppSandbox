@@ -8,6 +8,8 @@
 
 namespace ml
 {
+	/* Members */
+
 	void * OpenAL::m_device = NULL;
 	void * OpenAL::m_context = NULL;
 
@@ -145,14 +147,14 @@ namespace ml
 
 	/* Buffers */
 
-	uint32_t OpenAL::genBuffers(int32_t count)
+	uint32_t OpenAL::genBuffers(AL::Size count)
 	{
 		static uint32_t temp;
 		alCheck(alGenBuffers(count, &temp));
 		return temp;
 	}
 
-	void OpenAL::deleteBuffers(size_t count, const uint32_t * buffers)
+	void OpenAL::deleteBuffers(AL::Size count, const uint32_t * buffers)
 	{
 		alCheck(alDeleteBuffers(count, buffers));
 	}
@@ -164,7 +166,7 @@ namespace ml
 		return temp;
 	}
 
-	void OpenAL::bufferData(uint32_t id,AL::Enum format, const void * data, int32_t size, int32_t freq)
+	void OpenAL::bufferData(uint32_t id,AL::Enum format, const void * data, AL::Size size, int32_t freq)
 	{
 		alCheck(alBufferData(id, format, data, size, freq));
 	}
@@ -273,14 +275,14 @@ namespace ml
 
 	/* Sources */
 
-	uint32_t OpenAL::genSources(int32_t count)
+	uint32_t OpenAL::genSources(AL::Size count)
 	{
 		static uint32_t temp;
 		alCheck(alGenSources(count, &temp));
 		return temp;
 	}
 
-	void OpenAL::deleteSources(int32_t count, const uint32_t * sources)
+	void OpenAL::deleteSources(AL::Size count, const uint32_t * sources)
 	{
 		alCheck(alDeleteSources(count, sources));
 	}
@@ -396,22 +398,22 @@ namespace ml
 
 	/* Source vector based playback calls */
 
-	void OpenAL::sourcePlay(int32_t count, const uint32_t * ids)
+	void OpenAL::sourcePlay(AL::Size count, const uint32_t * ids)
 	{
 		alCheck(alSourcePlayv(count, ids));
 	}
 
-	void OpenAL::sourceStop(int32_t count, const uint32_t * ids)
+	void OpenAL::sourceStop(AL::Size count, const uint32_t * ids)
 	{
 		alCheck(alSourceStopv(count, ids));
 	}
 
-	void OpenAL::sourceRewind(int32_t count, const uint32_t * ids)
+	void OpenAL::sourceRewind(AL::Size count, const uint32_t * ids)
 	{
 		alCheck(alSourceRewindv(count, ids));
 	}
 
-	void OpenAL::sourcePause(int32_t count, const uint32_t * ids)
+	void OpenAL::sourcePause(AL::Size count, const uint32_t * ids)
 	{
 		alCheck(alSourcePausev(count, ids));
 	}

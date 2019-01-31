@@ -1,17 +1,15 @@
-#ifndef _KEY_CODE_H_
-#define _KEY_CODE_H_
+#ifndef _NATIVE_KEY_H_
+#define _NATIVE_KEY_H_
 
 #include <MemeCore/Export.h>
 #include <inttypes.h>
 
-// https://docs.microsoft.com/en-us/windows/desktop/inputdev/virtual-key-codes
-// Note: I'm not sure if any of these work on non-Windows systems
-
 namespace ml
 {
-	struct ML_CORE_API Key final
+	struct ML_CORE_API NativeKey final
 	{
-		enum Code : uint32_t
+#ifdef ML_SYSTEM_WINDOWS
+		enum : int32_t
 		{
 			LeftMouse	= 0x01, RightMouse, Cancel, MiddleMouse, XButton1, XButton2,
 			Backspace	= 0x08, Tab, 
@@ -42,9 +40,17 @@ namespace ml
 			PacketKey	= 0xE7,
 			Attn		= 0xF7, CRSEL, EXSEL, EREOF, Play, Zoom, NoName, OEM_Clear,
 
+			MAX_KEYCODE,
+			MIN_MOUSE = LeftMouse,
+			MAX_MOUSE = (XButton2 + 1),
+		};
+#else
+		enum : int32_t
+		{
 			MAX_KEYCODE
 		};
+#endif
 	};
 }
 
-#endif // !_KEY_CODE_H_
+#endif // !_NATIVE_KEY_H_

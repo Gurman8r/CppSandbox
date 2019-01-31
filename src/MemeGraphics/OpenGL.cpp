@@ -7,6 +7,8 @@
 #include <GL/glew.h>
 #pragma comment (lib, "glew32s.lib")
 
+#define ML_BUFFER_SIZE 1024
+
 namespace ml
 {
 	// Members
@@ -378,7 +380,7 @@ namespace ml
 			type,
 			normalized,
 			(stride * width),
-			reinterpret_cast<const void *>(offset * width))); // this causes a warning in x64
+			reinterpret_cast<const uint32_t *>(offset * width))); // this causes a warning in x64
 	}
 
 	void OpenGL::enableVertexAttribArray(uint32_t index)
@@ -597,7 +599,7 @@ namespace ml
 
 	GL::CStr OpenGL::getInfoLog(uint32_t obj)
 	{
-		static char log[1024];
+		static char log[ML_BUFFER_SIZE];
 		glCheck(glGetInfoLogARB(obj, sizeof(log), 0, log));
 		return log;
 	}
