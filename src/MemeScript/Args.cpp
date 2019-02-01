@@ -7,7 +7,7 @@ namespace ml
 		: m_values()
 	{
 	}
-	Args::Args(const Value & value)
+	Args::Args(const value_type & value)
 		: m_values({ value })
 	{
 	}
@@ -15,15 +15,15 @@ namespace ml
 		: m_values(values)
 	{
 	}
-	Args::Args(const std::initializer_list<Value>& values)
+	Args::Args(const std::initializer_list<value_type>& values)
 		: m_values(values)
 	{
 	}
-	Args::Args(const Value & value, const Value & delim)
+	Args::Args(const value_type & value, const value_type & delim)
 		: m_values(StringUtility::Split(value, delim))
 	{
 	}
-	Args::Args(const Self & copy)
+	Args::Args(const self_type & copy)
 		: m_values(copy.m_values)
 	{
 	}
@@ -31,45 +31,45 @@ namespace ml
 	{
 	}
 
-	const Args::Value	Args::at(size_t index) const
+	const Args::value_type	Args::at(size_t index) const
 	{
 		return (*this)[index];
 	}
-	const Args::Value	Args::back() const
+	const Args::value_type	Args::back() const
 	{
 		if (!empty())
 		{
 			return m_values.back();
 		}
-		return Value();
+		return value_type();
 	}
-	const Args::Value	Args::front() const
+	const Args::value_type	Args::front() const
 	{
 		if (!empty())
 		{
 			return m_values.front();
 		}
-		return Value();
+		return value_type();
 	}
-	const Args::Value	Args::str() const
+	const Args::value_type	Args::str() const
 	{
-		Value out;
-		for (const Value& it : (*this))
+		value_type out;
+		for (const value_type& it : (*this))
 		{
 			out += it + " ";
 		}
 		return out;
 	}
-	const Args::Value	Args::substr(size_t index, size_t count) const
+	const Args::value_type	Args::substr(size_t index, size_t count) const
 	{
 		auto from = (begin() + index);
 
 		if (!inRange(from) || !inRange(from + count))
 		{
-			return Value();
+			return value_type();
 		}
 
-		Value toStr;
+		value_type toStr;
 
 		for (size_t i = 0; i < count; i++)
 		{
@@ -127,11 +127,11 @@ namespace ml
 		return stream;
 	}
 
-	const size_t	Args::count(const Value & value) const
+	const size_t	Args::count(const value_type & value) const
 	{
 		return count(begin(), end(), value);
 	}
-	const size_t	Args::count(const_iterator first, const_iterator last, const Value & val) const
+	const size_t	Args::count(const_iterator first, const_iterator last, const value_type & val) const
 	{
 		difference_type ret = 0;
 
@@ -147,7 +147,7 @@ namespace ml
 
 		return ret;
 	}
-	const size_t	Args::indexOf(const Value& value) const
+	const size_t	Args::indexOf(const value_type& value) const
 	{
 		auto it = find(value);
 
@@ -163,7 +163,7 @@ namespace ml
 		return m_values.size();
 	}
 
-	const bool		Args::contains(const Value & value) const
+	const bool		Args::contains(const value_type & value) const
 	{
 		return find_first(value) != end();
 	}
@@ -180,44 +180,44 @@ namespace ml
 		return it < end();
 	}
 
-	const Args::Self Args::clone() const
+	const Args::self_type Args::clone() const
 	{
 		return Args().copy(*this);
 	}
-	const Args::Self Args::clone(size_t index, size_t count) const
+	const Args::self_type Args::clone(size_t index, size_t count) const
 	{
 		return Args().copy(*this, index, count);
 	}
-	const Args::Self Args::clone(const Self & other) const
+	const Args::self_type Args::clone(const self_type & other) const
 	{
 		return Args().copy(other);
 	}
-	const Args::Self Args::clone(const Self & other, size_t index, size_t count) const
+	const Args::self_type Args::clone(const self_type & other, size_t index, size_t count) const
 	{
 		return Args().copy(other, index, count);
 	}
-	const Args::Self Args::clone(const_iterator first, const_iterator last) const
+	const Args::self_type Args::clone(const_iterator first, const_iterator last) const
 	{
 		return Args().assign(vector_type(first, last));
 	}
 
 
-	Args::Self&	Args::assign(const vector_type & value)
+	Args::self_type&	Args::assign(const vector_type & value)
 	{
 		m_values = value;
 
 		return (*this);
 	}
-	Args::Self&	Args::clear()
+	Args::self_type&	Args::clear()
 	{
 		m_values.clear();
 		return (*this);
 	}
-	Args::Self&	Args::copy(const Self& other)
+	Args::self_type&	Args::copy(const self_type& other)
 	{
 		return copy(other, 0);
 	}
-	Args::Self&	Args::copy(const Self& other, size_t index)
+	Args::self_type&	Args::copy(const self_type& other, size_t index)
 	{
 		if (other.inRange(index))
 		{
@@ -226,7 +226,7 @@ namespace ml
 
 		return (*this);
 	}
-	Args::Self&	Args::copy(const Self& other, size_t index, size_t count)
+	Args::self_type&	Args::copy(const self_type& other, size_t index, size_t count)
 	{
 		if (other.inRange(index))
 		{
@@ -237,19 +237,19 @@ namespace ml
 
 		return (*this);
 	}
-	Args::Self&	Args::copy(const_iterator first, const_iterator last)
+	Args::self_type&	Args::copy(const_iterator first, const_iterator last)
 	{
 		return assign(vector_type(first, last));
 	}
-	Args::Self&	Args::erase(size_t index, size_t count)
+	Args::self_type&	Args::erase(size_t index, size_t count)
 	{
 		return erase(begin() + index, count);
 	}
-	Args::Self&	Args::erase(const_iterator it, size_t count)
+	Args::self_type&	Args::erase(const_iterator it, size_t count)
 	{
 		return erase(it, it + count);
 	}
-	Args::Self&	Args::erase(const_iterator first, const_iterator last)
+	Args::self_type&	Args::erase(const_iterator first, const_iterator last)
 	{
 		if (!empty() && first >= begin() && last != end())
 		{
@@ -257,20 +257,20 @@ namespace ml
 		}
 		return (*this);
 	}
-	Args::Self&	Args::insert(size_t index, char value)
+	Args::self_type&	Args::insert(size_t index, char value)
 	{
-		return insert(index, Value(1, value));
+		return insert(index, value_type(1, value));
 	}
-	Args::Self&	Args::insert(size_t index, const char * value)
+	Args::self_type&	Args::insert(size_t index, const char * value)
 	{
-		return insert(index, Value(value));
+		return insert(index, value_type(value));
 	}
-	Args::Self&	Args::insert(size_t index, const Value& value)
+	Args::self_type&	Args::insert(size_t index, const value_type& value)
 	{
 		m_values.insert(begin() + index, value);
 		return (*this);
 	}
-	Args::Self&	Args::mergeNext(size_t index, size_t count)
+	Args::self_type&	Args::mergeNext(size_t index, size_t count)
 	{
 		auto from = (begin() + index);
 		auto to = (from + count);
@@ -296,7 +296,7 @@ namespace ml
 
 		return (*this);
 	}
-	Args::Self&	Args::pop_back()
+	Args::self_type&	Args::pop_back()
 	{
 		if (!empty())
 		{
@@ -305,7 +305,7 @@ namespace ml
 
 		return (*this);
 	}
-	Args::Self&	Args::pop_front()
+	Args::self_type&	Args::pop_front()
 	{
 		if (!empty())
 		{
@@ -314,20 +314,20 @@ namespace ml
 
 		return (*this);
 	}
-	Args::Self&	Args::push_back(char value)
+	Args::self_type&	Args::push_back(char value)
 	{
-		return push_back(Value(1, value));
+		return push_back(value_type(1, value));
 	}
-	Args::Self&	Args::push_back(const char* value)
+	Args::self_type&	Args::push_back(const char* value)
 	{
-		return push_back(Value(value));
+		return push_back(value_type(value));
 	}
-	Args::Self&	Args::push_back(const Value& value)
+	Args::self_type&	Args::push_back(const value_type& value)
 	{
 		m_values.push_back(value);
 		return (*this);
 	}
-	Args::Self&	Args::push_back(const vector_type& value)
+	Args::self_type&	Args::push_back(const vector_type& value)
 	{
 		for (auto it = value.begin(); it != value.end(); it++)
 		{
@@ -335,23 +335,23 @@ namespace ml
 		}
 		return (*this);
 	}
-	Args::Self&	Args::push_back(const Self& value)
+	Args::self_type&	Args::push_back(const self_type& value)
 	{
 		return push_back(value.m_values);
 	}
-	Args::Self&	Args::push_front(char value)
+	Args::self_type&	Args::push_front(char value)
 	{
-		return push_front(Value(1, value));
+		return push_front(value_type(1, value));
 	}
-	Args::Self&	Args::push_front(const char* value)
+	Args::self_type&	Args::push_front(const char* value)
 	{
-		return push_front(Value(value));
+		return push_front(value_type(value));
 	}
-	Args::Self&	Args::push_front(const Value& value)
+	Args::self_type&	Args::push_front(const value_type& value)
 	{
 		return insert(0, value);
 	}
-	Args::Self&	Args::push_front(const vector_type& value)
+	Args::self_type&	Args::push_front(const vector_type& value)
 	{
 		for (auto it = value.end(); it != value.begin(); it--)
 		{
@@ -359,15 +359,15 @@ namespace ml
 		}
 		return (*this);
 	}
-	Args::Self&	Args::push_front(const Self& value)
+	Args::self_type&	Args::push_front(const self_type& value)
 	{
 		return push_front(value.m_values);
 	}
-	Args::Self&	Args::remove(const Value& value)
+	Args::self_type&	Args::remove(const value_type& value)
 	{
 		return erase(find_first(value));
 	}
-	Args::Self&	Args::removeAll(const Value& value)
+	Args::self_type&	Args::removeAll(const value_type& value)
 	{
 		const_iterator it;
 		while ((it = find_first(value)) != end())
@@ -376,12 +376,12 @@ namespace ml
 		}
 		return (*this);
 	}
-	Args::Self&	Args::resize(size_t size)
+	Args::self_type&	Args::resize(size_t size)
 	{
 		m_values.resize(size);
 		return (*this);
 	}
-	Args::Self&	Args::reverse()
+	Args::self_type&	Args::reverse()
 	{
 		if (!empty())
 		{
@@ -392,7 +392,7 @@ namespace ml
 	}
 
 
-	Args::const_iterator Args::find(const Value& value, size_t index) const
+	Args::const_iterator Args::find(const value_type& value, size_t index) const
 	{
 		for (auto it = begin() + index; it != end(); it++)
 		{
@@ -403,7 +403,7 @@ namespace ml
 		}
 		return end();
 	}
-	Args::const_iterator Args::find_first(const Value& value) const
+	Args::const_iterator Args::find_first(const value_type& value) const
 	{
 		for (auto it = begin(); it != end(); it++)
 		{
@@ -414,7 +414,7 @@ namespace ml
 		}
 		return end();
 	}
-	Args::const_iterator Args::find_first_not_of(const Value& value, size_t index) const
+	Args::const_iterator Args::find_first_not_of(const value_type& value, size_t index) const
 	{
 		for (auto it = begin(); it != end(); it++)
 		{
@@ -425,7 +425,7 @@ namespace ml
 		}
 		return end();
 	}
-	Args::const_iterator Args::find_last(const Value& value) const
+	Args::const_iterator Args::find_last(const value_type& value) const
 	{
 		for (auto it = end(); it != begin(); it--)
 		{
@@ -436,7 +436,7 @@ namespace ml
 		}
 		return end();
 	}
-	Args::const_iterator Args::find_last_not_of(const Value& value) const
+	Args::const_iterator Args::find_last_not_of(const value_type& value) const
 	{
 		for (auto it = end(); it != begin(); it--)
 		{
@@ -491,7 +491,7 @@ namespace ml
 	}
 	
 	
-	bool Args::equals(const Self & value) const
+	bool Args::equals(const self_type & value) const
 	{
 		if (size() == value.size())
 		{
@@ -507,7 +507,7 @@ namespace ml
 		return false;
 	}
 
-	bool Args::lessThan(const Self & value) const
+	bool Args::lessThan(const self_type & value) const
 	{
 		if (size() != value.size())
 		{

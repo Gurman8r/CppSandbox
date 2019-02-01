@@ -10,54 +10,54 @@ namespace ml
 		: public Vector<T, 3>
 	{
 	public:
-		using Base = Vector<T, 3>;
-		using Self = Vector3<T>;
+		using base_type = Vector<T, 3>;
+		using self_type = Vector3<T>;
 
 	public:
 		Vector3()
-			: Base()
+			: base_type()
 		{
 		}
 
 		Vector3(const T & xyz)
-			: Base(xyz)
+			: base_type(xyz)
 		{
 		}
 
 		Vector3(const T & x, const T & y, const T & z)
-			: Base({ x, y, z })
+			: base_type({ x, y, z })
 		{
 		}
 
 		template <size_t N>
 		Vector3(const Vector<T, N> & copy)
-			: Base(copy)
+			: base_type(copy)
 		{
 		}
 
 		template<typename U>
 		Vector3(const Vector3<U>& copy)
-			: Base(copy)
+			: base_type(copy)
 		{
 		}
 		
 		template <typename U, size_t N>
 		Vector3(const Vector<U, N> & copy)
-			: Base(copy)
+			: base_type(copy)
 		{
 		}
 
 		virtual ~Vector3() {}
 
 	public:
-		static const Self Zero;
-		static const Self One;
-		static const Self Up;
-		static const Self Down;
-		static const Self Left;
-		static const Self Right;
-		static const Self Forward;
-		static const Self Back;
+		static const self_type Zero;
+		static const self_type One;
+		static const self_type Up;
+		static const self_type Down;
+		static const self_type Left;
+		static const self_type Right;
+		static const self_type Forward;
+		static const self_type Back;
 	};
 
 	template<typename T> const Vector3<T> Vector3<T>::Zero		= Vector3<T>( 0,  0,  0);

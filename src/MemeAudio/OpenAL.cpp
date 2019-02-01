@@ -63,7 +63,7 @@ namespace ml
 				errorDesc = "An unacceptable value has been specified for an enumerated argument.";
 				break;
 			case AL::InvalidValue:
-				errorName = "Invalid Value";
+				errorName = "Invalid value_type";
 				errorDesc = "A numeric argument is out of range.";
 				break;
 			case AL::InvalidOperation:

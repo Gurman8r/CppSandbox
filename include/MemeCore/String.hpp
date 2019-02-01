@@ -19,118 +19,118 @@ namespace ml
 		, public IComparable<BasicString<_Elem, _Traits, _Alloc>>
 	{
 	public:
-		using Value		= _Elem;
-		using Traits	= _Traits;
-		using Allocator	= _Alloc;
+		using value_type	= _Elem;
+		using traits_type	= _Traits;
+		using allocator_type= _Alloc;
 
-		using Self		= BasicString<Value, Traits, Allocator>;
-		using Base		= std::basic_string<Value, Traits, Allocator>;
-		using Stream	= std::basic_stringstream<Value, Traits, Allocator>;
+		using self_type		= BasicString<value_type, traits_type, allocator_type>;
+		using base_type		= std::basic_string<value_type, traits_type, allocator_type>;
+		using Stream		= std::basic_stringstream<value_type, traits_type, allocator_type>;
 		
-		using reference				= typename Base::reference;
-		using pointer				= typename Base::pointer;
-		using const_reference		= typename Base::const_reference;
-		using const_pointer			= typename Base::const_pointer;
-		using size_type				= typename Base::size_type;
-		using difference_type		= typename Base::difference_type;
-		using iterator				= typename Base::iterator;
-		using const_iterator		= typename Base::const_iterator;
-		using reverse_iterator		= typename Base::reverse_iterator;
-		using const_reverse_iterator= typename Base::const_reverse_iterator;
-		using _Alty					= typename Base::_Alty;
-		using _Alty_traits			= typename Base::_Alty_traits;
+		using reference				= typename base_type::reference;
+		using pointer				= typename base_type::pointer;
+		using const_reference		= typename base_type::const_reference;
+		using const_pointer			= typename base_type::const_pointer;
+		using size_type				= typename base_type::size_type;
+		using difference_type		= typename base_type::difference_type;
+		using iterator				= typename base_type::iterator;
+		using const_iterator		= typename base_type::const_iterator;
+		using reverse_iterator		= typename base_type::reverse_iterator;
+		using const_reverse_iterator= typename base_type::const_reverse_iterator;
+		using _Alty					= typename base_type::_Alty;
+		using _Alty_traits			= typename base_type::_Alty_traits;
 
 	public: // Constructors
 		BasicString()
-			: Base()
+			: base_type()
 		{
 		}
 
-		BasicString(Self && value) noexcept
-			: Base(value)
+		BasicString(self_type && value) noexcept
+			: base_type(value)
 		{
 		}
 
-		BasicString(Self && value, const Allocator & alloc)
-			: Base(value, alloc)
+		BasicString(self_type && value, const allocator_type & alloc)
+			: base_type(value, alloc)
 		{
 		}
 		
-		BasicString(const Self & value)
-			: Base(value)
+		BasicString(const self_type & value)
+			: base_type(value)
 		{
 		}
 		
-		BasicString(const Self & value, const Allocator & alloc)
-			: Base(value, alloc)
+		BasicString(const self_type & value, const allocator_type & alloc)
+			: base_type(value, alloc)
 		{
 		}
 		
-		explicit BasicString(const Allocator & alloc) noexcept
-			: Base(alloc)
+		explicit BasicString(const allocator_type & alloc) noexcept
+			: base_type(alloc)
 		{
 		}
 		
-		BasicString(const Self & value, const size_type off, const Allocator & alloc = Allocator())
-			: Base(value, off, alloc)
+		BasicString(const self_type & value, const size_type off, const allocator_type & alloc = allocator_type())
+			: base_type(value, off, alloc)
 		{
 		}
 		
-		BasicString(const Self & value, const size_type off, const size_type count, const Allocator & alloc = Allocator())
-			: Base(value, off, count, alloc)
+		BasicString(const self_type & value, const size_type off, const size_type count, const allocator_type & alloc = allocator_type())
+			: base_type(value, off, count, alloc)
 		{
 		}
 		
-		BasicString(const Value * const value)
-			: Base(value)
+		BasicString(const value_type * const value)
+			: base_type(value)
 		{
 		}
 		
-		BasicString(const Value * const value, const size_type count)
-			: Base(value, count)
+		BasicString(const value_type * const value, const size_type count)
+			: base_type(value, count)
 		{
 		}
 		
-		BasicString(const Value * const value, const size_type count, const Allocator & alloc)
-			: Base(value, count, alloc)
+		BasicString(const value_type * const value, const size_type count, const allocator_type & alloc)
+			: base_type(value, count, alloc)
 		{
 		}
 		
-		BasicString(const size_type count, const Value value)
-			: Base(count, value)
+		BasicString(const size_type count, const value_type value)
+			: base_type(count, value)
 		{
 		}
 		
-		BasicString(const size_type count, const Value value, const Allocator & alloc)
-			: Base(count, value, alloc)
+		BasicString(const size_type count, const value_type value, const allocator_type & alloc)
+			: base_type(count, value, alloc)
 		{
 		}
 		
 		template <class Iter>
 		BasicString(Iter begin, Iter end, std::input_iterator_tag)
-			: Base(begin, end, std::input_iterator_tag())
+			: base_type(begin, end, std::input_iterator_tag())
 		{
 		}
 		
 		template <class Iter>
 		BasicString(Iter begin, Iter end, std::forward_iterator_tag)
-			: Base(begin, end, std::forward_iterator_tag())
+			: base_type(begin, end, std::forward_iterator_tag())
 		{
 		}
 		
 		template <class Iter>
-		BasicString(Iter begin, Iter end, const Allocator & alloc = Allocator())
-			: Base(begin, end, alloc)
+		BasicString(Iter begin, Iter end, const allocator_type & alloc = allocator_type())
+			: base_type(begin, end, alloc)
 		{
 		}
 		
-		BasicString(Value * const first, Value * const last, std::random_access_iterator_tag)
-			: Base(first, last, std::random_access_iterator_tag())
+		BasicString(value_type * const first, value_type * const last, std::random_access_iterator_tag)
+			: base_type(first, last, std::random_access_iterator_tag())
 		{
 		}
 
-		BasicString(const Base & value)
-			: Base(value)
+		BasicString(const base_type & value)
+			: base_type(value)
 		{
 		}
 		
@@ -138,7 +138,7 @@ namespace ml
 
 
 	public: // Assignment Operators
-		inline Self & operator=(const Self & other)
+		inline self_type & operator=(const self_type & other)
 		{
 			using namespace std;
 			if (this != _STD addressof(other))
@@ -160,7 +160,7 @@ namespace ml
 			return (*this);
 		}
 
-		inline Self & operator=(Self && other) noexcept
+		inline self_type & operator=(self_type && other) noexcept
 		{
 			using namespace std;
 			if (this != _STD addressof(other))
@@ -178,52 +178,52 @@ namespace ml
 	
 
 	public: // Cast Operators
-		inline operator Base() const
+		inline operator base_type() const
 		{
-			return static_cast<Base>(*this);
+			return static_cast<base_type>(*this);
 		}
 
-		inline operator const Base &() const
+		inline operator const base_type &() const
 		{
-			return static_cast<const Base &>(*this);
-		}
-
-
-	public: // Base Comparison
-		inline bool equals(const Base & value) const override
-		{
-			return value == (const Base &)(*this);
-		}
-		
-		inline bool lessThan(const Base & value) const override
-		{
-			return value < (const Base &)(*this);
+			return static_cast<const base_type &>(*this);
 		}
 
 
-	public: // Self Comparison
-		inline bool equals(const Self & value) const override
+	public: // base_type Comparison
+		inline bool equals(const base_type & value) const override
 		{
-			return equals((const Base &)(value));
+			return value == (const base_type &)(*this);
 		}
 		
-		inline bool lessThan(const Self & value) const override
+		inline bool lessThan(const base_type & value) const override
 		{
-			return lessThan((const Base &)(value));
+			return value < (const base_type &)(*this);
+		}
+
+
+	public: // self_type Comparison
+		inline bool equals(const self_type & value) const override
+		{
+			return equals((const base_type &)(value));
+		}
+		
+		inline bool lessThan(const self_type & value) const override
+		{
+			return lessThan((const base_type &)(value));
 		}
 
 
 	public: // Custom
 		template<typename T, typename ... A>
-		inline static Self Format(Self value, const T & first, const A & ...args)
+		inline static self_type Format(self_type value, const T & first, const A & ...args)
 		{
 			return value.format(first, (args)...);
 		}
 
 		template<typename T, typename ... A>
-		inline Self & format(const T & first, const A & ...args)
+		inline self_type & format(const T & first, const A & ...args)
 		{
-			Self::Stream stream;
+			self_type::Stream stream;
 			stream << first << ml::endl;
 
 			int32_t sink[] = { 0, ((void)(stream << args << ml::endl), 0)... };
@@ -231,13 +231,13 @@ namespace ml
 
 			for (size_type a = 0; stream.good(); a++)
 			{
-				const Self fmt = ("{" + std::to_string(a) + "}");
+				const self_type fmt = ("{" + std::to_string(a) + "}");
 
-				Self arg;
+				self_type arg;
 				if (std::getline(stream, arg))
 				{
 					for (size_type i = 0;
-						(i = (*this).find(fmt, i)) != Self::npos;
+						(i = (*this).find(fmt, i)) != self_type::npos;
 						(i += arg.size()))
 					{
 						(*this).replace(i, fmt.size(), arg);

@@ -28,49 +28,49 @@ namespace ml
 			"Missing \"operator>>\" | Element must be de-serializable");
 
 	public:
-		using Value			= _Elem;
-		using Allocator		= _Alloc;
+		using value_type		= _Elem;
+		using allocator_type	= _Alloc;
 
-		using Base			= std::vector<Value, Allocator>;
-		using Self			= List<Value, Allocator>;
+		using base_type			= std::vector<value_type, allocator_type>;
+		using self_type			= List<value_type, allocator_type>;
 
-		using size_type		= size_t;
-		using Initializer	= std::initializer_list<Value>;
+		using size_type			= size_t;
+		using initializer_type	= std::initializer_list<value_type>;
 
-		using iterator				= typename Base::iterator;
-		using const_iterator		= typename Base::const_iterator;
-		using reverse_iterator		= typename Base::reverse_iterator;
-		using const_reverse_iterator= typename Base::const_reverse_iterator;
+		using iterator				= typename base_type::iterator;
+		using const_iterator		= typename base_type::const_iterator;
+		using reverse_iterator		= typename base_type::reverse_iterator;
+		using const_reverse_iterator= typename base_type::const_reverse_iterator;
 
 	public:
 		List()
-			: Base()
+			: base_type()
 		{
 		}
 		
-		List(const Allocator & alloc)
-			: Base(alloc)
+		List(const allocator_type & alloc)
+			: base_type(alloc)
 		{
 		}
 		
-		List(const Base & value, const Allocator & alloc = Allocator())
-			: Base(value, alloc)
+		List(const base_type & value, const allocator_type & alloc = allocator_type())
+			: base_type(value, alloc)
 		{
 		}
 		
-		List(const Initializer & value, const Allocator & alloc = Allocator())
-			: Base(value, alloc)
+		List(const initializer_type & value, const allocator_type & alloc = allocator_type())
+			: base_type(value, alloc)
 		{
 		}
 		
-		List(const Self & value, const Allocator & alloc = Allocator())
-			: Base(value, alloc)
+		List(const self_type & value, const allocator_type & alloc = allocator_type())
+			: base_type(value, alloc)
 		{
 		}
 		
 		template <class Iter>
-		List(Iter begin, Iter end, const Allocator & alloc = Allocator())
-			: Base(begin, end, alloc)
+		List(Iter begin, Iter end, const allocator_type & alloc = allocator_type())
+			: base_type(begin, end, alloc)
 		{
 		}
 		
@@ -92,37 +92,37 @@ namespace ml
 		}
 
 
-	public: // Base Cast
-		inline operator Base() const
+	public: // base_type Cast
+		inline operator base_type() const
 		{
-			return static_cast<Base>(*this);
+			return static_cast<base_type>(*this);
 		}
 
-		inline operator const Base &() const
+		inline operator const base_type &() const
 		{
-			return static_cast<const Base &>(*this);
+			return static_cast<const base_type &>(*this);
 		}
 
 	public:
-		inline virtual bool equals(const Base & value) const override
+		inline virtual bool equals(const base_type & value) const override
 		{
-			return value == (const Base &)(*this);
+			return value == (const base_type &)(*this);
 		}
 		
-		inline virtual bool lessThan(const Base & value) const override
+		inline virtual bool lessThan(const base_type & value) const override
 		{
-			return value < (const Base &)(*this);
+			return value < (const base_type &)(*this);
 		}
 
 		
-		inline virtual bool equals(const Self & value) const override
+		inline virtual bool equals(const self_type & value) const override
 		{
-			return equals((const Base &)(value));
+			return equals((const base_type &)(value));
 		}
 		
-		inline virtual bool lessThan(const Self & value) const override
+		inline virtual bool lessThan(const self_type & value) const override
 		{
-			return lessThan((const Base &)(value));
+			return lessThan((const base_type &)(value));
 		}
 	};
 }

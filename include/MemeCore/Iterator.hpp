@@ -18,15 +18,15 @@ namespace ml
 	{
 	public:
 		using iterator_category = IC;
-		using Value		= VT;
+		using value_type		= VT;
 		using unqualified_type	= UT;
 		using difference_type	= DT;
-		using pointer			= Value * ;
-		using reference			= Value & ;
-		using const_pointer		= const Value * ;
-		using const_reference	= const Value & ;
-		using Self			= Iterator<iterator_category, Value, unqualified_type, difference_type>;
-		using const_self_type	= Iterator<iterator_category, const Value, unqualified_type, difference_type>;
+		using pointer			= value_type * ;
+		using reference			= value_type & ;
+		using const_pointer		= const value_type * ;
+		using const_reference	= const value_type & ;
+		using self_type			= Iterator<iterator_category, value_type, unqualified_type, difference_type>;
+		using const_self_type	= Iterator<iterator_category, const value_type, unqualified_type, difference_type>;
 
 	public:
 		Iterator()
@@ -34,7 +34,7 @@ namespace ml
 		{
 		}
 		
-		Iterator(const Self & copy)
+		Iterator(const self_type & copy)
 			: m_handle(copy.m_handle)
 		{
 		}
@@ -47,12 +47,12 @@ namespace ml
 		virtual ~Iterator() {}
 
 	public:
-		virtual bool equals(const Self & value) const override
+		virtual bool equals(const self_type & value) const override
 		{
 			return m_handle == value.m_handle;
 		}
 		
-		virtual bool lessThan(const Self & value) const override
+		virtual bool lessThan(const self_type & value) const override
 		{
 			return m_handle < value.m_handle;
 		}
@@ -77,14 +77,14 @@ namespace ml
 		}
 
 
-		inline Self & operator++()
+		inline self_type & operator++()
 		{
 			assert((m_handle != NULL) && "Out-of-bounds iterator increment!");
 			(++m_handle);
 			return (*this);
 		}
 		
-		inline Self & operator--()
+		inline self_type & operator--()
 		{
 			assert((m_handle != NULL) && "Out-of-bounds iterator increment!");
 			(--m_handle);
@@ -92,51 +92,51 @@ namespace ml
 		}
 		
 
-		inline Self operator++(int32_t)
+		inline self_type operator++(int32_t)
 		{
 			assert((m_handle != NULL) && "Out-of-bounds iterator increment!");
-			Self tmp = (*this);
+			self_type tmp = (*this);
 			operator++();
 			return tmp;
 		}
 		
-		inline Self operator--(int32_t)
+		inline self_type operator--(int32_t)
 		{
 			assert((m_handle != NULL) && "Out-of-bounds iterator increment!");
-			Self tmp = (*this);
+			self_type tmp = (*this);
 			operator--();
 			return tmp;
 		}
 		
 
-		inline Self operator+(const difference_type & value) const
+		inline self_type operator+(const difference_type & value) const
 		{
-			return Self(m_handle + value);
+			return self_type(m_handle + value);
 		}
 		
-		inline Self operator-(const difference_type & value) const
+		inline self_type operator-(const difference_type & value) const
 		{
-			return Self(m_handle - value);
+			return self_type(m_handle - value);
 		}
 		
 
-		inline Self & operator+=(const difference_type & value)
+		inline self_type & operator+=(const difference_type & value)
 		{
 			return (*this) = (*this) + value;
 		}
 		
-		inline Self & operator-=(const difference_type & value)
+		inline self_type & operator-=(const difference_type & value)
 		{
 			return (*this) = (*this) - value;
 		}
 		
 
-		inline const difference_type operator+(const Self & other) const
+		inline const difference_type operator+(const self_type & other) const
 		{
 			return (m_handle + other.m_handle);
 		}
 		
-		inline const difference_type operator-(const Self & other) const
+		inline const difference_type operator-(const self_type & other) const
 		{
 			return (m_handle - other.m_handle);
 		}

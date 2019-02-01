@@ -10,11 +10,11 @@ namespace ml
 		, public std::streambuf
 	{
 	public:
-		using Base = std::ostream;
+		using base_type = std::ostream;
 
 	public:
 		BasicOStream()
-			: Base(this)
+			: base_type(this)
 		{
 		}
 		~BasicOStream() {}

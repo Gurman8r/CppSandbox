@@ -117,7 +117,7 @@ namespace ml
 				return v->Pow(expr->evaluate());
 			}
 		}
-		return Var().errorValue("AST_Assign : Set Value Failed");
+		return Var().errorValue("AST_Assign : Set value_type Failed");
 	}
 
 	bool AST_Assign::run()
@@ -126,7 +126,7 @@ namespace ml
 		{
 			return runNext();
 		}
-		return Debug::LogError("AST_Assign : Mod Value Failed");
+		return Debug::LogError("AST_Assign : Mod value_type Failed");
 	}
 
 

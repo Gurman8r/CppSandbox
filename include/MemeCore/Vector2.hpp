@@ -10,75 +10,75 @@ namespace ml
 		: public Vector<T, 2>
 	{
 	public:
-		using Base = Vector<T, 2>;
-		using Self = Vector2<T>;
+		using base_type = Vector<T, 2>;
+		using self_type = Vector2<T>;
 
 	public:
 		Vector2()
-			: Base()
+			: base_type()
 		{
 		}
 
 		Vector2(const T & xy)
-			: Base(xy)
+			: base_type(xy)
 		{
 		}
 
 		Vector2(const T & x, const T & y)
-			: Base({ x, y })
+			: base_type({ x, y })
 		{
 		}
 		
 		template <size_t N>
 		Vector2(const Vector<T, N> & copy)
-			: Base(copy)
+			: base_type(copy)
 		{
 		}
 
 		template<typename U>
 		Vector2(const Vector2<U>& copy)
-			: Base(copy)
+			: base_type(copy)
 		{
 		}
 
 		template <typename U, size_t N>
 		Vector2(const Vector<U, N> & copy)
-			: Base(copy)
+			: base_type(copy)
 		{
 		}
 
 		virtual ~Vector2() {}
 		
 	public:
-		inline static float angle(const Self & from, const Self & to)
+		inline static float angle(const self_type & from, const self_type & to)
 		{
 			return angle(to - from);
 		};
 
-		inline static float angle(const Self & value)
+		inline static float angle(const self_type & value)
 		{
 			return atan2(value[0], value[1]);
 		};
 
-		inline static float det(const Self & a, const Self & b)
+		inline static float det(const self_type & a, const self_type & b)
 		{
 			return 
 				(static_cast<float>(a[0]) * static_cast<float>(b[1])) - 
 				(static_cast<float>(a[1]) * static_cast<float>(b[0]));
 		};
 
-		inline static Self angle(float value)
+		inline static self_type angle(float value)
 		{
-			return Self(cos(value), sin(value));
+			return self_type(cos(value), sin(value));
 		};
 
 	public:
-		static const Self Zero;
-		static const Self One;
-		static const Self Up;
-		static const Self Down;
-		static const Self Left;
-		static const Self Right;
+		static const self_type Zero;
+		static const self_type One;
+		static const self_type Up;
+		static const self_type Down;
+		static const self_type Left;
+		static const self_type Right;
 	};
 
 	template<typename T> const Vector2<T> Vector2<T>::Zero	= Vector2<T>( 0,  0);

@@ -400,7 +400,7 @@ namespace ml
 		{
 			return true;
 		}
-		return Debug::LogError("AST_Return : Failed Setting Value");
+		return Debug::LogError("AST_Return : Failed Setting value_type");
 	}
 
 

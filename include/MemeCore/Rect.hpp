@@ -12,37 +12,37 @@ namespace ml
 		: public Vector4<T>
 	{
 	public:
-		using Value	= T;
-		using Base		= Vector4<T>;
-		using Self		= Rect<Value>;
-		using coord_type	= Vector2<Value>;
+		using value_type	= T;
+		using base_type		= Vector4<T>;
+		using self_type		= Rect<value_type>;
+		using coord_type	= Vector2<value_type>;
 
-		const static Self Empty;
-		const static Self One;
+		const static self_type Empty;
+		const static self_type One;
 
 	public:
 		Rect()
-			: Base()
+			: base_type()
 		{
 		}
-		Rect(const Value & width, const Value & height)
-			: Base(0, 0, width, height)
+		Rect(const value_type & width, const value_type & height)
+			: base_type(0, 0, width, height)
 		{
 		}
-		Rect(const Value & left, const Value & top, const Value & width, const Value & height)
-			: Base(left, top, width, height)
+		Rect(const value_type & left, const value_type & top, const value_type & width, const value_type & height)
+			: base_type(left, top, width, height)
 		{
 		}
-		Rect(const Self & copy)
-			: Base(copy)
+		Rect(const self_type & copy)
+			: base_type(copy)
 		{
 		}
 		Rect(const coord_type & position, const coord_type & size)
-			: Base(position[0], position[1], size[0], size[1])
+			: base_type(position[0], position[1], size[0], size[1])
 		{
 		}
 		Rect(const coord_type & size)
-			: Base(0, 0, size[0], size[1])
+			: base_type(0, 0, size[0], size[1])
 		{
 		}
 		~Rect() 
@@ -50,27 +50,27 @@ namespace ml
 		}
 		
 	public:
-		inline const Value left() const
+		inline const value_type left() const
 		{
 			return (*this)[0];
 		}
-		inline const Value top() const
+		inline const value_type top() const
 		{
 			return (*this)[1];
 		}
-		inline const Value width() const
+		inline const value_type width() const
 		{
 			return (*this)[2];
 		}
-		inline const Value height() const
+		inline const value_type height() const
 		{
 			return (*this)[3];
 		}		
-		inline const Value bot() const
+		inline const value_type bot() const
 		{
 			return top() + height();
 		}
-		inline const Value right() const
+		inline const value_type right() const
 		{
 			return left() + width();
 		}
@@ -84,53 +84,53 @@ namespace ml
 		}
 		inline const coord_type center() const
 		{
-			return position() + (size() / Value(2));
+			return position() + (size() / value_type(2));
 		}
 		
-		inline Self &	left(Value value)
+		inline self_type &	left(value_type value)
 		{
 			(*this)[0] = value;
 			return (*this);
 		}
-		inline Self &	top(Value value)
+		inline self_type &	top(value_type value)
 		{
 			(*this)[1] = value;
 			return (*this);
 		}
-		inline Self &	width(Value value)
+		inline self_type &	width(value_type value)
 		{
 			(*this)[2] = value;
 			return (*this);
 		}
-		inline Self &	height(Value value)
+		inline self_type &	height(value_type value)
 		{
 			(*this)[3] = value;
 			return (*this);
 		}		
-		inline Self &	bot(Value value)
+		inline self_type &	bot(value_type value)
 		{
 			return height(value - top());
 		}
-		inline Self &	right(Value value)
+		inline self_type &	right(value_type value)
 		{
 			return width(value - left());
 		}
-		inline Self &	position(const coord_type& value)
+		inline self_type &	position(const coord_type& value)
 		{
 			return left(value[0]).top(value[1]);
 		}
-		inline Self &	size(const coord_type& value)
+		inline self_type &	size(const coord_type& value)
 		{
 			return width(value[0]).height(value[1]);
 		}
-		inline Self &	center(const coord_type& value)
+		inline self_type &	center(const coord_type& value)
 		{
-			return position(value - (size() / Value(2)));
+			return position(value - (size() / value_type(2)));
 		}
 		
-		inline operator Base() const
+		inline operator base_type() const
 		{
-			return Base((*this)[0], (*this)[1], (*this)[2], (*this)[3]);
+			return base_type((*this)[0], (*this)[1], (*this)[2], (*this)[3]);
 		}
 	};
 

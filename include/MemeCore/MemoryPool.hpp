@@ -16,7 +16,7 @@ namespace ml
 		using data_type	= T;
 		using pointer	= data_type * ;
 		using reference	= data_type & ;
-		using Self	= MemoryPool<T, MaxBytes>;
+		using self_type	= MemoryPool<T, MaxBytes>;
 		
 	public:
 		MemoryPool()

@@ -13,7 +13,7 @@ namespace ml
 
 		enum : size_t { Size = N };
 		
-		using Self = InputState<Size>;
+		using self_type = InputState<Size>;
 
 	public:
 		virtual ~InputState() { }
@@ -22,7 +22,7 @@ namespace ml
 		virtual bool checkKey(int32_t value) const = 0;
 
 	public:
-		Self & beginStep()
+		self_type & beginStep()
 		{
 			for (size_t i = 0; i < Size; i++)
 			{
@@ -31,7 +31,7 @@ namespace ml
 			return (*this);
 		}
 
-		Self & endStep()
+		self_type & endStep()
 		{
 			for (size_t i = 0; i < Size; i++)
 			{

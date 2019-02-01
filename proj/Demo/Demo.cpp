@@ -116,7 +116,7 @@ namespace demo
 			ev.window.getCursorPos()
 		));
 
-		// Value Input
+		// value_type Input
 		if (ev.input.getKeyDown(ml::NativeKey::Escape))
 		{
 			ev.window.close();

@@ -10,13 +10,13 @@ namespace ml
 	class IEnumerable
 	{
 	public:
-		using Value		= T;
-		using pointer			= Value *;
-		using reference			= Value &;
-		using const_pointer		= const Value *;
-		using const_reference	= const Value &;
-		using iterator			= ForwardIterator<Value>;
-		using const_iterator	= ForwardIterator<const Value>;
+		using value_type		= T;
+		using pointer			= value_type *;
+		using reference			= value_type &;
+		using const_pointer		= const value_type *;
+		using const_reference	= const value_type &;
+		using iterator			= ForwardIterator<value_type>;
+		using const_iterator	= ForwardIterator<const value_type>;
 
 	public:
 		IEnumerable(pointer first, pointer last)

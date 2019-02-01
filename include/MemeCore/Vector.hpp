@@ -12,57 +12,57 @@ namespace ml
 		, public IComparable<Vector<T, N>>
 	{
 	public:
-		using Base = Matrix<T, N, 1>;
-		using Self = Vector<T, N>;
+		using base_type = Matrix<T, N, 1>;
+		using self_type = Vector<T, N>;
 
 	public:
 		Vector()
-			: Base()
+			: base_type()
 		{
 		}
 		
 		Vector(const T & value)
-			: Base(value)
+			: base_type(value)
 		{
 		}
 		
 		Vector(const T * value)
-			: Base(value)
+			: base_type(value)
 		{
 		}
 		
 		Vector(const std::initializer_list<T> & value)
-			: Base(value)
+			: base_type(value)
 		{
 		}
 		
-		Vector(const Self & value)
-			: Base(value)
+		Vector(const self_type & value)
+			: base_type(value)
 		{
 		}
 
 		template <size_t N>
 		Vector(const Vector<T, N> & copy)
-			: Base(copy)
+			: base_type(copy)
 		{
 		}
 
 		template<typename U>
 		Vector(const Vector<U, N>& copy)
-			: Base(copy)
+			: base_type(copy)
 		{
 		}
 
 		template <typename U, size_t N>
 		Vector(const Vector<U, N> & copy)
-			: Base(copy)
+			: base_type(copy)
 		{
 		}
 
 		virtual ~Vector() {}
 
 	public:
-		inline virtual bool equals(const Self & value) const override
+		inline virtual bool equals(const self_type & value) const override
 		{
 			for (size_t i = 0; i < (*this).Size; i++)
 			{
@@ -74,7 +74,7 @@ namespace ml
 			return true;
 		}
 		
-		inline virtual bool lessThan(const Self & value) const override
+		inline virtual bool lessThan(const self_type & value) const override
 		{
 			for (size_t i = 0; i < (*this).Size; i++)
 			{
@@ -88,14 +88,14 @@ namespace ml
 
 
 	public:
-		inline float distanceTo(const Self & value) const
+		inline float distanceTo(const self_type & value) const
 		{
-			return Self::distance((*this), value);
+			return self_type::distance((*this), value);
 		}
 
-		inline float dot(const Self & value) const
+		inline float dot(const self_type & value) const
 		{
-			return Self::dot((*this), value);
+			return self_type::dot((*this), value);
 		}
 		
 		inline float magnitude() const
@@ -114,26 +114,26 @@ namespace ml
 		};
 		
 
-		inline Self & normalize()
+		inline self_type & normalize()
 		{
 			return (*this) /= magnitude();
 		};
 
-		inline Self normal() const
+		inline self_type normal() const
 		{
-			return Self(*this).normalize();
+			return self_type(*this).normalize();
 		};
 
 		
-		inline static float distance(const Self& a, const Self& b)
+		inline static float distance(const self_type& a, const self_type& b)
 		{
-			return Self(a - b).magnitude();
+			return self_type(a - b).magnitude();
 		};
 
-		inline static float dot(const Self& a, const Self& b)
+		inline static float dot(const self_type& a, const self_type& b)
 		{
 			float value = 0;
-			for (size_t i = 0; i < Self::Size; i++)
+			for (size_t i = 0; i < self_type::Size; i++)
 			{
 				value += static_cast<float>(a[i]) * static_cast<float>(b[i]);
 			}
@@ -141,25 +141,25 @@ namespace ml
 		};
 
 
-		inline static Self direction(const Self& from, const Self& to)
+		inline static self_type direction(const self_type& from, const self_type& to)
 		{
 			return (to - from).normal();
 		};
 
-		inline static Self lerp(const Self& a, const Self& b, float t)
+		inline static self_type lerp(const self_type& a, const self_type& b, float t)
 		{
-			return Self(a * t + b * ((T)(1) - t));
+			return self_type(a * t + b * ((T)(1) - t));
 		};
 
-		inline static Self reflect(const Self& direction, const Self& normal)
+		inline static self_type reflect(const self_type& direction, const self_type& normal)
 		{
 			return (normal - direction) * ((T)2 * dot(direction, normal));
 		};
 
 	public:
-		inline friend Self operator+(const Self& lhs, const Self& rhs)
+		inline friend self_type operator+(const self_type& lhs, const self_type& rhs)
 		{
-			Self tmp;
+			self_type tmp;
 			for (size_t i = 0; i < tmp.Size; i++)
 			{
 				tmp[i] = lhs[i] + rhs[i];
@@ -167,9 +167,9 @@ namespace ml
 			return tmp;
 		};
 		
-		inline friend Self operator-(const Self& lhs, const Self& rhs)
+		inline friend self_type operator-(const self_type& lhs, const self_type& rhs)
 		{
-			Self tmp;
+			self_type tmp;
 			for (size_t i = 0; i < tmp.Size; i++)
 			{
 				tmp[i] = lhs[i] - rhs[i];
@@ -177,9 +177,9 @@ namespace ml
 			return tmp;
 		};
 		
-		inline friend Self operator*(const Self& lhs, const Self& rhs)
+		inline friend self_type operator*(const self_type& lhs, const self_type& rhs)
 		{
-			Self tmp;
+			self_type tmp;
 			for (size_t i = 0; i < tmp.Size; i++)
 			{
 				tmp[i] = lhs[i] * rhs[i];
@@ -187,9 +187,9 @@ namespace ml
 			return tmp;
 		};
 		
-		inline friend Self operator/(const Self& lhs, const Self& rhs)
+		inline friend self_type operator/(const self_type& lhs, const self_type& rhs)
 		{
-			Self tmp;
+			self_type tmp;
 			for (size_t i = 0; i < tmp.Size; i++)
 			{
 				tmp[i] = lhs[i] / rhs[i];
@@ -197,9 +197,9 @@ namespace ml
 			return tmp;
 		};
 		
-		inline friend Self operator*(const Self& lhs, const T & rhs)
+		inline friend self_type operator*(const self_type& lhs, const T & rhs)
 		{
-			Self tmp;
+			self_type tmp;
 			for (size_t i = 0; i < tmp.Size; i++)
 			{
 				tmp[i] = lhs[i] * rhs;
@@ -207,9 +207,9 @@ namespace ml
 			return tmp;
 		};
 		
-		inline friend Self operator/(const Self& lhs, const T & rhs)
+		inline friend self_type operator/(const self_type& lhs, const T & rhs)
 		{
-			Self tmp;
+			self_type tmp;
 			for (size_t i = 0; i < tmp.Size; i++)
 			{
 				tmp[i] = lhs[i] / rhs;
@@ -218,37 +218,37 @@ namespace ml
 		};
 		
 
-		inline friend Self & operator+=(Self& lhs, const Self& rhs)
+		inline friend self_type & operator+=(self_type& lhs, const self_type& rhs)
 		{
 			return (lhs = (lhs + rhs));
 		};
 		
-		inline friend Self & operator-=(Self& lhs, const Self& rhs)
+		inline friend self_type & operator-=(self_type& lhs, const self_type& rhs)
 		{
 			return (lhs = (lhs - rhs));
 		};
 		
-		inline friend Self & operator*=(Self& lhs, const Self& rhs)
+		inline friend self_type & operator*=(self_type& lhs, const self_type& rhs)
 		{
 			return (lhs = (lhs * rhs));
 		};
 		
-		inline friend Self & operator/=(Self& lhs, const Self& rhs)
+		inline friend self_type & operator/=(self_type& lhs, const self_type& rhs)
 		{
 			return (lhs = (lhs / rhs));
 		};
 		
-		inline friend Self & operator*=(Self& lhs, const T & rhs)
+		inline friend self_type & operator*=(self_type& lhs, const T & rhs)
 		{
 			return (lhs = (lhs * rhs));
 		};
 		
-		inline friend Self & operator/=(Self& lhs, const T & rhs)
+		inline friend self_type & operator/=(self_type& lhs, const T & rhs)
 		{
 			return (lhs = (lhs / rhs));
 		};
 		
-		inline friend Self operator-(const Self& rhs)
+		inline friend self_type operator-(const self_type& rhs)
 		{
 			return rhs * static_cast<T>(-1);
 		}

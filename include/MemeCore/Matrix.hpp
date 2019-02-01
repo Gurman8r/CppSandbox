@@ -15,7 +15,7 @@ namespace ml
 	{
 	public:
 		using data_type	= T;
-		using Self	= Matrix<data_type, _Cols, _Rows>;
+		using self_type	= Matrix<data_type, _Cols, _Rows>;
 		using size_type = size_t;
 
 		enum : size_type
@@ -35,7 +35,7 @@ namespace ml
 		}
 		
 		Matrix(const data_type & value)
-			: Self()
+			: self_type()
 		{
 			for (size_type i = 0; i < Size; i++)
 			{
@@ -44,7 +44,7 @@ namespace ml
 		}
 		
 		Matrix(const data_type * value)
-			: Self()
+			: self_type()
 		{
 			for (size_type i = 0; i < Size; i++)
 			{
@@ -53,7 +53,7 @@ namespace ml
 		}
 		
 		Matrix(const std::initializer_list<data_type> & value)
-			: Self()
+			: self_type()
 		{
 			for (auto it = value.begin(); it != value.end(); it++)
 			{
@@ -61,14 +61,14 @@ namespace ml
 			}
 		}
 		
-		Matrix(const Self & value)
-			: Self(value.ptr())
+		Matrix(const self_type & value)
+			: self_type(value.ptr())
 		{
 		}
 		
 		template <typename U, size_type C, size_type R>
 		Matrix(const Matrix<U, C, R> & copy)
-			: Self()
+			: self_type()
 		{
 			const size_type imax = std::min<size_type>(Size, copy.Size);
 
@@ -96,9 +96,9 @@ namespace ml
 			return m_data[index];
 		}
 
-		inline static Self identity()
+		inline static self_type identity()
 		{
-			Self value;
+			self_type value;
 			for (size_type y = 0; y < Rows; y++)
 			{
 				for (size_type x = 0; x < Cols; x++)
@@ -143,7 +143,7 @@ namespace ml
 		}
 
 	public:
-		inline virtual bool equals(const Self & value) const override
+		inline virtual bool equals(const self_type & value) const override
 		{
 			for (size_type i = 0; i < Size; i++)
 			{
@@ -155,7 +155,7 @@ namespace ml
 			return true;
 		}
 		
-		inline virtual bool lessThan(const Self & value) const override
+		inline virtual bool lessThan(const self_type & value) const override
 		{
 			for (size_type i = 0; i < Size; i++)
 			{
@@ -168,7 +168,7 @@ namespace ml
 		}
 
 	public:
-		inline static const std::vector<T> & contiguous(const Self * value, size_type length)
+		inline static const std::vector<T> & contiguous(const self_type * value, size_type length)
 		{
 			static std::vector<T> out;
 			if (const size_type imax = (length * Size))

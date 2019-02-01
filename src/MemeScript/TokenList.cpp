@@ -7,7 +7,7 @@ namespace ml
 	{
 	}
 	
-	TokenList::TokenList(const Value & value)
+	TokenList::TokenList(const value_type & value)
 		: m_values({ value })
 	{
 	}
@@ -27,27 +27,27 @@ namespace ml
 	}
 
 
-	const TokenList::Value		TokenList::at(size_t index) const
+	const TokenList::value_type		TokenList::at(size_t index) const
 	{
 		return (*this)[index];
 	}
 	
-	const TokenList::Value		TokenList::back() const
+	const TokenList::value_type		TokenList::back() const
 	{
 		if (!empty())
 		{
 			return m_values.back();
 		}
-		return Value();
+		return value_type();
 	}
 	
-	const TokenList::Value		TokenList::front() const
+	const TokenList::value_type		TokenList::front() const
 	{
 		if (!empty())
 		{
 			return m_values.front();
 		}
-		return Value();
+		return value_type();
 	}
 	
 	const String				TokenList::str() const
@@ -135,12 +135,12 @@ namespace ml
 	}
 
 
-	const size_t	TokenList::count(const Value & value) const
+	const size_t	TokenList::count(const value_type & value) const
 	{
 		return count(begin(), end(), value);
 	}
 	
-	const size_t	TokenList::count(const_iterator first, const_iterator last, const Value & val) const
+	const size_t	TokenList::count(const_iterator first, const_iterator last, const value_type & val) const
 	{
 		difference_type ret = 0;
 
@@ -157,7 +157,7 @@ namespace ml
 		return ret;
 	}
 	
-	const size_t	TokenList::indexOf(const Value& value) const
+	const size_t	TokenList::indexOf(const value_type& value) const
 	{
 		auto it = find(value);
 
@@ -175,7 +175,7 @@ namespace ml
 	}
 
 
-	const bool	TokenList::contains(const Value & value) const
+	const bool	TokenList::contains(const value_type & value) const
 	{
 		return find_first(value) != end();
 	}
@@ -186,7 +186,7 @@ namespace ml
 	}
 
 
-	const bool	TokenList::back(const Value & value) const
+	const bool	TokenList::back(const value_type & value) const
 	{
 		return back() == value;
 	}
@@ -202,7 +202,7 @@ namespace ml
 	}
 
 
-	const bool	TokenList::front(const Value & value) const
+	const bool	TokenList::front(const value_type & value) const
 	{
 		return front() == value;
 	}
@@ -228,12 +228,12 @@ namespace ml
 		return it < end();
 	}
 	
-	const bool	TokenList::isWrap(const Value & value) const
+	const bool	TokenList::isWrap(const value_type & value) const
 	{
 		return isWrap(value, value);
 	}
 	
-	const bool	TokenList::isWrap(const Value & lhs, const Value & rhs) const
+	const bool	TokenList::isWrap(const value_type & lhs, const value_type & rhs) const
 	{
 		return size() >= 2 && front().type == lhs.type && back().type == rhs.type;
 	}
@@ -352,7 +352,7 @@ namespace ml
 		return TokenList();
 	}
 	
-	TokenList	TokenList::between(const Value & lhs, const Value & rhs) const
+	TokenList	TokenList::between(const value_type & lhs, const value_type & rhs) const
 	{
 		const_iterator from = find_first(lhs);
 		if (from != end())
@@ -470,15 +470,15 @@ namespace ml
 	
 	TokenList&	TokenList::insert(size_t index, char value)
 	{
-		return insert(index, Value(value));
+		return insert(index, value_type(value));
 	}
 	
-	TokenList&	TokenList::insert(size_t index, const Value& value)
+	TokenList&	TokenList::insert(size_t index, const value_type& value)
 	{
 		return insert(begin() + index, value);
 	}
 	
-	TokenList&	TokenList::insert(iterator it, const Value & value)
+	TokenList&	TokenList::insert(iterator it, const value_type & value)
 	{
 		m_values.insert(it, value);
 		return (*this);
@@ -506,10 +506,10 @@ namespace ml
 	
 	TokenList&	TokenList::push_back(char value)
 	{
-		return push_back(Value(value));
+		return push_back(value_type(value));
 	}
 	
-	TokenList&	TokenList::push_back(const Value& value)
+	TokenList&	TokenList::push_back(const value_type& value)
 	{
 		m_values.push_back(value);
 
@@ -532,10 +532,10 @@ namespace ml
 	
 	TokenList&	TokenList::push_front(char value)
 	{
-		return push_front(Value(value));
+		return push_front(value_type(value));
 	}
 	
-	TokenList&	TokenList::push_front(const Value& value)
+	TokenList&	TokenList::push_front(const value_type& value)
 	{
 		return insert(0, value);
 	}
@@ -554,12 +554,12 @@ namespace ml
 		return push_front(value.m_values);
 	}
 	
-	TokenList&	TokenList::remove(const Value& value)
+	TokenList&	TokenList::remove(const value_type& value)
 	{
 		return erase(find_first(value));
 	}
 	
-	TokenList&	TokenList::removeAll(const Value& value)
+	TokenList&	TokenList::removeAll(const value_type& value)
 	{
 		const_iterator it;
 		while ((it = find_first(value)) != end())
@@ -591,7 +591,7 @@ namespace ml
 		return pop_back();
 	}
 	
-	TokenList&	TokenList::unwrapIf(const Value & value)
+	TokenList&	TokenList::unwrapIf(const value_type & value)
 	{
 		if (isWrap(value))
 		{
@@ -600,7 +600,7 @@ namespace ml
 		return (*this);
 	}
 	
-	TokenList&	TokenList::unwrapIf(const Value & lhs, const Value & rhs)
+	TokenList&	TokenList::unwrapIf(const value_type & lhs, const value_type & rhs)
 	{
 		if (isWrap(lhs, rhs))
 		{
@@ -609,18 +609,18 @@ namespace ml
 		return (*this);
 	}
 	
-	TokenList&	TokenList::wrap(const Value & value)
+	TokenList&	TokenList::wrap(const value_type & value)
 	{
 		return wrap(value, value);
 	}
 	
-	TokenList&	TokenList::wrap(const Value & lhs, const Value & rhs)
+	TokenList&	TokenList::wrap(const value_type & lhs, const value_type & rhs)
 	{
 		return push_front(lhs).push_back(rhs);
 	}
 
 
-	TokenList::const_iterator TokenList::find(const Value& value, size_t index) const
+	TokenList::const_iterator TokenList::find(const value_type& value, size_t index) const
 	{
 		for (TokenList::const_iterator it = begin() + index; it != end(); it++)
 		{
@@ -632,7 +632,7 @@ namespace ml
 		return end();
 	}
 	
-	TokenList::const_iterator TokenList::find_first(const Value& value) const
+	TokenList::const_iterator TokenList::find_first(const value_type& value) const
 	{
 		for (TokenList::const_iterator it = begin(); it != end(); it++)
 		{
@@ -644,7 +644,7 @@ namespace ml
 		return end();
 	}
 	
-	TokenList::const_iterator TokenList::find_first_not_of(const Value& value, size_t index) const
+	TokenList::const_iterator TokenList::find_first_not_of(const value_type& value, size_t index) const
 	{
 		for (TokenList::const_iterator it = begin(); it != end(); it++)
 		{
@@ -656,7 +656,7 @@ namespace ml
 		return end();
 	}
 	
-	TokenList::const_iterator TokenList::find_last(const Value& value) const
+	TokenList::const_iterator TokenList::find_last(const value_type& value) const
 	{
 		for (TokenList::const_iterator it = end(); it != begin(); it--)
 		{
@@ -668,7 +668,7 @@ namespace ml
 		return end();
 	}
 	
-	TokenList::const_iterator TokenList::find_last_not_of(const Value& value) const
+	TokenList::const_iterator TokenList::find_last_not_of(const value_type& value) const
 	{
 		for (auto it = end(); it != begin(); it--)
 		{

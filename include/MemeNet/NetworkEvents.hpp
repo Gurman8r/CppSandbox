@@ -6,7 +6,7 @@
 
 namespace ml
 {
-	// Base
+	// base_type
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	struct ML_NETWORK_API NetworkEvent : public Event

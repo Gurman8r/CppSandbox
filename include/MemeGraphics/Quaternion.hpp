@@ -10,7 +10,7 @@ namespace ml
 		: public Vector4<float>
 	{
 	public:
-		using Base = Vector4<float>;
+		using base_type = Vector4<float>;
 
 	public:
 		Quaternion()
@@ -26,15 +26,15 @@ namespace ml
 		{
 		}
 		Quaternion(float x, float y, float z, float w)
-			: Base(x, y, z, w)
+			: base_type(x, y, z, w)
 		{
 		}
 		Quaternion(const Vector<float, 4> & copy)
-			: Base(copy)
+			: base_type(copy)
 		{
 		}
 		Quaternion(const Quaternion & copy)
-			: Base((Base)copy)
+			: base_type((base_type)copy)
 		{
 		}
 		~Quaternion() {}
@@ -102,17 +102,17 @@ namespace ml
 		
 		inline friend Quaternion operator*(const Quaternion & lhs, float rhs)
 		{
-			return (Base)(lhs) * rhs;
+			return (base_type)(lhs) * rhs;
 		}
 		
 		inline friend Quaternion operator/(const Quaternion & lhs, float rhs)
 		{
-			return (Base)(lhs) / rhs;
+			return (base_type)(lhs) / rhs;
 		}
 		
-		inline operator Base() const
+		inline operator base_type() const
 		{
-			return Base((*this)[0], (*this)[1], (*this)[2], (*this)[3]);
+			return base_type((*this)[0], (*this)[1], (*this)[2], (*this)[3]);
 		}
 	};
 

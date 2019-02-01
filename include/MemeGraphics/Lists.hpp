@@ -20,29 +20,29 @@ namespace ml
 		: public List<Vertex>
 	{
 	public:
-		using Base = List<value_type>;
-		using Self = VertexList;
+		using base_type = List<value_type>;
+		using self_type = VertexList;
 
 	public:
 		VertexList()
-			: Base()
+			: base_type()
 		{
 		}
-		VertexList(const Base & value)
-			: Base(value)
+		VertexList(const base_type & value)
+			: base_type(value)
 		{
 		}
-		VertexList(const Initializer & value)
-			: Base(value)
+		VertexList(const initializer_type & value)
+			: base_type(value)
 		{
 		}
-		VertexList(const Self & value)
-			: Base(value)
+		VertexList(const self_type & value)
+			: base_type(value)
 		{
 		}
 		template <typename Iter>
 		VertexList(Iter begin, Iter end)
-			: Base(begin, end)
+			: base_type(begin, end)
 		{
 		}
 		~VertexList() {}
