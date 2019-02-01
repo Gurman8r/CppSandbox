@@ -2,8 +2,6 @@
 #define _COMPONENT_POOL_H_
 
 #include <MemeCore/Component.hpp>
-#include <unordered_map>
-#include <typeindex>
 
 #define assert_typeof_component(T) \
 static_assert(std::is_base_of<ml::Component, T>::value, "Type must inherit ml::Component")

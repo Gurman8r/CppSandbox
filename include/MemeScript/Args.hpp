@@ -2,7 +2,6 @@
 #define _ARGS_H_
 
 #include <MemeCore/ITrackable.hpp>
-#include <MemeCore/IComparable.hpp>
 #include <MemeScript/Export.hpp>
 
 namespace ml

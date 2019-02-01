@@ -1,10 +1,8 @@
 #ifndef _ISERIALIZABLE_H_
 #define _ISERIALIZABLE_H_
 
-#include <MemeCore/Export.hpp>
-#include <iostream>
 #include <MemeCore/String.hpp>
-#include <type_traits>
+#include <MemeCore/TypeInfo.hpp>
 
 namespace ml
 {
@@ -13,14 +11,14 @@ namespace ml
 	public:
 		inline virtual void serialize(std::ostream & out) const
 		{
-			out << "[" << get_type().name() << "]";
+			out << get_type().name;
 		}
 		inline virtual void deserialize(std::istream & in) 
 		{
 		}
 
 	public:
-		inline const std::type_info & get_type() const 
+		inline TypeInfo get_type() const
 		{
 			return typeid(*this);
 		}
@@ -29,17 +27,17 @@ namespace ml
 		{ 
 			String::Stream stream;
 			stream << (*this);
-			return stream; 
+			return stream;
 		}
 
-		inline virtual const String to_string() const
+		inline virtual const String to_str() const
 		{
-			return to_stream().str(); 
+			return to_stream().str();
 		}
 
-		inline virtual const char * c_str() const
+		inline virtual const char * to_cstr() const
 		{
-			return to_string().c_str();
+			return to_str().c_str();
 		}
 
 	public:

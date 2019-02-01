@@ -144,7 +144,7 @@ namespace ml
 				pfx.push_back(arg);
 			}
 
-			if(show) cout << "P: " << pfx << std::endl;
+			if(show) cout << "P: " << pfx << ml::endl;
 		}
 
 		while (!stk.empty() && stk.front() != TokenType::TOK_LPRN)
@@ -153,7 +153,7 @@ namespace ml
 			stk.erase(stk.begin());
 		}
 
-		if (show) cout << "P: " << pfx << std::endl;
+		if (show) cout << "P: " << pfx << ml::endl;
 
 		if (stk.empty())
 		{
@@ -223,7 +223,7 @@ namespace ml
 				{
 					if (m_showToks)
 					{
-						cout << (*it) << std::endl;
+						cout << (*it) << ml::endl;
 					}
 
 					// For
@@ -271,7 +271,7 @@ namespace ml
 
 				if (m_showTree)
 				{
-					cout << (*root) << std::endl;
+					cout << (*root) << ml::endl;
 				}
 			}
 		}

@@ -60,9 +60,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\MemeCore\IOStream.hpp">
-      <Filter>Header Files\STD</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Component.hpp">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
@@ -171,9 +168,6 @@
     <ClInclude Include="..\..\include\MemeCore\Debug.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Enum.hpp">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\FileSystem.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
@@ -185,6 +179,21 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Export.hpp">
       <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\STD.hpp">
+      <Filter>Header Files\STD</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\IO.hpp">
+      <Filter>Header Files\STD</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\OStream.hpp">
+      <Filter>Header Files\STD</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\IntTypes.hpp">
+      <Filter>Header Files\STD</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\TypeInfo.hpp">
+      <Filter>Header Files\STD</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

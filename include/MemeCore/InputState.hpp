@@ -1,8 +1,7 @@
 #ifndef _INPUT_STATE_H_
 #define _INPUT_STATE_H_
 
-#include <inttypes.h>
-#include <stdlib.h>
+#include <MemeCore/IntTypes.hpp>
 
 namespace ml
 {
@@ -34,7 +33,10 @@ namespace ml
 
 		self_type & endStep()
 		{
-			memcpy(m_old, m_new, Size);
+			for (size_t i = 0; i < Size; i++)
+			{
+				m_old[i] = m_new[i];
+			}
 			return (*this);
 		}
 

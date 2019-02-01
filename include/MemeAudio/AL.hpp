@@ -2,7 +2,7 @@
 #define _AL_H_
 
 #include <MemeAudio/Export.hpp>
-#include <inttypes.h>
+#include <MemeCore/Maths.hpp>
 
 namespace ml
 {

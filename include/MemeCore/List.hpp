@@ -2,7 +2,6 @@
 #define _BASE_LIST_H_
 
 #include <MemeCore/ITrackable.hpp>
-#include <MemeCore/IComparable.hpp>
 
 namespace ml
 {

@@ -1,10 +1,8 @@
 #ifndef _PLUGIN_MANAGER_H_
 #define _PLUGIN_MANAGER_H_
 
-#include <MemeCore/Export.hpp>
 #include <MemeCore/ISingleton.hpp>
 #include <MemeCore/ITrackable.hpp>
-#include <cassert>
 
 #define ML_Plugins ml::LibLoader::getInstance()
 

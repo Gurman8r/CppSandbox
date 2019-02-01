@@ -3,7 +3,6 @@
 
 #include <MemeNet/Export.hpp>
 #include <MemeCore/ITrackable.hpp>
-#include <MemeCore/IComparable.hpp>
 
 namespace ml
 {
@@ -152,7 +151,7 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			out << id << " ";
+			out << id;
 		}
 		
 		inline bool equals(const uint64_t & value) const override

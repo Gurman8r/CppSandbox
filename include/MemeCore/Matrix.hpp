@@ -1,7 +1,6 @@
 #ifndef _MATRIX_H_
 #define _MATRIX_H_
 
-#include <MemeCore/ITrackable.hpp>
 #include <MemeCore/IEnumerable.hpp>
 
 namespace ml
@@ -123,7 +122,7 @@ namespace ml
 				}
 				if (y < Rows - 1)
 				{
-					out << std::endl;
+					out << ml::endl;
 				}
 			}
 		}

@@ -82,19 +82,19 @@ namespace ml
 
 			cerr
 				<< FMT()
-				<< std::endl
+				<< ml::endl
 				<< FG::Red
 				<< "An internal OpenAL call failed in " << fileName << "(" << line << ")"
-				<< FG::Yellow << std::endl << "Code: "
-				<< FG::White << std::endl << "\t" << errorCode
-				<< FG::Yellow << std::endl << "Expression: "
-				<< FG::White << std::endl << "\t" << expr
-				<< FG::Yellow << std::endl << "Description:"
-				<< FG::White << std::endl << "\t" << errorName
-				<< FG::White << std::endl << "\t" << errorDesc
+				<< FG::Yellow << ml::endl << "Code: "
+				<< FG::White << ml::endl << "\t" << errorCode
+				<< FG::Yellow << ml::endl << "Expression: "
+				<< FG::White << ml::endl << "\t" << expr
+				<< FG::Yellow << ml::endl << "Description:"
+				<< FG::White << ml::endl << "\t" << errorName
+				<< FG::White << ml::endl << "\t" << errorDesc
 				<< FMT()
-				<< std::endl
-				<< std::endl;
+				<< ml::endl
+				<< ml::endl;
 		}
 	}
 	

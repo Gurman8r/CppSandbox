@@ -86,9 +86,9 @@ namespace ml
 		RecordMap::const_iterator it;
 		for (it = m_map.begin(); it != m_map.end(); ++it)
 		{
-			out << (*it->first) << (it->second) << std::endl;
+			out << (*it->first) << (it->second) << ml::endl;
 		}
-		out << std::endl;
+		out << ml::endl;
 	}
 
 }

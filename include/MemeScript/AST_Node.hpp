@@ -3,7 +3,6 @@
 
 #include <MemeScript/Export.hpp>
 #include <MemeCore/ITrackable.hpp>
-#include <unordered_map>
 
 namespace ml
 {

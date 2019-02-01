@@ -49,7 +49,7 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			out << "[" << get_type().name() << "] " << width << " " << height;
+			out << "[" << get_type().name << "] " << width << " " << height;
 		}
 	};
 
@@ -69,7 +69,7 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			out << "[" << get_type().name() << "] " << x << " " << y;
+			out << "[" << get_type().name << "] " << x << " " << y;
 		}
 	};
 
@@ -87,7 +87,7 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			out << "[" << get_type().name() << "] " << (char)value;
+			out << "[" << get_type().name << "] " << (char)value;
 		}
 	};
 
@@ -107,7 +107,7 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			out << "[" << get_type().name() << "] " << x << " " << y;
+			out << "[" << get_type().name << "] " << x << " " << y;
 		}
 	};
 
@@ -122,7 +122,7 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			out << "[" << get_type().name() << "] ";
+			out << "[" << get_type().name << "] ";
 		}
 	};
 
@@ -140,7 +140,7 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			out << "[" << get_type().name() << "] " << value;
+			out << "[" << get_type().name << "] " << value;
 		}
 	};
 
@@ -160,7 +160,7 @@ namespace ml
 		
 		void serialize(std::ostream & out) const override
 		{
-			out << "[" << get_type().name() << "] " << x << " " << y;
+			out << "[" << get_type().name << "] " << x << " " << y;
 		}
 	};
 
@@ -178,7 +178,7 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			out << "[" << get_type().name() << "] " << value;
+			out << "[" << get_type().name << "] " << value;
 		}
 	};
 

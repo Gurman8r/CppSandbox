@@ -3,7 +3,6 @@
 
 #include <MemeGraphics/Glyph.hpp>
 #include <MemeCore/IResource.hpp>
-#include <map>
 
 namespace ml
 {

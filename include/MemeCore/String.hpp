@@ -2,12 +2,7 @@
 #define _ML_STRING_H_
 
 #include <MemeCore/IComparable.hpp>
-#include <MemeCore/IOStream.hpp>
-#include <algorithm>
-#include <string>
-#include <sstream>
-#include <initializer_list>
-#include <vector>
+#include <MemeCore/IO.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -36,15 +31,12 @@ namespace ml
 		using pointer				= typename Base::pointer;
 		using const_reference		= typename Base::const_reference;
 		using const_pointer			= typename Base::const_pointer;
-		
 		using size_type				= typename Base::size_type;
 		using difference_type		= typename Base::difference_type;
-		
 		using iterator				= typename Base::iterator;
 		using const_iterator		= typename Base::const_iterator;
 		using reverse_iterator		= typename Base::reverse_iterator;
 		using const_reverse_iterator= typename Base::const_reverse_iterator;
-		
 		using _Alty					= typename Base::_Alty;
 		using _Alty_traits			= typename Base::_Alty_traits;
 
@@ -71,11 +63,6 @@ namespace ml
 		
 		BasicString(const Self & value, const Allocator & alloc)
 			: Base(value, alloc)
-		{
-		}
-
-		BasicString(const Base & value)
-			: Base(value)
 		{
 		}
 		
@@ -139,6 +126,11 @@ namespace ml
 		
 		BasicString(Value * const first, Value * const last, std::random_access_iterator_tag)
 			: Base(first, last, std::random_access_iterator_tag())
+		{
+		}
+
+		BasicString(const Base & value)
+			: Base(value)
 		{
 		}
 		

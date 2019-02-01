@@ -1,10 +1,8 @@
 #ifndef _CONSOLE_UTILITY_H_
 #define _CONSOLE_UTILITY_H_
 
-#include <MemeCore/Export.hpp>
-#include <MemeCore/Enum.hpp>
-#include <iostream>
-#include <iomanip>
+#include <MemeCore/IntTypes.hpp>
+#include <MemeCore/IO.hpp>
 
 namespace ml
 {
@@ -22,22 +20,22 @@ namespace ml
 	{
 		enum Color : uint16_t
 		{
-			Black = ML_ENUM_0,
-			DarkBlue = ML_ENUM_1,
-			DarkGreen = ML_ENUM_2,
-			DarkCyan = DarkGreen | DarkBlue,
-			DarkRed = ML_ENUM_4,
+			Black		= ML_ENUM_0,
+			DarkBlue	= ML_ENUM_1,
+			DarkGreen	= ML_ENUM_2,
+			DarkCyan	= DarkGreen | DarkBlue,
+			DarkRed		= ML_ENUM_4,
 			DarkMagenta = DarkRed | DarkBlue,
-			DarkYellow = DarkRed | DarkGreen,
-			Normal = DarkRed | DarkGreen | DarkBlue,
-			Gray = ML_ENUM_8,
-			Blue = Gray | DarkBlue,
-			Green = Gray | DarkGreen,
-			Cyan = Gray | DarkGreen | DarkBlue,
-			Red = Gray | DarkRed,
-			Magenta = Gray | DarkRed | DarkBlue,
-			Yellow = Gray | DarkRed | DarkGreen,
-			White = Gray | DarkRed | DarkGreen | DarkBlue,
+			DarkYellow	= DarkRed | DarkGreen,
+			Normal		= DarkRed | DarkGreen | DarkBlue,
+			Gray		= ML_ENUM_8,
+			Blue		= Gray | DarkBlue,
+			Green		= Gray | DarkGreen,
+			Cyan		= Gray | DarkGreen | DarkBlue,
+			Red			= Gray | DarkRed,
+			Magenta		= Gray | DarkRed | DarkBlue,
+			Yellow		= Gray | DarkRed | DarkGreen,
+			White		= Gray | DarkRed | DarkGreen | DarkBlue,
 
 			MAX_COLOR = 16
 		};
@@ -51,22 +49,22 @@ namespace ml
 	{
 		enum Color : uint16_t
 		{
-			Black = ML_ENUM_0,
-			DarkBlue = ML_ENUM_16,
-			DarkGreen = ML_ENUM_32,
-			DarkCyan = DarkGreen | DarkBlue,
-			DarkRed = ML_ENUM_64,
+			Black		= ML_ENUM_0,
+			DarkBlue	= ML_ENUM_16,
+			DarkGreen	= ML_ENUM_32,
+			DarkCyan	= DarkGreen | DarkBlue,
+			DarkRed		= ML_ENUM_64,
 			DarkMagenta = DarkRed | DarkBlue,
-			DarkYellow = DarkRed | DarkGreen,
-			Gray = DarkRed | DarkGreen | DarkBlue,
-			DarkGray = ML_ENUM_128,
-			Blue = DarkGray | DarkBlue,
-			Green = DarkGray | DarkGreen,
-			Cyan = DarkGray | DarkGreen | DarkBlue,
-			Red = DarkGray | DarkRed,
-			Magenta = DarkGray | DarkRed | DarkBlue,
-			Yellow = DarkGray | DarkRed | DarkGreen,
-			White = DarkGray | DarkRed | DarkGreen | DarkBlue,
+			DarkYellow	= DarkRed | DarkGreen,
+			Gray		= DarkRed | DarkGreen | DarkBlue,
+			DarkGray	= ML_ENUM_128,
+			Blue		= DarkGray | DarkBlue,
+			Green		= DarkGray | DarkGreen,
+			Cyan		= DarkGray | DarkGreen | DarkBlue,
+			Red			= DarkGray | DarkRed,
+			Magenta		= DarkGray | DarkRed | DarkBlue,
+			Yellow		= DarkGray | DarkRed | DarkGreen,
+			White		= DarkGray | DarkRed | DarkGreen | DarkBlue,
 
 			MAX_COLOR = 16
 		};

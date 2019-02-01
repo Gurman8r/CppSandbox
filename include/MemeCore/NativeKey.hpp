@@ -2,7 +2,7 @@
 #define _NATIVE_KEY_H_
 
 #include <MemeCore/Export.hpp>
-#include <inttypes.h>
+#include <MemeCore/IntTypes.hpp>
 
 namespace ml
 {

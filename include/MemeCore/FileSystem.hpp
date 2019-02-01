@@ -3,7 +3,6 @@
 
 #include <MemeCore/ISingleton.hpp>
 #include <MemeCore/ITrackable.hpp>
-#include <MemeCore/String.hpp>
 
 #define ML_FileSystem ml::FileSystem::getInstance()
 
@@ -20,14 +19,14 @@ namespace ml
 		~FileSystem() {}
 
 	public:
+		bool	getDirContents(const String & dirName, String::Stream & stream) const;
+		bool	setWorkingDir(const String & value);
+		String	getWorkingDir() const;
+
 		bool	fileExists(const String & filename) const;
 		bool	getFileContents(const String & filename, std::vector<char> & buffer) const;
 		bool	getFileContents(const String & filename, String & str) const;
 		bool	getFileContents(const String & filename, String::Stream & stream) const;
-
-		bool	setWorkingDir(const String & value);
-		String	getWorkingDir() const;
-
 		String	getFileExtension(const String & filename) const;
 	};
 }

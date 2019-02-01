@@ -2,7 +2,6 @@
 #define _TOKEN_H_
 
 #include <MemeScript/Args.hpp>
-#include <unordered_map>
 
 namespace ml
 {

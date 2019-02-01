@@ -90,7 +90,7 @@ namespace ml
 		out << "Bytes Used: "
 			<< "( " << m_used << " / " << m_size << " ) "
 			<< "( " << (((double)m_used / m_size) * 100.0) << " % )"
-			<< std::endl;
+			<< ml::endl;
 
 		if (Chunk * chunk = m_head)
 		{
@@ -103,7 +103,7 @@ namespace ml
 		}
 		else
 		{
-			out << "Empty" << std::endl;
+			out << "Empty" << ml::endl;
 		}
 	}
 
@@ -120,7 +120,7 @@ namespace ml
 			<< FG::White << " | " << FG::Green << "npos: " << FG::Yellow << (&c.npos)
 			<< FG::White << " }"
 			<< FMT()
-			<< std::endl;
+			<< ml::endl;
 	}
 
 	

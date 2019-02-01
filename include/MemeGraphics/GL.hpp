@@ -2,7 +2,7 @@
 #define _GRAPHICS_ENUM_H_
 
 #include <MemeGraphics/Export.hpp>
-#include <MemeCore/Enum.hpp>
+#include <MemeCore/Maths.hpp>
 
 namespace ml
 {
@@ -283,7 +283,7 @@ namespace ml
 	template <typename T>
 	inline GL::Attachment operator+(const GL::Attachment lhs, const T rhs)
 	{
-		return ML_ENUM_CLAMP(
+		return ML_TYPE_CLAMP(
 			GL::Attachment,
 			static_cast<GL::Enum>(lhs) + static_cast<GL::Enum>(rhs),
 			GL::ColorAttachment0,
@@ -299,7 +299,7 @@ namespace ml
 	template <typename T>
 	inline GL::TextureID operator+(const GL::TextureID lhs, const T rhs)
 	{
-		return ML_ENUM_CLAMP(
+		return ML_TYPE_CLAMP(
 			GL::TextureID,
 			static_cast<GL::Enum>(lhs) + static_cast<GL::Enum>(rhs),
 			GL::Texture0,

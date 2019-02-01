@@ -1,14 +1,62 @@
 #include <MemeCore/FileSystem.hpp>
 #include <MemeCore/Debug.hpp>
-#include <fstream>
 
 #ifdef ML_SYSTEM_WINDOWS
 #include <direct.h>
+#include <../thirdparty/include/dirent.h>
 #endif
-
 
 namespace ml
 {
+	bool FileSystem::getDirContents(const String & dirName, String::Stream & stream) const
+	{
+		if(DIR * dir = opendir(dirName.c_str()))
+		{
+			while (dirent * e = readdir(dir))
+			{
+				switch (e->d_type)
+				{
+				case DT_REG:
+					stream << e->d_name << "";
+					break;
+				case DT_DIR:
+					stream << e->d_name << "/";
+					break;
+				case DT_LNK:
+					stream << e->d_name << "@";
+					break;
+				default:
+					stream << e->d_name << "*";
+					break;
+				}
+				stream << ml::endl;
+			}
+			closedir(dir);
+			return true;
+		}
+		stream.str(String());
+		return false;
+	}
+
+	bool FileSystem::setWorkingDir(const String & value)
+	{
+#ifdef ML_SYSTEM_WINDOWS
+		return (_chdir(value.c_str()) == EXIT_SUCCESS) ? true : false;
+#else
+		return false;
+#endif
+	}
+
+	String FileSystem::getWorkingDir() const
+	{
+#ifdef ML_SYSTEM_WINDOWS
+		return String(_getcwd(NULL, 0));
+#else
+		return String();
+#endif
+	}
+
+
 	bool FileSystem::fileExists(const String & filename) const
 	{
 		return (bool)(std::ifstream(filename));
@@ -23,10 +71,8 @@ namespace ml
 			if (file)
 			{
 				file.seekg(0, std::ios_base::end);
-
-				std::streamsize size = file.tellg();
-
-				if (size > 0)
+				std::streamsize size;
+				if ((size = file.tellg()) > 0)
 				{
 					file.seekg(0, std::ios_base::beg);
 
@@ -34,11 +80,8 @@ namespace ml
 
 					file.read(&buffer[0], size);
 				}
-
 				buffer.push_back('\0');
-
 				file.close();
-
 				return true;
 			}
 			else
@@ -77,23 +120,7 @@ namespace ml
 	}
 	
 
-	bool FileSystem::setWorkingDir(const String & value)
-	{
-#ifdef ML_SYSTEM_WINDOWS
-		return (_chdir(value.c_str()) == EXIT_SUCCESS) ? true : false;
-#else
-		return false;
-#endif
-	}
-
-	String FileSystem::getWorkingDir() const
-	{
-#ifdef ML_SYSTEM_WINDOWS
-		return String(_getcwd(NULL, 0));
-#else
-		return String();
-#endif
-	}
+	
 
 
 	String FileSystem::getFileExtension(const String & filename) const

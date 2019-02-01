@@ -42,7 +42,7 @@ namespace ml
 			<< "(VT: " << m_vt.size() << ") " // << std::Endl << m_vt << std::Endl
 			<< "(VN: " << m_vn.size() << ") " // << std::Endl << m_vn << std::Endl
 			<< "(VF: " << m_vf.size() << ") " // << std::Endl << m_vi << std::Endl
-			<< "}" << std::endl;
+			<< "}" << ml::endl;
 	}
 
 	void Mesh::deserialize(std::istream & in)

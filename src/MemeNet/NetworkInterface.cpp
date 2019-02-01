@@ -78,7 +78,7 @@ namespace ml
 			(PacketPriority)settings.priority,
 			(PacketReliability)settings.reliability,
 			settings.ordering,
-			RakNet::SystemAddress(addr.c_str(), addr.port),
+			RakNet::SystemAddress(addr.to_cstr(), addr.port),
 			settings.broadcast,
 			settings.receiptNumber);
 	}
@@ -103,7 +103,7 @@ namespace ml
 
 	GUID NetworkInterface::getGUIDFromAddress(const Address & value) const
 	{
-		const auto addr = RakNet::SystemAddress(value.c_str(), value.port);
+		const auto addr = RakNet::SystemAddress(value.to_cstr(), value.port);
 		const auto guid = ML_PEER(m_peer)->GetGuidFromSystemAddress(addr);
 		return GUID(guid.g);
 	}

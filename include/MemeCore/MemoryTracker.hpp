@@ -3,10 +3,9 @@
 
 #include <MemeCore/ISingleton.hpp>
 #include <MemeCore/ISerializable.hpp>
-#include <map>
 
 // Singleton to keep track of dynamically allocated ITrackables
-// Handles memory allocation/deallocation
+// Handles memory allocation ( malloc / free )
 #define ML_Tracker ml::MemoryTracker::getInstance()
 
 namespace ml

@@ -231,7 +231,7 @@ namespace demo
 						.setScale(ml::vec2f::One)
 						.setPosition(origin + (offset * (float)(i + 1)))
 						.setColor(colors[i])
-						.setText(fonts[i].to_string())// + " | " + ev.window.title())
+						.setText(fonts[i].to_str())// + " | " + ev.window.title())
 					, batch);
 				}
 
@@ -318,32 +318,14 @@ namespace demo
 						return ml::Var().stringValue(buf);
 					}
 				}
-				else if (DIR * dir = opendir(name.c_str()))
+				else
 				{
-					ml::String::Stream ss;
-					while (dirent * e = readdir(dir))
+					ml::String::Stream stream;
+					if (ML_FileSystem.getDirContents(name, stream))
 					{
-						switch (e->d_type)
-						{
-						case DT_REG:
-							ss << e->d_name << "";
-							break;
-						case DT_DIR:
-							ss << e->d_name << "/";
-							break;
-						case DT_LNK:
-							ss << e->d_name << "@";
-							break;
-						default:
-							ss << e->d_name << "*";
-							break;
-						}
-						ss << ml::endl;
+						return ml::Var().stringValue(stream.str());
 					}
-					closedir(dir);
-					return ml::Var().stringValue(ss.str());
 				}
-
 				return ml::Var().boolValue(false);
 			} });
 

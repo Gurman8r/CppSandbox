@@ -1,14 +1,22 @@
 #ifndef _MATHS_H_
 #define _MATHS_H_
 
+/* * * * * * * * * * * * * * * * * * * * */
+
 #include <MemeCore/Export.hpp>
+#include <MemeCore/IntTypes.hpp>
+
+/* * * * * * * * * * * * * * * * * * * * */
 
 #define ML_CLAMP(value, min, max) \
-((value) < (min)) \
-? (min) \
-	: ((value) > (max)) \
-	? (max) \
-	: (value) \
+(((value) > (max)) \
+	? (((value) < (min)) \
+		? (min) \
+		: (value)) \
+	: (max)) \
+
+#define ML_TYPE_CLAMP(type, value, min, max) \
+static_cast<type>(ML_CLAMP(value, min, max)) \
 
 #define ML_MAP(value, min1, max1, min2, max2) \
 (min2 + (value - min1) * (max2 - min2) / (max1 - min1)) \
@@ -19,6 +27,8 @@
 	: (((value) > (0)) \
 		? (+1) \
 		: (-1))) \
+
+/* * * * * * * * * * * * * * * * * * * * */
 
 namespace ml
 {

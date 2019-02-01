@@ -1,8 +1,6 @@
 #include <MemeScript/AST_Expr.hpp>
 #include <MemeScript/Interpreter.hpp>
-
 #include <MemeCore/Debug.hpp>
-#include <iostream>
 
 namespace ml
 {
@@ -651,7 +649,7 @@ namespace ml
 
 	Var AST_TypeID::evaluate() const
 	{
-		return Var().intValue(expr->evaluate().getType());
+		return Var().intValue(expr->evaluate().getTypeID());
 	}
 
 

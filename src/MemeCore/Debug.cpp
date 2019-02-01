@@ -1,6 +1,5 @@
 #include <MemeCore/Debug.hpp>
 #include <MemeCore/NativeInput.hpp>
-#include <MemeCore/IOStream.hpp>
 
 namespace ml
 {
@@ -46,7 +45,7 @@ namespace ml
 			<< FG::Yellow << " WRN "
 			<< FG::White << "]"
 			<< FMT() << " " << message
-			<< std::endl;
+			<< ml::endl;
 		return Debug::Warning;
 	}
 
@@ -58,7 +57,7 @@ namespace ml
 			<< FG::Red << " ERR "
 			<< FG::White << "]"
 			<< FMT() << " " << message
-			<< std::endl;
+			<< ml::endl;
 		return Debug::Error;
 	}
 	
@@ -70,7 +69,7 @@ namespace ml
 			<< FG::Green << " LOG "
 			<< FG::White << "]"
 			<< FMT() << " " << message
-			<< std::endl;
+			<< ml::endl;
 		return Debug::Success;
 	}
 }

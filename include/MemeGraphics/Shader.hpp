@@ -7,7 +7,6 @@
 #include <MemeGraphics/Texture.hpp>
 #include <MemeGraphics/Transform.hpp>
 #include <MemeGraphics/Color.hpp>
-#include <map>
 
 namespace ml
 {

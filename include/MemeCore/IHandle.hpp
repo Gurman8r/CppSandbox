@@ -1,7 +1,7 @@
 #ifndef _IHANDLE_H_
 #define _IHANDLE_H_
 
-#include <inttypes.h>
+#include <MemeCore/IntTypes.hpp>
 
 namespace ml
 {

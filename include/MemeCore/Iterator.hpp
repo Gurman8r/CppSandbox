@@ -2,11 +2,6 @@
 #define _ITERATOR_H_
 
 #include <MemeCore/ITrackable.hpp>
-#include <MemeCore/IComparable.hpp>
-#include <iterator>
-#include <cassert>
-#include <cstddef>
-#include <utility>
 
 // https://codereview.stackexchange.com/a/74647/86601
 
@@ -18,8 +13,8 @@ namespace ml
 	// DT : difference type
 	template <class IC, class VT, class UT, class DT>
 	class Iterator
-		: public IComparable<Iterator<IC, VT, UT, DT>>
-		, public std::iterator<IC, UT, DT, VT *, VT &>
+		: public std::iterator<IC, UT, DT, VT *, VT &>
+		, public IComparable<Iterator<IC, VT, UT, DT>>
 	{
 	public:
 		using iterator_category = IC;

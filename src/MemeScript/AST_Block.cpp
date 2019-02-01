@@ -38,7 +38,7 @@ namespace ml
 		for (AST_Node* n : (*this))
 		{
 			out << tab(n->getDepth()) << (*n) 
-				<< std::endl << FMT();
+				<< ml::endl << FMT();
 		}
 
 		out << tab(getDepth()) << "}";

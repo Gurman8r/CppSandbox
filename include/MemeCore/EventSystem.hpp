@@ -3,7 +3,6 @@
 
 #include <MemeCore/EventListener.hpp>
 #include <MemeCore/ISingleton.hpp>
-#include <map>
 
 #define ML_EventSystem ml::EventSystem::getInstance()
 

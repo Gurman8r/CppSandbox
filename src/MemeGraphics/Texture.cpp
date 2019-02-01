@@ -1,8 +1,6 @@
 #include <MemeGraphics/Texture.hpp>
 #include <MemeGraphics/OpenGL.hpp>
 #include <MemeCore/Debug.hpp>
-#include <cassert>
-#include <algorithm>
 
 namespace ml
 {

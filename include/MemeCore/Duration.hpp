@@ -1,10 +1,7 @@
 #ifndef _TIME_POINT_H_
 #define _TIME_POINT_H_
 
-#include <MemeCore/IComparable.hpp>
-#include <MemeCore/ISerializable.hpp>
 #include <MemeCore/ITrackable.hpp>
-#include <chrono>
 
 namespace ml
 {

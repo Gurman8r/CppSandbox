@@ -56,7 +56,7 @@ namespace ml
 			{
 				out << e << " ";
 			}
-			out << std::endl;
+			out << ml::endl;
 		}
 
 	private:

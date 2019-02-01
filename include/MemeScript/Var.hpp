@@ -1,10 +1,8 @@
 #ifndef _VAR_H_
 #define _VAR_H_
 
-#include <MemeCore/IComparable.hpp>
 #include <MemeScript/TokenList.hpp>
 #include <MemeScript/StringUtility.hpp>
-#include <iostream>
 
 namespace ml
 {
@@ -32,7 +30,7 @@ namespace ml
 		};
 
 	public:
-		enum Type : int32_t
+		enum : int32_t
 		{
 			INVALID_TYPE = -1,
 
@@ -56,9 +54,9 @@ namespace ml
 			MAX_VAR_TYPE
 		};
 		
-		static const String TypeNames[Type::MAX_VAR_TYPE];
+		static const String TypeNames[Var::MAX_VAR_TYPE];
 		
-		inline friend std::ostream & operator<<(std::ostream & out, const Type & rhs)
+		inline friend std::ostream & operator<<(std::ostream & out, const int32_t & rhs)
 		{
 			return out << Var::TypeNames[rhs];;
 		}
@@ -66,31 +64,31 @@ namespace ml
 
 	public:
 		Var();
-		Var(const Type& type, const TokenList& data);
+		Var(const int32_t& type, const TokenList& data);
 		Var(const Var & other);
 		~Var();
 
 	public:
 		inline int32_t	getScope()		const { return m_scope; }
-		inline Type		getType()		const { return m_type; }
-		inline String	getTypeName()	const { return TypeNames[getType()]; }
+		inline int32_t	getTypeID()		const { return m_typeID; }
+		inline String	getTypeName()	const { return TypeNames[getTypeID()]; }
 
 		inline Var & setScope(int32_t value)
 		{
 			m_scope = value;
 			return (*this);
 		}
-		inline Var & setType(const Type & value)
+		inline Var & setType(const int32_t & value)
 		{
 			m_changed = !compareType(value);
-			m_type = value;
+			m_typeID = value;
 			return (*this);
 		}
 
 	public: // Check Functions
 
 		bool	compareTokens(const TokenList& value) const;
-		bool	compareType(const Type& type) const;
+		bool	compareType(const int32_t& type) const;
 
 		bool	isValid() const;
 		bool	isArrayType() const;
@@ -203,7 +201,7 @@ namespace ml
 	private:
 		TokenList	m_tokens;
 		int32_t		m_scope;
-		Type		m_type;
+		int32_t		m_typeID;
 
 		mutable bool m_changed = true;
 	};

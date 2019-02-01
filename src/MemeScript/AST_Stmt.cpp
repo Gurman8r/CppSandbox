@@ -371,7 +371,7 @@ namespace ml
 		
 		cout << FMT();
 		
-		if(endl) { cout << std::endl; }
+		if(endl) { cout << ml::endl; }
 		
 		return runNext();
 	}
