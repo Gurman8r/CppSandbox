@@ -19,14 +19,12 @@ namespace ml
 		, public IComparable<BasicString<_Elem, _Traits, _Alloc>>
 	{
 	public:
-		using value_type	= _Elem;
-		using traits_type	= _Traits;
-		using allocator_type= _Alloc;
-
-		using self_type		= BasicString<value_type, traits_type, allocator_type>;
-		using base_type		= std::basic_string<value_type, traits_type, allocator_type>;
-		using Stream		= std::basic_stringstream<value_type, traits_type, allocator_type>;
-		
+		using value_type			= _Elem;
+		using traits_type			= _Traits;
+		using allocator_type		= _Alloc;
+		using self_type				= BasicString<value_type, traits_type, allocator_type>;
+		using base_type				= std::basic_string<value_type, traits_type, allocator_type>;
+		using Stream				= std::basic_stringstream<value_type, traits_type, allocator_type>;
 		using reference				= typename base_type::reference;
 		using pointer				= typename base_type::pointer;
 		using const_reference		= typename base_type::const_reference;
@@ -214,27 +212,27 @@ namespace ml
 
 
 	public: // Custom
-		template<typename T, typename ... A>
+		template <class T, class ... A>
 		inline static self_type Format(self_type value, const T & first, const A & ...args)
 		{
 			return value.format(first, (args)...);
 		}
 
-		template<typename T, typename ... A>
+		template <class T, class ... A>
 		inline self_type & format(const T & first, const A & ...args)
 		{
-			self_type::Stream stream;
-			stream << first << ml::endl;
+			self_type::Stream ss;
+			ss << first << ml::endl;
 
-			int32_t sink[] = { 0, ((void)(stream << args << ml::endl), 0)... };
+			int32_t sink[] = { 0, ((void)(ss << args << ml::endl), 0)... };
 			(void)sink;
 
-			for (size_type a = 0; stream.good(); a++)
+			for (size_type a = 0; ss.good(); a++)
 			{
 				const self_type fmt = ("{" + std::to_string(a) + "}");
 
 				self_type arg;
-				if (std::getline(stream, arg))
+				if (std::getline(ss, arg))
 				{
 					for (size_type i = 0;
 						(i = (*this).find(fmt, i)) != self_type::npos;

@@ -40,7 +40,7 @@ namespace ml
 			: base_type(value)
 		{
 		}
-		template <typename Iter>
+		template <class Iter>
 		VertexList(Iter begin, Iter end)
 			: base_type(begin, end)
 		{

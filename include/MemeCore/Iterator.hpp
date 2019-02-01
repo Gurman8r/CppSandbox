@@ -7,20 +7,22 @@
 
 namespace ml
 {
-	// IC : iterator category
-	// VT : value type
-	// UT : unqualified type
-	// DT : difference type
-	template <class IC, class VT, class UT, class DT>
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	template <
+		class _Category,
+		class _Value, 
+		class _Unqualified,
+		class _Difference>
 	class Iterator
-		: public std::iterator<IC, UT, DT, VT *, VT &>
-		, public IComparable<Iterator<IC, VT, UT, DT>>
+		: public std::iterator<_Category, _Unqualified, _Difference, _Value *, _Value &>
+		, public IComparable<Iterator<_Category, _Value, _Unqualified, _Difference>>
 	{
 	public:
-		using iterator_category = IC;
-		using value_type		= VT;
-		using unqualified_type	= UT;
-		using difference_type	= DT;
+		using iterator_category = _Category;
+		using value_type		= _Value;
+		using unqualified_type	= _Unqualified;
+		using difference_type	= _Difference;
 		using pointer			= value_type * ;
 		using reference			= value_type & ;
 		using const_pointer		= const value_type * ;
@@ -60,7 +62,7 @@ namespace ml
 	public:
 		inline operator const_self_type() const
 		{
-			return Iterator<iterator_category, const VT>(m_handle);
+			return Iterator<iterator_category, const value_type>(m_handle);
 		}
 
 
@@ -145,8 +147,16 @@ namespace ml
 		unqualified_type * m_handle;
 	};
 
-	template <class VT, class UT = std::remove_cv_t<VT>, class DT = std::ptrdiff_t>
-	using ForwardIterator = Iterator<std::forward_iterator_tag, VT, UT, DT>;
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	template <
+		class _Value,
+		class _Unqualified = std::remove_cv_t<_Value>,
+		class _Difference = std::ptrdiff_t
+	>
+	using ForwardIterator = Iterator<std::forward_iterator_tag, _Value, _Unqualified, _Difference>;
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ITERATOR_HPP_

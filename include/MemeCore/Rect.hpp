@@ -7,7 +7,7 @@
 namespace ml
 {
 
-	template <typename T>
+	template <class T>
 	class Rect final
 		: public Vector4<T>
 	{
@@ -115,15 +115,15 @@ namespace ml
 		{
 			return width(value - left());
 		}
-		inline self_type &	position(const coord_type& value)
+		inline self_type &	position(const coord_type & value)
 		{
 			return left(value[0]).top(value[1]);
 		}
-		inline self_type &	size(const coord_type& value)
+		inline self_type &	size(const coord_type & value)
 		{
 			return width(value[0]).height(value[1]);
 		}
-		inline self_type &	center(const coord_type& value)
+		inline self_type &	center(const coord_type & value)
 		{
 			return position(value - (size() / value_type(2)));
 		}
@@ -134,8 +134,8 @@ namespace ml
 		}
 	};
 
-	template <typename T> const Rect<T> Rect<T>::Empty = Rect<T>(0, 0, 0, 0);
-	template <typename T> const Rect<T> Rect<T>::One = Rect<T>(1, 1, 1, 1);
+	template <class T> const Rect<T> Rect<T>::Empty	= Rect<T>(0, 0, 0, 0);
+	template <class T> const Rect<T> Rect<T>::One	= Rect<T>(1, 1, 1, 1);
 
 	using FloatRect = Rect<float>;
 	using IntRect	= Rect<int32_t>;

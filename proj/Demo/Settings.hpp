@@ -9,9 +9,9 @@
 #include <MemeWindow/Context.hpp>
 
 // Singleton to store program properties/settings (INIReader)
-#define SETTINGS demo::Settings::getInstance()
+#define SETTINGS DEMO::Settings::getInstance()
 
-namespace demo
+namespace DEMO
 {
 	class Settings final
 		: public ml::ITrackable

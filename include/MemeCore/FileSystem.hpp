@@ -20,20 +20,23 @@ namespace ml
 		~FileSystem() {}
 
 	public:
-
-
-		bool	getDirContents(const String & dirName, List<char> & buffer) const;
-		bool	getDirContents(const String & dirName, String & str) const;
-		bool	getDirContents(const String & dirName, String::Stream & stream) const;
+		/* * * * * * * * * * * * * * * * * * * * */
 
 		bool	setWorkingDir(const String & value);
 		String	getWorkingDir() const;
+		bool	getDirContents(const String & dirName, List<char> & buffer) const;
+		bool	getDirContents(const String & dirName, String & str) const;
+		bool	getDirContents(const String & dirName, String::Stream & ss) const;
+
+		/* * * * * * * * * * * * * * * * * * * * */
 
 		bool	fileExists(const String & filename) const;
 		bool	getFileContents(const String & filename, List<char> & buffer) const;
 		bool	getFileContents(const String & filename, String & str) const;
-		bool	getFileContents(const String & filename, String::Stream & stream) const;
+		bool	getFileContents(const String & filename, String::Stream & ss) const;
 		String	getFileExtension(const String & filename) const;
+
+		/* * * * * * * * * * * * * * * * * * * * */
 	};
 }
 

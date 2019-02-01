@@ -1,19 +1,18 @@
 #ifndef _ARGS_HPP_
 #define _ARGS_HPP_
 
-#include <MemeCore/ITrackable.hpp>
+#include <MemeCore/List.hpp>
 #include <MemeScript/Export.hpp>
 
 namespace ml
 {
-	// Wrapper for std::vector<String>
 	class ML_SCRIPT_API Args final
 		: public ITrackable
 		, public IComparable<Args>
 	{
 	public:
 		using value_type			= String;
-		using vector_type			= std::vector<value_type>;
+		using vector_type			= List<value_type>;
 		using iterator				= vector_type::iterator;
 		using const_iterator		= vector_type::const_iterator;
 		using reverse_iterator		= vector_type::reverse_iterator;
@@ -108,11 +107,9 @@ namespace ml
 		Args::const_reverse_iterator	crend() const;
 
 	public:
-		inline friend std::ostream& operator<<(std::ostream& out, const Args& value)
+		inline void serialize(std::ostream & out) const override
 		{
-			for (const value_type& s : value)
-				out << s << " ";
-			return out;
+			out << m_values;
 		}
 		inline value_type	operator[](size_t index) const
 		{

@@ -5,7 +5,7 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-namespace demo
+namespace DEMO
 {
 	struct Foo final
 	{
@@ -68,7 +68,7 @@ namespace demo
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-namespace demo
+namespace DEMO 
 {
 	inline static int32_t testScripts()
 	{
@@ -386,7 +386,7 @@ namespace demo
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-namespace demo
+namespace DEMO 
 {
 	inline static int32_t runTests(uint32_t id)
 	{

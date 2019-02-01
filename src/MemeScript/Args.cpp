@@ -114,17 +114,15 @@ namespace ml
 
 	String::Stream Args::sstream() const
 	{
-		String::Stream stream;
-
+		String::Stream ss;
 		if (!empty())
 		{
 			for (auto e : (*this))
 			{
-				stream << e << '\n';
+				ss << e << '\n';
 			}
 		}
-
-		return stream;
+		return ss;
 	}
 
 	const size_t	Args::count(const value_type & value) const

@@ -5,9 +5,13 @@
 #include <MemeCore/InputState.hpp>
 #include <MemeCore/ITrackable.hpp>
 
+/* * * * * * * * * * * * * * * * * * * * */
+
 namespace ml
 {
-	struct ML_WINDOW_API MouseButton final
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	struct ML_WINDOW_API WindowMouse final
 	{
 		enum : int32_t
 		{
@@ -20,9 +24,12 @@ namespace ml
 			Button6,
 			Button7,
 
-			MAX_MOUSE_BUTTON
+			MAX_MOUSE_BUTTON,
+			MIN_MOUSE_BUTTON = Button0,
 		};
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	struct ML_WINDOW_API WindowKey final
 	{
@@ -149,9 +156,37 @@ namespace ml
 			RightSuper	= 347,
 			Menu		= 348,
 			
-			MAX_KEYCODE
+			MAX_KEYCODE,
+			MIN_KEYCODE = Space,
 		};
+
+		/* * * * * * * * * * * * * * * * * * * * */
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	class Window;
+	
+	class WindowInput
+		: public ITrackable
+		, public InputState<WindowKey::MAX_KEYCODE>
+	{
+	public:
+		WindowInput(const Window * window)
+			: m_window(window)
+		{
+		}
+		~WindowInput() {}
+	
+		bool checkKey(int32_t value) const override;
+	
+		bool getAnyKey() const override;
+	
+	private:
+		const Window * m_window;
+	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_WINDOW_INPUT_HPP_

@@ -693,7 +693,7 @@ namespace ml
 
 		//return (*this);
 
-		return errorValue(String::Format(
+		return errorValue(String().format(
 			"Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
 			getTypeID(), (*this), OperatorType::OP_ADD, other.getTypeID(), other));
 	}
@@ -765,7 +765,7 @@ namespace ml
 			}
 		}
 
-		return errorValue(String::Format(
+		return errorValue(String().format(
 			"Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
 			getTypeID(), (*this), OperatorType::OP_DIV, other.getTypeID(), other));
 	}
@@ -828,7 +828,7 @@ namespace ml
 			}
 		}
 
-		return errorValue(String::Format(
+		return errorValue(String().format(
 			"Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
 			getTypeID(), (*this), OperatorType::OP_MOD, other.getTypeID(), other));
 	}
@@ -900,7 +900,7 @@ namespace ml
 			}
 		}
 
-		return errorValue(String::Format(
+		return errorValue(String().format(
 			"Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
 			getTypeID(), (*this), OperatorType::OP_MUL, other.getTypeID(), other));
 	}
@@ -963,7 +963,7 @@ namespace ml
 			}
 		}
 
-		return errorValue(String::Format(
+		return errorValue(String().format(
 			"Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
 			getTypeID(), (*this), OperatorType::OP_POW, other.getTypeID(), other));
 	}
@@ -1035,7 +1035,7 @@ namespace ml
 			}
 		}
 
-		return errorValue(String::Format(
+		return errorValue(String().format(
 			"Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
 			getTypeID(), (*this), OperatorType::OP_SUB, other.getTypeID(), other));
 	}

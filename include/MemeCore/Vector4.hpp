@@ -5,7 +5,7 @@
 
 namespace ml
 {
-	template <typename T>
+	template <class T>
 	class Vector4
 		: public Vector<T, 4>
 	{
@@ -35,13 +35,13 @@ namespace ml
 		{
 		}
 
-		template<typename U>
+		template <class U>
 		Vector4(const Vector4<U> & copy)
 			: base_type(copy)
 		{
 		}
 
-		template <typename U, size_t N>
+		template <class U, size_t N>
 		Vector4(const Vector<U, N> & copy)
 			: base_type(copy)
 		{
@@ -53,8 +53,8 @@ namespace ml
 		static const self_type One;
 	};
 
-	template<typename T> const Vector4<T> Vector4<T>::Zero = Vector4<T>(0);
-	template<typename T> const Vector4<T> Vector4<T>::One  = Vector4<T>(1);
+	template <class T> const Vector4<T> Vector4<T>::Zero = Vector4<T>(0);
+	template <class T> const Vector4<T> Vector4<T>::One  = Vector4<T>(1);
 
 	using vec4f = Vector4<float>;
 	using vec4i = Vector4<int32_t>;

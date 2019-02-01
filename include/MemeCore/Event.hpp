@@ -6,6 +6,9 @@
 #define ML_MAX_SYSTEM_EVENTS 32
 #define ML_MAX_CUSTOM_EVENTS 256
 
+#define assert_typeof_event(T) \
+static_assert(std::is_base_of<ml::Event, T>::value, "Type must derrive ml::Event") \
+
 namespace ml
 {
 	class ML_CORE_API Event
@@ -72,21 +75,17 @@ namespace ml
 
 	public:
 		template <class T>
-		inline const T * As() const
+		inline const T * Cast() const
 		{
+			assert_typeof_event(T);
 			return dynamic_cast<const T *>(this);
 		}
 
 		template <class T>
-		inline T * As()
+		inline T * Cast()
 		{
+			assert_typeof_event(T);
 			return dynamic_cast<T *>(this);
-		}
-
-		template <class T>
-		inline const bool Is() const
-		{
-			return bool(As<T>());
 		}
 
 	private:

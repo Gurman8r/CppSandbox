@@ -6,7 +6,7 @@
 namespace ml
 {
 	// Supports simple iteration of a fixed array
-	template <typename T>
+	template <class T>
 	class IEnumerable
 	{
 	public:

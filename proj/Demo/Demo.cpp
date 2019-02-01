@@ -1,8 +1,14 @@
 #include "Demo.hpp"
 #include <MemeCore/EventSystem.hpp>
-#include <dirent.h>
 
-namespace demo
+#ifdef ML_SYSTEM_WINDOWS
+#include <../thirdparty/include/dirent.h>
+#else
+#include <dirent.h>
+#endif // ML_SYSTEM_WINDOWS
+
+
+namespace DEMO
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
@@ -107,7 +113,7 @@ namespace demo
 	void Demo::onUpdate(const UpdateEvent & ev)
 	{
 		// Set Window Title
-		ev.window.setTitle(ml::String::Format(
+		ev.window.setTitle(ml::String().format(
 			"{0} | {1} | {2} ({3} fps) | {4}",
 			SETTINGS.title,
 			ML_Time.elapsed(),
@@ -320,10 +326,10 @@ namespace demo
 				}
 				else
 				{
-					ml::String::Stream stream;
-					if (ML_FileSystem.getDirContents(name, stream))
+					ml::String::Stream ss;
+					if (ML_FileSystem.getDirContents(name, ss))
 					{
-						return ml::Var().stringValue(stream.str());
+						return ml::Var().stringValue(ss.str());
 					}
 				}
 				return ml::Var().boolValue(false);

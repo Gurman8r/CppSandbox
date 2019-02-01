@@ -87,7 +87,7 @@ namespace ml
 		inline const Style &		style()		const { return m_style; }
 		inline const vec2i &		position()	const { return m_position; }
 		inline const vec2u &		size()		const { return videoMode().size; }
-		inline const String &	title()		const { return m_title; }
+		inline const String &		title()		const { return m_title; }
 		inline const uint32_t &		width()		const { return size()[0]; }
 		inline const uint32_t &		height()	const { return size()[1]; }
 		inline const float			aspect()	const { return (float)width() / (float)height(); };
@@ -103,7 +103,7 @@ namespace ml
 		Style		m_style;
 		Cursor		m_cursorMode;
 		vec2i		m_position;
-		String	m_title;
+		String		m_title;
 		bool		m_focused;
 		vec2d		m_scroll;
 

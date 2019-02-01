@@ -2,6 +2,7 @@
 #define _TOKEN_LIST_HPP_
 
 #include <MemeScript/Token.hpp>
+#include <MemeCore/List.hpp>
 
 namespace ml
 {
@@ -13,7 +14,9 @@ namespace ml
 	public:
 		using value_type			= Token;
 		using string_type			= String;
-		using vector_type			= std::vector<value_type>;
+		using vector_type			= List<value_type>;
+		using cstring_list			= List<const char*>;
+		using char_list				= List<char>;
 		using initializer_type		= std::initializer_list<value_type>;
 		using iterator				= vector_type::iterator;
 		using const_iterator		= vector_type::const_iterator;
@@ -21,8 +24,6 @@ namespace ml
 		using const_reverse_iterator= vector_type::const_reverse_iterator;
 		using difference_type		= vector_type::difference_type;
 		using stream_type			= String::Stream;
-		using cstring_list			= std::vector<const char*>;
-		using char_list				= std::vector<char>;
 
 	public:
 		TokenList();
@@ -34,8 +35,8 @@ namespace ml
 		const value_type	at(size_t index) const;
 		const value_type	back() const;
 		const value_type	front() const;
-		const String	str() const;
-		const String	substr(size_t index, size_t count) const;
+		const String		str() const;
+		const String		substr(size_t index, size_t count) const;
 		const vector_type	subvec(size_t index, size_t count) const;
 		const vector_type&	values() const;
 		const stream_type	sstream() const;

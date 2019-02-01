@@ -26,7 +26,7 @@ namespace ml
 
 		void dispatchAllEvents(const Event * ev);
 
-		std::multimap<int32_t, EventListener*> m_listeners;
+		std::multimap<int32_t, EventListener *> m_listeners;
 	};
 }
 

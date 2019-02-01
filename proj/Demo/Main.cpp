@@ -12,7 +12,7 @@
 int32_t main(int32_t argc, char ** argv)
 {
 	// Create Demo
-	demo::Demo game;
+	DEMO::Demo demo;
 	
 	// Load Settings
 	if (!SETTINGS.loadFromFile(CONFIG_INI))
@@ -22,7 +22,7 @@ int32_t main(int32_t argc, char ** argv)
 	}
 
 	// Enter
-	if (!game.onEnter({ argc, argv }))
+	if (!demo.onEnter({ argc, argv }))
 	{
 		return ml::Debug::LogError("Failed Entering Program")
 			|| ml::Debug::pause(EXIT_FAILURE);
@@ -31,7 +31,7 @@ int32_t main(int32_t argc, char ** argv)
 	// Run Tests
 	if (SETTINGS.runTests)
 	{
-		return demo::runTests(SETTINGS.runTests);
+		return DEMO::runTests(SETTINGS.runTests);
 	}
 
 	// Create Window
@@ -64,14 +64,14 @@ int32_t main(int32_t argc, char ** argv)
 	}
 	
 	// Load
-	if (!game.onLoad({ SETTINGS.logLoading }))
+	if (!demo.onLoad({ SETTINGS.logLoading }))
 	{
 		return ml::Debug::LogError("Failed Loading Resources")
 			|| ml::Debug::pause(EXIT_FAILURE);
 	}
 
 	// Start
-	game.onStart({ window });
+	demo.onStart({ window });
 
 	// Loop
 	ml::Timer		loopTimer;
@@ -83,10 +83,10 @@ int32_t main(int32_t argc, char ** argv)
 		input.beginStep();
 		{
 			// Update
-			game.onUpdate({ window, elapsed, input });
+			demo.onUpdate({ window, elapsed, input });
 
 			// Draw
-			game.onDraw({ window, elapsed });
+			demo.onDraw({ window, elapsed });
 		}
 		// End Step
 		input.endStep();
@@ -95,7 +95,7 @@ int32_t main(int32_t argc, char ** argv)
 	} while (window.isOpen());
 
 	// Exit
-	return game.onExit({ EXIT_SUCCESS });
+	return demo.onExit({ EXIT_SUCCESS });
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

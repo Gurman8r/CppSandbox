@@ -25,7 +25,7 @@ namespace ml
 		void	serialize(std::ostream & out) const override;
 		void	serializeChunk(std::ostream & out, const Chunk & c) const;
 
-		template <typename T>
+		template <class T>
 		inline T * allocate()
 		{
 			return static_cast<T *>(allocate(sizeof(T)));

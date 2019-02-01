@@ -22,21 +22,14 @@ namespace ml
 			check::has_leftshift_operator<_Elem>::value,
 			"Missing \"operator<<\" | Element must be serializable");
 
-		// elements need >> operator
-		static_assert(
-			check::has_rightshift_operator<_Elem>::value,
-			"Missing \"operator>>\" | Element must be de-serializable");
-
 	public:
-		using value_type		= _Elem;
-		using allocator_type	= _Alloc;
-
-		using base_type			= std::vector<value_type, allocator_type>;
-		using self_type			= List<value_type, allocator_type>;
-
-		using size_type			= size_t;
-		using initializer_type	= std::initializer_list<value_type>;
-
+		using value_type			= _Elem;
+		using allocator_type		= _Alloc;
+		using self_type				= List<value_type, allocator_type>;
+		using base_type				= std::vector<value_type, allocator_type>;
+		using initializer_type		= std::initializer_list<value_type>;
+		using difference_type		= typename base_type::difference_type;
+		using size_type				= typename base_type::size_type;
 		using iterator				= typename base_type::iterator;
 		using const_iterator		= typename base_type::const_iterator;
 		using reverse_iterator		= typename base_type::reverse_iterator;
@@ -79,11 +72,9 @@ namespace ml
 	public:
 		inline virtual void serialize(std::ostream & out) const override
 		{
-			out << "{ ";
-			for (size_type i = 0, imax = (*this).size(); i < imax; i++)
+			for (size_type i = 0, imax = this->size(); i < imax; i++)
 			{
-				out << (*this)[i]
-					<< ((i < imax - 1) ? ", " : " }");
+				out << (*this)[i] << ' ';
 			}
 		}
 		

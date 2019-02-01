@@ -261,7 +261,7 @@ namespace ml
 						{
 							root->addChild(node);
 
-							if (AST_Block* blck = node->As<AST_Block>())
+							if (AST_Block* blck = node->Cast<AST_Block>())
 							{
 								root = blck;
 							}
@@ -380,7 +380,7 @@ namespace ml
 		{
 			if (AST_Expr* expr = genComplex(toks.between('(', ')').pop_front()))
 			{
-				if (AST_Name* name = expr->As<AST_Name>())
+				if (AST_Name* name = expr->Cast<AST_Name>())
 				{
 					return new AST_Delete(name);
 				}
@@ -396,7 +396,7 @@ namespace ml
 		{
 			if (AST_Expr* expr = genComplex(toks.between('(', ')').pop_front()))
 			{
-				if (AST_String* str = expr->As<AST_String>())
+				if (AST_String* str = expr->Cast<AST_String>())
 				{
 					return new AST_Include(str);
 				}
@@ -751,7 +751,7 @@ namespace ml
 			}
 		}
 
-		if (AST_BinOp* oper = stk.top()->As<AST_BinOp>())
+		if (AST_BinOp* oper = stk.top()->Cast<AST_BinOp>())
 		{
 			return oper;
 		}

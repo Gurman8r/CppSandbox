@@ -4,63 +4,13 @@
 #ifdef ML_SYSTEM_WINDOWS
 #include <direct.h>
 #include <../thirdparty/include/dirent.h>
+#else
+#include <dirent.h>
 #endif
 
 namespace ml
 {
-	bool FileSystem::getDirContents(const String & dirName, List<char> & buffer) const
-	{
-		static String str;
-		if (getDirContents(dirName, str))
-		{
-			buffer = List<char>(str.begin(), str.end());
-			return true;
-		}
-		buffer.clear();
-		return false;
-	}
-
-	bool FileSystem::getDirContents(const String & dirName, String & str) const
-	{
-		static String::Stream stream;
-		if (getDirContents(dirName, stream))
-		{
-			str = stream.str();
-			return true;
-		}
-		str = String();
-		return false;
-	}
-
-	bool FileSystem::getDirContents(const String & dirName, String::Stream & stream) const
-	{
-		if(DIR * dir = opendir(dirName.c_str()))
-		{
-			while (dirent * e = readdir(dir))
-			{
-				switch (e->d_type)
-				{
-				case DT_REG:
-					stream << e->d_name << "";
-					break;
-				case DT_DIR:
-					stream << e->d_name << "/";
-					break;
-				case DT_LNK:
-					stream << e->d_name << "@";
-					break;
-				default:
-					stream << e->d_name << "*";
-					break;
-				}
-				stream << ml::endl;
-			}
-			closedir(dir);
-			return true;
-		}
-		stream.str(String());
-		return false;
-	}
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool FileSystem::setWorkingDir(const String & value)
 	{
@@ -80,6 +30,62 @@ namespace ml
 #endif
 	}
 
+	bool FileSystem::getDirContents(const String & dirName, List<char> & buffer) const
+	{
+		static String str;
+		if (getDirContents(dirName, str))
+		{
+			buffer = List<char>(str.begin(), str.end());
+			return true;
+		}
+		buffer.clear();
+		return false;
+	}
+
+	bool FileSystem::getDirContents(const String & dirName, String & str) const
+	{
+		static String::Stream ss;
+		if (getDirContents(dirName, ss))
+		{
+			str = ss.str();
+			return true;
+		}
+		str = String();
+		return false;
+	}
+
+	bool FileSystem::getDirContents(const String & dirName, String::Stream & ss) const
+	{
+		if(DIR * dir = opendir(dirName.c_str()))
+		{
+			while (dirent * e = readdir(dir))
+			{
+				switch (e->d_type)
+				{
+				case DT_REG:
+					ss << e->d_name << "";
+					break;
+				case DT_DIR:
+					ss << e->d_name << "/";
+					break;
+				case DT_LNK:
+					ss << e->d_name << "@";
+					break;
+				default:
+					ss << e->d_name << "*";
+					break;
+				}
+				ss << ml::endl;
+			}
+			closedir(dir);
+			return true;
+		}
+		ss.str(String());
+		return false;
+	}
+
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool FileSystem::fileExists(const String & filename) const
 	{
@@ -131,13 +137,13 @@ namespace ml
 		return false;
 	}
 
-	bool FileSystem::getFileContents(const String & filename, String::Stream & stream) const
+	bool FileSystem::getFileContents(const String & filename, String::Stream & ss) const
 	{
 		static String buffer;
-		stream.str(String());
+		ss.str(String());
 		if (getFileContents(filename, buffer))
 		{
-			stream.str(buffer);
+			ss.str(buffer);
 			return true;
 		}
 		return false;
@@ -156,5 +162,5 @@ namespace ml
 		return String();
 	}
 
-
+	/* * * * * * * * * * * * * * * * * * * * */
 }

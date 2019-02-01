@@ -1,10 +1,10 @@
-#ifndef _PLUGIN_MANAGER_HPP_
-#define _PLUGIN_MANAGER_HPP_
+#ifndef _LIB_LOADER_HPP_
+#define _LIB_LOADER_HPP_
 
 #include <MemeCore/ISingleton.hpp>
 #include <MemeCore/ITrackable.hpp>
 
-#define ML_Plugins ml::LibLoader::getInstance()
+#define ML_LibLoader ml::LibLoader::getInstance()
 
 namespace ml
 {
@@ -14,12 +14,16 @@ namespace ml
 	{
 		friend class ISingleton<LibLoader>;
 
+	private:
+		LibLoader() {}
+		~LibLoader() {}
+
 	public:
 		bool	freeLibrary(void * value);
 		void *	loadLibrary(const String & filename);
 		void *	loadFunction(void * value, const String & name);
 
-		template <typename T, typename ... A>
+		template <class T, class ... A>
 		inline bool callFunc(void * value, T & result, const A & ... args)
 		{
 			using Func = T(*)(A ...);
@@ -32,7 +36,7 @@ namespace ml
 			return false;
 		}
 
-		template <typename T, typename ... A>
+		template <class T, class ... A>
 		inline T callFunc(void * value, const A & ... args)
 		{
 			using Func = T(*)(A ...);
@@ -42,9 +46,8 @@ namespace ml
 		}
 
 	private:
-		LibLoader() {}
-		~LibLoader() {}
+
 	};
 }
 
-#endif // !_PLUGIN_MANAGER_HPP_
+#endif // !_LIB_LOADER_HPP_

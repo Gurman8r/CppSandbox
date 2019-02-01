@@ -16,9 +16,6 @@
     <Filter Include="Header Files\Interfaces">
       <UniqueIdentifier>{0f6478ac-f3ae-4b33-8996-88395d482025}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Utility">
-      <UniqueIdentifier>{aa9cd324-f987-4bac-9b0c-1520e7a689c5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility">
       <UniqueIdentifier>{53169a05-2aa2-4f63-946b-1f27b92afd23}</UniqueIdentifier>
     </Filter>
@@ -64,6 +61,9 @@
     <Filter Include="Source Files\FS">
       <UniqueIdentifier>{12815f7e-eacb-44de-84de-fa49c5edeb6d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Utility">
+      <UniqueIdentifier>{aa9cd324-f987-4bac-9b0c-1520e7a689c5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeCore\Component.hpp">
@@ -88,9 +88,6 @@
       <Filter>Header Files\Input</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\NativeInput.hpp">
-      <Filter>Header Files\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\NativeKey.hpp">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\IComparable.hpp">

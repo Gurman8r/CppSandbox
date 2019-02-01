@@ -55,19 +55,19 @@ namespace ml
 		Shader & setUniformArray(const String & name, int32_t count, const mat4f * value);
 
 	public:
-		template <typename T>
+		template <class T>
 		Shader & setUniform(Uniform::ID id, const T & value)
 		{
 			return setUniform(Uniform::Names[id], value);
 		};
 
-		template <typename T>
+		template <class T>
 		Shader & setUniformArray(Uniform::ID id, int32_t count, T * value)
 		{
 			return setUniformArray(Uniform::Names[id], value, count);
 		};
 
-		template <typename T>
+		template <class T>
 		Shader & setUniformArray(Uniform::ID id, const std::vector<T> & value)
 		{
 			return setUniformArray(Uniform::Names[id], (int32_t)value.size(), &value[0]);

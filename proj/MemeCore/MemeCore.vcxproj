@@ -185,7 +185,6 @@
     <ClInclude Include="..\..\include\MemeCore\ISerializable.hpp" />
     <ClInclude Include="..\..\include\MemeCore\ISingleton.hpp" />
     <ClInclude Include="..\..\include\MemeCore\ITrackable.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\NativeKey.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Maths.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Matrix.hpp" />
     <ClInclude Include="..\..\include\MemeCore\MemoryTracker.hpp" />

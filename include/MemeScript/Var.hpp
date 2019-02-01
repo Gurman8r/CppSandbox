@@ -11,25 +11,6 @@ namespace ml
 		, public IComparable<Var>
 	{
 	public:
-		struct ML_SCRIPT_API Ptr
-			: public ITrackable
-		{
-			String		name;
-			int32_t		index;
-
-			Ptr();
-			Ptr(int32_t index, const String& name);
-			Ptr(const Ptr& copy);
-
-			Var * get() const;
-
-			void serialize(std::ostream & out) const override;
-
-			inline Var * operator->() const { return get(); }
-			inline Var * operator*() const { return get(); }
-		};
-
-	public:
 		enum : int32_t
 		{
 			INVALID_TYPE = -1,
@@ -53,14 +34,32 @@ namespace ml
 			//- - - - - - -//
 			MAX_VAR_TYPE
 		};
-		
+
+	public:
+		struct ML_SCRIPT_API Ptr
+			: public ITrackable
+		{
+			String		name;
+			int32_t		index;
+
+			Ptr();
+			Ptr(int32_t index, const String& name);
+			Ptr(const Ptr& copy);
+
+			Var * get() const;
+
+			void serialize(std::ostream & out) const override;
+
+			inline Var * operator->() const { return get(); }
+			inline Var * operator*() const { return get(); }
+		};
+
 		static const String TypeNames[Var::MAX_VAR_TYPE];
 		
 		inline friend std::ostream & operator<<(std::ostream & out, const int32_t & rhs)
 		{
 			return out << Var::TypeNames[rhs];;
 		}
-
 
 	public:
 		Var();
@@ -134,10 +133,10 @@ namespace ml
 		Var & tokensValue(const TokenList & value);
 		Var & voidValue();
 		
-		template<typename T, typename ... A>
+		template <class T, class ... A>
 		inline Var & errorValue(const String & fmt, const T & arg0, const A &... args)
 		{
-			return errorValue(String::Format(fmt, arg0, (args)...));
+			return errorValue(String().format(fmt, arg0, (args)...));
 		};
 
 

@@ -6,31 +6,43 @@
 
 namespace ml
 {
-	struct ML_CORE_API TypeInfo final
-	{
-		const char *	name;
-		const char *	rawName;
-		size_t			hashCode;
+	class ML_CORE_API TypeInfo final
+	{	
+	public:
 
 		TypeInfo()
-			: name		(0)
-			, rawName	(0)
-			, hashCode	(0)
+			: m_name(0)
+			, m_raw	(0)
+			, m_hash(0)
 		{
 		}
 		TypeInfo(const std::type_info & value)
-			: name		(value.name())
-			, rawName	(value.raw_name())
-			, hashCode	(value.hash_code())
+			: m_name(value.name())
+			, m_raw	(value.raw_name())
+			, m_hash(value.hash_code())
 		{
 		}
 		TypeInfo(const TypeInfo & copy)
-			: name		(copy.name)
-			, rawName	(copy.rawName)
-			, hashCode	(copy.hashCode)
+			: m_name(copy.m_name)
+			, m_raw	(copy.m_raw)
+			, m_hash(copy.m_hash)
 		{
 		}
 		~TypeInfo() { }
+
+		inline const char * name() const { return m_name; }
+		inline const char * raw_name() const { return m_raw; }
+		inline const size_t hash_code() const { return m_hash; }
+
+		inline friend std::ostream & operator<<(std::ostream & out, const TypeInfo & value)
+		{
+			return out << value.name();
+		}
+
+	private:
+		const char *	m_name;
+		const char *	m_raw;
+		size_t			m_hash;
 	};
 }
 

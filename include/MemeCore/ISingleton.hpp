@@ -5,7 +5,7 @@
 
 namespace ml
 {
-	template <typename T>
+	template <class T>
 	class ISingleton
 		: public INonCopyable
 	{

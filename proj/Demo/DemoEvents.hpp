@@ -6,7 +6,7 @@
 #include <MemeCore/InputState.hpp>
 #include <MemeGraphics/RenderWindow.hpp>
 
-namespace demo
+namespace DEMO 
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 

@@ -17,9 +17,9 @@ namespace ml
 	
 	bool NativeInput::getAnyKey() const
 	{
-		for (uint32_t i = NativeKey::MIN_MOUSE; i < NativeKey::MAX_KEYCODE; i++)
+		for (int32_t i = NativeKey::MIN_MOUSE; i < NativeKey::MAX_KEYCODE; i++)
 		{
-			if (getKey((int32_t)i))
+			if (getKey(i))
 			{
 				return true;
 			}

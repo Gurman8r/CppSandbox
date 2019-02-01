@@ -40,19 +40,19 @@ namespace ml
 		static const float Rad2Deg;
 
 	public:
-		template <typename T>
+		template <class T>
 		inline static const T clamp(T value, T min, T max)
 		{
 			return static_cast<T>(ML_CLAMP(value, min, max));
 		}
 
-		template <typename T>
+		template <class T>
 		inline static T mapRange(T value, T min1, T max1, T min2, T max2)
 		{
 			return static_cast<T>(ML_MAP(value, min1, max1, min2, max2));
 		}
 
-		template <typename T>
+		template <class T>
 		inline static const T sign(const T & value)
 		{
 			return static_cast<T>(ML_SIGN(value));

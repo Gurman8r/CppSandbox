@@ -77,15 +77,15 @@ namespace ml
 
 	bool Shader::loadFromFile(const String & filename)
 	{
-		String::Stream stream;
-		if (ML_FileSystem.getFileContents(filename, stream))
+		String::Stream ss;
+		if (ML_FileSystem.getFileContents(filename, ss))
 		{
 			enum : int8_t { NONE = -1, VERT, FRAG, GEOM, MAX };
 
 			String::Stream source[MAX];
 			int8_t type = NONE;
 			String line;
-			while (std::getline(stream, line))
+			while (std::getline(ss, line))
 			{
 				if (line.find("#shader") != String::npos)
 				{

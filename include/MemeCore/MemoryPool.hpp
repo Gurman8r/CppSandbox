@@ -6,7 +6,7 @@
 
 namespace ml
 {
-	template <typename T, size_t MaxBytes>
+	template <class T, size_t MaxBytes>
 	class MemoryPool final
 		: public ITrackable
 		, public IEnumerable<T>

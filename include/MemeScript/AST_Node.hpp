@@ -4,6 +4,9 @@
 #include <MemeScript/Export.hpp>
 #include <MemeCore/ITrackable.hpp>
 
+#define assert_typeof_node(T) \
+static_assert(std::is_base_of<ml::AST_Node, T>::value, "Type must derrive ml::AST_Node") \
+
 namespace ml
 {
 	class ML_SCRIPT_API AST_Node
@@ -84,80 +87,82 @@ namespace ml
 
 	public:
 		template <class T>
-		inline const T* As() const
+		inline const T * Cast() const
 		{
-			return dynamic_cast<const T*>(this);
+			assert_typeof_node(T);
+			return dynamic_cast<const T *>(this);
 		}
 		
 		template <class T>
-		inline T * As()
+		inline T * Cast()
 		{
-			return dynamic_cast<T*>(this);
-		}
-		
-		template <class T>
-		inline const bool Is() const
-		{
-			return bool(As<T>());
+			assert_typeof_node(T);
+			return dynamic_cast<T *>(this);
 		}
 
 	public: // Templates
-		template <typename T>
-		T* nextAs() const
+		template <class T>
+		T * nextAs() const
 		{
+			assert_typeof_node(T);
 			if (AST_Node* n = getNext())
 			{
-				return n->As<T>();
+				return n->Cast<T>();
 			}
 			return NULL;
 		}
 
-		template <typename T>
-		T* prevAs() const
+		template <class T>
+		T * prevAs() const
 		{
+			assert_typeof_node(T);
 			if (AST_Node* p = getPrev())
 			{
-				return p->As<T>();
+				return p->Cast<T>();
 			}
 			return NULL;
 		}
 
-		template <typename T>
-		T* parentAs() const
+		template <class T>
+		T * parentAs() const
 		{
+			assert_typeof_node(T);
 			if (AST_Node* p = getParent())
 			{
-				return p->As<T>();
+				return p->Cast<T>();
 			}
 			return NULL;
 		}
 
-		template <typename T>
-		T* childAs(size_t index) const
+		template <class T>
+		T * childAs(size_t index) const
 		{
+			assert_typeof_node(T);
 			if (AST_Node* c = getChild(index))
 			{
-				return c->As<T>();
+				return c->Cast<T>();
 			}
 			return NULL;
 		}
 
-		template <typename T>
-		T* firstAs() const
+		template <class T>
+		T * firstAs() const
 		{
+			assert_typeof_node(T);
 			if (!empty())
 			{
-				return (*begin())->As<T>();
+				return (*begin())->Cast<T>();
 			}
 			return NULL;
 		}
 
-		template <typename T>
-		T* lastAs() const
+		template <class T>
+		T * lastAs() const
 		{
+			assert_typeof_node(T);
 			if (!empty())
 			{
-				return (*end() - 1)->As<T>();
+				return (*end() - 1)->Cast<T>();
 			}
 			return NULL;
 		}

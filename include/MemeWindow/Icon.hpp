@@ -6,13 +6,20 @@
 
 namespace ml
 {
-	struct ML_WINDOW_API Icon final
+	class ML_WINDOW_API Icon final
 		: public ITrackable
 	{
+	public:
 		uint32_t		width;
 		uint32_t		height;
 		const uint8_t *	pixels;
 
+		Icon()
+			: width(0)
+			, height(0)
+			, pixels(0)
+		{
+		}
 		Icon(uint32_t width, uint32_t height, const uint8_t * pixels)
 			: width(width)
 			, height(height)
@@ -28,7 +35,7 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			out << get_type().name << ' ' << width << ' ' << height << ' ';
+			out << get_type().name() << ' ' << width << ' ' << height << ' ';
 		}
 	};
 }

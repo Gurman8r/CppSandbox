@@ -28,22 +28,22 @@ namespace ml
 		static Status Log(const String & message);			// + 1 true
 
 	public:
-		template<typename T, typename ... A>
+		template <class T, class ... A>
 		inline static Status LogWarning(const String & fmt, const T & arg0, const A &... args)
 		{
-			return Debug::LogWarning(String::Format(fmt, arg0, (args)...));
+			return Debug::LogWarning(String().format(fmt, arg0, (args)...));
 		}
 
-		template<typename T, typename ... A>
+		template <class T, class ... A>
 		inline static Status LogError(const String & fmt, const T & arg0, const A &... args)
 		{
-			return Debug::LogError(String::Format(fmt, arg0, (args)...));
+			return Debug::LogError(String().format(fmt, arg0, (args)...));
 		}
 
-		template<typename T, typename ... A>
+		template <class T, class ... A>
 		inline static Status Log(const String & fmt, const T & arg0, const A &... args)
 		{
-			return Debug::Log(String::Format(fmt, arg0, (args)...));
+			return Debug::Log(String().format(fmt, arg0, (args)...));
 		}
 	};
 	

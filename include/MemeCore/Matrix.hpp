@@ -6,7 +6,7 @@
 namespace ml
 {
 	// Template Fixed 2D Array
-	template <typename T, size_t _Cols, size_t _Rows>
+	template <class T, size_t _Cols, size_t _Rows>
 	class Matrix
 		: public ITrackable
 		, public IComparable<Matrix<T, _Cols, _Rows>>
@@ -66,7 +66,7 @@ namespace ml
 		{
 		}
 		
-		template <typename U, size_type C, size_type R>
+		template <class U, size_type C, size_type R>
 		Matrix(const Matrix<U, C, R> & copy)
 			: self_type()
 		{
@@ -190,13 +190,13 @@ namespace ml
 		}
 	};
 
-	template <typename T, size_t N> 
+	template <class T, size_t N> 
 	using MatrixNxN = Matrix<T, N, N>;
 	
-	template <typename T> 
+	template <class T> 
 	using Matrix3 = MatrixNxN<T, 3>;
 	
-	template <typename T> 
+	template <class T> 
 	using Matrix4 = MatrixNxN<T, 4>;
 
 	using mat3f = Matrix3<float>;

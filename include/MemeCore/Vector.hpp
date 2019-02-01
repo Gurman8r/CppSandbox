@@ -6,7 +6,7 @@
 namespace ml
 {
 	// One Dimensional Matrix
-	template <typename T, size_t N>
+	template <class T, size_t N>
 	class Vector
 		: public Matrix<T, N, 1>
 		, public IComparable<Vector<T, N>>
@@ -47,13 +47,13 @@ namespace ml
 		{
 		}
 
-		template<typename U>
+		template <class U>
 		Vector(const Vector<U, N>& copy)
 			: base_type(copy)
 		{
 		}
 
-		template <typename U, size_t N>
+		template <class U, size_t N>
 		Vector(const Vector<U, N> & copy)
 			: base_type(copy)
 		{

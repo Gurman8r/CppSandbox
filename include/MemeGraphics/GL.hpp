@@ -280,7 +280,7 @@ namespace ml
 	};
 
 	// Attachment Operators
-	template <typename T>
+	template <class T>
 	inline GL::Attachment operator+(const GL::Attachment lhs, const T rhs)
 	{
 		return ML_TYPE_CLAMP(
@@ -289,14 +289,14 @@ namespace ml
 			GL::ColorAttachment0,
 			GL::ColorAttachment15);
 	}
-	template <typename T>
+	template <class T>
 	inline GL::Attachment operator-(const GL::Attachment lhs, const T rhs)
 	{
 		return (lhs + (-rhs));
 	}
 
 	// TextureID Operators
-	template <typename T>
+	template <class T>
 	inline GL::TextureID operator+(const GL::TextureID lhs, const T rhs)
 	{
 		return ML_TYPE_CLAMP(
@@ -305,7 +305,7 @@ namespace ml
 			GL::Texture0,
 			GL::Texture31);
 	}
-	template <typename T>
+	template <class T>
 	inline GL::TextureID operator-(const GL::TextureID lhs, const T rhs)
 	{
 		return (lhs + (-rhs));

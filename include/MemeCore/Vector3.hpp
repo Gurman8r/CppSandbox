@@ -5,7 +5,7 @@
 
 namespace ml
 {
-	template <typename T>
+	template <class T>
 	class Vector3
 		: public Vector<T, 3>
 	{
@@ -35,13 +35,13 @@ namespace ml
 		{
 		}
 
-		template<typename U>
+		template <class U>
 		Vector3(const Vector3<U>& copy)
 			: base_type(copy)
 		{
 		}
 		
-		template <typename U, size_t N>
+		template <class U, size_t N>
 		Vector3(const Vector<U, N> & copy)
 			: base_type(copy)
 		{
@@ -60,14 +60,14 @@ namespace ml
 		static const self_type Back;
 	};
 
-	template<typename T> const Vector3<T> Vector3<T>::Zero		= Vector3<T>( 0,  0,  0);
-	template<typename T> const Vector3<T> Vector3<T>::One		= Vector3<T>( 1,  1,  1);
-	template<typename T> const Vector3<T> Vector3<T>::Up		= Vector3<T>( 0,  1,  0);
-	template<typename T> const Vector3<T> Vector3<T>::Down		= Vector3<T>( 0, -1,  0);
-	template<typename T> const Vector3<T> Vector3<T>::Left		= Vector3<T>(-1,  0,  0);
-	template<typename T> const Vector3<T> Vector3<T>::Right		= Vector3<T>( 1,  0,  0);
-	template<typename T> const Vector3<T> Vector3<T>::Forward	= Vector3<T>( 0,  0,  1);
-	template<typename T> const Vector3<T> Vector3<T>::Back		= Vector3<T>( 0,  0, -1);
+	template <class T> const Vector3<T> Vector3<T>::Zero	= Vector3<T>( 0,  0,  0);
+	template <class T> const Vector3<T> Vector3<T>::One		= Vector3<T>( 1,  1,  1);
+	template <class T> const Vector3<T> Vector3<T>::Up		= Vector3<T>( 0,  1,  0);
+	template <class T> const Vector3<T> Vector3<T>::Down	= Vector3<T>( 0, -1,  0);
+	template <class T> const Vector3<T> Vector3<T>::Left	= Vector3<T>(-1,  0,  0);
+	template <class T> const Vector3<T> Vector3<T>::Right	= Vector3<T>( 1,  0,  0);
+	template <class T> const Vector3<T> Vector3<T>::Forward	= Vector3<T>( 0,  0,  1);
+	template <class T> const Vector3<T> Vector3<T>::Back	= Vector3<T>( 0,  0, -1);
 
 	using vec3f = Vector3<float>;
 	using vec3i = Vector3<int32_t>;

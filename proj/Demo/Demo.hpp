@@ -23,7 +23,7 @@
 
 // Resources
 /* * * * * * * * * * * * * * * * * * * * */
-namespace demo
+namespace DEMO
 {
 	enum : int32_t
 	{
@@ -132,7 +132,7 @@ namespace demo
 
 // Demo
 /* * * * * * * * * * * * * * * * * * * * */
-namespace demo
+namespace DEMO
 {
 	class Demo final
 		: public ml::ITrackable

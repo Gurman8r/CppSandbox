@@ -176,7 +176,7 @@ namespace ml
 		AST_Node* p = getParent();
 		while (p)
 		{
-			if (AST_Block* b = p->As<AST_Block>())
+			if (AST_Block* b = p->Cast<AST_Block>())
 			{
 				return b;
 			}
