@@ -209,7 +209,7 @@ namespace ml
 		{
 			static std::vector<GLFWimage> temp;
 
-			temp.resize(value.size());
+			temp.resize(count);
 
 			for (size_t i = 0; i < count; i++)
 			{

@@ -1,5 +1,5 @@
-#ifndef _WINDOW_INPUT_H_
-#define _WINDOW_INPUT_H_
+#ifndef _WINDOW_INPUT_HPP_
+#define _WINDOW_INPUT_HPP_
 
 #include <MemeWindow/Export.hpp>
 #include <MemeCore/InputState.hpp>
@@ -154,4 +154,4 @@ namespace ml
 	};
 }
 
-#endif // !_WINDOW_INPUT_H_
+#endif // !_WINDOW_INPUT_HPP_

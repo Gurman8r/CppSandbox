@@ -1,5 +1,5 @@
-#ifndef _TOKEN_H_
-#define _TOKEN_H_
+#ifndef _TOKEN_HPP_
+#define _TOKEN_HPP_
 
 #include <MemeScript/Args.hpp>
 
@@ -100,4 +100,4 @@ namespace ml
 	}
 }
 
-#endif // !_TOKEN_H_
+#endif // !_TOKEN_HPP_

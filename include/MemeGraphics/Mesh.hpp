@@ -1,5 +1,5 @@
-#ifndef _MESH_H_
-#define _MESH_H_
+#ifndef _MESH_HPP_
+#define _MESH_HPP_
 
 #include <MemeCore/IResource.hpp>
 #include <MemeGraphics/Vertex.hpp>
@@ -31,4 +31,4 @@ namespace ml
 	};
 }
 
-#endif // !_MESH_H_
+#endif // !_MESH_HPP_

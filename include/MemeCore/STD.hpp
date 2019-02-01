@@ -1,5 +1,5 @@
-#ifndef _ML_STD_H_
-#define _ML_STD_H_
+#ifndef _ML_STD_HPP_
+#define _ML_STD_HPP_
 
 #include <algorithm>
 #include <cassert>
@@ -20,4 +20,4 @@
 #include <utility>
 #include <vector>
 
-#endif // !_ML_STD_H_
+#endif // !_ML_STD_HPP_

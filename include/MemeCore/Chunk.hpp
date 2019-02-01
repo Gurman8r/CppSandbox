@@ -1,5 +1,5 @@
-#ifndef _CHUNK_H_
-#define _CHUNK_H_
+#ifndef _CHUNK_HPP_
+#define _CHUNK_HPP_
 
 #include <MemeCore/Export.hpp>
 #include <MemeCore/IntTypes.hpp>
@@ -26,4 +26,4 @@ namespace ml
 	};
 }
 
-#endif // !_CHUNK_H_
+#endif // !_CHUNK_HPP_

@@ -1,5 +1,5 @@
-#ifndef _NETWORK_INTERFACE_H_
-#define _NETWORK_INTERFACE_H_
+#ifndef _NETWORK_INTERFACE_HPP_
+#define _NETWORK_INTERFACE_HPP_
 
 #include <MemeNet/Export.hpp>
 #include <MemeCore/EventListener.hpp>
@@ -43,4 +43,4 @@ namespace ml
 	};
 }
 
-#endif // !_NETWORK_INTERFACE_H_
+#endif // !_NETWORK_INTERFACE_HPP_

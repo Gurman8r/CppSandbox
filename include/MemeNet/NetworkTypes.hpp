@@ -1,5 +1,5 @@
-#ifndef _PACKET_H_
-#define _PACKET_H_
+#ifndef _PACKET_HPP_
+#define _PACKET_HPP_
 
 #include <MemeNet/Export.hpp>
 #include <MemeCore/ITrackable.hpp>
@@ -215,4 +215,4 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 }
 
-#endif // !_PACKET_H_
+#endif // !_PACKET_HPP_

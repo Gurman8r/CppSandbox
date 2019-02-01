@@ -1,5 +1,5 @@
-#ifndef _IRESOURCE_H_
-#define _IRESOURCE_H_
+#ifndef _IRESOURCE_HPP_
+#define _IRESOURCE_HPP_
 
 #include <MemeCore/String.hpp>
 
@@ -13,4 +13,4 @@ namespace ml
 	};
 }
 
-#endif // !_IRESOURCE_H_
+#endif // !_IRESOURCE_HPP_

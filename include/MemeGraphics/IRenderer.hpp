@@ -1,5 +1,5 @@
-#ifndef _DRAWABLE_H_
-#define _DRAWABLE_H_
+#ifndef _DRAWABLE_HPP_
+#define _DRAWABLE_HPP_
 
 #include <MemeGraphics/RenderBatch.hpp>
 
@@ -19,4 +19,4 @@ namespace ml
 	};
 }
 
-#endif // !_DRAWABLE_H_
+#endif // !_DRAWABLE_HPP_

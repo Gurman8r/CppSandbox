@@ -8,6 +8,30 @@
 
 namespace ml
 {
+	bool FileSystem::getDirContents(const String & dirName, List<char> & buffer) const
+	{
+		static String str;
+		if (getDirContents(dirName, str))
+		{
+			buffer = List<char>(str.begin(), str.end());
+			return true;
+		}
+		buffer.clear();
+		return false;
+	}
+
+	bool FileSystem::getDirContents(const String & dirName, String & str) const
+	{
+		static String::Stream stream;
+		if (getDirContents(dirName, stream))
+		{
+			str = stream.str();
+			return true;
+		}
+		str = String();
+		return false;
+	}
+
 	bool FileSystem::getDirContents(const String & dirName, String::Stream & stream) const
 	{
 		if(DIR * dir = opendir(dirName.c_str()))
@@ -62,7 +86,7 @@ namespace ml
 		return (bool)(std::ifstream(filename));
 	}
 
-	bool FileSystem::getFileContents(const String & filename, std::vector<char> & buffer) const
+	bool FileSystem::getFileContents(const String & filename, List<char> & buffer) const
 	{
 		buffer.clear();
 		if (!filename.empty())
@@ -97,7 +121,7 @@ namespace ml
 
 	bool FileSystem::getFileContents(const String & filename, String & str) const
 	{
-		static std::vector<char> buffer;
+		static List<char> buffer;
 		str.clear();
 		if (getFileContents(filename, buffer))
 		{
@@ -119,10 +143,6 @@ namespace ml
 		return false;
 	}
 	
-
-	
-
-
 	String FileSystem::getFileExtension(const String & filename) const
 	{
 		if (fileExists(filename))

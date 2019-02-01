@@ -1,5 +1,5 @@
-#ifndef _CONTEXT_H_
-#define _CONTEXT_H_
+#ifndef _CONTEXT_HPP_
+#define _CONTEXT_HPP_
 
 #include <MemeWindow/Export.hpp>
 #include <MemeCore/ITrackable.hpp>
@@ -54,4 +54,4 @@ namespace ml
 	};
 }
 
-#endif // !_CONTEXT_SETTINGS_H_
+#endif // !_CONTEXT_SETTINGS_HPP_

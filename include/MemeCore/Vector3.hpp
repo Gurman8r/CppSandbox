@@ -1,5 +1,5 @@
-#ifndef _VECTOR_3_H_
-#define _VECTOR_3_H_
+#ifndef _VECTOR_3_HPP_
+#define _VECTOR_3_HPP_
 
 #include <MemeCore/Vector.hpp>
 
@@ -10,54 +10,54 @@ namespace ml
 		: public Vector<T, 3>
 	{
 	public:
-		using base_type = Vector<T, 3>;
-		using self_type = Vector3<T>;
+		using Base = Vector<T, 3>;
+		using Self = Vector3<T>;
 
 	public:
 		Vector3()
-			: base_type()
+			: Base()
 		{
 		}
 
 		Vector3(const T & xyz)
-			: base_type(xyz)
+			: Base(xyz)
 		{
 		}
 
 		Vector3(const T & x, const T & y, const T & z)
-			: base_type({ x, y, z })
+			: Base({ x, y, z })
 		{
 		}
 
 		template <size_t N>
 		Vector3(const Vector<T, N> & copy)
-			: base_type(copy)
+			: Base(copy)
 		{
 		}
 
 		template<typename U>
 		Vector3(const Vector3<U>& copy)
-			: base_type(copy)
+			: Base(copy)
 		{
 		}
 		
 		template <typename U, size_t N>
 		Vector3(const Vector<U, N> & copy)
-			: base_type(copy)
+			: Base(copy)
 		{
 		}
 
 		virtual ~Vector3() {}
 
 	public:
-		static const self_type Zero;
-		static const self_type One;
-		static const self_type Up;
-		static const self_type Down;
-		static const self_type Left;
-		static const self_type Right;
-		static const self_type Forward;
-		static const self_type Back;
+		static const Self Zero;
+		static const Self One;
+		static const Self Up;
+		static const Self Down;
+		static const Self Left;
+		static const Self Right;
+		static const Self Forward;
+		static const Self Back;
 	};
 
 	template<typename T> const Vector3<T> Vector3<T>::Zero		= Vector3<T>( 0,  0,  0);
@@ -76,4 +76,4 @@ namespace ml
 	using vec3u = Vector3<uint32_t>;
 }
 
-#endif // !_VECTOR_3_H_
+#endif // !_VECTOR_3_HPP_

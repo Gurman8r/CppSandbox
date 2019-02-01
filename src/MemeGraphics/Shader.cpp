@@ -127,14 +127,14 @@ namespace ml
 	bool Shader::loadFromFile(const String & vs, const String & fs)
 	{
 		// Read the vertex shader file
-		std::vector<char> vertexShader;
+		List<char> vertexShader;
 		if (!ML_FileSystem.getFileContents(vs, vertexShader))
 		{
 			return Debug::LogError("Failed to open vertex source file \"{0}\"", vs);
 		}
 
 		// Read the fragment shader file
-		std::vector<char> fragmentShader;
+		List<char> fragmentShader;
 		if (!ML_FileSystem.getFileContents(fs, fragmentShader))
 		{
 			return Debug::LogError("Failed to open fragment source file \"{0}\"", fs);
@@ -147,21 +147,21 @@ namespace ml
 	bool Shader::loadFromFile(const String & vs, const String & gs, const String & fs)
 	{
 		// Read the vertex shader file
-		std::vector<char> vertexShader;
+		List<char> vertexShader;
 		if (!ML_FileSystem.getFileContents(vs, vertexShader))
 		{
 			return Debug::LogError("Failed to open vertex source file \"{0}\"", vs);
 		}
 
 		// Read the geometry shader file
-		std::vector<char> geometryShader;
+		List<char> geometryShader;
 		if (!ML_FileSystem.getFileContents(gs, geometryShader))
 		{
 			return Debug::LogError("Failed to open geometry source file \"{0}\"", gs);
 		}
 
 		// Read the fragment shader file
-		std::vector<char> fragmentShader;
+		List<char> fragmentShader;
 		if (!ML_FileSystem.getFileContents(fs, fragmentShader))
 		{
 			return Debug::LogError("Failed to open fragment source file \"{0}\"", fs);

@@ -19,6 +19,15 @@
 		printl("*   {url}  *");
 		printl("*                                           *");
 		printl("* * * * * * * * * * * * * * * * * * * * * * *");
+
+		if(chdir("../../../"));
+		{
+			str = read(".");
+
+			print(str);
+			
+			chdir(dir);
+		};
 	};
 
 	hello();

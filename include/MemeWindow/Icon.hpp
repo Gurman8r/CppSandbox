@@ -1,5 +1,5 @@
-#ifndef _ICON_H_
-#define _ICON_H_
+#ifndef _ICON_HPP_
+#define _ICON_HPP_
 
 #include <MemeWindow/Export.hpp>
 #include <MemeCore/ITrackable.hpp>
@@ -25,7 +25,12 @@ namespace ml
 			, pixels(copy.pixels)
 		{
 		}
+
+		inline void serialize(std::ostream & out) const override
+		{
+			out << get_type().name << ' ' << width << ' ' << height << ' ';
+		}
 	};
 }
 
-#endif // !_ICON_H_
+#endif // !_ICON_HPP_

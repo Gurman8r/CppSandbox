@@ -1,5 +1,5 @@
-#ifndef _COMPONENT_POOL_H_
-#define _COMPONENT_POOL_H_
+#ifndef _COMPONENT_POOL_HPP_
+#define _COMPONENT_POOL_HPP_
 
 #include <MemeCore/Component.hpp>
 
@@ -126,4 +126,4 @@ namespace ml
 	};
 }
 
-#endif // !_COMPONENT_POOL_H_
+#endif // !_COMPONENT_POOL_HPP_

@@ -1,5 +1,5 @@
-#ifndef _ISERIALIZABLE_H_
-#define _ISERIALIZABLE_H_
+#ifndef _ISERIALIZABLE_HPP_
+#define _ISERIALIZABLE_HPP_
 
 #include <MemeCore/String.hpp>
 #include <MemeCore/TypeInfo.hpp>
@@ -54,4 +54,4 @@ namespace ml
 	};
 }
 
-#endif // !_ISERIALIZABLE_H_
+#endif // !_ISERIALIZABLE_HPP_

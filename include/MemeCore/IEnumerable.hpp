@@ -1,5 +1,5 @@
-#ifndef _IENUMERABLE_H_
-#define _IENUMERABLE_H_
+#ifndef _IENUMERABLE_HPP_
+#define _IENUMERABLE_HPP_
 
 #include <MemeCore/Iterator.hpp>
 
@@ -10,13 +10,13 @@ namespace ml
 	class IEnumerable
 	{
 	public:
-		using value_type		= T;
-		using pointer			= value_type *;
-		using reference			= value_type &;
-		using const_pointer		= const value_type *;
-		using const_reference	= const value_type &;
-		using iterator			= ForwardIterator<value_type>;
-		using const_iterator	= ForwardIterator<const value_type>;
+		using Value		= T;
+		using pointer			= Value *;
+		using reference			= Value &;
+		using const_pointer		= const Value *;
+		using const_reference	= const Value &;
+		using iterator			= ForwardIterator<Value>;
+		using const_iterator	= ForwardIterator<const Value>;
 
 	public:
 		IEnumerable(pointer first, pointer last)
@@ -95,4 +95,4 @@ namespace ml
 	};
 }
 
-#endif // !_IENUMERABLE_H_
+#endif // !_IENUMERABLE_HPP_

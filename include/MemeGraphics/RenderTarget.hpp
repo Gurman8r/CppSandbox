@@ -1,5 +1,5 @@
-#ifndef _RENDER_TARGET_H_
-#define _RENDER_TARGET_H_
+#ifndef _RENDER_TARGET_HPP_
+#define _RENDER_TARGET_HPP_
 
 #include <MemeGraphics/IRenderer.hpp>
 #include <MemeGraphics/VertexArray.hpp>
@@ -31,4 +31,4 @@ namespace ml
 	
 }
 
-#endif // !_RENDER_TARGET_H_
+#endif // !_RENDER_TARGET_HPP_

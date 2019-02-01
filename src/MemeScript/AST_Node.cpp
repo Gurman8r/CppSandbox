@@ -284,7 +284,7 @@ namespace ml
 
 
 	// Search
-	AST_Node::const_iterator	AST_Node::find(const value_type & value, size_t index) const
+	AST_Node::const_iterator	AST_Node::find(const Value & value, size_t index) const
 	{
 		if (value)
 		{
@@ -294,7 +294,7 @@ namespace ml
 		return end();
 	}
 
-	AST_Node::const_iterator	AST_Node::find_first(const value_type & value) const
+	AST_Node::const_iterator	AST_Node::find_first(const Value & value) const
 	{
 		if (value)
 		{
@@ -310,7 +310,7 @@ namespace ml
 		return end();
 	}
 
-	AST_Node::const_iterator	AST_Node::find_first_not_of(const value_type & value, size_t index) const
+	AST_Node::const_iterator	AST_Node::find_first_not_of(const Value & value, size_t index) const
 	{
 		if (value)
 		{
@@ -325,7 +325,7 @@ namespace ml
 		return end();
 	}
 
-	AST_Node::const_iterator	AST_Node::find_last(const value_type & value) const
+	AST_Node::const_iterator	AST_Node::find_last(const Value & value) const
 	{
 		if (value)
 		{
@@ -340,7 +340,7 @@ namespace ml
 		return end();
 	}
 
-	AST_Node::const_iterator	AST_Node::find_last_not_of(const value_type & value) const
+	AST_Node::const_iterator	AST_Node::find_last_not_of(const Value & value) const
 	{
 		if (value)
 		{

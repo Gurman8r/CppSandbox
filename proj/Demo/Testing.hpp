@@ -1,11 +1,11 @@
-#ifndef _TESTING_H_
-#define _TESTING_H_
+#ifndef _TESTING_HPP_
+#define _TESTING_HPP_
 
 #include <MemeCore/MemoryManager.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-namespace tests
+namespace demo
 {
 	struct Foo final
 	{
@@ -68,7 +68,7 @@ namespace tests
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-namespace tests
+namespace demo
 {
 	inline static int32_t testScripts()
 	{
@@ -386,7 +386,7 @@ namespace tests
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-namespace tests
+namespace demo
 {
 	inline static int32_t runTests(uint32_t id)
 	{
@@ -403,4 +403,4 @@ namespace tests
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-#endif // !_TESTING_H_
+#endif // !_TESTING_HPP_

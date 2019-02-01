@@ -1,5 +1,5 @@
-#ifndef _AST_STMT_H_
-#define _AST_STMT_H_
+#ifndef _AST_STMT_HPP_
+#define _AST_STMT_HPP_
 
 #include <MemeScript/AST_Block.hpp>
 
@@ -163,4 +163,4 @@ namespace ml
 	};
 }
 
-#endif // !_AST_STMT_H_
+#endif // !_AST_STMT_HPP_

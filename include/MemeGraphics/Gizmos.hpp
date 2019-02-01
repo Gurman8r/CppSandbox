@@ -1,5 +1,5 @@
-#ifndef _GIZMOS_H_
-#define _GIZMOS_H_
+#ifndef _GIZMOS_HPP_
+#define _GIZMOS_HPP_
 
 #include <MemeGraphics/Export.hpp>
 #include <MemeCore/ISingleton.hpp>
@@ -25,4 +25,4 @@ namespace ml
 	};
 }
 
-#endif // !_GIZMOS_H_
+#endif // !_GIZMOS_HPP_

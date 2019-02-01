@@ -1,5 +1,5 @@
-#ifndef _UNIFORM_H_
-#define	_UNIFORM_H_
+#ifndef _UNIFORM_HPP_
+#define	_UNIFORM_HPP_
 
 #include <MemeGraphics/Export.hpp>
 #include <MemeCore/String.hpp>
@@ -22,4 +22,4 @@ namespace ml
 	};
 }
 
-#endif // !_UNIFORM_H_
+#endif // !_UNIFORM_HPP_

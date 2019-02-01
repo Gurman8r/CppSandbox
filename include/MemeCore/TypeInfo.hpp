@@ -1,5 +1,5 @@
-#ifndef _ML_TYPE_INFO_H_
-#define _ML_TYPE_INFO_H_
+#ifndef _ML_TYPE_INFO_HPP_
+#define _ML_TYPE_INFO_HPP_
 
 #include <MemeCore/Export.hpp>
 #include <MemeCore/String.hpp>
@@ -34,4 +34,4 @@ namespace ml
 	};
 }
 
-#endif // !_ML_TYPE_INFO_H_
+#endif // !_ML_TYPE_INFO_HPP_

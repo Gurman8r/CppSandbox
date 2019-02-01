@@ -1,5 +1,5 @@
-#ifndef _ITRANSFORMABLE_H_
-#define _ITRANSFORMABLE_H_
+#ifndef _ITRANSFORMABLE_HPP_
+#define _ITRANSFORMABLE_HPP_
 
 #include <MemeGraphics/Transform.hpp>
 
@@ -31,4 +31,4 @@ namespace ml
 	};
 }
 
-#endif // !_ITRANSFORMABLE_H_
+#endif // !_ITRANSFORMABLE_HPP_

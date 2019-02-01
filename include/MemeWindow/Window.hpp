@@ -1,5 +1,5 @@
-#ifndef _WINDOW_H_
-#define _WINDOW_H_
+#ifndef _WINDOW_HPP_
+#define _WINDOW_HPP_
 
 #include <MemeCore/Vector4.hpp>
 #include <MemeCore/EventListener.hpp>
@@ -111,4 +111,4 @@ namespace ml
 	};
 
 }
-#endif // !_WINDOW_H_
+#endif // !_WINDOW_HPP_

@@ -1,5 +1,5 @@
-#ifndef _COMMAND_H_
-#define _COMMAND_H_
+#ifndef _COMMAND_HPP_
+#define _COMMAND_HPP_
 
 #include <MemeScript/Var.hpp>
 
@@ -28,4 +28,4 @@ namespace ml
 	};
 }
 
-#endif // !_COMMAND_H_
+#endif // !_COMMAND_HPP_

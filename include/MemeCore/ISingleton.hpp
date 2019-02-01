@@ -1,5 +1,5 @@
-#ifndef _ISINGLETON_H_
-#define _ISINGLETON_H_
+#ifndef _ISINGLETON_HPP_
+#define _ISINGLETON_HPP_
 
 #include <MemeCore/INonCopyable.hpp>
 
@@ -18,4 +18,4 @@ namespace ml
 	};
 }
 
-#endif // !_ISINGLETON_H_
+#endif // !_ISINGLETON_HPP_

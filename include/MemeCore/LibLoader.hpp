@@ -1,5 +1,5 @@
-#ifndef _PLUGIN_MANAGER_H_
-#define _PLUGIN_MANAGER_H_
+#ifndef _PLUGIN_MANAGER_HPP_
+#define _PLUGIN_MANAGER_HPP_
 
 #include <MemeCore/ISingleton.hpp>
 #include <MemeCore/ITrackable.hpp>
@@ -47,4 +47,4 @@ namespace ml
 	};
 }
 
-#endif // !_PLUGIN_MANAGER_H_
+#endif // !_PLUGIN_MANAGER_HPP_

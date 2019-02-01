@@ -1,5 +1,5 @@
-#ifndef _FONT_H_
-#define _FONT_H_
+#ifndef _FONT_HPP_
+#define _FONT_HPP_
 
 #include <MemeGraphics/Glyph.hpp>
 #include <MemeCore/IResource.hpp>
@@ -53,4 +53,4 @@ namespace ml
 	};
 }
 
-#endif // !_FONT_H_
+#endif // !_FONT_HPP_

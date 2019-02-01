@@ -1,5 +1,5 @@
-#ifndef _TIME_POINT_H_
-#define _TIME_POINT_H_
+#ifndef _TIME_POINT_HPP_
+#define _TIME_POINT_HPP_
 
 #include <MemeCore/ITrackable.hpp>
 
@@ -87,4 +87,4 @@ namespace ml
 	};
 }
 
-#endif // !_TIME_POINT_H_
+#endif // !_TIME_POINT_HPP_

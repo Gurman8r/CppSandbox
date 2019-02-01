@@ -1,5 +1,5 @@
-#ifndef _VIDEO_MODE_H_
-#define _VIDEO_MODE_H_
+#ifndef _VIDEO_MODE_HPP_
+#define _VIDEO_MODE_HPP_
 
 #include <MemeWindow/Export.hpp>
 #include <MemeCore/Vector2.hpp>
@@ -45,4 +45,4 @@ namespace ml
 	};
 }
 
-#endif // !_VIDEO_MODE_H_
+#endif // !_VIDEO_MODE_HPP_

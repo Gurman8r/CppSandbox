@@ -1,5 +1,5 @@
-#ifndef _INON_COPYABLE_H_
-#define _INON_COPYABLE_H_
+#ifndef _INON_COPYABLE_HPP_
+#define _INON_COPYABLE_HPP_
 
 #include <MemeCore/Export.hpp>
 
@@ -17,4 +17,4 @@ namespace ml
 	};
 }
 
-#endif // !_INON_COPYABLE_H_
+#endif // !_INON_COPYABLE_HPP_

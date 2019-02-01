@@ -1,5 +1,5 @@
-#ifndef _GRAPHICS_ENUM_H_
-#define _GRAPHICS_ENUM_H_
+#ifndef _GRAPHICS_ENUM_HPP_
+#define _GRAPHICS_ENUM_HPP_
 
 #include <MemeGraphics/Export.hpp>
 #include <MemeCore/Maths.hpp>
@@ -330,4 +330,4 @@ namespace ml
 	}
 }
 
-#endif // !_GRAPHICS_ENUM_H_
+#endif // !_GRAPHICS_ENUM_HPP_

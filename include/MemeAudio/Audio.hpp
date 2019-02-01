@@ -1,5 +1,5 @@
-#ifndef _AUDIO_MANAGER_H_
-#define _AUDIO_MANAGER_H_
+#ifndef _AUDIO_MANAGER_HPP_
+#define _AUDIO_MANAGER_HPP_
 
 #include <MemeCore/ISingleton.hpp>
 #include <MemeAudio/OpenAL.hpp>
@@ -27,4 +27,4 @@ namespace ml
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-#endif // !_AUDIO_MANAGER_H_
+#endif // !_AUDIO_MANAGER_HPP_

@@ -1,5 +1,5 @@
-#ifndef _ITRACKABLE_H_
-#define _ITRACKABLE_H_
+#ifndef _ITRACKABLE_HPP_
+#define _ITRACKABLE_HPP_
 
 #include <MemeCore/MemoryTracker.hpp>
 
@@ -33,4 +33,4 @@ namespace ml
 	};
 }
 
-#endif // !_ITRACKABLE_H_
+#endif // !_ITRACKABLE_HPP_

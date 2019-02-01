@@ -1,5 +1,5 @@
-#ifndef _SETTINGS_H_
-#define _SETTINGS_H_
+#ifndef _SETTINGS_HPP_
+#define _SETTINGS_HPP_
 
 #include <INIReader.h>
 #include <MemeCore/ITrackable.hpp>
@@ -125,4 +125,4 @@ namespace demo
 	};
 }
 
-#endif // !_SETTINGS_H_
+#endif // !_SETTINGS_HPP_

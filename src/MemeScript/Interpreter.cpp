@@ -25,7 +25,7 @@ namespace ml
 	{
 		if (ML_FileSystem.fileExists(value.c_str()))
 		{
-			std::vector<char> buffer;
+			List<char> buffer;
 			if (ML_FileSystem.getFileContents(value, buffer))
 			{
 				return execToks(lexer().setBuffer(buffer).splitTokens());

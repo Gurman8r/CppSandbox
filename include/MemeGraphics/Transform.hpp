@@ -1,5 +1,5 @@
-#ifndef _TRANSFORM_H_
-#define _TRANSFORM_H_
+#ifndef _TRANSFORM_HPP_
+#define _TRANSFORM_HPP_
 
 #include <MemeGraphics/Export.hpp>
 #include <MemeGraphics/Quaternion.hpp>
@@ -47,4 +47,4 @@ namespace ml
 	};
 }
 
-#endif // !_TRANSFORM_H_
+#endif // !_TRANSFORM_HPP_

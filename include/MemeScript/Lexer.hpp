@@ -1,5 +1,5 @@
-#ifndef _LEXER_H_
-#define _LEXER_H_
+#ifndef _LEXER_HPP_
+#define _LEXER_HPP_
 
 #include <MemeScript/TokenList.hpp>
 
@@ -48,4 +48,4 @@ namespace ml
 	};
 }
 
-#endif // !_LEXER_H_
+#endif // !_LEXER_HPP_

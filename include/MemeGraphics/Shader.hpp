@@ -1,5 +1,5 @@
-#ifndef _SHADER_H_
-#define _SHADER_H_
+#ifndef _SHADER_HPP_
+#define _SHADER_HPP_
 
 #include <MemeCore/ITrackable.hpp>
 #include <MemeCore/IResource.hpp>
@@ -87,4 +87,4 @@ namespace ml
 	};
 }
 
-#endif // !_SHADER_H_
+#endif // !_SHADER_HPP_

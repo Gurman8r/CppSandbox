@@ -1,5 +1,5 @@
-#ifndef _DEMO_EVENTS_H_
-#define _DEMO_EVENTS_H_
+#ifndef _DEMO_EVENTS_HPP_
+#define _DEMO_EVENTS_HPP_
 
 #include <MemeCore/Event.hpp>
 #include <MemeCore/Duration.hpp>
@@ -122,4 +122,4 @@ namespace demo
 	};
 }
 
-#endif // !_DEMO_EVENTS_H_
+#endif // !_DEMO_EVENTS_HPP_

@@ -1,5 +1,5 @@
-#ifndef _BYTE_POOL_H_
-#define _BYTE_POOL_H_
+#ifndef _BYTE_POOL_HPP_
+#define _BYTE_POOL_HPP_
 
 #include <MemeCore/ITrackable.hpp>
 #include <MemeCore/IEnumerable.hpp>
@@ -16,7 +16,7 @@ namespace ml
 		using data_type	= T;
 		using pointer	= data_type * ;
 		using reference	= data_type & ;
-		using self_type	= MemoryPool<T, MaxBytes>;
+		using Self	= MemoryPool<T, MaxBytes>;
 		
 	public:
 		MemoryPool()
@@ -68,4 +68,4 @@ namespace ml
 	using BytePool = MemoryPool<uint8_t, N>;
 }
 
-#endif // !_BYTE_POOL_H_
+#endif // !_BYTE_POOL_HPP_

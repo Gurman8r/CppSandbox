@@ -1,5 +1,5 @@
-#ifndef _VERTEX_BUFFER_H_
-#define _VERTEX_BUFFER_H_
+#ifndef _VERTEX_BUFFER_HPP_
+#define _VERTEX_BUFFER_HPP_
 
 #include <MemeGraphics/GL.hpp>
 #include <MemeGraphics/Lists.hpp>
@@ -43,4 +43,4 @@ namespace ml
 	using VBO = VertexBuffer;
 }
 
-#endif // !_VERTEX_BUFFER_H_
+#endif // !_VERTEX_BUFFER_HPP_

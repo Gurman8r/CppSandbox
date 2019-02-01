@@ -1,5 +1,5 @@
-#ifndef _AST_NODE_H_
-#define _AST_NODE_H_
+#ifndef _AST_NODE_HPP_
+#define _AST_NODE_HPP_
 
 #include <MemeScript/Export.hpp>
 #include <MemeCore/ITrackable.hpp>
@@ -11,7 +11,7 @@ namespace ml
 	{
 	public:
 		using list_type				= std::vector<AST_Node*>;
-		using value_type			= list_type::value_type;
+		using Value					= list_type::value_type;
 		using iterator				= list_type::iterator;
 		using const_iterator		= list_type::const_iterator;
 		using reverse_iterator		= list_type::reverse_iterator;
@@ -64,11 +64,11 @@ namespace ml
 		const_reverse_iterator	crend() const;
 
 	public: // Search
-		const_iterator	find(const value_type& value, size_t index = 0) const;
-		const_iterator	find_first(const value_type& value) const;
-		const_iterator	find_first_not_of(const value_type& value, size_t index = 0) const;
-		const_iterator	find_last(const value_type& value) const;
-		const_iterator	find_last_not_of(const value_type& value) const;
+		const_iterator	find(const Value& value, size_t index = 0) const;
+		const_iterator	find_first(const Value& value) const;
+		const_iterator	find_first_not_of(const Value& value, size_t index = 0) const;
+		const_iterator	find_last(const Value& value) const;
+		const_iterator	find_last_not_of(const Value& value) const;
 
 	public: // Operators
 		inline void serialize(std::ostream & out) const
@@ -171,4 +171,4 @@ namespace ml
 	};
 }
 
-#endif // !_AST_NODE_H_
+#endif // !_AST_NODE_HPP_

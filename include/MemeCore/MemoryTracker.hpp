@@ -1,5 +1,5 @@
-#ifndef _MEMORY_TRACKER_H_
-#define _MEMORY_TRACKER_H_
+#ifndef _MEMORY_TRACKER_HPP_
+#define _MEMORY_TRACKER_HPP_
 
 #include <MemeCore/ISingleton.hpp>
 #include <MemeCore/ISerializable.hpp>
@@ -38,4 +38,4 @@ namespace ml
 	};
 }
 
-#endif // !_MEMORY_TRACKER_H_
+#endif // !_MEMORY_TRACKER_HPP_

@@ -355,7 +355,7 @@ namespace ml
 		glCheck(glBufferData(type, size, data, usage));
 	}
 
-	void OpenGL::bufferSubData(GL::Target target, ptrdiff_t offset, ptrdiff_t size, const void * data)
+	void OpenGL::bufferSubData(GL::Target target, int32_t offset, int32_t size, const void * data)
 	{
 		glCheck(glBufferSubData(target, offset, size, data));
 	}

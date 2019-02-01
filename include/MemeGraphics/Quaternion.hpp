@@ -1,5 +1,5 @@
-#ifndef _QUATERNION_H_
-#define _QUATERNION_H_
+#ifndef _QUATERNION_HPP_
+#define _QUATERNION_HPP_
 
 #include <MemeCore/Vector4.hpp>
 #include <MemeCore/Maths.hpp>
@@ -10,7 +10,7 @@ namespace ml
 		: public Vector4<float>
 	{
 	public:
-		using base_type = Vector4<float>;
+		using Base = Vector4<float>;
 
 	public:
 		Quaternion()
@@ -26,15 +26,15 @@ namespace ml
 		{
 		}
 		Quaternion(float x, float y, float z, float w)
-			: base_type(x, y, z, w)
+			: Base(x, y, z, w)
 		{
 		}
 		Quaternion(const Vector<float, 4> & copy)
-			: base_type(copy)
+			: Base(copy)
 		{
 		}
 		Quaternion(const Quaternion & copy)
-			: base_type((base_type)copy)
+			: Base((Base)copy)
 		{
 		}
 		~Quaternion() {}
@@ -102,21 +102,21 @@ namespace ml
 		
 		inline friend Quaternion operator*(const Quaternion & lhs, float rhs)
 		{
-			return (base_type)(lhs) * rhs;
+			return (Base)(lhs) * rhs;
 		}
 		
 		inline friend Quaternion operator/(const Quaternion & lhs, float rhs)
 		{
-			return (base_type)(lhs) / rhs;
+			return (Base)(lhs) / rhs;
 		}
 		
-		inline operator base_type() const
+		inline operator Base() const
 		{
-			return base_type((*this)[0], (*this)[1], (*this)[2], (*this)[3]);
+			return Base((*this)[0], (*this)[1], (*this)[2], (*this)[3]);
 		}
 	};
 
 	using quat = Quaternion;
 }
 
-#endif // !_QUATERNION_H_
+#endif // !_QUATERNION_HPP_

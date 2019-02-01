@@ -1,7 +1,8 @@
-#ifndef _BASE_LIST_H_
-#define _BASE_LIST_H_
+#ifndef _BASE_LIST_HPP_
+#define _BASE_LIST_HPP_
 
 #include <MemeCore/ITrackable.hpp>
+#include <MemeCore/Check.hpp>
 
 namespace ml
 {
@@ -16,46 +17,63 @@ namespace ml
 		, public IComparable<std::vector<_Elem, _Alloc>>
 		, public IComparable<List<_Elem, _Alloc>>
 	{
+		// elements need << operator
+		static_assert(
+			check::has_leftshift_operator<_Elem>::value,
+			"Missing \"operator<<\" | Element must be serializable");
+
+		// elements need >> operator
+		static_assert(
+			check::has_rightshift_operator<_Elem>::value,
+			"Missing \"operator>>\" | Element must be de-serializable");
+
 	public:
-		using value_type = _Elem;
-		using allocator = _Alloc;
-		using size_type = size_t;
+		using Value			= _Elem;
+		using Allocator		= _Alloc;
 
-		using base_type = std::vector<value_type, allocator>;
-		using init_type = std::initializer_list<value_type>;
-		using self_type = List<value_type, allocator>;
+		using Base			= std::vector<Value, Allocator>;
+		using Self			= List<Value, Allocator>;
 
-		using iterator				= typename base_type::iterator;
-		using const_iterator		= typename base_type::const_iterator;
-		using reverse_iterator		= typename base_type::reverse_iterator;
-		using const_reverse_iterator= typename base_type::const_reverse_iterator;
+		using size_type		= size_t;
+		using Initializer	= std::initializer_list<Value>;
+
+		using iterator				= typename Base::iterator;
+		using const_iterator		= typename Base::const_iterator;
+		using reverse_iterator		= typename Base::reverse_iterator;
+		using const_reverse_iterator= typename Base::const_reverse_iterator;
 
 	public:
 		List()
-			: base_type()
+			: Base()
 		{
 		}
-		List(const allocator & alloc)
-			: base_type(alloc)
+		
+		List(const Allocator & alloc)
+			: Base(alloc)
 		{
 		}
-		List(const base_type & value, const allocator & alloc = allocator())
-			: base_type(value, alloc)
+		
+		List(const Base & value, const Allocator & alloc = Allocator())
+			: Base(value, alloc)
 		{
 		}
-		List(const init_type & value, const allocator & alloc = allocator())
-			: base_type(value, alloc)
+		
+		List(const Initializer & value, const Allocator & alloc = Allocator())
+			: Base(value, alloc)
 		{
 		}
-		List(const self_type & value, const allocator & alloc = allocator())
-			: base_type(value, alloc)
+		
+		List(const Self & value, const Allocator & alloc = Allocator())
+			: Base(value, alloc)
 		{
 		}
+		
 		template <class Iter>
-		List(Iter begin, Iter end, const allocator & alloc = allocator())
-			: base_type(begin, end, alloc)
+		List(Iter begin, Iter end, const Allocator & alloc = Allocator())
+			: Base(begin, end, alloc)
 		{
 		}
+		
 		virtual ~List() {}
 		
 	public:
@@ -75,38 +93,38 @@ namespace ml
 
 
 	public: // Base Cast
-		inline operator base_type() const
+		inline operator Base() const
 		{
-			return static_cast<base_type>(*this);
+			return static_cast<Base>(*this);
 		}
 
-		inline operator const base_type &() const
+		inline operator const Base &() const
 		{
-			return static_cast<const base_type &>(*this);
+			return static_cast<const Base &>(*this);
 		}
 
 	public:
-		inline virtual bool equals(const base_type & value) const override
+		inline virtual bool equals(const Base & value) const override
 		{
-			return value == (const base_type &)(*this);
+			return value == (const Base &)(*this);
 		}
 		
-		inline virtual bool lessThan(const base_type & value) const override
+		inline virtual bool lessThan(const Base & value) const override
 		{
-			return value < (const base_type &)(*this);
+			return value < (const Base &)(*this);
 		}
 
 		
-		inline virtual bool equals(const self_type & value) const override
+		inline virtual bool equals(const Self & value) const override
 		{
-			return equals((const base_type &)(value));
+			return equals((const Base &)(value));
 		}
 		
-		inline virtual bool lessThan(const self_type & value) const override
+		inline virtual bool lessThan(const Self & value) const override
 		{
-			return lessThan((const base_type &)(value));
+			return lessThan((const Base &)(value));
 		}
 	};
 }
 
-#endif // !_BASE_LIST_H_
+#endif // !_BASE_LIST_HPP_

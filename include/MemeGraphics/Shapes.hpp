@@ -1,5 +1,5 @@
-#ifndef _SHAPES_H_
-#define _SHAPES_H_
+#ifndef _SHAPES_HPP_
+#define _SHAPES_HPP_
 
 #include <MemeGraphics/Lists.hpp>
 
@@ -28,4 +28,4 @@ namespace ml
 	};
 }
 
-#endif // !_SHAPES_H_
+#endif // !_SHAPES_HPP_

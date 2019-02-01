@@ -1,5 +1,5 @@
-#ifndef _CONFIG_H_
-#define _CONFIG_H_
+#ifndef _CONFIG_HPP_
+#define _CONFIG_HPP_
 
 //	Debug Macro
 /* * * * * * * * * * * * * * * * * * * */
@@ -88,4 +88,4 @@
 	#define ML_API_IMPORT
 #endif
 
-#endif // !_CONFIG_H_
+#endif // !_CONFIG_HPP_

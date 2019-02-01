@@ -1,5 +1,5 @@
-#ifndef _LISTS_H_
-#define _LISTS_H_
+#ifndef _LISTS_HPP_
+#define _LISTS_HPP_
 
 #include <MemeCore/List.hpp>
 #include <MemeGraphics/Vertex.hpp>
@@ -20,29 +20,29 @@ namespace ml
 		: public List<Vertex>
 	{
 	public:
-		using base_type = List<value_type>;
-		using self_type = VertexList;
+		using Base = List<value_type>;
+		using Self = VertexList;
 
 	public:
 		VertexList()
-			: base_type()
+			: Base()
 		{
 		}
-		VertexList(const base_type & value)
-			: base_type(value)
+		VertexList(const Base & value)
+			: Base(value)
 		{
 		}
-		VertexList(const init_type & value)
-			: base_type(value)
+		VertexList(const Initializer & value)
+			: Base(value)
 		{
 		}
-		VertexList(const self_type & value)
-			: base_type(value)
+		VertexList(const Self & value)
+			: Base(value)
 		{
 		}
 		template <typename Iter>
 		VertexList(Iter begin, Iter end)
-			: base_type(begin, end)
+			: Base(begin, end)
 		{
 		}
 		~VertexList() {}
@@ -75,4 +75,4 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 }
 
-#endif // !_LISTS_H_
+#endif // !_LISTS_HPP_

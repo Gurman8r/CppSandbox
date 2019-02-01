@@ -1,5 +1,5 @@
-#ifndef _TEXT_H_
-#define _TEXT_H_
+#ifndef _TEXT_HPP_
+#define _TEXT_HPP_
 
 #include <MemeGraphics/IRenderer.hpp>
 #include <MemeGraphics/Font.hpp>
@@ -50,4 +50,4 @@ namespace ml
 		vec4f			m_color;
 	};
 }
-#endif // !_TEXT_H_
+#endif // !_TEXT_HPP_

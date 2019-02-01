@@ -1,5 +1,5 @@
-#ifndef _ML_STRING_H_
-#define _ML_STRING_H_
+#ifndef _ML_STRING_HPP_
+#define _ML_STRING_HPP_
 
 #include <MemeCore/IComparable.hpp>
 #include <MemeCore/IO.hpp>
@@ -229,14 +229,14 @@ namespace ml
 			int32_t sink[] = { 0, ((void)(stream << args << ml::endl), 0)... };
 			(void)sink;
 
-			for (size_t a = 0; stream.good(); a++)
+			for (size_type a = 0; stream.good(); a++)
 			{
 				const Self fmt = ("{" + std::to_string(a) + "}");
 
 				Self arg;
 				if (std::getline(stream, arg))
 				{
-					for (size_t i = 0;
+					for (size_type i = 0;
 						(i = (*this).find(fmt, i)) != Self::npos;
 						(i += arg.size()))
 					{
@@ -290,4 +290,4 @@ namespace ml
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-#endif // !_ML_STRING_H_
+#endif // !_ML_STRING_HPP_

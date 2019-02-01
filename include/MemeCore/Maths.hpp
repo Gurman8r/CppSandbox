@@ -1,5 +1,5 @@
-#ifndef _MATHS_H_
-#define _MATHS_H_
+#ifndef _MATHS_HPP_
+#define _MATHS_HPP_
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -61,4 +61,4 @@ namespace ml
 	};
 }
 
-#endif // !_MATHS_H_
+#endif // !_MATHS_HPP_

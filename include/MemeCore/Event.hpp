@@ -1,5 +1,5 @@
-#ifndef _EVENT_H_
-#define _EVENT_H_
+#ifndef _EVENT_HPP_
+#define _EVENT_HPP_
 
 #include <MemeCore/ITrackable.hpp>
 
@@ -95,4 +95,4 @@ namespace ml
 	};
 }
 
-#endif // !_EVENT_H_
+#endif // !_EVENT_HPP_

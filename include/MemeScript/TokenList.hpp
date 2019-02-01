@@ -1,5 +1,5 @@
-#ifndef _TOKEN_LIST_H_
-#define _TOKEN_LIST_H_
+#ifndef _TOKEN_LIST_HPP_
+#define _TOKEN_LIST_HPP_
 
 #include <MemeScript/Token.hpp>
 
@@ -11,10 +11,10 @@ namespace ml
 		, public IComparable<String>
 	{
 	public:
-		using value_type			= Token;
+		using Value			= Token;
 		using string_type			= String;
-		using vector_type			= std::vector<value_type>;
-		using initializer_type		= std::initializer_list<value_type>;
+		using vector_type			= std::vector<Value>;
+		using initializer_type		= std::initializer_list<Value>;
 		using iterator				= vector_type::iterator;
 		using const_iterator		= vector_type::const_iterator;
 		using reverse_iterator		= vector_type::reverse_iterator;
@@ -26,38 +26,38 @@ namespace ml
 
 	public:
 		TokenList();
-		TokenList(const value_type& value);
+		TokenList(const Value& value);
 		TokenList(const vector_type& values);
 		TokenList(const TokenList& copy);
 		~TokenList();
 
-		const value_type	at(size_t index) const;
-		const value_type	back() const;
-		const value_type	front() const;
+		const Value	at(size_t index) const;
+		const Value	back() const;
+		const Value	front() const;
 		const String	str() const;
 		const String	substr(size_t index, size_t count) const;
 		const vector_type	subvec(size_t index, size_t count) const;
 		const vector_type&	values() const;
 		const stream_type	sstream() const;
 
-		const size_t	count(const value_type& value) const;
-		const size_t	count(const_iterator first, const_iterator last, const value_type& value) const;
-		const size_t	indexOf(const value_type& value) const;
+		const size_t	count(const Value& value) const;
+		const size_t	count(const_iterator first, const_iterator last, const Value& value) const;
+		const size_t	indexOf(const Value& value) const;
 		const size_t	size() const;
 
-		const bool	back(const value_type& value) const;
+		const bool	back(const Value& value) const;
 		const bool	back(const string_type& value) const;
 		const bool	back(char value) const;
-		const bool	front(const value_type& value) const;
+		const bool	front(const Value& value) const;
 		const bool	front(const string_type& value) const;
 		const bool	front(char value) const;
 
-		const bool	contains(const value_type& value) const;
+		const bool	contains(const Value& value) const;
 		const bool	empty() const;
 		const bool	inRange(size_t index) const;
 		const bool	inRange(const_iterator it) const;
-		const bool	isWrap(const value_type& value) const;
-		const bool	isWrap(const value_type& lhs, const value_type& rhs) const;
+		const bool	isWrap(const Value& value) const;
+		const bool	isWrap(const Value& lhs, const Value& rhs) const;
 
 		const bool	matchChar(size_t index, char c) const;
 		const bool	matchChar(const const_iterator& it, char c) const;
@@ -69,7 +69,7 @@ namespace ml
 		const bool	matchData(const const_iterator& it, const cstring_list& data) const;
 
 		TokenList	after(size_t index) const;
-		TokenList	between(const value_type& lhs, const value_type& rhs) const;
+		TokenList	between(const Value& lhs, const Value& rhs) const;
 		TokenList	clone() const;
 		TokenList	clone(size_t index, size_t count = 1) const;
 		TokenList	clone(const TokenList& other) const;
@@ -88,34 +88,34 @@ namespace ml
 		TokenList &	erase(const_iterator it, size_t count = 1);
 		TokenList &	erase(const_iterator first, const_iterator last);
 		TokenList &	insert(size_t index, char value);
-		TokenList &	insert(size_t index, const value_type& value);
-		TokenList &	insert(iterator it, const value_type& value);
+		TokenList &	insert(size_t index, const Value& value);
+		TokenList &	insert(iterator it, const Value& value);
 		TokenList &	pop_back();
 		TokenList &	pop_front();
 		TokenList &	push_back(char value);
-		TokenList &	push_back(const value_type& value);
+		TokenList &	push_back(const Value& value);
 		TokenList &	push_back(const vector_type& value);
 		TokenList &	push_back(const TokenList& value);
 		TokenList &	push_front(char value);
-		TokenList &	push_front(const value_type& value);
+		TokenList &	push_front(const Value& value);
 		TokenList &	push_front(const vector_type& value);
 		TokenList &	push_front(const TokenList& value);
-		TokenList &	remove(const value_type& value);
-		TokenList &	removeAll(const value_type& value);
+		TokenList &	remove(const Value& value);
+		TokenList &	removeAll(const Value& value);
 		TokenList &	resize(size_t size);
 		TokenList &	reverse();
 		TokenList &	unwrap();
-		TokenList &	unwrapIf(const value_type& value);
-		TokenList &	unwrapIf(const value_type& lhs, const value_type& rhs);
-		TokenList &	wrap(const value_type& value);
-		TokenList &	wrap(const value_type& lhs, const value_type& rhs);
+		TokenList &	unwrapIf(const Value& value);
+		TokenList &	unwrapIf(const Value& lhs, const Value& rhs);
+		TokenList &	wrap(const Value& value);
+		TokenList &	wrap(const Value& lhs, const Value& rhs);
 
 	public:
-		const_iterator	find(const value_type& value, size_t begin = 0) const;
-		const_iterator	find_first(const value_type& value) const;
-		const_iterator	find_first_not_of(const value_type& value, size_t begin = 0) const;
-		const_iterator	find_last(const value_type& value) const;
-		const_iterator	find_last_not_of(const value_type& value) const;
+		const_iterator	find(const Value& value, size_t begin = 0) const;
+		const_iterator	find_first(const Value& value) const;
+		const_iterator	find_first_not_of(const Value& value, size_t begin = 0) const;
+		const_iterator	find_last(const Value& value) const;
+		const_iterator	find_last_not_of(const Value& value) const;
 
 	public:
 		iterator				begin();
@@ -130,18 +130,18 @@ namespace ml
 		const_reverse_iterator	crend() const;
 
 	public:
-		inline const value_type & operator[](size_t index) const
+		inline const Value & operator[](size_t index) const
 		{
-			static value_type df;
+			static Value df;
 			if (inRange(index))
 			{
 				return m_values.at(index);
 			}
 			return df;
 		}
-		inline value_type & operator[](size_t index)
+		inline Value & operator[](size_t index)
 		{
-			static value_type df;
+			static Value df;
 			if (inRange(index))
 			{
 				return m_values[index];
@@ -171,4 +171,4 @@ namespace ml
 	};
 }
 
-#endif // !_TOKEN_LIST_H_
+#endif // !_TOKEN_LIST_HPP_

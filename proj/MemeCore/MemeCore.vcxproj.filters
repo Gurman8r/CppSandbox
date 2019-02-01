@@ -58,6 +58,12 @@
     <Filter Include="Header Files\STD">
       <UniqueIdentifier>{485dbe29-b211-4cd5-b452-6ce26ff91e9e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\FS">
+      <UniqueIdentifier>{19c6709d-12eb-4198-abd3-e13c31d5dbcd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\FS">
+      <UniqueIdentifier>{12815f7e-eacb-44de-84de-fa49c5edeb6d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeCore\Component.hpp">
@@ -168,9 +174,6 @@
     <ClInclude Include="..\..\include\MemeCore\Debug.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\FileSystem.hpp">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\LibLoader.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
@@ -195,6 +198,15 @@
     <ClInclude Include="..\..\include\MemeCore\TypeInfo.hpp">
       <Filter>Header Files\STD</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Directory.hpp">
+      <Filter>Header Files\FS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\FileSystem.hpp">
+      <Filter>Header Files\FS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Check.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeCore\Maths.cpp">
@@ -202,9 +214,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\EventSystem.cpp">
       <Filter>Source Files\Events</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeCore\FileSystem.cpp">
-      <Filter>Source Files\Utility</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\Timer.cpp">
       <Filter>Source Files\Time</Filter>
@@ -235,6 +244,12 @@
     </ClCompile>
     <ClCompile Include="..\..\include\MemeCore\IEnumerable.hpp">
       <Filter>Header Files\Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeCore\FileSystem.cpp">
+      <Filter>Source Files\FS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeCore\Directory.cpp">
+      <Filter>Source Files\FS</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

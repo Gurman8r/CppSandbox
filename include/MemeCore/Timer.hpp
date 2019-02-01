@@ -1,5 +1,5 @@
-#ifndef _TIMER_H_
-#define _TIMER_H_
+#ifndef _TIMER_HPP_
+#define _TIMER_HPP_
 
 #include <MemeCore/Duration.hpp>
 
@@ -35,4 +35,4 @@ namespace ml
 	};
 }
 
-#endif // !_TIMER_H_
+#endif // !_TIMER_HPP_

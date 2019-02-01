@@ -1,5 +1,5 @@
-#ifndef _DEBUG_UTILITY_H_
-#define _DEBUG_UTILITY_H_
+#ifndef _DEBUG_UTILITY_HPP_
+#define _DEBUG_UTILITY_HPP_
 
 #include <MemeCore/Console.hpp>
 #include <MemeCore/String.hpp>
@@ -49,4 +49,4 @@ namespace ml
 	
 }
 
-#endif // !_DEBUG_UTILITY_H_
+#endif // !_DEBUG_UTILITY_HPP_

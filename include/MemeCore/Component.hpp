@@ -1,5 +1,5 @@
-#ifndef _COMPONENT_H_
-#define _COMPONENT_H_
+#ifndef _COMPONENT_HPP_
+#define _COMPONENT_HPP_
 
 #include <MemeCore/ITrackable.hpp>
 
@@ -17,4 +17,4 @@ namespace ml
 	};
 }
 
-#endif // !_COMPONENT_H_
+#endif // !_COMPONENT_HPP_

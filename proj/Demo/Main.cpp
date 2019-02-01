@@ -31,7 +31,7 @@ int32_t main(int32_t argc, char ** argv)
 	// Run Tests
 	if (SETTINGS.runTests)
 	{
-		return tests::runTests(SETTINGS.runTests);
+		return demo::runTests(SETTINGS.runTests);
 	}
 
 	// Create Window

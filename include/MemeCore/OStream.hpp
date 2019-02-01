@@ -1,5 +1,5 @@
-#ifndef _ML_OSTREAM_H_
-#define _ML_OSTREAM_H_
+#ifndef _ML_OSTREAM_HPP_
+#define _ML_OSTREAM_HPP_
 
 #include <MemeCore/IO.hpp>
 
@@ -10,11 +10,11 @@ namespace ml
 		, public std::streambuf
 	{
 	public:
-		using base_type = std::ostream;
+		using Base = std::ostream;
 
 	public:
 		BasicOStream()
-			: base_type(this)
+			: Base(this)
 		{
 		}
 		~BasicOStream() {}
@@ -29,4 +29,4 @@ namespace ml
 	};
 }
 
-#endif // !_ML_OSTREAM_H_
+#endif // !_ML_OSTREAM_HPP_

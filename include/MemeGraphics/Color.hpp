@@ -1,5 +1,5 @@
-#ifndef _COLOR_H_
-#define _COLOR_H_
+#ifndef _COLOR_HPP_
+#define _COLOR_HPP_
 
 #include <MemeGraphics/Export.hpp>
 #include <MemeCore/Vector4.hpp>
@@ -33,4 +33,4 @@ namespace ml
 	};
 }
 
-#endif // !_COLOR_H_
+#endif // !_COLOR_HPP_

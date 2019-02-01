@@ -1,5 +1,5 @@
-#ifndef _CONSOLE_UTILITY_H_
-#define _CONSOLE_UTILITY_H_
+#ifndef _CONSOLE_UTILITY_HPP_
+#define _CONSOLE_UTILITY_HPP_
 
 #include <MemeCore/IntTypes.hpp>
 #include <MemeCore/IO.hpp>
@@ -141,4 +141,4 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 }
 
-#endif // !_CONSOLE_UTILITY_H_
+#endif // !_CONSOLE_UTILITY_HPP_

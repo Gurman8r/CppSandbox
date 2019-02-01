@@ -1,5 +1,5 @@
-#ifndef _INPUT_STATE_H_
-#define _INPUT_STATE_H_
+#ifndef _INPUT_STATE_HPP_
+#define _INPUT_STATE_HPP_
 
 #include <MemeCore/IntTypes.hpp>
 
@@ -13,7 +13,7 @@ namespace ml
 
 		enum : size_t { Size = N };
 		
-		using self_type = InputState<Size>;
+		using Self = InputState<Size>;
 
 	public:
 		virtual ~InputState() { }
@@ -22,7 +22,7 @@ namespace ml
 		virtual bool checkKey(int32_t value) const = 0;
 
 	public:
-		self_type & beginStep()
+		Self & beginStep()
 		{
 			for (size_t i = 0; i < Size; i++)
 			{
@@ -31,7 +31,7 @@ namespace ml
 			return (*this);
 		}
 
-		self_type & endStep()
+		Self & endStep()
 		{
 			for (size_t i = 0; i < Size; i++)
 			{
@@ -62,4 +62,4 @@ namespace ml
 	};
 }
 
-#endif // !_INPUT_STATE_H_
+#endif // !_INPUT_STATE_HPP_

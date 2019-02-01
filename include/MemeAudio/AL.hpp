@@ -1,5 +1,5 @@
-#ifndef _AL_H_
-#define _AL_H_
+#ifndef _AL_HPP_
+#define _AL_HPP_
 
 #include <MemeAudio/Export.hpp>
 #include <MemeCore/Maths.hpp>
@@ -25,4 +25,4 @@ namespace ml
 	};
 }
 
-#endif // !_AL_H_
+#endif // !_AL_HPP_

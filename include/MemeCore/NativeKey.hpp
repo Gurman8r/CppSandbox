@@ -1,5 +1,5 @@
-#ifndef _NATIVE_KEY_H_
-#define _NATIVE_KEY_H_
+#ifndef _NATIVE_KEY_HPP_
+#define _NATIVE_KEY_HPP_
 
 #include <MemeCore/Export.hpp>
 #include <MemeCore/IntTypes.hpp>
@@ -53,4 +53,4 @@ namespace ml
 	};
 }
 
-#endif // !_NATIVE_KEY_H_
+#endif // !_NATIVE_KEY_HPP_

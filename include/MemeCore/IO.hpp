@@ -1,5 +1,5 @@
-#ifndef _ML_IO_H_
-#define _ML_IO_H_
+#ifndef _ML_IO_HPP_
+#define _ML_IO_HPP_
 
 #include <MemeCore/Export.hpp>
 #include <MemeCore/STD.hpp>
@@ -32,4 +32,4 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 }
 
-#endif // !_ML_IO_H_
+#endif // !_ML_IO_HPP_

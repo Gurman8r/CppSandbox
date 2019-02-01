@@ -1,5 +1,5 @@
-#ifndef _ML_AUDIO_EXPORT_H_
-#define _ML_AUDIO_EXPORT_H_
+#ifndef _ML_AUDIO_EXPORT_HPP_
+#define _ML_AUDIO_EXPORT_HPP_
 
 #include <MemeCore/Config.hpp>
 
@@ -9,4 +9,4 @@
 	#define ML_AUDIO_API ML_API_IMPORT
 #endif
 
-#endif // !_ML_AUDIO_EXPORT_H_
+#endif // !_ML_AUDIO_EXPORT_HPP_

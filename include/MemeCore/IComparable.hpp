@@ -1,5 +1,5 @@
-#ifndef _ICOMPARABLE_H_
-#define _ICOMPARABLE_H_
+#ifndef _ICOMPARABLE_HPP_
+#define _ICOMPARABLE_HPP_
 
 namespace ml
 {
@@ -8,7 +8,7 @@ namespace ml
 	{
 	public:
 		using comp_type = T;
-		using self_type = IComparable<comp_type>;
+		using Self = IComparable<comp_type>;
 
 	public:
 		virtual bool equals(const comp_type & value) const = 0;
@@ -26,32 +26,32 @@ namespace ml
 		}
 
 	public:
-		inline friend bool operator==(const self_type & lhs, const comp_type & rhs)
+		inline friend bool operator==(const Self & lhs, const comp_type & rhs)
 		{
 			return lhs.equals(rhs);
 		}
 		
-		inline friend bool operator!=(const self_type & lhs, const comp_type & rhs)
+		inline friend bool operator!=(const Self & lhs, const comp_type & rhs)
 		{
 			return lhs.notEquals(rhs);
 		}
 		
-		inline friend bool operator >(const self_type & lhs, const comp_type & rhs)
+		inline friend bool operator >(const Self & lhs, const comp_type & rhs)
 		{
 			return lhs.greaterThan(rhs);
 		}
 		
-		inline friend bool operator <(const self_type & lhs, const comp_type & rhs)
+		inline friend bool operator <(const Self & lhs, const comp_type & rhs)
 		{
 			return lhs.lessThan(rhs);
 		}
 
-		inline friend bool operator>=(const self_type & lhs, const comp_type & rhs)
+		inline friend bool operator>=(const Self & lhs, const comp_type & rhs)
 		{
 			return lhs.equals(rhs) || lhs.greaterThan(rhs);
 		}
 
-		inline friend bool operator<=(const self_type & lhs, const comp_type & rhs)
+		inline friend bool operator<=(const Self & lhs, const comp_type & rhs)
 		{
 			return lhs.equals(rhs) || lhs.lessThan(rhs);
 		}
@@ -59,4 +59,4 @@ namespace ml
 
 }
 
-#endif // !_ICOMPARABLE_H_
+#endif // !_ICOMPARABLE_HPP_

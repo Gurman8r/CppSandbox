@@ -1,5 +1,5 @@
-#ifndef _RENDER_STATE_H_
-#define _RENDER_STATE_H_
+#ifndef _RENDER_STATE_HPP_
+#define _RENDER_STATE_HPP_
 
 #include <MemeGraphics/VertexArray.hpp>
 #include <MemeGraphics/VertexBuffer.hpp>
@@ -79,4 +79,4 @@ namespace ml
 	};
 }
 
-#endif // !_RENDER_STATE_H_
+#endif // !_RENDER_STATE_HPP_

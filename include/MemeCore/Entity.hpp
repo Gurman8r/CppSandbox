@@ -1,5 +1,5 @@
-#ifndef _ENTITY_H_
-#define _ENTITY_H_
+#ifndef _ENTITY_HPP_
+#define _ENTITY_HPP_
 
 #include <MemeCore/ComponentMap.hpp>
 
@@ -61,4 +61,4 @@ namespace ml
 	};
 }
 
-#endif // !_ENTITY_H_
+#endif // !_ENTITY_HPP_

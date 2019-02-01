@@ -277,7 +277,7 @@ namespace ml
 	{
 		const String& filename = str->evaluate().stringValue();
 		
-		std::vector<char> buffer;
+		List<char> buffer;
 		if (ML_FileSystem.getFileContents(filename, buffer))
 		{
 			const TokenList toks = ML_Interpreter.lexer().setBuffer(buffer).splitTokens();

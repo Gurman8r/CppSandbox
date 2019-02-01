@@ -1,5 +1,5 @@
-#ifndef _CLIENT_H_
-#define _CLIENT_H_
+#ifndef _CLIENT_HPP_
+#define _CLIENT_HPP_
 
 #include <MemeCore/ISingleton.hpp>
 #include <MemeNet/NetworkInterface.hpp>
@@ -34,4 +34,4 @@ namespace ml
 	};
 }
 
-#endif // !_CLIENT_H_
+#endif // !_CLIENT_HPP_

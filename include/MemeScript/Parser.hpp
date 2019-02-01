@@ -1,5 +1,5 @@
-#ifndef _PARSER_H_
-#define _PARSER_H_
+#ifndef _PARSER_HPP_
+#define _PARSER_HPP_
 
 #include <MemeScript/TokenList.hpp>
 #include <MemeScript/AST_Block.hpp>
@@ -62,4 +62,4 @@ namespace ml
 	};
 }
 
-#endif // !_PARSER_H_
+#endif // !_PARSER_HPP_

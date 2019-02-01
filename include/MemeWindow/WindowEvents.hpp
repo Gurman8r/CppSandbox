@@ -1,5 +1,5 @@
-#ifndef _WINDOW_EVENTS_H_
-#define _WINDOW_EVENTS_H_
+#ifndef _WINDOW_EVENTS_HPP_
+#define _WINDOW_EVENTS_HPP_
 
 #include <MemeWindow/Export.hpp>
 #include <MemeCore/EventSystem.hpp>
@@ -185,4 +185,4 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 }
 
-#endif // !_WINDOW_EVENTS_H_
+#endif // !_WINDOW_EVENTS_HPP_

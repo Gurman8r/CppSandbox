@@ -1,5 +1,5 @@
-#ifndef _NATIVE_INPUT_H_
-#define _NATIVE_INPUT_H_
+#ifndef _NATIVE_INPUT_HPP_
+#define _NATIVE_INPUT_HPP_
 
 #include <MemeCore/NativeKey.hpp>
 #include <MemeCore/ITrackable.hpp>
@@ -22,4 +22,4 @@ namespace ml
 	};
 }
 
-#endif // !_NATIVE_INPUT_H_
+#endif // !_NATIVE_INPUT_HPP_

@@ -1,5 +1,5 @@
-#ifndef _SERVER_H_
-#define _SERVER_H_
+#ifndef _SERVER_HPP_
+#define _SERVER_HPP_
 
 #include <MemeCore/ISingleton.hpp>
 #include <MemeNet/NetworkInterface.hpp>
@@ -37,4 +37,4 @@ namespace ml
 	};
 }
 
-#endif // !_SERVER_H_
+#endif // !_SERVER_HPP_

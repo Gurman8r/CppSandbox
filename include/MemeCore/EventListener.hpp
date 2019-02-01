@@ -1,5 +1,5 @@
-#ifndef _EVENT_LISTENER_H_
-#define _EVENT_LISTENER_H_
+#ifndef _EVENT_LISTENER_HPP_
+#define _EVENT_LISTENER_HPP_
 
 #include <MemeCore/Event.hpp>
 
@@ -15,4 +15,4 @@ namespace ml
 	};
 }
 
-#endif // !_EVENT_LISTENER_H_
+#endif // !_EVENT_LISTENER_HPP_

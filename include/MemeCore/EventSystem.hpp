@@ -1,5 +1,5 @@
-#ifndef _EVENT_SYSTEM_H_
-#define _EVENT_SYSTEM_H_
+#ifndef _EVENT_SYSTEM_HPP_
+#define _EVENT_SYSTEM_HPP_
 
 #include <MemeCore/EventListener.hpp>
 #include <MemeCore/ISingleton.hpp>
@@ -30,4 +30,4 @@ namespace ml
 	};
 }
 
-#endif // !_EVENT_SYSTEM_H_
+#endif // !_EVENT_SYSTEM_HPP_

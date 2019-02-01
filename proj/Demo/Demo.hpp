@@ -1,5 +1,5 @@
-#ifndef _GAME_H_
-#define _GAME_H_
+#ifndef _GAME_HPP_
+#define _GAME_HPP_
 
 #include <MemeAudio/Audio.hpp>
 #include <MemeCore/Time.hpp>
@@ -190,4 +190,4 @@ namespace demo
 	};
 }
 
-#endif // !_GAME_H_
+#endif // !_GAME_HPP_
