@@ -30,7 +30,7 @@ namespace ml
 		case NetworkEvent::EV_ClientRecievePacket:
 			if (auto ev = value->Cast<ClientRecievePacketEvent>())
 			{
-				Debug::Log("CLIENT -> {0}", (*ev));
+				Debug::log("CLIENT -> {0}", (*ev));
 			}
 			break;
 		}
@@ -41,20 +41,20 @@ namespace ml
 		switch (value.data[0])
 		{
 		case ID_CONNECTION_REQUEST_ACCEPTED:
-			Debug::Log("Connection Request Accepted");
+			Debug::log("Connection Request Accepted");
 			m_connected = true;
 			break;
 
 		case ID_NO_FREE_INCOMING_CONNECTIONS:
-			Debug::LogError("No Free Incoming Connections");
+			Debug::logError("No Free Incoming Connections");
 			break;
 
 		case ID_DISCONNECTION_NOTIFICATION:
-			Debug::Log("Disconnected");
+			Debug::log("Disconnected");
 			break;
 
 		case ID_CONNECTION_LOST:
-			Debug::LogError("Connection Lost");
+			Debug::logError("Connection Lost");
 			break;
 
 		case ML_CLIENT_RECIEVE:
@@ -79,22 +79,22 @@ namespace ml
 				(int32_t)pass.size()))
 			{
 			case RakNet::CONNECTION_ATTEMPT_STARTED:
-				return Debug::Log("CONNECTION_ATTEMPT_STARTED");
+				return Debug::log("CONNECTION_ATTEMPT_STARTED");
 
 			case RakNet::INVALID_PARAMETER:
-				return Debug::LogError("INVALID_PARAMETER");
+				return Debug::logError("INVALID_PARAMETER");
 
 			case RakNet::CANNOT_RESOLVE_DOMAIN_NAME:
-				return Debug::LogError("CANNOT_RESOLVE_DOMAIN_NAME");
+				return Debug::logError("CANNOT_RESOLVE_DOMAIN_NAME");
 
 			case RakNet::ALREADY_CONNECTED_TO_ENDPOINT:
-				return Debug::LogError("ALREADY_CONNECTED_TO_ENDPOINT");
+				return Debug::logError("ALREADY_CONNECTED_TO_ENDPOINT");
 
 			case RakNet::CONNECTION_ATTEMPT_ALREADY_IN_PROGRESS:
-				return Debug::LogError("CONNECTION_ATTEMPT_ALREADY_IN_PROGRESS");
+				return Debug::logError("CONNECTION_ATTEMPT_ALREADY_IN_PROGRESS");
 
 			case RakNet::SECURITY_INITIALIZATION_FAILED:
-				return Debug::LogError("SECURITY_INITIALIZATION_FAILED");
+				return Debug::logError("SECURITY_INITIALIZATION_FAILED");
 			}
 		}
 		return false;

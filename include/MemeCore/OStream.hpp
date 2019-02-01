@@ -17,7 +17,7 @@ namespace ml
 			: base_type(this)
 		{
 		}
-		~BasicOStream() {}
+		virtual ~BasicOStream() {}
 
 		virtual int32_t overflow(int32_t c) override
 		{

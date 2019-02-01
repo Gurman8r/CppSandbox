@@ -30,31 +30,32 @@ namespace ml
 #endif
 	}
 
-	bool FileSystem::getDirContents(const String & dirName, List<char> & buffer) const
+
+	bool FileSystem::getDirContents(const String & dirName, List<char> & value) const
 	{
-		static String str;
-		if (getDirContents(dirName, str))
+		static String temp;
+		if (getDirContents(dirName, temp))
 		{
-			buffer = List<char>(str.begin(), str.end());
+			value.assign(temp.begin(), temp.end());
 			return true;
 		}
-		buffer.clear();
+		value.clear();
 		return false;
 	}
 
-	bool FileSystem::getDirContents(const String & dirName, String & str) const
+	bool FileSystem::getDirContents(const String & dirName, String & value) const
 	{
-		static String::Stream ss;
-		if (getDirContents(dirName, ss))
+		static String::Stream temp;
+		if (getDirContents(dirName, temp))
 		{
-			str = ss.str();
+			value.assign(temp.str());
 			return true;
 		}
-		str = String();
+		value.clear();
 		return false;
 	}
 
-	bool FileSystem::getDirContents(const String & dirName, String::Stream & ss) const
+	bool FileSystem::getDirContents(const String & dirName, String::Stream & value) const
 	{
 		if(DIR * dir = opendir(dirName.c_str()))
 		{
@@ -63,24 +64,24 @@ namespace ml
 				switch (e->d_type)
 				{
 				case DT_REG:
-					ss << e->d_name << "";
+					value << e->d_name << "";
 					break;
 				case DT_DIR:
-					ss << e->d_name << "/";
+					value << e->d_name << "/";
 					break;
 				case DT_LNK:
-					ss << e->d_name << "@";
+					value << e->d_name << "@";
 					break;
 				default:
-					ss << e->d_name << "*";
+					value << e->d_name << "*";
 					break;
 				}
-				ss << ml::endl;
+				value << ml::endl;
 			}
 			closedir(dir);
 			return true;
 		}
-		ss.str(String());
+		value.str(String());
 		return false;
 	}
 
@@ -92,60 +93,66 @@ namespace ml
 		return (bool)(std::ifstream(filename));
 	}
 
-	bool FileSystem::getFileContents(const String & filename, List<char> & buffer) const
+
+	bool FileSystem::getFileContents(const String & filename, List<char> & value) const
 	{
-		buffer.clear();
+		value.clear();
+
 		if (!filename.empty())
 		{
 			std::ifstream file(filename.c_str(), std::ios_base::binary);
 			if (file)
 			{
 				file.seekg(0, std::ios_base::end);
+
 				std::streamsize size;
 				if ((size = file.tellg()) > 0)
 				{
 					file.seekg(0, std::ios_base::beg);
 
-					buffer.resize(static_cast<size_t>(size));
+					value.resize(static_cast<size_t>(size));
 
-					file.read(&buffer[0], size);
+					file.read(&value[0], size);
 				}
-				buffer.push_back('\0');
+
+				value.push_back('\0');
+
 				file.close();
+
 				return true;
 			}
 			else
 			{
-				return Debug::LogError("FileSystem: File not found \'{0}\'", filename);
+				return Debug::logError("FileSystem: File not found \'{0}\'", filename);
 			}
 		}
 		else
 		{
-			return Debug::LogError("FileSystem: Filename cannot be empty");
+			return Debug::logError("FileSystem: Filename cannot be empty");
 		}
 	}
 
-	bool FileSystem::getFileContents(const String & filename, String & str) const
+	bool FileSystem::getFileContents(const String & filename, String & value) const
 	{
-		static List<char> buffer;
-		str.clear();
-		if (getFileContents(filename, buffer))
+		static List<char> temp;
+		if (getFileContents(filename, temp))
 		{
-			str = String(buffer.begin(), buffer.end());
+			value.assign(temp.begin(), temp.end());
 			return true;
 		}
+		value.clear();
 		return false;
 	}
 
-	bool FileSystem::getFileContents(const String & filename, String::Stream & ss) const
+	bool FileSystem::getFileContents(const String & filename, String::Stream & value) const
 	{
-		static String buffer;
-		ss.str(String());
-		if (getFileContents(filename, buffer))
+		static String temp;
+		if (getFileContents(filename, temp))
 		{
-			ss.str(buffer);
+			value.str(temp);
 			return true;
 		}
+		value.str(String());
 		return false;
 	}
 	

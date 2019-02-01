@@ -120,12 +120,12 @@ namespace ml
 					{
 						if (!stmt->run())
 						{
-							return Debug::LogError("AST_For : Statement Failure");
+							return Debug::logError("AST_For : Statement Failure");
 						}
 					}
 					else
 					{
-						return Debug::LogError("AST_For : Block Failure");
+						return Debug::logError("AST_For : Block Failure");
 					}
 				}
 
@@ -133,10 +133,10 @@ namespace ml
 			}
 			else
 			{
-				return Debug::LogError("For: Assignment Failure");
+				return Debug::logError("For: Assignment Failure");
 			}
 		}
-		return Debug::LogError("For Failure");
+		return Debug::logError("For Failure");
 	}
 
 
@@ -163,7 +163,7 @@ namespace ml
 		{
 			return runNext();
 		}
-		return Debug::LogError("AST_Delete : Failure {0}", name->value);
+		return Debug::logError("AST_Delete : Failure {0}", name->value);
 	}
 
 
@@ -196,7 +196,7 @@ namespace ml
 				}
 				else
 				{
-					return Debug::LogError("AST_If : Run Body Failed");
+					return Debug::logError("AST_If : Run Body Failed");
 				}
 			}
 
@@ -214,7 +214,7 @@ namespace ml
 						}
 						else
 						{
-							return Debug::LogError("AST_Elif : Run Body Failed");
+							return Debug::logError("AST_Elif : Run Body Failed");
 						}
 					}
 					else
@@ -224,7 +224,7 @@ namespace ml
 				}
 				else
 				{
-					return Debug::LogError("AST_Elif : Body Not Found");
+					return Debug::logError("AST_Elif : Body Not Found");
 				}
 			}
 
@@ -238,12 +238,12 @@ namespace ml
 					}
 					else
 					{
-						return Debug::LogError("AST_Else : Run Body Failed");
+						return Debug::logError("AST_Else : Run Body Failed");
 					}
 				}
 				else
 				{
-					return Debug::LogError("AST_Else : Body Not Found");
+					return Debug::logError("AST_Else : Body Not Found");
 				}
 			}
 
@@ -251,7 +251,7 @@ namespace ml
 		}
 		else
 		{
-			return Debug::LogError("AST_If : Body Not Found");
+			return Debug::logError("AST_If : Body Not Found");
 		}
 	}
 
@@ -292,7 +292,7 @@ namespace ml
 					{
 						if (!block()->insertChildAfter(prev, (*it)))
 						{
-							Debug::LogError("AST_Include : Failed loading node");
+							Debug::logError("AST_Include : Failed loading node");
 						}
 
 						prev = (*it);
@@ -300,7 +300,7 @@ namespace ml
 				}
 				else
 				{
-					Debug::LogWarning("AST_Include : Nothing to load");
+					Debug::logWarning("AST_Include : Nothing to load");
 				}
 
 				root->clear();
@@ -308,7 +308,7 @@ namespace ml
 			}
 			return runNext();
 		}
-		return Debug::LogError("AST_Include : File Not Found");
+		return Debug::logError("AST_Include : File Not Found");
 	}
 
 
@@ -400,7 +400,7 @@ namespace ml
 		{
 			return true;
 		}
-		return Debug::LogError("AST_Return : Failed Setting value_type");
+		return Debug::logError("AST_Return : Failed Setting value_type");
 	}
 
 
@@ -432,17 +432,17 @@ namespace ml
 				{
 					if (++count >= 100)
 					{
-						return Debug::LogError("AST_While : Loops Exceded {0}", count);
+						return Debug::logError("AST_While : Loops Exceded {0}", count);
 					}
 				}
 				else
 				{
-					return Debug::LogError("AST_While : Block Run First Failed");
+					return Debug::logError("AST_While : Block Run First Failed");
 				}
 			}
 			return blck->runNext();
 		}
-		return Debug::LogError("AST_While : Failure");
+		return Debug::logError("AST_While : Failure");
 	}
 	
 }

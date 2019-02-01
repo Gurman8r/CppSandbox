@@ -23,27 +23,27 @@ namespace ml
 		static void		terminate(bool areYouSure);
 
 	public:
-		static Status LogWarning(const String & message);	// - 1 true
-		static Status LogError(const String & message);		//   0 false
-		static Status Log(const String & message);			// + 1 true
+		static Status logWarning(const String & message);	// - 1 true
+		static Status logError(const String & message);		//   0 false
+		static Status log(const String & message);			// + 1 true
 
 	public:
-		template <class T, class ... A>
-		inline static Status LogWarning(const String & fmt, const T & arg0, const A &... args)
+		template <class T, typename ... A>
+		inline static Status logWarning(const String & fmt, const T & arg0, const A &... args)
 		{
-			return Debug::LogWarning(String().format(fmt, arg0, (args)...));
+			return Debug::logWarning(String::Format(fmt, arg0, (args)...));
 		}
 
-		template <class T, class ... A>
-		inline static Status LogError(const String & fmt, const T & arg0, const A &... args)
+		template <class T, typename ... A>
+		inline static Status logError(const String & fmt, const T & arg0, const A &... args)
 		{
-			return Debug::LogError(String().format(fmt, arg0, (args)...));
+			return Debug::logError(String::Format(fmt, arg0, (args)...));
 		}
 
-		template <class T, class ... A>
-		inline static Status Log(const String & fmt, const T & arg0, const A &... args)
+		template <class T, typename ... A>
+		inline static Status log(const String & fmt, const T & arg0, const A &... args)
 		{
-			return Debug::Log(String().format(fmt, arg0, (args)...));
+			return Debug::log(String::Format(fmt, arg0, (args)...));
 		}
 	};
 	

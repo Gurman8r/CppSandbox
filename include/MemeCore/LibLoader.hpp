@@ -23,7 +23,7 @@ namespace ml
 		void *	loadLibrary(const String & filename);
 		void *	loadFunction(void * value, const String & name);
 
-		template <class T, class ... A>
+		template <typename T, typename ... A>
 		inline bool callFunc(void * value, T & result, const A & ... args)
 		{
 			using Func = T(*)(A ...);
@@ -36,7 +36,7 @@ namespace ml
 			return false;
 		}
 
-		template <class T, class ... A>
+		template <typename T, typename ... A>
 		inline T callFunc(void * value, const A & ... args)
 		{
 			using Func = T(*)(A ...);

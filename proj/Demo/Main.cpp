@@ -17,14 +17,14 @@ int32_t main(int32_t argc, char ** argv)
 	// Load Settings
 	if (!SETTINGS.loadFromFile(CONFIG_INI))
 	{
-		return ml::Debug::LogError("Failed Loading SendSettings")
+		return ml::Debug::logError("Failed Loading SendSettings")
 			|| ml::Debug::pause(EXIT_FAILURE);
 	}
 
 	// Enter
 	if (!demo.onEnter({ argc, argv }))
 	{
-		return ml::Debug::LogError("Failed Entering Program")
+		return ml::Debug::logError("Failed Entering Program")
 			|| ml::Debug::pause(EXIT_FAILURE);
 	}
 
@@ -36,7 +36,7 @@ int32_t main(int32_t argc, char ** argv)
 
 	// Create Window
 	ml::RenderWindow window;
-	if (ml::Debug::Log("Creating Window..."))
+	if (ml::Debug::log("Creating Window..."))
 	{
 		if (!window.good() && window.create(
 			SETTINGS.title,
@@ -58,7 +58,7 @@ int32_t main(int32_t argc, char ** argv)
 		}
 		else
 		{
-			return ml::Debug::LogError("Failed Creating Window")
+			return ml::Debug::logError("Failed Creating Window")
 				|| ml::Debug::pause(EXIT_FAILURE);
 		}
 	}
@@ -66,7 +66,7 @@ int32_t main(int32_t argc, char ** argv)
 	// Load
 	if (!demo.onLoad({ SETTINGS.logLoading }))
 	{
-		return ml::Debug::LogError("Failed Loading Resources")
+		return ml::Debug::logError("Failed Loading Resources")
 			|| ml::Debug::pause(EXIT_FAILURE);
 	}
 

@@ -30,7 +30,7 @@ namespace ml
 		case NetworkEvent::EV_ServerRecievePacket:
 			if (auto ev = value->Cast<ServerRecievePacketEvent>())
 			{
-				Debug::Log("SERVER -> {0}", (*ev));
+				Debug::log("SERVER -> {0}", (*ev));
 			}
 			break;
 		}
@@ -41,31 +41,31 @@ namespace ml
 		switch (value.data[0])
 		{
 		case ID_REMOTE_DISCONNECTION_NOTIFICATION:
-			Debug::Log("Remote Disconnection");
+			Debug::log("Remote Disconnection");
 			break;
 	
 		case ID_REMOTE_CONNECTION_LOST:
-			Debug::LogError("Remote Connection List");
+			Debug::logError("Remote Connection List");
 			break;
 	
 		case ID_REMOTE_NEW_INCOMING_CONNECTION:
-			Debug::Log("Remote New Incoming Connection");
+			Debug::log("Remote New Incoming Connection");
 			break;
 	
 		case ID_NEW_INCOMING_CONNECTION:
-			Debug::Log("New Incoming Connection");
+			Debug::log("New Incoming Connection");
 			break;
 	
 		case ID_NO_FREE_INCOMING_CONNECTIONS:
-			Debug::LogError("No Free Incoming Connections");
+			Debug::logError("No Free Incoming Connections");
 			break;
 	
 		case ID_DISCONNECTION_NOTIFICATION:
-			Debug::Log("Disconnected");
+			Debug::log("Disconnected");
 			break;
 	
 		case ID_CONNECTION_LOST:
-			Debug::LogError("Connection Lost");
+			Debug::logError("Connection Lost");
 			break;
 	
 		case ML_SERVER_RECIEVE:
@@ -88,41 +88,41 @@ namespace ml
 			{
 			case RakNet::RAKNET_STARTED:
 				m_running = true;
-				return Debug::Log("RAKNET_STARTED");
+				return Debug::log("RAKNET_STARTED");
 
 			case RakNet::RAKNET_ALREADY_STARTED:
-				return Debug::LogWarning("RAKNET_ALREADY_STARTED");
+				return Debug::logWarning("RAKNET_ALREADY_STARTED");
 
 			case RakNet::INVALID_SOCKET_DESCRIPTORS:
-				return Debug::LogError("INVALID_SOCKET_DESCRIPTORS");
+				return Debug::logError("INVALID_SOCKET_DESCRIPTORS");
 
 			case RakNet::INVALID_MAX_CONNECTIONS:
-				return Debug::LogError("INVALID_MAX_CONNECTIONS");
+				return Debug::logError("INVALID_MAX_CONNECTIONS");
 
 			case RakNet::SOCKET_FAMILY_NOT_SUPPORTED:
-				return Debug::LogError("SOCKET_FAMILY_NOT_SUPPORTED");
+				return Debug::logError("SOCKET_FAMILY_NOT_SUPPORTED");
 
 			case RakNet::SOCKET_PORT_ALREADY_IN_USE:
-				return Debug::LogError("SOCKET_PORT_ALREADY_IN_USE");
+				return Debug::logError("SOCKET_PORT_ALREADY_IN_USE");
 
 			case RakNet::SOCKET_FAILED_TO_BIND:
-				return Debug::LogError("SOCKET_FAILED_TO_BIND");
+				return Debug::logError("SOCKET_FAILED_TO_BIND");
 
 			case RakNet::SOCKET_FAILED_TEST_SEND:
-				return Debug::LogError("SOCKET_FAILED_TEST_SEND");
+				return Debug::logError("SOCKET_FAILED_TEST_SEND");
 
 			case RakNet::PORT_CANNOT_BE_ZERO:
-				return Debug::LogError("PORT_CANNOT_BE_ZERO");
+				return Debug::logError("PORT_CANNOT_BE_ZERO");
 
 			case RakNet::FAILED_TO_CREATE_NETWORK_THREAD:
-				return Debug::LogError("FAILED_TO_CREATE_NETWORK_THREAD");
+				return Debug::logError("FAILED_TO_CREATE_NETWORK_THREAD");
 
 			case RakNet::COULD_NOT_GENERATE_GUID:
-				return Debug::LogError("COULD_NOT_GENERATE_GUID");
+				return Debug::logError("COULD_NOT_GENERATE_GUID");
 
 			case RakNet::STARTUP_OTHER_FAILURE:
 			default:
-				return Debug::LogError("STARTUP_OTHER_FAILURE");
+				return Debug::logError("STARTUP_OTHER_FAILURE");
 			}
 		}
 		return false;

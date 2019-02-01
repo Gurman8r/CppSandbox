@@ -171,7 +171,6 @@
     <ClCompile Include="..\..\include\MemeWindow\WindowInput.hpp" />
     <ClCompile Include="..\..\src\MemeWindow\VideoMode.cpp" />
     <ClCompile Include="..\..\src\MemeWindow\Window.cpp" />
-    <ClCompile Include="..\..\src\MemeWindow\WindowInput.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

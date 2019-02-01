@@ -165,26 +165,26 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	class Window;
-	
-	class WindowInput
-		: public ITrackable
-		, public InputState<WindowKey::MAX_KEYCODE>
-	{
-	public:
-		WindowInput(const Window * window)
-			: m_window(window)
-		{
-		}
-		~WindowInput() {}
-	
-		bool checkKey(int32_t value) const override;
-	
-		bool getAnyKey() const override;
-	
-	private:
-		const Window * m_window;
-	};
+	//class Window;
+	//
+	//class WindowInput
+	//	: public ITrackable
+	//	, public InputState<WindowKey::MAX_KEYCODE>
+	//{
+	//public:
+	//	WindowInput(const Window * window)
+	//		: m_window(window)
+	//	{
+	//	}
+	//	~WindowInput() {}
+	//
+	//	bool checkKey(int32_t value) const override;
+	//
+	//	bool getAnyKey() const override;
+	//
+	//private:
+	//	const Window * m_window;
+	//};
 
 	/* * * * * * * * * * * * * * * * * * * * */
 }

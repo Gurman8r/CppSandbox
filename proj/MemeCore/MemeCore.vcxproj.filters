@@ -192,9 +192,6 @@
     <ClInclude Include="..\..\include\MemeCore\IntTypes.hpp">
       <Filter>Header Files\STD</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\TypeInfo.hpp">
-      <Filter>Header Files\STD</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Directory.hpp">
       <Filter>Header Files\FS</Filter>
     </ClInclude>

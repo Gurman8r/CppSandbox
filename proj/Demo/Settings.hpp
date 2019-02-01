@@ -115,7 +115,7 @@ namespace DEMO
 
 				return true;
 			}
-			return ml::Debug::LogError("Failed Loading Settings \"{0}\"", filename);
+			return ml::Debug::logError("Failed Loading Settings \"{0}\"", filename);
 		}
 
 		inline const ml::String pathTo(const ml::String & filename) const

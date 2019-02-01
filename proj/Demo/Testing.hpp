@@ -80,7 +80,7 @@ namespace DEMO
 
 		if (!program.run())
 		{
-			Debug::LogError("Failed");
+			Debug::logError("Failed");
 		}
 
 		return Debug::pause(EXIT_SUCCESS);
@@ -125,21 +125,21 @@ namespace DEMO
 
 		ml::cout << "\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n\n";
 
-		ml::Debug::Log("sizeof(Chunk): {0}", ChunkSize);
-		ml::Debug::Log("sizeof(byte*): {0}", ByteSize);
-		ml::Debug::Log("Offset: {0}", Offset);
-		ml::Debug::Log("Max Bytes: {0}", MaxBytes);
+		ml::Debug::log("sizeof(Chunk): {0}", ChunkSize);
+		ml::Debug::log("sizeof(byte*): {0}", ByteSize);
+		ml::Debug::log("Offset: {0}", Offset);
+		ml::Debug::log("Max Bytes: {0}", MaxBytes);
 		ml::cout << ml::endl;
-		ml::Debug::Log("sizeof(Foo) : {0}", FooSize);
-		ml::Debug::Log("sizeof(Bar) : {0}", BarSize);
+		ml::Debug::log("sizeof(Foo) : {0}", FooSize);
+		ml::Debug::log("sizeof(Bar) : {0}", BarSize);
 
 		ml::cout << "\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n\n";
 
-		ml::Debug::Log("Prime");
+		ml::Debug::log("Prime");
 		ml::byte data[MaxBytes];
 		if (!ML_Memory.prime(data, MaxBytes))
 		{
-			return ml::Debug::LogError("Failed Priming Memory")
+			return ml::Debug::logError("Failed Priming Memory")
 				|| ml::Debug::pause(EXIT_FAILURE);
 		}
 		ml::cout
@@ -149,7 +149,7 @@ namespace DEMO
 			<< "\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n\n";
 
 
-		ml::Debug::Log("Allocate");
+		ml::Debug::log("Allocate");
 		//void * fa = ML_Memory.allocate(MaxBytes - (Offset * FooSize));
 		ml::cout
 			<< ml::endl
@@ -158,7 +158,7 @@ namespace DEMO
 			<< "\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n\n";
 
 
-		ml::Debug::Log("Free");
+		ml::Debug::log("Free");
 		//ML_Memory.free(fa);
 		ml::cout
 			<< ml::endl
@@ -176,11 +176,11 @@ namespace DEMO
 				test[i]->index = i;
 				test[i]->name = "Test Name";
 				test[i]->tag = Tags[i].c_str();
-				ml::Debug::Log("Allocation Success: {0}", (*test[i]));
+				ml::Debug::log("Allocation Success: {0}", (*test[i]));
 			}
 			else
 			{
-				ml::Debug::LogError("Allocation Failure: {0}", (Tags[i]));
+				ml::Debug::logError("Allocation Failure: {0}", (Tags[i]));
 			}
 		}
 		ml::cout << ml::endl << ML_Memory << ml::endl;
@@ -192,11 +192,11 @@ namespace DEMO
 		{
 			if (ML_Memory.free(test[i]))
 			{
-				ml::Debug::Log("Free Success: {0}", (test[i]));
+				ml::Debug::log("Free Success: {0}", (test[i]));
 			}
 			else
 			{
-				ml::Debug::LogError("Free Failure: {0}", (test[i]));
+				ml::Debug::logError("Free Failure: {0}", (test[i]));
 			}
 		}
 		ml::cout << ml::endl << ML_Memory << ml::endl;
@@ -211,11 +211,11 @@ namespace DEMO
 				test[i]->index = i;
 				test[i]->name = "Test Name";
 				test[i]->tag = Tags[i].c_str();
-				ml::Debug::Log("Allocation Success: {0}", (*test[i]));
+				ml::Debug::log("Allocation Success: {0}", (*test[i]));
 			}
 			else
 			{
-				ml::Debug::LogError("Allocation Failure: {0}", (Tags[i]));
+				ml::Debug::logError("Allocation Failure: {0}", (Tags[i]));
 			}
 		}
 		ml::cout << ml::endl << ML_Memory << ml::endl;
@@ -227,11 +227,11 @@ namespace DEMO
 		{
 			if (ML_Memory.free(test[i]))
 			{
-				ml::Debug::Log("Free Success: {0}", (test[i]));
+				ml::Debug::log("Free Success: {0}", (test[i]));
 			}
 			else
 			{
-				ml::Debug::LogError("Free Failure: {0}", (test[i]));
+				ml::Debug::logError("Free Failure: {0}", (test[i]));
 			}
 		}
 		ml::cout << ml::endl << ML_Memory << ml::endl;
@@ -250,31 +250,31 @@ namespace DEMO
 			FooSize		= sizeof(Foo),
 		};
 
-		ml::Debug::Log("sizeof(Chunk): {0}", ChunkSize);
-		ml::Debug::Log("sizeof(byte*): {0}", ByteSize);
-		ml::Debug::Log("sizeof(Test) : {0}", FooSize);
-		ml::Debug::Log("Data Size : {0}", ChunkSize + ByteSize + FooSize);
-		ml::Debug::Log("Max Bytes: {0}", MaxBytes);
+		ml::Debug::log("sizeof(Chunk): {0}", ChunkSize);
+		ml::Debug::log("sizeof(byte*): {0}", ByteSize);
+		ml::Debug::log("sizeof(Test) : {0}", FooSize);
+		ml::Debug::log("Data Size : {0}", ChunkSize + ByteSize + FooSize);
+		ml::Debug::log("Max Bytes: {0}", MaxBytes);
 
 
-		ml::Debug::Log("Prime");
+		ml::Debug::log("Prime");
 		ml::byte data[MaxBytes];
 		if (!ML_Memory.prime(data, MaxBytes))
 		{
-			return ml::Debug::LogError("Failed Priming Memory")
+			return ml::Debug::logError("Failed Priming Memory")
 				|| ml::Debug::pause(EXIT_FAILURE);
 		}
 		ml::cout << ml::endl << ML_Memory << ml::endl;
 
 
-		ml::Debug::Log("Allocate");
+		ml::Debug::log("Allocate");
 		Foo * ta = ML_Memory.allocate<Foo>();
 		Foo * tb = ML_Memory.allocate<Foo>();
 		Foo * tc = ML_Memory.allocate<Foo>();
 		ml::cout << ml::endl << ML_Memory << ml::endl;
 
 
-		ml::Debug::Log("Write");
+		ml::Debug::log("Write");
 		(*ta) = { 1, "Test", "A" };
 		(*tb) = { 2, "Test", "B" };
 		(*tc) = { 3, "Test", "C" };
@@ -285,7 +285,7 @@ namespace DEMO
 			<< (*tc) << ml::endl
 			<< ml::endl;
 
-		ml::Debug::Log("Read");
+		ml::Debug::log("Read");
 		ml::Chunk * ca = ML_Memory.readChunk(ta);
 		ml::Chunk * cb = ML_Memory.readChunk(tb);
 		ml::Chunk * cc = ML_Memory.readChunk(tc);
@@ -301,7 +301,7 @@ namespace DEMO
 		ml::cout << ml::endl;
 
 
-		ml::Debug::Log("Free");
+		ml::Debug::log("Free");
 
 		ML_Memory.free(ca->npos);
 		ml::cout << ml::endl << ML_Memory << ml::endl;
@@ -329,24 +329,24 @@ namespace DEMO
 
 		ml::cout << "\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n\n";
 
-		ml::Debug::Log("sizeof(Chunk): {0}", ChunkSize);
-		ml::Debug::Log("sizeof(byte*): {0}", ByteSize);
-		ml::Debug::Log("Offset: {0}", Offset);
-		ml::Debug::Log("Max Bytes: {0}", MaxBytes);
+		ml::Debug::log("sizeof(Chunk): {0}", ChunkSize);
+		ml::Debug::log("sizeof(byte*): {0}", ByteSize);
+		ml::Debug::log("Offset: {0}", Offset);
+		ml::Debug::log("Max Bytes: {0}", MaxBytes);
 		ml::cout << ml::endl;
-		ml::Debug::Log("sizeof(Foo) : {0}", FooSize);
-		ml::Debug::Log("sizeof(Bar) : {0}", BarSize);
+		ml::Debug::log("sizeof(Foo) : {0}", FooSize);
+		ml::Debug::log("sizeof(Bar) : {0}", BarSize);
 
 		ml::cout<< "\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n\n";
 
 		
-		ml::Debug::Log("Prime");
+		ml::Debug::log("Prime");
 		ml::byte data[MaxBytes];
 		if (!ML_Memory.prime(data, MaxBytes) 
 			|| !ML_Memory.free(ML_Memory.allocate(MaxBytes - (Offset * 2)))
 			)
 		{
-			return ml::Debug::LogError("Failed Priming Memory")
+			return ml::Debug::logError("Failed Priming Memory")
 				|| ml::Debug::pause(EXIT_FAILURE);
 		}
 		ml::cout
@@ -357,7 +357,7 @@ namespace DEMO
 
 		Foo * fa, *fb, *fc, *fd;
 
-		ml::Debug::Log("Allocate");
+		ml::Debug::log("Allocate");
 		fa = ML_Memory.allocate<Foo>();
 		fb = ML_Memory.allocate<Foo>();
 		fc = ML_Memory.allocate<Foo>();
@@ -369,7 +369,7 @@ namespace DEMO
 			<< "\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * \n\n";
 		
 		
-		ml::Debug::Log("Free");
+		ml::Debug::log("Free");
 		ML_Memory.free(fa);
 		ML_Memory.free(fb);
 		ML_Memory.free(fc);

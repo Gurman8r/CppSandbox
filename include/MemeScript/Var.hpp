@@ -133,10 +133,10 @@ namespace ml
 		Var & tokensValue(const TokenList & value);
 		Var & voidValue();
 		
-		template <class T, class ... A>
+		template <class T, typename ... A>
 		inline Var & errorValue(const String & fmt, const T & arg0, const A &... args)
 		{
-			return errorValue(String().format(fmt, arg0, (args)...));
+			return errorValue(String::Format(fmt, arg0, (args)...));
 		};
 
 

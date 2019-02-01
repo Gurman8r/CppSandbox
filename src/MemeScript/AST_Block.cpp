@@ -212,7 +212,7 @@ namespace ml
 		{
 			return n->run();
 		}
-		return Debug::LogError("Block is empty");
+		return Debug::logError("Block is empty");
 	}
 
 }

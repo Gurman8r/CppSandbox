@@ -212,17 +212,17 @@ namespace ml
 
 
 	public: // Custom
-		template <class T, class ... A>
+		template <class T, typename ... A>
 		inline static self_type Format(self_type value, const T & first, const A & ...args)
 		{
 			return value.format(first, (args)...);
 		}
 
-		template <class T, class ... A>
-		inline self_type & format(const T & first, const A & ...args)
+		template <class T, typename ... A>
+		inline self_type & format(const T & arg0, const A & ...args)
 		{
 			self_type::Stream ss;
-			ss << first << ml::endl;
+			ss << arg0 << ml::endl;
 
 			int32_t sink[] = { 0, ((void)(ss << args << ml::endl), 0)... };
 			(void)sink;

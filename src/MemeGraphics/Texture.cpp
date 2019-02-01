@@ -34,7 +34,7 @@ namespace ml
 			}
 			else
 			{
-				Debug::LogError("Failed to copy texture, failed to create new texture");
+				Debug::logError("Failed to copy texture, failed to create new texture");
 			}
 		}
 	}
@@ -188,7 +188,7 @@ namespace ml
 	{
 		if (width == 0 || height == 0)
 		{
-			return Debug::LogError("Failed creating texture, invalid size {0}", m_size);
+			return Debug::logError("Failed creating texture, invalid size {0}", m_size);
 		}
 
 		uint32_t maxSize = OpenGL::getMaxTextureSize();
@@ -197,7 +197,7 @@ namespace ml
 			OpenGL::getValidTextureSize(height));
 		if ((actualSize[0] > maxSize) || (actualSize[1] > maxSize))
 		{
-			return Debug::LogError(
+			return Debug::logError(
 				"Failed creating texture: "
 				"Internal size is too high {0} "
 				"Maximum is {1}",
@@ -218,7 +218,7 @@ namespace ml
 			static bool warned = false;
 			if (!warned)
 			{
-				Debug::LogWarning(
+				Debug::logWarning(
 					"OpenGL extension SGIS_texture_edge_clamp unavailable\n"
 					"Artifacts may occur along texture edges\n"
 					"Ensure that hardware acceleration is enabled if available");
@@ -231,7 +231,7 @@ namespace ml
 			static bool warned = false;
 			if (!warned)
 			{
-				Debug::LogWarning(
+				Debug::logWarning(
 					"OpenGL ES extension EXT_sRGB unavailable\n"
 					"Automatic sRGB to linear conversion disabled");
 				warned = true;
@@ -309,7 +309,7 @@ namespace ml
 		{
 			if (!width || !height)
 			{
-				return Debug::LogError("Failed creating texture, invalid size {0}",
+				return Debug::logError("Failed creating texture, invalid size {0}",
 						vec2u(width, height));
 			}
 
@@ -319,7 +319,7 @@ namespace ml
 				OpenGL::getValidTextureSize(height));
 			if ((actualSize[0] > maxSize) || (actualSize[1] > maxSize))
 			{
-				return Debug::LogError(
+				return Debug::logError(
 					"Failed creating texture: "
 					"Internal size is too high {0} "
 					"Maximum is {1}",
@@ -408,7 +408,7 @@ namespace ml
 				static bool warned = false;
 				if (!warned)
 				{
-					Debug::LogWarning(
+					Debug::logWarning(
 						"OpenGL extension texture_edge_clamp unavailable\n"
 						"Artifacts may occur along texture edges");
 					warned = true;
@@ -491,7 +491,7 @@ namespace ml
 				static bool warned = false;
 				if (!warned)
 				{
-					Debug::LogWarning(
+					Debug::logWarning(
 						"OpenGL extension texture SRGB unavailable");
 					warned = true;
 				}
@@ -588,7 +588,7 @@ namespace ml
 		OpenGL::bindTexture(
 			GL::Texture2D,
 			((value && (*value))
-				? (Texture::id_type)(*value)
+				? (Texture::value_type)(*value)
 				: NULL));
 	}
 	

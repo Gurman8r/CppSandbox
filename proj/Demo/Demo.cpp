@@ -37,14 +37,14 @@ namespace DEMO
 					SETTINGS.pathTo(SETTINGS.scrPath + SETTINGS.scrFile)
 				);
 			}
-			return ml::Debug::LogWarning("No Script");
+			return ml::Debug::logWarning("No Script");
 		}
 		return false;
 	}
 	
 	bool Demo::onLoad(const LoadEvent & ev)
 	{
-		return (ml::Debug::Log("Loading..."))
+		return (ml::Debug::log("Loading..."))
 			&& loadFonts(ev.log)
 			&& loadImages(ev.log)
 			&& loadTextures(ev.log)
@@ -58,7 +58,7 @@ namespace DEMO
 	
 	void Demo::onStart(const StartEvent & ev)
 	{
-		if (ml::Debug::Log("Starting..."))
+		if (ml::Debug::log("Starting..."))
 		{
 			// Set Window Icon
 			if (ml::Image icon = images[IMG_icon])
@@ -113,7 +113,7 @@ namespace DEMO
 	void Demo::onUpdate(const UpdateEvent & ev)
 	{
 		// Set Window Title
-		ev.window.setTitle(ml::String().format(
+		ev.window.setTitle(ml::String::Format(
 			"{0} | {1} | {2} ({3} fps) | {4}",
 			SETTINGS.title,
 			ML_Time.elapsed(),
@@ -420,7 +420,7 @@ namespace DEMO
 	bool Demo::loadFonts(bool log)
 	{
 		// Load Fonts
-		return ml::Debug::Log("Loading Fonts...")
+		return ml::Debug::log("Loading Fonts...")
 			&& load<ml::Font>(fonts[FNT_clacon], "/fonts/clacon.ttf", log)
 			&& load<ml::Font>(fonts[FNT_consolas], "/fonts/consolas.ttf", log)
 			&& load<ml::Font>(fonts[FNT_lconsole], "/fonts/lucida_console.ttf", log)
@@ -431,18 +431,18 @@ namespace DEMO
 	bool Demo::loadImages(bool log)
 	{
 		// Load Images
-		return ml::Debug::Log("Loading Images...")
+		return ml::Debug::log("Loading Images...")
 			&& load<ml::Image>(images[IMG_icon], "/images/dean.png", log)
 			;
 	}
 
 	bool Demo::loadTextures(bool log)
 	{
-		ml::Debug::Log("Max Texture Size: {0}", ml::vec2u(ml::OpenGL::getMaxTextureSize()))
+		ml::Debug::log("Max Texture Size: {0}", ml::vec2u(ml::OpenGL::getMaxTextureSize()))
 			;
 
 		// Load Textures
-		return ml::Debug::Log("Loading Textures...")
+		return ml::Debug::log("Loading Textures...")
 			&& load<ml::Texture>(textures[TEX_dean], "/images/dean.png", log)
 			&& load<ml::Texture>(textures[TEX_sanic], "/images/sanic.png", log)
 			//&& load<ml::Texture>(textures[TEX_bg_clouds], "/textures/bg/bg_clouds.png", log)
@@ -467,7 +467,7 @@ namespace DEMO
 	bool Demo::loadShaders(bool log)
 	{
 		// Load Shaders
-		return ml::Debug::Log("Loading Shaders...")
+		return ml::Debug::log("Loading Shaders...")
 			&& load<ml::Shader>(shaders[GL_basic3D], "/shaders/basic3D.shader", log)
 			&& load<ml::Shader>(shaders[GL_text], "/shaders/text.shader", log)
 			&& load<ml::Shader>(shaders[GL_geometry], "/shaders/geometry.shader", log)
@@ -477,7 +477,7 @@ namespace DEMO
 	bool Demo::loadMeshes(bool log)
 	{
 		// Load Meshes
-		return ml::Debug::Log("Loading Meshes...")
+		return ml::Debug::log("Loading Meshes...")
 			&& load<ml::Mesh>(mesh[MESH_sphere8x6], "/meshes/sphere8x6.mesh", log)
 			&& load<ml::Mesh>(mesh[MESH_sphere32x24], "/meshes/sphere32x24.mesh", log)
 			;
@@ -486,7 +486,7 @@ namespace DEMO
 	bool Demo::loadBuffers(bool log)
 	{
 		// Load Buffers
-		if (ml::Debug::Log("Loading Buffers..."))
+		if (ml::Debug::log("Loading Buffers..."))
 		{
 			static const ml::BufferLayout layout({
 				{ 0, 3, ml::GL::Float, false, ml::Vertex::Size, 0, sizeof(float) },
@@ -553,7 +553,7 @@ namespace DEMO
 
 	bool Demo::loadAudio(bool log)
 	{
-		if (ml::Debug::Log("Loading Audio..."))
+		if (ml::Debug::log("Loading Audio..."))
 		{
 			if (ml::OpenAL::init())
 			{
@@ -561,17 +561,17 @@ namespace DEMO
 			}
 			else
 			{
-				return ml::Debug::LogError("Failed Loading Audio");
+				return ml::Debug::logError("Failed Loading Audio");
 			}
 		}
-		return ml::Debug::Log("Loading Sounds...")
+		return ml::Debug::log("Loading Sounds...")
 			//&& load<ml::Sound>(sounds[SND_test], "/sounds/example.wav", log)
 			;
 	}
 
 	bool Demo::loadNetwork(bool log)
 	{
-		if (ml::Debug::Log("Loading Network..."))
+		if (ml::Debug::log("Loading Network..."))
 		{
 			if (SETTINGS.isServer)
 			{
@@ -580,7 +580,7 @@ namespace DEMO
 				{
 					if (ML_Server.start({ ML_LOCALHOST, ML_PORT }, ML_MAX_CLIENTS))
 					{
-						ml::Debug::Log("Server Started: {0}", ML_Server.getMyAddress());
+						ml::Debug::log("Server Started: {0}", ML_Server.getMyAddress());
 						return true;
 					}
 				}
@@ -592,7 +592,7 @@ namespace DEMO
 				{
 					if (ML_Client.connect({ ML_LOCALHOST, ML_PORT }, ""))
 					{
-						return ml::Debug::Log("Client Connected: ");
+						return ml::Debug::log("Client Connected: ");
 					}
 				}
 			}

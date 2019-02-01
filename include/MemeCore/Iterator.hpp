@@ -23,10 +23,10 @@ namespace ml
 		using value_type		= _Value;
 		using unqualified_type	= _Unqualified;
 		using difference_type	= _Difference;
-		using pointer			= value_type * ;
-		using reference			= value_type & ;
-		using const_pointer		= const value_type * ;
-		using const_reference	= const value_type & ;
+		using pointer			= typename value_type * ;
+		using reference			= typename value_type & ;
+		using const_pointer		= typename const value_type * ;
+		using const_reference	= typename const value_type & ;
 		using self_type			= Iterator<iterator_category, value_type, unqualified_type, difference_type>;
 		using const_self_type	= Iterator<iterator_category, const value_type, unqualified_type, difference_type>;
 

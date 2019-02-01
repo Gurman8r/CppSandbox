@@ -87,7 +87,7 @@ namespace ml
 
 					if (++count > 100)
 					{
-						Debug::LogError("Stack overflow");
+						Debug::logError("Stack overflow");
 
 						return false;
 					}
@@ -135,7 +135,7 @@ namespace ml
 				
 				if (stk.empty())
 				{
-					Debug::LogError("Missing left parenthesis (1)\n");
+					Debug::logError("Missing left parenthesis (1)\n");
 					return false;
 				}
 			}
@@ -157,7 +157,7 @@ namespace ml
 
 		if (stk.empty())
 		{
-			Debug::LogError("Missing left parenthesis (2)\n");
+			Debug::logError("Missing left parenthesis (2)\n");
 			return false;
 		}
 
@@ -187,12 +187,12 @@ namespace ml
 		}
 		else if (numOperands <= 1)
 		{
-			Debug::LogError("Not enough operands");
+			Debug::logError("Not enough operands");
 			return false;
 		}
 		else if (numOperators >= numOperands)
 		{
-			Debug::LogError("Too many operators");
+			Debug::logError("Too many operators");
 			return false;
 		}
 

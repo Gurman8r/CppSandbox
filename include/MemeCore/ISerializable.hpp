@@ -1,7 +1,8 @@
 #ifndef _ISERIALIZABLE_HPP_
 #define _ISERIALIZABLE_HPP_
 
-#include <MemeCore/TypeInfo.hpp>
+#include <MemeCore/Export.hpp>
+#include <MemeCore/String.hpp>
 
 namespace ml
 {
@@ -10,7 +11,7 @@ namespace ml
 	public:
 		inline virtual void serialize(std::ostream & out) const
 		{
-			out << get_type();
+			out << get_type().name();
 		}
 		
 		inline virtual void deserialize(std::istream & in) 
@@ -18,7 +19,7 @@ namespace ml
 		}
 
 	public:
-		inline TypeInfo get_type() const
+		inline const std::type_info & get_type() const
 		{
 			return typeid(*this);
 		}

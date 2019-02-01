@@ -27,7 +27,7 @@ namespace ml
 			//out() << v << endln;
 			return true;
 		}
-		return Debug::LogError("AST_Expr : Invalid Syntax: \'{0}\'", v.textValue());
+		return Debug::logError("AST_Expr : Invalid Syntax: \'{0}\'", v.textValue());
 	}
 
 
@@ -126,7 +126,7 @@ namespace ml
 		{
 			return runNext();
 		}
-		return Debug::LogError("AST_Assign : Mod value_type Failed");
+		return Debug::logError("AST_Assign : Mod value_type Failed");
 	}
 
 
@@ -257,7 +257,7 @@ namespace ml
 		Var v;
 		if ((v = evaluate()).isErrorType())
 		{
-			return Debug::LogError("AST_Call : Call Failed {0}", v);
+			return Debug::logError("AST_Call : Call Failed {0}", v);
 		}
 		return runNext();
 	}
@@ -323,7 +323,7 @@ namespace ml
 		{
 			return runNext();
 		}
-		return Debug::LogError("AST_Func : Run Failed");
+		return Debug::logError("AST_Func : Run Failed");
 	}
 
 
@@ -603,7 +603,7 @@ namespace ml
 		{
 			return runNext();
 		}
-		return Debug::LogError("AST_Sys : Call Failed");
+		return Debug::logError("AST_Sys : Call Failed");
 	}
 
 

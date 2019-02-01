@@ -39,7 +39,7 @@ namespace ml
 	{
 		if (good())
 		{
-			Debug::Log("OpenGL version supported by this platform: {0}",
+			Debug::log("OpenGL version supported by this platform: {0}",
 				getString(GL::Version));
 
 			majorVersion = (uint32_t)getInt(GL::MajorVersion);
@@ -54,13 +54,13 @@ namespace ml
 				}
 				else
 				{
-					Debug::LogWarning("Can't get the version number, assuming 1.1");
+					Debug::logWarning("Can't get the version number, assuming 1.1");
 					majorVersion = 1;
 					minorVersion = 1;
 				}
 			}
 
-			Debug::Log("Using OpenGL Version: {0}.{1}",
+			Debug::log("Using OpenGL Version: {0}.{1}",
 				majorVersion,
 				minorVersion);
 		}

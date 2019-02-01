@@ -44,8 +44,5 @@
     <ClCompile Include="..\..\include\MemeWindow\WindowInput.hpp">
       <Filter>Header Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemeWindow\WindowInput.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

@@ -37,14 +37,14 @@ namespace ml
 			{
 				if (!OpenGL::enable(GL::FramebufferSRGB, true))
 				{
-					ml::Debug::LogWarning("Failed to enable Framebuffer SRGB");
+					ml::Debug::logWarning("Failed to enable Framebuffer SRGB");
 					m_context.srgbCapable = false;
 				}
 			}
 
 			return true;
 		}
-		return ml::Debug::LogError("Failed to Initialize GLEW");
+		return ml::Debug::logError("Failed to Initialize GLEW");
 	}
 
 	void RenderWindow::onEvent(const Event * value)

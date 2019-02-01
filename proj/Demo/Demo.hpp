@@ -166,9 +166,9 @@ namespace DEMO
 			const std::type_info & info(typeid(res));
 			return (res.loadFromFile(SETTINGS.pathTo(file))
 				? (log
-					? ml::Debug::Log("Loaded [{0}]: \"{1}\"", info.name(), file)
+					? ml::Debug::log("Loaded \"{0}\"", file)
 					: ml::Debug::Success)
-				: ml::Debug::LogError("Failed Loading [{0}]: \"{1}\"", info.name(), file)
+				: ml::Debug::logError("Failed Loading [{0}]: \"{1}\"", info.name(), file)
 				);
 		}
 

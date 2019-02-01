@@ -195,7 +195,6 @@
     <ClInclude Include="..\..\include\MemeCore\Time.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Duration.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Timer.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\TypeInfo.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Vector.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Vector2.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Vector3.hpp" />

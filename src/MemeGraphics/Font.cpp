@@ -55,7 +55,7 @@ namespace ml
 		FT_Library library;
 		if (FT_Init_FreeType(&library) != EXIT_SUCCESS)
 		{
-			return Debug::LogError("Failed to load font \"{0}\" (failed to open FreeType)", 
+			return Debug::logError("Failed to load font \"{0}\" (failed to open FreeType)", 
 				filename);
 		}
 		m_library = library;
@@ -64,7 +64,7 @@ namespace ml
 		FT_Face face;
 		if (FT_New_Face(static_cast<FT_Library>(m_library), filename.c_str(), 0, &face) != EXIT_SUCCESS)
 		{
-			return Debug::LogError("Failed to load font \"{0}\" (failed to create the font face)",
+			return Debug::logError("Failed to load font \"{0}\" (failed to create the font face)",
 				filename);
 		}
 
@@ -73,7 +73,7 @@ namespace ml
 		if (FT_Stroker_New(static_cast<FT_Library>(m_library), &stroker) != EXIT_SUCCESS)
 		{
 			FT_Done_Face(face);
-			return Debug::LogError("Failed to load font \"{0}\" (failed to create the stroker)", 
+			return Debug::logError("Failed to load font \"{0}\" (failed to create the stroker)", 
 				filename);
 		}
 
@@ -82,7 +82,7 @@ namespace ml
 		{
 			FT_Stroker_Done(stroker);
 			FT_Done_Face(face);
-			return Debug::LogError("Failed to load font \"{0}\" (failed to set the Unicode character set)", 
+			return Debug::logError("Failed to load font \"{0}\" (failed to set the Unicode character set)", 
 				filename);
 		}
 
@@ -136,7 +136,7 @@ namespace ml
 		// Load character glyph 
 		if (FT_Load_Char(face, value, FT_LOAD_RENDER) != EXIT_SUCCESS)
 		{
-			Debug::LogWarning("Failed to load Glyph \'{0}\'", (char)value);
+			Debug::logWarning("Failed to load Glyph \'{0}\'", (char)value);
 			return glyph;
 		}
 
@@ -152,7 +152,7 @@ namespace ml
 			false,
 			false))
 		{
-			Debug::LogWarning("Failed Loading Glyph Texture: \'{0}\'", (char)value);
+			Debug::logWarning("Failed Loading Glyph Texture: \'{0}\'", (char)value);
 		}
 
 		glyph.bounds = {

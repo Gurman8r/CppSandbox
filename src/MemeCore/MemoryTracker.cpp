@@ -38,10 +38,10 @@ namespace ml
 
 	MemoryTracker::~MemoryTracker() 
 	{
-		Debug::Log("Deleting Memory Tracker...");
+		Debug::log("Deleting Memory Tracker...");
 		if (!m_map.empty())
 		{
-			Debug::LogWarning("Final allocations follow:");
+			Debug::logWarning("Final allocations follow:");
 			
 			cerr << (*this);
 			

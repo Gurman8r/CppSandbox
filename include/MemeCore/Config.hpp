@@ -49,7 +49,7 @@
 #if defined(ML_SYSTEM_WINDOWS)
 	#if defined(_WIN64)
 		#define ML_x64
-	#elif defined(_WIN32)
+	#elif
 		#define ML_x86
 	#endif
 #elif defined(__GNUC__)

@@ -121,7 +121,7 @@ namespace ml
 				return loadFromMemory(vs, fs);
 			}
 		}
-		return Debug::LogError("Failed to open shader source file \"{0}\"", filename);
+		return Debug::logError("Failed to open shader source file \"{0}\"", filename);
 	}
 
 	bool Shader::loadFromFile(const String & vs, const String & fs)
@@ -130,14 +130,14 @@ namespace ml
 		List<char> vertexShader;
 		if (!ML_FileSystem.getFileContents(vs, vertexShader))
 		{
-			return Debug::LogError("Failed to open vertex source file \"{0}\"", vs);
+			return Debug::logError("Failed to open vertex source file \"{0}\"", vs);
 		}
 
 		// Read the fragment shader file
 		List<char> fragmentShader;
 		if (!ML_FileSystem.getFileContents(fs, fragmentShader))
 		{
-			return Debug::LogError("Failed to open fragment source file \"{0}\"", fs);
+			return Debug::logError("Failed to open fragment source file \"{0}\"", fs);
 		}
 
 		// Compile the shader program
@@ -150,21 +150,21 @@ namespace ml
 		List<char> vertexShader;
 		if (!ML_FileSystem.getFileContents(vs, vertexShader))
 		{
-			return Debug::LogError("Failed to open vertex source file \"{0}\"", vs);
+			return Debug::logError("Failed to open vertex source file \"{0}\"", vs);
 		}
 
 		// Read the geometry shader file
 		List<char> geometryShader;
 		if (!ML_FileSystem.getFileContents(gs, geometryShader))
 		{
-			return Debug::LogError("Failed to open geometry source file \"{0}\"", gs);
+			return Debug::logError("Failed to open geometry source file \"{0}\"", gs);
 		}
 
 		// Read the fragment shader file
 		List<char> fragmentShader;
 		if (!ML_FileSystem.getFileContents(fs, fragmentShader))
 		{
-			return Debug::LogError("Failed to open fragment source file \"{0}\"", fs);
+			return Debug::logError("Failed to open fragment source file \"{0}\"", fs);
 		}
 
 		// Compile the shader program
@@ -324,7 +324,7 @@ namespace ml
 
 				if ((m_textures.size() + 1) >= maxUnits)
 				{
-					Debug::LogError("Impossible to use texture \"{0}\" for source: all available texture units are used: {1}", name, maxUnits);
+					Debug::logError("Impossible to use texture \"{0}\" for source: all available texture units are used: {1}", name, maxUnits);
 					return (*this);
 				}
 			}
@@ -394,12 +394,12 @@ namespace ml
 	{
 		if (!OpenGL::shadersAvailable())
 		{
-			return ml::Debug::LogError("Shaders are not available on your system.");
+			return ml::Debug::logError("Shaders are not available on your system.");
 		}
 
 		if (gs && !OpenGL::geometryShadersAvailable())
 		{
-			return ml::Debug::LogError("Geometry shaders are not available on your system.");
+			return ml::Debug::logError("Geometry shaders are not available on your system.");
 		}
 
 		if ((*this))
@@ -426,7 +426,7 @@ namespace ml
 				const char * log = OpenGL::getInfoLog(vertexShader);
 				OpenGL::deleteShader(vertexShader);
 				OpenGL::deleteShader(shaderProgram);
-				return Debug::LogError("Failed to compile vertex source: {0}", log);
+				return Debug::logError("Failed to compile vertex source: {0}", log);
 			}
 
 			// Attach the shader to the program, and delete it
@@ -448,7 +448,7 @@ namespace ml
 				const char * log = OpenGL::getInfoLog(geometryShader);
 				OpenGL::deleteShader(geometryShader);
 				OpenGL::deleteShader(shaderProgram);
-				return Debug::LogError("Failed to compile geometry source: {0}", log);
+				return Debug::logError("Failed to compile geometry source: {0}", log);
 			}
 
 			// Attach the shader to the program, and delete it
@@ -470,7 +470,7 @@ namespace ml
 				const char * log = OpenGL::getInfoLog(fragmentShader);
 				OpenGL::deleteShader(fragmentShader);
 				OpenGL::deleteShader(shaderProgram);
-				return Debug::LogError("Failed to compile fragment source: {0}", log);
+				return Debug::logError("Failed to compile fragment source: {0}", log);
 			}
 
 			// Attach the shader to the program, and delete it
@@ -486,7 +486,7 @@ namespace ml
 		{
 			const char * log = OpenGL::getInfoLog(shaderProgram);
 			OpenGL::deleteShader(shaderProgram);
-			return Debug::LogError("Failed to link source: {0}", log);
+			return Debug::logError("Failed to link source: {0}", log);
 		}
 
 		get_ref() = shaderProgram;
@@ -513,7 +513,7 @@ namespace ml
 			
 			if (location == -1)
 			{
-				Debug::LogWarning("Uniform \"{0}\" not found in source", value);
+				Debug::logWarning("Uniform \"{0}\" not found in source", value);
 			}
 
 			return location;

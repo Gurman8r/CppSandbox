@@ -27,10 +27,10 @@ namespace ml
 		~Interpreter() {}
 
 	public:
-		template <class T, class ... A>
+		template <typename T, typename ... A>
 		inline Var execCommand(const String& fmt, const T& arg0, const A&... args)
 		{
-			return execCommand(String().format(fmt, arg0, (args)...));
+			return execCommand(String::Format(fmt, arg0, (args)...));
 		}
 
 		Var	execCommand(const String & value);

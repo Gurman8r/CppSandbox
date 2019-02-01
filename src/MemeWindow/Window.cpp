@@ -70,9 +70,9 @@ namespace ml
 
 				return initialize();
 			}
-			return ml::Debug::LogError("Failed to Create GLFW Window");
+			return ml::Debug::logError("Failed to Create GLFW Window");
 		}
-		return ml::Debug::LogError("Failed to Initialize GLFW");
+		return ml::Debug::logError("Failed to Initialize GLFW");
 	}
 
 	bool Window::initialize()
