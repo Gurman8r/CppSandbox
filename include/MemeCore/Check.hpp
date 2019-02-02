@@ -1,10 +1,14 @@
 #ifndef _CHECK_HPP_
 #define _CHECK_HPP_
 
+/* * * * * * * * * * * * * * * * * * * * */
+
 // https://stackoverflow.com/questions/6534041/how-to-check-whether-operator-exists
 // https://stackoverflow.com/questions/12509962/static-assert-for-ensuring-design-contract
 
-#define ML_MAKE_OP_CHECK(OP, NAME) \
+/* * * * * * * * * * * * * * * * * * * * */
+
+#define ML_CHECK_OPERATOR(OP, NAME) \
 class no_##NAME##_operator \
 { \
 	bool b[2]; \
@@ -17,24 +21,28 @@ bool check_##NAME##_operator(...); \
 no_##NAME##_operator & check_##NAME##_operator(const no_##NAME##_operator &); \
  \
 template <class T, class Arg = T> \
-struct has_##NAME##_operator \
+struct has_##NAME##_operator final \
 { \
 	enum \
 	{ \
 		value = ( \
-			sizeof(check_##NAME##_operator(*(T*)(0) == *(Arg*)(0))) \
+			sizeof(check_##NAME##_operator(*(T *)(0) == *(Arg *)(0))) \
 			 != \
 			sizeof(no_##NAME##_operator)) \
 	}; \
 } \
 
+/* * * * * * * * * * * * * * * * * * * * */
+
 namespace ml
 {
 	namespace check
 	{
-		ML_MAKE_OP_CHECK(operator<<, leftshift);
-		ML_MAKE_OP_CHECK(operator>>, rightshift);
+		ML_CHECK_OPERATOR(operator<<, leftshift);
+		ML_CHECK_OPERATOR(operator>>, rightshift);
 	}
 }
+
+/* * * * * * * * * * * * * * * * * * * * */
 
 #endif // !_CHECK_HPP_

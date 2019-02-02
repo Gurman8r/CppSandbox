@@ -24,9 +24,12 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	inline static std::ostream & endl(std::ostream & out)
+	template <class E, class T>
+	inline std::basic_ostream<E, T> & endl(std::basic_ostream<E, T> & out)
 	{
-		return out << std::endl;
+		out.put(out.widen('\n'));
+		out.flush();
+		return (out);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

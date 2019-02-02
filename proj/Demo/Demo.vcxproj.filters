@@ -199,6 +199,9 @@
     <None Include="..\..\config.ini">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="..\..\assets\meshes\example.mesh">
+      <Filter>Resource Files\meshes</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="..\..\assets\fonts\clacon.ttf">

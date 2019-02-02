@@ -20,7 +20,7 @@ namespace ml
 		// elements need << operator
 		static_assert(
 			check::has_leftshift_operator<_Elem>::value,
-			"Missing \"operator<<\" | Element must be serializable");
+			"ml::List | Element requires \"<<\" operator");
 
 	public:
 		using value_type			= _Elem;
@@ -40,12 +40,17 @@ namespace ml
 			: base_type()
 		{
 		}
-		
-		List(const allocator_type & alloc)
+
+		explicit List(const allocator_type & alloc)
 			: base_type(alloc)
 		{
 		}
 		
+		explicit List(const size_type count, const allocator_type & alloc = allocator_type())
+			: base_type(count, alloc)
+		{
+		}
+
 		List(const base_type & value, const allocator_type & alloc = allocator_type())
 			: base_type(value, alloc)
 		{
@@ -74,7 +79,8 @@ namespace ml
 		{
 			for (size_type i = 0, imax = this->size(); i < imax; i++)
 			{
-				out << (*this)[i] << ' ';
+				out << (*this)[i]
+					<< ((i < imax - 1) ? ' ' : '\n');
 			}
 		}
 		
@@ -83,7 +89,7 @@ namespace ml
 		}
 
 
-	public: // base_type Cast
+	public:
 		inline operator base_type() const
 		{
 			return static_cast<base_type>(*this);
@@ -93,6 +99,7 @@ namespace ml
 		{
 			return static_cast<const base_type &>(*this);
 		}
+
 
 	public:
 		inline virtual bool equals(const base_type & value) const override
@@ -115,6 +122,7 @@ namespace ml
 		{
 			return lessThan((const base_type &)(value));
 		}
+
 	};
 }
 

@@ -11,7 +11,6 @@ namespace ml
 		: public ITrackable
 		, public IComparable<Matrix<T, _Cols, _Rows>>
 		, public IEnumerable<T>
-
 	{
 	public:
 		using data_type	= T;
@@ -88,11 +87,13 @@ namespace ml
 		
 		inline const data_type & operator[](size_type index) const
 		{
+			assert(index < Size && "Matrix subscript out of range!");
 			return m_data[index];
 		}
 		
 		inline data_type & operator[](size_type index)
 		{
+			assert(index < Size && "Matrix subscript out of range!");
 			return m_data[index];
 		}
 

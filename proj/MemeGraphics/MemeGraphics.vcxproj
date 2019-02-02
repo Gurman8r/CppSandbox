@@ -32,6 +32,7 @@
     <ClInclude Include="..\..\include\MemeGraphics\ITransformable.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Lists.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Mesh.hpp" />
+    <ClInclude Include="..\..\include\MemeGraphics\Model.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\OpenGL.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Quaternion.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\RenderBatch.hpp" />
@@ -56,6 +57,7 @@
     <ClCompile Include="..\..\src\MemeGraphics\FrameBuffer.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Gizmos.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\IndexBuffer.cpp" />
+    <ClCompile Include="..\..\src\MemeGraphics\Model.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\OpenGL.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Image.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Mesh.cpp" />

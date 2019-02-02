@@ -28,24 +28,39 @@ namespace ml
 			: base_type()
 		{
 		}
+		
+		explicit VertexList(const allocator_type & alloc)
+			: base_type(alloc)
+		{
+		}
+
+		explicit VertexList(const size_type count, const allocator_type & alloc = allocator_type())
+			: base_type(count, alloc)
+		{
+		}
+		
 		VertexList(const base_type & value)
 			: base_type(value)
 		{
 		}
+		
 		VertexList(const initializer_type & value)
 			: base_type(value)
 		{
 		}
+		
 		VertexList(const self_type & value)
 			: base_type(value)
 		{
 		}
+		
 		template <class Iter>
 		VertexList(Iter begin, Iter end)
 			: base_type(begin, end)
 		{
 		}
-		~VertexList() {}
+		
+		virtual ~VertexList() {}
 
 	public:
 		inline const FloatList & contiguous() const

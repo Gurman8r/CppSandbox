@@ -480,6 +480,7 @@ namespace DEMO
 		return ml::Debug::log("Loading Meshes...")
 			&& load<ml::Mesh>(mesh[MESH_sphere8x6], "/meshes/sphere8x6.mesh", log)
 			&& load<ml::Mesh>(mesh[MESH_sphere32x24], "/meshes/sphere32x24.mesh", log)
+			&& load<ml::Mesh>(mesh[MESH_example], "/meshes/example.mesh", log)
 			;
 	}
 
@@ -529,7 +530,7 @@ namespace DEMO
 			vbo[VBO_quad].unbind();
 			vao[VAO_quad].unbind();
 
-
+			
 			// Text
 			vao[VAO_text]
 				.create(ml::GL::Triangles)
@@ -542,9 +543,6 @@ namespace DEMO
 			vbo[VBO_text].unbind();
 			vao[VAO_text].unbind();
 
-
-			// FBO
-			fbo[FBO_test].create();
 
 
 		}
@@ -571,7 +569,8 @@ namespace DEMO
 
 	bool Demo::loadNetwork(bool log)
 	{
-		if (ml::Debug::log("Loading Network..."))
+		if ((SETTINGS.isServer || SETTINGS.isClient) && 
+			ml::Debug::log("Loading Network..."))
 		{
 			if (SETTINGS.isServer)
 			{

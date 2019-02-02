@@ -51,6 +51,7 @@ namespace ml
 
 		return toStr;
 	}
+	
 	String	StringUtility::ToUpper(const String & src)
 	{
 		std::locale loc;

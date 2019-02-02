@@ -13,7 +13,7 @@
 #include <MemeGraphics/FrameBuffer.hpp>
 #include <MemeGraphics/BufferLayout.hpp>
 #include <MemeGraphics/OpenGL.hpp>
-#include <MemeGraphics/Mesh.hpp>
+#include <MemeGraphics/Model.hpp>
 #include <MemeNet/Client.hpp>
 #include <MemeNet/Server.hpp>
 #include <MemeScript/Interpreter.hpp>
@@ -90,6 +90,7 @@ namespace DEMO
 		MIN_VAO = -1,
 		VAO_cube,
 		VAO_quad,
+		VAO_example,
 		VAO_text,
 		MAX_VAO,
 
@@ -97,6 +98,7 @@ namespace DEMO
 		MIN_VBO = -1,
 		VBO_cube,
 		VBO_quad,
+		VBO_example,
 		VBO_text,
 		MAX_VBO,
 
@@ -104,6 +106,7 @@ namespace DEMO
 		MIN_IBO = -1,
 		IBO_cube,
 		IBO_quad,
+		IBO_example,
 		MAX_IBO,
 
 		// Frame Buffers
@@ -115,6 +118,7 @@ namespace DEMO
 		MIN_MESH = -1,
 		MESH_sphere8x6,
 		MESH_sphere32x24,
+		MESH_example,
 		MAX_MESH,
 
 		// Text

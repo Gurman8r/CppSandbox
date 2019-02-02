@@ -5,10 +5,16 @@
 namespace ml
 {
 	Mesh::Mesh()
+		: m_vertices()
+		, m_texcoords()
+		, m_normals()
 	{
 	}
 
 	Mesh::Mesh(const Mesh & copy)
+		: m_vertices(copy.m_vertices)
+		, m_texcoords(copy.m_texcoords)
+		, m_normals(copy.m_normals)
 	{
 	}
 
@@ -37,12 +43,11 @@ namespace ml
 
 	void Mesh::serialize(std::ostream & out) const
 	{
-		out << "{"
-			<< "(VP: " << m_vp.size() << ") " // << std::Endl << m_vp << std::Endl
-			<< "(VT: " << m_vt.size() << ") " // << std::Endl << m_vt << std::Endl
-			<< "(VN: " << m_vn.size() << ") " // << std::Endl << m_vn << std::Endl
-			<< "(VF: " << m_vf.size() << ") " // << std::Endl << m_vi << std::Endl
-			<< "}" << ml::endl;
+		out << "Mesh:"		<< endl
+			<< m_vertices	<< endl
+			<< m_texcoords	<< endl
+			<< m_normals	<< endl
+			<< endl;
 	}
 
 	void Mesh::deserialize(std::istream & in)
@@ -52,63 +57,115 @@ namespace ml
 		auto parseLine = [](
 			const String & line,
 			const String & find,
-			String::Stream & data)
+			String::Stream & ss)
 		{
 			size_t i;
 			if ((i = line.find(find)) != String::npos)
 			{
-				data.str(line.substr((i + find.size()), (line.size() - find.size() - 1)));
+				ss.str(line.substr((i + find.size()), (line.size() - find.size() - 1)));
 				return true;
 			}
+			ss.str(String());
 			return false;
 		};
 		
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		m_vp.clear();
-		m_vt.clear();
-		m_vn.clear();
-		m_vf.clear();
+		List<vec3f>		vp; // Vertices
+		List<vec2f>		vt; // Texcoords
+		List<vec3f>		vn; // Normals
+		List<IndexList> vf;	// Faces
+
+		/* * * * * * * * * * * * * * * * * * * * */
 
 		String line;
 		while (std::getline(in, line))
 		{
-			String::Stream data;
-			if (parseLine(line, "v ", data))
+			if (line.front() == '#')
+				continue;
+
+			String::Stream ss;
+			if (parseLine(line, "v ", ss))
 			{
-				// Position
+				// Vertex
 				vec3f temp;
-				data >> temp;
-				m_vp.push_back(temp);
+				ss >> temp;
+				vp.push_back(temp);
 			}
-			else if (parseLine(line, "vt ", data))
+			else if (parseLine(line, "vt ", ss))
 			{
 				// Texcoord
 				vec2f temp;
-				data >> temp;
-				m_vt.push_back(temp);
+				ss >> temp;
+				vt.push_back(temp);
 			}
-			else if (parseLine(line, "vn ", data))
+			else if (parseLine(line, "vn ", ss))
 			{
 				// Normal
 				vec3f temp;
-				data >> temp;
-				m_vn.push_back(temp);
+				ss >> temp;
+				vn.push_back(temp);
 			}
-			else if (parseLine(line, "f ", data))
+			else if (parseLine(line, "f ", ss))
 			{
-				// Index
-				String temp;
-				while (std::getline(data, temp, '/'))
+				// Face
+				vf.push_back(IndexList());
+
+				String::Stream lineStream(ss.str());
+				while (lineStream.good())
 				{
-					m_vf.push_back(std::stoi(temp));
+					lineStream >> line;
+
+					String::Stream indexStream(line);
+					while (std::getline(indexStream, line, '/'))
+					{
+						vf.back().push_back(std::stoi(line));
+					}
 				}
 			}
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		// TODO...
+		IndexList vi; // Vertex Indices
+		IndexList ti; // Texcoord Indices
+		IndexList ni; // Normal Indices
+
+		for (size_t i = 0, imax = vf.size(); i < imax; i++)
+		{
+			vi.push_back(vf[i][0] - 1);
+			ti.push_back(vf[i][1] - 1);
+			ni.push_back(vf[i][2] - 1);
+
+			vi.push_back(vf[i][3] - 1);
+			ti.push_back(vf[i][4] - 1);
+			ni.push_back(vf[i][5] - 1);
+
+			vi.push_back(vf[i][6] - 1);
+			ti.push_back(vf[i][7] - 1);
+			ni.push_back(vf[i][8] - 1);
+		}
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		m_vertices.clear();
+		m_texcoords.clear();
+		m_normals.clear();
+
+		for (const uint32_t i : vi)
+		{
+			m_vertices.push_back(vp[i]);
+		}
+
+		for (const uint32_t i : ti)
+		{
+			m_texcoords.push_back(vt[i]);
+		}
+
+		for (const uint32_t i : ni)
+		{
+			m_normals.push_back(vn[i]);
+		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	}
