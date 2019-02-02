@@ -84,6 +84,7 @@ namespace DEMO
 		MIN_MODEL = -1,
 		M_cube,
 		M_quad,
+		M_sphere32x24,
 		MAX_MODEL,
 
 		// Vertex Arrays
@@ -91,6 +92,8 @@ namespace DEMO
 		VAO_cube,
 		VAO_quad,
 		VAO_example,
+		VAO_sphere8x6,
+		VAO_sphere32x24,
 		VAO_text,
 		MAX_VAO,
 
@@ -99,6 +102,8 @@ namespace DEMO
 		VBO_cube,
 		VBO_quad,
 		VBO_example,
+		VBO_sphere8x6,
+		VBO_sphere32x24,
 		VBO_text,
 		MAX_VBO,
 
@@ -106,7 +111,6 @@ namespace DEMO
 		MIN_IBO = -1,
 		IBO_cube,
 		IBO_quad,
-		IBO_example,
 		MAX_IBO,
 
 		// Frame Buffers
@@ -116,9 +120,9 @@ namespace DEMO
 
 		// Meshes
 		MIN_MESH = -1,
+		MESH_example,
 		MESH_sphere8x6,
 		MESH_sphere32x24,
-		MESH_example,
 		MAX_MESH,
 
 		// Text
@@ -129,7 +133,7 @@ namespace DEMO
 
 		// Sounds
 		MIN_SOUND = -1,
-		SND_test,
+		SND_sphere8x6,
 		MAX_SOUND,
 	};
 }
@@ -144,14 +148,6 @@ namespace DEMO
 	public:
 		Demo();
 		~Demo();
-
-	public:
-		bool	onEnter(const EnterEvent & ev);
-		bool	onLoad(const LoadEvent & ev);
-		void	onStart(const StartEvent & ev);
-		void	onUpdate(const UpdateEvent & ev);
-		void	onDraw(const DrawEvent & ev);
-		int32_t onExit(const ExitEvent & ev);
 
 	public:
 		bool	setupInterpreter();
@@ -175,6 +171,14 @@ namespace DEMO
 				: ml::Debug::logError("Failed Loading [{0}]: \"{1}\"", info.name(), file)
 				);
 		}
+
+	public:
+		bool	onEnter(const EnterEvent & ev);
+		bool	onLoad(const LoadEvent & ev);
+		void	onStart(const StartEvent & ev);
+		void	onUpdate(const UpdateEvent & ev);
+		void	onDraw(const DrawEvent & ev);
+		int32_t onExit(const ExitEvent & ev);
 
 	private:
 		ml::Font		fonts	[MAX_FONT];

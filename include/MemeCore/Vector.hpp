@@ -14,6 +14,7 @@ namespace ml
 	public:
 		using base_type = Matrix<T, N, 1>;
 		using self_type = Vector<T, N>;
+		using data_type = T;
 
 	public:
 		Vector()
@@ -54,8 +55,8 @@ namespace ml
 		}
 
 		template <class U, size_t N>
-		Vector(const Vector<U, N> & copy)
-			: base_type(copy)
+		Vector(const Vector<U, N> & copy, const data_type dv = (data_type)(0))
+			: base_type(copy, dv)
 		{
 		}
 

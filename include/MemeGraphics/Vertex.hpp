@@ -21,7 +21,7 @@ namespace ml
 		Vertex(const vec3f & position, const vec4f & color);
 		Vertex(const vec3f & position, const vec2f & texcoords);
 		Vertex(const vec3f & position, const vec4f & color, const vec2f & texcoords);
-		Vertex(const Vertex& copy);
+		Vertex(const Vertex & copy);
 		~Vertex();
 
 		const vec3f & position() const;

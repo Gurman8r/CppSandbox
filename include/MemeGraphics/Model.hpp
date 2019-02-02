@@ -18,7 +18,6 @@ namespace ml
 		void draw(RenderTarget & target, RenderBatch batch) const override;
 
 	private:
-		std::vector<Mesh> m_meshes;
 	};
 }
 

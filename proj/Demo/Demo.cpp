@@ -22,239 +22,6 @@ namespace DEMO
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Demo::onEnter(const EnterEvent & ev)
-	{
-		// Start Master Timer
-		ML_Time.start();
-
-		// Setup Interpreter
-		if (setupInterpreter())
-		{
-			// Run Script
-			if (!SETTINGS.scrFile.empty())
-			{
-				return ML_Interpreter.execFile(
-					SETTINGS.pathTo(SETTINGS.scrPath + SETTINGS.scrFile)
-				);
-			}
-			return ml::Debug::logWarning("No Script");
-		}
-		return false;
-	}
-	
-	bool Demo::onLoad(const LoadEvent & ev)
-	{
-		return (ml::Debug::log("Loading..."))
-			&& loadFonts(ev.log)
-			&& loadImages(ev.log)
-			&& loadTextures(ev.log)
-			&& loadShaders(ev.log)
-			&& loadMeshes(ev.log)
-			&& loadBuffers(ev.log)
-			&& loadAudio(ev.log)
-			&& loadNetwork(ev.log)
-			;
-	}
-	
-	void Demo::onStart(const StartEvent & ev)
-	{
-		if (ml::Debug::log("Starting..."))
-		{
-			// Set Window Icon
-			if (ml::Image icon = images[IMG_icon])
-			{
-				ev.window.setIcons({ icon.flipVertically() });
-			}
-
-			// Orthographic
-			proj[P_ortho] = ml::Transform::Orthographic(
-				0.0f, (float)ev.window.width(),
-				0.0f, (float)ev.window.height(),
-				SETTINGS.orthoNear,
-				SETTINGS.orthoFar);
-
-			// Perspective
-			proj[P_persp] = ml::Transform::Perspective(
-				SETTINGS.fieldOfView,
-				ev.window.aspect(),
-				SETTINGS.perspNear,
-				SETTINGS.perspFar);
-
-			// Camera
-			ml::vec3f cameraPos = { 0.0f, 0.0f, 3.0f };
-			view[V_camera].lookAt(
-				cameraPos,
-				cameraPos + ml::vec3f::Back,
-				ml::vec3f::Up);
-
-			// Cube
-			model[M_cube]
-				.translate({ +3.0f, 0.0f, 0.0f })
-				.rotate(0.0f, ml::vec3f::Up)
-				.scale(ml::vec3f::One);
-
-			// Quad
-			model[M_quad]
-				.translate({ -3.0f, 0.0f, 0.0f })
-				.rotate(0.0f, ml::vec3f::Up)
-				.scale(ml::vec3f::One * 5.f);
-
-			// Static Text
-			text[TXT_static]
-				.setFont(&fonts[FNT_minecraft])
-				.setFontSize(72)
-				.setScale(ml::vec2f::One)
-				.setPosition({ 32, 128 })
-				.setColor(ml::Color::White)
-				.setText("there is no need\nto be upset");
-		}
-	}
-	
-	void Demo::onUpdate(const UpdateEvent & ev)
-	{
-		// Set Window Title
-		ev.window.setTitle(ml::String::Format(
-			"{0} | {1} | {2} ({3} fps) | {4}",
-			SETTINGS.title,
-			ML_Time.elapsed(),
-			ev.elapsed.delta(),
-			ml::Time::calculateFPS(ev.elapsed.delta()),
-			ev.window.getCursorPos()
-		));
-
-		// value_type Input
-		if (ev.input.getKeyDown(ml::NativeKey::Escape))
-		{
-			ev.window.close();
-		}
-
-		if (SETTINGS.isServer)
-		{
-			ML_Server.poll();
-		}
-		else if(SETTINGS.isClient)
-		{
-			ML_Client.poll();
-		}
-	}
-	
-	void Demo::onDraw(const DrawEvent & ev)
-	{
-		ev.window.clear(ml::Color::Violet);
-		{
-			// Begin 3D
-			ml::OpenGL::enable(ml::GL::CullFace);
-			ml::OpenGL::enable(ml::GL::DepthTest);
-
-			// Cube
-			if (ml::Shader & shader = shaders[GL_basic3D])
-			{
-				(shader)
-					.setUniform(ml::Uniform::Color, ml::Color::White)
-					.setUniform(ml::Uniform::Texture, textures[TEX_stone_dm])
-					.setUniform(ml::Uniform::Proj, proj[P_persp])
-					.setUniform(ml::Uniform::View, view[V_camera])
-					.setUniform(ml::Uniform::Model, model[M_cube]
-						.translate(ml::vec3f::Zero)
-						.rotate(+ev.elapsed.delta(), ml::vec3f::One)
-						.scale(ml::vec3f::One))
-					.bind();
-
-				vao[VAO_cube].bind();
-				vbo[VBO_cube].bind();
-				ibo[IBO_cube].bind();
-				{
-					ml::OpenGL::drawElements(
-						vao[VAO_cube].mode(),
-						ibo[IBO_cube].count(),
-						ibo[IBO_cube].type(),
-						NULL);
-				}
-				ibo[IBO_cube].unbind();
-				vbo[VBO_cube].unbind();
-				vao[VAO_cube].unbind();
-			}
-
-			// Begin 2D
-			ml::OpenGL::disable(ml::GL::CullFace);
-			ml::OpenGL::disable(ml::GL::DepthTest);
-
-			// Quad
-			if (ml::Shader & shader = shaders[GL_basic3D])
-			{
-				(shader)
-					.setUniform(ml::Uniform::Color, ml::Color::White)
-					.setUniform(ml::Uniform::Texture, textures[TEX_sanic])
-					.setUniform(ml::Uniform::Proj, proj[P_persp])
-					.setUniform(ml::Uniform::View, view[V_camera])
-					.setUniform(ml::Uniform::Model, model[M_quad]
-						.translate(ml::vec3f::Zero)
-						.rotate(-ev.elapsed.delta(), ml::vec3f::Forward)
-						.scale(ml::vec3f::One))
-					.bind();
-
-				vao[VAO_quad].bind();
-				vbo[VBO_quad].bind();
-				ibo[IBO_quad].bind();
-				{
-					ml::OpenGL::drawElements(
-						vao[VAO_quad].mode(),
-						ibo[IBO_quad].count(),
-						ibo[IBO_quad].type(),
-						NULL);
-				}
-				ibo[IBO_quad].unbind();
-				vbo[VBO_quad].unbind();
-				vao[VAO_quad].unbind();
-			}
-
-			// Text
-			if (ml::Shader & shader = shaders[GL_text])
-			{
-				static ml::RenderBatch batch(
-					&vao[VAO_text],
-					&vbo[VBO_text],
-					&proj[P_ortho],
-					NULL,
-					&shader);
-
-				static const uint32_t  fontSize = 24;
-				static const ml::vec2f offset = { 0.0f, -(float)fontSize };
-				static const ml::vec2f origin = { (float)fontSize, (float)ev.window.height() };
-				static const ml::vec4f colors[MAX_FONT] = {
-					ml::Color::Red,
-					ml::Color::Green,
-					ml::Color::Blue,
-					ml::Color::White,
-				};
-
-				// Dynamic Text
-				for (uint32_t i = (MIN_FONT + 1); i < MAX_FONT; i++)
-				{
-					ev.window.draw(text[TXT_dynamic]
-						.setFont(&fonts[i])
-						.setFontSize(fontSize)
-						.setScale(ml::vec2f::One)
-						.setPosition(origin + (offset * (float)(i + 1)))
-						.setColor(colors[i])
-						.setText(fonts[i].to_str())// + " | " + ev.window.title())
-					, batch);
-				}
-
-				// Static Text
-				ev.window.draw(text[TXT_static], batch);
-			}
-		}
-		ev.window.swapBuffers().pollEvents();
-	}
-	
-	int32_t Demo::onExit(const ExitEvent & ev)
-	{
-		return ev.exitCode;
-	}
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
 	bool Demo::setupInterpreter()
 	{
 		static bool checked = false;
@@ -478,14 +245,16 @@ namespace DEMO
 	{
 		// Load Meshes
 		return ml::Debug::log("Loading Meshes...")
+			&& load<ml::Mesh>(mesh[MESH_example], "/meshes/example.mesh", log)
 			&& load<ml::Mesh>(mesh[MESH_sphere8x6], "/meshes/sphere8x6.mesh", log)
 			&& load<ml::Mesh>(mesh[MESH_sphere32x24], "/meshes/sphere32x24.mesh", log)
-			&& load<ml::Mesh>(mesh[MESH_example], "/meshes/example.mesh", log)
 			;
 	}
 
 	bool Demo::loadBuffers(bool log)
 	{
+		//ml::cout << mesh[MESH_sphere8x6] << ml::endl;
+
 		// Load Buffers
 		if (ml::Debug::log("Loading Buffers..."))
 		{
@@ -530,6 +299,45 @@ namespace DEMO
 			vbo[VBO_quad].unbind();
 			vao[VAO_quad].unbind();
 
+
+			// Example
+			vao[VAO_example]
+				.create(ml::GL::Triangles)
+				.bind();
+			vbo[VBO_example]
+				.create(ml::GL::StaticDraw)
+				.bind()
+				.bufferData(mesh[MESH_example].contiguous());
+			layout.bind();
+			vbo[VBO_example].unbind();
+			vao[VAO_example].unbind();
+
+
+			// Sphere 8x6
+			vao[VAO_sphere8x6]
+				.create(ml::GL::Triangles)
+				.bind();
+			vbo[VBO_sphere8x6]
+				.create(ml::GL::StaticDraw)
+				.bind()
+				.bufferData(mesh[MESH_sphere8x6].contiguous());
+			layout.bind();
+			vbo[VBO_sphere8x6].unbind();
+			vao[VAO_sphere8x6].unbind();
+
+
+			// Sphere 32x24
+			vao[VAO_sphere32x24]
+				.create(ml::GL::Triangles)
+				.bind();
+			vbo[VAO_sphere32x24]
+				.create(ml::GL::StaticDraw)
+				.bind()
+				.bufferData(mesh[MESH_sphere32x24].contiguous());
+			layout.bind();
+			vbo[VBO_sphere32x24].unbind();
+			vao[VAO_sphere32x24].unbind();
+
 			
 			// Text
 			vao[VAO_text]
@@ -542,8 +350,6 @@ namespace DEMO
 			layout.bind();
 			vbo[VBO_text].unbind();
 			vao[VAO_text].unbind();
-
-
 
 		}
 		return true;
@@ -563,7 +369,7 @@ namespace DEMO
 			}
 		}
 		return ml::Debug::log("Loading Sounds...")
-			//&& load<ml::Sound>(sounds[SND_test], "/sounds/example.wav", log)
+			//&& load<ml::Sound>(sounds[SND_sphere8x6], "/sounds/example.wav", log)
 			;
 	}
 
@@ -597,6 +403,271 @@ namespace DEMO
 			}
 		}
 		return true;
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	bool Demo::onEnter(const EnterEvent & ev)
+	{
+		// Start Master Timer
+		ML_Time.start();
+
+		// Setup Interpreter
+		if (setupInterpreter())
+		{
+			// Run Script
+			if (!SETTINGS.scrFile.empty())
+			{
+				return ML_Interpreter.execFile(
+					SETTINGS.pathTo(SETTINGS.scrPath + SETTINGS.scrFile)
+				);
+			}
+			return ml::Debug::logWarning("No Script");
+		}
+		return false;
+	}
+	
+	bool Demo::onLoad(const LoadEvent & ev)
+	{
+		return (ml::Debug::log("Loading..."))
+			&& loadFonts(ev.log)
+			&& loadImages(ev.log)
+			&& loadTextures(ev.log)
+			&& loadShaders(ev.log)
+			&& loadMeshes(ev.log)
+			&& loadBuffers(ev.log)
+			&& loadAudio(ev.log)
+			&& loadNetwork(ev.log)
+			;
+	}
+	
+	void Demo::onStart(const StartEvent & ev)
+	{
+		if (ml::Debug::log("Starting..."))
+		{
+			// Set Window Icon
+			if (ml::Image icon = images[IMG_icon])
+			{
+				ev.window.setIcons({ icon.flipVertically() });
+			}
+
+			// Orthographic
+			proj[P_ortho] = ml::Transform::Orthographic(
+				0.0f, (float)ev.window.width(),
+				0.0f, (float)ev.window.height(),
+				SETTINGS.orthoNear,
+				SETTINGS.orthoFar);
+
+			// Perspective
+			proj[P_persp] = ml::Transform::Perspective(
+				SETTINGS.fieldOfView,
+				ev.window.aspect(),
+				SETTINGS.perspNear,
+				SETTINGS.perspFar);
+
+			// Camera
+			ml::vec3f cameraPos = { 0.0f, 0.0f, 3.0f };
+			view[V_camera].lookAt(
+				cameraPos,
+				cameraPos + ml::vec3f::Back,
+				ml::vec3f::Up);
+
+			// Cube
+			model[M_cube]
+				.translate({ +5.0f, 0.0f, 0.0f })
+				.rotate(0.0f, ml::vec3f::Up)
+				.scale(ml::vec3f::One);
+
+			// Quad
+			model[M_quad]
+				.translate({ -8.0f, 0.0f, 0.0f })
+				.rotate(0.0f, ml::vec3f::Up)
+				.scale(ml::vec3f::One * 5.f);
+
+			// Test
+			model[M_sphere32x24]
+				.translate({ 0.0f, 0.0f, -2.0f })
+				.rotate(0.0f, ml::vec3f::Up)
+				.scale(ml::vec3f::One);
+
+			// Static Text
+			text[TXT_static]
+				.setFont(&fonts[FNT_minecraft])
+				.setFontSize(72)
+				.setScale(ml::vec2f::One)
+				.setPosition({ 32, 128 })
+				.setColor(ml::Color::White)
+				.setText("there is no need\nto be upset");
+		}
+	}
+	
+	void Demo::onUpdate(const UpdateEvent & ev)
+	{
+		// Set Window Title
+		ev.window.setTitle(ml::String::Format(
+			"{0} | {1} | {2} ({3} fps) | {4}",
+			SETTINGS.title,
+			ML_Time.elapsed(),
+			ev.elapsed.delta(),
+			ml::Time::calculateFPS(ev.elapsed.delta()),
+			ev.window.getCursorPos()
+		));
+
+		// value_type Input
+		if (ev.input.getKeyDown(ml::NativeKey::Escape))
+		{
+			ev.window.close();
+		}
+
+		if (SETTINGS.isServer)
+		{
+			ML_Server.poll();
+		}
+		else if(SETTINGS.isClient)
+		{
+			ML_Client.poll();
+		}
+	}
+	
+	void Demo::onDraw(const DrawEvent & ev)
+	{
+		ev.window.clear(ml::Color::Violet);
+		{
+			ml::OpenGL::enable(ml::GL::CullFace);
+			ml::OpenGL::enable(ml::GL::DepthTest);
+
+
+			// Cube
+			if (ml::Shader & shader = shaders[GL_basic3D])
+			{
+				(shader)
+					.setUniform(ml::Uniform::Color, ml::Color::White)
+					.setUniform(ml::Uniform::Texture, textures[TEX_stone_dm])
+					.setUniform(ml::Uniform::Proj, proj[P_persp])
+					.setUniform(ml::Uniform::View, view[V_camera])
+					.setUniform(ml::Uniform::Model, model[M_cube]
+						.translate(ml::vec3f::Zero)
+						.rotate(+ev.elapsed.delta(), ml::vec3f::One)
+						.scale(ml::vec3f::One))
+					.bind();
+
+				vao[VAO_cube].bind();
+				vbo[VBO_cube].bind();
+				ibo[IBO_cube].bind();
+				{
+					ml::OpenGL::drawElements(
+						vao[VAO_cube].mode(),
+						ibo[IBO_cube].count(),
+						ibo[IBO_cube].type(),
+						NULL);
+				}
+				ibo[IBO_cube].unbind();
+				vbo[VBO_cube].unbind();
+				vao[VAO_cube].unbind();
+			}
+			
+			// Sphere32x24
+			if (ml::Shader & shader = shaders[GL_basic3D])
+			{
+				(shader)
+					.setUniform(ml::Uniform::Color, ml::Color::White)
+					.setUniform(ml::Uniform::Texture, textures[TEX_stone_dm])
+					.setUniform(ml::Uniform::Proj, proj[P_persp])
+					.setUniform(ml::Uniform::View, view[V_camera])
+					.setUniform(ml::Uniform::Model, model[M_sphere32x24]
+						.translate(ml::vec3f::Zero)
+						.rotate(+ev.elapsed.delta(), ml::vec3f::One)
+						.scale(ml::vec3f::One))
+					.bind();
+
+				vao[VAO_sphere32x24].bind();
+				vbo[VBO_sphere32x24].bind();
+				{
+					ml::OpenGL::drawArrays(
+						vao[VAO_sphere32x24].mode(),
+						0,
+						(int32_t)mesh[MESH_sphere32x24].contiguous().size());
+				}
+				vbo[VBO_sphere32x24].unbind();
+				vao[VAO_sphere32x24].unbind();
+			}
+
+
+			ml::OpenGL::disable(ml::GL::CullFace);
+			ml::OpenGL::disable(ml::GL::DepthTest);
+
+			// Quad
+			if (ml::Shader & shader = shaders[GL_basic3D])
+			{
+				(shader)
+					.setUniform(ml::Uniform::Color, ml::Color::White)
+					.setUniform(ml::Uniform::Texture, textures[TEX_sanic])
+					.setUniform(ml::Uniform::Proj, proj[P_persp])
+					.setUniform(ml::Uniform::View, view[V_camera])
+					.setUniform(ml::Uniform::Model, model[M_quad]
+						.translate(ml::vec3f::Zero)
+						.rotate(-ev.elapsed.delta(), ml::vec3f::Forward)
+						.scale(ml::vec3f::One))
+					.bind();
+
+				vao[VAO_quad].bind();
+				vbo[VBO_quad].bind();
+				ibo[IBO_quad].bind();
+				{
+					ml::OpenGL::drawElements(
+						vao[VAO_quad].mode(),
+						ibo[IBO_quad].count(),
+						ibo[IBO_quad].type(),
+						NULL);
+				}
+				ibo[IBO_quad].unbind();
+				vbo[VBO_quad].unbind();
+				vao[VAO_quad].unbind();
+			}
+
+			// Text
+			if (ml::Shader & shader = shaders[GL_text])
+			{
+				static ml::RenderBatch batch(
+					&vao[VAO_text],
+					&vbo[VBO_text],
+					&proj[P_ortho],
+					NULL,
+					&shader);
+
+				static const uint32_t  fontSize = 24;
+				static const ml::vec2f offset = { 0.0f, -(float)fontSize };
+				static const ml::vec2f origin = { (float)fontSize, (float)ev.window.height() };
+				static const ml::vec4f colors[MAX_FONT] = {
+					ml::Color::Red,
+					ml::Color::Green,
+					ml::Color::Blue,
+					ml::Color::White,
+				};
+
+				// Dynamic Text
+				for (uint32_t i = (MIN_FONT + 1); i < MAX_FONT; i++)
+				{
+					ev.window.draw(text[TXT_dynamic]
+						.setFont(&fonts[i])
+						.setFontSize(fontSize)
+						.setScale(ml::vec2f::One)
+						.setPosition(origin + (offset * (float)(i + 1)))
+						.setColor(colors[i])
+						.setText(fonts[i].to_str())// + " | " + ev.window.title())
+					, batch);
+				}
+
+				// Static Text
+				ev.window.draw(text[TXT_static], batch);
+			}
+		}
+		ev.window.swapBuffers().pollEvents();
+	}
+	
+	int32_t Demo::onExit(const ExitEvent & ev)
+	{
+		return ev.exitCode;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

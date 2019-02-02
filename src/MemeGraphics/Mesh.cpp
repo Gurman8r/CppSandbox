@@ -5,16 +5,10 @@
 namespace ml
 {
 	Mesh::Mesh()
-		: m_vertices()
-		, m_texcoords()
-		, m_normals()
 	{
 	}
 
 	Mesh::Mesh(const Mesh & copy)
-		: m_vertices(copy.m_vertices)
-		, m_texcoords(copy.m_texcoords)
-		, m_normals(copy.m_normals)
 	{
 	}
 
@@ -43,10 +37,14 @@ namespace ml
 
 	void Mesh::serialize(std::ostream & out) const
 	{
-		out << "Mesh:"		<< endl
-			<< m_vertices	<< endl
-			<< m_texcoords	<< endl
-			<< m_normals	<< endl
+		out << "Mesh:" << endl
+
+			<< "V: " << m_vertices.size() << endl
+			<< m_vertices << endl
+
+			<< "I: " << m_indices.size() << endl
+			<< m_indices << endl
+			
 			<< endl;
 	}
 
@@ -65,18 +63,15 @@ namespace ml
 				ss.str(line.substr((i + find.size()), (line.size() - find.size() - 1)));
 				return true;
 			}
-			ss.str(String());
 			return false;
 		};
 		
+		// Read File
 		/* * * * * * * * * * * * * * * * * * * * */
-
 		List<vec3f>		vp; // Vertices
 		List<vec2f>		vt; // Texcoords
 		List<vec3f>		vn; // Normals
 		List<IndexList> vf;	// Faces
-
-		/* * * * * * * * * * * * * * * * * * * * */
 
 		String line;
 		while (std::getline(in, line))
@@ -125,8 +120,8 @@ namespace ml
 			}
 		}
 
+		// Indices
 		/* * * * * * * * * * * * * * * * * * * * */
-
 		IndexList vi; // Vertex Indices
 		IndexList ti; // Texcoord Indices
 		IndexList ni; // Normal Indices
@@ -142,30 +137,30 @@ namespace ml
 			ni.push_back(vf[i][5] - 1);
 
 			vi.push_back(vf[i][6] - 1);
-			ti.push_back(vf[i][7] - 1);
 			ni.push_back(vf[i][8] - 1);
+			ti.push_back(vf[i][7] - 1);
 		}
 
+		if ((vi.size() != ti.size()) || (vi.size() != ni.size()))
+		{
+			Debug::logError("Mesh: Index List Size Mismatch");
+			return;
+		}
+
+
+		// Vertices
 		/* * * * * * * * * * * * * * * * * * * * */
+		m_vertices.resize(vi.size());
 
-		m_vertices.clear();
-		m_texcoords.clear();
-		m_normals.clear();
-
-		for (const uint32_t i : vi)
+		for (size_t i = 0, imax = m_vertices.size(); i < imax; i++)
 		{
-			m_vertices.push_back(vp[i]);
+			m_vertices[i] = Vertex(
+				vp[vi[i]],
+				Color::White, //vec4f(vn[ni[i]], 1),
+				vt[ti[i]]);
 		}
 
-		for (const uint32_t i : ti)
-		{
-			m_texcoords.push_back(vt[i]);
-		}
-
-		for (const uint32_t i : ni)
-		{
-			m_normals.push_back(vn[i]);
-		}
+		m_contiguous = m_vertices.contiguous();
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	}

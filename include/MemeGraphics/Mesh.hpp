@@ -24,14 +24,14 @@ namespace ml
 		void deserialize(std::istream & in) override;
 
 	public:
-		inline const List<vec3f> & vertices	()	const { return m_vertices;	}
-		inline const List<vec2f> & texcoords()	const { return m_texcoords; }
-		inline const List<vec3f> & normals	()	const { return m_normals;	}
+		inline const VertexList &	vertices	() const { return m_vertices;	}
+		inline const IndexList &	indices		() const { return m_indices;	}
+		inline const FloatList &	contiguous	() const { return m_contiguous; }
 
 	private:
-		List<vec3f> m_vertices;
-		List<vec2f> m_texcoords;
-		List<vec3f> m_normals;
+		VertexList	m_vertices;
+		IndexList	m_indices;
+		FloatList	m_contiguous;
 	};
 }
 

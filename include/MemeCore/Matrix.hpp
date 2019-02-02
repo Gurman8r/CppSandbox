@@ -2,6 +2,7 @@
 #define _MATRIX_HPP_
 
 #include <MemeCore/IEnumerable.hpp>
+#include <MemeCore/List.hpp>
 
 namespace ml
 {
@@ -66,14 +67,21 @@ namespace ml
 		}
 		
 		template <class U, size_type C, size_type R>
-		Matrix(const Matrix<U, C, R> & copy)
+		Matrix(const Matrix<U, C, R> & copy, const data_type dv = (data_type)(0))
 			: self_type()
 		{
 			const size_type imax = std::min<size_type>(Size, copy.Size);
 
-			for (size_type i = 0; i < imax; i++)
+			for (size_type i = 0; i < Size; i++)
 			{
-				(*this)[i] = static_cast<data_type>(copy[i]);
+				if (i < copy.Size)
+				{
+					(*this)[i] = static_cast<data_type>(copy[i]);
+				}
+				else
+				{
+					(*this)[i] = dv;
+				}
 			}
 		}
 

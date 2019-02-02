@@ -12,6 +12,7 @@ namespace ml
 	public:
 		using base_type = Vector<T, 4>;
 		using self_type = Vector4<T>;
+		using data_type = T;
 
 	public:
 		Vector4()
@@ -42,8 +43,8 @@ namespace ml
 		}
 
 		template <class U, size_t N>
-		Vector4(const Vector<U, N> & copy)
-			: base_type(copy)
+		Vector4(const Vector<U, N> & copy, const data_type dv = (data_type)(0))
+			: base_type(copy, dv)
 		{
 		}
 
