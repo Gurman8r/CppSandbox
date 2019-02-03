@@ -5,10 +5,23 @@
 namespace ml
 {
 	Mesh::Mesh()
+		: m_vertices	()
+		, m_indices		()
+		, m_contiguous	()
+	{
+	}
+
+	Mesh::Mesh(const VertexList & vertices)
+		: m_vertices	(vertices)
+		, m_indices		()
+		, m_contiguous	(vertices.contiguous())
 	{
 	}
 
 	Mesh::Mesh(const Mesh & copy)
+		: m_vertices	(copy.m_vertices)
+		, m_indices		(copy.m_indices)
+		, m_contiguous	(copy.m_contiguous)
 	{
 	}
 
@@ -41,9 +54,6 @@ namespace ml
 
 			<< "V: " << m_vertices.size() << endl
 			<< m_vertices << endl
-
-			<< "I: " << m_indices.size() << endl
-			<< m_indices << endl
 			
 			<< endl;
 	}
@@ -66,9 +76,9 @@ namespace ml
 			return false;
 		};
 		
-		// Read File
 		/* * * * * * * * * * * * * * * * * * * * */
-		List<vec3f>		vp; // Vertices
+
+		List<vec3f>		vp; // Positions
 		List<vec2f>		vt; // Texcoords
 		List<vec3f>		vn; // Normals
 		List<IndexList> vf;	// Faces
@@ -82,7 +92,7 @@ namespace ml
 			String::Stream ss;
 			if (parseLine(line, "v ", ss))
 			{
-				// Vertex
+				// Position
 				vec3f temp;
 				ss >> temp;
 				vp.push_back(temp);
@@ -120,9 +130,9 @@ namespace ml
 			}
 		}
 
-		// Indices
 		/* * * * * * * * * * * * * * * * * * * * */
-		IndexList vi; // Vertex Indices
+
+		IndexList vi; // Position Indices
 		IndexList ti; // Texcoord Indices
 		IndexList ni; // Normal Indices
 
@@ -141,22 +151,15 @@ namespace ml
 			ti.push_back(vf[i][7] - 1);
 		}
 
-		if ((vi.size() != ti.size()) || (vi.size() != ni.size()))
-		{
-			Debug::logError("Mesh: Index List Size Mismatch");
-			return;
-		}
-
-
-		// Vertices
 		/* * * * * * * * * * * * * * * * * * * * */
+		
 		m_vertices.resize(vi.size());
 
 		for (size_t i = 0, imax = m_vertices.size(); i < imax; i++)
 		{
 			m_vertices[i] = Vertex(
-				vp[vi[i]],
-				Color::White, //vec4f(vn[ni[i]], 1),
+				vp[vi[i]], 
+				vec4f(vn[vi[i]], 1),
 				vt[ti[i]]);
 		}
 

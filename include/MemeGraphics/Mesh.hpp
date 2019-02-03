@@ -14,7 +14,8 @@ namespace ml
 	{
 	public:
 		Mesh();
-		Mesh(const Mesh& copy);
+		Mesh(const VertexList & vertices);
+		Mesh(const Mesh & copy);
 		~Mesh();
 
 		bool cleanup() override;

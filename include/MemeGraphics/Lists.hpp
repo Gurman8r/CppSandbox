@@ -67,10 +67,8 @@ namespace ml
 		{
 			if (const size_type imax = ((*this).size() * Vertex::Size))
 			{
-				if (m_contiguous.size() != imax)
-				{
-					m_contiguous.resize(imax);
-				}
+				m_contiguous.resize(imax);
+
 				for (size_type i = 0; i < imax; i++)
 				{
 					m_contiguous[i] = (*this)[i / Vertex::Size][i % Vertex::Size];

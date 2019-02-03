@@ -44,6 +44,7 @@ namespace DEMO
 		MIN_TEXTURE = -1,
 		TEX_dean,
 		TEX_sanic,
+		TEX_earth,
 		TEX_bg_clouds,
 		TEX_sky_clouds,
 		TEX_sky_water,

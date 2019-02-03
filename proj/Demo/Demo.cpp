@@ -212,6 +212,7 @@ namespace DEMO
 		return ml::Debug::log("Loading Textures...")
 			&& load<ml::Texture>(textures[TEX_dean], "/images/dean.png", log)
 			&& load<ml::Texture>(textures[TEX_sanic], "/images/sanic.png", log)
+			&& load<ml::Texture>(textures[TEX_earth], "/images/earth.png", log)
 			//&& load<ml::Texture>(textures[TEX_bg_clouds], "/textures/bg/bg_clouds.png", log)
 			//&& load<ml::Texture>(textures[TEX_sky_clouds], "/textures/bg/sky_clouds.png", log)
 			//&& load<ml::Texture>(textures[TEX_sky_water], "/textures/bg/sky_water.png", log)
@@ -484,11 +485,11 @@ namespace DEMO
 				.rotate(0.0f, ml::vec3f::Up)
 				.scale(ml::vec3f::One * 5.f);
 
-			// Test
+			// Sphere 32x24
 			model[M_sphere32x24]
 				.translate({ 0.0f, 0.0f, -2.0f })
 				.rotate(0.0f, ml::vec3f::Up)
-				.scale(ml::vec3f::One);
+				.scale(ml::vec3f::One * 2.f);
 
 			// Static Text
 			text[TXT_static]
@@ -536,7 +537,6 @@ namespace DEMO
 			ml::OpenGL::enable(ml::GL::CullFace);
 			ml::OpenGL::enable(ml::GL::DepthTest);
 
-
 			// Cube
 			if (ml::Shader & shader = shaders[GL_basic3D])
 			{
@@ -571,12 +571,12 @@ namespace DEMO
 			{
 				(shader)
 					.setUniform(ml::Uniform::Color, ml::Color::White)
-					.setUniform(ml::Uniform::Texture, textures[TEX_stone_dm])
+					.setUniform(ml::Uniform::Texture, textures[TEX_earth])
 					.setUniform(ml::Uniform::Proj, proj[P_persp])
 					.setUniform(ml::Uniform::View, view[V_camera])
 					.setUniform(ml::Uniform::Model, model[M_sphere32x24]
 						.translate(ml::vec3f::Zero)
-						.rotate(+ev.elapsed.delta(), ml::vec3f::One)
+						.rotate(+ev.elapsed.delta(), ml::vec3f::Up)
 						.scale(ml::vec3f::One))
 					.bind();
 
