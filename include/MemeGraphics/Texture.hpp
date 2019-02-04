@@ -37,17 +37,14 @@ namespace ml
 			const uint8_t * pixels, 
 			uint32_t width, 
 			uint32_t height,
-			GL::Format colFmt, 
-			GL::Format intFmt, 
+			GL::Format	colorFmt,
+			GL::Format	internalFmt, 
 			bool smooth,
-			bool repeat, 
-			bool srgb, 
-			bool mipmapped);
+			bool repeat);
 
 		Texture & swap(Texture & value);
 		Texture & setRepeated(bool value);
 		Texture & setSmooth(bool value);
-		Texture & setSrgb(bool value);
 		Texture & generateMipmap();
 		Texture & invalidateMipmap();
 		
@@ -63,25 +60,25 @@ namespace ml
 		static void	bind(const Texture * value);
 
 	public:
-		inline const vec2u &	size()		const { return m_size; }
-		inline const vec2u &	actualSize()const { return m_actualSize; }
-		inline const bool &		smooth()	const { return m_smooth; }
-		inline const bool &		sRGB()		const { return m_srgb; }
-		inline const bool &		repeated()	const { return m_repeated; }
-		inline const bool &		mipmapped()	const { return m_mipmapped; }
-		inline const uint32_t & width()		const { return size()[0]; }
-		inline const uint32_t & height()	const { return size()[1]; }
+		inline const vec2u &	size()			const { return m_size; }
+		inline const vec2u &	actualSize()	const { return m_actualSize; }
+		inline const GL::Format colorFmt()		const { return m_colorFmt; }
+		inline const GL::Format internalFmt()	const { return m_internalFmt; }
+		inline const bool		smooth()		const { return m_smooth; }
+		inline const bool		repeated()		const { return m_repeated; }
+		inline const bool		mipmapped()		const { return m_mipmapped; }
+		inline const uint32_t	width()			const { return size()[0]; }
+		inline const uint32_t	height()		const { return size()[1]; }
 
 	private:
-		vec2u	m_size;
-		vec2u	m_actualSize;
-		bool	m_smooth;
-		bool	m_srgb;
-		bool	m_repeated;
-		bool	m_mipmapped;
+		vec2u		m_size;
+		vec2u		m_actualSize;
+		GL::Format	m_colorFmt;
+		GL::Format	m_internalFmt;
+		bool		m_smooth;
+		bool		m_repeated;
+		bool		m_mipmapped;
 
-		GL::Format m_cFormat;
-		GL::Format m_iFormat;
 	};
 }
 

@@ -84,6 +84,7 @@ namespace ml
 
 			String::Stream source[MAX];
 			int8_t type = NONE;
+
 			String line;
 			while (std::getline(ss, line))
 			{
@@ -104,7 +105,7 @@ namespace ml
 				}
 				else if(type > NONE)
 				{
-					source[type] << line << '\n';
+					source[type] << line << std::endl;
 				}
 			}
 
@@ -182,13 +183,12 @@ namespace ml
 	}
 
 
-	Shader & Shader::bind(bool bindTextures)
+	bool Shader::bind(bool bindTextures) const
 	{
-		Shader::bind(this, bindTextures);
-		return (*this);
+		return Shader::bind(this, bindTextures);
 	}
 
-	void Shader::bind(const Shader * shader, bool bindTextures)
+	bool Shader::bind(const Shader * shader, bool bindTextures)
 	{
 		if (shader && OpenGL::shadersAvailable())
 		{
@@ -205,114 +205,116 @@ namespace ml
 					Texture::bind(it->second);
 				}
 			}
+			return true;
 		}
 		else
 		{
 			OpenGL::useShader(NULL);
+			return false;
 		}
 	}
 	
 	
-	Shader & Shader::setUniform(const String & name, const float & value)
+	bool Shader::setUniform(const String & name, const float & value) const
 	{
 		UniformBinder u(this, name);
 		if (u)
 		{
 			OpenGL::uniform1f(u.location, value);
 		}
-		return (*this);
+		return u;
 	}
-	Shader & Shader::setUniform(const String & name, const int32_t & value)
+	bool Shader::setUniform(const String & name, const int32_t & value) const
 	{
 		UniformBinder u(this, name);
 		if (u)
 		{
 			OpenGL::uniform1i(u.location, value);
 		}
-		return (*this);
+		return u;
 	}
-	Shader & Shader::setUniform(const String & name, const uint32_t & value)
+	bool Shader::setUniform(const String & name, const uint32_t & value) const
 	{
 		UniformBinder u(this, name);
 		if (u)
 		{
 			OpenGL::uniform1u(u.location, value);
 		}
-		return (*this);
+		return u;
 	}
-	Shader & Shader::setUniform(const String & name, const vec2f & value)
+	bool Shader::setUniform(const String & name, const vec2f & value) const
 	{
 		UniformBinder u(this, name);
 		if (u)
 		{
 			OpenGL::uniform2f(u.location, value[0], value[1]);
 		}
-		return (*this);
+		return u;
 	}
-	Shader & Shader::setUniform(const String & name, const vec3f & value)
+	bool Shader::setUniform(const String & name, const vec3f & value) const
 	{
 		UniformBinder u(this, name);
 		if (u)
 		{
 			OpenGL::uniform3f(u.location, value[0], value[1], value[2]);
 		}
-		return (*this);
+		return u;
 	}
-	Shader & Shader::setUniform(const String & name, const vec4f & value)
+	bool Shader::setUniform(const String & name, const vec4f & value) const
 	{
 		UniformBinder u(this, name);
 		if (u)
 		{
 			OpenGL::uniform4f(u.location, value[0], value[1], value[2], value[3]);
 		}
-		return (*this);
+		return u;
 	}
-	Shader & Shader::setUniform(const String & name, const vec2i & value)
+	bool Shader::setUniform(const String & name, const vec2i & value) const
 	{
 		UniformBinder u(this, name);
 		if (u)
 		{
 			OpenGL::uniform2i(u.location, value[0], value[1]);
 		}
-		return (*this);
+		return u;
 	}
-	Shader & Shader::setUniform(const String & name, const vec3i & value)
+	bool Shader::setUniform(const String & name, const vec3i & value) const
 	{
 		UniformBinder u(this, name);
 		if (u)
 		{
 			OpenGL::uniform3i(u.location, value[0], value[1], value[2]);
 		}
-		return (*this);
+		return u;
 	}
-	Shader & Shader::setUniform(const String & name, const vec4i & value)
+	bool Shader::setUniform(const String & name, const vec4i & value) const
 	{
 		UniformBinder u(this, name);
 		if (u)
 		{
 			OpenGL::uniform4i(u.location, value[0], value[1], value[2], value[3]);
 		}
-		return (*this);
+		return u;
 	}
-	Shader & Shader::setUniform(const String & name, const mat3f & value)
+	bool Shader::setUniform(const String & name, const mat3f & value) const
 	{
 		UniformBinder u(this, name);
 		if (u)
 		{
 			OpenGL::uniformMatrix3f(u.location, 1, false, value.ptr());
 		}
-		return (*this);
+		return u;
 	}
-	Shader & Shader::setUniform(const String & name, const mat4f & value)
+	bool Shader::setUniform(const String & name, const mat4f & value) const
 	{
 		UniformBinder u(this, name);
 		if (u)
 		{
 			OpenGL::uniformMatrix4f(u.location, 1, false, value.ptr());
 		}
-		return (*this);
+		return u;
 	}
-	Shader & Shader::setUniform(const String & name, const Texture & value)
+	bool Shader::setUniform(const String & name, const Texture & value) const
 	{
 		UniformBinder u(this, name);
 		if (u)
@@ -325,70 +327,69 @@ namespace ml
 				if ((m_textures.size() + 1) >= maxUnits)
 				{
 					Debug::logError("Impossible to use texture \"{0}\" for source: all available texture units are used: {1}", name, maxUnits);
-					return (*this);
+					return u;
 				}
 			}
 			m_textures[u.location] = &value;
 		}
-		return (*this);
+		return u;
 	}
 	
 	
-	Shader & Shader::setUniformArray(const String & name, int32_t count, const float * value)
+	bool Shader::setUniformArray(const String & name, int32_t count, const float * value) const
 	{
 		UniformBinder u(this, name);
 		if (u)
 		{
 			OpenGL::uniformArray1f(u.location, count, value);
 		}
-		return (*this);
+		return u;
 	}
-	Shader & Shader::setUniformArray(const String & name, int32_t count, const vec2f * value)
+	bool Shader::setUniformArray(const String & name, int32_t count, const vec2f * value) const
 	{
 		UniformBinder u(this, name);
 		if (u)
 		{
 			OpenGL::uniformArray2f(u.location, count, &vec2f::contiguous(value, count)[0]);
 		}
-		return (*this);
+		return u;
 	}
-	Shader & Shader::setUniformArray(const String & name, int32_t count, const vec3f * value)
+	bool Shader::setUniformArray(const String & name, int32_t count, const vec3f * value) const
 	{
 		UniformBinder u(this, name);
 		if (u)
 		{
 			OpenGL::uniformArray3f(u.location, count, &vec3f::contiguous(value, count)[0]);
 		}
-		return (*this);
+		return u;
 	}
-	Shader & Shader::setUniformArray(const String & name, int32_t count, const vec4f * value)
+	bool Shader::setUniformArray(const String & name, int32_t count, const vec4f * value) const
 	{
 		UniformBinder u(this, name);
 		if (u)
 		{
 			OpenGL::uniformArray4f(u.location, count, &vec4f::contiguous(value, count)[0]);
 		}
-		return (*this);
+		return u;
 	}
-	Shader & Shader::setUniformArray(const String & name, int32_t count, const mat3f * value)
+	bool Shader::setUniformArray(const String & name, int32_t count, const mat3f * value) const
 	{
 		UniformBinder u(this, name);
 		if (u)
 		{
 			OpenGL::uniformMatrixArray3f(u.location, count, false, &mat3f::contiguous(value, count)[0]);
 		}
-		return (*this);
+		return u;
 	}
-	Shader & Shader::setUniformArray(const String & name, int32_t count, const mat4f * value)
+	bool Shader::setUniformArray(const String & name, int32_t count, const mat4f * value) const
 	{
 		UniformBinder u(this, name);
 		if (u)
 		{
 			OpenGL::uniformMatrixArray4f(u.location, count, false, &mat4f::contiguous(value, count)[0]);
 		}
-		return (*this);
+		return u;
 	}
-
 
 	bool Shader::compile(const char * vs, const char * gs, const char * fs)
 	{
@@ -402,15 +403,15 @@ namespace ml
 			return ml::Debug::logError("Geometry shaders are not available on your system.");
 		}
 
-		if ((*this))
+		cleanup();
+
+		if (!(*this) && !(get_ref() = OpenGL::createProgramObject()))
 		{
-			OpenGL::deleteShader((*this));
+			return Debug::logError("Failed creating shader object");
 		}
 
 		m_textures.clear();
 		m_uniforms.clear();
-
-		uint32_t shaderProgram = OpenGL::createProgramObject();
 
 		// Create the vertex shader if needed
 		if (vs)
@@ -425,12 +426,12 @@ namespace ml
 			{
 				const char * log = OpenGL::getInfoLog(vertexShader);
 				OpenGL::deleteShader(vertexShader);
-				OpenGL::deleteShader(shaderProgram);
+				OpenGL::deleteShader(*this);
 				return Debug::logError("Failed to compile vertex source: {0}", log);
 			}
 
 			// Attach the shader to the program, and delete it
-			OpenGL::attachShader(shaderProgram, vertexShader);
+			OpenGL::attachShader(*this, vertexShader);
 			OpenGL::deleteShader(vertexShader);
 		}
 
@@ -447,12 +448,12 @@ namespace ml
 			{
 				const char * log = OpenGL::getInfoLog(geometryShader);
 				OpenGL::deleteShader(geometryShader);
-				OpenGL::deleteShader(shaderProgram);
+				OpenGL::deleteShader(*this);
 				return Debug::logError("Failed to compile geometry source: {0}", log);
 			}
 
 			// Attach the shader to the program, and delete it
-			OpenGL::attachShader(shaderProgram, geometryShader);
+			OpenGL::attachShader(*this, geometryShader);
 			OpenGL::deleteShader(geometryShader);
 		}
 
@@ -469,27 +470,25 @@ namespace ml
 			{
 				const char * log = OpenGL::getInfoLog(fragmentShader);
 				OpenGL::deleteShader(fragmentShader);
-				OpenGL::deleteShader(shaderProgram);
+				OpenGL::deleteShader(*this);
 				return Debug::logError("Failed to compile fragment source: {0}", log);
 			}
 
 			// Attach the shader to the program, and delete it
-			OpenGL::attachShader(shaderProgram, fragmentShader);
+			OpenGL::attachShader(*this, fragmentShader);
 			OpenGL::deleteShader(fragmentShader);
 		}
 
 		// Link the program
-		OpenGL::linkShader(shaderProgram);
+		OpenGL::linkShader(*this);
 
 		// Check the link log
-		if (!OpenGL::getProgramParameter(shaderProgram, GL::ObjectLinkStatus))
+		if (!OpenGL::getProgramParameter(*this, GL::ObjectLinkStatus))
 		{
-			const char * log = OpenGL::getInfoLog(shaderProgram);
-			OpenGL::deleteShader(shaderProgram);
+			const char * log = OpenGL::getInfoLog(*this);
+			OpenGL::deleteShader(*this);
 			return Debug::logError("Failed to link source: {0}", log);
 		}
-
-		get_ref() = shaderProgram;
 
 		OpenGL::flush();
 

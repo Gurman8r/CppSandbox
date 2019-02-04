@@ -1,5 +1,5 @@
-#ifndef _DRAWABLE_HPP_
-#define _DRAWABLE_HPP_
+#ifndef _I_DRAWABLE_HPP_
+#define _I_DRAWABLE_HPP_
 
 #include <MemeGraphics/RenderBatch.hpp>
 
@@ -7,10 +7,10 @@ namespace ml
 {
 	class RenderTarget;
 
-	class ML_GRAPHICS_API IRenderer
+	class ML_GRAPHICS_API IDrawable
 	{
 	public:
-		virtual ~IRenderer() {}
+		virtual ~IDrawable() {}
 
 		virtual void draw(RenderTarget & target, RenderBatch batch) const = 0;
 
@@ -19,4 +19,4 @@ namespace ml
 	};
 }
 
-#endif // !_DRAWABLE_HPP_
+#endif // !_I_DRAWABLE_HPP_

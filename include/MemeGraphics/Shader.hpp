@@ -1,8 +1,6 @@
 #ifndef _SHADER_HPP_
 #define _SHADER_HPP_
 
-#include <MemeCore/ITrackable.hpp>
-#include <MemeCore/IResource.hpp>
 #include <MemeGraphics/Uniform.hpp>
 #include <MemeGraphics/Texture.hpp>
 #include <MemeGraphics/Transform.hpp>
@@ -24,51 +22,51 @@ namespace ml
 		bool loadFromFile(const String & filename) override;
 		bool loadFromFile(const String & vs, const String & fs);
 		bool loadFromFile(const String & vs, const String & gs, const String & fs);
-		bool loadFromMemory(const String& vs, const String& fs);
-		bool loadFromMemory(const String& vs, const String& gs, const String& fs);
+		bool loadFromMemory(const String & vs, const String & fs);
+		bool loadFromMemory(const String & vs, const String & gs, const String & fs);
 
 	public:
-		Shader &	bind(bool bindTextures = true);
-		static void bind(const Shader* shader, bool bindTextures = true);
+		bool bind(bool bindTextures = true) const;
+		static bool bind(const Shader* shader, bool bindTextures = true);
 
 	public:
 		// Set Uniform
-		Shader & setUniform(const String & name, const float & value);
-		Shader & setUniform(const String & name, const int32_t & value);
-		Shader & setUniform(const String & name, const uint32_t & value);
-		Shader & setUniform(const String & name, const vec2f & value);
-		Shader & setUniform(const String & name, const vec3f & value);
-		Shader & setUniform(const String & name, const vec4f & value);
-		Shader & setUniform(const String & name, const vec2i & value);
-		Shader & setUniform(const String & name, const vec3i & value);
-		Shader & setUniform(const String & name, const vec4i & value);
-		Shader & setUniform(const String & name, const mat3f & value);
-		Shader & setUniform(const String & name, const mat4f & value);
-		Shader & setUniform(const String & name, const Texture & value);
+		bool setUniform(const String & name, const float & value) const;
+		bool setUniform(const String & name, const int32_t & value) const;
+		bool setUniform(const String & name, const uint32_t & value) const;
+		bool setUniform(const String & name, const vec2f & value) const;
+		bool setUniform(const String & name, const vec3f & value) const;
+		bool setUniform(const String & name, const vec4f & value) const;
+		bool setUniform(const String & name, const vec2i & value) const;
+		bool setUniform(const String & name, const vec3i & value) const;
+		bool setUniform(const String & name, const vec4i & value) const;
+		bool setUniform(const String & name, const mat3f & value) const;
+		bool setUniform(const String & name, const mat4f & value) const;
+		bool setUniform(const String & name, const Texture & value) const;
 
 		// Set Uniform Array
-		Shader & setUniformArray(const String & name, int32_t count, const float * value);
-		Shader & setUniformArray(const String & name, int32_t count, const vec2f * value);
-		Shader & setUniformArray(const String & name, int32_t count, const vec3f * value);
-		Shader & setUniformArray(const String & name, int32_t count, const vec4f * value);
-		Shader & setUniformArray(const String & name, int32_t count, const mat3f * value);
-		Shader & setUniformArray(const String & name, int32_t count, const mat4f * value);
+		bool setUniformArray(const String & name, int32_t count, const float * value) const;
+		bool setUniformArray(const String & name, int32_t count, const vec2f * value) const;
+		bool setUniformArray(const String & name, int32_t count, const vec3f * value) const;
+		bool setUniformArray(const String & name, int32_t count, const vec4f * value) const;
+		bool setUniformArray(const String & name, int32_t count, const mat3f * value) const;
+		bool setUniformArray(const String & name, int32_t count, const mat4f * value) const;
 
 	public:
 		template <class T>
-		Shader & setUniform(Uniform::ID id, const T & value)
+		bool setUniform(Uniform::ID id, const T & value) const
 		{
 			return setUniform(Uniform::Names[id], value);
 		};
-
+		
 		template <class T>
-		Shader & setUniformArray(Uniform::ID id, int32_t count, T * value)
+		bool setUniformArray(Uniform::ID id, int32_t count, T * value) const
 		{
 			return setUniformArray(Uniform::Names[id], value, count);
 		};
-
+		
 		template <class T>
-		Shader & setUniformArray(Uniform::ID id, const std::vector<T> & value)
+		bool setUniformArray(Uniform::ID id, const std::vector<T> & value) const
 		{
 			return setUniformArray(Uniform::Names[id], (int32_t)value.size(), &value[0]);
 		};

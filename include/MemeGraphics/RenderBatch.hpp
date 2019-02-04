@@ -5,41 +5,43 @@
 #include <MemeGraphics/VertexBuffer.hpp>
 #include <MemeGraphics/IndexBuffer.hpp>
 #include <MemeGraphics/FrameBuffer.hpp>
+#include <MemeGraphics/RenderBuffer.hpp>
 #include <MemeGraphics/Shader.hpp>
 #include <MemeGraphics/Lists.hpp>
 
 namespace ml
 {
-	struct ML_GRAPHICS_API RenderBatch final : public ITrackable
+	struct ML_GRAPHICS_API RenderBatch final
+		: public ITrackable
 	{
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		VAO		* vao;
-		VBO		* vbo;
-		IBO		* ibo;
-		FBO		* fbo;
-		Shader	* shader;
+		VAO	* vao;
+		VBO	* vbo;
+		IBO	* ibo;
+		FBO	* fbo;
+		RBO	* rbo;
 
-		const Transform * proj;
-		const Transform * view;
-		const Transform	* model;
-		const vec4f		* color;
-		const Texture	* texture;
-		const VertexList* vertices;
+		const Shader	 * shader;
+		const Transform  * proj;
+		const Transform  * view;
+		const Transform	 * model;
+		const vec4f		 * color;
+		const Texture	 * texture;
+		const VertexList * vertices;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		RenderBatch(
-			VAO * vao, VBO * vbo,
-			const Transform * proj, const Transform * view,
-			Shader * shader)
+			VAO * vao, VBO * vbo, const Transform * proj, const Shader * shader)
 			: vao		(vao)
 			, vbo		(vbo)
 			, ibo		(NULL)
 			, fbo		(NULL)
+			, rbo		(NULL)
 			, shader	(shader)
 			, proj		(proj)
-			, view		(view)
+			, view		(NULL)
 			, model		(NULL)
 			, color		(NULL)
 			, texture	(NULL)
@@ -51,6 +53,7 @@ namespace ml
 			, vbo		(NULL)
 			, ibo		(NULL)
 			, fbo		(NULL)
+			, rbo		(NULL)
 			, shader	(NULL)
 			, proj		(NULL)
 			, view		(NULL)
@@ -65,6 +68,7 @@ namespace ml
 			, vbo		(copy.vbo)
 			, ibo		(copy.ibo)
 			, fbo		(copy.fbo)
+			, rbo		(copy.rbo)
 			, shader	(copy.shader)
 			, proj		(copy.proj)
 			, view		(copy.view)

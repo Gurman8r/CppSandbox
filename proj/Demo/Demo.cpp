@@ -1,5 +1,6 @@
 #include "Demo.hpp"
 #include <MemeCore/EventSystem.hpp>
+#include <MemeWindow/WindowEvents.hpp>
 
 #ifdef ML_SYSTEM_WINDOWS
 #include <../thirdparty/include/dirent.h>
@@ -13,11 +14,55 @@ namespace DEMO
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Demo::Demo()
+		: m_status(ml::Debug::Success)
 	{
+		ML_EventSystem.addListener(DemoEvent::EV_Enter, this);
+		ML_EventSystem.addListener(DemoEvent::EV_Load,	this);
+		ML_EventSystem.addListener(DemoEvent::EV_Start, this);
+		ML_EventSystem.addListener(DemoEvent::EV_Update,this);
+		ML_EventSystem.addListener(DemoEvent::EV_Draw,	this);
+		ML_EventSystem.addListener(DemoEvent::EV_Exit,	this);
 	}
 
 	Demo::~Demo()
 	{
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	void Demo::onEvent(const ml::Event * value)
+	{
+		ml::RenderWindow::onEvent(value);
+
+		switch (value->eventID())
+		{
+		case DemoEvent::EV_Enter:	onEnter(*value->Cast<EnterEvent>());	break;
+		case DemoEvent::EV_Load:	onLoad(*value->Cast<LoadEvent>());		break;
+		case DemoEvent::EV_Start:	onStart(*value->Cast<StartEvent>());	break;
+		case DemoEvent::EV_Update:	onUpdate(*value->Cast<UpdateEvent>());	break;
+		case DemoEvent::EV_Draw:	onDraw(*value->Cast<DrawEvent>());		break;
+		case DemoEvent::EV_Exit:	onExit(*value->Cast<ExitEvent>());		break;
+
+		case ml::WindowEvent::EV_WindowResized:
+			if (auto ev = value->Cast<ml::WindowResizedEvent>())
+			{
+				// Orthographic
+				proj[P_ortho] = ml::Transform::Orthographic(
+					0.0f, (float)this->width(),
+					0.0f, (float)this->height(),
+					SETTINGS.orthoNear,
+					SETTINGS.orthoFar);
+
+				// Perspective
+				proj[P_persp] = ml::Transform::Perspective(
+					SETTINGS.fieldOfView,
+					this->aspect(),
+					SETTINGS.perspNear,
+					SETTINGS.perspFar);
+			}
+			break;
+		}
+
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -213,19 +258,19 @@ namespace DEMO
 			&& load<ml::Texture>(textures[TEX_dean], "/images/dean.png")
 			&& load<ml::Texture>(textures[TEX_sanic], "/images/sanic.png")
 			&& load<ml::Texture>(textures[TEX_earth], "/images/earth.png")
-			//&& load<ml::Tex>(textures[TEX_bg_clouds], "/textures/bg/bg_clouds.png")
-			//&& load<ml::Tex>(textures[TEX_sky_clouds], "/textures/bg/sky_clouds.png")
-			//&& load<ml::Tex>(textures[TEX_sky_water], "/textures/bg/sky_water.png")
-			//&& load<ml::Tex>(textures[TEX_earth_cm], "/textures/earth/earth_cm_2k.png")
-			//&& load<ml::Tex>(textures[TEX_earth_dm], "/textures/earth/earth_dm_2k.png")
-			//&& load<ml::Tex>(textures[TEX_earth_hm], "/textures/earth/earth_hm_2k.png")
-			//&& load<ml::Tex>(textures[TEX_earth_lm], "/textures/earth/earth_lm_2k.png")
-			//&& load<ml::Tex>(textures[TEX_earth_nm], "/textures/earth/earth_nm_2k.png")
-			//&& load<ml::Tex>(textures[TEX_earth_sm], "/textures/earth/earth_sm_2k.png")
-			//&& load<ml::Tex>(textures[TEX_mars_dm], "/textures/mars/mars_dm_2k.png")
-			//&& load<ml::Tex>(textures[TEX_mars_nm], "/textures/mars/mars_nm_2k.png")
-			//&& load<ml::Tex>(textures[TEX_moon_dm], "/textures/moon/moon_dm_2k.png")
-			//&& load<ml::Tex>(textures[TEX_moon_nm], "/textures/moon/moon_nm_2k.png")
+			//&& load<ml::Texture>(textures[TEX_bg_clouds], "/textures/bg/bg_clouds.png")
+			//&& load<ml::Texture>(textures[TEX_sky_clouds], "/textures/bg/sky_clouds.png")
+			//&& load<ml::Texture>(textures[TEX_sky_water], "/textures/bg/sky_water.png")
+			//&& load<ml::Texture>(textures[TEX_earth_cm], "/textures/earth/earth_cm_2k.png")
+			//&& load<ml::Texture>(textures[TEX_earth_dm], "/textures/earth/earth_dm_2k.png")
+			//&& load<ml::Texture>(textures[TEX_earth_hm], "/textures/earth/earth_hm_2k.png")
+			//&& load<ml::Texture>(textures[TEX_earth_lm], "/textures/earth/earth_lm_2k.png")
+			//&& load<ml::Texture>(textures[TEX_earth_nm], "/textures/earth/earth_nm_2k.png")
+			//&& load<ml::Texture>(textures[TEX_earth_sm], "/textures/earth/earth_sm_2k.png")
+			//&& load<ml::Texture>(textures[TEX_mars_dm], "/textures/mars/mars_dm_2k.png")
+			//&& load<ml::Texture>(textures[TEX_mars_nm], "/textures/mars/mars_nm_2k.png")
+			//&& load<ml::Texture>(textures[TEX_moon_dm], "/textures/moon/moon_dm_2k.png")
+			//&& load<ml::Texture>(textures[TEX_moon_nm], "/textures/moon/moon_nm_2k.png")
 			&& load<ml::Texture>(textures[TEX_stone_dm], "/textures/stone/stone_dm.png")
 			&& load<ml::Texture>(textures[TEX_stone_hm], "/textures/stone/stone_hm.png")
 			&& load<ml::Texture>(textures[TEX_stone_nm], "/textures/stone/stone_nm.png")
@@ -237,9 +282,22 @@ namespace DEMO
 		// Load Shaders
 		return ml::Debug::log("Loading Shaders...")
 			&& load<ml::Shader>(shaders[GL_basic3D], "/shaders/basic3D.shader")
+			&& load<ml::Shader>(shaders[GL_sprites], "/shaders/sprites.shader")
 			&& load<ml::Shader>(shaders[GL_text], "/shaders/text.shader")
 			&& load<ml::Shader>(shaders[GL_geometry], "/shaders/geometry.shader")
 			&& load<ml::Shader>(shaders[GL_framebuffer], "/shaders/framebuffer.shader")
+			;
+	}
+
+	bool Demo::loadUniforms()
+	{
+		return ml::Debug::log("Loading Uniforms...")
+			&& (uniforms[U_Model]	= (ml::Uniform::Model))
+			&& (uniforms[U_View]	= (ml::Uniform::View))
+			&& (uniforms[U_Proj]	= (ml::Uniform::Proj))
+			&& (uniforms[U_Color]	= (ml::Uniform::Color))
+			&& (uniforms[U_Texture] = (ml::Uniform::Texture))
+			&& (uniforms[U_Curve]	= (ml::Uniform::Curve))
 			;
 	}
 
@@ -250,6 +308,12 @@ namespace DEMO
 			&& load<ml::Mesh>(mesh[MESH_example], "/meshes/example.mesh")
 			&& load<ml::Mesh>(mesh[MESH_sphere8x6], "/meshes/sphere8x6.mesh")
 			&& load<ml::Mesh>(mesh[MESH_sphere32x24], "/meshes/sphere32x24.mesh")
+			;
+	}
+
+	bool Demo::loadModels()
+	{
+		return ml::Debug::log("Loading Models...")
 			;
 	}
 
@@ -358,12 +422,12 @@ namespace DEMO
 				.bind();
 			// RBO
 			rbo[RBO_scene]
-				.create(1280, 720)
+				.create(this->width(), this->height())
 				.bind()
 				.bufferStorage(ml::GL::Depth24_Stencil8)
 				.bufferFramebuffer(ml::GL::DepthStencilAttachment)
 				.unbind();
-			// Tex
+			// Texture
 			if (textures[TEX_framebuffer].create(
 				rbo[RBO_scene].width(),
 				rbo[RBO_scene].height()
@@ -437,7 +501,7 @@ namespace DEMO
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Demo::onEnter(const EnterEvent & ev)
+	void Demo::onEnter(const EnterEvent & ev)
 	{
 		// Start Master Timer
 		ML_Time.start();
@@ -448,27 +512,61 @@ namespace DEMO
 			// Run Script
 			if (!SETTINGS.scrFile.empty())
 			{
-				return ML_Interpreter.execFile(
+				m_status = ML_Interpreter.execFile(
 					SETTINGS.pathTo(SETTINGS.scrPath + SETTINGS.scrFile)
-				);
+				)
+				? ml::Debug::Success
+				: ml::Debug::Error;
 			}
-			return ml::Debug::logWarning("No Script");
+			else
+			{
+				m_status = ml::Debug::logWarning("No Script");
+			}
 		}
-		return false;
+		else
+		{
+			m_status = ml::Debug::Error;
+		}
 	}
 	
-	bool Demo::onLoad(const LoadEvent & ev)
+	void Demo::onLoad(const LoadEvent & ev)
 	{
-		return (ml::Debug::log("Loading..."))
-			&& loadFonts()
-			&& loadImages()
-			&& loadTextures()
-			&& loadShaders()
-			&& loadMeshes()
-			&& loadBuffers()
-			&& loadAudio()
-			&& loadNetwork()
-			;
+		if (ml::Debug::log("Creating Window...") && create(
+			SETTINGS.title,
+			ml::VideoMode({ SETTINGS.width, SETTINGS.height }, SETTINGS.bitsPerPixel),
+			ml::Window::Style::Default,
+			ml::Context(
+				SETTINGS.majorVersion,
+				SETTINGS.minorVersion,
+				SETTINGS.depthBits,
+				SETTINGS.stencilBits,
+				SETTINGS.profile,
+				SETTINGS.multisample,
+				SETTINGS.srgbCapable)
+		))
+		{
+			this->setCursor(ml::Window::Cursor::Normal);
+			this->setPosition((ml::VideoMode::desktop().size - this->size()) / 2);
+			this->setViewport(ml::vec2i::Zero, this->size());
+
+			m_status = (ml::Debug::log("Loading Resources..."))
+				&& loadFonts()
+				&& loadImages()
+				&& loadTextures()
+				&& loadShaders()
+				&& loadUniforms()
+				&& loadMeshes()
+				&& loadModels()
+				&& loadBuffers()
+				&& loadAudio()
+				&& loadNetwork()
+				? ml::Debug::Success
+				: ml::Debug::Error;
+		}
+		else
+		{
+			m_status = ml::Debug::logError("Failed Creating Window");
+		}
 	}
 	
 	void Demo::onStart(const StartEvent & ev)
@@ -478,20 +576,20 @@ namespace DEMO
 			// Set Window Icon
 			if (ml::Image icon = images[IMG_icon])
 			{
-				ev.window.setIcons({ icon.flipVertically() });
+				this->setIcons({ icon.flipVertically() });
 			}
 
 			// Orthographic
 			proj[P_ortho] = ml::Transform::Orthographic(
-				0.0f, (float)ev.window.width(),
-				0.0f, (float)ev.window.height(),
+				0.0f, (float)this->width(),
+				0.0f, (float)this->height(),
 				SETTINGS.orthoNear,
 				SETTINGS.orthoFar);
 
 			// Perspective
 			proj[P_persp] = ml::Transform::Perspective(
 				SETTINGS.fieldOfView,
-				ev.window.aspect(),
+				this->aspect(),
 				SETTINGS.perspNear,
 				SETTINGS.perspFar);
 
@@ -503,19 +601,19 @@ namespace DEMO
 				ml::vec3f::Up);
 
 			// Cube
-			model[M_cube]
+			transform[T_cube]
 				.translate({ +5.0f, 0.0f, 0.0f })
 				.rotate(0.0f, ml::vec3f::Up)
 				.scale(ml::vec3f::One);
 
 			// Quad
-			model[M_quad]
+			transform[T_quad]
 				.translate({ -5.0f, 0.0f, 0.0f })
 				.rotate(0.0f, ml::vec3f::Up)
 				.scale(ml::vec3f::One);
 
 			// Sphere 32x24
-			model[M_sphere32x24]
+			transform[T_sphere32x24]
 				.translate({ 0.0f, 0.0f, 0.0f })
 				.rotate(0.0f, ml::vec3f::Up)
 				.scale(ml::vec3f::One);
@@ -534,19 +632,28 @@ namespace DEMO
 	void Demo::onUpdate(const UpdateEvent & ev)
 	{
 		// Set Window Title
-		ev.window.setTitle(ml::String::Format(
+		this->setTitle(ml::String::Format(
 			"{0} | {1} | {2} ({3} fps) | {4}",
 			SETTINGS.title,
 			ML_Time.elapsed(),
 			ev.elapsed.delta(),
 			ml::Time::calculateFPS(ev.elapsed.delta()),
-			ev.window.getCursorPos()
+			this->getCursorPos()
 		));
 
-		// value_type Input
 		if (ev.input.getKeyDown(ml::NativeKey::Escape))
 		{
-			ev.window.close();
+			this->close();
+		}
+
+		if (ev.input.getKeyDown(ml::NativeKey::R))
+		{
+			//loadShaders();
+		}
+
+		if (ev.input.getKeyDown(ml::NativeKey::Pause))
+		{
+			ml::Debug::pause(0);
 		}
 
 		if (SETTINGS.isServer)
@@ -564,7 +671,7 @@ namespace DEMO
 		fbo[FBO_scene].bind();
 		{
 			// Clear
-			ev.window.clear(ml::Color::Violet);
+			this->clear(ml::Color::Violet);
 			
 			// 3D
 			ml::OpenGL::enable(ml::GL::CullFace);
@@ -573,18 +680,17 @@ namespace DEMO
 			// Cube
 			if (true)
 			{
-				shaders[GL_basic3D]
-					.setUniform(ml::Uniform::Color, ml::Color::White)
-					.setUniform(ml::Uniform::Tex,	textures[TEX_stone_dm])
-					.setUniform(ml::Uniform::Proj,	proj[P_persp])
-					.setUniform(ml::Uniform::View,	view[V_camera])
-					.setUniform(ml::Uniform::Model, model[M_cube]
-						.translate(ml::vec3f::Zero)
-						.rotate(+ev.elapsed.delta(), ml::vec3f::One)
-						.scale(ml::vec3f::One))
-					.bind();
+				shaders[GL_basic3D].setUniform(uniforms[U_Color], ml::Color::White);
+				shaders[GL_basic3D].setUniform(uniforms[U_Texture], textures[TEX_stone_dm]);
+				shaders[GL_basic3D].setUniform(uniforms[U_Proj], proj[P_persp]);
+				shaders[GL_basic3D].setUniform(uniforms[U_View], view[V_camera]);
+				shaders[GL_basic3D].setUniform(uniforms[U_Model], transform[T_cube]
+					.translate(ml::vec3f::Zero)
+					.rotate(+ev.elapsed.delta(), ml::vec3f::One)
+					.scale(ml::vec3f::One));
+				shaders[GL_basic3D].bind();
 
-				ev.window.draw(
+				this->draw(
 					vao[VAO_cube],
 					vbo[VBO_cube],
 					ibo[IBO_cube]);
@@ -593,27 +699,19 @@ namespace DEMO
 			// Sphere32x24
 			if (true)
 			{
-				shaders[GL_basic3D]
-					.setUniform(ml::Uniform::Color, ml::Color::White)
-					.setUniform(ml::Uniform::Tex,	textures[TEX_earth])
-					.setUniform(ml::Uniform::Proj,	proj[P_persp])
-					.setUniform(ml::Uniform::View,	view[V_camera])
-					.setUniform(ml::Uniform::Model, model[M_sphere32x24]
-						.translate(ml::vec3f::Zero)
-						.rotate(+ev.elapsed.delta(), ml::vec3f::Up)
-						.scale(ml::vec3f::One))
-					.bind();
+				shaders[GL_basic3D].setUniform(uniforms[U_Color], ml::Color::White);
+				shaders[GL_basic3D].setUniform(uniforms[U_Texture], textures[TEX_earth]);
+				shaders[GL_basic3D].setUniform(uniforms[U_Proj], proj[P_persp]);
+				shaders[GL_basic3D].setUniform(uniforms[U_View], view[V_camera]);
+				shaders[GL_basic3D].setUniform(uniforms[U_Model], transform[T_sphere32x24]
+					.translate(ml::vec3f::Zero)
+					.rotate(+ev.elapsed.delta(), ml::vec3f::Up)
+					.scale(ml::vec3f::One));
+				shaders[GL_basic3D].bind();
 
-				vao[VAO_sphere32x24].bind();
-				vbo[VBO_sphere32x24].bind();
-				{
-					ml::OpenGL::drawArrays(
-						vao[VAO_sphere32x24].mode(),
-						0,
-						(int32_t)mesh[MESH_sphere32x24].contiguous().size());
-				}
-				vbo[VBO_sphere32x24].unbind();
-				vao[VAO_sphere32x24].unbind();
+				this->draw(
+					vao[VAO_sphere32x24], 
+					vbo[VBO_sphere32x24]);
 			}
 
 			// 2D
@@ -623,18 +721,17 @@ namespace DEMO
 			// Quad
 			if (true)
 			{
-				shaders[GL_basic3D]
-					.setUniform(ml::Uniform::Color, ml::Color::White)
-					.setUniform(ml::Uniform::Tex,	textures[TEX_sanic])
-					.setUniform(ml::Uniform::Proj,	proj[P_persp])
-					.setUniform(ml::Uniform::View,	view[V_camera])
-					.setUniform(ml::Uniform::Model, model[M_quad]
-						.translate(ml::vec3f::Zero)
-						.rotate(-ev.elapsed.delta(), ml::vec3f::Forward)
-						.scale(ml::vec3f::One))
-					.bind();
+				shaders[GL_sprites].setUniform(uniforms[U_Color], ml::Color::White);
+				shaders[GL_sprites].setUniform(uniforms[U_Texture], textures[TEX_sanic]);
+				shaders[GL_sprites].setUniform(uniforms[U_Proj], proj[P_persp]);
+				shaders[GL_sprites].setUniform(uniforms[U_View], view[V_camera]);
+				shaders[GL_sprites].setUniform(uniforms[U_Model], transform[T_quad]
+					.translate(ml::vec3f::Zero)
+					.rotate(-ev.elapsed.delta(), ml::vec3f::Forward)
+					.scale(ml::vec3f::One));
+				shaders[GL_sprites].bind();
 
-				ev.window.draw(
+				this->draw(
 					vao[VAO_quad], 
 					vbo[VBO_quad], 
 					ibo[IBO_quad]);
@@ -647,12 +744,11 @@ namespace DEMO
 					&vao[VAO_text],
 					&vbo[VBO_text],
 					&proj[P_ortho],
-					NULL,
 					&shaders[GL_text]);
 
 				static const uint32_t  fontSize = 24;
 				static const ml::vec2f offset = { 0.0f, -(float)fontSize };
-				static const ml::vec2f origin = { (float)fontSize, (float)ev.window.height() };
+				static const ml::vec2f origin = { (float)fontSize, (float)this->height() };
 				static const ml::vec4f colors[MAX_FONT] = {
 					ml::Color::Red,
 					ml::Color::Green,
@@ -663,50 +759,48 @@ namespace DEMO
 				// Dynamic Text
 				for (uint32_t i = (MIN_FONT + 1); i < MAX_FONT; i++)
 				{
-					ev.window.draw(text[TXT_dynamic]
+					this->draw(text[TXT_dynamic]
 						.setFont(&fonts[i])
 						.setFontSize(fontSize)
 						.setScale(ml::vec2f::One)
 						.setPosition(origin + (offset * (float)(i + 1)))
 						.setColor(colors[i])
-						.setText(fonts[i].to_str())// + " | " + ev.window.title())
+						.setText(fonts[i].to_str())// + " | " + this->title())
 					, batch);
 				}
 
 				// Static Text
-				ev.window.draw(text[TXT_static], batch);
+				this->draw(text[TXT_static], batch);
 			}
 
 			// Geometry
 			if (true)
 			{
-				shaders[GL_geometry]
-					.setUniform(ml::Uniform::CurveMode, 1)
-					.setUniform(ml::Uniform::Color, ml::Color::Red)
-					.bind();
+				shaders[GL_geometry].setUniform(uniforms[U_Curve], 1);
+				shaders[GL_geometry].setUniform(uniforms[U_Color], ml::Color::Red);
+				shaders[GL_geometry].bind();
 				ml::OpenGL::drawArrays(ml::GL::Points, 0, 4);
 			}
 
 		}
 		fbo[FBO_scene].unbind();
 		
-		ev.window.clear(ml::Color::White);
+		this->clear(ml::Color::White);
 		{
-			shaders[GL_framebuffer]
-				.setUniform(ml::Uniform::Tex, textures[TEX_framebuffer])
-				.bind();
+			shaders[GL_framebuffer].setUniform(uniforms[U_Texture], textures[TEX_framebuffer]);
+			shaders[GL_framebuffer].setUniform("u_mode", 3);
+			shaders[GL_framebuffer].bind();
 			
-			ev.window.draw(
+			this->draw(
 				vao[VAO_quad],
 				vbo[VBO_quad],
 				ibo[IBO_quad]);
 		}
-		ev.window.swapBuffers().pollEvents();
+		this->swapBuffers().pollEvents();
 	}
 	
-	int32_t Demo::onExit(const ExitEvent & ev)
+	void Demo::onExit(const ExitEvent & ev)
 	{
-		return ev.exitCode;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

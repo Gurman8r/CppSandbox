@@ -70,8 +70,6 @@ namespace ml
 		Matrix(const Matrix<U, C, R> & copy, const data_type dv = (data_type)(0))
 			: self_type()
 		{
-			const size_type imax = std::min<size_type>(Size, copy.Size);
-
 			for (size_type i = 0; i < Size; i++)
 			{
 				if (i < copy.Size)

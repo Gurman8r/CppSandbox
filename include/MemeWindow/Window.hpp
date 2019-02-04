@@ -92,8 +92,6 @@ namespace ml
 		inline const uint32_t &		height()	const { return size()[1]; }
 		inline const float			aspect()	const { return (float)width() / (float)height(); };
 
-		inline bool good() const { return m_window; }
-
 	protected:
 		void *		m_window;
 		void *		m_monitor;

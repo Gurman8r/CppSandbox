@@ -56,7 +56,7 @@ namespace ml
 		case WindowEvent::EV_WindowResized:
 			if(auto ev = value->Cast<WindowResizedEvent>())
 			{
-				setViewport({ 0, 0 }, { ev->width, ev->height });
+				setViewport({ 0, 0 }, size());
 			}
 		break;
 		case WindowEvent::EV_WindowFramebufferResized:

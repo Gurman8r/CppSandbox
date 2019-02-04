@@ -1,14 +1,14 @@
 #ifndef _SPRITE_HPP_
 #define _SPRITE_HPP_
 
-#include <MemeGraphics/IRenderer.hpp>
+#include <MemeGraphics/IDrawable.hpp>
 #include <MemeGraphics/Texture.hpp>
 
 namespace ml
 {
 	class ML_GRAPHICS_API Sprite
 		: public ITrackable
-		, public IRenderer
+		, public IDrawable
 	{
 	public:
 		Sprite();

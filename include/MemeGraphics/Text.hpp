@@ -1,7 +1,7 @@
 #ifndef _TEXT_HPP_
 #define _TEXT_HPP_
 
-#include <MemeGraphics/IRenderer.hpp>
+#include <MemeGraphics/IDrawable.hpp>
 #include <MemeGraphics/Font.hpp>
 #include <MemeGraphics/RenderTarget.hpp>
 #include <MemeGraphics/Lists.hpp>
@@ -10,7 +10,7 @@ namespace ml
 {
 	class ML_GRAPHICS_API Text
 		: public ITrackable
-		, public IRenderer
+		, public IDrawable
 	{
 	public:
 		Text();
@@ -27,7 +27,7 @@ namespace ml
 
 	public:
 		inline const Font *		getFont()		const { return m_font;		}
-		inline const uint32_t &	getFontSize()	const { return m_fontSize;	}
+		inline const uint32_t	getFontSize()	const { return m_fontSize;	}
 		inline const vec2f &	getPosition()	const { return m_position;	}
 		inline const vec2f &	getScale()		const { return m_scale;		}
 		inline const String &	getText()		const { return m_text;		}

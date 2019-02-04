@@ -145,12 +145,10 @@ namespace ml
 			face->glyph->bitmap.buffer,
 			face->glyph->bitmap.width,
 			face->glyph->bitmap.rows,
-			GL::Red, 
+			GL::RGBA,
 			GL::Red,
 			true, 
-			true,
-			false,
-			false))
+			true))
 		{
 			Debug::logWarning("Failed Loading Glyph Texture: \'{0}\'", (char)value);
 		}

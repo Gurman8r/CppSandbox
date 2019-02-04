@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * */
 
 #include "Demo.hpp"
-#include "Testing.hpp"
+#include <MemeCore/EventSystem.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -11,67 +11,34 @@
 
 int32_t main(int32_t argc, char ** argv)
 {
-	// Create Demo
-	DEMO::Demo demo;
-	
 	// Load Settings
 	if (!SETTINGS.loadFromFile(CONFIG_INI))
 	{
-		return ml::Debug::logError("Failed Loading SendSettings")
+		return ml::Debug::logError("Failed Loading Settings")
 			|| ml::Debug::pause(EXIT_FAILURE);
 	}
+	
+	// Create Demo
+	DEMO::Demo demo;
 
 	// Enter
-	if (!demo.onEnter({ argc, argv }))
+	ML_EventSystem.fireEvent(DEMO::EnterEvent(argc, argv));
+	if (demo.checkStatus() == ml::Debug::Error)
 	{
 		return ml::Debug::logError("Failed Entering Program")
 			|| ml::Debug::pause(EXIT_FAILURE);
 	}
-
-	// Run Tests
-	if (SETTINGS.runTests)
-	{
-		return DEMO::runTests(SETTINGS.runTests);
-	}
-
-	// Create Window
-	ml::RenderWindow window;
-	if (ml::Debug::log("Creating Window..."))
-	{
-		if (!window.good() && window.create(
-			SETTINGS.title,
-			ml::VideoMode({ SETTINGS.width, SETTINGS.height }, SETTINGS.bitsPerPixel),
-			ml::Window::Style::Default,
-			ml::Context(
-				SETTINGS.majorVersion,
-				SETTINGS.minorVersion,
-				SETTINGS.depthBits,
-				SETTINGS.stencilBits,
-				SETTINGS.profile,
-				SETTINGS.multisample,
-				SETTINGS.srgbCapable)
-		))
-		{
-			window.setCursor(ml::Window::Cursor::Normal);
-			window.setPosition((ml::VideoMode::desktop().size - window.size()) / 2);
-			window.setViewport(ml::vec2i::Zero, window.size());
-		}
-		else
-		{
-			return ml::Debug::logError("Failed Creating Window")
-				|| ml::Debug::pause(EXIT_FAILURE);
-		}
-	}
 	
 	// Load
-	if (!demo.onLoad({ }))
+	ML_EventSystem.fireEvent(DEMO::LoadEvent());
+	if (demo.checkStatus() == ml::Debug::Error)
 	{
 		return ml::Debug::logError("Failed Loading Resources")
 			|| ml::Debug::pause(EXIT_FAILURE);
 	}
 
 	// Start
-	demo.onStart({ window });
+	ML_EventSystem.fireEvent(DEMO::StartEvent());
 
 	// Loop
 	ml::Timer		loopTimer;
@@ -83,19 +50,21 @@ int32_t main(int32_t argc, char ** argv)
 		input.beginStep();
 		{
 			// Update
-			demo.onUpdate({ window, elapsed, input });
+			ML_EventSystem.fireEvent(DEMO::UpdateEvent(elapsed, input));
 
 			// Draw
-			demo.onDraw({ window, elapsed });
+			ML_EventSystem.fireEvent(DEMO::DrawEvent(elapsed));
 		}
 		// End Step
 		input.endStep();
 		elapsed = loopTimer.stop().elapsed();
 
-	} while (window.isOpen());
+	} while (demo.isOpen());
 
 	// Exit
-	return demo.onExit({ EXIT_SUCCESS });
+	ML_EventSystem.fireEvent(DEMO::ExitEvent());
+
+	return EXIT_SUCCESS;
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

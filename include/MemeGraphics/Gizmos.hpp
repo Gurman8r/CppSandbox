@@ -21,7 +21,6 @@ namespace ml
 	private:
 		Gizmos() {}
 		~Gizmos() {}
-
 	};
 }
 

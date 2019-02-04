@@ -23,7 +23,7 @@
     <ClInclude Include="..\..\include\MemeGraphics\FrameBuffer.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\GL.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Gizmos.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\IRenderer.hpp" />
+    <ClInclude Include="..\..\include\MemeGraphics\IDrawable.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Export.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Font.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Glyph.hpp" />

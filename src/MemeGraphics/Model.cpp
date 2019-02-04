@@ -14,6 +14,16 @@ namespace ml
 	{
 	}
 
+	bool Model::cleanup()
+	{
+		return false;
+	}
+
+	bool Model::loadFromFile(const String & filename)
+	{
+		return false;
+	}
+
 
 	void Model::draw(RenderTarget & target, RenderBatch batch) const
 	{

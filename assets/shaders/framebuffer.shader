@@ -89,12 +89,12 @@ void drawKernel(in float kernel[9])
 #define MODE_JUICY		3
 #define MODE_BLUR		4
 
+uniform int u_mode;
+
 // Main
 void main()
 {
-	const int mode = MODE_JUICY;
-
-	switch (mode)
+	switch (u_mode)
 	{
 	case MODE_NORMAL:
 		drawNormal();

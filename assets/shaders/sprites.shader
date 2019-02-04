@@ -15,6 +15,8 @@ out vec2 v_Texcoord;
 
 // Uniforms
 uniform mat4 u_proj;
+uniform mat4 u_view;
+uniform mat4 u_model;
 
 void main()
 {
@@ -22,7 +24,9 @@ void main()
 	v_Texcoord	= a_Texcoord;
 	v_Color		= a_Color;
 
-	gl_Position = u_proj * vec4(a_Position, 1.0);
+	mat4 mvp = (u_proj * u_view * u_model);
+
+	gl_Position = mvp * vec4(a_Position, 1.0);
 }
 
 // Fragment
@@ -41,9 +45,7 @@ uniform vec4		u_color;
 
 void main()
 {
-	float a = texture(u_texture, v_Texcoord).r;
-
-	v_FragColor = vec4(1, 1, 1, a) * u_color;
+	v_FragColor = u_color * v_Color * texture(u_texture, v_Texcoord);
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

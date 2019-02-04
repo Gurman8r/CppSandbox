@@ -9,11 +9,10 @@ namespace ml
 		, m_size		(vec2u::Zero)
 		, m_actualSize	(vec2u::Zero)
 		, m_smooth		(false)
-		, m_srgb		(false)
 		, m_repeated	(false)
 		, m_mipmapped	(false)
-		, m_cFormat		(GL::RGBA)
-		, m_iFormat		(m_srgb ? GL::SRGB8_Alpha8 : GL::RGBA)
+		, m_colorFmt	(GL::RGBA)
+		, m_internalFmt	(GL::RGBA)
 	{
 	}
 
@@ -22,11 +21,10 @@ namespace ml
 		, m_size		(vec2u::Zero)
 		, m_actualSize	(vec2u::Zero)
 		, m_smooth		(copy.m_smooth)
-		, m_srgb		(copy.m_srgb)
 		, m_repeated	(copy.m_repeated)
-		, m_mipmapped	(copy.m_mipmapped)
-		, m_cFormat		(copy.m_cFormat)
-		, m_iFormat		(copy.m_iFormat)
+		, m_mipmapped	(false)
+		, m_colorFmt	(copy.m_colorFmt)
+		, m_internalFmt	(copy.m_internalFmt)
 	{
 		if (copy)
 		{
@@ -97,7 +95,7 @@ namespace ml
 				y, 
 				width,
 				height,
-				GL::RGBA,
+				m_colorFmt,
 				GL::UnsignedByte,
 				pixels);
 
@@ -122,24 +120,16 @@ namespace ml
 			OpenGL::texParameter( // TexMinFilter
 				GL::Texture2D,
 				GL::TexMinFilter,
-				(m_mipmapped
-					? (m_smooth
-						? GL::LinearMipmapLinear
-						: GL::NearestMipmapNearest)
-					: (m_smooth
-						? GL::Linear
-						: GL::Nearest)));
+				(m_smooth
+					? GL::Linear
+					: GL::Nearest));
 
 			OpenGL::texParameter( // TexMagFilter
 				GL::Texture2D,
 				GL::TexMagFilter,
-				(m_mipmapped
-					? (m_smooth
-						? GL::LinearMipmapLinear
-						: GL::NearestMipmapNearest)
-					: (m_smooth
-						? GL::Linear
-						: GL::Nearest)));
+				(m_smooth
+					? GL::Linear
+					: GL::Nearest));
 
 			Texture::bind(NULL);
 
@@ -157,12 +147,10 @@ namespace ml
 			NULL,
 			width,
 			height,
-			m_cFormat,
-			m_iFormat,
+			m_colorFmt,
+			m_internalFmt,
 			m_smooth,
-			m_repeated,
-			m_srgb,
-			m_mipmapped
+			m_repeated
 		);
 	}
 
@@ -170,12 +158,10 @@ namespace ml
 		const uint8_t * pixels, 
 		uint32_t	width, 
 		uint32_t	height,
-		GL::Format	cFormat,
-		GL::Format	iFormat, 
+		GL::Format	colorFmt,
+		GL::Format	internalFmt, 
 		bool		smooth, 
-		bool		repeat,
-		bool		srgb,
-		bool		mipmapped)
+		bool		repeat)
 	{
 		if (!width || !height)
 		{
@@ -203,11 +189,9 @@ namespace ml
 
 			m_size		= { width, height };
 			m_smooth	= smooth;
-			m_srgb		= srgb;
 			m_repeated	= repeat;
-			m_mipmapped	= mipmapped;
-			m_cFormat	= cFormat;
-			m_iFormat	= iFormat;
+			m_colorFmt	= colorFmt;
+			m_internalFmt	= internalFmt;
 
 			if (m_mipmapped && !OpenGL::framebuffersAvailable())
 			{
@@ -229,27 +213,16 @@ namespace ml
 				}
 			}
 
-			if (m_srgb && !OpenGL::textureSrgbAvailable())
-			{
-				static bool warned = false;
-				if (!warned)
-				{
-					Debug::logWarning("Texture sRGB Unavailable");
-					warned = true;
-				}
-				m_srgb = false;
-			}
-
 			Texture::bind(this);
 
 			OpenGL::texImage2D(
 				GL::Texture2D,
 				0,
-				m_cFormat,
+				m_colorFmt,
 				m_size[0],
 				m_size[1],
 				0,
-				m_iFormat,
+				m_internalFmt,
 				GL::UnsignedByte,
 				pixels);
 
@@ -271,27 +244,19 @@ namespace ml
 							? GL::ClampToEdge
 							: GL::Clamp)));
 
-			OpenGL::texParameter(
+			OpenGL::texParameter( // TexMinFilter
 				GL::Texture2D,
 				GL::TexMinFilter,
-				(m_mipmapped
-					? (m_smooth
-						? GL::LinearMipmapLinear
-						: GL::NearestMipmapNearest)
-					: (m_smooth
-						? GL::Linear
-						: GL::Nearest)));
+				(m_smooth
+					? GL::Linear
+					: GL::Nearest));
 
-			OpenGL::texParameter(
+			OpenGL::texParameter( // TexMagFilter
 				GL::Texture2D,
 				GL::TexMagFilter,
-				(m_mipmapped
-					? (m_smooth
-						? GL::LinearMipmapLinear
-						: GL::NearestMipmapNearest)
-					: (m_smooth
-						? GL::Linear
-						: GL::Nearest)));
+				(m_smooth
+					? GL::Linear
+					: GL::Nearest));
 
 			Texture::bind(NULL);
 
@@ -309,9 +274,10 @@ namespace ml
 		std::swap(m_size,		other.m_size);
 		std::swap(m_actualSize,	other.m_actualSize);
 		std::swap(m_smooth,		other.m_smooth);
-		std::swap(m_srgb,		other.m_srgb);
 		std::swap(m_repeated,	other.m_repeated);
 		std::swap(m_mipmapped,	other.m_mipmapped);
+		std::swap(m_colorFmt,	other.m_colorFmt);
+		std::swap(m_internalFmt,	other.m_internalFmt);
 
 		return other;
 	}
@@ -368,18 +334,18 @@ namespace ml
 
 			Texture::bind(this);
 
-			OpenGL::texParameter(
-				GL::Texture2D,
-				GL::TexMagFilter,
-				(m_smooth
-					? GL::Linear
-					: GL::Nearest));
-
 			if (m_mipmapped)
 			{
 				OpenGL::texParameter(
 					GL::Texture2D,
 					GL::TexMinFilter,
+					(m_smooth
+						? GL::LinearMipmapLinear
+						: GL::LinearMipmapNearest));
+
+				OpenGL::texParameter(
+					GL::Texture2D,
+					GL::TexMagFilter,
 					(m_smooth
 						? GL::LinearMipmapLinear
 						: GL::LinearMipmapNearest));
@@ -392,30 +358,16 @@ namespace ml
 					(m_smooth
 						? GL::Linear
 						: GL::Nearest));
+
+				OpenGL::texParameter(
+					GL::Texture2D,
+					GL::TexMagFilter,
+					(m_smooth
+						? GL::Linear
+						: GL::Nearest));
 			}
 
 			Texture::bind(NULL);
-		}
-		return (*this);
-	}
-
-	Texture & Texture::setSrgb(bool value)
-	{
-		if ((*this) && (m_srgb != value))
-		{
-			if ((m_srgb = value) && !OpenGL::textureSrgbAvailable())
-			{
-				static bool warned = false;
-				if (!warned)
-				{
-					Debug::logWarning(
-						"OpenGL extension texture SRGB unavailable");
-					warned = true;
-				}
-			}
-			//Tex::bind(this);
-			//{}
-			//Tex::bind(NULL);
 		}
 		return (*this);
 	}
@@ -490,7 +442,7 @@ namespace ml
 				OpenGL::getTexImage(
 					GL::Texture2D,
 					0,
-					GL::RGBA,
+					m_colorFmt,
 					GL::UnsignedByte,
 					&pixels[0]);
 

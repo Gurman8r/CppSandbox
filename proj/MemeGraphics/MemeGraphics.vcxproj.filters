@@ -13,32 +13,38 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\Rendering">
-      <UniqueIdentifier>{d15342cc-d15c-402e-accc-c3a2c45796a3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\DS">
       <UniqueIdentifier>{aeee4eb9-e7d8-430c-bc68-d3ca84f8d369}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\DS">
       <UniqueIdentifier>{af5c254e-15a7-4a77-9673-c744352d7b68}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Rendering">
-      <UniqueIdentifier>{22518504-c8c3-4139-b999-60b4911a73bd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Interfaces">
       <UniqueIdentifier>{0bee5786-4dbe-41db-81dd-9cad85974a90}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Buffers">
-      <UniqueIdentifier>{b05bb526-d2bd-4bc7-aa76-f105027d8beb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Buffers">
-      <UniqueIdentifier>{6652bc3a-a5fa-44ca-8400-ad6093276177}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Wrapper">
       <UniqueIdentifier>{e6925aeb-bae2-4cf0-bfbb-70aba96f9b5e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Wrapper">
       <UniqueIdentifier>{18eb3d43-0a77-4af5-9975-896e67ff95dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Buffers">
+      <UniqueIdentifier>{6652bc3a-a5fa-44ca-8400-ad6093276177}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Buffers">
+      <UniqueIdentifier>{b05bb526-d2bd-4bc7-aa76-f105027d8beb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Drawable">
+      <UniqueIdentifier>{d15342cc-d15c-402e-accc-c3a2c45796a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Drawable">
+      <UniqueIdentifier>{22518504-c8c3-4139-b999-60b4911a73bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Rendering">
+      <UniqueIdentifier>{d3846bfa-5393-4ab4-bae7-7d778977d806}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Rendering">
+      <UniqueIdentifier>{0948861a-0cdf-4c56-afbb-b4a431bb642a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -96,23 +102,11 @@
     <ClInclude Include="..\..\include\MemeGraphics\Vertex.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\IRenderer.hpp">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\ITransformable.hpp">
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Gizmos.hpp">
-      <Filter>Header Files\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\RenderBatch.hpp">
-      <Filter>Header Files\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\RenderTarget.hpp">
-      <Filter>Header Files\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\RenderWindow.hpp">
-      <Filter>Header Files\Rendering</Filter>
+      <Filter>Header Files\Drawable</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\GL.hpp">
       <Filter>Header Files\Wrapper</Filter>
@@ -124,22 +118,31 @@
       <Filter>Header Files\DS</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Text.hpp">
-      <Filter>Header Files\Rendering</Filter>
+      <Filter>Header Files\Drawable</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Sprite.hpp">
-      <Filter>Header Files\Rendering</Filter>
+      <Filter>Header Files\Drawable</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Model.hpp">
-      <Filter>Header Files\Rendering</Filter>
+      <Filter>Header Files\Drawable</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\RenderBuffer.hpp">
       <Filter>Header Files\Buffers</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\RenderTarget.hpp">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\RenderBatch.hpp">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\RenderWindow.hpp">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\IDrawable.hpp">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\MemeGraphics\RenderTarget.cpp">
-      <Filter>Source Files\Rendering</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Color.cpp">
       <Filter>Source Files\DS</Filter>
     </ClCompile>
@@ -186,28 +189,31 @@
       <Filter>Source Files\Buffers</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Gizmos.cpp">
-      <Filter>Source Files\Rendering</Filter>
+      <Filter>Source Files\Drawable</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\FrameBuffer.cpp">
       <Filter>Source Files\Buffers</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemeGraphics\RenderWindow.cpp">
-      <Filter>Source Files\Rendering</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Text.cpp">
-      <Filter>Source Files\Rendering</Filter>
+      <Filter>Source Files\Drawable</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Sprite.cpp">
-      <Filter>Source Files\Rendering</Filter>
+      <Filter>Source Files\Drawable</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Model.cpp">
-      <Filter>Source Files\Rendering</Filter>
+      <Filter>Source Files\Drawable</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\RenderBuffer.cpp">
       <Filter>Source Files\Buffers</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Lists.cpp">
       <Filter>Source Files\DS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\RenderWindow.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\RenderTarget.cpp">
+      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

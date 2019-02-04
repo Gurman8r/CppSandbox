@@ -19,13 +19,13 @@ namespace ml
 	}
 	
 
-	RenderTarget & RenderTarget::draw(const IRenderer & value)
+	RenderTarget & RenderTarget::draw(const IDrawable & value)
 	{
 		RenderBatch batch;
 		return draw(value, batch);
 	}
 
-	RenderTarget & RenderTarget::draw(const IRenderer & value, const RenderBatch & batch)
+	RenderTarget & RenderTarget::draw(const IDrawable & value, const RenderBatch & batch)
 	{
 		value.draw((*this), batch);
 		return (*this);
@@ -38,41 +38,38 @@ namespace ml
 		{
 			if (batch.proj)
 			{
-				(*batch.shader).setUniform(Uniform::Proj, (*batch.proj));
+				batch.shader->setUniform(Uniform::Proj, (*batch.proj));
 			}
 			if (batch.view)
 			{
-				(*batch.shader).setUniform(Uniform::View, (*batch.view));
+				batch.shader->setUniform(Uniform::View, (*batch.view));
 			}
 			if (batch.model)
 			{
-				(*batch.shader).setUniform(Uniform::Model, (*batch.model));
+				batch.shader->setUniform(Uniform::Model, (*batch.model));
 			}
 			if (batch.color)
 			{
-				(*batch.shader).setUniform(Uniform::Color, (*batch.color));
+				batch.shader->setUniform(Uniform::Color, (*batch.color));
 			}
 			if (batch.texture)
 			{
-				(*batch.shader).setUniform(Uniform::Tex, (*batch.texture));
+				batch.shader->setUniform(Uniform::Texture, (*batch.texture));
 			}
-			(*batch.shader).bind((batch.texture != NULL));
+
+			batch.shader->bind((batch.texture != NULL));
 		}
 		
-		// Update Geometry
-		if (batch.vao && batch.vbo && !batch.ibo && batch.vertices)
+		if (batch.vbo && batch.vertices)
 		{
-			(*batch.vao).bind();
-
 			(*batch.vbo)
 				.bind()
 				.bufferSubData((*batch.vertices).contiguous(), 0)
 				.unbind();
-
-			OpenGL::drawArrays((*batch.vao).mode(), 0, (uint32_t)(*batch.vertices).size());
-
-			(*batch.vao).unbind();
 		}
+
+		return draw((*batch.vao), (*batch.vbo));
+
 		return (*this);
 	}
 
@@ -87,6 +84,21 @@ namespace ml
 				OpenGL::drawElements(vao.mode(), ibo.count(), ibo.type(), NULL);
 			}
 			ibo.unbind();
+			vbo.unbind();
+			vao.unbind();
+		}
+		return (*this);
+	}
+
+	RenderTarget & RenderTarget::draw(VAO & vao, VBO & vbo)
+	{
+		if (vao && vbo)
+		{
+			vao.bind();
+			vbo.bind();
+			{
+				OpenGL::drawArrays(vao.mode(), 0, vbo.size());
+			}
 			vbo.unbind();
 			vao.unbind();
 		}

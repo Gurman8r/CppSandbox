@@ -61,11 +61,8 @@ namespace DEMO
 
 	struct StartEvent final : public DemoEvent
 	{
-		ml::RenderWindow & window;
-
-		StartEvent(ml::RenderWindow & window)
+		StartEvent()
 			: DemoEvent(EV_Start)
-			, window(window)
 		{
 		}
 	};
@@ -74,16 +71,13 @@ namespace DEMO
 
 	struct UpdateEvent final : public DemoEvent
 	{
-		ml::RenderWindow &	window;
 		ml::Duration		elapsed;
 		ml::NativeInput		input;
 
 		UpdateEvent(
-			ml::RenderWindow & window, 
 			const ml::Duration & elapsed,
 			const ml::NativeInput & input)
 			: DemoEvent(EV_Update)
-			, window(window)
 			, elapsed(elapsed)
 			, input(input)
 		{
@@ -94,12 +88,10 @@ namespace DEMO
 
 	struct DrawEvent final : public DemoEvent
 	{
-		ml::RenderWindow & window;
 		ml::Duration elapsed;
 
-		DrawEvent(ml::RenderWindow & window, const ml::Duration & elapsed)
+		DrawEvent(const ml::Duration & elapsed)
 			: DemoEvent(EV_Draw)
-			, window(window)
 			, elapsed(elapsed)
 		{
 		}
@@ -109,11 +101,9 @@ namespace DEMO
 
 	struct ExitEvent final : public DemoEvent
 	{
-		int32_t exitCode;
 
-		ExitEvent(int32_t exitCode)
+		ExitEvent()
 			: DemoEvent(EV_Exit)
-			, exitCode(exitCode)
 		{
 		}
 	};

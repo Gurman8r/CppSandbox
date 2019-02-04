@@ -60,7 +60,11 @@ namespace ml
 
 	RenderBuffer & RenderBuffer::bufferFramebuffer(GL::FBO_Attachment attachment)
 	{
-		OpenGL::framebufferRenderbuffer(GL::Framebuffer, attachment, GL::Renderbuffer, (*this));
+		OpenGL::framebufferRenderbuffer(
+			GL::Framebuffer, 
+			attachment, 
+			GL::Renderbuffer,
+			(*this));
 		return (*this);
 	}
 }

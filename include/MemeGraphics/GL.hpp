@@ -24,6 +24,8 @@ namespace ml
 		enum Target : Enum
 		{
 			Texture2D		= 0x0DE1,		// GL_TEXTURE_2D
+			Texture3D		= 0x806F,		// GL_TEXTURE_3D
+			TextureCubeMap	= 0x8513,		// GL_TEXTURE_CUBE_MAP
 			ArrayBuffer		= 0x8892,		// GL_ARRAY_BUFFER
 			ElementArrayBuffer,				// GL_ELEMENT_ARRAY_BUFFER
 			Framebuffer		= 0x8D40,		// GL_FRAMEBUFFER

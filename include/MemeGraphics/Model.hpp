@@ -1,7 +1,7 @@
 #ifndef _MODEL_HPP_
 #define _MODEL_HPP_
 
-#include <MemeGraphics/IRenderer.hpp>
+#include <MemeGraphics/IDrawable.hpp>
 #include <MemeGraphics/ITransformable.hpp>
 #include <MemeGraphics/Mesh.hpp>
 #include <MemeGraphics/Shader.hpp>
@@ -13,17 +13,21 @@ namespace ml
 {
 	class ML_GRAPHICS_API Model
 		: public ITrackable
-		, public IRenderer
-		, public ITransformable
+		, public IDrawable
+		, public IResource
 	{
 	public:
 		Model();
 		Model(const Model & copy);
 		~Model();
 
+		bool cleanup() override;
+		bool loadFromFile(const String & filename) override;
+
 		void draw(RenderTarget & target, RenderBatch batch) const override;
 
 	private:
+		const Shader *	m_shader;
 		const Texture * m_texture;
 
 		VAO		m_vao;

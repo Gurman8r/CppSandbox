@@ -1,7 +1,7 @@
 #ifndef _RENDER_TARGET_HPP_
 #define _RENDER_TARGET_HPP_
 
-#include <MemeGraphics/IRenderer.hpp>
+#include <MemeGraphics/IDrawable.hpp>
 #include <MemeGraphics/VertexArray.hpp>
 #include <MemeGraphics/VertexBuffer.hpp>
 #include <MemeGraphics/IndexBuffer.hpp>
@@ -15,14 +15,16 @@ namespace ml
 	public:
 		virtual ~RenderTarget() {}
 
-	public: // Drawing
+	public:
 		RenderTarget & clear();
 		RenderTarget & clear(const vec4f & color);
 
-		RenderTarget & draw(const IRenderer & value);
-		RenderTarget & draw(const IRenderer & value, const RenderBatch & batch);
+	public:
+		RenderTarget & draw(const IDrawable & value);
+		RenderTarget & draw(const IDrawable & value, const RenderBatch & batch);
 		RenderTarget & draw(const RenderBatch & value);
 		RenderTarget & draw(VAO & vao, VBO & vbo, IBO & ibo);
+		RenderTarget & draw(VAO & vao, VBO & vbo);
 
 	public:
 		void setViewport(const vec2i & pos, const vec2i & size) const;
