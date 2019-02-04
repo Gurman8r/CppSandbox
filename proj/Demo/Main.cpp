@@ -1,6 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * */
 
 #include "Demo.hpp"
+#include "GUI.hpp"
 #include <MemeCore/EventSystem.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -11,6 +12,8 @@
 
 int32_t main(int32_t argc, char ** argv)
 {
+	//return gui_main(argc, argv);
+
 	// Load Settings
 	if (!SETTINGS.loadFromFile(CONFIG_INI))
 	{
