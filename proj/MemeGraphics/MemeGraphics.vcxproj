@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\include\MemeGraphics\Camera.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Color.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\FrameBuffer.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\GL.hpp" />
@@ -53,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeGraphics\BufferLayout.cpp" />
+    <ClCompile Include="..\..\src\MemeGraphics\Camera.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Color.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Font.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\FrameBuffer.cpp" />

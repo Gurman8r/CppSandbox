@@ -64,13 +64,11 @@ namespace ml
 		{
 			(*batch.vbo)
 				.bind()
-				.bufferSubData((*batch.vertices).contiguous(), 0)
+				.bufferSubData(batch.vertices->contiguous(), 0)
 				.unbind();
 		}
 
 		return draw((*batch.vao), (*batch.vbo));
-
-		return (*this);
 	}
 
 	RenderTarget & RenderTarget::draw(VAO & vao, VBO & vbo, IBO & ibo)

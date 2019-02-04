@@ -96,10 +96,6 @@ void main()
 {
 	switch (u_mode)
 	{
-	case MODE_NORMAL:
-		drawNormal();
-		break;
-
 	case MODE_INVERTED:
 		drawInverted();
 		break;
@@ -122,6 +118,11 @@ void main()
 			2.0 / 16, 4.0 / 16, 2.0 / 16,
 			1.0 / 16, 2.0 / 16, 1.0 / 16
 		));
+		break;
+
+	case MODE_NORMAL:
+	default:
+		drawNormal();
 		break;
 	};
 }

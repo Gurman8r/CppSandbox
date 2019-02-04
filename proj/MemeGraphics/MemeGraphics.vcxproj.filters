@@ -46,6 +46,12 @@
     <Filter Include="Header Files\Rendering">
       <UniqueIdentifier>{0948861a-0cdf-4c56-afbb-b4a431bb642a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Transforms">
+      <UniqueIdentifier>{0389a432-cba6-4e80-9723-3017f234a55e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Transforms">
+      <UniqueIdentifier>{94ba435b-7fa3-46a5-b588-af824460c9ec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeGraphics\Export.hpp">
@@ -93,9 +99,6 @@
     <ClInclude Include="..\..\include\MemeGraphics\Texture.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Transform.hpp">
-      <Filter>Header Files\DS</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Uniform.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
@@ -141,6 +144,12 @@
     <ClInclude Include="..\..\include\MemeGraphics\IDrawable.hpp">
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\Transform.hpp">
+      <Filter>Header Files\Transforms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\Camera.hpp">
+      <Filter>Header Files\Transforms</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeGraphics\Color.cpp">
@@ -165,9 +174,6 @@
       <Filter>Source Files\Wrapper</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Uniform.cpp">
-      <Filter>Source Files\DS</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeGraphics\Transform.cpp">
       <Filter>Source Files\DS</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Shapes.cpp">
@@ -214,6 +220,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\RenderTarget.cpp">
       <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\Transform.cpp">
+      <Filter>Source Files\Transforms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\Camera.cpp">
+      <Filter>Source Files\Transforms</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

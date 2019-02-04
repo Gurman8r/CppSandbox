@@ -34,10 +34,11 @@ namespace ml
 		Image & setPixel(uint32_t x, uint32_t y, const vec4b & color);
 
 		inline const vec2u &	size()		const { return m_size; }
-		inline const uint32_t & width()		const { return size()[0]; }
-		inline const uint32_t & height()	const { return size()[1]; }
+		inline const uint32_t	width()		const { return size()[0]; }
+		inline const uint32_t	height()	const { return size()[1]; }
 		inline const Pixels &	pixels()	const { return m_pixels; }
 		inline const uint8_t *	ptr()		const { return &pixels()[0]; }
+		inline const int32_t	channels()	const { return m_channels; }
 
 		inline const uint8_t &	operator[](uint32_t index) const { return m_pixels[index]; }
 		inline uint8_t &		operator[](uint32_t index) { return m_pixels[index]; }
@@ -48,6 +49,7 @@ namespace ml
 	private:
 		vec2u	m_size;
 		Pixels	m_pixels;
+		int32_t	m_channels;
 	};
 }
 

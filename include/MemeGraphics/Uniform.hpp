@@ -31,8 +31,8 @@ namespace ml
 
 		String name;
 
-		inline operator String() const { return name; }
-		inline operator bool() const { return !name.empty(); }
+		inline operator String	() const { return name; }
+		inline operator bool	() const { return !name.empty(); }
 	};
 }
 

@@ -12,9 +12,9 @@ namespace ml
 		int32_t		location;
 
 		UniformBinder(const Shader * shader, const String & name)
-			: cached(0)
-			, program(*shader)
-			, location(-1)
+			: cached	(NULL)
+			, program	(*shader)
+			, location	(-1)
 		{
 			if (program)
 			{

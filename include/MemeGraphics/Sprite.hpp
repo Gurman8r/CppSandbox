@@ -17,9 +17,6 @@ namespace ml
 		void draw(RenderTarget & target, RenderBatch batch) const override;
 
 	private:
-		const Texture * m_texture;
-		Vertex	m_vertices[4];
-		IntRect m_bounds;
 	};
 }
 

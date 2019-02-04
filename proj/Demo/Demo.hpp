@@ -80,7 +80,7 @@ namespace DEMO
 		U_View,
 		U_Proj,
 		U_Color,
-		U_Texture,
+		U_Tex,
 		U_Curve,
 		MAX_UNIFORM,
 
@@ -95,7 +95,7 @@ namespace DEMO
 		V_camera,
 		MAX_VIEW,
 
-		// Transform (Model) Matrices
+		// Transforms (Model Matrices)
 		MIN_TRANSFORM = -1,
 		T_cube,
 		T_quad,
@@ -156,6 +156,7 @@ namespace DEMO
 		MIN_TEXT = -1,
 		TXT_dynamic,
 		TXT_static,
+		TXT_input,
 		MAX_TEXT,
 
 		// Sounds
@@ -240,6 +241,8 @@ namespace DEMO
 		ml::Sound		sounds		[MAX_SOUND];
 
 		ml::Debug::Status m_status;
+		int32_t m_fboMode = 0;
+		bool m_acceptingInput = 0;
 	};
 }
 

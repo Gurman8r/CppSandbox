@@ -61,6 +61,16 @@ namespace DEMO
 					SETTINGS.perspFar);
 			}
 			break;
+
+		case ml::WindowEvent::EV_WindowCharTyped:
+			if (auto ev = value->Cast<ml::WindowCharTypedEvent>())
+			{
+				if (m_acceptingInput)
+				{
+					text[TXT_input].setText(text[TXT_input].getText() + (char)ev->value);
+				}
+			}
+			break;
 		}
 
 	}
@@ -250,9 +260,6 @@ namespace DEMO
 
 	bool Demo::loadTextures()
 	{
-		ml::Debug::log("Max Texture Size: {0}", ml::vec2u(ml::OpenGL::getMaxTextureSize()))
-			;
-
 		// Load Textures
 		return ml::Debug::log("Loading Textures...")
 			&& load<ml::Texture>(textures[TEX_dean], "/images/dean.png")
@@ -292,12 +299,12 @@ namespace DEMO
 	bool Demo::loadUniforms()
 	{
 		return ml::Debug::log("Loading Uniforms...")
-			&& (uniforms[U_Model]	= (ml::Uniform::Model))
-			&& (uniforms[U_View]	= (ml::Uniform::View))
-			&& (uniforms[U_Proj]	= (ml::Uniform::Proj))
-			&& (uniforms[U_Color]	= (ml::Uniform::Color))
-			&& (uniforms[U_Texture] = (ml::Uniform::Texture))
-			&& (uniforms[U_Curve]	= (ml::Uniform::Curve))
+			&& (uniforms[U_Model]	= "u_model")
+			&& (uniforms[U_View]	= "u_view")
+			&& (uniforms[U_Proj]	= "u_proj")
+			&& (uniforms[U_Color]	= "u_color")
+			&& (uniforms[U_Tex]		= "u_texture")
+			&& (uniforms[U_Curve]	= "u_curveMode")
 			;
 	}
 
@@ -626,12 +633,21 @@ namespace DEMO
 				.setPosition({ 32, 128 })
 				.setColor(ml::Color::White)
 				.setText("there is no need\nto be upset");
+
+			// Input Text
+			text[TXT_input]
+				.setFont(&fonts[FNT_minecraft])
+				.setFontSize(24)
+				.setScale(ml::vec2f::One)
+				.setPosition({ (float)this->width() / 2.f, 32 })
+				.setColor(ml::Color::White)
+				.setText(ml::String());
 		}
 	}
 	
 	void Demo::onUpdate(const UpdateEvent & ev)
 	{
-		// Set Window Title
+		// Update Title
 		this->setTitle(ml::String::Format(
 			"{0} | {1} | {2} ({3} fps) | {4}",
 			SETTINGS.title,
@@ -641,14 +657,11 @@ namespace DEMO
 			this->getCursorPos()
 		));
 
+
+		// Handle Input
 		if (ev.input.getKeyDown(ml::NativeKey::Escape))
 		{
 			this->close();
-		}
-
-		if (ev.input.getKeyDown(ml::NativeKey::R))
-		{
-			//loadShaders();
 		}
 
 		if (ev.input.getKeyDown(ml::NativeKey::Pause))
@@ -656,6 +669,61 @@ namespace DEMO
 			ml::Debug::pause(0);
 		}
 
+		if (ev.input.getKeyDown(ml::NativeKey::Tab))
+		{
+			m_acceptingInput = !m_acceptingInput;
+		}
+
+		if (m_acceptingInput)
+		{
+			if (ev.input.getKeyDown(ml::NativeKey::Return))
+			{
+				ml::String str;
+				if (!(str = text[TXT_input].getText()).empty())
+				{
+					ML_Interpreter.execCommand(str);
+				}
+				text[TXT_input].setText(ml::String());
+			}
+
+			if (ev.input.getKeyDown(ml::NativeKey::Backspace))
+			{
+				ml::String str;
+				if (!(str = text[TXT_input].getText()).empty())
+				{
+					str.pop_back();
+					text[TXT_input].setText(str);
+				}
+			}
+		}
+		else
+		{
+			text[TXT_input].setText(ml::String());
+
+			if (ev.input.getKeyDown(ml::NativeKey::R))
+			{
+				//loadShaders();
+			}
+			
+			int32_t numPress = -1;
+			for (int32_t i = ml::NativeKey::Num0; i <= ml::NativeKey::Num9; i++)
+			{
+				if (ev.input.getKeyDown(i))
+				{
+					numPress = (9 - (ml::NativeKey::Num9 - i));
+					break;
+				}
+			}
+			if (numPress >= 0)
+			{
+				m_fboMode = numPress;
+				ml::Debug::log("FBO Mode: {0}", m_fboMode);
+			}
+		}
+
+
+
+		// Update Network
 		if (SETTINGS.isServer)
 		{
 			ML_Server.poll();
@@ -678,17 +746,17 @@ namespace DEMO
 			ml::OpenGL::enable(ml::GL::DepthTest);
 
 			// Cube
-			if (true)
+			if (const ml::Shader & s = shaders[GL_basic3D])
 			{
-				shaders[GL_basic3D].setUniform(uniforms[U_Color], ml::Color::White);
-				shaders[GL_basic3D].setUniform(uniforms[U_Texture], textures[TEX_stone_dm]);
-				shaders[GL_basic3D].setUniform(uniforms[U_Proj], proj[P_persp]);
-				shaders[GL_basic3D].setUniform(uniforms[U_View], view[V_camera]);
-				shaders[GL_basic3D].setUniform(uniforms[U_Model], transform[T_cube]
+				s.setUniform(uniforms[U_Color],	ml::Color::White);
+				s.setUniform(uniforms[U_Tex],	textures[TEX_stone_dm]);
+				s.setUniform(uniforms[U_Proj],	proj[P_persp]);
+				s.setUniform(uniforms[U_View],	view[V_camera]);
+				s.setUniform(uniforms[U_Model],	transform[T_cube]
 					.translate(ml::vec3f::Zero)
 					.rotate(+ev.elapsed.delta(), ml::vec3f::One)
 					.scale(ml::vec3f::One));
-				shaders[GL_basic3D].bind();
+				s.bind();
 
 				this->draw(
 					vao[VAO_cube],
@@ -697,17 +765,17 @@ namespace DEMO
 			}
 			
 			// Sphere32x24
-			if (true)
+			if (const ml::Shader & s = shaders[GL_basic3D])
 			{
-				shaders[GL_basic3D].setUniform(uniforms[U_Color], ml::Color::White);
-				shaders[GL_basic3D].setUniform(uniforms[U_Texture], textures[TEX_earth]);
-				shaders[GL_basic3D].setUniform(uniforms[U_Proj], proj[P_persp]);
-				shaders[GL_basic3D].setUniform(uniforms[U_View], view[V_camera]);
-				shaders[GL_basic3D].setUniform(uniforms[U_Model], transform[T_sphere32x24]
+				s.setUniform(uniforms[U_Color],	ml::Color::White);
+				s.setUniform(uniforms[U_Tex],	textures[TEX_earth]);
+				s.setUniform(uniforms[U_Proj],	proj[P_persp]);
+				s.setUniform(uniforms[U_View],	view[V_camera]);
+				s.setUniform(uniforms[U_Model],	transform[T_sphere32x24]
 					.translate(ml::vec3f::Zero)
 					.rotate(+ev.elapsed.delta(), ml::vec3f::Up)
 					.scale(ml::vec3f::One));
-				shaders[GL_basic3D].bind();
+				s.bind();
 
 				this->draw(
 					vao[VAO_sphere32x24], 
@@ -719,17 +787,17 @@ namespace DEMO
 			ml::OpenGL::disable(ml::GL::DepthTest);
 
 			// Quad
-			if (true)
+			if (const ml::Shader & s = shaders[GL_sprites])
 			{
-				shaders[GL_sprites].setUniform(uniforms[U_Color], ml::Color::White);
-				shaders[GL_sprites].setUniform(uniforms[U_Texture], textures[TEX_sanic]);
-				shaders[GL_sprites].setUniform(uniforms[U_Proj], proj[P_persp]);
-				shaders[GL_sprites].setUniform(uniforms[U_View], view[V_camera]);
-				shaders[GL_sprites].setUniform(uniforms[U_Model], transform[T_quad]
+				s.setUniform(uniforms[U_Color],	ml::Color::White);
+				s.setUniform(uniforms[U_Tex],	textures[TEX_sanic]);
+				s.setUniform(uniforms[U_Proj],	proj[P_persp]);
+				s.setUniform(uniforms[U_View],	view[V_camera]);
+				s.setUniform(uniforms[U_Model],	transform[T_quad]
 					.translate(ml::vec3f::Zero)
 					.rotate(-ev.elapsed.delta(), ml::vec3f::Forward)
 					.scale(ml::vec3f::One));
-				shaders[GL_sprites].bind();
+				s.bind();
 
 				this->draw(
 					vao[VAO_quad], 
@@ -771,14 +839,17 @@ namespace DEMO
 
 				// Static Text
 				this->draw(text[TXT_static], batch);
+
+				// Input Text
+				this->draw(text[TXT_input], batch);
 			}
 
 			// Geometry
-			if (true)
+			if (const ml::Shader & s = shaders[GL_geometry])
 			{
-				shaders[GL_geometry].setUniform(uniforms[U_Curve], 1);
-				shaders[GL_geometry].setUniform(uniforms[U_Color], ml::Color::Red);
-				shaders[GL_geometry].bind();
+				s.setUniform(uniforms[U_Color], ml::Color::Red);
+				s.setUniform(uniforms[U_Curve], 1);
+				s.bind();
 				ml::OpenGL::drawArrays(ml::GL::Points, 0, 4);
 			}
 
@@ -786,10 +857,11 @@ namespace DEMO
 		fbo[FBO_scene].unbind();
 		
 		this->clear(ml::Color::White);
+		if(const ml::Shader & s = shaders[GL_framebuffer])
 		{
-			shaders[GL_framebuffer].setUniform(uniforms[U_Texture], textures[TEX_framebuffer]);
-			shaders[GL_framebuffer].setUniform("u_mode", 3);
-			shaders[GL_framebuffer].bind();
+			s.setUniform(uniforms[U_Tex], textures[TEX_framebuffer]);
+			s.setUniform("u_mode", m_fboMode);
+			s.bind();
 			
 			this->draw(
 				vao[VAO_quad],

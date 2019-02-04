@@ -16,7 +16,7 @@
 
 namespace ml
 {
-	class ML_GRAPHICS_API Transform final
+	class ML_GRAPHICS_API Transform
 		: public ITrackable
 	{
 	public:

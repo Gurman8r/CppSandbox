@@ -10,12 +10,14 @@ namespace ml
 	Image::Image()
 		: m_size(vec2u::Zero)
 		, m_pixels(Pixels())
+		, m_channels(0)
 	{
 	}
 
 	Image::Image(uint32_t width, uint32_t height, const uint8_t * pixels)
 		: m_size(width, height)
 		, m_pixels(Pixels())
+		, m_channels(0)
 	{
 		create(width, height, pixels);
 	}
@@ -23,6 +25,7 @@ namespace ml
 	Image::Image(const Image & copy)
 		: m_size(copy.m_size)
 		, m_pixels(copy.m_pixels)
+		, m_channels(copy.m_channels)
 	{
 	}
 
@@ -41,12 +44,14 @@ namespace ml
 	{
 		stbi_set_flip_vertically_on_load(true);
 		
-		int32_t width, height, channels;
-		if (uint8_t * data = stbi_load(filename.c_str(), &width, &height, &channels, 0))
+		int32_t w, h, channels;
+		if (uint8_t * data = stbi_load(filename.c_str(), &w, &h, &channels, 0))
 		{
-			m_size = { (uint32_t)width, (uint32_t)height };
+			m_size = { (uint32_t)w, (uint32_t)h };
 			
-			m_pixels.resize(width * height * channels);
+			m_pixels.resize(w * h * channels);
+
+			m_channels = channels;
 			
 			memcpy(&m_pixels[0], data, m_pixels.size());
 
@@ -58,6 +63,7 @@ namespace ml
 		{
 			m_size = vec2u::Zero;
 			m_pixels.clear();
+			m_channels = 0;
 			return false;
 		}
 	}

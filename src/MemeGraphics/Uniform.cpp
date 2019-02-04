@@ -17,7 +17,7 @@ namespace ml
 	{
 	}
 	Uniform::Uniform(const ID id)
-		: name(Names[id])
+		: name(Uniform::Names[id])
 	{
 	}
 	Uniform::Uniform(const String & name)

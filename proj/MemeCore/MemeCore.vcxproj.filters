@@ -129,9 +129,6 @@
     <ClInclude Include="..\..\include\MemeCore\MemoryManager.hpp">
       <Filter>Header Files\Memory</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\MemoryPool.hpp">
-      <Filter>Header Files\Memory</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\MemoryTracker.hpp">
       <Filter>Header Files\Memory</Filter>
     </ClInclude>
