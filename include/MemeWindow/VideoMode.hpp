@@ -3,7 +3,6 @@
 
 #include <MemeWindow/Export.hpp>
 #include <MemeCore/Vector2.hpp>
-#include <MemeCore/List.hpp>
 
 namespace ml
 {
@@ -18,7 +17,7 @@ namespace ml
 		~VideoMode();
 
 		static const VideoMode & desktop();
-		static const List<VideoMode> & resolutions();
+		static const std::vector<VideoMode> & resolutions();
 
 		bool isValidFullscreenMode() const;
 
@@ -29,18 +28,9 @@ namespace ml
 		inline const uint32_t & height() const { return size.back(); }
 
 	public:
-		inline void serialize(std::ostream & out) const override
-		{
-			out << "(" << size << ", " << bitsPerPixel << ")";
-		}
-		inline bool equals(const VideoMode & value) const override
-		{
-			return (size == value.size) && (bitsPerPixel == value.bitsPerPixel);
-		}
-		inline bool lessThan(const VideoMode & value) const override
-		{
-			return (size < value.size);
-		}
+		void serialize(std::ostream & out) const override;
+		bool equals(const VideoMode & value) const override;
+		bool lessThan(const VideoMode & value) const override;
 
 	};
 }

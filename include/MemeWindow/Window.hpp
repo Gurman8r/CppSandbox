@@ -10,11 +10,26 @@
 
 namespace ml
 {
+	
+
 	class ML_WINDOW_API Window
 		: public ITrackable
 		, public INonCopyable
 		, public IEventListener
 	{
+	public:
+		using WindowResizedClbk		= void(*)(void *, int32_t, int32_t);
+		using WindowMovedClbk		= void(*)(void *, int32_t, int32_t);
+		using WindowClosedClbk		= void(*)(void *);
+		using WindowFocusedClbk		= void(*)(void *, int32_t);
+		using WindowCharClbk		= void(*)(void *, uint32_t);
+		using WindowScrollClbk		= void(*)(void *, double, double);
+		using WindowMouseMovedClbk	= void(*)(void *, double, double);
+		using WindowMouseEnterClbk	= void(*)(void *, int32_t);
+		using WindowMouseButtonClbk	= void(*)(void *, int32_t, int32_t, int32_t);
+		using WindowKeyClbk			= void(*)(void *, int32_t, int32_t, int32_t, int32_t);
+		using WindowFboSizeClbk		= void(*)(void *, int32_t, int32_t);
+
 	public:
 		enum Cursor : uint32_t
 		{
@@ -54,9 +69,9 @@ namespace ml
 	public:
 		bool create(
 			const String	& title, 
-			const VideoMode		& mode, 
-			const Style			& style, 
-			const Context		& context);
+			const VideoMode	& mode, 
+			const Style		& style, 
+			const Context	& context);
 
 		virtual bool initialize();
 		virtual void onEvent(const Event * ev) override;
@@ -68,6 +83,8 @@ namespace ml
 		Window & swapBuffers();
 
 		Window & setCursor(Cursor value);
+		Window & setCursorPos(const vec2i & value);
+		Window & setClipboard(const String & value);
 		Window & setIcons(const std::vector<Icon> & value);
 		Window & setPosition(const vec2i & value);
 		Window & setSize(const vec2u & value);
@@ -75,8 +92,12 @@ namespace ml
 
 		bool	isFocused() const;
 		bool	isOpen() const;
+
+		int32_t	getAttrib(int32_t value) const;
 		vec2f	getCursorPos() const;
 		char	getChar() const;
+		String	getClipboard() const;
+		vec2i	getFramebufferSize() const;
 		bool	getKey(int32_t value) const;
 		bool	getMouseButton(int32_t button) const;
 		vec2f	getScroll() const;
@@ -91,6 +112,20 @@ namespace ml
 		inline const uint32_t &		width()		const { return size()[0]; }
 		inline const uint32_t &		height()	const { return size()[1]; }
 		inline const float			aspect()	const { return (float)width() / (float)height(); };
+		inline const Cursor			getCursor() const { return m_cursorMode; }
+
+	public:
+		void setMouseButtonCallback(WindowMouseButtonClbk callback);
+		void setScrollCallback(WindowScrollClbk callback);
+		void setCharCallback(WindowCharClbk callback);
+		void setKeyCallback(WindowKeyClbk callback);
+		void setCursorPosCallback(WindowMouseMovedClbk callback);
+		void setWindowSizeCallback(WindowResizedClbk callback);
+		void setWindowPosCallback(WindowMovedClbk callback);
+		void setWindowCloseCallback(WindowClosedClbk callback);
+		void setWindowFocusCallback(WindowFocusedClbk callback);
+		void setCursorEnterCallback(WindowMouseEnterClbk callback);
+		void setFramebufferSizeCallback(WindowFboSizeClbk callback);
 
 	protected:
 		void *		m_window;
@@ -107,6 +142,5 @@ namespace ml
 
 		mutable char m_char;
 	};
-
 }
 #endif // !_WINDOW_HPP_

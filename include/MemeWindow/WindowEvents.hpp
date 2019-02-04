@@ -23,6 +23,8 @@ namespace ml
 			EV_WindowMouseScroll,
 			EV_WindowMouseMoved,
 			EV_WindowMouseEnter,
+			EV_WindowMouseButton,
+			EV_WindowKey,
 			EV_WindowFramebufferResized,
 
 			MAX_WINDOW_EVENT
@@ -180,6 +182,39 @@ namespace ml
 		inline void serialize(std::ostream & out) const override
 		{
 			out << "[" << get_type().name() << "] " << value;
+		}
+	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	struct WindowMouseButtonEvent : public WindowEvent
+	{
+		int32_t button, action, mods;
+
+		WindowMouseButtonEvent(int32_t button, int32_t action, int32_t mods)
+			: WindowEvent(EV_WindowMouseButton)
+			, button(button)
+			, action(action)
+			, mods(mods)
+		{
+
+		}
+	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	struct WindowKeyEvent : public WindowEvent
+	{
+		int32_t button, scan, action, mods;
+
+		WindowKeyEvent(int32_t button, int32_t scan, int32_t action, int32_t mods)
+			: WindowEvent(EV_WindowKey)
+			, button(button)
+			, scan(scan)
+			, action(action)
+			, mods(mods)
+		{
+
 		}
 	};
 

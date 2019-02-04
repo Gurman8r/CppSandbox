@@ -32,6 +32,20 @@ namespace ml
 	}
 
 
+	void VideoMode::serialize(std::ostream & out) const
+	{
+		out << "(" << size << ", " << bitsPerPixel << ")";
+	}
+	bool VideoMode::equals(const VideoMode & value) const
+	{
+		return (size == value.size) && (bitsPerPixel == value.bitsPerPixel);
+	}
+	bool VideoMode::lessThan(const VideoMode & value) const
+	{
+		return (size < value.size);
+	}
+
+
 	const VideoMode & VideoMode::desktop()
 	{
 		static VideoMode temp;
@@ -54,9 +68,9 @@ namespace ml
 		return temp;
 	}
 
-	const List<VideoMode> & VideoMode::resolutions()
+	const std::vector<VideoMode> & VideoMode::resolutions()
 	{
-		static List<VideoMode> temp;
+		static std::vector<VideoMode> temp;
 		static bool checked = false;
 		if(!checked)
 		{	checked = true;
@@ -77,7 +91,7 @@ namespace ml
 				}
 			}
 #else
-			temp = List<VideoMode>();
+			temp = std::vector<VideoMode>();
 #endif
 		}
 		return temp;
@@ -85,7 +99,7 @@ namespace ml
 
 	bool VideoMode::isValidFullscreenMode() const
 	{
-		static const List<VideoMode> & modes = resolutions();
+		static const std::vector<VideoMode> & modes = resolutions();
 
 		return std::find(modes.begin(), modes.end(), *this) != modes.end();
 	}

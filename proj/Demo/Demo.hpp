@@ -5,6 +5,7 @@
 #include <MemeCore/Time.hpp>
 #include <MemeCore/NativeInput.hpp>
 #include <MemeCore/FileSystem.hpp>
+#include <MemeEditor/Editor.hpp>
 #include <MemeGraphics/Text.hpp>
 #include <MemeGraphics/RenderWindow.hpp>
 #include <MemeGraphics/Shapes.hpp>

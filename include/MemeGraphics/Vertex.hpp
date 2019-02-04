@@ -100,16 +100,4 @@ namespace ml
 	};
 }
 
-namespace std
-{
-	template<>
-	struct hash<ml::Vertex>
-	{
-		inline size_t operator()(const ml::Vertex & value) const noexcept
-		{
-			return _Hash_array_representation(value.ptr(), ml::Vertex::Size);
-		}
-	};
-}
-
 #endif // !_VERTEX_HPP_

@@ -81,10 +81,10 @@
       <UniqueIdentifier>{4bd9d2f2-14c9-4cac-a777-eee48dd31dd3}</UniqueIdentifier>
     </Filter>
     <Filter Include="imgui">
-      <UniqueIdentifier>{47552745-420b-4b8a-a182-b5d8213cb262}</UniqueIdentifier>
+      <UniqueIdentifier>{0ae9ad33-af76-4b48-b7a9-3a340dee9043}</UniqueIdentifier>
     </Filter>
     <Filter Include="imgui\examples">
-      <UniqueIdentifier>{4ca8066a-6fab-49e9-b7f8-7f677eb72cc8}</UniqueIdentifier>
+      <UniqueIdentifier>{47552745-420b-4b8a-a182-b5d8213cb262}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -301,9 +301,6 @@
     <ClInclude Include="DemoEvents.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GUI.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\thirdparty\include\imgui\imconfig.h">
       <Filter>imgui</Filter>
     </ClInclude>
@@ -322,10 +319,10 @@
     <ClInclude Include="..\..\thirdparty\include\imgui\imstb_truetype.h">
       <Filter>imgui</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\thirdparty\include\imgui\examples\imgui_impl_opengl3.h">
+    <ClInclude Include="..\..\thirdparty\include\imgui\examples\imgui_impl_glfw.h">
       <Filter>imgui\examples</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\thirdparty\include\imgui\examples\imgui_impl_glfw.h">
+    <ClInclude Include="..\..\thirdparty\include\imgui\examples\imgui_impl_opengl3.h">
       <Filter>imgui\examples</Filter>
     </ClInclude>
   </ItemGroup>
@@ -348,10 +345,10 @@
     <ClCompile Include="..\..\thirdparty\include\imgui\imgui_widgets.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\thirdparty\include\imgui\examples\imgui_impl_opengl3.cpp">
+    <ClCompile Include="..\..\thirdparty\include\imgui\examples\imgui_impl_glfw.cpp">
       <Filter>imgui\examples</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\thirdparty\include\imgui\examples\imgui_impl_glfw.cpp">
+    <ClCompile Include="..\..\thirdparty\include\imgui\examples\imgui_impl_opengl3.cpp">
       <Filter>imgui\examples</Filter>
     </ClCompile>
   </ItemGroup>
