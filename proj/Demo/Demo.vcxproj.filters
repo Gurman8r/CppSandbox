@@ -202,6 +202,9 @@
     <None Include="..\..\assets\meshes\example.mesh">
       <Filter>Resource Files\meshes</Filter>
     </None>
+    <None Include="..\..\assets\shaders\framebuffer.shader">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="..\..\assets\fonts\clacon.ttf">

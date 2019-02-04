@@ -36,6 +36,7 @@
     <ClInclude Include="..\..\include\MemeGraphics\OpenGL.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Quaternion.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\RenderBatch.hpp" />
+    <ClInclude Include="..\..\include\MemeGraphics\RenderBuffer.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\RenderTarget.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\RenderWindow.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Shader.hpp" />
@@ -61,6 +62,7 @@
     <ClCompile Include="..\..\src\MemeGraphics\OpenGL.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Image.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Mesh.cpp" />
+    <ClCompile Include="..\..\src\MemeGraphics\RenderBuffer.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\RenderTarget.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\RenderWindow.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Shader.cpp" />

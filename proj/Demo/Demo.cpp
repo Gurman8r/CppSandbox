@@ -239,6 +239,7 @@ namespace DEMO
 			&& load<ml::Shader>(shaders[GL_basic3D], "/shaders/basic3D.shader", log)
 			&& load<ml::Shader>(shaders[GL_text], "/shaders/text.shader", log)
 			&& load<ml::Shader>(shaders[GL_geometry], "/shaders/geometry.shader", log)
+			&& load<ml::Shader>(shaders[GL_framebuffer], "/shaders/framebuffer.shader", log)
 			;
 	}
 
@@ -352,6 +353,43 @@ namespace DEMO
 			vbo[VBO_text].unbind();
 			vao[VAO_text].unbind();
 
+
+			// FBO
+			fbo[FBO_test]
+				.create()
+				.bind();
+			// RBO
+			rbo[RBO_test]
+				.create(1280, 720)
+				.bind()
+				.bufferStorage(ml::GL::Depth24_Stencil8)
+				.bufferFramebuffer(ml::GL::DepthStencilAttachment)
+				.unbind();
+			if (testTex.create(
+				NULL,
+				rbo[RBO_test].width(),
+				rbo[RBO_test].height(),
+				ml::GL::RGB,
+				ml::GL::RGB,
+				false,
+				false,
+				false,
+				false
+			))
+			{
+				ml::OpenGL::framebufferTexture2D(
+					ml::GL::Framebuffer, 
+					ml::GL::ColorAttachment0,
+					ml::GL::Texture2D,
+					testTex,
+					0);
+			}
+			if (!ml::OpenGL::checkFramebufferStatus(ml::GL::Framebuffer))
+			{
+				return ml::Debug::logError("Framebuffer is not complete");
+			}
+			fbo[FBO_test].unbind();
+			
 		}
 		return true;
 	}
@@ -370,7 +408,6 @@ namespace DEMO
 			}
 		}
 		return ml::Debug::log("Loading Sounds...")
-			//&& load<ml::Sound>(sounds[SND_sphere8x6], "/sounds/example.wav", log)
 			;
 	}
 
@@ -483,7 +520,7 @@ namespace DEMO
 			model[M_quad]
 				.translate({ -5.0f, 0.0f, 0.0f })
 				.rotate(0.0f, ml::vec3f::Up)
-				.scale(ml::vec3f::One * 2);
+				.scale(ml::vec3f::One);
 
 			// Sphere 32x24
 			model[M_sphere32x24]
@@ -532,8 +569,12 @@ namespace DEMO
 	
 	void Demo::onDraw(const DrawEvent & ev)
 	{
+		// FBO
+		fbo[FBO_test].bind();
+
 		ev.window.clear(ml::Color::Violet);
 		{
+			// 3D
 			ml::OpenGL::enable(ml::GL::CullFace);
 			ml::OpenGL::enable(ml::GL::DepthTest);
 
@@ -593,6 +634,7 @@ namespace DEMO
 			}
 
 
+			// 2D
 			ml::OpenGL::disable(ml::GL::CullFace);
 			ml::OpenGL::disable(ml::GL::DepthTest);
 
@@ -672,6 +714,27 @@ namespace DEMO
 
 				ml::OpenGL::drawArrays(ml::GL::Points, 0, 4);
 			}
+
+
+			// FBO
+			fbo[FBO_test].unbind();
+			ev.window.clear(ml::Color::White);
+			shaders[GL_framebuffer]
+				.setUniform(ml::Uniform::Texture, testTex)
+				.bind();
+			vao[VAO_quad].bind();
+			vbo[VBO_quad].bind();
+			ibo[IBO_quad].bind();
+			{
+				ml::OpenGL::drawElements(
+					vao[VAO_quad].mode(),
+					ibo[IBO_quad].count(),
+					ibo[IBO_quad].type(),
+					NULL);
+			}
+			ibo[IBO_quad].unbind();
+			vbo[VBO_quad].unbind();
+			vao[VAO_quad].unbind();
 		}
 		ev.window.swapBuffers().pollEvents();
 	}

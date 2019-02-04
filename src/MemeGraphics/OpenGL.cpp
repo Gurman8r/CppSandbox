@@ -566,6 +566,36 @@ namespace ml
 		glCheck(glFramebufferTexture2D(target, attachment, textarget, texture, level));
 	}
 
+	// Renderbuffers
+
+	uint32_t OpenGL::genRenderbuffers(uint32_t count)
+	{
+		static uint32_t temp;
+		glCheck(glGenRenderbuffers(count, &temp));
+		return temp;
+	}
+
+	void OpenGL::deleteRenderbuffers(uint32_t count, const uint32_t * renderbuffers)
+	{
+		glCheck(glDeleteRenderbuffers(count, renderbuffers));
+	}
+
+	void OpenGL::bindRenderbuffer(GL::Target target, uint32_t renderbuffer)
+	{
+		glCheck(glBindRenderbuffer(target, renderbuffer));
+	}
+
+	void OpenGL::renderbufferStorage(GL::Target target, uint32_t value, int32_t width, int32_t height)
+	{
+		glCheck(glRenderbufferStorage(target, value, width, height));
+	}
+
+	void OpenGL::framebufferRenderbuffer(GL::Target target, uint32_t attachment, GL::Target renderbuffertarget, uint32_t renderbuffer)
+	{
+		glCheck(glFramebufferRenderbuffer(target, attachment, renderbuffertarget, renderbuffer));
+
+	}
+
 
 	// Shaders
 

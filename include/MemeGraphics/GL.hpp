@@ -1,5 +1,5 @@
-#ifndef _GRAPHICS_ENUM_HPP_
-#define _GRAPHICS_ENUM_HPP_
+#ifndef _ML_GL_HPP_
+#define _ML_GL_HPP_
 
 #include <MemeGraphics/Export.hpp>
 #include <MemeCore/Maths.hpp>
@@ -175,6 +175,26 @@ namespace ml
 			SLuminance8_Alpha8,				// GL_SLUMINANCE8_ALPHA8
 			SLuminance,						// GL_SLUMINANCE
 			SLuminance8,					// GL_SLUMINANCE8
+
+			Depth24_Stencil8 = 0x88F0,		// GL_DEPTH24_STENCIL8
+			DepthStencil = 0x84F9,			// GL_DEPTH_STENCIL
+			UnsignedInt_24_8,				// GL_UNSIGNED_INT_24_8
+
+		};
+
+		enum FBO_Attachment : Enum
+		{
+			AttachmentColorEncoding= 0x8210,// GL_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING
+			AttachmentComponentType,		// GL_FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE
+			AttachmentRedSize,				// GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE
+			AttachmentGreenSize,			// GL_FRAMEBUFFER_ATTACHMENT_GREEN_SIZE
+			AttachmentBlueSize,				// GL_FRAMEBUFFER_ATTACHMENT_BLUE_SIZE
+			AttachmentAlphaSize,			// GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE
+			AttachmentDepthSize,			// GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE
+			AttachmentStencilSize,			// GL_FRAMEBUFFER_ATTACHMENT_STENCIL_SIZE
+			FramebufferDefault,				// GL_FRAMEBUFFER_DEFAULT
+			FramebufferUndefined,			// GL_FRAMEBUFFER_UNDEFINED
+			DepthStencilAttachment,			// GL_DEPTH_STENCIL_ATTACHMENT
 		};
 
 		enum TexParam : Enum
@@ -330,4 +350,4 @@ namespace ml
 	}
 }
 
-#endif // !_GRAPHICS_ENUM_HPP_
+#endif // !_ML_GL_HPP_

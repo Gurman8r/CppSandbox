@@ -132,6 +132,9 @@
     <ClInclude Include="..\..\include\MemeGraphics\Model.hpp">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\RenderBuffer.hpp">
+      <Filter>Header Files\Buffers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeGraphics\RenderTarget.cpp">
@@ -199,6 +202,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Model.cpp">
       <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\RenderBuffer.cpp">
+      <Filter>Source Files\Buffers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,8 +1,12 @@
 #ifndef _MODEL_HPP_
 #define _MODEL_HPP_
 
-#include <MemeGraphics/Mesh.hpp>
 #include <MemeGraphics/IRenderer.hpp>
+#include <MemeGraphics/Mesh.hpp>
+#include <MemeGraphics/Shader.hpp>
+#include <MemeGraphics/VertexArray.hpp>
+#include <MemeGraphics/VertexBuffer.hpp>
+#include <MemeGraphics/IndexBuffer.hpp>
 
 namespace ml
 {
@@ -18,6 +22,10 @@ namespace ml
 		void draw(RenderTarget & target, RenderBatch batch) const override;
 
 	private:
+		VAO		m_vao;
+		VBO		m_vbo;
+		IBO		m_ibo;
+
 	};
 }
 

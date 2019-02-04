@@ -11,6 +11,7 @@
 #include <MemeGraphics/VertexBuffer.hpp>
 #include <MemeGraphics/IndexBuffer.hpp>
 #include <MemeGraphics/FrameBuffer.hpp>
+#include <MemeGraphics/RenderBuffer.hpp>
 #include <MemeGraphics/BufferLayout.hpp>
 #include <MemeGraphics/OpenGL.hpp>
 #include <MemeGraphics/Model.hpp>
@@ -68,6 +69,7 @@ namespace DEMO
 		GL_basic3D,
 		GL_text,
 		GL_geometry,
+		GL_framebuffer,
 		MAX_SHADER,
 
 		// Projection Matrices
@@ -118,6 +120,11 @@ namespace DEMO
 		MIN_FBO = -1,
 		FBO_test,
 		MAX_FBO,
+
+		// Render Buffers
+		MIN_RBO = -1,
+		RBO_test,
+		MAX_RBO,
 
 		// Meshes
 		MIN_MESH = -1,
@@ -193,9 +200,12 @@ namespace DEMO
 		ml::VBO			vbo		[MAX_VBO];
 		ml::IBO			ibo		[MAX_IBO];
 		ml::FBO			fbo		[MAX_FBO];
+		ml::RBO			rbo		[MAX_RBO];
 		ml::Mesh		mesh	[MAX_MESH];
 		ml::Text		text	[MAX_TEXT];
 		ml::Sound		sounds	[MAX_SOUND];
+
+		ml::Texture testTex;
 	};
 }
 

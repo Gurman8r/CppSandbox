@@ -162,6 +162,7 @@
     <None Include="..\..\assets\scripts\hello.meme" />
     <None Include="..\..\assets\scripts\core.meme" />
     <None Include="..\..\assets\scripts\stub.meme" />
+    <None Include="..\..\assets\shaders\framebuffer.shader" />
     <None Include="..\..\assets\shaders\fs\basic\drawColor_fs4x.shader" />
     <None Include="..\..\assets\shaders\fs\basic\drawSolid_fs4x.shader" />
     <None Include="..\..\assets\shaders\fs\basic\drawTexture_fs4x.shader" />

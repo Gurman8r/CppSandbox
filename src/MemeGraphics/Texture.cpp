@@ -210,88 +210,88 @@ namespace ml
 
 		if (!(*this) && (get_ref() = OpenGL::genTextures(1)))
 		{
-			
-		}
-
-		if (!m_repeated && !OpenGL::edgeClampAvailable())
-		{
-			static bool warned = false;
-			if (!warned)
+			if (!m_repeated && !OpenGL::edgeClampAvailable())
 			{
-				Debug::logWarning(
-					"OpenGL extension SGIS_texture_edge_clamp unavailable\n"
-					"Artifacts may occur along texture edges\n"
-					"Ensure that hardware acceleration is enabled if available");
-				warned = true;
+				static bool warned = false;
+				if (!warned)
+				{
+					Debug::logWarning(
+						"OpenGL extension SGIS_texture_edge_clamp unavailable\n"
+						"Artifacts may occur along texture edges\n"
+						"Ensure that hardware acceleration is enabled if available");
+					warned = true;
+				}
 			}
-		}
 
-		if (m_srgb && !OpenGL::textureSrgbAvailable())
-		{
-			static bool warned = false;
-			if (!warned)
+			if (m_srgb && !OpenGL::textureSrgbAvailable())
 			{
-				Debug::logWarning(
-					"OpenGL ES extension EXT_sRGB unavailable\n"
-					"Automatic sRGB to linear conversion disabled");
-				warned = true;
+				static bool warned = false;
+				if (!warned)
+				{
+					Debug::logWarning(
+						"OpenGL ES extension EXT_sRGB unavailable\n"
+						"Automatic sRGB to linear conversion disabled");
+					warned = true;
+				}
+				m_srgb = false;
 			}
-			m_srgb = false;
+
+			m_mipmapped = false;
+
+			// Initialize the texture
+			Texture::bind(this);
+
+			OpenGL::texImage2D(
+				GL::Texture2D,
+				0,
+					(m_srgb
+						? GL::SRGB8_Alpha8
+						: GL::RGBA),
+				m_actualSize[0],
+				m_actualSize[1],
+				0,
+				GL::RGBA,
+				GL::UnsignedByte,
+				NULL);
+
+			OpenGL::texParameter(
+				GL::Texture2D,
+				GL::TexWrapS,
+					(m_repeated
+						? GL::Repeat
+						: (OpenGL::edgeClampAvailable()
+							? GL::ClampToEdge
+							: GL::Clamp)));
+
+			OpenGL::texParameter(
+				GL::Texture2D,
+				GL::TexWrapT,
+					(m_repeated
+						? GL::Repeat
+						: (OpenGL::edgeClampAvailable()
+							? GL::ClampToEdge
+							: GL::Clamp)));
+
+			OpenGL::texParameter(
+				GL::Texture2D,
+				GL::TexMagFilter,
+					(m_smooth
+						? GL::Linear
+						: GL::Nearest));
+
+			OpenGL::texParameter(
+				GL::Texture2D,
+				GL::TexMinFilter,
+					(m_smooth
+						? GL::Linear
+						: GL::Nearest));
+
+			Texture::bind(NULL);
+
+			return true;
 		}
 
-		m_mipmapped = false;
-
-		// Initialize the texture
-		Texture::bind(this);
-		
-		OpenGL::texImage2D(
-			GL::Texture2D,
-			0,
-			(m_srgb
-				? GL::SRGB8_Alpha8
-				: GL::RGBA),
-			m_actualSize[0], 
-			m_actualSize[1], 
-			0, 
-			GL::RGBA, 
-			GL::UnsignedByte, 
-			NULL);
-		
-		OpenGL::texParameter(
-			GL::Texture2D,
-			GL::TexWrapS,
-			(m_repeated
-				? GL::Repeat
-				: (OpenGL::edgeClampAvailable()
-					? GL::ClampToEdge
-					: GL::Clamp)));
-		
-		OpenGL::texParameter(
-			GL::Texture2D,
-			GL::TexWrapT, 
-			(m_repeated
-				? GL::Repeat
-				: (OpenGL::edgeClampAvailable()
-					? GL::ClampToEdge
-					: GL::Clamp)));
-		
-		OpenGL::texParameter(
-			GL::Texture2D, 
-			GL::TexMagFilter,
-			(m_smooth
-				? GL::Linear
-				: GL::Nearest));
-		
-		OpenGL::texParameter(
-			GL::Texture2D, 
-			GL::TexMinFilter, 
-			(m_smooth
-				? GL::Linear
-				: GL::Nearest));
-		
-		Texture::bind(NULL);
-		
-		return true;
+		return Debug::logError("Unable to create texture");
 	}
 
 	bool Texture::create(

@@ -1,5 +1,5 @@
-/* Vertex
-* * * * * * * * * * * * * * * * * * * * */
+// Vertex
+/* * * * * * * * * * * * * * * * * * * * */
 #shader vertex
 #version 330 core
 
@@ -21,8 +21,8 @@ void main()
 }
 
 
-/* Fragment
-* * * * * * * * * * * * * * * * * * * * */
+// Fragment
+/* * * * * * * * * * * * * * * * * * * * */
 #shader fragment
 #version 330 core
 
@@ -41,8 +41,8 @@ void main()
 }
 
 
-/* Geometry
-* * * * * * * * * * * * * * * * * * * * */
+// Geometry
+/* * * * * * * * * * * * * * * * * * * * */
 #shader geometry
 #version 330 core
 

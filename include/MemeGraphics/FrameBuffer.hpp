@@ -7,7 +7,7 @@
 
 namespace ml
 {
-	class ML_GRAPHICS_API FrameBuffer
+	class ML_GRAPHICS_API FrameBuffer final
 		: public ITrackable
 		, public IHandle<uint32_t>
 	{

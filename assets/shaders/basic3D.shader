@@ -1,5 +1,5 @@
-/* Vertex
-* * * * * * * * * * * * * * * * * * * * */
+// Vertex
+/* * * * * * * * * * * * * * * * * * * * */
 #shader vertex
 #version 330 core
 
@@ -29,8 +29,8 @@ void main()
 	gl_Position = mvp * vec4(a_Position, 1.0);
 }
 
-/* Fragment
-* * * * * * * * * * * * * * * * * * * * */
+// Fragment
+/* * * * * * * * * * * * * * * * * * * * */
 #shader fragment
 #version 330 core
 

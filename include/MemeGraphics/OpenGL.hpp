@@ -106,9 +106,16 @@ namespace ml
 		static uint32_t genFramebuffers(uint32_t count);
 		static uint32_t	checkFramebufferStatus(GL::Target target);
 		static void		bindFramebuffer(GL::Target target, uint32_t framebuffer);
-		static void		deleteFramebuffers(uint32_t count, const uint32_t * framebuffersAvailable);
+		static void		deleteFramebuffers(uint32_t count, const uint32_t * framebuffers);
 		static void		blitFramebuffer(int32_t srcX0, int32_t srcY0, int32_t srcX1, int32_t srcY1, int32_t dstX0, int32_t dstY0, int32_t dstX1, int32_t dstY1, GL::Mask mask, uint32_t filter);
 		static void		framebufferTexture2D(GL::Target target, GL::Attachment attachment, GL::Target textarget, uint32_t texture, int32_t level);
+
+	public: // Renderbuffers
+		static uint32_t genRenderbuffers(uint32_t count);
+		static void		deleteRenderbuffers(uint32_t count, const uint32_t * renderbuffers);
+		static void		bindRenderbuffer(GL::Target target, uint32_t renderbuffer);
+		static void		renderbufferStorage(GL::Target target, uint32_t value, int32_t width, int32_t height);
+		static void		framebufferRenderbuffer(GL::Target target, uint32_t attachment, GL::Target renderbuffertarget, uint32_t renderbuffer);
 
 	public: // Shaders
 		static bool		shadersAvailable();
