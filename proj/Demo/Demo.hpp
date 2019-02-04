@@ -46,6 +46,7 @@ namespace DEMO
 		TEX_dean,
 		TEX_sanic,
 		TEX_earth,
+		TEX_framebuffer,
 		TEX_bg_clouds,
 		TEX_sky_clouds,
 		TEX_sky_water,
@@ -204,8 +205,6 @@ namespace DEMO
 		ml::Mesh		mesh	[MAX_MESH];
 		ml::Text		text	[MAX_TEXT];
 		ml::Sound		sounds	[MAX_SOUND];
-
-		ml::Texture testTex;
 	};
 }
 

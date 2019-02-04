@@ -365,7 +365,7 @@ namespace DEMO
 				.bufferStorage(ml::GL::Depth24_Stencil8)
 				.bufferFramebuffer(ml::GL::DepthStencilAttachment)
 				.unbind();
-			if (testTex.create(
+			if (textures[TEX_framebuffer].create(
 				NULL,
 				rbo[RBO_test].width(),
 				rbo[RBO_test].height(),
@@ -381,7 +381,7 @@ namespace DEMO
 					ml::GL::Framebuffer, 
 					ml::GL::ColorAttachment0,
 					ml::GL::Texture2D,
-					testTex,
+					textures[TEX_framebuffer],
 					0);
 			}
 			if (!ml::OpenGL::checkFramebufferStatus(ml::GL::Framebuffer))
@@ -720,7 +720,7 @@ namespace DEMO
 			fbo[FBO_test].unbind();
 			ev.window.clear(ml::Color::White);
 			shaders[GL_framebuffer]
-				.setUniform(ml::Uniform::Texture, testTex)
+				.setUniform(ml::Uniform::Texture, textures[TEX_framebuffer])
 				.bind();
 			vao[VAO_quad].bind();
 			vbo[VBO_quad].bind();
