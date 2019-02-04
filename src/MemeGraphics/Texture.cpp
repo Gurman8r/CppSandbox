@@ -413,9 +413,9 @@ namespace ml
 					warned = true;
 				}
 			}
-			//Texture::bind(this);
+			//Tex::bind(this);
 			//{}
-			//Texture::bind(NULL);
+			//Tex::bind(NULL);
 		}
 		return (*this);
 	}

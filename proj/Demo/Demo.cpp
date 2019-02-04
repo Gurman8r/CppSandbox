@@ -213,19 +213,19 @@ namespace DEMO
 			&& load<ml::Texture>(textures[TEX_dean], "/images/dean.png")
 			&& load<ml::Texture>(textures[TEX_sanic], "/images/sanic.png")
 			&& load<ml::Texture>(textures[TEX_earth], "/images/earth.png")
-			//&& load<ml::Texture>(textures[TEX_bg_clouds], "/textures/bg/bg_clouds.png")
-			//&& load<ml::Texture>(textures[TEX_sky_clouds], "/textures/bg/sky_clouds.png")
-			//&& load<ml::Texture>(textures[TEX_sky_water], "/textures/bg/sky_water.png")
-			//&& load<ml::Texture>(textures[TEX_earth_cm], "/textures/earth/earth_cm_2k.png")
-			//&& load<ml::Texture>(textures[TEX_earth_dm], "/textures/earth/earth_dm_2k.png")
-			//&& load<ml::Texture>(textures[TEX_earth_hm], "/textures/earth/earth_hm_2k.png")
-			//&& load<ml::Texture>(textures[TEX_earth_lm], "/textures/earth/earth_lm_2k.png")
-			//&& load<ml::Texture>(textures[TEX_earth_nm], "/textures/earth/earth_nm_2k.png")
-			//&& load<ml::Texture>(textures[TEX_earth_sm], "/textures/earth/earth_sm_2k.png")
-			//&& load<ml::Texture>(textures[TEX_mars_dm], "/textures/mars/mars_dm_2k.png")
-			//&& load<ml::Texture>(textures[TEX_mars_nm], "/textures/mars/mars_nm_2k.png")
-			//&& load<ml::Texture>(textures[TEX_moon_dm], "/textures/moon/moon_dm_2k.png")
-			//&& load<ml::Texture>(textures[TEX_moon_nm], "/textures/moon/moon_nm_2k.png")
+			//&& load<ml::Tex>(textures[TEX_bg_clouds], "/textures/bg/bg_clouds.png")
+			//&& load<ml::Tex>(textures[TEX_sky_clouds], "/textures/bg/sky_clouds.png")
+			//&& load<ml::Tex>(textures[TEX_sky_water], "/textures/bg/sky_water.png")
+			//&& load<ml::Tex>(textures[TEX_earth_cm], "/textures/earth/earth_cm_2k.png")
+			//&& load<ml::Tex>(textures[TEX_earth_dm], "/textures/earth/earth_dm_2k.png")
+			//&& load<ml::Tex>(textures[TEX_earth_hm], "/textures/earth/earth_hm_2k.png")
+			//&& load<ml::Tex>(textures[TEX_earth_lm], "/textures/earth/earth_lm_2k.png")
+			//&& load<ml::Tex>(textures[TEX_earth_nm], "/textures/earth/earth_nm_2k.png")
+			//&& load<ml::Tex>(textures[TEX_earth_sm], "/textures/earth/earth_sm_2k.png")
+			//&& load<ml::Tex>(textures[TEX_mars_dm], "/textures/mars/mars_dm_2k.png")
+			//&& load<ml::Tex>(textures[TEX_mars_nm], "/textures/mars/mars_nm_2k.png")
+			//&& load<ml::Tex>(textures[TEX_moon_dm], "/textures/moon/moon_dm_2k.png")
+			//&& load<ml::Tex>(textures[TEX_moon_nm], "/textures/moon/moon_nm_2k.png")
 			&& load<ml::Texture>(textures[TEX_stone_dm], "/textures/stone/stone_dm.png")
 			&& load<ml::Texture>(textures[TEX_stone_hm], "/textures/stone/stone_hm.png")
 			&& load<ml::Texture>(textures[TEX_stone_nm], "/textures/stone/stone_nm.png")
@@ -363,7 +363,7 @@ namespace DEMO
 				.bufferStorage(ml::GL::Depth24_Stencil8)
 				.bufferFramebuffer(ml::GL::DepthStencilAttachment)
 				.unbind();
-			// Texture
+			// Tex
 			if (textures[TEX_framebuffer].create(
 				rbo[RBO_scene].width(),
 				rbo[RBO_scene].height()
@@ -575,9 +575,9 @@ namespace DEMO
 			{
 				shaders[GL_basic3D]
 					.setUniform(ml::Uniform::Color, ml::Color::White)
-					.setUniform(ml::Uniform::Texture, textures[TEX_stone_dm])
-					.setUniform(ml::Uniform::Proj, proj[P_persp])
-					.setUniform(ml::Uniform::View, view[V_camera])
+					.setUniform(ml::Uniform::Tex,	textures[TEX_stone_dm])
+					.setUniform(ml::Uniform::Proj,	proj[P_persp])
+					.setUniform(ml::Uniform::View,	view[V_camera])
 					.setUniform(ml::Uniform::Model, model[M_cube]
 						.translate(ml::vec3f::Zero)
 						.rotate(+ev.elapsed.delta(), ml::vec3f::One)
@@ -595,9 +595,9 @@ namespace DEMO
 			{
 				shaders[GL_basic3D]
 					.setUniform(ml::Uniform::Color, ml::Color::White)
-					.setUniform(ml::Uniform::Texture, textures[TEX_earth])
-					.setUniform(ml::Uniform::Proj, proj[P_persp])
-					.setUniform(ml::Uniform::View, view[V_camera])
+					.setUniform(ml::Uniform::Tex,	textures[TEX_earth])
+					.setUniform(ml::Uniform::Proj,	proj[P_persp])
+					.setUniform(ml::Uniform::View,	view[V_camera])
 					.setUniform(ml::Uniform::Model, model[M_sphere32x24]
 						.translate(ml::vec3f::Zero)
 						.rotate(+ev.elapsed.delta(), ml::vec3f::Up)
@@ -625,9 +625,9 @@ namespace DEMO
 			{
 				shaders[GL_basic3D]
 					.setUniform(ml::Uniform::Color, ml::Color::White)
-					.setUniform(ml::Uniform::Texture, textures[TEX_sanic])
-					.setUniform(ml::Uniform::Proj, proj[P_persp])
-					.setUniform(ml::Uniform::View, view[V_camera])
+					.setUniform(ml::Uniform::Tex,	textures[TEX_sanic])
+					.setUniform(ml::Uniform::Proj,	proj[P_persp])
+					.setUniform(ml::Uniform::View,	view[V_camera])
 					.setUniform(ml::Uniform::Model, model[M_quad]
 						.translate(ml::vec3f::Zero)
 						.rotate(-ev.elapsed.delta(), ml::vec3f::Forward)
@@ -686,27 +686,20 @@ namespace DEMO
 					.bind();
 				ml::OpenGL::drawArrays(ml::GL::Points, 0, 4);
 			}
+
 		}
 		fbo[FBO_scene].unbind();
 		
 		ev.window.clear(ml::Color::White);
 		{
 			shaders[GL_framebuffer]
-				.setUniform(ml::Uniform::Texture, textures[TEX_framebuffer])
+				.setUniform(ml::Uniform::Tex, textures[TEX_framebuffer])
 				.bind();
-			vao[VAO_quad].bind();
-			vbo[VBO_quad].bind();
-			ibo[IBO_quad].bind();
-			{
-				ml::OpenGL::drawElements(
-					vao[VAO_quad].mode(),
-					ibo[IBO_quad].count(),
-					ibo[IBO_quad].type(),
-					NULL);
-			}
-			ibo[IBO_quad].unbind();
-			vbo[VBO_quad].unbind();
-			vao[VAO_quad].unbind();
+			
+			ev.window.draw(
+				vao[VAO_quad],
+				vbo[VBO_quad],
+				ibo[IBO_quad]);
 		}
 		ev.window.swapBuffers().pollEvents();
 	}

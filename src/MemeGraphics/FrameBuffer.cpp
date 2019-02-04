@@ -32,7 +32,7 @@ namespace ml
 	{
 		if (!(*this) && (get_ref() = OpenGL::genFramebuffers(1)))
 		{
-
+			// good
 		}
 		return (*this);
 	}

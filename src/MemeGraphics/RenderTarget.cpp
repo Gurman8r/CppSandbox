@@ -54,7 +54,7 @@ namespace ml
 			}
 			if (batch.texture)
 			{
-				(*batch.shader).setUniform(Uniform::Texture, (*batch.texture));
+				(*batch.shader).setUniform(Uniform::Tex, (*batch.texture));
 			}
 			(*batch.shader).bind((batch.texture != NULL));
 		}

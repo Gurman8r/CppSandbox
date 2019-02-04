@@ -63,6 +63,36 @@ namespace ml
 			Debug::log("Using OpenGL Version: {0}.{1}",
 				majorVersion,
 				minorVersion);
+
+			if (!framebuffersAvailable())
+			{
+				static bool warned = false;
+				if (!warned)
+				{
+					Debug::logWarning("Texture Mipmap Framebuffers Unavailable");
+					warned = true;
+				}
+			}
+
+			if (!edgeClampAvailable())
+			{
+				static bool warned = false;
+				if (!warned)
+				{
+					Debug::logWarning("Texture Edge Clamp Unavailable");
+					warned = true;
+				}
+			}
+
+			if (!textureSrgbAvailable())
+			{
+				static bool warned = false;
+				if (!warned)
+				{
+					Debug::logWarning("Texture sRGB Unavailable");
+					warned = true;
+				}
+			}
 		}
 	}
 

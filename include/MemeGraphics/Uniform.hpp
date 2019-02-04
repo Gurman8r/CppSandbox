@@ -14,7 +14,7 @@ namespace ml
 			Proj,
 			View,
 			Color,
-			Texture,
+			Tex,
 			CurveMode,
 			MAX_UNIFORM_ID
 		};
