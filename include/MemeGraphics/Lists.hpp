@@ -15,7 +15,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	// Vertex List : List<Vertex> : std::vector<Vertex>
+	// VertexList | List<Vertex> | std::vector<Vertex>
 	class ML_GRAPHICS_API VertexList final
 		: public List<Vertex>
 	{
@@ -24,35 +24,12 @@ namespace ml
 		using self_type = VertexList;
 
 	public:
-		VertexList()
-			: base_type()
-		{
-		}
-		
-		explicit VertexList(const allocator_type & alloc)
-			: base_type(alloc)
-		{
-		}
-
-		explicit VertexList(const size_type count, const allocator_type & alloc = allocator_type())
-			: base_type(count, alloc)
-		{
-		}
-		
-		VertexList(const base_type & value)
-			: base_type(value)
-		{
-		}
-		
-		VertexList(const initializer_type & value)
-			: base_type(value)
-		{
-		}
-		
-		VertexList(const self_type & value)
-			: base_type(value)
-		{
-		}
+		VertexList();
+		explicit VertexList(const allocator_type & alloc);
+		explicit VertexList(const size_type count, const allocator_type & alloc = allocator_type());
+		VertexList(const base_type & value);
+		VertexList(const initializer_type & value);
+		VertexList(const self_type & value);
 		
 		template <class Iter>
 		VertexList(Iter begin, Iter end)
@@ -60,26 +37,10 @@ namespace ml
 		{
 		}
 		
-		virtual ~VertexList() {}
+		virtual ~VertexList();
 
 	public:
-		inline const FloatList & contiguous() const
-		{
-			if (const size_type imax = ((*this).size() * Vertex::Size))
-			{
-				m_contiguous.resize(imax);
-
-				for (size_type i = 0; i < imax; i++)
-				{
-					m_contiguous[i] = (*this)[i / Vertex::Size][i % Vertex::Size];
-				}
-			}
-			else if (!m_contiguous.empty())
-			{
-				m_contiguous.clear();
-			}
-			return m_contiguous;
-		}
+		const FloatList & contiguous() const;
 
 	private:
 		mutable FloatList m_contiguous;

@@ -177,9 +177,6 @@ namespace ml
 			SLuminance8,					// GL_SLUMINANCE8
 
 			Depth24_Stencil8 = 0x88F0,		// GL_DEPTH24_STENCIL8
-			DepthStencil = 0x84F9,			// GL_DEPTH_STENCIL
-			UnsignedInt_24_8,				// GL_UNSIGNED_INT_24_8
-
 		};
 
 		enum FBO_Attachment : Enum

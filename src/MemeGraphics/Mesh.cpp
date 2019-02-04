@@ -159,7 +159,7 @@ namespace ml
 		{
 			m_vertices[i] = Vertex(
 				vp[vi[i]], 
-				vec4f(vn[vi[i]], 1),
+				vec4f(vn[vi[i]], 1.0f),
 				vt[ti[i]]);
 		}
 

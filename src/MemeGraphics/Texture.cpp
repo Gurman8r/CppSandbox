@@ -209,15 +209,22 @@ namespace ml
 			m_cFormat	= cFormat;
 			m_iFormat	= iFormat;
 
+			if (m_mipmapped && !OpenGL::framebuffersAvailable())
+			{
+				static bool warned = false;
+				if (!warned)
+				{
+					Debug::logWarning("Texture Mipmap Framebuffers Unavailable");
+					warned = true;
+				}
+			}
+
 			if (!m_repeated && !OpenGL::edgeClampAvailable())
 			{
 				static bool warned = false;
 				if (!warned)
 				{
-					Debug::logWarning(
-						"OpenGL extension SGIS_texture_edge_clamp unavailable\n"
-						"Artifacts may occur along texture edges\n"
-						"Ensure that hardware acceleration is enabled if available");
+					Debug::logWarning("Texture Edge Clamp Unavailable");
 					warned = true;
 				}
 			}
@@ -227,9 +234,7 @@ namespace ml
 				static bool warned = false;
 				if (!warned)
 				{
-					Debug::logWarning(
-						"OpenGL ES extension EXT_sRGB unavailable\n"
-						"Automatic sRGB to linear conversion disabled");
+					Debug::logWarning("Texture sRGB Unavailable");
 					warned = true;
 				}
 				m_srgb = false;

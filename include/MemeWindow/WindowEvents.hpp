@@ -17,12 +17,13 @@ namespace ml
 
 			EV_WindowResized,
 			EV_WindowMoved,
-			EV_WindowChar,
-			EV_WindowScroll,
 			EV_WindowClosed,
 			EV_WindowFocused,
-			EV_WindowMouseMove,
+			EV_WindowCharTyped,
+			EV_WindowMouseScroll,
+			EV_WindowMouseMoved,
 			EV_WindowMouseEnter,
+			EV_WindowFramebufferResized,
 
 			MAX_WINDOW_EVENT
 		};
@@ -75,44 +76,6 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_WINDOW_API WindowCharEvent final : public WindowEvent
-	{
-		uint32_t value;
-
-		WindowCharEvent(uint32_t value)
-			: WindowEvent(EV_WindowChar)
-			, value(value)
-		{
-		}
-
-		inline void serialize(std::ostream & out) const override
-		{
-			out << "[" << get_type().name() << "] " << (char)value;
-		}
-	};
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	struct ML_WINDOW_API WindowScrollEvent final : public WindowEvent
-	{
-		double x;
-		double y;
-
-		WindowScrollEvent(double x, double y)
-			: WindowEvent(EV_WindowScroll)
-			, x(x)
-			, y(y)
-		{
-		}
-
-		inline void serialize(std::ostream & out) const override
-		{
-			out << "[" << get_type().name() << "] " << x << " " << y;
-		}
-	};
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
 	struct ML_WINDOW_API WindowClosedEvent final : public WindowEvent
 	{
 		WindowClosedEvent()
@@ -146,13 +109,51 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
+	struct ML_WINDOW_API WindowCharTypedEvent final : public WindowEvent
+	{
+		uint32_t value;
+
+		WindowCharTypedEvent(uint32_t value)
+			: WindowEvent(EV_WindowCharTyped)
+			, value(value)
+		{
+		}
+
+		inline void serialize(std::ostream & out) const override
+		{
+			out << "[" << get_type().name() << "] " << (char)value;
+		}
+	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	struct ML_WINDOW_API WindowMouseScrollEvent final : public WindowEvent
+	{
+		double x;
+		double y;
+
+		WindowMouseScrollEvent(double x, double y)
+			: WindowEvent(EV_WindowMouseScroll)
+			, x(x)
+			, y(y)
+		{
+		}
+
+		inline void serialize(std::ostream & out) const override
+		{
+			out << "[" << get_type().name() << "] " << x << " " << y;
+		}
+	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	struct ML_WINDOW_API WindowMouseMoveEvent final : public WindowEvent
 	{
 		double x;
 		double y;
 
 		WindowMouseMoveEvent(double x, double y)
-			: WindowEvent(EV_WindowMouseMove)
+			: WindowEvent(EV_WindowMouseMoved)
 			, x(x)
 			, y(y)
 		{
@@ -179,6 +180,22 @@ namespace ml
 		inline void serialize(std::ostream & out) const override
 		{
 			out << "[" << get_type().name() << "] " << value;
+		}
+	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	struct ML_WINDOW_API WindowFramebufferResizedEvent final : public WindowEvent
+	{
+		int32_t width;
+		int32_t height;
+
+		WindowFramebufferResizedEvent(int32_t width, int32_t height)
+			: WindowEvent(EV_WindowFramebufferResized)
+			, width(width)
+			, height(height)
+		{
+
 		}
 	};
 

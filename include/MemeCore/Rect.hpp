@@ -6,7 +6,6 @@
 
 namespace ml
 {
-
 	template <class T>
 	class Rect final
 		: public Vector4<T>

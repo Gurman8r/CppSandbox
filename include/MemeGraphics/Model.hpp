@@ -2,6 +2,7 @@
 #define _MODEL_HPP_
 
 #include <MemeGraphics/IRenderer.hpp>
+#include <MemeGraphics/ITransformable.hpp>
 #include <MemeGraphics/Mesh.hpp>
 #include <MemeGraphics/Shader.hpp>
 #include <MemeGraphics/VertexArray.hpp>
@@ -13,6 +14,7 @@ namespace ml
 	class ML_GRAPHICS_API Model
 		: public ITrackable
 		, public IRenderer
+		, public ITransformable
 	{
 	public:
 		Model();
@@ -22,6 +24,8 @@ namespace ml
 		void draw(RenderTarget & target, RenderBatch batch) const override;
 
 	private:
+		const Texture * m_texture;
+
 		VAO		m_vao;
 		VBO		m_vbo;
 		IBO		m_ibo;

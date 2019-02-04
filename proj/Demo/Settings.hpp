@@ -25,7 +25,7 @@ namespace DEMO
 		ml::String	rootPath;		// Solution Dir
 		ml::String	assetPath;		// Where's all the npos?
 		uint32_t	runTests;		// Run test functions
-		bool		logLoading;		// Verbose loading output
+		bool		verboseLog;		// Verbose loading output
 
 		// [Script]
 		ml::String	scrPath;		// Location of scripts
@@ -75,7 +75,7 @@ namespace DEMO
 				rootPath	= ini.Get("General", "rootPath", "../../../");
 				assetPath	= ini.Get("General", "assetPath", "assets/");
 				runTests	= ini.GetInteger("General", "runTests", false);
-				logLoading	= ini.GetBoolean("General", "logLoading", false);
+				verboseLog	= ini.GetBoolean("General", "verboseLog", false);
 
 				// [Script]
 				scrPath		= ini.Get("Script", "scrPath", "scripts/");

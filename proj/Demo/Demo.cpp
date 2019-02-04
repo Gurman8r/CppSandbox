@@ -184,79 +184,77 @@ namespace DEMO
 		return checked;
 	}
 
-	bool Demo::loadFonts(bool log)
+	bool Demo::loadFonts()
 	{
 		// Load Fonts
 		return ml::Debug::log("Loading Fonts...")
-			&& load<ml::Font>(fonts[FNT_clacon], "/fonts/clacon.ttf", log)
-			&& load<ml::Font>(fonts[FNT_consolas], "/fonts/consolas.ttf", log)
-			&& load<ml::Font>(fonts[FNT_lconsole], "/fonts/lucida_console.ttf", log)
-			&& load<ml::Font>(fonts[FNT_minecraft], "/fonts/minecraft.ttf", log)
+			&& load<ml::Font>(fonts[FNT_clacon], "/fonts/clacon.ttf")
+			&& load<ml::Font>(fonts[FNT_consolas], "/fonts/consolas.ttf")
+			&& load<ml::Font>(fonts[FNT_lconsole], "/fonts/lucida_console.ttf")
+			&& load<ml::Font>(fonts[FNT_minecraft], "/fonts/minecraft.ttf")
 			;
 	}
 
-	bool Demo::loadImages(bool log)
+	bool Demo::loadImages()
 	{
 		// Load Images
 		return ml::Debug::log("Loading Images...")
-			&& load<ml::Image>(images[IMG_icon], "/images/dean.png", log)
+			&& load<ml::Image>(images[IMG_icon], "/images/dean.png")
 			;
 	}
 
-	bool Demo::loadTextures(bool log)
+	bool Demo::loadTextures()
 	{
 		ml::Debug::log("Max Texture Size: {0}", ml::vec2u(ml::OpenGL::getMaxTextureSize()))
 			;
 
 		// Load Textures
 		return ml::Debug::log("Loading Textures...")
-			&& load<ml::Texture>(textures[TEX_dean], "/images/dean.png", log)
-			&& load<ml::Texture>(textures[TEX_sanic], "/images/sanic.png", log)
-			&& load<ml::Texture>(textures[TEX_earth], "/images/earth.png", log)
-			//&& load<ml::Texture>(textures[TEX_bg_clouds], "/textures/bg/bg_clouds.png", log)
-			//&& load<ml::Texture>(textures[TEX_sky_clouds], "/textures/bg/sky_clouds.png", log)
-			//&& load<ml::Texture>(textures[TEX_sky_water], "/textures/bg/sky_water.png", log)
-			//&& load<ml::Texture>(textures[TEX_earth_cm], "/textures/earth/earth_cm_2k.png", log)
-			//&& load<ml::Texture>(textures[TEX_earth_dm], "/textures/earth/earth_dm_2k.png", log)
-			//&& load<ml::Texture>(textures[TEX_earth_hm], "/textures/earth/earth_hm_2k.png", log)
-			//&& load<ml::Texture>(textures[TEX_earth_lm], "/textures/earth/earth_lm_2k.png", log)
-			//&& load<ml::Texture>(textures[TEX_earth_nm], "/textures/earth/earth_nm_2k.png", log)
-			//&& load<ml::Texture>(textures[TEX_earth_sm], "/textures/earth/earth_sm_2k.png", log)
-			//&& load<ml::Texture>(textures[TEX_mars_dm], "/textures/mars/mars_dm_2k.png", log)
-			//&& load<ml::Texture>(textures[TEX_mars_nm], "/textures/mars/mars_nm_2k.png", log)
-			//&& load<ml::Texture>(textures[TEX_moon_dm], "/textures/moon/moon_dm_2k.png", log)
-			//&& load<ml::Texture>(textures[TEX_moon_nm], "/textures/moon/moon_nm_2k.png", log)
-			&& load<ml::Texture>(textures[TEX_stone_dm], "/textures/stone/stone_dm.png", log)
-			&& load<ml::Texture>(textures[TEX_stone_hm], "/textures/stone/stone_hm.png", log)
-			&& load<ml::Texture>(textures[TEX_stone_nm], "/textures/stone/stone_nm.png", log)
+			&& load<ml::Texture>(textures[TEX_dean], "/images/dean.png")
+			&& load<ml::Texture>(textures[TEX_sanic], "/images/sanic.png")
+			&& load<ml::Texture>(textures[TEX_earth], "/images/earth.png")
+			//&& load<ml::Texture>(textures[TEX_bg_clouds], "/textures/bg/bg_clouds.png")
+			//&& load<ml::Texture>(textures[TEX_sky_clouds], "/textures/bg/sky_clouds.png")
+			//&& load<ml::Texture>(textures[TEX_sky_water], "/textures/bg/sky_water.png")
+			//&& load<ml::Texture>(textures[TEX_earth_cm], "/textures/earth/earth_cm_2k.png")
+			//&& load<ml::Texture>(textures[TEX_earth_dm], "/textures/earth/earth_dm_2k.png")
+			//&& load<ml::Texture>(textures[TEX_earth_hm], "/textures/earth/earth_hm_2k.png")
+			//&& load<ml::Texture>(textures[TEX_earth_lm], "/textures/earth/earth_lm_2k.png")
+			//&& load<ml::Texture>(textures[TEX_earth_nm], "/textures/earth/earth_nm_2k.png")
+			//&& load<ml::Texture>(textures[TEX_earth_sm], "/textures/earth/earth_sm_2k.png")
+			//&& load<ml::Texture>(textures[TEX_mars_dm], "/textures/mars/mars_dm_2k.png")
+			//&& load<ml::Texture>(textures[TEX_mars_nm], "/textures/mars/mars_nm_2k.png")
+			//&& load<ml::Texture>(textures[TEX_moon_dm], "/textures/moon/moon_dm_2k.png")
+			//&& load<ml::Texture>(textures[TEX_moon_nm], "/textures/moon/moon_nm_2k.png")
+			&& load<ml::Texture>(textures[TEX_stone_dm], "/textures/stone/stone_dm.png")
+			&& load<ml::Texture>(textures[TEX_stone_hm], "/textures/stone/stone_hm.png")
+			&& load<ml::Texture>(textures[TEX_stone_nm], "/textures/stone/stone_nm.png")
 			;
 	}
 
-	bool Demo::loadShaders(bool log)
+	bool Demo::loadShaders()
 	{
 		// Load Shaders
 		return ml::Debug::log("Loading Shaders...")
-			&& load<ml::Shader>(shaders[GL_basic3D], "/shaders/basic3D.shader", log)
-			&& load<ml::Shader>(shaders[GL_text], "/shaders/text.shader", log)
-			&& load<ml::Shader>(shaders[GL_geometry], "/shaders/geometry.shader", log)
-			&& load<ml::Shader>(shaders[GL_framebuffer], "/shaders/framebuffer.shader", log)
+			&& load<ml::Shader>(shaders[GL_basic3D], "/shaders/basic3D.shader")
+			&& load<ml::Shader>(shaders[GL_text], "/shaders/text.shader")
+			&& load<ml::Shader>(shaders[GL_geometry], "/shaders/geometry.shader")
+			&& load<ml::Shader>(shaders[GL_framebuffer], "/shaders/framebuffer.shader")
 			;
 	}
 
-	bool Demo::loadMeshes(bool log)
+	bool Demo::loadMeshes()
 	{
 		// Load Meshes
 		return ml::Debug::log("Loading Meshes...")
-			&& load<ml::Mesh>(mesh[MESH_example], "/meshes/example.mesh", log)
-			&& load<ml::Mesh>(mesh[MESH_sphere8x6], "/meshes/sphere8x6.mesh", log)
-			&& load<ml::Mesh>(mesh[MESH_sphere32x24], "/meshes/sphere32x24.mesh", log)
+			&& load<ml::Mesh>(mesh[MESH_example], "/meshes/example.mesh")
+			&& load<ml::Mesh>(mesh[MESH_sphere8x6], "/meshes/sphere8x6.mesh")
+			&& load<ml::Mesh>(mesh[MESH_sphere32x24], "/meshes/sphere32x24.mesh")
 			;
 	}
 
-	bool Demo::loadBuffers(bool log)
+	bool Demo::loadBuffers()
 	{
-		//ml::cout << mesh[MESH_sphere8x6] << ml::endl;
-
 		// Load Buffers
 		if (ml::Debug::log("Loading Buffers..."))
 		{
@@ -355,19 +353,20 @@ namespace DEMO
 
 
 			// FBO
-			fbo[FBO_test]
+			fbo[FBO_scene]
 				.create()
 				.bind();
 			// RBO
-			rbo[RBO_test]
+			rbo[RBO_scene]
 				.create(1280, 720)
 				.bind()
 				.bufferStorage(ml::GL::Depth24_Stencil8)
 				.bufferFramebuffer(ml::GL::DepthStencilAttachment)
 				.unbind();
+			// Texture
 			if (textures[TEX_framebuffer].create(
-				rbo[RBO_test].width(),
-				rbo[RBO_test].height()
+				rbo[RBO_scene].width(),
+				rbo[RBO_scene].height()
 			))
 			{
 				ml::OpenGL::framebufferTexture2D(
@@ -381,13 +380,13 @@ namespace DEMO
 			{
 				return ml::Debug::logError("Framebuffer is not complete");
 			}
-			fbo[FBO_test].unbind();
+			fbo[FBO_scene].unbind();
 			
 		}
 		return true;
 	}
 
-	bool Demo::loadAudio(bool log)
+	bool Demo::loadAudio()
 	{
 		if (ml::Debug::log("Loading Audio..."))
 		{
@@ -404,7 +403,7 @@ namespace DEMO
 			;
 	}
 
-	bool Demo::loadNetwork(bool log)
+	bool Demo::loadNetwork()
 	{
 		if ((SETTINGS.isServer || SETTINGS.isClient) && 
 			ml::Debug::log("Loading Network..."))
@@ -461,14 +460,14 @@ namespace DEMO
 	bool Demo::onLoad(const LoadEvent & ev)
 	{
 		return (ml::Debug::log("Loading..."))
-			&& loadFonts(ev.log)
-			&& loadImages(ev.log)
-			&& loadTextures(ev.log)
-			&& loadShaders(ev.log)
-			&& loadMeshes(ev.log)
-			&& loadBuffers(ev.log)
-			&& loadAudio(ev.log)
-			&& loadNetwork(ev.log)
+			&& loadFonts()
+			&& loadImages()
+			&& loadTextures()
+			&& loadShaders()
+			&& loadMeshes()
+			&& loadBuffers()
+			&& loadAudio()
+			&& loadNetwork()
 			;
 	}
 	
@@ -562,11 +561,11 @@ namespace DEMO
 	
 	void Demo::onDraw(const DrawEvent & ev)
 	{
-		// FBO
-		fbo[FBO_test].bind();
-
-		ev.window.clear(ml::Color::Violet);
+		fbo[FBO_scene].bind();
 		{
+			// Clear
+			ev.window.clear(ml::Color::Violet);
+			
 			// 3D
 			ml::OpenGL::enable(ml::GL::CullFace);
 			ml::OpenGL::enable(ml::GL::DepthTest);
@@ -585,19 +584,10 @@ namespace DEMO
 						.scale(ml::vec3f::One))
 					.bind();
 
-				vao[VAO_cube].bind();
-				vbo[VBO_cube].bind();
-				ibo[IBO_cube].bind();
-				{
-					ml::OpenGL::drawElements(
-						vao[VAO_cube].mode(),
-						ibo[IBO_cube].count(),
-						ibo[IBO_cube].type(),
-						NULL);
-				}
-				ibo[IBO_cube].unbind();
-				vbo[VBO_cube].unbind();
-				vao[VAO_cube].unbind();
+				ev.window.draw(
+					vao[VAO_cube],
+					vbo[VBO_cube],
+					ibo[IBO_cube]);
 			}
 			
 			// Sphere32x24
@@ -644,19 +634,10 @@ namespace DEMO
 						.scale(ml::vec3f::One))
 					.bind();
 
-				vao[VAO_quad].bind();
-				vbo[VBO_quad].bind();
-				ibo[IBO_quad].bind();
-				{
-					ml::OpenGL::drawElements(
-						vao[VAO_quad].mode(),
-						ibo[IBO_quad].count(),
-						ibo[IBO_quad].type(),
-						NULL);
-				}
-				ibo[IBO_quad].unbind();
-				vbo[VBO_quad].unbind();
-				vao[VAO_quad].unbind();
+				ev.window.draw(
+					vao[VAO_quad], 
+					vbo[VBO_quad], 
+					ibo[IBO_quad]);
 			}
 
 			// Text
@@ -705,10 +686,11 @@ namespace DEMO
 					.bind();
 				ml::OpenGL::drawArrays(ml::GL::Points, 0, 4);
 			}
-
-			// FBO
-			fbo[FBO_test].unbind();
-			ev.window.clear(ml::Color::White);
+		}
+		fbo[FBO_scene].unbind();
+		
+		ev.window.clear(ml::Color::White);
+		{
 			shaders[GL_framebuffer]
 				.setUniform(ml::Uniform::Texture, textures[TEX_framebuffer])
 				.bind();

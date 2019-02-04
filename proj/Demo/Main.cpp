@@ -64,7 +64,7 @@ int32_t main(int32_t argc, char ** argv)
 	}
 	
 	// Load
-	if (!demo.onLoad({ SETTINGS.logLoading }))
+	if (!demo.onLoad({ }))
 	{
 		return ml::Debug::logError("Failed Loading Resources")
 			|| ml::Debug::pause(EXIT_FAILURE);

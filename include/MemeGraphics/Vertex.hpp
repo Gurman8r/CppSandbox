@@ -32,8 +32,24 @@ namespace ml
 		Vertex & color(const vec4f & value);
 		Vertex & texcoords(const vec2f & value);
 
+		Vertex & position(float x, float y, float z);
+		Vertex & color(float r, float g, float b, float a);
+		Vertex & texcoords(float x, float y);
+
+	public:
 		inline const float & operator[](size_t index) const	{ return m_data[index]; }
 		inline float &		 operator[](size_t index)		{ return m_data[index]; }
+
+	public:
+		inline const float & at(const size_t index) const
+		{
+			return m_data[index];
+		}
+
+		inline const float * ptr() const
+		{
+			return m_data;
+		}
 
 	public:
 		inline void serialize(std::ostream & out) const override
@@ -45,6 +61,7 @@ namespace ml
 					<< ((i < Size - 1) ? ", " : " }");
 			}
 		}
+		
 		inline void deserialize(std::istream & in) override
 		{
 			for (size_t i = 0; i < Size; i++)
@@ -58,18 +75,19 @@ namespace ml
 		{
 			for (auto i = 0; i < Size; i++)
 			{
-				if ((*this)[i] != other[i])
+				if (at(i) != other.at(i))
 				{
 					return false;
 				}
 			}
 			return true;
 		}
+
 		inline bool lessThan(const Vertex & other) const override
 		{
 			for (auto i = 0; i < Size; i++)
 			{
-				if ((*this)[i] >= other[i])
+				if (at(i) >= other.at(i))
 				{
 					return false;
 				}
@@ -79,6 +97,18 @@ namespace ml
 
 	private:
 		float m_data[Size];
+	};
+}
+
+namespace std
+{
+	template<>
+	struct hash<ml::Vertex>
+	{
+		inline size_t operator()(const ml::Vertex & value) const noexcept
+		{
+			return _Hash_array_representation(value.ptr(), ml::Vertex::Size);
+		}
 	};
 }
 

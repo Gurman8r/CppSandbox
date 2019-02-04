@@ -51,11 +51,8 @@ namespace DEMO
 
 	struct LoadEvent final : public DemoEvent
 	{
-		bool log;
-
-		LoadEvent(bool log)
+		LoadEvent()
 			: DemoEvent(EV_Load)
-			, log(log)
 		{
 		}
 	};

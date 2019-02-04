@@ -25,7 +25,7 @@ namespace ml
 		const Transform	* model;
 		const vec4f		* color;
 		const Texture	* texture;
-		const FloatList	* vertices;
+		const VertexList* vertices;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 

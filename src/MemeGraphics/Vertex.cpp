@@ -79,25 +79,50 @@ namespace ml
 
 	Vertex & Vertex::position(const vec3f & value)
 	{
-		(*this)[0] = value[0];
-		(*this)[1] = value[1];
-		(*this)[2] = value[2];
-		return (*this);
+		return position(
+			value[0],
+			value[1], 
+			value[2]);
 	}
 	
 	Vertex & Vertex::color(const vec4f & value)
 	{
-		(*this)[3] = value[0];
-		(*this)[4] = value[1];
-		(*this)[5] = value[2];
-		(*this)[6] = value[3];
-		return (*this);
+		return color(
+			value[0],
+			value[1], 
+			value[2], 
+			value[3]);
 	}
 	
 	Vertex & Vertex::texcoords(const vec2f & value)
 	{
-		(*this)[7] = value[0];
-		(*this)[8] = value[1];
+		return texcoords(
+			value[0],
+			value[1]);
+	}
+
+
+	Vertex & Vertex::position(float x, float y, float z)
+	{
+		(*this)[0] = x;
+		(*this)[1] = y;
+		(*this)[2] = z;
+		return (*this);
+	}
+
+	Vertex & Vertex::color(float r, float g, float b, float a)
+	{
+		(*this)[3] = r;
+		(*this)[4] = g;
+		(*this)[5] = b;
+		(*this)[6] = a;
+		return (*this);
+	}
+
+	Vertex & Vertex::texcoords(float x, float y)
+	{
+		(*this)[7] = x;
+		(*this)[8] = y;
 		return (*this);
 	}
 }

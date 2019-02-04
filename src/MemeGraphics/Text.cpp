@@ -90,14 +90,30 @@ namespace ml
 					glyph.size() * m_scale
 				);
 
-				m_vertices[i] = VertexList({
-					{{ rect.left(),  rect.bot(), 0.f }, vec2f::Zero	},
-					{{ rect.left(),  rect.top(), 0.f }, vec2f::Up	},
-					{{ rect.right(), rect.top(), 0.f }, vec2f::One	},
-					{{ rect.left(),  rect.bot(), 0.f }, vec2f::Zero	},
-					{{ rect.right(), rect.top(), 0.f }, vec2f::One	},
-					{{ rect.right(), rect.bot(), 0.f }, vec2f::Right},
-				}).contiguous();
+				static VertexList verts({
+					{ vec3f::Zero, Color::White, vec2f::Zero	},
+					{ vec3f::Zero, Color::White, vec2f::Up		},
+					{ vec3f::Zero, Color::White, vec2f::One		},
+					{ vec3f::Zero, Color::White, vec2f::Zero	},
+					{ vec3f::Zero, Color::White, vec2f::One		},
+					{ vec3f::Zero, Color::White, vec2f::Right	},
+				});
+				verts[0].position(rect.left(),  rect.bot(), 0.0f);
+				verts[1].position(rect.left(),  rect.top(), 0.0f);
+				verts[2].position(rect.right(), rect.top(), 0.0f);
+				verts[3].position(rect.left(),  rect.bot(), 0.0f);
+				verts[4].position(rect.right(), rect.top(), 0.0f);
+				verts[5].position(rect.right(), rect.bot(), 0.0f);
+				m_vertices[i] = verts;
+
+				//m_vertices[i] = VertexList({
+				//	{{ rect.left(),  rect.bot(), 0.f }, vec2f::Zero	},
+				//	{{ rect.left(),  rect.top(), 0.f }, vec2f::Up	},
+				//	{{ rect.right(), rect.top(), 0.f }, vec2f::One	},
+				//	{{ rect.left(),  rect.bot(), 0.f }, vec2f::Zero	},
+				//	{{ rect.right(), rect.top(), 0.f }, vec2f::One	},
+				//	{{ rect.right(), rect.bot(), 0.f }, vec2f::Right},
+				//});
 
 				m_textures[i] = (&glyph.texture);
 				
@@ -118,7 +134,7 @@ namespace ml
 	void Text::draw(RenderTarget & target, RenderBatch batch) const
 	{
 		update();
-		batch.color = &m_color;
+		batch.color = &getColor();
 		for (size_t i = 0, imax = m_text.size(); i < imax; i++)
 		{
 			batch.texture = m_textures[i];

@@ -13,7 +13,7 @@ namespace ml
 	>
 	class List
 		: public std::vector<_Elem, _Alloc>
-		, public ITrackable
+		, public ISerializable
 		, public IComparable<std::vector<_Elem, _Alloc>>
 		, public IComparable<List<_Elem, _Alloc>>
 	{

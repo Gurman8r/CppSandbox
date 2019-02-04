@@ -206,5 +206,8 @@
     <ClCompile Include="..\..\src\MemeGraphics\RenderBuffer.cpp">
       <Filter>Source Files\Buffers</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\Lists.cpp">
+      <Filter>Source Files\DS</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -119,12 +119,12 @@ namespace DEMO
 
 		// Frame Buffers
 		MIN_FBO = -1,
-		FBO_test,
+		FBO_scene,
 		MAX_FBO,
 
 		// Render Buffers
 		MIN_RBO = -1,
-		RBO_test,
+		RBO_scene,
 		MAX_RBO,
 
 		// Meshes
@@ -160,21 +160,21 @@ namespace DEMO
 
 	public:
 		bool	setupInterpreter();
-		bool	loadFonts(bool log);
-		bool	loadImages(bool log);
-		bool	loadTextures(bool log);
-		bool	loadShaders(bool log);
-		bool	loadMeshes(bool log);
-		bool	loadBuffers(bool log);
-		bool	loadAudio(bool log);
-		bool	loadNetwork(bool log);
+		bool	loadFonts();
+		bool	loadImages();
+		bool	loadTextures();
+		bool	loadShaders();
+		bool	loadMeshes();
+		bool	loadBuffers();
+		bool	loadAudio();
+		bool	loadNetwork();
 
 		template <class T>
-		inline static bool load(ml::IResource & res, const ml::String & file, bool log)
+		inline static bool load(ml::IResource & res, const ml::String & file)
 		{
 			const std::type_info & info(typeid(res));
 			return (res.loadFromFile(SETTINGS.pathTo(file))
-				? (log
+				? (SETTINGS.verboseLog
 					? ml::Debug::log("Loaded \"{0}\"", file)
 					: ml::Debug::Success)
 				: ml::Debug::logError("Failed Loading [{0}]: \"{1}\"", info.name(), file)

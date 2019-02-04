@@ -66,12 +66,29 @@ namespace ml
 
 			(*batch.vbo)
 				.bind()
-				.bufferSubData((*batch.vertices), 0)
+				.bufferSubData((*batch.vertices).contiguous(), 0)
 				.unbind();
 
 			OpenGL::drawArrays((*batch.vao).mode(), 0, (uint32_t)(*batch.vertices).size());
 
 			(*batch.vao).unbind();
+		}
+		return (*this);
+	}
+
+	RenderTarget & RenderTarget::draw(VAO & vao, VBO & vbo, IBO & ibo)
+	{
+		if (vao && vbo && ibo)
+		{
+			vao.bind();
+			vbo.bind();
+			ibo.bind();
+			{
+				OpenGL::drawElements(vao.mode(), ibo.count(), ibo.type(), NULL);
+			}
+			ibo.unbind();
+			vbo.unbind();
+			vao.unbind();
 		}
 		return (*this);
 	}

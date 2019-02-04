@@ -19,14 +19,15 @@ namespace ml
 		, m_cursorMode	(Window::Cursor::Hidden)
 		, m_position	(vec2i::Zero)
 	{
-		ML_EventSystem.addListener(WindowEvent::EV_WindowResized,	this);
-		ML_EventSystem.addListener(WindowEvent::EV_WindowMoved,		this);
-		ML_EventSystem.addListener(WindowEvent::EV_WindowChar,		this);
-		ML_EventSystem.addListener(WindowEvent::EV_WindowScroll,	this);
-		ML_EventSystem.addListener(WindowEvent::EV_WindowClosed,	this);
-		ML_EventSystem.addListener(WindowEvent::EV_WindowFocused,	this);
-		ML_EventSystem.addListener(WindowEvent::EV_WindowMouseMove,	this);
-		ML_EventSystem.addListener(WindowEvent::EV_WindowMouseEnter,this);
+		ML_EventSystem.addListener(WindowEvent::EV_WindowResized,			this);
+		ML_EventSystem.addListener(WindowEvent::EV_WindowMoved,				this);
+		ML_EventSystem.addListener(WindowEvent::EV_WindowClosed,			this);
+		ML_EventSystem.addListener(WindowEvent::EV_WindowFocused,			this);
+		ML_EventSystem.addListener(WindowEvent::EV_WindowCharTyped,			this);
+		ML_EventSystem.addListener(WindowEvent::EV_WindowMouseScroll,		this);
+		ML_EventSystem.addListener(WindowEvent::EV_WindowMouseMoved,		this);
+		ML_EventSystem.addListener(WindowEvent::EV_WindowMouseEnter,		this);
+		ML_EventSystem.addListener(WindowEvent::EV_WindowFramebufferResized,this);
 	}
 	Window::~Window() {}
 
@@ -79,35 +80,57 @@ namespace ml
 	{
 		glfwSetWindowSizeCallback(ML_WINDOW(m_window),
 			[](GLFWwindow * window, int32_t w, int32_t h)
-		{ ML_EventSystem.fireEvent(WindowResizedEvent(w, h)); });
+		{
+			ML_EventSystem.fireEvent(WindowResizedEvent(w, h));
+		});
 
 		glfwSetWindowPosCallback(ML_WINDOW(m_window),
 			[](GLFWwindow * window, int32_t x, int32_t y)
-		{ ML_EventSystem.fireEvent(WindowMovedEvent(x, y)); });
+		{
+			ML_EventSystem.fireEvent(WindowMovedEvent(x, y));
+		});
 
 		glfwSetCharCallback(ML_WINDOW(m_window),
 			[](GLFWwindow * window, uint32_t c)
-		{ ML_EventSystem.fireEvent(WindowCharEvent(c)); });
+		{
+			ML_EventSystem.fireEvent(WindowCharTypedEvent(c));
+		});
 
 		glfwSetScrollCallback(ML_WINDOW(m_window),
 			[](GLFWwindow * window, double x, double y)
-		{ ML_EventSystem.fireEvent(WindowScrollEvent(x, y)); });
+		{
+			ML_EventSystem.fireEvent(WindowMouseScrollEvent(x, y));
+		});
 
 		glfwSetWindowCloseCallback(ML_WINDOW(m_window),
 			[](GLFWwindow * window)
-		{ ML_EventSystem.fireEvent(WindowClosedEvent()); });
+		{
+			ML_EventSystem.fireEvent(WindowClosedEvent());
+		});
 
 		glfwSetWindowFocusCallback(ML_WINDOW(m_window),
 			[](GLFWwindow * window, int32_t focused)
-		{ ML_EventSystem.fireEvent(WindowFocusedEvent(focused)); });
+		{
+			ML_EventSystem.fireEvent(WindowFocusedEvent(focused));
+		});
 
 		glfwSetCursorPosCallback(ML_WINDOW(m_window),
-			[](GLFWwindow * window, double x, double y) 
-		{ ML_EventSystem.fireEvent(WindowMouseMoveEvent(x, y)); });
+			[](GLFWwindow * window, double x, double y)
+		{
+			ML_EventSystem.fireEvent(WindowMouseMoveEvent(x, y));
+		});
 
 		glfwSetCursorEnterCallback(ML_WINDOW(m_window),
 			[](GLFWwindow * window, int32_t entered)
-		{ ML_EventSystem.fireEvent(WindowMouseEnterEvent(entered)); });
+		{
+			ML_EventSystem.fireEvent(WindowMouseEnterEvent(entered));
+		});
+
+		glfwSetFramebufferSizeCallback(ML_WINDOW(m_window),
+			[](GLFWwindow * window, int32_t w, int32_t h)
+		{
+			ML_EventSystem.fireEvent(WindowFramebufferResizedEvent(w, h));
+		});
 
 		return true;
 	}
@@ -128,18 +151,6 @@ namespace ml
 				m_position = { ev->x, ev->y };
 			}
 			break;
-		case WindowEvent::EV_WindowChar:
-			if (auto ev = value->Cast<WindowCharEvent>())
-			{
-				m_char = (char)ev->value;
-			}
-			break;
-		case WindowEvent::EV_WindowScroll:
-			if (auto ev = value->Cast<WindowScrollEvent>())
-			{
-				m_scroll = { ev->x, ev->y };
-			}
-			break;
 		case WindowEvent::EV_WindowClosed:
 			if (auto ev = value->Cast<WindowClosedEvent>())
 			{
@@ -151,13 +162,30 @@ namespace ml
 				m_focused = ev->value;
 			}
 			break;
-		case WindowEvent::EV_WindowMouseMove:
+		case WindowEvent::EV_WindowCharTyped:
+			if (auto ev = value->Cast<WindowCharTypedEvent>())
+			{
+				m_char = (char)ev->value;
+			}
+			break;
+		case WindowEvent::EV_WindowMouseScroll:
+			if (auto ev = value->Cast<WindowMouseScrollEvent>())
+			{
+				m_scroll = { ev->x, ev->y };
+			}
+			break;
+		case WindowEvent::EV_WindowMouseMoved:
 			if (auto ev = value->Cast<WindowMouseMoveEvent>())
 			{
 			}
 			break;
 		case WindowEvent::EV_WindowMouseEnter:
 			if (auto ev = value->Cast<WindowMouseEnterEvent>())
+			{
+			}
+			break;
+		case WindowEvent::EV_WindowFramebufferResized:
+			if (auto ev = value->Cast<WindowFramebufferResizedEvent>())
 			{
 			}
 			break;

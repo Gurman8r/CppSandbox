@@ -58,6 +58,7 @@
     <ClCompile Include="..\..\src\MemeGraphics\FrameBuffer.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Gizmos.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\IndexBuffer.cpp" />
+    <ClCompile Include="..\..\src\MemeGraphics\Lists.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Model.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\OpenGL.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Image.cpp" />

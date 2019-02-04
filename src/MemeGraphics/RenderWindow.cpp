@@ -59,6 +59,11 @@ namespace ml
 				setViewport({ 0, 0 }, { ev->width, ev->height });
 			}
 		break;
+		case WindowEvent::EV_WindowFramebufferResized:
+			if (auto ev = value->Cast<WindowFramebufferResizedEvent>())
+			{
+			}
+			break;
 		}
 	}
 }

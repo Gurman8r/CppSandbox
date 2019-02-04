@@ -82,27 +82,48 @@ void drawKernel(in float kernel[9])
 	v_FragColor = vec4(color, 1.0);
 }
 
+// Enums
+#define MODE_NORMAL		0
+#define MODE_INVERTED	1
+#define MODE_GRAYSCALE	2
+#define MODE_JUICY		3
+#define MODE_BLUR		4
+
 // Main
 void main()
 {
-	drawNormal();
-	
-	//drawInverted();
-	
-	//drawGrayscale();
+	const int mode = MODE_JUICY;
 
-	//drawKernel(float[9](
-	//	-1, -1, -1,
-	//	-1, +9, -1,
-	//	-1, -1, -1
-	//));
+	switch (mode)
+	{
+	case MODE_NORMAL:
+		drawNormal();
+		break;
 
-	// Blur
-	//drawKernel(float[9](
-	//	1.0 / 16, 2.0 / 16, 1.0 / 16,
-	//	2.0 / 16, 4.0 / 16, 2.0 / 16,
-	//	1.0 / 16, 2.0 / 16, 1.0 / 16
-	//));
+	case MODE_INVERTED:
+		drawInverted();
+		break;
+
+	case MODE_GRAYSCALE:
+		drawGrayscale();
+		break;
+
+	case MODE_JUICY:
+		drawKernel(float[9](
+			-1, -1, -1,
+			-1, +9, -1,
+			-1, -1, -1
+		));
+		break;
+
+	case MODE_BLUR:
+		drawKernel(float[9](
+			1.0 / 16, 2.0 / 16, 1.0 / 16,
+			2.0 / 16, 4.0 / 16, 2.0 / 16,
+			1.0 / 16, 2.0 / 16, 1.0 / 16
+		));
+		break;
+	};
 }
 
 /* * * * * * * * * * * * * * * * * * * * */
