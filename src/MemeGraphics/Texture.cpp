@@ -12,6 +12,8 @@ namespace ml
 		, m_srgb		(false)
 		, m_repeated	(false)
 		, m_mipmapped	(false)
+		, m_cFormat		(GL::RGBA)
+		, m_iFormat		(m_srgb ? GL::SRGB8_Alpha8 : GL::RGBA)
 	{
 	}
 
@@ -22,15 +24,15 @@ namespace ml
 		, m_smooth		(copy.m_smooth)
 		, m_srgb		(copy.m_srgb)
 		, m_repeated	(copy.m_repeated)
-		, m_mipmapped	(false)
+		, m_mipmapped	(copy.m_mipmapped)
+		, m_cFormat		(copy.m_cFormat)
+		, m_iFormat		(copy.m_iFormat)
 	{
 		if (copy)
 		{
-			if (create(copy.size()[0], copy.size()[1]))
+			if (create(copy.width(), copy.height()))
 			{
 				update(copy);
-
-				OpenGL::flush();
 			}
 			else
 			{
@@ -57,82 +59,13 @@ namespace ml
 
 	bool Texture::loadFromFile(const String & filename)
 	{
-		Image image;
+		static Image image;
 		return image.loadFromFile(filename) && loadFromImage(image);
 	}
 
 	bool Texture::loadFromImage(const Image & value)
 	{
-		return loadFromImage(value, IntRect(vec2i::Zero, value.size()));
-	}
-
-	bool Texture::loadFromImage(const Image & image, const IntRect & area)
-	{
-		// Image size
-		const int32_t w = (int32_t)image.width();
-		const int32_t h = (int32_t)image.height();
-
-		// Load the entire image if the source area is empty or the whole image
-		if ((area.width() == 0 || area.height() == 0) || (
-			area.left() <= 0 && 
-			area.top() <= 0 && 
-			area.width() >= w && 
-			area.height() >= h))
-		{
-			if (create(image.size()[0], image.size()[1]))
-			{
-				update(image);
-
-				return true;
-			}
-			return false;
-		}
-		else
-		{
-			// Adjust the rectangle to the size of the image
-			IntRect rect = area;
-			if (rect.left()  < 0) rect.left(0);
-			if (rect.top()	 < 0) rect.top(0);
-			if (rect.right() > w) rect.right(w);
-			if (rect.bot()	 > h) rect.bot(h);
-
-			// Create the texture and upload the pixels
-			if (create(rect.width(), rect.height()))
-			{
-				// Copy the pixels to the texture, row by row
-				const uint8_t * pixels = image.ptr() + 4 * (rect.left() + (w * rect.top()));
-
-				Texture::bind(this);
-
-				for (int32_t i = 0; i < rect.height(); i++)
-				{
-					OpenGL::texSubImage2D(
-						GL::Texture2D,
-						0, 
-						0, i, rect.width(), 1, 
-						GL::RGBA, 
-						GL::UnsignedByte, 
-						pixels);
-
-					pixels += 4 * w;
-				}
-
-				OpenGL::texParameter(
-					GL::Texture2D,
-					GL::TexMinFilter,
-					(m_smooth
-						? GL::Linear
-						: GL::Nearest));
-
-				m_mipmapped = false;
-
-				// Force an OpenGL flush, so that the texture will appear updated
-				OpenGL::flush();
-
-				return true;
-			}
-			return false;
-		}
+		return create(value.width(), value.height()) && update(value);
 	}
 	
 	
@@ -143,7 +76,7 @@ namespace ml
 	
 	bool Texture::update(const Image & image)
 	{
-		return update(image.ptr(), image.size()[0], image.size()[1], 0, 0);
+		return update(image.ptr(), image.width(), image.height(), 0, 0);
 	}
 	
 	bool Texture::update(
@@ -160,19 +93,53 @@ namespace ml
 			OpenGL::texSubImage2D(
 				GL::Texture2D,
 				0,
-				x, y, width, height,
+				x, 
+				y, 
+				width,
+				height,
 				GL::RGBA,
 				GL::UnsignedByte,
 				pixels);
 
-			OpenGL::texParameter(
+			OpenGL::texParameter( // TexWrapS
+				GL::Texture2D,
+				GL::TexWrapS,
+				(m_repeated
+					? GL::Repeat
+					: (OpenGL::edgeClampAvailable()
+						? GL::ClampToEdge
+						: GL::Clamp)));
+
+			OpenGL::texParameter( // TexWrapT
+				GL::Texture2D,
+				GL::TexWrapT,
+				(m_repeated
+					? GL::Repeat
+					: (OpenGL::edgeClampAvailable()
+						? GL::ClampToEdge
+						: GL::Clamp)));
+
+			OpenGL::texParameter( // TexMinFilter
 				GL::Texture2D,
 				GL::TexMinFilter,
-				(m_smooth
-					? GL::Linear
-					: GL::Nearest));
+				(m_mipmapped
+					? (m_smooth
+						? GL::LinearMipmapLinear
+						: GL::NearestMipmapNearest)
+					: (m_smooth
+						? GL::Linear
+						: GL::Nearest)));
 
-			m_mipmapped = false;
+			OpenGL::texParameter( // TexMagFilter
+				GL::Texture2D,
+				GL::TexMagFilter,
+				(m_mipmapped
+					? (m_smooth
+						? GL::LinearMipmapLinear
+						: GL::NearestMipmapNearest)
+					: (m_smooth
+						? GL::Linear
+						: GL::Nearest)));
 
 			Texture::bind(NULL);
 
@@ -186,30 +153,62 @@ namespace ml
 
 	bool Texture::create(uint32_t width, uint32_t height)
 	{
-		if (width == 0 || height == 0)
-		{
-			return Debug::logError("Failed creating texture, invalid size {0}", m_size);
-		}
+		return create(
+			NULL,
+			width,
+			height,
+			m_cFormat,
+			m_iFormat,
+			m_smooth,
+			m_repeated,
+			m_srgb,
+			m_mipmapped
+		);
+	}
 
-		uint32_t maxSize = OpenGL::getMaxTextureSize();
-		vec2u actualSize(
-			OpenGL::getValidTextureSize(width),
-			OpenGL::getValidTextureSize(height));
-		if ((actualSize[0] > maxSize) || (actualSize[1] > maxSize))
+	bool Texture::create(
+		const uint8_t * pixels, 
+		uint32_t	width, 
+		uint32_t	height,
+		GL::Format	cFormat,
+		GL::Format	iFormat, 
+		bool		smooth, 
+		bool		repeat,
+		bool		srgb,
+		bool		mipmapped)
+	{
+		if (!width || !height)
 		{
-			return Debug::logError(
-				"Failed creating texture: "
-				"Internal size is too high {0} "
-				"Maximum is {1}",
-				actualSize,
-				vec2u(maxSize));
+			return Debug::logError("Failed creating texture, invalid size {0}",
+				vec2u(width, height));
 		}
-
-		m_actualSize = actualSize;
-		m_size = vec2u(width, height);
 
 		if (!(*this) && (get_ref() = OpenGL::genTextures(1)))
 		{
+			m_actualSize = vec2u(
+				OpenGL::getValidTextureSize(width),
+				OpenGL::getValidTextureSize(height));
+
+			const uint32_t maxSize = OpenGL::getMaxTextureSize();
+			
+			if ((m_actualSize[0] > maxSize) || (m_actualSize[1] > maxSize))
+			{
+				return Debug::logError(
+					"Failed creating texture: "
+					"Internal size is too high {0} "
+					"Maximum is {1}",
+					m_actualSize,
+					vec2u(maxSize));
+			}
+
+			m_size		= { width, height };
+			m_smooth	= smooth;
+			m_srgb		= srgb;
+			m_repeated	= repeat;
+			m_mipmapped	= mipmapped;
+			m_cFormat	= cFormat;
+			m_iFormat	= iFormat;
+
 			if (!m_repeated && !OpenGL::edgeClampAvailable())
 			{
 				static bool warned = false;
@@ -236,114 +235,16 @@ namespace ml
 				m_srgb = false;
 			}
 
-			m_mipmapped = false;
-
-			// Initialize the texture
 			Texture::bind(this);
 
 			OpenGL::texImage2D(
 				GL::Texture2D,
 				0,
-					(m_srgb
-						? GL::SRGB8_Alpha8
-						: GL::RGBA),
-				m_actualSize[0],
-				m_actualSize[1],
-				0,
-				GL::RGBA,
-				GL::UnsignedByte,
-				NULL);
-
-			OpenGL::texParameter(
-				GL::Texture2D,
-				GL::TexWrapS,
-					(m_repeated
-						? GL::Repeat
-						: (OpenGL::edgeClampAvailable()
-							? GL::ClampToEdge
-							: GL::Clamp)));
-
-			OpenGL::texParameter(
-				GL::Texture2D,
-				GL::TexWrapT,
-					(m_repeated
-						? GL::Repeat
-						: (OpenGL::edgeClampAvailable()
-							? GL::ClampToEdge
-							: GL::Clamp)));
-
-			OpenGL::texParameter(
-				GL::Texture2D,
-				GL::TexMagFilter,
-					(m_smooth
-						? GL::Linear
-						: GL::Nearest));
-
-			OpenGL::texParameter(
-				GL::Texture2D,
-				GL::TexMinFilter,
-					(m_smooth
-						? GL::Linear
-						: GL::Nearest));
-
-			Texture::bind(NULL);
-
-			return true;
-		}
-
-		return Debug::logError("Unable to create texture");
-	}
-
-	bool Texture::create(
-		const uint8_t * pixels, 
-		uint32_t	width, 
-		uint32_t	height,
-		GL::Format	colFmt,
-		GL::Format	intFmt, 
-		bool		smooth, 
-		bool		repeat,
-		bool		srgb,
-		bool		mipmapped)
-	{
-		if (!(*this) && (get_ref() = OpenGL::genTextures(1)))
-		{
-			if (!width || !height)
-			{
-				return Debug::logError("Failed creating texture, invalid size {0}",
-						vec2u(width, height));
-			}
-
-			uint32_t maxSize = OpenGL::getMaxTextureSize();
-			vec2u actualSize(
-				OpenGL::getValidTextureSize(width),
-				OpenGL::getValidTextureSize(height));
-			if ((actualSize[0] > maxSize) || (actualSize[1] > maxSize))
-			{
-				return Debug::logError(
-					"Failed creating texture: "
-					"Internal size is too high {0} "
-					"Maximum is {1}",
-					actualSize,
-					vec2u(maxSize));
-			}
-
-			m_size			= { width, height };
-			m_actualSize	= actualSize;
-			m_smooth		= smooth;
-			m_srgb			= srgb;
-			m_repeated		= repeat;
-			m_mipmapped		= mipmapped;
-		
-			Texture::bind(this);
-
-			OpenGL::texImage2D(
-				GL::Texture2D,
-				0,
-				colFmt,
+				m_cFormat,
 				m_size[0],
 				m_size[1],
 				0,
-				intFmt,
+				m_iFormat,
 				GL::UnsignedByte,
 				pixels);
 
@@ -365,21 +266,32 @@ namespace ml
 							? GL::ClampToEdge
 							: GL::Clamp)));
 
-			OpenGL::texParameter( // TexMagFilter
-				GL::Texture2D,
-				GL::TexMagFilter,
-					(m_smooth
-						? GL::Linear
-						: GL::Nearest));
-
-			OpenGL::texParameter( // TexMinFilter
+			OpenGL::texParameter(
 				GL::Texture2D,
 				GL::TexMinFilter,
-					(m_smooth
+				(m_mipmapped
+					? (m_smooth
+						? GL::LinearMipmapLinear
+						: GL::NearestMipmapNearest)
+					: (m_smooth
 						? GL::Linear
-						: GL::Nearest));
+						: GL::Nearest)));
+
+			OpenGL::texParameter(
+				GL::Texture2D,
+				GL::TexMagFilter,
+				(m_mipmapped
+					? (m_smooth
+						? GL::LinearMipmapLinear
+						: GL::NearestMipmapNearest)
+					: (m_smooth
+						? GL::Linear
+						: GL::Nearest)));
 
 			Texture::bind(NULL);
+
+			OpenGL::flush();
+
 			return true;
 		}
 		return false;
@@ -545,6 +457,13 @@ namespace ml
 					? GL::Linear
 					: GL::Nearest));
 
+			OpenGL::texParameter(
+				GL::Texture2D,
+				GL::TexMagFilter,
+				(m_smooth
+					? GL::Linear
+					: GL::Nearest));
+
 			m_mipmapped = false;
 
 			Texture::bind(NULL);
@@ -555,32 +474,27 @@ namespace ml
 
 	const Image Texture::copyToImage() const
 	{
-		// Easy case: empty texture
-		if (!(*this))
+		if ((*this))
 		{
-			return Image();
+			Image::Pixels pixels(width() * height() * 4);
+
+			if ((m_size == m_actualSize))
+			{
+				Texture::bind(this);
+
+				OpenGL::getTexImage(
+					GL::Texture2D,
+					0,
+					GL::RGBA,
+					GL::UnsignedByte,
+					&pixels[0]);
+
+				Texture::bind(NULL);
+			}
+
+			return Image().create(width(), height(), &pixels[0]);
 		}
-
-		// Create an array of pixels
-		Image::Pixels pixels(m_size[0] * m_size[1] * 4);
-
-		if ((m_size == m_actualSize))
-		{
-			// Texture is not padded nor flipped, we can use a direct copy
-			Texture::bind(this);
-			OpenGL::getTexImage(
-				GL::Texture2D,
-				0,
-				GL::RGBA,
-				GL::UnsignedByte,
-				&pixels[0]);
-			Texture::bind(NULL);
-		}
-
-		// Create the image
-		Image image;
-		image.create(m_size[0], m_size[1], &pixels[0]);
-		return image;
+		return Image();
 	}
 
 	void Texture::bind(const Texture * value)

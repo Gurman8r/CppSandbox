@@ -22,7 +22,6 @@ namespace ml
 		bool cleanup() override;
 		bool loadFromFile(const String & filename) override;
 		bool loadFromImage(const Image & value);
-		bool loadFromImage(const Image & value, const IntRect & area);
 
 		bool update(const Texture & texture);
 		bool update(const Image & image);
@@ -70,8 +69,8 @@ namespace ml
 		inline const bool &		sRGB()		const { return m_srgb; }
 		inline const bool &		repeated()	const { return m_repeated; }
 		inline const bool &		mipmapped()	const { return m_mipmapped; }
-		inline const uint32_t & width()		const { return size().front(); }
-		inline const uint32_t & height()	const { return size().back(); }
+		inline const uint32_t & width()		const { return size()[0]; }
+		inline const uint32_t & height()	const { return size()[1]; }
 
 	private:
 		vec2u	m_size;
@@ -80,6 +79,9 @@ namespace ml
 		bool	m_srgb;
 		bool	m_repeated;
 		bool	m_mipmapped;
+
+		GL::Format m_cFormat;
+		GL::Format m_iFormat;
 	};
 }
 

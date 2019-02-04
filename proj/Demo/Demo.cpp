@@ -366,15 +366,8 @@ namespace DEMO
 				.bufferFramebuffer(ml::GL::DepthStencilAttachment)
 				.unbind();
 			if (textures[TEX_framebuffer].create(
-				NULL,
 				rbo[RBO_test].width(),
-				rbo[RBO_test].height(),
-				ml::GL::RGB,
-				ml::GL::RGB,
-				false,
-				false,
-				false,
-				false
+				rbo[RBO_test].height()
 			))
 			{
 				ml::OpenGL::framebufferTexture2D(
@@ -579,9 +572,9 @@ namespace DEMO
 			ml::OpenGL::enable(ml::GL::DepthTest);
 
 			// Cube
-			if (ml::Shader & shader = shaders[GL_basic3D])
+			if (true)
 			{
-				(shader)
+				shaders[GL_basic3D]
 					.setUniform(ml::Uniform::Color, ml::Color::White)
 					.setUniform(ml::Uniform::Texture, textures[TEX_stone_dm])
 					.setUniform(ml::Uniform::Proj, proj[P_persp])
@@ -608,9 +601,9 @@ namespace DEMO
 			}
 			
 			// Sphere32x24
-			if (ml::Shader & shader = shaders[GL_basic3D])
+			if (true)
 			{
-				(shader)
+				shaders[GL_basic3D]
 					.setUniform(ml::Uniform::Color, ml::Color::White)
 					.setUniform(ml::Uniform::Texture, textures[TEX_earth])
 					.setUniform(ml::Uniform::Proj, proj[P_persp])
@@ -633,15 +626,14 @@ namespace DEMO
 				vao[VAO_sphere32x24].unbind();
 			}
 
-
 			// 2D
 			ml::OpenGL::disable(ml::GL::CullFace);
 			ml::OpenGL::disable(ml::GL::DepthTest);
 
 			// Quad
-			if (ml::Shader & shader = shaders[GL_basic3D])
+			if (true)
 			{
-				(shader)
+				shaders[GL_basic3D]
 					.setUniform(ml::Uniform::Color, ml::Color::White)
 					.setUniform(ml::Uniform::Texture, textures[TEX_sanic])
 					.setUniform(ml::Uniform::Proj, proj[P_persp])
@@ -668,14 +660,14 @@ namespace DEMO
 			}
 
 			// Text
-			if (ml::Shader & shader = shaders[GL_text])
+			if (true)
 			{
 				static ml::RenderBatch batch(
 					&vao[VAO_text],
 					&vbo[VBO_text],
 					&proj[P_ortho],
 					NULL,
-					&shader);
+					&shaders[GL_text]);
 
 				static const uint32_t  fontSize = 24;
 				static const ml::vec2f offset = { 0.0f, -(float)fontSize };
@@ -705,16 +697,14 @@ namespace DEMO
 			}
 
 			// Geometry
-			if (ml::Shader & shader = shaders[GL_geometry])
+			if (true)
 			{
-				shader
+				shaders[GL_geometry]
 					.setUniform(ml::Uniform::CurveMode, 1)
 					.setUniform(ml::Uniform::Color, ml::Color::Red)
 					.bind();
-
 				ml::OpenGL::drawArrays(ml::GL::Points, 0, 4);
 			}
-
 
 			// FBO
 			fbo[FBO_test].unbind();

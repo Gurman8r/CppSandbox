@@ -85,17 +85,17 @@ void drawKernel(in float kernel[9])
 // Main
 void main()
 {
-	//drawNormal();
+	drawNormal();
 	
 	//drawInverted();
 	
 	//drawGrayscale();
 
-	drawKernel(float[9](
-		-1, -1, -1,
-		-1, +9, -1,
-		-1, -1, -1
-	));
+	//drawKernel(float[9](
+	//	-1, -1, -1,
+	//	-1, +9, -1,
+	//	-1, -1, -1
+	//));
 
 	// Blur
 	//drawKernel(float[9](
