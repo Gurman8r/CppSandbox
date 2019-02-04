@@ -2,7 +2,7 @@
 #define _WINDOW_HPP_
 
 #include <MemeCore/Vector4.hpp>
-#include <MemeCore/EventListener.hpp>
+#include <MemeCore/IEventListener.hpp>
 #include <MemeCore/INonCopyable.hpp>
 #include <MemeWindow/Context.hpp>
 #include <MemeWindow/Icon.hpp>
@@ -13,7 +13,7 @@ namespace ml
 	class ML_WINDOW_API Window
 		: public ITrackable
 		, public INonCopyable
-		, public EventListener
+		, public IEventListener
 	{
 	public:
 		enum Cursor : uint32_t

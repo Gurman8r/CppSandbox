@@ -36,7 +36,7 @@ namespace ml
 		};
 
 	public:
-		struct ML_SCRIPT_API Ptr
+		struct Ptr
 			: public ITrackable
 		{
 			String		name;

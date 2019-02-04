@@ -1,7 +1,7 @@
 #ifndef _EVENT_SYSTEM_HPP_
 #define _EVENT_SYSTEM_HPP_
 
-#include <MemeCore/EventListener.hpp>
+#include <MemeCore/IEventListener.hpp>
 #include <MemeCore/ISingleton.hpp>
 
 #define ML_EventSystem ml::EventSystem::getInstance()
@@ -15,10 +15,10 @@ namespace ml
 		friend class ISingleton<EventSystem>;
 
 	public:
-		void addListener(const int32_t & type, EventListener * listener);
+		void addListener(const int32_t & type, IEventListener * listener);
 		void fireEvent(const Event & ev);
-		void removeListener(const int32_t & type, EventListener * listener);
-		void removeListenerFromAllEvents(EventListener * listener);
+		void removeListener(const int32_t & type, IEventListener * listener);
+		void removeListenerFromAllEvents(IEventListener * listener);
 
 	private:
 		EventSystem() {}
@@ -26,7 +26,7 @@ namespace ml
 
 		void dispatchAllEvents(const Event * ev);
 
-		std::multimap<int32_t, EventListener *> m_listeners;
+		std::multimap<int32_t, IEventListener *> m_listeners;
 	};
 }
 

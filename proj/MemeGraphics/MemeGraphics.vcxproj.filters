@@ -123,14 +123,14 @@
     <ClInclude Include="..\..\include\MemeGraphics\Lists.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Model.hpp">
-      <Filter>Header Files\DS</Filter>
+    <ClInclude Include="..\..\include\MemeGraphics\Text.hpp">
+      <Filter>Header Files\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Sprite.hpp">
-      <Filter>Header Files\DS</Filter>
+      <Filter>Header Files\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Text.hpp">
-      <Filter>Header Files\DS</Filter>
+    <ClInclude Include="..\..\include\MemeGraphics\Model.hpp">
+      <Filter>Header Files\Rendering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -192,13 +192,13 @@
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Text.cpp">
-      <Filter>Source Files\DS</Filter>
+      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Sprite.cpp">
-      <Filter>Source Files\DS</Filter>
+      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Model.cpp">
-      <Filter>Source Files\DS</Filter>
+      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

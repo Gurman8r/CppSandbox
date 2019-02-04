@@ -2,7 +2,7 @@
 
 namespace ml
 {
-	void EventSystem::addListener(const int32_t & type, EventListener * listener)
+	void EventSystem::addListener(const int32_t & type, IEventListener * listener)
 	{
 		m_listeners.insert({ type, listener });
 	}
@@ -12,15 +12,15 @@ namespace ml
 		dispatchAllEvents(&ev);
 	}
 	
-	void EventSystem::removeListener(const int32_t & type, EventListener * listener)
+	void EventSystem::removeListener(const int32_t & type, IEventListener * listener)
 	{
 		std::pair<
-			std::multimap<int32_t, EventListener *>::iterator,
-			std::multimap<int32_t, EventListener *>::iterator> ret;
+			std::multimap<int32_t, IEventListener *>::iterator,
+			std::multimap<int32_t, IEventListener *>::iterator> ret;
 
 		ret = m_listeners.equal_range(type);
 
-		std::multimap<int32_t, EventListener *>::iterator iter;
+		std::multimap<int32_t, IEventListener *>::iterator iter;
 
 		for (iter = ret.first; iter != ret.second; ++iter)
 		{
@@ -33,9 +33,9 @@ namespace ml
 		}
 	}
 	
-	void EventSystem::removeListenerFromAllEvents(EventListener * listener)
+	void EventSystem::removeListenerFromAllEvents(IEventListener * listener)
 	{
-		std::multimap<int32_t, EventListener *>::iterator iter;
+		std::multimap<int32_t, IEventListener *>::iterator iter;
 
 		bool allTheWayThrough = false;
 
@@ -60,12 +60,12 @@ namespace ml
 	void EventSystem::dispatchAllEvents(const Event * ev)
 	{
 		std::pair<
-			std::multimap<int32_t, EventListener *>::iterator,
-			std::multimap<int32_t, EventListener *>::iterator> ret;
+			std::multimap<int32_t, IEventListener *>::iterator,
+			std::multimap<int32_t, IEventListener *>::iterator> ret;
 
 		ret = m_listeners.equal_range(ev->eventID());
 
-		std::multimap<int32_t, EventListener *>::iterator it;
+		std::multimap<int32_t, IEventListener *>::iterator it;
 
 		for (it = ret.first; it != ret.second; ++it)
 		{

@@ -173,7 +173,7 @@
     <ClInclude Include="..\..\include\MemeCore\Entity.hpp" />
     <ClInclude Include="..\..\include\MemeCore\IntTypes.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Event.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\EventListener.hpp" />
+    <ClInclude Include="..\..\include\MemeCore\IEventListener.hpp" />
     <ClInclude Include="..\..\include\MemeCore\EventSystem.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Export.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Iterator.hpp" />

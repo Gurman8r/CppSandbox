@@ -2,7 +2,7 @@
 #define _NETWORK_INTERFACE_HPP_
 
 #include <MemeNet/Export.hpp>
-#include <MemeCore/EventListener.hpp>
+#include <MemeCore/IEventListener.hpp>
 #include <MemeNet/NetworkTypes.hpp>
 
 #define ML_LOCALHOST "127.0.0.1"
@@ -16,7 +16,7 @@
 namespace ml
 {
 	class ML_NETWORK_API NetworkInterface
-		: public EventListener
+		: public IEventListener
 	{
 	public:
 		NetworkInterface();

@@ -1,5 +1,5 @@
-#ifndef _IHANDLE_HPP_
-#define _IHANDLE_HPP_
+#ifndef _I_HANDLE_HPP_
+#define _I_HANDLE_HPP_
 
 #include <MemeCore/IntTypes.hpp>
 
@@ -42,4 +42,4 @@ namespace ml
 	};
 }
 
-#endif // !_IHANDLE_HPP_
+#endif // !_I_HANDLE_HPP_

@@ -26,12 +26,12 @@ namespace ml
 		Text & setText(const String & value);
 
 	public:
-		inline const Font *			getFont()		const { return m_font;		}
-		inline const uint32_t &		getFontSize()	const { return m_fontSize;	}
-		inline const vec2f &		getPosition()	const { return m_position;	}
-		inline const vec2f &		getScale()		const { return m_scale;		}
+		inline const Font *		getFont()		const { return m_font;		}
+		inline const uint32_t &	getFontSize()	const { return m_fontSize;	}
+		inline const vec2f &	getPosition()	const { return m_position;	}
+		inline const vec2f &	getScale()		const { return m_scale;		}
 		inline const String &	getText()		const { return m_text;		}
-		inline const vec4f &		getColor()		const { return m_color;		}
+		inline const vec4f &	getColor()		const { return m_color;		}
 
 	public:
 		void update() const;

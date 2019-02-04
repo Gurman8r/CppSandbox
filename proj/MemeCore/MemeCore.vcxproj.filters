@@ -34,12 +34,6 @@
     <Filter Include="Source Files\Input">
       <UniqueIdentifier>{d1a3add3-e7bb-49d0-9c80-8908fba0b68b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Events">
-      <UniqueIdentifier>{554f9adc-6997-4716-b5ca-b25faeaa10a6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Events">
-      <UniqueIdentifier>{5a5d991b-8f10-4633-8a19-e25a1692d05c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Memory">
       <UniqueIdentifier>{c3db8fef-a046-47c0-93ce-fffddae2ad04}</UniqueIdentifier>
     </Filter>
@@ -58,8 +52,14 @@
     <Filter Include="Header Files\Utility">
       <UniqueIdentifier>{aa9cd324-f987-4bac-9b0c-1520e7a689c5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Matrix">
+    <Filter Include="Header Files\Matrices">
       <UniqueIdentifier>{31b96231-5819-483e-b653-76572a31bbb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Event System">
+      <UniqueIdentifier>{554f9adc-6997-4716-b5ca-b25faeaa10a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Event System">
+      <UniqueIdentifier>{5a5d991b-8f10-4633-8a19-e25a1692d05c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -73,13 +73,10 @@
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Event.hpp">
-      <Filter>Header Files\Events</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\EventListener.hpp">
-      <Filter>Header Files\Events</Filter>
+      <Filter>Header Files\Event System</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\EventSystem.hpp">
-      <Filter>Header Files\Events</Filter>
+      <Filter>Header Files\Event System</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\InputState.hpp">
       <Filter>Header Files\Input</Filter>
@@ -109,22 +106,22 @@
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Matrix.hpp">
-      <Filter>Header Files\Matrix</Filter>
+      <Filter>Header Files\Matrices</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Rect.hpp">
-      <Filter>Header Files\Matrix</Filter>
+      <Filter>Header Files\Matrices</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Vector.hpp">
-      <Filter>Header Files\Matrix</Filter>
+      <Filter>Header Files\Matrices</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Vector2.hpp">
-      <Filter>Header Files\Matrix</Filter>
+      <Filter>Header Files\Matrices</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Vector3.hpp">
-      <Filter>Header Files\Matrix</Filter>
+      <Filter>Header Files\Matrices</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Vector4.hpp">
-      <Filter>Header Files\Matrix</Filter>
+      <Filter>Header Files\Matrices</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Chunk.hpp">
       <Filter>Header Files\Memory</Filter>
@@ -198,10 +195,13 @@
     <ClInclude Include="..\..\include\MemeCore\Maths.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\IEventListener.hpp">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeCore\EventSystem.cpp">
-      <Filter>Source Files\Events</Filter>
+      <Filter>Source Files\Event System</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\Timer.cpp">
       <Filter>Source Files\Time</Filter>

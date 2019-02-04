@@ -481,15 +481,15 @@ namespace DEMO
 
 			// Quad
 			model[M_quad]
-				.translate({ -8.0f, 0.0f, 0.0f })
+				.translate({ -5.0f, 0.0f, 0.0f })
 				.rotate(0.0f, ml::vec3f::Up)
-				.scale(ml::vec3f::One * 5.f);
+				.scale(ml::vec3f::One * 2);
 
 			// Sphere 32x24
 			model[M_sphere32x24]
-				.translate({ 0.0f, 0.0f, -2.0f })
+				.translate({ 0.0f, 0.0f, 0.0f })
 				.rotate(0.0f, ml::vec3f::Up)
-				.scale(ml::vec3f::One * 2.f);
+				.scale(ml::vec3f::One);
 
 			// Static Text
 			text[TXT_static]
@@ -660,6 +660,17 @@ namespace DEMO
 
 				// Static Text
 				ev.window.draw(text[TXT_static], batch);
+			}
+
+			// Geometry
+			if (ml::Shader & shader = shaders[GL_geometry])
+			{
+				shader
+					.setUniform(ml::Uniform::CurveMode, 1)
+					.setUniform(ml::Uniform::Color, ml::Color::Red)
+					.bind();
+
+				ml::OpenGL::drawArrays(ml::GL::Points, 0, 4);
 			}
 		}
 		ev.window.swapBuffers().pollEvents();

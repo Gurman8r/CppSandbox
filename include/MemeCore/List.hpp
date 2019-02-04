@@ -1,5 +1,5 @@
-#ifndef _BASE_LIST_HPP_
-#define _BASE_LIST_HPP_
+#ifndef _ML_LIST_HPP_
+#define _ML_LIST_HPP_
 
 #include <MemeCore/ITrackable.hpp>
 #include <MemeCore/Check.hpp>
@@ -126,4 +126,4 @@ namespace ml
 	};
 }
 
-#endif // !_BASE_LIST_HPP_
+#endif // !_ML_LIST_HPP_

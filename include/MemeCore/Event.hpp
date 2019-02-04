@@ -68,11 +68,6 @@ namespace ml
 			return m_eventID;
 		}
 
-		inline operator bool() const 
-		{ 
-			return eventID(); 
-		}
-
 	public:
 		template <class T>
 		inline const T * Cast() const

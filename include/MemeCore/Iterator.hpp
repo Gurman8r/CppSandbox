@@ -1,5 +1,5 @@
-#ifndef _ITERATOR_HPP_
-#define _ITERATOR_HPP_
+#ifndef _ML_ITERATOR_HPP_
+#define _ML_ITERATOR_HPP_
 
 #include <MemeCore/ITrackable.hpp>
 
@@ -23,10 +23,10 @@ namespace ml
 		using value_type		= _Value;
 		using unqualified_type	= _Unqualified;
 		using difference_type	= _Difference;
-		using pointer			= typename value_type * ;
-		using reference			= typename value_type & ;
-		using const_pointer		= typename const value_type * ;
-		using const_reference	= typename const value_type & ;
+		using pointer			= value_type * ;
+		using reference			= value_type & ;
+		using const_pointer		= const value_type * ;
+		using const_reference	= const value_type & ;
 		using self_type			= Iterator<iterator_category, value_type, unqualified_type, difference_type>;
 		using const_self_type	= Iterator<iterator_category, const value_type, unqualified_type, difference_type>;
 
@@ -159,4 +159,4 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 }
 
-#endif // !_ITERATOR_HPP_
+#endif // !_ML_ITERATOR_HPP_

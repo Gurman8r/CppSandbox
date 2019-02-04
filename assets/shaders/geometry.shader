@@ -244,6 +244,7 @@ void drawCubicHermiteSplineSegment(in vec4 p0, in vec4 m0, in vec4 p1, in vec4 m
 	EndPrimitive();
 }
 
+// Stub
 void stub(const int samples, const float dt)
 {
 	// test points
@@ -289,14 +290,11 @@ void stub(const int samples, const float dt)
 }
 
 // Main
+/* * * * * * * * * * * * * * * * * * * * */
 void main()
 {
 	const int samples = SAMPLES_PER_SEGMENT;
 	const float dt = 1.0 / float(SAMPLES_PER_SEGMENT);
 
 	stub(samples, dt);
-
-	//vec4 a = gl_in[0].gl_Position + vec4(-0.1, 0.0, 0.0, 0.0);
-	//vec4 b = gl_in[0].gl_Position + vec4(0.1, 0.0, 0.0, 0.0);
-	//drawLineFull(a, b);
 }

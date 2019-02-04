@@ -1,5 +1,5 @@
-#ifndef _IENUMERABLE_HPP_
-#define _IENUMERABLE_HPP_
+#ifndef _I_ENUMERABLE_HPP_
+#define _I_ENUMERABLE_HPP_
 
 #include <MemeCore/Iterator.hpp>
 
@@ -95,4 +95,4 @@ namespace ml
 	};
 }
 
-#endif // !_IENUMERABLE_HPP_
+#endif // !_I_ENUMERABLE_HPP_

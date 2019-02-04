@@ -14,7 +14,7 @@ namespace ml
 	{
 	public:
 		using list_type				= std::vector<AST_Node*>;
-		using value_type					= list_type::value_type;
+		using value_type			= list_type::value_type;
 		using iterator				= list_type::iterator;
 		using const_iterator		= list_type::const_iterator;
 		using reverse_iterator		= list_type::reverse_iterator;
@@ -168,7 +168,7 @@ namespace ml
 		}
 
 	private: // Variables
-		AST_Node*	m_parent;
+		AST_Node *	m_parent;
 		list_type	m_children;
 		int32_t		m_id;
 
