@@ -90,13 +90,7 @@
     <ClInclude Include="..\..\include\MemeGraphics\Quaternion.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Shader.hpp">
-      <Filter>Header Files\DS</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Shapes.hpp">
-      <Filter>Header Files\DS</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Texture.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Uniform.hpp">
@@ -149,6 +143,12 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Camera.hpp">
       <Filter>Header Files\Transforms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\Texture.hpp">
+      <Filter>Header Files\DS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\Shader.hpp">
+      <Filter>Header Files\DS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

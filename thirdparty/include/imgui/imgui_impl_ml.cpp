@@ -1,3 +1,4 @@
+
 #include <imgui/imgui_impl_ml.hpp>
 #include <imgui/imgui.h>
 #include <MemeCore/Debug.hpp>
@@ -11,8 +12,8 @@
 /* * * * * * * * * * * * * * * * * * * * */
 
 static char         g_GlslVersionString[32] = "";
-static GLuint       g_FontTexture = 0;
-static GLuint       g_ShaderHandle = 0, g_VertHandle = 0, g_FragHandle = 0;
+static uint32_t     g_FontTexture = 0;
+static uint32_t     g_ShaderHandle = 0, g_VertHandle = 0, g_FragHandle = 0;
 static int          g_AttribLocationTex = 0, g_AttribLocationProjMtx = 0;
 static int          g_AttribLocationPosition = 0, g_AttribLocationUV = 0, g_AttribLocationColor = 0;
 static unsigned int g_VboHandle = 0, g_ElementsHandle = 0;
@@ -170,9 +171,9 @@ static void ImGui_ML_UpdateMouseCursor()
 	}
 }
 
-static bool CheckShader(GLuint handle, const char* desc)
+static bool CheckShader(uint32_t handle, const char* desc)
 {
-	GLint status = 0, log_length = 0;
+	int32_t status = 0, log_length = 0;
 	glGetShaderiv(handle, GL_COMPILE_STATUS, &status);
 	glGetShaderiv(handle, GL_INFO_LOG_LENGTH, &log_length);
 	if ((GLboolean)status == GL_FALSE)
@@ -181,15 +182,15 @@ static bool CheckShader(GLuint handle, const char* desc)
 	{
 		ImVector<char> buf;
 		buf.resize((int)(log_length + 1));
-		glGetShaderInfoLog(handle, log_length, NULL, (GLchar*)buf.begin());
+		glGetShaderInfoLog(handle, log_length, NULL, (char*)buf.begin());
 		fprintf(stderr, "%s\n", buf.begin());
 	}
 	return (GLboolean)status == GL_TRUE;
 }
 
-static bool CheckProgram(GLuint handle, const char* desc)
+static bool CheckProgram(uint32_t handle, const char* desc)
 {
-	GLint status = 0, log_length = 0;
+	int32_t status = 0, log_length = 0;
 	glGetProgramiv(handle, GL_LINK_STATUS, &status);
 	glGetProgramiv(handle, GL_INFO_LOG_LENGTH, &log_length);
 	if ((GLboolean)status == GL_FALSE)
@@ -198,7 +199,7 @@ static bool CheckProgram(GLuint handle, const char* desc)
 	{
 		ImVector<char> buf;
 		buf.resize((int)(log_length + 1));
-		glGetProgramInfoLog(handle, log_length, NULL, (GLchar*)buf.begin());
+		glGetProgramInfoLog(handle, log_length, NULL, (char*)buf.begin());
 		fprintf(stderr, "%s\n", buf.begin());
 	}
 	return (GLboolean)status == GL_TRUE;
@@ -314,33 +315,33 @@ void ImGui_ML_RenderDrawData(ImDrawData * draw_data)
 	draw_data->ScaleClipRects(io.DisplayFramebufferScale);
 
 	// Backup GL state
-	GLenum last_active_texture; glGetIntegerv(GL_ACTIVE_TEXTURE, (GLint*)&last_active_texture);
+	GLenum last_active_texture; glGetIntegerv(GL_ACTIVE_TEXTURE, (int32_t*)&last_active_texture);
 	glActiveTexture(GL_TEXTURE0);
-	GLint last_program; glGetIntegerv(GL_CURRENT_PROGRAM, &last_program);
-	GLint last_texture; glGetIntegerv(GL_TEXTURE_BINDING_2D, &last_texture);
+	int32_t last_program; glGetIntegerv(GL_CURRENT_PROGRAM, &last_program);
+	int32_t last_texture; glGetIntegerv(GL_TEXTURE_BINDING_2D, &last_texture);
 #ifdef GL_SAMPLER_BINDING
-	GLint last_sampler; glGetIntegerv(GL_SAMPLER_BINDING, &last_sampler);
+	int32_t last_sampler; glGetIntegerv(GL_SAMPLER_BINDING, &last_sampler);
 #endif
-	GLint last_array_buffer; glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &last_array_buffer);
-	GLint last_vertex_array; glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &last_vertex_array);
+	int32_t last_array_buffer; glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &last_array_buffer);
+	int32_t last_vertex_array; glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &last_vertex_array);
 #ifdef GL_POLYGON_MODE
-	GLint last_polygon_mode[2]; glGetIntegerv(GL_POLYGON_MODE, last_polygon_mode);
+	int32_t last_polygon_mode[2]; glGetIntegerv(GL_POLYGON_MODE, last_polygon_mode);
 #endif
-	GLint last_viewport[4]; glGetIntegerv(GL_VIEWPORT, last_viewport);
-	GLint last_scissor_box[4]; glGetIntegerv(GL_SCISSOR_BOX, last_scissor_box);
-	GLenum last_blend_src_rgb; glGetIntegerv(GL_BLEND_SRC_RGB, (GLint*)&last_blend_src_rgb);
-	GLenum last_blend_dst_rgb; glGetIntegerv(GL_BLEND_DST_RGB, (GLint*)&last_blend_dst_rgb);
-	GLenum last_blend_src_alpha; glGetIntegerv(GL_BLEND_SRC_ALPHA, (GLint*)&last_blend_src_alpha);
-	GLenum last_blend_dst_alpha; glGetIntegerv(GL_BLEND_DST_ALPHA, (GLint*)&last_blend_dst_alpha);
-	GLenum last_blend_equation_rgb; glGetIntegerv(GL_BLEND_EQUATION_RGB, (GLint*)&last_blend_equation_rgb);
-	GLenum last_blend_equation_alpha; glGetIntegerv(GL_BLEND_EQUATION_ALPHA, (GLint*)&last_blend_equation_alpha);
+	int32_t last_viewport[4]; glGetIntegerv(GL_VIEWPORT, last_viewport);
+	int32_t last_scissor_box[4]; glGetIntegerv(GL_SCISSOR_BOX, last_scissor_box);
+	GLenum last_blend_src_rgb; glGetIntegerv(GL_BLEND_SRC_RGB, (int32_t*)&last_blend_src_rgb);
+	GLenum last_blend_dst_rgb; glGetIntegerv(GL_BLEND_DST_RGB, (int32_t*)&last_blend_dst_rgb);
+	GLenum last_blend_src_alpha; glGetIntegerv(GL_BLEND_SRC_ALPHA, (int32_t*)&last_blend_src_alpha);
+	GLenum last_blend_dst_alpha; glGetIntegerv(GL_BLEND_DST_ALPHA, (int32_t*)&last_blend_dst_alpha);
+	GLenum last_blend_equation_rgb; glGetIntegerv(GL_BLEND_EQUATION_RGB, (int32_t*)&last_blend_equation_rgb);
+	GLenum last_blend_equation_alpha; glGetIntegerv(GL_BLEND_EQUATION_ALPHA, (int32_t*)&last_blend_equation_alpha);
 	GLboolean last_enable_blend = glIsEnabled(GL_BLEND);
 	GLboolean last_enable_cull_face = glIsEnabled(GL_CULL_FACE);
 	GLboolean last_enable_depth_test = glIsEnabled(GL_DEPTH_TEST);
 	GLboolean last_enable_scissor_test = glIsEnabled(GL_SCISSOR_TEST);
 	bool clip_origin_lower_left = true;
 #ifdef GL_CLIP_ORIGIN
-	GLenum last_clip_origin = 0; glGetIntegerv(GL_CLIP_ORIGIN, (GLint*)&last_clip_origin); // Support for GL 4.5's glClipControl(GL_UPPER_LEFT)
+	GLenum last_clip_origin = 0; glGetIntegerv(GL_CLIP_ORIGIN, (int32_t*)&last_clip_origin); // Support for GL 4.5's glClipControl(GL_UPPER_LEFT)
 	if (last_clip_origin == GL_UPPER_LEFT)
 		clip_origin_lower_left = false;
 #endif
@@ -358,7 +359,7 @@ void ImGui_ML_RenderDrawData(ImDrawData * draw_data)
 
 	// Setup viewport, orthographic projection matrix
 	// Our visible imgui space lies from draw_data->DisplayPos (top left) to draw_data->DisplayPos+data_data->DisplaySize (bottom right). DisplayMin is typically (0,0) for single viewport apps.
-	glViewport(0, 0, (GLsizei)fb_width, (GLsizei)fb_height);
+	glViewport(0, 0, (int32_t)fb_width, (int32_t)fb_height);
 	float L = draw_data->DisplayPos.x;
 	float R = draw_data->DisplayPos.x + draw_data->DisplaySize.x;
 	float T = draw_data->DisplayPos.y;
@@ -378,7 +379,7 @@ void ImGui_ML_RenderDrawData(ImDrawData * draw_data)
 #endif
 	// Recreate the VAO every time
 	// (This is to easily allow multiple GL contexts. VAO are not shared among GL contexts, and we don't track creation/deletion of windows so we don't have an obvious key to use to cache them.)
-	GLuint vao_handle = 0;
+	uint32_t vao_handle = 0;
 	glGenVertexArrays(1, &vao_handle);
 	glBindVertexArray(vao_handle);
 	glBindBuffer(GL_ARRAY_BUFFER, g_VboHandle);
@@ -422,8 +423,8 @@ void ImGui_ML_RenderDrawData(ImDrawData * draw_data)
 						glScissor((int)clip_rect.x, (int)clip_rect.y, (int)clip_rect.z, (int)clip_rect.w); // Support for GL 4.5's glClipControl(GL_UPPER_LEFT)
 
 					// Bind texture, Draw
-					glBindTexture(GL_TEXTURE_2D, (GLuint)(intptr_t)pcmd->TextureId);
-					glDrawElements(GL_TRIANGLES, (GLsizei)pcmd->ElemCount, sizeof(ImDrawIdx) == 2 ? GL_UNSIGNED_SHORT : GL_UNSIGNED_INT, idx_buffer_offset);
+					glBindTexture(GL_TEXTURE_2D, (uint32_t)(intptr_t)pcmd->TextureId);
+					glDrawElements(GL_TRIANGLES, (int32_t)pcmd->ElemCount, sizeof(ImDrawIdx) == 2 ? GL_UNSIGNED_SHORT : GL_UNSIGNED_INT, idx_buffer_offset);
 				}
 			}
 			idx_buffer_offset += pcmd->ElemCount;
@@ -449,8 +450,8 @@ void ImGui_ML_RenderDrawData(ImDrawData * draw_data)
 #ifdef GL_POLYGON_MODE
 	glPolygonMode(GL_FRONT_AND_BACK, (GLenum)last_polygon_mode[0]);
 #endif
-	glViewport(last_viewport[0], last_viewport[1], (GLsizei)last_viewport[2], (GLsizei)last_viewport[3]);
-	glScissor(last_scissor_box[0], last_scissor_box[1], (GLsizei)last_scissor_box[2], (GLsizei)last_scissor_box[3]);
+	glViewport(last_viewport[0], last_viewport[1], (int32_t)last_viewport[2], (int32_t)last_viewport[3]);
+	glScissor(last_scissor_box[0], last_scissor_box[1], (int32_t)last_scissor_box[2], (int32_t)last_scissor_box[3]);
 }
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -464,7 +465,7 @@ bool ImGui_ML_CreateFontsTexture()
 	io.Fonts->GetTexDataAsRGBA32(&pixels, &width, &height);   // Load as RGBA 32-bits (75% of the memory is wasted, but default font is so small) because it is more likely to be compatible with user's existing shaders. If your ImTextureId represent a higher-level concept than just a GL texture id, consider calling GetTexDataAsAlpha8() instead to save on GPU memory.
 
 	// Upload texture to graphics system
-	GLint last_texture;
+	int32_t last_texture;
 	glGetIntegerv(GL_TEXTURE_BINDING_2D, &last_texture);
 	glGenTextures(1, &g_FontTexture);
 	glBindTexture(GL_TEXTURE_2D, g_FontTexture);
@@ -496,7 +497,7 @@ void ImGui_ML_DestroyFontsTexture()
 bool ImGui_ML_CreateDeviceObjects()
 {
 	// Backup GL state
-	GLint last_texture, last_array_buffer, last_vertex_array;
+	int32_t last_texture, last_array_buffer, last_vertex_array;
 	glGetIntegerv(GL_TEXTURE_BINDING_2D, &last_texture);
 	glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &last_array_buffer);
 	glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &last_vertex_array);
@@ -505,7 +506,7 @@ bool ImGui_ML_CreateDeviceObjects()
 	int glsl_version = 130;
 	sscanf(g_GlslVersionString, "#version %d", &glsl_version);
 
-	const GLchar* vertex_shader_glsl_120 =
+	const char* vertex_shader_glsl_120 =
 		"uniform mat4 ProjMtx;\n"
 		"attribute vec2 Position;\n"
 		"attribute vec2 UV;\n"
@@ -519,7 +520,7 @@ bool ImGui_ML_CreateDeviceObjects()
 		"    gl_Position = ProjMtx * vec4(Position.xy,0,1);\n"
 		"}\n";
 
-	const GLchar* vertex_shader_glsl_130 =
+	const char* vertex_shader_glsl_130 =
 		"uniform mat4 ProjMtx;\n"
 		"in vec2 Position;\n"
 		"in vec2 UV;\n"
@@ -533,7 +534,7 @@ bool ImGui_ML_CreateDeviceObjects()
 		"    gl_Position = ProjMtx * vec4(Position.xy,0,1);\n"
 		"}\n";
 
-	const GLchar* vertex_shader_glsl_300_es =
+	const char* vertex_shader_glsl_300_es =
 		"precision mediump float;\n"
 		"layout (location = 0) in vec2 Position;\n"
 		"layout (location = 1) in vec2 UV;\n"
@@ -548,7 +549,7 @@ bool ImGui_ML_CreateDeviceObjects()
 		"    gl_Position = ProjMtx * vec4(Position.xy,0,1);\n"
 		"}\n";
 
-	const GLchar* vertex_shader_glsl_410_core =
+	const char* vertex_shader_glsl_410_core =
 		"layout (location = 0) in vec2 Position;\n"
 		"layout (location = 1) in vec2 UV;\n"
 		"layout (location = 2) in vec4 Color;\n"
@@ -562,7 +563,7 @@ bool ImGui_ML_CreateDeviceObjects()
 		"    gl_Position = ProjMtx * vec4(Position.xy,0,1);\n"
 		"}\n";
 
-	const GLchar* fragment_shader_glsl_120 =
+	const char* fragment_shader_glsl_120 =
 		"#ifdef GL_ES\n"
 		"    precision mediump float;\n"
 		"#endif\n"
@@ -574,7 +575,7 @@ bool ImGui_ML_CreateDeviceObjects()
 		"    gl_FragColor = Frag_Color * texture2D(Texture, Frag_UV.st);\n"
 		"}\n";
 
-	const GLchar* fragment_shader_glsl_130 =
+	const char* fragment_shader_glsl_130 =
 		"uniform sampler2D Texture;\n"
 		"in vec2 Frag_UV;\n"
 		"in vec4 Frag_Color;\n"
@@ -584,7 +585,7 @@ bool ImGui_ML_CreateDeviceObjects()
 		"    Out_Color = Frag_Color * texture(Texture, Frag_UV.st);\n"
 		"}\n";
 
-	const GLchar* fragment_shader_glsl_300_es =
+	const char* fragment_shader_glsl_300_es =
 		"precision mediump float;\n"
 		"uniform sampler2D Texture;\n"
 		"in vec2 Frag_UV;\n"
@@ -595,7 +596,7 @@ bool ImGui_ML_CreateDeviceObjects()
 		"    Out_Color = Frag_Color * texture(Texture, Frag_UV.st);\n"
 		"}\n";
 
-	const GLchar* fragment_shader_glsl_410_core =
+	const char* fragment_shader_glsl_410_core =
 		"in vec2 Frag_UV;\n"
 		"in vec4 Frag_Color;\n"
 		"uniform sampler2D Texture;\n"
@@ -606,8 +607,8 @@ bool ImGui_ML_CreateDeviceObjects()
 		"}\n";
 
 	// Select shaders matching our GLSL versions
-	const GLchar* vertex_shader = NULL;
-	const GLchar* fragment_shader = NULL;
+	const char* vertex_shader = NULL;
+	const char* fragment_shader = NULL;
 	if (glsl_version < 130)
 	{
 		vertex_shader = vertex_shader_glsl_120;
@@ -630,13 +631,13 @@ bool ImGui_ML_CreateDeviceObjects()
 	}
 
 	// Create shaders
-	const GLchar* vertex_shader_with_version[2] = { g_GlslVersionString, vertex_shader };
+	const char* vertex_shader_with_version[2] = { g_GlslVersionString, vertex_shader };
 	g_VertHandle = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(g_VertHandle, 2, vertex_shader_with_version, NULL);
 	glCompileShader(g_VertHandle);
 	CheckShader(g_VertHandle, "vertex shader");
 
-	const GLchar* fragment_shader_with_version[2] = { g_GlslVersionString, fragment_shader };
+	const char* fragment_shader_with_version[2] = { g_GlslVersionString, fragment_shader };
 	g_FragHandle = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(g_FragHandle, 2, fragment_shader_with_version, NULL);
 	glCompileShader(g_FragHandle);

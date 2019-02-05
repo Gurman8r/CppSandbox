@@ -150,13 +150,10 @@ namespace ml
 		static void		uniform2i(int32_t location, int32_t x, int32_t y);
 		static void		uniform3i(int32_t location, int32_t x, int32_t y, int32_t z);
 		static void		uniform4i(int32_t location, int32_t x, int32_t y, int32_t z, int32_t w);
-		static void		uniformMatrix2f(int32_t location, uint32_t count, bool transpose, const float * value);
-		static void		uniformMatrix3f(int32_t location, uint32_t count, bool transpose, const float * value);
-		static void		uniformMatrix4f(int32_t location, uint32_t count, bool transpose, const float * value);
-		static void		uniformArray1f(int32_t location, uint32_t count, const float * value);
-		static void		uniformArray2f(int32_t location, uint32_t count, const float * value);
-		static void		uniformArray3f(int32_t location, uint32_t count, const float * value);
-		static void		uniformArray4f(int32_t location, uint32_t count, const float * value);
+		static void		uniform1fv(int32_t location, uint32_t count, const float * value);
+		static void		uniform2fv(int32_t location, uint32_t count, const float * value);
+		static void		uniform3fv(int32_t location, uint32_t count, const float * value);
+		static void		uniform4fv(int32_t location, uint32_t count, const float * value);
 		static void		uniformMatrix2fv(int32_t location, uint32_t count, bool transpose, const float * value);
 		static void		uniformMatrix3fv(int32_t location, uint32_t count, bool transpose, const float * value);
 		static void		uniformMatrix4fv(int32_t location, uint32_t count, bool transpose, const float * value);

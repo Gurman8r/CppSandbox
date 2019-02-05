@@ -24,8 +24,8 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	template <class E, class T>
-	inline std::basic_ostream<E, T> & endl(std::basic_ostream<E, T> & out)
+	template <class _Elem, class _Traits>
+	inline std::basic_ostream<_Elem, _Traits> & endl(std::basic_ostream<_Elem, _Traits> & out)
 	{
 		out.put(out.widen('\n'));
 		out.flush();

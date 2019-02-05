@@ -304,7 +304,7 @@ namespace ml
 		UniformBinder u(this, name);
 		if (u)
 		{
-			OpenGL::uniformMatrix3f(u.location, 1, false, value.ptr());
+			OpenGL::uniformMatrix3fv(u.location, 1, false, value.ptr());
 		}
 		return u;
 	}
@@ -313,7 +313,7 @@ namespace ml
 		UniformBinder u(this, name);
 		if (u)
 		{
-			OpenGL::uniformMatrix4f(u.location, 1, false, value.ptr());
+			OpenGL::uniformMatrix4fv(u.location, 1, false, value.ptr());
 		}
 		return u;
 	}
@@ -344,7 +344,7 @@ namespace ml
 		UniformBinder u(this, name);
 		if (u)
 		{
-			OpenGL::uniformArray1f(u.location, count, value);
+			OpenGL::uniform1fv(u.location, count, value);
 		}
 		return u;
 	}
@@ -353,7 +353,7 @@ namespace ml
 		UniformBinder u(this, name);
 		if (u)
 		{
-			OpenGL::uniformArray2f(u.location, count, &vec2f::contiguous(value, count)[0]);
+			OpenGL::uniform2fv(u.location, count, &vec2f::contiguous(value, count)[0]);
 		}
 		return u;
 	}
@@ -362,7 +362,7 @@ namespace ml
 		UniformBinder u(this, name);
 		if (u)
 		{
-			OpenGL::uniformArray3f(u.location, count, &vec3f::contiguous(value, count)[0]);
+			OpenGL::uniform3fv(u.location, count, &vec3f::contiguous(value, count)[0]);
 		}
 		return u;
 	}
@@ -371,7 +371,7 @@ namespace ml
 		UniformBinder u(this, name);
 		if (u)
 		{
-			OpenGL::uniformArray4f(u.location, count, &vec4f::contiguous(value, count)[0]);
+			OpenGL::uniform4fv(u.location, count, &vec4f::contiguous(value, count)[0]);
 		}
 		return u;
 	}

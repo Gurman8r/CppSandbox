@@ -815,37 +815,22 @@ namespace ml
 		glCheck(glUniform4i(location, x, y, z, w));
 	}
 
-	void OpenGL::uniformMatrix2f(int32_t location, uint32_t count, bool transpose, const float * value)
-	{
-		glCheck(glUniformMatrix2fv(location, count, transpose, value));
-	}
-
-	void OpenGL::uniformMatrix3f(int32_t location, uint32_t count, bool transpose, const float * value)
-	{
-		glCheck(glUniformMatrix3fv(location, count, transpose, value));
-	}
-
-	void OpenGL::uniformMatrix4f(int32_t location, uint32_t count, bool transpose, const float * value)
-	{
-		glCheck(glUniformMatrix4fv(location, count, transpose, value));
-	}
-
-	void OpenGL::uniformArray1f(int32_t location, uint32_t count, const float * value)
+	void OpenGL::uniform1fv(int32_t location, uint32_t count, const float * value)
 	{
 		glCheck(glUniform1fv(location, count, value));
 	}
 
-	void OpenGL::uniformArray2f(int32_t location, uint32_t count, const float * value)
+	void OpenGL::uniform2fv(int32_t location, uint32_t count, const float * value)
 	{
 		glCheck(glUniform2fv(location, count, value));
 	}
 
-	void OpenGL::uniformArray3f(int32_t location, uint32_t count, const float * value)
+	void OpenGL::uniform3fv(int32_t location, uint32_t count, const float * value)
 	{
 		glCheck(glUniform3fv(location, count, value));
 	}
 
-	void OpenGL::uniformArray4f(int32_t location, uint32_t count, const float * value)
+	void OpenGL::uniform4fv(int32_t location, uint32_t count, const float * value)
 	{
 		glCheck(glUniform4fv(location, count, value));
 	}
