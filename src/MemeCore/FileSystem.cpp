@@ -15,7 +15,7 @@ namespace ml
 	bool FileSystem::setWorkingDir(const String & value)
 	{
 #ifdef ML_SYSTEM_WINDOWS
-		return (_chdir(value.c_str()) == EXIT_SUCCESS) ? true : false;
+		return (_chdir(value.c_str()) == EXIT_SUCCESS);
 #else
 		return false;
 #endif

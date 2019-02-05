@@ -18,9 +18,9 @@ namespace ml
 		, public IComparable<List<_Elem, _Alloc>>
 	{
 		// elements need << operator
-		static_assert(
-			check::has_leftshift_operator<_Elem>::value,
-			"ml::List | Element requires \"<<\" operator");
+		//static_assert(
+		//	check::has_leftshift_operator<_Elem>::value,
+		//	"ml::List | Element requires \"<<\" operator");
 
 	public:
 		using value_type			= _Elem;

@@ -19,18 +19,15 @@ namespace ml
 
 			// Setup GL
 			OpenGL::enable(GL::CullFace);
-			OpenGL::cullFace(GL::Back);
-
 			OpenGL::enable(GL::DepthTest);
-			OpenGL::depthFunc(GL::Less);
-
 			OpenGL::enable(GL::Blend);
-			OpenGL::blendFunc(GL::SourceAlpha, GL::OneMinusSourceAlpha);
-
 			OpenGL::enable(GL::AlphaTest);
-			OpenGL::alphaFunc(GL::Greater, 0.01f);
-
 			OpenGL::enable(GL::Texture2D);
+
+			OpenGL::cullFace(GL::Back);
+			OpenGL::depthFunc(GL::Less);
+			OpenGL::blendFunc(GL::SourceAlpha, GL::OneMinusSourceAlpha);
+			OpenGL::alphaFunc(GL::Greater, 0.01f);
 			OpenGL::activeTexture(GL::Texture0);
 
 			if (m_context.multisample)

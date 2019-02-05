@@ -135,7 +135,6 @@ namespace DEMO
 
 			ML_Interpreter.addCmd({ "read", [](ml::Args & args)
 			{
-
 				ml::String name = args.pop_front().front();
 
 				if (ML_FileSystem.fileExists(name))
@@ -553,7 +552,7 @@ namespace DEMO
 		)
 		&& setup())
 		{
-			this->setCursor(ml::Window::Normal);
+			this->setCursor(ml::Cursor::Normal);
 			this->setPosition((ml::VideoMode::desktop().size - this->size()) / 2);
 			this->setViewport(ml::vec2i::Zero, this->size());
 

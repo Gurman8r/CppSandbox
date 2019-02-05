@@ -31,8 +31,8 @@ int32_t gui_main(int32_t argc, char ** argv)
 	GLFWwindow * window;
 	if (glfwInit() == GLFW_TRUE)
 	{
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
@@ -158,10 +158,9 @@ int32_t foo_main(int32_t argc, char ** argv)
 		ml::Window::Style::Default,
 		ml::Context(3, 3)
 	)
-	&& m_window.setup()
-	)
+	&& m_window.setup())
 	{
-		m_window.setCursor(ml::Window::Normal);
+		m_window.setCursor(ml::Cursor::Normal);
 		m_window.setPosition((ml::VideoMode::desktop().size - m_window.size()) / 2);
 	}
 	else

@@ -18,7 +18,7 @@ namespace ml
 		, m_context		()
 		, m_videoMode	()
 		, m_style		(Window::Default)
-		, m_cursorMode	(Window::Hidden)
+		, m_cursorMode	(Cursor::Normal)
 		, m_position	(vec2i::Zero)
 	{
 		ML_EventSystem.addListener(WindowEvent::EV_WindowSize,		this);
@@ -216,8 +216,6 @@ namespace ml
 			if (auto ev = value->Cast<WindowSizeEvent>())
 			{
 				m_videoMode.size = { (uint32_t)ev->width, (uint32_t)ev->height };
-
-				Debug::log("EV: {0}", *ev);
 			}
 			break;
 		}
@@ -275,13 +273,13 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	Window & Window::setClipboard(const String & value)
+	Window & Window::setClipboardString(const String & value)
 	{
 		glfwSetClipboardString(ML_WINDOW(m_window), value.c_str());
 		return (*this);
 	}
 	
-	Window & Window::setCursor(CursorMode value)
+	Window & Window::setCursor(Cursor::Mode value)
 	{
 		m_cursorMode = value;
 		glfwSetInputMode(ML_WINDOW(m_window), GLFW_CURSOR, value);
@@ -349,12 +347,12 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Window::isFocused() const
+	bool	Window::isFocused() const
 	{
 		return m_focused;
 	}
 
-	bool Window::isOpen() const
+	bool	Window::isOpen() const
 	{
 		return !glfwWindowShouldClose(ML_WINDOW(m_window));
 	}
@@ -364,7 +362,7 @@ namespace ml
 		return glfwGetWindowAttrib(ML_WINDOW(m_window), value);
 	}
 
-	char Window::getChar() const
+	char	Window::getChar() const
 	{
 		static char temp = 0;
 		temp = m_char;
@@ -372,127 +370,140 @@ namespace ml
 		return temp;
 	}
 
-	String Window::getClipboard() const
+	String	Window::getClipboardString() const
 	{
 		return String(glfwGetClipboardString(ML_WINDOW(m_window)));
 	}
 
-	vec2f Window::getCursorPos() const
+	vec2f	Window::getCursorPos() const
 	{
-		static double x, y;
-		glfwGetCursorPos(ML_WINDOW(m_window), &x, &y);
-		return vec2f((float)x, (float)y);
+		static vec2d temp;
+		glfwGetCursorPos(ML_WINDOW(m_window), &temp[0], &temp[1]);
+		return (vec2f)temp;
 	}
 
-	vec2i Window::getFramebufferSize() const
+	vec2i	Window::getFramebufferSize() const
 	{
 		static vec2i temp;
 		glfwGetFramebufferSize(ML_WINDOW(m_window), &temp[0], &temp[1]);
 		return temp;
 	}
 
-	bool Window::getKey(int32_t value) const
+	bool	Window::getKey(int32_t value) const
 	{
 		return (glfwGetKey(ML_WINDOW(m_window), value) == GLFW_PRESS);
 	}
 
-	bool Window::getMouseButton(int32_t value) const
+	bool	Window::getMouseButton(int32_t value) const
 	{
 		return (glfwGetMouseButton(ML_WINDOW(m_window), value) == GLFW_PRESS);
 	}
 
-	vec2f Window::getScroll() const
+	vec2f	Window::getScroll() const
 	{
 		return vec2f(m_scroll);
 	}
 
-	float Window::getTime() const
+	float	Window::getTime() const
 	{
 		return static_cast<float>(glfwGetTime());
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void Window::setErrorCallback(ErrorCallback callback)
+	Window::ErrorFun			Window::setErrorCallback(ErrorFun callback)
 	{
-		glfwSetErrorCallback(reinterpret_cast<GLFWerrorfun>(callback));
+		glfwSetErrorCallback(
+			reinterpret_cast<GLFWerrorfun>(callback));
+		return callback;
 	}
-
-	void Window::setCharCallback(CharCallback callback)
+	
+	Window::CharFun				Window::setCharCallback(CharFun callback)
 	{
 		glfwSetCharCallback(
 			ML_WINDOW(m_window),
 			reinterpret_cast<GLFWcharfun>(callback));
+		return callback;
 	}
 	
-	void Window::setCursorEnterCallback(CursorEnterCallback callback)
+	Window::CursorEnterFun		Window::setCursorEnterCallback(CursorEnterFun callback)
 	{
 		glfwSetCursorEnterCallback(
 			ML_WINDOW(m_window),
 			reinterpret_cast<GLFWcursorenterfun>(callback));
+		return callback;
 	}
 	
-	void Window::setCursorPosCallback(CursorPosCallback callback)
+	Window::CursorPosFun		Window::setCursorPosCallback(CursorPosFun callback)
 	{
 		glfwSetCursorPosCallback(
 			ML_WINDOW(m_window),
 			reinterpret_cast<GLFWcursorposfun>(callback));
+		return callback;
 	}
 	
-	void Window::setFramebufferSizeCallback(FramebufferSizeCallback callback)
+	Window::FramebufferSizeFun	Window::setFramebufferSizeCallback(FramebufferSizeFun callback)
 	{
 		glfwSetFramebufferSizeCallback(
 			ML_WINDOW(m_window),
 			reinterpret_cast<GLFWframebuffersizefun>(callback));
+		return callback;
 	}
 	
-	void Window::setMouseButtonCallback(MouseButtonCallback callback)
-	{
-		glfwSetMouseButtonCallback(
-			ML_WINDOW(m_window),
-			reinterpret_cast<GLFWmousebuttonfun>(callback));
-	}
-	
-	void Window::setKeyCallback(KeyCallback callback)
+	Window::KeyFun				Window::setKeyCallback(KeyFun callback)
 	{
 		glfwSetKeyCallback(
 			ML_WINDOW(m_window),
 			reinterpret_cast<GLFWkeyfun>(callback));
+		return callback;
 	}
 	
-	void Window::setScrollCallback(ScrollCallback callback)
+	Window::MouseButtonFun		Window::setMouseButtonCallback(MouseButtonFun callback)
+	{
+		glfwSetMouseButtonCallback(
+			ML_WINDOW(m_window),
+			reinterpret_cast<GLFWmousebuttonfun>(callback));
+		return callback;
+	}
+	
+	Window::ScrollFun			Window::setScrollCallback(ScrollFun callback)
 	{
 		glfwSetScrollCallback(
 			ML_WINDOW(m_window),
 			reinterpret_cast<GLFWscrollfun>(callback));
+		return callback;
 	}
 	
-	void Window::setWindowCloseCallback(WindowCloseCallback callback)
+	Window::WindowCloseFun		Window::setWindowCloseCallback(WindowCloseFun callback)
 	{
 		glfwSetWindowCloseCallback(
 			ML_WINDOW(m_window),
 			reinterpret_cast<GLFWwindowclosefun>(callback));
+		return callback;
 	}
 	
-	void Window::setWindowFocusCallback(WindowFocusCallback callback)
+	Window::WindowFocusFun		Window::setWindowFocusCallback(WindowFocusFun callback)
 	{
 		glfwSetWindowFocusCallback(
 			ML_WINDOW(m_window),
 			reinterpret_cast<GLFWwindowfocusfun>(callback));
+		return callback;
 	}
 	
-	void Window::setWindowPosCallback(WindowPosCallback callback)
+	Window::WindowPosFun		Window::setWindowPosCallback(WindowPosFun callback)
 	{
 		glfwSetWindowPosCallback(
-			ML_WINDOW(m_window), 
+			ML_WINDOW(m_window),
 			reinterpret_cast<GLFWwindowposfun>(callback));
+		return callback;
 	}
 	
-	void Window::setWindowSizeCallback(WindowSizeCallback callback)
+	Window::WindowSizeFun		Window::setWindowSizeCallback(WindowSizeFun callback)
 	{
 		glfwSetWindowSizeCallback(
 			ML_WINDOW(m_window),
 			reinterpret_cast<GLFWwindowposfun>(callback));
+		return callback;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

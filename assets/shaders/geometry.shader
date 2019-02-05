@@ -10,8 +10,6 @@ layout(location = 2) in vec2 a_Texcoord;
 
 // Varyings
 out vec3 v_Position;
-out vec4 v_Color;
-out vec2 v_Texcoord;
 
 void main()
 {
@@ -27,17 +25,14 @@ void main()
 #version 330 core
 
 // Varyings
-in vec3		v_Position;
-in vec4		v_Color;
-in vec2		v_Texcoord;
-out vec4	v_FragColor;
+out vec4 v_FragColor;
 
 // Uniforms
 uniform vec4 u_color;
 
 void main()
 {
-	v_FragColor = u_color * v_Color.w;
+	v_FragColor = u_color;
 }
 
 

@@ -4,6 +4,7 @@
 #include <MemeCore/Vector4.hpp>
 #include <MemeCore/IEventListener.hpp>
 #include <MemeCore/INonCopyable.hpp>
+#include <MemeWindow/Cursor.hpp>
 #include <MemeWindow/Context.hpp>
 #include <MemeWindow/Icon.hpp>
 #include <MemeWindow/VideoMode.hpp>
@@ -16,26 +17,18 @@ namespace ml
 		, public IEventListener
 	{
 	public:
-		using ErrorCallback				= void(*)(int32_t, const char *);
-		using CharCallback				= void(*)(void *, uint32_t);
-		using CursorEnterCallback		= void(*)(void *, int32_t);
-		using CursorPosCallback			= void(*)(void *, double, double);
-		using FramebufferSizeCallback	= void(*)(void *, int32_t, int32_t);
-		using KeyCallback				= void(*)(void *, int32_t, int32_t, int32_t, int32_t);
-		using MouseButtonCallback		= void(*)(void *, int32_t, int32_t, int32_t);
-		using ScrollCallback			= void(*)(void *, double, double);
-		using WindowCloseCallback		= void(*)(void *);
-		using WindowFocusCallback		= void(*)(void *, int32_t);
-		using WindowPosCallback			= void(*)(void *, int32_t, int32_t);
-		using WindowSizeCallback		= void(*)(void *, int32_t, int32_t);
-
-	public:
-		enum CursorMode : uint32_t
-		{
-			Normal	 = 0x34001,
-			Hidden	 = 0x34002,
-			Disabled = 0x34003,
-		};
+		using ErrorFun			= void(*)(int32_t, const char *);
+		using CharFun			= void(*)(void *, uint32_t);
+		using CursorEnterFun	= void(*)(void *, int32_t);
+		using CursorPosFun		= void(*)(void *, double, double);
+		using FramebufferSizeFun= void(*)(void *, int32_t, int32_t);
+		using KeyFun			= void(*)(void *, int32_t, int32_t, int32_t, int32_t);
+		using MouseButtonFun	= void(*)(void *, int32_t, int32_t, int32_t);
+		using ScrollFun			= void(*)(void *, double, double);
+		using WindowCloseFun	= void(*)(void *);
+		using WindowFocusFun	= void(*)(void *, int32_t);
+		using WindowPosFun		= void(*)(void *, int32_t, int32_t);
+		using WindowSizeFun		= void(*)(void *, int32_t, int32_t);
 
 	public:
 		enum Style : uint32_t
@@ -52,16 +45,6 @@ namespace ml
 			// Resizable | Visible | Decorated | Focused | AutoIconify
 			Default	= Resizable | Visible | Decorated | Focused | AutoIconify,
 		};
-		
-		inline friend Style operator|(Style lhs, Style rhs)
-		{
-			return (Window::Style)((uint32_t)lhs | (uint32_t)rhs);
-		}
-		
-		inline friend Style & operator|=(Style & lhs, const Style & rhs)
-		{
-			return (lhs = (lhs | rhs));
-		}
 
 	public:
 		Window();
@@ -90,8 +73,8 @@ namespace ml
 		Window & terminate();
 
 	public:
-		Window & setClipboard(const String & value);
-		Window & setCursor(CursorMode value);
+		Window & setClipboardString(const String & value);
+		Window & setCursor(Cursor::Mode value);
 		Window & setCursorPos(const vec2i & value);
 		Window & setIcons(const std::vector<Icon> & value);
 		Window & setPosition(const vec2i & value);
@@ -105,7 +88,7 @@ namespace ml
 
 		int32_t	getAttrib(int32_t value) const;
 		char	getChar() const;
-		String	getClipboard() const;
+		String	getClipboardString() const;
 		vec2f	getCursorPos() const;
 		vec2i	getFramebufferSize() const;
 		bool	getKey(int32_t value) const;
@@ -123,36 +106,35 @@ namespace ml
 		inline const uint32_t &		width()		const { return size()[0]; }
 		inline const uint32_t &		height()	const { return size()[1]; }
 		inline const float			aspect()	const { return (float)width() / (float)height(); };
-		inline const CursorMode		cursorMode()const { return m_cursorMode; }
+		inline const Cursor::Mode	cursorMode()const { return m_cursorMode; }
 
 	public:
-		void setCharCallback(CharCallback callback);
-		void setCursorEnterCallback(CursorEnterCallback callback);
-		void setCursorPosCallback(CursorPosCallback callback);
-		void setErrorCallback(ErrorCallback callback);
-		void setFramebufferSizeCallback(FramebufferSizeCallback callback);
-		void setKeyCallback(KeyCallback callback);
-		void setMouseButtonCallback(MouseButtonCallback callback);
-		void setScrollCallback(ScrollCallback callback);
-		void setWindowCloseCallback(WindowCloseCallback callback);
-		void setWindowFocusCallback(WindowFocusCallback callback);
-		void setWindowPosCallback(WindowPosCallback callback);
-		void setWindowSizeCallback(WindowSizeCallback callback);
+		ErrorFun			setErrorCallback(ErrorFun callback);
+		CharFun				setCharCallback(CharFun callback);
+		CursorEnterFun		setCursorEnterCallback(CursorEnterFun callback);
+		CursorPosFun		setCursorPosCallback(CursorPosFun callback);
+		FramebufferSizeFun	setFramebufferSizeCallback(FramebufferSizeFun callback);
+		KeyFun				setKeyCallback(KeyFun callback);
+		MouseButtonFun		setMouseButtonCallback(MouseButtonFun callback);
+		ScrollFun			setScrollCallback(ScrollFun callback);
+		WindowCloseFun		setWindowCloseCallback(WindowCloseFun callback);
+		WindowFocusFun		setWindowFocusCallback(WindowFocusFun callback);
+		WindowPosFun		setWindowPosCallback(WindowPosFun callback);
+		WindowSizeFun		setWindowSizeCallback(WindowSizeFun callback);
 
 	protected:
-		void *		m_window;
-		void *		m_monitor;
-		void *		m_share;
-		Context		m_context;
-		VideoMode	m_videoMode;
-		Style		m_style;
-		CursorMode	m_cursorMode;
-		vec2i		m_position;
-		String		m_title;
-		bool		m_focused;
-		vec2d		m_scroll;
-
-		mutable char m_char;
+		void *			m_window;
+		void *			m_monitor;
+		void *			m_share;
+		Context			m_context;
+		VideoMode		m_videoMode;
+		Style			m_style;
+		Cursor::Mode	m_cursorMode;
+		vec2i			m_position;
+		String			m_title;
+		bool			m_focused;
+		vec2d			m_scroll;
+		mutable char	m_char;
 	};
 }
 #endif // !_WINDOW_HPP_
