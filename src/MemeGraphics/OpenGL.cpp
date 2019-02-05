@@ -249,14 +249,21 @@ namespace ml
 	int32_t OpenGL::getInt(GL::Enum name)
 	{
 		static int32_t temp;
-		glCheck(glGetIntegerv(name, &temp));
+		getIntv(name, &temp);
 		return temp;
+	}
+
+	int32_t * OpenGL::getIntv(GL::Enum name, int32_t * params)
+	{
+		glCheck(glGetIntegerv(name, params));
+
+		return params;
 	}
 
 
 	// Functions
 
-	void OpenGL::activeTexture(GL::TextureID target)
+	void OpenGL::activeTexture(uint32_t target)
 	{
 		glCheck(glActiveTexture(target));
 	}
@@ -291,14 +298,19 @@ namespace ml
 		glCheck(glViewport(x, y, w, h));
 	}
 
-	void OpenGL::blendEquationSeparate(GL::Equation lhs, GL::Equation rhs)
+	void OpenGL::blendEquationSeparate(uint32_t lhs, uint32_t rhs)
 	{
 		glCheck(glBlendEquationSeparate(lhs, rhs));
 	}
 
-	void OpenGL::blendFuncSeparate(GL::Factor sfactorRGB, GL::Factor dfactorRGB, GL::Factor sfactorAlpha, GL::Factor dfactorAlpha)
+	void OpenGL::blendFuncSeparate(uint32_t sfactorRGB, uint32_t dfactorRGB, uint32_t sfactorAlpha, uint32_t dfactorAlpha)
 	{
 		glCheck(glBlendFuncSeparate(sfactorRGB, dfactorRGB, sfactorAlpha, dfactorAlpha));
+	}
+
+	void OpenGL::polygonMode(GL::Enum face, GL::Enum mode)
+	{
+		glCheck(glPolygonMode(face, mode));
 	}
 
 
@@ -418,18 +430,29 @@ namespace ml
 		glCheck(glDeleteVertexArrays(count, arrays));
 	}
 
+	void OpenGL::vertexAttribPointer(uint32_t index, uint32_t size, GL::Type type, bool normalized, uint32_t stride, const void * pointer)
+	{
+		glCheck(glVertexAttribPointer(
+			index,
+			size,
+			type,
+			normalized,
+			stride,
+			pointer));
+	}
+
 	void OpenGL::vertexAttribPointer(uint32_t index, uint32_t size, GL::Type type, bool normalized, uint32_t stride, uint32_t offset, uint32_t width)
 	{
 #pragma warning(push)
 #pragma warning(disable: 4312)
-		glCheck(glVertexAttribPointer(
+		return vertexAttribPointer(
 			index,
 			size,
 			type,
 			normalized,
 			(stride * width),
 			// this causes a warning in x64
-			reinterpret_cast<const uint32_t *>(offset * width)));
+			reinterpret_cast<const uint32_t *>(offset * width));
 #pragma warning(pop)
 	}
 
@@ -438,12 +461,6 @@ namespace ml
 		glCheck(glEnableVertexAttribArray(index));
 	}
 
-	int32_t OpenGL::getAttribLocation(uint32_t program, GL::Str name)
-	{
-		static int32_t temp;
-		glCheck(temp = glGetAttribLocation(program, name));
-		return temp;
-	}
 
 
 	// Textures
@@ -565,12 +582,17 @@ namespace ml
 
 	void OpenGL::pixelStore(uint32_t name, int32_t param)
 	{
-		glCheck(glPixelStorei(name, 1));
+		glCheck(glPixelStorei(name, param));
 	}
 
 	void OpenGL::scissor(int32_t x, int32_t y, int32_t width, int32_t height)
 	{
 		glCheck(glScissor(x, y, width, height));
+	}
+
+	void OpenGL::bindSampler(uint32_t unit, int32_t sampler)
+	{
+		glCheck(glBindSampler(unit, sampler));
 	}
 
 
@@ -625,6 +647,7 @@ namespace ml
 	{
 		glCheck(glFramebufferTexture2D(target, attachment, textarget, texture, level));
 	}
+
 
 	// Renderbuffers
 
@@ -689,7 +712,7 @@ namespace ml
 	}
 
 
-	GL::Str OpenGL::getInfoLog(uint32_t obj)
+	GL::Str OpenGL::getProgramInfoLog(uint32_t obj)
 	{
 		static char log[ML_BUFFER_SIZE];
 		glCheck(glGetInfoLogARB(obj, sizeof(log), 0, log));
@@ -730,11 +753,18 @@ namespace ml
 		glCheck(glGetProgramiv(program, name, &temp));
 		return temp;
 	}
-
-	int32_t OpenGL::getUniformLocation(uint32_t obj, GL::Str name)
+	
+	int32_t OpenGL::getAttribLocation(uint32_t program, GL::Str name)
 	{
 		static int32_t temp;
-		glCheck(temp = glGetUniformLocation(obj, name));
+		glCheck(temp = glGetAttribLocationARB(program, name));
+		return temp;
+	}
+
+	int32_t OpenGL::getUniformLocation(uint32_t program, GL::Str name)
+	{
+		static int32_t temp;
+		glCheck(temp = glGetUniformLocationARB(program, name));
 		return temp;
 	}
 
@@ -749,6 +779,11 @@ namespace ml
 		glCheck(glDeleteObjectARB(obj));
 	}
 
+	void OpenGL::detachShader(uint32_t containerObj, uint32_t obj)
+	{
+		glCheck(glDetachObjectARB(containerObj, obj));
+	}
+
 	void OpenGL::attachShader(uint32_t containerObj, uint32_t obj)
 	{
 		glCheck(glAttachObjectARB(containerObj, obj));
@@ -761,93 +796,88 @@ namespace ml
 
 	void OpenGL::compileShader(uint32_t obj)
 	{
-		glCheck(glCompileShader(obj));
+		glCheck(glCompileShaderARB(obj));
 	}
 
 	void OpenGL::linkShader(uint32_t obj)
 	{
-		glCheck(glLinkProgram(obj));
+		glCheck(glLinkProgramARB(obj));
 	}
 
 
 	void OpenGL::uniform1f(int32_t location, float value)
 	{
-		glCheck(glUniform1f(location, value));
+		glCheck(glUniform1fARB(location, value));
 	}
 
 	void OpenGL::uniform1i(int32_t location, int32_t value)
 	{
-		glCheck(glUniform1i(location, value));
-	}
-
-	void OpenGL::uniform1u(int32_t location, uint32_t value)
-	{
-		glCheck(glUniform1ui(location, value));
+		glCheck(glUniform1iARB(location, value));
 	}
 
 	void OpenGL::uniform2f(int32_t location, float x, float y)
 	{
-		glCheck(glUniform2f(location, x, y));
+		glCheck(glUniform2fARB(location, x, y));
 	}
 
 	void OpenGL::uniform3f(int32_t location, float x, float y, float z)
 	{
-		glCheck(glUniform3f(location, x, y, z));
+		glCheck(glUniform3fARB(location, x, y, z));
 	}
 
 	void OpenGL::uniform4f(int32_t location, float x, float y, float z, float w)
 	{
-		glCheck(glUniform4f(location, x, y, z, w));
+		glCheck(glUniform4fARB(location, x, y, z, w));
 	}
 
 	void OpenGL::uniform2i(int32_t location, int32_t x, int32_t y)
 	{
-		glCheck(glUniform2i(location, x, y));
+		glCheck(glUniform2iARB(location, x, y));
 	}
 
 	void OpenGL::uniform3i(int32_t location, int32_t x, int32_t y, int32_t z)
 	{
-		glCheck(glUniform3i(location, x, y, z));
+		glCheck(glUniform3iARB(location, x, y, z));
 	}
 
 	void OpenGL::uniform4i(int32_t location, int32_t x, int32_t y, int32_t z, int32_t w)
 	{
-		glCheck(glUniform4i(location, x, y, z, w));
+		glCheck(glUniform4iARB(location, x, y, z, w));
 	}
 
 	void OpenGL::uniform1fv(int32_t location, uint32_t count, const float * value)
 	{
-		glCheck(glUniform1fv(location, count, value));
+		glCheck(glUniform1fvARB(location, count, value));
 	}
 
 	void OpenGL::uniform2fv(int32_t location, uint32_t count, const float * value)
 	{
-		glCheck(glUniform2fv(location, count, value));
+		glCheck(glUniform2fvARB(location, count, value));
 	}
 
 	void OpenGL::uniform3fv(int32_t location, uint32_t count, const float * value)
 	{
-		glCheck(glUniform3fv(location, count, value));
+		glCheck(glUniform3fvARB(location, count, value));
 	}
 
 	void OpenGL::uniform4fv(int32_t location, uint32_t count, const float * value)
 	{
-		glCheck(glUniform4fv(location, count, value));
+		glCheck(glUniform4fvARB(location, count, value));
 	}
 
 	void OpenGL::uniformMatrix2fv(int32_t location, uint32_t count, bool transpose, const float * value)
 	{
-		glCheck(glUniformMatrix2fv(location, count, GL_FALSE, value));
+		glCheck(glUniformMatrix2fvARB(location, count, transpose, value));
 	}
 
 	void OpenGL::uniformMatrix3fv(int32_t location, uint32_t count, bool transpose, const float * value)
 	{
-		glCheck(glUniformMatrix3fv(location, count, GL_FALSE, value));
+		glCheck(glUniformMatrix3fvARB(location, count, transpose, value));
 	}
 
 	void OpenGL::uniformMatrix4fv(int32_t location, uint32_t count, bool transpose, const float * value)
 	{
-		glCheck(glUniformMatrix4fv(location, count, GL_FALSE, value));
+		glCheck(glUniformMatrix4fvARB(location, count, transpose, value));
 	}
 
 }

@@ -33,7 +33,6 @@ namespace ml
 		// Set Uniform
 		bool setUniform(const String & name, const float & value) const;
 		bool setUniform(const String & name, const int32_t & value) const;
-		bool setUniform(const String & name, const uint32_t & value) const;
 		bool setUniform(const String & name, const vec2f & value) const;
 		bool setUniform(const String & name, const vec3f & value) const;
 		bool setUniform(const String & name, const vec4f & value) const;
@@ -71,10 +70,11 @@ namespace ml
 			return setUniformArray(Uniform::Names[id], (int32_t)value.size(), &value[0]);
 		};
 
-	private:
-		bool		compile(const char* vs, const char* gs, const char* fs);
+	public:
+		bool		compile(const char * vs, const char * gs, const char * fs);
 		int32_t		getUniformLocation(const String & value) const;
-	
+		int32_t		getAttribLocation(const String & value) const;
+
 	private:
 		struct	UniformBinder;
 

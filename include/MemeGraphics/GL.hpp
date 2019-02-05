@@ -19,6 +19,7 @@ namespace ml
 			Blend			= 0x0BE2,		// GL_BLEND
 			Multisample		= 0x809D,		// GL_MULTISAMPLE
 			FramebufferSRGB	= 0x8DB9,		// GL_FRAMEBUFFER_SRGB
+			ScissorTest		= 0x0C11,		// GL_SCISSOR_TEST
 		};
 
 		enum Target : Enum
@@ -28,6 +29,7 @@ namespace ml
 			TextureCubeMap	= 0x8513,		// GL_TEXTURE_CUBE_MAP
 			ArrayBuffer		= 0x8892,		// GL_ARRAY_BUFFER
 			ElementArrayBuffer,				// GL_ELEMENT_ARRAY_BUFFER
+			ArrayBufferBinding,				// GL_ARRAY_BUFFER_BINDING
 			Framebuffer		= 0x8D40,		// GL_FRAMEBUFFER
 			Renderbuffer,					// GL_RENDERBUFFER
 			ProgramObject	= 0x8B40,		// GL_PROGRAM_OBJECT_ARB
@@ -35,6 +37,12 @@ namespace ml
 			FramebufferDraw = 0x8CA9,		// GL_DRAW_FRAMEBUFFER
 			ReadFramebufferBinding = 0x8CAA,// GL_READ_FRAMEBUFFER_BINDING
 			DrawFramebufferBinding = 0x8CA6,// GL_DRAW_FRAMEBUFFER_BINDING
+			CurrentProgram = 0x8B8D,		// GL_CURRENT_PROGRAM
+			VertexArrayBinding = 0x85B5,	// GL_VERTEX_ARRAY_BINDING
+			TextureBinding2D = 0x8069,		// GL_TEXTURE_BINDING_2D
+			SamplerBinding = 0x8919,		// GL_SAMPLER_BINDING
+			ActiveTexture = 0x84E0,			// GL_ACTIVE_TEXTURE
+
 		};
 
 		enum Usage : Enum
@@ -74,6 +82,17 @@ namespace ml
 			ContextProfileMask = 0x9126,	// GL_CONTEXT_PROFILE_MASK
 			MaxTextureSize = 0x0D33,		// GL_MAX_TEXTURE_SIZE
 			MaxCombTexImgUnits = 0x8B4D,	// GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS
+			InfoLogLength = 0x8B84,			// GL_INFO_LOG_LENGTH
+			PolygonMode = 0x0B40,			// GL_POLYGON_MODE
+			Viewport = 0x0BA2,				// GL_VIEWPORT
+			ScissorBox = 0x0C10,			// GL_SCISSOR_BOX
+		};
+
+		enum ClipControl
+		{
+			LowerLeft = 0x8CA1,				// GL_LOWER_LEFT
+			UpperLeft,						// GL_UPPER_LEFT
+			ClipOrigin = 0x935C,			// GL_CLIP_ORIGIN
 		};
 
 		enum Status : Enum
@@ -100,6 +119,7 @@ namespace ml
 			Triangles,						// GL_TRIANGLES
 			TriangleStrip,					// GL_TRIANGLE_STRIP
 			TriangleFan,					// GL_TRIANGLE_FAN
+			Fill = 0x1B02,					// GL_FILL
 		};
 
 		enum Equation : Enum
@@ -107,6 +127,17 @@ namespace ml
 			Multiply	= 0x0103,			// GL_MULT
 			Add			= 0x0104,			// GL_ADD
 			Subtract	= 0x84E7,			// GL_SUBTRACT
+			FuncAdd		= 0x8006,			// GL_FUNC_ADD
+		};
+
+		enum BlendEquation : Enum
+		{
+			BlendEquationRGB = 0x8009,		// GL_BLEND_EQUATION_RGB
+			BlendEquationAlpha = 0x883D,	// GL_BLEND_EQUATION_ALPHA
+			BlendDestRGB = 0x80C8,			// GL_BLEND_DST_RGB
+			BlendSourceRGB,					// GL_BLEND_SRC_RGB
+			BlendDestAlpha = 0x80CA,		// GL_BLEND_DST_ALPHA
+			BlendSourceAlpha,				// GL_BLEND_SRC_ALPHA
 		};
 
 		enum Comparison : Enum
@@ -284,6 +315,27 @@ namespace ml
 			Texture29,						// GL_TEXTURE29
 			Texture30,						// GL_TEXTURE30
 			Texture31,						// GL_TEXTURE31
+			
+		};
+
+		enum DrawBuffers
+		{
+			DrawBuffer0 = 0x8CE0,		// GL_DRAW_BUFFER0
+			DrawBuffer1,				// GL_DRAW_BUFFER1
+			DrawBuffer2,				// GL_DRAW_BUFFER2
+			DrawBuffer3,				// GL_DRAW_BUFFER3
+			DrawBuffer4,				// GL_DRAW_BUFFER4
+			DrawBuffer5,				// GL_DRAW_BUFFER5
+			DrawBuffer6,				// GL_DRAW_BUFFER6
+			DrawBuffer7,				// GL_DRAW_BUFFER7
+			DrawBuffer8,				// GL_DRAW_BUFFER8
+			DrawBuffer9,				// GL_DRAW_BUFFER9
+			DrawBuffer10,				// GL_DRAW_BUFFER10
+			DrawBuffer11,				// GL_DRAW_BUFFER11
+			DrawBuffer12,				// GL_DRAW_BUFFER12
+			DrawBuffer13,				// GL_DRAW_BUFFER13
+			DrawBuffer14,				// GL_DRAW_BUFFER14
+			DrawBuffer15,				// GL_DRAW_BUFFER15
 		};
 
 		enum Mask : Enum

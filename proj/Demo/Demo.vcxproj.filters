@@ -304,9 +304,6 @@
     <ClInclude Include="DemoEvents.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="imgui_main.hpp">
-      <Filter>imgui</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\thirdparty\include\imgui\imconfig.h">
       <Filter>imgui\Header Files</Filter>
     </ClInclude>

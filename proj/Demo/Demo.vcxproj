@@ -100,8 +100,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\;$(SolutionDir)thirdparty\lib\$(Configuration)\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>MemeAudio_$(Configuration)_$(PlatformTarget).lib;MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeEditor_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;MemeNet_$(Configuration)_$(PlatformTarget).lib;MemeScript_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;glew32s.lib;opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalOptions>/NODEFAULTLIB:LIBCMT.lib /NODEFAULTLIB:LIBCMTD.lib /NODEFAULTLIB:MSVCRT.lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>MemeAudio_$(Configuration)_$(PlatformTarget).lib;MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeEditor_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;MemeNet_$(Configuration)_$(PlatformTarget).lib;MemeScript_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -115,8 +114,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\;$(SolutionDir)thirdparty\lib\$(Configuration)\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>MemeAudio_$(Configuration)_$(PlatformTarget).lib;MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeEditor_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;MemeNet_$(Configuration)_$(PlatformTarget).lib;MemeScript_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;glew32s.lib;opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalOptions>/NODEFAULTLIB:LIBCMT.lib /NODEFAULTLIB:LIBCMTD.lib /NODEFAULTLIB:MSVCRT.lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>MemeAudio_$(Configuration)_$(PlatformTarget).lib;MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeEditor_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;MemeNet_$(Configuration)_$(PlatformTarget).lib;MemeScript_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -134,8 +132,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\;$(SolutionDir)thirdparty\lib\$(Configuration)\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>MemeAudio_$(Configuration)_$(PlatformTarget).lib;MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeEditor_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;MemeNet_$(Configuration)_$(PlatformTarget).lib;MemeScript_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;glew32s.lib;opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalOptions>/NODEFAULTLIB:LIBCMT.lib /NODEFAULTLIB:LIBCMTD.lib /NODEFAULTLIB:MSVCRT.lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>MemeAudio_$(Configuration)_$(PlatformTarget).lib;MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeEditor_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;MemeNet_$(Configuration)_$(PlatformTarget).lib;MemeScript_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -153,8 +150,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\;$(SolutionDir)thirdparty\lib\$(Configuration)\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>MemeAudio_$(Configuration)_$(PlatformTarget).lib;MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeEditor_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;MemeNet_$(Configuration)_$(PlatformTarget).lib;MemeScript_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;glew32s.lib;opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalOptions>/NODEFAULTLIB:LIBCMT.lib /NODEFAULTLIB:LIBCMTD.lib /NODEFAULTLIB:MSVCRT.lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>MemeAudio_$(Configuration)_$(PlatformTarget).lib;MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeEditor_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;MemeNet_$(Configuration)_$(PlatformTarget).lib;MemeScript_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -247,7 +243,6 @@
     <ClInclude Include="..\..\thirdparty\include\imgui\imstb_truetype.h" />
     <ClInclude Include="DemoEvents.hpp" />
     <ClInclude Include="Demo.hpp" />
-    <ClInclude Include="imgui_main.hpp" />
     <ClInclude Include="Settings.hpp" />
     <ClInclude Include="Testing.hpp" />
   </ItemGroup>

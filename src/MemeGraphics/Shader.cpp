@@ -236,15 +236,6 @@ namespace ml
 		}
 		return u;
 	}
-	bool Shader::setUniform(const String & name, const uint32_t & value) const
-	{
-		UniformBinder u(this, name);
-		if (u)
-		{
-			OpenGL::uniform1u(u.location, value);
-		}
-		return u;
-	}
 	bool Shader::setUniform(const String & name, const vec2f & value) const
 	{
 		UniformBinder u(this, name);
@@ -427,7 +418,7 @@ namespace ml
 			// Check the Compile log
 			if (!OpenGL::getProgramParameter(vertexShader, GL::ObjectCompileStatus))
 			{
-				const char * log = OpenGL::getInfoLog(vertexShader);
+				const char * log = OpenGL::getProgramInfoLog(vertexShader);
 				OpenGL::deleteShader(vertexShader);
 				OpenGL::deleteShader(*this);
 				return Debug::logError("Failed to compile vertex source: {0}", log);
@@ -449,7 +440,7 @@ namespace ml
 			// Check the Compile log
 			if (!OpenGL::getProgramParameter(geometryShader, GL::ObjectCompileStatus))
 			{
-				const char * log = OpenGL::getInfoLog(geometryShader);
+				const char * log = OpenGL::getProgramInfoLog(geometryShader);
 				OpenGL::deleteShader(geometryShader);
 				OpenGL::deleteShader(*this);
 				return Debug::logError("Failed to compile geometry source: {0}", log);
@@ -471,7 +462,7 @@ namespace ml
 			// Check the Compile log
 			if (!OpenGL::getProgramParameter(fragmentShader, GL::ObjectCompileStatus))
 			{
-				const char * log = OpenGL::getInfoLog(fragmentShader);
+				const char * log = OpenGL::getProgramInfoLog(fragmentShader);
 				OpenGL::deleteShader(fragmentShader);
 				OpenGL::deleteShader(*this);
 				return Debug::logError("Failed to compile fragment source: {0}", log);
@@ -488,7 +479,7 @@ namespace ml
 		// Check the link log
 		if (!OpenGL::getProgramParameter(*this, GL::ObjectLinkStatus))
 		{
-			const char * log = OpenGL::getInfoLog(*this);
+			const char * log = OpenGL::getProgramInfoLog(*this);
 			OpenGL::deleteShader(*this);
 			return Debug::logError("Failed to link source: {0}", log);
 		}
@@ -520,5 +511,10 @@ namespace ml
 
 			return location;
 		}
+	}
+	
+	int32_t Shader::getAttribLocation(const String & value) const
+	{
+		return OpenGL::getAttribLocation(*this, value.c_str());
 	}
 }

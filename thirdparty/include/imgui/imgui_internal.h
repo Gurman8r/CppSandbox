@@ -31,10 +31,10 @@ Index of this file:
 #error Must include imgui.h before imgui_internal.h
 #endif
 
-#include <stdio.h>      // FILE*
-#include <stdlib.h>     // NULL, malloc, free, qsort, atoi, atof
-#include <math.h>       // sqrtf, fabsf, fmodf, powf, floorf, ceilf, cosf, sinf
-#include <limits.h>     // INT_MIN, INT_MAX
+#include <cstdio>      // FILE*
+#include <cstdlib>     // NULL, malloc, free, qsort, atoi, atof
+#include <cmath>       // sqrtf, fabsf, fmodf, powf, floorf, ceilf, cosf, sinf
+#include <limits>     // INT_MIN, INT_MAX
 
 #ifdef _MSC_VER
 #pragma warning (push)
@@ -152,7 +152,7 @@ static inline bool      ImCharIsBlankA(char c)          { return c == ' ' || c =
 static inline bool      ImCharIsBlankW(unsigned int c)  { return c == ' ' || c == '\t' || c == 0x3000; }
 static inline bool      ImIsPowerOfTwo(int v)           { return v != 0 && (v & (v - 1)) == 0; }
 static inline int       ImUpperPowerOfTwo(int v)        { v--; v |= v >> 1; v |= v >> 2; v |= v >> 4; v |= v >> 8; v |= v >> 16; v++; return v; }
-#define ImQsort         qsort
+#define ImQsort         std::qsort
 
 // Helpers: Geometry
 IMGUI_API ImVec2        ImLineClosestPoint(const ImVec2& a, const ImVec2& b, const ImVec2& p);

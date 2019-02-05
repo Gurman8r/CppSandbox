@@ -45,17 +45,19 @@ namespace ml
 		static double	getDouble(GL::Enum name);
 		static float	getFloat(GL::Enum name);
 		static int32_t	getInt(GL::Enum name);
+		static int32_t*	getIntv(GL::Enum name, int32_t * params);
 
 	public: // Functions
-		static void		activeTexture(GL::TextureID textureID);
+		static void		activeTexture(uint32_t textureID);
 		static void		alphaFunc(GL::Comparison comp, float value);
 		static void		blendFunc(GL::Factor src, GL::Factor dst);
 		static void		blendEquation(GL::Equation equation);
 		static void		cullFace(GL::Face value);
 		static void		depthFunc(GL::Comparison value);
 		static void		viewport(int32_t x, int32_t y, int32_t w, int32_t h);
-		static void		blendEquationSeparate(GL::Equation lhs, GL::Equation rhs);
-		static void		blendFuncSeparate(GL::Factor sfactorRGB, GL::Factor dfactorRGB, GL::Factor sfactorAlpha, GL::Factor dfactorAlpha);
+		static void		blendEquationSeparate(uint32_t lhs, uint32_t rhs);
+		static void		blendFuncSeparate(uint32_t sfactorRGB, uint32_t dfactorRGB, uint32_t sfactorAlpha, uint32_t dfactorAlpha);
+		static void		polygonMode(GL::Enum face, GL::Enum mode);
 
 	public: // Drawing
 		static void		clear(GL::Mask mask);
@@ -83,9 +85,9 @@ namespace ml
 		static void		bufferSubData(GL::Target target, int32_t offset, int32_t size, const void * data);
 		static void		deleteBuffers(uint32_t count, const uint32_t * buffers);
 		static void		deleteVertexArrays(uint32_t count, const uint32_t * arrays);
+		static void		vertexAttribPointer(uint32_t index, uint32_t size, GL::Type type, bool normalized, uint32_t stride, const void * pointer);
 		static void		vertexAttribPointer(uint32_t index, uint32_t size, GL::Type type, bool normalized, uint32_t stride, uint32_t offset, uint32_t width);
 		static void		enableVertexAttribArray(uint32_t index);
-		static int32_t	getAttribLocation(uint32_t program, GL::Str name);
 
 	public: // Textures
 		static int32_t	getMaxTextureUnits();
@@ -105,6 +107,7 @@ namespace ml
 		static void		generateMipmap(GL::Target target);
 		static void		pixelStore(uint32_t name, int32_t param);
 		static void		scissor(int32_t x, int32_t y, int32_t width, int32_t height);
+		static void		bindSampler(uint32_t unit, int32_t sampler);
 
 	public: // Framebuffers
 		static bool		framebuffersAvailable();
@@ -126,16 +129,18 @@ namespace ml
 		static bool		shadersAvailable();
 		static bool		geometryShadersAvailable();
 
-		static GL::Str	getInfoLog(uint32_t obj);
+		static GL::Str	getProgramInfoLog(uint32_t obj);
 		static uint32_t getProgramHandle(uint32_t name);
 		static uint32_t createProgramObject();
 		static uint32_t createShaderObject(GL::ShaderType type);
 		static int32_t	getProgramParameter(int32_t obj, GL::Status param);
 		static int32_t	getProgramiv(uint32_t program, uint32_t name);
-		static int32_t	getUniformLocation(uint32_t obj, GL::Str name);
+		static int32_t	getAttribLocation(uint32_t program, GL::Str name);
+		static int32_t	getUniformLocation(uint32_t program, GL::Str name);
 
 		static void		useShader(uint32_t obj);
 		static void		deleteShader(uint32_t obj);
+		static void		detachShader(uint32_t containerObj, uint32_t obj);
 		static void		attachShader(uint32_t containerObj, uint32_t obj);
 		static void		shaderSource(uint32_t obj, int32_t count, GL::Str const * src, const int32_t * length);
 		static void		compileShader(uint32_t obj);
@@ -143,7 +148,6 @@ namespace ml
 
 		static void		uniform1f(int32_t location, float value);
 		static void		uniform1i(int32_t location, int32_t value);
-		static void		uniform1u(int32_t location, uint32_t value);
 		static void		uniform2f(int32_t location, float x, float y);
 		static void		uniform3f(int32_t location, float x, float y, float z);
 		static void		uniform4f(int32_t location, float x, float y, float z, float w);
