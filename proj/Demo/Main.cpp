@@ -1,6 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * */
 
 #include "Demo.hpp"
+#include "GUI.hpp"
 #include <MemeCore/EventSystem.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -17,7 +18,9 @@ int32_t main(int32_t argc, char ** argv)
 		return ml::Debug::logError("Failed Loading Settings")
 			|| ml::Debug::pause(EXIT_FAILURE);
 	}
-	
+
+	//return gui_main(argc, argv);
+
 	// Create Demo
 	DEMO::Demo demo;
 

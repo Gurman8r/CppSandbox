@@ -14,7 +14,8 @@ namespace ml
 		RenderWindow() {}
 		virtual ~RenderWindow() {}
 
-		bool initialize() override;
+		bool setup() override;
+		virtual bool setup(bool experimental);
 
 		void onEvent(const Event * ev) override;
 

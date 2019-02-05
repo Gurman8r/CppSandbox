@@ -8,30 +8,39 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	Window::Window()
 		: m_window		(NULL)
 		, m_monitor		(NULL)
 		, m_share		(NULL)
-		, m_title		("Window")
+		, m_title		(get_type().name())
 		, m_context		()
 		, m_videoMode	()
-		, m_style		(Window::Style::Default)
-		, m_cursorMode	(Window::Cursor::Hidden)
+		, m_style		(Window::Default)
+		, m_cursorMode	(Window::Hidden)
 		, m_position	(vec2i::Zero)
 	{
-		ML_EventSystem.addListener(WindowEvent::EV_WindowResized,			this);
-		ML_EventSystem.addListener(WindowEvent::EV_WindowMoved,				this);
-		ML_EventSystem.addListener(WindowEvent::EV_WindowClosed,			this);
-		ML_EventSystem.addListener(WindowEvent::EV_WindowFocused,			this);
-		ML_EventSystem.addListener(WindowEvent::EV_WindowCharTyped,			this);
-		ML_EventSystem.addListener(WindowEvent::EV_WindowMouseScroll,		this);
-		ML_EventSystem.addListener(WindowEvent::EV_WindowMouseMoved,		this);
-		ML_EventSystem.addListener(WindowEvent::EV_WindowMouseEnter,		this);
-		ML_EventSystem.addListener(WindowEvent::EV_WindowMouseButton,		this);
-		ML_EventSystem.addListener(WindowEvent::EV_WindowKey,				this);
-		ML_EventSystem.addListener(WindowEvent::EV_WindowFramebufferResized,this);
+		ML_EventSystem.addListener(WindowEvent::EV_WindowSize,		this);
+		ML_EventSystem.addListener(WindowEvent::Ev_WindowPos,		this);
+		ML_EventSystem.addListener(WindowEvent::EV_WindowClose,		this);
+		ML_EventSystem.addListener(WindowEvent::EV_WindowFocus,		this);
+		ML_EventSystem.addListener(WindowEvent::EV_Char,			this);
+		ML_EventSystem.addListener(WindowEvent::EV_Scroll,			this);
+		ML_EventSystem.addListener(WindowEvent::EV_CursorPos,		this);
+		ML_EventSystem.addListener(WindowEvent::EV_CursorEnter,		this);
+		ML_EventSystem.addListener(WindowEvent::EV_MouseButton,		this);
+		ML_EventSystem.addListener(WindowEvent::EV_Key,				this);
+		ML_EventSystem.addListener(WindowEvent::EV_FramebufferSize,	this);
 	}
-	Window::~Window() {}
+	
+	Window::~Window() 
+	{
+		destroy();
+		terminate();
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool Window::create(
 		const String		& title, 
@@ -40,11 +49,11 @@ namespace ml
 		const Context		& context)
 	{
 		m_title		= title;
-		m_context	= context;
 		m_videoMode	= videoMode;
 		m_style		= style;
+		m_context	= context;
 
-		if (glfwInit() == GL_TRUE)
+		if (glfwInit() == GLFW_TRUE)
 		{
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, m_context.majorVersion);
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, m_context.minorVersion);
@@ -53,7 +62,7 @@ namespace ml
 			glfwWindowHint(GLFW_DEPTH_BITS,		m_context.depthBits);
 			glfwWindowHint(GLFW_STENCIL_BITS,	m_context.stencilBits);
 			glfwWindowHint(GLFW_SRGB_CAPABLE,	m_context.srgbCapable);
-
+			
 			glfwWindowHint(GLFW_RESIZABLE,		(m_style & Style::Resizable));
 			glfwWindowHint(GLFW_VISIBLE,		(m_style & Style::Visible));
 			glfwWindowHint(GLFW_DECORATED,		(m_style & Style::Decorated));
@@ -69,70 +78,75 @@ namespace ml
 				ML_MONITOR(m_monitor),
 				ML_WINDOW(m_share))))
 			{
-				glfwMakeContextCurrent(ML_WINDOW(m_window));
+				makeContextCurrent();
 
-				return initialize();
+				return true;
 			}
 			return ml::Debug::logError("Failed to Create GLFW Window");
 		}
 		return ml::Debug::logError("Failed to Initialize GLFW");
 	}
 
-	bool Window::initialize()
+	bool Window::setup()
 	{
+		setErrorCallback([](int32_t code, const char * desc) 
+		{
+			Debug::logError("Window Error {0}: {1}", code, desc);
+		});
+
+		setCharCallback([](void * window, uint32_t c)
+		{
+			ML_EventSystem.fireEvent(CharEvent(c));
+		});
+
+		setCursorEnterCallback([](void * window, int32_t entered)
+		{
+			ML_EventSystem.fireEvent(CursorEnterEvent(entered));
+		});
+
+		setCursorPosCallback([](void * window, double x, double y)
+		{
+			ML_EventSystem.fireEvent(CursorPosEvent(x, y));
+		});
+
+		setFramebufferSizeCallback([](void * window, int32_t w, int32_t h)
+		{
+			ML_EventSystem.fireEvent(FramebufferSizeEvent(w, h));
+		});
+
+		setKeyCallback([](void * window, int32_t button, int32_t scan, int32_t action, int32_t mods)
+		{
+			ML_EventSystem.fireEvent(KeyEvent(button, scan, action, mods));
+		});
+
 		setMouseButtonCallback([](void * window, int32_t button, int32_t action, int32_t mods)
 		{
-			ML_EventSystem.fireEvent(WindowMouseButtonEvent(button, action, mods));
+			ML_EventSystem.fireEvent(MouseButtonEvent(button, action, mods));
 		});
 		
 		setScrollCallback([](void * window, double x, double y)
 		{
-			ML_EventSystem.fireEvent(WindowMouseScrollEvent(x, y));
-		});
-		
-		setCharCallback([](void * window, uint32_t c)
-		{
-			ML_EventSystem.fireEvent(WindowCharTypedEvent(c));
-		});
-		
-		setKeyCallback([](void * window, int32_t button, int32_t scan, int32_t action, int32_t mods)
-		{
-			ML_EventSystem.fireEvent(WindowKeyEvent(button, scan, action, mods));
-		});
-		
-		setCursorPosCallback([](void * window, double x, double y)
-		{
-			ML_EventSystem.fireEvent(WindowMouseMoveEvent(x, y));
+			ML_EventSystem.fireEvent(ScrollEvent(x, y));
 		});
 
-		setWindowSizeCallback([](void * window, int32_t w, int32_t h)
+		setWindowCloseCallback([](void * window)
 		{
-			ML_EventSystem.fireEvent(WindowResizedEvent(w, h));
+			ML_EventSystem.fireEvent(WindowCloseEvent());
+		});
+
+		setWindowFocusCallback([](void * window, int32_t focused)
+		{
+			ML_EventSystem.fireEvent(WindowFocusEvent(focused));
 		});
 		
 		setWindowPosCallback([](void * window, int32_t x, int32_t y)
 		{
-			ML_EventSystem.fireEvent(WindowMovedEvent(x, y));
+			ML_EventSystem.fireEvent(WindowPosEvent(x, y));
 		});
-		
-		setWindowCloseCallback([](void * window)
+
+		setWindowSizeCallback([](void * window, int32_t width, int32_t height)
 		{
-			ML_EventSystem.fireEvent(WindowClosedEvent());
-		});
-		
-		setWindowFocusCallback([](void * window, int32_t focused)
-		{
-			ML_EventSystem.fireEvent(WindowFocusedEvent(focused));
-		});
-		
-		setCursorEnterCallback([](void * window, int32_t entered)
-		{
-			ML_EventSystem.fireEvent(WindowMouseEnterEvent(entered));
-		});
-		
-		setFramebufferSizeCallback([](void * window, int32_t w, int32_t h)
-		{
-			ML_EventSystem.fireEvent(WindowFramebufferResizedEvent(w, h));
+			ML_EventSystem.fireEvent(WindowSizeEvent(width, height));
 		});
 
 		return true;
@@ -142,61 +156,74 @@ namespace ml
 	{
 		switch (value->eventID())
 		{
-		case WindowEvent::EV_WindowResized:
-			if (auto ev = value->Cast<WindowResizedEvent>())
+		case WindowEvent::EV_Char:
+			if (auto ev = value->Cast<CharEvent>())
+			{
+				m_char = (char)ev->value;
+			}
+			break;
+		case WindowEvent::EV_CursorEnter:
+			if (auto ev = value->Cast<CursorEnterEvent>())
+			{
+			}
+			break;
+		case WindowEvent::EV_CursorPos:
+			if (auto ev = value->Cast<CursorPosEvent>())
+			{
+			}
+			break;
+		case WindowEvent::EV_FramebufferSize:
+			if (auto ev = value->Cast<FramebufferSizeEvent>())
+			{
+			}
+			break;
+		case WindowEvent::EV_Key:
+			if (auto ev = value->Cast<KeyEvent>())
+			{
+
+			}
+			break;
+		case WindowEvent::EV_MouseButton:
+			if (auto ev = value->Cast<MouseButtonEvent>())
+			{
+
+			}
+			break;
+		case WindowEvent::EV_Scroll:
+			if (auto ev = value->Cast<ScrollEvent>())
+			{
+				m_scroll = { ev->x, ev->y };
+			}
+			break;
+		case WindowEvent::EV_WindowClose:
+			if (auto ev = value->Cast<WindowCloseEvent>())
+			{
+			}
+			break;
+		case WindowEvent::EV_WindowFocus:
+			if (auto ev = value->Cast<WindowFocusEvent>())
+			{
+				m_focused = ev->focused;
+			}
+			break;
+		case WindowEvent::Ev_WindowPos:
+			if (auto ev = value->Cast<WindowPosEvent>())
+			{
+				m_position = { ev->x, ev->y };
+			}
+			break;
+		case WindowEvent::EV_WindowSize:
+			if (auto ev = value->Cast<WindowSizeEvent>())
 			{
 				m_videoMode.size = { (uint32_t)ev->width, (uint32_t)ev->height };
 
 				Debug::log("EV: {0}", *ev);
 			}
 			break;
-		case WindowEvent::EV_WindowMoved:
-			if (auto ev = value->Cast<WindowMovedEvent>())
-			{
-				m_position = { ev->x, ev->y };
-			}
-			break;
-		case WindowEvent::EV_WindowClosed:
-			if (auto ev = value->Cast<WindowClosedEvent>())
-			{
-			}
-			break;
-		case WindowEvent::EV_WindowFocused:
-			if (auto ev = value->Cast<WindowFocusedEvent>())
-			{
-				m_focused = ev->value;
-			}
-			break;
-		case WindowEvent::EV_WindowCharTyped:
-			if (auto ev = value->Cast<WindowCharTypedEvent>())
-			{
-				m_char = (char)ev->value;
-			}
-			break;
-		case WindowEvent::EV_WindowMouseScroll:
-			if (auto ev = value->Cast<WindowMouseScrollEvent>())
-			{
-				m_scroll = { ev->x, ev->y };
-			}
-			break;
-		case WindowEvent::EV_WindowMouseMoved:
-			if (auto ev = value->Cast<WindowMouseMoveEvent>())
-			{
-			}
-			break;
-		case WindowEvent::EV_WindowMouseEnter:
-			if (auto ev = value->Cast<WindowMouseEnterEvent>())
-			{
-			}
-			break;
-		case WindowEvent::EV_WindowFramebufferResized:
-			if (auto ev = value->Cast<WindowFramebufferResizedEvent>())
-			{
-			}
-			break;
 		}
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	Window & Window::close()
 	{
@@ -204,13 +231,25 @@ namespace ml
 		return (*this);
 	}
 
-	Window & Window::maximize()
+	Window & Window::destroy()
+	{
+		glfwDestroyWindow(ML_WINDOW(m_window));
+		return (*this);
+	}
+
+	Window & Window::makeContextCurrent()
+	{
+		glfwMakeContextCurrent(ML_WINDOW(m_window));
+		return (*this);
+	}
+
+	Window & Window::restore()
 	{
 		glfwRestoreWindow(ML_WINDOW(m_window));
 		return (*this);
 	}
 
-	Window & Window::minimize()
+	Window & Window::iconify()
 	{
 		glfwIconifyWindow(ML_WINDOW(m_window));
 		return (*this);
@@ -228,8 +267,21 @@ namespace ml
 		return (*this);
 	}
 
+	Window & Window::terminate()
+	{
+		glfwTerminate();
+		return (*this);
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	Window & Window::setClipboard(const String & value)
+	{
+		glfwSetClipboardString(ML_WINDOW(m_window), value.c_str());
+		return (*this);
+	}
 	
-	Window & Window::setCursor(Cursor value)
+	Window & Window::setCursor(CursorMode value)
 	{
 		m_cursorMode = value;
 		glfwSetInputMode(ML_WINDOW(m_window), GLFW_CURSOR, value);
@@ -239,12 +291,6 @@ namespace ml
 	Window & Window::setCursorPos(const vec2i & value)
 	{
 		glfwSetCursorPos(ML_WINDOW(m_window), value[0], value[1]);
-		return (*this);
-	}
-
-	Window & Window::setClipboard(const String & value)
-	{
-		glfwSetClipboardString(ML_WINDOW(m_window), value.c_str());
 		return (*this);
 	}
 
@@ -288,6 +334,12 @@ namespace ml
 		return (*this);
 	}
 
+	Window & Window::setSwapInterval(int32_t value)
+	{
+		glfwSwapInterval(value);
+		return (*this);
+	}
+
 	Window & Window::setTitle(const String & value)
 	{
 		m_title = value;
@@ -295,6 +347,7 @@ namespace ml
 		return (*this);
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool Window::isFocused() const
 	{
@@ -305,17 +358,10 @@ namespace ml
 	{
 		return !glfwWindowShouldClose(ML_WINDOW(m_window));
 	}
-
+	
 	int32_t Window::getAttrib(int32_t value) const
 	{
 		return glfwGetWindowAttrib(ML_WINDOW(m_window), value);
-	}
-
-	vec2f Window::getCursorPos() const
-	{
-		static double x, y;
-		glfwGetCursorPos(ML_WINDOW(m_window), &x, &y);
-		return vec2f((float)x, (float)y);
 	}
 
 	char Window::getChar() const
@@ -329,6 +375,13 @@ namespace ml
 	String Window::getClipboard() const
 	{
 		return String(glfwGetClipboardString(ML_WINDOW(m_window)));
+	}
+
+	vec2f Window::getCursorPos() const
+	{
+		static double x, y;
+		glfwGetCursorPos(ML_WINDOW(m_window), &x, &y);
+		return vec2f((float)x, (float)y);
 	}
 
 	vec2i Window::getFramebufferSize() const
@@ -358,82 +411,89 @@ namespace ml
 		return static_cast<float>(glfwGetTime());
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
-	void Window::setMouseButtonCallback(WindowMouseButtonClbk callback)
+	void Window::setErrorCallback(ErrorCallback callback)
 	{
-		glfwSetMouseButtonCallback(
-			ML_WINDOW(m_window),
-			reinterpret_cast<GLFWmousebuttonfun>(callback));
+		glfwSetErrorCallback(reinterpret_cast<GLFWerrorfun>(callback));
 	}
 
-	void Window::setScrollCallback(WindowScrollClbk callback)
-	{
-		glfwSetScrollCallback(
-			ML_WINDOW(m_window),
-			reinterpret_cast<GLFWscrollfun>(callback));
-	}
-
-	void Window::setCharCallback(WindowCharClbk callback)
+	void Window::setCharCallback(CharCallback callback)
 	{
 		glfwSetCharCallback(
 			ML_WINDOW(m_window),
 			reinterpret_cast<GLFWcharfun>(callback));
 	}
-
-	void Window::setKeyCallback(WindowKeyClbk callback)
+	
+	void Window::setCursorEnterCallback(CursorEnterCallback callback)
 	{
-		glfwSetKeyCallback(
+		glfwSetCursorEnterCallback(
 			ML_WINDOW(m_window),
-			reinterpret_cast<GLFWkeyfun>(callback));
+			reinterpret_cast<GLFWcursorenterfun>(callback));
 	}
-
-	void Window::setCursorPosCallback(WindowMouseMovedClbk callback)
+	
+	void Window::setCursorPosCallback(CursorPosCallback callback)
 	{
 		glfwSetCursorPosCallback(
 			ML_WINDOW(m_window),
 			reinterpret_cast<GLFWcursorposfun>(callback));
 	}
-
-	void Window::setWindowSizeCallback(WindowResizedClbk callback)
+	
+	void Window::setFramebufferSizeCallback(FramebufferSizeCallback callback)
+	{
+		glfwSetFramebufferSizeCallback(
+			ML_WINDOW(m_window),
+			reinterpret_cast<GLFWframebuffersizefun>(callback));
+	}
+	
+	void Window::setMouseButtonCallback(MouseButtonCallback callback)
+	{
+		glfwSetMouseButtonCallback(
+			ML_WINDOW(m_window),
+			reinterpret_cast<GLFWmousebuttonfun>(callback));
+	}
+	
+	void Window::setKeyCallback(KeyCallback callback)
+	{
+		glfwSetKeyCallback(
+			ML_WINDOW(m_window),
+			reinterpret_cast<GLFWkeyfun>(callback));
+	}
+	
+	void Window::setScrollCallback(ScrollCallback callback)
+	{
+		glfwSetScrollCallback(
+			ML_WINDOW(m_window),
+			reinterpret_cast<GLFWscrollfun>(callback));
+	}
+	
+	void Window::setWindowCloseCallback(WindowCloseCallback callback)
+	{
+		glfwSetWindowCloseCallback(
+			ML_WINDOW(m_window),
+			reinterpret_cast<GLFWwindowclosefun>(callback));
+	}
+	
+	void Window::setWindowFocusCallback(WindowFocusCallback callback)
+	{
+		glfwSetWindowFocusCallback(
+			ML_WINDOW(m_window),
+			reinterpret_cast<GLFWwindowfocusfun>(callback));
+	}
+	
+	void Window::setWindowPosCallback(WindowPosCallback callback)
+	{
+		glfwSetWindowPosCallback(
+			ML_WINDOW(m_window), 
+			reinterpret_cast<GLFWwindowposfun>(callback));
+	}
+	
+	void Window::setWindowSizeCallback(WindowSizeCallback callback)
 	{
 		glfwSetWindowSizeCallback(
 			ML_WINDOW(m_window),
 			reinterpret_cast<GLFWwindowposfun>(callback));
 	}
 
-	void Window::setWindowPosCallback(WindowMovedClbk callback)
-	{
-		glfwSetWindowPosCallback(
-			ML_WINDOW(m_window), 
-			reinterpret_cast<GLFWwindowposfun>(callback));
-	}
-
-	void Window::setWindowCloseCallback(WindowClosedClbk callback)
-	{
-		glfwSetWindowCloseCallback(
-			ML_WINDOW(m_window),
-			reinterpret_cast<GLFWwindowclosefun>(callback));
-	}
-
-	void Window::setWindowFocusCallback(WindowFocusedClbk callback)
-	{
-		glfwSetWindowFocusCallback(
-			ML_WINDOW(m_window),
-			reinterpret_cast<GLFWwindowfocusfun>(callback));
-	}
-
-	void Window::setCursorEnterCallback(WindowMouseEnterClbk callback)
-	{
-		glfwSetCursorEnterCallback(
-			ML_WINDOW(m_window),
-			reinterpret_cast<GLFWcursorenterfun>(callback));
-	}
-
-	void Window::setFramebufferSizeCallback(WindowFboSizeClbk callback)
-	{
-		glfwSetFramebufferSizeCallback(
-			ML_WINDOW(m_window),
-			reinterpret_cast<GLFWframebuffersizefun>(callback));
-	}
-
+	/* * * * * * * * * * * * * * * * * * * * */
 }

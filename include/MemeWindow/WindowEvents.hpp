@@ -15,17 +15,17 @@ namespace ml
 		{
 			MIN_WINDOW_EVENT = Event::EV_WINDOW + 1,
 
-			EV_WindowResized,
-			EV_WindowMoved,
-			EV_WindowClosed,
-			EV_WindowFocused,
-			EV_WindowCharTyped,
-			EV_WindowMouseScroll,
-			EV_WindowMouseMoved,
-			EV_WindowMouseEnter,
-			EV_WindowMouseButton,
-			EV_WindowKey,
-			EV_WindowFramebufferResized,
+			EV_Char,
+			EV_CursorEnter,
+			EV_CursorPos,
+			EV_FramebufferSize,
+			EV_Key,
+			EV_MouseButton,
+			EV_Scroll,
+			EV_WindowSize,
+			Ev_WindowPos,
+			EV_WindowClose,
+			EV_WindowFocus,
 
 			MAX_WINDOW_EVENT
 		};
@@ -38,85 +38,12 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_WINDOW_API WindowResizedEvent final : public WindowEvent
-	{
-		int32_t width;
-		int32_t height;
-
-		WindowResizedEvent(int32_t width, int32_t height)
-			: WindowEvent(EV_WindowResized)
-			, width(width)
-			, height(height)
-		{
-		}
-
-		inline void serialize(std::ostream & out) const override
-		{
-			out << "[" << get_type().name() << "] " << width << " " << height;
-		}
-	};
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	struct ML_WINDOW_API WindowMovedEvent final : public WindowEvent
-	{
-		int32_t x;
-		int32_t y;
-
-		WindowMovedEvent(int32_t x, int32_t y)
-			: WindowEvent(EV_WindowMoved)
-			, x(x)
-			, y(y)
-		{
-		}
-
-		inline void serialize(std::ostream & out) const override
-		{
-			out << "[" << get_type().name() << "] " << x << " " << y;
-		}
-	};
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	struct ML_WINDOW_API WindowClosedEvent final : public WindowEvent
-	{
-		WindowClosedEvent()
-			: WindowEvent(EV_WindowClosed)
-		{
-		}
-
-		inline void serialize(std::ostream & out) const override
-		{
-			out << "[" << get_type().name() << "] ";
-		}
-	};
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	struct ML_WINDOW_API WindowFocusedEvent final : public WindowEvent
-	{
-		int32_t value;
-
-		WindowFocusedEvent(int32_t value)
-			: WindowEvent(EV_WindowFocused)
-			, value(value)
-		{
-		}
-
-		inline void serialize(std::ostream & out) const override
-		{
-			out << "[" << get_type().name() << "] " << value;
-		}
-	};
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	struct ML_WINDOW_API WindowCharTypedEvent final : public WindowEvent
+	struct ML_WINDOW_API CharEvent final : public WindowEvent
 	{
 		uint32_t value;
 
-		WindowCharTypedEvent(uint32_t value)
-			: WindowEvent(EV_WindowCharTyped)
+		CharEvent(uint32_t value)
+			: WindowEvent(EV_Char)
 			, value(value)
 		{
 		}
@@ -129,33 +56,31 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_WINDOW_API WindowMouseScrollEvent final : public WindowEvent
+	struct ML_WINDOW_API CursorEnterEvent final : public WindowEvent
 	{
-		double x;
-		double y;
+		int32_t entered;
 
-		WindowMouseScrollEvent(double x, double y)
-			: WindowEvent(EV_WindowMouseScroll)
-			, x(x)
-			, y(y)
+		CursorEnterEvent(int32_t entered)
+			: WindowEvent(EV_CursorEnter)
+			, entered(entered)
 		{
 		}
 
 		inline void serialize(std::ostream & out) const override
 		{
-			out << "[" << get_type().name() << "] " << x << " " << y;
+			out << "[" << get_type().name() << "] " << entered;
 		}
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_WINDOW_API WindowMouseMoveEvent final : public WindowEvent
+	struct ML_WINDOW_API CursorPosEvent final : public WindowEvent
 	{
 		double x;
 		double y;
 
-		WindowMouseMoveEvent(double x, double y)
-			: WindowEvent(EV_WindowMouseMoved)
+		CursorPosEvent(double x, double y)
+			: WindowEvent(EV_CursorPos)
 			, x(x)
 			, y(y)
 		{
@@ -169,68 +94,157 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_WINDOW_API WindowMouseEnterEvent final : public WindowEvent
-	{
-		int32_t value;
-
-		WindowMouseEnterEvent(int32_t value)
-			: WindowEvent(EV_WindowMouseEnter)
-			, value(value)
-		{
-		}
-
-		inline void serialize(std::ostream & out) const override
-		{
-			out << "[" << get_type().name() << "] " << value;
-		}
-	};
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	struct WindowMouseButtonEvent : public WindowEvent
-	{
-		int32_t button, action, mods;
-
-		WindowMouseButtonEvent(int32_t button, int32_t action, int32_t mods)
-			: WindowEvent(EV_WindowMouseButton)
-			, button(button)
-			, action(action)
-			, mods(mods)
-		{
-
-		}
-	};
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	struct WindowKeyEvent : public WindowEvent
+	struct KeyEvent : public WindowEvent
 	{
 		int32_t button, scan, action, mods;
 
-		WindowKeyEvent(int32_t button, int32_t scan, int32_t action, int32_t mods)
-			: WindowEvent(EV_WindowKey)
+		KeyEvent(int32_t button, int32_t scan, int32_t action, int32_t mods)
+			: WindowEvent(EV_Key)
 			, button(button)
 			, scan(scan)
 			, action(action)
 			, mods(mods)
 		{
+		}
 
+		inline void serialize(std::ostream & out) const override
+		{
+			out << "[" << get_type().name() << "] "
+				<< button << " " << scan << " " << action << " " << mods;
 		}
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_WINDOW_API WindowFramebufferResizedEvent final : public WindowEvent
+	struct MouseButtonEvent : public WindowEvent
+	{
+		int32_t button, action, mods;
+
+		MouseButtonEvent(int32_t button, int32_t action, int32_t mods)
+			: WindowEvent(EV_MouseButton)
+			, button(button)
+			, action(action)
+			, mods(mods)
+		{
+		}
+
+		inline void serialize(std::ostream & out) const override
+		{
+			out << "[" << get_type().name() << "] " 
+				<< button << " " << action << " " << mods;
+		}
+	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	struct ML_WINDOW_API ScrollEvent final : public WindowEvent
+	{
+		double x;
+		double y;
+
+		ScrollEvent(double x, double y)
+			: WindowEvent(EV_Scroll)
+			, x(x)
+			, y(y)
+		{
+		}
+
+		inline void serialize(std::ostream & out) const override
+		{
+			out << "[" << get_type().name() << "] " << x << " " << y;
+		}
+	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	struct ML_WINDOW_API FramebufferSizeEvent final : public WindowEvent
 	{
 		int32_t width;
 		int32_t height;
 
-		WindowFramebufferResizedEvent(int32_t width, int32_t height)
-			: WindowEvent(EV_WindowFramebufferResized)
+		FramebufferSizeEvent(int32_t width, int32_t height)
+			: WindowEvent(EV_FramebufferSize)
 			, width(width)
 			, height(height)
 		{
+		}
 
+		inline void serialize(std::ostream & out) const override
+		{
+			out << "[" << get_type().name() << "] " << width << " " << height;
+		}
+	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	struct ML_WINDOW_API WindowCloseEvent final : public WindowEvent
+	{
+		WindowCloseEvent()
+			: WindowEvent(EV_WindowClose)
+		{
+		}
+
+		inline void serialize(std::ostream & out) const override
+		{
+			out << "[" << get_type().name() << "] ";
+		}
+	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	struct ML_WINDOW_API WindowFocusEvent final : public WindowEvent
+	{
+		int32_t focused;
+
+		WindowFocusEvent(int32_t entered)
+			: WindowEvent(EV_WindowFocus)
+			, focused(entered)
+		{
+		}
+
+		inline void serialize(std::ostream & out) const override
+		{
+			out << "[" << get_type().name() << "] " << focused;
+		}
+	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	struct ML_WINDOW_API WindowPosEvent final : public WindowEvent
+	{
+		int32_t x;
+		int32_t y;
+
+		WindowPosEvent(int32_t x, int32_t y)
+			: WindowEvent(Ev_WindowPos)
+			, x(x)
+			, y(y)
+		{
+		}
+
+		inline void serialize(std::ostream & out) const override
+		{
+			out << "[" << get_type().name() << "] " << x << " " << y;
+		}
+	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	struct ML_WINDOW_API WindowSizeEvent final : public WindowEvent
+	{
+		int32_t width;
+		int32_t height;
+
+		WindowSizeEvent(int32_t width, int32_t height)
+			: WindowEvent(EV_WindowSize)
+			, width(width)
+			, height(height)
+		{
+		}
+
+		inline void serialize(std::ostream & out) const override
+		{
+			out << "[" << get_type().name() << "] " << width << " " << height;
 		}
 	};
 

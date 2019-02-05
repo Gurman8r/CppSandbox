@@ -1,7 +1,10 @@
 #include <MemeGraphics/OpenGL.hpp>
 #include <MemeCore/Debug.hpp>
 
+#ifndef GLEW_STATIC
 #define GLEW_STATIC
+#endif // !GLEW_STATIC
+
 #include <GL/glew.h>
 #pragma comment (lib, "glew32s.lib")
 
@@ -268,6 +271,11 @@ namespace ml
 		glCheck(glBlendFunc(src, dst));
 	}
 
+	void OpenGL::blendEquation(GL::Equation equation)
+	{
+		glCheck(glBlendEquation(equation));
+	}
+
 	void OpenGL::cullFace(GL::Face face)
 	{
 		glCheck(glCullFace(face));
@@ -281,6 +289,16 @@ namespace ml
 	void OpenGL::viewport(int32_t x, int32_t y, int32_t w, int32_t h)
 	{
 		glCheck(glViewport(x, y, w, h));
+	}
+
+	void OpenGL::blendEquationSeparate(GL::Equation lhs, GL::Equation rhs)
+	{
+		glCheck(glBlendEquationSeparate(lhs, rhs));
+	}
+
+	void OpenGL::blendFuncSeparate(GL::Factor sfactorRGB, GL::Factor dfactorRGB, GL::Factor sfactorAlpha, GL::Factor dfactorAlpha)
+	{
+		glCheck(glBlendFuncSeparate(sfactorRGB, dfactorRGB, sfactorAlpha, dfactorAlpha));
 	}
 
 
@@ -420,6 +438,13 @@ namespace ml
 		glCheck(glEnableVertexAttribArray(index));
 	}
 
+	int32_t OpenGL::getAttribLocation(uint32_t program, GL::Str name)
+	{
+		static int32_t temp;
+		glCheck(temp = glGetAttribLocation(program, name));
+		return temp;
+	}
+
 
 	// Textures
 
@@ -541,6 +566,11 @@ namespace ml
 	void OpenGL::pixelStore(uint32_t name, int32_t param)
 	{
 		glCheck(glPixelStorei(name, 1));
+	}
+
+	void OpenGL::scissor(int32_t x, int32_t y, int32_t width, int32_t height)
+	{
+		glCheck(glScissor(x, y, width, height));
 	}
 
 
@@ -694,6 +724,13 @@ namespace ml
 		return temp;
 	}
 
+	int32_t OpenGL::getProgramiv(uint32_t program, uint32_t name)
+	{
+		static int32_t temp;
+		glCheck(glGetProgramiv(program, name, &temp));
+		return temp;
+	}
+
 	int32_t OpenGL::getUniformLocation(uint32_t obj, GL::Str name)
 	{
 		static int32_t temp;
@@ -813,17 +850,17 @@ namespace ml
 		glCheck(glUniform4fv(location, count, value));
 	}
 
-	void OpenGL::uniformMatrixArray2f(int32_t location, uint32_t count, bool transpose, const float * value)
+	void OpenGL::uniformMatrix2fv(int32_t location, uint32_t count, bool transpose, const float * value)
 	{
 		glCheck(glUniformMatrix2fv(location, count, GL_FALSE, value));
 	}
 
-	void OpenGL::uniformMatrixArray3f(int32_t location, uint32_t count, bool transpose, const float * value)
+	void OpenGL::uniformMatrix3fv(int32_t location, uint32_t count, bool transpose, const float * value)
 	{
 		glCheck(glUniformMatrix3fv(location, count, GL_FALSE, value));
 	}
 
-	void OpenGL::uniformMatrixArray4f(int32_t location, uint32_t count, bool transpose, const float * value)
+	void OpenGL::uniformMatrix4fv(int32_t location, uint32_t count, bool transpose, const float * value)
 	{
 		glCheck(glUniformMatrix4fv(location, count, GL_FALSE, value));
 	}

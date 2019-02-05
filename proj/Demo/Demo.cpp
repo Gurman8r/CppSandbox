@@ -43,8 +43,8 @@ namespace DEMO
 		case DemoEvent::EV_Draw:	onDraw(*value->Cast<DrawEvent>());		break;
 		case DemoEvent::EV_Exit:	onExit(*value->Cast<ExitEvent>());		break;
 
-		case ml::WindowEvent::EV_WindowResized:
-			if (auto ev = value->Cast<ml::WindowResizedEvent>())
+		case ml::WindowEvent::EV_WindowSize:
+			if (auto ev = value->Cast<ml::WindowSizeEvent>())
 			{
 				// Orthographic
 				proj[P_ortho] = ml::Transform::Orthographic(
@@ -62,8 +62,8 @@ namespace DEMO
 			}
 			break;
 
-		case ml::WindowEvent::EV_WindowCharTyped:
-			if (auto ev = value->Cast<ml::WindowCharTypedEvent>())
+		case ml::WindowEvent::EV_Char:
+			if (auto ev = value->Cast<ml::CharEvent>())
 			{
 				if (m_acceptingInput)
 				{
@@ -550,9 +550,10 @@ namespace DEMO
 				SETTINGS.profile,
 				SETTINGS.multisample,
 				SETTINGS.srgbCapable)
-		))
+		)
+		&& setup())
 		{
-			this->setCursor(ml::Window::Cursor::Normal);
+			this->setCursor(ml::Window::Normal);
 			this->setPosition((ml::VideoMode::desktop().size - this->size()) / 2);
 			this->setViewport(ml::vec2i::Zero, this->size());
 

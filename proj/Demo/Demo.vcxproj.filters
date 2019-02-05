@@ -83,9 +83,6 @@
     <Filter Include="imgui">
       <UniqueIdentifier>{0ae9ad33-af76-4b48-b7a9-3a340dee9043}</UniqueIdentifier>
     </Filter>
-    <Filter Include="imgui\examples">
-      <UniqueIdentifier>{47552745-420b-4b8a-a182-b5d8213cb262}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\assets\shaders\fs\basic\drawColor_fs4x.shader">
@@ -319,11 +316,14 @@
     <ClInclude Include="..\..\thirdparty\include\imgui\imstb_truetype.h">
       <Filter>imgui</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\thirdparty\include\imgui\examples\imgui_impl_glfw.h">
-      <Filter>imgui\examples</Filter>
+    <ClInclude Include="GUI.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\thirdparty\include\imgui\examples\imgui_impl_opengl3.h">
-      <Filter>imgui\examples</Filter>
+    <ClInclude Include="..\..\thirdparty\include\imgui\imgui_impl_glfw.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\thirdparty\include\imgui\imgui_impl_opengl3.h">
+      <Filter>imgui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -345,11 +345,11 @@
     <ClCompile Include="..\..\thirdparty\include\imgui\imgui_widgets.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\thirdparty\include\imgui\examples\imgui_impl_glfw.cpp">
-      <Filter>imgui\examples</Filter>
+    <ClCompile Include="..\..\thirdparty\include\imgui\imgui_impl_glfw.cpp">
+      <Filter>imgui</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\thirdparty\include\imgui\examples\imgui_impl_opengl3.cpp">
-      <Filter>imgui\examples</Filter>
+    <ClCompile Include="..\..\thirdparty\include\imgui\imgui_impl_opengl3.cpp">
+      <Filter>imgui</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

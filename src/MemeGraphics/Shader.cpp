@@ -70,6 +70,9 @@ namespace ml
 		if ((*this))
 		{
 			OpenGL::deleteShader((*this));
+			
+			get_ref() = NULL;
+
 			return true;
 		}
 		return false;
@@ -377,7 +380,7 @@ namespace ml
 		UniformBinder u(this, name);
 		if (u)
 		{
-			OpenGL::uniformMatrixArray3f(u.location, count, false, &mat3f::contiguous(value, count)[0]);
+			OpenGL::uniformMatrix3fv(u.location, count, false, &mat3f::contiguous(value, count)[0]);
 		}
 		return u;
 	}
@@ -386,7 +389,7 @@ namespace ml
 		UniformBinder u(this, name);
 		if (u)
 		{
-			OpenGL::uniformMatrixArray4f(u.location, count, false, &mat4f::contiguous(value, count)[0]);
+			OpenGL::uniformMatrix4fv(u.location, count, false, &mat4f::contiguous(value, count)[0]);
 		}
 		return u;
 	}

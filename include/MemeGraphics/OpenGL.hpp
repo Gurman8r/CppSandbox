@@ -50,9 +50,12 @@ namespace ml
 		static void		activeTexture(GL::TextureID textureID);
 		static void		alphaFunc(GL::Comparison comp, float value);
 		static void		blendFunc(GL::Factor src, GL::Factor dst);
+		static void		blendEquation(GL::Equation equation);
 		static void		cullFace(GL::Face value);
 		static void		depthFunc(GL::Comparison value);
 		static void		viewport(int32_t x, int32_t y, int32_t w, int32_t h);
+		static void		blendEquationSeparate(GL::Equation lhs, GL::Equation rhs);
+		static void		blendFuncSeparate(GL::Factor sfactorRGB, GL::Factor dfactorRGB, GL::Factor sfactorAlpha, GL::Factor dfactorAlpha);
 
 	public: // Drawing
 		static void		clear(GL::Mask mask);
@@ -82,6 +85,7 @@ namespace ml
 		static void		deleteVertexArrays(uint32_t count, const uint32_t * arrays);
 		static void		vertexAttribPointer(uint32_t index, uint32_t size, GL::Type type, bool normalized, uint32_t stride, uint32_t offset, uint32_t width);
 		static void		enableVertexAttribArray(uint32_t index);
+		static int32_t	getAttribLocation(uint32_t program, GL::Str name);
 
 	public: // Textures
 		static int32_t	getMaxTextureUnits();
@@ -100,6 +104,7 @@ namespace ml
 		static void		getTexImage(GL::Target target, int32_t level, GL::Format format, GL::Type type, void * pixels);
 		static void		generateMipmap(GL::Target target);
 		static void		pixelStore(uint32_t name, int32_t param);
+		static void		scissor(int32_t x, int32_t y, int32_t width, int32_t height);
 
 	public: // Framebuffers
 		static bool		framebuffersAvailable();
@@ -126,6 +131,7 @@ namespace ml
 		static uint32_t createProgramObject();
 		static uint32_t createShaderObject(GL::ShaderType type);
 		static int32_t	getProgramParameter(int32_t obj, GL::Status param);
+		static int32_t	getProgramiv(uint32_t program, uint32_t name);
 		static int32_t	getUniformLocation(uint32_t obj, GL::Str name);
 
 		static void		useShader(uint32_t obj);
@@ -151,9 +157,9 @@ namespace ml
 		static void		uniformArray2f(int32_t location, uint32_t count, const float * value);
 		static void		uniformArray3f(int32_t location, uint32_t count, const float * value);
 		static void		uniformArray4f(int32_t location, uint32_t count, const float * value);
-		static void		uniformMatrixArray2f(int32_t location, uint32_t count, bool transpose, const float * value);
-		static void		uniformMatrixArray3f(int32_t location, uint32_t count, bool transpose, const float * value);
-		static void		uniformMatrixArray4f(int32_t location, uint32_t count, bool transpose, const float * value);
+		static void		uniformMatrix2fv(int32_t location, uint32_t count, bool transpose, const float * value);
+		static void		uniformMatrix3fv(int32_t location, uint32_t count, bool transpose, const float * value);
+		static void		uniformMatrix4fv(int32_t location, uint32_t count, bool transpose, const float * value);
 	};
 
 }

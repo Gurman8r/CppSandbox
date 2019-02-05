@@ -5,9 +5,14 @@
 
 namespace ml
 {
-	bool RenderWindow::initialize()
+	bool RenderWindow::setup()
 	{
-		if (Window::initialize() && OpenGL::init(true))
+		return setup(true);
+	}
+
+	bool RenderWindow::setup(bool experimental)
+	{
+		if (Window::setup() && OpenGL::init(experimental))
 		{
 			// Validate GL Version
 			OpenGL::validate(m_context.majorVersion, m_context.minorVersion);
@@ -53,14 +58,14 @@ namespace ml
 
 		switch (value->eventID())
 		{
-		case WindowEvent::EV_WindowResized:
-			if(auto ev = value->Cast<WindowResizedEvent>())
+		case WindowEvent::EV_WindowSize:
+			if(auto ev = value->Cast<WindowSizeEvent>())
 			{
 				setViewport({ 0, 0 }, size());
 			}
 		break;
-		case WindowEvent::EV_WindowFramebufferResized:
-			if (auto ev = value->Cast<WindowFramebufferResizedEvent>())
+		case WindowEvent::EV_FramebufferSize:
+			if (auto ev = value->Cast<FramebufferSizeEvent>())
 			{
 			}
 			break;
