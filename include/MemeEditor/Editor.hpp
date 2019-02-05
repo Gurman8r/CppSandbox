@@ -2,11 +2,12 @@
 #define _EDITOR_HPP_
 
 #include <MemeEditor/Export.hpp>
-#include <MemeCore/ITrackable.hpp>
+#include <MemeGraphics/RenderWindow.hpp>
 
 namespace ml
 {
 	class ML_EDITOR_API Editor
+		: public RenderWindow
 	{
 	public:
 		Editor();

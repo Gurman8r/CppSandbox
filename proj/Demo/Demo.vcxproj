@@ -232,8 +232,7 @@
     <ClCompile Include="..\..\thirdparty\include\imgui\imgui.cpp" />
     <ClCompile Include="..\..\thirdparty\include\imgui\imgui_demo.cpp" />
     <ClCompile Include="..\..\thirdparty\include\imgui\imgui_draw.cpp" />
-    <ClCompile Include="..\..\thirdparty\include\imgui\imgui_impl_glfw.cpp" />
-    <ClCompile Include="..\..\thirdparty\include\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="..\..\thirdparty\include\imgui\imgui_impl_ml.cpp" />
     <ClCompile Include="..\..\thirdparty\include\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Demo.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -241,15 +240,14 @@
   <ItemGroup>
     <ClInclude Include="..\..\thirdparty\include\imgui\imconfig.h" />
     <ClInclude Include="..\..\thirdparty\include\imgui\imgui.h" />
-    <ClInclude Include="..\..\thirdparty\include\imgui\imgui_impl_glfw.h" />
-    <ClInclude Include="..\..\thirdparty\include\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="..\..\thirdparty\include\imgui\imgui_impl_ml.hpp" />
     <ClInclude Include="..\..\thirdparty\include\imgui\imgui_internal.h" />
     <ClInclude Include="..\..\thirdparty\include\imgui\imstb_rectpack.h" />
     <ClInclude Include="..\..\thirdparty\include\imgui\imstb_textedit.h" />
     <ClInclude Include="..\..\thirdparty\include\imgui\imstb_truetype.h" />
     <ClInclude Include="DemoEvents.hpp" />
     <ClInclude Include="Demo.hpp" />
-    <ClInclude Include="GUI.hpp" />
+    <ClInclude Include="imgui_main.hpp" />
     <ClInclude Include="Settings.hpp" />
     <ClInclude Include="Testing.hpp" />
   </ItemGroup>

@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * */
 
 #include "Demo.hpp"
-#include "GUI.hpp"
+#include "imgui_main.hpp"
 #include <MemeCore/EventSystem.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * */

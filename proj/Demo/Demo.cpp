@@ -545,9 +545,9 @@ namespace DEMO
 			ml::Context(
 				SETTINGS.majorVersion,
 				SETTINGS.minorVersion,
+				SETTINGS.profile,
 				SETTINGS.depthBits,
 				SETTINGS.stencilBits,
-				SETTINGS.profile,
 				SETTINGS.multisample,
 				SETTINGS.srgbCapable)
 		)

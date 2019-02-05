@@ -1,81 +1,15 @@
-// dear imgui: Renderer for OpenGL3 / OpenGL ES2 / OpenGL ES3 (modern OpenGL with shaders / programmatic pipeline)
-// This needs to be used along with a Platform Binding (e.g. GLFW, SDL, Win32, custom..)
-// (Note: We are using GL3W as a helper library to access OpenGL functions since there is no standard header to access modern OpenGL functions easily. Alternatives are GLEW, Glad, etc..)
-
-// Implemented features:
-//  [X] Renderer: User texture binding. Use 'GLuint' OpenGL texture identifier as void*/ImTextureID. Read the FAQ about ImTextureID in imgui.cpp.
-
-// You can copy and use unmodified imgui_impl_* files in your project. See main.cpp for an example of using this.
-// If you are new to dear imgui, read examples/README.txt and read the documentation at the top of imgui.cpp.
-// https://github.com/ocornut/imgui
-
-// CHANGELOG
-// (minor and older changes stripped away, please see git history for details)
-//  2018-11-30: Misc: Setting up io.BackendRendererName so it can be displayed in the About Window.
-//  2018-11-13: OpenGL: Support for GL 4.5's glClipControl(GL_UPPER_LEFT).
-//  2018-08-29: OpenGL: Added support for more OpenGL loaders: glew and glad, with comments indicative that any loader can be used.
-//  2018-08-09: OpenGL: Default to OpenGL ES 3 on iOS and Android. GLSL version default to "#version 300 ES".
-//  2018-07-30: OpenGL: Support for GLSL 300 ES and 410 core. Fixes for Emscripten compilation.
-//  2018-07-10: OpenGL: Support for more GLSL versions (based on the GLSL version string). Added error output when shaders fail to compile/link.
-//  2018-06-08: Misc: Extracted imgui_impl_opengl3.cpp/.h away from the old combined GLFW/SDL+OpenGL3 examples.
-//  2018-06-08: OpenGL: Use draw_data->DisplayPos and draw_data->DisplaySize to setup projection matrix and clipping rectangle.
-//  2018-05-25: OpenGL: Removed unnecessary backup/restore of GL_ELEMENT_ARRAY_BUFFER_BINDING since this is part of the VAO state.
-//  2018-05-14: OpenGL: Making the call to glBindSampler() optional so 3.2 context won't fail if the function is a NULL pointer.
-//  2018-03-06: OpenGL: Added const char* glsl_version parameter to ImGui_ImplOpenGL3_Init() so user can override the GLSL version e.g. "#version 150".
-//  2018-02-23: OpenGL: Create the VAO in the render function so the setup can more easily be used with multiple shared GL context.
-//  2018-02-16: Misc: Obsoleted the io.RenderDrawListsFn callback and exposed ImGui_ImplSdlGL3_RenderDrawData() in the .h file so you can call it yourself.
-//  2018-01-07: OpenGL: Changed GLSL shader version from 330 to 150.
-//  2017-09-01: OpenGL: Save and restore current bound sampler. Save and restore current polygon mode.
-//  2017-05-01: OpenGL: Fixed save and restore of current blend func state.
-//  2017-05-01: OpenGL: Fixed save and restore of current GL_ACTIVE_TEXTURE.
-//  2016-09-05: OpenGL: Fixed save and restore of current scissor rectangle.
-//  2016-07-29: OpenGL: Explicitly setting GL_UNPACK_ROW_LENGTH to reduce issues because SDL changes it. (#752)
-
-//----------------------------------------
-// OpenGL    GLSL      GLSL
-// version   version   string
-//----------------------------------------
-//  2.0       110       "#version 110"
-//  2.1       120
-//  3.0       130
-//  3.1       140
-//  3.2       150       "#version 150"
-//  3.3       330
-//  4.0       400
-//  4.1       410       "#version 410 core"
-//  4.2       420
-//  4.3       430
-//  ES 2.0    100       "#version 100"
-//  ES 3.0    300       "#version 300 es"
-//----------------------------------------
-
-#if defined(_MSC_VER) && !defined(_CRT_SECURE_NO_WARNINGS)
-#define _CRT_SECURE_NO_WARNINGS
-#endif
-
+#include <imgui/imgui_impl_ml.hpp>
 #include <imgui/imgui.h>
-#include <imgui/imgui_impl_opengl3.h>
-#include <stdio.h>
-#if defined(_MSC_VER) && _MSC_VER <= 1500 // MSVC 2008 or earlier
-#include <stddef.h>     // intptr_t
-#else
-#include <stdint.h>     // intptr_t
-#endif
-#if defined(__APPLE__)
-#include "TargetConditionals.h"
-#endif
-
-// iOS, Android and Emscripten can use GL ES 3
-// Call ImGui_ImplOpenGL3_Init() with "#version 300 es"
-#if (defined(__APPLE__) && TARGET_OS_IOS) || (defined(__ANDROID__)) || (defined(__EMSCRIPTEN__))
-#define USE_GL_ES3
-#endif
+#include <MemeCore/Debug.hpp>
 
 #define GLEW_STATIC
 #include <GL/glew.h>
 #pragma comment (lib, "glew32s.lib")
 
-// OpenGL Data
+#include <GLFW/glfw3.h>
+
+/* * * * * * * * * * * * * * * * * * * * */
+
 static char         g_GlslVersionString[32] = "";
 static GLuint       g_FontTexture = 0;
 static GLuint       g_ShaderHandle = 0, g_VertHandle = 0, g_FragHandle = 0;
@@ -83,8 +17,197 @@ static int          g_AttribLocationTex = 0, g_AttribLocationProjMtx = 0;
 static int          g_AttribLocationPosition = 0, g_AttribLocationUV = 0, g_AttribLocationColor = 0;
 static unsigned int g_VboHandle = 0, g_ElementsHandle = 0;
 
-// Functions
-bool    ImGui_ImplOpenGL3_Init(const char* glsl_version)
+/* * * * * * * * * * * * * * * * * * * * */
+
+enum GlfwClientApi
+{
+	GlfwClientApi_Unknown,
+	GlfwClientApi_OpenGL,
+	GlfwClientApi_Vulkan
+};
+
+static GLFWwindow*          g_Window = NULL;
+static GlfwClientApi        g_ClientApi = GlfwClientApi_Unknown;
+static double               g_Time = 0.0;
+static bool                 g_MouseJustPressed[5] = { false, false, false, false, false };
+static GLFWcursor*          g_MouseCursors[ImGuiMouseCursor_COUNT] = { 0 };
+
+/* * * * * * * * * * * * * * * * * * * * */
+
+static GLFWmousebuttonfun   g_PrevUserCallbackMousebutton = NULL;
+static GLFWscrollfun        g_PrevUserCallbackScroll = NULL;
+static GLFWkeyfun           g_PrevUserCallbackKey = NULL;
+static GLFWcharfun          g_PrevUserCallbackChar = NULL;
+
+/* * * * * * * * * * * * * * * * * * * * */
+
+static const char* ImGui_ML_GetClipboardText(void* user_data)
+{
+	return glfwGetClipboardString((GLFWwindow*)user_data);
+}
+
+static void ImGui_ML_SetClipboardText(void* user_data, const char* text)
+{
+	glfwSetClipboardString((GLFWwindow*)user_data, text);
+}
+
+static bool ImGui_ML_Init(GLFWwindow* window, bool install_callbacks, GlfwClientApi client_api)
+{
+	g_Window = window;
+	g_Time = 0.0;
+
+	// Setup back-end capabilities flags
+	ImGuiIO& io = ImGui::GetIO();
+	io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;         // We can honor GetMouseCursor() values (optional)
+	io.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;          // We can honor io.WantSetMousePos requests (optional, rarely used)
+	io.BackendPlatformName = "imgui_impl_glfw";
+
+	// Keyboard mapping. ImGui will use those indices to peek into the io.KeysDown[] array.
+	io.KeyMap[ImGuiKey_Tab] = GLFW_KEY_TAB;
+	io.KeyMap[ImGuiKey_LeftArrow] = GLFW_KEY_LEFT;
+	io.KeyMap[ImGuiKey_RightArrow] = GLFW_KEY_RIGHT;
+	io.KeyMap[ImGuiKey_UpArrow] = GLFW_KEY_UP;
+	io.KeyMap[ImGuiKey_DownArrow] = GLFW_KEY_DOWN;
+	io.KeyMap[ImGuiKey_PageUp] = GLFW_KEY_PAGE_UP;
+	io.KeyMap[ImGuiKey_PageDown] = GLFW_KEY_PAGE_DOWN;
+	io.KeyMap[ImGuiKey_Home] = GLFW_KEY_HOME;
+	io.KeyMap[ImGuiKey_End] = GLFW_KEY_END;
+	io.KeyMap[ImGuiKey_Insert] = GLFW_KEY_INSERT;
+	io.KeyMap[ImGuiKey_Delete] = GLFW_KEY_DELETE;
+	io.KeyMap[ImGuiKey_Backspace] = GLFW_KEY_BACKSPACE;
+	io.KeyMap[ImGuiKey_Space] = GLFW_KEY_SPACE;
+	io.KeyMap[ImGuiKey_Enter] = GLFW_KEY_ENTER;
+	io.KeyMap[ImGuiKey_Escape] = GLFW_KEY_ESCAPE;
+	io.KeyMap[ImGuiKey_A] = GLFW_KEY_A;
+	io.KeyMap[ImGuiKey_C] = GLFW_KEY_C;
+	io.KeyMap[ImGuiKey_V] = GLFW_KEY_V;
+	io.KeyMap[ImGuiKey_X] = GLFW_KEY_X;
+	io.KeyMap[ImGuiKey_Y] = GLFW_KEY_Y;
+	io.KeyMap[ImGuiKey_Z] = GLFW_KEY_Z;
+
+	io.SetClipboardTextFn = ImGui_ML_SetClipboardText;
+	io.GetClipboardTextFn = ImGui_ML_GetClipboardText;
+	io.ClipboardUserData = g_Window;
+
+	g_MouseCursors[ImGuiMouseCursor_Arrow] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+	g_MouseCursors[ImGuiMouseCursor_TextInput] = glfwCreateStandardCursor(GLFW_IBEAM_CURSOR);
+	g_MouseCursors[ImGuiMouseCursor_ResizeAll] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);   // FIXME: GLFW doesn't have this.
+	g_MouseCursors[ImGuiMouseCursor_ResizeNS] = glfwCreateStandardCursor(GLFW_VRESIZE_CURSOR);
+	g_MouseCursors[ImGuiMouseCursor_ResizeEW] = glfwCreateStandardCursor(GLFW_HRESIZE_CURSOR);
+	g_MouseCursors[ImGuiMouseCursor_ResizeNESW] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);  // FIXME: GLFW doesn't have this.
+	g_MouseCursors[ImGuiMouseCursor_ResizeNWSE] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);  // FIXME: GLFW doesn't have this.
+	g_MouseCursors[ImGuiMouseCursor_Hand] = glfwCreateStandardCursor(GLFW_HAND_CURSOR);
+
+	// Chain GLFW callbacks: our callbacks will call the user's previously installed callbacks, if any.
+	g_PrevUserCallbackMousebutton = NULL;
+	g_PrevUserCallbackScroll = NULL;
+	g_PrevUserCallbackKey = NULL;
+	g_PrevUserCallbackChar = NULL;
+	if (install_callbacks)
+	{
+		g_PrevUserCallbackMousebutton = glfwSetMouseButtonCallback(window, ImGui_ML_MouseButtonCallback);
+		g_PrevUserCallbackScroll = glfwSetScrollCallback(window, ImGui_ML_ScrollCallback);
+		g_PrevUserCallbackKey = glfwSetKeyCallback(window, ImGui_ML_KeyCallback);
+		g_PrevUserCallbackChar = glfwSetCharCallback(window, ImGui_ML_CharCallback);
+	}
+
+	g_ClientApi = client_api;
+	return true;
+}
+
+static void ImGui_ML_UpdateMousePosAndButtons()
+{
+	// Update buttons
+	ImGuiIO& io = ImGui::GetIO();
+	for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++)
+	{
+		// If a mouse press event came, always pass it as "mouse held this frame", so we don't miss click-release events that are shorter than 1 frame.
+		io.MouseDown[i] = g_MouseJustPressed[i] || glfwGetMouseButton(g_Window, i) != 0;
+		g_MouseJustPressed[i] = false;
+	}
+
+	// Update mouse position
+	const ImVec2 mouse_pos_backup = io.MousePos;
+	io.MousePos = ImVec2(-FLT_MAX, -FLT_MAX);
+#ifdef __EMSCRIPTEN__
+	const bool focused = true; // Emscripten
+#else
+	const bool focused = glfwGetWindowAttrib(g_Window, GLFW_FOCUSED) != 0;
+#endif
+	if (focused)
+	{
+		if (io.WantSetMousePos)
+		{
+			glfwSetCursorPos(g_Window, (double)mouse_pos_backup.x, (double)mouse_pos_backup.y);
+		}
+		else
+		{
+			double mouse_x, mouse_y;
+			glfwGetCursorPos(g_Window, &mouse_x, &mouse_y);
+			io.MousePos = ImVec2((float)mouse_x, (float)mouse_y);
+		}
+	}
+}
+
+static void ImGui_ML_UpdateMouseCursor()
+{
+	ImGuiIO& io = ImGui::GetIO();
+	if ((io.ConfigFlags & ImGuiConfigFlags_NoMouseCursorChange) || glfwGetInputMode(g_Window, GLFW_CURSOR) == GLFW_CURSOR_DISABLED)
+		return;
+
+	ImGuiMouseCursor imgui_cursor = ImGui::GetMouseCursor();
+	if (imgui_cursor == ImGuiMouseCursor_None || io.MouseDrawCursor)
+	{
+		// Hide OS mouse cursor if imgui is drawing it or if it wants no cursor
+		glfwSetInputMode(g_Window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+	}
+	else
+	{
+		// Show OS mouse cursor
+		// FIXME-PLATFORM: Unfocused windows seems to fail changing the mouse cursor with GLFW 3.2, but 3.3 works here.
+		glfwSetCursor(g_Window, g_MouseCursors[imgui_cursor] ? g_MouseCursors[imgui_cursor] : g_MouseCursors[ImGuiMouseCursor_Arrow]);
+		glfwSetInputMode(g_Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	}
+}
+
+static bool CheckShader(GLuint handle, const char* desc)
+{
+	GLint status = 0, log_length = 0;
+	glGetShaderiv(handle, GL_COMPILE_STATUS, &status);
+	glGetShaderiv(handle, GL_INFO_LOG_LENGTH, &log_length);
+	if ((GLboolean)status == GL_FALSE)
+		fprintf(stderr, "ERROR: ImGui_ImplOpenGL3_CreateDeviceObjects: failed to compile %s!\n", desc);
+	if (log_length > 0)
+	{
+		ImVector<char> buf;
+		buf.resize((int)(log_length + 1));
+		glGetShaderInfoLog(handle, log_length, NULL, (GLchar*)buf.begin());
+		fprintf(stderr, "%s\n", buf.begin());
+	}
+	return (GLboolean)status == GL_TRUE;
+}
+
+static bool CheckProgram(GLuint handle, const char* desc)
+{
+	GLint status = 0, log_length = 0;
+	glGetProgramiv(handle, GL_LINK_STATUS, &status);
+	glGetProgramiv(handle, GL_INFO_LOG_LENGTH, &log_length);
+	if ((GLboolean)status == GL_FALSE)
+		fprintf(stderr, "ERROR: ImGui_ImplOpenGL3_CreateDeviceObjects: failed to link %s! (with GLSL '%s')\n", desc, g_GlslVersionString);
+	if (log_length > 0)
+	{
+		ImVector<char> buf;
+		buf.resize((int)(log_length + 1));
+		glGetProgramInfoLog(handle, log_length, NULL, (GLchar*)buf.begin());
+		fprintf(stderr, "%s\n", buf.begin());
+	}
+	return (GLboolean)status == GL_TRUE;
+}
+
+
+/* * * * * * * * * * * * * * * * * * * * */
+
+bool ImGui_ML_Init(const char * glsl_version)
 {
 	ImGuiIO& io = ImGui::GetIO();
 	io.BackendRendererName = "imgui_impl_opengl3";
@@ -104,21 +227,83 @@ bool    ImGui_ImplOpenGL3_Init(const char* glsl_version)
 	return true;
 }
 
-void    ImGui_ImplOpenGL3_Shutdown()
+bool ImGui_ML_InitForOpenGL(GLFWwindow * window, bool install_callbacks)
 {
-	ImGui_ImplOpenGL3_DestroyDeviceObjects();
+	return ImGui_ML_Init(window, install_callbacks, GlfwClientApi_OpenGL);
 }
 
-void    ImGui_ImplOpenGL3_NewFrame()
+void ImGui_ML_Shutdown()
+{
+	ImGui_ML_DestroyDeviceObjects();
+
+	for (ImGuiMouseCursor cursor_n = 0; cursor_n < ImGuiMouseCursor_COUNT; cursor_n++)
+	{
+		glfwDestroyCursor(g_MouseCursors[cursor_n]);
+		g_MouseCursors[cursor_n] = NULL;
+	}
+	g_ClientApi = GlfwClientApi_Unknown;
+}
+
+void ImGui_ML_NewFrame()
 {
 	if (!g_FontTexture)
-		ImGui_ImplOpenGL3_CreateDeviceObjects();
+		ImGui_ML_CreateDeviceObjects();
+
+	ImGuiIO& io = ImGui::GetIO();
+	IM_ASSERT(io.Fonts->IsBuilt() && "Font atlas not built! It is generally built by the renderer back-end. Missing call to renderer _NewFrame() function? e.g. ImGui_ImplOpenGL3_NewFrame().");
+
+	// Setup display size (every frame to accommodate for window resizing)
+	int w, h;
+	int display_w, display_h;
+	glfwGetWindowSize(g_Window, &w, &h);
+	glfwGetFramebufferSize(g_Window, &display_w, &display_h);
+	io.DisplaySize = ImVec2((float)w, (float)h);
+	io.DisplayFramebufferScale = ImVec2(w > 0 ? ((float)display_w / w) : 0, h > 0 ? ((float)display_h / h) : 0);
+
+	// Setup time step
+	double current_time = glfwGetTime();
+	io.DeltaTime = g_Time > 0.0 ? (float)(current_time - g_Time) : (float)(1.0f / 60.0f);
+	g_Time = current_time;
+
+	ImGui_ML_UpdateMousePosAndButtons();
+	ImGui_ML_UpdateMouseCursor();
+
+	// Gamepad navigation mapping [BETA]
+	memset(io.NavInputs, 0, sizeof(io.NavInputs));
+	if (io.ConfigFlags & ImGuiConfigFlags_NavEnableGamepad)
+	{
+		// Update gamepad inputs
+#define MAP_BUTTON(NAV_NO, BUTTON_NO)       { if (buttons_count > BUTTON_NO && buttons[BUTTON_NO] == GLFW_PRESS) io.NavInputs[NAV_NO] = 1.0f; }
+#define MAP_ANALOG(NAV_NO, AXIS_NO, V0, V1) { float v = (axes_count > AXIS_NO) ? axes[AXIS_NO] : V0; v = (v - V0) / (V1 - V0); if (v > 1.0f) v = 1.0f; if (io.NavInputs[NAV_NO] < v) io.NavInputs[NAV_NO] = v; }
+		int axes_count = 0, buttons_count = 0;
+		const float* axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &axes_count);
+		const unsigned char* buttons = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &buttons_count);
+		MAP_BUTTON(ImGuiNavInput_Activate, 0);     // Cross / A
+		MAP_BUTTON(ImGuiNavInput_Cancel, 1);     // Circle / B
+		MAP_BUTTON(ImGuiNavInput_Menu, 2);     // Square / X
+		MAP_BUTTON(ImGuiNavInput_Input, 3);     // Triangle / Y
+		MAP_BUTTON(ImGuiNavInput_DpadLeft, 13);    // D-Pad Left
+		MAP_BUTTON(ImGuiNavInput_DpadRight, 11);    // D-Pad Right
+		MAP_BUTTON(ImGuiNavInput_DpadUp, 10);    // D-Pad Up
+		MAP_BUTTON(ImGuiNavInput_DpadDown, 12);    // D-Pad Down
+		MAP_BUTTON(ImGuiNavInput_FocusPrev, 4);     // L1 / LB
+		MAP_BUTTON(ImGuiNavInput_FocusNext, 5);     // R1 / RB
+		MAP_BUTTON(ImGuiNavInput_TweakSlow, 4);     // L1 / LB
+		MAP_BUTTON(ImGuiNavInput_TweakFast, 5);     // R1 / RB
+		MAP_ANALOG(ImGuiNavInput_LStickLeft, 0, -0.3f, -0.9f);
+		MAP_ANALOG(ImGuiNavInput_LStickRight, 0, +0.3f, +0.9f);
+		MAP_ANALOG(ImGuiNavInput_LStickUp, 1, +0.3f, +0.9f);
+		MAP_ANALOG(ImGuiNavInput_LStickDown, 1, -0.3f, -0.9f);
+#undef MAP_BUTTON
+#undef MAP_ANALOG
+		if (axes_count > 0 && buttons_count > 0)
+			io.BackendFlags |= ImGuiBackendFlags_HasGamepad;
+		else
+			io.BackendFlags &= ~ImGuiBackendFlags_HasGamepad;
+	}
 }
 
-// OpenGL3 Render function.
-// (this used to be set in io.RenderDrawListsFn and called by ImGui::Render(), but you can now call this directly from your main loop)
-// Note that this implementation is little overcomplicated because we are saving/setting up/restoring every OpenGL state explicitly, in order to be able to run within any OpenGL engine that doesn't do so.
-void    ImGui_ImplOpenGL3_RenderDrawData(ImDrawData* draw_data)
+void ImGui_ML_RenderDrawData(ImDrawData * draw_data)
 {
 	// Avoid rendering when minimized, scale coordinates for retina displays (screen coordinates != framebuffer coordinates)
 	ImGuiIO& io = ImGui::GetIO();
@@ -268,7 +453,9 @@ void    ImGui_ImplOpenGL3_RenderDrawData(ImDrawData* draw_data)
 	glScissor(last_scissor_box[0], last_scissor_box[1], (GLsizei)last_scissor_box[2], (GLsizei)last_scissor_box[3]);
 }
 
-bool ImGui_ImplOpenGL3_CreateFontsTexture()
+/* * * * * * * * * * * * * * * * * * * * */
+
+bool ImGui_ML_CreateFontsTexture()
 {
 	// Build texture atlas
 	ImGuiIO& io = ImGui::GetIO();
@@ -295,7 +482,7 @@ bool ImGui_ImplOpenGL3_CreateFontsTexture()
 	return true;
 }
 
-void ImGui_ImplOpenGL3_DestroyFontsTexture()
+void ImGui_ML_DestroyFontsTexture()
 {
 	if (g_FontTexture)
 	{
@@ -306,43 +493,7 @@ void ImGui_ImplOpenGL3_DestroyFontsTexture()
 	}
 }
 
-// If you get an error please report on github. You may try different GL context version or GLSL version. See GL<>GLSL version table at the top of this file.
-static bool CheckShader(GLuint handle, const char* desc)
-{
-	GLint status = 0, log_length = 0;
-	glGetShaderiv(handle, GL_COMPILE_STATUS, &status);
-	glGetShaderiv(handle, GL_INFO_LOG_LENGTH, &log_length);
-	if ((GLboolean)status == GL_FALSE)
-		fprintf(stderr, "ERROR: ImGui_ImplOpenGL3_CreateDeviceObjects: failed to compile %s!\n", desc);
-	if (log_length > 0)
-	{
-		ImVector<char> buf;
-		buf.resize((int)(log_length + 1));
-		glGetShaderInfoLog(handle, log_length, NULL, (GLchar*)buf.begin());
-		fprintf(stderr, "%s\n", buf.begin());
-	}
-	return (GLboolean)status == GL_TRUE;
-}
-
-// If you get an error please report on GitHub. You may try different GL context version or GLSL version.
-static bool CheckProgram(GLuint handle, const char* desc)
-{
-	GLint status = 0, log_length = 0;
-	glGetProgramiv(handle, GL_LINK_STATUS, &status);
-	glGetProgramiv(handle, GL_INFO_LOG_LENGTH, &log_length);
-	if ((GLboolean)status == GL_FALSE)
-		fprintf(stderr, "ERROR: ImGui_ImplOpenGL3_CreateDeviceObjects: failed to link %s! (with GLSL '%s')\n", desc, g_GlslVersionString);
-	if (log_length > 0)
-	{
-		ImVector<char> buf;
-		buf.resize((int)(log_length + 1));
-		glGetProgramInfoLog(handle, log_length, NULL, (GLchar*)buf.begin());
-		fprintf(stderr, "%s\n", buf.begin());
-	}
-	return (GLboolean)status == GL_TRUE;
-}
-
-bool    ImGui_ImplOpenGL3_CreateDeviceObjects()
+bool ImGui_ML_CreateDeviceObjects()
 {
 	// Backup GL state
 	GLint last_texture, last_array_buffer, last_vertex_array;
@@ -507,7 +658,7 @@ bool    ImGui_ImplOpenGL3_CreateDeviceObjects()
 	glGenBuffers(1, &g_VboHandle);
 	glGenBuffers(1, &g_ElementsHandle);
 
-	ImGui_ImplOpenGL3_CreateFontsTexture();
+	ImGui_ML_CreateFontsTexture();
 
 	// Restore modified GL state
 	glBindTexture(GL_TEXTURE_2D, last_texture);
@@ -517,7 +668,7 @@ bool    ImGui_ImplOpenGL3_CreateDeviceObjects()
 	return true;
 }
 
-void    ImGui_ImplOpenGL3_DestroyDeviceObjects()
+void ImGui_ML_DestroyDeviceObjects()
 {
 	if (g_VboHandle) glDeleteBuffers(1, &g_VboHandle);
 	if (g_ElementsHandle) glDeleteBuffers(1, &g_ElementsHandle);
@@ -534,5 +685,55 @@ void    ImGui_ImplOpenGL3_DestroyDeviceObjects()
 	if (g_ShaderHandle) glDeleteProgram(g_ShaderHandle);
 	g_ShaderHandle = 0;
 
-	ImGui_ImplOpenGL3_DestroyFontsTexture();
+	ImGui_ML_DestroyFontsTexture();
+}
+
+
+/* * * * * * * * * * * * * * * * * * * * */
+
+void ImGui_ML_MouseButtonCallback(GLFWwindow * window, int button, int action, int mods)
+{
+	if (g_PrevUserCallbackMousebutton != NULL)
+		g_PrevUserCallbackMousebutton(window, button, action, mods);
+
+	if (action == GLFW_PRESS && button >= 0 && button < IM_ARRAYSIZE(g_MouseJustPressed))
+		g_MouseJustPressed[button] = true;
+}
+
+void ImGui_ML_ScrollCallback(GLFWwindow * window, double xoffset, double yoffset)
+{
+	if (g_PrevUserCallbackScroll != NULL)
+		g_PrevUserCallbackScroll(window, xoffset, yoffset);
+
+	ImGuiIO& io = ImGui::GetIO();
+	io.MouseWheelH += (float)xoffset;
+	io.MouseWheel += (float)yoffset;
+}
+
+void ImGui_ML_KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mods)
+{
+	if (g_PrevUserCallbackKey != NULL)
+		g_PrevUserCallbackKey(window, key, scancode, action, mods);
+
+	ImGuiIO& io = ImGui::GetIO();
+	if (action == GLFW_PRESS)
+		io.KeysDown[key] = true;
+	if (action == GLFW_RELEASE)
+		io.KeysDown[key] = false;
+
+	// Modifiers are not reliable across systems
+	io.KeyCtrl = io.KeysDown[GLFW_KEY_LEFT_CONTROL] || io.KeysDown[GLFW_KEY_RIGHT_CONTROL];
+	io.KeyShift = io.KeysDown[GLFW_KEY_LEFT_SHIFT] || io.KeysDown[GLFW_KEY_RIGHT_SHIFT];
+	io.KeyAlt = io.KeysDown[GLFW_KEY_LEFT_ALT] || io.KeysDown[GLFW_KEY_RIGHT_ALT];
+	io.KeySuper = io.KeysDown[GLFW_KEY_LEFT_SUPER] || io.KeysDown[GLFW_KEY_RIGHT_SUPER];
+}
+
+void ImGui_ML_CharCallback(GLFWwindow * window, unsigned int c)
+{
+	if (g_PrevUserCallbackChar != NULL)
+		g_PrevUserCallbackChar(window, c);
+
+	ImGuiIO& io = ImGui::GetIO();
+	if (c > 0 && c < 0x10000)
+		io.AddInputCharacter((unsigned short)c);
 }
