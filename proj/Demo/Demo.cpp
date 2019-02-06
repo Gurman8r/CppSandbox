@@ -553,7 +553,8 @@ namespace DEMO
 				SETTINGS.multisample,
 				SETTINGS.srgbCapable)
 		)
-		&& setup())
+		&& setup() // Initialize OpenGL
+		)
 		{
 			this->setInputMode(ml::Cursor::Normal);
 			this->setPosition((ml::VideoMode::desktop().size - this->size()) / 2);
@@ -755,12 +756,14 @@ namespace DEMO
 	
 	void Demo::onDraw(const DrawEvent & ev)
 	{
+		static ml::vec4f clear_color = ml::Color::Violet;
+
 		// Draw Scene
 		/* * * * * * * * * * * * * * * * * * * * */
 		fbo[FBO_scene].bind();
 		{
 			// Clear
-			this->clear(ml::Color::Violet);
+			this->clear(clear_color);
 			
 			// 3D
 			ml::OpenGL::enable(ml::GL::CullFace);
@@ -927,7 +930,7 @@ namespace DEMO
 				ImGui::Checkbox("Another Window", &show_another_window);
 
 				ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-				//ImGui::ColorEdit3("clear color", (float*)&clear_color);
+				ImGui::ColorEdit4("clear color", &clear_color[0]);
 
 				if (ImGui::Button("Button"))
 				{
@@ -956,11 +959,9 @@ namespace DEMO
 			ImGui::Render();
 
 			this->makeContextCurrent();
-			
 			this->setViewport(ml::vec2f::Zero, this->getFramebufferSize());
 			
 			ImGui_ML_RenderDrawData(ImGui::GetDrawData());
-			
 			this->makeContextCurrent();
 
 			/* * * * * * * * * * * * * * * * * * * * */

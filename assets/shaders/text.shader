@@ -1,7 +1,7 @@
 // Vertex
 /* * * * * * * * * * * * * * * * * * * * */
 #shader vertex
-#version 330 core
+#version 410 core
 
 // Layout
 layout(location = 0) in vec3 a_Position;
@@ -28,7 +28,7 @@ void main()
 // Fragment
 /* * * * * * * * * * * * * * * * * * * * */
 #shader fragment
-#version 330 core
+#version 410 core
 
 // Varyings
 out vec4	v_FragColor;

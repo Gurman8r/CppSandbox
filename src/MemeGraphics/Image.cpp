@@ -48,15 +48,10 @@ namespace ml
 		if (uint8_t * data = stbi_load(filename.c_str(), &w, &h, &channels, 0))
 		{
 			m_size = { (uint32_t)w, (uint32_t)h };
-			
-			m_pixels.resize(w * h * channels);
-
 			m_channels = channels;
-			
+			m_pixels.resize(w * h * channels);
 			memcpy(&m_pixels[0], data, m_pixels.size());
-
 			stbi_image_free(data);
-			
 			return true;
 		}
 		else
