@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <cctype>
 #include <chrono>
 #include <cstddef>
 #include <fstream>
@@ -10,8 +11,10 @@
 #include <iomanip>
 #include <iostream>
 #include <iterator>
+#include <locale>
 #include <map>
 #include <sstream>
+#include <stdarg.h>
 #include <string>
 #include <type_traits>
 #include <typeindex>

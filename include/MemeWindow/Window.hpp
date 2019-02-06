@@ -8,6 +8,7 @@
 #include <MemeWindow/Context.hpp>
 #include <MemeWindow/Icon.hpp>
 #include <MemeWindow/VideoMode.hpp>
+#include <MemeWindow/WindowInput.hpp>
 
 namespace ml
 {
@@ -50,8 +51,6 @@ namespace ml
 		Window();
 		virtual ~Window();
 
-		inline void * ptr() { return m_window; }
-
 	public:
 		bool create(
 			const String	& title, 
@@ -74,9 +73,10 @@ namespace ml
 
 	public:
 		Window & setClipboardString(const String & value);
-		Window & setCursor(Cursor::Mode value);
+		Window & setCursor(void * value);
 		Window & setCursorPos(const vec2i & value);
 		Window & setIcons(const std::vector<Icon> & value);
+		Window & setInputMode(Cursor::Mode value);
 		Window & setPosition(const vec2i & value);
 		Window & setSize(const vec2u & value);
 		Window & setSwapInterval(int32_t value);
@@ -85,15 +85,14 @@ namespace ml
 	public:
 		bool	isFocused() const;
 		bool	isOpen() const;
-
 		int32_t	getAttrib(int32_t value) const;
 		char	getChar() const;
 		String	getClipboardString() const;
 		vec2f	getCursorPos() const;
 		vec2i	getFramebufferSize() const;
-		bool	getKey(int32_t value) const;
-		bool	getMouseButton(int32_t button) const;
-		vec2f	getScroll() const;
+		int32_t	getKey(int32_t value) const;
+		int32_t	getInputMode() const;
+		int32_t	getMouseButton(int32_t button) const;
 		float	getTime() const;
 
 	public:
@@ -106,7 +105,10 @@ namespace ml
 		inline const uint32_t &		width()		const { return size()[0]; }
 		inline const uint32_t &		height()	const { return size()[1]; }
 		inline const float			aspect()	const { return (float)width() / (float)height(); };
-		inline const Cursor::Mode	cursorMode()const { return m_cursorMode; }
+
+	public:
+		void *	createCursor(uint32_t value) const;
+		void	destroyCursor(void * value) const;
 
 	public:
 		ErrorFun			setErrorCallback(ErrorFun callback);
@@ -129,11 +131,8 @@ namespace ml
 		Context			m_context;
 		VideoMode		m_videoMode;
 		Style			m_style;
-		Cursor::Mode	m_cursorMode;
 		vec2i			m_position;
 		String			m_title;
-		bool			m_focused;
-		vec2d			m_scroll;
 		mutable char	m_char;
 	};
 }

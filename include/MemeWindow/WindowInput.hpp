@@ -7,6 +7,12 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
+#define ML_RELEASE	0
+#define ML_PRESS	1
+#define ML_REPEAT	2
+
+/* * * * * * * * * * * * * * * * * * * * */
+
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */

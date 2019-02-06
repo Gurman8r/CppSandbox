@@ -10,8 +10,18 @@ namespace ml
 		enum Mode
 		{
 			Normal = 0x34001,
-			Hidden = 0x34002,
-			Disabled = 0x34003,
+			Hidden,
+			Disabled,
+		};
+
+		enum Standard
+		{
+			Arrow = 0x36001, 
+			IBeam, 
+			Crosshair,
+			Hand,
+			HResize,
+			VResize,
 		};
 	};
 }

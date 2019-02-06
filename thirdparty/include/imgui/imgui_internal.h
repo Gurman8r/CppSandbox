@@ -1,3 +1,6 @@
+#ifndef _IMGUI_INTERNAL_H_
+#define _IMGUI_INTERNAL_H_
+
 // dear imgui, v1.67
 // (internal structures/api)
 
@@ -20,8 +23,6 @@ Index of this file:
 // Internal API
 
 */
-
-#pragma once
 
 //-----------------------------------------------------------------------------
 // Header mess
@@ -1482,3 +1483,6 @@ extern void                 ImGuiTestEngineHook_ItemInfo(ImGuiContext* ctx, ImGu
 #ifdef _MSC_VER
 #pragma warning (pop)
 #endif
+
+
+#endif // !_IMGUI_INTERNAL_H_

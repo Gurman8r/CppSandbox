@@ -1,32 +1,39 @@
 #ifndef _IMGUI_IMPL_ML_HPP_
 #define _IMGUI_IMPL_ML_HPP_
 
+#include <imgui/imconfig.h>
+#include <stdint.h>
+
 /* * * * * * * * * * * * * * * * * * * * */
 
 struct ImDrawData;
-struct GLFWwindow;
+
+namespace ml
+{
+	class Window;
+}
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-bool     ImGui_ML_Init(const char * glsl_version = 0);
-bool     ImGui_ML_InitForOpenGL(GLFWwindow * window, bool install_callbacks);
-void     ImGui_ML_Shutdown();
-void     ImGui_ML_NewFrame();
-void     ImGui_ML_RenderDrawData(ImDrawData * draw_data);
+IMGUI_API bool ImGui_ML_Init(const char * glsl_version = 0);
+IMGUI_API bool ImGui_ML_InitForOpenGL(ml::Window * window, bool install_callbacks);
+IMGUI_API void ImGui_ML_Shutdown();
+IMGUI_API void ImGui_ML_NewFrame();
+IMGUI_API void ImGui_ML_RenderDrawData(ImDrawData * draw_data);
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-bool     ImGui_ML_CreateFontsTexture();
-void     ImGui_ML_DestroyFontsTexture();
-bool     ImGui_ML_CreateDeviceObjects();
-void     ImGui_ML_DestroyDeviceObjects();
+IMGUI_API bool ImGui_ML_CreateFontsTexture();
+IMGUI_API void ImGui_ML_DestroyFontsTexture();
+IMGUI_API bool ImGui_ML_CreateDeviceObjects();
+IMGUI_API void ImGui_ML_DestroyDeviceObjects();
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-void     ImGui_ML_MouseButtonCallback(GLFWwindow * window, int button, int action, int mods);
-void     ImGui_ML_ScrollCallback(GLFWwindow * window, double xoffset, double yoffset);
-void     ImGui_ML_KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mods);
-void     ImGui_ML_CharCallback(GLFWwindow * window, unsigned int c);
+IMGUI_API void ImGui_ML_MouseButtonCallback(void * window, int32_t button, int32_t action, int32_t mods);
+IMGUI_API void ImGui_ML_ScrollCallback(void * window, double xoffset, double yoffset);
+IMGUI_API void ImGui_ML_KeyCallback(void * window, int32_t key, int32_t scancode, int32_t action, int32_t mods);
+IMGUI_API void ImGui_ML_CharCallback(void * window, uint32_t c);
 
 /* * * * * * * * * * * * * * * * * * * * */
 

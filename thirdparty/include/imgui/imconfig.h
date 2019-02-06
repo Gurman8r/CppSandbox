@@ -1,3 +1,6 @@
+#ifndef _IMCONFIG_H_
+#define _IMCONFIG_H_
+
 //-----------------------------------------------------------------------------
 // COMPILE-TIME OPTIONS FOR DEAR IMGUI
 // Runtime options (clipboard callbacks, enabling various features, etc.) can generally be set via the ImGuiIO structure.
@@ -11,7 +14,7 @@
 // Call IMGUI_CHECKVERSION() from your .cpp files to verify that the data structures your files are using are matching the ones imgui.cpp is using.
 //-----------------------------------------------------------------------------
 
-#pragma once
+#include <MemeEditor/Export.hpp>
 
 //---- Define assertion handler. Defaults to calling assert().
 //#define IM_ASSERT(_EXPR)  MyAssert(_EXPR)
@@ -20,6 +23,8 @@
 //---- Define attributes of all API symbols declarations, e.g. for DLL under Windows.
 //#define IMGUI_API __declspec( dllexport )
 //#define IMGUI_API __declspec( dllimport )
+
+#define IMGUI_API ML_EDITOR_API
 
 //---- Don't define obsolete functions/enums names. Consider enabling from time to time after updating to avoid using soon-to-be obsolete function/names.
 //#define IMGUI_DISABLE_OBSOLETE_FUNCTIONS
@@ -53,12 +58,12 @@
 // This will be inlined as part of ImVec2 and ImVec4 class declarations.
 /*
 #define IM_VEC2_CLASS_EXTRA                                                 \
-        ImVec2(const MyVec2& f) { x = f.x; y = f.y; }                       \
-        operator MyVec2() const { return MyVec2(x,y); }
+		ImVec2(const MyVec2& f) { x = f.x; y = f.y; }                       \
+		operator MyVec2() const { return MyVec2(x,y); }
 
 #define IM_VEC4_CLASS_EXTRA                                                 \
-        ImVec4(const MyVec4& f) { x = f.x; y = f.y; z = f.z; w = f.w; }     \
-        operator MyVec4() const { return MyVec4(x,y,z,w); }
+		ImVec4(const MyVec4& f) { x = f.x; y = f.y; z = f.z; w = f.w; }     \
+		operator MyVec4() const { return MyVec4(x,y,z,w); }
 */
 
 //---- Use 32-bit vertex indices (default is 16-bit) to allow meshes with more than 64K vertices. Render function needs to support it.
@@ -68,6 +73,9 @@
 /*
 namespace ImGui
 {
-    void MyFunction(const char* name, const MyMatrix44& v);
+	void MyFunction(const char* name, const MyMatrix44& v);
 }
 */
+
+
+#endif // !_IMCONFIG_H_

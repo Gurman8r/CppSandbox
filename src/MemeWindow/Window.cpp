@@ -18,7 +18,6 @@ namespace ml
 		, m_context		()
 		, m_videoMode	()
 		, m_style		(Window::Default)
-		, m_cursorMode	(Cursor::Normal)
 		, m_position	(vec2i::Zero)
 	{
 		ML_EventSystem.addListener(WindowEvent::EV_WindowSize,		this);
@@ -180,19 +179,16 @@ namespace ml
 		case WindowEvent::EV_Key:
 			if (auto ev = value->Cast<KeyEvent>())
 			{
-
 			}
 			break;
 		case WindowEvent::EV_MouseButton:
 			if (auto ev = value->Cast<MouseButtonEvent>())
 			{
-
 			}
 			break;
 		case WindowEvent::EV_Scroll:
 			if (auto ev = value->Cast<ScrollEvent>())
 			{
-				m_scroll = { ev->x, ev->y };
 			}
 			break;
 		case WindowEvent::EV_WindowClose:
@@ -203,7 +199,6 @@ namespace ml
 		case WindowEvent::EV_WindowFocus:
 			if (auto ev = value->Cast<WindowFocusEvent>())
 			{
-				m_focused = ev->focused;
 			}
 			break;
 		case WindowEvent::Ev_WindowPos:
@@ -278,14 +273,13 @@ namespace ml
 		glfwSetClipboardString(ML_WINDOW(m_window), value.c_str());
 		return (*this);
 	}
-	
-	Window & Window::setCursor(Cursor::Mode value)
+
+	Window & Window::setCursor(void * value)
 	{
-		m_cursorMode = value;
-		glfwSetInputMode(ML_WINDOW(m_window), GLFW_CURSOR, value);
+		glfwSetCursor(ML_WINDOW(m_window), static_cast<GLFWcursor*>(value));
 		return (*this);
 	}
-
+	
 	Window & Window::setCursorPos(const vec2i & value)
 	{
 		glfwSetCursorPos(ML_WINDOW(m_window), value[0], value[1]);
@@ -315,6 +309,12 @@ namespace ml
 		{
 			glfwSetWindowIcon(ML_WINDOW(m_window), 0, NULL);
 		}
+		return (*this);
+	}
+
+	Window & Window::setInputMode(Cursor::Mode value)
+	{
+		glfwSetInputMode(ML_WINDOW(m_window), GLFW_CURSOR, value);
 		return (*this);
 	}
 
@@ -349,7 +349,7 @@ namespace ml
 
 	bool	Window::isFocused() const
 	{
-		return m_focused;
+		return getAttrib(GLFW_FOCUSED);
 	}
 
 	bool	Window::isOpen() const
@@ -389,19 +389,19 @@ namespace ml
 		return temp;
 	}
 
-	bool	Window::getKey(int32_t value) const
+	int32_t	Window::getKey(int32_t value) const
 	{
-		return (glfwGetKey(ML_WINDOW(m_window), value) == GLFW_PRESS);
+		return glfwGetKey(ML_WINDOW(m_window), value);
 	}
 
-	bool	Window::getMouseButton(int32_t value) const
+	int32_t Window::getInputMode() const
 	{
-		return (glfwGetMouseButton(ML_WINDOW(m_window), value) == GLFW_PRESS);
+		return static_cast<Cursor::Mode>(glfwGetInputMode(ML_WINDOW(m_window), GLFW_CURSOR));
 	}
 
-	vec2f	Window::getScroll() const
+	int32_t	Window::getMouseButton(int32_t value) const
 	{
-		return vec2f(m_scroll);
+		return glfwGetMouseButton(ML_WINDOW(m_window), value);
 	}
 
 	float	Window::getTime() const
@@ -411,99 +411,135 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
+	void * Window::createCursor(uint32_t value) const
+	{
+		return glfwCreateStandardCursor(value);
+	}
+
+	void Window::destroyCursor(void * value) const
+	{
+		glfwDestroyCursor(static_cast<GLFWcursor *>(value));
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	Window::ErrorFun			Window::setErrorCallback(ErrorFun callback)
 	{
-		glfwSetErrorCallback(
-			reinterpret_cast<GLFWerrorfun>(callback));
-		return callback;
+		if (glfwSetErrorCallback(reinterpret_cast<GLFWerrorfun>(callback)))
+		{
+			return callback;
+		}
+		return NULL;
 	}
 	
 	Window::CharFun				Window::setCharCallback(CharFun callback)
 	{
-		glfwSetCharCallback(
-			ML_WINDOW(m_window),
-			reinterpret_cast<GLFWcharfun>(callback));
-		return callback;
+		if (glfwSetCharCallback(ML_WINDOW(m_window),
+			reinterpret_cast<GLFWcharfun>(callback)))
+		{
+			return callback;
+		}
+		return NULL;
 	}
 	
 	Window::CursorEnterFun		Window::setCursorEnterCallback(CursorEnterFun callback)
 	{
-		glfwSetCursorEnterCallback(
-			ML_WINDOW(m_window),
-			reinterpret_cast<GLFWcursorenterfun>(callback));
-		return callback;
+		if (glfwSetCursorEnterCallback(ML_WINDOW(m_window),
+			reinterpret_cast<GLFWcursorenterfun>(callback)))
+		{
+			return callback;
+		}
+		return NULL;
 	}
 	
 	Window::CursorPosFun		Window::setCursorPosCallback(CursorPosFun callback)
 	{
-		glfwSetCursorPosCallback(
-			ML_WINDOW(m_window),
-			reinterpret_cast<GLFWcursorposfun>(callback));
-		return callback;
+		if (glfwSetCursorPosCallback(ML_WINDOW(m_window),
+			reinterpret_cast<GLFWcursorposfun>(callback)))
+		{
+			return callback;
+		}
+		return NULL;
 	}
 	
 	Window::FramebufferSizeFun	Window::setFramebufferSizeCallback(FramebufferSizeFun callback)
 	{
-		glfwSetFramebufferSizeCallback(
-			ML_WINDOW(m_window),
-			reinterpret_cast<GLFWframebuffersizefun>(callback));
-		return callback;
+		if (glfwSetFramebufferSizeCallback(ML_WINDOW(m_window),
+			reinterpret_cast<GLFWframebuffersizefun>(callback)))
+		{
+			return callback;
+		}
+		return NULL;
 	}
 	
 	Window::KeyFun				Window::setKeyCallback(KeyFun callback)
 	{
-		glfwSetKeyCallback(
-			ML_WINDOW(m_window),
-			reinterpret_cast<GLFWkeyfun>(callback));
-		return callback;
+		if (glfwSetKeyCallback(ML_WINDOW(m_window),
+			reinterpret_cast<GLFWkeyfun>(callback)))
+		{
+			return callback;
+		}
+		return NULL;
 	}
 	
 	Window::MouseButtonFun		Window::setMouseButtonCallback(MouseButtonFun callback)
 	{
-		glfwSetMouseButtonCallback(
-			ML_WINDOW(m_window),
-			reinterpret_cast<GLFWmousebuttonfun>(callback));
+		if (glfwSetMouseButtonCallback(ML_WINDOW(m_window),
+			reinterpret_cast<GLFWmousebuttonfun>(callback)))
+		{
+
+		}
 		return callback;
 	}
 	
 	Window::ScrollFun			Window::setScrollCallback(ScrollFun callback)
 	{
-		glfwSetScrollCallback(
-			ML_WINDOW(m_window),
-			reinterpret_cast<GLFWscrollfun>(callback));
-		return callback;
+		if (glfwSetScrollCallback(ML_WINDOW(m_window), 
+			reinterpret_cast<GLFWscrollfun>(callback)))
+		{
+			return callback;
+		}
+		return NULL;
 	}
 	
 	Window::WindowCloseFun		Window::setWindowCloseCallback(WindowCloseFun callback)
 	{
-		glfwSetWindowCloseCallback(
-			ML_WINDOW(m_window),
-			reinterpret_cast<GLFWwindowclosefun>(callback));
-		return callback;
+		if (glfwSetWindowCloseCallback(ML_WINDOW(m_window),
+			reinterpret_cast<GLFWwindowclosefun>(callback)))
+		{
+			return callback;
+		}
+		return NULL;
 	}
 	
 	Window::WindowFocusFun		Window::setWindowFocusCallback(WindowFocusFun callback)
 	{
-		glfwSetWindowFocusCallback(
-			ML_WINDOW(m_window),
-			reinterpret_cast<GLFWwindowfocusfun>(callback));
-		return callback;
+		if (glfwSetWindowFocusCallback(ML_WINDOW(m_window),
+			reinterpret_cast<GLFWwindowfocusfun>(callback)))
+		{
+			return callback;
+		}
+		return NULL;
 	}
 	
 	Window::WindowPosFun		Window::setWindowPosCallback(WindowPosFun callback)
 	{
-		glfwSetWindowPosCallback(
-			ML_WINDOW(m_window),
-			reinterpret_cast<GLFWwindowposfun>(callback));
-		return callback;
+		if (glfwSetWindowPosCallback(ML_WINDOW(m_window),
+			reinterpret_cast<GLFWwindowposfun>(callback)))
+		{
+			return callback;
+		}
+		return NULL;
 	}
 	
 	Window::WindowSizeFun		Window::setWindowSizeCallback(WindowSizeFun callback)
 	{
-		glfwSetWindowSizeCallback(
-			ML_WINDOW(m_window),
-			reinterpret_cast<GLFWwindowposfun>(callback));
-		return callback;
+		if (glfwSetWindowSizeCallback(ML_WINDOW(m_window),
+			reinterpret_cast<GLFWwindowposfun>(callback)))
+		{
+			return callback;
+		}
+		return NULL;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

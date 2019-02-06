@@ -16,7 +16,6 @@ namespace ml
 	class BasicString
 		: public std::basic_string<_Elem, _Traits, _Alloc>
 		, public IComparable<std::basic_string<_Elem, _Traits, _Alloc>>
-		, public IComparable<BasicString<_Elem, _Traits, _Alloc>>
 	{
 	public:
 		using value_type			= _Elem;
@@ -196,18 +195,6 @@ namespace ml
 		inline bool lessThan(const base_type & value) const override
 		{
 			return value < (const base_type &)(*this);
-		}
-
-
-	public: // self_type Comparison
-		inline bool equals(const self_type & value) const override
-		{
-			return equals((const base_type &)(value));
-		}
-		
-		inline bool lessThan(const self_type & value) const override
-		{
-			return lessThan((const base_type &)(value));
 		}
 
 

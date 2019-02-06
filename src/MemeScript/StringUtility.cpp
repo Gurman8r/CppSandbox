@@ -1,7 +1,5 @@
 #include <MemeScript/StringUtility.hpp>
-#include <stdarg.h>
-#include <locale>
-#include <cctype>
+
 
 #define BUFFER_SIZE 512
 

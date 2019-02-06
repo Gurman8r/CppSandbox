@@ -8,6 +8,9 @@
 #include <dirent.h>
 #endif // ML_SYSTEM_WINDOWS
 
+#include <imgui/imgui.h>
+#include <imgui/imgui_impl_ml.hpp>
+
 
 namespace DEMO
 {
@@ -552,7 +555,7 @@ namespace DEMO
 		)
 		&& setup())
 		{
-			this->setCursor(ml::Cursor::Normal);
+			this->setInputMode(ml::Cursor::Normal);
 			this->setPosition((ml::VideoMode::desktop().size - this->size()) / 2);
 			this->setViewport(ml::vec2i::Zero, this->size());
 
@@ -578,6 +581,22 @@ namespace DEMO
 	
 	void Demo::onStart(const StartEvent & ev)
 	{
+		if (ml::Debug::log("Dear ImGui..."))
+		{
+			// Setup Dear ImGui context
+			IMGUI_CHECKVERSION();
+			ImGui::CreateContext();
+			ImGuiIO& io = ImGui::GetIO(); (void)io;
+
+			// Setup Dear ImGui style
+			ImGui::StyleColorsDark();
+
+			// Setup Platform/Renderer bindings
+			ImGui_ML_InitForOpenGL(this, true);
+			ImGui_ML_Init("#version 410");
+		}
+
+
 		if (ml::Debug::log("Starting..."))
 		{
 			// Set Window Icon
@@ -736,6 +755,8 @@ namespace DEMO
 	
 	void Demo::onDraw(const DrawEvent & ev)
 	{
+		// Draw Scene
+		/* * * * * * * * * * * * * * * * * * * * */
 		fbo[FBO_scene].bind();
 		{
 			// Clear
@@ -855,10 +876,14 @@ namespace DEMO
 
 		}
 		fbo[FBO_scene].unbind();
-		
-		this->clear(ml::Color::White);
+
+
+		// Draw Framebuffer
+		/* * * * * * * * * * * * * * * * * * * * */
 		if(const ml::Shader & s = shaders[GL_framebuffer])
 		{
+			this->clear(ml::Color::White);
+
 			s.setUniform(uniforms[U_Tex], textures[TEX_framebuffer]);
 			s.setUniform("u_mode", m_fboMode);
 			s.bind();
@@ -868,7 +893,81 @@ namespace DEMO
 				vbo[VBO_quad],
 				ibo[IBO_quad]);
 		}
-		this->swapBuffers().pollEvents();
+
+
+		// Draw GUI
+		/* * * * * * * * * * * * * * * * * * * * */
+		this->pollEvents();
+		{
+			/* * * * * * * * * * * * * * * * * * * * */
+
+			static bool show_demo_window = false;
+			static bool show_another_window = false;
+
+			/* * * * * * * * * * * * * * * * * * * * */
+
+			ImGui_ML_NewFrame();
+			ImGui::NewFrame();
+
+			// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
+			if (show_demo_window)
+			{
+				ImGui::ShowDemoWindow(&show_demo_window);
+			}
+
+			// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
+			{
+				static float f = 0.0f;
+				static int counter = 0;
+
+				ImGui::Begin("Hello, world!");
+
+				ImGui::Text("This is some useful text.");
+				ImGui::Checkbox("Demo Window", &show_demo_window);
+				ImGui::Checkbox("Another Window", &show_another_window);
+
+				ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
+				//ImGui::ColorEdit3("clear color", (float*)&clear_color);
+
+				if (ImGui::Button("Button"))
+				{
+					counter++;
+				}
+				ImGui::SameLine();
+				ImGui::Text("counter = %d", counter);
+
+				ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+				ImGui::End();
+			}
+
+			// 3. Show another simple window.
+			if (show_another_window)
+			{
+				ImGui::Begin("Another Window", &show_another_window);
+				ImGui::Text("Hello from another window!");
+				if (ImGui::Button("Close Me"))
+				{
+					show_another_window = false;
+				}
+				ImGui::End();
+			}
+
+			// Rendering
+			ImGui::Render();
+
+			this->makeContextCurrent();
+			
+			this->setViewport(ml::vec2f::Zero, this->getFramebufferSize());
+			
+			ImGui_ML_RenderDrawData(ImGui::GetDrawData());
+			
+			this->makeContextCurrent();
+
+			/* * * * * * * * * * * * * * * * * * * * */
+		}
+		this->swapBuffers();
+
+		/* * * * * * * * * * * * * * * * * * * * */
 	}
 	
 	void Demo::onExit(const ExitEvent & ev)
