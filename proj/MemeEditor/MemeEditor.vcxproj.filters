@@ -30,9 +30,6 @@
     <ClInclude Include="..\..\thirdparty\include\imgui\imgui.h">
       <Filter>Header Files\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\thirdparty\include\imgui\imgui_impl_ml.hpp">
-      <Filter>Header Files\imgui</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\thirdparty\include\imgui\imgui_internal.h">
       <Filter>Header Files\imgui</Filter>
     </ClInclude>
@@ -46,6 +43,9 @@
       <Filter>Header Files\imgui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\thirdparty\include\imgui\imconfig.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\thirdparty\include\imgui\imgui_ml.hpp">
       <Filter>Header Files\imgui</Filter>
     </ClInclude>
   </ItemGroup>
@@ -62,10 +62,10 @@
     <ClCompile Include="..\..\thirdparty\include\imgui\imgui_draw.cpp">
       <Filter>Source Files\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\thirdparty\include\imgui\imgui_impl_ml.cpp">
+    <ClCompile Include="..\..\thirdparty\include\imgui\imgui_widgets.cpp">
       <Filter>Source Files\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\thirdparty\include\imgui\imgui_widgets.cpp">
+    <ClCompile Include="..\..\thirdparty\include\imgui\imgui_ml.cpp">
       <Filter>Source Files\imgui</Filter>
     </ClCompile>
   </ItemGroup>

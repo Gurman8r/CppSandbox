@@ -2,16 +2,16 @@
 #define _EDITOR_HPP_
 
 #include <MemeEditor/Export.hpp>
-#include <MemeGraphics/RenderWindow.hpp>
 
 namespace ml
 {
 	class ML_EDITOR_API Editor
-		: public RenderWindow
 	{
 	public:
 		Editor();
 		~Editor();
+
+		static void ShowHelpMarker(const char * desc);
 
 	private:
 

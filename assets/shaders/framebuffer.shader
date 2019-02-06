@@ -30,6 +30,8 @@ in  vec2	v_Texcoord;
 
 // Uniforms
 uniform sampler2D u_texture;
+uniform int u_mode;
+
 
 // Functions
 void drawNormal()
@@ -88,8 +90,6 @@ void drawKernel(in float kernel[9])
 #define MODE_GRAYSCALE	2
 #define MODE_JUICY		3
 #define MODE_BLUR		4
-
-uniform int u_mode;
 
 // Main
 void main()

@@ -50,7 +50,7 @@ int32_t main(int32_t argc, char ** argv)
 		input.beginStep();
 		{
 			// Update
-			ML_EventSystem.fireEvent(DEMO::UpdateEvent(elapsed, input));
+			ML_EventSystem.fireEvent(DEMO::UpdateEvent(elapsed));
 
 			// Draw
 			ML_EventSystem.fireEvent(DEMO::DrawEvent(elapsed));

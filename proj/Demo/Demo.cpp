@@ -4,13 +4,10 @@
 
 #ifdef ML_SYSTEM_WINDOWS
 #include <../thirdparty/include/dirent.h>
-#else
-#include <dirent.h>
 #endif // ML_SYSTEM_WINDOWS
 
 #include <imgui/imgui.h>
-#include <imgui/imgui_impl_ml.hpp>
-
+#include <imgui/imgui_ml.hpp>
 
 namespace DEMO
 {
@@ -46,6 +43,19 @@ namespace DEMO
 		case DemoEvent::EV_Draw:	onDraw(*value->Cast<DrawEvent>());		break;
 		case DemoEvent::EV_Exit:	onExit(*value->Cast<ExitEvent>());		break;
 
+		case ml::WindowEvent::EV_Key:
+			if (auto ev = value->Cast<ml::KeyEvent>())
+			{
+				switch (ev->button)
+				{
+				case ml::WindowKey::Escape:
+					switch (ev->action)
+						case ML_PRESS: this->close(); break;
+					break;
+				}
+			}
+			break;
+
 		case ml::WindowEvent::EV_WindowSize:
 			if (auto ev = value->Cast<ml::WindowSizeEvent>())
 			{
@@ -62,16 +72,6 @@ namespace DEMO
 					this->aspect(),
 					SETTINGS.perspNear,
 					SETTINGS.perspFar);
-			}
-			break;
-
-		case ml::WindowEvent::EV_Char:
-			if (auto ev = value->Cast<ml::CharEvent>())
-			{
-				if (m_acceptingInput)
-				{
-					text[TXT_input].setText(text[TXT_input].getText() + (char)ev->value);
-				}
 			}
 			break;
 		}
@@ -584,15 +584,9 @@ namespace DEMO
 	{
 		if (ml::Debug::log("Dear ImGui..."))
 		{
-			// Setup Dear ImGui context
 			IMGUI_CHECKVERSION();
 			ImGui::CreateContext();
-			ImGuiIO& io = ImGui::GetIO(); (void)io;
-
-			// Setup Dear ImGui style
 			ImGui::StyleColorsDark();
-
-			// Setup Platform/Renderer bindings
 			ImGui_ML_InitForOpenGL(this, true);
 			ImGui_ML_Init("#version 410");
 		}
@@ -653,95 +647,20 @@ namespace DEMO
 				.setPosition({ 32, 128 })
 				.setColor(ml::Color::White)
 				.setText("there is no need\nto be upset");
-
-			// Input Text
-			text[TXT_input]
-				.setFont(&fonts[FNT_minecraft])
-				.setFontSize(24)
-				.setScale(ml::vec2f::One)
-				.setPosition({ (float)this->width() / 2.f, 32 })
-				.setColor(ml::Color::White)
-				.setText(ml::String());
 		}
 	}
 	
 	void Demo::onUpdate(const UpdateEvent & ev)
 	{
 		// Update Title
-		this->setTitle(ml::String::Format(
-			"{0} | {1} | {2} ({3} fps) | {4}",
-			SETTINGS.title,
-			ML_Time.elapsed(),
-			ev.elapsed.delta(),
-			ml::Time::calculateFPS(ev.elapsed.delta()),
-			this->getCursorPos()
-		));
-
-
-		// Handle Input
-		if (ev.input.getKeyDown(ml::NativeKey::Escape))
-		{
-			this->close();
-		}
-
-		if (ev.input.getKeyDown(ml::NativeKey::Pause))
-		{
-			ml::Debug::pause(0);
-		}
-
-		if (ev.input.getKeyDown(ml::NativeKey::Tab))
-		{
-			m_acceptingInput = !m_acceptingInput;
-		}
-
-		if (m_acceptingInput)
-		{
-			if (ev.input.getKeyDown(ml::NativeKey::Return))
-			{
-				ml::String str;
-				if (!(str = text[TXT_input].getText()).empty())
-				{
-					ML_Interpreter.execCommand(str);
-				}
-				text[TXT_input].setText(ml::String());
-			}
-
-			if (ev.input.getKeyDown(ml::NativeKey::Backspace))
-			{
-				ml::String str;
-				if (!(str = text[TXT_input].getText()).empty())
-				{
-					str.pop_back();
-					text[TXT_input].setText(str);
-				}
-			}
-		}
-		else
-		{
-			text[TXT_input].setText(ml::String());
-
-			if (ev.input.getKeyDown(ml::NativeKey::R))
-			{
-				//loadShaders();
-			}
-			
-			int32_t numPress = -1;
-			for (int32_t i = ml::NativeKey::Num0; i <= ml::NativeKey::Num9; i++)
-			{
-				if (ev.input.getKeyDown(i))
-				{
-					numPress = (9 - (ml::NativeKey::Num9 - i));
-					break;
-				}
-			}
-			if (numPress >= 0)
-			{
-				m_fboMode = numPress;
-				ml::Debug::log("FBO Mode: {0}", m_fboMode);
-			}
-		}
-
-
+		//this->setTitle(ml::String::Format(
+		//	"{0} | {1} | {2} ({3} fps) | {4}",
+		//	SETTINGS.title,
+		//	ML_Time.elapsed(),
+		//	ev.elapsed.delta(),
+		//	ml::Time::calculateFPS(ev.elapsed.delta()),
+		//	this->getCursorPos()
+		//));
 
 		// Update Network
 		if (SETTINGS.isServer)
@@ -840,7 +759,7 @@ namespace DEMO
 
 				static const uint32_t  fontSize = 24;
 				static const ml::vec2f offset = { 0.0f, -(float)fontSize };
-				static const ml::vec2f origin = { (float)fontSize, (float)this->height() };
+				static const ml::vec2f origin = { (float)fontSize, (float)this->height() - 64 };
 				static const ml::vec4f colors[MAX_FONT] = {
 					ml::Color::Red,
 					ml::Color::Green,
@@ -863,16 +782,15 @@ namespace DEMO
 
 				// Static Text
 				this->draw(text[TXT_static], batch);
-
-				// Input Text
-				this->draw(text[TXT_input], batch);
 			}
 
 			// Geometry
 			if (const ml::Shader & s = shaders[GL_geometry])
 			{
-				s.setUniform(uniforms[U_Color], ml::Color::Red);
-				s.setUniform(uniforms[U_Curve], 1);
+				s.setUniform(uniforms[U_Color], m_lineColor);
+				s.setUniform(uniforms[U_Curve], m_lineMode);
+				s.setUniform("u_delta", m_lineDelta);
+				s.setUniform("u_samples", m_lineSamples);
 				s.bind();
 				ml::OpenGL::drawArrays(ml::GL::Points, 0, 4);
 			}
@@ -901,71 +819,100 @@ namespace DEMO
 		// Draw GUI
 		/* * * * * * * * * * * * * * * * * * * * */
 		this->pollEvents();
+		ImGui_ML_NewFrame();
+		ImGui::NewFrame();
 		{
 			/* * * * * * * * * * * * * * * * * * * * */
 
-			static bool show_demo_window = false;
-			static bool show_another_window = false;
+			static bool show_demo = false;
+			static bool show_editor = true;
+			static bool show_app_metrics = false;
+			static bool show_app_style_editor = false;
+			static bool show_app_about = false;
 
 			/* * * * * * * * * * * * * * * * * * * * */
 
-			ImGui_ML_NewFrame();
-			ImGui::NewFrame();
-
-			// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-			if (show_demo_window)
+			if (show_demo)
 			{
-				ImGui::ShowDemoWindow(&show_demo_window);
+				ImGui::ShowDemoWindow(&show_demo);
 			}
 
-			// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
+			if (ImGui::BeginMainMenuBar())
 			{
-				static float f = 0.0f;
-				static int counter = 0;
-
-				ImGui::Begin("Hello, world!");
-
-				ImGui::Text("This is some useful text.");
-				ImGui::Checkbox("Demo Window", &show_demo_window);
-				ImGui::Checkbox("Another Window", &show_another_window);
-
-				ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-				ImGui::ColorEdit4("clear color", &clear_color[0]);
-
-				if (ImGui::Button("Button"))
+				if (ImGui::BeginMenu("File"))
 				{
-					counter++;
+					if (ImGui::MenuItem("New", "Ctrl+N", false, false)) {}
+					if (ImGui::MenuItem("Open", "Ctrl+O", false, false)) {}
+					ImGui::Separator();
+					if (ImGui::MenuItem("Save", "Ctrl+S", false, false)) {}
+					if (ImGui::MenuItem("Save All", "Ctrl+Shift+S", false, false)) {}
+					ImGui::Separator();
+					if (ImGui::MenuItem("Quit", "Alt+F4")) { this->close(); }
+					ImGui::EndMenu();
 				}
-				ImGui::SameLine();
-				ImGui::Text("counter = %d", counter);
+				if (ImGui::BeginMenu("Edit"))
+				{
+					if (ImGui::MenuItem("Undo", "CTRL+Z", false, false)) {}
+					if (ImGui::MenuItem("Redo", "CTRL+Y", false, false)) {}
+					ImGui::Separator();
+					if (ImGui::MenuItem("Cut", "CTRL+X", false, false)) {}
+					if (ImGui::MenuItem("Copy", "CTRL+C", false, false)) {}
+					if (ImGui::MenuItem("Paste", "CTRL+V", false, false)) {}
+					ImGui::EndMenu();
+				}
+				if (ImGui::BeginMenu("Window"))
+				{
+					ImGui::MenuItem("Editor", NULL, &show_editor);
+					ImGui::EndMenu();
+				}
+				if (ImGui::BeginMenu("Help"))
+				{
+					ImGui::MenuItem("ImGui Demo", NULL, &show_demo);
+					ImGui::MenuItem("ImGui Metrics", NULL, &show_app_metrics);
+					ImGui::MenuItem("Style Editor", NULL, &show_app_style_editor);
+					ImGui::MenuItem("About Dear ImGui", NULL, &show_app_about);
+					ImGui::EndMenu();
+				}
+				ImGui::EndMainMenuBar();
+			}
 
+			if(show_editor && ImGui::Begin("Editor", &show_editor,
+				ImGuiWindowFlags_AlwaysAutoResize |
+				ImGuiWindowFlags_NoCollapse))
+			{
+				ml::Editor::ShowHelpMarker("Help Marker");
+				ImGui::Separator();
 				ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-				ImGui::End();
-			}
-
-			// 3. Show another simple window.
-			if (show_another_window)
-			{
-				ImGui::Begin("Another Window", &show_another_window);
-				ImGui::Text("Hello from another window!");
-				if (ImGui::Button("Close Me"))
+				ImGui::Separator();
+				ImGui::ColorEdit4("Clear Color", &clear_color[0]);
+				if (ImGui::CollapsingHeader("Framebuffer"))
 				{
-					show_another_window = false;
+					ImGui::SliderInt("FBO Mode", &m_fboMode, 0, 4);
+				}
+				if (ImGui::CollapsingHeader("Geometry"))
+				{
+					ImGui::SliderInt("Line Mode", &m_lineMode, 0, 3);
+					ImGui::ColorEdit4("Line Color", &m_lineColor[0]);
+					ImGui::SliderFloat("Line Delta", &m_lineDelta, 0.f, 1.f);
+					ImGui::SliderInt("Line Samples", &m_lineSamples, 1, 128);
 				}
 				ImGui::End();
 			}
 
-			// Rendering
-			ImGui::Render();
-
-			this->makeContextCurrent();
-			this->setViewport(ml::vec2f::Zero, this->getFramebufferSize());
-			
-			ImGui_ML_RenderDrawData(ImGui::GetDrawData());
-			this->makeContextCurrent();
+			if (show_app_metrics)     { ImGui::ShowMetricsWindow(&show_app_metrics); }
+			if (show_app_style_editor){ ImGui::Begin("Style Editor", &show_app_style_editor); ImGui::ShowStyleEditor(); ImGui::End(); }
+			if (show_app_about)       { ImGui::ShowAboutWindow(&show_app_about); }
 
 			/* * * * * * * * * * * * * * * * * * * * */
 		}
+		ImGui::Render();
+		this->makeContextCurrent();
+		this->setViewport(ml::vec2f::Zero, this->getFramebufferSize());
+		ImGui_ML_RenderDrawData(ImGui::GetDrawData());
+		this->makeContextCurrent();
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
 		this->swapBuffers();
 
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -973,6 +920,7 @@ namespace DEMO
 	
 	void Demo::onExit(const ExitEvent & ev)
 	{
+		ImGui_ML_Shutdown();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

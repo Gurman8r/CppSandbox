@@ -423,36 +423,28 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	Window::ErrorFun			Window::setErrorCallback(ErrorFun callback)
+	Window::ErrorFun Window::setErrorCallback(ErrorFun callback)
 	{
-		if (glfwSetErrorCallback(reinterpret_cast<GLFWerrorfun>(callback)))
-		{
-			return callback;
-		}
-		return NULL;
+		return glfwSetErrorCallback(reinterpret_cast<GLFWerrorfun>(callback))
+			? callback
+			: NULL;
 	}
 	
-	Window::CharFun				Window::setCharCallback(CharFun callback)
+	Window::CharFun Window::setCharCallback(CharFun callback)
 	{
-		if (glfwSetCharCallback(ML_WINDOW(m_window),
-			reinterpret_cast<GLFWcharfun>(callback)))
-		{
-			return callback;
-		}
-		return NULL;
+		return glfwSetCharCallback(ML_WINDOW(m_window), reinterpret_cast<GLFWcharfun>(callback))
+			? callback
+			: NULL;
 	}
 	
-	Window::CursorEnterFun		Window::setCursorEnterCallback(CursorEnterFun callback)
+	Window::CursorEnterFun Window::setCursorEnterCallback(CursorEnterFun callback)
 	{
-		if (glfwSetCursorEnterCallback(ML_WINDOW(m_window),
-			reinterpret_cast<GLFWcursorenterfun>(callback)))
-		{
-			return callback;
-		}
-		return NULL;
+		return glfwSetCursorEnterCallback(ML_WINDOW(m_window), reinterpret_cast<GLFWcursorenterfun>(callback))
+			? callback
+			: NULL;
 	}
 	
-	Window::CursorPosFun		Window::setCursorPosCallback(CursorPosFun callback)
+	Window::CursorPosFun Window::setCursorPosCallback(CursorPosFun callback)
 	{
 		if (glfwSetCursorPosCallback(ML_WINDOW(m_window),
 			reinterpret_cast<GLFWcursorposfun>(callback)))
@@ -462,84 +454,60 @@ namespace ml
 		return NULL;
 	}
 	
-	Window::FramebufferSizeFun	Window::setFramebufferSizeCallback(FramebufferSizeFun callback)
+	Window::FramebufferSizeFun Window::setFramebufferSizeCallback(FramebufferSizeFun callback)
 	{
-		if (glfwSetFramebufferSizeCallback(ML_WINDOW(m_window),
-			reinterpret_cast<GLFWframebuffersizefun>(callback)))
-		{
-			return callback;
-		}
-		return NULL;
+		return glfwSetFramebufferSizeCallback(ML_WINDOW(m_window), reinterpret_cast<GLFWframebuffersizefun>(callback))
+			? callback
+			: NULL;
 	}
 	
-	Window::KeyFun				Window::setKeyCallback(KeyFun callback)
+	Window::KeyFun Window::setKeyCallback(KeyFun callback)
 	{
-		if (glfwSetKeyCallback(ML_WINDOW(m_window),
-			reinterpret_cast<GLFWkeyfun>(callback)))
-		{
-			return callback;
-		}
-		return NULL;
+		return glfwSetKeyCallback(ML_WINDOW(m_window), reinterpret_cast<GLFWkeyfun>(callback))
+			? callback
+			: NULL;
 	}
 	
-	Window::MouseButtonFun		Window::setMouseButtonCallback(MouseButtonFun callback)
+	Window::MouseButtonFun Window::setMouseButtonCallback(MouseButtonFun callback)
 	{
-		if (glfwSetMouseButtonCallback(ML_WINDOW(m_window),
-			reinterpret_cast<GLFWmousebuttonfun>(callback)))
-		{
-
-		}
-		return callback;
+		return glfwSetMouseButtonCallback(ML_WINDOW(m_window), reinterpret_cast<GLFWmousebuttonfun>(callback))
+			? callback
+			: NULL;
 	}
 	
-	Window::ScrollFun			Window::setScrollCallback(ScrollFun callback)
+	Window::ScrollFun Window::setScrollCallback(ScrollFun callback)
 	{
-		if (glfwSetScrollCallback(ML_WINDOW(m_window), 
-			reinterpret_cast<GLFWscrollfun>(callback)))
-		{
-			return callback;
-		}
-		return NULL;
+		return glfwSetScrollCallback(ML_WINDOW(m_window), reinterpret_cast<GLFWscrollfun>(callback))
+			? callback 
+			: NULL;
 	}
 	
-	Window::WindowCloseFun		Window::setWindowCloseCallback(WindowCloseFun callback)
+	Window::WindowCloseFun Window::setWindowCloseCallback(WindowCloseFun callback)
 	{
-		if (glfwSetWindowCloseCallback(ML_WINDOW(m_window),
-			reinterpret_cast<GLFWwindowclosefun>(callback)))
-		{
-			return callback;
-		}
-		return NULL;
+		return glfwSetWindowCloseCallback(ML_WINDOW(m_window), reinterpret_cast<GLFWwindowclosefun>(callback))
+			? callback
+			: NULL;
 	}
 	
-	Window::WindowFocusFun		Window::setWindowFocusCallback(WindowFocusFun callback)
+	Window::WindowFocusFun Window::setWindowFocusCallback(WindowFocusFun callback)
 	{
-		if (glfwSetWindowFocusCallback(ML_WINDOW(m_window),
-			reinterpret_cast<GLFWwindowfocusfun>(callback)))
-		{
-			return callback;
-		}
-		return NULL;
+		return glfwSetWindowFocusCallback(ML_WINDOW(m_window), reinterpret_cast<GLFWwindowfocusfun>(callback))
+			? callback
+			: NULL;
 	}
 	
-	Window::WindowPosFun		Window::setWindowPosCallback(WindowPosFun callback)
+	Window::WindowPosFun Window::setWindowPosCallback(WindowPosFun callback)
 	{
-		if (glfwSetWindowPosCallback(ML_WINDOW(m_window),
-			reinterpret_cast<GLFWwindowposfun>(callback)))
-		{
-			return callback;
-		}
-		return NULL;
+		return glfwSetWindowPosCallback(ML_WINDOW(m_window), reinterpret_cast<GLFWwindowposfun>(callback))
+			? callback
+			: NULL;
 	}
 	
-	Window::WindowSizeFun		Window::setWindowSizeCallback(WindowSizeFun callback)
+	Window::WindowSizeFun Window::setWindowSizeCallback(WindowSizeFun callback)
 	{
-		if (glfwSetWindowSizeCallback(ML_WINDOW(m_window),
-			reinterpret_cast<GLFWwindowposfun>(callback)))
-		{
-			return callback;
-		}
-		return NULL;
+		return glfwSetWindowSizeCallback(ML_WINDOW(m_window), reinterpret_cast<GLFWwindowposfun>(callback))
+			? callback
+			: NULL;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

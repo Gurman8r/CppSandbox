@@ -71,15 +71,11 @@ namespace DEMO
 
 	struct UpdateEvent final : public DemoEvent
 	{
-		ml::Duration		elapsed;
-		ml::NativeInput		input;
+		ml::Duration elapsed;
 
-		UpdateEvent(
-			const ml::Duration & elapsed,
-			const ml::NativeInput & input)
+		UpdateEvent(const ml::Duration & elapsed)
 			: DemoEvent(EV_Update)
 			, elapsed(elapsed)
-			, input(input)
 		{
 		}
 	};

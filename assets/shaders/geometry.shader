@@ -59,7 +59,9 @@ layout(points) in;
 layout(line_strip, max_vertices = SAMPLES_MAX) out;
 
 // Uniforms
-uniform int	u_curveMode;
+uniform int		u_curveMode;
+uniform float	u_delta;
+uniform int		u_samples;
 
 // Maths
 vec4 lerp(in vec4 p0, in vec4 p1, const float t)
@@ -240,7 +242,7 @@ void drawCubicHermiteSplineSegment(in vec4 p0, in vec4 m0, in vec4 p1, in vec4 m
 }
 
 // Stub
-void stub(const int samples, const float dt)
+void stub(in int samples, in float dt)
 {
 	// test points
 	vec4 testP0 = vec4(-0.5, 0.5, 0.0, 1.0);
@@ -252,15 +254,16 @@ void stub(const int samples, const float dt)
 
 	switch (u_curveMode)
 	{
-	case CURVE_BEZIER:
-		// full curve
-		drawBezierCurve3(testP0, testP1, testP2, testP3, samples, dt);
-		//	break;	// no break to draw the lines that are used to form the curve
 	case CURVE_LINES:
 		// multiple segments
 		drawLine(testP0, testP1, samples, dt);
 		drawLine(testP1, testP2, samples, dt);
 		drawLine(testP2, testP3, samples, dt);
+		drawLine(testP3, testP0, samples, dt);
+		break;
+	case CURVE_BEZIER:
+		// full curve
+		drawBezierCurve3(testP0, testP1, testP2, testP3, samples, dt);
 		break;
 	case CURVE_CATMULLROM:
 		// curve segment
@@ -288,8 +291,7 @@ void stub(const int samples, const float dt)
 /* * * * * * * * * * * * * * * * * * * * */
 void main()
 {
-	const int samples = SAMPLES_PER_SEGMENT;
-	const float dt = 1.0 / float(SAMPLES_PER_SEGMENT);
+	float dt = u_delta / float(u_samples);
 
-	stub(samples, dt);
+	stub(u_samples, dt);
 }

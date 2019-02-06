@@ -19,6 +19,7 @@
 #include <MemeNet/Client.hpp>
 #include <MemeNet/Server.hpp>
 #include <MemeScript/Interpreter.hpp>
+#include <MemeEditor/Editor.hpp>
 
 #include "DemoEvents.hpp"
 #include "Settings.hpp"
@@ -157,7 +158,6 @@ namespace DEMO
 		MIN_TEXT = -1,
 		TXT_dynamic,
 		TXT_static,
-		TXT_input,
 		MAX_TEXT,
 
 		// Sounds
@@ -242,8 +242,12 @@ namespace DEMO
 		ml::Sound		sounds		[MAX_SOUND];
 
 		ml::Debug::Status m_status;
-		int32_t m_fboMode = 0;
-		bool m_acceptingInput = 0;
+
+		int32_t		m_fboMode		= 0;
+		int32_t		m_lineMode		= 0;
+		ml::vec4f	m_lineColor		= ml::Color::Red;
+		float		m_lineDelta		= 1.f;
+		int32_t		m_lineSamples	= 16;
 	};
 }
 

@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * */
 
 #include <imgui/imgui.h>
-#include <imgui/imgui_impl_ml.hpp>
+#include <imgui/imgui_ml.hpp>
 #include <MemeCore/EventSystem.hpp>
 #include <MemeGraphics/OpenGL.hpp>
 #include <MemeGraphics/Shader.hpp>
@@ -22,11 +22,6 @@ static ClientAPI	g_ClientApi = API_Unknown;
 static double       g_Time = 0.0;
 static bool         g_MouseJustPressed[5] = { false, false, false, false, false };
 static void *		g_MouseCursors[ImGuiMouseCursor_COUNT] = { 0 };
-
-static ml::Window::MouseButtonFun   g_PrevUserCallbackMousebutton = NULL;
-static ml::Window::ScrollFun        g_PrevUserCallbackScroll = NULL;
-static ml::Window::KeyFun           g_PrevUserCallbackKey = NULL;
-static ml::Window::CharFun          g_PrevUserCallbackChar = NULL;
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -58,7 +53,9 @@ static bool ImGui_ML_Init(ml::Window * window, bool install_callbacks, ClientAPI
 	ImGuiIO& io = ImGui::GetIO();
 	io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors; // We can honor GetMouseCursor() values (optional)
 	io.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;  // We can honor io.WantSetMousePos requests (optional, rarely used)
-	io.BackendPlatformName = "imgui_impl_ml";
+	io.BackendPlatformName = "imgui_impl_glfw";
+	io.BackendRendererName = "imgui_impl_opengl3";
+
 
 	// Keyboard mapping. ImGui will use those indices to peek into the io.KeysDown[] array.
 	io.KeyMap[ImGuiKey_Tab] = ml::WindowKey::Tab;
@@ -89,25 +86,19 @@ static bool ImGui_ML_Init(ml::Window * window, bool install_callbacks, ClientAPI
 
 	g_MouseCursors[ImGuiMouseCursor_Arrow]		= g_Window->createCursor(ml::Cursor::Arrow);
 	g_MouseCursors[ImGuiMouseCursor_TextInput]	= g_Window->createCursor(ml::Cursor::IBeam);
-	g_MouseCursors[ImGuiMouseCursor_ResizeAll]	= g_Window->createCursor(ml::Cursor::Arrow);   // FIXME: ML doesn't have this.
+	g_MouseCursors[ImGuiMouseCursor_ResizeAll]	= g_Window->createCursor(ml::Cursor::Arrow);   // FIXME: GLFW doesn't have this.
 	g_MouseCursors[ImGuiMouseCursor_ResizeNS]	= g_Window->createCursor(ml::Cursor::VResize);
 	g_MouseCursors[ImGuiMouseCursor_ResizeEW]	= g_Window->createCursor(ml::Cursor::HResize);
-	g_MouseCursors[ImGuiMouseCursor_ResizeNESW] = g_Window->createCursor(ml::Cursor::Arrow);  // FIXME: ML doesn't have this.
-	g_MouseCursors[ImGuiMouseCursor_ResizeNWSE] = g_Window->createCursor(ml::Cursor::Arrow);  // FIXME: ML doesn't have this.
+	g_MouseCursors[ImGuiMouseCursor_ResizeNESW] = g_Window->createCursor(ml::Cursor::Arrow);  // FIXME: GLFW doesn't have this.
+	g_MouseCursors[ImGuiMouseCursor_ResizeNWSE] = g_Window->createCursor(ml::Cursor::Arrow);  // FIXME: GLFW doesn't have this.
 	g_MouseCursors[ImGuiMouseCursor_Hand]		= g_Window->createCursor(ml::Cursor::Hand);
-
-	// Chain ML callbacks: our callbacks will call the user's previously installed callbacks, if any.
-	g_PrevUserCallbackMousebutton	= NULL;
-	g_PrevUserCallbackScroll		= NULL;
-	g_PrevUserCallbackKey			= NULL;
-	g_PrevUserCallbackChar			= NULL;
 
 	if (install_callbacks)
 	{
-		g_PrevUserCallbackMousebutton = window->setMouseButtonCallback(ImGui_ML_MouseButtonCallback);
-		g_PrevUserCallbackScroll = window->setScrollCallback(ImGui_ML_ScrollCallback);
-		g_PrevUserCallbackKey = window->setKeyCallback(ImGui_ML_KeyCallback);
-		g_PrevUserCallbackChar = window->setCharCallback(ImGui_ML_CharCallback);
+		window->setMouseButtonCallback(ImGui_ML_MouseButtonCallback);
+		window->setScrollCallback(ImGui_ML_ScrollCallback);
+		window->setKeyCallback(ImGui_ML_KeyCallback);
+		window->setCharCallback(ImGui_ML_CharCallback);
 	}
 
 	g_ClientApi = client_api;
@@ -247,9 +238,6 @@ static bool ImGui_ML_CompileShader(uint32_t & program, const char * const * vs, 
 
 bool ImGui_ML_Init(const char * glsl_version)
 {
-	ImGuiIO& io = ImGui::GetIO();
-	io.BackendRendererName = "imgui_impl_opengl3";
-
 	// Store GLSL version string so we can refer to it later in case we recreate shaders. Note: GLSL version is NOT the same as GL version. Leave this to NULL if unsure.
 #ifdef USE_GL_ES3
 	if (glsl_version == NULL)
@@ -708,7 +696,9 @@ void ImGui_ML_DestroyDeviceObjects()
 	if (g_VertHandle) ml::OpenGL::deleteShader(g_VertHandle);
 	g_VertHandle = 0;
 
-	if (g_ShaderHandle && g_FragHandle) ml::OpenGL::detachShader(g_ShaderHandle, g_FragHandle);
+	if (g_ShaderHandle && g_FragHandle) 
+		ml::OpenGL::detachShader(g_ShaderHandle, g_FragHandle);
+
 	if (g_FragHandle) ml::OpenGL::deleteShader(g_FragHandle);
 	g_FragHandle = 0;
 
@@ -722,11 +712,6 @@ void ImGui_ML_DestroyDeviceObjects()
 
 void ImGui_ML_MouseButtonCallback(void * window, int32_t button, int32_t action, int32_t mods)
 {
-	if (ml::Window::MouseButtonFun temp = g_PrevUserCallbackMousebutton)
-	{
-		g_PrevUserCallbackMousebutton = NULL;
-	}
-
 	if (action == ML_PRESS && button >= 0 && button < IM_ARRAYSIZE(g_MouseJustPressed))
 	{
 		g_MouseJustPressed[button] = true;
@@ -737,11 +722,6 @@ void ImGui_ML_MouseButtonCallback(void * window, int32_t button, int32_t action,
 
 void ImGui_ML_ScrollCallback(void * window, double xoffset, double yoffset)
 {
-	if (ml::Window::ScrollFun temp = g_PrevUserCallbackScroll)
-	{
-		g_PrevUserCallbackScroll = NULL;
-	}
-
 	ImGuiIO& io = ImGui::GetIO();
 	io.MouseWheelH += (float)xoffset;
 	io.MouseWheel += (float)yoffset;
@@ -751,11 +731,6 @@ void ImGui_ML_ScrollCallback(void * window, double xoffset, double yoffset)
 
 void ImGui_ML_KeyCallback(void * window, int32_t key, int32_t scancode, int32_t action, int32_t mods)
 {
-	if (ml::Window::KeyFun temp = g_PrevUserCallbackKey)
-	{
-		g_PrevUserCallbackKey = NULL;
-	}
-
 	ImGuiIO& io = ImGui::GetIO();
 
 	if (action == ML_PRESS)
@@ -779,11 +754,6 @@ void ImGui_ML_KeyCallback(void * window, int32_t key, int32_t scancode, int32_t 
 
 void ImGui_ML_CharCallback(void * window, uint32_t c)
 {
-	if (ml::Window::CharFun temp = g_PrevUserCallbackChar)
-	{
-		g_PrevUserCallbackChar = NULL;
-	}
-
 	ImGuiIO& io = ImGui::GetIO();
 	if (c > 0 && c < 0x10000)
 	{
