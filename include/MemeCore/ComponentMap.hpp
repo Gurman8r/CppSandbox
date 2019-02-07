@@ -4,7 +4,7 @@
 #include <MemeCore/Component.hpp>
 
 #define assert_typeof_component(T) \
-static_assert(std::is_base_of<ml::Component, T>::value, "Type must derrive ml::Component")
+static_assert(std::is_base_of<ml::Component, T>::value, "Type must derive ml::Component")
 
 namespace ml
 {

@@ -59,6 +59,7 @@ namespace ml
 			m_size = vec2u::Zero;
 			m_pixels.clear();
 			m_channels = 0;
+			stbi_image_free(data);
 			return false;
 		}
 	}

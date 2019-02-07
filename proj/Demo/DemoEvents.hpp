@@ -98,8 +98,11 @@ namespace DEMO
 
 	struct GuiEvent final : public DemoEvent
 	{
-		GuiEvent()
+		ml::Duration elapsed;
+
+		GuiEvent(const ml::Duration & elapsed)
 			: DemoEvent(EV_Gui)
+			, elapsed(elapsed)
 		{
 		}
 	};

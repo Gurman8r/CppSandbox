@@ -1,8 +1,7 @@
 #ifndef _EDITOR_HPP_
 #define _EDITOR_HPP_
 
-#include <MemeEditor/Export.hpp>
-#include <MemeCore/ISingleton.hpp>
+#include <MemeEditor/ResourceManager.hpp>
 #include <MemeGraphics/RenderWindow.hpp>
 #include <MemeGraphics/Transform.hpp>
 
@@ -21,11 +20,18 @@ namespace ml
 		~Editor();
 
 	public:
-		void ShowHelpMarker(const char * desc);
+		static void ShowHelpMarker(const char * desc);
 
-		Transform & InputTransform(const char * label, Transform & value);
+	public:
+		mat4f & InputMat4f(const char * label, mat4f & value);
+		mat3f & InputMat3f(const char * label, mat3f & value);
+
+	public:
+		inline const bool	open() const	{ return m_open; }
+		inline bool &		open()			{ return m_open; }
 
 	private:
+		bool m_open;
 	};
 }
 

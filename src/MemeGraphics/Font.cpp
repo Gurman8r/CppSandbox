@@ -12,18 +12,18 @@
 namespace ml
 {
 	Font::Font()
-		: m_pages()
-		, m_library(NULL)
-		, m_face(NULL)
-		, m_stroker(NULL)
+		: m_pages	()
+		, m_library	(NULL)
+		, m_face	(NULL)
+		, m_stroker	(NULL)
 	{
 	}
 
 	Font::Font(const Font & copy)
-		: m_pages(copy.m_pages)
-		, m_library(copy.m_library)
-		, m_face(copy.m_face)
-		, m_stroker(copy.m_stroker)
+		: m_pages	(copy.m_pages)
+		, m_library	(copy.m_library)
+		, m_face	(copy.m_face)
+		, m_stroker	(copy.m_stroker)
 	{
 	}
 
@@ -35,6 +35,8 @@ namespace ml
 
 	bool Font::cleanup()
 	{
+		m_pages.clear();
+
 		// Destroy the fonts face
 		if (m_face)
 		{

@@ -5,7 +5,7 @@
 #include <MemeCore/ITrackable.hpp>
 
 #define assert_typeof_node(T) \
-static_assert(std::is_base_of<ml::AST_Node, T>::value, "Type must derrive ml::AST_Node") \
+static_assert(std::is_base_of<ml::AST_Node, T>::value, "Type must derive ml::AST_Node") \
 
 namespace ml
 {

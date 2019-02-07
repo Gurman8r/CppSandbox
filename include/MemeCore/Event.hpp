@@ -7,7 +7,7 @@
 #define ML_MAX_CUSTOM_EVENTS 256
 
 #define assert_typeof_event(T) \
-static_assert(std::is_base_of<ml::Event, T>::value, "Type must derrive ml::Event") \
+static_assert(std::is_base_of<ml::Event, T>::value, "Type must derive ml::Event") \
 
 namespace ml
 {

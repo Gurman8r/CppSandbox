@@ -31,50 +31,50 @@ namespace DEMO
 	enum : int32_t
 	{
 		// Fonts
-		MIN_FONT = -1,
-		FNT_clacon,
-		FNT_consolas,
-		FNT_lconsole,
-		FNT_minecraft,
-		MAX_FONT,
+		//MIN_FONT = -1,
+		//FNT_clacon,
+		//FNT_consolas,
+		//FNT_lconsole,
+		//FNT_minecraft,
+		//MAX_FONT,
 
 		// Images
-		MIN_IMAGE = -1,
-		IMG_icon,
-		MAX_IMAGE,
+		//MIN_IMAGE = -1,
+		//IMG_icon,
+		//MAX_IMAGE,
 
 		// Textures
-		MIN_TEXTURE = -1,
-		TEX_dean,
-		TEX_sanic,
-		TEX_earth,
-		TEX_framebuffer,
-		TEX_bg_clouds,
-		TEX_sky_clouds,
-		TEX_sky_water,
-		TEX_earth_cm,
-		TEX_earth_dm,
-		TEX_earth_hm,
-		TEX_earth_lm,
-		TEX_earth_nm,
-		TEX_earth_sm,
-		TEX_mars_dm,
-		TEX_mars_nm,
-		TEX_moon_dm,
-		TEX_moon_nm,
-		TEX_stone_dm,
-		TEX_stone_hm,
-		TEX_stone_nm,
-		MAX_TEXTURE,
+		//MIN_TEXTURE = -1,
+		//TEX_dean,
+		//TEX_sanic,
+		//TEX_earth,
+		//TEX_framebuffer,
+		//TEX_bg_clouds,
+		//TEX_sky_clouds,
+		//TEX_sky_water,
+		//TEX_earth_cm,
+		//TEX_earth_dm,
+		//TEX_earth_hm,
+		//TEX_earth_lm,
+		//TEX_earth_nm,
+		//TEX_earth_sm,
+		//TEX_mars_dm,
+		//TEX_mars_nm,
+		//TEX_moon_dm,
+		//TEX_moon_nm,
+		//TEX_stone_dm,
+		//TEX_stone_hm,
+		//TEX_stone_nm,
+		//MAX_TEXTURE,
 
 		// Shaders
-		MIN_SHADER = -1,
-		GL_basic3D,
-		GL_sprites,
-		GL_text,
-		GL_geometry,
-		GL_framebuffer,
-		MAX_SHADER,
+		//MIN_SHADER = -1,
+		//GL_basic3D,
+		//GL_sprites,
+		//GL_text,
+		//GL_geometry,
+		//GL_framebuffer,
+		//MAX_SHADER,
 
 		// Uniforms
 		MIN_UNIFORM = -1,
@@ -139,13 +139,6 @@ namespace DEMO
 		MIN_RBO = -1,
 		RBO_scene,
 		MAX_RBO,
-
-		// Meshes
-		MIN_MESH = -1,
-		MESH_example,
-		MESH_sphere8x6,
-		MESH_sphere32x24,
-		MAX_MESH,
 
 		// Models
 		MIN_MODEL = -1,
@@ -232,10 +225,6 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 
 	private:
-		ml::Font		fonts		[MAX_FONT];
-		ml::Image		images		[MAX_IMAGE];
-		ml::Texture		textures	[MAX_TEXTURE];
-		ml::Shader		shaders		[MAX_SHADER];
 		ml::Uniform		uniforms	[MAX_UNIFORM];
 		ml::Transform	proj		[MAX_PROJ];
 		ml::Transform	view		[MAX_VIEW];
@@ -245,7 +234,6 @@ namespace DEMO
 		ml::IBO			ibo			[MAX_IBO];
 		ml::FBO			fbo			[MAX_FBO];
 		ml::RBO			rbo			[MAX_RBO];
-		ml::Mesh		mesh		[MAX_MESH];
 		ml::Model		models		[MAX_MODEL];
 		ml::Text		text		[MAX_TEXT];
 		ml::Sound		sounds		[MAX_SOUND];
@@ -256,6 +244,7 @@ namespace DEMO
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
+		ml::Texture m_framebuffer;
 		ml::vec4f	m_clearColor	= ml::Color::Violet;
 		int32_t		m_fboMode		= 0;
 		int32_t		m_lineMode		= 1;
