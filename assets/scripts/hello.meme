@@ -11,6 +11,11 @@
 		lib	= "MemeScript Version 1.0";
 		url	= "https://github.com/Gurman8r/CppSandbox";
 
+		#printl("# {dir}\{exe}");
+		#printl("# {msg}");
+		#printl("# {lib}");
+		#printl("# {url}");
+		
 		printl("{dir}\{exe}");
 		printl("* * * * * * * * * * * * * * * * * * * * * * *");
 		printl("*                                           *");

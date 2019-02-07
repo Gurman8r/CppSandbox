@@ -58,27 +58,27 @@ static bool ImGui_ML_Init(ml::Window * window, bool install_callbacks, ClientAPI
 
 
 	// Keyboard mapping. ImGui will use those indices to peek into the io.KeysDown[] array.
-	io.KeyMap[ImGuiKey_Tab] = ml::WindowKey::Tab;
-	io.KeyMap[ImGuiKey_LeftArrow] = ml::WindowKey::Left;
-	io.KeyMap[ImGuiKey_RightArrow] = ml::WindowKey::Right;
-	io.KeyMap[ImGuiKey_UpArrow] = ml::WindowKey::Up;
-	io.KeyMap[ImGuiKey_DownArrow] = ml::WindowKey::Down;
-	io.KeyMap[ImGuiKey_PageUp] = ml::WindowKey::PageUp;
-	io.KeyMap[ImGuiKey_PageDown] = ml::WindowKey::PageDown;
-	io.KeyMap[ImGuiKey_Home] = ml::WindowKey::Home;
-	io.KeyMap[ImGuiKey_End] = ml::WindowKey::End;
-	io.KeyMap[ImGuiKey_Insert] = ml::WindowKey::Insert;
-	io.KeyMap[ImGuiKey_Delete] = ml::WindowKey::Delete;
-	io.KeyMap[ImGuiKey_Backspace] = ml::WindowKey::Backspace;
-	io.KeyMap[ImGuiKey_Space] = ml::WindowKey::Space;
-	io.KeyMap[ImGuiKey_Enter] = ml::WindowKey::Enter;
-	io.KeyMap[ImGuiKey_Escape] = ml::WindowKey::Escape;
-	io.KeyMap[ImGuiKey_A] = ml::WindowKey::A;
-	io.KeyMap[ImGuiKey_C] = ml::WindowKey::C;
-	io.KeyMap[ImGuiKey_V] = ml::WindowKey::V;
-	io.KeyMap[ImGuiKey_X] = ml::WindowKey::X;
-	io.KeyMap[ImGuiKey_Y] = ml::WindowKey::Y;
-	io.KeyMap[ImGuiKey_Z] = ml::WindowKey::Z;
+	io.KeyMap[ImGuiKey_Tab] = ml::KeyCode::Tab;
+	io.KeyMap[ImGuiKey_LeftArrow] = ml::KeyCode::Left;
+	io.KeyMap[ImGuiKey_RightArrow] = ml::KeyCode::Right;
+	io.KeyMap[ImGuiKey_UpArrow] = ml::KeyCode::Up;
+	io.KeyMap[ImGuiKey_DownArrow] = ml::KeyCode::Down;
+	io.KeyMap[ImGuiKey_PageUp] = ml::KeyCode::PageUp;
+	io.KeyMap[ImGuiKey_PageDown] = ml::KeyCode::PageDown;
+	io.KeyMap[ImGuiKey_Home] = ml::KeyCode::Home;
+	io.KeyMap[ImGuiKey_End] = ml::KeyCode::End;
+	io.KeyMap[ImGuiKey_Insert] = ml::KeyCode::Insert;
+	io.KeyMap[ImGuiKey_Delete] = ml::KeyCode::Delete;
+	io.KeyMap[ImGuiKey_Backspace] = ml::KeyCode::Backspace;
+	io.KeyMap[ImGuiKey_Space] = ml::KeyCode::Space;
+	io.KeyMap[ImGuiKey_Enter] = ml::KeyCode::Enter;
+	io.KeyMap[ImGuiKey_Escape] = ml::KeyCode::Escape;
+	io.KeyMap[ImGuiKey_A] = ml::KeyCode::A;
+	io.KeyMap[ImGuiKey_C] = ml::KeyCode::C;
+	io.KeyMap[ImGuiKey_V] = ml::KeyCode::V;
+	io.KeyMap[ImGuiKey_X] = ml::KeyCode::X;
+	io.KeyMap[ImGuiKey_Y] = ml::KeyCode::Y;
+	io.KeyMap[ImGuiKey_Z] = ml::KeyCode::Z;
 
 	io.SetClipboardTextFn = ImGui_ML_SetClipboardText;
 	io.GetClipboardTextFn = ImGui_ML_GetClipboardText;
@@ -236,7 +236,7 @@ static bool ImGui_ML_CompileShader(uint32_t & program, const char * const * vs, 
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-bool ImGui_ML_Init(const char * glsl_version)
+bool ImGui_ML_Init(const char * glsl_version, ml::Window * window, bool install_callbacks)
 {
 	// Store GLSL version string so we can refer to it later in case we recreate shaders. Note: GLSL version is NOT the same as GL version. Leave this to NULL if unsure.
 #ifdef USE_GL_ES3
@@ -250,11 +250,6 @@ bool ImGui_ML_Init(const char * glsl_version)
 	strcpy(g_GlslVersionString, glsl_version);
 	strcat(g_GlslVersionString, "\n");
 
-	return true;
-}
-
-bool ImGui_ML_InitForOpenGL(ml::Window * window, bool install_callbacks)
-{
 	return ImGui_ML_Init(window, install_callbacks, API_OpenGL);
 }
 
@@ -744,10 +739,10 @@ void ImGui_ML_KeyCallback(void * window, int32_t key, int32_t scancode, int32_t 
 	}
 
 	// Modifiers are not reliable across systems
-	io.KeyCtrl = io.KeysDown[ml::WindowKey::LeftControl] || io.KeysDown[ml::WindowKey::RightControl];
-	io.KeyShift = io.KeysDown[ml::WindowKey::LeftShift] || io.KeysDown[ml::WindowKey::RightShift];
-	io.KeyAlt = io.KeysDown[ml::WindowKey::LeftAlt] || io.KeysDown[ml::WindowKey::RightAlt];
-	io.KeySuper = io.KeysDown[ml::WindowKey::LeftSuper] || io.KeysDown[ml::WindowKey::RightSuper];
+	io.KeyCtrl = io.KeysDown[ml::KeyCode::LeftControl] || io.KeysDown[ml::KeyCode::RightControl];
+	io.KeyShift = io.KeysDown[ml::KeyCode::LeftShift] || io.KeysDown[ml::KeyCode::RightShift];
+	io.KeyAlt = io.KeysDown[ml::KeyCode::LeftAlt] || io.KeysDown[ml::KeyCode::RightAlt];
+	io.KeySuper = io.KeysDown[ml::KeyCode::LeftSuper] || io.KeysDown[ml::KeyCode::RightSuper];
 
 	ML_EventSystem.fireEvent(ml::KeyEvent(key, scancode, action, mods));
 }

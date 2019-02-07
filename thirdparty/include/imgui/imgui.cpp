@@ -3713,7 +3713,7 @@ void ImGui::EndFrame()
     {
         if (g.CurrentWindowStack.Size > 1)
         {
-            IM_ASSERT(g.CurrentWindowStack.Size == 1 && "Mismatched Begin/BeginChild vs End/EndChild calls: did you forget to call End/EndChild?");
+			IM_ASSERT(g.CurrentWindowStack.Size == 1 && "Mismatched Begin/BeginChild vs End/EndChild calls: did you forget to call End/EndChild?");
             while (g.CurrentWindowStack.Size > 1) // FIXME-ERRORHANDLING
                 End();
         }

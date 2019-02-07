@@ -15,8 +15,7 @@ namespace ml
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-IMGUI_API bool ImGui_ML_Init(const char * glsl_version = 0);
-IMGUI_API bool ImGui_ML_InitForOpenGL(ml::Window * window, bool install_callbacks);
+IMGUI_API bool ImGui_ML_Init(const char * glsl_version, ml::Window * window, bool install_callbacks);
 IMGUI_API void ImGui_ML_Shutdown();
 IMGUI_API void ImGui_ML_NewFrame();
 IMGUI_API void ImGui_ML_RenderDrawData(ImDrawData * draw_data);

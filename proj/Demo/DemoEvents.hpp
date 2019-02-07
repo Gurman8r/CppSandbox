@@ -21,6 +21,7 @@ namespace DEMO
 			EV_Start,
 			EV_Update,
 			EV_Draw,
+			EV_Gui,
 			EV_Exit,
 
 			MAX_DEMO_EVENT
@@ -89,6 +90,16 @@ namespace DEMO
 		DrawEvent(const ml::Duration & elapsed)
 			: DemoEvent(EV_Draw)
 			, elapsed(elapsed)
+		{
+		}
+	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	struct GuiEvent final : public DemoEvent
+	{
+		GuiEvent()
+			: DemoEvent(EV_Gui)
 		{
 		}
 	};

@@ -178,6 +178,8 @@ namespace DEMO
 		Demo();
 		~Demo();
 
+		/* * * * * * * * * * * * * * * * * * * * */
+
 	public:
 		void onEvent(const ml::Event * value) override;
 
@@ -188,6 +190,8 @@ namespace DEMO
 			m_status = ml::Debug::Success;
 			return temp;
 		}
+
+		/* * * * * * * * * * * * * * * * * * * * */
 
 	private:
 		bool	setupInterpreter();
@@ -214,13 +218,18 @@ namespace DEMO
 			);
 		}
 
+		/* * * * * * * * * * * * * * * * * * * * */
+
 	private:
 		void	onEnter(const EnterEvent & ev);
 		void	onLoad(const LoadEvent & ev);
 		void	onStart(const StartEvent & ev);
 		void	onUpdate(const UpdateEvent & ev);
 		void	onDraw(const DrawEvent & ev);
+		void	onGui(const GuiEvent & ev);
 		void	onExit(const ExitEvent & ev);
+
+		/* * * * * * * * * * * * * * * * * * * * */
 
 	private:
 		ml::Font		fonts		[MAX_FONT];
@@ -241,13 +250,29 @@ namespace DEMO
 		ml::Text		text		[MAX_TEXT];
 		ml::Sound		sounds		[MAX_SOUND];
 
+		/* * * * * * * * * * * * * * * * * * * * */
+
 		ml::Debug::Status m_status;
 
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		ml::vec4f	m_clearColor	= ml::Color::Violet;
 		int32_t		m_fboMode		= 0;
-		int32_t		m_lineMode		= 0;
+		int32_t		m_lineMode		= 1;
 		ml::vec4f	m_lineColor		= ml::Color::Red;
 		float		m_lineDelta		= 1.f;
 		int32_t		m_lineSamples	= 16;
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		bool show_ml_editor		= false;
+		bool show_ml_console	= false;
+		bool show_imgui_demo	= false;
+		bool show_imgui_metrics	= false;
+		bool show_imgui_style	= false;
+		bool show_imgui_about	= false;
+
+		/* * * * * * * * * * * * * * * * * * * * */
 	};
 }
 

@@ -4,8 +4,9 @@
 
 #ifdef ML_SYSTEM_WINDOWS
 #include <../thirdparty/include/dirent.h>
-#endif // ML_SYSTEM_WINDOWS
+#endif
 
+#include "InterpreterConsole.hpp"
 #include <imgui/imgui.h>
 #include <imgui/imgui_ml.hpp>
 
@@ -21,6 +22,7 @@ namespace DEMO
 		ML_EventSystem.addListener(DemoEvent::EV_Start, this);
 		ML_EventSystem.addListener(DemoEvent::EV_Update,this);
 		ML_EventSystem.addListener(DemoEvent::EV_Draw,	this);
+		ML_EventSystem.addListener(DemoEvent::EV_Gui,	this);
 		ML_EventSystem.addListener(DemoEvent::EV_Exit,	this);
 	}
 
@@ -41,20 +43,8 @@ namespace DEMO
 		case DemoEvent::EV_Start:	onStart(*value->Cast<StartEvent>());	break;
 		case DemoEvent::EV_Update:	onUpdate(*value->Cast<UpdateEvent>());	break;
 		case DemoEvent::EV_Draw:	onDraw(*value->Cast<DrawEvent>());		break;
+		case DemoEvent::EV_Gui:		onGui(*value->Cast<GuiEvent>());		break;
 		case DemoEvent::EV_Exit:	onExit(*value->Cast<ExitEvent>());		break;
-
-		case ml::WindowEvent::EV_Key:
-			if (auto ev = value->Cast<ml::KeyEvent>())
-			{
-				switch (ev->button)
-				{
-				case ml::WindowKey::Escape:
-					switch (ev->action)
-						case ML_PRESS: this->close(); break;
-					break;
-				}
-			}
-			break;
 
 		case ml::WindowEvent::EV_WindowSize:
 			if (auto ev = value->Cast<ml::WindowSizeEvent>())
@@ -72,6 +62,33 @@ namespace DEMO
 					this->aspect(),
 					SETTINGS.perspNear,
 					SETTINGS.perspFar);
+			}
+			break;
+
+		case ml::WindowEvent::EV_Key:
+			if (auto ev = value->Cast<ml::KeyEvent>())
+			{
+				switch (ev->button)
+				{
+				case ml::KeyCode::Escape:
+					if (ev->action == ML_PRESS)
+					{
+						this->close();
+					}
+					break;
+				case ml::KeyCode::E:
+					if (ev->action == ML_PRESS && (ev->mods & ML_MOD_CTRL))
+					{
+						show_ml_editor = true;
+					}
+					break;
+				case ml::KeyCode::T:
+					if (ev->action == ML_PRESS && (ev->mods & ML_MOD_CTRL) && (ev->mods & ML_MOD_ALT))
+					{
+						show_ml_console = true;
+					}
+					break;
+				}
 			}
 			break;
 		}
@@ -104,19 +121,14 @@ namespace DEMO
 				return ml::Var().boolValue(true);
 			} });
 
-			ML_Interpreter.addCmd({ "pause", [](ml::Args & args)
-			{
-				return ml::Var().intValue(ml::Debug::pause(EXIT_SUCCESS));
-			} });
-
-			ML_Interpreter.addCmd({ "clear", [](ml::Args & args)
-			{
-				return ml::Var().intValue(ml::Debug::clear());
-			} });
-
 			ML_Interpreter.addCmd({ "cwd", [](ml::Args & args)
 			{
-				return ml::Var().stringValue(ML_FileSystem.getWorkingDir());
+				const ml::String str = ML_FileSystem.getWorkingDir();
+				if (args.pop_front().front() == "-p")
+				{
+					ml::cout << str;
+				}
+				return ml::Var().stringValue(str);
 			} });
 
 			ML_Interpreter.addCmd({ "cd", [](ml::Args & args)
@@ -560,6 +572,20 @@ namespace DEMO
 			this->setPosition((ml::VideoMode::desktop().size - this->size()) / 2);
 			this->setViewport(ml::vec2i::Zero, this->size());
 
+			if (ml::Debug::log("Dear ImGui..."))
+			{
+				IMGUI_CHECKVERSION();
+				ImGui::CreateContext();
+				ImGui::StyleColorsDark();
+				ImGui::GetStyle().FrameBorderSize = 1;
+
+				if (!ImGui_ML_Init("#version 410", this, true))
+				{
+					m_status = ml::Debug::Error;
+					return;
+				}
+			}
+
 			m_status = (ml::Debug::log("Loading Resources..."))
 				&& loadFonts()
 				&& loadImages()
@@ -582,16 +608,6 @@ namespace DEMO
 	
 	void Demo::onStart(const StartEvent & ev)
 	{
-		if (ml::Debug::log("Dear ImGui..."))
-		{
-			IMGUI_CHECKVERSION();
-			ImGui::CreateContext();
-			ImGui::StyleColorsDark();
-			ImGui_ML_InitForOpenGL(this, true);
-			ImGui_ML_Init("#version 410");
-		}
-
-
 		if (ml::Debug::log("Starting..."))
 		{
 			// Set Window Icon
@@ -653,14 +669,14 @@ namespace DEMO
 	void Demo::onUpdate(const UpdateEvent & ev)
 	{
 		// Update Title
-		//this->setTitle(ml::String::Format(
-		//	"{0} | {1} | {2} ({3} fps) | {4}",
-		//	SETTINGS.title,
-		//	ML_Time.elapsed(),
-		//	ev.elapsed.delta(),
-		//	ml::Time::calculateFPS(ev.elapsed.delta()),
-		//	this->getCursorPos()
-		//));
+		this->setTitle(ml::String::Format(
+			"{0} | {1} | {2} ({3} fps) | {4}",
+			SETTINGS.title,
+			ML_Time.elapsed(),
+			ev.elapsed.delta(),
+			ml::Time::calculateFPS(ev.elapsed.delta()),
+			this->getCursorPos()
+		));
 
 		// Update Network
 		if (SETTINGS.isServer)
@@ -675,14 +691,12 @@ namespace DEMO
 	
 	void Demo::onDraw(const DrawEvent & ev)
 	{
-		static ml::vec4f clear_color = ml::Color::Violet;
-
 		// Draw Scene
 		/* * * * * * * * * * * * * * * * * * * * */
 		fbo[FBO_scene].bind();
 		{
 			// Clear
-			this->clear(clear_color);
+			this->clear(m_clearColor);
 			
 			// 3D
 			ml::OpenGL::enable(ml::GL::CullFace);
@@ -717,7 +731,8 @@ namespace DEMO
 				s.setUniform(uniforms[U_Model],	transform[T_sphere32x24]
 					.translate(ml::vec3f::Zero)
 					.rotate(+ev.elapsed.delta(), ml::vec3f::Up)
-					.scale(ml::vec3f::One));
+					.scale(ml::vec3f::One)
+				);
 				s.bind();
 
 				this->draw(
@@ -822,88 +837,7 @@ namespace DEMO
 		ImGui_ML_NewFrame();
 		ImGui::NewFrame();
 		{
-			/* * * * * * * * * * * * * * * * * * * * */
-
-			static bool show_demo = false;
-			static bool show_editor = true;
-			static bool show_app_metrics = false;
-			static bool show_app_style_editor = false;
-			static bool show_app_about = false;
-
-			/* * * * * * * * * * * * * * * * * * * * */
-
-			if (show_demo)
-			{
-				ImGui::ShowDemoWindow(&show_demo);
-			}
-
-			if (ImGui::BeginMainMenuBar())
-			{
-				if (ImGui::BeginMenu("File"))
-				{
-					if (ImGui::MenuItem("New", "Ctrl+N", false, false)) {}
-					if (ImGui::MenuItem("Open", "Ctrl+O", false, false)) {}
-					ImGui::Separator();
-					if (ImGui::MenuItem("Save", "Ctrl+S", false, false)) {}
-					if (ImGui::MenuItem("Save All", "Ctrl+Shift+S", false, false)) {}
-					ImGui::Separator();
-					if (ImGui::MenuItem("Quit", "Alt+F4")) { this->close(); }
-					ImGui::EndMenu();
-				}
-				if (ImGui::BeginMenu("Edit"))
-				{
-					if (ImGui::MenuItem("Undo", "CTRL+Z", false, false)) {}
-					if (ImGui::MenuItem("Redo", "CTRL+Y", false, false)) {}
-					ImGui::Separator();
-					if (ImGui::MenuItem("Cut", "CTRL+X", false, false)) {}
-					if (ImGui::MenuItem("Copy", "CTRL+C", false, false)) {}
-					if (ImGui::MenuItem("Paste", "CTRL+V", false, false)) {}
-					ImGui::EndMenu();
-				}
-				if (ImGui::BeginMenu("Window"))
-				{
-					ImGui::MenuItem("Editor", NULL, &show_editor);
-					ImGui::EndMenu();
-				}
-				if (ImGui::BeginMenu("Help"))
-				{
-					ImGui::MenuItem("ImGui Demo", NULL, &show_demo);
-					ImGui::MenuItem("ImGui Metrics", NULL, &show_app_metrics);
-					ImGui::MenuItem("Style Editor", NULL, &show_app_style_editor);
-					ImGui::MenuItem("About Dear ImGui", NULL, &show_app_about);
-					ImGui::EndMenu();
-				}
-				ImGui::EndMainMenuBar();
-			}
-
-			if(show_editor && ImGui::Begin("Editor", &show_editor,
-				ImGuiWindowFlags_AlwaysAutoResize |
-				ImGuiWindowFlags_NoCollapse))
-			{
-				ml::Editor::ShowHelpMarker("Help Marker");
-				ImGui::Separator();
-				ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-				ImGui::Separator();
-				ImGui::ColorEdit4("Clear Color", &clear_color[0]);
-				if (ImGui::CollapsingHeader("Framebuffer"))
-				{
-					ImGui::SliderInt("FBO Mode", &m_fboMode, 0, 4);
-				}
-				if (ImGui::CollapsingHeader("Geometry"))
-				{
-					ImGui::SliderInt("Line Mode", &m_lineMode, 0, 3);
-					ImGui::ColorEdit4("Line Color", &m_lineColor[0]);
-					ImGui::SliderFloat("Line Delta", &m_lineDelta, 0.f, 1.f);
-					ImGui::SliderInt("Line Samples", &m_lineSamples, 1, 128);
-				}
-				ImGui::End();
-			}
-
-			if (show_app_metrics)     { ImGui::ShowMetricsWindow(&show_app_metrics); }
-			if (show_app_style_editor){ ImGui::Begin("Style Editor", &show_app_style_editor); ImGui::ShowStyleEditor(); ImGui::End(); }
-			if (show_app_about)       { ImGui::ShowAboutWindow(&show_app_about); }
-
-			/* * * * * * * * * * * * * * * * * * * * */
+			ML_EventSystem.fireEvent(GuiEvent());
 		}
 		ImGui::Render();
 		this->makeContextCurrent();
@@ -914,6 +848,124 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		this->swapBuffers();
+
+		/* * * * * * * * * * * * * * * * * * * * */
+	}
+
+	void Demo::onGui(const GuiEvent & ev)
+	{
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		// Main Menu Bar
+		if (ImGui::BeginMainMenuBar())
+		{
+			if (ImGui::BeginMenu("File"))
+			{
+				if (ImGui::MenuItem("New", "Ctrl+N", false, false)) {}
+				if (ImGui::MenuItem("Open", "Ctrl+O", false, false)) {}
+				ImGui::Separator();
+				if (ImGui::MenuItem("Save", "Ctrl+S", false, false)) {}
+				if (ImGui::MenuItem("Save All", "Ctrl+Shift+S", false, false)) {}
+				ImGui::Separator();
+				if (ImGui::MenuItem("Quit", "Alt+F4")) { this->close(); }
+				ImGui::EndMenu();
+			}
+			if (ImGui::BeginMenu("Edit"))
+			{
+				if (ImGui::MenuItem("Undo", "Ctrl+Z", false, false)) {}
+				if (ImGui::MenuItem("Redo", "Ctrl+Y", false, false)) {}
+				ImGui::Separator();
+				if (ImGui::MenuItem("Cut", "Ctrl+X", false, false)) {}
+				if (ImGui::MenuItem("Copy", "Ctrl+C", false, false)) {}
+				if (ImGui::MenuItem("Paste", "Ctrl+V", false, false)) {}
+				ImGui::EndMenu();
+			}
+			if (ImGui::BeginMenu("Window"))
+			{
+				ImGui::MenuItem("Meme Editor", "Ctrl+E", &show_ml_editor);
+				ImGui::MenuItem("Console", "Ctrl+Alt+T", &show_ml_console);
+				ImGui::EndMenu();
+			}
+			if (ImGui::BeginMenu("Help"))
+			{
+				ImGui::MenuItem("ImGui Demo", NULL, &show_imgui_demo);
+				ImGui::MenuItem("ImGui Metrics", NULL, &show_imgui_metrics);
+				ImGui::MenuItem("Style Editor", NULL, &show_imgui_style);
+				ImGui::MenuItem("About Dear ImGui", NULL, &show_imgui_about);
+				ImGui::EndMenu();
+			}
+			ImGui::EndMainMenuBar();
+		}
+
+		// Windows
+		if (show_imgui_demo)	{ ImGui::ShowDemoWindow(&show_imgui_demo); }
+		if (show_imgui_metrics) { ImGui::ShowMetricsWindow(&show_imgui_metrics); }
+		if (show_imgui_style)	{ ImGui::Begin("Style Editor", &show_imgui_style); ImGui::ShowStyleEditor(); ImGui::End(); }
+		if (show_imgui_about)	{ ImGui::ShowAboutWindow(&show_imgui_about); }
+		
+		// Console
+		if (show_ml_console)
+		{
+			static ml::InterpreterConsole console;
+			console.Draw("MemeScript Console", &show_ml_console);
+		}
+
+		// Editor
+		if (show_ml_editor)
+		{
+			//ImGui::SetNextWindowPos(ImVec2(780, 200), ImGuiCond_Once);
+			//ImGui::SetNextWindowSize(ImVec2(450, 250), ImGuiCond_Once);
+
+			if (!ImGui::Begin("Meme Editor", &show_ml_editor, ImGuiWindowFlags_AlwaysAutoResize))
+			{
+				ImGui::End();
+				return;
+			}
+
+			ML_Editor.ShowHelpMarker("Help Marker");
+			ImGui::Separator();
+			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+			ImGui::Separator();
+
+			ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
+			if (ImGui::BeginTabBar("MyTabBar", tab_bar_flags))
+			{
+				if (ImGui::BeginTabItem("Scene"))
+				{
+					ImGui::ColorEdit4("Clear Color", &m_clearColor[0]);
+					ImGui::EndTabItem();
+				}
+				if (ImGui::BeginTabItem("Framebuffer"))
+				{
+					ImGui::SliderInt("FBO Mode", &m_fboMode, 0, 4);
+					ImGui::EndTabItem();
+				}
+				if (ImGui::BeginTabItem("Geometry"))
+				{
+					ImGui::SliderInt("Line Mode", &m_lineMode, 0, 3);
+					ImGui::ColorEdit4("Line Color", &m_lineColor[0]);
+					ImGui::SliderFloat("Line Delta", &m_lineDelta, 0.f, 1.f);
+					ImGui::SliderInt("Line Samples", &m_lineSamples, 1, 128);
+					ImGui::EndTabItem();
+				}
+				if (ImGui::BeginTabItem("Source"))
+				{
+					enum { Size = 128 };
+					static char buf[Size] = "Hello, World!";
+					ImGui::InputTextMultiline("Label", buf, Size, { 0, 0 }, 0);
+					if (ImGui::Button("Compile")) {}
+					ImGui::EndTabItem();
+				}
+				if (ImGui::BeginTabItem("Model"))
+				{
+					ML_Editor.InputTransform("Sphere", transform[T_sphere32x24]);
+					ImGui::EndTabItem();
+				}
+				ImGui::EndTabBar();
+			}
+
+			ImGui::End();
+		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	}

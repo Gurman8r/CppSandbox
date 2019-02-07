@@ -39,7 +39,7 @@ namespace ml
 
 	Debug::Status Debug::logWarning(const String & message)
 	{
-		ml::cerr
+		ml::cout
 			<< FMT()
 			<< FG::White << "["
 			<< FG::Yellow << " WRN "
@@ -51,7 +51,7 @@ namespace ml
 
 	Debug::Status Debug::logError(const String & message)
 	{
-		ml::cerr
+		ml::cout
 			<< FMT()
 			<< FG::White << "["
 			<< FG::Red << " ERR "

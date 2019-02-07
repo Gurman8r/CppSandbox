@@ -2,8 +2,9 @@
 #define _WINDOW_INPUT_HPP_
 
 #include <MemeWindow/Export.hpp>
-#include <MemeCore/InputState.hpp>
 #include <MemeCore/ITrackable.hpp>
+#include <MemeCore/BitHelper.hpp>
+#include <MemeCore/IntTypes.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -11,13 +12,19 @@
 #define ML_PRESS	1
 #define ML_REPEAT	2
 
+#define ML_MOD_SHIFT	(0 << 1)
+#define ML_MOD_CTRL		(1 << 1)
+#define ML_MOD_ALT		(1 << 2)
+#define ML_MOD_SUPER	(1 << 3)
+
+
 /* * * * * * * * * * * * * * * * * * * * */
 
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_WINDOW_API WindowMouse final
+	struct ML_WINDOW_API MouseButton final
 	{
 		enum : int32_t
 		{
@@ -37,7 +44,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_WINDOW_API WindowKey final
+	struct ML_WINDOW_API KeyCode final
 	{
 		enum : int32_t
 		{
@@ -168,29 +175,6 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	};
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	//class Window;
-	//
-	//class WindowInput
-	//	: public ITrackable
-	//	, public InputState<WindowKey::MAX_KEYCODE>
-	//{
-	//public:
-	//	WindowInput(const Window * window)
-	//		: m_window(window)
-	//	{
-	//	}
-	//	~WindowInput() {}
-	//
-	//	bool checkKey(int32_t value) const override;
-	//
-	//	bool getAnyKey() const override;
-	//
-	//private:
-	//	const Window * m_window;
-	//};
 
 	/* * * * * * * * * * * * * * * * * * * * */
 }
