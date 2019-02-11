@@ -23,3 +23,7 @@ __________
 	- Retarget the solution to a different Windows SDK version.
 	- Run the OpenAL SDK installer "/thirdparty/tools/oalinst.exe"
 	- Try updating your graphics drivers.
+
+	
+__________	
+https://i.imgur.com/gpnXgHE.jpg
