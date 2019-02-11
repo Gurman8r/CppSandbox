@@ -25,5 +25,6 @@ __________
 	- Try updating your graphics drivers.
 
 	
-__________	
+__________
+https://docs.google.com/document/d/1AGI_7HTSVHGOlaVBpLVQISlTbUbD0dpTw3lY-CR2HMA/edit?usp=sharing	
 https://i.imgur.com/gpnXgHE.jpg
