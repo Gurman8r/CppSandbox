@@ -279,9 +279,9 @@ namespace DEMO
 			{ "dean",		SETTINGS.pathTo("/images/dean.png") },
 			{ "sanic",		SETTINGS.pathTo("/images/sanic.png") },
 			{ "earth",		SETTINGS.pathTo("/images/earth.png") },
-			{ "bg_clouds",	SETTINGS.pathTo("/textures/bg/bg_clouds.png") },
-			{ "sky_clouds", SETTINGS.pathTo("/textures/bg/sky_clouds.png") },
-			{ "sky_water",	SETTINGS.pathTo("/textures/bg/sky_water.png") },
+			//{ "bg_clouds",	SETTINGS.pathTo("/textures/bg/bg_clouds.png") },
+			//{ "sky_clouds", SETTINGS.pathTo("/textures/bg/sky_clouds.png") },
+			//{ "sky_water",	SETTINGS.pathTo("/textures/bg/sky_water.png") },
 			//{ "earth_cm",	SETTINGS.pathTo("/textures/earth/earth_cm_2k.png") },
 			//{ "earth_dm",	SETTINGS.pathTo("/textures/earth/earth_dm_2k.png") },
 			//{ "earth_hm",	SETTINGS.pathTo("/textures/earth/earth_hm_2k.png") },
@@ -879,7 +879,7 @@ namespace DEMO
 			}
 			if (ImGui::BeginMenu("Window"))
 			{
-				ImGui::MenuItem("Meme Editor", "Ctrl+E", &show_ml_editor);
+				ImGui::MenuItem("Editor", "Ctrl+E", &show_ml_editor);
 				ImGui::MenuItem("Console", "Ctrl+Alt+T", &show_ml_console);
 				ImGui::EndMenu();
 			}
@@ -913,7 +913,7 @@ namespace DEMO
 			//ImGui::SetNextWindowPos(ImVec2(780, 200), ImGuiCond_Once);
 			//ImGui::SetNextWindowSize(ImVec2(450, 250), ImGuiCond_Once);
 
-			if (!ImGui::Begin("Meme Editor", &show_ml_editor, ImGuiWindowFlags_AlwaysAutoResize))
+			if (!ImGui::Begin("Editor", &show_ml_editor, ImGuiWindowFlags_AlwaysAutoResize))
 			{
 				ImGui::End();
 				return;
@@ -953,7 +953,9 @@ namespace DEMO
 				}
 				if (ImGui::BeginTabItem("Model"))
 				{
-					ML_Editor.InputMat4f("Sphere", (ml::mat4f&)transform[T_sphere32x24]);
+					ml::mat4f temp = transform[T_sphere32x24];
+					ML_Editor.InputMat4f("Sphere", temp);
+					transform[T_sphere32x24] = temp;
 					ImGui::EndTabItem();
 				}
 				ImGui::EndTabBar();
