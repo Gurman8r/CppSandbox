@@ -180,6 +180,7 @@
     <None Include="..\..\assets\shaders\gs\basic\drawCurve_gs4x.shader" />
     <None Include="..\..\assets\shaders\gs\basic\drawCurve_morphing_gs4x.shader" />
     <None Include="..\..\assets\shaders\basic3D.shader" />
+    <None Include="..\..\assets\shaders\lighting.shader" />
     <None Include="..\..\assets\shaders\sprites.shader" />
     <None Include="..\..\assets\shaders\text.shader" />
     <None Include="..\..\assets\shaders\vs\animation\drawBone_vs4x.shader" />

@@ -307,6 +307,7 @@ namespace DEMO
 			{ "text",		SETTINGS.pathTo("/shaders/text.shader") },
 			{ "geometry",	SETTINGS.pathTo("/shaders/geometry.shader") },
 			{ "framebuffer",SETTINGS.pathTo("/shaders/framebuffer.shader") },
+			//{ "lighting",	SETTINGS.pathTo("/shaders/lighting.shader") },
 		});
 	}
 
@@ -552,7 +553,7 @@ namespace DEMO
 	
 	void Demo::onLoad(const LoadEvent & ev)
 	{
-		ml::OpenGL::errorPause(true);
+		//ml::OpenGL::errorPause(true);
 
 		if (ml::Debug::log("Creating Window...") && create(
 			SETTINGS.title,
@@ -727,6 +728,8 @@ namespace DEMO
 			{
 				s->setUniform(uniforms[U_Color],	ml::Color::White);
 				s->setUniform(uniforms[U_Tex],		(*ML_Resources.getTexture("earth")));
+				//s->setUniform("u_lightPos",			ml::vec3f::Zero);
+				//s->setUniform("u_lightColor",		ml::Color::White);
 				s->setUniform(uniforms[U_Proj],		proj[P_persp]);
 				s->setUniform(uniforms[U_View],		view[V_camera]);
 				s->setUniform(uniforms[U_Model],	transform[T_sphere32x24]

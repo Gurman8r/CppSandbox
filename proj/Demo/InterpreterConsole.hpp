@@ -26,16 +26,16 @@ namespace ml
 			ExecCommand(ml::String("exec " + SETTINGS.pathTo(SETTINGS.scrPath + SETTINGS.scrFile)).c_str());
 
 			Commands.push_back("clear");
-			Commands.push_back("command(");
-			Commands.push_back("if(");
-			Commands.push_back("elif(");
+			Commands.push_back("command");
+			Commands.push_back("if");
+			Commands.push_back("elif");
 			Commands.push_back("else");
-			Commands.push_back("for(");
-			Commands.push_back("while(");
-			Commands.push_back("print(");
-			Commands.push_back("delete(");
-			Commands.push_back("include(");
-			Commands.push_back("return(");
+			Commands.push_back("for");
+			Commands.push_back("while");
+			Commands.push_back("print");
+			Commands.push_back("delete");
+			Commands.push_back("include");
+			Commands.push_back("return");
 			for (const std::string & e : ML_Interpreter.cmdNames())
 			{
 				Commands.push_back(e.c_str());
