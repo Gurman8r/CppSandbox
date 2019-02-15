@@ -631,11 +631,11 @@ namespace DEMO
 			if(const ml::Model * model = ML_Resources.models.find("cube"))
 			{
 				static ml::UniformSet uniforms = {
-					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
-					ml::Uniform("u_texture",ml::Uniform::Tex2D, ML_Resources.textures.find("stone_dm")),
 					ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
 					ml::Uniform("u_view",	ml::Uniform::Mat4,	&m_camera.matrix()),
 					ml::Uniform("u_model",	ml::Uniform::Mat4,	&model->transform().matrix()),
+					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
+					ml::Uniform("u_texture",ml::Uniform::Tex2D, ML_Resources.textures.find("stone_dm")),
 				};
 				if (const ml::Shader * shader = ML_Resources.shaders.find("basic3D"))
 				{
@@ -649,11 +649,11 @@ namespace DEMO
 			if (const ml::Model * model = ML_Resources.models.find("sphere32x24"))
 			{
 				static ml::UniformSet uniforms = {
-					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
-					ml::Uniform("u_texture",ml::Uniform::Tex2D,	ML_Resources.textures.find("earth")),
 					ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
 					ml::Uniform("u_view",	ml::Uniform::Mat4,	&m_camera.matrix()),
 					ml::Uniform("u_model",	ml::Uniform::Mat4,	&model->transform().matrix()),
+					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
+					ml::Uniform("u_texture",ml::Uniform::Tex2D,	ML_Resources.textures.find("earth")),
 				};
 				if (const ml::Shader * shader = ML_Resources.shaders.find("basic3D"))
 				{
@@ -671,11 +671,11 @@ namespace DEMO
 			if(const ml::Model * model = ML_Resources.models.find("quad"))
 			{
 				static ml::UniformSet uniforms = {
-					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
-					ml::Uniform("u_texture",ml::Uniform::Tex2D,	ML_Resources.textures.find("sanic")),
 					ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
 					ml::Uniform("u_view",	ml::Uniform::Mat4,	&m_camera.matrix()),
 					ml::Uniform("u_model",	ml::Uniform::Mat4,	&model->transform().matrix()),
+					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
+					ml::Uniform("u_texture",ml::Uniform::Tex2D,	ML_Resources.textures.find("sanic")),
 				};
 				if (const ml::Shader * shader = ML_Resources.shaders.find("sprites"))
 				{
@@ -752,23 +752,21 @@ namespace DEMO
 			shader->setUniforms(uniforms);
 			shader->bind();
 			this->clear(ml::Color::White);
-			this->draw(*ML_Resources.models.find("quad"));;
+			this->draw(*ML_Resources.models.find("quad"));
 		}
 
 
 		// Draw GUI
 		/* * * * * * * * * * * * * * * * * * * * */
 		this->pollEvents();
+		
 		ImGui_ML_NewFrame();
 		ImGui::NewFrame();
 		{
 			ML_EventSystem.fireEvent(GuiEvent(ev.elapsed));
 		}
 		ImGui::Render();
-		this->makeContextCurrent();
-		this->setViewport(ml::vec2f::Zero, this->getFramebufferSize());
 		ImGui_ML_RenderDrawData(ImGui::GetDrawData());
-		this->makeContextCurrent();
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
@@ -833,7 +831,7 @@ namespace DEMO
 		if (show_ml_console)
 		{
 			static ml::InterpreterConsole console;
-			console.Draw("MemeScript Console", &show_ml_console);
+			console.Draw("Console", &show_ml_console);
 		}
 
 		// Editor
@@ -1036,6 +1034,7 @@ namespace DEMO
 				ML_Editor.ShowFramerate();
 				ImGui::Separator();
 
+				ImGui::Text("Network Manager Placeholder");
 				ImGui::End();
 			}
 		}

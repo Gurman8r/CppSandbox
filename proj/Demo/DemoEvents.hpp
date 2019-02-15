@@ -111,7 +111,6 @@ namespace DEMO
 
 	struct ExitEvent final : public DemoEvent
 	{
-
 		ExitEvent()
 			: DemoEvent(EV_Exit)
 		{

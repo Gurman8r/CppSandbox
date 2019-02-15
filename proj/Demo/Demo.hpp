@@ -101,7 +101,7 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		ml::vec4f	m_clearColor	= ml::Color::Violet;
-		int32_t		m_fboMode		= 0;
+		int32_t		m_fboMode		= 3;
 		int32_t		m_lineMode		= 1;
 		ml::vec4f	m_lineColor		= ml::Color::Red;
 		float		m_lineDelta		= 1.f;

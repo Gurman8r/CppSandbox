@@ -58,7 +58,7 @@ namespace ml
 		
 		inline friend std::ostream & operator<<(std::ostream & out, const int32_t & rhs)
 		{
-			return out << Var::TypeNames[rhs];;
+			return out << Var::TypeNames[rhs];
 		}
 
 	public:

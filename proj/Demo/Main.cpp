@@ -19,11 +19,11 @@ int32_t main(int32_t argc, char ** argv)
 	}
 
 	// Create Demo
-	DEMO::Demo demo;
+	DEMO::Demo * demo = new DEMO::Demo();
 
 	// Enter
 	ML_EventSystem.fireEvent(DEMO::EnterEvent(argc, argv));
-	if (demo.getError() == ml::Debug::Error)
+	if (demo->getError() == ml::Debug::Error)
 	{
 		return ml::Debug::logError("Failed Entering Program")
 			|| ml::Debug::pause(EXIT_FAILURE);
@@ -31,7 +31,7 @@ int32_t main(int32_t argc, char ** argv)
 	
 	// Load
 	ML_EventSystem.fireEvent(DEMO::LoadEvent());
-	if (demo.getError() == ml::Debug::Error)
+	if (demo->getError() == ml::Debug::Error)
 	{
 		return ml::Debug::logError("Failed Loading Resources")
 			|| ml::Debug::pause(EXIT_FAILURE);
@@ -59,10 +59,12 @@ int32_t main(int32_t argc, char ** argv)
 		input.endStep();
 		elapsed = loopTimer.stop().elapsed();
 
-	} while (demo.isOpen());
+	} while (demo->isOpen());
 
 	// Exit
 	ML_EventSystem.fireEvent(DEMO::ExitEvent());
+
+	delete demo;
 
 	return EXIT_SUCCESS;
 }

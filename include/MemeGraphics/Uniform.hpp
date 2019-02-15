@@ -12,7 +12,7 @@ namespace ml
 		, public IComparable<Uniform>
 	{
 	public:
-		enum Type : int32_t
+		enum : int32_t
 		{
 			None,
 			Int,
@@ -43,11 +43,7 @@ namespace ml
 		template <class T>
 		inline const T * get_pointer() const
 		{
-			const T * temp;
-			assert(
-				(temp = reinterpret_cast<const T *>(data)) && 
-				("Cannot reinterpret uniform data"));
-			return temp;
+			return reinterpret_cast<const T *>(data);
 		}
 
 		template <class T>
