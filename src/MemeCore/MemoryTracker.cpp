@@ -11,7 +11,7 @@ namespace ml
 		size_t	index;
 		size_t	size;
 
-		Record(void* addr, size_t index, size_t size)
+		Record(void * addr, size_t index, size_t size)
 			: addr(addr)
 			, index(index)
 			, size(size)

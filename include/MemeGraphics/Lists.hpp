@@ -4,6 +4,7 @@
 #include <MemeCore/List.hpp>
 #include <MemeGraphics/Vertex.hpp>
 #include <MemeGraphics/Texture.hpp>
+#include <MemeGraphics/Uniform.hpp>
 
 namespace ml
 {
@@ -12,6 +13,7 @@ namespace ml
 	using FloatList		= List<float>;
 	using IndexList		= List<uint32_t>;
 	using TextureList	= List<const Texture *>;
+	using UniformList	= List<Uniform>;
 
 	/* * * * * * * * * * * * * * * * * * * * */
 

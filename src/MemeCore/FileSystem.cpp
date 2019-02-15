@@ -45,7 +45,7 @@ namespace ml
 
 	bool FileSystem::getDirContents(const String & dirName, String & value) const
 	{
-		static String::Stream temp;
+		static SStream temp;
 		if (getDirContents(dirName, temp))
 		{
 			value.assign(temp.str());
@@ -55,7 +55,7 @@ namespace ml
 		return false;
 	}
 
-	bool FileSystem::getDirContents(const String & dirName, String::Stream & value) const
+	bool FileSystem::getDirContents(const String & dirName, SStream & value) const
 	{
 		if(DIR * dir = opendir(dirName.c_str()))
 		{
@@ -144,7 +144,7 @@ namespace ml
 		return false;
 	}
 
-	bool FileSystem::getFileContents(const String & filename, String::Stream & value) const
+	bool FileSystem::getFileContents(const String & filename, SStream & value) const
 	{
 		static String temp;
 		if (getFileContents(filename, temp))

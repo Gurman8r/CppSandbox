@@ -10,6 +10,16 @@ namespace ml
 	{
 	}
 
+	bool Sprite::cleanup()
+	{
+		return false;
+	}
+
+	bool Sprite::loadFromFile(const String & filename)
+	{
+		return false;
+	}
+
 	
 	void Sprite::draw(RenderTarget & target, RenderBatch batch) const
 	{

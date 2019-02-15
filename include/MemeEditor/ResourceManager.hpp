@@ -1,14 +1,13 @@
 #ifndef _RESOURCE_MANAGER_H_
 #define _RESOURCE_MANAGER_H_
 
-#include <MemeEditor/Loader.hpp>
+#include <MemeEditor/ResourceMap.hpp>
 #include <MemeCore/ISingleton.hpp>
 #include <MemeCore/List.hpp>
+#include <MemeAudio/Sound.hpp>
 #include <MemeGraphics/Font.hpp>
-#include <MemeGraphics/Texture.hpp>
-#include <MemeGraphics/Shader.hpp>
-#include <MemeGraphics/Mesh.hpp>
-
+#include <MemeGraphics/Model.hpp>
+#include <MemeGraphics/Sprite.hpp>
 
 #define ML_Resources ml::ResourceManager::getInstance()
 
@@ -20,63 +19,22 @@ namespace ml
 	{
 		friend class ISingleton<ResourceManager>;
 
-	public:
-		template <class T>
-		using Map = std::unordered_map<String, T *>;
-
-		using FileMap = std::unordered_map<String, String>;
-		
-		using FontMap		= Map<Font>;
-		using ImageMap		= Map<Image>;
-		using MeshMap		= Map<Mesh>;
-		using ShaderMap		= Map<Shader>;
-		using TextureMap	= Map<Texture>;
-
-	public:
+	protected:
 		ResourceManager();
 		~ResourceManager();
 
-	public: // Fonts
-		const Font * loadFont(const String & name, const String & filename);
-		size_t loadFonts(const FileMap & files);
-		size_t clearFonts();
-		Font * getFont(const String & name);
-		const FontMap & getAllFonts() const;
+	public:
+		void cleanAll();
 
-	public: // Images
-		const Image * loadImage(const String & name, const String & filename);
-		size_t loadImages(const FileMap & files);
-		size_t clearImages();
-		Image * getImage(const String & name);
-		const ImageMap & getAllImages() const;
-
-	public: // Meshes
-		const Mesh * loadMesh(const String & name, const String & filename);
-		size_t loadMeshes(const FileMap & files);
-		size_t clearMeshes();
-		Mesh * getMesh(const String & name);
-		const MeshMap & getAllMeshes() const;
-
-	public: // Shaders
-		const Shader * loadShader(const String & name, const String & filename);
-		size_t loadShaders(const FileMap & files);
-		size_t clearShaders();
-		Shader * getShader(const String & name);
-		const ShaderMap & getAllShaders() const;
-
-	public: // Textures
-		const Texture * loadTexture(const String & name, const String & filename);
-		size_t loadTextures(const FileMap & files);
-		size_t clearTextures();
-		Texture * getTexture(const String & name);
-		const TextureMap & getAllTextures() const;
-
-	private:
-		FontMap m_fonts;
-		ImageMap m_images;
-		MeshMap m_meshes;
-		ShaderMap m_shaders;
-		TextureMap m_textures;
+	public:
+		ResourceMap<Font>		fonts;
+		ResourceMap<Image>		images;
+		ResourceMap<Mesh>		meshes;
+		ResourceMap<Model>		models;
+		ResourceMap<Shader>		shaders;
+		ResourceMap<Sound>		sounds;
+		ResourceMap<Sprite>		sprites;
+		ResourceMap<Texture>	textures;
 	};
 
 	

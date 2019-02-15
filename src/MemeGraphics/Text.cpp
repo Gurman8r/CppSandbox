@@ -104,17 +104,8 @@ namespace ml
 				verts[3].position(rect.left(),  rect.bot(), 0.0f);
 				verts[4].position(rect.right(), rect.top(), 0.0f);
 				verts[5].position(rect.right(), rect.bot(), 0.0f);
+				
 				m_vertices[i] = verts;
-
-				//m_vertices[i] = VertexList({
-				//	{{ rect.left(),  rect.bot(), 0.f }, vec2f::Zero	},
-				//	{{ rect.left(),  rect.top(), 0.f }, vec2f::Up	},
-				//	{{ rect.right(), rect.top(), 0.f }, vec2f::One	},
-				//	{{ rect.left(),  rect.bot(), 0.f }, vec2f::Zero	},
-				//	{{ rect.right(), rect.top(), 0.f }, vec2f::One	},
-				//	{{ rect.right(), rect.bot(), 0.f }, vec2f::Right},
-				//});
-
 				m_textures[i] = (&glyph.texture);
 				
 				switch (m_text[i])
@@ -134,11 +125,15 @@ namespace ml
 	void Text::draw(RenderTarget & target, RenderBatch batch) const
 	{
 		update();
-		batch.color = &getColor();
+		
+		if (Uniform * u = batch.uniforms.find("u_color")) { u->data = &getColor(); }
+
 		for (size_t i = 0, imax = m_text.size(); i < imax; i++)
 		{
-			batch.texture = m_textures[i];
+			if (Uniform * u = batch.uniforms.find("u_texture")) { u->data = m_textures[i]; }
+
 			batch.vertices = &m_vertices[i];
+
 			target.draw(batch);
 		}
 	}

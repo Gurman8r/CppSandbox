@@ -88,7 +88,7 @@ namespace ml
 				filename);
 		}
 
-		// Store the loaded fonts in our ugly void* :)
+		// Store the loaded fonts in our ugly void * :)
 		m_stroker = stroker;
 		m_face = face;
 

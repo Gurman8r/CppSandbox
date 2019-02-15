@@ -370,9 +370,9 @@ namespace ml
 		return temp;
 	}
 
-	String	Window::getClipboardString() const
+	CString Window::getClipboardString() const
 	{
-		return String(glfwGetClipboardString(ML_WINDOW(m_window)));
+		return (glfwGetClipboardString(ML_WINDOW(m_window)));
 	}
 
 	vec2f	Window::getCursorPos() const

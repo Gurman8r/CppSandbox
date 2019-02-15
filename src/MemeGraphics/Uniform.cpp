@@ -2,36 +2,41 @@
 
 namespace ml
 {
-	const String Uniform::Names[Uniform::MAX_UNIFORM_ID] =
-	{
-		"u_model",
-		"u_view",
-		"u_proj",
-		"u_color",
-		"u_texture",
-		"u_curveMode",
-	};
-
 	Uniform::Uniform()
 		: name(String())
+		, type(None)
+		, data(NULL)
 	{
 	}
-	Uniform::Uniform(const ID id)
-		: name(Uniform::Names[id])
-	{
-	}
+	
 	Uniform::Uniform(const String & name)
 		: name(name)
+		, type(None)
+		, data(NULL)
 	{
 	}
-	Uniform::Uniform(const char * name)
+	
+	Uniform::Uniform(const String & name, const int32_t type)
 		: name(name)
+		, type(type)
+		, data(NULL)
 	{
 	}
+	
+	Uniform::Uniform(const String & name, const int32_t type, const void * data)
+		: name(name)
+		, type(type)
+		, data(data)
+	{
+	}
+	
 	Uniform::Uniform(const Uniform & copy)
 		: name(copy.name)
+		, type(copy.type)
+		, data(copy.data)
 	{
 	}
+	
 	Uniform::~Uniform()
 	{
 	}

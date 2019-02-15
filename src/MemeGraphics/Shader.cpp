@@ -3,6 +3,8 @@
 #include <MemeCore/Debug.hpp>
 #include <MemeCore/FileSystem.hpp>
 
+/* * * * * * * * * * * * * * * * * * * * */
+
 namespace ml
 {
 	struct Shader::UniformBinder
@@ -43,6 +45,8 @@ namespace ml
 	};
 }
 
+/* * * * * * * * * * * * * * * * * * * * */
+
 namespace ml
 {
 	Shader::Shader()
@@ -64,6 +68,7 @@ namespace ml
 		cleanup();
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool Shader::cleanup()
 	{
@@ -80,50 +85,10 @@ namespace ml
 
 	bool Shader::loadFromFile(const String & filename)
 	{
-		String::Stream ss;
-		if (ML_FileSystem.getFileContents(filename, ss))
+		static String source;
+		if (ML_FileSystem.getFileContents(filename, source))
 		{
-			enum : int8_t { NONE = -1, VERT, FRAG, GEOM, MAX };
-
-			String::Stream source[MAX];
-			int8_t type = NONE;
-
-			String line;
-			while (std::getline(ss, line))
-			{
-				if (line.find("#shader") != String::npos)
-				{
-					if (line.find("vertex") != String::npos)
-					{
-						type = VERT;
-					}
-					else if (line.find("fragment") != String::npos)
-					{
-						type = FRAG;
-					}
-					else if (line.find("geometry") != String::npos)
-					{
-						type = GEOM;
-					}
-				}
-				else if(type > NONE)
-				{
-					source[type] << line << std::endl;
-				}
-			}
-
-			const String & vs = source[VERT].str();
-			const String & gs = source[GEOM].str();
-			const String & fs = source[FRAG].str();
-
-			if (!gs.empty())
-			{
-				return loadFromMemory(vs, gs, fs);
-			}
-			else
-			{
-				return loadFromMemory(vs, fs);
-			}
+			return loadFromMemory(source);
 		}
 		return Debug::logError("Failed to open shader source file \"{0}\"", filename);
 	}
@@ -131,14 +96,14 @@ namespace ml
 	bool Shader::loadFromFile(const String & vs, const String & fs)
 	{
 		// Read the vertex shader file
-		List<char> vertexShader;
+		static List<char> vertexShader;
 		if (!ML_FileSystem.getFileContents(vs, vertexShader))
 		{
 			return Debug::logError("Failed to open vertex source file \"{0}\"", vs);
 		}
 
 		// Read the fragment shader file
-		List<char> fragmentShader;
+		static List<char> fragmentShader;
 		if (!ML_FileSystem.getFileContents(fs, fragmentShader))
 		{
 			return Debug::logError("Failed to open fragment source file \"{0}\"", fs);
@@ -151,21 +116,21 @@ namespace ml
 	bool Shader::loadFromFile(const String & vs, const String & gs, const String & fs)
 	{
 		// Read the vertex shader file
-		List<char> vertexShader;
+		static List<char> vertexShader;
 		if (!ML_FileSystem.getFileContents(vs, vertexShader))
 		{
 			return Debug::logError("Failed to open vertex source file \"{0}\"", vs);
 		}
 
 		// Read the geometry shader file
-		List<char> geometryShader;
+		static List<char> geometryShader;
 		if (!ML_FileSystem.getFileContents(gs, geometryShader))
 		{
 			return Debug::logError("Failed to open geometry source file \"{0}\"", gs);
 		}
 
 		// Read the fragment shader file
-		List<char> fragmentShader;
+		static List<char> fragmentShader;
 		if (!ML_FileSystem.getFileContents(fs, fragmentShader))
 		{
 			return Debug::logError("Failed to open fragment source file \"{0}\"", fs);
@@ -175,39 +140,78 @@ namespace ml
 		return compile(&vertexShader[0], &geometryShader[0], &fragmentShader[0]);
 	}
 
+	bool Shader::loadFromMemory(const String & source)
+	{
+		enum : int8_t { NONE = -1, VERT, FRAG, GEOM, MAX };
+
+		int8_t	srcType = NONE;
+		SStream	srcData[MAX];
+		SStream	stream(source);
+		String	line;
+
+		while (std::getline(stream, line))
+		{
+			if (line.find("#shader") != String::npos)
+			{
+				if (line.find("vertex") != String::npos)
+				{
+					srcType = VERT;
+				}
+				else if (line.find("fragment") != String::npos)
+				{
+					srcType = FRAG;
+				}
+				else if (line.find("geometry") != String::npos)
+				{
+					srcType = GEOM;
+				}
+			}
+			else if (srcType > NONE)
+			{
+				srcData[srcType] << line << std::endl;
+			}
+		}
+
+		return loadFromMemory(
+			srcData[VERT].str(),
+			srcData[GEOM].str(),
+			srcData[FRAG].str());
+	}
+
+	bool Shader::loadFromMemory(const String & vs, const String & gs, const String & fs)
+	{
+		if (gs.empty())
+		{
+			return loadFromMemory(vs, fs);
+		}
+		else
+		{
+			return compile(vs.c_str(), gs.c_str(), fs.c_str());
+		}
+	}
+
 	bool Shader::loadFromMemory(const String & vs, const String & fs)
 	{
 		return compile(vs.c_str(), NULL, fs.c_str());
 	}
 
-	bool Shader::loadFromMemory(const String & vs, const String & gs, const String & fs)
-	{
-		return compile(vs.c_str(), gs.c_str(), fs.c_str());
-	}
-
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool Shader::bind(bool bindTextures) const
 	{
-		return Shader::bind(this, bindTextures);
-	}
-
-	bool Shader::bind(const Shader * shader, bool bindTextures)
-	{
-		if (shader && OpenGL::shadersAvailable())
+		if (*this)
 		{
-			if (*shader)
-			{
-				OpenGL::useShader(*shader);
-			}
+			OpenGL::useShader(*this);
 
 			if (bindTextures)
 			{
 				TextureTable::const_iterator it;
-				for (it = shader->m_textures.begin(); it != shader->m_textures.end(); it++)
+				for (it = m_textures.cbegin(); it != m_textures.cend(); it++)
 				{
 					Texture::bind(it->second);
 				}
 			}
+
 			return true;
 		}
 		else
@@ -216,7 +220,46 @@ namespace ml
 			return false;
 		}
 	}
-	
+
+	bool Shader::setUniform(const Uniform & u) const
+	{
+		if (!u.name.empty())
+		{
+			if (u.data)
+			{
+				switch (u.type)
+				{
+				case Uniform::Int:	return setUniform(u.name, u.get_value<int32_t>());
+				case Uniform::Float:return setUniform(u.name, u.get_value<float>());
+				case Uniform::Vec2:	return setUniform(u.name, u.get_value<vec2f>());
+				case Uniform::Vec3:	return setUniform(u.name, u.get_value<vec3f>());
+				case Uniform::Vec4:	return setUniform(u.name, u.get_value<vec4f>());
+				case Uniform::Mat3:	return setUniform(u.name, u.get_value<mat3f>());
+				case Uniform::Mat4:	return setUniform(u.name, u.get_value<mat4f>());
+				case Uniform::Tex2D:return setUniform(u.name, u.get_value<Texture>());
+				}
+				return Debug::logError("Invalid Uniform Type | {0} | {1}", u.name, u.type);
+			}
+			return Debug::logError("Invalid Uniform Data | {0}", u.name);
+		}
+		return Debug::logError("Invalid Uniform Name | {0}", u.name);
+	}
+
+	bool Shader::setUniforms(const UniformSet & value) const
+	{
+		size_t count = 0;
+		UniformSet::const_iterator it;
+		for (it = value.begin(); it != value.end(); it++)
+		{
+			if (!setUniform(it->second))
+			{
+				Debug::logWarning("Failed setting uniform: {0}", it->second.name);
+			}
+		}
+		return count;
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 	
 	bool Shader::setUniform(const String & name, const float & value) const
 	{
@@ -329,6 +372,7 @@ namespace ml
 		return u;
 	}
 	
+	/* * * * * * * * * * * * * * * * * * * * */
 	
 	bool Shader::setUniformArray(const String & name, int32_t count, const float * value) const
 	{
@@ -384,6 +428,8 @@ namespace ml
 		}
 		return u;
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool Shader::compile(const char * vs, const char * gs, const char * fs)
 	{
@@ -517,4 +563,6 @@ namespace ml
 	{
 		return OpenGL::getAttribLocation(*this, value.c_str());
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

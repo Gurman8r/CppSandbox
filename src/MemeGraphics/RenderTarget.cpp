@@ -1,5 +1,6 @@
 #include <MemeGraphics/RenderTarget.hpp>
 #include <MemeGraphics/OpenGL.hpp>
+#include <MemeCore/Debug.hpp>
 
 namespace ml
 {
@@ -36,39 +37,27 @@ namespace ml
 		// Update Shader
 		if (batch.shader)
 		{
-			if (batch.proj)
-			{
-				batch.shader->setUniform(Uniform::Proj, (*batch.proj));
-			}
-			if (batch.view)
-			{
-				batch.shader->setUniform(Uniform::View, (*batch.view));
-			}
-			if (batch.model)
-			{
-				batch.shader->setUniform(Uniform::Model, (*batch.model));
-			}
-			if (batch.color)
-			{
-				batch.shader->setUniform(Uniform::Color, (*batch.color));
-			}
-			if (batch.texture)
-			{
-				batch.shader->setUniform(Uniform::Texture, (*batch.texture));
-			}
-
-			batch.shader->bind((batch.texture != NULL));
+			batch.shader->setUniforms(batch.uniforms);
+			batch.shader->bind();
 		}
 		
-		if (batch.vbo && batch.vertices)
+		if (batch.vbo && batch.vbo && !batch.ibo && batch.vertices)
 		{
 			(*batch.vbo)
 				.bind()
 				.bufferSubData(batch.vertices->contiguous(), 0)
 				.unbind();
+			
+			return draw((*batch.vao), (*batch.vbo));
 		}
-
-		return draw((*batch.vao), (*batch.vbo));
+		else if(batch.vao && batch.vbo && batch.ibo && !batch.vertices)
+		{
+			return draw((*batch.vao), (*batch.vbo), (*batch.ibo));
+		}
+		else
+		{
+			return (*this);
+		}
 	}
 
 	RenderTarget & RenderTarget::draw(VAO & vao, VBO & vbo, IBO & ibo)

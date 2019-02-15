@@ -87,7 +87,7 @@ namespace ml
 		bool	isOpen() const;
 		int32_t	getAttrib(int32_t value) const;
 		char	getChar() const;
-		String	getClipboardString() const;
+		CString	getClipboardString() const;
 		vec2f	getCursorPos() const;
 		vec2i	getFramebufferSize() const;
 		int32_t	getKey(int32_t value) const;

@@ -73,7 +73,7 @@ namespace DEMO
 				case ml::KeyCode::Escape:
 					if (ev->action == ML_PRESS)
 					{
-						this->close();
+						if (SETTINGS.escapeIsExit) { this->close(); }
 					}
 					break;
 				case ml::KeyCode::E:
@@ -82,10 +82,22 @@ namespace DEMO
 						show_ml_editor = true;
 					}
 					break;
+				case ml::KeyCode::D:
+					if (ev->action == ML_PRESS && (ev->mods & ML_MOD_CTRL) && (ev->mods & ML_MOD_ALT))
+					{
+						show_imgui_demo = true;
+					}
+					break;
 				case ml::KeyCode::T:
 					if (ev->action == ML_PRESS && (ev->mods & ML_MOD_CTRL) && (ev->mods & ML_MOD_ALT))
 					{
 						show_ml_console = true;
+					}
+					break;
+				case ml::KeyCode::N:
+					if (ev->action == ML_PRESS && (ev->mods & ML_MOD_CTRL) && (ev->mods & ML_MOD_ALT))
+					{
+						show_ml_network = true;
 					}
 					break;
 				}
@@ -162,7 +174,7 @@ namespace DEMO
 				}
 				else
 				{
-					ml::String::Stream ss;
+					ml::SStream ss;
 					if (ML_FileSystem.getDirContents(name, ss))
 					{
 						return ml::Var().stringValue(ss.str());
@@ -253,90 +265,13 @@ namespace DEMO
 		return checked;
 	}
 
-	bool Demo::loadFonts()
+	bool Demo::loadAudio()
 	{
-		// Load Fonts
-		return ml::Debug::log("Loading Fonts...") && ML_Resources.loadFonts({
-			{ "clacon",		SETTINGS.pathTo("fonts/clacon.ttf") },
-			{ "consolas",	SETTINGS.pathTo("fonts/consolas.ttf") },
-			{ "lconsole",	SETTINGS.pathTo("fonts/lucida_console.ttf") },
-			{ "minecraft",	SETTINGS.pathTo("fonts/minecraft.ttf") },
+		return ml::Debug::log("Loading Audio...")
+			&& ml::OpenAL::init() || ML_Resources.sounds.loadAll({
+
 		});
-	}
 
-	bool Demo::loadImages()
-	{
-		// Load Images
-		return ml::Debug::log("Loading Images...") && ML_Resources.loadImages({
-			{ "icon",		SETTINGS.pathTo("/images/dean.png")} 
-		});
-	}
-
-	bool Demo::loadTextures()
-	{
-		// Load Textures
-		return ml::Debug::log("Loading Textures...") && ML_Resources.loadTextures({
-			{ "dean",		SETTINGS.pathTo("/images/dean.png") },
-			{ "sanic",		SETTINGS.pathTo("/images/sanic.png") },
-			{ "earth",		SETTINGS.pathTo("/images/earth.png") },
-			//{ "bg_clouds",	SETTINGS.pathTo("/textures/bg/bg_clouds.png") },
-			//{ "sky_clouds", SETTINGS.pathTo("/textures/bg/sky_clouds.png") },
-			//{ "sky_water",	SETTINGS.pathTo("/textures/bg/sky_water.png") },
-			//{ "earth_cm",	SETTINGS.pathTo("/textures/earth/earth_cm_2k.png") },
-			//{ "earth_dm",	SETTINGS.pathTo("/textures/earth/earth_dm_2k.png") },
-			//{ "earth_hm",	SETTINGS.pathTo("/textures/earth/earth_hm_2k.png") },
-			//{ "earth_lm",	SETTINGS.pathTo("/textures/earth/earth_lm_2k.png") },
-			//{ "earth_nm",	SETTINGS.pathTo("/textures/earth/earth_nm_2k.png") },
-			//{ "earth_sm",	SETTINGS.pathTo("/textures/earth/earth_sm_2k.png") },
-			//{ "mars_dm",	SETTINGS.pathTo("/textures/mars/mars_dm_2k.png") },
-			//{ "mars_nm",	SETTINGS.pathTo("/textures/mars/mars_nm_2k.png") },
-			//{ "moon_dm",	SETTINGS.pathTo("/textures/moon/moon_dm_2k.png") },
-			//{ "moon_nm",	SETTINGS.pathTo("/textures/moon/moon_nm_2k.png") },
-			{ "stone_dm",	SETTINGS.pathTo("/textures/stone/stone_dm.png") },
-			{ "stone_hm",	SETTINGS.pathTo("/textures/stone/stone_hm.png") },
-			{ "stone_nm",	SETTINGS.pathTo("/textures/stone/stone_nm.png") },
-		});
-	}
-
-	bool Demo::loadShaders()
-	{
-		// Load Shaders
-		return ml::Debug::log("Loading Shaders...") && ML_Resources.loadShaders({
-			{ "basic3D",	SETTINGS.pathTo("/shaders/basic3D.shader") },
-			{ "sprites",	SETTINGS.pathTo("/shaders/sprites.shader") },
-			{ "text",		SETTINGS.pathTo("/shaders/text.shader") },
-			{ "geometry",	SETTINGS.pathTo("/shaders/geometry.shader") },
-			{ "framebuffer",SETTINGS.pathTo("/shaders/framebuffer.shader") },
-			//{ "lighting",	SETTINGS.pathTo("/shaders/lighting.shader") },
-		});
-	}
-
-	bool Demo::loadUniforms()
-	{
-		return ml::Debug::log("Loading Uniforms...")
-			&& (uniforms[U_Model]	= "u_model")
-			&& (uniforms[U_View]	= "u_view")
-			&& (uniforms[U_Proj]	= "u_proj")
-			&& (uniforms[U_Color]	= "u_color")
-			&& (uniforms[U_Tex]		= "u_texture")
-			&& (uniforms[U_Curve]	= "u_curveMode")
-			;
-	}
-
-	bool Demo::loadMeshes()
-	{
-		// Load Meshes
-		return ml::Debug::log("Loading Meshes...") && ML_Resources.loadMeshes({
-			{ "example",	SETTINGS.pathTo("/meshes/example.mesh") },
-			{ "sphere8x6",	SETTINGS.pathTo("/meshes/sphere8x6.mesh") },
-			{ "sphere32x24",SETTINGS.pathTo("/meshes/sphere32x24.mesh") },
-		});
-	}
-
-	bool Demo::loadModels()
-	{
-		return ml::Debug::log("Loading Models...")
-			;
 	}
 
 	bool Demo::loadBuffers()
@@ -393,7 +328,7 @@ namespace DEMO
 			vbo[VBO_example]
 				.create(ml::GL::StaticDraw)
 				.bind()
-				.bufferData(ML_Resources.getMesh("example")->contiguous());
+				.bufferData(ML_Resources.meshes.find("example")->contiguous());
 			layout.bind();
 			vbo[VBO_example].unbind();
 			vao[VAO_example].unbind();
@@ -406,7 +341,7 @@ namespace DEMO
 			vbo[VBO_sphere8x6]
 				.create(ml::GL::StaticDraw)
 				.bind()
-				.bufferData(ML_Resources.getMesh("sphere8x6")->contiguous());
+				.bufferData(ML_Resources.meshes.find("sphere8x6")->contiguous());
 			layout.bind();
 			vbo[VBO_sphere8x6].unbind();
 			vao[VAO_sphere8x6].unbind();
@@ -419,7 +354,7 @@ namespace DEMO
 			vbo[VAO_sphere32x24]
 				.create(ml::GL::StaticDraw)
 				.bind()
-				.bufferData(ML_Resources.getMesh("sphere32x24")->contiguous());
+				.bufferData(ML_Resources.meshes.find("sphere32x24")->contiguous());
 			layout.bind();
 			vbo[VBO_sphere32x24].unbind();
 			vao[VAO_sphere32x24].unbind();
@@ -471,22 +406,41 @@ namespace DEMO
 		}
 		return true;
 	}
-
-	bool Demo::loadAudio()
+	
+	bool Demo::loadFonts()
 	{
-		if (ml::Debug::log("Loading Audio..."))
-		{
-			if (ml::OpenAL::init())
-			{
-				return true;
-			}
-			else
-			{
-				return ml::Debug::logError("Failed Loading Audio");
-			}
-		}
-		return ml::Debug::log("Loading Sounds...")
-			;
+		// Load Fonts
+		return ml::Debug::log("Loading Fonts...") && ML_Resources.fonts.loadAll({
+			{ "clacon",		SETTINGS.pathTo("fonts/clacon.ttf") },
+			{ "consolas",	SETTINGS.pathTo("fonts/consolas.ttf") },
+			{ "lconsole",	SETTINGS.pathTo("fonts/lucida_console.ttf") },
+			{ "minecraft",	SETTINGS.pathTo("fonts/minecraft.ttf") },
+		});
+	}
+
+	bool Demo::loadImages()
+	{
+		// Load Images
+		return ml::Debug::log("Loading Images...") && ML_Resources.images.loadAll({
+			{ "icon",		SETTINGS.pathTo("/images/dean.png")} 
+		});
+	}
+
+	bool Demo::loadMeshes()
+	{
+		// Load Meshes
+		return ml::Debug::log("Loading Meshes...") && ML_Resources.meshes.loadAll({
+			{ "example",	SETTINGS.pathTo("/meshes/example.mesh") },
+			{ "sphere8x6",	SETTINGS.pathTo("/meshes/sphere8x6.mesh") },
+			{ "sphere32x24",SETTINGS.pathTo("/meshes/sphere32x24.mesh") },
+		});
+	}
+
+	bool Demo::loadModels()
+	{
+		return ml::Debug::log("Loading Models...") || ML_Resources.models.loadAll({
+
+		});
 	}
 
 	bool Demo::loadNetwork()
@@ -501,8 +455,7 @@ namespace DEMO
 				{
 					if (ML_Server.start({ ML_LOCALHOST, ML_PORT }, ML_MAX_CLIENTS))
 					{
-						ml::Debug::log("Server Started: {0}", ML_Server.getMyAddress());
-						return true;
+						return ml::Debug::log("Server Started: {0}", ML_Server.getMyAddress());
 					}
 				}
 			}
@@ -519,6 +472,52 @@ namespace DEMO
 			}
 		}
 		return true;
+	}
+
+	bool Demo::loadShaders()
+	{
+		// Load Shaders
+		return ml::Debug::log("Loading Shaders...") && ML_Resources.shaders.loadAll({
+			{ "basic3D",	SETTINGS.pathTo("/shaders/basic3D.shader") },
+			{ "sprites",	SETTINGS.pathTo("/shaders/sprites.shader") },
+			{ "text",		SETTINGS.pathTo("/shaders/text.shader") },
+			{ "geometry",	SETTINGS.pathTo("/shaders/geometry.shader") },
+			{ "framebuffer",SETTINGS.pathTo("/shaders/framebuffer.shader") },
+			//{ "lighting",	SETTINGS.pathTo("/shaders/lighting.shader") },
+		});
+	}
+
+	bool Demo::loadSprites()
+	{
+		return ml::Debug::log("Loading Sprites...") || ML_Resources.sprites.loadAll({
+			
+		});
+	}
+
+	bool Demo::loadTextures()
+	{
+		// Load Textures
+		return ml::Debug::log("Loading Textures...") && ML_Resources.textures.loadAll({
+			{ "dean",		SETTINGS.pathTo("/images/dean.png") },
+			{ "sanic",		SETTINGS.pathTo("/images/sanic.png") },
+			{ "earth",		SETTINGS.pathTo("/images/earth.png") },
+			//{ "bg_clouds",	SETTINGS.pathTo("/textures/bg/bg_clouds.png") },
+			//{ "sky_clouds", SETTINGS.pathTo("/textures/bg/sky_clouds.png") },
+			//{ "sky_water",	SETTINGS.pathTo("/textures/bg/sky_water.png") },
+			//{ "earth_cm",	SETTINGS.pathTo("/textures/earth/earth_cm_2k.png") },
+			//{ "earth_dm",	SETTINGS.pathTo("/textures/earth/earth_dm_2k.png") },
+			//{ "earth_hm",	SETTINGS.pathTo("/textures/earth/earth_hm_2k.png") },
+			//{ "earth_lm",	SETTINGS.pathTo("/textures/earth/earth_lm_2k.png") },
+			//{ "earth_nm",	SETTINGS.pathTo("/textures/earth/earth_nm_2k.png") },
+			//{ "earth_sm",	SETTINGS.pathTo("/textures/earth/earth_sm_2k.png") },
+			//{ "mars_dm",	SETTINGS.pathTo("/textures/mars/mars_dm_2k.png") },
+			//{ "mars_nm",	SETTINGS.pathTo("/textures/mars/mars_nm_2k.png") },
+			//{ "moon_dm",	SETTINGS.pathTo("/textures/moon/moon_dm_2k.png") },
+			//{ "moon_nm",	SETTINGS.pathTo("/textures/moon/moon_nm_2k.png") },
+			{ "stone_dm",	SETTINGS.pathTo("/textures/stone/stone_dm.png") },
+			{ "stone_hm",	SETTINGS.pathTo("/textures/stone/stone_hm.png") },
+			{ "stone_nm",	SETTINGS.pathTo("/textures/stone/stone_nm.png") },
+		});
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -553,7 +552,7 @@ namespace DEMO
 	
 	void Demo::onLoad(const LoadEvent & ev)
 	{
-		//ml::OpenGL::errorPause(true);
+		ml::OpenGL::errorPause(SETTINGS.glErrorPause);
 
 		if (ml::Debug::log("Creating Window...") && create(
 			SETTINGS.title,
@@ -589,15 +588,15 @@ namespace DEMO
 			}
 
 			m_status = (ml::Debug::log("Loading Resources..."))
+				&& loadAudio()
 				&& loadFonts()
 				&& loadImages()
 				&& loadTextures()
 				&& loadShaders()
-				&& loadUniforms()
 				&& loadMeshes()
-				&& loadModels()
 				&& loadBuffers()
-				&& loadAudio()
+				&& loadModels()
+				&& loadSprites()
 				&& loadNetwork()
 				? ml::Debug::Success
 				: ml::Debug::Error;
@@ -613,7 +612,7 @@ namespace DEMO
 		if (ml::Debug::log("Starting..."))
 		{
 			// Set Window Icon
-			if (ml::Image * icon = ML_Resources.getImage("icon"))
+			if (ml::Image * icon = ML_Resources.images.find("icon"))
 			{
 				this->setIcons({ (*icon).flipVertically() });
 			}
@@ -659,7 +658,7 @@ namespace DEMO
 
 			// Static Text
 			text[TXT_static]
-				.setFont(ML_Resources.getFont("minecraft"))
+				.setFont(ML_Resources.fonts.find("minecraft"))
 				.setFontSize(72)
 				.setScale(ml::vec2f::One)
 				.setPosition({ 32, 128 })
@@ -689,6 +688,24 @@ namespace DEMO
 		{
 			ML_Client.poll();
 		}
+
+		// Animate
+		{
+			transform[T_cube]
+				.translate(ml::vec3f::Zero)
+				.rotate(+ev.elapsed.delta(), ml::vec3f::One)
+				.scale(ml::vec3f::One);
+
+			transform[T_sphere32x24]
+				.translate(ml::vec3f::Zero)
+				.rotate((m_animate ? ev.elapsed.delta() : 0.f), ml::vec3f::Up)
+				.scale(ml::vec3f::One);
+
+			transform[T_quad]
+				.translate(ml::vec3f::Zero)
+				.rotate(-ev.elapsed.delta(), ml::vec3f::Forward)
+				.scale(ml::vec3f::One);
+		}
 	}
 	
 	void Demo::onDraw(const DrawEvent & ev)
@@ -705,18 +722,17 @@ namespace DEMO
 			ml::OpenGL::enable(ml::GL::DepthTest);
 
 			// Cube
-			if (ml::Shader * s = ML_Resources.getShader("basic3D"))
+			if (const ml::Shader * shader = ML_Resources.shaders.find("basic3D"))
 			{
-				s->setUniform(uniforms[U_Color],	ml::Color::White);
-				s->setUniform(uniforms[U_Tex],		(*ML_Resources.getTexture("stone_dm")));
-				s->setUniform(uniforms[U_Proj],		proj[P_persp]);
-				s->setUniform(uniforms[U_View],		view[V_camera]);
-				s->setUniform(uniforms[U_Model],	transform[T_cube]
-					.translate(ml::vec3f::Zero)
-					.rotate(+ev.elapsed.delta(), ml::vec3f::One)
-					.scale(ml::vec3f::One));
-				s->bind();
-
+				static ml::UniformSet u = {
+					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::Red),
+					ml::Uniform("u_texture",ml::Uniform::Tex2D, ML_Resources.textures.find("stone_dm")),
+					ml::Uniform("u_proj",	ml::Uniform::Mat4,	&proj[P_persp].matrix()),
+					ml::Uniform("u_view",	ml::Uniform::Mat4,	&view[V_camera].matrix()),
+					ml::Uniform("u_model",	ml::Uniform::Mat4,	&transform[T_cube].matrix()),
+				};
+				shader->setUniforms(u);
+				shader->bind();
 				this->draw(
 					vao[VAO_cube],
 					vbo[VBO_cube],
@@ -724,21 +740,17 @@ namespace DEMO
 			}
 			
 			// Sphere32x24
-			if (ml::Shader * s = ML_Resources.getShader("basic3D"))
+			if (const ml::Shader * shader = ML_Resources.shaders.find("basic3D"))
 			{
-				s->setUniform(uniforms[U_Color],	ml::Color::White);
-				s->setUniform(uniforms[U_Tex],		(*ML_Resources.getTexture("earth")));
-				//s->setUniform("u_lightPos",			ml::vec3f::Zero);
-				//s->setUniform("u_lightColor",		ml::Color::White);
-				s->setUniform(uniforms[U_Proj],		proj[P_persp]);
-				s->setUniform(uniforms[U_View],		view[V_camera]);
-				s->setUniform(uniforms[U_Model],	transform[T_sphere32x24]
-					.translate(ml::vec3f::Zero)
-					.rotate(+ev.elapsed.delta(), ml::vec3f::Up)
-					.scale(ml::vec3f::One)
-				);
-				s->bind();
-
+				static ml::UniformSet u = {
+					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
+					ml::Uniform("u_texture",ml::Uniform::Tex2D,	ML_Resources.textures.find("earth")),
+					ml::Uniform("u_proj",	ml::Uniform::Mat4,	&proj[P_persp].matrix()),
+					ml::Uniform("u_view",	ml::Uniform::Mat4,	&view[V_camera].matrix()),
+					ml::Uniform("u_model",	ml::Uniform::Mat4,	&transform[T_sphere32x24].matrix()),
+				};
+				shader->setUniforms(u);
+				shader->bind();
 				this->draw(
 					vao[VAO_sphere32x24], 
 					vbo[VBO_sphere32x24]);
@@ -749,18 +761,17 @@ namespace DEMO
 			ml::OpenGL::disable(ml::GL::DepthTest);
 
 			// Quad
-			if (ml::Shader * s = ML_Resources.getShader("sprites"))
+			if (const ml::Shader * shader = ML_Resources.shaders.find("sprites"))
 			{
-				s->setUniform(uniforms[U_Color],	ml::Color::White);
-				s->setUniform(uniforms[U_Tex],		(*ML_Resources.getTexture("sanic")));
-				s->setUniform(uniforms[U_Proj],		proj[P_persp]);
-				s->setUniform(uniforms[U_View],		view[V_camera]);
-				s->setUniform(uniforms[U_Model],	transform[T_quad]
-					.translate(ml::vec3f::Zero)
-					.rotate(-ev.elapsed.delta(), ml::vec3f::Forward)
-					.scale(ml::vec3f::One));
-				s->bind();
-
+				static ml::UniformSet u = {
+					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
+					ml::Uniform("u_texture",ml::Uniform::Tex2D,	ML_Resources.textures.find("sanic")),
+					ml::Uniform("u_proj",	ml::Uniform::Mat4,	&proj[P_persp].matrix()),
+					ml::Uniform("u_view",	ml::Uniform::Mat4,	&view[V_camera].matrix()),
+					ml::Uniform("u_model",	ml::Uniform::Mat4,	&transform[T_quad].matrix()),
+				};
+				shader->setUniforms(u);
+				shader->bind();
 				this->draw(
 					vao[VAO_quad], 
 					vbo[VBO_quad], 
@@ -773,8 +784,12 @@ namespace DEMO
 				static ml::RenderBatch batch(
 					&vao[VAO_text],
 					&vbo[VBO_text],
-					&proj[P_ortho],
-					ML_Resources.getShader("text"));
+					ML_Resources.shaders.find("text"),
+					{
+						ml::Uniform("u_proj",	ml::Uniform::Mat4, &proj[P_ortho].matrix()),
+						ml::Uniform("u_color",	ml::Uniform::Vec4),
+						ml::Uniform("u_texture",ml::Uniform::Tex2D),
+					});
 
 				static const uint32_t  fontSize = 24;
 				static const ml::vec2f offset = { 0.0f, -(float)fontSize };
@@ -782,7 +797,7 @@ namespace DEMO
 
 				// Dynamic Text
 				size_t i = 0;
-				for (auto pair : ML_Resources.getAllFonts())
+				for (auto pair : ML_Resources.fonts.getAll())
 				{
 					this->draw(text[TXT_dynamic]
 						.setFont(pair.second)
@@ -800,30 +815,33 @@ namespace DEMO
 			}
 
 			// Geometry
-			if (ml::Shader * s = ML_Resources.getShader("geometry"))
+			if (const ml::Shader * shader = ML_Resources.shaders.find("geometry"))
 			{
-				s->setUniform(uniforms[U_Color], m_lineColor);
-				s->setUniform(uniforms[U_Curve], m_lineMode);
-				s->setUniform("u_delta", m_lineDelta);
-				s->setUniform("u_samples", m_lineSamples);
-				s->bind();
+				static ml::UniformSet u = {
+					ml::Uniform("u_color",		ml::Uniform::Vec4,	&m_lineColor),
+					ml::Uniform("u_lineMode",	ml::Uniform::Int,	&m_lineMode),
+					ml::Uniform("u_lineDelta",	ml::Uniform::Float, &m_lineDelta),
+					ml::Uniform("u_lineSamples",ml::Uniform::Int,	&m_lineSamples),
+				};
+				shader->setUniforms(u);
+				shader->bind();
 				ml::OpenGL::drawArrays(ml::GL::Points, 0, 4);
 			}
 
 		}
 		fbo[FBO_scene].unbind();
 
-
 		// Draw Framebuffer
 		/* * * * * * * * * * * * * * * * * * * * */
-		if(ml::Shader * s = ML_Resources.getShader("framebuffer"))
+		if(ml::Shader * shader = ML_Resources.shaders.find("framebuffer"))
 		{
+			static ml::UniformSet u = {
+				ml::Uniform("u_texture",ml::Uniform::Tex2D, &m_framebuffer),
+				ml::Uniform("u_mode",	ml::Uniform::Int, &m_fboMode),
+			};
+			shader->setUniforms(u);
+			shader->bind();
 			this->clear(ml::Color::White);
-
-			s->setUniform(uniforms[U_Tex], m_framebuffer);
-			s->setUniform("u_mode", m_fboMode);
-			s->bind();
-			
 			this->draw(
 				vao[VAO_quad],
 				vbo[VBO_quad],
@@ -884,11 +902,12 @@ namespace DEMO
 			{
 				ImGui::MenuItem("Editor", "Ctrl+E", &show_ml_editor);
 				ImGui::MenuItem("Console", "Ctrl+Alt+T", &show_ml_console);
+				ImGui::MenuItem("Network", "Ctrl+Alt+N", &show_ml_network);
 				ImGui::EndMenu();
 			}
 			if (ImGui::BeginMenu("Help"))
 			{
-				ImGui::MenuItem("ImGui Demo", NULL, &show_imgui_demo);
+				ImGui::MenuItem("ImGui Demo", "Ctrl+Alt+D", &show_imgui_demo);
 				ImGui::MenuItem("ImGui Metrics", NULL, &show_imgui_metrics);
 				ImGui::MenuItem("Style Editor", NULL, &show_imgui_style);
 				ImGui::MenuItem("About Dear ImGui", NULL, &show_imgui_about);
@@ -913,58 +932,200 @@ namespace DEMO
 		// Editor
 		if (show_ml_editor)
 		{
-			//ImGui::SetNextWindowPos(ImVec2(780, 200), ImGuiCond_Once);
-			//ImGui::SetNextWindowSize(ImVec2(450, 250), ImGuiCond_Once);
-
 			if (!ImGui::Begin("Editor", &show_ml_editor, ImGuiWindowFlags_AlwaysAutoResize))
 			{
 				ImGui::End();
 				return;
 			}
-
-			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-			ImGui::Separator();
-
-			ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
-			if (ImGui::BeginTabBar("MyTabBar", tab_bar_flags))
+			else
 			{
-				if (ImGui::BeginTabItem("Scene"))
-				{
-					ImGui::ColorEdit4("Clear Color", &m_clearColor[0]);
-					ImGui::EndTabItem();
-				}
-				if (ImGui::BeginTabItem("Framebuffer"))
-				{
-					ImGui::SliderInt("FBO Mode", &m_fboMode, 0, 4);
-					ImGui::EndTabItem();
-				}
-				if (ImGui::BeginTabItem("Geometry"))
-				{
-					ImGui::SliderInt("Line Mode", &m_lineMode, 0, 3);
-					ImGui::ColorEdit4("Line Color", &m_lineColor[0]);
-					ImGui::SliderFloat("Line Delta", &m_lineDelta, 0.f, 1.f);
-					ImGui::SliderInt("Line Samples", &m_lineSamples, 1, 128);
-					ImGui::EndTabItem();
-				}
-				if (ImGui::BeginTabItem("Source"))
-				{
-					enum { Size = 128 };
-					static char buf[Size] = "Hello, World!";
-					ImGui::InputTextMultiline("Label", buf, Size, { 0, 0 }, 0);
-					if (ImGui::Button("Compile")) {}
-					ImGui::EndTabItem();
-				}
-				if (ImGui::BeginTabItem("Model"))
-				{
-					ml::mat4f temp = transform[T_sphere32x24];
-					ML_Editor.InputMat4f("Sphere", temp);
-					transform[T_sphere32x24] = temp;
-					ImGui::EndTabItem();
-				}
-				ImGui::EndTabBar();
-			}
+				ML_Editor.ShowHelpMarker("Some help text");
+				ML_Editor.ShowFramerate();
+				ImGui::Separator();
 
-			ImGui::End();
+				if (ImGui::BeginTabBar("EditorTabBar", ImGuiTabBarFlags_None))
+				{
+					if (ImGui::BeginTabItem("Scene"))
+					{
+						ImGui::ColorEdit4("Clear Color", &m_clearColor[0]);
+						ImGui::EndTabItem();
+					}
+					if (ImGui::BeginTabItem("Framebuffer"))
+					{
+						ImGui::SliderInt("FBO Mode", &m_fboMode, 0, 4);
+						ImGui::EndTabItem();
+					}
+					if (ImGui::BeginTabItem("Geometry"))
+					{
+						ImGui::SliderInt("Line Mode", &m_lineMode, 0, 3);
+						ImGui::ColorEdit4("Line Color", &m_lineColor[0]);
+						ImGui::SliderFloat("Line Delta", &m_lineDelta, 0.f, 1.f);
+						ImGui::SliderInt("Line Samples", &m_lineSamples, 1, 128);
+						ImGui::EndTabItem();
+					}
+					if (ImGui::BeginTabItem("Transform"))
+					{
+						ImGui::Checkbox("Animate", &m_animate);
+
+						ML_Editor.InputTransform("Matrix", transform[T_sphere32x24]);
+
+						ml::vec3f pos = transform[T_sphere32x24].getPosition();
+						ML_Editor.InputVec3f("Position", pos);
+						transform[T_sphere32x24].setPosition(pos);
+
+						ml::vec3f scl = transform[T_sphere32x24].getScale();
+						ML_Editor.InputVec3f("Scale", scl);
+						transform[T_sphere32x24].setScale(scl);
+
+						ImGui::EndTabItem();
+					}
+					if (ImGui::BeginTabItem("Shader"))
+					{
+						// Shader Source
+						ImGui::BeginGroup();
+						{
+							ImGui::Text("Source:");
+
+							static ml::String source(1024, '\0');
+
+							ImGui::InputTextMultiline(
+								"##Source",
+								&source[0],
+								source.capacity(),
+								{ 512, ImGui::GetTextLineHeight() * 16 },
+								0);
+
+							if (ImGui::Button("Compile")) {}
+						}
+						ImGui::EndGroup();
+
+						// List Uniforms
+						ImGui::SameLine();
+						ImGui::BeginGroup();
+						{
+							const size_t count = m_uniforms.size();
+
+							ImGui::Text("Uniforms:");
+
+							// List
+							if (ImGui::ListBoxHeader("##Uniforms", count))
+							{
+								for (size_t i = 0; i < count; i++)
+								{
+									const ml::String name = (std::to_string(i) + " : " + m_uniforms[i].name);
+									if (ImGui::Selectable(name.c_str(), (i == m_selected)))
+									{
+										m_selected = i;
+									}
+								}
+								ImGui::ListBoxFooter();
+							}
+							
+							// Buttons
+							ImGui::BeginGroup();
+							{
+								if (ImGui::Button("Up"))
+								{
+									if (m_selected > 0)
+									{
+										std::swap(m_uniforms[m_selected], m_uniforms[m_selected - 1]);
+										m_selected--;
+									}
+								}
+								ImGui::SameLine();
+								if (ImGui::Button("Dn"))
+								{
+									if (m_selected + 1 < count)
+									{
+										std::swap(m_uniforms[m_selected], m_uniforms[m_selected + 1]);
+										m_selected++;
+									}
+								}
+								ImGui::SameLine();
+								if (ImGui::Button("New"))
+								{
+									m_uniforms.push_back(ml::Uniform("new_uniform"));
+									m_selected = m_uniforms.size() - 1;
+								}
+								ImGui::SameLine();
+								if (ImGui::Button("Ins"))
+								{
+									m_uniforms.insert(m_uniforms.begin() + m_selected, ml::Uniform("new_uniform"));
+								}
+								ImGui::SameLine();
+								if (ImGui::Button("Dup"))
+								{
+									if (count > 0)
+									{
+										m_uniforms.push_back(ml::Uniform(m_uniforms[m_selected]));
+										m_selected = m_uniforms.size() - 1;
+									}
+								}
+								ImGui::SameLine();
+								if (ImGui::Button("Del"))
+								{
+									if (count > 0)
+									{
+										m_uniforms.erase(m_uniforms.begin() + m_selected);
+										m_selected = (m_selected > 0 ? m_selected - 1 : m_uniforms.size() - 1);
+									}
+								}
+							}
+							ImGui::EndGroup();
+						}
+						ImGui::EndGroup();
+
+						// Edit Uniforms
+						ImGui::SameLine();
+						ImGui::BeginGroup();
+						{
+							ImGui::Text("Edit:");
+
+							static int32_t u_typeIndex = 0;
+							static ml::CString u_types[] = {
+								"Float",
+								"Vec2",
+								"Vec3",
+								"Vec4",
+								"Mat3",
+								"Mat4",
+								"Tex2D",
+							};
+							
+							const size_t count = m_uniforms.size();
+							if (ml::Uniform * u = (count ? &m_uniforms[m_selected] : NULL))
+							{
+								ImGui::InputText("Name", &u->name[0], 32);
+								ImGui::Combo("Type", &u_typeIndex, u_types, IM_ARRAYSIZE(u_types));
+							}
+						}
+						ImGui::EndGroup();
+
+						ImGui::EndTabItem();
+					}
+					ImGui::EndTabBar();
+				}
+
+				ImGui::End();
+			}
+		}
+
+		// Network
+		if (show_ml_network)
+		{
+			if (!ImGui::Begin("Network", &show_ml_network, ImGuiWindowFlags_AlwaysAutoResize))
+			{
+				ImGui::End();
+				return;
+			}
+			else
+			{
+				ML_Editor.ShowHelpMarker("Some help text");
+				ML_Editor.ShowFramerate();
+				ImGui::Separator();
+
+				ImGui::End();
+			}
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -972,11 +1133,7 @@ namespace DEMO
 	
 	void Demo::onExit(const ExitEvent & ev)
 	{
-		ML_Resources.clearMeshes();
-		ML_Resources.clearShaders();
-		ML_Resources.clearTextures();
-		ML_Resources.clearImages();
-		ML_Resources.clearFonts();
+		ML_Resources.cleanAll();
 
 		ImGui_ML_Shutdown();
 	}

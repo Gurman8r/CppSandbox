@@ -22,7 +22,9 @@ void main()
 	v_Texcoord	= a_Texcoord;
 	v_Color		= a_Color;
 
-	gl_Position = u_proj * vec4(a_Position, 1.0);
+	mat4 mvp = u_proj;
+
+	gl_Position = mvp * vec4(a_Position, 1.0);
 }
 
 // Fragment

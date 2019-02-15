@@ -3,10 +3,16 @@
 namespace ml
 {
 	Model::Model()
+		: m_shader	(NULL)
+		, m_texture	(NULL)
+		, m_mesh	(NULL)
 	{
 	}
 
 	Model::Model(const Model & copy)
+		: m_shader	(copy.m_shader)
+		, m_texture	(copy.m_texture)
+		, m_mesh	(copy.m_mesh)
 	{
 	}
 

@@ -270,6 +270,9 @@ namespace ml
 	using Wstring	= BasicString<wchar_t>;
 	using U16string = BasicString<char16_t>;
 	using U32string	= BasicString<char32_t>;
+
+	using CString	= const char *;
+	using SStream	= String::Stream;
 #endif
 }
 

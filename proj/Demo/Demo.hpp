@@ -30,62 +30,6 @@ namespace DEMO
 {
 	enum : int32_t
 	{
-		// Fonts
-		//MIN_FONT = -1,
-		//FNT_clacon,
-		//FNT_consolas,
-		//FNT_lconsole,
-		//FNT_minecraft,
-		//MAX_FONT,
-
-		// Images
-		//MIN_IMAGE = -1,
-		//IMG_icon,
-		//MAX_IMAGE,
-
-		// Textures
-		//MIN_TEXTURE = -1,
-		//TEX_dean,
-		//TEX_sanic,
-		//TEX_earth,
-		//TEX_framebuffer,
-		//TEX_bg_clouds,
-		//TEX_sky_clouds,
-		//TEX_sky_water,
-		//TEX_earth_cm,
-		//TEX_earth_dm,
-		//TEX_earth_hm,
-		//TEX_earth_lm,
-		//TEX_earth_nm,
-		//TEX_earth_sm,
-		//TEX_mars_dm,
-		//TEX_mars_nm,
-		//TEX_moon_dm,
-		//TEX_moon_nm,
-		//TEX_stone_dm,
-		//TEX_stone_hm,
-		//TEX_stone_nm,
-		//MAX_TEXTURE,
-
-		// Shaders
-		//MIN_SHADER = -1,
-		//GL_basic3D,
-		//GL_sprites,
-		//GL_text,
-		//GL_geometry,
-		//GL_framebuffer,
-		//MAX_SHADER,
-
-		// Uniforms
-		MIN_UNIFORM = -1,
-		U_Model,
-		U_View,
-		U_Proj,
-		U_Color,
-		U_Tex,
-		U_Curve,
-		MAX_UNIFORM,
-
 		// Projection Matrices
 		MIN_PROJ = -1,
 		P_persp,
@@ -152,11 +96,6 @@ namespace DEMO
 		TXT_dynamic,
 		TXT_static,
 		MAX_TEXT,
-
-		// Sounds
-		MIN_SOUND = -1,
-		SND_sphere8x6,
-		MAX_SOUND,
 	};
 }
 
@@ -188,28 +127,17 @@ namespace DEMO
 
 	private:
 		bool	setupInterpreter();
+		
+		bool	loadAudio();
+		bool	loadBuffers();
 		bool	loadFonts();
 		bool	loadImages();
 		bool	loadTextures();
 		bool	loadShaders();
-		bool	loadUniforms();
 		bool	loadMeshes();
 		bool	loadModels();
-		bool	loadBuffers();
-		bool	loadAudio();
 		bool	loadNetwork();
-
-		template <class T>
-		inline static bool load(ml::IResource & res, const ml::String & file)
-		{
-			const std::type_info & info(typeid(res));
-			return (res.loadFromFile(SETTINGS.pathTo(file))
-				? (SETTINGS.verboseLog
-					? ml::Debug::log("Loaded {0}: \"{1}\"", info.name(), file)
-					: ml::Debug::Success)
-				: ml::Debug::logError("Failed Loading [{0}]: \"{1}\"", info.name(), file)
-			);
-		}
+		bool	loadSprites();
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
@@ -225,7 +153,6 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 
 	private:
-		ml::Uniform		uniforms	[MAX_UNIFORM];
 		ml::Transform	proj		[MAX_PROJ];
 		ml::Transform	view		[MAX_VIEW];
 		ml::Transform	transform	[MAX_TRANSFORM];
@@ -236,7 +163,6 @@ namespace DEMO
 		ml::RBO			rbo			[MAX_RBO];
 		ml::Model		models		[MAX_MODEL];
 		ml::Text		text		[MAX_TEXT];
-		ml::Sound		sounds		[MAX_SOUND];
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
@@ -251,11 +177,16 @@ namespace DEMO
 		ml::vec4f	m_lineColor		= ml::Color::Red;
 		float		m_lineDelta		= 1.f;
 		int32_t		m_lineSamples	= 16;
+		bool		m_animate		= true;
+
+		ml::List<ml::Uniform> m_uniforms;
+		size_t m_selected = 0;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		bool show_ml_editor		= false;
 		bool show_ml_console	= false;
+		bool show_ml_network	= false;
 		bool show_imgui_demo	= false;
 		bool show_imgui_metrics	= false;
 		bool show_imgui_style	= false;

@@ -38,7 +38,7 @@ namespace ml
 		const vector_type	subvec(size_t index, size_t count) const;
 		const vector_type&	values() const;
 
-		String::Stream	sstream() const;
+		SStream	sstream() const;
 
 		const size_t	count(const value_type& value) const;
 		const size_t	count(const_iterator first, const_iterator last, const value_type& value) const;
@@ -67,18 +67,18 @@ namespace ml
 		self_type&	erase(const_iterator it, size_t count = 1);
 		self_type&	erase(const_iterator first, const_iterator last);
 		self_type&	insert(size_t index, char value);
-		self_type&	insert(size_t index, const char* value);
+		self_type&	insert(size_t index, const char * value);
 		self_type&	insert(size_t index, const value_type& value);
 		self_type&	mergeNext(size_t index, size_t count);
 		self_type&	pop_back();
 		self_type&	pop_front();
 		self_type&	push_back(char value);
-		self_type&	push_back(const char* value);
+		self_type&	push_back(const char * value);
 		self_type&	push_back(const value_type& value);
 		self_type&	push_back(const vector_type& value);
 		self_type&	push_back(const self_type& value);
 		self_type&	push_front(char value);
-		self_type&	push_front(const char* value);
+		self_type&	push_front(const char * value);
 		self_type&	push_front(const value_type& value);
 		self_type&	push_front(const vector_type& value);
 		self_type&	push_front(const self_type& value);

@@ -59,9 +59,9 @@ layout(points) in;
 layout(line_strip, max_vertices = SAMPLES_MAX) out;
 
 // Uniforms
-uniform int		u_curveMode;
-uniform float	u_delta;
-uniform int		u_samples;
+uniform int		u_lineMode;
+uniform float	u_lineDelta;
+uniform int		u_lineSamples;
 
 // Maths
 vec4 lerp(in vec4 p0, in vec4 p1, const float t)
@@ -252,7 +252,7 @@ void stub(in int samples, in float dt)
 
 	vec4 p0, p1, p2, p3, pPrev, pNext, m0, m1;
 
-	switch (u_curveMode)
+	switch (u_lineMode)
 	{
 	case CURVE_LINES:
 		// multiple segments
@@ -291,7 +291,7 @@ void stub(in int samples, in float dt)
 /* * * * * * * * * * * * * * * * * * * * */
 void main()
 {
-	float dt = u_delta / float(u_samples);
+	float dt = u_lineDelta / float(u_lineSamples);
 
-	stub(u_samples, dt);
+	stub(u_lineSamples, dt);
 }

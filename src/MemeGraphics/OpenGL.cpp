@@ -213,14 +213,14 @@ namespace ml
 
 	GL::Str OpenGL::getString(GL::Enum name)
 	{
-		static const char* temp;
+		static const char * temp;
 		glCheck(temp = reinterpret_cast<GL::Str>(glGetString(name)));
 		return temp;
 	}
 
 	GL::Str OpenGL::getString(GL::Enum name, uint32_t index)
 	{
-		static const char* temp;
+		static const char * temp;
 		glCheck(temp = reinterpret_cast<GL::Str>(glGetStringi(name, index)));
 		return temp;
 	}

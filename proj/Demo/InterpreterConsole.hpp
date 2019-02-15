@@ -10,11 +10,11 @@ namespace ml
 	struct InterpreterConsole
 	{
 		char                  InputBuf[256];
-		ImVector<char*>       Items;
+		ImVector<char *>       Items;
 		bool                  ScrollToBottom;
-		ImVector<char*>       History;
+		ImVector<char *>       History;
 		int                   HistoryPos;    // -1: new line, 0..History.Size-1 browsing history.
-		ImVector<const char*> Commands;
+		ImVector<ml::CString> Commands;
 
 		InterpreterConsole()
 		{
@@ -50,10 +50,10 @@ namespace ml
 		}
 
 		// Portable helpers
-		static int   Stricmp(const char* str1, const char* str2) { int d; while ((d = toupper(*str2) - toupper(*str1)) == 0 && *str1) { str1++; str2++; } return d; }
-		static int   Strnicmp(const char* str1, const char* str2, int n) { int d = 0; while (n > 0 && (d = toupper(*str2) - toupper(*str1)) == 0 && *str1) { str1++; str2++; n--; } return d; }
-		static char* Strdup(const char *str) { size_t len = strlen(str) + 1; void* buff = malloc(len); return (char*)memcpy(buff, (const void*)str, len); }
-		static void  Strtrim(char* str) { char* str_end = str + strlen(str); while (str_end > str && str_end[-1] == ' ') str_end--; *str_end = 0; }
+		static int   Stricmp(ml::CString str1, ml::CString str2) { int d; while ((d = toupper(*str2) - toupper(*str1)) == 0 && *str1) { str1++; str2++; } return d; }
+		static int   Strnicmp(ml::CString str1, ml::CString str2, int n) { int d = 0; while (n > 0 && (d = toupper(*str2) - toupper(*str1)) == 0 && *str1) { str1++; str2++; n--; } return d; }
+		static char *Strdup(ml::CString str) { size_t len = strlen(str) + 1; void * buff = malloc(len); return (char *)memcpy(buff, (const void *)str, len); }
+		static void  Strtrim(char * str) { char * str_end = str + strlen(str); while (str_end > str && str_end[-1] == ' ') str_end--; *str_end = 0; }
 
 		void    ClearLog()
 		{
@@ -63,7 +63,7 @@ namespace ml
 			ScrollToBottom = true;
 		}
 
-		void    AddLog(const char* fmt, ...) IM_FMTARGS(2)
+		void    AddLog(ml::CString fmt, ...) IM_FMTARGS(2)
 		{
 			// FIXME-OPT
 			char buf[1024];
@@ -76,7 +76,7 @@ namespace ml
 			ScrollToBottom = true;
 		}
 
-		void    Draw(const char* title, bool* p_open)
+		void    Draw(ml::CString title, bool* p_open)
 		{
 			ImGui::SetNextWindowSize(ImVec2(550, 600), ImGuiCond_FirstUseEver);
 			if (!ImGui::Begin(title, p_open))
@@ -133,7 +133,7 @@ namespace ml
 			ImVec4 col_default_text = ImGui::GetStyleColorVec4(ImGuiCol_Text);
 			for (int i = 0; i < Items.Size; i++)
 			{
-				const char* item = Items[i];
+				ml::CString item = Items[i];
 				if (!filter.PassFilter(item))
 					continue;
 				ImVec4 col = col_default_text;
@@ -154,9 +154,19 @@ namespace ml
 
 			// Command-line
 			bool reclaim_focus = false;
-			if (ImGui::InputText("Input", InputBuf, IM_ARRAYSIZE(InputBuf), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory, &TextEditCallbackStub, (void*)this))
+			if (ImGui::InputText(
+				"Input", 
+				InputBuf, 
+				IM_ARRAYSIZE(InputBuf), 
+				(
+					ImGuiInputTextFlags_EnterReturnsTrue |
+					ImGuiInputTextFlags_CallbackCompletion |
+					ImGuiInputTextFlags_CallbackHistory
+				),
+				&TextEditCallbackStub, 
+				(void *)this))
 			{
-				char* s = InputBuf;
+				char * s = InputBuf;
 				Strtrim(s);
 				if (s[0])
 					ExecCommand(s);
@@ -172,7 +182,7 @@ namespace ml
 			ImGui::End();
 		}
 
-		void    ExecCommand(const char* command_line)
+		void    ExecCommand(ml::CString command_line)
 		{
 			AddLog("# %s\n", command_line);
 
@@ -228,8 +238,8 @@ namespace ml
 				// Example of TEXT COMPLETION
 
 				// Locate beginning of current word
-				const char* word_end = data->Buf + data->CursorPos;
-				const char* word_start = word_end;
+				ml::CString word_end = data->Buf + data->CursorPos;
+				ml::CString word_start = word_end;
 				while (word_start > data->Buf)
 				{
 					const char c = word_start[-1];
@@ -239,7 +249,7 @@ namespace ml
 				}
 
 				// Build a list of candidates
-				ImVector<const char*> candidates;
+				ImVector<ml::CString> candidates;
 				for (int i = 0; i < Commands.Size; i++)
 					if (Strnicmp(Commands[i], word_start, (int)(word_end - word_start)) == 0)
 						candidates.push_back(Commands[i]);
@@ -309,7 +319,7 @@ namespace ml
 				// A better implementation would preserve the data on the current input line along with cursor position.
 				if (prev_history_pos != HistoryPos)
 				{
-					const char* history_str = (HistoryPos >= 0) ? History[HistoryPos] : "";
+					ml::CString history_str = (HistoryPos >= 0) ? History[HistoryPos] : "";
 					data->DeleteChars(0, data->BufTextLen);
 					data->InsertChars(0, history_str);
 				}

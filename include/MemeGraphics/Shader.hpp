@@ -1,7 +1,7 @@
 #ifndef _SHADER_HPP_
 #define _SHADER_HPP_
 
-#include <MemeGraphics/Uniform.hpp>
+#include <MemeGraphics/UniformSet.hpp>
 #include <MemeGraphics/Texture.hpp>
 #include <MemeGraphics/Transform.hpp>
 #include <MemeGraphics/Color.hpp>
@@ -18,16 +18,20 @@ namespace ml
 		Shader(const Shader & copy);
 		~Shader();
 
+	public:
 		bool cleanup() override;
 		bool loadFromFile(const String & filename) override;
 		bool loadFromFile(const String & vs, const String & fs);
 		bool loadFromFile(const String & vs, const String & gs, const String & fs);
-		bool loadFromMemory(const String & vs, const String & fs);
+		bool loadFromMemory(const String & source);
 		bool loadFromMemory(const String & vs, const String & gs, const String & fs);
+		bool loadFromMemory(const String & vs, const String & fs);
 
 	public:
+		// Core
 		bool bind(bool bindTextures = true) const;
-		static bool bind(const Shader* shader, bool bindTextures = true);
+		bool setUniform(const Uniform & value) const;
+		bool setUniforms(const UniformSet & value) const;
 
 	public:
 		// Set Uniform
@@ -52,33 +56,14 @@ namespace ml
 		bool setUniformArray(const String & name, int32_t count, const mat4f * value) const;
 
 	public:
-		template <class T>
-		bool setUniform(Uniform::ID id, const T & value) const
-		{
-			return setUniform(Uniform::Names[id], value);
-		};
-		
-		template <class T>
-		bool setUniformArray(Uniform::ID id, int32_t count, T * value) const
-		{
-			return setUniformArray(Uniform::Names[id], value, count);
-		};
-		
-		template <class T>
-		bool setUniformArray(Uniform::ID id, const std::vector<T> & value) const
-		{
-			return setUniformArray(Uniform::Names[id], (int32_t)value.size(), &value[0]);
-		};
-
-	public:
-		bool		compile(const char * vs, const char * gs, const char * fs);
-		int32_t		getUniformLocation(const String & value) const;
-		int32_t		getAttribLocation(const String & value) const;
+		bool	compile(const char * vs, const char * gs, const char * fs);
+		int32_t	getUniformLocation(const String & value) const;
+		int32_t	getAttribLocation(const String & value) const;
 
 	private:
 		struct	UniformBinder;
 
-		using	TextureTable = std::map<int32_t, const Texture*>;
+		using	TextureTable = std::map<int32_t, const Texture *>;
 		using	UniformTable = std::map<String, int32_t>;
 
 		mutable TextureTable m_textures;

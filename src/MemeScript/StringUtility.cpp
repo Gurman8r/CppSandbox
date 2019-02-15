@@ -133,7 +133,7 @@ namespace ml
 	{
 		if (!src.empty())
 		{
-			char* endptr = 0;
+			char * endptr = 0;
 			strtod(src.c_str(), &endptr);
 			if (*endptr != '\0' || endptr == src)
 			{

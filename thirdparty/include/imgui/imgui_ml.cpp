@@ -2,10 +2,10 @@
 
 #include <imgui/imgui.h>
 #include <imgui/imgui_ml.hpp>
+
 #include <MemeCore/EventSystem.hpp>
 #include <MemeGraphics/OpenGL.hpp>
 #include <MemeGraphics/Shader.hpp>
-#include <MemeWindow/Window.hpp>
 #include <MemeWindow/WindowEvents.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -34,17 +34,17 @@ static uint32_t		g_VboHandle = 0, g_ElementsHandle = 0;
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-static const char * ImGui_ML_GetClipboardText(void* user_data)
+inline static ml::CString ImGui_ML_GetClipboardText(void * user_data)
 {
-	return ((ml::Window *)user_data)->getClipboardString().c_str();
+	return static_cast<const ml::Window *>(user_data)->getClipboardString();
 }
 
-static void ImGui_ML_SetClipboardText(void* user_data, const char * text)
+inline static void ImGui_ML_SetClipboardText(void * user_data, ml::CString text)
 {
-	((ml::Window *)user_data)->setClipboardString(text);
+	static_cast<ml::Window *>(user_data)->setClipboardString(text);
 }
 
-static bool ImGui_ML_Init(ml::Window * window, bool install_callbacks, ClientAPI client_api)
+inline static bool ImGui_ML_Init(ml::Window * window, bool install_callbacks, ClientAPI client_api)
 {
 	g_Window = window;
 	g_Time = 0.0;
@@ -105,7 +105,7 @@ static bool ImGui_ML_Init(ml::Window * window, bool install_callbacks, ClientAPI
 	return true;
 }
 
-static void ImGui_ML_UpdateMousePosAndButtons()
+inline static void ImGui_ML_UpdateMousePosAndButtons()
 {
 	// Update buttons
 	ImGuiIO& io = ImGui::GetIO();
@@ -138,7 +138,7 @@ static void ImGui_ML_UpdateMousePosAndButtons()
 	}
 }
 
-static void ImGui_ML_UpdateMouseCursor()
+inline static void ImGui_ML_UpdateMouseCursor()
 {
 	ImGuiIO& io = ImGui::GetIO();
 	if ((io.ConfigFlags & ImGuiConfigFlags_NoMouseCursorChange) || g_Window->getInputMode() == ml::Cursor::Disabled)
@@ -159,7 +159,7 @@ static void ImGui_ML_UpdateMouseCursor()
 	}
 }
 
-static bool ImGui_ML_CompileShader(uint32_t & program, const char * const * vs, const char * const * fs)
+inline static bool ImGui_ML_CompileShader(uint32_t & program, ml::CString const * vs, ml::CString const * fs)
 {
 	if (!ml::OpenGL::shadersAvailable())
 	{
@@ -184,7 +184,7 @@ static bool ImGui_ML_CompileShader(uint32_t & program, const char * const * vs, 
 		// Check the Compile log
 		if (!ml::OpenGL::getProgramParameter(g_VertHandle, ml::GL::ObjectCompileStatus))
 		{
-			const char * log = ml::OpenGL::getProgramInfoLog(g_VertHandle);
+			ml::CString log = ml::OpenGL::getProgramInfoLog(g_VertHandle);
 			ml::OpenGL::deleteShader(g_VertHandle);
 			ml::OpenGL::deleteShader(program);
 			ml::cerr << ("Failed to compile vertex source: ") << log << ml::endl;
@@ -206,7 +206,7 @@ static bool ImGui_ML_CompileShader(uint32_t & program, const char * const * vs, 
 		// Check the Compile log
 		if (!ml::OpenGL::getProgramParameter(g_FragHandle, ml::GL::ObjectCompileStatus))
 		{
-			const char * log = ml::OpenGL::getProgramInfoLog(g_FragHandle);
+			ml::CString log = ml::OpenGL::getProgramInfoLog(g_FragHandle);
 			ml::OpenGL::deleteShader(g_FragHandle);
 			ml::OpenGL::deleteShader(program);
 			ml::cerr << ("Failed to compile fragment source: ") << log << ml::endl;
@@ -223,7 +223,7 @@ static bool ImGui_ML_CompileShader(uint32_t & program, const char * const * vs, 
 	// Check the link log
 	if (!ml::OpenGL::getProgramParameter(program, ml::GL::ObjectLinkStatus))
 	{
-		const char * log = ml::OpenGL::getProgramInfoLog(program);
+		ml::CString log = ml::OpenGL::getProgramInfoLog(program);
 		ml::OpenGL::deleteShader(program);
 		ml::cerr << ("Failed to link source: ") << log << ml::endl;
 		return false;
@@ -236,7 +236,7 @@ static bool ImGui_ML_CompileShader(uint32_t & program, const char * const * vs, 
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-bool ImGui_ML_Init(const char * glsl_version, ml::Window * window, bool install_callbacks)
+bool ImGui_ML_Init(ml::CString glsl_version, ml::Window * window, bool install_callbacks)
 {
 	// Store GLSL version string so we can refer to it later in case we recreate shaders. Note: GLSL version is NOT the same as GL version. Leave this to NULL if unsure.
 #ifdef USE_GL_ES3
@@ -411,9 +411,9 @@ void ImGui_ML_RenderDrawData(ImDrawData * draw_data)
 	ml::OpenGL::enableVertexAttribArray(g_AttribLocationPosition);
 	ml::OpenGL::enableVertexAttribArray(g_AttribLocationUV);
 	ml::OpenGL::enableVertexAttribArray(g_AttribLocationColor);
-	ml::OpenGL::vertexAttribPointer(g_AttribLocationPosition, 2, ml::GL::Float, false, sizeof(ImDrawVert), (void*)IM_OFFSETOF(ImDrawVert, pos));
-	ml::OpenGL::vertexAttribPointer(g_AttribLocationUV, 2, ml::GL::Float, false, sizeof(ImDrawVert), (void*)IM_OFFSETOF(ImDrawVert, uv));
-	ml::OpenGL::vertexAttribPointer(g_AttribLocationColor, 4, ml::GL::UnsignedByte, true, sizeof(ImDrawVert), (void*)IM_OFFSETOF(ImDrawVert, col));
+	ml::OpenGL::vertexAttribPointer(g_AttribLocationPosition, 2, ml::GL::Float, false, sizeof(ImDrawVert), (void *)IM_OFFSETOF(ImDrawVert, pos));
+	ml::OpenGL::vertexAttribPointer(g_AttribLocationUV, 2, ml::GL::Float, false, sizeof(ImDrawVert), (void *)IM_OFFSETOF(ImDrawVert, uv));
+	ml::OpenGL::vertexAttribPointer(g_AttribLocationColor, 4, ml::GL::UnsignedByte, true, sizeof(ImDrawVert), (void *)IM_OFFSETOF(ImDrawVert, col));
 
 	// Draw
 	ImVec2 pos = draw_data->DisplayPos;
@@ -423,10 +423,10 @@ void ImGui_ML_RenderDrawData(ImDrawData * draw_data)
 		const ImDrawIdx* idx_buffer_offset = 0;
 
 		ml::OpenGL::bindBuffer(ml::GL::ArrayBuffer, g_VboHandle);
-		ml::OpenGL::bufferData(ml::GL::ArrayBuffer, (int32_t)cmd_list->VtxBuffer.Size * sizeof(ImDrawVert), (const void*)cmd_list->VtxBuffer.Data, ml::GL::StreamDraw);
+		ml::OpenGL::bufferData(ml::GL::ArrayBuffer, (int32_t)cmd_list->VtxBuffer.Size * sizeof(ImDrawVert), (const void *)cmd_list->VtxBuffer.Data, ml::GL::StreamDraw);
 
 		ml::OpenGL::bindBuffer(ml::GL::ElementArrayBuffer, g_ElementsHandle);
-		ml::OpenGL::bufferData(ml::GL::ElementArrayBuffer, (int32_t)cmd_list->IdxBuffer.Size * sizeof(ImDrawIdx), (const void*)cmd_list->IdxBuffer.Data, ml::GL::StreamDraw);
+		ml::OpenGL::bufferData(ml::GL::ElementArrayBuffer, (int32_t)cmd_list->IdxBuffer.Size * sizeof(ImDrawIdx), (const void *)cmd_list->IdxBuffer.Data, ml::GL::StreamDraw);
 
 		for (int32_t cmd_i = 0; cmd_i < cmd_list->CmdBuffer.Size; cmd_i++)
 		{
@@ -531,7 +531,7 @@ bool ImGui_ML_CreateDeviceObjects()
 	int32_t glsl_version = 130;
 	sscanf(g_GlslVersionString, "#version %d", &glsl_version);
 
-	const char * vertex_shader_glsl_120 =
+	ml::CString vertex_shader_glsl_120 =
 		"uniform mat4 ProjMtx;\n"
 		"attribute vec2 Position;\n"
 		"attribute vec2 UV;\n"
@@ -545,7 +545,7 @@ bool ImGui_ML_CreateDeviceObjects()
 		"    gl_Position = ProjMtx * vec4(Position.xy,0,1);\n"
 		"}\n";
 
-	const char * vertex_shader_glsl_130 =
+	ml::CString vertex_shader_glsl_130 =
 		"uniform mat4 ProjMtx;\n"
 		"in vec2 Position;\n"
 		"in vec2 UV;\n"
@@ -559,7 +559,7 @@ bool ImGui_ML_CreateDeviceObjects()
 		"    gl_Position = ProjMtx * vec4(Position.xy,0,1);\n"
 		"}\n";
 
-	const char * vertex_shader_glsl_300_es =
+	ml::CString vertex_shader_glsl_300_es =
 		"precision mediump float;\n"
 		"layout (location = 0) in vec2 Position;\n"
 		"layout (location = 1) in vec2 UV;\n"
@@ -574,7 +574,7 @@ bool ImGui_ML_CreateDeviceObjects()
 		"    gl_Position = ProjMtx * vec4(Position.xy,0,1);\n"
 		"}\n";
 
-	const char * vertex_shader_glsl_410_core =
+	ml::CString vertex_shader_glsl_410_core =
 		"layout (location = 0) in vec2 Position;\n"
 		"layout (location = 1) in vec2 UV;\n"
 		"layout (location = 2) in vec4 Color;\n"
@@ -588,7 +588,7 @@ bool ImGui_ML_CreateDeviceObjects()
 		"    gl_Position = ProjMtx * vec4(Position.xy,0,1);\n"
 		"}\n";
 
-	const char * fragment_shader_glsl_120 =
+	ml::CString fragment_shader_glsl_120 =
 		"#ifdef GL_ES\n"
 		"    precision mediump float;\n"
 		"#endif\n"
@@ -600,7 +600,7 @@ bool ImGui_ML_CreateDeviceObjects()
 		"    gl_FragColor = Frag_Color * texture2D(Texture, Frag_UV.st);\n"
 		"}\n";
 
-	const char * fragment_shader_glsl_130 =
+	ml::CString fragment_shader_glsl_130 =
 		"uniform sampler2D Texture;\n"
 		"in vec2 Frag_UV;\n"
 		"in vec4 Frag_Color;\n"
@@ -610,7 +610,7 @@ bool ImGui_ML_CreateDeviceObjects()
 		"    Out_Color = Frag_Color * texture(Texture, Frag_UV.st);\n"
 		"}\n";
 
-	const char * fragment_shader_glsl_300_es =
+	ml::CString fragment_shader_glsl_300_es =
 		"precision mediump float;\n"
 		"uniform sampler2D Texture;\n"
 		"in vec2 Frag_UV;\n"
@@ -621,7 +621,7 @@ bool ImGui_ML_CreateDeviceObjects()
 		"    Out_Color = Frag_Color * texture(Texture, Frag_UV.st);\n"
 		"}\n";
 
-	const char * fragment_shader_glsl_410_core =
+	ml::CString fragment_shader_glsl_410_core =
 		"in vec2 Frag_UV;\n"
 		"in vec4 Frag_Color;\n"
 		"uniform sampler2D Texture;\n"
@@ -632,8 +632,8 @@ bool ImGui_ML_CreateDeviceObjects()
 		"}\n";
 
 	// Select shaders matching our GLSL versions
-	const char * vertex_shader = NULL;
-	const char * fragment_shader = NULL;
+	ml::CString vertex_shader = NULL;
+	ml::CString fragment_shader = NULL;
 	if (glsl_version < 130)
 	{
 		vertex_shader = vertex_shader_glsl_120;
@@ -656,8 +656,8 @@ bool ImGui_ML_CreateDeviceObjects()
 	}
 
 	// Create shaders
-	const char * vertex_shader_with_version[2] = { g_GlslVersionString, vertex_shader };
-	const char * fragment_shader_with_version[2] = { g_GlslVersionString, fragment_shader };
+	ml::CString vertex_shader_with_version[2] = { g_GlslVersionString, vertex_shader };
+	ml::CString fragment_shader_with_version[2] = { g_GlslVersionString, fragment_shader };
 
 	ImGui_ML_CompileShader(g_ShaderHandle, vertex_shader_with_version, fragment_shader_with_version);
 

@@ -121,7 +121,7 @@ namespace ml
 	
 	const TokenList::stream_type	TokenList::sstream() const
 	{
-		String::Stream ss;
+		SStream ss;
 		if (!empty())
 		{
 			for (auto e : (*this))

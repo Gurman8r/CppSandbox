@@ -38,7 +38,7 @@ namespace ml
 	
 	bool Mesh::loadFromFile(const String & filename)
 	{
-		String::Stream file;
+		SStream file;
 		if (ML_FileSystem.getFileContents(filename, file))
 		{
 			file >> (*this);
@@ -65,7 +65,7 @@ namespace ml
 		auto parseLine = [](
 			const String & line,
 			const String & find,
-			String::Stream & ss)
+			SStream & ss)
 		{
 			size_t i;
 			if ((i = line.find(find)) != String::npos)
@@ -89,7 +89,7 @@ namespace ml
 			if (line.front() == '#')
 				continue;
 
-			String::Stream ss;
+			SStream ss;
 			if (parseLine(line, "v ", ss))
 			{
 				// Position
@@ -116,12 +116,12 @@ namespace ml
 				// Face
 				vf.push_back(IndexList());
 
-				String::Stream lineStream(ss.str());
+				SStream lineStream(ss.str());
 				while (lineStream.good())
 				{
 					lineStream >> line;
 
-					String::Stream indexStream(line);
+					SStream indexStream(line);
 					while (std::getline(indexStream, line, '/'))
 					{
 						vf.back().push_back(std::stoi(line));

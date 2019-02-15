@@ -46,11 +46,11 @@
     <Filter Include="Source Files\Transforms">
       <UniqueIdentifier>{94ba435b-7fa3-46a5-b588-af824460c9ec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Window">
-      <UniqueIdentifier>{d3846bfa-5393-4ab4-bae7-7d778977d806}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Window">
+    <Filter Include="Header Files\Rendering">
       <UniqueIdentifier>{0948861a-0cdf-4c56-afbb-b4a431bb642a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Rendering">
+      <UniqueIdentifier>{d3846bfa-5393-4ab4-bae7-7d778977d806}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -127,13 +127,13 @@
       <Filter>Header Files\Buffers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\RenderTarget.hpp">
-      <Filter>Header Files\Window</Filter>
+      <Filter>Header Files\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\RenderBatch.hpp">
-      <Filter>Header Files\Window</Filter>
+      <Filter>Header Files\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\RenderWindow.hpp">
-      <Filter>Header Files\Window</Filter>
+      <Filter>Header Files\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\IDrawable.hpp">
       <Filter>Header Files\Interfaces</Filter>
@@ -148,6 +148,9 @@
       <Filter>Header Files\DS</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Shader.hpp">
+      <Filter>Header Files\DS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\UniformSet.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
   </ItemGroup>
@@ -216,16 +219,19 @@
       <Filter>Source Files\DS</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\RenderWindow.cpp">
-      <Filter>Source Files\Window</Filter>
+      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\RenderTarget.cpp">
-      <Filter>Source Files\Window</Filter>
+      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Transform.cpp">
       <Filter>Source Files\Transforms</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Camera.cpp">
       <Filter>Source Files\Transforms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\UniformSet.cpp">
+      <Filter>Source Files\DS</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

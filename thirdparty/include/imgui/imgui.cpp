@@ -224,14 +224,14 @@ CODE
      // Build and load the texture atlas into a texture
      // (In the examples/ app this is usually done within the ImGui_ImplXXX_Init() function from one of the demo Renderer)
      int width, height;
-     unsigned char* pixels = NULL;
+     unsigned char * pixels = NULL;
      io.Fonts->GetTexDataAsRGBA32(&pixels, &width, &height);
 
      // At this point you've got the texture data and you need to upload that your your graphic system:
      // After we have created the texture, store its pointer/identifier (_in whichever format your engine uses_) in 'io.Fonts->TexID'.
-     // This will be passed back to your via the renderer. Basically ImTextureID == void*. Read FAQ below for details about ImTextureID.
+     // This will be passed back to your via the renderer. Basically ImTextureID == void *. Read FAQ below for details about ImTextureID.
      MyTexture* texture = MyEngine::CreateTextureFromMemoryPixels(pixels, width, height, TEXTURE_TYPE_RGBA32)
-     io.Fonts->TexID = (void*)texture;
+     io.Fonts->TexID = (void *)texture;
 
      // Application main loop
      while (true)
@@ -392,7 +392,7 @@ CODE
                        If you used DragInt() with custom format strings, make sure you change them to use %d or an integer-compatible format.
                        To honor backward-compatibility, the DragInt() code will currently parse and modify format strings to replace %*f with %d, giving time to users to upgrade their code.
                        If you have IMGUI_DISABLE_OBSOLETE_FUNCTIONS enabled, the code will instead assert! You may run a reg-exp search on your codebase for e.g. "DragInt.*%f" to help you find them.
- - 2018/04/28 (1.61) - obsoleted InputFloat() functions taking an optional "int decimal_precision" in favor of an equivalent and more flexible "const char* format",
+ - 2018/04/28 (1.61) - obsoleted InputFloat() functions taking an optional "int decimal_precision" in favor of an equivalent and more flexible "const char * format",
                        consistent with other functions. Kept redirection functions (will obsolete).
  - 2018/04/09 (1.61) - IM_DELETE() helper function added in 1.60 doesn't clear the input _pointer_ reference, more consistent with expectation and allows passing r-value.
  - 2018/03/20 (1.60) - renamed io.WantMoveMouse to io.WantSetMousePos for consistency and ease of understanding (was added in 1.52, _not_ used by core and only honored by some binding ahead of merging the Nav branch).
@@ -443,18 +443,18 @@ CODE
  - 2017/08/20 (1.51) - renamed GetStyleColName() to GetStyleColorName() for consistency.
  - 2017/08/20 (1.51) - added PushStyleColor(ImGuiCol idx, ImU32 col) overload, which _might_ cause an "ambiguous call" compilation error if you are using ImColor() with implicit cast. Cast to ImU32 or ImVec4 explicily to fix.
  - 2017/08/15 (1.51) - marked the weird IMGUI_ONCE_UPON_A_FRAME helper macro as obsolete. prefer using the more explicit ImGuiOnceUponAFrame.
- - 2017/08/15 (1.51) - changed parameter order for BeginPopupContextWindow() from (const char*,int buttons,bool also_over_items) to (const char*,int buttons,bool also_over_items). Note that most calls relied on default parameters completely.
+ - 2017/08/15 (1.51) - changed parameter order for BeginPopupContextWindow() from (const char *,int buttons,bool also_over_items) to (const char *,int buttons,bool also_over_items). Note that most calls relied on default parameters completely.
  - 2017/08/13 (1.51) - renamed ImGuiCol_Columns*** to ImGuiCol_Separator***. Kept redirection enums (will obsolete).
  - 2017/08/11 (1.51) - renamed ImGuiSetCond_*** types and flags to ImGuiCond_***. Kept redirection enums (will obsolete).
  - 2017/08/09 (1.51) - removed ValueColor() helpers, they are equivalent to calling Text(label) + SameLine() + ColorButton().
  - 2017/08/08 (1.51) - removed ColorEditMode() and ImGuiColorEditMode in favor of ImGuiColorEditFlags and parameters to the various Color*() functions. The SetColorEditOptions() allows to initialize default but the user can still change them with right-click context menu.
-                     - changed prototype of 'ColorEdit4(const char* label, float col[4], bool show_alpha = true)' to 'ColorEdit4(const char* label, float col[4], ImGuiColorEditFlags flags = 0)', where passing flags = 0x01 is a safe no-op (hello dodgy backward compatibility!). - check and run the demo window, under "Color/Picker Widgets", to understand the various new options.
-                     - changed prototype of rarely used 'ColorButton(ImVec4 col, bool small_height = false, bool outline_border = true)' to 'ColorButton(const char* desc_id, ImVec4 col, ImGuiColorEditFlags flags = 0, ImVec2 size = ImVec2(0,0))'
+                     - changed prototype of 'ColorEdit4(const char * label, float col[4], bool show_alpha = true)' to 'ColorEdit4(const char * label, float col[4], ImGuiColorEditFlags flags = 0)', where passing flags = 0x01 is a safe no-op (hello dodgy backward compatibility!). - check and run the demo window, under "Color/Picker Widgets", to understand the various new options.
+                     - changed prototype of rarely used 'ColorButton(ImVec4 col, bool small_height = false, bool outline_border = true)' to 'ColorButton(const char * desc_id, ImVec4 col, ImGuiColorEditFlags flags = 0, ImVec2 size = ImVec2(0,0))'
  - 2017/07/20 (1.51) - removed IsPosHoveringAnyWindow(ImVec2), which was partly broken and misleading. ASSERT + redirect user to io.WantCaptureMouse
  - 2017/05/26 (1.50) - removed ImFontConfig::MergeGlyphCenterV in favor of a more multipurpose ImFontConfig::GlyphOffset.
  - 2017/05/01 (1.50) - renamed ImDrawList::PathFill() (rarely used directly) to ImDrawList::PathFillConvex() for clarity.
- - 2016/11/06 (1.50) - BeginChild(const char*) now applies the stack id to the provided label, consistently with other functions as it should always have been. It shouldn't affect you unless (extremely unlikely) you were appending multiple times to a same child from different locations of the stack id. If that's the case, generate an id with GetId() and use it instead of passing string to BeginChild().
- - 2016/10/15 (1.50) - avoid 'void* user_data' parameter to io.SetClipboardTextFn/io.GetClipboardTextFn pointers. We pass io.ClipboardUserData to it.
+ - 2016/11/06 (1.50) - BeginChild(const char *) now applies the stack id to the provided label, consistently with other functions as it should always have been. It shouldn't affect you unless (extremely unlikely) you were appending multiple times to a same child from different locations of the stack id. If that's the case, generate an id with GetId() and use it instead of passing string to BeginChild().
+ - 2016/10/15 (1.50) - avoid 'void * user_data' parameter to io.SetClipboardTextFn/io.GetClipboardTextFn pointers. We pass io.ClipboardUserData to it.
  - 2016/09/25 (1.50) - style.WindowTitleAlign is now a ImVec2 (ImGuiAlign enum was removed). set to (0.5f,0.5f) for horizontal+vertical centering, (0.0f,0.0f) for upper-left, etc.
  - 2016/07/30 (1.50) - SameLine(x) with x>0.0f is now relative to left of column/group if any, and not always to left of window. This was sort of always the intent and hopefully breakage should be minimal.
  - 2016/05/12 (1.49) - title bar (using ImGuiCol_TitleBg/ImGuiCol_TitleBgActive colors) isn't rendered over a window background (ImGuiCol_WindowBg color) anymore.
@@ -469,7 +469,7 @@ CODE
                        If this is confusing, pick the RGB value from title bar from an old screenshot and apply this as TitleBg/TitleBgActive. Or you may just create TitleBgActive from a tweaked TitleBg color.
  - 2016/05/07 (1.49) - removed confusing set of GetInternalState(), GetInternalStateSize(), SetInternalState() functions. Now using CreateContext(), DestroyContext(), GetCurrentContext(), SetCurrentContext().
  - 2016/05/02 (1.49) - renamed SetNextTreeNodeOpened() to SetNextTreeNodeOpen(), no redirection.
- - 2016/05/01 (1.49) - obsoleted old signature of CollapsingHeader(const char* label, const char* str_id = NULL, bool display_frame = true, bool default_open = false) as extra parameters were badly designed and rarely used. You can replace the "default_open = true" flag in new API with CollapsingHeader(label, ImGuiTreeNodeFlags_DefaultOpen).
+ - 2016/05/01 (1.49) - obsoleted old signature of CollapsingHeader(const char * label, const char * str_id = NULL, bool display_frame = true, bool default_open = false) as extra parameters were badly designed and rarely used. You can replace the "default_open = true" flag in new API with CollapsingHeader(label, ImGuiTreeNodeFlags_DefaultOpen).
  - 2016/04/26 (1.49) - changed ImDrawList::PushClipRect(ImVec4 rect) to ImDrawList::PushClipRect(Imvec2 min,ImVec2 max,bool intersect_with_current_clip_rect=false). Note that higher-level ImGui::PushClipRect() is preferable because it will clip at logic/widget level, whereas ImDrawList::PushClipRect() only affect your renderer.
  - 2016/04/03 (1.48) - removed style.WindowFillAlphaDefault setting which was redundant. Bake default BG alpha inside style.Colors[ImGuiCol_WindowBg] and all other Bg color values. (ref github issue #337).
  - 2016/04/03 (1.48) - renamed ImGuiCol_TooltipBg to ImGuiCol_PopupBg, used by popups/menus and tooltips. popups/menus were previously using ImGuiCol_WindowBg. (ref github issue #337)
@@ -525,8 +525,8 @@ CODE
  - 2015/01/19 (1.30) - renamed ImGuiStorage::GetIntPtr()/GetFloatPtr() to GetIntRef()/GetIntRef() because Ptr was conflicting with actual pointer storage functions.
  - 2015/01/11 (1.30) - big font/image API change! now loads TTF file. allow for multiple fonts. no need for a PNG loader.
               (1.30) - removed GetDefaultFontData(). uses io.Fonts->GetTextureData*() API to retrieve uncompressed pixels.
-                       font init:  { const void* png_data; unsigned int png_size; ImGui::GetDefaultFontData(NULL, NULL, &png_data, &png_size); <..Upload texture to GPU..>; }
-                       became:     { unsigned char* pixels; int width, height; io.Fonts->GetTexDataAsRGBA32(&pixels, &width, &height); <..Upload texture to GPU>; io.Fonts->TexId = YourTextureIdentifier; }
+                       font init:  { const void * png_data; unsigned int png_size; ImGui::GetDefaultFontData(NULL, NULL, &png_data, &png_size); <..Upload texture to GPU..>; }
+                       became:     { unsigned char * pixels; int width, height; io.Fonts->GetTexDataAsRGBA32(&pixels, &width, &height); <..Upload texture to GPU>; io.Fonts->TexId = YourTextureIdentifier; }
                        you now have more flexibility to load multiple TTF fonts and manage the texture buffer for internal needs.
                        it is now recommended that you sample the font texture with bilinear interpolation.
               (1.30) - added texture identifier in ImDrawCmd passed to your render function (we can now render images). make sure to set io.Fonts->TexID.
@@ -566,7 +566,7 @@ CODE
  Q: How can I display an image? What is ImTextureID, how does it works?
  A: Short explanation:
     - You may use functions such as ImGui::Image(), ImGui::ImageButton() or lower-level ImDrawList::AddImage() to emit draw calls that will use your own textures.
-    - Actual textures are identified in a way that is up to the user/engine. Those identifiers are stored and passed as ImTextureID (void*) value.
+    - Actual textures are identified in a way that is up to the user/engine. Those identifiers are stored and passed as ImTextureID (void *) value.
     - Loading image files from the disk and turning them into a texture is not within the scope of Dear ImGui (for a good reason). 
       Please read documentations or tutorials on your graphics API to understand how to display textures on the screen before moving onward.
 
@@ -576,7 +576,7 @@ CODE
       to render them is generally fairly short (a few dozen lines). In the examples/ folder we provide functions for popular graphics API (OpenGL, DirectX, etc.).
     - Each rendering function decides on a data type to represent "textures". The concept of what is a "texture" is entirely tied to your underlying engine/graphics API.
       We carry the information to identify a "texture" in the ImTextureID type. 
-      ImTextureID is nothing more that a void*, aka 4/8 bytes worth of data: just enough to store 1 pointer or 1 integer of your choice.
+      ImTextureID is nothing more that a void *, aka 4/8 bytes worth of data: just enough to store 1 pointer or 1 integer of your choice.
       Dear ImGui doesn't know or understand what you are storing in ImTextureID, it merely pass ImTextureID values until they reach your rendering function.
     - In the examples/ bindings, for each graphics API binding we decided on a type that is likely to be a good representation for specifying 
       an image from the end-user perspective. This is what the _examples_ rendering functions are using:
@@ -598,13 +598,13 @@ CODE
 
     User code may do:
 
-        // Cast our texture type to ImTextureID / void*
+        // Cast our texture type to ImTextureID / void *
         MyTexture* texture = g_CoffeeTableTexture;
-        ImGui::Image((void*)texture, ImVec2(texture->Width, texture->Height)); 
+        ImGui::Image((void *)texture, ImVec2(texture->Width, texture->Height)); 
 
     The renderer function called after ImGui::Render() will receive that same value that the user code passed:
 
-        // Cast ImTextureID / void* stored in the draw command as our texture type
+        // Cast ImTextureID / void * stored in the draw command as our texture type
         MyTexture* texture = (MyTexture*)pcmd->TextureId;
         MyEngineBindTexture2D(texture);
 
@@ -619,7 +619,7 @@ CODE
         #include <stb_image.h>
         [...]
         int my_image_width, my_image_height;
-        unsigned char* my_image_data = stbi_load("my_image.png", &my_image_width, &my_image_height, NULL, 4);
+        unsigned char * my_image_data = stbi_load("my_image.png", &my_image_width, &my_image_height, NULL, 4);
 
         // Turn the RGBA pixel data into an OpenGL texture:
         GLuint my_opengl_texture;
@@ -631,21 +631,21 @@ CODE
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image_width, image_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image_data);
 
         // Now that we have an OpenGL texture, assuming our imgui rendering function (imgui_impl_xxx.cpp file) takes GLuint as ImTextureID, we can display it:
-        ImGui::Image((void*)(intptr_t)my_opengl_texture, ImVec2(my_image_width, my_image_height));
+        ImGui::Image((void *)(intptr_t)my_opengl_texture, ImVec2(my_image_width, my_image_height));
 
-    C/C++ tip: a void* is pointer-sized storage. You may safely store any pointer or integer into it by casting your value to ImTexture / void*, and vice-versa. 
-    Because both end-points (user code and rendering function) are under your control, you know exactly what is stored inside the ImTexture / void*.
+    C/C++ tip: a void * is pointer-sized storage. You may safely store any pointer or integer into it by casting your value to ImTexture / void *, and vice-versa. 
+    Because both end-points (user code and rendering function) are under your control, you know exactly what is stored inside the ImTexture / void *.
     Examples:
 
         GLuint my_tex = XXX;
-        void* my_void_ptr;
-        my_void_ptr = (void*)(intptr_t)my_tex;                  // cast a GLuint into a void* (we don't take its address! we literally store the value inside the pointer)
-        my_tex = (GLuint)(intptr_t)my_void_ptr;                 // cast a void* into a GLuint
+        void * my_void_ptr;
+        my_void_ptr = (void *)(intptr_t)my_tex;                  // cast a GLuint into a void * (we don't take its address! we literally store the value inside the pointer)
+        my_tex = (GLuint)(intptr_t)my_void_ptr;                 // cast a void * into a GLuint
 
         ID3D11ShaderResourceView* my_dx11_srv = XXX;
-        void* my_void_ptr;
-        my_void_ptr = (void*)my_dx11_srv;                       // cast a ID3D11ShaderResourceView* into an opaque void*
-        my_dx11_srv = (ID3D11ShaderResourceView*)my_void_ptr;   // cast a void* into a ID3D11ShaderResourceView*
+        void * my_void_ptr;
+        my_void_ptr = (void *)my_dx11_srv;                       // cast a ID3D11ShaderResourceView* into an opaque void *
+        my_dx11_srv = (ID3D11ShaderResourceView*)my_void_ptr;   // cast a void * into a ID3D11ShaderResourceView*
 
     Finally, you may call ImGui::ShowMetricsWindow() to explore/visualize/understand how the ImDrawList are generated.
 
@@ -848,7 +848,7 @@ CODE
  Q: How can I interact with standard C++ types (such as std::string and std::vector)? 
  A: - Being highly portable (bindings for several languages, frameworks, programming style, obscure or older platforms/compilers),
       and aiming for compatibility & performance suitable for every modern real-time game engines, dear imgui does not use
-      any of std C++ types. We use raw types (e.g. char* instead of std::string) because they adapt to more use cases.
+      any of std C++ types. We use raw types (e.g. char * instead of std::string) because they adapt to more use cases.
     - To use ImGui::InputText() with a std::string or any resizable string class, see misc/cpp/imgui_stdlib.h.
     - To use combo boxes and list boxes with std::vector or any other data structure: the BeginCombo()/EndCombo() API
       lets you iterate and submit items yourself, so does the ListBoxHeader()/ListBoxFooter() API.
@@ -955,7 +955,7 @@ CODE
 #pragma clang diagnostic ignored "-Wexit-time-destructors"  // warning : declaration requires an exit-time destructor       // exit-time destruction order is undefined. if MemFree() leads to users code that has been disabled before exit it might cause problems. ImGui coding style welcomes static/globals.
 #pragma clang diagnostic ignored "-Wglobal-constructors"    // warning : declaration requires a global destructor           // similar to above, not sure what the exact difference it.
 #pragma clang diagnostic ignored "-Wsign-conversion"        // warning : implicit conversion changes signedness             //
-#pragma clang diagnostic ignored "-Wformat-pedantic"        // warning : format specifies type 'void *' but the argument has type 'xxxx *' // unreasonable, would lead to casting every %p arg to void*. probably enabled by -pedantic.
+#pragma clang diagnostic ignored "-Wformat-pedantic"        // warning : format specifies type 'void *' but the argument has type 'xxxx *' // unreasonable, would lead to casting every %p arg to void *. probably enabled by -pedantic.
 #pragma clang diagnostic ignored "-Wint-to-void-pointer-cast"       // warning : cast to 'void *' from smaller integer type 'int'
 #pragma clang diagnostic ignored "-Wzero-as-null-pointer-constant"  // warning : zero as null pointer constant              // some standard header variations use #define NULL 0
 #if __has_warning("-Wdouble-promotion")
@@ -964,7 +964,7 @@ CODE
 #elif defined(__GNUC__)
 #pragma GCC diagnostic ignored "-Wunused-function"          // warning: 'xxxx' defined but not used
 #pragma GCC diagnostic ignored "-Wint-to-pointer-cast"      // warning: cast to pointer from integer of different size
-#pragma GCC diagnostic ignored "-Wformat"                   // warning: format '%p' expects argument of type 'void*', but argument 6 has type 'ImGuiWindow*'
+#pragma GCC diagnostic ignored "-Wformat"                   // warning: format '%p' expects argument of type 'void *', but argument 6 has type 'ImGuiWindow*'
 #pragma GCC diagnostic ignored "-Wdouble-promotion"         // warning: implicit conversion from 'float' to 'double' when passing argument to function
 #pragma GCC diagnostic ignored "-Wconversion"               // warning: conversion to 'xxxx' from 'xxxx' may alter its value
 #pragma GCC diagnostic ignored "-Wformat-nonliteral"        // warning: format not a string literal, format string not checked
@@ -991,7 +991,7 @@ static void             SetWindowPos(ImGuiWindow* window, const ImVec2& pos, ImG
 static void             SetWindowSize(ImGuiWindow* window, const ImVec2& size, ImGuiCond cond);
 static void             SetWindowCollapsed(ImGuiWindow* window, bool collapsed, ImGuiCond cond);
 static void             FindHoveredWindow();
-static ImGuiWindow*     CreateNewWindow(const char* name, ImVec2 size, ImGuiWindowFlags flags);
+static ImGuiWindow*     CreateNewWindow(const char * name, ImVec2 size, ImGuiWindowFlags flags);
 static void             CheckStacksSize(ImGuiWindow* window, bool write);
 static ImVec2           CalcNextScrollFromScrollTargetAndClamp(ImGuiWindow* window, bool snap_on_edges);
 
@@ -1002,18 +1002,18 @@ static void             AddWindowToSortBuffer(ImVector<ImGuiWindow*>* out_sorted
 static ImRect           GetViewportRect();
 
 // Settings
-static void*            SettingsHandlerWindow_ReadOpen(ImGuiContext*, ImGuiSettingsHandler*, const char* name);
-static void             SettingsHandlerWindow_ReadLine(ImGuiContext*, ImGuiSettingsHandler*, void* entry, const char* line);
+static void *            SettingsHandlerWindow_ReadOpen(ImGuiContext*, ImGuiSettingsHandler*, const char * name);
+static void             SettingsHandlerWindow_ReadLine(ImGuiContext*, ImGuiSettingsHandler*, void * entry, const char * line);
 static void             SettingsHandlerWindow_WriteAll(ImGuiContext* imgui_ctx, ImGuiSettingsHandler* handler, ImGuiTextBuffer* buf);
 
 // Platform Dependents default implementation for IO functions
-static const char*      GetClipboardTextFn_DefaultImpl(void* user_data);
-static void             SetClipboardTextFn_DefaultImpl(void* user_data, const char* text);
+static const char *      GetClipboardTextFn_DefaultImpl(void * user_data);
+static void             SetClipboardTextFn_DefaultImpl(void * user_data, const char * text);
 static void             ImeSetInputScreenPosFn_DefaultImpl(int x, int y);
 
 namespace ImGui
 {
-static bool             BeginChildEx(const char* name, ImGuiID id, const ImVec2& size_arg, bool border, ImGuiWindowFlags flags);
+static bool             BeginChildEx(const char * name, ImGuiID id, const ImVec2& size_arg, bool border, ImGuiWindowFlags flags);
 
 // Navigation
 static void             NavUpdate();
@@ -1051,16 +1051,16 @@ ImGuiContext*   GImGui = NULL;
 // If you use DLL hotreloading you might need to call SetAllocatorFunctions() after reloading code from this file.
 // Otherwise, you probably don't want to modify them mid-program, and if you use global/static e.g. ImVector<> instances you may need to keep them accessible during program destruction.
 #ifndef IMGUI_DISABLE_DEFAULT_ALLOCATORS
-static void*   MallocWrapper(size_t size, void* user_data)    { (void)user_data; return malloc(size); }
-static void    FreeWrapper(void* ptr, void* user_data)        { (void)user_data; free(ptr); }
+static void *   MallocWrapper(size_t size, void * user_data)    { (void)user_data; return malloc(size); }
+static void    FreeWrapper(void * ptr, void * user_data)        { (void)user_data; free(ptr); }
 #else
-static void*   MallocWrapper(size_t size, void* user_data)    { (void)user_data; (void)size; IM_ASSERT(0); return NULL; }
-static void    FreeWrapper(void* ptr, void* user_data)        { (void)user_data; (void)ptr; IM_ASSERT(0); }
+static void *   MallocWrapper(size_t size, void * user_data)    { (void)user_data; (void)size; IM_ASSERT(0); return NULL; }
+static void    FreeWrapper(void * ptr, void * user_data)        { (void)user_data; (void)ptr; IM_ASSERT(0); }
 #endif
 
-static void*  (*GImAllocatorAllocFunc)(size_t size, void* user_data) = MallocWrapper;
-static void   (*GImAllocatorFreeFunc)(void* ptr, void* user_data) = FreeWrapper;
-static void*    GImAllocatorUserData = NULL;
+static void *  (*GImAllocatorAllocFunc)(size_t size, void * user_data) = MallocWrapper;
+static void   (*GImAllocatorFreeFunc)(void * ptr, void * user_data) = FreeWrapper;
+static void *    GImAllocatorUserData = NULL;
 
 //-----------------------------------------------------------------------------
 // [SECTION] MAIN USER FACING STRUCTURES (ImGuiStyle, ImGuiIO)
@@ -1198,7 +1198,7 @@ void ImGuiIO::AddInputCharacter(ImWchar c)
     InputQueueCharacters.push_back(c);
 }
 
-void ImGuiIO::AddInputCharactersUTF8(const char* utf8_chars)
+void ImGuiIO::AddInputCharactersUTF8(const char * utf8_chars)
 {
     while (*utf8_chars != 0)
     {
@@ -1266,51 +1266,51 @@ ImVec2 ImTriangleClosestPoint(const ImVec2& a, const ImVec2& b, const ImVec2& c,
     return proj_ca;
 }
 
-int ImStricmp(const char* str1, const char* str2)
+int ImStricmp(const char * str1, const char * str2)
 {
     int d;
     while ((d = toupper(*str2) - toupper(*str1)) == 0 && *str1) { str1++; str2++; }
     return d;
 }
 
-int ImStrnicmp(const char* str1, const char* str2, size_t count)
+int ImStrnicmp(const char * str1, const char * str2, size_t count)
 {
     int d = 0;
     while (count > 0 && (d = toupper(*str2) - toupper(*str1)) == 0 && *str1) { str1++; str2++; count--; }
     return d;
 }
 
-void ImStrncpy(char* dst, const char* src, size_t count)
+void ImStrncpy(char * dst, const char * src, size_t count)
 {
     if (count < 1) return;
     strncpy(dst, src, count);
     dst[count-1] = 0;
 }
 
-char* ImStrdup(const char* str)
+char * ImStrdup(const char * str)
 {
     size_t len = strlen(str);
-    void* buf = ImGui::MemAlloc(len + 1);
-    return (char*)memcpy(buf, (const void*)str, len + 1);
+    void * buf = ImGui::MemAlloc(len + 1);
+    return (char *)memcpy(buf, (const void *)str, len + 1);
 }
 
-char* ImStrdupcpy(char* dst, size_t* p_dst_size, const char* src)
+char * ImStrdupcpy(char * dst, size_t* p_dst_size, const char * src)
 {
     size_t dst_buf_size = p_dst_size ? *p_dst_size : strlen(dst) + 1;
     size_t src_size = strlen(src) + 1;
     if (dst_buf_size < src_size)
     {
         ImGui::MemFree(dst);
-        dst = (char*)ImGui::MemAlloc(src_size);
+        dst = (char *)ImGui::MemAlloc(src_size);
         if (p_dst_size)
             *p_dst_size = src_size;
     }
-    return (char*)memcpy(dst, (const void*)src, src_size);
+    return (char *)memcpy(dst, (const void *)src, src_size);
 }
 
-const char* ImStrchrRange(const char* str, const char* str_end, char c)
+const char * ImStrchrRange(const char * str, const char * str_end, char c)
 {
-    const char* p = (const char*)memchr(str, (int)c, str_end - str);
+    const char * p = (const char *)memchr(str, (int)c, str_end - str);
     return p;
 }
 
@@ -1323,9 +1323,9 @@ int ImStrlenW(const ImWchar* str)
 }
 
 // Find end-of-line. Return pointer will point to either first \n, either str_end.
-const char* ImStreolRange(const char* str, const char* str_end)
+const char * ImStreolRange(const char * str, const char * str_end)
 {
-    const char* p = (const char*)memchr(str, '\n', str_end - str);
+    const char * p = (const char *)memchr(str, '\n', str_end - str);
     return p ? p : str_end;
 }
 
@@ -1336,7 +1336,7 @@ const ImWchar* ImStrbolW(const ImWchar* buf_mid_line, const ImWchar* buf_begin) 
     return buf_mid_line;
 }
 
-const char* ImStristr(const char* haystack, const char* haystack_end, const char* needle, const char* needle_end)
+const char * ImStristr(const char * haystack, const char * haystack_end, const char * needle, const char * needle_end)
 {
     if (!needle_end)
         needle_end = needle + strlen(needle);
@@ -1346,8 +1346,8 @@ const char* ImStristr(const char* haystack, const char* haystack_end, const char
     {
         if (toupper(*haystack) == un0)
         {
-            const char* b = needle + 1;
-            for (const char* a = haystack + 1; b < needle_end; a++, b++)
+            const char * b = needle + 1;
+            for (const char * a = haystack + 1; b < needle_end; a++, b++)
                 if (toupper(*a) != toupper(*b))
                     break;
             if (b == needle_end)
@@ -1359,12 +1359,12 @@ const char* ImStristr(const char* haystack, const char* haystack_end, const char
 }
 
 // Trim str by offsetting contents when there's leading data + writing a \0 at the trailing position. We use this in situation where the cost is negligible.
-void ImStrTrimBlanks(char* buf)
+void ImStrTrimBlanks(char * buf)
 {
-    char* p = buf;
+    char * p = buf;
     while (p[0] == ' ' || p[0] == '\t')     // Leading blanks
         p++;
-    char* p_start = p;
+    char * p_start = p;
     while (*p != 0)                         // Find end of string
         p++;
     while (p > p_start && (p[-1] == ' ' || p[-1] == '\t'))  // Trailing blanks
@@ -1389,7 +1389,7 @@ void ImStrTrimBlanks(char* buf)
 #define vsnprintf _vsnprintf
 #endif
 
-int ImFormatString(char* buf, size_t buf_size, const char* fmt, ...)
+int ImFormatString(char * buf, size_t buf_size, const char * fmt, ...)
 {
     va_list args;
     va_start(args, fmt);
@@ -1407,7 +1407,7 @@ int ImFormatString(char* buf, size_t buf_size, const char* fmt, ...)
     return w;
 }
 
-int ImFormatStringV(char* buf, size_t buf_size, const char* fmt, va_list args)
+int ImFormatStringV(char * buf, size_t buf_size, const char * fmt, va_list args)
 {
 #ifdef IMGUI_USE_STB_SPRINTF
     int w = stbsp_vsnprintf(buf, (int)buf_size, fmt, args);
@@ -1427,7 +1427,7 @@ int ImFormatStringV(char* buf, size_t buf_size, const char* fmt, va_list args)
 // Pay attention that data_size==0 will yield different results than passing strlen(data) because the zero-terminated codepath handles ###.
 // This should technically be split into two distinct functions (ImHashData/ImHashStr), perhaps once we remove the silly static variable.
 // FIXME-OPT: Replace with e.g. FNV1a hash? CRC32 pretty much randomly access 1KB. Need to do proper measurements.
-ImU32 ImHash(const void* data, int data_size, ImU32 seed)
+ImU32 ImHash(const void * data, int data_size, ImU32 seed)
 {
     static ImU32 crc32_lut[256] = { 0 };
     if (!crc32_lut[1])
@@ -1444,7 +1444,7 @@ ImU32 ImHash(const void* data, int data_size, ImU32 seed)
 
     seed = ~seed;
     ImU32 crc = seed;
-    const unsigned char* current = (const unsigned char*)data;
+    const unsigned char * current = (const unsigned char *)data;
 
     if (data_size > 0)
     {
@@ -1469,7 +1469,7 @@ ImU32 ImHash(const void* data, int data_size, ImU32 seed)
     return ~crc;
 }
 
-FILE* ImFileOpen(const char* filename, const char* mode)
+FILE* ImFileOpen(const char * filename, const char * mode)
 {
 #if defined(_WIN32) && !defined(__CYGWIN__) && !defined(__GNUC__)
     // We need a fopen() wrapper because MSVC/Windows fopen doesn't handle UTF-8 filenames. Converting both strings from UTF-8 to wchar format (using a single allocation, because we can)
@@ -1487,7 +1487,7 @@ FILE* ImFileOpen(const char* filename, const char* mode)
 
 // Load file content into memory
 // Memory allocated with ImGui::MemAlloc(), must be freed by user using ImGui::MemFree()
-void* ImFileLoadToMemory(const char* filename, const char* file_open_mode, size_t* out_file_size, int padding_bytes)
+void * ImFileLoadToMemory(const char * filename, const char * file_open_mode, size_t* out_file_size, int padding_bytes)
 {
     IM_ASSERT(filename && file_open_mode);
     if (out_file_size)
@@ -1505,7 +1505,7 @@ void* ImFileLoadToMemory(const char* filename, const char* file_open_mode, size_
     }
 
     size_t file_size = (size_t)file_size_signed;
-    void* file_data = ImGui::MemAlloc(file_size + padding_bytes);
+    void * file_data = ImGui::MemAlloc(file_size + padding_bytes);
     if (file_data == NULL)
     {
         fclose(f);
@@ -1518,7 +1518,7 @@ void* ImFileLoadToMemory(const char* filename, const char* file_open_mode, size_
         return NULL;
     }
     if (padding_bytes > 0)
-        memset((void*)(((char*)file_data) + file_size), 0, (size_t)padding_bytes);
+        memset((void *)(((char *)file_data) + file_size), 0, (size_t)padding_bytes);
 
     fclose(f);
     if (out_file_size)
@@ -1534,10 +1534,10 @@ void* ImFileLoadToMemory(const char* filename, const char* file_open_mode, size_
 // Convert UTF-8 to 32-bits character, process single character input.
 // Based on stb_from_utf8() from github.com/nothings/stb/
 // We handle UTF-8 decoding error by skipping forward.
-int ImTextCharFromUtf8(unsigned int* out_char, const char* in_text, const char* in_text_end)
+int ImTextCharFromUtf8(unsigned int* out_char, const char * in_text, const char * in_text_end)
 {
     unsigned int c = (unsigned int)-1;
-    const unsigned char* str = (const unsigned char*)in_text;
+    const unsigned char * str = (const unsigned char *)in_text;
     if (!(*str & 0x80))
     {
         c = (unsigned int)(*str++);
@@ -1547,7 +1547,7 @@ int ImTextCharFromUtf8(unsigned int* out_char, const char* in_text, const char* 
     if ((*str & 0xe0) == 0xc0)
     {
         *out_char = 0xFFFD; // will be invalid but not end of string
-        if (in_text_end && in_text_end - (const char*)str < 2) return 1;
+        if (in_text_end && in_text_end - (const char *)str < 2) return 1;
         if (*str < 0xc2) return 2;
         c = (unsigned int)((*str++ & 0x1f) << 6);
         if ((*str & 0xc0) != 0x80) return 2;
@@ -1558,7 +1558,7 @@ int ImTextCharFromUtf8(unsigned int* out_char, const char* in_text, const char* 
     if ((*str & 0xf0) == 0xe0)
     {
         *out_char = 0xFFFD; // will be invalid but not end of string
-        if (in_text_end && in_text_end - (const char*)str < 3) return 1;
+        if (in_text_end && in_text_end - (const char *)str < 3) return 1;
         if (*str == 0xe0 && (str[1] < 0xa0 || str[1] > 0xbf)) return 3;
         if (*str == 0xed && str[1] > 0x9f) return 3; // str[1] < 0x80 is checked below
         c = (unsigned int)((*str++ & 0x0f) << 12);
@@ -1572,7 +1572,7 @@ int ImTextCharFromUtf8(unsigned int* out_char, const char* in_text, const char* 
     if ((*str & 0xf8) == 0xf0)
     {
         *out_char = 0xFFFD; // will be invalid but not end of string
-        if (in_text_end && in_text_end - (const char*)str < 4) return 1;
+        if (in_text_end && in_text_end - (const char *)str < 4) return 1;
         if (*str > 0xf4) return 4;
         if (*str == 0xf0 && (str[1] < 0x90 || str[1] > 0xbf)) return 4;
         if (*str == 0xf4 && str[1] > 0x8f) return 4; // str[1] < 0x80 is checked below
@@ -1592,7 +1592,7 @@ int ImTextCharFromUtf8(unsigned int* out_char, const char* in_text, const char* 
     return 0;
 }
 
-int ImTextStrFromUtf8(ImWchar* buf, int buf_size, const char* in_text, const char* in_text_end, const char** in_text_remaining)
+int ImTextStrFromUtf8(ImWchar* buf, int buf_size, const char * in_text, const char * in_text_end, const char ** in_text_remaining)
 {
     ImWchar* buf_out = buf;
     ImWchar* buf_end = buf + buf_size;
@@ -1611,7 +1611,7 @@ int ImTextStrFromUtf8(ImWchar* buf, int buf_size, const char* in_text, const cha
     return (int)(buf_out - buf);
 }
 
-int ImTextCountCharsFromUtf8(const char* in_text, const char* in_text_end)
+int ImTextCountCharsFromUtf8(const char * in_text, const char * in_text_end)
 {
     int char_count = 0;
     while ((!in_text_end || in_text < in_text_end) && *in_text)
@@ -1627,7 +1627,7 @@ int ImTextCountCharsFromUtf8(const char* in_text, const char* in_text_end)
 }
 
 // Based on stb_to_utf8() from github.com/nothings/stb/
-static inline int ImTextCharToUtf8(char* buf, int buf_size, unsigned int c)
+static inline int ImTextCharToUtf8(char * buf, int buf_size, unsigned int c)
 {
     if (c < 0x80)
     {
@@ -1665,7 +1665,7 @@ static inline int ImTextCharToUtf8(char* buf, int buf_size, unsigned int c)
 }
 
 // Not optimal but we very rarely use this function.
-int ImTextCountUtf8BytesFromChar(const char* in_text, const char* in_text_end)
+int ImTextCountUtf8BytesFromChar(const char * in_text, const char * in_text_end)
 {
     unsigned int dummy = 0;
     return ImTextCharFromUtf8(&dummy, in_text, in_text_end);
@@ -1680,10 +1680,10 @@ static inline int ImTextCountUtf8BytesFromChar(unsigned int c)
     return 3;
 }
 
-int ImTextStrToUtf8(char* buf, int buf_size, const ImWchar* in_text, const ImWchar* in_text_end)
+int ImTextStrToUtf8(char * buf, int buf_size, const ImWchar* in_text, const ImWchar* in_text_end)
 {
-    char* buf_out = buf;
-    const char* buf_end = buf + buf_size;
+    char * buf_out = buf;
+    const char * buf_end = buf + buf_size;
     while (buf_out < buf_end-1 && (!in_text_end || in_text < in_text_end) && *in_text)
     {
         unsigned int c = (unsigned int)(*in_text++);
@@ -1851,7 +1851,7 @@ void ImGuiStorage::BuildSortByKey()
 {
     struct StaticFunc
     {
-        static int IMGUI_CDECL PairCompareByID(const void* lhs, const void* rhs)
+        static int IMGUI_CDECL PairCompareByID(const void * lhs, const void * rhs)
         {
             // We can't just do a subtraction because qsort uses signed integers and subtracting our ID doesn't play well with that.
             if (((const Pair*)lhs)->key > ((const Pair*)rhs)->key) return +1;
@@ -1884,7 +1884,7 @@ float ImGuiStorage::GetFloat(ImGuiID key, float default_val) const
     return it->val_f;
 }
 
-void* ImGuiStorage::GetVoidPtr(ImGuiID key) const
+void * ImGuiStorage::GetVoidPtr(ImGuiID key) const
 {
     ImGuiStorage::Pair* it = LowerBound(const_cast<ImVector<ImGuiStorage::Pair>&>(Data), key);
     if (it == Data.end() || it->key != key)
@@ -1914,7 +1914,7 @@ float* ImGuiStorage::GetFloatRef(ImGuiID key, float default_val)
     return &it->val_f;
 }
 
-void** ImGuiStorage::GetVoidPtrRef(ImGuiID key, void* default_val)
+void ** ImGuiStorage::GetVoidPtrRef(ImGuiID key, void * default_val)
 {
     ImGuiStorage::Pair* it = LowerBound(Data, key);
     if (it == Data.end() || it->key != key)
@@ -1950,7 +1950,7 @@ void ImGuiStorage::SetFloat(ImGuiID key, float val)
     it->val_f = val;
 }
 
-void ImGuiStorage::SetVoidPtr(ImGuiID key, void* val)
+void ImGuiStorage::SetVoidPtr(ImGuiID key, void * val)
 {
     ImGuiStorage::Pair* it = LowerBound(Data, key);
     if (it == Data.end() || it->key != key)
@@ -1972,7 +1972,7 @@ void ImGuiStorage::SetAllInt(int v)
 //-----------------------------------------------------------------------------
 
 // Helper: Parse and apply text filters. In format "aaaaa[,bbbb][,ccccc]"
-ImGuiTextFilter::ImGuiTextFilter(const char* default_filter)
+ImGuiTextFilter::ImGuiTextFilter(const char * default_filter)
 {
     if (default_filter)
     {
@@ -1986,7 +1986,7 @@ ImGuiTextFilter::ImGuiTextFilter(const char* default_filter)
     }
 }
 
-bool ImGuiTextFilter::Draw(const char* label, float width)
+bool ImGuiTextFilter::Draw(const char * label, float width)
 {
     if (width != 0.0f)
         ImGui::PushItemWidth(width);
@@ -2001,8 +2001,8 @@ bool ImGuiTextFilter::Draw(const char* label, float width)
 void ImGuiTextFilter::TextRange::split(char separator, ImVector<TextRange>* out) const
 {
     out->resize(0);
-    const char* wb = b;
-    const char* we = wb;
+    const char * wb = b;
+    const char * we = wb;
     while (we < e)
     {
         if (*we == separator)
@@ -2037,7 +2037,7 @@ void ImGuiTextFilter::Build()
     }
 }
 
-bool ImGuiTextFilter::PassFilter(const char* text, const char* text_end) const
+bool ImGuiTextFilter::PassFilter(const char * text, const char * text_end) const
 {
     if (Filters.empty())
         return true;
@@ -2088,7 +2088,7 @@ bool ImGuiTextFilter::PassFilter(const char* text, const char* text_end) const
 char ImGuiTextBuffer::EmptyString[1] = { 0 };
 
 // Helper: Text buffer for logging/accumulating text
-void ImGuiTextBuffer::appendfv(const char* fmt, va_list args)
+void ImGuiTextBuffer::appendfv(const char * fmt, va_list args)
 {
     va_list args_copy;
     va_copy(args_copy, args);
@@ -2114,7 +2114,7 @@ void ImGuiTextBuffer::appendfv(const char* fmt, va_list args)
     va_end(args_copy);
 }
 
-void ImGuiTextBuffer::appendf(const char* fmt, ...)
+void ImGuiTextBuffer::appendf(const char * fmt, ...)
 {
     va_list args;
     va_start(args, fmt);
@@ -2213,11 +2213,11 @@ bool ImGuiListClipper::Step()
 // Also see imgui_draw.cpp for some more which have been reworked to not rely on ImGui:: state.
 //-----------------------------------------------------------------------------
 
-const char* ImGui::FindRenderedTextEnd(const char* text, const char* text_end)
+const char * ImGui::FindRenderedTextEnd(const char * text, const char * text_end)
 {
-    const char* text_display_end = text;
+    const char * text_display_end = text;
     if (!text_end)
-        text_end = (const char*)-1;
+        text_end = (const char *)-1;
 
     while (text_display_end < text_end && *text_display_end != '\0' && (text_display_end[0] != '#' || text_display_end[1] != '#'))
         text_display_end++;
@@ -2226,13 +2226,13 @@ const char* ImGui::FindRenderedTextEnd(const char* text, const char* text_end)
 
 // Internal ImGui functions to render text
 // RenderText***() functions calls ImDrawList::AddText() calls ImBitmapFont::RenderText()
-void ImGui::RenderText(ImVec2 pos, const char* text, const char* text_end, bool hide_text_after_hash)
+void ImGui::RenderText(ImVec2 pos, const char * text, const char * text_end, bool hide_text_after_hash)
 {
     ImGuiContext& g = *GImGui;
     ImGuiWindow* window = g.CurrentWindow;
 
     // Hide anything after a '##' string
-    const char* text_display_end;
+    const char * text_display_end;
     if (hide_text_after_hash)
     {
         text_display_end = FindRenderedTextEnd(text, text_end);
@@ -2252,7 +2252,7 @@ void ImGui::RenderText(ImVec2 pos, const char* text, const char* text_end, bool 
     }
 }
 
-void ImGui::RenderTextWrapped(ImVec2 pos, const char* text, const char* text_end, float wrap_width)
+void ImGui::RenderTextWrapped(ImVec2 pos, const char * text, const char * text_end, float wrap_width)
 {
     ImGuiContext& g = *GImGui;
     ImGuiWindow* window = g.CurrentWindow;
@@ -2270,7 +2270,7 @@ void ImGui::RenderTextWrapped(ImVec2 pos, const char* text, const char* text_end
 
 // Default clip_rect uses (pos_min,pos_max)
 // Handle clipping on CPU immediately (vs typically let the GPU clip the triangles that are overlapping the clipping rectangle edges)
-void ImGui::RenderTextClippedEx(ImDrawList* draw_list, const ImVec2& pos_min, const ImVec2& pos_max, const char* text, const char* text_display_end, const ImVec2* text_size_if_known, const ImVec2& align, const ImRect* clip_rect)
+void ImGui::RenderTextClippedEx(ImDrawList* draw_list, const ImVec2& pos_min, const ImVec2& pos_max, const char * text, const char * text_display_end, const ImVec2* text_size_if_known, const ImVec2& align, const ImRect* clip_rect)
 {
     // Perform CPU side clipping for single clipped element to avoid using scissor state
     ImVec2 pos = pos_min;
@@ -2298,10 +2298,10 @@ void ImGui::RenderTextClippedEx(ImDrawList* draw_list, const ImVec2& pos_min, co
     }
 }
 
-void ImGui::RenderTextClipped(const ImVec2& pos_min, const ImVec2& pos_max, const char* text, const char* text_end, const ImVec2* text_size_if_known, const ImVec2& align, const ImRect* clip_rect)
+void ImGui::RenderTextClipped(const ImVec2& pos_min, const ImVec2& pos_max, const char * text, const char * text_end, const ImVec2* text_size_if_known, const ImVec2& align, const ImRect* clip_rect)
 {
     // Hide anything after a '##' string
-    const char* text_display_end = FindRenderedTextEnd(text, text_end);
+    const char * text_display_end = FindRenderedTextEnd(text, text_end);
     const int text_len = (int)(text_display_end - text);
     if (text_len == 0)
         return;
@@ -2436,7 +2436,7 @@ void ImGui::RenderNavHighlight(const ImRect& bb, ImGuiID id, ImGuiNavHighlightFl
 //-----------------------------------------------------------------------------
 
 // ImGuiWindow is mostly a dumb struct. It merely has a constructor and a few helper methods
-ImGuiWindow::ImGuiWindow(ImGuiContext* context, const char* name)
+ImGuiWindow::ImGuiWindow(ImGuiContext* context, const char * name)
     : DrawListInst(&context->DrawListSharedData)
 {
     Name = ImStrdup(name);
@@ -2506,7 +2506,7 @@ ImGuiWindow::~ImGuiWindow()
         ColumnsStorage[i].~ImGuiColumnsSet();
 }
 
-ImGuiID ImGuiWindow::GetID(const char* str, const char* str_end)
+ImGuiID ImGuiWindow::GetID(const char * str, const char * str_end)
 {
     ImGuiID seed = IDStack.back();
     ImGuiID id = ImHash(str, str_end ? (int)(str_end - str) : 0, seed);
@@ -2514,24 +2514,24 @@ ImGuiID ImGuiWindow::GetID(const char* str, const char* str_end)
     return id;
 }
 
-ImGuiID ImGuiWindow::GetID(const void* ptr)
+ImGuiID ImGuiWindow::GetID(const void * ptr)
 {
     ImGuiID seed = IDStack.back();
-    ImGuiID id = ImHash(&ptr, sizeof(void*), seed);
+    ImGuiID id = ImHash(&ptr, sizeof(void *), seed);
     ImGui::KeepAliveID(id);
     return id;
 }
 
-ImGuiID ImGuiWindow::GetIDNoKeepAlive(const char* str, const char* str_end)
+ImGuiID ImGuiWindow::GetIDNoKeepAlive(const char * str, const char * str_end)
 {
     ImGuiID seed = IDStack.back();
     return ImHash(str, str_end ? (int)(str_end - str) : 0, seed);
 }
 
-ImGuiID ImGuiWindow::GetIDNoKeepAlive(const void* ptr)
+ImGuiID ImGuiWindow::GetIDNoKeepAlive(const void * ptr)
 {
     ImGuiID seed = IDStack.back();
-    return ImHash(&ptr, sizeof(void*), seed);
+    return ImHash(&ptr, sizeof(void *), seed);
 }
 
 // This is only used in rare/specific situations to manufacture an ID out of nowhere.
@@ -2890,14 +2890,14 @@ float ImGui::CalcWrapWidthForPos(const ImVec2& pos, float wrap_pos_x)
     return ImMax(wrap_pos_x - pos.x, 1.0f);
 }
 
-void* ImGui::MemAlloc(size_t size)
+void * ImGui::MemAlloc(size_t size)
 {
     if (ImGuiContext* ctx = GImGui)
         ctx->IO.MetricsActiveAllocations++;
     return GImAllocatorAllocFunc(size, GImAllocatorUserData);
 }
 
-void ImGui::MemFree(void* ptr)
+void ImGui::MemFree(void * ptr)
 {
     if (ptr) 
         if (ImGuiContext* ctx = GImGui)
@@ -2905,18 +2905,18 @@ void ImGui::MemFree(void* ptr)
     return GImAllocatorFreeFunc(ptr, GImAllocatorUserData);
 }
 
-const char* ImGui::GetClipboardText()
+const char * ImGui::GetClipboardText()
 {
     return GImGui->IO.GetClipboardTextFn ? GImGui->IO.GetClipboardTextFn(GImGui->IO.ClipboardUserData) : "";
 }
 
-void ImGui::SetClipboardText(const char* text)
+void ImGui::SetClipboardText(const char * text)
 {
     if (GImGui->IO.SetClipboardTextFn)
         GImGui->IO.SetClipboardTextFn(GImGui->IO.ClipboardUserData, text);
 }
 
-const char* ImGui::GetVersion()
+const char * ImGui::GetVersion()
 {
     return IMGUI_VERSION;
 }
@@ -2939,7 +2939,7 @@ void ImGui::SetCurrentContext(ImGuiContext* ctx)
 
 // Helper function to verify that the type sizes are matching between the calling file's compilation unit and imgui.cpp's compilation unit
 // If the user has inconsistent compilation settings, imgui configuration #define, packing pragma, etc. you may see different structures from what imgui.cpp sees which is highly problematic.
-bool ImGui::DebugCheckVersionAndDataLayout(const char* version, size_t sz_io, size_t sz_style, size_t sz_vec2, size_t sz_vec4, size_t sz_vert)
+bool ImGui::DebugCheckVersionAndDataLayout(const char * version, size_t sz_io, size_t sz_style, size_t sz_vec2, size_t sz_vec4, size_t sz_vert)
 {
     bool error = false;
     if (strcmp(version, IMGUI_VERSION)!=0) { error = true; IM_ASSERT(strcmp(version,IMGUI_VERSION)==0 && "Mismatched version string!");  }
@@ -2951,7 +2951,7 @@ bool ImGui::DebugCheckVersionAndDataLayout(const char* version, size_t sz_io, si
     return !error;
 }
 
-void ImGui::SetAllocatorFunctions(void* (*alloc_func)(size_t sz, void* user_data), void(*free_func)(void* ptr, void* user_data), void* user_data)
+void ImGui::SetAllocatorFunctions(void * (*alloc_func)(size_t sz, void * user_data), void(*free_func)(void * ptr, void * user_data), void * user_data)
 {
     GImAllocatorAllocFunc = alloc_func;
     GImAllocatorFreeFunc = free_func;
@@ -3559,7 +3559,7 @@ void ImGui::Shutdown(ImGuiContext* context)
 }
 
 // FIXME: Add a more explicit sort order in the window structure.
-static int IMGUI_CDECL ChildWindowComparer(const void* lhs, const void* rhs)
+static int IMGUI_CDECL ChildWindowComparer(const void * lhs, const void * rhs)
 {
     const ImGuiWindow* const a = *(const ImGuiWindow* const *)lhs;
     const ImGuiWindow* const b = *(const ImGuiWindow* const *)rhs;
@@ -3829,11 +3829,11 @@ void ImGui::Render()
 
 // Calculate text size. Text can be multi-line. Optionally ignore text after a ## marker.
 // CalcTextSize("") should return ImVec2(0.0f, GImGui->FontSize)
-ImVec2 ImGui::CalcTextSize(const char* text, const char* text_end, bool hide_text_after_double_hash, float wrap_width)
+ImVec2 ImGui::CalcTextSize(const char * text, const char * text_end, bool hide_text_after_double_hash, float wrap_width)
 {
     ImGuiContext& g = *GImGui;
 
-    const char* text_display_end;
+    const char * text_display_end;
     if (hide_text_after_double_hash)
         text_display_end = FindRenderedTextEnd(text, text_end);      // Hide anything after a '##' string
     else
@@ -4239,7 +4239,7 @@ static ImRect GetViewportRect()
     return ImRect(0.0f, 0.0f, g.IO.DisplaySize.x, g.IO.DisplaySize.y);
 }
 
-static bool ImGui::BeginChildEx(const char* name, ImGuiID id, const ImVec2& size_arg, bool border, ImGuiWindowFlags flags)
+static bool ImGui::BeginChildEx(const char * name, ImGuiID id, const ImVec2& size_arg, bool border, ImGuiWindowFlags flags)
 {
     ImGuiContext& g = *GImGui;
     ImGuiWindow* parent_window = g.CurrentWindow;
@@ -4290,7 +4290,7 @@ static bool ImGui::BeginChildEx(const char* name, ImGuiID id, const ImVec2& size
     return ret;
 }
 
-bool ImGui::BeginChild(const char* str_id, const ImVec2& size_arg, bool border, ImGuiWindowFlags extra_flags)
+bool ImGui::BeginChild(const char * str_id, const ImVec2& size_arg, bool border, ImGuiWindowFlags extra_flags)
 {
     ImGuiWindow* window = GetCurrentWindow();
     return BeginChildEx(str_id, window->GetID(str_id), size_arg, border, extra_flags);
@@ -4390,13 +4390,13 @@ ImGuiWindow* ImGui::FindWindowByID(ImGuiID id)
     return (ImGuiWindow*)g.WindowsById.GetVoidPtr(id);
 }
 
-ImGuiWindow* ImGui::FindWindowByName(const char* name)
+ImGuiWindow* ImGui::FindWindowByName(const char * name)
 {
     ImGuiID id = ImHash(name, 0);
     return FindWindowByID(id);
 }
 
-static ImGuiWindow* CreateNewWindow(const char* name, ImVec2 size, ImGuiWindowFlags flags)
+static ImGuiWindow* CreateNewWindow(const char * name, ImVec2 size, ImGuiWindowFlags flags)
 {
     ImGuiContext& g = *GImGui;
 
@@ -4640,7 +4640,7 @@ static void ImGui::UpdateManualResize(ImGuiWindow* window, const ImVec2& size_au
         if (resize_rect.Min.x > resize_rect.Max.x) ImSwap(resize_rect.Min.x, resize_rect.Max.x);
         if (resize_rect.Min.y > resize_rect.Max.y) ImSwap(resize_rect.Min.y, resize_rect.Max.y);
         bool hovered, held;
-        ButtonBehavior(resize_rect, window->GetID((void*)(intptr_t)resize_grip_n), &hovered, &held, ImGuiButtonFlags_FlattenChildren | ImGuiButtonFlags_NoNavFocus);
+        ButtonBehavior(resize_rect, window->GetID((void *)(intptr_t)resize_grip_n), &hovered, &held, ImGuiButtonFlags_FlattenChildren | ImGuiButtonFlags_NoNavFocus);
         //GetOverlayDrawList(window)->AddRect(resize_rect.Min, resize_rect.Max, IM_COL32(255, 255, 0, 255));
         if (hovered || held)
             g.MouseCursor = (resize_grip_n & 1) ? ImGuiMouseCursor_ResizeNESW : ImGuiMouseCursor_ResizeNWSE;
@@ -4665,7 +4665,7 @@ static void ImGui::UpdateManualResize(ImGuiWindow* window, const ImVec2& size_au
     {
         bool hovered, held;
         ImRect border_rect = GetResizeBorderRect(window, border_n, grip_hover_inner_size, WINDOWS_RESIZE_FROM_EDGES_HALF_THICKNESS);
-        ButtonBehavior(border_rect, window->GetID((void*)(intptr_t)(border_n + 4)), &hovered, &held, ImGuiButtonFlags_FlattenChildren);
+        ButtonBehavior(border_rect, window->GetID((void *)(intptr_t)(border_n + 4)), &hovered, &held, ImGuiButtonFlags_FlattenChildren);
         //GetOverlayDrawList(window)->AddRect(border_rect.Min, border_rect.Max, IM_COL32(255, 255, 0, 255));
         if ((hovered && g.HoveredIdTimer > WINDOWS_RESIZE_FROM_EDGES_FEEDBACK_TIMER) || held)
         {
@@ -4739,7 +4739,7 @@ void ImGui::UpdateWindowParentAndRootLinks(ImGuiWindow* window, ImGuiWindowFlags
 //   You can use the "##" or "###" markers to use the same label with different id, or same id with different label. See documentation at the top of this file.
 // - Return false when window is collapsed, so you can early out in your code. You always need to call ImGui::End() even if false is returned.
 // - Passing 'bool* p_open' displays a Close button on the upper-right corner of the window, the pointed value will be set to false when the button is pressed.
-bool ImGui::Begin(const char* name, bool* p_open, ImGuiWindowFlags flags)
+bool ImGui::Begin(const char * name, bool* p_open, ImGuiWindowFlags flags)
 {
     ImGuiContext& g = *GImGui;
     const ImGuiStyle& style = g.Style;
@@ -5265,7 +5265,7 @@ bool ImGui::Begin(const char* name, bool* p_open, ImGuiWindowFlags flags)
 
             // Title bar text (with: horizontal alignment, avoiding collapse/close button, optional "unsaved document" marker)
             // FIXME: Refactor text alignment facilities along with RenderText helpers, this is too much code..
-            const char* UNSAVED_DOCUMENT_MARKER = "*";
+            const char * UNSAVED_DOCUMENT_MARKER = "*";
             float marker_size_x = (flags & ImGuiWindowFlags_UnsavedDocument) ? CalcTextSize(UNSAVED_DOCUMENT_MARKER, NULL, false).x : 0.0f;
             ImVec2 text_size = CalcTextSize(name, NULL, true) + ImVec2(marker_size_x, 0.0f);
             ImRect text_r = title_bar_rect;
@@ -5360,7 +5360,7 @@ bool ImGui::Begin(const char* name, bool* p_open, ImGuiWindowFlags flags)
 
 // Old Begin() API with 5 parameters, avoid calling this version directly! Use SetNextWindowSize()/SetNextWindowBgAlpha() + Begin() instead.
 #ifndef IMGUI_DISABLE_OBSOLETE_FUNCTIONS
-bool ImGui::Begin(const char* name, bool* p_open, const ImVec2& size_first_use, float bg_alpha_override, ImGuiWindowFlags flags)
+bool ImGui::Begin(const char * name, bool* p_open, const ImVec2& size_first_use, float bg_alpha_override, ImGuiWindowFlags flags)
 {
     // Old API feature: we could pass the initial window size as a parameter. This was misleading because it only had an effect if the window didn't have data in the .ini file.
     if (size_first_use.x != 0.0f || size_first_use.y != 0.0f)
@@ -5664,7 +5664,7 @@ struct ImGuiStyleVarInfo
     ImGuiDataType   Type;
     ImU32           Count;
     ImU32           Offset;
-    void*           GetVarPtr(ImGuiStyle* style) const { return (void*)((unsigned char*)style + Offset); }
+    void *           GetVarPtr(ImGuiStyle* style) const { return (void *)((unsigned char *)style + Offset); }
 };
 
 static const ImGuiStyleVarInfo GStyleVarInfo[] =
@@ -5736,7 +5736,7 @@ void ImGui::PopStyleVar(int count)
         // We avoid a generic memcpy(data, &backup.Backup.., GDataTypeSize[info->Type] * info->Count), the overhead in Debug is not worth it.
         ImGuiStyleMod& backup = g.StyleModifiers.back();
         const ImGuiStyleVarInfo* info = GetStyleVarInfo(backup.VarIdx);
-        void* data = info->GetVarPtr(&g.Style);
+        void * data = info->GetVarPtr(&g.Style);
         if (info->Type == ImGuiDataType_Float && info->Count == 1)      { ((float*)data)[0] = backup.BackupFloat[0]; }
         else if (info->Type == ImGuiDataType_Float && info->Count == 2) { ((float*)data)[0] = backup.BackupFloat[0]; ((float*)data)[1] = backup.BackupFloat[1]; }
         g.StyleModifiers.pop_back();
@@ -5744,7 +5744,7 @@ void ImGui::PopStyleVar(int count)
     }
 }
 
-const char* ImGui::GetStyleColorName(ImGuiCol idx)
+const char * ImGui::GetStyleColorName(ImGuiCol idx)
 {
     // Create switch-case from enum with regexp: ImGuiCol_{.*}, --> case ImGuiCol_\1: return "\1";
     switch (idx)
@@ -5941,7 +5941,7 @@ void ImGui::SetWindowPos(const ImVec2& pos, ImGuiCond cond)
     SetWindowPos(window, pos, cond);
 }
 
-void ImGui::SetWindowPos(const char* name, const ImVec2& pos, ImGuiCond cond)
+void ImGui::SetWindowPos(const char * name, const ImVec2& pos, ImGuiCond cond)
 {
     if (ImGuiWindow* window = FindWindowByName(name))
         SetWindowPos(window, pos, cond);
@@ -5990,7 +5990,7 @@ void ImGui::SetWindowSize(const ImVec2& size, ImGuiCond cond)
     SetWindowSize(GImGui->CurrentWindow, size, cond);
 }
 
-void ImGui::SetWindowSize(const char* name, const ImVec2& size, ImGuiCond cond)
+void ImGui::SetWindowSize(const char * name, const ImVec2& size, ImGuiCond cond)
 {
     if (ImGuiWindow* window = FindWindowByName(name))
         SetWindowSize(window, size, cond);
@@ -6024,7 +6024,7 @@ bool ImGui::IsWindowAppearing()
     return window->Appearing;
 }
 
-void ImGui::SetWindowCollapsed(const char* name, bool collapsed, ImGuiCond cond)
+void ImGui::SetWindowCollapsed(const char * name, bool collapsed, ImGuiCond cond)
 {
     if (ImGuiWindow* window = FindWindowByName(name))
         SetWindowCollapsed(window, collapsed, cond);
@@ -6035,7 +6035,7 @@ void ImGui::SetWindowFocus()
     FocusWindow(GImGui->CurrentWindow);
 }
 
-void ImGui::SetWindowFocus(const char* name)
+void ImGui::SetWindowFocus(const char * name)
 {
     if (name)
     {
@@ -6065,7 +6065,7 @@ void ImGui::SetNextWindowSize(const ImVec2& size, ImGuiCond cond)
     g.NextWindowData.SizeCond = cond ? cond : ImGuiCond_Always;
 }
 
-void ImGui::SetNextWindowSizeConstraints(const ImVec2& size_min, const ImVec2& size_max, ImGuiSizeCallback custom_callback, void* custom_callback_user_data)
+void ImGui::SetNextWindowSizeConstraints(const ImVec2& size_min, const ImVec2& size_max, ImGuiSizeCallback custom_callback, void * custom_callback_user_data)
 {
     ImGuiContext& g = *GImGui;
     g.NextWindowData.SizeConstraintCond = ImGuiCond_Always;
@@ -6350,19 +6350,19 @@ ImGuiStorage* ImGui::GetStateStorage()
     return window->DC.StateStorage;
 }
 
-void ImGui::PushID(const char* str_id)
+void ImGui::PushID(const char * str_id)
 {
     ImGuiWindow* window = GetCurrentWindowRead();
     window->IDStack.push_back(window->GetIDNoKeepAlive(str_id));
 }
 
-void ImGui::PushID(const char* str_id_begin, const char* str_id_end)
+void ImGui::PushID(const char * str_id_begin, const char * str_id_end)
 {
     ImGuiWindow* window = GetCurrentWindowRead();
     window->IDStack.push_back(window->GetIDNoKeepAlive(str_id_begin, str_id_end));
 }
 
-void ImGui::PushID(const void* ptr_id)
+void ImGui::PushID(const void * ptr_id)
 {
     ImGuiWindow* window = GetCurrentWindowRead();
     window->IDStack.push_back(window->GetIDNoKeepAlive(ptr_id));
@@ -6370,7 +6370,7 @@ void ImGui::PushID(const void* ptr_id)
 
 void ImGui::PushID(int int_id)
 {
-    const void* ptr_id = (void*)(intptr_t)int_id;
+    const void * ptr_id = (void *)(intptr_t)int_id;
     ImGuiWindow* window = GetCurrentWindowRead();
     window->IDStack.push_back(window->GetIDNoKeepAlive(ptr_id));
 }
@@ -6381,17 +6381,17 @@ void ImGui::PopID()
     window->IDStack.pop_back();
 }
 
-ImGuiID ImGui::GetID(const char* str_id)
+ImGuiID ImGui::GetID(const char * str_id)
 {
     return GImGui->CurrentWindow->GetID(str_id);
 }
 
-ImGuiID ImGui::GetID(const char* str_id_begin, const char* str_id_end)
+ImGuiID ImGui::GetID(const char * str_id_begin, const char * str_id_end)
 {
     return GImGui->CurrentWindow->GetID(str_id_begin, str_id_end);
 }
 
-ImGuiID ImGui::GetID(const void* ptr_id)
+ImGuiID ImGui::GetID(const void * ptr_id)
 {
     return GImGui->CurrentWindow->GetID(ptr_id);
 }
@@ -6568,7 +6568,7 @@ void ImGui::EndTooltip()
     End();
 }
 
-void ImGui::SetTooltipV(const char* fmt, va_list args)
+void ImGui::SetTooltipV(const char * fmt, va_list args)
 {
     ImGuiContext& g = *GImGui;
     if (g.DragDropWithinSourceOrTarget)
@@ -6579,7 +6579,7 @@ void ImGui::SetTooltipV(const char* fmt, va_list args)
     EndTooltip();
 }
 
-void ImGui::SetTooltip(const char* fmt, ...)
+void ImGui::SetTooltip(const char * fmt, ...)
 {
     va_list args;
     va_start(args, fmt);
@@ -6597,7 +6597,7 @@ bool ImGui::IsPopupOpen(ImGuiID id)
     return g.OpenPopupStack.Size > g.BeginPopupStack.Size && g.OpenPopupStack[g.BeginPopupStack.Size].PopupId == id;
 }
 
-bool ImGui::IsPopupOpen(const char* str_id)
+bool ImGui::IsPopupOpen(const char * str_id)
 {
     ImGuiContext& g = *GImGui;
     return g.OpenPopupStack.Size > g.BeginPopupStack.Size && g.OpenPopupStack[g.BeginPopupStack.Size].PopupId == g.CurrentWindow->GetID(str_id);
@@ -6613,7 +6613,7 @@ ImGuiWindow* ImGui::GetFrontMostPopupModal()
     return NULL;
 }
 
-void ImGui::OpenPopup(const char* str_id)
+void ImGui::OpenPopup(const char * str_id)
 {
     ImGuiContext& g = *GImGui;
     OpenPopupEx(g.CurrentWindow->GetID(str_id));
@@ -6665,7 +6665,7 @@ void ImGui::OpenPopupEx(ImGuiID id)
     }
 }
 
-bool ImGui::OpenPopupOnItemClick(const char* str_id, int mouse_button)
+bool ImGui::OpenPopupOnItemClick(const char * str_id, int mouse_button)
 {
     ImGuiWindow* window = GImGui->CurrentWindow;
     if (IsMouseReleased(mouse_button) && IsItemHovered(ImGuiHoveredFlags_AllowWhenBlockedByPopup))
@@ -6778,7 +6778,7 @@ bool ImGui::BeginPopupEx(ImGuiID id, ImGuiWindowFlags extra_flags)
     return is_open;
 }
 
-bool ImGui::BeginPopup(const char* str_id, ImGuiWindowFlags flags)
+bool ImGui::BeginPopup(const char * str_id, ImGuiWindowFlags flags)
 {
     ImGuiContext& g = *GImGui;
     if (g.OpenPopupStack.Size <= g.BeginPopupStack.Size) // Early out for performance
@@ -6792,7 +6792,7 @@ bool ImGui::BeginPopup(const char* str_id, ImGuiWindowFlags flags)
 
 // If 'p_open' is specified for a modal popup window, the popup will have a regular close button which will close the popup.
 // Note that popup visibility status is owned by imgui (and manipulated with e.g. OpenPopup) so the actual value of *p_open is meaningless here.
-bool ImGui::BeginPopupModal(const char* name, bool* p_open, ImGuiWindowFlags flags)
+bool ImGui::BeginPopupModal(const char * name, bool* p_open, ImGuiWindowFlags flags)
 {
     ImGuiContext& g = *GImGui;
     ImGuiWindow* window = g.CurrentWindow;
@@ -6835,7 +6835,7 @@ void ImGui::EndPopup()
 // This is a helper to handle the simplest case of associating one named popup to one given widget.
 // You may want to handle this on user side if you have specific needs (e.g. tweaking IsItemHovered() parameters).
 // You can pass a NULL str_id to use the identifier of the last item.
-bool ImGui::BeginPopupContextItem(const char* str_id, int mouse_button)
+bool ImGui::BeginPopupContextItem(const char * str_id, int mouse_button)
 {
     ImGuiWindow* window = GImGui->CurrentWindow;
     ImGuiID id = str_id ? window->GetID(str_id) : window->DC.LastItemId; // If user hasn't passed an ID, we can use the LastItemID. Using LastItemID as a Popup ID won't conflict!
@@ -6845,7 +6845,7 @@ bool ImGui::BeginPopupContextItem(const char* str_id, int mouse_button)
     return BeginPopupEx(id, ImGuiWindowFlags_AlwaysAutoResize|ImGuiWindowFlags_NoTitleBar|ImGuiWindowFlags_NoSavedSettings);
 }
 
-bool ImGui::BeginPopupContextWindow(const char* str_id, int mouse_button, bool also_over_items)
+bool ImGui::BeginPopupContextWindow(const char * str_id, int mouse_button, bool also_over_items)
 {
     if (!str_id)
         str_id = "window_context";
@@ -6856,7 +6856,7 @@ bool ImGui::BeginPopupContextWindow(const char* str_id, int mouse_button, bool a
     return BeginPopupEx(id, ImGuiWindowFlags_AlwaysAutoResize|ImGuiWindowFlags_NoTitleBar|ImGuiWindowFlags_NoSavedSettings);
 }
 
-bool ImGui::BeginPopupContextVoid(const char* str_id, int mouse_button)
+bool ImGui::BeginPopupContextVoid(const char * str_id, int mouse_button)
 {
     if (!str_id)
         str_id = "void_context";
@@ -7955,7 +7955,7 @@ static void ImGui::NavUpdateWindowing()
 }
 
 // Window has already passed the IsWindowNavFocusable()
-static const char* GetFallbackWindowNameForWindowingList(ImGuiWindow* window)
+static const char * GetFallbackWindowNameForWindowingList(ImGuiWindow* window)
 {
     if (window->Flags & ImGuiWindowFlags_Popup)
         return "(Popup)";
@@ -7984,7 +7984,7 @@ void ImGui::NavUpdateWindowingList()
         ImGuiWindow* window = g.WindowsFocusOrder[n];
         if (!IsWindowNavFocusable(window))
             continue;
-        const char* label = window->Name;
+        const char * label = window->Name;
         if (label == FindRenderedTextEnd(label))
             label = GetFallbackWindowNameForWindowingList(window);
         Selectable(label, g.NavWindowingTarget == window);
@@ -8167,7 +8167,7 @@ static ImGuiColumnsSet* FindOrAddColumnsSet(ImGuiWindow* window, ImGuiID id)
     return columns;
 }
 
-void ImGui::BeginColumns(const char* str_id, int columns_count, ImGuiColumnsFlags flags)
+void ImGui::BeginColumns(const char * str_id, int columns_count, ImGuiColumnsFlags flags)
 {
     ImGuiContext& g = *GImGui;
     ImGuiWindow* window = GetCurrentWindow();
@@ -8299,7 +8299,7 @@ void ImGui::EndColumns()
 }
 
 // [2018-03: This is currently the only public API, while we are working on making BeginColumns/EndColumns user-facing]
-void ImGui::Columns(int columns_count, const char* id, bool border)
+void ImGui::Columns(int columns_count, const char * id, bool border)
 {
     ImGuiWindow* window = GetCurrentWindow();
     IM_ASSERT(columns_count >= 1);
@@ -8450,7 +8450,7 @@ void ImGui::EndDragDropSource()
 }
 
 // Use 'cond' to choose to submit payload on drag start or every frame
-bool ImGui::SetDragDropPayload(const char* type, const void* data, size_t data_size, ImGuiCond cond)
+bool ImGui::SetDragDropPayload(const char * type, const void * data, size_t data_size, ImGuiCond cond)
 {
     ImGuiContext& g = *GImGui;
     ImGuiPayload& payload = g.DragDropPayload;
@@ -8551,7 +8551,7 @@ bool ImGui::IsDragDropPayloadBeingAccepted()
     return g.DragDropActive && g.DragDropAcceptIdPrev != 0;
 }
 
-const ImGuiPayload* ImGui::AcceptDragDropPayload(const char* type, ImGuiDragDropFlags flags)
+const ImGuiPayload* ImGui::AcceptDragDropPayload(const char * type, ImGuiDragDropFlags flags)
 {
     ImGuiContext& g = *GImGui;
     ImGuiWindow* window = g.CurrentWindow;
@@ -8620,7 +8620,7 @@ void ImGui::EndDragDropTarget()
 //-----------------------------------------------------------------------------
 
 // Pass text data straight to log (without being displayed)
-void ImGui::LogText(const char* fmt, ...)
+void ImGui::LogText(const char * fmt, ...)
 {
     ImGuiContext& g = *GImGui;
     if (!g.LogEnabled)
@@ -8637,7 +8637,7 @@ void ImGui::LogText(const char* fmt, ...)
 
 // Internal version that takes a position to decide on newline placement and pad items according to their depth.
 // We split text into individual lines to add current tree level padding
-void ImGui::LogRenderedText(const ImVec2* ref_pos, const char* text, const char* text_end)
+void ImGui::LogRenderedText(const ImVec2* ref_pos, const char * text, const char * text_end)
 {
     ImGuiContext& g = *GImGui;
     ImGuiWindow* window = g.CurrentWindow;
@@ -8649,15 +8649,15 @@ void ImGui::LogRenderedText(const ImVec2* ref_pos, const char* text, const char*
     if (ref_pos)
         window->DC.LogLinePosY = ref_pos->y;
 
-    const char* text_remaining = text;
+    const char * text_remaining = text;
     if (g.LogStartDepth > window->DC.TreeDepth)  // Re-adjust padding if we have popped out of our starting depth
         g.LogStartDepth = window->DC.TreeDepth;
     const int tree_depth = (window->DC.TreeDepth - g.LogStartDepth);
     for (;;)
     {
         // Split the string. Each new line (after a '\n') is followed by spacing corresponding to the current depth of our log entry.
-        const char* line_start = text_remaining;
-        const char* line_end = ImStreolRange(line_start, text_end);
+        const char * line_start = text_remaining;
+        const char * line_end = ImStreolRange(line_start, text_end);
         const bool is_first_line = (line_start == text);
         const bool is_last_line = (line_end == text_end);
         if (!is_last_line || (line_start != line_end))
@@ -8692,7 +8692,7 @@ void ImGui::LogToTTY(int max_depth)
 }
 
 // Start logging ImGui output to given file
-void ImGui::LogToFile(int max_depth, const char* filename)
+void ImGui::LogToFile(int max_depth, const char * filename)
 {
     ImGuiContext& g = *GImGui;
     if (g.LogEnabled)
@@ -8802,7 +8802,7 @@ void ImGui::MarkIniSettingsDirty(ImGuiWindow* window)
             g.SettingsDirtyTimer = g.IO.IniSavingRate;
 }
 
-ImGuiWindowSettings* ImGui::CreateNewWindowSettings(const char* name)
+ImGuiWindowSettings* ImGui::CreateNewWindowSettings(const char * name)
 {
     ImGuiContext& g = *GImGui;
     g.SettingsWindows.push_back(ImGuiWindowSettings());
@@ -8821,17 +8821,17 @@ ImGuiWindowSettings* ImGui::FindWindowSettings(ImGuiID id)
     return NULL;
 }
 
-void ImGui::LoadIniSettingsFromDisk(const char* ini_filename)
+void ImGui::LoadIniSettingsFromDisk(const char * ini_filename)
 {
     size_t file_data_size = 0;
-    char* file_data = (char*)ImFileLoadToMemory(ini_filename, "rb", &file_data_size);
+    char * file_data = (char *)ImFileLoadToMemory(ini_filename, "rb", &file_data_size);
     if (!file_data)
         return;
     LoadIniSettingsFromMemory(file_data, (size_t)file_data_size);
     ImGui::MemFree(file_data);
 }
 
-ImGuiSettingsHandler* ImGui::FindSettingsHandler(const char* type_name)
+ImGuiSettingsHandler* ImGui::FindSettingsHandler(const char * type_name)
 {
     ImGuiContext& g = *GImGui;
     const ImGuiID type_hash = ImHash(type_name, 0, 0);
@@ -8842,7 +8842,7 @@ ImGuiSettingsHandler* ImGui::FindSettingsHandler(const char* type_name)
 }
 
 // Zero-tolerance, no error reporting, cheap .ini parsing
-void ImGui::LoadIniSettingsFromMemory(const char* ini_data, size_t ini_size)
+void ImGui::LoadIniSettingsFromMemory(const char * ini_data, size_t ini_size)
 {
     ImGuiContext& g = *GImGui;
     IM_ASSERT(g.Initialized);
@@ -8852,16 +8852,16 @@ void ImGui::LoadIniSettingsFromMemory(const char* ini_data, size_t ini_size)
     // For our convenience and to make the code simpler, we'll also write zero-terminators within the buffer. So let's create a writable copy..
     if (ini_size == 0)
         ini_size = strlen(ini_data);
-    char* buf = (char*)ImGui::MemAlloc(ini_size + 1);
-    char* buf_end = buf + ini_size;
+    char * buf = (char *)ImGui::MemAlloc(ini_size + 1);
+    char * buf_end = buf + ini_size;
     memcpy(buf, ini_data, ini_size);
     buf[ini_size] = 0;
 
-    void* entry_data = NULL;
+    void * entry_data = NULL;
     ImGuiSettingsHandler* entry_handler = NULL;
 
-    char* line_end = NULL;
-    for (char* line = buf; line < buf_end; line = line_end + 1)
+    char * line_end = NULL;
+    for (char * line = buf; line < buf_end; line = line_end + 1)
     {
         // Skip new lines markers, then find end of the line
         while (*line == '\n' || *line == '\r')
@@ -8876,10 +8876,10 @@ void ImGui::LoadIniSettingsFromMemory(const char* ini_data, size_t ini_size)
         {
             // Parse "[Type][Name]". Note that 'Name' can itself contains [] characters, which is acceptable with the current format and parsing code.
             line_end[-1] = 0;
-            const char* name_end = line_end - 1;
-            const char* type_start = line + 1;
-            char* type_end = (char*)(intptr_t)ImStrchrRange(type_start, name_end, ']');
-            const char* name_start = type_end ? ImStrchrRange(type_end + 1, name_end, '[') : NULL;
+            const char * name_end = line_end - 1;
+            const char * type_start = line + 1;
+            char * type_end = (char *)(intptr_t)ImStrchrRange(type_start, name_end, ']');
+            const char * name_start = type_end ? ImStrchrRange(type_end + 1, name_end, '[') : NULL;
             if (!type_end || !name_start)
             {
                 name_start = type_start; // Import legacy entries that have no type
@@ -8903,7 +8903,7 @@ void ImGui::LoadIniSettingsFromMemory(const char* ini_data, size_t ini_size)
     g.SettingsLoaded = true;
 }
 
-void ImGui::SaveIniSettingsToDisk(const char* ini_filename)
+void ImGui::SaveIniSettingsToDisk(const char * ini_filename)
 {
     ImGuiContext& g = *GImGui;
     g.SettingsDirtyTimer = 0.0f;
@@ -8911,7 +8911,7 @@ void ImGui::SaveIniSettingsToDisk(const char* ini_filename)
         return;
 
     size_t ini_data_size = 0;
-    const char* ini_data = SaveIniSettingsToMemory(&ini_data_size);
+    const char * ini_data = SaveIniSettingsToMemory(&ini_data_size);
     FILE* f = ImFileOpen(ini_filename, "wt");
     if (!f)
         return;
@@ -8920,7 +8920,7 @@ void ImGui::SaveIniSettingsToDisk(const char* ini_filename)
 }
 
 // Call registered handlers (e.g. SettingsHandlerWindow_WriteAll() + custom handlers) to write their stuff into a text buffer
-const char* ImGui::SaveIniSettingsToMemory(size_t* out_size)
+const char * ImGui::SaveIniSettingsToMemory(size_t* out_size)
 {
     ImGuiContext& g = *GImGui;
     g.SettingsDirtyTimer = 0.0f;
@@ -8936,15 +8936,15 @@ const char* ImGui::SaveIniSettingsToMemory(size_t* out_size)
     return g.SettingsIniData.c_str();
 }
 
-static void* SettingsHandlerWindow_ReadOpen(ImGuiContext*, ImGuiSettingsHandler*, const char* name)
+static void * SettingsHandlerWindow_ReadOpen(ImGuiContext*, ImGuiSettingsHandler*, const char * name)
 {
     ImGuiWindowSettings* settings = ImGui::FindWindowSettings(ImHash(name, 0));
     if (!settings)
         settings = ImGui::CreateNewWindowSettings(name);
-    return (void*)settings;
+    return (void *)settings;
 }
 
-static void SettingsHandlerWindow_ReadLine(ImGuiContext*, ImGuiSettingsHandler*, void* entry, const char* line)
+static void SettingsHandlerWindow_ReadLine(ImGuiContext*, ImGuiSettingsHandler*, void * entry, const char * line)
 {
     ImGuiWindowSettings* settings = (ImGuiWindowSettings*)entry;
     float x, y;
@@ -8984,8 +8984,8 @@ static void SettingsHandlerWindow_WriteAll(ImGuiContext* imgui_ctx, ImGuiSetting
         const ImGuiWindowSettings* settings = &g.SettingsWindows[i];
         if (settings->Pos.x == FLT_MAX)
             continue;
-        const char* name = settings->Name;
-        if (const char* p = strstr(name, "###"))  // Skip to the "###" marker if any. We don't skip past to match the behavior of GetID()
+        const char * name = settings->Name;
+        if (const char * p = strstr(name, "###"))  // Skip to the "###" marker if any. We don't skip past to match the behavior of GetID()
             name = p;
         buf->appendf("[%s][%s]\n", handler->TypeName, name);
         buf->appendf("Pos=%d,%d\n", (int)settings->Pos.x, (int)settings->Pos.y);
@@ -9017,7 +9017,7 @@ static void SettingsHandlerWindow_WriteAll(ImGuiContext* imgui_ctx, ImGuiSetting
 #pragma comment(lib, "user32")
 #endif
 
-static const char* GetClipboardTextFn_DefaultImpl(void*)
+static const char * GetClipboardTextFn_DefaultImpl(void *)
 {
     static ImVector<char> buf_local;
     buf_local.clear();
@@ -9040,7 +9040,7 @@ static const char* GetClipboardTextFn_DefaultImpl(void*)
     return buf_local.Data;
 }
 
-static void SetClipboardTextFn_DefaultImpl(void*, const char* text)
+static void SetClipboardTextFn_DefaultImpl(void *, const char * text)
 {
     if (!::OpenClipboard(NULL))
         return;
@@ -9063,18 +9063,18 @@ static void SetClipboardTextFn_DefaultImpl(void*, const char* text)
 #else
 
 // Local ImGui-only clipboard implementation, if user hasn't defined better clipboard handlers
-static const char* GetClipboardTextFn_DefaultImpl(void*)
+static const char * GetClipboardTextFn_DefaultImpl(void *)
 {
     ImGuiContext& g = *GImGui;
     return g.PrivateClipboard.empty() ? NULL : g.PrivateClipboard.begin();
 }
 
 // Local ImGui-only clipboard implementation, if user hasn't defined better clipboard handlers
-static void SetClipboardTextFn_DefaultImpl(void*, const char* text)
+static void SetClipboardTextFn_DefaultImpl(void *, const char * text)
 {
     ImGuiContext& g = *GImGui;
     g.PrivateClipboard.clear();
-    const char* text_end = text + strlen(text);
+    const char * text_end = text + strlen(text);
     g.PrivateClipboard.resize((int)(text_end - text) + 1);
     memcpy(&g.PrivateClipboard[0], text, (size_t)(text_end - text));
     g.PrivateClipboard[(int)(text_end - text)] = 0;
@@ -9137,7 +9137,7 @@ void ImGui::ShowMetricsWindow(bool* p_open)
 
     struct Funcs
     {
-        static void NodeDrawList(ImGuiWindow* window, ImDrawList* draw_list, const char* label)
+        static void NodeDrawList(ImGuiWindow* window, ImDrawList* draw_list, const char * label)
         {
             bool node_open = ImGui::TreeNode(draw_list, "%s: '%s' %d vtx, %d indices, %d cmds", label, draw_list->_OwnerName ? draw_list->_OwnerName : "", draw_list->VtxBuffer.Size, draw_list->IdxBuffer.Size, draw_list->CmdBuffer.Size);
             if (draw_list == ImGui::GetWindowDrawList())
@@ -9165,7 +9165,7 @@ void ImGui::ShowMetricsWindow(bool* p_open)
                     continue;
                 }
                 ImDrawIdx* idx_buffer = (draw_list->IdxBuffer.Size > 0) ? draw_list->IdxBuffer.Data : NULL;
-                bool pcmd_node_open = ImGui::TreeNode((void*)(pcmd - draw_list->CmdBuffer.begin()), "Draw %4d %s vtx, tex 0x%p, clip_rect (%4.0f,%4.0f)-(%4.0f,%4.0f)", pcmd->ElemCount, draw_list->IdxBuffer.Size > 0 ? "indexed" : "non-indexed", pcmd->TextureId, pcmd->ClipRect.x, pcmd->ClipRect.y, pcmd->ClipRect.z, pcmd->ClipRect.w);
+                bool pcmd_node_open = ImGui::TreeNode((void *)(pcmd - draw_list->CmdBuffer.begin()), "Draw %4d %s vtx, tex 0x%p, clip_rect (%4.0f,%4.0f)-(%4.0f,%4.0f)", pcmd->ElemCount, draw_list->IdxBuffer.Size > 0 ? "indexed" : "non-indexed", pcmd->TextureId, pcmd->ClipRect.x, pcmd->ClipRect.y, pcmd->ClipRect.z, pcmd->ClipRect.w);
                 if (show_draw_cmd_clip_rects && ImGui::IsItemHovered())
                 {
                     ImRect clip_rect = pcmd->ClipRect;
@@ -9206,7 +9206,7 @@ void ImGui::ShowMetricsWindow(bool* p_open)
             ImGui::TreePop();
         }
 
-        static void NodeWindows(ImVector<ImGuiWindow*>& windows, const char* label)
+        static void NodeWindows(ImVector<ImGuiWindow*>& windows, const char * label)
         {
             if (!ImGui::TreeNode(label, "%s (%d)", label, windows.Size))
                 return;
@@ -9215,7 +9215,7 @@ void ImGui::ShowMetricsWindow(bool* p_open)
             ImGui::TreePop();
         }
 
-        static void NodeWindow(ImGuiWindow* window, const char* label)
+        static void NodeWindow(ImGuiWindow* window, const char * label)
         {
             if (!ImGui::TreeNode(window, "%s '%s', %d @ 0x%p", label, window->Name, window->Active || window->WasActive, window))
                 return;
@@ -9243,7 +9243,7 @@ void ImGui::ShowMetricsWindow(bool* p_open)
                 for (int n = 0; n < window->ColumnsStorage.Size; n++)
                 {
                     const ImGuiColumnsSet* columns = &window->ColumnsStorage[n];
-                    if (ImGui::TreeNode((void*)(uintptr_t)columns->ID, "Columns Id: 0x%08X, Count: %d, Flags: 0x%04X", columns->ID, columns->Count, columns->Flags))
+                    if (ImGui::TreeNode((void *)(uintptr_t)columns->ID, "Columns Id: 0x%08X, Count: %d, Flags: 0x%04X", columns->ID, columns->Count, columns->Flags))
                     {
                         ImGui::BulletText("Width: %.1f (MinX: %.1f, MaxX: %.1f)", columns->MaxX - columns->MinX, columns->MinX, columns->MaxX);
                         for (int column_n = 0; column_n < columns->Columns.Size; column_n++)
@@ -9261,8 +9261,8 @@ void ImGui::ShowMetricsWindow(bool* p_open)
         {
             // Standalone tab bars (not associated to docking/windows functionality) currently hold no discernable strings.
             char buf[256];
-            char* p = buf;
-            const char* buf_end = buf + IM_ARRAYSIZE(buf);
+            char * p = buf;
+            const char * buf_end = buf + IM_ARRAYSIZE(buf);
             p += ImFormatString(p, buf_end - p, "TabBar (%d tabs)%s",
                 tab_bar->Tabs.Size, (tab_bar->PrevFrameVisible < ImGui::GetFrameCount() - 2) ? " *Inactive*" : "");
             if (ImGui::TreeNode(tab_bar, "%s", buf))
@@ -9307,7 +9307,7 @@ void ImGui::ShowMetricsWindow(bool* p_open)
     }
     if (ImGui::TreeNode("Internal state"))
     {
-        const char* input_source_names[] = { "None", "Mouse", "Nav", "NavKeyboard", "NavGamepad" }; IM_ASSERT(IM_ARRAYSIZE(input_source_names) == ImGuiInputSource_COUNT);
+        const char * input_source_names[] = { "None", "Mouse", "Nav", "NavKeyboard", "NavGamepad" }; IM_ASSERT(IM_ARRAYSIZE(input_source_names) == ImGuiInputSource_COUNT);
         ImGui::Text("HoveredWindow: '%s'", g.HoveredWindow ? g.HoveredWindow->Name : "NULL");
         ImGui::Text("HoveredRootWindow: '%s'", g.HoveredRootWindow ? g.HoveredRootWindow->Name : "NULL");
         ImGui::Text("HoveredId: 0x%08X/0x%08X (%.2f sec), AllowOverlap: %d", g.HoveredId, g.HoveredIdPreviousFrame, g.HoveredIdTimer, g.HoveredIdAllowOverlap); // Data is "in-flight" so depending on when the Metrics window is called we may see current frame information or not

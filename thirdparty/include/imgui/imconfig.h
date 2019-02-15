@@ -1,6 +1,9 @@
 #ifndef _IMCONFIG_H_
 #define _IMCONFIG_H_
 
+#include <MemeEditor/Export.hpp>
+#define IMGUI_API ML_EDITOR_API
+
 //-----------------------------------------------------------------------------
 // COMPILE-TIME OPTIONS FOR DEAR IMGUI
 // Runtime options (clipboard callbacks, enabling various features, etc.) can generally be set via the ImGuiIO structure.
@@ -14,7 +17,6 @@
 // Call IMGUI_CHECKVERSION() from your .cpp files to verify that the data structures your files are using are matching the ones imgui.cpp is using.
 //-----------------------------------------------------------------------------
 
-#include <MemeEditor/Export.hpp>
 
 //---- Define assertion handler. Defaults to calling assert().
 //#define IM_ASSERT(_EXPR)  MyAssert(_EXPR)
@@ -23,8 +25,6 @@
 //---- Define attributes of all API symbols declarations, e.g. for DLL under Windows.
 //#define IMGUI_API __declspec( dllexport )
 //#define IMGUI_API __declspec( dllimport )
-
-#define IMGUI_API ML_EDITOR_API
 
 //---- Don't define obsolete functions/enums names. Consider enabling from time to time after updating to avoid using soon-to-be obsolete function/names.
 //#define IMGUI_DISABLE_OBSOLETE_FUNCTIONS
@@ -73,7 +73,7 @@
 /*
 namespace ImGui
 {
-	void MyFunction(const char* name, const MyMatrix44& v);
+	void MyFunction(const char * name, const MyMatrix44& v);
 }
 */
 

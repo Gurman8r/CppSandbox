@@ -119,19 +119,15 @@ namespace ml
 	public:
 		inline virtual void serialize(std::ostream & out) const override
 		{
-			out << "{ ";
 			for (size_type y = 0; y < Rows; y++)
 			{
 				for (size_type x = 0; x < Cols; x++)
 				{
-					out << (*this)[y * Cols + x]
-						<< ((x < Cols - 1) ? ", " : " }");
+					out << (*this)[y * Cols + x] << " ";
 				}
-				if (y < Rows - 1)
-				{
-					out << ml::endl;
-				}
+				out << ml::endl;
 			}
+			out << ml::endl;
 		}
 		
 		inline virtual void deserialize(std::istream & in) override

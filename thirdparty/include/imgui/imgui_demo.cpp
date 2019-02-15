@@ -122,7 +122,7 @@ static void ShowExampleAppCustomRendering(bool* p_open);
 static void ShowExampleMenuFile();
 
 // Helper to display a little (?) mark which shows a tooltip when hovered.
-static void ShowHelpMarker(const char* desc)
+static void ShowHelpMarker(const char * desc)
 {
     ImGui::TextDisabled("(?)");
     if (ImGui::IsItemHovered())
@@ -468,7 +468,7 @@ static void ShowDemoWindowWidgets()
         {
             // Using the _simplified_ one-liner Combo() api here
             // See "Combo" section for examples of how to use the more complete BeginCombo()/EndCombo() api.
-            const char* items[] = { "AAAA", "BBBB", "CCCC", "DDDD", "EEEE", "FFFF", "GGGG", "HHHH", "IIII", "JJJJ", "KKKK", "LLLLLLL", "MMMM", "OOOOOOO" };
+            const char * items[] = { "AAAA", "BBBB", "CCCC", "DDDD", "EEEE", "FFFF", "GGGG", "HHHH", "IIII", "JJJJ", "KKKK", "LLLLLLL", "MMMM", "OOOOOOO" };
             static int item_current = 0;
             ImGui::Combo("combo", &item_current, items, IM_ARRAYSIZE(items));
             ImGui::SameLine(); ShowHelpMarker("Refer to the \"Combo\" section below for an explanation of the full BeginCombo/EndCombo API, and demonstration of various flags.\n");
@@ -532,7 +532,7 @@ static void ShowDemoWindowWidgets()
 
         {
             // List box
-            const char* listbox_items[] = { "Apple", "Banana", "Cherry", "Kiwi", "Mango", "Orange", "Pineapple", "Strawberry", "Watermelon" };
+            const char * listbox_items[] = { "Apple", "Banana", "Cherry", "Kiwi", "Mango", "Orange", "Pineapple", "Strawberry", "Watermelon" };
             static int listbox_item_current = 1;
             ImGui::ListBox("listbox\n(single select)", &listbox_item_current, listbox_items, IM_ARRAYSIZE(listbox_items), 4);
 
@@ -556,7 +556,7 @@ static void ShowDemoWindowWidgets()
         if (ImGui::TreeNode("Basic trees"))
         {
             for (int i = 0; i < 5; i++)
-                if (ImGui::TreeNode((void*)(intptr_t)i, "Child %d", i))
+                if (ImGui::TreeNode((void *)(intptr_t)i, "Child %d", i))
                 {
                     ImGui::Text("blah blah");
                     ImGui::SameLine();
@@ -585,7 +585,7 @@ static void ShowDemoWindowWidgets()
                 if (i < 3)
                 {
                     // Node
-                    bool node_open = ImGui::TreeNodeEx((void*)(intptr_t)i, node_flags, "Selectable Node %d", i);
+                    bool node_open = ImGui::TreeNodeEx((void *)(intptr_t)i, node_flags, "Selectable Node %d", i);
                     if (ImGui::IsItemClicked())
                         node_clicked = i;
                     if (node_open)
@@ -598,7 +598,7 @@ static void ShowDemoWindowWidgets()
                 {
                     // Leaf: The only reason we have a TreeNode at all is to allow selection of the leaf. Otherwise we can use BulletText() or TreeAdvanceToLabelPos()+Text().
                     node_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen; // ImGuiTreeNodeFlags_Bullet
-                    ImGui::TreeNodeEx((void*)(intptr_t)i, node_flags, "Selectable Leaf %d", i);
+                    ImGui::TreeNodeEx((void *)(intptr_t)i, node_flags, "Selectable Leaf %d", i);
                     if (ImGui::IsItemClicked())
                         node_clicked = i;
                 }
@@ -769,8 +769,8 @@ static void ShowDemoWindowWidgets()
 
         // General BeginCombo() API, you have full control over your selection data and display type.
         // (your selection data could be an index, a pointer to the object, an id for the object, a flag stored in the object itself, etc.)
-        const char* items[] = { "AAAA", "BBBB", "CCCC", "DDDD", "EEEE", "FFFF", "GGGG", "HHHH", "IIII", "JJJJ", "KKKK", "LLLLLLL", "MMMM", "OOOOOOO" };
-        static const char* item_current = items[0];            // Here our selection is a single pointer stored outside the object.
+        const char * items[] = { "AAAA", "BBBB", "CCCC", "DDDD", "EEEE", "FFFF", "GGGG", "HHHH", "IIII", "JJJJ", "KKKK", "LLLLLLL", "MMMM", "OOOOOOO" };
+        static const char * item_current = items[0];            // Here our selection is a single pointer stored outside the object.
         if (ImGui::BeginCombo("combo 1", item_current, flags)) // The second parameter is the label previewed before opening the combo.
         {
             for (int n = 0; n < IM_ARRAYSIZE(items); n++)
@@ -788,12 +788,12 @@ static void ShowDemoWindowWidgets()
         static int item_current_2 = 0;
         ImGui::Combo("combo 2 (one-liner)", &item_current_2, "aaaa\0bbbb\0cccc\0dddd\0eeee\0\0");
 
-        // Simplified one-liner Combo() using an array of const char*
+        // Simplified one-liner Combo() using an array of const char *
         static int item_current_3 = -1; // If the selection isn't within 0..count, Combo won't display a preview
         ImGui::Combo("combo 3 (array)", &item_current_3, items, IM_ARRAYSIZE(items));
 
         // Simplified one-liner Combo() using an accessor function
-        struct FuncHolder { static bool ItemGetter(void* data, int idx, const char** out_str) { *out_str = ((const char**)data)[idx]; return true; } };
+        struct FuncHolder { static bool ItemGetter(void * data, int idx, const char ** out_str) { *out_str = ((const char **)data)[idx]; return true; } };
         static int item_current_4 = 0;
         ImGui::Combo("combo 4 (function)", &item_current_4, &FuncHolder::ItemGetter, items, IM_ARRAYSIZE(items));
 
@@ -964,15 +964,15 @@ static void ShowDemoWindowWidgets()
         // FIXME: This is rather awkward because current plot API only pass in indices. We probably want an API passing floats and user provide sample rate/count.
         struct Funcs
         {
-            static float Sin(void*, int i) { return sinf(i * 0.1f); }
-            static float Saw(void*, int i) { return (i & 1) ? 1.0f : -1.0f; }
+            static float Sin(void *, int i) { return sinf(i * 0.1f); }
+            static float Saw(void *, int i) { return (i & 1) ? 1.0f : -1.0f; }
         };
         static int func_type = 0, display_count = 70;
         ImGui::Separator();
         ImGui::PushItemWidth(100); ImGui::Combo("func", &func_type, "Sin\0Saw\0"); ImGui::PopItemWidth();
         ImGui::SameLine();
         ImGui::SliderInt("Sample count", &display_count, 1, 400);
-        float (*func)(void*, int) = (func_type == 0) ? Funcs::Sin : Funcs::Saw;
+        float (*func)(void *, int) = (func_type == 0) ? Funcs::Sin : Funcs::Saw;
         ImGui::PlotLines("Lines", func, NULL, display_count, 0, NULL, -1.0f, 1.0f, ImVec2(0,80));
         ImGui::PlotHistogram("Histogram", func, NULL, display_count, 0, NULL, -1.0f, 1.0f, ImVec2(0,80));
         ImGui::Separator();
@@ -1153,9 +1153,9 @@ static void ShowDemoWindowWidgets()
         // and passing all arguments by address. 
         // This is the reason the test code below creates local variables to hold "zero" "one" etc. for each types.
         // In practice, if you frequently use a given type that is not covered by the normal API entry points, you can wrap it 
-        // yourself inside a 1 line function which can take typed argument as value instead of void*, and then pass their address 
+        // yourself inside a 1 line function which can take typed argument as value instead of void *, and then pass their address 
         // to the generic function. For example:
-        //   bool MySliderU64(const char *label, u64* value, u64 min = 0, u64 max = 0, const char* format = "%lld") 
+        //   bool MySliderU64(const char *label, u64* value, u64 min = 0, u64 max = 0, const char * format = "%lld") 
         //   { 
         //      return SliderScalar(label, ImGuiDataType_U64, value, &min, &max, format); 
         //   }
@@ -1353,7 +1353,7 @@ static void ShowDemoWindowWidgets()
             if (ImGui::RadioButton("Copy", mode == Mode_Copy)) { mode = Mode_Copy; } ImGui::SameLine();
             if (ImGui::RadioButton("Move", mode == Mode_Move)) { mode = Mode_Move; } ImGui::SameLine();
             if (ImGui::RadioButton("Swap", mode == Mode_Swap)) { mode = Mode_Swap; } 
-            static const char* names[9] = { "Bobby", "Beatrice", "Betty", "Brianna", "Barry", "Bernard", "Bibi", "Blaine", "Bryn" };
+            static const char * names[9] = { "Bobby", "Beatrice", "Betty", "Brianna", "Barry", "Bernard", "Bibi", "Blaine", "Bryn" };
             for (int n = 0; n < IM_ARRAYSIZE(names); n++)
             {
                 ImGui::PushID(n);
@@ -1387,7 +1387,7 @@ static void ShowDemoWindowWidgets()
                         }
                         if (mode == Mode_Swap)
                         {
-                            const char* tmp = names[n];
+                            const char * tmp = names[n];
                             names[n] = names[payload_n];
                             names[payload_n] = tmp;
                         }
@@ -1422,7 +1422,7 @@ static void ShowDemoWindowWidgets()
         if (item_type == 2) { ret = ImGui::Checkbox("ITEM: CheckBox", &b); }                            // Testing checkbox
         if (item_type == 3) { ret = ImGui::SliderFloat("ITEM: SliderFloat", &col4f[0], 0.0f, 1.0f); }   // Testing basic item
         if (item_type == 4) { ret = ImGui::ColorEdit4("ITEM: ColorEdit4", col4f); }                     // Testing multi-component items (IsItemXXX flags are reported merged)
-        if (item_type == 5) { const char* items[] = { "Apple", "Banana", "Cherry", "Kiwi" }; static int current = 1; ret = ImGui::ListBox("ITEM: ListBox", &current, items, IM_ARRAYSIZE(items), IM_ARRAYSIZE(items)); }
+        if (item_type == 5) { const char * items[] = { "Apple", "Banana", "Cherry", "Kiwi" }; static int current = 1; ret = ImGui::ListBox("ITEM: ListBox", &current, items, IM_ARRAYSIZE(items), IM_ARRAYSIZE(items)); }
         ImGui::BulletText(
             "Return value = %d\n"
             "IsItemFocused() = %d\n"
@@ -1685,7 +1685,7 @@ static void ShowDemoWindowLayout()
         // Various
         static float f0 = 1.0f, f1 = 2.0f, f2 = 3.0f;
         ImGui::PushItemWidth(80);
-        const char* items[] = { "AAAA", "BBBB", "CCCC", "DDDD" };
+        const char * items[] = { "AAAA", "BBBB", "CCCC", "DDDD" };
         static int item = -1;
         ImGui::Combo("Combo", &item, items, IM_ARRAYSIZE(items)); ImGui::SameLine();
         ImGui::SliderFloat("X", &f0, 0.0f, 5.0f); ImGui::SameLine();
@@ -1774,7 +1774,7 @@ static void ShowDemoWindowLayout()
                 tab_bar_flags &= ~(ImGuiTabBarFlags_FittingPolicyMask_ ^ ImGuiTabBarFlags_FittingPolicyScroll);
 
             // Tab Bar
-            const char* names[4] = { "Artichoke", "Beetroot", "Celery", "Daikon" };
+            const char * names[4] = { "Artichoke", "Beetroot", "Celery", "Daikon" };
             static bool opened[4] = { true, true, true, true }; // Persistent user state
             for (int n = 0; n < IM_ARRAYSIZE(opened); n++)
             {
@@ -1919,7 +1919,7 @@ static void ShowDemoWindowLayout()
             if (i > 0) ImGui::SameLine();
             ImGui::BeginGroup();
             ImGui::Text("%s", i == 0 ? "Top" : i == 1 ? "25%" : i == 2 ? "Center" : i == 3 ? "75%" : "Bottom");
-            ImGui::BeginChild(ImGui::GetID((void*)(intptr_t)i), ImVec2(ImGui::GetWindowWidth() * 0.17f, 200.0f), true);
+            ImGui::BeginChild(ImGui::GetID((void *)(intptr_t)i), ImVec2(ImGui::GetWindowWidth() * 0.17f, 200.0f), true);
             if (scroll_to)
                 ImGui::SetScrollFromPosY(ImGui::GetCursorStartPos().y + scroll_to_px, i * 0.25f);
             for (int line = 0; line < 100; line++)
@@ -1961,7 +1961,7 @@ static void ShowDemoWindowLayout()
                 ImGui::PushID(n + line * 1000);
                 char num_buf[16];
                 sprintf(num_buf, "%d", n);
-                const char* label = (!(n%15)) ? "FizzBuzz" : (!(n%3)) ? "Fizz" : (!(n%5)) ? "Buzz" : num_buf;
+                const char * label = (!(n%15)) ? "FizzBuzz" : (!(n%3)) ? "Fizz" : (!(n%5)) ? "Buzz" : num_buf;
                 float hue = n*0.05f;
                 ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue, 0.6f, 0.6f));
                 ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue, 0.7f, 0.7f));
@@ -2030,7 +2030,7 @@ static void ShowDemoWindowPopups()
         ImGui::TextWrapped("When a popup is active, it inhibits interacting with windows that are behind the popup. Clicking outside the popup closes it.");
 
         static int selected_fish = -1;
-        const char* names[] = { "Bream", "Haddock", "Mackerel", "Pollock", "Tilefish" };
+        const char * names[] = { "Bream", "Haddock", "Mackerel", "Pollock", "Tilefish" };
         static bool toggles[] = { true, false, false, false, false };
 
         // Simple selection popup
@@ -2249,8 +2249,8 @@ static void ShowDemoWindowColumns()
         ImGui::Text("Path"); ImGui::NextColumn();
         ImGui::Text("Hovered"); ImGui::NextColumn();
         ImGui::Separator();
-        const char* names[3] = { "One", "Two", "Three" };
-        const char* paths[3] = { "/path/one", "/path/two", "/path/three" };
+        const char * names[3] = { "One", "Two", "Three" };
+        const char * paths[3] = { "/path/one", "/path/two", "/path/three" };
         static int selected = -1;
         for (int i = 0; i < 3; i++)
         {
@@ -2411,7 +2411,7 @@ static void ShowDemoWindowMisc()
                     "  \"xxx,yyy\"  display lines containing \"xxx\" or \"yyy\"\n"
                     "  \"-xxx\"     hide lines containing \"xxx\"");
         filter.Draw();
-        const char* lines[] = { "aaa1.c", "bbb1.c", "ccc1.c", "aaa2.cpp", "bbb2.cpp", "ccc2.cpp", "abc.h", "hello, world" };
+        const char * lines[] = { "aaa1.c", "bbb1.c", "ccc1.c", "aaa2.cpp", "bbb2.cpp", "ccc2.cpp", "abc.h", "hello, world" };
         for (int i = 0; i < IM_ARRAYSIZE(lines); i++)
             if (filter.PassFilter(lines[i]))
                 ImGui::BulletText("%s", lines[i]);
@@ -2542,7 +2542,7 @@ static void ShowDemoWindowMisc()
 
         if (ImGui::TreeNode("Mouse cursors"))
         {
-            const char* mouse_cursors_names[] = { "Arrow", "TextInput", "Move", "ResizeNS", "ResizeEW", "ResizeNESW", "ResizeNWSE", "Hand" };
+            const char * mouse_cursors_names[] = { "Arrow", "TextInput", "Move", "ResizeNS", "ResizeEW", "ResizeNESW", "ResizeNWSE", "Hand" };
             IM_ASSERT(IM_ARRAYSIZE(mouse_cursors_names) == ImGuiMouseCursor_COUNT);
 
             ImGui::Text("Current mouse cursor = %d: %s", ImGui::GetMouseCursor(), mouse_cursors_names[ImGui::GetMouseCursor()]);
@@ -2689,7 +2689,7 @@ void ImGui::ShowAboutWindow(bool* p_open)
 
 // Demo helper function to select among default colors. See ShowStyleEditor() for more advanced options.
 // Here we use the simplified Combo() api that packs items into a single literal string. Useful for quick combo boxes where the choices are known locally.
-bool ImGui::ShowStyleSelector(const char* label)
+bool ImGui::ShowStyleSelector(const char * label)
 {
     static int style_idx = -1;
     if (ImGui::Combo(label, &style_idx, "Classic\0Dark\0Light\0"))
@@ -2707,7 +2707,7 @@ bool ImGui::ShowStyleSelector(const char* label)
 
 // Demo helper function to select among loaded fonts.
 // Here we use the regular BeginCombo()/EndCombo() api which is more the more flexible one.
-void ImGui::ShowFontSelector(const char* label)
+void ImGui::ShowFontSelector(const char * label)
 {
     ImGuiIO& io = ImGui::GetIO();
     ImFont* font_current = ImGui::GetFont();
@@ -2815,7 +2815,7 @@ void ImGui::ShowStyleEditor(ImGuiStyle* ref)
                 for (int i = 0; i < ImGuiCol_COUNT; i++)
                 {
                     const ImVec4& col = style.Colors[i];
-                    const char* name = ImGui::GetStyleColorName(i);
+                    const char * name = ImGui::GetStyleColorName(i);
                     if (!output_only_modified || memcmp(&col, &ref->Colors[i], sizeof(ImVec4)) != 0)
                         ImGui::LogText("colors[ImGuiCol_%s]%*s= ImVec4(%.2ff, %.2ff, %.2ff, %.2ff);" IM_NEWLINE, name, 23 - (int)strlen(name), "", col.x, col.y, col.z, col.w);
                 }
@@ -2837,7 +2837,7 @@ void ImGui::ShowStyleEditor(ImGuiStyle* ref)
             ImGui::PushItemWidth(-160);
             for (int i = 0; i < ImGuiCol_COUNT; i++)
             {
-                const char* name = ImGui::GetStyleColorName(i);
+                const char * name = ImGui::GetStyleColorName(i);
                 if (!filter.PassFilter(name))
                     continue;
                 ImGui::PushID(i);
@@ -2892,7 +2892,7 @@ void ImGui::ShowStyleEditor(ImGuiStyle* ref)
                             int count = 0;
                             for (int n = 0; n < 256; n++)
                                 count += font->FindGlyphNoFallback((ImWchar)(base + n)) ? 1 : 0;
-                            if (count > 0 && ImGui::TreeNode((void*)(intptr_t)base, "U+%04X..U+%04X (%d %s)", base, base + 255, count, count > 1 ? "glyphs" : "glyph"))
+                            if (count > 0 && ImGui::TreeNode((void *)(intptr_t)base, "U+%04X..U+%04X (%d %s)", base, base + 255, count, count > 1 ? "glyphs" : "glyph"))
                             {
                                 float cell_size = font->FontSize * 1;
                                 float cell_spacing = style.ItemSpacing.y;
@@ -3037,7 +3037,7 @@ static void ShowExampleMenuFile()
         float sz = ImGui::GetTextLineHeight();
         for (int i = 0; i < ImGuiCol_COUNT; i++)
         {
-            const char* name = ImGui::GetStyleColorName((ImGuiCol)i);
+            const char * name = ImGui::GetStyleColorName((ImGuiCol)i);
             ImVec2 p = ImGui::GetCursorScreenPos();
             ImGui::GetWindowDrawList()->AddRectFilled(p, ImVec2(p.x+sz, p.y+sz), ImGui::GetColorU32((ImGuiCol)i));
             ImGui::Dummy(ImVec2(sz, sz));
@@ -3063,11 +3063,11 @@ static void ShowExampleMenuFile()
 struct ExampleAppConsole
 {
     char                  InputBuf[256];
-    ImVector<char*>       Items;
+    ImVector<char *>       Items;
     bool                  ScrollToBottom;
-    ImVector<char*>       History;
+    ImVector<char *>       History;
     int                   HistoryPos;    // -1: new line, 0..History.Size-1 browsing history.
-    ImVector<const char*> Commands;
+    ImVector<const char *> Commands;
 
     ExampleAppConsole()
     {
@@ -3088,10 +3088,10 @@ struct ExampleAppConsole
     }
 
     // Portable helpers
-    static int   Stricmp(const char* str1, const char* str2)         { int d; while ((d = toupper(*str2) - toupper(*str1)) == 0 && *str1) { str1++; str2++; } return d; }
-    static int   Strnicmp(const char* str1, const char* str2, int n) { int d = 0; while (n > 0 && (d = toupper(*str2) - toupper(*str1)) == 0 && *str1) { str1++; str2++; n--; } return d; }
-    static char* Strdup(const char *str)                             { size_t len = strlen(str) + 1; void* buff = malloc(len); return (char*)memcpy(buff, (const void*)str, len); }
-    static void  Strtrim(char* str)                                  { char* str_end = str + strlen(str); while (str_end > str && str_end[-1] == ' ') str_end--; *str_end = 0; }
+    static int   Stricmp(const char * str1, const char * str2)         { int d; while ((d = toupper(*str2) - toupper(*str1)) == 0 && *str1) { str1++; str2++; } return d; }
+    static int   Strnicmp(const char * str1, const char * str2, int n) { int d = 0; while (n > 0 && (d = toupper(*str2) - toupper(*str1)) == 0 && *str1) { str1++; str2++; n--; } return d; }
+    static char * Strdup(const char *str)                             { size_t len = strlen(str) + 1; void * buff = malloc(len); return (char *)memcpy(buff, (const void *)str, len); }
+    static void  Strtrim(char * str)                                  { char * str_end = str + strlen(str); while (str_end > str && str_end[-1] == ' ') str_end--; *str_end = 0; }
 
     void    ClearLog()
     {
@@ -3101,7 +3101,7 @@ struct ExampleAppConsole
         ScrollToBottom = true;
     }
 
-    void    AddLog(const char* fmt, ...) IM_FMTARGS(2)
+    void    AddLog(const char * fmt, ...) IM_FMTARGS(2)
     {
         // FIXME-OPT
         char buf[1024];
@@ -3114,7 +3114,7 @@ struct ExampleAppConsole
         ScrollToBottom = true;
     }
 
-    void    Draw(const char* title, bool* p_open)
+    void    Draw(const char * title, bool* p_open)
     {
         ImGui::SetNextWindowSize(ImVec2(520,600), ImGuiCond_FirstUseEver);
         if (!ImGui::Begin(title, p_open))
@@ -3177,7 +3177,7 @@ struct ExampleAppConsole
         ImVec4 col_default_text = ImGui::GetStyleColorVec4(ImGuiCol_Text);
         for (int i = 0; i < Items.Size; i++)
         {
-            const char* item = Items[i];
+            const char * item = Items[i];
             if (!filter.PassFilter(item))
                 continue;
             ImVec4 col = col_default_text;
@@ -3198,9 +3198,9 @@ struct ExampleAppConsole
 
         // Command-line
         bool reclaim_focus = false;
-        if (ImGui::InputText("Input", InputBuf, IM_ARRAYSIZE(InputBuf), ImGuiInputTextFlags_EnterReturnsTrue|ImGuiInputTextFlags_CallbackCompletion|ImGuiInputTextFlags_CallbackHistory, &TextEditCallbackStub, (void*)this))
+        if (ImGui::InputText("Input", InputBuf, IM_ARRAYSIZE(InputBuf), ImGuiInputTextFlags_EnterReturnsTrue|ImGuiInputTextFlags_CallbackCompletion|ImGuiInputTextFlags_CallbackHistory, &TextEditCallbackStub, (void *)this))
         {
-            char* s = InputBuf;
+            char * s = InputBuf;
             Strtrim(s);
             if (s[0])
                 ExecCommand(s);
@@ -3216,7 +3216,7 @@ struct ExampleAppConsole
         ImGui::End();
     }
 
-    void    ExecCommand(const char* command_line)
+    void    ExecCommand(const char * command_line)
     {
         AddLog("# %s\n", command_line);
 
@@ -3270,8 +3270,8 @@ struct ExampleAppConsole
                 // Example of TEXT COMPLETION
 
                 // Locate beginning of current word
-                const char* word_end = data->Buf + data->CursorPos;
-                const char* word_start = word_end;
+                const char * word_end = data->Buf + data->CursorPos;
+                const char * word_start = word_end;
                 while (word_start > data->Buf)
                 {
                     const char c = word_start[-1];
@@ -3281,7 +3281,7 @@ struct ExampleAppConsole
                 }
 
                 // Build a list of candidates
-                ImVector<const char*> candidates;
+                ImVector<const char *> candidates;
                 for (int i = 0; i < Commands.Size; i++)
                     if (Strnicmp(Commands[i], word_start, (int)(word_end-word_start)) == 0)
                         candidates.push_back(Commands[i]);
@@ -3351,7 +3351,7 @@ struct ExampleAppConsole
                 // A better implementation would preserve the data on the current input line along with cursor position.
                 if (prev_history_pos != HistoryPos)
                 {
-                    const char* history_str = (HistoryPos >= 0) ? History[HistoryPos] : "";
+                    const char * history_str = (HistoryPos >= 0) ? History[HistoryPos] : "";
                     data->DeleteChars(0, data->BufTextLen);
                     data->InsertChars(0, history_str);
                 }
@@ -3389,7 +3389,7 @@ struct ExampleAppLog
         LineOffsets.push_back(0);
     }
 
-    void    AddLog(const char* fmt, ...) IM_FMTARGS(2)
+    void    AddLog(const char * fmt, ...) IM_FMTARGS(2)
     {
         int old_size = Buf.size();
         va_list args;
@@ -3402,7 +3402,7 @@ struct ExampleAppLog
         ScrollToBottom = true;
     }
 
-    void    Draw(const char* title, bool* p_open = NULL)
+    void    Draw(const char * title, bool* p_open = NULL)
     {
         if (!ImGui::Begin(title, p_open))
         {
@@ -3420,14 +3420,14 @@ struct ExampleAppLog
             ImGui::LogToClipboard();
 
         ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
-        const char* buf = Buf.begin();
-        const char* buf_end = Buf.end();
+        const char * buf = Buf.begin();
+        const char * buf_end = Buf.end();
         if (Filter.IsActive())
         {
             for (int line_no = 0; line_no < LineOffsets.Size; line_no++)
             {
-                const char* line_start = buf + LineOffsets[line_no];
-                const char* line_end = (line_no + 1 < LineOffsets.Size) ? (buf + LineOffsets[line_no + 1] - 1) : buf_end;
+                const char * line_start = buf + LineOffsets[line_no];
+                const char * line_end = (line_no + 1 < LineOffsets.Size) ? (buf + LineOffsets[line_no + 1] - 1) : buf_end;
                 if (Filter.PassFilter(line_start, line_end))
                     ImGui::TextUnformatted(line_start, line_end);
             }
@@ -3449,8 +3449,8 @@ struct ExampleAppLog
             {
                 for (int line_no = clipper.DisplayStart; line_no < clipper.DisplayEnd; line_no++)
                 {
-                    const char* line_start = buf + LineOffsets[line_no];
-                    const char* line_end = (line_no + 1 < LineOffsets.Size) ? (buf + LineOffsets[line_no + 1] - 1) : buf_end;
+                    const char * line_start = buf + LineOffsets[line_no];
+                    const char * line_end = (line_no + 1 < LineOffsets.Size) ? (buf + LineOffsets[line_no + 1] - 1) : buf_end;
                     ImGui::TextUnformatted(line_start, line_end);
                 }
             }
@@ -3480,8 +3480,8 @@ static void ShowExampleAppLog(bool* p_open)
         static int counter = 0;
         for (int n = 0; n < 5; n++)
         {
-            const char* categories[3] = { "info", "warn", "error" };
-            const char* words[] = { "Bumfuzzled", "Cattywampus", "Snickersnee", "Abibliophobia", "Absquatulate", "Nincompoop", "Pauciloquent" };
+            const char * categories[3] = { "info", "warn", "error" };
+            const char * words[] = { "Bumfuzzled", "Cattywampus", "Snickersnee", "Abibliophobia", "Absquatulate", "Nincompoop", "Pauciloquent" };
             log.AddLog("[%05d] [%s] Hello, current time is %.1f, here's a word: '%s'\n", 
                 ImGui::GetFrameCount(), categories[counter % IM_ARRAYSIZE(categories)], ImGui::GetTime(), words[counter % IM_ARRAYSIZE(words)]);
             counter++;
@@ -3575,7 +3575,7 @@ static void ShowExampleAppPropertyEditor(bool* p_open)
 
     struct funcs
     {
-        static void ShowDummyObject(const char* prefix, int uid)
+        static void ShowDummyObject(const char * prefix, int uid)
         {
             ImGui::PushID(uid);                      // Use object uid as identifier. Most commonly you could also use the object pointer as a base ID.
             ImGui::AlignTextToFramePadding();  // Text and Tree nodes are less high than regular widgets, here we add vertical spacing to make the tree lines equal high.
@@ -3727,12 +3727,12 @@ static void ShowExampleAppConstrainedResize(bool* p_open)
     if (type == 3) ImGui::SetNextWindowSizeConstraints(ImVec2(400, -1),  ImVec2(500, -1));          // Width 400-500
     if (type == 4) ImGui::SetNextWindowSizeConstraints(ImVec2(-1, 400),  ImVec2(-1, 500));          // Height 400-500
     if (type == 5) ImGui::SetNextWindowSizeConstraints(ImVec2(0, 0),     ImVec2(FLT_MAX, FLT_MAX), CustomConstraints::Square);          // Always Square
-    if (type == 6) ImGui::SetNextWindowSizeConstraints(ImVec2(0, 0),     ImVec2(FLT_MAX, FLT_MAX), CustomConstraints::Step, (void*)100);// Fixed Step
+    if (type == 6) ImGui::SetNextWindowSizeConstraints(ImVec2(0, 0),     ImVec2(FLT_MAX, FLT_MAX), CustomConstraints::Step, (void *)100);// Fixed Step
 
     ImGuiWindowFlags flags = auto_resize ? ImGuiWindowFlags_AlwaysAutoResize : 0;
     if (ImGui::Begin("Example: Constrained Resize", p_open, flags))
     {
-        const char* desc[] =
+        const char * desc[] =
         {
             "Resize vertical only",
             "Resize horizontal only",
@@ -3941,14 +3941,14 @@ static void ShowExampleAppCustomRendering(bool* p_open)
 // Simplified structure to mimic a Document model
 struct MyDocument
 {
-    const char* Name;           // Document title
+    const char * Name;           // Document title
     bool        Open;           // Set when the document is open (in this demo, we keep an array of all available documents to simplify the demo)
     bool        OpenPrev;       // Copy of Open from last update.
     bool        Dirty;          // Set when the document has been modified
     bool        WantClose;      // Set when the document 
     ImVec4      Color;          // An arbitrary variable associated to the document
 
-    MyDocument(const char* name, bool open = true, const ImVec4& color = ImVec4(1.0f,1.0f,1.0f,1.0f))
+    MyDocument(const char * name, bool open = true, const ImVec4& color = ImVec4(1.0f,1.0f,1.0f,1.0f))
     { 
         Name = name; 
         Open = OpenPrev = open; 

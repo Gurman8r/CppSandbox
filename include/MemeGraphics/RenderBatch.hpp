@@ -7,7 +7,7 @@
 #include <MemeGraphics/FrameBuffer.hpp>
 #include <MemeGraphics/RenderBuffer.hpp>
 #include <MemeGraphics/Shader.hpp>
-#include <MemeGraphics/Lists.hpp>
+#include <MemeGraphics/UniformSet.hpp>
 
 namespace ml
 {
@@ -21,31 +21,24 @@ namespace ml
 		IBO	* ibo;
 		FBO	* fbo;
 		RBO	* rbo;
+		
+		UniformSet uniforms;
 
-		const Shader	 * shader;
-		const Transform  * proj;
-		const Transform  * view;
-		const Transform	 * model;
-		const vec4f		 * color;
-		const Texture	 * texture;
-		const VertexList * vertices;
+		const Shader * shader;
+
+		const VertexList  * vertices;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		RenderBatch(
-			VAO * vao, VBO * vbo, const Transform * proj, const Shader * shader)
+		RenderBatch(VAO * vao, VBO * vbo, const Shader * shader, const UniformSet & uniforms)
 			: vao		(vao)
 			, vbo		(vbo)
 			, ibo		(NULL)
 			, fbo		(NULL)
 			, rbo		(NULL)
 			, shader	(shader)
-			, proj		(proj)
-			, view		(NULL)
-			, model		(NULL)
-			, color		(NULL)
-			, texture	(NULL)
 			, vertices	(NULL)
+			, uniforms	(uniforms)
 		{
 		}
 		RenderBatch()
@@ -55,12 +48,8 @@ namespace ml
 			, fbo		(NULL)
 			, rbo		(NULL)
 			, shader	(NULL)
-			, proj		(NULL)
-			, view		(NULL)
-			, model		(NULL)
-			, color		(NULL)
-			, texture	(NULL)
 			, vertices	(NULL)
+			, uniforms	(UniformSet())
 		{
 		}
 		RenderBatch(const RenderBatch & copy)
@@ -70,12 +59,8 @@ namespace ml
 			, fbo		(copy.fbo)
 			, rbo		(copy.rbo)
 			, shader	(copy.shader)
-			, proj		(copy.proj)
-			, view		(copy.view)
-			, model		(copy.model)
-			, color		(copy.color)
-			, texture	(copy.texture)
 			, vertices	(copy.vertices)
+			, uniforms	(copy.uniforms)
 		{
 		}
 

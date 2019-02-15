@@ -7,32 +7,57 @@
 
 namespace ml
 {
-	struct ML_GRAPHICS_API Uniform final
+	class ML_GRAPHICS_API Uniform final
 		: public ITrackable
 	{
-		enum ID : uint16_t
+	public:
+		enum Type : int32_t
 		{
-			Model,
-			View,
-			Proj,
-			Color,
-			Texture,
-			Curve,
-			MAX_UNIFORM_ID
+			None,
+			Int,
+			Float,
+			Vec2,
+			Vec3,
+			Vec4,
+			Mat3,
+			Mat4,
+			Tex2D,
+			MAX_TYPE
 		};
-		static const String Names[Uniform::MAX_UNIFORM_ID];
 
+	public:
 		Uniform();
-		Uniform(const ID id);
 		Uniform(const String & name);
-		Uniform(const char * name);
+		Uniform(const String & name, const int32_t type);
+		Uniform(const String & name, const int32_t type, const void * data);
 		Uniform(const Uniform & copy);
 		~Uniform();
 
-		String name;
+	public:
+		String		name;
+		int32_t		type;
+		const void *data;
 
-		inline operator String	() const { return name; }
-		inline operator bool	() const { return !name.empty(); }
+	public:
+		template <class T>
+		inline const T * get_pointer() const
+		{
+			const T * temp;
+			assert(
+				(temp = reinterpret_cast<const T *>(data)) && 
+				("Cannot reinterpret uniform data"));
+			return temp;
+		}
+
+		template <class T>
+		inline const T & get_value() const
+		{
+			return (*get_pointer<T>());
+		}
+
+	public:
+		inline operator String() const { return name;	}
+		inline operator bool()	 const { return !name.empty(); }
 	};
 }
 

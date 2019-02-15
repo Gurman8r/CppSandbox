@@ -34,9 +34,9 @@ namespace ml
 			return to_stream().str();
 		}
 
-		inline const String::Stream to_stream() const
+		inline const SStream to_stream() const
 		{ 
-			String::Stream ss;
+			SStream ss;
 			ss << (*this);
 			return ss;
 		}

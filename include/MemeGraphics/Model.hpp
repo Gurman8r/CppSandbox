@@ -29,6 +29,7 @@ namespace ml
 	private:
 		const Shader *	m_shader;
 		const Texture * m_texture;
+		const Mesh *	m_mesh;
 
 		VAO		m_vao;
 		VBO		m_vbo;

@@ -112,9 +112,9 @@ namespace ml
 		return m_values;
 	}
 
-	String::Stream Args::sstream() const
+	SStream Args::sstream() const
 	{
-		String::Stream ss;
+		SStream ss;
 		if (!empty())
 		{
 			for (auto e : (*this))
@@ -316,7 +316,7 @@ namespace ml
 	{
 		return push_back(value_type(1, value));
 	}
-	Args::self_type&	Args::push_back(const char* value)
+	Args::self_type&	Args::push_back(const char * value)
 	{
 		return push_back(value_type(value));
 	}
@@ -341,7 +341,7 @@ namespace ml
 	{
 		return push_front(value_type(1, value));
 	}
-	Args::self_type&	Args::push_front(const char* value)
+	Args::self_type&	Args::push_front(const char * value)
 	{
 		return push_front(value_type(value));
 	}

@@ -15,7 +15,7 @@ namespace ml
 		using value_type			= Token;
 		using string_type			= String;
 		using vector_type			= List<value_type>;
-		using cstring_list			= List<const char*>;
+		using cstring_list			= List<const char *>;
 		using char_list				= List<char>;
 		using initializer_type		= std::initializer_list<value_type>;
 		using iterator				= vector_type::iterator;
@@ -23,7 +23,7 @@ namespace ml
 		using reverse_iterator		= vector_type::reverse_iterator;
 		using const_reverse_iterator= vector_type::const_reverse_iterator;
 		using difference_type		= vector_type::difference_type;
-		using stream_type			= String::Stream;
+		using stream_type			= SStream;
 
 	public:
 		TokenList();
