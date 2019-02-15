@@ -144,7 +144,7 @@ namespace DEMO
 				.bufferFramebuffer(ml::GL::DepthStencilAttachment)
 				.unbind();
 			// Texture
-			if (ml::Texture * texture = ML_Resources.textures.find("framebuffer"))
+			if (ml::Texture * texture = ML_Resources.textures.get("framebuffer"))
 			{
 				ml::OpenGL::framebufferTexture2D(
 					ml::GL::Framebuffer, 
@@ -431,6 +431,9 @@ namespace DEMO
 
 	void Demo::onEnter(const EnterEvent & ev)
 	{
+		// Seed Random
+		ml::Random::seed();
+
 		// Start Master Timer
 		ML_Time.start();
 
@@ -518,7 +521,7 @@ namespace DEMO
 		if (ml::Debug::log("Starting..."))
 		{
 			// Set Window Icon
-			if (ml::Image * icon = ML_Resources.images.find("icon"))
+			if (ml::Image * icon = ML_Resources.images.get("icon"))
 			{
 				this->setIcons({ (*icon).flipVertically() });
 			}
@@ -545,26 +548,26 @@ namespace DEMO
 				ml::vec3f::Up);
 
 			// Cube
-			ML_Resources.models.find("cube")->transform()
+			ML_Resources.models.get("cube")->transform()
 				.translate({ +5.0f, 0.0f, 0.0f })
 				.rotate(0.0f, ml::vec3f::Up)
 				.scale(ml::vec3f::One);
 
 			// Quad
-			ML_Resources.models.find("quad")->transform()
+			ML_Resources.models.get("quad")->transform()
 				.translate({ -5.0f, 0.0f, 0.0f })
 				.rotate(0.0f, ml::vec3f::Up)
 				.scale(ml::vec3f::One);
 
 			// Sphere 32x24
-			ML_Resources.models.find("sphere32x24")->transform()
+			ML_Resources.models.get("sphere32x24")->transform()
 				.translate({ 0.0f, 0.0f, 0.0f })
 				.rotate(0.0f, ml::vec3f::Up)
 				.scale(ml::vec3f::One);
 
 			// Static Text
 			m_textStatic
-				.setFont(ML_Resources.fonts.find("minecraft"))
+				.setFont(ML_Resources.fonts.get("minecraft"))
 				.setFontSize(72)
 				.setScale(ml::vec2f::One)
 				.setPosition({ 32, 128 })
@@ -597,17 +600,17 @@ namespace DEMO
 
 		// Animate
 		{
-			ML_Resources.models.find("cube")->transform()
+			ML_Resources.models.get("cube")->transform()
 				.translate(ml::vec3f::Zero)
 				.rotate(+ev.elapsed.delta(), ml::vec3f::One)
 				.scale(ml::vec3f::One);
 
-			ML_Resources.models.find("sphere32x24")->transform()
+			ML_Resources.models.get("sphere32x24")->transform()
 				.translate(ml::vec3f::Zero)
 				.rotate((m_animate ? ev.elapsed.delta() : 0.f), ml::vec3f::Up)
 				.scale(ml::vec3f::One);
 
-			ML_Resources.models.find("quad")->transform()
+			ML_Resources.models.get("quad")->transform()
 				.translate(ml::vec3f::Zero)
 				.rotate(-ev.elapsed.delta(), ml::vec3f::Forward)
 				.scale(ml::vec3f::One);
@@ -628,16 +631,16 @@ namespace DEMO
 			ml::OpenGL::enable(ml::GL::DepthTest);
 
 			// Cube
-			if(const ml::Model * model = ML_Resources.models.find("cube"))
+			if(const ml::Model * model = ML_Resources.models.get("cube"))
 			{
 				static ml::UniformSet uniforms = {
 					ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
 					ml::Uniform("u_view",	ml::Uniform::Mat4,	&m_camera.matrix()),
 					ml::Uniform("u_model",	ml::Uniform::Mat4,	&model->transform().matrix()),
 					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
-					ml::Uniform("u_texture",ml::Uniform::Tex2D, ML_Resources.textures.find("stone_dm")),
+					ml::Uniform("u_texture",ml::Uniform::Tex2D, ML_Resources.textures.get("stone_dm")),
 				};
-				if (const ml::Shader * shader = ML_Resources.shaders.find("basic3D"))
+				if (const ml::Shader * shader = ML_Resources.shaders.get("basic3D"))
 				{
 					shader->setUniforms(uniforms);
 					shader->bind();
@@ -646,16 +649,16 @@ namespace DEMO
 			}
 			
 			// Sphere32x24
-			if (const ml::Model * model = ML_Resources.models.find("sphere32x24"))
+			if (const ml::Model * model = ML_Resources.models.get("sphere32x24"))
 			{
 				static ml::UniformSet uniforms = {
 					ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
 					ml::Uniform("u_view",	ml::Uniform::Mat4,	&m_camera.matrix()),
 					ml::Uniform("u_model",	ml::Uniform::Mat4,	&model->transform().matrix()),
 					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
-					ml::Uniform("u_texture",ml::Uniform::Tex2D,	ML_Resources.textures.find("earth")),
+					ml::Uniform("u_texture",ml::Uniform::Tex2D,	ML_Resources.textures.get("earth")),
 				};
-				if (const ml::Shader * shader = ML_Resources.shaders.find("basic3D"))
+				if (const ml::Shader * shader = ML_Resources.shaders.get("basic3D"))
 				{
 					shader->setUniforms(uniforms);
 					shader->bind();
@@ -668,16 +671,16 @@ namespace DEMO
 			ml::OpenGL::disable(ml::GL::DepthTest);
 
 			// Quad
-			if(const ml::Model * model = ML_Resources.models.find("quad"))
+			if(const ml::Model * model = ML_Resources.models.get("quad"))
 			{
 				static ml::UniformSet uniforms = {
 					ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
 					ml::Uniform("u_view",	ml::Uniform::Mat4,	&m_camera.matrix()),
 					ml::Uniform("u_model",	ml::Uniform::Mat4,	&model->transform().matrix()),
 					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
-					ml::Uniform("u_texture",ml::Uniform::Tex2D,	ML_Resources.textures.find("sanic")),
+					ml::Uniform("u_texture",ml::Uniform::Tex2D,	ML_Resources.textures.get("sanic")),
 				};
-				if (const ml::Shader * shader = ML_Resources.shaders.find("sprites"))
+				if (const ml::Shader * shader = ML_Resources.shaders.get("sprites"))
 				{
 					shader->setUniforms(uniforms);
 					shader->bind();
@@ -696,7 +699,7 @@ namespace DEMO
 				static ml::RenderBatch batch(
 					&m_vaoText,
 					&m_vboText,
-					ML_Resources.shaders.find("text"),
+					ML_Resources.shaders.get("text"),
 					uniforms);
 
 				static const uint32_t  fontSize = 24;
@@ -730,7 +733,7 @@ namespace DEMO
 					ml::Uniform("u_lineDelta",	ml::Uniform::Float, &m_lineDelta),
 					ml::Uniform("u_lineSamples",ml::Uniform::Int,	&m_lineSamples),
 				};
-				if (const ml::Shader * shader = ML_Resources.shaders.find("geometry"))
+				if (const ml::Shader * shader = ML_Resources.shaders.get("geometry"))
 				{
 					shader->setUniforms(uniforms);
 					shader->bind();
@@ -743,16 +746,16 @@ namespace DEMO
 
 		// Draw Framebuffer
 		/* * * * * * * * * * * * * * * * * * * * */
-		if(ml::Shader * shader = ML_Resources.shaders.find("framebuffer"))
+		if(ml::Shader * shader = ML_Resources.shaders.get("framebuffer"))
 		{
 			static ml::UniformSet uniforms = {
-				ml::Uniform("u_texture",ml::Uniform::Tex2D, ML_Resources.textures.find("framebuffer")),
+				ml::Uniform("u_texture",ml::Uniform::Tex2D, ML_Resources.textures.get("framebuffer")),
 				ml::Uniform("u_mode",	ml::Uniform::Int,	&m_fboMode),
 			};
 			shader->setUniforms(uniforms);
 			shader->bind();
 			this->clear(ml::Color::White);
-			this->draw(*ML_Resources.models.find("quad"));
+			this->draw(*ML_Resources.models.get("quad"));
 		}
 
 
@@ -872,7 +875,7 @@ namespace DEMO
 					{
 						ImGui::Checkbox("Animate", &m_animate);
 
-						ml::Transform & temp = ML_Resources.models.find("sphere32x24")->transform();
+						ml::Transform & temp = ML_Resources.models.get("sphere32x24")->transform();
 
 						ML_Editor.InputTransform("Matrix", temp);
 
@@ -1038,6 +1041,7 @@ namespace DEMO
 				ImGui::End();
 			}
 		}
+
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	}

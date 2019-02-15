@@ -22,6 +22,8 @@ namespace ml
 		const Duration & elapsed() const;
 
 		static uint64_t calculateFPS(float deltaTime);
+
+		static void sleep(const ml::Duration & value);
 	
 	private:
 		Time() { }

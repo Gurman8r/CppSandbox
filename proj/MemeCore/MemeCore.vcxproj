@@ -157,6 +157,7 @@
     <ClInclude Include="..\..\include\MemeCore\Check.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Chunk.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Directory.hpp" />
+    <ClInclude Include="..\..\include\MemeCore\Function.hpp" />
     <ClInclude Include="..\..\include\MemeCore\IHandle.hpp" />
     <ClInclude Include="..\..\include\MemeCore\InputState.hpp" />
     <ClInclude Include="..\..\include\MemeCore\IO.hpp" />
@@ -188,9 +189,11 @@
     <ClInclude Include="..\..\include\MemeCore\Matrix.hpp" />
     <ClInclude Include="..\..\include\MemeCore\MemoryTracker.hpp" />
     <ClInclude Include="..\..\include\MemeCore\OStream.hpp" />
+    <ClInclude Include="..\..\include\MemeCore\Random.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Rect.hpp" />
     <ClInclude Include="..\..\include\MemeCore\STD.hpp" />
     <ClInclude Include="..\..\include\MemeCore\String.hpp" />
+    <ClInclude Include="..\..\include\MemeCore\Thread.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Time.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Duration.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Timer.hpp" />
@@ -211,6 +214,8 @@
     <ClCompile Include="..\..\src\MemeCore\MemoryManager.cpp" />
     <ClCompile Include="..\..\src\MemeCore\MemoryTracker.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Maths.cpp" />
+    <ClCompile Include="..\..\src\MemeCore\Random.cpp" />
+    <ClCompile Include="..\..\src\MemeCore\Thread.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Time.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Duration.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Timer.cpp" />

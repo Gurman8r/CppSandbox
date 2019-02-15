@@ -61,6 +61,12 @@
     <Filter Include="Source Files\Event System">
       <UniqueIdentifier>{5a5d991b-8f10-4633-8a19-e25a1692d05c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Threading">
+      <UniqueIdentifier>{c04760b5-ba7d-4cfb-bde9-91f5bce95b72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Threading">
+      <UniqueIdentifier>{c5afbb30-6fd2-4557-8924-cdb640ab384d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeCore\Component.hpp">
@@ -195,6 +201,15 @@
     <ClInclude Include="..\..\include\MemeCore\IEventListener.hpp">
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Thread.hpp">
+      <Filter>Header Files\Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Random.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Function.hpp">
+      <Filter>Header Files\Threading</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeCore\EventSystem.cpp">
@@ -237,6 +252,12 @@
       <Filter>Source Files\FS</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\Maths.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeCore\Thread.cpp">
+      <Filter>Source Files\Threading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeCore\Random.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
   </ItemGroup>

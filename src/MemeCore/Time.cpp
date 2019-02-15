@@ -32,4 +32,11 @@ namespace ml
 		}
 		return fps;
 	}
+
+	void Time::sleep(const ml::Duration & value)
+	{
+		static Timer timer;
+		timer.reset();
+		while (timer.elapsed() < value);
+	}
 }

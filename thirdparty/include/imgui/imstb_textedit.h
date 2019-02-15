@@ -511,7 +511,7 @@ typedef struct
 
 // find the x/y location of a character, and remember info about the previous row in
 // case we get a move-up event (for page up, we'll have to rescan)
-static void stb_textedit_find_charpos(StbFindState *find, STB_TEXTEDIT_STRING *str, int n, int single_line)
+static void stb_textedit_find_charpos(StbFindState *get, STB_TEXTEDIT_STRING *str, int n, int single_line)
 {
    StbTexteditRow r;
    int prev_start = 0;
@@ -523,29 +523,29 @@ static void stb_textedit_find_charpos(StbFindState *find, STB_TEXTEDIT_STRING *s
       // explicitly handle this case in the regular code
       if (single_line) {
          STB_TEXTEDIT_LAYOUTROW(&r, str, 0);
-         find->y = 0;
-         find->first_char = 0;
-         find->length = z;
-         find->height = r.ymax - r.ymin;
-         find->x = r.x1;
+         get->y = 0;
+         get->first_char = 0;
+         get->length = z;
+         get->height = r.ymax - r.ymin;
+         get->x = r.x1;
       } else {
-         find->y = 0;
-         find->x = 0;
-         find->height = 1;
+         get->y = 0;
+         get->x = 0;
+         get->height = 1;
          while (i < z) {
             STB_TEXTEDIT_LAYOUTROW(&r, str, i);
             prev_start = i;
             i += r.num_chars;
          }
-         find->first_char = i;
-         find->length = 0;
-         find->prev_first = prev_start;
+         get->first_char = i;
+         get->length = 0;
+         get->prev_first = prev_start;
       }
       return;
    }
 
    // search rows to find the one that straddles character n
-   find->y = 0;
+   get->y = 0;
 
    for(;;) {
       STB_TEXTEDIT_LAYOUTROW(&r, str, i);
@@ -553,19 +553,19 @@ static void stb_textedit_find_charpos(StbFindState *find, STB_TEXTEDIT_STRING *s
          break;
       prev_start = i;
       i += r.num_chars;
-      find->y += r.baseline_y_delta;
+      get->y += r.baseline_y_delta;
    }
 
-   find->first_char = first = i;
-   find->length = r.num_chars;
-   find->height = r.ymax - r.ymin;
-   find->prev_first = prev_start;
+   get->first_char = first = i;
+   get->length = r.num_chars;
+   get->height = r.ymax - r.ymin;
+   get->prev_first = prev_start;
 
    // now scan to find xpos
-   find->x = r.x0;
+   get->x = r.x0;
    i = 0;
    for (i=0; first+i < n; ++i)
-      find->x += STB_TEXTEDIT_GETWIDTH(str, first, i);
+      get->x += STB_TEXTEDIT_GETWIDTH(str, first, i);
 }
 
 #define STB_TEXT_HAS_SELECTION(s)   ((s)->select_start != (s)->select_end)
@@ -855,7 +855,7 @@ retry:
 
       case STB_TEXTEDIT_K_DOWN:
       case STB_TEXTEDIT_K_DOWN | STB_TEXTEDIT_K_SHIFT: {
-         StbFindState find;
+         StbFindState get;
          StbTexteditRow row;
          int i, sel = (key & STB_TEXTEDIT_K_SHIFT) != 0;
 
@@ -872,13 +872,13 @@ retry:
 
          // compute current position of cursor point
          stb_textedit_clamp(str, state);
-         stb_textedit_find_charpos(&find, str, state->cursor, state->single_line);
+         stb_textedit_find_charpos(&get, str, state->cursor, state->single_line);
 
          // now find character position down a row
-         if (find.length) {
-            float goal_x = state->has_preferred_x ? state->preferred_x : find.x;
+         if (get.length) {
+            float goal_x = state->has_preferred_x ? state->preferred_x : get.x;
             float x;
-            int start = find.first_char + find.length;
+            int start = get.first_char + get.length;
             state->cursor = start;
             STB_TEXTEDIT_LAYOUTROW(&row, str, state->cursor);
             x = row.x0;
@@ -906,7 +906,7 @@ retry:
          
       case STB_TEXTEDIT_K_UP:
       case STB_TEXTEDIT_K_UP | STB_TEXTEDIT_K_SHIFT: {
-         StbFindState find;
+         StbFindState get;
          StbTexteditRow row;
          int i, sel = (key & STB_TEXTEDIT_K_SHIFT) != 0;
 
@@ -923,18 +923,18 @@ retry:
 
          // compute current position of cursor point
          stb_textedit_clamp(str, state);
-         stb_textedit_find_charpos(&find, str, state->cursor, state->single_line);
+         stb_textedit_find_charpos(&get, str, state->cursor, state->single_line);
 
          // can only go up if there's a previous row
-         if (find.prev_first != find.first_char) {
+         if (get.prev_first != get.first_char) {
             // now find character position up a row
-            float goal_x = state->has_preferred_x ? state->preferred_x : find.x;
+            float goal_x = state->has_preferred_x ? state->preferred_x : get.x;
             float x;
-            state->cursor = find.prev_first;
+            state->cursor = get.prev_first;
             STB_TEXTEDIT_LAYOUTROW(&row, str, state->cursor);
             x = row.x0;
             for (i=0; i < row.num_chars; ++i) {
-               float dx = STB_TEXTEDIT_GETWIDTH(str, find.prev_first, i);
+               float dx = STB_TEXTEDIT_GETWIDTH(str, get.prev_first, i);
                #ifdef STB_TEXTEDIT_GETWIDTH_NEWLINE
                if (dx == STB_TEXTEDIT_GETWIDTH_NEWLINE)
                   break;

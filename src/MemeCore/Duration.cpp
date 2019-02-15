@@ -3,17 +3,17 @@
 namespace ml
 {
 	Duration::Duration()
-		: m_millis(0UL)
+		: m_ms(0UL)
 	{
 	}
 	
 	Duration::Duration(uint64_t value)
-		: m_millis(value)
+		: m_ms(value)
 	{
 	}
 
 	Duration::Duration(const Duration & copy)
-		: m_millis(copy.m_millis)
+		: m_ms(copy.m_ms)
 	{
 	}
 	

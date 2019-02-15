@@ -30,27 +30,96 @@ namespace ml
 		~ResourceMap() { clear(); }
 
 	public:
+		inline pointer assign(const String & name, pointer value)
+		{
+			m_data[name] = value;
+			return get(name);
+		}
+
+		inline size_t clear()
+		{
+			size_t count = 0;
+			for (auto it = m_data.begin(); it != m_data.end(); it++)
+			{
+				if (it->second)
+				{
+					delete it->second;
+					it->second = NULL;
+					count++;
+				}
+			}
+			m_data.clear();
+			return count;
+		}
+
+		inline bool erase(const String & name)
+		{
+			iterator it;
+			if ((it = find(name)) != end())
+			{
+				delete it->second;
+				it->second = NULL;
+				m_data.erase(it);
+				return !get(name);
+			}
+			return false;
+		}
+
+		inline iterator find(const String & name)
+		{
+			return m_data.find(name);
+		}
+
+		inline const_iterator find(const String & name) const
+		{
+			return m_data.find(name);
+		}
+
+		inline const_pointer get(const String & name) const
+		{
+			const_iterator it;
+			return ((it = find(name)) != end())
+				? it->second
+				: NULL;
+		}
+
+		inline pointer get(const String & name)
+		{
+			iterator it;
+			return ((it = find(name)) != end())
+				? it->second
+				: NULL;
+		}
+
+		inline const data_map & getAll() const
+		{
+			return m_data;
+		}
+
 		inline pointer load(const String & name)
 		{
-			if (!find(name))
-			{
-				m_data[name] = new value_type();
-				return find(name);
-			}
-			return NULL;
+			return (get(name)
+				? NULL
+				: assign(name, new value_type()));
 		}
 
 		inline pointer load(const String & name, const String & filename)
 		{
-			if (!name.empty() && !filename.empty() && !find(name))
+			if (!name.empty() && !get(name))
 			{
-				pointer temp = new value_type();
-				if (temp->loadFromFile(filename))
+				if (!filename.empty())
 				{
-					m_data[name] = temp;
-					return find(name);
+					pointer temp = new value_type();
+					if (temp->loadFromFile(filename))
+					{
+						return assign(name, temp);
+					}
+					delete temp;
 				}
-				delete temp;
+				else
+				{
+					return load(name);
+				}
 			}
 			return NULL;
 		}
@@ -73,42 +142,13 @@ namespace ml
 			return count;
 		}
 
-		inline size_t clear()
-		{
-			size_t count = 0;
-			for (auto it = m_data.begin(); it != m_data.end(); it++)
-			{
-				if (it->second)
-				{
-					delete it->second;
-					it->second = NULL;
-					count++;
-				}
-			}
-			m_data.clear();
-			return count;
-		}
-
-		inline pointer find(const String & name)
-		{
-			iterator it;
-			return ((it = m_data.find(name)) != m_data.end())
-				? it->second
-				: NULL;
-		}
-
-		inline const_pointer find(const String & name) const
-		{
-			const_iterator it;
-			return ((it = m_data.find(name)) != m_data.end())
-				? it->second
-				: NULL;
-		}
-
-		inline const data_map & getAll() const
-		{
-			return m_data;
-		}
+	public:
+		inline iterator			begin()			{ return m_data.begin();	}
+		inline iterator			end()			{ return m_data.end();		}
+		inline const_iterator	begin()  const	{ return m_data.begin();	}
+		inline const_iterator	end()	 const	{ return m_data.end();		}
+		inline const_iterator	cbegin() const	{ return m_data.cbegin();	}
+		inline const_iterator	cend()	 const	{ return m_data.cend();		}
 
 	private:
 		data_map m_data;

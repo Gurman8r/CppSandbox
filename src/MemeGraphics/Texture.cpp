@@ -277,7 +277,7 @@ namespace ml
 		std::swap(m_repeated,	other.m_repeated);
 		std::swap(m_mipmapped,	other.m_mipmapped);
 		std::swap(m_colorFmt,	other.m_colorFmt);
-		std::swap(m_internalFmt,	other.m_internalFmt);
+		std::swap(m_internalFmt,other.m_internalFmt);
 
 		return other;
 	}

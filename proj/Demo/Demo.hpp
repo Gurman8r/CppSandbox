@@ -4,7 +4,9 @@
 #include <MemeAudio/Audio.hpp>
 #include <MemeCore/Time.hpp>
 #include <MemeCore/NativeInput.hpp>
-#include <MemeCore/FileSystem.hpp>
+#include <MemeCore/FileSystem.hpp> 
+#include <MemeCore/Random.hpp>
+#include <MemeCore/Thread.hpp>
 #include <MemeEditor/Editor.hpp>
 #include <MemeGraphics/Text.hpp>
 #include <MemeGraphics/RenderWindow.hpp>
@@ -120,6 +122,7 @@ namespace DEMO
 		bool show_imgui_metrics	= false;
 		bool show_imgui_style	= false;
 		bool show_imgui_about	= false;
+
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	};

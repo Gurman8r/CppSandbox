@@ -7,6 +7,7 @@
 #include <cctype>
 #include <chrono>
 #include <cstddef>
+#include <ctime>
 #include <fstream>
 #include <initializer_list>
 #include <iomanip>
@@ -14,6 +15,8 @@
 #include <iterator>
 #include <locale>
 #include <map>
+#include <mutex>
+#include <process.h>
 #include <random>
 #include <sstream>
 #include <stdarg.h>
