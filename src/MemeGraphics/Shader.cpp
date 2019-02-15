@@ -146,9 +146,9 @@ namespace ml
 
 		int8_t	srcType = NONE;
 		SStream	srcData[MAX];
+
 		SStream	stream(source);
 		String	line;
-
 		while (std::getline(stream, line))
 		{
 			if (line.find("#shader") != String::npos)
@@ -246,9 +246,9 @@ namespace ml
 		UniformSet::const_iterator it;
 		for (it = value.begin(); it != value.end(); it++)
 		{
-			if (!setUniform(it->second))
+			if (setUniform(it->second))
 			{
-				Debug::logWarning("Failed setting uniform: {0}", it->second.name);
+				count++;
 			}
 		}
 		return count;
@@ -265,6 +265,7 @@ namespace ml
 		}
 		return u;
 	}
+	
 	bool Shader::setUniform(const String & name, const int32_t & value) const
 	{
 		UniformBinder u(this, name);
@@ -274,6 +275,7 @@ namespace ml
 		}
 		return u;
 	}
+	
 	bool Shader::setUniform(const String & name, const vec2f & value) const
 	{
 		UniformBinder u(this, name);
@@ -283,6 +285,7 @@ namespace ml
 		}
 		return u;
 	}
+	
 	bool Shader::setUniform(const String & name, const vec3f & value) const
 	{
 		UniformBinder u(this, name);
@@ -292,6 +295,7 @@ namespace ml
 		}
 		return u;
 	}
+	
 	bool Shader::setUniform(const String & name, const vec4f & value) const
 	{
 		UniformBinder u(this, name);
@@ -301,6 +305,7 @@ namespace ml
 		}
 		return u;
 	}
+	
 	bool Shader::setUniform(const String & name, const vec2i & value) const
 	{
 		UniformBinder u(this, name);
@@ -310,6 +315,7 @@ namespace ml
 		}
 		return u;
 	}
+	
 	bool Shader::setUniform(const String & name, const vec3i & value) const
 	{
 		UniformBinder u(this, name);
@@ -319,6 +325,7 @@ namespace ml
 		}
 		return u;
 	}
+	
 	bool Shader::setUniform(const String & name, const vec4i & value) const
 	{
 		UniformBinder u(this, name);
@@ -328,6 +335,7 @@ namespace ml
 		}
 		return u;
 	}
+	
 	bool Shader::setUniform(const String & name, const mat3f & value) const
 	{
 		UniformBinder u(this, name);
@@ -337,6 +345,7 @@ namespace ml
 		}
 		return u;
 	}
+	
 	bool Shader::setUniform(const String & name, const mat4f & value) const
 	{
 		UniformBinder u(this, name);
@@ -346,6 +355,7 @@ namespace ml
 		}
 		return u;
 	}
+	
 	bool Shader::setUniform(const String & name, const Texture & value) const
 	{
 		UniformBinder u(this, name);
@@ -378,6 +388,7 @@ namespace ml
 		}
 		return u;
 	}
+	
 	bool Shader::setUniformArray(const String & name, int32_t count, const vec2f * value) const
 	{
 		UniformBinder u(this, name);
@@ -387,6 +398,7 @@ namespace ml
 		}
 		return u;
 	}
+	
 	bool Shader::setUniformArray(const String & name, int32_t count, const vec3f * value) const
 	{
 		UniformBinder u(this, name);
@@ -396,6 +408,7 @@ namespace ml
 		}
 		return u;
 	}
+	
 	bool Shader::setUniformArray(const String & name, int32_t count, const vec4f * value) const
 	{
 		UniformBinder u(this, name);
@@ -405,6 +418,7 @@ namespace ml
 		}
 		return u;
 	}
+	
 	bool Shader::setUniformArray(const String & name, int32_t count, const mat3f * value) const
 	{
 		UniformBinder u(this, name);
@@ -414,6 +428,7 @@ namespace ml
 		}
 		return u;
 	}
+	
 	bool Shader::setUniformArray(const String & name, int32_t count, const mat4f * value) const
 	{
 		UniformBinder u(this, name);

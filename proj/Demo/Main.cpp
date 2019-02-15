@@ -23,7 +23,7 @@ int32_t main(int32_t argc, char ** argv)
 
 	// Enter
 	ML_EventSystem.fireEvent(DEMO::EnterEvent(argc, argv));
-	if (demo.checkStatus() == ml::Debug::Error)
+	if (demo.getError() == ml::Debug::Error)
 	{
 		return ml::Debug::logError("Failed Entering Program")
 			|| ml::Debug::pause(EXIT_FAILURE);
@@ -31,7 +31,7 @@ int32_t main(int32_t argc, char ** argv)
 	
 	// Load
 	ML_EventSystem.fireEvent(DEMO::LoadEvent());
-	if (demo.checkStatus() == ml::Debug::Error)
+	if (demo.getError() == ml::Debug::Error)
 	{
 		return ml::Debug::logError("Failed Loading Resources")
 			|| ml::Debug::pause(EXIT_FAILURE);

@@ -34,78 +34,7 @@ static uint32_t		g_VboHandle = 0, g_ElementsHandle = 0;
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-inline static ml::CString ImGui_ML_GetClipboardText(void * user_data)
-{
-	return static_cast<const ml::Window *>(user_data)->getClipboardString();
-}
-
-inline static void ImGui_ML_SetClipboardText(void * user_data, ml::CString text)
-{
-	static_cast<ml::Window *>(user_data)->setClipboardString(text);
-}
-
-inline static bool ImGui_ML_Init(ml::Window * window, bool install_callbacks, ClientAPI client_api)
-{
-	g_Window = window;
-	g_Time = 0.0;
-
-	// Setup back-end capabilities flags
-	ImGuiIO& io = ImGui::GetIO();
-	io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors; // We can honor GetMouseCursor() values (optional)
-	io.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;  // We can honor io.WantSetMousePos requests (optional, rarely used)
-	io.BackendPlatformName = "imgui_impl_glfw";
-	io.BackendRendererName = "imgui_impl_opengl3";
-
-
-	// Keyboard mapping. ImGui will use those indices to peek into the io.KeysDown[] array.
-	io.KeyMap[ImGuiKey_Tab] = ml::KeyCode::Tab;
-	io.KeyMap[ImGuiKey_LeftArrow] = ml::KeyCode::Left;
-	io.KeyMap[ImGuiKey_RightArrow] = ml::KeyCode::Right;
-	io.KeyMap[ImGuiKey_UpArrow] = ml::KeyCode::Up;
-	io.KeyMap[ImGuiKey_DownArrow] = ml::KeyCode::Down;
-	io.KeyMap[ImGuiKey_PageUp] = ml::KeyCode::PageUp;
-	io.KeyMap[ImGuiKey_PageDown] = ml::KeyCode::PageDown;
-	io.KeyMap[ImGuiKey_Home] = ml::KeyCode::Home;
-	io.KeyMap[ImGuiKey_End] = ml::KeyCode::End;
-	io.KeyMap[ImGuiKey_Insert] = ml::KeyCode::Insert;
-	io.KeyMap[ImGuiKey_Delete] = ml::KeyCode::Delete;
-	io.KeyMap[ImGuiKey_Backspace] = ml::KeyCode::Backspace;
-	io.KeyMap[ImGuiKey_Space] = ml::KeyCode::Space;
-	io.KeyMap[ImGuiKey_Enter] = ml::KeyCode::Enter;
-	io.KeyMap[ImGuiKey_Escape] = ml::KeyCode::Escape;
-	io.KeyMap[ImGuiKey_A] = ml::KeyCode::A;
-	io.KeyMap[ImGuiKey_C] = ml::KeyCode::C;
-	io.KeyMap[ImGuiKey_V] = ml::KeyCode::V;
-	io.KeyMap[ImGuiKey_X] = ml::KeyCode::X;
-	io.KeyMap[ImGuiKey_Y] = ml::KeyCode::Y;
-	io.KeyMap[ImGuiKey_Z] = ml::KeyCode::Z;
-
-	io.SetClipboardTextFn = ImGui_ML_SetClipboardText;
-	io.GetClipboardTextFn = ImGui_ML_GetClipboardText;
-	io.ClipboardUserData = g_Window;
-
-	g_MouseCursors[ImGuiMouseCursor_Arrow]		= g_Window->createCursor(ml::Cursor::Arrow);
-	g_MouseCursors[ImGuiMouseCursor_TextInput]	= g_Window->createCursor(ml::Cursor::IBeam);
-	g_MouseCursors[ImGuiMouseCursor_ResizeAll]	= g_Window->createCursor(ml::Cursor::Arrow);   // FIXME: GLFW doesn't have this.
-	g_MouseCursors[ImGuiMouseCursor_ResizeNS]	= g_Window->createCursor(ml::Cursor::VResize);
-	g_MouseCursors[ImGuiMouseCursor_ResizeEW]	= g_Window->createCursor(ml::Cursor::HResize);
-	g_MouseCursors[ImGuiMouseCursor_ResizeNESW] = g_Window->createCursor(ml::Cursor::Arrow);  // FIXME: GLFW doesn't have this.
-	g_MouseCursors[ImGuiMouseCursor_ResizeNWSE] = g_Window->createCursor(ml::Cursor::Arrow);  // FIXME: GLFW doesn't have this.
-	g_MouseCursors[ImGuiMouseCursor_Hand]		= g_Window->createCursor(ml::Cursor::Hand);
-
-	if (install_callbacks)
-	{
-		window->setMouseButtonCallback(ImGui_ML_MouseButtonCallback);
-		window->setScrollCallback(ImGui_ML_ScrollCallback);
-		window->setKeyCallback(ImGui_ML_KeyCallback);
-		window->setCharCallback(ImGui_ML_CharCallback);
-	}
-
-	g_ClientApi = client_api;
-	return true;
-}
-
-inline static void ImGui_ML_UpdateMousePosAndButtons()
+inline static void ImGui_ML_HandleInput()
 {
 	// Update buttons
 	ImGuiIO& io = ImGui::GetIO();
@@ -119,12 +48,8 @@ inline static void ImGui_ML_UpdateMousePosAndButtons()
 	// Update mouse position
 	const ImVec2 mouse_pos_backup = io.MousePos;
 	io.MousePos = ImVec2(-FLT_MAX, -FLT_MAX);
-#ifdef __EMSCRIPTEN__
-	const bool focused = true; // Emscripten
-#else
-	const bool focused = g_Window->isFocused();
-#endif
-	if (focused)
+	
+	if (g_Window->isFocused())
 	{
 		if (io.WantSetMousePos)
 		{
@@ -136,11 +61,8 @@ inline static void ImGui_ML_UpdateMousePosAndButtons()
 			io.MousePos = ImVec2(mousePos[0], mousePos[1]);
 		}
 	}
-}
 
-inline static void ImGui_ML_UpdateMouseCursor()
-{
-	ImGuiIO& io = ImGui::GetIO();
+	// Mouse
 	if ((io.ConfigFlags & ImGuiConfigFlags_NoMouseCursorChange) || g_Window->getInputMode() == ml::Cursor::Disabled)
 		return;
 
@@ -250,7 +172,68 @@ bool ImGui_ML_Init(ml::CString glsl_version, ml::Window * window, bool install_c
 	strcpy(g_GlslVersionString, glsl_version);
 	strcat(g_GlslVersionString, "\n");
 
-	return ImGui_ML_Init(window, install_callbacks, API_OpenGL);
+	g_Window = window;
+	g_Time = 0.0;
+
+	// Setup back-end capabilities flags
+	ImGuiIO& io = ImGui::GetIO();
+	io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors; // We can honor GetMouseCursor() values (optional)
+	io.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;  // We can honor io.WantSetMousePos requests (optional, rarely used)
+	io.BackendPlatformName = "imgui_impl_glfw3";
+	io.BackendRendererName = "imgui_impl_opengl3";
+
+	// Keyboard mapping. ImGui will use those indices to peek into the io.KeysDown[] array.
+	io.KeyMap[ImGuiKey_Tab] = ml::KeyCode::Tab;
+	io.KeyMap[ImGuiKey_LeftArrow] = ml::KeyCode::Left;
+	io.KeyMap[ImGuiKey_RightArrow] = ml::KeyCode::Right;
+	io.KeyMap[ImGuiKey_UpArrow] = ml::KeyCode::Up;
+	io.KeyMap[ImGuiKey_DownArrow] = ml::KeyCode::Down;
+	io.KeyMap[ImGuiKey_PageUp] = ml::KeyCode::PageUp;
+	io.KeyMap[ImGuiKey_PageDown] = ml::KeyCode::PageDown;
+	io.KeyMap[ImGuiKey_Home] = ml::KeyCode::Home;
+	io.KeyMap[ImGuiKey_End] = ml::KeyCode::End;
+	io.KeyMap[ImGuiKey_Insert] = ml::KeyCode::Insert;
+	io.KeyMap[ImGuiKey_Delete] = ml::KeyCode::Delete;
+	io.KeyMap[ImGuiKey_Backspace] = ml::KeyCode::Backspace;
+	io.KeyMap[ImGuiKey_Space] = ml::KeyCode::Space;
+	io.KeyMap[ImGuiKey_Enter] = ml::KeyCode::Enter;
+	io.KeyMap[ImGuiKey_Escape] = ml::KeyCode::Escape;
+	io.KeyMap[ImGuiKey_A] = ml::KeyCode::A;
+	io.KeyMap[ImGuiKey_C] = ml::KeyCode::C;
+	io.KeyMap[ImGuiKey_V] = ml::KeyCode::V;
+	io.KeyMap[ImGuiKey_X] = ml::KeyCode::X;
+	io.KeyMap[ImGuiKey_Y] = ml::KeyCode::Y;
+	io.KeyMap[ImGuiKey_Z] = ml::KeyCode::Z;
+
+	io.SetClipboardTextFn = [](void * user_data, ml::CString text)
+	{
+		static_cast<ml::Window *>(user_data)->setClipboardString(text);
+	};
+	io.GetClipboardTextFn = [](void * user_data)
+	{
+		return static_cast<const ml::Window *>(user_data)->getClipboardString();
+	};
+	io.ClipboardUserData = g_Window;
+
+	g_MouseCursors[ImGuiMouseCursor_Arrow] = g_Window->createCursor(ml::Cursor::Arrow);
+	g_MouseCursors[ImGuiMouseCursor_TextInput] = g_Window->createCursor(ml::Cursor::IBeam);
+	g_MouseCursors[ImGuiMouseCursor_ResizeAll] = g_Window->createCursor(ml::Cursor::Arrow);   // FIXME: GLFW doesn't have this.
+	g_MouseCursors[ImGuiMouseCursor_ResizeNS] = g_Window->createCursor(ml::Cursor::VResize);
+	g_MouseCursors[ImGuiMouseCursor_ResizeEW] = g_Window->createCursor(ml::Cursor::HResize);
+	g_MouseCursors[ImGuiMouseCursor_ResizeNESW] = g_Window->createCursor(ml::Cursor::Arrow);  // FIXME: GLFW doesn't have this.
+	g_MouseCursors[ImGuiMouseCursor_ResizeNWSE] = g_Window->createCursor(ml::Cursor::Arrow);  // FIXME: GLFW doesn't have this.
+	g_MouseCursors[ImGuiMouseCursor_Hand] = g_Window->createCursor(ml::Cursor::Hand);
+
+	if (install_callbacks)
+	{
+		window->setMouseButtonCallback(ImGui_ML_MouseButtonCallback);
+		window->setScrollCallback(ImGui_ML_ScrollCallback);
+		window->setKeyCallback(ImGui_ML_KeyCallback);
+		window->setCharCallback(ImGui_ML_CharCallback);
+	}
+
+	g_ClientApi = API_OpenGL;
+	return true;
 }
 
 void ImGui_ML_Shutdown()
@@ -284,8 +267,7 @@ void ImGui_ML_NewFrame()
 	io.DeltaTime = g_Time > 0.0 ? (float)(current_time - g_Time) : (float)(1.0f / 60.0f);
 	g_Time = current_time;
 
-	ImGui_ML_UpdateMousePosAndButtons();
-	ImGui_ML_UpdateMouseCursor();
+	ImGui_ML_HandleInput();
 
 #ifdef ML_MAP_GAMEPAD
 	// Gamepad navigation mapping [BETA]

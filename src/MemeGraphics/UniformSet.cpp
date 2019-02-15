@@ -21,7 +21,7 @@ namespace ml
 		}
 	}
 
-	UniformSet::UniformSet(const std::initializer_list<Uniform>& value)
+	UniformSet::UniformSet(const std::initializer_list<Uniform> & value)
 		: UniformSet()
 	{
 		for (auto it = value.begin(); it != value.end(); it++)

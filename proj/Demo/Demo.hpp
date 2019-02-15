@@ -16,6 +16,7 @@
 #include <MemeGraphics/BufferLayout.hpp>
 #include <MemeGraphics/OpenGL.hpp>
 #include <MemeGraphics/Model.hpp>
+#include <MemeGraphics/Camera.hpp>
 #include <MemeNet/Client.hpp>
 #include <MemeNet/Server.hpp>
 #include <MemeScript/Interpreter.hpp>
@@ -30,27 +31,6 @@ namespace DEMO
 {
 	enum : int32_t
 	{
-		// Projection Matrices
-		MIN_PROJ = -1,
-		P_persp,
-		P_ortho,
-		MAX_PROJ,
-
-		// View Matrices
-		MIN_VIEW = -1,
-		V_camera,
-		MAX_VIEW,
-
-		// Vertex Arrays
-		MIN_VAO = -1,
-		VAO_text,
-		MAX_VAO,
-
-		// Vertex Buffers
-		MIN_VBO = -1,
-		VBO_text,
-		MAX_VBO,
-
 		// Frame Buffers
 		MIN_FBO = -1,
 		FBO_scene,
@@ -60,12 +40,6 @@ namespace DEMO
 		MIN_RBO = -1,
 		RBO_scene,
 		MAX_RBO,
-
-		// Text
-		MIN_TEXT = -1,
-		TXT_dynamic,
-		TXT_static,
-		MAX_TEXT,
 	};
 }
 
@@ -77,40 +51,39 @@ namespace DEMO
 		: public ml::RenderWindow
 	{
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		Demo();
 		~Demo();
 
-		/* * * * * * * * * * * * * * * * * * * * */
-
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		void onEvent(const ml::Event * value) override;
 
-		inline const ml::Debug::Status checkStatus()
+		inline const int32_t getError() const
 		{
-			static ml::Debug::Status temp;
-			temp = m_status;
-			m_status = ml::Debug::Success;
+			int32_t temp = 1;
+			std::swap((int32_t &)m_error, temp);
 			return temp;
 		}
 
-		/* * * * * * * * * * * * * * * * * * * * */
 
 	private:
-		bool	setupInterpreter();
-		
+		/* * * * * * * * * * * * * * * * * * * * */
+
 		bool	loadAudio();
 		bool	loadBuffers();
 		bool	loadFonts();
 		bool	loadImages();
+		bool	loadInterpreter();
 		bool	loadModels();
 		bool	loadShaders();
 		bool	loadSprites();
 		bool	loadTextures();
 		bool	loadNetwork();
 
+	private:
 		/* * * * * * * * * * * * * * * * * * * * */
 
-	private:
 		void	onEnter(const EnterEvent & ev);
 		void	onLoad(const LoadEvent & ev);
 		void	onStart(const StartEvent & ev);
@@ -119,20 +92,29 @@ namespace DEMO
 		void	onGui(const GuiEvent & ev);
 		void	onExit(const ExitEvent & ev);
 
-		/* * * * * * * * * * * * * * * * * * * * */
-
 	private:
-		ml::Transform	proj		[MAX_PROJ];
-		ml::Transform	view		[MAX_VIEW];
-		ml::VAO			vao			[MAX_VAO];
-		ml::VBO			vbo			[MAX_VBO];
-		ml::FBO			fbo			[MAX_FBO];
-		ml::RBO			rbo			[MAX_RBO];
-		ml::Text		text		[MAX_TEXT];
+		/* * * * * * * * * * * * * * * * * * * * */
+		
+		mutable ml::Debug::Status m_error;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		ml::Debug::Status m_status;
+		ml::FBO m_frameBuffer;
+		ml::RBO m_renderBuffer;
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		ml::Transform	m_persp;
+		ml::Transform	m_ortho;
+		ml::Camera		m_camera;
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		ml::VAO m_vaoText;
+		ml::VBO m_vboText;
+
+		ml::Text m_textDynamic;
+		ml::Text m_textStatic;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 

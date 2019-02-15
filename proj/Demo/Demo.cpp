@@ -15,7 +15,7 @@ namespace DEMO
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Demo::Demo()
-		: m_status(ml::Debug::Success)
+		: m_error(ml::Debug::Success)
 	{
 		ML_EventSystem.addListener(DemoEvent::EV_Enter, this);
 		ML_EventSystem.addListener(DemoEvent::EV_Load,	this);
@@ -50,14 +50,14 @@ namespace DEMO
 			if (auto ev = value->Cast<ml::WindowSizeEvent>())
 			{
 				// Orthographic
-				proj[P_ortho] = ml::Transform::Orthographic(
+				m_ortho = ml::Transform::Orthographic(
 					0.0f, (float)this->width(),
 					0.0f, (float)this->height(),
 					SETTINGS.orthoNear,
 					SETTINGS.orthoFar);
 
 				// Perspective
-				proj[P_persp] = ml::Transform::Perspective(
+				m_persp = ml::Transform::Perspective(
 					SETTINGS.fieldOfView,
 					this->aspect(),
 					SETTINGS.perspNear,
@@ -109,7 +109,80 @@ namespace DEMO
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Demo::setupInterpreter()
+	bool Demo::loadAudio()
+	{
+		return ml::Debug::log("Loading Audio...") && ml::OpenAL::init();
+	}
+
+	bool Demo::loadBuffers()
+	{
+		// Load Buffers
+		if (ml::Debug::log("Loading Buffers..."))
+		{
+			// Text
+			m_vaoText
+				.create(ml::GL::Triangles)
+				.bind();
+			m_vboText
+				.create(ml::GL::DynamicDraw)
+				.bind()
+				.bufferData(NULL, (ml::Glyph::VertexCount * ml::Vertex::Size));
+			ml::BufferLayout::Default.bind();
+			m_vboText.unbind();
+			m_vaoText.unbind();
+
+
+			// FBO
+			m_frameBuffer
+				.create()
+				.bind();
+			// RBO
+			m_renderBuffer
+				.create(this->width(), this->height())
+				.bind()
+				.bufferStorage(ml::GL::Depth24_Stencil8)
+				.bufferFramebuffer(ml::GL::DepthStencilAttachment)
+				.unbind();
+			// Texture
+			if (ml::Texture * texture = ML_Resources.textures.find("framebuffer"))
+			{
+				ml::OpenGL::framebufferTexture2D(
+					ml::GL::Framebuffer, 
+					ml::GL::ColorAttachment0,
+					ml::GL::Texture2D,
+					*texture,
+					0);
+			}
+			if (!ml::OpenGL::checkFramebufferStatus(ml::GL::Framebuffer))
+			{
+				return ml::Debug::logError("Framebuffer is not complete");
+			}
+			m_frameBuffer.unbind();
+			
+		}
+		return true;
+	}
+	
+	bool Demo::loadFonts()
+	{
+		// Load Fonts
+		return ml::Debug::log("Loading Fonts...") && ML_Resources.fonts.load({
+			{ "clacon",		SETTINGS.pathTo("fonts/clacon.ttf") },
+			{ "consolas",	SETTINGS.pathTo("fonts/consolas.ttf") },
+			{ "lconsole",	SETTINGS.pathTo("fonts/lucida_console.ttf") },
+			{ "minecraft",	SETTINGS.pathTo("fonts/minecraft.ttf") },
+		});
+	}
+
+	bool Demo::loadImages()
+	{
+		// Load Images
+		return ml::Debug::log("Loading Images...") && ML_Resources.images.load({
+			{ "icon",		SETTINGS.pathTo("/images/dean.png")} 
+		});
+	}
+
+	bool Demo::loadInterpreter()
 	{
 		static bool checked = false;
 		if (!checked)
@@ -265,79 +338,6 @@ namespace DEMO
 		return checked;
 	}
 
-	bool Demo::loadAudio()
-	{
-		return ml::Debug::log("Loading Audio...") && ml::OpenAL::init();
-	}
-
-	bool Demo::loadBuffers()
-	{
-		// Load Buffers
-		if (ml::Debug::log("Loading Buffers..."))
-		{
-			// Text
-			vao[VAO_text]
-				.create(ml::GL::Triangles)
-				.bind();
-			vbo[VBO_text]
-				.create(ml::GL::DynamicDraw)
-				.bind()
-				.bufferData(NULL, (ml::Glyph::VertexCount * ml::Vertex::Size));
-			ml::BufferLayout::Default.bind();
-			vbo[VBO_text].unbind();
-			vao[VAO_text].unbind();
-
-
-			// FBO
-			fbo[FBO_scene]
-				.create()
-				.bind();
-			// RBO
-			rbo[RBO_scene]
-				.create(this->width(), this->height())
-				.bind()
-				.bufferStorage(ml::GL::Depth24_Stencil8)
-				.bufferFramebuffer(ml::GL::DepthStencilAttachment)
-				.unbind();
-			// Texture
-			if (ml::Texture * texture = ML_Resources.textures.find("framebuffer"))
-			{
-				ml::OpenGL::framebufferTexture2D(
-					ml::GL::Framebuffer, 
-					ml::GL::ColorAttachment0,
-					ml::GL::Texture2D,
-					*texture,
-					0);
-			}
-			if (!ml::OpenGL::checkFramebufferStatus(ml::GL::Framebuffer))
-			{
-				return ml::Debug::logError("Framebuffer is not complete");
-			}
-			fbo[FBO_scene].unbind();
-			
-		}
-		return true;
-	}
-	
-	bool Demo::loadFonts()
-	{
-		// Load Fonts
-		return ml::Debug::log("Loading Fonts...") && ML_Resources.fonts.load({
-			{ "clacon",		SETTINGS.pathTo("fonts/clacon.ttf") },
-			{ "consolas",	SETTINGS.pathTo("fonts/consolas.ttf") },
-			{ "lconsole",	SETTINGS.pathTo("fonts/lucida_console.ttf") },
-			{ "minecraft",	SETTINGS.pathTo("fonts/minecraft.ttf") },
-		});
-	}
-
-	bool Demo::loadImages()
-	{
-		// Load Images
-		return ml::Debug::log("Loading Images...") && ML_Resources.images.load({
-			{ "icon",		SETTINGS.pathTo("/images/dean.png")} 
-		});
-	}
-
 	bool Demo::loadModels()
 	{
 		return ml::Debug::log("Loading Models...") && ML_Resources.models.load({
@@ -435,12 +435,12 @@ namespace DEMO
 		ML_Time.start();
 
 		// Setup Interpreter
-		if (setupInterpreter())
+		if (loadInterpreter())
 		{
 			// Run Script
 			if (!SETTINGS.scrFile.empty())
 			{
-				m_status = ML_Interpreter.execFile(
+				m_error = ML_Interpreter.execFile(
 					SETTINGS.pathTo(SETTINGS.scrPath + SETTINGS.scrFile)
 				)
 				? ml::Debug::Success
@@ -448,12 +448,12 @@ namespace DEMO
 			}
 			else
 			{
-				m_status = ml::Debug::logWarning("No Script");
+				m_error = ml::Debug::logWarning("No Script");
 			}
 		}
 		else
 		{
-			m_status = ml::Debug::Error;
+			m_error = ml::Debug::Error;
 		}
 	}
 	
@@ -489,12 +489,12 @@ namespace DEMO
 				ImGui::GetStyle().FrameBorderSize = 1;
 				if (!ImGui_ML_Init("#version 410", this, true))
 				{
-					m_status = ml::Debug::Error;
+					m_error = ml::Debug::Error;
 					return;
 				}
 			}
 
-			m_status = (ml::Debug::log("Loading Resources..."))
+			m_error = (ml::Debug::log("Loading Resources..."))
 				&& loadAudio()
 				&& loadFonts()
 				&& loadImages()
@@ -509,7 +509,7 @@ namespace DEMO
 		}
 		else
 		{
-			m_status = ml::Debug::logError("Failed Creating Window");
+			m_error = ml::Debug::logError("Failed Creating Window");
 		}
 	}
 	
@@ -524,14 +524,14 @@ namespace DEMO
 			}
 
 			// Orthographic
-			proj[P_ortho] = ml::Transform::Orthographic(
+			m_ortho = ml::Transform::Orthographic(
 				0.0f, (float)this->width(),
 				0.0f, (float)this->height(),
 				SETTINGS.orthoNear,
 				SETTINGS.orthoFar);
 
 			// Perspective
-			proj[P_persp] = ml::Transform::Perspective(
+			m_persp = ml::Transform::Perspective(
 				SETTINGS.fieldOfView,
 				this->aspect(),
 				SETTINGS.perspNear,
@@ -539,7 +539,7 @@ namespace DEMO
 
 			// Camera
 			ml::vec3f cameraPos = { 0.0f, 0.0f, 3.0f };
-			view[V_camera].lookAt(
+			m_camera.lookAt(
 				cameraPos,
 				cameraPos + ml::vec3f::Back,
 				ml::vec3f::Up);
@@ -563,7 +563,7 @@ namespace DEMO
 				.scale(ml::vec3f::One);
 
 			// Static Text
-			text[TXT_static]
+			m_textStatic
 				.setFont(ML_Resources.fonts.find("minecraft"))
 				.setFontSize(72)
 				.setScale(ml::vec2f::One)
@@ -618,7 +618,7 @@ namespace DEMO
 	{
 		// Draw Scene
 		/* * * * * * * * * * * * * * * * * * * * */
-		fbo[FBO_scene].bind();
+		m_frameBuffer.bind();
 		{
 			// Clear
 			this->clear(m_clearColor);
@@ -633,8 +633,8 @@ namespace DEMO
 				static ml::UniformSet uniforms = {
 					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
 					ml::Uniform("u_texture",ml::Uniform::Tex2D, ML_Resources.textures.find("stone_dm")),
-					ml::Uniform("u_proj",	ml::Uniform::Mat4,	&proj[P_persp].matrix()),
-					ml::Uniform("u_view",	ml::Uniform::Mat4,	&view[V_camera].matrix()),
+					ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
+					ml::Uniform("u_view",	ml::Uniform::Mat4,	&m_camera.matrix()),
 					ml::Uniform("u_model",	ml::Uniform::Mat4,	&model->transform().matrix()),
 				};
 				if (const ml::Shader * shader = ML_Resources.shaders.find("basic3D"))
@@ -651,8 +651,8 @@ namespace DEMO
 				static ml::UniformSet uniforms = {
 					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
 					ml::Uniform("u_texture",ml::Uniform::Tex2D,	ML_Resources.textures.find("earth")),
-					ml::Uniform("u_proj",	ml::Uniform::Mat4,	&proj[P_persp].matrix()),
-					ml::Uniform("u_view",	ml::Uniform::Mat4,	&view[V_camera].matrix()),
+					ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
+					ml::Uniform("u_view",	ml::Uniform::Mat4,	&m_camera.matrix()),
 					ml::Uniform("u_model",	ml::Uniform::Mat4,	&model->transform().matrix()),
 				};
 				if (const ml::Shader * shader = ML_Resources.shaders.find("basic3D"))
@@ -673,8 +673,8 @@ namespace DEMO
 				static ml::UniformSet uniforms = {
 					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
 					ml::Uniform("u_texture",ml::Uniform::Tex2D,	ML_Resources.textures.find("sanic")),
-					ml::Uniform("u_proj",	ml::Uniform::Mat4,	&proj[P_persp].matrix()),
-					ml::Uniform("u_view",	ml::Uniform::Mat4,	&view[V_camera].matrix()),
+					ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
+					ml::Uniform("u_view",	ml::Uniform::Mat4,	&m_camera.matrix()),
 					ml::Uniform("u_model",	ml::Uniform::Mat4,	&model->transform().matrix()),
 				};
 				if (const ml::Shader * shader = ML_Resources.shaders.find("sprites"))
@@ -689,13 +689,13 @@ namespace DEMO
 			if (true)
 			{
 				static ml::UniformSet uniforms = {
-						ml::Uniform("u_proj",	ml::Uniform::Mat4, &proj[P_ortho].matrix()),
+						ml::Uniform("u_proj",	ml::Uniform::Mat4, &m_ortho.matrix()),
 						ml::Uniform("u_color",	ml::Uniform::Vec4),
 						ml::Uniform("u_texture",ml::Uniform::Tex2D),
 				};
 				static ml::RenderBatch batch(
-					&vao[VAO_text],
-					&vbo[VBO_text],
+					&m_vaoText,
+					&m_vboText,
 					ML_Resources.shaders.find("text"),
 					uniforms);
 
@@ -707,7 +707,7 @@ namespace DEMO
 				size_t i = 0;
 				for (auto pair : ML_Resources.fonts.getAll())
 				{
-					this->draw(text[TXT_dynamic]
+					this->draw(m_textDynamic
 						.setFont(pair.second)
 						.setFontSize(fontSize)
 						.setScale(ml::vec2f::One)
@@ -719,7 +719,7 @@ namespace DEMO
 				}
 
 				// Static Text
-				this->draw(text[TXT_static], batch);
+				this->draw(m_textStatic, batch);
 			}
 
 			// Geometry
@@ -739,7 +739,7 @@ namespace DEMO
 			}
 
 		}
-		fbo[FBO_scene].unbind();
+		m_frameBuffer.unbind();
 
 		// Draw Framebuffer
 		/* * * * * * * * * * * * * * * * * * * * */
