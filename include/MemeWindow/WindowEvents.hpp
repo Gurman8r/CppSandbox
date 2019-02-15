@@ -4,6 +4,7 @@
 #include <MemeWindow/Export.hpp>
 #include <MemeCore/EventSystem.hpp>
 #include <MemeCore/Debug.hpp>
+#include <MemeCore/Vector2.hpp>
 
 namespace ml
 {
@@ -90,6 +91,8 @@ namespace ml
 		{
 			out << "[" << get_type().name() << "] " << x << " " << y;
 		}
+
+		inline vec2d position() const { return { x, y }; }
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -153,6 +156,8 @@ namespace ml
 		{
 			out << "[" << get_type().name() << "] " << x << " " << y;
 		}
+
+		inline vec2d position() const { return { x, y }; }
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -173,6 +178,8 @@ namespace ml
 		{
 			out << "[" << get_type().name() << "] " << width << " " << height;
 		}
+
+		inline vec2i size() const { return { width, height }; }
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -226,6 +233,8 @@ namespace ml
 		{
 			out << "[" << get_type().name() << "] " << x << " " << y;
 		}
+
+		inline vec2i position() const { return { x, y }; }
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -246,6 +255,8 @@ namespace ml
 		{
 			out << "[" << get_type().name() << "] " << width << " " << height;
 		}
+
+		inline vec2i size() const { return { width, height }; }
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

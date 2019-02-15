@@ -5,6 +5,7 @@
 #include <MemeGraphics/Quaternion.hpp>
 #include <MemeCore/Vector3.hpp>
 #include <MemeCore/Vector2.hpp>
+#include <MemeCore/Rect.hpp>
 
 namespace ml
 {
@@ -19,8 +20,12 @@ namespace ml
 		Transform(const Transform & copy);
 		~Transform();
 
+		static mat4f Orthographic(const FloatRect & rect, const vec2f & clip);
+		static mat4f Orthographic(const FloatRect & rect, float N, float F);
+		static mat4f Orthographic(const FloatRect & rect);
 		static mat4f Orthographic(float L, float R, float T, float B, float N, float F);
 		static mat4f Orthographic(float L, float R, float T, float B);
+		static mat4f Perspective(float fov, float aspect, const vec2f & clip);
 		static mat4f Perspective(float fov, float aspect, float N, float F);
 		static mat4f LookAt(const vec3f & eye, const vec3f & pos, const vec3f & up);
 		static mat4f Rotate(const mat4f & value, float angle, const vec3f & axis);

@@ -78,8 +78,12 @@ namespace DEMO
 
 	private:
 		/* * * * * * * * * * * * * * * * * * * * */
-		
+
 		mutable ml::Debug::Status m_error;
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		ml::Thread * m_thread;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
@@ -102,6 +106,7 @@ namespace DEMO
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
+		ml::vec3f	m_camPos;
 		ml::vec4f	m_clearColor	= ml::Color::Violet;
 		int32_t		m_fboMode		= 3;
 		int32_t		m_lineMode		= 1;
@@ -122,7 +127,6 @@ namespace DEMO
 		bool show_imgui_metrics	= false;
 		bool show_imgui_style	= false;
 		bool show_imgui_about	= false;
-
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	};

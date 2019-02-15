@@ -204,13 +204,13 @@ namespace ml
 		case WindowEvent::Ev_WindowPos:
 			if (auto ev = value->Cast<WindowPosEvent>())
 			{
-				m_position = { ev->x, ev->y };
+				m_position = ev->position();
 			}
 			break;
 		case WindowEvent::EV_WindowSize:
 			if (auto ev = value->Cast<WindowSizeEvent>())
 			{
-				m_videoMode.size = { (uint32_t)ev->width, (uint32_t)ev->height };
+				m_videoMode.size = (vec2u)ev->size();
 			}
 			break;
 		}

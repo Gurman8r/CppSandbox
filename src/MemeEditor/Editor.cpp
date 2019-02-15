@@ -17,7 +17,7 @@ namespace ml
 	
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void Editor::ShowHelpMarker(ml::CString desc) const
+	void Editor::ShowHelpMarker(CString desc) const
 	{
 		ImGui::TextDisabled("(?)");
 		if (ImGui::IsItemHovered())
@@ -38,7 +38,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	template <typename T, size_t C, size_t R>
-	inline static Matrix<T, C, R> & InputMatrix(ml::CString label, Matrix<T, C, R> & value)
+	inline static Matrix<T, C, R> & InputMatrix(CString label, Matrix<T, C, R> & value)
 	{
 		const String id = String("##") + label;
 
@@ -62,23 +62,23 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	Transform & Editor::InputTransform(ml::CString label, Transform & value) const
+	Transform & Editor::InputTransform(CString label, Transform & value) const
 	{
 		mat4f temp = value;
 		return (value = InputMat4f(label, temp));
 	}
 
-	mat4f & Editor::InputMat4f(ml::CString label, mat4f & value) const
+	mat4f & Editor::InputMat4f(CString label, mat4f & value) const
 	{
 		return InputMatrix<float, 4, 4>(label, value);
 	}
 
-	mat3f & Editor::InputMat3f(ml::CString label, mat3f & value) const
+	mat3f & Editor::InputMat3f(CString label, mat3f & value) const
 	{
 		return InputMatrix<float, 3, 3>(label, value);
 	}
 
-	vec2f & Editor::InputVec2f(ml::CString label, vec2f & value) const
+	vec2f & Editor::InputVec2f(CString label, vec2f & value) const
 	{
 		const String id = String("##") + label;
 
@@ -91,7 +91,7 @@ namespace ml
 		return value;
 	}
 
-	vec3f & Editor::InputVec3f(ml::CString label, vec3f & value) const
+	vec3f & Editor::InputVec3f(CString label, vec3f & value) const
 	{
 		const String id = String("##") + label;
 
@@ -105,7 +105,7 @@ namespace ml
 		return value;
 	}
 
-	vec4f & Editor::InputVec4f(ml::CString label, vec4f & value) const
+	vec4f & Editor::InputVec4f(CString label, vec4f & value) const
 	{
 		const String id = String("##") + label;
 

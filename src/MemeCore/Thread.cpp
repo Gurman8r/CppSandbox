@@ -1,24 +1,18 @@
 #include <MemeCore/Thread.hpp>
 
-#ifdef ML_SYSTEM_WINDOWS
-#include <Windows.h>
-#endif
-
-#define ML_HANDLE(value) reinterpret_cast<HANDLE>(value)
-
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Thread::Thread()
 		: m_fun(NULL)
-		, m_thread(NULL)
+		, m_thr(NULL)
 	{
 	}
 
 	Thread::~Thread()
 	{
-		join();
+		wait();
 		cleanup();
 	}
 
@@ -31,65 +25,75 @@ namespace ml
 			delete m_fun;
 			m_fun = NULL;
 		}
-		if (m_thread)
+		if (m_thr)
 		{
-			delete m_thread;
-			m_thread = NULL;
+			delete m_thr;
+			m_thr = NULL;
 		}
 		return (*this);
 	}
 
 	Thread & Thread::detatch()
 	{
-		if (m_thread)
+		if (alive())
 		{
-			m_thread->detach();
+			m_thr->detach();
 		}
 		return (*this);
 	}
 
 	Thread & Thread::launch()
 	{
-		if (!m_thread)
+		if (!alive())
 		{
-			m_thread = new std::thread(&Thread::run, this);
-		}
-		return (*this);
-	}
-
-	Thread & Thread::join()
-	{
-		if (m_thread)
-		{
-			m_thread->join();
+			m_thr = new std::thread(&Thread::run, this);
 		}
 		return (*this);
 	}
 
 	Thread & Thread::swap(Thread & other)
 	{
-		std::swap(m_thread, other.m_thread);
-		std::swap(m_fun,	other.m_fun);
+		std::swap(m_fun, other.m_fun);
+		std::swap(m_thr, other.m_thr);
 		return other;
 	}
 
-	Thread & Thread::terminate()
+	Thread & Thread::wait()
 	{
-		if (m_thread)
+		if (joinable())
 		{
-
+			m_thr->join();
 		}
 		return (*this);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
+	bool Thread::alive() const
+	{
+		return m_thr;
+	}
+
+	void * Thread::handle()
+	{
+		return (alive() ? m_thr->native_handle() : NULL);
+	}
+
+	Thread::ID Thread::id() const
+	{
+		return (alive() ? m_thr->get_id() : ID());
+	}
+
+	bool Thread::joinable() const
+	{
+		return (alive() && m_thr->joinable());
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	void Thread::run()
 	{
-		if (m_fun)
-		{
-			return m_fun->run();
-		}
+		return (m_fun ? m_fun->run() : void());
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

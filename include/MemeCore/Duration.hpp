@@ -3,8 +3,11 @@
 
 #include <MemeCore/ITrackable.hpp>
 
-#define ml_duration_cast(T, value) \
-(uint64_t)(std::chrono::duration_cast<T>(value).count()) \
+/* * * * * * * * * * * * * * * * * * * * */
+
+#define ml_duration_cast(T, value) (std::chrono::duration_cast<T>(value).count())
+
+/* * * * * * * * * * * * * * * * * * * * */
 
 namespace ml
 {
@@ -16,6 +19,15 @@ namespace ml
 	using Millis	= typename std::chrono::milliseconds;	// _ms
 	using Micros	= typename std::chrono::microseconds;	// _us
 	using Nanos		= typename std::chrono::nanoseconds;	// _ns
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	constexpr Hours	  operator "" _h  (uint64_t value) { return Hours  (value); }
+	constexpr Minutes operator "" _m  (uint64_t value) { return Minutes(value); }
+	constexpr Seconds operator "" _s  (uint64_t value) { return Seconds(value); }
+	constexpr Millis  operator "" _ms (uint64_t value) { return Millis (value); }
+	constexpr Micros  operator "" _us (uint64_t value) { return Micros (value); }
+	constexpr Nanos	  operator "" _ns (uint64_t value) { return Nanos  (value); }
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
@@ -35,7 +47,7 @@ namespace ml
 
 		template <class Rep, class Per>
 		Duration(const std::chrono::duration<Rep, Per> & value)
-			: Duration(ml_duration_cast(Millis, value))
+			: Duration(ml_duration_cast(ml::Millis, value))
 		{
 		}
 
@@ -47,12 +59,12 @@ namespace ml
 		inline const float delta() const { return (float)(*this) / 1000.f; }
 		
 	public:
-		const uint64_t nanos() const;
-		const uint64_t micros() const;
-		const uint64_t millis() const;		
-		const uint64_t seconds() const;		
-		const uint64_t minutes() const;		
 		const uint64_t hours() const;
+		const uint64_t minutes() const;		
+		const uint64_t seconds() const;		
+		const uint64_t millis() const;		
+		const uint64_t micros() const;
+		const uint64_t nanos() const;
 
 	public:
 		friend Duration	operator+(const Duration & lhs, const Duration & rhs);
@@ -103,15 +115,6 @@ namespace ml
 		}
 		
 	};
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	constexpr Hours		operator "" _h (uint64_t value) { return Hours(value);	 }
-	constexpr Minutes	operator "" _m (uint64_t value) { return Minutes(value); }
-	constexpr Seconds	operator "" _s (uint64_t value) { return Seconds(value); }
-	constexpr Millis	operator "" _ms(uint64_t value) { return Millis(value);  }
-	constexpr Micros	operator "" _us(uint64_t value) { return Micros(value);  }
-	constexpr Nanos		operator "" _ns(uint64_t value) { return Nanos(value);	 }
 
 	/* * * * * * * * * * * * * * * * * * * * */
 }

@@ -12,7 +12,7 @@ namespace ml
 		: m_matrix(mat4f::identity())
 	{
 		this->translate(vec3f::Zero);
-		this->rotate(0.f, vec3f::One);
+		this->rotate(0.0f, vec3f::One);
 		this->scale(vec3f::One);
 	}
 
@@ -48,6 +48,21 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
+	mat4f Transform::Orthographic(const FloatRect & rect, const vec2f & clip)
+	{
+		return Orthographic(rect, clip[0], clip[1]);
+	}
+
+	mat4f Transform::Orthographic(const FloatRect & rect, float N, float F)
+	{
+		return Orthographic(rect.left(), rect.right(), rect.top(), rect.bot(), N, F);
+	}
+
+	mat4f Transform::Orthographic(const FloatRect & rect)
+	{
+		return Orthographic(rect.left(), rect.right(), rect.top(), rect.bot());
+	}
+
 	mat4f Transform::Orthographic(float L, float R, float T, float B, float N, float F)
 	{
 		return mat4f(glm::value_ptr(glm::ortho(L, R, T, B, N, F)));
@@ -56,6 +71,11 @@ namespace ml
 	mat4f Transform::Orthographic(float L, float R, float T, float B)
 	{
 		return mat4f(glm::value_ptr(glm::ortho(L, R, T, B)));
+	}
+
+	mat4f Transform::Perspective(float fov, float aspect, const vec2f & clip)
+	{
+		return Perspective(fov, aspect, clip[0], clip[1]);
 	}
 
 	mat4f Transform::Perspective(float fov, float aspect, float N, float F)

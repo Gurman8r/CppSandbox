@@ -13,6 +13,19 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	using FontMap		= ResourceMap<Font>;
+	using ImageMap		= ResourceMap<Image>;
+	using MeshMap		= ResourceMap<Mesh>;
+	using ModelMap		= ResourceMap<Model>;
+	using ShaderMap		= ResourceMap<Shader>;
+	using SoundMap		= ResourceMap<Sound>;
+	using SpriteMap		= ResourceMap<Sprite>;
+	using TextureMap	= ResourceMap<Texture>;
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_EDITOR_API ResourceManager
 		: public ITrackable
 		, public ISingleton<ResourceManager>
@@ -27,16 +40,16 @@ namespace ml
 		void cleanAll();
 
 	public:
-		ResourceMap<Font>		fonts;
-		ResourceMap<Image>		images;
-		ResourceMap<Mesh>		meshes;
-		ResourceMap<Model>		models;
-		ResourceMap<Shader>		shaders;
-		ResourceMap<Sound>		sounds;
-		ResourceMap<Sprite>		sprites;
-		ResourceMap<Texture>	textures;
+		FontMap		fonts;
+		ImageMap	images;
+		MeshMap		meshes;
+		ModelMap	models;
+		ShaderMap	shaders;
+		SoundMap	sounds;
+		SpriteMap	sprites;
+		TextureMap	textures;
 	};
 
-	
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 #endif // !_RESOURCE_MANAGER_H_

@@ -3,10 +3,23 @@
 namespace ml
 {
 	Text::Text()
+		: m_font	(NULL)
+		, m_fontSize(0)
+		, m_position(0)
+		, m_scale	(1)
+		, m_string	(String())
+		, m_color	(Color::White)
+
 	{
 	}
 	
 	Text::Text(const Text & copy)
+		: m_font	(copy.m_font)
+		, m_fontSize(copy.m_fontSize)
+		, m_position(copy.m_position)
+		, m_scale	(copy.m_scale)
+		, m_string	(copy.m_string)
+		, m_color	(copy.m_color)
 	{
 	}
 	
@@ -61,12 +74,12 @@ namespace ml
 		return (*this);
 	}
 	
-	Text & Text::setText(const String & value)
+	Text & Text::setString(const String & value)
 	{
-		if (m_text != value)
+		if (m_string != value)
 		{
 			m_requiresUpdate = true;
-			m_text = value;
+			m_string = value;
 		}
 		return (*this);
 	}
@@ -77,13 +90,13 @@ namespace ml
 		if (m_requiresUpdate)
 		{	m_requiresUpdate = false;
 			
-			m_vertices.resize(m_text.size());
-			m_textures.resize(m_text.size());
+			m_vertices.resize(m_string.size());
+			m_textures.resize(m_string.size());
 			
 			vec2f drawPos = m_position;
-			for (size_t i = 0, imax = m_text.size(); i < imax; i++)
+			for (size_t i = 0, imax = m_string.size(); i < imax; i++)
 			{
-				const Glyph & glyph = (*m_font).getGlyph(m_text[i], m_fontSize);
+				const Glyph & glyph = (*m_font).getGlyph(m_string[i], m_fontSize);
 				
 				const FloatRect rect(
 					glyph.offset() + drawPos * m_scale,
@@ -108,7 +121,7 @@ namespace ml
 				m_vertices[i] = verts;
 				m_textures[i] = (&glyph.texture);
 				
-				switch (m_text[i])
+				switch (m_string[i])
 				{
 				case '\n':
 					drawPos[0] = m_position[0];
@@ -124,13 +137,22 @@ namespace ml
 	
 	void Text::draw(RenderTarget & target, RenderBatch batch) const
 	{
+		// Update Geometry/Textures
 		update();
 		
-		if (Uniform * u = batch.uniforms.find("u_color")) { u->data = &getColor(); }
+		// Color
+		if (Uniform * u = batch.uniforms->find("u_color")) 
+		{ 
+			u->data = &getColor(); 
+		}
 
-		for (size_t i = 0, imax = m_text.size(); i < imax; i++)
+		for (size_t i = 0, imax = m_string.size(); i < imax; i++)
 		{
-			if (Uniform * u = batch.uniforms.find("u_texture")) { u->data = m_textures[i]; }
+			// Glyph Texture
+			if (Uniform * u = batch.uniforms->find("u_texture")) 
+			{
+				u->data = m_textures[i]; 
+			}
 
 			batch.vertices = &m_vertices[i];
 

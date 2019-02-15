@@ -153,6 +153,9 @@
     <ClInclude Include="..\..\include\MemeGraphics\UniformSet.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\Canvas.hpp">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeGraphics\Color.cpp">
@@ -232,6 +235,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\UniformSet.cpp">
       <Filter>Source Files\DS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\Canvas.cpp">
+      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

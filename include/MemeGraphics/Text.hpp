@@ -5,6 +5,14 @@
 #include <MemeGraphics/Font.hpp>
 #include <MemeGraphics/RenderTarget.hpp>
 #include <MemeGraphics/Lists.hpp>
+#include <MemeGraphics/VertexArray.hpp>
+#include <MemeGraphics/VertexBuffer.hpp>
+
+// TODO: 
+/*
+	Maybe draw 2D stuff to a Canvas?
+	Each canvas could have it's own VAO/VBO so we dont need to store them in Demo.
+*/
 
 namespace ml
 {
@@ -23,14 +31,14 @@ namespace ml
 		Text & setColor(const vec4f & value);
 		Text & setFont(const Font * value);
 		Text & setFontSize(uint32_t value);
-		Text & setText(const String & value);
+		Text & setString(const String & value);
 
 	public:
 		inline const Font *		getFont()		const { return m_font;		}
 		inline const uint32_t	getFontSize()	const { return m_fontSize;	}
 		inline const vec2f &	getPosition()	const { return m_position;	}
 		inline const vec2f &	getScale()		const { return m_scale;		}
-		inline const String &	getText()		const { return m_text;		}
+		inline const String &	getString()		const { return m_string;		}
 		inline const vec4f &	getColor()		const { return m_color;		}
 
 	public:
@@ -42,12 +50,12 @@ namespace ml
 		mutable TextureList		 m_textures;
 		mutable List<VertexList> m_vertices;
 
-		const Font *	m_font;
-		uint32_t		m_fontSize;
-		vec2f			m_position;
-		vec2f			m_scale;
-		String			m_text;
-		vec4f			m_color;
+		const Font *m_font;
+		uint32_t	m_fontSize;
+		vec2f		m_position;
+		vec2f		m_scale;
+		String		m_string;
+		vec4f		m_color;
 	};
 }
 #endif // !_TEXT_HPP_

@@ -20,16 +20,16 @@ namespace ml
 		~Editor();
 
 	public:
-		void ShowHelpMarker(ml::CString desc) const;
+		void ShowHelpMarker(CString desc) const;
 		void ShowFramerate() const;
 
 	public:
-		Transform & InputTransform(const char * label, Transform & value) const;
-		mat4f &	InputMat4f(ml::CString label, mat4f & value) const;
-		mat3f &	InputMat3f(ml::CString label, mat3f & value) const;
-		vec2f &	InputVec2f(ml::CString label, vec2f & value) const;
-		vec3f &	InputVec3f(ml::CString label, vec3f & value) const;
-		vec4f &	InputVec4f(ml::CString label, vec4f & value) const;
+		Transform & InputTransform(CString label, Transform & value) const;
+		mat4f &	InputMat4f(CString label, mat4f & value) const;
+		mat3f &	InputMat3f(CString label, mat3f & value) const;
+		vec2f &	InputVec2f(CString label, vec2f & value) const;
+		vec3f &	InputVec3f(CString label, vec3f & value) const;
+		vec4f &	InputVec4f(CString label, vec4f & value) const;
 
 	public:
 		inline const bool	open() const	{ return m_open; }

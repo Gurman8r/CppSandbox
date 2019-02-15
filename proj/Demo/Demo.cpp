@@ -51,17 +51,16 @@ namespace DEMO
 			{
 				// Orthographic
 				m_ortho = ml::Transform::Orthographic(
-					0.0f, (float)this->width(),
-					0.0f, (float)this->height(),
-					SETTINGS.orthoNear,
-					SETTINGS.orthoFar);
+					{ ml::vec2f::Zero, (ml::vec2f)this->size() },
+					{ SETTINGS.orthoNear, SETTINGS.orthoFar }
+				);
 
 				// Perspective
 				m_persp = ml::Transform::Perspective(
 					SETTINGS.fieldOfView,
 					this->aspect(),
-					SETTINGS.perspNear,
-					SETTINGS.perspFar);
+					{ SETTINGS.perspNear, SETTINGS.perspFar }
+				);
 			}
 			break;
 
@@ -518,62 +517,65 @@ namespace DEMO
 	
 	void Demo::onStart(const StartEvent & ev)
 	{
-		if (ml::Debug::log("Starting..."))
+		ml::Debug::log("Starting...");
+
+		// Set Window Icon
+		if (ml::Image * icon = ML_Resources.images.get("icon"))
 		{
-			// Set Window Icon
-			if (ml::Image * icon = ML_Resources.images.get("icon"))
-			{
-				this->setIcons({ (*icon).flipVertically() });
-			}
-
-			// Orthographic
-			m_ortho = ml::Transform::Orthographic(
-				0.0f, (float)this->width(),
-				0.0f, (float)this->height(),
-				SETTINGS.orthoNear,
-				SETTINGS.orthoFar);
-
-			// Perspective
-			m_persp = ml::Transform::Perspective(
-				SETTINGS.fieldOfView,
-				this->aspect(),
-				SETTINGS.perspNear,
-				SETTINGS.perspFar);
-
-			// Camera
-			ml::vec3f cameraPos = { 0.0f, 0.0f, 3.0f };
-			m_camera.lookAt(
-				cameraPos,
-				cameraPos + ml::vec3f::Back,
-				ml::vec3f::Up);
-
-			// Cube
-			ML_Resources.models.get("cube")->transform()
-				.translate({ +5.0f, 0.0f, 0.0f })
-				.rotate(0.0f, ml::vec3f::Up)
-				.scale(ml::vec3f::One);
-
-			// Quad
-			ML_Resources.models.get("quad")->transform()
-				.translate({ -5.0f, 0.0f, 0.0f })
-				.rotate(0.0f, ml::vec3f::Up)
-				.scale(ml::vec3f::One);
-
-			// Sphere 32x24
-			ML_Resources.models.get("sphere32x24")->transform()
-				.translate({ 0.0f, 0.0f, 0.0f })
-				.rotate(0.0f, ml::vec3f::Up)
-				.scale(ml::vec3f::One);
-
-			// Static Text
-			m_textStatic
-				.setFont(ML_Resources.fonts.get("minecraft"))
-				.setFontSize(72)
-				.setScale(ml::vec2f::One)
-				.setPosition({ 32, 128 })
-				.setColor(ml::Color::White)
-				.setText("there is no need\nto be upset");
+			this->setIcons({ (*icon).flipVertically() });
 		}
+
+		// Orthographic
+		m_ortho = ml::Transform::Orthographic(
+			{ ml::vec2f::Zero, (ml::vec2f)this->size() },
+			{ SETTINGS.orthoNear, SETTINGS.orthoFar }
+		);
+
+		// Perspective
+		m_persp = ml::Transform::Perspective(
+			SETTINGS.fieldOfView,
+			this->aspect(),
+			{ SETTINGS.perspNear, SETTINGS.perspFar }
+		);
+
+		// Camera
+		m_camPos = { 0.0f, 0.0f, 3.0f };
+		m_camera.lookAt(m_camPos, m_camPos + ml::vec3f::Back, ml::vec3f::Up);
+
+		// Setup Model Transforms
+		ML_Resources.models.get("cube")->transform()
+			.translate({ +5.0f, 0.0f, 0.0f });
+		
+		ML_Resources.models.get("quad")->transform()
+			.translate({ -5.0f, 0.0f, 0.0f });
+		
+		ML_Resources.models.get("sphere32x24")->transform()
+			.translate({ 0.0f, 0.0f, 0.0f });
+
+		// Static Text
+		m_textStatic
+			.setFont(ML_Resources.fonts.get("minecraft"))
+			.setFontSize(72)
+			.setScale(ml::vec2f::One)
+			.setPosition({ 32, 128 })
+			.setColor(ml::Color::White)
+			.setString("there is no need\nto be upset");
+
+		// Threads
+		m_thread = new ml::Thread([&]()
+		{
+			using namespace ml;
+			Debug::log("Entering Thread");
+			do
+			{
+				cout << "*";
+				ML_Time.sleep(1_s);
+			}
+			while (this->isOpen());
+			cout << endl;
+			Debug::log("Exiting Thread");
+		});
+		m_thread->launch();
 	}
 	
 	void Demo::onUpdate(const UpdateEvent & ev)
@@ -700,7 +702,7 @@ namespace DEMO
 					&m_vaoText,
 					&m_vboText,
 					ML_Resources.shaders.get("text"),
-					uniforms);
+					&uniforms);
 
 				static const uint32_t  fontSize = 24;
 				static const ml::vec2f offset = { 0.0f, -(float)fontSize };
@@ -716,7 +718,7 @@ namespace DEMO
 						.setScale(ml::vec2f::One)
 						.setPosition(origin + (offset * (float)(i + 1)))
 						.setColor(ml::Color::White)
-						.setText(pair.second->to_str())// + " | " + this->title())
+						.setString(pair.second->to_str())// + " | " + this->title())
 					, batch);
 					i++;
 				}
@@ -1048,6 +1050,8 @@ namespace DEMO
 	
 	void Demo::onExit(const ExitEvent & ev)
 	{
+		delete m_thread;
+
 		ML_Resources.cleanAll();
 
 		ImGui_ML_Shutdown();

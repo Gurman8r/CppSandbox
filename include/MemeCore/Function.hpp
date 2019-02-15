@@ -20,87 +20,74 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	template <typename F>
+	template <typename Fun>
 	class VoidFun final : public Function
 	{
+		Fun m_fun;
+
 	public:
-		VoidFun(F fun)
+		VoidFun(Fun fun)
 			: m_fun(fun)
 		{
 		}
 
 		inline void run() override { return m_fun(); }
-
-	private:
-		F m_fun;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	template <typename T, typename A>
+	template <typename Fun, typename Arg>
 	class ArgFun final : public Function
 	{
-	public:
-		using F = void(*)(A);
+		Fun	m_fun;
+		Arg	m_arg;
 
 	public:
-		ArgFun(F fun, A arg)
+		ArgFun(Fun fun, Arg arg)
 			: m_fun(fun)
 			, m_arg(arg)
 		{
 		}
 
-		void run() override { return m_fun(m_arg); }
-
-	private:
-		F m_fun;
-		A m_arg;
+		inline void run() override { return m_fun(m_arg); }
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	template <typename T>
+	template <typename T, typename Fun = void(T::*)()>
 	class MemberFun final : public Function
 	{
-	public:
-		using F = void(T::*)();
+		Fun	m_fun;
+		T *	m_obj;
 
 	public:
-		MemberFun(F fun, T * obj)
+		MemberFun(Fun fun, T * obj)
 			: m_fun(fun)
 			, m_obj(obj)
 		{
 		}
 
-		void run() override { return (m_obj->*m_fun)(); }
-
-	private:
-		F	m_fun;
-		T *	m_obj;
+		inline void run() override { return (m_obj->*m_fun)(); }
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	template <typename T, typename A>
+	template <typename T, typename Arg, typename Fun = void(T::*)()>
 	class MemberArgFun final : public Function
 	{
-	public:
-		using F = void(T::*)(A *);
+		Fun	m_fun;
+		T *	m_obj;
+		Arg	m_arg;
 
 	public:
-		MemberArgFun(F fun, T * obj, A * arg)
+		MemberArgFun(Fun fun, T * obj, Arg arg)
 			: m_fun(fun)
 			, m_obj(obj)
 			, m_arg(arg)
 		{
 		}
 
-		void run() override { return (m_obj->*m_fun)(m_arg); }
-
-	private:
-		F	m_fun;
-		T *	m_obj;
-		A * m_arg;
+		inline void run() override { return (m_obj->*m_fun)(m_arg); }
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

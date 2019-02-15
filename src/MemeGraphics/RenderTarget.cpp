@@ -37,7 +37,7 @@ namespace ml
 		// Update Shader
 		if (batch.shader)
 		{
-			batch.shader->setUniforms(batch.uniforms);
+			batch.shader->setUniforms(*batch.uniforms);
 			batch.shader->bind();
 		}
 		

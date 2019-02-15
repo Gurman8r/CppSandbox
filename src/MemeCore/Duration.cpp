@@ -22,34 +22,34 @@ namespace ml
 	}
 
 	
-	const uint64_t Duration::nanos() const
+	const uint64_t Duration::hours() const
 	{
-		return micros() * 1000UL;
+		return minutes() / 24UL;
 	}
 
-	const uint64_t Duration::micros() const
+	const uint64_t Duration::minutes() const
 	{
-		return millis() * 1000UL;
+		return seconds() / 60UL;
 	}
 
-	const uint64_t Duration::millis() const
-	{
-		return (uint64_t)(*this);
-	}
-	
 	const uint64_t Duration::seconds() const
 	{
 		return millis() / 1000UL;
 	}
 	
-	const uint64_t Duration::minutes() const
+	const uint64_t Duration::millis() const
 	{
-		return seconds() / 60UL;
+		return (uint64_t)(*this);
 	}
 	
-	const uint64_t Duration::hours() const
+	const uint64_t Duration::micros() const
 	{
-		return minutes() / 24UL;
+		return millis() * 1000UL;
+	}
+	
+	const uint64_t Duration::nanos() const
+	{
+		return micros() * 1000UL;
 	}
 
 

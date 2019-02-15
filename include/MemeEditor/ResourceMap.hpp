@@ -7,22 +7,25 @@
 
 namespace ml
 {
-	template <class T>
+	template <class _Elem>
 	class ResourceMap final
 		: public ITrackable
 	{
 		static_assert(
-			std::is_base_of<ml::IResource, T>::value, 
+			std::is_base_of<ml::IResource, _Elem>::value, 
 			"Type must derive ml::IResource");
 
 	public:
-		using value_type	= T;
+		using value_type	= _Elem;
 		using pointer		= typename value_type * ;
 		using const_pointer = typename const pointer ;
-		using data_map		= std::unordered_map<String, pointer>;
-		using file_map		= std::unordered_map<String, String>;
-		using iterator		= typename data_map::iterator;
-		using const_iterator= typename data_map::const_iterator;
+
+		using PointerMap	= std::unordered_map<String, pointer>;
+		using FileMap		= std::unordered_map<String, String>;
+		using Pair			= std::pair<String, pointer>;
+		
+		using iterator		= typename PointerMap::iterator;
+		using const_iterator= typename PointerMap::const_iterator;
 
 	public:
 		ResourceMap() : m_data() {}
@@ -91,7 +94,12 @@ namespace ml
 				: NULL;
 		}
 
-		inline const data_map & getAll() const
+		inline const PointerMap & getAll() const
+		{
+			return m_data;
+		}
+
+		inline PointerMap & getAll()
 		{
 			return m_data;
 		}
@@ -124,10 +132,10 @@ namespace ml
 			return NULL;
 		}
 
-		inline size_t load(const file_map & files)
+		inline size_t load(const FileMap & files)
 		{
 			size_t count = 0;
-			for (file_map::const_iterator it = files.cbegin(); it != files.end(); it++)
+			for (FileMap::const_iterator it = files.cbegin(); it != files.end(); it++)
 			{
 				if (const_pointer temp = load(it->first, it->second))
 				{
@@ -151,7 +159,7 @@ namespace ml
 		inline const_iterator	cend()	 const	{ return m_data.cend();		}
 
 	private:
-		data_map m_data;
+		PointerMap m_data;
 	};
 }
 

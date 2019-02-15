@@ -76,7 +76,7 @@ namespace ml
 			}
 			else
 			{
-				return Var().errorValue("Failed running value");
+				return Var().errorValue("Failed alive value");
 			}
 		}
 		else
