@@ -25,24 +25,6 @@
 #include "DemoEvents.hpp"
 #include "Settings.hpp"
 
-// Resources
-/* * * * * * * * * * * * * * * * * * * * */
-namespace DEMO
-{
-	enum : int32_t
-	{
-		// Frame Buffers
-		MIN_FBO = -1,
-		FBO_scene,
-		MAX_FBO,
-
-		// Render Buffers
-		MIN_RBO = -1,
-		RBO_scene,
-		MAX_RBO,
-	};
-}
-
 // Demo
 /* * * * * * * * * * * * * * * * * * * * */
 namespace DEMO
