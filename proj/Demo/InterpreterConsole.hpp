@@ -21,7 +21,7 @@ namespace ml
 			ClearLog();
 			memset(InputBuf, 0, sizeof(InputBuf));
 			HistoryPos = -1;
-			AddLog("# Using this feature may cause crashes or system instability.");
+			AddLog("# Using this feature may result in crashes or system instability.");
 			AddLog("# Type \'help\' for a list of commands.");
 			ExecCommand(ml::String("exec " + SETTINGS.pathTo(SETTINGS.scrPath + SETTINGS.scrFile)).c_str());
 

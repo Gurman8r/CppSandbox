@@ -3,12 +3,13 @@
 
 #include <MemeGraphics/Export.hpp>
 #include <MemeCore/ITrackable.hpp>
-#include <MemeCore/IResource.hpp>
+#include <MemeCore/IComparable.hpp>
 
 namespace ml
 {
 	class ML_GRAPHICS_API Uniform final
 		: public ITrackable
+		, public IComparable<Uniform>
 	{
 	public:
 		enum Type : int32_t
@@ -56,8 +57,13 @@ namespace ml
 		}
 
 	public:
-		inline operator String() const { return name;	}
-		inline operator bool()	 const { return !name.empty(); }
+		bool good() const;
+
+		void serialize(std::ostream & out) const override;
+		void deserialize(std::istream & in) override;
+
+		bool equals(const Uniform & other) const override;
+		bool lessThan(const Uniform & other) const override;
 	};
 }
 

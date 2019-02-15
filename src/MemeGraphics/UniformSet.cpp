@@ -70,4 +70,14 @@ namespace ml
 		}
 		return NULL;
 	}
+
+	const Uniform * UniformSet::find(const String & name) const
+	{
+		const_iterator it;
+		if ((it = m_map.find(name)) != end())
+		{
+			return &it->second;
+		}
+		return NULL;
+	}
 }

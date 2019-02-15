@@ -10,9 +10,9 @@ namespace ml
 		: public ITrackable
 	{
 	public:
-		using map_type		= std::unordered_map<String, Uniform>;
-		using iterator		= typename map_type::iterator;
-		using const_iterator= typename map_type::const_iterator;
+		using map_type			= std::unordered_map<String, Uniform>;
+		using iterator			= typename map_type::iterator;
+		using const_iterator	= typename map_type::const_iterator;
 
 	public:
 		UniformSet();
@@ -27,6 +27,7 @@ namespace ml
 		bool empty() const;
 		bool insert(const Uniform & value);
 		Uniform * find(const String & name);
+		const Uniform * find(const String & name) const;
 
 	public:
 		inline const Uniform & operator[](const String & name) const { return m_map.at(name); }

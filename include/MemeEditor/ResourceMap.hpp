@@ -30,22 +30,32 @@ namespace ml
 		~ResourceMap() { clear(); }
 
 	public:
-		inline const_pointer load(const String & name, const String & filename)
+		inline pointer load(const String & name)
 		{
-			if (!name.empty() && !filename.empty())
+			if (!find(name))
+			{
+				m_data[name] = new value_type();
+				return find(name);
+			}
+			return NULL;
+		}
+
+		inline pointer load(const String & name, const String & filename)
+		{
+			if (!name.empty() && !filename.empty() && !find(name))
 			{
 				pointer temp = new value_type();
 				if (temp->loadFromFile(filename))
 				{
 					m_data[name] = temp;
-					return temp;
+					return find(name);
 				}
 				delete temp;
 			}
 			return NULL;
 		}
 
-		inline size_t loadAll(const file_map & files)
+		inline size_t load(const file_map & files)
 		{
 			size_t count = 0;
 			for (file_map::const_iterator it = files.cbegin(); it != files.end(); it++)

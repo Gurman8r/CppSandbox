@@ -4,15 +4,20 @@
 namespace ml
 {
 	IndexBuffer::IndexBuffer()
-		: IHandle(NULL)
+		: IHandle	(NULL)
+		, m_data	(NULL)
+		, m_count	(NULL)
+		, m_usage	(GL::StaticDraw)
+		, m_type	(GL::UnsignedInt)
 	{
 	}
 
 	IndexBuffer::IndexBuffer(const IndexBuffer & copy)
-		: IHandle(copy)
-		, m_usage(copy.m_usage)
-		, m_data(copy.m_data)
-		, m_count(copy.m_count)
+		: IHandle	(copy)
+		, m_data	(copy.m_data)
+		, m_count	(copy.m_count)
+		, m_usage	(copy.m_usage)
+		, m_type	(copy.m_type)
 	{
 	}
 

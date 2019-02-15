@@ -6,21 +6,18 @@ namespace ml
 {
 	Mesh::Mesh()
 		: m_vertices	()
-		, m_indices		()
 		, m_contiguous	()
 	{
 	}
 
 	Mesh::Mesh(const VertexList & vertices)
 		: m_vertices	(vertices)
-		, m_indices		()
 		, m_contiguous	(vertices.contiguous())
 	{
 	}
 
 	Mesh::Mesh(const Mesh & copy)
 		: m_vertices	(copy.m_vertices)
-		, m_indices		(copy.m_indices)
 		, m_contiguous	(copy.m_contiguous)
 	{
 	}
@@ -50,12 +47,7 @@ namespace ml
 
 	void Mesh::serialize(std::ostream & out) const
 	{
-		out << "Mesh:" << endl
-
-			<< "V: " << m_vertices.size() << endl
-			<< m_vertices << endl
-			
-			<< endl;
+		out << m_vertices.size() << m_vertices << endl;
 	}
 
 	void Mesh::deserialize(std::istream & in)

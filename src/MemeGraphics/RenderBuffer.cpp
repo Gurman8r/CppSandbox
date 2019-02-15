@@ -52,9 +52,9 @@ namespace ml
 	}
 
 
-	RenderBuffer & RenderBuffer::bufferStorage(GL::Format internalFormat)
+	RenderBuffer & RenderBuffer::bufferStorage(GL::Format format)
 	{
-		OpenGL::renderbufferStorage(GL::Renderbuffer, internalFormat, m_width, m_height);
+		OpenGL::renderbufferStorage(GL::Renderbuffer, format, m_width, m_height);
 		return (*this);
 	}
 

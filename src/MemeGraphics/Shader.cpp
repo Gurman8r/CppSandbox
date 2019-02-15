@@ -223,26 +223,21 @@ namespace ml
 
 	bool Shader::setUniform(const Uniform & u) const
 	{
-		if (!u.name.empty())
+		if (u.good())
 		{
-			if (u.data)
+			switch (u.type)
 			{
-				switch (u.type)
-				{
-				case Uniform::Int:	return setUniform(u.name, u.get_value<int32_t>());
-				case Uniform::Float:return setUniform(u.name, u.get_value<float>());
-				case Uniform::Vec2:	return setUniform(u.name, u.get_value<vec2f>());
-				case Uniform::Vec3:	return setUniform(u.name, u.get_value<vec3f>());
-				case Uniform::Vec4:	return setUniform(u.name, u.get_value<vec4f>());
-				case Uniform::Mat3:	return setUniform(u.name, u.get_value<mat3f>());
-				case Uniform::Mat4:	return setUniform(u.name, u.get_value<mat4f>());
-				case Uniform::Tex2D:return setUniform(u.name, u.get_value<Texture>());
-				}
-				return Debug::logError("Invalid Uniform Type | {0} | {1}", u.name, u.type);
+			case Uniform::Int:	return setUniform(u.name, u.get_value<int32_t>());
+			case Uniform::Float:return setUniform(u.name, u.get_value<float>());
+			case Uniform::Vec2:	return setUniform(u.name, u.get_value<vec2f>());
+			case Uniform::Vec3:	return setUniform(u.name, u.get_value<vec3f>());
+			case Uniform::Vec4:	return setUniform(u.name, u.get_value<vec4f>());
+			case Uniform::Mat3:	return setUniform(u.name, u.get_value<mat3f>());
+			case Uniform::Mat4:	return setUniform(u.name, u.get_value<mat4f>());
+			case Uniform::Tex2D:return setUniform(u.name, u.get_value<Texture>());
 			}
-			return Debug::logError("Invalid Uniform Data | {0}", u.name);
 		}
-		return Debug::logError("Invalid Uniform Name | {0}", u.name);
+		return Debug::logError("Invalid Uniform | {0}", u);
 	}
 
 	bool Shader::setUniforms(const UniformSet & value) const

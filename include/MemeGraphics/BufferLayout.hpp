@@ -10,7 +10,11 @@ namespace ml
 		: public ITrackable
 	{
 	public:
+		static const BufferLayout Default;
+
+	public:
 		struct Element final
+			: public ITrackable
 		{
 			uint32_t	index;
 			uint32_t	size;
@@ -19,6 +23,10 @@ namespace ml
 			uint32_t	stride;
 			uint32_t	offset;
 			uint32_t	width;
+
+			Element();
+			Element(uint32_t index, uint32_t size, GL::Type type, bool normalized, uint32_t stride, uint32_t offset, uint32_t width);
+			Element(const Element & copy);
 
 			void use() const;
 		};
@@ -31,8 +39,6 @@ namespace ml
 		~BufferLayout();
 
 		void bind() const;
-
-		static void bind(const BufferLayout & value);
 
 		BufferLayout & push_back(const Element & value);
 		

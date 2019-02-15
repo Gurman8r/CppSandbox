@@ -41,38 +41,15 @@ namespace DEMO
 		V_camera,
 		MAX_VIEW,
 
-		// Transforms (Model Matrices)
-		MIN_TRANSFORM = -1,
-		T_cube,
-		T_quad,
-		T_sphere32x24,
-		MAX_TRANSFORM,
-
 		// Vertex Arrays
 		MIN_VAO = -1,
-		VAO_cube,
-		VAO_quad,
-		VAO_example,
-		VAO_sphere8x6,
-		VAO_sphere32x24,
 		VAO_text,
 		MAX_VAO,
 
 		// Vertex Buffers
 		MIN_VBO = -1,
-		VBO_cube,
-		VBO_quad,
-		VBO_example,
-		VBO_sphere8x6,
-		VBO_sphere32x24,
 		VBO_text,
 		MAX_VBO,
-
-		// Index Buffers
-		MIN_IBO = -1,
-		IBO_cube,
-		IBO_quad,
-		MAX_IBO,
 
 		// Frame Buffers
 		MIN_FBO = -1,
@@ -83,13 +60,6 @@ namespace DEMO
 		MIN_RBO = -1,
 		RBO_scene,
 		MAX_RBO,
-
-		// Models
-		MIN_MODEL = -1,
-		MODEL_example,
-		MODEL_sphere8x6,
-		MODEL_sphere32x24,
-		MAX_MODEL,
 
 		// Text
 		MIN_TEXT = -1,
@@ -132,12 +102,11 @@ namespace DEMO
 		bool	loadBuffers();
 		bool	loadFonts();
 		bool	loadImages();
-		bool	loadTextures();
-		bool	loadShaders();
-		bool	loadMeshes();
 		bool	loadModels();
-		bool	loadNetwork();
+		bool	loadShaders();
 		bool	loadSprites();
+		bool	loadTextures();
+		bool	loadNetwork();
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
@@ -155,13 +124,10 @@ namespace DEMO
 	private:
 		ml::Transform	proj		[MAX_PROJ];
 		ml::Transform	view		[MAX_VIEW];
-		ml::Transform	transform	[MAX_TRANSFORM];
 		ml::VAO			vao			[MAX_VAO];
 		ml::VBO			vbo			[MAX_VBO];
-		ml::IBO			ibo			[MAX_IBO];
 		ml::FBO			fbo			[MAX_FBO];
 		ml::RBO			rbo			[MAX_RBO];
-		ml::Model		models		[MAX_MODEL];
 		ml::Text		text		[MAX_TEXT];
 
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -170,7 +136,6 @@ namespace DEMO
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		ml::Texture m_framebuffer;
 		ml::vec4f	m_clearColor	= ml::Color::Violet;
 		int32_t		m_fboMode		= 0;
 		int32_t		m_lineMode		= 1;

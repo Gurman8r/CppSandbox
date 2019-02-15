@@ -1,8 +1,40 @@
 #include <MemeGraphics/BufferLayout.hpp>
 #include <MemeGraphics/OpenGL.hpp>
+#include <MemeGraphics/Vertex.hpp>
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	const BufferLayout BufferLayout::Default({
+		{ 0, 3, ml::GL::Float, false, ml::Vertex::Size, 0, sizeof(float) },
+		{ 1, 4, ml::GL::Float, false, ml::Vertex::Size, 3, sizeof(float) },
+		{ 2, 2, ml::GL::Float, false, ml::Vertex::Size, 7, sizeof(float) },
+	});
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	BufferLayout::Element::Element()
+		: Element(0, 0, GL::Byte, false, 0, 0, 0)
+	{
+	}
+
+	BufferLayout::Element::Element(uint32_t index, uint32_t size, GL::Type type, bool normalized, uint32_t stride, uint32_t offset, uint32_t width)
+		: index		(index)
+		, size		(size)
+		, type		(type)
+		, normalized(normalized)
+		, stride	(stride)
+		, offset	(offset)
+		, width		(width)
+	{
+	}
+
+	BufferLayout::Element::Element(const Element & e) 
+		: Element(e.index, e.size, e.type, e.normalized, e.stride, e.offset, e.width)
+	{
+	}
+
 	void BufferLayout::Element::use() const
 	{
 		OpenGL::vertexAttribPointer(
@@ -15,10 +47,9 @@ namespace ml
 			width);
 		OpenGL::enableVertexAttribArray(index);
 	}
-}
 
-namespace ml
-{
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	BufferLayout::BufferLayout()
 		: BufferLayout(std::vector<Element>())
 	{
@@ -43,15 +74,10 @@ namespace ml
 	{
 	}
 
-
+	
 	void BufferLayout::bind() const
 	{
-		BufferLayout::bind(*this);
-	}
-
-	void BufferLayout::bind(const BufferLayout & value)
-	{
-		for (const Element & e : value.elements())
+		for (const Element & e : elements())
 		{
 			e.use();
 		}
@@ -63,4 +89,5 @@ namespace ml
 		return (*this);
 	}
 	
+	/* * * * * * * * * * * * * * * * * * * * */
 }

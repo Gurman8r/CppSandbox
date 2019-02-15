@@ -40,4 +40,29 @@ namespace ml
 	Uniform::~Uniform()
 	{
 	}
+
+	bool Uniform::good() const
+	{
+		return !name.empty() && data && type;
+	}
+
+	void Uniform::serialize(std::ostream & out) const
+	{
+		out << name << " " << type << " ";
+	}
+
+	void Uniform::deserialize(std::istream & in)
+	{
+		in >> name >> type;
+	}
+
+	bool Uniform::equals(const Uniform & other) const
+	{
+		return (name == other.name) && (type == other.type);
+	}
+
+	bool Uniform::lessThan(const Uniform & other) const
+	{
+		return (name < other.name) && (type < other.type);
+	}
 }
