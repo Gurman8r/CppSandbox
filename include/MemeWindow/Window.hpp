@@ -18,20 +18,6 @@ namespace ml
 		, public IEventListener
 	{
 	public:
-		using ErrorFun			= void(*)(int32_t, const char *);
-		using CharFun			= void(*)(void *, uint32_t);
-		using CursorEnterFun	= void(*)(void *, int32_t);
-		using CursorPosFun		= void(*)(void *, double, double);
-		using FramebufferSizeFun= void(*)(void *, int32_t, int32_t);
-		using KeyFun			= void(*)(void *, int32_t, int32_t, int32_t, int32_t);
-		using MouseButtonFun	= void(*)(void *, int32_t, int32_t, int32_t);
-		using ScrollFun			= void(*)(void *, double, double);
-		using WindowCloseFun	= void(*)(void *);
-		using WindowFocusFun	= void(*)(void *, int32_t);
-		using WindowPosFun		= void(*)(void *, int32_t, int32_t);
-		using WindowSizeFun		= void(*)(void *, int32_t, int32_t);
-
-	public:
 		enum Style : uint32_t
 		{
 			None		= (0 << 0),
@@ -47,9 +33,13 @@ namespace ml
 			Default	= Resizable | Visible | Decorated | Focused | AutoIconify,
 		};
 
+		/* * * * * * * * * * * * * * * * * * * * */
+
 	public:
 		Window();
 		virtual ~Window();
+
+		/* * * * * * * * * * * * * * * * * * * * */
 
 	public:
 		bool create(
@@ -61,6 +51,8 @@ namespace ml
 		virtual bool setup();
 		virtual void onEvent(const Event * ev) override;
 
+		/* * * * * * * * * * * * * * * * * * * * */
+
 	public:
 		Window & close();
 		Window & destroy();
@@ -70,6 +62,8 @@ namespace ml
 		Window & pollEvents();
 		Window & swapBuffers();
 		Window & terminate();
+
+		/* * * * * * * * * * * * * * * * * * * * */
 
 	public:
 		Window & setClipboardString(const String & value);
@@ -81,6 +75,8 @@ namespace ml
 		Window & setSize(const vec2u & value);
 		Window & setSwapInterval(int32_t value);
 		Window & setTitle(const String & value);
+
+		/* * * * * * * * * * * * * * * * * * * * */
 		
 	public:
 		bool	isFocused() const;
@@ -95,6 +91,8 @@ namespace ml
 		int32_t	getMouseButton(int32_t button) const;
 		float	getTime() const;
 
+		/* * * * * * * * * * * * * * * * * * * * */
+
 	public:
 		inline const Context &		context()	const { return m_context; }
 		inline const VideoMode &	videoMode()	const { return m_videoMode; }
@@ -102,15 +100,51 @@ namespace ml
 		inline const vec2i &		position()	const { return m_position; }
 		inline const vec2u &		size()		const { return videoMode().size; }
 		inline const String &		title()		const { return m_title; }
-		inline const uint32_t &		width()		const { return size()[0]; }
-		inline const uint32_t &		height()	const { return size()[1]; }
-		inline const float			aspect()	const { return (float)width() / (float)height(); };
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
+	public:
+		template <typename T = uint32_t> inline const T width()		  const { return static_cast<T>(size()[0]); }
+		template <typename T = uint32_t> inline const T height()	  const { return static_cast<T>(size()[1]); }
+		template <typename T = int32_t>  inline const T frameWidth()  const { return static_cast<T>(getFramebufferSize()[0]); }
+		template <typename T = int32_t>  inline const T frameHeight() const { return static_cast<T>(getFramebufferSize()[1]); }
+
+		inline const float aspect() const 
+		{
+			return ((width() && height()) 
+				? (width<float>() / height<float>()) 
+				: 0.0f);
+		};
+
+		inline const float frameAspect() const 
+		{
+			return ((frameWidth() && frameHeight())
+				? (frameWidth<float>() / frameHeight<float>()) 
+				: 0.0f);
+		};
+
+		/* * * * * * * * * * * * * * * * * * * * */
 
 	public:
 		void *	createCursor(uint32_t value) const;
 		void	destroyCursor(void * value) const;
 
+		/* * * * * * * * * * * * * * * * * * * * */
+
 	public:
+		using ErrorFun			= void(*)(int32_t, const char *);
+		using CharFun			= void(*)(void *, uint32_t);
+		using CursorEnterFun	= void(*)(void *, int32_t);
+		using CursorPosFun		= void(*)(void *, double, double);
+		using FramebufferSizeFun= void(*)(void *, int32_t, int32_t);
+		using KeyFun			= void(*)(void *, int32_t, int32_t, int32_t, int32_t);
+		using MouseButtonFun	= void(*)(void *, int32_t, int32_t, int32_t);
+		using ScrollFun			= void(*)(void *, double, double);
+		using WindowCloseFun	= void(*)(void *);
+		using WindowFocusFun	= void(*)(void *, int32_t);
+		using WindowPosFun		= void(*)(void *, int32_t, int32_t);
+		using WindowSizeFun		= void(*)(void *, int32_t, int32_t);
+
 		ErrorFun			setErrorCallback(ErrorFun callback);
 		CharFun				setCharCallback(CharFun callback);
 		CursorEnterFun		setCursorEnterCallback(CursorEnterFun callback);
@@ -124,6 +158,8 @@ namespace ml
 		WindowPosFun		setWindowPosCallback(WindowPosFun callback);
 		WindowSizeFun		setWindowSizeCallback(WindowSizeFun callback);
 
+		/* * * * * * * * * * * * * * * * * * * * */
+
 	protected:
 		void *			m_window;
 		void *			m_monitor;
@@ -134,6 +170,8 @@ namespace ml
 		vec2i			m_position;
 		String			m_title;
 		mutable char	m_char;
+
+		/* * * * * * * * * * * * * * * * * * * * */
 	};
 }
 #endif // !_WINDOW_HPP_

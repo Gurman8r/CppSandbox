@@ -364,9 +364,9 @@ namespace ml
 
 	char	Window::getChar() const
 	{
-		static char temp = 0;
+		static char temp;
 		temp = m_char;
-		m_char = 0;
+		m_char = NULL;
 		return temp;
 	}
 
