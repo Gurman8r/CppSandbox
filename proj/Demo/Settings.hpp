@@ -27,6 +27,7 @@ namespace DEMO
 		uint32_t	runTests;		// Run test functions
 		bool		escapeIsExit;	// Escape key is Exit?
 		bool		enableThreads;	// Enable threads?
+		ml::String	manifest;		// Name of manifest file
 
 		// [Script]
 		ml::String	scrPath;		// Location of scripts
@@ -77,6 +78,7 @@ namespace DEMO
 				runTests	 = ini.GetInteger("General", "runTests", false);
 				escapeIsExit = ini.GetBoolean("General", "escapeIsExit", true);
 				enableThreads= ini.GetBoolean("General", "enableThreads", false);
+				manifest	 = ini.Get("General", "manifest", "manifest.txt");
 
 				// [Script]
 				scrPath		 = ini.Get("Script", "scrPath", "scripts/");

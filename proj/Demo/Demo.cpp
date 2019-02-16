@@ -108,11 +108,6 @@ namespace DEMO
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Demo::loadAudio()
-	{
-		return ml::Debug::log("Loading Audio...") && ml::OpenAL::init();
-	}
-
 	bool Demo::loadBuffers()
 	{
 		// Load Buffers
@@ -143,8 +138,10 @@ namespace DEMO
 				.bufferFramebuffer(ml::GL::DepthStencilAttachment)
 				.unbind();
 			// Texture
-			if (ml::Texture * texture = ML_Resources.textures.get("framebuffer"))
+			if (ml::Texture * texture = ML_Resources.textures.load("framebuffer"))
 			{
+				texture->create(this->size());
+
 				ml::OpenGL::framebufferTexture2D(
 					ml::GL::Framebuffer, 
 					ml::GL::ColorAttachment0,
@@ -162,27 +159,6 @@ namespace DEMO
 		return true;
 	}
 	
-	bool Demo::loadFonts()
-	{
-		// Load Fonts
-		return ml::Debug::log("Loading Fonts...")
-			&& ML_Resources.fonts.load({
-				{ "clacon",		SETTINGS.pathTo("fonts/clacon.ttf") },
-				{ "consolas",	SETTINGS.pathTo("fonts/consolas.ttf") },
-				{ "lconsole",	SETTINGS.pathTo("fonts/lucida_console.ttf") },
-				{ "minecraft",	SETTINGS.pathTo("fonts/minecraft.ttf") },
-			});
-	}
-
-	bool Demo::loadImages()
-	{
-		// Load Images
-		return ml::Debug::log("Loading Images...") 
-			&& ML_Resources.images.load({
-				{ "icon",	SETTINGS.pathTo("/images/dean.png")} 
-			});
-	}
-
 	bool Demo::loadInterpreter()
 	{
 		static bool checked = false;
@@ -342,12 +318,6 @@ namespace DEMO
 	bool Demo::loadModels()
 	{
 		return ml::Debug::log("Loading Models...") 
-			&& ML_Resources.models.load({
-				{ "cube1",		SETTINGS.pathTo("/meshes/cube.mesh") },
-				{ "sphere_lo",	SETTINGS.pathTo("/meshes/sphere8x6.mesh") },
-				{ "sphere_hi",	SETTINGS.pathTo("/meshes/sphere32x24.mesh") },
-			})
-			&& ML_Resources.models.load("tri")->loadFromMemory(ml::Shapes::Triangle::Vertices, ml::Shapes::Triangle::Indices)
 			&& ML_Resources.models.load("cube")->loadFromMemory(ml::Shapes::Cube::Vertices, ml::Shapes::Cube::Indices)
 			&& ML_Resources.models.load("quad")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
 			;
@@ -382,59 +352,6 @@ namespace DEMO
 			}
 		}
 		return true;
-	}
-
-	bool Demo::loadShaders()
-	{
-		// Load Shaders
-		return ml::Debug::log("Loading Shaders...") 
-			&& ML_Resources.shaders.load({
-				{ "basic3D",	SETTINGS.pathTo("/shaders/basic3D.shader") },
-				{ "sprites",	SETTINGS.pathTo("/shaders/sprites.shader") },
-				{ "text",		SETTINGS.pathTo("/shaders/text.shader") },
-				{ "geometry",	SETTINGS.pathTo("/shaders/geometry.shader") },
-				{ "framebuffer",SETTINGS.pathTo("/shaders/framebuffer.shader") },
-				{ "lighting",	SETTINGS.pathTo("/shaders/lighting.shader") },
-			});
-	}
-
-	bool Demo::loadSprites()
-	{
-		return ml::Debug::log("Loading Sprites...");
-	}
-
-	bool Demo::loadTextures()
-	{
-		// Load Textures
-		return ml::Debug::log("Loading Textures...") 
-			&& ML_Resources.textures.load({
-				{ "dean",		SETTINGS.pathTo("/images/dean.png") },
-				{ "sanic",		SETTINGS.pathTo("/images/sanic.png") },
-				{ "earth_cm",	SETTINGS.pathTo("/textures/earth_lo/earth_cm.png") },
-				{ "earth_dm",	SETTINGS.pathTo("/textures/earth_lo/earth_dm.png") },
-				{ "earth_hm",	SETTINGS.pathTo("/textures/earth_lo/earth_hm.png") },
-				{ "earth_lm",	SETTINGS.pathTo("/textures/earth_lo/earth_lm.png") },
-				{ "earth_nm",	SETTINGS.pathTo("/textures/earth_lo/earth_nm.png") },
-				{ "earth_sm",	SETTINGS.pathTo("/textures/earth_lo/earth_sm.png") },
-				{ "stone_dm",	SETTINGS.pathTo("/textures/stone/stone_dm.png") },
-				{ "stone_hm",	SETTINGS.pathTo("/textures/stone/stone_hm.png") },
-				{ "stone_nm",	SETTINGS.pathTo("/textures/stone/stone_nm.png") },
-				//{ "bg_clouds",	SETTINGS.pathTo("/textures/bg/bg_clouds.png") },
-				//{ "sky_clouds", SETTINGS.pathTo("/textures/bg/sky_clouds.png") },
-				//{ "sky_water",	SETTINGS.pathTo("/textures/bg/sky_water.png") },
-				//{ "earth_cm",	SETTINGS.pathTo("/textures/earth_hi/earth_cm_2k.png") },
-				//{ "earth_dm",	SETTINGS.pathTo("/textures/earth_hi/earth_dm_2k.png") },
-				//{ "earth_hm",	SETTINGS.pathTo("/textures/earth_hi/earth_hm_2k.png") },
-				//{ "earth_lm",	SETTINGS.pathTo("/textures/earth_hi/earth_lm_2k.png") },
-				//{ "earth_nm",	SETTINGS.pathTo("/textures/earth_hi/earth_nm_2k.png") },
-				//{ "earth_sm",	SETTINGS.pathTo("/textures/earth_hi/earth_sm_2k.png") },
-				//{ "mars_dm",	SETTINGS.pathTo("/textures/mars/mars_dm_2k.png") },
-				//{ "mars_nm",	SETTINGS.pathTo("/textures/mars/mars_nm_2k.png") },
-				//{ "moon_dm",	SETTINGS.pathTo("/textures/moon/moon_dm_2k.png") },
-				//{ "moon_nm",	SETTINGS.pathTo("/textures/moon/moon_nm_2k.png") },
-			})
-			&& ML_Resources.textures.load("framebuffer")->create(this->size())
-			;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -510,17 +427,16 @@ namespace DEMO
 			}
 
 			m_error = (ml::Debug::log("Loading Resources..."))
-				&& loadAudio()
-				&& loadFonts()
-				&& loadImages()
-				&& loadTextures()
-				&& loadShaders()
+				&& ml::OpenAL::init()
+				&& m_manifest.loadFromFile(SETTINGS.pathTo(SETTINGS.manifest))
+				&& ML_Resources.loadManifest(m_manifest)
 				&& loadBuffers()
 				&& loadModels()
-				&& loadSprites()
 				&& loadNetwork()
 				? ml::Debug::Success
 				: ml::Debug::Error;
+
+			ml::cout << m_manifest << ml::endl;
 		}
 		else
 		{
@@ -700,7 +616,7 @@ namespace DEMO
 					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
 					ml::Uniform("u_texture",ml::Uniform::Tex2D,	ML_Resources.textures.get("sanic")),
 				};
-				if (const ml::Shader * shader = ML_Resources.shaders.get("sprites"))
+				if (const ml::Shader * shader = ML_Resources.shaders.get("basic2D"))
 				{
 					shader->setUniforms(uniforms);
 					shader->bind();

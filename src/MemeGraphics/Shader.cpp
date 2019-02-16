@@ -368,7 +368,7 @@ namespace ml
 
 				if ((m_textures.size() + 1) >= maxUnits)
 				{
-					Debug::logError("Impossible to use texture \"{0}\" for source: all available texture units are used: {1}", name, maxUnits);
+					Debug::logError("All available texture units are used: {0}", maxUnits);
 					return u;
 				}
 			}

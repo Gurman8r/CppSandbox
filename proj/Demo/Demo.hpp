@@ -54,16 +54,10 @@ namespace DEMO
 	private:
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		bool	loadAudio();
 		bool	loadBuffers();
-		bool	loadFonts();
-		bool	loadImages();
 		bool	loadInterpreter();
 		bool	loadModels();
 		bool	loadNetwork();
-		bool	loadShaders();
-		bool	loadSprites();
-		bool	loadTextures();
 
 	private:
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -77,6 +71,10 @@ namespace DEMO
 		void	onExit(const ExitEvent & ev);
 
 	private:
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		ml::Manifest m_manifest;
+
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		mutable int32_t m_error;

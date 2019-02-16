@@ -464,7 +464,7 @@ namespace ml
 		OpenGL::bindTexture(
 			GL::Texture2D,
 			((value && (*value))
-				? (Texture::value_type)(*value)
+				? (uint32_t)(*value)
 				: NULL));
 	}
 	

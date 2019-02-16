@@ -144,17 +144,17 @@ namespace ml
 
 		inline bool load(const FileMap & files)
 		{
+			return load(String(), files);
+		}
+
+		inline bool load(const String & path, const FileMap & files)
+		{
 			size_t count = 0;
 			for (FileMap::const_iterator it = files.cbegin(); it != files.end(); it++)
 			{
-				if (const_pointer temp = load(it->first, it->second))
+				if (const_pointer temp = load(it->first, path + it->second))
 				{
-					Debug::log("Loaded | {0} | {1}", it->first, it->second);
 					count++;
-				}
-				else
-				{
-					Debug::logError("Failed Loading | {0} | {1}", it->first, it->second);
 				}
 			}
 			return count;

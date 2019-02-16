@@ -58,6 +58,8 @@ void main()
 	vec4 tex_dm		= texture(u_texture, v_Texcoord);
 
 	v_FragColor = result * tex_dm;
+
+	//v_FragColor = u_color * v_Color * texture(u_texture, v_Texcoord);
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

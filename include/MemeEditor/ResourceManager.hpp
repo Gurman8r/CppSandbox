@@ -2,6 +2,7 @@
 #define _RESOURCE_MANAGER_H_
 
 #include <MemeEditor/ResourceMap.hpp>
+#include <MemeEditor/Manifest.hpp>
 #include <MemeCore/ISingleton.hpp>
 #include <MemeCore/List.hpp>
 #include <MemeAudio/Sound.hpp>
@@ -38,6 +39,8 @@ namespace ml
 
 	public:
 		void cleanup();
+
+		bool loadManifest(const Manifest & value);
 
 	public:
 		FontMap		fonts;

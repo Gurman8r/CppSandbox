@@ -205,9 +205,6 @@
     <None Include="..\..\assets\shaders\framebuffer.shader">
       <Filter>Resource Files\shaders</Filter>
     </None>
-    <None Include="..\..\assets\shaders\sprites.shader">
-      <Filter>Resource Files\shaders</Filter>
-    </None>
     <None Include="..\..\assets\shaders\lighting.shader">
       <Filter>Resource Files\shaders</Filter>
     </None>
@@ -225,6 +222,9 @@
     </None>
     <None Include="..\..\assets\meshes\teddy.mesh">
       <Filter>Resource Files\meshes</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\basic2D.shader">
+      <Filter>Resource Files\shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
