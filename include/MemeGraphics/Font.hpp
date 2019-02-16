@@ -11,8 +11,8 @@ namespace ml
 		, public IResource
 	{
 	public:
-		using GlyphTable = std::map<uint32_t, Glyph>;
-		using PageTable  = std::map<uint32_t, GlyphTable>;
+		using GlyphTable = Map<uint32_t, Glyph>;
+		using PageTable  = Map<uint32_t, GlyphTable>;
 
 		struct Info final : public ITrackable
 		{

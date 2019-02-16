@@ -63,8 +63,8 @@ namespace ml
 	private:
 		struct	UniformBinder;
 
-		using	TextureTable = std::map<int32_t, const Texture *>;
-		using	UniformTable = std::map<String, int32_t>;
+		using	TextureTable = Map<int32_t, const Texture *>;
+		using	UniformTable = Map<String, int32_t>;
 
 		mutable TextureTable m_textures;
 		mutable UniformTable m_uniforms;

@@ -4,7 +4,7 @@
 
 namespace ml
 {
-	struct MemoryTracker::Record
+	struct MemoryTracker::Record final
 		: public ISerializable
 	{
 		void *	addr;
@@ -31,7 +31,7 @@ namespace ml
 namespace ml
 {
 	MemoryTracker::MemoryTracker()
-		: m_map()
+		: m_records()
 		, m_guid(0)
 	{
 	}
@@ -39,7 +39,7 @@ namespace ml
 	MemoryTracker::~MemoryTracker() 
 	{
 		Debug::log("Deleting Memory Tracker...");
-		if (!m_map.empty())
+		if (!m_records.empty())
 		{
 			Debug::logWarning("Final allocations follow:");
 			
@@ -54,13 +54,11 @@ namespace ml
 	{
 		if (ITrackable * ptr = static_cast<ITrackable *>(malloc(size)))
 		{
-#ifdef ML_DEBUG
 			RecordMap::iterator it;
-			if ((it = m_map.find(ptr)) == m_map.end())
+			if ((it = m_records.find(ptr)) == m_records.end())
 			{
-				m_map.insert({ ptr, Record(ptr, m_guid++, size) });
+				m_records.insert({ ptr, Record(ptr, m_guid++, size) });
 			}
-#endif // ML_DEBUG
 			return ptr;
 		}
 		return NULL;
@@ -70,21 +68,20 @@ namespace ml
 	{
 		if (ITrackable * ptr = static_cast<ITrackable *>(value))
 		{
-#ifdef ML_DEBUG
 			RecordMap::iterator it;
-			if ((it = m_map.find(ptr)) != m_map.end())
+			if ((it = m_records.find(ptr)) != m_records.end())
 			{
-				m_map.erase(it);
+				m_records.erase(it);
 			}
-#endif // ML_DEBUG
-			return free(ptr);
+			free(ptr);
 		}
+		value = NULL;
 	}
 
 	void MemoryTracker::serialize(std::ostream & out) const
 	{
 		RecordMap::const_iterator it;
-		for (it = m_map.begin(); it != m_map.end(); ++it)
+		for (it = m_records.begin(); it != m_records.end(); ++it)
 		{
 			out << (*it->first) << (it->second) << ml::endl;
 		}

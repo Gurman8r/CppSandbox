@@ -7,10 +7,18 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	class ResourceManager;
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	template <class _Elem>
 	class ResourceMap final
 		: public ITrackable
 	{
+		friend class ResourceManager;
+
 		static_assert(
 			std::is_base_of<ml::IResource, _Elem>::value, 
 			"Type must derive ml::IResource");
@@ -20,16 +28,15 @@ namespace ml
 		using pointer		= typename value_type * ;
 		using const_pointer = typename const pointer ;
 
-		using PointerMap	= std::unordered_map<String, pointer>;
-		using FileMap		= std::unordered_map<String, String>;
+		using PointerMap	= HashMap<String, pointer>;
+		using FileMap		= HashMap<String, String>;
 		using Pair			= std::pair<String, pointer>;
 		
 		using iterator		= typename PointerMap::iterator;
 		using const_iterator= typename PointerMap::const_iterator;
 
-	public:
+	private:
 		ResourceMap() : m_data() {}
-
 		~ResourceMap() { clear(); }
 
 	public:
@@ -151,16 +158,18 @@ namespace ml
 		}
 
 	public:
-		inline iterator			begin()			{ return m_data.begin();	}
-		inline iterator			end()			{ return m_data.end();		}
-		inline const_iterator	begin()  const	{ return m_data.begin();	}
-		inline const_iterator	end()	 const	{ return m_data.end();		}
-		inline const_iterator	cbegin() const	{ return m_data.cbegin();	}
-		inline const_iterator	cend()	 const	{ return m_data.cend();		}
+		inline iterator			begin()			{ return m_data.begin();  }
+		inline iterator			end()			{ return m_data.end();	  }
+		inline const_iterator	begin()  const	{ return m_data.begin();  }
+		inline const_iterator	end()	 const	{ return m_data.end();	  }
+		inline const_iterator	cbegin() const	{ return m_data.cbegin(); }
+		inline const_iterator	cend()	 const	{ return m_data.cend();	  }
 
 	private:
 		PointerMap m_data;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_RESOURCE_MAP_HPP_

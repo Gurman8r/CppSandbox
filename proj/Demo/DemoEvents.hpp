@@ -3,7 +3,7 @@
 
 #include <MemeCore/Event.hpp>
 #include <MemeCore/Duration.hpp>
-#include <MemeCore/InputState.hpp>
+#include <MemeCore/NativeInput.hpp>
 #include <MemeGraphics/RenderWindow.hpp>
 
 namespace DEMO 
@@ -72,11 +72,13 @@ namespace DEMO
 
 	struct UpdateEvent final : public DemoEvent
 	{
-		ml::Duration elapsed;
+		const ml::Duration & elapsed;
+		const ml::NativeInput & input;
 
-		UpdateEvent(const ml::Duration & elapsed)
+		UpdateEvent(const ml::Duration & elapsed, const ml::NativeInput & input)
 			: DemoEvent(EV_Update)
 			, elapsed(elapsed)
+			, input(input)
 		{
 		}
 	};
@@ -85,11 +87,13 @@ namespace DEMO
 
 	struct DrawEvent final : public DemoEvent
 	{
-		ml::Duration elapsed;
+		const ml::Duration & elapsed;
+		const ml::NativeInput & input;
 
-		DrawEvent(const ml::Duration & elapsed)
+		DrawEvent(const ml::Duration & elapsed, const ml::NativeInput & input)
 			: DemoEvent(EV_Draw)
 			, elapsed(elapsed)
+			, input(input)
 		{
 		}
 	};
@@ -98,11 +102,13 @@ namespace DEMO
 
 	struct GuiEvent final : public DemoEvent
 	{
-		ml::Duration elapsed;
+		const ml::Duration & elapsed;
+		const ml::NativeInput & input;
 
-		GuiEvent(const ml::Duration & elapsed)
+		GuiEvent(const ml::Duration & elapsed, const ml::NativeInput & input)
 			: DemoEvent(EV_Gui)
 			, elapsed(elapsed)
+			, input(input)
 		{
 		}
 	};

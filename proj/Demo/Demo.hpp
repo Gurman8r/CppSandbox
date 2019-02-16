@@ -101,8 +101,7 @@ namespace DEMO
 		ml::VAO m_vaoText;
 		ml::VBO m_vboText;
 
-		ml::Text m_textDynamic;
-		ml::Text m_textStatic;
+		ml::HashMap<ml::String, ml::Text> m_text;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 

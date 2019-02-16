@@ -12,8 +12,8 @@ namespace ml
 		: public ITrackable
 	{
 	public:
-		using VarMap	= std::map<String, Var *>;
-		using ScopeMap	= std::unordered_map<int32_t, VarMap*>;
+		using VarMap	= Map<String, Var *>;
+		using ScopeMap	= HashMap<int32_t, VarMap*>;
 
 	public:
 		Runtime();

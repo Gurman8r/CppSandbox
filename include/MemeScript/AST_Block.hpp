@@ -12,7 +12,7 @@ namespace ml
 		: public AST_Node
 	{
 	public:
-		using FuncMap = std::unordered_map<String, AST_Func*>;
+		using FuncMap = HashMap<String, AST_Func*>;
 
 	public:
 		AST_Block();

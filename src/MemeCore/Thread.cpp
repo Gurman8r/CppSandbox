@@ -23,12 +23,10 @@ namespace ml
 		if (m_fun)
 		{
 			delete m_fun;
-			m_fun = NULL;
 		}
 		if (m_thr)
 		{
 			delete m_thr;
-			m_thr = NULL;
 		}
 		return (*this);
 	}
@@ -56,6 +54,15 @@ namespace ml
 		std::swap(m_fun, other.m_fun);
 		std::swap(m_thr, other.m_thr);
 		return other;
+	}
+
+	Thread & Thread::update(Function * fun)
+	{
+		if (m_fun != fun)
+		{
+			m_fun = fun;
+		}
+		return (*this);
 	}
 
 	Thread & Thread::wait()
@@ -93,7 +100,7 @@ namespace ml
 
 	void Thread::run()
 	{
-		return (m_fun ? m_fun->run() : void());
+		return (m_fun ? (*m_fun)() : void());
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

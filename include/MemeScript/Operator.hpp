@@ -42,9 +42,9 @@ namespace ml
 		, public IComparable<Operator>
 		, public IComparable<OperatorType>
 	{
-		using OperMap = std::unordered_map<String, OperatorType>;
+		using OperMap = HashMap<String, OperatorType>;
 
-		static const std::unordered_map<String, OperatorType> OpValues;
+		static const HashMap<String, OperatorType> OpValues;
 
 		Operator();
 		Operator(OperatorType type);

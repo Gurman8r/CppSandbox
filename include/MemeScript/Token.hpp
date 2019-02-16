@@ -59,8 +59,8 @@ namespace ml
 		, public IComparable<TokenType>
 		, public IComparable<String>
 	{
-		using SymbolMap = std::unordered_map<String, TokenType>;
-		using NameMap = std::unordered_map<TokenType, String>;
+		using SymbolMap = HashMap<String, TokenType>;
+		using NameMap = HashMap<TokenType, String>;
 
 		static const NameMap	TypeNames;
 		static const SymbolMap	Symbols;

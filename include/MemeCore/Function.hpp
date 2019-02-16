@@ -20,13 +20,13 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	template <typename Fun>
+	template <typename F>
 	class VoidFun final : public Function
 	{
-		Fun m_fun;
+		F	m_fun;
 
 	public:
-		VoidFun(Fun fun)
+		VoidFun(F fun)
 			: m_fun(fun)
 		{
 		}
@@ -36,14 +36,14 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	template <typename Fun, typename Arg>
+	template <typename F, typename A>
 	class ArgFun final : public Function
 	{
-		Fun	m_fun;
-		Arg	m_arg;
+		F	m_fun;
+		A	m_arg;
 
 	public:
-		ArgFun(Fun fun, Arg arg)
+		ArgFun(F fun, A arg)
 			: m_fun(fun)
 			, m_arg(arg)
 		{
@@ -54,14 +54,14 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	template <typename T, typename Fun = void(T::*)()>
+	template <typename T, typename F = void(T::*)()>
 	class MemberFun final : public Function
 	{
-		Fun	m_fun;
+		F	m_fun;
 		T *	m_obj;
 
 	public:
-		MemberFun(Fun fun, T * obj)
+		MemberFun(F fun, T * obj)
 			: m_fun(fun)
 			, m_obj(obj)
 		{
@@ -72,15 +72,15 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	template <typename T, typename Arg, typename Fun = void(T::*)()>
+	template <typename T, typename A, typename F = void(T::*)()>
 	class MemberArgFun final : public Function
 	{
-		Fun	m_fun;
+		F	m_fun;
 		T *	m_obj;
-		Arg	m_arg;
+		A	m_arg;
 
 	public:
-		MemberArgFun(Fun fun, T * obj, Arg arg)
+		MemberArgFun(F fun, T * obj, A arg)
 			: m_fun(fun)
 			, m_obj(obj)
 			, m_arg(arg)

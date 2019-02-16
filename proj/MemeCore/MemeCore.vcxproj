@@ -162,6 +162,7 @@
     <ClInclude Include="..\..\include\MemeCore\InputState.hpp" />
     <ClInclude Include="..\..\include\MemeCore\IO.hpp" />
     <ClInclude Include="..\..\include\MemeCore\LibLoader.hpp" />
+    <ClInclude Include="..\..\include\MemeCore\Map.hpp" />
     <ClInclude Include="..\..\include\MemeCore\MemoryManager.hpp" />
     <ClInclude Include="..\..\include\MemeCore\List.hpp" />
     <ClInclude Include="..\..\include\MemeCore\BitHelper.hpp" />

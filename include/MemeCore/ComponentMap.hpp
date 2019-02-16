@@ -13,7 +13,7 @@ namespace ml
 	{
 	public:
 		using key_type		= const std::type_info *;
-		using map_type		= std::unordered_map<key_type, Component *>;
+		using map_type		= HashMap<key_type, Component *>;
 		using iterator		= typename map_type::iterator;
 		using const_iterator= typename map_type::const_iterator;
 

@@ -19,7 +19,7 @@ namespace ml
 		friend ISingleton<Interpreter>;
 
 	public:
-		using CmdTable = std::unordered_map<String, Command>;
+		using CmdTable = HashMap<String, Command>;
 		using CmdNames = std::vector<String>;
 
 	private:

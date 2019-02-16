@@ -1,12 +1,13 @@
 #ifndef _MEMORY_TRACKER_HPP_
 #define _MEMORY_TRACKER_HPP_
 
+#include <MemeCore/Map.hpp>
 #include <MemeCore/ISingleton.hpp>
 #include <MemeCore/ISerializable.hpp>
 
 // Singleton to keep track of dynamically allocated ITrackables
 // Handles memory allocation ( malloc / free )
-#define ML_Tracker ml::MemoryTracker::getInstance()
+#define ML_MemoryTracker ml::MemoryTracker::getInstance()
 
 namespace ml
 {
@@ -31,9 +32,9 @@ namespace ml
 
 		struct Record;
 
-		using RecordMap = std::map<ITrackable *, Record>;
+		using RecordMap = HashMap<ITrackable *, Record>;
 
-		RecordMap	m_map;
+		RecordMap	m_records;
 		size_t		m_guid;
 	};
 }

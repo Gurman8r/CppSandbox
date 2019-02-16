@@ -10,7 +10,7 @@ namespace ml
 		: public ITrackable
 	{
 	public:
-		using map_type			= std::unordered_map<String, Uniform>;
+		using map_type			= HashMap<String, Uniform>;
 		using iterator			= typename map_type::iterator;
 		using const_iterator	= typename map_type::const_iterator;
 

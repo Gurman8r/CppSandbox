@@ -553,7 +553,7 @@ namespace DEMO
 			.translate({ 0.0f, 0.0f, 0.0f });
 
 		// Static Text
-		m_textStatic
+		m_text["static"]
 			.setFont(ML_Resources.fonts.get("minecraft"))
 			.setFontSize(72)
 			.setScale(ml::vec2f::One)
@@ -575,7 +575,7 @@ namespace DEMO
 			cout << endl;
 			Debug::log("Exiting Thread");
 		});
-		m_thread->launch();
+		//m_thread->launch();
 	}
 	
 	void Demo::onUpdate(const UpdateEvent & ev)
@@ -586,7 +586,7 @@ namespace DEMO
 			SETTINGS.title,
 			ML_Time.elapsed(),
 			ev.elapsed.delta(),
-			ml::Time::calculateFPS(ev.elapsed.delta()),
+			ML_Time.calculateFPS(ev.elapsed.delta()),
 			this->getCursorPos()
 		));
 
@@ -712,7 +712,7 @@ namespace DEMO
 				size_t i = 0;
 				for (auto pair : ML_Resources.fonts.getAll())
 				{
-					this->draw(m_textDynamic
+					this->draw(m_text["dynamic"]
 						.setFont(pair.second)
 						.setFontSize(fontSize)
 						.setScale(ml::vec2f::One)
@@ -724,7 +724,7 @@ namespace DEMO
 				}
 
 				// Static Text
-				this->draw(m_textStatic, batch);
+				this->draw(m_text["static"], batch);
 			}
 
 			// Geometry
@@ -768,7 +768,7 @@ namespace DEMO
 		ImGui_ML_NewFrame();
 		ImGui::NewFrame();
 		{
-			ML_EventSystem.fireEvent(GuiEvent(ev.elapsed));
+			ML_EventSystem.fireEvent(GuiEvent(ev.elapsed, ev.input));
 		}
 		ImGui::Render();
 		ImGui_ML_RenderDrawData(ImGui::GetDrawData());
