@@ -4,4 +4,4 @@
 /.vs
 /tools/glewinfo.txt
 /tools/visualinfo.txt
-/imgui.ini
+imgui.ini
