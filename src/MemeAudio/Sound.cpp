@@ -18,7 +18,7 @@ namespace ml
 		return false;
 	}
 
-	bool Sound::readFile(const String & filename)
+	bool Sound::loadFromFile(const String & filename)
 	{
 		return false;
 	}

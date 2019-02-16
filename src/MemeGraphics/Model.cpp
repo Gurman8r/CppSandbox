@@ -30,10 +30,10 @@ namespace ml
 		return false;
 	}
 
-	bool Model::readFile(const String & filename)
+	bool Model::loadFromFile(const String & filename)
 	{
 		Mesh mesh;
-		return mesh.readFile(filename) && loadFromMemory(mesh);
+		return mesh.loadFromFile(filename) && loadFromMemory(mesh);
 	}
 
 	bool Model::loadFromMemory(const Mesh & mesh)

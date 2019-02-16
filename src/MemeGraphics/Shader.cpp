@@ -83,7 +83,7 @@ namespace ml
 		return false;
 	}
 
-	bool Shader::readFile(const String & filename)
+	bool Shader::loadFromFile(const String & filename)
 	{
 		static String source;
 		if (ML_FileSystem.getFileContents(filename, source))
@@ -93,18 +93,18 @@ namespace ml
 		return Debug::logError("Failed to open shader source file \"{0}\"", filename);
 	}
 
-	bool Shader::readFile(const String & vs, const String & fs)
+	bool Shader::loadFromFile(const String & vs, const String & fs)
 	{
 		// Read the vertex shader file
 		static File vert;
-		if (!vert.readFile(vs))
+		if (!vert.loadFromFile(vs))
 		{
 			return Debug::logError("Failed to open vertex source file \"{0}\"", vs);
 		}
 
 		// Read the fragment shader file
 		static File frag;
-		if (!frag.readFile(fs))
+		if (!frag.loadFromFile(fs))
 		{
 			return Debug::logError("Failed to open fragment source file \"{0}\"", fs);
 		}
@@ -113,25 +113,25 @@ namespace ml
 		return compile((*vert), NULL, (*frag));
 	}
 
-	bool Shader::readFile(const String & vs, const String & gs, const String & fs)
+	bool Shader::loadFromFile(const String & vs, const String & gs, const String & fs)
 	{
 		// Read the vertex shader file
 		static File vert;
-		if (!vert.readFile(vs))
+		if (!vert.loadFromFile(vs))
 		{
 			return Debug::logError("Failed to open vertex source file \"{0}\"", vs);
 		}
 
 		// Read the geometry shader file
 		static File geom;
-		if (!geom.readFile(gs))
+		if (!geom.loadFromFile(gs))
 		{
 			return Debug::logError("Failed to open geometry source file \"{0}\"", gs);
 		}
 
 		// Read the fragment shader file
 		static File frag;
-		if (!frag.readFile(fs))
+		if (!frag.loadFromFile(fs))
 		{
 			return Debug::logError("Failed to open fragment source file \"{0}\"", fs);
 		}

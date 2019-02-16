@@ -8,7 +8,7 @@ namespace ml
 	class IWritable
 	{
 	public:
-		virtual bool writeFile(const String & filename) const = 0;
+		virtual bool saveToFile(const String & filename) const = 0;
 	};
 }
 

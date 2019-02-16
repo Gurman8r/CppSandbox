@@ -23,7 +23,7 @@ namespace ml
 		return true;
 	}
 
-	bool Manifest::readFile(const String & filename)
+	bool Manifest::loadFromFile(const String & filename)
 	{
 		SStream ss;
 		if (ML_FileSystem.getFileContents(filename, ss))

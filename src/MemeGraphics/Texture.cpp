@@ -55,10 +55,10 @@ namespace ml
 		return false;
 	}
 
-	bool Texture::readFile(const String & filename)
+	bool Texture::loadFromFile(const String & filename)
 	{
 		static Image image;
-		return image.readFile(filename) && loadFromImage(image);
+		return image.loadFromFile(filename) && loadFromImage(image);
 	}
 
 	bool Texture::loadFromImage(const Image & value)

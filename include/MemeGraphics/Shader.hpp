@@ -20,9 +20,9 @@ namespace ml
 
 	public:
 		bool cleanup() override;
-		bool readFile(const String & filename) override;
-		bool readFile(const String & vs, const String & fs);
-		bool readFile(const String & vs, const String & gs, const String & fs);
+		bool loadFromFile(const String & filename) override;
+		bool loadFromFile(const String & vs, const String & fs);
+		bool loadFromFile(const String & vs, const String & gs, const String & fs);
 		bool loadFromMemory(const String & source);
 		bool loadFromMemory(const String & vs, const String & gs, const String & fs);
 		bool loadFromMemory(const String & vs, const String & fs);

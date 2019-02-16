@@ -67,7 +67,7 @@ namespace DEMO
 	public:
 		inline bool cleanup() override { return true; }
 
-		inline bool readFile(const ml::String & filename) override
+		inline bool loadFromFile(const ml::String & filename) override
 		{
 			INIReader ini(filename.c_str());
 			if (ini.ParseError() == 0)

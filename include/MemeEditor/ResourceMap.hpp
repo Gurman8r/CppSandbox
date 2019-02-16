@@ -128,7 +128,7 @@ namespace ml
 				if (!filename.empty())
 				{
 					pointer temp = new value_type();
-					if (temp->readFile(filename))
+					if (temp->loadFromFile(filename))
 					{
 						return set(name, temp);
 					}

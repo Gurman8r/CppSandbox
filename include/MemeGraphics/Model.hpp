@@ -25,7 +25,7 @@ namespace ml
 
 	public:
 		bool cleanup() override;
-		bool readFile(const String & filename) override;
+		bool loadFromFile(const String & filename) override;
 		bool loadFromMemory(const Mesh & mesh);
 		bool loadFromMemory(const FloatList & vertices);
 		bool loadFromMemory(const VertexList & vertices);

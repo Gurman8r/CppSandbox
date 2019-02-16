@@ -16,7 +16,7 @@ namespace ml
 		~Sprite();
 
 		bool cleanup() override;
-		bool readFile(const String & filename) override;
+		bool loadFromFile(const String & filename) override;
 
 		void draw(RenderTarget & target, RenderBatch batch) const override;
 

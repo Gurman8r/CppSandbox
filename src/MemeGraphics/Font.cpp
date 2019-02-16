@@ -52,7 +52,7 @@ namespace ml
 		return true;
 	}
 
-	bool Font::readFile(const String & filename)
+	bool Font::loadFromFile(const String & filename)
 	{
 		FT_Library library;
 		if (FT_Init_FreeType(&library) != EXIT_SUCCESS)

@@ -30,7 +30,7 @@ namespace ml
 		~Font();
 
 		bool cleanup() override;
-		bool readFile(const String & filename) override;
+		bool loadFromFile(const String & filename) override;
 
 		const Glyph & getGlyph(uint32_t value, uint32_t size) const;
 		const Info	& getInfo() const;

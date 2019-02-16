@@ -267,7 +267,7 @@ namespace DEMO
 	bool Demo::loadResources()
 	{
 		ml::Manifest manifest;
-		if (manifest.readFile(SETTINGS.pathTo(SETTINGS.manifest)))
+		if (manifest.loadFromFile(SETTINGS.pathTo(SETTINGS.manifest)))
 		{
 			ml::cout << ml::endl << manifest << ml::endl;
 

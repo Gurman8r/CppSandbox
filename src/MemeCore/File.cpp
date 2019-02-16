@@ -39,7 +39,7 @@ namespace ml
 		return true;
 	}
 
-	bool File::readFile(const String & filename)
+	bool File::loadFromFile(const String & filename)
 	{
 		std::ifstream file(filename, std::ios_base::binary);
 		if (file)
@@ -51,7 +51,7 @@ namespace ml
 		return Debug::logError("Failed reading file \'{0}\'", filename);
 	}
 
-	bool File::writeFile(const String & filename) const
+	bool File::saveToFile(const String & filename) const
 	{
 		std::ofstream file(filename, std::ios_base::binary);
 		if (file)

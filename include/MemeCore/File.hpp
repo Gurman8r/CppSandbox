@@ -29,8 +29,8 @@ namespace ml
 		~File();
 
 		bool cleanup() override;
-		bool readFile(const String & filename) override;
-		bool writeFile(const String & filename) const override;
+		bool loadFromFile(const String & filename) override;
+		bool saveToFile(const String & filename) const override;
 
 		void serialize(std::ostream & out) const override;
 		void deserialize(std::istream & in) override;

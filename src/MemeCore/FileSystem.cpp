@@ -97,7 +97,7 @@ namespace ml
 	bool FileSystem::getFileContents(const String & filename, List<char> & value) const
 	{
 		static File file;
-		if (file.readFile(filename))
+		if (file.loadFromFile(filename))
 		{
 			value = file;
 			return true;

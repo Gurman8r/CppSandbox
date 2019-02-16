@@ -33,7 +33,7 @@ namespace ml
 		return true;
 	}
 	
-	bool Mesh::readFile(const String & filename)
+	bool Mesh::loadFromFile(const String & filename)
 	{
 		SStream file;
 		if (ML_FileSystem.getFileContents(filename, file))

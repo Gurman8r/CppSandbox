@@ -20,7 +20,7 @@ namespace ml
 
 	public:
 		bool cleanup() override;
-		bool readFile(const String & filename) override;
+		bool loadFromFile(const String & filename) override;
 
 		void serialize(std::ostream & out) const override;
 		void deserialize(std::istream & in) override;
