@@ -546,7 +546,7 @@ namespace DEMO
 		);
 
 		// Camera
-		m_camPos = { 0.0f, 0.0f, 3.0f };
+		m_camPos = { 0.0f, 0.0f, 10.0f };
 		m_camera.lookAt(m_camPos, m_camPos + ml::vec3f::Back, ml::vec3f::Up);
 
 		// Setup Model Transforms
