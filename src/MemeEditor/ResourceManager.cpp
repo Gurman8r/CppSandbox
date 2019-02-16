@@ -8,10 +8,10 @@ namespace ml
 
 	ResourceManager::~ResourceManager() 
 	{
-		cleanAll();
+		cleanup();
 	}
 
-	void ResourceManager::cleanAll()
+	void ResourceManager::cleanup()
 	{
 		sounds.clear();
 		sprites.clear();

@@ -50,6 +50,7 @@ namespace ml
 				if (it->second)
 				{
 					delete it->second;
+					it->second = NULL;
 					count++;
 				}
 			}

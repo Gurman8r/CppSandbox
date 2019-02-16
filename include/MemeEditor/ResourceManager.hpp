@@ -37,7 +37,7 @@ namespace ml
 		~ResourceManager();
 
 	public:
-		void cleanAll();
+		void cleanup();
 
 	public:
 		FontMap		fonts;

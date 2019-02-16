@@ -23,9 +23,9 @@ namespace ml
 		static void		terminate(bool areYouSure);
 
 	public:
-		static int32_t logWarning(const String & message);	// - 1 true
-		static int32_t logError(const String & message);	//   0 false
-		static int32_t log(const String & message);			// + 1 true
+		static int32_t logWarning(const String & message); // - 1 true
+		static int32_t logError(const String & message);   //   0 false
+		static int32_t log(const String & message);		   // + 1 true
 
 	public:
 		template <class T, typename ... A>

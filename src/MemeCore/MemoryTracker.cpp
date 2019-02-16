@@ -74,8 +74,8 @@ namespace ml
 				m_records.erase(it);
 			}
 			free(ptr);
+			ptr = NULL;
 		}
-		value = NULL;
 	}
 
 	void MemoryTracker::serialize(std::ostream & out) const

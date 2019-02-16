@@ -18,7 +18,7 @@ int32_t main(int32_t argc, char ** argv)
 			|| ml::Debug::pause(EXIT_FAILURE);
 	}
 
-	// Create Demo
+	// Create Program
 	if (DEMO::Demo * program = new DEMO::Demo())
 	{
 		// Enter
@@ -63,10 +63,14 @@ int32_t main(int32_t argc, char ** argv)
 
 		// Exit
 		ML_EventSystem.fireEvent(DEMO::ExitEvent());
-
+		
 		delete program;
+
+		return EXIT_SUCCESS && ml::Debug::log("Goodbye");
 	}
-	return EXIT_SUCCESS;
+
+	return ml::Debug::logError("Failed Creating Program")
+		|| ml::Debug::pause(EXIT_FAILURE);
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

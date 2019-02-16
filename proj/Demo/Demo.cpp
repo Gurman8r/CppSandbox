@@ -38,13 +38,13 @@ namespace DEMO
 
 		switch (value->eventID())
 		{
-		case DemoEvent::EV_Enter:	onEnter(*value->Cast<EnterEvent>());	break;
-		case DemoEvent::EV_Load:	onLoad(*value->Cast<LoadEvent>());		break;
-		case DemoEvent::EV_Start:	onStart(*value->Cast<StartEvent>());	break;
-		case DemoEvent::EV_Update:	onUpdate(*value->Cast<UpdateEvent>());	break;
-		case DemoEvent::EV_Draw:	onDraw(*value->Cast<DrawEvent>());		break;
-		case DemoEvent::EV_Gui:		onGui(*value->Cast<GuiEvent>());		break;
-		case DemoEvent::EV_Exit:	onExit(*value->Cast<ExitEvent>());		break;
+		case DemoEvent::EV_Enter:	return onEnter(*value->Cast<EnterEvent>());
+		case DemoEvent::EV_Load:	return onLoad(*value->Cast<LoadEvent>());
+		case DemoEvent::EV_Start:	return onStart(*value->Cast<StartEvent>());
+		case DemoEvent::EV_Update:	return onUpdate(*value->Cast<UpdateEvent>());
+		case DemoEvent::EV_Draw:	return onDraw(*value->Cast<DrawEvent>());
+		case DemoEvent::EV_Gui:		return onGui(*value->Cast<GuiEvent>());
+		case DemoEvent::EV_Exit:	return onExit(*value->Cast<ExitEvent>());
 
 		case ml::WindowEvent::EV_WindowSize:
 			if (auto ev = value->Cast<ml::WindowSizeEvent>())
@@ -352,6 +352,37 @@ namespace DEMO
 			;
 	}
 
+	bool Demo::loadNetwork()
+	{
+		if ((SETTINGS.isServer || SETTINGS.isClient) && 
+			ml::Debug::log("Loading Network..."))
+		{
+			if (SETTINGS.isServer)
+			{
+				// Server Setup
+				if (ML_Server.setup())
+				{
+					if (ML_Server.start({ ML_LOCALHOST, ML_PORT }, ML_MAX_CLIENTS))
+					{
+						return ml::Debug::log("Server Started: {0}", ML_Server.getMyAddress());
+					}
+				}
+			}
+			else if(SETTINGS.isClient)
+			{
+				// Client Setup
+				if (ML_Client.setup())
+				{
+					if (ML_Client.connect({ ML_LOCALHOST, ML_PORT }, ""))
+					{
+						return ml::Debug::log("Client Connected: ");
+					}
+				}
+			}
+		}
+		return true;
+	}
+
 	bool Demo::loadShaders()
 	{
 		// Load Shaders
@@ -400,37 +431,6 @@ namespace DEMO
 			;
 	}
 
-	bool Demo::loadNetwork()
-	{
-		if ((SETTINGS.isServer || SETTINGS.isClient) && 
-			ml::Debug::log("Loading Network..."))
-		{
-			if (SETTINGS.isServer)
-			{
-				// Server Setup
-				if (ML_Server.setup())
-				{
-					if (ML_Server.start({ ML_LOCALHOST, ML_PORT }, ML_MAX_CLIENTS))
-					{
-						return ml::Debug::log("Server Started: {0}", ML_Server.getMyAddress());
-					}
-				}
-			}
-			else if(SETTINGS.isClient)
-			{
-				// Client Setup
-				if (ML_Client.setup())
-				{
-					if (ML_Client.connect({ ML_LOCALHOST, ML_PORT }, ""))
-					{
-						return ml::Debug::log("Client Connected: ");
-					}
-				}
-			}
-		}
-		return true;
-	}
-
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	void Demo::onEnter(const EnterEvent & ev)
@@ -468,20 +468,22 @@ namespace DEMO
 	{
 		ml::OpenGL::errorPause(SETTINGS.glErrorPause);
 
-		if (ml::Debug::log("Creating Window...") && create(
-			SETTINGS.title,
-			ml::VideoMode({ SETTINGS.width, SETTINGS.height }, SETTINGS.bitsPerPixel),
-			ml::Window::Style::Default,
-			ml::Context(
-				SETTINGS.majorVersion,
-				SETTINGS.minorVersion,
-				SETTINGS.profile,
-				SETTINGS.depthBits,
-				SETTINGS.stencilBits,
-				SETTINGS.multisample,
-				SETTINGS.srgbCapable)
-		)
-		&& setup() // Initialize OpenGL
+		if (ml::Debug::log("Creating Window...")
+			&& this->create(
+				SETTINGS.title,
+				ml::VideoMode({ SETTINGS.width, SETTINGS.height }, SETTINGS.bitsPerPixel),
+				ml::Window::Style::Default,
+				ml::Context(
+					SETTINGS.majorVersion,
+					SETTINGS.minorVersion,
+					SETTINGS.profile,
+					SETTINGS.depthBits,
+					SETTINGS.stencilBits,
+					SETTINGS.multisample,
+					SETTINGS.srgbCapable
+				)
+			)
+			&& this->setup() // Initialize OpenGL
 		)
 		{
 			this->setInputMode(ml::Cursor::Normal);
@@ -767,7 +769,6 @@ namespace DEMO
 			this->clear(ml::Color::White);
 			this->draw(*ML_Resources.models.get("quad"));
 		}
-
 
 		// Draw GUI
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -1060,7 +1061,7 @@ namespace DEMO
 	{
 		delete m_thread;
 
-		ML_Resources.cleanAll();
+		ML_Resources.cleanup();
 
 		ImGui_ML_Shutdown();
 	}

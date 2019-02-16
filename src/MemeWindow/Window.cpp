@@ -35,8 +35,7 @@ namespace ml
 	
 	Window::~Window() 
 	{
-		destroy();
-		terminate();
+		cleanup();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -84,6 +83,12 @@ namespace ml
 			return ml::Debug::logError("Failed to Create GLFW Window");
 		}
 		return ml::Debug::logError("Failed to Initialize GLFW");
+	}
+
+	void Window::cleanup()
+	{
+		destroy();
+		terminate();
 	}
 
 	bool Window::setup()

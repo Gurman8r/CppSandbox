@@ -12,7 +12,6 @@ namespace ml
 
 	Thread::~Thread()
 	{
-		wait();
 		cleanup();
 	}
 
@@ -20,14 +19,12 @@ namespace ml
 
 	Thread & Thread::cleanup()
 	{
-		if (m_fun)
-		{
-			delete m_fun;
-		}
-		if (m_thr)
-		{
-			delete m_thr;
-		}
+		wait();
+
+		if (m_thr) { delete m_thr; }
+		
+		if (m_fun) { delete m_fun; }
+
 		return (*this);
 	}
 
@@ -49,17 +46,12 @@ namespace ml
 		return (*this);
 	}
 
-	Thread & Thread::swap(Thread & other)
-	{
-		std::swap(m_fun, other.m_fun);
-		std::swap(m_thr, other.m_thr);
-		return other;
-	}
-
 	Thread & Thread::update(Function * fun)
 	{
 		if (m_fun != fun)
 		{
+			cleanup();
+
 			m_fun = fun;
 		}
 		return (*this);

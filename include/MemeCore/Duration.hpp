@@ -13,12 +13,12 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	using Hours		= typename std::chrono::hours;			// _h
-	using Minutes	= typename std::chrono::minutes;		// _m
-	using Seconds	= typename std::chrono::seconds;		// _s
-	using Millis	= typename std::chrono::milliseconds;	// _ms
-	using Micros	= typename std::chrono::microseconds;	// _us
-	using Nanos		= typename std::chrono::nanoseconds;	// _ns
+	using Hours		= typename std::chrono::hours;
+	using Minutes	= typename std::chrono::minutes;
+	using Seconds	= typename std::chrono::seconds;
+	using Millis	= typename std::chrono::milliseconds;
+	using Micros	= typename std::chrono::microseconds;
+	using Nanos		= typename std::chrono::nanoseconds;
 
 	/* * * * * * * * * * * * * * * * * * * * */
 

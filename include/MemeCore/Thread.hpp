@@ -49,7 +49,6 @@ namespace ml
 		Thread & cleanup();
 		Thread & detatch();
 		Thread & launch();
-		Thread & swap(Thread & other);
 		Thread & update(Function * fun);
 		Thread & wait();
 

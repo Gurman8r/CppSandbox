@@ -46,7 +46,7 @@ namespace DEMO
 		inline int32_t getError() const
 		{
 			int32_t temp = 1;
-			std::swap((int32_t &)m_error, temp);
+			std::swap(m_error, temp);
 			return temp;
 		}
 
@@ -60,10 +60,10 @@ namespace DEMO
 		bool	loadImages();
 		bool	loadInterpreter();
 		bool	loadModels();
+		bool	loadNetwork();
 		bool	loadShaders();
 		bool	loadSprites();
 		bool	loadTextures();
-		bool	loadNetwork();
 
 	private:
 		/* * * * * * * * * * * * * * * * * * * * */
