@@ -165,20 +165,22 @@ namespace DEMO
 	bool Demo::loadFonts()
 	{
 		// Load Fonts
-		return ml::Debug::log("Loading Fonts...") && ML_Resources.fonts.load({
-			{ "clacon",		SETTINGS.pathTo("fonts/clacon.ttf") },
-			{ "consolas",	SETTINGS.pathTo("fonts/consolas.ttf") },
-			{ "lconsole",	SETTINGS.pathTo("fonts/lucida_console.ttf") },
-			{ "minecraft",	SETTINGS.pathTo("fonts/minecraft.ttf") },
-		});
+		return ml::Debug::log("Loading Fonts...")
+			&& ML_Resources.fonts.load({
+				{ "clacon",		SETTINGS.pathTo("fonts/clacon.ttf") },
+				{ "consolas",	SETTINGS.pathTo("fonts/consolas.ttf") },
+				{ "lconsole",	SETTINGS.pathTo("fonts/lucida_console.ttf") },
+				{ "minecraft",	SETTINGS.pathTo("fonts/minecraft.ttf") },
+			});
 	}
 
 	bool Demo::loadImages()
 	{
 		// Load Images
-		return ml::Debug::log("Loading Images...") && ML_Resources.images.load({
-			{ "icon",		SETTINGS.pathTo("/images/dean.png")} 
-		});
+		return ml::Debug::log("Loading Images...") 
+			&& ML_Resources.images.load({
+				{ "icon",	SETTINGS.pathTo("/images/dean.png")} 
+			});
 	}
 
 	bool Demo::loadInterpreter()
@@ -339,27 +341,29 @@ namespace DEMO
 
 	bool Demo::loadModels()
 	{
-		return ml::Debug::log("Loading Models...") && ML_Resources.models.load({
-			{ "example",		SETTINGS.pathTo("/meshes/example.mesh") },
-			{ "sphere8x6",		SETTINGS.pathTo("/meshes/sphere8x6.mesh") },
-			{ "sphere32x24",	SETTINGS.pathTo("/meshes/sphere32x24.mesh") },
-		})
-		&& ML_Resources.models.load("cube")->loadFromMemory(ml::Shapes::Cube::Vertices, ml::Shapes::Cube::Indices)
-		&& ML_Resources.models.load("quad")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
-		;
+		return ml::Debug::log("Loading Models...") 
+			&& ML_Resources.models.load({
+				{ "cube1",		SETTINGS.pathTo("/meshes/cube.mesh") },
+				{ "sphere_lo",	SETTINGS.pathTo("/meshes/sphere8x6.mesh") },
+				{ "sphere_hi",	SETTINGS.pathTo("/meshes/sphere32x24.mesh") },
+			})
+			&& ML_Resources.models.load("cube")->loadFromMemory(ml::Shapes::Cube::Vertices, ml::Shapes::Cube::Indices)
+			&& ML_Resources.models.load("quad")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
+			;
 	}
 
 	bool Demo::loadShaders()
 	{
 		// Load Shaders
-		return ml::Debug::log("Loading Shaders...") && ML_Resources.shaders.load({
-			{ "basic3D",	SETTINGS.pathTo("/shaders/basic3D.shader") },
-			{ "sprites",	SETTINGS.pathTo("/shaders/sprites.shader") },
-			{ "text",		SETTINGS.pathTo("/shaders/text.shader") },
-			{ "geometry",	SETTINGS.pathTo("/shaders/geometry.shader") },
-			{ "framebuffer",SETTINGS.pathTo("/shaders/framebuffer.shader") },
-			//{ "lighting",	SETTINGS.pathTo("/shaders/lighting.shader") },
-		});
+		return ml::Debug::log("Loading Shaders...") 
+			&& ML_Resources.shaders.load({
+				{ "basic3D",	SETTINGS.pathTo("/shaders/basic3D.shader") },
+				{ "sprites",	SETTINGS.pathTo("/shaders/sprites.shader") },
+				{ "text",		SETTINGS.pathTo("/shaders/text.shader") },
+				{ "geometry",	SETTINGS.pathTo("/shaders/geometry.shader") },
+				{ "framebuffer",SETTINGS.pathTo("/shaders/framebuffer.shader") },
+				//{ "lighting",	SETTINGS.pathTo("/shaders/lighting.shader") },
+			});
 	}
 
 	bool Demo::loadSprites()
@@ -370,29 +374,30 @@ namespace DEMO
 	bool Demo::loadTextures()
 	{
 		// Load Textures
-		return ml::Debug::log("Loading Textures...") && ML_Resources.textures.load({
-			{ "dean",		SETTINGS.pathTo("/images/dean.png") },
-			{ "sanic",		SETTINGS.pathTo("/images/sanic.png") },
-			{ "earth",		SETTINGS.pathTo("/images/earth.png") },
-			//{ "bg_clouds",	SETTINGS.pathTo("/textures/bg/bg_clouds.png") },
-			//{ "sky_clouds", SETTINGS.pathTo("/textures/bg/sky_clouds.png") },
-			//{ "sky_water",	SETTINGS.pathTo("/textures/bg/sky_water.png") },
-			//{ "earth_cm",	SETTINGS.pathTo("/textures/earth/earth_cm_2k.png") },
-			//{ "earth_dm",	SETTINGS.pathTo("/textures/earth/earth_dm_2k.png") },
-			//{ "earth_hm",	SETTINGS.pathTo("/textures/earth/earth_hm_2k.png") },
-			//{ "earth_lm",	SETTINGS.pathTo("/textures/earth/earth_lm_2k.png") },
-			//{ "earth_nm",	SETTINGS.pathTo("/textures/earth/earth_nm_2k.png") },
-			//{ "earth_sm",	SETTINGS.pathTo("/textures/earth/earth_sm_2k.png") },
-			//{ "mars_dm",	SETTINGS.pathTo("/textures/mars/mars_dm_2k.png") },
-			//{ "mars_nm",	SETTINGS.pathTo("/textures/mars/mars_nm_2k.png") },
-			//{ "moon_dm",	SETTINGS.pathTo("/textures/moon/moon_dm_2k.png") },
-			//{ "moon_nm",	SETTINGS.pathTo("/textures/moon/moon_nm_2k.png") },
-			{ "stone_dm",	SETTINGS.pathTo("/textures/stone/stone_dm.png") },
-			{ "stone_hm",	SETTINGS.pathTo("/textures/stone/stone_hm.png") },
-			{ "stone_nm",	SETTINGS.pathTo("/textures/stone/stone_nm.png") },
-		})
-		&& ML_Resources.textures.load("framebuffer")->create(this->width(), this->height())
-		;
+		return ml::Debug::log("Loading Textures...") 
+			&& ML_Resources.textures.load({
+				{ "dean",		SETTINGS.pathTo("/images/dean.png") },
+				{ "sanic",		SETTINGS.pathTo("/images/sanic.png") },
+				{ "earth",		SETTINGS.pathTo("/images/earth.png") },
+				{ "stone_dm",	SETTINGS.pathTo("/textures/stone/stone_dm.png") },
+				{ "stone_hm",	SETTINGS.pathTo("/textures/stone/stone_hm.png") },
+				{ "stone_nm",	SETTINGS.pathTo("/textures/stone/stone_nm.png") },
+				//{ "bg_clouds",	SETTINGS.pathTo("/textures/bg/bg_clouds.png") },
+				//{ "sky_clouds", SETTINGS.pathTo("/textures/bg/sky_clouds.png") },
+				//{ "sky_water",	SETTINGS.pathTo("/textures/bg/sky_water.png") },
+				//{ "earth_cm",	SETTINGS.pathTo("/textures/earth/earth_cm_2k.png") },
+				//{ "earth_dm",	SETTINGS.pathTo("/textures/earth/earth_dm_2k.png") },
+				//{ "earth_hm",	SETTINGS.pathTo("/textures/earth/earth_hm_2k.png") },
+				//{ "earth_lm",	SETTINGS.pathTo("/textures/earth/earth_lm_2k.png") },
+				//{ "earth_nm",	SETTINGS.pathTo("/textures/earth/earth_nm_2k.png") },
+				//{ "earth_sm",	SETTINGS.pathTo("/textures/earth/earth_sm_2k.png") },
+				//{ "mars_dm",	SETTINGS.pathTo("/textures/mars/mars_dm_2k.png") },
+				//{ "mars_nm",	SETTINGS.pathTo("/textures/mars/mars_nm_2k.png") },
+				//{ "moon_dm",	SETTINGS.pathTo("/textures/moon/moon_dm_2k.png") },
+				//{ "moon_nm",	SETTINGS.pathTo("/textures/moon/moon_nm_2k.png") },
+			})
+			&& ML_Resources.textures.load("framebuffer")->create(this->size())
+			;
 	}
 
 	bool Demo::loadNetwork()
@@ -549,7 +554,7 @@ namespace DEMO
 		ML_Resources.models.get("quad")->transform()
 			.translate({ -5.0f, 0.0f, 0.0f });
 		
-		ML_Resources.models.get("sphere32x24")->transform()
+		ML_Resources.models.get("sphere_hi")->transform()
 			.translate({ 0.0f, 0.0f, 0.0f });
 
 		// Static Text
@@ -575,7 +580,10 @@ namespace DEMO
 			cout << endl;
 			Debug::log("Exiting Thread");
 		});
-		//m_thread->launch();
+		if (SETTINGS.enableThreads)
+		{
+			m_thread->launch();
+		}
 	}
 	
 	void Demo::onUpdate(const UpdateEvent & ev)
@@ -607,7 +615,7 @@ namespace DEMO
 				.rotate(+ev.elapsed.delta(), ml::vec3f::One)
 				.scale(ml::vec3f::One);
 
-			ML_Resources.models.get("sphere32x24")->transform()
+			ML_Resources.models.get("sphere_hi")->transform()
 				.translate(ml::vec3f::Zero)
 				.rotate((m_animate ? ev.elapsed.delta() : 0.f), ml::vec3f::Up)
 				.scale(ml::vec3f::One);
@@ -651,7 +659,7 @@ namespace DEMO
 			}
 			
 			// Sphere32x24
-			if (const ml::Model * model = ML_Resources.models.get("sphere32x24"))
+			if (const ml::Model * model = ML_Resources.models.get("sphere_hi"))
 			{
 				static ml::UniformSet uniforms = {
 					ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
@@ -877,7 +885,7 @@ namespace DEMO
 					{
 						ImGui::Checkbox("Animate", &m_animate);
 
-						ml::Transform & temp = ML_Resources.models.get("sphere32x24")->transform();
+						ml::Transform & temp = ML_Resources.models.get("sphere_hi")->transform();
 
 						ML_Editor.InputTransform("Matrix", temp);
 

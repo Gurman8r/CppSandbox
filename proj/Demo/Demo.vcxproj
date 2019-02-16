@@ -154,7 +154,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="..\..\assets\meshes\example.mesh" />
+    <None Include="..\..\assets\meshes\cube.mesh" />
     <None Include="..\..\assets\meshes\sphere32x24.mesh" />
     <None Include="..\..\assets\meshes\sphere8x6.mesh" />
     <None Include="..\..\assets\scripts\fibonacci.meme" />
@@ -234,6 +234,9 @@
     <ClInclude Include="Demo.hpp" />
     <ClInclude Include="InterpreterConsole.hpp" />
     <ClInclude Include="Settings.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\assets\manifest.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

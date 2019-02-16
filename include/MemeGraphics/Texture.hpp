@@ -32,6 +32,7 @@ namespace ml
 			uint32_t x, 
 			uint32_t y);
 
+		bool create(const vec2u & size);
 		bool create(uint32_t width, uint32_t height);
 		bool create(
 			const uint8_t * pixels, 

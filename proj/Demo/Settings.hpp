@@ -25,8 +25,9 @@ namespace DEMO
 		ml::String	rootPath;		// Solution Dir
 		ml::String	assetPath;		// Where's all the npos?
 		uint32_t	runTests;		// Run test functions
-		bool		verboseLog;		// Verbose loading output
+		bool		verboseLog;		// Verbose log output
 		bool		escapeIsExit;	// Escape key is Exit?
+		bool		enableThreads;	// Enable threads?
 
 		// [Script]
 		ml::String	scrPath;		// Location of scripts
@@ -77,6 +78,7 @@ namespace DEMO
 				runTests	 = ini.GetInteger("General", "runTests", false);
 				verboseLog	 = ini.GetBoolean("General", "verboseLog", false);
 				escapeIsExit = ini.GetBoolean("General", "escapeIsExit", true);
+				enableThreads= ini.GetBoolean("General", "enableThreads", false);
 
 				// [Script]
 				scrPath		 = ini.Get("Script", "scrPath", "scripts/");

@@ -54,6 +54,9 @@
     <ClInclude Include="..\..\include\MemeEditor\ResourceManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeEditor\Manifest.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeEditor\Editor.cpp">
@@ -75,6 +78,9 @@
       <Filter>Source Files\imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\ResourceManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeEditor\Manifest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

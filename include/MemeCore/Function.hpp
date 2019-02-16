@@ -72,7 +72,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	template <typename T, typename A, typename F = void(T::*)()>
+	template <typename T, typename A, typename F = void(T::*)(A)>
 	class MemberArgFun final : public Function
 	{
 		F	m_fun;

@@ -10,6 +10,9 @@ namespace ml
 
 	template <typename Key, typename Val>
 	using HashMap = std::unordered_map<Key, Val>;
+
+	template <typename Key, typename Val>
+	using Pair = std::pair<Key, Val>;
 }
 
 #endif // !_ML_MAP_HPP_

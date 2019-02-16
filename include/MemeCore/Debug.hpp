@@ -9,7 +9,7 @@ namespace ml
 	class ML_CORE_API Debug final
 	{
 	public:
-		enum Status : int32_t
+		enum : int32_t
 		{
 			Warning = -1,
 			Error	=  0,
@@ -23,25 +23,25 @@ namespace ml
 		static void		terminate(bool areYouSure);
 
 	public:
-		static Status logWarning(const String & message);	// - 1 true
-		static Status logError(const String & message);		//   0 false
-		static Status log(const String & message);			// + 1 true
+		static int32_t logWarning(const String & message);	// - 1 true
+		static int32_t logError(const String & message);	//   0 false
+		static int32_t log(const String & message);			// + 1 true
 
 	public:
 		template <class T, typename ... A>
-		inline static Status logWarning(const String & fmt, const T & arg0, const A &... args)
+		inline static int32_t logWarning(const String & fmt, const T & arg0, const A &... args)
 		{
 			return Debug::logWarning(String::Format(fmt, arg0, (args)...));
 		}
 
 		template <class T, typename ... A>
-		inline static Status logError(const String & fmt, const T & arg0, const A &... args)
+		inline static int32_t logError(const String & fmt, const T & arg0, const A &... args)
 		{
 			return Debug::logError(String::Format(fmt, arg0, (args)...));
 		}
 
 		template <class T, typename ... A>
-		inline static Status log(const String & fmt, const T & arg0, const A &... args)
+		inline static int32_t log(const String & fmt, const T & arg0, const A &... args)
 		{
 			return Debug::log(String::Format(fmt, arg0, (args)...));
 		}

@@ -43,7 +43,7 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 		void onEvent(const ml::Event * value) override;
 
-		inline const int32_t getError() const
+		inline int32_t getError() const
 		{
 			int32_t temp = 1;
 			std::swap((int32_t &)m_error, temp);
@@ -79,7 +79,7 @@ namespace DEMO
 	private:
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		mutable ml::Debug::Status m_error;
+		mutable int32_t m_error;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 

@@ -14,7 +14,7 @@ namespace ml
 	
 	void EventSystem::removeListener(const int32_t & type, IEventListener * listener)
 	{
-		std::pair<
+		Pair<
 			std::multimap<int32_t, IEventListener *>::iterator,
 			std::multimap<int32_t, IEventListener *>::iterator> ret;
 
@@ -59,7 +59,7 @@ namespace ml
 
 	void EventSystem::dispatchAllEvents(const Event * ev)
 	{
-		std::pair<
+		Pair<
 			std::multimap<int32_t, IEventListener *>::iterator,
 			std::multimap<int32_t, IEventListener *>::iterator> ret;
 

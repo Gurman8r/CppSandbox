@@ -37,7 +37,7 @@ namespace ml
 	}
 
 
-	Debug::Status Debug::logWarning(const String & message)
+	int32_t Debug::logWarning(const String & message)
 	{
 		ml::cout
 			<< FMT()
@@ -49,7 +49,7 @@ namespace ml
 		return Debug::Warning;
 	}
 
-	Debug::Status Debug::logError(const String & message)
+	int32_t Debug::logError(const String & message)
 	{
 		ml::cout
 			<< FMT()
@@ -61,7 +61,7 @@ namespace ml
 		return Debug::Error;
 	}
 	
-	Debug::Status Debug::log(const String & message)
+	int32_t Debug::log(const String & message)
 	{
 		ml::cout
 			<< FMT()

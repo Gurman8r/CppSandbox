@@ -30,7 +30,7 @@ namespace ml
 
 		using PointerMap	= HashMap<String, pointer>;
 		using FileMap		= HashMap<String, String>;
-		using Pair			= std::pair<String, pointer>;
+		using Pair			= Pair<String, pointer>;
 		
 		using iterator		= typename PointerMap::iterator;
 		using const_iterator= typename PointerMap::const_iterator;
@@ -40,11 +40,7 @@ namespace ml
 		~ResourceMap() { clear(); }
 
 	public:
-		inline pointer assign(const String & name, pointer value)
-		{
-			m_data[name] = value;
-			return get(name);
-		}
+		/* * * * * * * * * * * * * * * * * * * * */
 
 		inline size_t clear()
 		{
@@ -54,7 +50,6 @@ namespace ml
 				if (it->second)
 				{
 					delete it->second;
-					it->second = NULL;
 					count++;
 				}
 			}
@@ -68,12 +63,13 @@ namespace ml
 			if ((it = find(name)) != end())
 			{
 				delete it->second;
-				it->second = NULL;
 				m_data.erase(it);
 				return !get(name);
 			}
 			return false;
 		}
+
+		/* * * * * * * * * * * * * * * * * * * * */
 
 		inline iterator find(const String & name)
 		{
@@ -84,6 +80,8 @@ namespace ml
 		{
 			return m_data.find(name);
 		}
+
+		/* * * * * * * * * * * * * * * * * * * * */
 
 		inline const_pointer get(const String & name) const
 		{
@@ -101,6 +99,8 @@ namespace ml
 				: NULL;
 		}
 
+		/* * * * * * * * * * * * * * * * * * * * */
+
 		inline const PointerMap & getAll() const
 		{
 			return m_data;
@@ -111,11 +111,13 @@ namespace ml
 			return m_data;
 		}
 
+		/* * * * * * * * * * * * * * * * * * * * */
+
 		inline pointer load(const String & name)
 		{
 			return (get(name)
 				? NULL
-				: assign(name, new value_type()));
+				: set(name, new value_type()));
 		}
 
 		inline pointer load(const String & name, const String & filename)
@@ -127,7 +129,7 @@ namespace ml
 					pointer temp = new value_type();
 					if (temp->loadFromFile(filename))
 					{
-						return assign(name, temp);
+						return set(name, temp);
 					}
 					delete temp;
 				}
@@ -139,7 +141,7 @@ namespace ml
 			return NULL;
 		}
 
-		inline size_t load(const FileMap & files)
+		inline bool load(const FileMap & files)
 		{
 			size_t count = 0;
 			for (FileMap::const_iterator it = files.cbegin(); it != files.end(); it++)
@@ -156,6 +158,16 @@ namespace ml
 			}
 			return count;
 		}
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		inline pointer set(const String & name, pointer value)
+		{
+			m_data[name] = value;
+			return get(name);
+		}
+
+		/* * * * * * * * * * * * * * * * * * * * */
 
 	public:
 		inline iterator			begin()			{ return m_data.begin();  }

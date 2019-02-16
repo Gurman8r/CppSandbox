@@ -141,6 +141,11 @@ namespace ml
 	}
 
 
+	bool Texture::create(const vec2u & size)
+	{
+		return create(size[0], size[1]);
+	}
+
 	bool Texture::create(uint32_t width, uint32_t height)
 	{
 		return create(

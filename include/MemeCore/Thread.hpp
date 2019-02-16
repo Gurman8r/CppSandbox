@@ -38,7 +38,7 @@ namespace ml
 			update(new MemberFun<T, F>(fun, obj));
 		}
 
-		template <typename T, typename A, typename F = void(T::*)()>
+		template <typename T, typename A, typename F = void(T::*)(A)>
 		Thread(F fun, T * obj, A arg)
 			: Thread()
 		{
