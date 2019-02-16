@@ -347,6 +347,7 @@ namespace DEMO
 				{ "sphere_lo",	SETTINGS.pathTo("/meshes/sphere8x6.mesh") },
 				{ "sphere_hi",	SETTINGS.pathTo("/meshes/sphere32x24.mesh") },
 			})
+			&& ML_Resources.models.load("tri")->loadFromMemory(ml::Shapes::Triangle::Vertices, ml::Shapes::Triangle::Indices)
 			&& ML_Resources.models.load("cube")->loadFromMemory(ml::Shapes::Cube::Vertices, ml::Shapes::Cube::Indices)
 			&& ML_Resources.models.load("quad")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
 			;
@@ -393,7 +394,7 @@ namespace DEMO
 				{ "text",		SETTINGS.pathTo("/shaders/text.shader") },
 				{ "geometry",	SETTINGS.pathTo("/shaders/geometry.shader") },
 				{ "framebuffer",SETTINGS.pathTo("/shaders/framebuffer.shader") },
-				//{ "lighting",	SETTINGS.pathTo("/shaders/lighting.shader") },
+				{ "lighting",	SETTINGS.pathTo("/shaders/lighting.shader") },
 			});
 	}
 
@@ -409,19 +410,24 @@ namespace DEMO
 			&& ML_Resources.textures.load({
 				{ "dean",		SETTINGS.pathTo("/images/dean.png") },
 				{ "sanic",		SETTINGS.pathTo("/images/sanic.png") },
-				{ "earth",		SETTINGS.pathTo("/images/earth.png") },
+				{ "earth_cm",	SETTINGS.pathTo("/textures/earth_lo/earth_cm.png") },
+				{ "earth_dm",	SETTINGS.pathTo("/textures/earth_lo/earth_dm.png") },
+				{ "earth_hm",	SETTINGS.pathTo("/textures/earth_lo/earth_hm.png") },
+				{ "earth_lm",	SETTINGS.pathTo("/textures/earth_lo/earth_lm.png") },
+				{ "earth_nm",	SETTINGS.pathTo("/textures/earth_lo/earth_nm.png") },
+				{ "earth_sm",	SETTINGS.pathTo("/textures/earth_lo/earth_sm.png") },
 				{ "stone_dm",	SETTINGS.pathTo("/textures/stone/stone_dm.png") },
 				{ "stone_hm",	SETTINGS.pathTo("/textures/stone/stone_hm.png") },
 				{ "stone_nm",	SETTINGS.pathTo("/textures/stone/stone_nm.png") },
 				//{ "bg_clouds",	SETTINGS.pathTo("/textures/bg/bg_clouds.png") },
 				//{ "sky_clouds", SETTINGS.pathTo("/textures/bg/sky_clouds.png") },
 				//{ "sky_water",	SETTINGS.pathTo("/textures/bg/sky_water.png") },
-				//{ "earth_cm",	SETTINGS.pathTo("/textures/earth/earth_cm_2k.png") },
-				//{ "earth_dm",	SETTINGS.pathTo("/textures/earth/earth_dm_2k.png") },
-				//{ "earth_hm",	SETTINGS.pathTo("/textures/earth/earth_hm_2k.png") },
-				//{ "earth_lm",	SETTINGS.pathTo("/textures/earth/earth_lm_2k.png") },
-				//{ "earth_nm",	SETTINGS.pathTo("/textures/earth/earth_nm_2k.png") },
-				//{ "earth_sm",	SETTINGS.pathTo("/textures/earth/earth_sm_2k.png") },
+				//{ "earth_cm",	SETTINGS.pathTo("/textures/earth_hi/earth_cm_2k.png") },
+				//{ "earth_dm",	SETTINGS.pathTo("/textures/earth_hi/earth_dm_2k.png") },
+				//{ "earth_hm",	SETTINGS.pathTo("/textures/earth_hi/earth_hm_2k.png") },
+				//{ "earth_lm",	SETTINGS.pathTo("/textures/earth_hi/earth_lm_2k.png") },
+				//{ "earth_nm",	SETTINGS.pathTo("/textures/earth_hi/earth_nm_2k.png") },
+				//{ "earth_sm",	SETTINGS.pathTo("/textures/earth_hi/earth_sm_2k.png") },
 				//{ "mars_dm",	SETTINGS.pathTo("/textures/mars/mars_dm_2k.png") },
 				//{ "mars_nm",	SETTINGS.pathTo("/textures/mars/mars_nm_2k.png") },
 				//{ "moon_dm",	SETTINGS.pathTo("/textures/moon/moon_dm_2k.png") },
@@ -546,7 +552,6 @@ namespace DEMO
 		);
 
 		// Camera
-		m_camPos = { 0.0f, 0.0f, 10.0f };
 		m_camera.lookAt(m_camPos, m_camPos + ml::vec3f::Back, ml::vec3f::Up);
 
 		// Setup Model Transforms
@@ -664,13 +669,16 @@ namespace DEMO
 			if (const ml::Model * model = ML_Resources.models.get("sphere_hi"))
 			{
 				static ml::UniformSet uniforms = {
-					ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
-					ml::Uniform("u_view",	ml::Uniform::Mat4,	&m_camera.matrix()),
-					ml::Uniform("u_model",	ml::Uniform::Mat4,	&model->transform().matrix()),
-					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
-					ml::Uniform("u_texture",ml::Uniform::Tex2D,	ML_Resources.textures.get("earth")),
+					ml::Uniform("u_proj",		ml::Uniform::Mat4,	&m_persp.matrix()),
+					ml::Uniform("u_view",		ml::Uniform::Mat4,	&m_camera.matrix()),
+					ml::Uniform("u_model",		ml::Uniform::Mat4,	&model->transform().matrix()),
+					ml::Uniform("u_color",		ml::Uniform::Vec4,	&ml::Color::White),
+					ml::Uniform("u_lightPos",	ml::Uniform::Vec3,	&m_camPos),
+					ml::Uniform("u_lightCol",	ml::Uniform::Vec4,	&m_lightCol),
+					ml::Uniform("u_ambient",	ml::Uniform::Float, &m_ambient),
+					ml::Uniform("u_texture",	ml::Uniform::Tex2D,	ML_Resources.textures.get("earth_dm")),
 				};
-				if (const ml::Shader * shader = ML_Resources.shaders.get("basic3D"))
+				if (const ml::Shader * shader = ML_Resources.shaders.get("lighting"))
 				{
 					shader->setUniforms(uniforms);
 					shader->bind();
@@ -872,6 +880,13 @@ namespace DEMO
 					if (ImGui::BeginTabItem("Framebuffer"))
 					{
 						ImGui::SliderInt("FBO Mode", &m_fboMode, 0, 4);
+						ImGui::EndTabItem();
+					}
+					if (ImGui::BeginTabItem("Lighting"))
+					{
+						ML_Editor.InputVec3f("Light Position", m_lightPos);
+						ImGui::ColorEdit4("Light Color", &m_lightCol[0]);
+						ImGui::DragFloat("Light Ambient", &m_ambient, 1.f, 0.1f, 10.f);
 						ImGui::EndTabItem();
 					}
 					if (ImGui::BeginTabItem("Geometry"))

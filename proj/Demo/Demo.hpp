@@ -105,9 +105,14 @@ namespace DEMO
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		ml::vec3f	m_camPos;
+		ml::vec3f	m_camPos	= { 0.f, 0.f, 10.f };
+		float		m_camSpd	= 1.0f;
+		ml::vec3f	m_lightPos	= ml::vec3f::Zero;
+		ml::vec4f	m_lightCol	= ml::Color::White;
+		float		m_ambient	= 1.f;
+
 		ml::vec4f	m_clearColor	= ml::Color::Violet;
-		int32_t		m_fboMode		= 3;
+		int32_t		m_fboMode		= 0;
 		int32_t		m_lineMode		= 1;
 		ml::vec4f	m_lineColor		= ml::Color::Red;
 		float		m_lineDelta		= 1.f;

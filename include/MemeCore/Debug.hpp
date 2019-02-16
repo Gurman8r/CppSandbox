@@ -20,7 +20,7 @@ namespace ml
 		static int32_t	clear();
 		static void		exit(int32_t exitCode);
 		static int32_t	pause(int32_t exitCode);
-		static void		terminate(bool areYouSure);
+		static void		terminate();
 
 	public:
 		static int32_t logWarning(const String & message); // - 1 true

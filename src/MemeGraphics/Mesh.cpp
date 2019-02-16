@@ -113,8 +113,8 @@ namespace ml
 				{
 					lineStream >> line;
 
-					SStream indexStream(line);
-					while (std::getline(indexStream, line, '/'))
+					SStream valueStream(line);
+					while (std::getline(valueStream, line, '/'))
 					{
 						vf.back().push_back(std::stoi(line));
 					}
@@ -149,10 +149,11 @@ namespace ml
 
 		for (size_t i = 0, imax = m_vertices.size(); i < imax; i++)
 		{
-			m_vertices[i] = Vertex(
-				vp[vi[i]], 
-				vec4f(vn[vi[i]], 1.0f),
-				vt[ti[i]]);
+			const vec3f p = vp[vi[i]];
+			const vec4f n = vec4f(vn[vi[i]], 1.0f);
+			const vec2f t = vt[ti[i]];
+
+			m_vertices[i] = Vertex(p, n, t);
 		}
 
 		m_contiguous = m_vertices.contiguous();

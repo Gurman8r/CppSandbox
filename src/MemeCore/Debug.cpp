@@ -29,11 +29,9 @@ namespace ml
 		return exitCode;
 	}
 
-	void Debug::terminate(bool areYouSure)
+	void Debug::terminate()
 	{
-		return ((areYouSure)
-			? std::terminate()
-			: void());
+		return std::terminate();
 	}
 
 

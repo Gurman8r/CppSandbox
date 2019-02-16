@@ -20,9 +20,6 @@
     <Filter Include="Resource Files\meshes">
       <UniqueIdentifier>{698365e7-9b18-4357-942c-0422c5cab989}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\scripts">
-      <UniqueIdentifier>{59483728-d1a2-4120-9e4c-e3fdf1e83de8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\shaders">
       <UniqueIdentifier>{f0ce37f6-161c-4c7e-9b01-30e5675bfdc0}</UniqueIdentifier>
     </Filter>
@@ -68,9 +65,6 @@
     <Filter Include="Resource Files\textures\bg">
       <UniqueIdentifier>{429d3244-a0c2-4ebb-a7c4-ecd4f6fc52c0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\textures\earth">
-      <UniqueIdentifier>{a6a1c69a-2efc-4182-b2f6-3774554e5bb3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\textures\mars">
       <UniqueIdentifier>{0cf74065-1eb0-40f0-bef7-73636e1e6991}</UniqueIdentifier>
     </Filter>
@@ -79,6 +73,15 @@
     </Filter>
     <Filter Include="Resource Files\textures\stone">
       <UniqueIdentifier>{51081792-8bda-4c88-a5d5-d30941816518}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\scripts">
+      <UniqueIdentifier>{59483728-d1a2-4120-9e4c-e3fdf1e83de8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\textures\earth_hi">
+      <UniqueIdentifier>{a6a1c69a-2efc-4182-b2f6-3774554e5bb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\textures\earth_lo">
+      <UniqueIdentifier>{37f3295d-b266-4015-b79e-77d9a2b91aed}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -211,6 +214,18 @@
     <None Include="..\..\assets\meshes\cube.mesh">
       <Filter>Resource Files\meshes</Filter>
     </None>
+    <None Include="..\..\assets\meshes\teapot.mesh">
+      <Filter>Resource Files\meshes</Filter>
+    </None>
+    <None Include="..\..\assets\meshes\cow.mesh">
+      <Filter>Resource Files\meshes</Filter>
+    </None>
+    <None Include="..\..\assets\meshes\pumpkin.mesh">
+      <Filter>Resource Files\meshes</Filter>
+    </None>
+    <None Include="..\..\assets\meshes\teddy.mesh">
+      <Filter>Resource Files\meshes</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="..\..\assets\fonts\clacon.ttf">
@@ -257,24 +272,6 @@
     <Image Include="..\..\assets\textures\mars\mars_nm_2k.png">
       <Filter>Resource Files\textures\mars</Filter>
     </Image>
-    <Image Include="..\..\assets\textures\earth\earth_cm_2k.png">
-      <Filter>Resource Files\textures\earth</Filter>
-    </Image>
-    <Image Include="..\..\assets\textures\earth\earth_dm_2k.png">
-      <Filter>Resource Files\textures\earth</Filter>
-    </Image>
-    <Image Include="..\..\assets\textures\earth\earth_hm_2k.png">
-      <Filter>Resource Files\textures\earth</Filter>
-    </Image>
-    <Image Include="..\..\assets\textures\earth\earth_lm_2k.png">
-      <Filter>Resource Files\textures\earth</Filter>
-    </Image>
-    <Image Include="..\..\assets\textures\earth\earth_nm_2k.png">
-      <Filter>Resource Files\textures\earth</Filter>
-    </Image>
-    <Image Include="..\..\assets\textures\earth\earth_sm_2k.png">
-      <Filter>Resource Files\textures\earth</Filter>
-    </Image>
     <Image Include="..\..\assets\textures\bg\bg_clouds.png">
       <Filter>Resource Files\textures\bg</Filter>
     </Image>
@@ -283,6 +280,42 @@
     </Image>
     <Image Include="..\..\assets\textures\bg\sky_water.png">
       <Filter>Resource Files\textures\bg</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\earth_lo\earth_cm.png">
+      <Filter>Resource Files\textures\earth_lo</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\earth_lo\earth_dm.png">
+      <Filter>Resource Files\textures\earth_lo</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\earth_lo\earth_hm.png">
+      <Filter>Resource Files\textures\earth_lo</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\earth_lo\earth_lm.png">
+      <Filter>Resource Files\textures\earth_lo</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\earth_lo\earth_nm.png">
+      <Filter>Resource Files\textures\earth_lo</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\earth_lo\earth_sm.png">
+      <Filter>Resource Files\textures\earth_lo</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\earth_hi\earth_cm_2k.png">
+      <Filter>Resource Files\textures\earth_hi</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\earth_hi\earth_dm_2k.png">
+      <Filter>Resource Files\textures\earth_hi</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\earth_hi\earth_hm_2k.png">
+      <Filter>Resource Files\textures\earth_hi</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\earth_hi\earth_lm_2k.png">
+      <Filter>Resource Files\textures\earth_hi</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\earth_hi\earth_nm_2k.png">
+      <Filter>Resource Files\textures\earth_hi</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\earth_hi\earth_sm_2k.png">
+      <Filter>Resource Files\textures\earth_hi</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

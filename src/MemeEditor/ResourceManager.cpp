@@ -8,7 +8,6 @@ namespace ml
 
 	ResourceManager::~ResourceManager() 
 	{
-		cleanup();
 	}
 
 	void ResourceManager::cleanup()

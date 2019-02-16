@@ -154,9 +154,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="..\..\assets\meshes\cow.mesh" />
     <None Include="..\..\assets\meshes\cube.mesh" />
+    <None Include="..\..\assets\meshes\pumpkin.mesh" />
     <None Include="..\..\assets\meshes\sphere32x24.mesh" />
     <None Include="..\..\assets\meshes\sphere8x6.mesh" />
+    <None Include="..\..\assets\meshes\teapot.mesh" />
+    <None Include="..\..\assets\meshes\teddy.mesh" />
     <None Include="..\..\assets\scripts\fibonacci.meme" />
     <None Include="..\..\assets\scripts\files.meme" />
     <None Include="..\..\assets\scripts\hello.meme" />
@@ -211,12 +215,18 @@
     <Image Include="..\..\assets\textures\bg\bg_clouds.png" />
     <Image Include="..\..\assets\textures\bg\sky_clouds.png" />
     <Image Include="..\..\assets\textures\bg\sky_water.png" />
-    <Image Include="..\..\assets\textures\earth\earth_cm_2k.png" />
-    <Image Include="..\..\assets\textures\earth\earth_dm_2k.png" />
-    <Image Include="..\..\assets\textures\earth\earth_hm_2k.png" />
-    <Image Include="..\..\assets\textures\earth\earth_lm_2k.png" />
-    <Image Include="..\..\assets\textures\earth\earth_nm_2k.png" />
-    <Image Include="..\..\assets\textures\earth\earth_sm_2k.png" />
+    <Image Include="..\..\assets\textures\earth_hi\earth_cm_2k.png" />
+    <Image Include="..\..\assets\textures\earth_hi\earth_dm_2k.png" />
+    <Image Include="..\..\assets\textures\earth_hi\earth_hm_2k.png" />
+    <Image Include="..\..\assets\textures\earth_hi\earth_lm_2k.png" />
+    <Image Include="..\..\assets\textures\earth_hi\earth_nm_2k.png" />
+    <Image Include="..\..\assets\textures\earth_hi\earth_sm_2k.png" />
+    <Image Include="..\..\assets\textures\earth_lo\earth_cm.png" />
+    <Image Include="..\..\assets\textures\earth_lo\earth_dm.png" />
+    <Image Include="..\..\assets\textures\earth_lo\earth_hm.png" />
+    <Image Include="..\..\assets\textures\earth_lo\earth_lm.png" />
+    <Image Include="..\..\assets\textures\earth_lo\earth_nm.png" />
+    <Image Include="..\..\assets\textures\earth_lo\earth_sm.png" />
     <Image Include="..\..\assets\textures\mars\mars_dm_2k.png" />
     <Image Include="..\..\assets\textures\mars\mars_nm_2k.png" />
     <Image Include="..\..\assets\textures\moon\moon_dm_2k.png" />
