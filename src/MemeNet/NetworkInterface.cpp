@@ -19,7 +19,7 @@ namespace ml
 	
 	NetworkInterface::~NetworkInterface()
 	{
-		cleanup();
+		clean();
 	}
 
 
@@ -28,7 +28,7 @@ namespace ml
 		return (!m_peer && (m_peer = ML_PEER(RakNet::RakPeerInterface::GetInstance())));
 	}
 
-	void NetworkInterface::cleanup()
+	void NetworkInterface::clean()
 	{
 		if (m_peer)
 		{

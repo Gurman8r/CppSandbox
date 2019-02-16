@@ -46,7 +46,7 @@ namespace ml
 		}
 
 	public:
-		Thread & cleanup();
+		Thread & clean();
 		Thread & detatch();
 		Thread & launch();
 		Thread & update(Function * fun);

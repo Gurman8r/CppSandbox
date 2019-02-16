@@ -25,7 +25,7 @@ namespace ml
 			AddLog("# Type \'help\' for a list of commands.");
 			ExecCommand(ml::String("exec " + SETTINGS.pathTo(SETTINGS.scrPath + SETTINGS.scrFile)).c_str());
 
-			Commands.push_back("clear");
+			Commands.push_back("clearChildren");
 			Commands.push_back("command");
 			Commands.push_back("if");
 			Commands.push_back("elif");
@@ -197,7 +197,7 @@ namespace ml
 				}
 			History.push_back(Strdup(command_line));
 
-			if (String(command_line) == "clear")
+			if (String(command_line) == "clearChildren")
 			{
 				ClearLog();
 			}

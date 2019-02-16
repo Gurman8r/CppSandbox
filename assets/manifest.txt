@@ -1,44 +1,57 @@
-path ../../../assets/
+# Root Path
+#***********************************************************************#
+path: ../../../assets/
 
-font clacon			/fonts/clacon.ttf
-font consolas		/fonts/consolas.ttf
-font lconsole		/fonts/lucida_console.ttf
-font minecraft		/fonts/minecraft.ttf
+# Images
+#***********************************************************************#
+image:		icon			/images/dean.png
 
-image	icon		/images/dean.png
+# Fonts
+#***********************************************************************#
+font:		clacon			/fonts/clacon.ttf
+font:		consolas		/fonts/consolas.ttf
+font:		lconsole		/fonts/lucida_console.ttf
+font:		minecraft		/fonts/minecraft.ttf
 
-texture dean		/images/dean.png
-texture sanic		/images/sanic.png
-texture earth_cm	/textures/earth_lo/earth_cm.png
-texture earth_dm 	/textures/earth_lo/earth_dm.png
-texture earth_hm 	/textures/earth_lo/earth_hm.png
-texture earth_lm 	/textures/earth_lo/earth_lm.png
-texture earth_nm 	/textures/earth_lo/earth_nm.png
-texture earth_sm 	/textures/earth_lo/earth_sm.png
-texture stone_dm	/textures/stone/stone_dm.png
-texture stone_hm	/textures/stone/stone_hm.png
-texture stone_nm	/textures/stone/stone_nm.png
-#texture bg_clouds	/textures/bg/bg_clouds.png
-#texture sky_clouds /textures/bg/sky_clouds.png
-#texture sky_water	/textures/bg/sky_water.png
-#texture earth_cm	/textures/earth_hi/earth_cm_2k.png
-#texture earth_dm	/textures/earth_hi/earth_dm_2k.png
-#texture earth_hm	/textures/earth_hi/earth_hm_2k.png
-#texture earth_lm	/textures/earth_hi/earth_lm_2k.png
-#texture earth_nm	/textures/earth_hi/earth_nm_2k.png
-#texture earth_sm	/textures/earth_hi/earth_sm_2k.png
-#texture mars_dm	/textures/mars/mars_dm_2k.png
-#texture mars_nm	/textures/mars/mars_nm_2k.png
-#texture moon_dm	/textures/moon/moon_dm_2k.png
-#texture moon_nm	/textures/moon/moon_nm_2k.png
+# Models
+#***********************************************************************#
+model:		cube1			/meshes/cube.mesh
+model:		sphere_lo		/meshes/sphere8x6.mesh
+model:		sphere_hi		/meshes/sphere32x24.mesh
 
-shader basic3D		/shaders/basic3D.shader
-shader basic2D		/shaders/basic2D.shader
-shader text			/shaders/text.shader
-shader geometry		/shaders/geometry.shader
-shader framebuffer	/shaders/framebuffer.shader
-shader lighting		/shaders/lighting.shader
+# Shaders
+#***********************************************************************#
+shader:		basic3D			/shaders/basic3D.shader
+shader:		basic2D			/shaders/basic2D.shader
+shader:		text			/shaders/text.shader
+shader:		geometry		/shaders/geometry.shader
+shader:		framebuffer		/shaders/framebuffer.shader
+shader:		lighting		/shaders/lighting.shader
 
-model cube1			/meshes/cube.mesh
-model sphere_lo		/meshes/sphere8x6.mesh
-model sphere_hi		/meshes/sphere32x24.mesh
+# Textures
+#***********************************************************************#
+texture:	dean			/images/dean.png
+texture:	sanic			/images/sanic.png
+texture:	earth_cm		/textures/earth_lo/earth_cm.png
+texture:	earth_dm 		/textures/earth_lo/earth_dm.png
+texture:	earth_hm 		/textures/earth_lo/earth_hm.png
+texture:	earth_lm 		/textures/earth_lo/earth_lm.png
+texture:	earth_nm 		/textures/earth_lo/earth_nm.png
+texture:	earth_sm 		/textures/earth_lo/earth_sm.png
+texture:	stone_dm		/textures/stone/stone_dm.png
+texture:	stone_hm		/textures/stone/stone_hm.png
+texture:	stone_nm		/textures/stone/stone_nm.png
+
+#texture:	bg_clouds		/textures/bg/bg_clouds.png
+#texture:	sky_clouds		/textures/bg/sky_clouds.png
+#texture:	sky_water		/textures/bg/sky_water.png
+#texture:	earth_cm_2k		/textures/earth_hi/earth_cm_2k.png
+#texture:	earth_dm_2k		/textures/earth_hi/earth_dm_2k.png
+#texture:	earth_hm_2k		/textures/earth_hi/earth_hm_2k.png
+#texture:	earth_lm_2k		/textures/earth_hi/earth_lm_2k.png
+#texture:	earth_nm_2k		/textures/earth_hi/earth_nm_2k.png
+#texture:	earth_sm_2k		/textures/earth_hi/earth_sm_2k.png
+#texture:	mars_dm			/textures/mars/mars_dm_2k.png
+#texture:	mars_nm			/textures/mars/mars_nm_2k.png
+#texture:	moon_dm			/textures/moon/moon_dm_2k.png
+#texture:	moon_nm			/textures/moon/moon_nm_2k.png

@@ -12,12 +12,12 @@ namespace ml
 
 	Thread::~Thread()
 	{
-		cleanup();
+		clean();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	Thread & Thread::cleanup()
+	Thread & Thread::clean()
 	{
 		wait();
 
@@ -50,7 +50,7 @@ namespace ml
 	{
 		if (m_fun != fun)
 		{
-			cleanup();
+			clean();
 
 			m_fun = fun;
 		}

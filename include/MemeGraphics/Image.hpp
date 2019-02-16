@@ -1,7 +1,7 @@
 #ifndef _IMAGE_HPP_
 #define _IMAGE_HPP_
 
-#include <MemeCore/IResource.hpp>
+#include <MemeCore/IReadable.hpp>
 #include <MemeCore/Vector2.hpp>
 #include <MemeGraphics/Color.hpp>
 #include <MemeWindow/Icon.hpp>
@@ -10,7 +10,7 @@ namespace ml
 {
 	class ML_GRAPHICS_API Image final
 		: public ITrackable
-		, public IResource
+		, public IReadable
 	{
 	public:
 		using Pixels = std::vector<uint8_t>;
@@ -22,7 +22,7 @@ namespace ml
 		~Image();
 
 		bool cleanup() override;
-		bool loadFromFile(const String & filename) override;		
+		bool readFile(const String & filename) override;		
 
 		Image & create(uint32_t width, uint32_t height, const vec4b & color);
 		Image & create(uint32_t width, uint32_t height, const uint8_t * pixels);

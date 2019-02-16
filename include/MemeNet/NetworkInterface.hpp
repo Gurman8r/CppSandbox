@@ -23,7 +23,7 @@ namespace ml
 		virtual ~NetworkInterface();
 
 		bool setup();
-		void cleanup();
+		void clean();
 		void poll();
 
 		uint32_t send(const GUID & guid, const String & data, const SendSettings & settings);

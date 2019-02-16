@@ -48,7 +48,7 @@ namespace ml
 			const Style		& style, 
 			const Context	& context);
 
-		virtual void cleanup();
+		virtual void clean();
 		virtual bool setup();
 		virtual void onEvent(const Event * ev) override;
 

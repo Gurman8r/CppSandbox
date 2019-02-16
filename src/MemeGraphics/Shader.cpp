@@ -83,7 +83,7 @@ namespace ml
 		return false;
 	}
 
-	bool Shader::loadFromFile(const String & filename)
+	bool Shader::readFile(const String & filename)
 	{
 		static String source;
 		if (ML_FileSystem.getFileContents(filename, source))
@@ -93,51 +93,51 @@ namespace ml
 		return Debug::logError("Failed to open shader source file \"{0}\"", filename);
 	}
 
-	bool Shader::loadFromFile(const String & vs, const String & fs)
+	bool Shader::readFile(const String & vs, const String & fs)
 	{
 		// Read the vertex shader file
-		static List<char> vertexShader;
-		if (!ML_FileSystem.getFileContents(vs, vertexShader))
+		static File vert;
+		if (!vert.readFile(vs))
 		{
 			return Debug::logError("Failed to open vertex source file \"{0}\"", vs);
 		}
 
 		// Read the fragment shader file
-		static List<char> fragmentShader;
-		if (!ML_FileSystem.getFileContents(fs, fragmentShader))
+		static File frag;
+		if (!frag.readFile(fs))
 		{
 			return Debug::logError("Failed to open fragment source file \"{0}\"", fs);
 		}
 
 		// Compile the shader program
-		return compile(&vertexShader[0], NULL, &fragmentShader[0]);
+		return compile((*vert), NULL, (*frag));
 	}
 
-	bool Shader::loadFromFile(const String & vs, const String & gs, const String & fs)
+	bool Shader::readFile(const String & vs, const String & gs, const String & fs)
 	{
 		// Read the vertex shader file
-		static List<char> vertexShader;
-		if (!ML_FileSystem.getFileContents(vs, vertexShader))
+		static File vert;
+		if (!vert.readFile(vs))
 		{
 			return Debug::logError("Failed to open vertex source file \"{0}\"", vs);
 		}
 
 		// Read the geometry shader file
-		static List<char> geometryShader;
-		if (!ML_FileSystem.getFileContents(gs, geometryShader))
+		static File geom;
+		if (!geom.readFile(gs))
 		{
 			return Debug::logError("Failed to open geometry source file \"{0}\"", gs);
 		}
 
 		// Read the fragment shader file
-		static List<char> fragmentShader;
-		if (!ML_FileSystem.getFileContents(fs, fragmentShader))
+		static File frag;
+		if (!frag.readFile(fs))
 		{
 			return Debug::logError("Failed to open fragment source file \"{0}\"", fs);
 		}
 
 		// Compile the shader program
-		return compile(&vertexShader[0], &geometryShader[0], &fragmentShader[0]);
+		return compile((*vert), (*geom), (*frag));
 	}
 
 	bool Shader::loadFromMemory(const String & source)

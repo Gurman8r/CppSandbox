@@ -79,8 +79,7 @@ namespace ml
 		{
 			for (size_type i = 0, imax = this->size(); i < imax; i++)
 			{
-				out << (*this)[i]
-					<< ((i < imax - 1) ? ' ' : '\n');
+				out << (*this)[i] << " ";
 			}
 		}
 		

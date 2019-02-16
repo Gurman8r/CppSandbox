@@ -9073,7 +9073,7 @@ static const char * GetClipboardTextFn_DefaultImpl(void *)
 static void SetClipboardTextFn_DefaultImpl(void *, const char * text)
 {
     ImGuiContext& g = *GImGui;
-    g.PrivateClipboard.clear();
+    g.PrivateClipboard.clearChildren();
     const char * text_end = text + strlen(text);
     g.PrivateClipboard.resize((int)(text_end - text) + 1);
     memcpy(&g.PrivateClipboard[0], text, (size_t)(text_end - text));

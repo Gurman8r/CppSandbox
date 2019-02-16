@@ -54,9 +54,9 @@ namespace DEMO
 	private:
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		bool	loadBuffers();
 		bool	loadInterpreter();
-		bool	loadModels();
+		bool	loadResources();
+		bool	loadBuffers();
 		bool	loadNetwork();
 
 	private:
@@ -71,10 +71,6 @@ namespace DEMO
 		void	onExit(const ExitEvent & ev);
 
 	private:
-		/* * * * * * * * * * * * * * * * * * * * */
-
-		ml::Manifest m_manifest;
-
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		mutable int32_t m_error;

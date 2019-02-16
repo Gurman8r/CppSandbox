@@ -3,7 +3,7 @@
 
 #include <MemeEditor/Export.hpp>
 #include <MemeCore/ITrackable.hpp>
-#include <MemeCore/IResource.hpp>
+#include <MemeCore/IReadable.hpp>
 
 namespace ml
 {
@@ -20,8 +20,8 @@ namespace ml
 		friend class ResourceManager;
 
 		static_assert(
-			std::is_base_of<ml::IResource, _Elem>::value, 
-			"Type must derive ml::IResource");
+			std::is_base_of<ml::IReadable, _Elem>::value, 
+			"Type must derive ml::IReadable");
 
 	public:
 		using value_type	= _Elem;
@@ -128,7 +128,7 @@ namespace ml
 				if (!filename.empty())
 				{
 					pointer temp = new value_type();
-					if (temp->loadFromFile(filename))
+					if (temp->readFile(filename))
 					{
 						return set(name, temp);
 					}
@@ -152,7 +152,7 @@ namespace ml
 			size_t count = 0;
 			for (FileMap::const_iterator it = files.cbegin(); it != files.end(); it++)
 			{
-				if (const_pointer temp = load(it->first, path + it->second))
+				if (const_pointer temp = load(it->first, (path + it->second)))
 				{
 					count++;
 				}

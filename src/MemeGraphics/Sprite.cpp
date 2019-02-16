@@ -15,7 +15,7 @@ namespace ml
 		return false;
 	}
 
-	bool Sprite::loadFromFile(const String & filename)
+	bool Sprite::readFile(const String & filename)
 	{
 		return false;
 	}

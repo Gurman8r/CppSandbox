@@ -12,7 +12,7 @@
 int32_t main(int32_t argc, char ** argv)
 {
 	// Load Settings
-	if (!SETTINGS.loadFromFile(CONFIG_INI))
+	if (!SETTINGS.readFile(CONFIG_INI))
 	{
 		return ml::Debug::logError("Failed Loading Settings")
 			|| ml::Debug::pause(EXIT_FAILURE);

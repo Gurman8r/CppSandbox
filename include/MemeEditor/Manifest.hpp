@@ -3,37 +3,34 @@
 
 #include <MemeEditor/Export.hpp>
 #include <MemeCore/ITrackable.hpp>
-#include <MemeCore/IResource.hpp>
+#include <MemeCore/IReadable.hpp>
 
 namespace ml
 {
 	class ML_EDITOR_API Manifest final
 		: public ITrackable
-		, public IResource
+		, public IReadable
 	{
 	public:
-		using FileMap = HashMap<String, String>;
-		using TypeMap = HashMap<String, FileMap>;
+		using FileMap = HashMap<String, HashMap<String, String>>;
 
 	public:
 		Manifest();
 		~Manifest();
 
 		bool cleanup() override;
-		bool loadFromFile(const String & filename) override;
+		bool readFile(const String & filename) override;
 
 		void serialize(std::ostream & out) const override;
 		void deserialize(std::istream & in) override;
 
-		const TypeMap & getTypes() const;
-		const FileMap & getFiles(const String & type) const;
-
 	public:
-		inline const String & path() const { return m_path; }
+		inline const String &	getPath()	const { return m_path; }
+		inline const FileMap &	getFiles()	const { return m_files; }
 
 	private:
-		TypeMap	m_data;
 		String	m_path;
+		FileMap	m_files;
 	};
 }
 #endif // !_MANIFEST_HPP_

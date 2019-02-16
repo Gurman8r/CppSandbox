@@ -10,7 +10,7 @@ namespace ml
 
 	Sound::~Sound()
 	{
-		
+		cleanup();
 	}
 
 	bool Sound::cleanup()
@@ -18,7 +18,7 @@ namespace ml
 		return false;
 	}
 
-	bool Sound::loadFromFile(const String & filename)
+	bool Sound::readFile(const String & filename)
 	{
 		return false;
 	}

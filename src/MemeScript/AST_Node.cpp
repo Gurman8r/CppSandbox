@@ -31,8 +31,8 @@ namespace ml
 
 	AST_Node::~AST_Node()
 	{
-		clean();
-		clear();
+		cleanChildren();
+		clearChildren();
 	}
 
 
@@ -54,12 +54,12 @@ namespace ml
 	}
 
 
-	void AST_Node::clear()
+	void AST_Node::clearChildren()
 	{
 		m_children.clear();
 	}
 
-	void AST_Node::clean()
+	void AST_Node::cleanChildren()
 	{
 		for (AST_Node * child : m_children)
 		{
@@ -68,17 +68,17 @@ namespace ml
 	}
 
 
-	bool		AST_Node::empty() const
+	bool AST_Node::empty() const
 	{
 		return m_children.empty();
 	}
-
-	bool		AST_Node::isChildOf(AST_Node * node) const
+		 
+	bool AST_Node::isChildOf(AST_Node * node) const
 	{
 		return false;
 	}
-
-	bool		AST_Node::isParentOf(AST_Node * node) const
+		 
+	bool AST_Node::isParentOf(AST_Node * node) const
 	{
 		return find(node) != end();
 	}

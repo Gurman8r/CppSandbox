@@ -108,57 +108,6 @@ namespace DEMO
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Demo::loadBuffers()
-	{
-		// Load Buffers
-		if (ml::Debug::log("Loading Buffers..."))
-		{
-			// Text
-			m_vaoText
-				.create(ml::GL::Triangles)
-				.bind();
-			m_vboText
-				.create(ml::GL::DynamicDraw)
-				.bind()
-				.bufferData(NULL, (ml::Glyph::VertexCount * ml::Vertex::Size));
-			ml::BufferLayout::Default.bind();
-			m_vboText.unbind();
-			m_vaoText.unbind();
-
-
-			// FBO
-			m_frameBuffer
-				.create()
-				.bind();
-			// RBO
-			m_renderBuffer
-				.create(this->width(), this->height())
-				.bind()
-				.bufferStorage(ml::GL::Depth24_Stencil8)
-				.bufferFramebuffer(ml::GL::DepthStencilAttachment)
-				.unbind();
-			// Texture
-			if (ml::Texture * texture = ML_Resources.textures.load("framebuffer"))
-			{
-				texture->create(this->size());
-
-				ml::OpenGL::framebufferTexture2D(
-					ml::GL::Framebuffer, 
-					ml::GL::ColorAttachment0,
-					ml::GL::Texture2D,
-					*texture,
-					0);
-			}
-			if (!ml::OpenGL::checkFramebufferStatus(ml::GL::Framebuffer))
-			{
-				return ml::Debug::logError("Framebuffer is not complete");
-			}
-			m_frameBuffer.unbind();
-			
-		}
-		return true;
-	}
-	
 	bool Demo::loadInterpreter()
 	{
 		static bool checked = false;
@@ -315,12 +264,71 @@ namespace DEMO
 		return checked;
 	}
 
-	bool Demo::loadModels()
+	bool Demo::loadResources()
 	{
-		return ml::Debug::log("Loading Models...") 
-			&& ML_Resources.models.load("cube")->loadFromMemory(ml::Shapes::Cube::Vertices, ml::Shapes::Cube::Indices)
-			&& ML_Resources.models.load("quad")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
-			;
+		ml::Manifest manifest;
+		if (manifest.readFile(SETTINGS.pathTo(SETTINGS.manifest)))
+		{
+			ml::cout << ml::endl << manifest << ml::endl;
+
+			return ML_Resources.loadManifest(manifest)
+				&& ML_Resources.models.load("cube")->loadFromMemory(ml::Shapes::Cube::Vertices, ml::Shapes::Cube::Indices)
+				&& ML_Resources.models.load("quad")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
+				&& loadBuffers()
+				;
+		}
+		return ml::Debug::logError("Failed loading manifest");
+	}
+	
+	bool Demo::loadBuffers()
+	{
+		// Load Buffers
+		if (ml::Debug::log("Loading Buffers..."))
+		{
+			// Text
+			m_vaoText
+				.create(ml::GL::Triangles)
+				.bind();
+			m_vboText
+				.create(ml::GL::DynamicDraw)
+				.bind()
+				.bufferData(NULL, (ml::Glyph::VertexCount * ml::Vertex::Size));
+			ml::BufferLayout::Default.bind();
+			m_vboText.unbind();
+			m_vaoText.unbind();
+
+
+			// FBO
+			m_frameBuffer
+				.create()
+				.bind();
+			// RBO
+			m_renderBuffer
+				.create(this->width(), this->height())
+				.bind()
+				.bufferStorage(ml::GL::Depth24_Stencil8)
+				.bufferFramebuffer(ml::GL::DepthStencilAttachment)
+				.unbind();
+			// Texture
+			if (ml::Texture * texture = ML_Resources.textures.load("framebuffer"))
+			{
+				texture->create(this->size());
+
+				ml::OpenGL::framebufferTexture2D(
+					ml::GL::Framebuffer, 
+					ml::GL::ColorAttachment0,
+					ml::GL::Texture2D,
+					*texture,
+					0);
+			}
+			if (!ml::OpenGL::checkFramebufferStatus(ml::GL::Framebuffer))
+			{
+				return ml::Debug::logError("Framebuffer is not complete");
+			}
+			m_frameBuffer.unbind();
+			
+		}
+		return true;
 	}
 
 	bool Demo::loadNetwork()
@@ -426,17 +434,12 @@ namespace DEMO
 				}
 			}
 
-			m_error = (ml::Debug::log("Loading Resources..."))
+			m_error = ml::Debug::log("Loading...")
 				&& ml::OpenAL::init()
-				&& m_manifest.loadFromFile(SETTINGS.pathTo(SETTINGS.manifest))
-				&& ML_Resources.loadManifest(m_manifest)
-				&& loadBuffers()
-				&& loadModels()
+				&& loadResources()
 				&& loadNetwork()
 				? ml::Debug::Success
 				: ml::Debug::Error;
-
-			ml::cout << m_manifest << ml::endl;
 		}
 		else
 		{
@@ -992,7 +995,7 @@ namespace DEMO
 	{
 		delete m_thread;
 
-		ML_Resources.cleanup();
+		ML_Resources.clean();
 
 		ImGui_ML_Shutdown();
 	}

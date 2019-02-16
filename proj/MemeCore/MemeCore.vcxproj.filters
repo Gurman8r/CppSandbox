@@ -99,9 +99,6 @@
     <ClInclude Include="..\..\include\MemeCore\INonCopyable.hpp">
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\IResource.hpp">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\ISerializable.hpp">
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
@@ -213,6 +210,15 @@
     <ClInclude Include="..\..\include\MemeCore\Map.hpp">
       <Filter>Header Files\STD</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\File.hpp">
+      <Filter>Header Files\FS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\IReadable.hpp">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\IWritable.hpp">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeCore\EventSystem.cpp">
@@ -262,6 +268,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\Random.cpp">
       <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeCore\File.cpp">
+      <Filter>Source Files\FS</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

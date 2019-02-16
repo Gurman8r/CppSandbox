@@ -10,7 +10,7 @@ namespace ml
 {
 	class ML_GRAPHICS_API Texture final
 		: public ITrackable
-		, public IResource
+		, public IReadable
 		, public IHandle<uint32_t>
 	{
 	public:
@@ -20,11 +20,12 @@ namespace ml
 
 	public:
 		bool cleanup() override;
-		bool loadFromFile(const String & filename) override;
+		bool readFile(const String & filename) override;
 		bool loadFromImage(const Image & value);
 
 		bool update(const Texture & texture);
 		bool update(const Image & image);
+		bool update(const uint8_t * pixels, const vec2u & size, const vec2u & pos);
 		bool update(
 			const uint8_t * pixels, 
 			uint32_t width, 

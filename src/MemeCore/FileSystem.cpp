@@ -96,40 +96,13 @@ namespace ml
 
 	bool FileSystem::getFileContents(const String & filename, List<char> & value) const
 	{
-		value.clear();
-
-		if (!filename.empty())
+		static File file;
+		if (file.readFile(filename))
 		{
-			std::ifstream file(filename.c_str(), std::ios_base::binary);
-			if (file)
-			{
-				file.seekg(0, std::ios_base::end);
-
-				std::streamsize size;
-				if ((size = file.tellg()) > 0)
-				{
-					file.seekg(0, std::ios_base::beg);
-
-					value.resize(static_cast<size_t>(size));
-
-					file.read(&value[0], size);
-				}
-
-				value.push_back('\0');
-
-				file.close();
-
-				return true;
-			}
-			else
-			{
-				return Debug::logError("FileSystem: File not found \'{0}\'", filename);
-			}
+			value = file;
+			return true;
 		}
-		else
-		{
-			return Debug::logError("FileSystem: Filename cannot be empty");
-		}
+		return false;
 	}
 
 	bool FileSystem::getFileContents(const String & filename, String & value) const

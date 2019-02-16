@@ -3,6 +3,7 @@
 
 #include <MemeCore/ISingleton.hpp>
 #include <MemeCore/Directory.hpp>
+#include <MemeCore/File.hpp>
 #include <MemeCore/List.hpp>
 
 #define ML_FileSystem ml::FileSystem::getInstance()

@@ -30,8 +30,8 @@ namespace ml
 		const list_type& getChildren() const;
 		const list_type& getSiblings() const;
 
-		void	clear();
-		void	clean();
+		void	clearChildren();
+		void	cleanChildren();
 
 		bool	empty() const;
 		bool	isChildOf(AST_Node* node) const;

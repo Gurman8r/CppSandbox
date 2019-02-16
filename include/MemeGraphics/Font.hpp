@@ -2,13 +2,13 @@
 #define _FONT_HPP_
 
 #include <MemeGraphics/Glyph.hpp>
-#include <MemeCore/IResource.hpp>
+#include <MemeCore/IReadable.hpp>
 
 namespace ml
 {
 	class ML_GRAPHICS_API Font final
 		: public ITrackable
-		, public IResource
+		, public IReadable
 	{
 	public:
 		using GlyphTable = Map<uint32_t, Glyph>;
@@ -30,7 +30,7 @@ namespace ml
 		~Font();
 
 		bool cleanup() override;
-		bool loadFromFile(const String & filename) override;
+		bool readFile(const String & filename) override;
 
 		const Glyph & getGlyph(uint32_t value, uint32_t size) const;
 		const Info	& getInfo() const;

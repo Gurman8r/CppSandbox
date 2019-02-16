@@ -303,7 +303,7 @@ namespace ml
 					Debug::logWarning("AST_Include : Nothing to load");
 				}
 
-				root->clear();
+				root->clearChildren();
 				delete root;
 			}
 			return runNext();

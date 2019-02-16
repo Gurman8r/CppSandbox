@@ -8,7 +8,7 @@ namespace ml
 #ifdef ML_SYSTEM_WINDOWS
 		return system("cls");
 #else
-		return system("clear");
+		return system("clearChildren");
 #endif
 	}
 

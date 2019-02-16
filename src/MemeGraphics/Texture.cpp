@@ -55,10 +55,10 @@ namespace ml
 		return false;
 	}
 
-	bool Texture::loadFromFile(const String & filename)
+	bool Texture::readFile(const String & filename)
 	{
 		static Image image;
-		return image.loadFromFile(filename) && loadFromImage(image);
+		return image.readFile(filename) && loadFromImage(image);
 	}
 
 	bool Texture::loadFromImage(const Image & value)
@@ -74,7 +74,12 @@ namespace ml
 	
 	bool Texture::update(const Image & image)
 	{
-		return update(image.ptr(), image.width(), image.height(), 0, 0);
+		return update(image.ptr(), image.size(), vec2u::Zero);
+	}
+
+	bool Texture::update(const uint8_t * pixels, const vec2u & size, const vec2u & pos)
+	{
+		return update(pixels, size[0], size[1], pos[0], pos[1]);
 	}
 	
 	bool Texture::update(

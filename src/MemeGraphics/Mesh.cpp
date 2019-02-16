@@ -30,10 +30,10 @@ namespace ml
 	
 	bool Mesh::cleanup()
 	{
-		return false;
+		return true;
 	}
 	
-	bool Mesh::loadFromFile(const String & filename)
+	bool Mesh::readFile(const String & filename)
 	{
 		SStream file;
 		if (ML_FileSystem.getFileContents(filename, file))

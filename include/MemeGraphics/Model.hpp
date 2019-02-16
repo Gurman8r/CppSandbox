@@ -15,7 +15,7 @@ namespace ml
 	class ML_GRAPHICS_API Model
 		: public ITrackable
 		, public IDrawable
-		, public IResource
+		, public IReadable
 		, public ITransformable
 	{
 	public:
@@ -25,7 +25,7 @@ namespace ml
 
 	public:
 		bool cleanup() override;
-		bool loadFromFile(const String & filename) override;
+		bool readFile(const String & filename) override;
 		bool loadFromMemory(const Mesh & mesh);
 		bool loadFromMemory(const FloatList & vertices);
 		bool loadFromMemory(const VertexList & vertices);

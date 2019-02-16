@@ -9,14 +9,14 @@ namespace ml
 	class ML_GRAPHICS_API Sprite
 		: public ITrackable
 		, public IDrawable
-		, public IResource
+		, public IReadable
 	{
 	public:
 		Sprite();
 		~Sprite();
 
 		bool cleanup() override;
-		bool loadFromFile(const String & filename) override;
+		bool readFile(const String & filename) override;
 
 		void draw(RenderTarget & target, RenderBatch batch) const override;
 

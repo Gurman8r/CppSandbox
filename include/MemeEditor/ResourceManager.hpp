@@ -38,7 +38,7 @@ namespace ml
 		~ResourceManager();
 
 	public:
-		void cleanup();
+		void clean();
 
 		bool loadManifest(const Manifest & value);
 

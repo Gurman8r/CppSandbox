@@ -1,7 +1,10 @@
 #include <MemeEditor/ResourceManager.hpp>
+#include <MemeCore/Debug.hpp>
 
 namespace ml
 {
+	using pair_type = Pair<String, HashMap<String, String>>;
+
 	ResourceManager::ResourceManager()
 	{
 	}
@@ -10,7 +13,7 @@ namespace ml
 	{
 	}
 
-	void ResourceManager::cleanup()
+	void ResourceManager::clean()
 	{
 		sounds.clear();
 		sprites.clear();
@@ -26,44 +29,47 @@ namespace ml
 	{
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		for (auto pair : value.getTypes())
+		for (const pair_type & p : value.getFiles())
 		{
-			const String & type = pair.first;
+			const String & type = p.first;
 
-			if (type == "font")
+			if (type.empty())
 			{
-				this->fonts.load(value.path(), pair.second);
+				continue;
 			}
-			else if (type == "image")
+			else if (type == "font" && (!fonts.load(value.getPath(), p.second)))
 			{
-				this->images.load(value.path(), pair.second);
+				return Debug::logError("Failed loading {0}", type);
 			}
-			else if (type == "mesh")
+			else if (type == "image" && (!images.load(value.getPath(), p.second)))
 			{
-				this->meshes.load(value.path(), pair.second);
+				return Debug::logError("Failed loading {0}", type);
 			}
-			else if (type == "model")
+			else if (type == "mesh" && (!meshes.load(value.getPath(), p.second)))
 			{
-				this->models.load(value.path(), pair.second);
+				return Debug::logError("Failed loading {0}", type);
 			}
-			else if (type == "shader")
+			else if (type == "model" && (!models.load(value.getPath(), p.second)))
 			{
-				this->shaders.load(value.path(), pair.second);
+				return Debug::logError("Failed loading {0}", type);
 			}
-			else if (type == "sound")
+			else if (type == "shader" && (!shaders.load(value.getPath(), p.second)))
 			{
-				this->sounds.load(value.path(), pair.second);
+				return Debug::logError("Failed loading {0}", type);
 			}
-			else if (type == "sprite")
+			else if (type == "sound" && (!sounds.load(value.getPath(), p.second)))
 			{
-				this->sprites.load(value.path(), pair.second);
+				return Debug::logError("Failed loading {0}", type);
 			}
-			else if (type == "texture")
+			else if (type == "sprite" && (!sprites.load(value.getPath(), p.second)))
 			{
-				this->textures.load(value.path(), pair.second);
+				return Debug::logError("Failed loading {0}", type);
+			}
+			else if (type == "texture" && (!textures.load(value.getPath(), p.second)))
+			{
+				return Debug::logError("Failed loading {0}", type);
 			}
 		}
-
 		return true;
 
 		/* * * * * * * * * * * * * * * * * * * * */

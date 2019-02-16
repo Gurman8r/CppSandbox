@@ -1,13 +1,9 @@
 #include <MemeEditor/Manifest.hpp>
 #include <MemeCore/FileSystem.hpp>
+#include <MemeCore/Debug.hpp>
 
 namespace ml
 {
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	using FileMap = typename Manifest::FileMap;
-	using TypeMap = typename Manifest::TypeMap;
-
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Manifest::Manifest()
@@ -23,10 +19,11 @@ namespace ml
 
 	bool Manifest::cleanup()
 	{
+		m_files.clear();
 		return true;
 	}
 
-	bool Manifest::loadFromFile(const String & filename)
+	bool Manifest::readFile(const String & filename)
 	{
 		SStream ss;
 		if (ML_FileSystem.getFileContents(filename, ss))
@@ -43,19 +40,27 @@ namespace ml
 	{
 		out << std::left;
 
-		out << "Path: \"" << m_path << "\"" << endl;
+		out << FG::Green << "path"
+			<< FG::White << " | "
+			<< FG::Magenta << "\"" << m_path << "\"" 
+			<< endl;
 
-		for (const Pair<String, FileMap> & pair : m_data)
+		for (auto pair : m_files)
 		{
-			out << pair.first << endl;
+			out << FG::Green << pair.first
+				<< FG::White << " | "
+				<< FG::Cyan << pair.second.size()
+				<< endl;
 
-			for (const Pair<String, String> & data : pair.second)
+			for (auto data : pair.second)
 			{
-				out << "| " << std::setw(10) << data.first << " \"" << data.second << "\"" << endl;
+				out << FG::Normal << " | " << std::setw(12) 
+					<< FG::Yellow << data.first 
+					<< FG::Magenta << " \"" << data.second << "\""
+					<< endl;
 			}
-
-			out << endl;
 		}
+		out << FMT();
 	}
 
 	void Manifest::deserialize(std::istream & in)
@@ -73,11 +78,11 @@ namespace ml
 			return false;
 		};
 
-		auto loadData = [&](const String & name, SStream & ss)
+		auto loadData = [&](const String & type, SStream & ss)
 		{
 			String temp;
 			ss >> temp;
-			ss >> m_data[name][temp];
+			ss >> m_files[type][temp];
 		};
 
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -89,57 +94,21 @@ namespace ml
 				continue;
 
 			SStream ss;
-			if (parseLine(line, "path ", ss))
+			if (parseLine(line, "path:", ss))
 			{
 				ss >> m_path;
 			}
-			else if (parseLine(line, "font ", ss))
-			{
-				loadData("font", ss);
-			}
-			else if (parseLine(line, "image ", ss))
-			{
-				loadData("image", ss);
-			}
-			else if (parseLine(line, "mesh ", ss))
-			{
-				loadData("mesh", ss);
-			}
-			else if (parseLine(line, "model ", ss))
-			{
-				loadData("model", ss);
-			}
-			else if (parseLine(line, "shader ", ss))
-			{
-				loadData("shader", ss);
-			}
-			else if (parseLine(line, "sound ", ss))
-			{
-				loadData("sound", ss);
-			}
-			else if (parseLine(line, "sprite ", ss))
-			{
-				loadData("sprite", ss);
-			}
-			else if (parseLine(line, "texture ", ss))
-			{
-				loadData("texture", ss);
-			}
+			else if (parseLine(line, "font:",	ss)) { loadData("font",		ss); }
+			else if (parseLine(line, "image:",	ss)) { loadData("image",	ss); }
+			else if (parseLine(line, "mesh:",	ss)) { loadData("mesh",		ss); }
+			else if (parseLine(line, "model:",	ss)) { loadData("model",	ss); }
+			else if (parseLine(line, "shader:",	ss)) { loadData("shader",	ss); }
+			else if (parseLine(line, "sound:",	ss)) { loadData("sound",	ss); }
+			else if (parseLine(line, "sprite:",	ss)) { loadData("sprite",	ss); }
+			else if (parseLine(line, "texture:",ss)) { loadData("texture",	ss); }
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
-	}
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	const TypeMap & Manifest::getTypes() const
-	{
-		return m_data;
-	}
-
-	const FileMap & Manifest::getFiles(const String & type) const
-	{
-		return m_data.at(type);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

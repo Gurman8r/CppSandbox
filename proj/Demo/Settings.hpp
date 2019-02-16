@@ -4,7 +4,7 @@
 #include <INIReader.h>
 #include <MemeCore/ITrackable.hpp>
 #include <MemeCore/ISingleton.hpp>
-#include <MemeCore/IResource.hpp>
+#include <MemeCore/IReadable.hpp>
 #include <MemeCore/Debug.hpp>
 #include <MemeWindow/Context.hpp>
 
@@ -15,7 +15,7 @@ namespace DEMO
 {
 	class Settings final
 		: public ml::ITrackable
-		, public ml::IResource
+		, public ml::IReadable
 		, public ml::ISingleton<Settings>
 	{	
 		friend class ml::ISingleton<Settings>;
@@ -67,7 +67,7 @@ namespace DEMO
 	public:
 		inline bool cleanup() override { return true; }
 
-		inline bool loadFromFile(const ml::String & filename) override
+		inline bool readFile(const ml::String & filename) override
 		{
 			INIReader ini(filename.c_str());
 			if (ini.ParseError() == 0)
