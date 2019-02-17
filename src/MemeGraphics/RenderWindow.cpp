@@ -28,6 +28,7 @@ namespace ml
 			OpenGL::depthFunc(GL::Less);
 			OpenGL::blendFunc(GL::SourceAlpha, GL::OneMinusSourceAlpha);
 			OpenGL::alphaFunc(GL::Greater, 0.01f);
+
 			OpenGL::activeTexture(GL::Texture0);
 
 			if (m_context.multisample)

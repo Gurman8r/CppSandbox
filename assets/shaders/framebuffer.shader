@@ -10,11 +10,11 @@ layout(location = 1) in vec4 a_Color;
 layout(location = 2) in vec2 a_Texcoord;
 
 // Varyings
-out vec2 v_Texcoord;
+out vec2 Texcoord;
 
 void main()
 {
-	v_Texcoord = a_Texcoord;
+	Texcoord = a_Texcoord;
 
 	gl_Position = vec4(a_Position.x, a_Position.y, 0.0, 1.0);
 }
@@ -26,8 +26,8 @@ void main()
 #version 410 core
 
 // Varyings
-out vec4	v_FragColor;
-in  vec2	v_Texcoord;
+out vec4	FragColor;
+in  vec2	Texcoord;
 
 // Uniforms
 uniform sampler2D u_texture;
@@ -37,21 +37,21 @@ uniform int u_mode;
 // Functions
 void drawNormal()
 {
-	v_FragColor = texture(u_texture, v_Texcoord);
+	FragColor = texture(u_texture, Texcoord);
 }
 
 void drawInverted()
 {
-	v_FragColor = vec4(vec3(1.0 - texture(u_texture, v_Texcoord)), 1.0);
+	FragColor = vec4(vec3(1.0 - texture(u_texture, Texcoord)), 1.0);
 }
 
 void drawGrayscale()
 {
-	v_FragColor = texture(u_texture, v_Texcoord);
+	FragColor = texture(u_texture, Texcoord);
 
-	float average = (v_FragColor.r + v_FragColor.g + v_FragColor.b) / 3.0;
+	float average = (FragColor.r + FragColor.g + FragColor.b) / 3.0;
 	
-	v_FragColor = vec4(average, average, average, 1.0);
+	FragColor = vec4(average, average, average, 1.0);
 }
 
 void drawKernel(in float kernel[9])
@@ -73,7 +73,7 @@ void drawKernel(in float kernel[9])
 	vec3 samples[9];
 	for (int i = 0; i < 9; i++)
 	{
-		samples[i] = vec3(texture(u_texture, v_Texcoord.st + offsets[i]));
+		samples[i] = vec3(texture(u_texture, Texcoord.st + offsets[i]));
 	}
 
 	vec3 color = vec3(0.0);
@@ -82,7 +82,7 @@ void drawKernel(in float kernel[9])
 		color += samples[i] * kernel[i];
 	}
 
-	v_FragColor = vec4(color, 1.0);
+	FragColor = vec4(color, 1.0);
 }
 
 // Enums

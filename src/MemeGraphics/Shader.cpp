@@ -205,9 +205,13 @@ namespace ml
 
 			if (bindTextures)
 			{
+				GL::TextureID texID = GL::Texture0;
+
 				TextureTable::const_iterator it;
 				for (it = m_textures.cbegin(); it != m_textures.cend(); it++)
 				{
+					OpenGL::activeTexture(texID++);
+
 					Texture::bind(it->second);
 				}
 			}

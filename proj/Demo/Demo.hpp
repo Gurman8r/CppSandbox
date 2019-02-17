@@ -88,7 +88,10 @@ namespace DEMO
 
 		ml::Transform	m_persp;
 		ml::Transform	m_ortho;
-		ml::Camera		m_camera;
+
+		ml::Camera	m_camera;
+		ml::vec3f	m_camPos = { 0.f, 0.f, 10.f };
+		float		m_camSpd = 1.0f;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
@@ -98,12 +101,12 @@ namespace DEMO
 		ml::HashMap<ml::String, ml::Text> m_text;
 
 		/* * * * * * * * * * * * * * * * * * * * */
-
-		ml::vec3f	m_camPos	= { 0.f, 0.f, 10.f };
-		float		m_camSpd	= 1.0f;
-		ml::vec3f	m_lightPos	= ml::vec3f::Zero;
-		ml::vec4f	m_lightCol	= ml::Color::White;
-		float		m_ambient	= 1.f;
+		
+		ml::vec3f	m_lightPos		= { 0, 0, 16 };
+		ml::vec4f	m_lightCol		= ml::Color::White;
+		float		m_ambientAmt	= 0.01f;
+		float		m_specularAmt	= 1.0f;
+		int32_t		m_specularPow	= 2;
 
 		ml::vec4f	m_clearColor	= ml::Color::Violet;
 		int32_t		m_fboMode		= 0;
@@ -112,9 +115,6 @@ namespace DEMO
 		float		m_lineDelta		= 1.f;
 		int32_t		m_lineSamples	= 16;
 		bool		m_animate		= true;
-
-		ml::List<ml::Uniform> m_uniforms;
-		size_t m_selected = 0;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
@@ -125,6 +125,9 @@ namespace DEMO
 		bool show_imgui_metrics	= false;
 		bool show_imgui_style	= false;
 		bool show_imgui_about	= false;
+
+		ml::List<ml::Uniform> m_uniforms;
+		size_t m_selected = 0;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	};

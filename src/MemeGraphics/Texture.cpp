@@ -466,11 +466,14 @@ namespace ml
 
 	void Texture::bind(const Texture * value)
 	{
-		OpenGL::bindTexture(
-			GL::Texture2D,
-			((value && (*value))
-				? (uint32_t)(*value)
-				: NULL));
+		if (value && (*value))
+		{
+			OpenGL::bindTexture(GL::Texture2D, (uint32_t)(*value));
+		}
+		else
+		{
+			OpenGL::bindTexture(GL::Texture2D, NULL);
+		}
 	}
 	
 }

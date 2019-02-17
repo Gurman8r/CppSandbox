@@ -9,11 +9,11 @@ layout(location = 1) in vec4 a_Color;
 layout(location = 2) in vec2 a_Texcoord;
 
 // Varyings
-out vec3 v_Position;
+out vec3 Position;
 
 void main()
 {
-	v_Position = a_Position;
+	Position = a_Position;
 
 	gl_Position = vec4(a_Position, 1.0);
 }
@@ -25,14 +25,14 @@ void main()
 #version 410 core
 
 // Varyings
-out vec4 v_FragColor;
+out vec4 FragColor;
 
 // Uniforms
 uniform vec4 u_color;
 
 void main()
 {
-	v_FragColor = u_color;
+	FragColor = u_color;
 }
 
 

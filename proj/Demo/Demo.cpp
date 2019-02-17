@@ -592,10 +592,14 @@ namespace DEMO
 					ml::Uniform("u_view",		ml::Uniform::Mat4,	&m_camera.matrix()),
 					ml::Uniform("u_model",		ml::Uniform::Mat4,	&model->transform().matrix()),
 					ml::Uniform("u_color",		ml::Uniform::Vec4,	&ml::Color::White),
-					ml::Uniform("u_lightPos",	ml::Uniform::Vec3,	&m_camPos),
+					ml::Uniform("u_lightPos",	ml::Uniform::Vec3,	&m_lightPos),
+					ml::Uniform("u_viewPos",	ml::Uniform::Vec3,	&m_camPos),
 					ml::Uniform("u_lightCol",	ml::Uniform::Vec4,	&m_lightCol),
-					ml::Uniform("u_ambient",	ml::Uniform::Float, &m_ambient),
-					ml::Uniform("u_texture",	ml::Uniform::Tex2D,	ML_Resources.textures.get("earth_dm")),
+					ml::Uniform("u_ambientAmt",	ml::Uniform::Float, &m_ambientAmt),
+					ml::Uniform("u_specularAmt",ml::Uniform::Float, &m_specularAmt),
+					ml::Uniform("u_specularPow",ml::Uniform::Int,	&m_specularPow),
+					ml::Uniform("u_tex_dm",		ml::Uniform::Tex2D,	ML_Resources.textures.get("earth_dm")),
+					ml::Uniform("u_tex_sm",		ml::Uniform::Tex2D,	ML_Resources.textures.get("earth_sm")),
 				};
 				if (const ml::Shader * shader = ML_Resources.shaders.get("lighting"))
 				{
@@ -631,9 +635,9 @@ namespace DEMO
 			if (true)
 			{
 				static ml::UniformSet uniforms = {
-						ml::Uniform("u_proj",	ml::Uniform::Mat4, &m_ortho.matrix()),
-						ml::Uniform("u_color",	ml::Uniform::Vec4),
-						ml::Uniform("u_texture",ml::Uniform::Tex2D),
+					ml::Uniform("u_proj",	ml::Uniform::Mat4, &m_ortho.matrix()),
+					ml::Uniform("u_color",	ml::Uniform::Vec4),
+					ml::Uniform("u_texture",ml::Uniform::Tex2D),
 				};
 				static ml::RenderBatch batch(
 					&m_vaoText,
@@ -805,7 +809,9 @@ namespace DEMO
 					{
 						ML_Editor.InputVec3f("Light Position", m_lightPos);
 						ImGui::ColorEdit4("Light Color", &m_lightCol[0]);
-						ImGui::DragFloat("Light Ambient", &m_ambient, 1.f, 0.1f, 10.f);
+						ImGui::DragFloat("Ambient Amt", &m_ambientAmt, 0.01f, 0.f, 1.f);
+						ImGui::DragFloat("Specular Amt", &m_specularAmt, 0.01f, 0.1f, 10.f);
+						ImGui::DragInt("Specular Pow", &m_specularPow, 1.f, 0, 256);
 						ImGui::EndTabItem();
 					}
 					if (ImGui::BeginTabItem("Geometry"))
