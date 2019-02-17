@@ -51,7 +51,7 @@ namespace ml
 				const size_t i = y * value.Cols + x;
 				const String l = (i > 9 ? std::to_string(i) : ("0" + std::to_string(i)));
 
-				ImGui::DragFloat((l + id).c_str(), &value[i]);
+				ImGui::DragFloat((l + id).c_str(), &value[i], 0.01f);
 				ImGui::SameLine();
 			}
 			ImGui::PopItemWidth();
@@ -82,12 +82,11 @@ namespace ml
 	{
 		const String id = String("##") + label;
 
-		ImGui::PushItemWidth(80);
-		ImGui::Text(label);
-		ImGui::DragFloat((String("x") + id).c_str(), &value[0]); ImGui::SameLine();
-		ImGui::DragFloat((String("y") + id).c_str(), &value[1]); ImGui::SameLine();
+		ImGui::PushItemWidth(64);
+		ImGui::DragFloat((id + "##X").c_str(), &value[0], 1, 0, 0, "X:%.3f"); ImGui::SameLine();
+		ImGui::DragFloat((id + "##Y").c_str(), &value[1], 1, 0, 0, "Y:%.3f"); ImGui::SameLine();
 		ImGui::PopItemWidth();
-		ImGui::NewLine();
+		ImGui::Text(label);
 		return value;
 	}
 
@@ -95,13 +94,12 @@ namespace ml
 	{
 		const String id = String("##") + label;
 
-		ImGui::PushItemWidth(80);
-		ImGui::Text(label);
-		ImGui::DragFloat((String("x") + id).c_str(), &value[0]); ImGui::SameLine();
-		ImGui::DragFloat((String("y") + id).c_str(), &value[1]); ImGui::SameLine();
-		ImGui::DragFloat((String("z") + id).c_str(), &value[2]); ImGui::SameLine();
+		ImGui::PushItemWidth(64);
+		ImGui::DragFloat((id + "##X").c_str(), &value[0], 1, 0, 0, "X:%.3f"); ImGui::SameLine();
+		ImGui::DragFloat((id + "##Y").c_str(), &value[1], 1, 0, 0, "Y:%.3f"); ImGui::SameLine();
+		ImGui::DragFloat((id + "##Z").c_str(), &value[2], 1, 0, 0, "Z:%.3f"); ImGui::SameLine();
 		ImGui::PopItemWidth();
-		ImGui::NewLine();
+		ImGui::Text(label);
 		return value;
 	}
 
@@ -109,14 +107,13 @@ namespace ml
 	{
 		const String id = String("##") + label;
 
-		ImGui::PushItemWidth(80);
-		ImGui::Text(label);
-		ImGui::DragFloat((String("x") + id).c_str(), &value[0]); ImGui::SameLine();
-		ImGui::DragFloat((String("y") + id).c_str(), &value[1]); ImGui::SameLine();
-		ImGui::DragFloat((String("z") + id).c_str(), &value[2]); ImGui::SameLine();
-		ImGui::DragFloat((String("w") + id).c_str(), &value[3]); ImGui::SameLine();
+		ImGui::PushItemWidth(64);
+		ImGui::DragFloat((id + "##X").c_str(), &value[0], 1, 0, 0, "X:%.3f"); ImGui::SameLine();
+		ImGui::DragFloat((id + "##Y").c_str(), &value[1], 1, 0, 0, "Y:%.3f"); ImGui::SameLine();
+		ImGui::DragFloat((id + "##Z").c_str(), &value[2], 1, 0, 0, "Z:%.3f"); ImGui::SameLine();
+		ImGui::DragFloat((id + "##W").c_str(), &value[2], 1, 0, 0, "W:%.3f"); ImGui::SameLine();
 		ImGui::PopItemWidth();
-		ImGui::NewLine();
+		ImGui::Text(label);
 		return value;
 	}
 

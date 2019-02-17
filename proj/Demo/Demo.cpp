@@ -497,7 +497,7 @@ namespace DEMO
 		m_thread = new ml::Thread([&]()
 		{
 			using namespace ml;
-			Debug::log("Entering Thread");
+			Debug::log("Entering Dummy Thread");
 			do
 			{
 				cout << "*";
@@ -505,7 +505,7 @@ namespace DEMO
 			}
 			while (this->isOpen());
 			cout << endl;
-			Debug::log("Exiting Thread");
+			Debug::log("Exiting Dummy Thread");
 		});
 		if (SETTINGS.enableThreads) { m_thread->launch(); }
 	}
@@ -848,7 +848,8 @@ namespace DEMO
 		// Editor
 		if (show_ml_editor)
 		{
-			if (!ImGui::Begin("Editor", &show_ml_editor, ImGuiWindowFlags_AlwaysAutoResize))
+			ImGuiWindowFlags flags = ImGuiWindowFlags_AlwaysAutoResize;
+			if (!ImGui::Begin("Editor", &show_ml_editor, flags))
 			{
 				ImGui::End();
 				return;
@@ -864,36 +865,37 @@ namespace DEMO
 					if (ImGui::BeginTabItem("Scene"))
 					{
 						ImGui::ColorEdit4("Clear Color", &m_clearColor[0]);
-						ImGui::EndTabItem();
-					}
-					if (ImGui::BeginTabItem("Framebuffer"))
-					{
-						ImGui::SliderInt("FBO Mode", &m_fboMode, 0, 4);
-						ImGui::EndTabItem();
-					}
-					if (ImGui::BeginTabItem("Camera"))
-					{
-						ImGui::Checkbox("Animate", &m_camAnimate);
+						ImGui::Separator();
+
+						static ml::CString fbo_modes[] = {
+								"Normal",
+								"Grayscale",
+								"Blur",
+								"Juicy",
+								"Inverted",
+						};
+						ImGui::Combo("Framebuffer", &m_fboMode, fbo_modes, IM_ARRAYSIZE(fbo_modes));
+						ImGui::Separator();
+
+						ImGui::Checkbox("Camera Move", &m_camAnimate);
 						ML_Editor.InputVec3f("Camera Pos", m_camPos);
 						ML_Editor.InputVec3f("Camera Look", m_camLook);
 						ImGui::DragFloat("Camera Speed", &m_camSpd, 0.01f, 0.f, 1.f);
-						ImGui::EndTabItem();
-					}
-					if (ImGui::BeginTabItem("Light"))
-					{
-						ML_Editor.InputVec3f("Position", m_lightPos);
-						ImGui::ColorEdit4("Color", &m_lightCol[0]);
-						ImGui::DragFloat("Ambient", &m_ambient, 0.01f, 0.f, 1.f);
-						ImGui::DragFloat("Specular", &m_specular, 0.01f, 0.1f, 10.f);
-						ImGui::DragInt("Shininess", &m_shininess, 1.f, 0, 256);
-						ImGui::EndTabItem();
-					}
-					if (ImGui::BeginTabItem("Geometry"))
-					{
-						ImGui::SliderInt("Mode", &m_lineMode, -1, 3);
-						ImGui::ColorEdit4("Color", &m_lineColor[0]);
-						ImGui::SliderFloat("Delta", &m_lineDelta, 0.f, 1.f);
-						ImGui::SliderInt("Samples", &m_lineSamples, 1, 128);
+						ImGui::Separator();
+
+						ML_Editor.InputVec3f("Light Position", m_lightPos);
+						ImGui::ColorEdit4("Light Color", &m_lightCol[0]);
+						ImGui::DragFloat("Light Ambient", &m_ambient, 0.01f, 0.f, 1.f);
+						ImGui::DragFloat("Light Specular", &m_specular, 0.01f, 0.1f, 10.f);
+						ImGui::DragInt("Light Shininess", &m_shininess, 1.f, 0, 256);
+						ImGui::Separator();
+
+						ImGui::SliderInt("Line Mode", &m_lineMode, -1, 3);
+						ImGui::ColorEdit4("Line Color", &m_lineColor[0]);
+						ImGui::SliderFloat("Line Delta", &m_lineDelta, 0.f, 1.f);
+						ImGui::SliderInt("Line Samples", &m_lineSamples, 1, 128);
+						ImGui::Separator();
+
 						ImGui::EndTabItem();
 					}
 					if (ImGui::BeginTabItem("Transform"))
@@ -904,17 +906,9 @@ namespace DEMO
 
 						ML_Editor.InputTransform("Matrix", temp);
 
-						ml::vec3f pos = temp.getPosition();
-						ML_Editor.InputVec3f("Position", pos);
-						temp.setPosition(pos);
-
-						ml::vec3f scl = temp.getScale();
-						ML_Editor.InputVec3f("scale", scl);
-						temp.scale(scl);
-
 						ImGui::EndTabItem();
 					}
-					if (ImGui::BeginTabItem("Shader"))
+					if (ImGui::BeginTabItem("Shader Editor"))
 					{
 						// Shader Source
 						ImGui::BeginGroup();
@@ -934,111 +928,116 @@ namespace DEMO
 						}
 						ImGui::EndGroup();
 
-						// List Uniforms
-						ImGui::SameLine();
-						ImGui::BeginGroup();
+						// Uniform Editor
+						ImGui::PushItemWidth(256);
 						{
-							const size_t count = m_uniforms.size();
-
-							ImGui::Text("Uniforms:");
-
-							// List
-							if (ImGui::ListBoxHeader("##Uniforms", count))
-							{
-								for (size_t i = 0; i < count; i++)
-								{
-									const ml::String name = (std::to_string(i) + " : " + m_uniforms[i].name);
-									if (ImGui::Selectable(name.c_str(), (i == m_selected)))
-									{
-										m_selected = i;
-									}
-								}
-								ImGui::ListBoxFooter();
-							}
-							
-							// Buttons
+							// List Uniforms
+							ImGui::SameLine();
 							ImGui::BeginGroup();
 							{
-								if (ImGui::Button("Up"))
+								const size_t count = m_uniforms.size();
+
+								ImGui::Text("Uniforms:");
+
+								// List
+								if (ImGui::ListBoxHeader("##Uniforms", count))
 								{
-									if (m_selected > 0)
+									for (size_t i = 0; i < count; i++)
 									{
-										std::swap(m_uniforms[m_selected], m_uniforms[m_selected - 1]);
-										m_selected--;
+										const ml::String name = (std::to_string(i) + " : " + m_uniforms[i].name);
+										if (ImGui::Selectable(name.c_str(), (i == m_selected)))
+										{
+											m_selected = i;
+										}
 									}
+									ImGui::ListBoxFooter();
 								}
-								ImGui::SameLine();
-								if (ImGui::Button("Dn"))
+
+								// Buttons
+								ImGui::BeginGroup();
 								{
-									if (m_selected + 1 < count)
+									if (ImGui::Button("Up"))
 									{
-										std::swap(m_uniforms[m_selected], m_uniforms[m_selected + 1]);
-										m_selected++;
+										if (m_selected > 0)
+										{
+											std::swap(m_uniforms[m_selected], m_uniforms[m_selected - 1]);
+											m_selected--;
+										}
 									}
-								}
-								ImGui::SameLine();
-								if (ImGui::Button("New"))
-								{
-									m_uniforms.push_back(ml::Uniform("new_uniform"));
-									m_selected = m_uniforms.size() - 1;
-								}
-								ImGui::SameLine();
-								if (ImGui::Button("Ins"))
-								{
-									m_uniforms.insert(m_uniforms.begin() + m_selected, ml::Uniform("new_uniform"));
-								}
-								ImGui::SameLine();
-								if (ImGui::Button("Dup"))
-								{
-									if (count > 0)
+									ImGui::SameLine();
+									if (ImGui::Button("Dn"))
 									{
-										m_uniforms.push_back(ml::Uniform(m_uniforms[m_selected]));
+										if (m_selected + 1 < count)
+										{
+											std::swap(m_uniforms[m_selected], m_uniforms[m_selected + 1]);
+											m_selected++;
+										}
+									}
+									ImGui::SameLine();
+									if (ImGui::Button("New"))
+									{
+										m_uniforms.push_back(ml::Uniform("new_uniform"));
 										m_selected = m_uniforms.size() - 1;
 									}
-								}
-								ImGui::SameLine();
-								if (ImGui::Button("Del"))
-								{
-									if (count > 0)
+									ImGui::SameLine();
+									if (ImGui::Button("Ins"))
 									{
-										m_uniforms.erase(m_uniforms.begin() + m_selected);
-										m_selected = (m_selected > 0 ? m_selected - 1 : m_uniforms.size() - 1);
+										m_uniforms.insert(m_uniforms.begin() + m_selected, ml::Uniform("new_uniform"));
 									}
+									ImGui::SameLine();
+									if (ImGui::Button("Dup"))
+									{
+										if (count > 0)
+										{
+											m_uniforms.push_back(ml::Uniform(m_uniforms[m_selected]));
+											m_selected = m_uniforms.size() - 1;
+										}
+									}
+									ImGui::SameLine();
+									if (ImGui::Button("Del"))
+									{
+										if (count > 0)
+										{
+											m_uniforms.erase(m_uniforms.begin() + m_selected);
+											m_selected = (m_selected > 0 ? m_selected - 1 : m_uniforms.size() - 1);
+										}
+									}
+								}
+								ImGui::EndGroup();
+							}
+							ImGui::EndGroup();
+
+							// Edit Uniforms
+							ImGui::SameLine();
+							ImGui::BeginGroup();
+							{
+								ImGui::Text("Edit:");
+
+								static ml::CString u_types[] = {
+									"Int",
+									"Float",
+									"Vec2",
+									"Vec3",
+									"Vec4",
+									"Mat3",
+									"Mat4",
+									"Tex2D",
+								};
+
+								if (ml::Uniform * u = (m_uniforms.empty() ? NULL : &m_uniforms[m_selected]))
+								{
+									ImGui::InputText("Name", &u->name[0], 32);
+									ImGui::Combo("Type", &u->type, u_types, IM_ARRAYSIZE(u_types));
+								}
+								else
+								{
+									ImGui::Text("No Uniform Selected");
 								}
 							}
 							ImGui::EndGroup();
 						}
-						ImGui::EndGroup();
-
-						// Edit Uniforms
-						ImGui::SameLine();
-						ImGui::BeginGroup();
-						{
-							ImGui::Text("Edit:");
-
-							static ml::CString u_types[] = {
-								"Int",
-								"Float",
-								"Vec2",
-								"Vec3",
-								"Vec4",
-								"Mat3",
-								"Mat4",
-								"Tex2D",
-							};
-							
-							if (ml::Uniform * u = (m_uniforms.empty() ? NULL : &m_uniforms[m_selected]))
-							{
-								ImGui::InputText("Name", &u->name[0], 32);
-								ImGui::Combo("Type", &u->type, u_types, IM_ARRAYSIZE(u_types));
-							}
-							else
-							{
-								ImGui::Text("No Uniform Selected");
-							}
-						}
-						ImGui::EndGroup();
-
+						ImGui::PopItemWidth();
+						
 						ImGui::EndTabItem();
 					}
 					ImGui::EndTabBar();

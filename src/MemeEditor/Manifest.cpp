@@ -109,14 +109,14 @@ namespace ml
 			{
 				ss >> m_path;
 			}
-			else if (parseLine(line, "font:",	ss)) { loadData("font",		ss); }
-			else if (parseLine(line, "image:",	ss)) { loadData("image",	ss); }
-			else if (parseLine(line, "mesh:",	ss)) { loadData("mesh",		ss); }
-			else if (parseLine(line, "model:",	ss)) { loadData("model",	ss); }
-			else if (parseLine(line, "shader:",	ss)) { loadData("shader",	ss); }
-			else if (parseLine(line, "sound:",	ss)) { loadData("sound",	ss); }
-			else if (parseLine(line, "sprite:",	ss)) { loadData("sprite",	ss); }
-			else if (parseLine(line, "texture:",ss)) { loadData("texture",	ss); }
+			else if (parseLine(line, "font:",	ss)) { loadData("fonts",	ss); }
+			else if (parseLine(line, "image:",	ss)) { loadData("images",	ss); }
+			else if (parseLine(line, "mesh:",	ss)) { loadData("meshes",	ss); }
+			else if (parseLine(line, "model:",	ss)) { loadData("models",	ss); }
+			else if (parseLine(line, "shader:",	ss)) { loadData("shaders",	ss); }
+			else if (parseLine(line, "sound:",	ss)) { loadData("sounds",	ss); }
+			else if (parseLine(line, "sprite:",	ss)) { loadData("sprites",	ss); }
+			else if (parseLine(line, "texture:",ss)) { loadData("textures",	ss); }
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * */

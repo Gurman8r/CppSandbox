@@ -41,7 +41,7 @@ namespace ml
 		Debug::log("Deleting Memory Tracker...");
 		if (!m_records.empty())
 		{
-			Debug::logWarning("Final allocations follow:");
+			Debug::logError("Final allocations follow:");
 			
 			cerr << (*this);
 			
