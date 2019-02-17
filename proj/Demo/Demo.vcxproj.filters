@@ -334,9 +334,6 @@
     <ClInclude Include="DemoEvents.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InterpreterConsole.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">

@@ -1,5 +1,5 @@
 #include "Demo.hpp"
-#include "InterpreterConsole.hpp"
+#include <MemeEditor/InterpreterConsole.hpp>
 #include <MemeCore/EventSystem.hpp>
 #include <MemeWindow/WindowEvents.hpp>
 
@@ -274,7 +274,6 @@ namespace DEMO
 			return ML_Resources.loadManifest(manifest)
 				&& ML_Resources.models.load("borg")->loadFromMemory(ml::Shapes::Cube::Vertices, ml::Shapes::Cube::Indices)
 				&& ML_Resources.models.load("sanic")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
-				&& ML_Resources.models.load("plane1")->loadFromMemory(ml::Shapes::Cube::Vertices, ml::Shapes::Cube::Indices)
 				&& ML_Resources.textures.load("framebuffer")->create(this->size())
 				&& loadBuffers()
 				;
@@ -480,6 +479,10 @@ namespace DEMO
 			.translate({ 0.0f, 0.0f, -5.0f })
 			.scale(0.5f);
 
+		ML_Resources.models.get("moon")->transform()
+			.translate({ 0.0f, 0.0f, 5.0f })
+			.scale(0.5f);
+
 		ML_Resources.models.get("ground")->transform()
 			.translate({ 0.0f, -2.5f, 0.0f })
 			.scale({ 12.5, 0.25f, 12.5 });
@@ -543,6 +546,9 @@ namespace DEMO
 			ML_Resources.models.get("earth")->transform()
 				.rotate((m_animate ? ev.elapsed.delta() : 0.f), ml::vec3f::Up);
 
+			ML_Resources.models.get("moon")->transform()
+				.rotate(ev.elapsed.delta(), ml::vec3f::Up);
+
 			ML_Resources.models.get("sanic")->transform()
 				.rotate(-ev.elapsed.delta(), ml::vec3f::Forward);
 
@@ -575,7 +581,7 @@ namespace DEMO
 			// Clear
 			this->clear(m_clearColor);
 
-			static ml::UniformSet uniforms_3D = {
+			static ml::UniformSet uni_camera = {
 				ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
 				ml::Uniform("u_view",	ml::Uniform::Mat4,	&m_camera.matrix()),
 			};
@@ -593,7 +599,7 @@ namespace DEMO
 				};
 				if (const ml::Shader * shader = ML_Resources.shaders.get("solid"))
 				{
-					shader->setUniforms(uniforms_3D);
+					shader->setUniforms(uni_camera);
 					shader->setUniforms(uniforms);
 					shader->bind();
 				}
@@ -610,7 +616,7 @@ namespace DEMO
 				};
 				if (const ml::Shader * shader = ML_Resources.shaders.get("basic3D"))
 				{
-					shader->setUniforms(uniforms_3D);
+					shader->setUniforms(uni_camera);
 					shader->setUniforms(uniforms);
 					shader->bind();
 				}
@@ -633,7 +639,24 @@ namespace DEMO
 				};
 				if (const ml::Shader * shader = ML_Resources.shaders.get("lighting"))
 				{
-					shader->setUniforms(uniforms_3D);
+					shader->setUniforms(uni_camera);
+					shader->setUniforms(uniforms);
+					shader->bind();
+				}
+				this->draw(*model);
+			}
+
+			// Earth
+			if (const ml::Model * model = ML_Resources.models.get("moon"))
+			{
+				static ml::UniformSet uniforms = {
+					ml::Uniform("u_model",	ml::Uniform::Mat4,	&model->transform().matrix()),
+					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
+					ml::Uniform("u_texture",ml::Uniform::Tex2D, ML_Resources.textures.get("moon_dm")),
+				};
+				if (const ml::Shader * shader = ML_Resources.shaders.get("basic3D"))
+				{
+					shader->setUniforms(uni_camera);
 					shader->setUniforms(uniforms);
 					shader->bind();
 				}
@@ -650,7 +673,7 @@ namespace DEMO
 				};
 				if (const ml::Shader * shader = ML_Resources.shaders.get("normal3D"))
 				{
-					shader->setUniforms(uniforms_3D);
+					shader->setUniforms(uni_camera);
 					shader->setUniforms(uniforms);
 					shader->bind();
 				}
@@ -670,7 +693,7 @@ namespace DEMO
 				};
 				if (const ml::Shader * shader = ML_Resources.shaders.get("normal3D"))
 				{
-					shader->setUniforms(uniforms_3D);
+					shader->setUniforms(uni_camera);
 					shader->setUniforms(uniforms);
 					shader->bind();
 				}
@@ -687,7 +710,7 @@ namespace DEMO
 				};
 				if (const ml::Shader * shader = ML_Resources.shaders.get("basic3D"))
 				{
-					shader->setUniforms(uniforms_3D);
+					shader->setUniforms(uni_camera);
 					shader->setUniforms(uniforms);
 					shader->bind();
 				}
@@ -819,6 +842,7 @@ namespace DEMO
 				ImGui::MenuItem("Editor", "Ctrl+E", &show_ml_editor);
 				ImGui::MenuItem("Console", "Ctrl+Alt+T", &show_ml_console);
 				ImGui::MenuItem("Network", "Ctrl+Alt+N", &show_ml_network);
+				ImGui::MenuItem("Shader Builder", "Ctrl+Alt+B", &show_ml_shader);
 				ImGui::EndMenu();
 			}
 			if (ImGui::BeginMenu("Help"))
@@ -838,18 +862,10 @@ namespace DEMO
 		if (show_imgui_style)	{ ImGui::Begin("Style Editor", &show_imgui_style); ImGui::ShowStyleEditor(); ImGui::End(); }
 		if (show_imgui_about)	{ ImGui::ShowAboutWindow(&show_imgui_about); }
 		
-		// Console
-		if (show_ml_console)
-		{
-			static ml::InterpreterConsole console;
-			console.Draw("Console", &show_ml_console);
-		}
-
 		// Editor
 		if (show_ml_editor)
 		{
-			ImGuiWindowFlags flags = ImGuiWindowFlags_AlwaysAutoResize;
-			if (!ImGui::Begin("Editor", &show_ml_editor, flags))
+			if (!ImGui::Begin("Editor", &show_ml_editor, ImGuiWindowFlags_AlwaysAutoResize))
 			{
 				ImGui::End();
 				return;
@@ -908,143 +924,18 @@ namespace DEMO
 
 						ImGui::EndTabItem();
 					}
-					if (ImGui::BeginTabItem("Shader Editor"))
-					{
-						// Shader Source
-						ImGui::BeginGroup();
-						{
-							ImGui::Text("Source:");
-
-							static ml::String source(1024, '\0');
-
-							ImGui::InputTextMultiline(
-								"##Source",
-								&source[0],
-								source.capacity(),
-								{ 512, ImGui::GetTextLineHeight() * 16 },
-								0);
-
-							if (ImGui::Button("Compile")) {}
-						}
-						ImGui::EndGroup();
-
-						// Uniform Editor
-						ImGui::PushItemWidth(256);
-						{
-							// List Uniforms
-							ImGui::SameLine();
-							ImGui::BeginGroup();
-							{
-								const size_t count = m_uniforms.size();
-
-								ImGui::Text("Uniforms:");
-
-								// List
-								if (ImGui::ListBoxHeader("##Uniforms", count))
-								{
-									for (size_t i = 0; i < count; i++)
-									{
-										const ml::String name = (std::to_string(i) + " : " + m_uniforms[i].name);
-										if (ImGui::Selectable(name.c_str(), (i == m_selected)))
-										{
-											m_selected = i;
-										}
-									}
-									ImGui::ListBoxFooter();
-								}
-
-								// Buttons
-								ImGui::BeginGroup();
-								{
-									if (ImGui::Button("Up"))
-									{
-										if (m_selected > 0)
-										{
-											std::swap(m_uniforms[m_selected], m_uniforms[m_selected - 1]);
-											m_selected--;
-										}
-									}
-									ImGui::SameLine();
-									if (ImGui::Button("Dn"))
-									{
-										if (m_selected + 1 < count)
-										{
-											std::swap(m_uniforms[m_selected], m_uniforms[m_selected + 1]);
-											m_selected++;
-										}
-									}
-									ImGui::SameLine();
-									if (ImGui::Button("New"))
-									{
-										m_uniforms.push_back(ml::Uniform("new_uniform"));
-										m_selected = m_uniforms.size() - 1;
-									}
-									ImGui::SameLine();
-									if (ImGui::Button("Ins"))
-									{
-										m_uniforms.insert(m_uniforms.begin() + m_selected, ml::Uniform("new_uniform"));
-									}
-									ImGui::SameLine();
-									if (ImGui::Button("Dup"))
-									{
-										if (count > 0)
-										{
-											m_uniforms.push_back(ml::Uniform(m_uniforms[m_selected]));
-											m_selected = m_uniforms.size() - 1;
-										}
-									}
-									ImGui::SameLine();
-									if (ImGui::Button("Del"))
-									{
-										if (count > 0)
-										{
-											m_uniforms.erase(m_uniforms.begin() + m_selected);
-											m_selected = (m_selected > 0 ? m_selected - 1 : m_uniforms.size() - 1);
-										}
-									}
-								}
-								ImGui::EndGroup();
-							}
-							ImGui::EndGroup();
-
-							// Edit Uniforms
-							ImGui::SameLine();
-							ImGui::BeginGroup();
-							{
-								ImGui::Text("Edit:");
-
-								static ml::CString u_types[] = {
-									"Int",
-									"Float",
-									"Vec2",
-									"Vec3",
-									"Vec4",
-									"Mat3",
-									"Mat4",
-									"Tex2D",
-								};
-
-								if (ml::Uniform * u = (m_uniforms.empty() ? NULL : &m_uniforms[m_selected]))
-								{
-									ImGui::InputText("Name", &u->name[0], 32);
-									ImGui::Combo("Type", &u->type, u_types, IM_ARRAYSIZE(u_types));
-								}
-								else
-								{
-									ImGui::Text("Nothing Selected");
-								}
-							}
-							ImGui::EndGroup();
-						}
-						ImGui::PopItemWidth();
-						
-						ImGui::EndTabItem();
-					}
 					ImGui::EndTabBar();
 				}
 
 				ImGui::End();
 			}
+		}
+
+		// Console
+		if (show_ml_console)
+		{
+			static ml::InterpreterConsole console;
+			console.Draw("Console", &show_ml_console);
 		}
 
 		// Network
@@ -1062,6 +953,148 @@ namespace DEMO
 				ImGui::Separator();
 
 				ImGui::Text("Network Manager Placeholder");
+				ImGui::End();
+			}
+		}
+
+		// Shader
+		if (show_ml_shader)
+		{
+			if (!ImGui::Begin("Shader Builder", &show_ml_shader, ImGuiWindowFlags_AlwaysAutoResize))
+			{
+				ImGui::End();
+				return;
+			}
+			else
+			{
+				// Shader Source
+				ImGui::BeginGroup();
+				{
+					ImGui::Text("Source:");
+
+					static ml::String source(1024, '\0');
+
+					ImGui::InputTextMultiline(
+						"##Source",
+						&source[0],
+						source.capacity(),
+						{ 512, ImGui::GetTextLineHeight() * 16 },
+						0);
+
+					if (ImGui::Button("Compile")) {}
+				}
+				ImGui::EndGroup();
+
+				// Uniform Editor
+				ImGui::PushItemWidth(256);
+				{
+					// List Uniforms
+					ImGui::SameLine();
+					ImGui::BeginGroup();
+					{
+						const size_t count = m_uniforms.size();
+
+						ImGui::Text("Uniforms:");
+
+						// List
+						if (ImGui::ListBoxHeader("##Uniforms", count))
+						{
+							for (size_t i = 0; i < count; i++)
+							{
+								const ml::String name = (std::to_string(i) + " : " + m_uniforms[i].name);
+								if (ImGui::Selectable(name.c_str(), (i == m_selected)))
+								{
+									m_selected = i;
+								}
+							}
+							ImGui::ListBoxFooter();
+						}
+
+						// Buttons
+						ImGui::BeginGroup();
+						{
+							if (ImGui::Button("Up"))
+							{
+								if (m_selected > 0)
+								{
+									std::swap(m_uniforms[m_selected], m_uniforms[m_selected - 1]);
+									m_selected--;
+								}
+							}
+							ImGui::SameLine();
+							if (ImGui::Button("Dn"))
+							{
+								if (m_selected + 1 < count)
+								{
+									std::swap(m_uniforms[m_selected], m_uniforms[m_selected + 1]);
+									m_selected++;
+								}
+							}
+							ImGui::SameLine();
+							if (ImGui::Button("New"))
+							{
+								m_uniforms.push_back(ml::Uniform("new_uniform"));
+								m_selected = m_uniforms.size() - 1;
+							}
+							ImGui::SameLine();
+							if (ImGui::Button("Ins"))
+							{
+								m_uniforms.insert(m_uniforms.begin() + m_selected, ml::Uniform("new_uniform"));
+							}
+							ImGui::SameLine();
+							if (ImGui::Button("Dup"))
+							{
+								if (count > 0)
+								{
+									m_uniforms.push_back(ml::Uniform(m_uniforms[m_selected]));
+									m_selected = m_uniforms.size() - 1;
+								}
+							}
+							ImGui::SameLine();
+							if (ImGui::Button("Del"))
+							{
+								if (count > 0)
+								{
+									m_uniforms.erase(m_uniforms.begin() + m_selected);
+									m_selected = (m_selected > 0 ? m_selected - 1 : m_uniforms.size() - 1);
+								}
+							}
+						}
+						ImGui::EndGroup();
+					}
+					ImGui::EndGroup();
+
+					// Edit Uniforms
+					ImGui::SameLine();
+					ImGui::BeginGroup();
+					{
+						ImGui::Text("Edit:");
+
+						static ml::CString u_types[] = {
+							"Int",
+							"Float",
+							"Vec2",
+							"Vec3",
+							"Vec4",
+							"Mat3",
+							"Mat4",
+							"Tex2D",
+						};
+
+						if (ml::Uniform * u = (m_uniforms.empty() ? NULL : &m_uniforms[m_selected]))
+						{
+							ImGui::InputText("Name", &u->name[0], 32);
+							ImGui::Combo("Type", &u->type, u_types, IM_ARRAYSIZE(u_types));
+						}
+						else
+						{
+							ImGui::Text("Nothing Selected");
+						}
+					}
+					ImGui::EndGroup();
+				}
+				ImGui::PopItemWidth();
+
 				ImGui::End();
 			}
 		}

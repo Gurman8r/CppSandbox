@@ -13,16 +13,13 @@ font:		consolas	/fonts/consolas.ttf
 font:		lconsole	/fonts/lucida_console.ttf
 font:		minecraft	/fonts/minecraft.ttf
 
-# Meshes
-#***********************************************************************#
-#mesh:
-
 # Models
 #***********************************************************************#
 model:		cube		/meshes/cube.mesh
 model:		ground		/meshes/cube.mesh
 model:		light		/meshes/sphere8x6.mesh
 model:		earth		/meshes/sphere32x24.mesh
+model:		moon		/meshes/sphere8x6.mesh
 
 # Shaders
 #***********************************************************************#

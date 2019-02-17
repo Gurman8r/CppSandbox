@@ -244,7 +244,6 @@
   <ItemGroup>
     <ClInclude Include="DemoEvents.hpp" />
     <ClInclude Include="Demo.hpp" />
-    <ClInclude Include="InterpreterConsole.hpp" />
     <ClInclude Include="Settings.hpp" />
   </ItemGroup>
   <ItemGroup>

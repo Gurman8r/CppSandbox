@@ -122,6 +122,7 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		bool show_ml_editor		= false;
+		bool show_ml_shader		= false;
 		bool show_ml_console	= false;
 		bool show_ml_network	= false;
 		bool show_imgui_demo	= false;

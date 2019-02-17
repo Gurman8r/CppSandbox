@@ -1,4 +1,3 @@
-
 // Vertex
 /* * * * * * * * * * * * * * * * * * * * */
 #shader vertex
@@ -30,9 +29,8 @@ out vec4	FragColor;
 in  vec2	Texcoord;
 
 // Uniforms
-uniform sampler2D u_texture;
-uniform int u_mode;
-
+uniform sampler2D	u_texture;
+uniform int			u_mode;
 
 // Functions
 void drawNormal()
@@ -97,10 +95,6 @@ void main()
 {
 	switch (u_mode)
 	{
-	case MODE_INVERTED:
-		drawInverted();
-		break;
-
 	case MODE_GRAYSCALE:
 		drawGrayscale();
 		break;
@@ -119,6 +113,10 @@ void main()
 			2.0 / 16, 4.0 / 16, 2.0 / 16,
 			1.0 / 16, 2.0 / 16, 1.0 / 16
 		));
+		break;
+
+	case MODE_INVERTED:
+		drawInverted();
 		break;
 
 	case MODE_NORMAL:
