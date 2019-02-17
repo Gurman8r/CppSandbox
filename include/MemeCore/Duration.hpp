@@ -42,6 +42,7 @@ namespace ml
 	public:
 		Duration();
 		Duration(uint64_t value);
+		Duration(float value, uint64_t ratio);
 		Duration(const Duration & copy);
 		~Duration();
 

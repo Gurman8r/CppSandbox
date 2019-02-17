@@ -6,7 +6,7 @@
 
 // Layout
 layout(location = 0) in vec3 a_Position;
-layout(location = 1) in vec4 a_Color;
+layout(location = 1) in vec4 a_Normal;
 layout(location = 2) in vec2 a_Texcoord;
 
 // Varyings
@@ -87,10 +87,10 @@ void drawKernel(in float kernel[9])
 
 // Enums
 #define MODE_NORMAL		0
-#define MODE_INVERTED	1
-#define MODE_GRAYSCALE	2
+#define MODE_GRAYSCALE	1
+#define MODE_BLUR		2
 #define MODE_JUICY		3
-#define MODE_BLUR		4
+#define MODE_INVERTED	4
 
 // Main
 void main()

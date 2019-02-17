@@ -223,13 +223,13 @@
     <None Include="..\..\assets\meshes\teddy.mesh">
       <Filter>Resource Files\meshes</Filter>
     </None>
-    <None Include="..\..\assets\shaders\basic2D.shader">
-      <Filter>Resource Files\shaders</Filter>
-    </None>
     <None Include="..\..\assets\shaders\solid.shader">
       <Filter>Resource Files\shaders</Filter>
     </None>
     <None Include="..\..\assets\shaders\skybox.shader">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\normal3D.shader">
       <Filter>Resource Files\shaders</Filter>
     </None>
   </ItemGroup>

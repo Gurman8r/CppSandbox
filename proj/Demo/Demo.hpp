@@ -1,3 +1,4 @@
+
 #ifndef _DEMO_HPP_
 #define _DEMO_HPP_
 
@@ -88,24 +89,22 @@ namespace DEMO
 
 		ml::Transform	m_persp;
 		ml::Transform	m_ortho;
-
-		ml::Camera	m_camera;
-		bool		m_camAnimate = true;
-		ml::vec3f	m_camPos = { 0.f, 2.5f, 10.f };
-		ml::vec3f	m_camLook = { 0 };
-		float		m_camSpd = 5.0f;
-		float		m_camDist = 10.0f;
+		ml::Camera		m_camera;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		ml::VAO m_vaoText;
 		ml::VBO m_vboText;
-
 		ml::HashMap<ml::String, ml::Text> m_text;
 
 		/* * * * * * * * * * * * * * * * * * * * */
+
+		bool		m_camAnimate = true;
+		ml::vec3f	m_camPos = { 0, 1, 10 };
+		ml::vec3f	m_camLook = { 0 };
+		float		m_camSpd = 1.f;
 		
-		ml::vec3f	m_lightPos		= { 0, 0, 15 };
+		ml::vec3f	m_lightPos		= { 0, 1, 15 };
 		ml::vec4f	m_lightCol		= ml::Color::LightYellow;
 		float		m_ambient		= 0.01f;
 		float		m_specular		= 1.0f;
@@ -113,7 +112,7 @@ namespace DEMO
 
 		ml::vec4f	m_clearColor	= ml::Color::Gray;
 		int32_t		m_fboMode		= 3;
-		int32_t		m_lineMode		= 3;
+		int32_t		m_lineMode		= -1;
 		ml::vec4f	m_lineColor		= ml::Color::Red;
 		float		m_lineDelta		= 1.f;
 		int32_t		m_lineSamples	= 16;

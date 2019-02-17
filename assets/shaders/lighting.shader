@@ -53,10 +53,6 @@ uniform sampler2D	u_tex_sm;
 
 void main()
 {
-	// textures
-	vec4	tex_dm	= texture(u_tex_dm, Texcoord);
-	vec4	tex_sm	= texture(u_tex_sm, Texcoord);
-
 	// ambient
 	vec3	ambient	= (u_ambient * u_lightCol.xyz);
 
@@ -71,6 +67,10 @@ void main()
 	vec3	refl	= reflect(-lightDir, norm);
 	float	spec	= pow(max(dot(view, refl), 0.0), u_shininess);
 	vec3	specular= (u_specular * spec * u_lightCol.xyz);
+
+	// textures
+	vec4	tex_dm = texture(u_tex_dm, Texcoord);
+	vec4	tex_sm = texture(u_tex_sm, Texcoord);
 
 	// result
 	FragColor =

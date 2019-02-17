@@ -99,10 +99,9 @@ namespace ml
 
 	public:
 		inline const Context &		context()	const { return m_context; }
-		inline const VideoMode &	videoMode()	const { return m_videoMode; }
 		inline const Style &		style()		const { return m_style; }
 		inline const vec2i &		position()	const { return m_position; }
-		inline const vec2u &		size()		const { return videoMode().size; }
+		inline const vec2u &		size()		const { return m_videoMode.size; }
 		inline const String &		title()		const { return m_title; }
 
 		/* * * * * * * * * * * * * * * * * * * * */

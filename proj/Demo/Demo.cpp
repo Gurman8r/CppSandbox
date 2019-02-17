@@ -81,7 +81,7 @@ namespace DEMO
 						show_ml_editor = true;
 					}
 					break;
-				case ml::KeyCode::D:
+				case ml::KeyCode::H:
 					if (ev->action == ML_PRESS && (ev->mods & ML_MOD_CTRL) && (ev->mods & ML_MOD_ALT))
 					{
 						show_imgui_demo = true;
@@ -272,8 +272,9 @@ namespace DEMO
 			ml::cout << ml::endl << manifest << ml::endl;
 
 			return ML_Resources.loadManifest(manifest)
-				&& ML_Resources.models.load("cube_def")->loadFromMemory(ml::Shapes::Cube::Vertices, ml::Shapes::Cube::Indices)
-				&& ML_Resources.models.load("quad_def")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
+				&& ML_Resources.models.load("borg")->loadFromMemory(ml::Shapes::Cube::Vertices, ml::Shapes::Cube::Indices)
+				&& ML_Resources.models.load("sanic")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
+				&& ML_Resources.models.load("plane1")->loadFromMemory(ml::Shapes::Cube::Vertices, ml::Shapes::Cube::Indices)
 				&& ML_Resources.textures.load("framebuffer")->create(this->size())
 				&& loadBuffers()
 				;
@@ -348,7 +349,7 @@ namespace DEMO
 				// Client Setup
 				if (ML_Client.setup())
 				{
-					if (ML_Client.connect({ ML_LOCALHOST, ML_PORT }, ""))
+					if (ML_Client.connect({ ML_LOCALHOST, ML_PORT }))
 					{
 						return ml::Debug::log("Client Connected: ");
 					}
@@ -395,23 +396,19 @@ namespace DEMO
 	{
 		ml::OpenGL::errorPause(SETTINGS.glErrorPause);
 
-		if (ml::Debug::log("Creating Window...")
-			&& this->create(
-				SETTINGS.title,
-				ml::VideoMode({ SETTINGS.width, SETTINGS.height }, SETTINGS.bitsPerPixel),
-				ml::Window::Style::DefaultNoResize,
-				ml::Context(
-					SETTINGS.majorVersion,
-					SETTINGS.minorVersion,
-					SETTINGS.profile,
-					SETTINGS.depthBits,
-					SETTINGS.stencilBits,
-					SETTINGS.multisample,
-					SETTINGS.srgbCapable
-				)
-			)
-			&& this->setup() // Initialize OpenGL
-		)
+		const ml::Window::Style wStyle = ml::Window::Style::DefaultNoResize;
+		const ml::VideoMode vMode(SETTINGS.windowSize(), SETTINGS.bitsPerPixel);
+		const ml::Context cSettings(
+			SETTINGS.majorVersion,
+			SETTINGS.minorVersion,
+			SETTINGS.profile,
+			SETTINGS.depthBits,
+			SETTINGS.stencilBits,
+			SETTINGS.multisample,
+			SETTINGS.srgbCapable
+		);
+
+		if (this->create(SETTINGS.title, vMode, wStyle, cSettings) && this->setup())
 		{
 			this->setInputMode(ml::Cursor::Normal);
 			this->setPosition((ml::VideoMode::desktop().size - this->size()) / 2);
@@ -470,18 +467,22 @@ namespace DEMO
 		m_camera.LookAt(m_camPos, m_camPos + ml::vec3f::Back, ml::vec3f::Up);
 
 		// Setup Model Transforms
-		ML_Resources.models.get("cube_def")->transform()
+		ML_Resources.models.get("borg")->transform()
 			.translate({ +5.0f, 0.0f, 0.0f });
 		
-		ML_Resources.models.get("quad_def")->transform()
+		ML_Resources.models.get("sanic")->transform()
 			.translate({ -5.0f, 0.0f, 0.0f });
 
-		ML_Resources.models.get("sphere_hi")->transform()
+		ML_Resources.models.get("earth")->transform()
 			.translate({ 0.0f, 0.0f, 0.0f });
 
 		ML_Resources.models.get("cube")->transform()
 			.translate({ 0.0f, 0.0f, -5.0f })
 			.scale(0.5f);
+
+		ML_Resources.models.get("ground")->transform()
+			.translate({ 0.0f, -2.5f, 0.0f })
+			.scale({ 12.5, 0.25f, 12.5 });
 
 		// Static Text
 		m_text["static"]
@@ -506,10 +507,7 @@ namespace DEMO
 			cout << endl;
 			Debug::log("Exiting Thread");
 		});
-		if (SETTINGS.enableThreads)
-		{
-			m_thread->launch();
-		}
+		if (SETTINGS.enableThreads) { m_thread->launch(); }
 	}
 	
 	void Demo::onUpdate(const UpdateEvent & ev)
@@ -536,16 +534,16 @@ namespace DEMO
 
 		// Update Models
 		{
-			ML_Resources.models.get("cube_def")->transform()
+			ML_Resources.models.get("borg")->transform()
 				.rotate(+ev.elapsed.delta(), ml::vec3f::One);
 
 			ML_Resources.models.get("cube")->transform()
 				.rotate(-ev.elapsed.delta(), ml::vec3f::One);
 
-			ML_Resources.models.get("sphere_hi")->transform()
+			ML_Resources.models.get("earth")->transform()
 				.rotate((m_animate ? ev.elapsed.delta() : 0.f), ml::vec3f::Up);
 
-			ML_Resources.models.get("quad_def")->transform()
+			ML_Resources.models.get("sanic")->transform()
 				.rotate(-ev.elapsed.delta(), ml::vec3f::Forward);
 
 			ML_Resources.models.get("light")->transform()
@@ -555,7 +553,7 @@ namespace DEMO
 
 		// Update Camera
 		{
-			const ml::vec3f pos = ML_Resources.models.get("sphere_hi")->transform().getPosition();
+			const ml::vec3f pos = ML_Resources.models.get("earth")->transform().getPosition();
 			const ml::vec3f dir = (pos - m_camPos).normalized();
 
 			m_camLook = m_camPos + (pos - m_camPos).normalized();
@@ -576,6 +574,11 @@ namespace DEMO
 		{
 			// Clear
 			this->clear(m_clearColor);
+
+			static ml::UniformSet uniforms_3D = {
+				ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
+				ml::Uniform("u_view",	ml::Uniform::Mat4,	&m_camera.matrix()),
+			};
 			
 			// 3D
 			ml::OpenGL::enable(ml::GL::CullFace);
@@ -585,31 +588,29 @@ namespace DEMO
 			if (const ml::Model * model = ML_Resources.models.get("light"))
 			{
 				static ml::UniformSet uniforms = {
-					ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
-					ml::Uniform("u_view",	ml::Uniform::Mat4,	&m_camera.matrix()),
 					ml::Uniform("u_model",	ml::Uniform::Mat4,	&model->transform().matrix()),
 					ml::Uniform("u_color",	ml::Uniform::Vec4,	&m_lightCol),
 				};
 				if (const ml::Shader * shader = ML_Resources.shaders.get("solid"))
 				{
+					shader->setUniforms(uniforms_3D);
 					shader->setUniforms(uniforms);
 					shader->bind();
 				}
 				this->draw(*model);
 			}
 
-			// Default Cube
-			if (const ml::Model * model = ML_Resources.models.get("cube_def"))
+			// Borg
+			if (const ml::Model * model = ML_Resources.models.get("borg"))
 			{
 				static ml::UniformSet uniforms = {
-					ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
-					ml::Uniform("u_view",	ml::Uniform::Mat4,	&m_camera.matrix()),
 					ml::Uniform("u_model",	ml::Uniform::Mat4,	&model->transform().matrix()),
 					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
-					ml::Uniform("u_texture",ml::Uniform::Tex2D, ML_Resources.textures.get("stone_dm")),
+					ml::Uniform("u_texture",ml::Uniform::Tex2D, ML_Resources.textures.get("borg")),
 				};
 				if (const ml::Shader * shader = ML_Resources.shaders.get("basic3D"))
 				{
+					shader->setUniforms(uniforms_3D);
 					shader->setUniforms(uniforms);
 					shader->bind();
 				}
@@ -617,11 +618,9 @@ namespace DEMO
 			}
 
 			// Earth
-			if (const ml::Model * model = ML_Resources.models.get("sphere_hi"))
+			if (const ml::Model * model = ML_Resources.models.get("earth"))
 			{
 				static ml::UniformSet uniforms = {
-					ml::Uniform("u_proj",		ml::Uniform::Mat4,	&m_persp.matrix()),
-					ml::Uniform("u_view",		ml::Uniform::Mat4,	&m_camera.matrix()),
 					ml::Uniform("u_model",		ml::Uniform::Mat4,	&model->transform().matrix()),
 					ml::Uniform("u_viewPos",	ml::Uniform::Vec3,	&m_camPos),
 					ml::Uniform("u_lightPos",	ml::Uniform::Vec3,	&m_lightPos),
@@ -634,6 +633,7 @@ namespace DEMO
 				};
 				if (const ml::Shader * shader = ML_Resources.shaders.get("lighting"))
 				{
+					shader->setUniforms(uniforms_3D);
 					shader->setUniforms(uniforms);
 					shader->bind();
 				}
@@ -644,14 +644,13 @@ namespace DEMO
 			if (const ml::Model * model = ML_Resources.models.get("cube"))
 			{
 				static ml::UniformSet uniforms = {
-					ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
-					ml::Uniform("u_view",	ml::Uniform::Mat4,	&m_camera.matrix()),
 					ml::Uniform("u_model",	ml::Uniform::Mat4,	&model->transform().matrix()),
 					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
 					ml::Uniform("u_texture",ml::Uniform::Tex2D, ML_Resources.textures.get("stone_dm")),
 				};
-				if (const ml::Shader * shader = ML_Resources.shaders.get("basic3D"))
+				if (const ml::Shader * shader = ML_Resources.shaders.get("normal3D"))
 				{
+					shader->setUniforms(uniforms_3D);
 					shader->setUniforms(uniforms);
 					shader->bind();
 				}
@@ -661,18 +660,34 @@ namespace DEMO
 			// 2D
 			ml::OpenGL::disable(ml::GL::CullFace);
 
-			// Default Quad
-			if(const ml::Model * model = ML_Resources.models.get("quad_def"))
+			// Plane
+			if (const ml::Model * model = ML_Resources.models.get("ground"))
 			{
 				static ml::UniformSet uniforms = {
-					ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
-					ml::Uniform("u_view",	ml::Uniform::Mat4,	&m_camera.matrix()),
+					ml::Uniform("u_model",	ml::Uniform::Mat4,	&model->transform().matrix()),
+					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
+					ml::Uniform("u_texture",ml::Uniform::Tex2D,	ML_Resources.textures.get("stone_dm")),
+				};
+				if (const ml::Shader * shader = ML_Resources.shaders.get("normal3D"))
+				{
+					shader->setUniforms(uniforms_3D);
+					shader->setUniforms(uniforms);
+					shader->bind();
+				}
+				this->draw(*model);
+			}
+
+			// Sanic
+			if(const ml::Model * model = ML_Resources.models.get("sanic"))
+			{
+				static ml::UniformSet uniforms = {
 					ml::Uniform("u_model",	ml::Uniform::Mat4,	&model->transform().matrix()),
 					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
 					ml::Uniform("u_texture",ml::Uniform::Tex2D,	ML_Resources.textures.get("sanic")),
 				};
-				if (const ml::Shader * shader = ML_Resources.shaders.get("basic2D"))
+				if (const ml::Shader * shader = ML_Resources.shaders.get("basic3D"))
 				{
+					shader->setUniforms(uniforms_3D);
 					shader->setUniforms(uniforms);
 					shader->bind();
 				}
@@ -749,7 +764,7 @@ namespace DEMO
 			shader->setUniforms(uniforms);
 			shader->bind();
 			this->clear(ml::Color::White);
-			this->draw(*ML_Resources.models.get("quad_def"));
+			this->draw(*ML_Resources.models.get("sanic"));
 		}
 
 		// Draw GUI
@@ -808,7 +823,7 @@ namespace DEMO
 			}
 			if (ImGui::BeginMenu("Help"))
 			{
-				ImGui::MenuItem("ImGui Demo", "Ctrl+Alt+D", &show_imgui_demo);
+				ImGui::MenuItem("ImGui Demo", "Ctrl+Alt+H", &show_imgui_demo);
 				ImGui::MenuItem("ImGui Metrics", NULL, &show_imgui_metrics);
 				ImGui::MenuItem("Style Editor", NULL, &show_imgui_style);
 				ImGui::MenuItem("About Dear ImGui", NULL, &show_imgui_about);
@@ -862,7 +877,6 @@ namespace DEMO
 						ML_Editor.InputVec3f("Camera Pos", m_camPos);
 						ML_Editor.InputVec3f("Camera Look", m_camLook);
 						ImGui::DragFloat("Camera Speed", &m_camSpd, 0.01f, 0.f, 1.f);
-						ImGui::DragFloat("Camera Distance", &m_camDist, 0.01f, 1.f, 25.f);
 						ImGui::EndTabItem();
 					}
 					if (ImGui::BeginTabItem("Light"))
@@ -876,7 +890,7 @@ namespace DEMO
 					}
 					if (ImGui::BeginTabItem("Geometry"))
 					{
-						ImGui::SliderInt("Mode", &m_lineMode, 0, 3);
+						ImGui::SliderInt("Mode", &m_lineMode, -1, 3);
 						ImGui::ColorEdit4("Color", &m_lineColor[0]);
 						ImGui::SliderFloat("Delta", &m_lineDelta, 0.f, 1.f);
 						ImGui::SliderInt("Samples", &m_lineSamples, 1, 128);
@@ -886,7 +900,7 @@ namespace DEMO
 					{
 						ImGui::Checkbox("Animate", &m_animate);
 
-						ml::Transform & temp = ML_Resources.models.get("sphere_hi")->transform();
+						ml::Transform & temp = ML_Resources.models.get("earth")->transform();
 
 						ML_Editor.InputTransform("Matrix", temp);
 

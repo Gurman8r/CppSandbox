@@ -13,18 +13,21 @@ font:		consolas	/fonts/consolas.ttf
 font:		lconsole	/fonts/lucida_console.ttf
 font:		minecraft	/fonts/minecraft.ttf
 
+# Meshes
+#***********************************************************************#
+#mesh:
+
 # Models
 #***********************************************************************#
-model:		empty
 model:		cube		/meshes/cube.mesh
+model:		ground		/meshes/cube.mesh
 model:		light		/meshes/sphere8x6.mesh
-model:		sphere_lo	/meshes/sphere8x6.mesh
-model:		sphere_hi	/meshes/sphere32x24.mesh
+model:		earth		/meshes/sphere32x24.mesh
 
 # Shaders
 #***********************************************************************#
 shader:		basic3D		/shaders/basic3D.shader
-shader:		basic2D		/shaders/basic2D.shader
+shader:		normal3D	/shaders/normal3D.shader
 shader:		text		/shaders/text.shader
 shader:		geometry	/shaders/geometry.shader
 shader:		framebuffer	/shaders/framebuffer.shader
@@ -36,6 +39,8 @@ shader:		skybox		/shaders/skybox.shader
 #***********************************************************************#
 texture:	dean		/images/dean.png
 texture:	sanic		/images/sanic.png
+texture:	borg		/images/borg.png
+texture:	grass		/images/grass.png
 texture:	earth_cm	/textures/earth_lo/earth_cm.png
 texture:	earth_dm 	/textures/earth_lo/earth_dm.png
 texture:	earth_hm 	/textures/earth_lo/earth_hm.png

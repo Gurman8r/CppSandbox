@@ -12,6 +12,11 @@ namespace ml
 	{
 	}
 
+	Duration::Duration(float value, uint64_t ratio)
+		: m_ms((uint64_t)(value) * ratio)
+	{
+	}
+
 	Duration::Duration(const Duration & copy)
 		: m_ms(copy.m_ms)
 	{
@@ -24,17 +29,17 @@ namespace ml
 	
 	const uint64_t Duration::hours() const
 	{
-		return minutes() / 24UL;
+		return minutes() / 24ULL;
 	}
 
 	const uint64_t Duration::minutes() const
 	{
-		return seconds() / 60UL;
+		return seconds() / 60ULL;
 	}
 
 	const uint64_t Duration::seconds() const
 	{
-		return millis() / 1000UL;
+		return millis() / 1000ULL;
 	}
 	
 	const uint64_t Duration::millis() const
@@ -44,12 +49,12 @@ namespace ml
 	
 	const uint64_t Duration::micros() const
 	{
-		return millis() * 1000UL;
+		return millis() * 1000ULL;
 	}
 	
 	const uint64_t Duration::nanos() const
 	{
-		return micros() * 1000UL;
+		return micros() * 1000ULL;
 	}
 
 

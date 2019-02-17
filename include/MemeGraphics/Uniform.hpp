@@ -35,9 +35,9 @@ namespace ml
 		~Uniform();
 
 	public:
-		String		name;
-		int32_t		type;
-		const void *data;
+		String		 name;
+		int32_t		 type;
+		const void * data;
 
 	public:
 		template <class T>

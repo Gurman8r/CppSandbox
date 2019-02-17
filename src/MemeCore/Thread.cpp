@@ -21,11 +21,13 @@ namespace ml
 	{
 		wait();
 
-		if (m_thr) { delete m_thr; }
+		if (m_thr) 
+		{
+			delete m_thr;
+			m_thr = NULL;
+		}
 		
-		if (m_fun) { delete m_fun; }
-
-		return (*this);
+		return update(NULL);
 	}
 
 	Thread & Thread::detatch()
@@ -50,8 +52,10 @@ namespace ml
 	{
 		if (m_fun != fun)
 		{
-			clean();
-
+			if (m_fun)
+			{ 
+				delete m_fun;
+			}
 			m_fun = fun;
 		}
 		return (*this);

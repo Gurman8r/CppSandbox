@@ -49,6 +49,8 @@ namespace DEMO
 		bool		multisample;	// Multisample
 		bool		srgbCapable;	// sRGB Capable
 
+		inline ml::vec2u windowSize() const { return { width, height }; }
+
 		// [Graphics]
 		bool		glErrorPause;	// OpenGL Error Pause?
 		float		fieldOfView;	// Field of View

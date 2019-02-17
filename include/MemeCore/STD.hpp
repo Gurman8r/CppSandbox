@@ -17,6 +17,7 @@
 #include <map>
 #include <mutex>
 #include <random>
+#include <regex>
 #include <sstream>
 #include <stdarg.h>
 #include <string>

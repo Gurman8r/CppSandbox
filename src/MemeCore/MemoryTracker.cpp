@@ -45,7 +45,9 @@ namespace ml
 			
 			cerr << (*this);
 			
-			Debug::pause(EXIT_FAILURE);
+#ifdef ML_DEBUG
+			Debug::terminate();
+#endif // ML_DEBUG
 		}
 	}
 

@@ -5,7 +5,7 @@
 
 // Layout
 layout(location = 0) in vec3 a_Position;
-layout(location = 1) in vec4 a_Color;
+layout(location = 1) in vec4 a_Normal;
 layout(location = 2) in vec2 a_Texcoord;
 
 // Varyings
@@ -283,6 +283,12 @@ void stub(in int samples, in float dt)
 		// tangents
 		drawLineFull(p0, p0 + m0);
 		drawLineFull(p1, p1 + m1);
+		break;
+	default:
+		drawLineFull(testP0, testP1);
+		drawLineFull(testP1, testP2);
+		drawLineFull(testP2, testP3);
+		drawLineFull(testP3, testP0);
 		break;
 	};
 }
