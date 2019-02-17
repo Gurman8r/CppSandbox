@@ -37,35 +37,35 @@ namespace ml
 			{
 				continue;
 			}
-			else if (type == "font" && (!fonts.load(value.getPath(), p.second)))
+			else if (type == "font" && (!fonts.load(p.second, value.getPath())))
 			{
 				return Debug::logError("Failed loading {0}", type);
 			}
-			else if (type == "image" && (!images.load(value.getPath(), p.second)))
+			else if (type == "image" && (!images.load(p.second, value.getPath())))
 			{
 				return Debug::logError("Failed loading {0}", type);
 			}
-			else if (type == "mesh" && (!meshes.load(value.getPath(), p.second)))
+			else if (type == "mesh" && (!meshes.load(p.second, value.getPath())))
 			{
 				return Debug::logError("Failed loading {0}", type);
 			}
-			else if (type == "model" && (!models.load(value.getPath(), p.second)))
+			else if (type == "model" && (!models.load(p.second, value.getPath())))
 			{
 				return Debug::logError("Failed loading {0}", type);
 			}
-			else if (type == "shader" && (!shaders.load(value.getPath(), p.second)))
+			else if (type == "shader" && (!shaders.load(p.second, value.getPath())))
 			{
 				return Debug::logError("Failed loading {0}", type);
 			}
-			else if (type == "sound" && (!sounds.load(value.getPath(), p.second)))
+			else if (type == "sound" && (!sounds.load(p.second, value.getPath())))
 			{
 				return Debug::logError("Failed loading {0}", type);
 			}
-			else if (type == "sprite" && (!sprites.load(value.getPath(), p.second)))
+			else if (type == "sprite" && (!sprites.load(p.second, value.getPath())))
 			{
 				return Debug::logError("Failed loading {0}", type);
 			}
-			else if (type == "texture" && (!textures.load(value.getPath(), p.second)))
+			else if (type == "texture" && (!textures.load(p.second, value.getPath())))
 			{
 				return Debug::logError("Failed loading {0}", type);
 			}

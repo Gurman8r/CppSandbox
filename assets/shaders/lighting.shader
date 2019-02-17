@@ -36,49 +36,47 @@ void main()
 #version 410 core
 
 // Varyings
-out vec4 FragColor;
 in	vec3 FragPos;
 in  vec3 Normal;
 in  vec2 Texcoord;
+out vec4 FragColor;
 
 // Uniforms
-uniform vec4		u_color;
 uniform vec3		u_viewPos;
 uniform vec3		u_lightPos;
 uniform vec4		u_lightCol;
-uniform float		u_ambientAmt;
-uniform float		u_specularAmt;
-uniform int			u_specularPow;
+uniform float		u_ambient;
+uniform float		u_specular;
+uniform int			u_shininess;
 uniform sampler2D	u_tex_dm;
 uniform sampler2D	u_tex_sm;
 
 void main()
 {
-	float alpha = u_color.w;
-
 	// textures
-	vec3	tex_dm = texture(u_tex_dm, Texcoord).xyz;
-	vec3	tex_sm = texture(u_tex_sm, Texcoord).xyz;
+	vec4	tex_dm	= texture(u_tex_dm, Texcoord);
+	vec4	tex_sm	= texture(u_tex_sm, Texcoord);
 
 	// ambient
-	vec4	ambient = (u_ambientAmt * u_lightCol);
+	vec3	ambient	= (u_ambient * u_lightCol.xyz);
 
 	// diffuse 
-	vec3	norm		= normalize(Normal);
-	vec3	lightDir	= normalize(u_lightPos - FragPos);
-	float	diff		= max(dot(norm, lightDir), 0.0);
-	vec3	diffuse		= (diff * u_lightCol.xyz) * tex_dm;
+	vec3	norm	= normalize(Normal);
+	vec3	lightDir= normalize(u_lightPos - FragPos);
+	float	diff	= max(dot(norm, lightDir), 0.0);
+	vec3	diffuse	= (diff * u_lightCol.xyz);
 
 	// specular		 
-	vec3	viewDir		= normalize(u_viewPos - FragPos);
-	vec3	reflectDir	= reflect(-lightDir, norm);
-	float	spec		= pow(max(dot(viewDir, reflectDir), 0.0), u_specularPow);
-	vec3	specular	= (u_specularAmt * spec * u_lightCol.xyz) * tex_sm;
+	vec3	view	= normalize(u_viewPos - FragPos);
+	vec3	refl	= reflect(-lightDir, norm);
+	float	spec	= pow(max(dot(view, refl), 0.0), u_shininess);
+	vec3	specular= (u_specular * spec * u_lightCol.xyz);
 
 	// result
-	vec4 result = (ambient) + vec4(diffuse, 1.0) + vec4(specular, 1.0);
-
-	FragColor = result * u_color;
+	FragColor =
+		(vec4(ambient, 1.0)) +
+		(vec4(diffuse, 1.0) * tex_dm) +
+		(vec4(specular, 1.0) * tex_sm);
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

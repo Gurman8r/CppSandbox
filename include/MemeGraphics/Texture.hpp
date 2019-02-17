@@ -62,6 +62,7 @@ namespace ml
 		static void	bind(const Texture * value);
 
 	public:
+		inline const uint32_t	type()			const { return m_type; }
 		inline const vec2u &	size()			const { return m_size; }
 		inline const vec2u &	actualSize()	const { return m_actualSize; }
 		inline const GL::Format colorFmt()		const { return m_colorFmt; }
@@ -73,6 +74,7 @@ namespace ml
 		inline const uint32_t	height()		const { return size()[1]; }
 
 	private:
+		uint32_t	m_type;
 		vec2u		m_size;
 		vec2u		m_actualSize;
 		GL::Format	m_colorFmt;

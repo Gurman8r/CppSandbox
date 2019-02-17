@@ -120,7 +120,7 @@ namespace ml
 			return (*this) /= magnitude();
 		};
 
-		inline self_type normal() const
+		inline self_type normalized() const
 		{
 			return self_type(*this).normalize();
 		};
@@ -144,7 +144,7 @@ namespace ml
 
 		inline static self_type direction(const self_type& from, const self_type& to)
 		{
-			return (to - from).normal();
+			return (to - from).normalized();
 		};
 
 		inline static self_type lerp(const self_type& a, const self_type& b, float t)

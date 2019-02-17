@@ -51,6 +51,23 @@ namespace ml
 		virtual ~Vector3() {}
 
 	public:
+		inline self_type & cross(const self_type & other)
+		{
+			return (*this) = cross((*this), other);
+		}
+
+		inline static self_type cross(const self_type & a, const self_type & b)
+		{
+			// (y - z) - (z - y)
+			// (z - x) - (x - z)
+			// (x - y) - (y - x)
+			return self_type(
+				(a[1] * b[2]) - (a[2] * b[1]),
+				(a[2] * b[0]) - (a[0] * b[2]),
+				(a[0] * b[1]) - (a[1] * b[0]));
+		}
+
+	public:
 		static const self_type Zero;
 		static const self_type One;
 		static const self_type Up;

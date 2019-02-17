@@ -114,24 +114,37 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		inline pointer load(const String & name)
+		inline bool load(const FileMap & files)
 		{
-			return (get(name)
-				? NULL
-				: set(name, new value_type()));
+			return load(files, String());
 		}
 
-		inline pointer load(const String & name, const String & filename)
+		inline bool load(const FileMap & files, const String & path = String())
+		{
+			size_t count = 0;
+			for (FileMap::const_iterator it = files.cbegin(); it != files.end(); it++)
+			{
+				if (const_pointer temp = load(it->first, it->second, path))
+				{
+					count++;
+				}
+			}
+			return count;
+		}
+
+		inline pointer load(const String & name, const String & file, const String & path = String())
 		{
 			if (!name.empty() && !get(name))
 			{
-				if (!filename.empty())
+				if (!file.empty())
 				{
 					pointer temp = new value_type();
-					if (temp->loadFromFile(filename))
+
+					if (temp->loadFromFile(path + file))
 					{
 						return set(name, temp);
 					}
+
 					delete temp;
 				}
 				else
@@ -142,23 +155,13 @@ namespace ml
 			return NULL;
 		}
 
-		inline bool load(const FileMap & files)
+		inline pointer load(const String & name)
 		{
-			return load(String(), files);
+			return (get(name)
+				? NULL
+				: set(name, new value_type()));
 		}
 
-		inline bool load(const String & path, const FileMap & files)
-		{
-			size_t count = 0;
-			for (FileMap::const_iterator it = files.cbegin(); it != files.end(); it++)
-			{
-				if (const_pointer temp = load(it->first, (path + it->second)))
-				{
-					count++;
-				}
-			}
-			return count;
-		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
 

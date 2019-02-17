@@ -72,8 +72,8 @@ namespace ml
 	public:
 		inline static Quaternion slerp(const Quaternion & lhs, const Quaternion & rhs, float t)
 		{
-			Quaternion a = lhs.normal();
-			Quaternion b = rhs.normal();
+			Quaternion a = lhs.normalized();
+			Quaternion b = rhs.normalized();
 			float d = a.dot(b);
 			if (d > 0.9995f)
 			{
@@ -86,7 +86,7 @@ namespace ml
 			}
 			d = Maths::clamp(d, -1.0f, 1.0f);
 			float dt = (acosf(d) * t);
-			return (b - a * d).normal();
+			return (b - a * d).normalized();
 		}
 
 	public:

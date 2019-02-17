@@ -51,8 +51,8 @@ namespace ml
 		inline const char * operator*() const	{ return ptr(); }
 		inline char *		operator*()			{ return ptr(); }
 
-		inline operator Data()	 const { return m_data; }
-		inline operator String() const { return String(m_data.begin(), m_data.end()); }
+		inline operator Data()	 const { return data(); }
+		inline operator String() const { return to_str(); }
 
 	public:
 		inline iterator			begin()			{ return m_data.begin();  }

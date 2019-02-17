@@ -67,11 +67,7 @@ namespace ml
 
 	void File::serialize(std::ostream & out) const
 	{
-		for (const char & c : (*this))
-		{
-			out << c;
-		}
-		out << endl;
+		out << String(begin(), end());
 	}
 
 	void File::deserialize(std::istream & file)

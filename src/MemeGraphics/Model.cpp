@@ -1,5 +1,9 @@
 #include <MemeGraphics/Model.hpp>
 #include <MemeGraphics/RenderTarget.hpp>
+#include <MemeGraphics/Shapes.hpp>
+
+#define ML_DEFAULT_CUBE "DEFAULT_CUBE"
+#define ML_DEFAULT_QUAD "DEFAULT_QUAD"
 
 namespace ml
 {

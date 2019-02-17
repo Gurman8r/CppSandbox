@@ -15,7 +15,6 @@ namespace ml
 		Camera(const Camera & copy);
 		~Camera();
 
-	private:
 
 	};
 }

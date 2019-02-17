@@ -13,6 +13,7 @@ namespace ml
 		const static vec4f Clear;
 		const static vec4f White;
 		const static vec4f Black;
+		const static vec4f Gray;
 
 		const static vec4f Red;
 		const static vec4f Blue;
@@ -20,6 +21,7 @@ namespace ml
 		
 		const static vec4f Cyan;
 		const static vec4f Yellow;
+		const static vec4f LightYellow;
 		const static vec4f Magenta;
 
 		const static vec4f Violet;

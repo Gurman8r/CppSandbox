@@ -80,9 +80,20 @@ namespace ml
 
 		auto loadData = [&](const String & type, SStream & ss)
 		{
-			String temp;
-			ss >> temp;
-			ss >> m_files[type][temp];
+			if (ss.good())
+			{
+				String name;
+				ss >> name;
+
+				if (ss.good())
+				{
+					ss >> m_files[type][name];
+				}
+				else
+				{
+					m_files[type][name] = String();
+				}
+			}
 		};
 
 		/* * * * * * * * * * * * * * * * * * * * */

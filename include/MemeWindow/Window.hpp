@@ -31,6 +31,9 @@ namespace ml
 
 			// Resizable | Visible | Decorated | Focused | AutoIconify
 			Default	= Resizable | Visible | Decorated | Focused | AutoIconify,
+
+			// Visible | Decorated | Focused | AutoIconify
+			DefaultNoResize = Visible | Decorated | Focused | AutoIconify,
 		};
 
 		/* * * * * * * * * * * * * * * * * * * * */

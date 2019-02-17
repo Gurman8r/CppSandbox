@@ -51,7 +51,7 @@ namespace DEMO
 			{
 				// Orthographic
 				m_ortho = ml::Transform::Orthographic(
-					{ ml::vec2f::Zero, (ml::vec2f)this->size() },
+					{ ml::vec2f::Zero, (ml::vec2f)this->getFramebufferSize() },
 					{ SETTINGS.orthoNear, SETTINGS.orthoFar }
 				);
 
@@ -272,8 +272,9 @@ namespace DEMO
 			ml::cout << ml::endl << manifest << ml::endl;
 
 			return ML_Resources.loadManifest(manifest)
-				&& ML_Resources.models.load("cube")->loadFromMemory(ml::Shapes::Cube::Vertices, ml::Shapes::Cube::Indices)
-				&& ML_Resources.models.load("quad")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
+				&& ML_Resources.models.load("cube_def")->loadFromMemory(ml::Shapes::Cube::Vertices, ml::Shapes::Cube::Indices)
+				&& ML_Resources.models.load("quad_def")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
+				&& ML_Resources.textures.load("framebuffer")->create(this->size())
 				&& loadBuffers()
 				;
 		}
@@ -310,17 +311,12 @@ namespace DEMO
 				.bufferFramebuffer(ml::GL::DepthStencilAttachment)
 				.unbind();
 			// Texture
-			if (ml::Texture * texture = ML_Resources.textures.load("framebuffer"))
-			{
-				texture->create(this->size());
-
-				ml::OpenGL::framebufferTexture2D(
-					ml::GL::Framebuffer, 
-					ml::GL::ColorAttachment0,
-					ml::GL::Texture2D,
-					*texture,
-					0);
-			}
+			ml::OpenGL::framebufferTexture2D(
+				ml::GL::Framebuffer,
+				ml::GL::ColorAttachment0,
+				ml::GL::Texture2D,
+				*ML_Resources.textures.get("framebuffer"),
+				0);
 			if (!ml::OpenGL::checkFramebufferStatus(ml::GL::Framebuffer))
 			{
 				return ml::Debug::logError("Framebuffer is not complete");
@@ -403,7 +399,7 @@ namespace DEMO
 			&& this->create(
 				SETTINGS.title,
 				ml::VideoMode({ SETTINGS.width, SETTINGS.height }, SETTINGS.bitsPerPixel),
-				ml::Window::Style::Default,
+				ml::Window::Style::DefaultNoResize,
 				ml::Context(
 					SETTINGS.majorVersion,
 					SETTINGS.minorVersion,
@@ -419,7 +415,7 @@ namespace DEMO
 		{
 			this->setInputMode(ml::Cursor::Normal);
 			this->setPosition((ml::VideoMode::desktop().size - this->size()) / 2);
-			this->setViewport(ml::vec2i::Zero, this->size());
+			this->setViewport(ml::vec2i::Zero, this->getFramebufferSize());
 
 			if (ml::Debug::log("Dear ImGui..."))
 			{
@@ -471,17 +467,21 @@ namespace DEMO
 		);
 
 		// Camera
-		m_camera.lookAt(m_camPos, m_camPos + ml::vec3f::Back, ml::vec3f::Up);
+		m_camera.LookAt(m_camPos, m_camPos + ml::vec3f::Back, ml::vec3f::Up);
 
 		// Setup Model Transforms
-		ML_Resources.models.get("cube")->transform()
+		ML_Resources.models.get("cube_def")->transform()
 			.translate({ +5.0f, 0.0f, 0.0f });
 		
-		ML_Resources.models.get("quad")->transform()
+		ML_Resources.models.get("quad_def")->transform()
 			.translate({ -5.0f, 0.0f, 0.0f });
-		
+
 		ML_Resources.models.get("sphere_hi")->transform()
 			.translate({ 0.0f, 0.0f, 0.0f });
+
+		ML_Resources.models.get("cube")->transform()
+			.translate({ 0.0f, 0.0f, -5.0f })
+			.scale(0.5f);
 
 		// Static Text
 		m_text["static"]
@@ -534,22 +534,37 @@ namespace DEMO
 			ML_Client.poll();
 		}
 
-		// Animate
+		// Update Models
 		{
+			ML_Resources.models.get("cube_def")->transform()
+				.rotate(+ev.elapsed.delta(), ml::vec3f::One);
+
 			ML_Resources.models.get("cube")->transform()
-				.translate(ml::vec3f::Zero)
-				.rotate(+ev.elapsed.delta(), ml::vec3f::One)
-				.scale(ml::vec3f::One);
+				.rotate(-ev.elapsed.delta(), ml::vec3f::One);
 
 			ML_Resources.models.get("sphere_hi")->transform()
-				.translate(ml::vec3f::Zero)
-				.rotate((m_animate ? ev.elapsed.delta() : 0.f), ml::vec3f::Up)
-				.scale(ml::vec3f::One);
+				.rotate((m_animate ? ev.elapsed.delta() : 0.f), ml::vec3f::Up);
 
-			ML_Resources.models.get("quad")->transform()
-				.translate(ml::vec3f::Zero)
-				.rotate(-ev.elapsed.delta(), ml::vec3f::Forward)
-				.scale(ml::vec3f::One);
+			ML_Resources.models.get("quad_def")->transform()
+				.rotate(-ev.elapsed.delta(), ml::vec3f::Forward);
+
+			ML_Resources.models.get("light")->transform()
+				.setPosition(m_lightPos)
+				.rotate(-ev.elapsed.delta(), ml::vec3f::Forward);
+		}
+
+		// Update Camera
+		{
+			const ml::vec3f pos = ML_Resources.models.get("sphere_hi")->transform().getPosition();
+			const ml::vec3f dir = (pos - m_camPos).normalized();
+
+			m_camLook = m_camPos + (pos - m_camPos).normalized();
+			m_camera.lookAt(m_camPos, m_camLook, ml::vec3f::Up);
+
+			float speed = (m_camAnimate ? m_camSpd * ev.elapsed.delta() : 0.0f);
+			ml::vec3f fwd = (m_camLook - m_camPos);
+			ml::vec3f right = (fwd.cross(ml::vec3f::Up) * ml::vec3f(1, 0, 1)).normalized();
+			m_camPos += right * speed;
 		}
 	}
 	
@@ -566,8 +581,25 @@ namespace DEMO
 			ml::OpenGL::enable(ml::GL::CullFace);
 			ml::OpenGL::enable(ml::GL::DepthTest);
 
-			// Cube
-			if(const ml::Model * model = ML_Resources.models.get("cube"))
+			// Light
+			if (const ml::Model * model = ML_Resources.models.get("light"))
+			{
+				static ml::UniformSet uniforms = {
+					ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
+					ml::Uniform("u_view",	ml::Uniform::Mat4,	&m_camera.matrix()),
+					ml::Uniform("u_model",	ml::Uniform::Mat4,	&model->transform().matrix()),
+					ml::Uniform("u_color",	ml::Uniform::Vec4,	&m_lightCol),
+				};
+				if (const ml::Shader * shader = ML_Resources.shaders.get("solid"))
+				{
+					shader->setUniforms(uniforms);
+					shader->bind();
+				}
+				this->draw(*model);
+			}
+
+			// Default Cube
+			if (const ml::Model * model = ML_Resources.models.get("cube_def"))
 			{
 				static ml::UniformSet uniforms = {
 					ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
@@ -583,21 +615,20 @@ namespace DEMO
 				}
 				this->draw(*model);
 			}
-			
-			// Sphere32x24
+
+			// Earth
 			if (const ml::Model * model = ML_Resources.models.get("sphere_hi"))
 			{
 				static ml::UniformSet uniforms = {
 					ml::Uniform("u_proj",		ml::Uniform::Mat4,	&m_persp.matrix()),
 					ml::Uniform("u_view",		ml::Uniform::Mat4,	&m_camera.matrix()),
 					ml::Uniform("u_model",		ml::Uniform::Mat4,	&model->transform().matrix()),
-					ml::Uniform("u_color",		ml::Uniform::Vec4,	&ml::Color::White),
-					ml::Uniform("u_lightPos",	ml::Uniform::Vec3,	&m_lightPos),
 					ml::Uniform("u_viewPos",	ml::Uniform::Vec3,	&m_camPos),
+					ml::Uniform("u_lightPos",	ml::Uniform::Vec3,	&m_lightPos),
 					ml::Uniform("u_lightCol",	ml::Uniform::Vec4,	&m_lightCol),
-					ml::Uniform("u_ambientAmt",	ml::Uniform::Float, &m_ambientAmt),
-					ml::Uniform("u_specularAmt",ml::Uniform::Float, &m_specularAmt),
-					ml::Uniform("u_specularPow",ml::Uniform::Int,	&m_specularPow),
+					ml::Uniform("u_ambient",	ml::Uniform::Float, &m_ambient),
+					ml::Uniform("u_specular",	ml::Uniform::Float, &m_specular),
+					ml::Uniform("u_shininess",	ml::Uniform::Int,	&m_shininess),
 					ml::Uniform("u_tex_dm",		ml::Uniform::Tex2D,	ML_Resources.textures.get("earth_dm")),
 					ml::Uniform("u_tex_sm",		ml::Uniform::Tex2D,	ML_Resources.textures.get("earth_sm")),
 				};
@@ -609,12 +640,29 @@ namespace DEMO
 				this->draw(*model);
 			}
 
+			// Cube
+			if (const ml::Model * model = ML_Resources.models.get("cube"))
+			{
+				static ml::UniformSet uniforms = {
+					ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
+					ml::Uniform("u_view",	ml::Uniform::Mat4,	&m_camera.matrix()),
+					ml::Uniform("u_model",	ml::Uniform::Mat4,	&model->transform().matrix()),
+					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
+					ml::Uniform("u_texture",ml::Uniform::Tex2D, ML_Resources.textures.get("stone_dm")),
+				};
+				if (const ml::Shader * shader = ML_Resources.shaders.get("basic3D"))
+				{
+					shader->setUniforms(uniforms);
+					shader->bind();
+				}
+				this->draw(*model);
+			}
+
 			// 2D
 			ml::OpenGL::disable(ml::GL::CullFace);
-			ml::OpenGL::disable(ml::GL::DepthTest);
 
-			// Quad
-			if(const ml::Model * model = ML_Resources.models.get("quad"))
+			// Default Quad
+			if(const ml::Model * model = ML_Resources.models.get("quad_def"))
 			{
 				static ml::UniformSet uniforms = {
 					ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
@@ -630,6 +678,9 @@ namespace DEMO
 				}
 				this->draw(*model);
 			}
+
+			// GUI
+			ml::OpenGL::disable(ml::GL::DepthTest);
 
 			// Text
 			if (true)
@@ -698,7 +749,7 @@ namespace DEMO
 			shader->setUniforms(uniforms);
 			shader->bind();
 			this->clear(ml::Color::White);
-			this->draw(*ML_Resources.models.get("quad"));
+			this->draw(*ML_Resources.models.get("quad_def"));
 		}
 
 		// Draw GUI
@@ -805,21 +856,30 @@ namespace DEMO
 						ImGui::SliderInt("FBO Mode", &m_fboMode, 0, 4);
 						ImGui::EndTabItem();
 					}
-					if (ImGui::BeginTabItem("Lighting"))
+					if (ImGui::BeginTabItem("Camera"))
 					{
-						ML_Editor.InputVec3f("Light Position", m_lightPos);
-						ImGui::ColorEdit4("Light Color", &m_lightCol[0]);
-						ImGui::DragFloat("Ambient Amt", &m_ambientAmt, 0.01f, 0.f, 1.f);
-						ImGui::DragFloat("Specular Amt", &m_specularAmt, 0.01f, 0.1f, 10.f);
-						ImGui::DragInt("Specular Pow", &m_specularPow, 1.f, 0, 256);
+						ImGui::Checkbox("Animate", &m_camAnimate);
+						ML_Editor.InputVec3f("Camera Pos", m_camPos);
+						ML_Editor.InputVec3f("Camera Look", m_camLook);
+						ImGui::DragFloat("Camera Speed", &m_camSpd, 0.01f, 0.f, 1.f);
+						ImGui::DragFloat("Camera Distance", &m_camDist, 0.01f, 1.f, 25.f);
+						ImGui::EndTabItem();
+					}
+					if (ImGui::BeginTabItem("Light"))
+					{
+						ML_Editor.InputVec3f("Position", m_lightPos);
+						ImGui::ColorEdit4("Color", &m_lightCol[0]);
+						ImGui::DragFloat("Ambient", &m_ambient, 0.01f, 0.f, 1.f);
+						ImGui::DragFloat("Specular", &m_specular, 0.01f, 0.1f, 10.f);
+						ImGui::DragInt("Shininess", &m_shininess, 1.f, 0, 256);
 						ImGui::EndTabItem();
 					}
 					if (ImGui::BeginTabItem("Geometry"))
 					{
-						ImGui::SliderInt("Line Mode", &m_lineMode, 0, 3);
-						ImGui::ColorEdit4("Line Color", &m_lineColor[0]);
-						ImGui::SliderFloat("Line Delta", &m_lineDelta, 0.f, 1.f);
-						ImGui::SliderInt("Line Samples", &m_lineSamples, 1, 128);
+						ImGui::SliderInt("Mode", &m_lineMode, 0, 3);
+						ImGui::ColorEdit4("Color", &m_lineColor[0]);
+						ImGui::SliderFloat("Delta", &m_lineDelta, 0.f, 1.f);
+						ImGui::SliderInt("Samples", &m_lineSamples, 1, 128);
 						ImGui::EndTabItem();
 					}
 					if (ImGui::BeginTabItem("Transform"))
@@ -835,8 +895,8 @@ namespace DEMO
 						temp.setPosition(pos);
 
 						ml::vec3f scl = temp.getScale();
-						ML_Editor.InputVec3f("Scale", scl);
-						temp.setScale(scl);
+						ML_Editor.InputVec3f("scale", scl);
+						temp.scale(scl);
 
 						ImGui::EndTabItem();
 					}

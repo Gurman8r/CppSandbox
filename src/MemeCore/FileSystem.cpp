@@ -99,7 +99,7 @@ namespace ml
 		static File file;
 		if (file.loadFromFile(filename))
 		{
-			value = file;
+			value = file.data();
 			return true;
 		}
 		return false;
@@ -107,10 +107,10 @@ namespace ml
 
 	bool FileSystem::getFileContents(const String & filename, String & value) const
 	{
-		static List<char> temp;
-		if (getFileContents(filename, temp))
+		static File file;
+		if (file.loadFromFile(filename))
 		{
-			value.assign(temp.begin(), temp.end());
+			value = file.to_str();
 			return true;
 		}
 		value.clear();
