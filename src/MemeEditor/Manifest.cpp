@@ -114,6 +114,7 @@ namespace ml
 			else if (parseLine(line, "mesh:",	ss)) { loadData("meshes",	ss); }
 			else if (parseLine(line, "model:",	ss)) { loadData("models",	ss); }
 			else if (parseLine(line, "shader:",	ss)) { loadData("shaders",	ss); }
+			else if (parseLine(line, "skybox:",	ss)) { loadData("skyboxes",	ss); }
 			else if (parseLine(line, "sound:",	ss)) { loadData("sounds",	ss); }
 			else if (parseLine(line, "sprite:",	ss)) { loadData("sprites",	ss); }
 			else if (parseLine(line, "texture:",ss)) { loadData("textures",	ss); }

@@ -202,6 +202,7 @@
     <None Include="..\..\assets\shaders\vs\deferred\passAttribs_world_vs4x.shader" />
     <None Include="..\..\assets\shaders\vs\deferred\passPosition_clip_vs4x.shader" />
     <None Include="..\..\assets\shaders\vs\shadow\phong_passAltClip_vs4x.shader" />
+    <None Include="..\..\assets\skyboxes\sunset.skybox" />
     <None Include="..\..\config.ini" />
   </ItemGroup>
   <ItemGroup>

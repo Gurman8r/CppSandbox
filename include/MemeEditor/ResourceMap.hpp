@@ -1,3 +1,4 @@
+
 #ifndef _RESOURCE_MAP_HPP_
 #define _RESOURCE_MAP_HPP_
 

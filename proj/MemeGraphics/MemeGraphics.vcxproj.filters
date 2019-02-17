@@ -156,6 +156,9 @@
     <ClInclude Include="..\..\include\MemeGraphics\Canvas.hpp">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\Skybox.hpp">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeGraphics\Color.cpp">
@@ -238,6 +241,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Canvas.cpp">
       <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\Skybox.cpp">
+      <Filter>Source Files\Drawable</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

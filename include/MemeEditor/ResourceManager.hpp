@@ -8,6 +8,7 @@
 #include <MemeAudio/Sound.hpp>
 #include <MemeGraphics/Font.hpp>
 #include <MemeGraphics/Model.hpp>
+#include <MemeGraphics/Skybox.hpp>
 #include <MemeGraphics/Sprite.hpp>
 
 #define ML_Resources ml::ResourceManager::getInstance()
@@ -20,6 +21,7 @@ namespace ml
 	using ImageMap		= ResourceMap<Image>;
 	using MeshMap		= ResourceMap<Mesh>;
 	using ModelMap		= ResourceMap<Model>;
+	using SkyboxMap		= ResourceMap<Skybox>;
 	using ShaderMap		= ResourceMap<Shader>;
 	using SoundMap		= ResourceMap<Sound>;
 	using SpriteMap		= ResourceMap<Sprite>;
@@ -47,6 +49,7 @@ namespace ml
 		ImageMap	images;
 		MeshMap		meshes;
 		ModelMap	models;
+		SkyboxMap	skyboxes;
 		ShaderMap	shaders;
 		SoundMap	sounds;
 		SpriteMap	sprites;

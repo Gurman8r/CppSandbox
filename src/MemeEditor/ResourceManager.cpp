@@ -20,6 +20,8 @@ namespace ml
 		models.clear();
 		meshes.clear();
 		shaders.clear();
+		sprites.clear();
+		skyboxes.clear();
 		textures.clear();
 		images.clear();
 		fonts.clear();
@@ -54,6 +56,10 @@ namespace ml
 				return Debug::logError("Failed loading {0}", type);
 			}
 			else if (type == "shaders" && (!shaders.load(p.second, value.getPath())))
+			{
+				return Debug::logError("Failed loading {0}", type);
+			}
+			else if (type == "skyboxes" && (!skyboxes.load(p.second, value.getPath())))
 			{
 				return Debug::logError("Failed loading {0}", type);
 			}
