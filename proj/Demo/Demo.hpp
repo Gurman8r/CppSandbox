@@ -1,4 +1,5 @@
 
+
 #ifndef _DEMO_HPP_
 #define _DEMO_HPP_
 
@@ -108,7 +109,7 @@ namespace DEMO
 		ml::vec4f	m_lightCol		= ml::Color::LightYellow;
 		float		m_ambient		= 0.01f;
 		float		m_specular		= 1.0f;
-		int32_t		m_shininess		= 2;
+		int32_t		m_shininess		= 32;
 
 		ml::vec4f	m_clearColor	= ml::Color::Gray;
 		int32_t		m_fboMode		= 3;

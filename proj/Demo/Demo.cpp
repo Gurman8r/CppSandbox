@@ -887,7 +887,7 @@ namespace DEMO
 						ImGui::ColorEdit4("Light Color", &m_lightCol[0]);
 						ImGui::DragFloat("Light Ambient", &m_ambient, 0.01f, 0.f, 1.f);
 						ImGui::DragFloat("Light Specular", &m_specular, 0.01f, 0.1f, 10.f);
-						ImGui::DragInt("Light Shininess", &m_shininess, 1.f, 0, 256);
+						ImGui::DragInt("Light Shininess", &m_shininess, 1.f, 1, 256);
 						ImGui::Separator();
 
 						ImGui::SliderInt("Line Mode", &m_lineMode, -1, 3);
@@ -1031,7 +1031,7 @@ namespace DEMO
 								}
 								else
 								{
-									ImGui::Text("No Uniform Selected");
+									ImGui::Text("Nothing Selected");
 								}
 							}
 							ImGui::EndGroup();
