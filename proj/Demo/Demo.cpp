@@ -3,10 +3,6 @@
 #include <MemeCore/EventSystem.hpp>
 #include <MemeWindow/WindowEvents.hpp>
 
-#ifdef ML_SYSTEM_WINDOWS
-#include <../thirdparty/include/dirent.h>
-#endif
-
 #include <imgui/imgui.h>
 #include <imgui/imgui_ml.hpp>
 
@@ -204,29 +200,11 @@ namespace DEMO
 
 			ML_Interpreter.addCmd({ "ls", [](ml::Args & args)
 			{
-				const ml::String dirName = args.pop_front().empty() ? "./" : args.str();
-				if (DIR * dir = opendir(dirName.c_str()))
+				const ml::String name = args.pop_front().empty() ? "." : args.str();
+				ml::SStream ss;
+				if (ML_FileSystem.getDirContents(name, ss))
 				{
-					while (dirent * e = readdir(dir))
-					{
-						switch (e->d_type)
-						{
-						case DT_REG:
-							ml::cout << (ml::FG::Green | ml::BG::Black) << e->d_name << "";
-							break;
-						case DT_DIR:
-							ml::cout << (ml::FG::Blue | ml::BG::Green) << e->d_name << "/";
-							break;
-						case DT_LNK:
-							ml::cout << (ml::FG::Green | ml::BG::Black) << e->d_name << "@";
-							break;
-						default:
-							ml::cout << (ml::FG::Green | ml::BG::Black) << e->d_name << "*";
-							break;
-						}
-						ml::cout << ml::FMT() << ml::endl;
-					}
-					closedir(dir);
+					ml::cout << ss.str();
 					return ml::Var().boolValue(true);
 				}
 				return ml::Var().boolValue(false);
@@ -272,9 +250,9 @@ namespace DEMO
 			ml::cout << ml::endl << manifest << ml::endl;
 
 			return ML_Resources.loadManifest(manifest)
-				&& ML_Resources.models.load("borg")->loadFromMemory(ml::Shapes::Cube::Vertices, ml::Shapes::Cube::Indices)
-				&& ML_Resources.models.load("sanic")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
-				&& ML_Resources.textures.load("framebuffer")->create(this->size())
+				&& ML_Resources.models.get("borg")->loadFromMemory(ml::Shapes::Cube::Vertices, ml::Shapes::Cube::Indices)
+				&& ML_Resources.models.get("sanic")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
+				&& ML_Resources.textures.get("framebuffer")->create(this->size())
 				&& loadBuffers()
 				;
 		}
@@ -574,17 +552,17 @@ namespace DEMO
 	
 	void Demo::onDraw(const DrawEvent & ev)
 	{
+		static ml::UniformSet camera_uniforms = {
+			ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
+			ml::Uniform("u_view",	ml::Uniform::Mat4,	&m_camera.matrix()),
+		};
+
 		// Draw Scene
 		/* * * * * * * * * * * * * * * * * * * * */
 		m_frameBuffer.bind();
 		{
 			// Clear
 			this->clear(m_clearColor);
-
-			static ml::UniformSet uni_camera = {
-				ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
-				ml::Uniform("u_view",	ml::Uniform::Mat4,	&m_camera.matrix()),
-			};
 			
 			// 3D
 			ml::OpenGL::enable(ml::GL::CullFace);
@@ -599,7 +577,7 @@ namespace DEMO
 				};
 				if (const ml::Shader * shader = ML_Resources.shaders.get("solid"))
 				{
-					shader->setUniforms(uni_camera);
+					shader->setUniforms(camera_uniforms);
 					shader->setUniforms(uniforms);
 					shader->bind();
 				}
@@ -616,7 +594,7 @@ namespace DEMO
 				};
 				if (const ml::Shader * shader = ML_Resources.shaders.get("basic3D"))
 				{
-					shader->setUniforms(uni_camera);
+					shader->setUniforms(camera_uniforms);
 					shader->setUniforms(uniforms);
 					shader->bind();
 				}
@@ -639,14 +617,14 @@ namespace DEMO
 				};
 				if (const ml::Shader * shader = ML_Resources.shaders.get("lighting"))
 				{
-					shader->setUniforms(uni_camera);
+					shader->setUniforms(camera_uniforms);
 					shader->setUniforms(uniforms);
 					shader->bind();
 				}
 				this->draw(*model);
 			}
 
-			// Earth
+			// Moon
 			if (const ml::Model * model = ML_Resources.models.get("moon"))
 			{
 				static ml::UniformSet uniforms = {
@@ -656,7 +634,7 @@ namespace DEMO
 				};
 				if (const ml::Shader * shader = ML_Resources.shaders.get("basic3D"))
 				{
-					shader->setUniforms(uni_camera);
+					shader->setUniforms(camera_uniforms);
 					shader->setUniforms(uniforms);
 					shader->bind();
 				}
@@ -673,7 +651,7 @@ namespace DEMO
 				};
 				if (const ml::Shader * shader = ML_Resources.shaders.get("normal3D"))
 				{
-					shader->setUniforms(uni_camera);
+					shader->setUniforms(camera_uniforms);
 					shader->setUniforms(uniforms);
 					shader->bind();
 				}
@@ -693,7 +671,7 @@ namespace DEMO
 				};
 				if (const ml::Shader * shader = ML_Resources.shaders.get("normal3D"))
 				{
-					shader->setUniforms(uni_camera);
+					shader->setUniforms(camera_uniforms);
 					shader->setUniforms(uniforms);
 					shader->bind();
 				}
@@ -710,7 +688,7 @@ namespace DEMO
 				};
 				if (const ml::Shader * shader = ML_Resources.shaders.get("basic3D"))
 				{
-					shader->setUniforms(uni_camera);
+					shader->setUniforms(camera_uniforms);
 					shader->setUniforms(uniforms);
 					shader->bind();
 				}

@@ -21,25 +21,24 @@ namespace ml
 	public:
 		bool cleanup() override;
 		bool loadFromFile(const String & filename) override;
-		bool loadFromFile(const String & filename, GL::Target type);
+		bool loadFromFile(const String & filename, uint32_t type);
 		bool loadFromImage(const Image & value);
-		bool loadFromImage(const Image & value, GL::Target type);
+		bool loadFromImage(const Image & value, uint32_t type);
 
 		bool update(const Texture & texture);
 		bool update(const Image & image);
 		bool update(const uint8_t * pixels, const vec2u & size, const vec2u & pos);
 
 		bool create(const vec2u & size);
-		bool create(const vec2u & size, GL::Target type);
+		bool create(const vec2u & size, uint32_t type);
 		bool create(
 			const uint8_t * pixels, 
-			uint32_t width, 
-			uint32_t height,
-			GL::Format	colorFmt,
-			GL::Format	internalFmt, 
+			const vec2u & size,
+			GL::Format	colFormat,
+			GL::Format	intFormat, 
 			bool smooth,
 			bool repeat,
-			GL::Target type);
+			uint32_t type);
 
 		Texture & swap(Texture & value);
 		Texture & setRepeated(bool value);
@@ -59,11 +58,11 @@ namespace ml
 		static void	bind(const Texture * value);
 
 	public:
-		inline const GL::Target	type()			const { return m_type; }
+		inline const uint32_t	type()			const { return m_type; }
 		inline const vec2u &	size()			const { return m_size; }
 		inline const vec2u &	actualSize()	const { return m_actualSize; }
-		inline const GL::Format colorFmt()		const { return m_colorFmt; }
-		inline const GL::Format internalFmt()	const { return m_internalFmt; }
+		inline const GL::Format colFormat()		const { return m_colFormat; }
+		inline const GL::Format internalFmt()	const { return m_intFormat; }
 		inline const bool		smooth()		const { return m_smooth; }
 		inline const bool		repeated()		const { return m_repeated; }
 		inline const bool		mipmapped()		const { return m_mipmapped; }
@@ -71,11 +70,11 @@ namespace ml
 		inline const uint32_t	height()		const { return size()[1]; }
 
 	private:
-		GL::Target	m_type;
+		uint32_t	m_type;
 		vec2u		m_size;
 		vec2u		m_actualSize;
-		GL::Format	m_colorFmt;
-		GL::Format	m_internalFmt;
+		GL::Format	m_colFormat;
+		GL::Format	m_intFormat;
 		bool		m_smooth;
 		bool		m_repeated;
 		bool		m_mipmapped;

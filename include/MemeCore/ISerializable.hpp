@@ -24,17 +24,17 @@ namespace ml
 			return typeid(*this);
 		}
 
-		inline const char * to_cstr() const
+		inline CString to_cstr() const
 		{
 			return to_str().c_str();
 		}
 
-		inline const String to_str() const
+		inline String to_str() const
 		{
 			return to_stream().str();
 		}
 
-		inline const SStream to_stream() const
+		inline SStream to_stream() const
 		{ 
 			SStream ss;
 			ss << (*this);

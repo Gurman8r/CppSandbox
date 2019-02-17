@@ -157,7 +157,7 @@
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Skybox.hpp">
-      <Filter>Header Files\Drawable</Filter>
+      <Filter>Header Files\DS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -243,7 +243,7 @@
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Skybox.cpp">
-      <Filter>Source Files\Drawable</Filter>
+      <Filter>Source Files\DS</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

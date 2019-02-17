@@ -12,8 +12,8 @@ namespace ml
 		, m_smooth		(false)
 		, m_repeated	(false)
 		, m_mipmapped	(false)
-		, m_colorFmt	(GL::RGBA)
-		, m_internalFmt	(GL::RGBA)
+		, m_colFormat	(GL::RGBA)
+		, m_intFormat	(GL::RGBA)
 	{
 	}
 
@@ -25,8 +25,8 @@ namespace ml
 		, m_smooth		(copy.m_smooth)
 		, m_repeated	(copy.m_repeated)
 		, m_mipmapped	(false)
-		, m_colorFmt	(copy.m_colorFmt)
-		, m_internalFmt	(copy.m_internalFmt)
+		, m_colFormat	(copy.m_colFormat)
+		, m_intFormat	(copy.m_intFormat)
 	{
 		if (copy)
 		{
@@ -59,10 +59,10 @@ namespace ml
 
 	bool Texture::loadFromFile(const String & filename)
 	{
-		return loadFromFile(filename, GL::Texture2D);
+		return loadFromFile(filename, m_type);
 	}
 
-	bool Texture::loadFromFile(const String & filename, GL::Target type)
+	bool Texture::loadFromFile(const String & filename, uint32_t type)
 	{
 		static Image image;
 		return image.loadFromFile(filename) && loadFromImage(image, type);
@@ -70,10 +70,10 @@ namespace ml
 
 	bool Texture::loadFromImage(const Image & value)
 	{
-		return loadFromImage(value, GL::Texture2D);
+		return loadFromImage(value, m_type);
 	}
 
-	bool Texture::loadFromImage(const Image & value, GL::Target type)
+	bool Texture::loadFromImage(const Image & value, uint32_t type)
 	{
 		return create(value.size()) && update(value);
 	}
@@ -96,18 +96,18 @@ namespace ml
 			Texture::bind(this);
 
 			OpenGL::texSubImage2D(
-				GL::Texture2D,
+				m_type,
 				0,
 				pos[0],
 				pos[1],
 				size[0],
 				size[1],
-				m_colorFmt,
+				m_colFormat,
 				GL::UnsignedByte,
 				pixels);
 
 			OpenGL::texParameter( // TexWrapS
-				GL::Texture2D,
+				m_type,
 				GL::TexWrapS,
 				(m_repeated
 					? GL::Repeat
@@ -116,7 +116,7 @@ namespace ml
 						: GL::Clamp)));
 
 			OpenGL::texParameter( // TexWrapT
-				GL::Texture2D,
+				m_type,
 				GL::TexWrapT,
 				(m_repeated
 					? GL::Repeat
@@ -125,14 +125,14 @@ namespace ml
 						: GL::Clamp)));
 
 			OpenGL::texParameter( // TexMinFilter
-				GL::Texture2D,
+				m_type,
 				GL::TexMinFilter,
 				(m_smooth
 					? GL::Linear
 					: GL::Nearest));
 
 			OpenGL::texParameter( // TexMagFilter
-				GL::Texture2D,
+				m_type,
 				GL::TexMagFilter,
 				(m_smooth
 					? GL::Linear
@@ -153,14 +153,13 @@ namespace ml
 		return create(size, m_type);
 	}
 
-	bool Texture::create(const vec2u & size, GL::Target type)
+	bool Texture::create(const vec2u & size, uint32_t type)
 	{
 		return create(
 			NULL,
-			size[0], 
-			size[1],
-			m_colorFmt,
-			m_internalFmt,
+			size,
+			m_colFormat,
+			m_intFormat,
 			m_smooth,
 			m_repeated,
 			type
@@ -169,25 +168,23 @@ namespace ml
 
 	bool Texture::create(
 		const uint8_t * pixels, 
-		uint32_t	width, 
-		uint32_t	height,
-		GL::Format	colorFmt,
-		GL::Format	internalFmt, 
-		bool		smooth, 
-		bool		repeat,
-		GL::Target	type)
+		const vec2u &	size,
+		GL::Format		colFormat,
+		GL::Format		intFormat, 
+		bool			smooth, 
+		bool			repeat,
+		uint32_t		type)
 	{
-		if (!width || !height)
+		if (!size[0] || !size[1])
 		{
-			return Debug::logError("Failed creating texture, invalid size {0}",
-				vec2u(width, height));
+			return Debug::logError("Failed creating texture, invalid size {0}", size);
 		}
 
 		if (!(*this) && (get_ref() = OpenGL::genTextures(1)))
 		{
 			m_actualSize = vec2u(
-				OpenGL::getValidTextureSize(width),
-				OpenGL::getValidTextureSize(height));
+				OpenGL::getValidTextureSize(size[0]),
+				OpenGL::getValidTextureSize(size[1]));
 
 			const uint32_t maxSize = OpenGL::getMaxTextureSize();
 			
@@ -202,11 +199,11 @@ namespace ml
 			}
 
 			m_type		= type;
-			m_size		= { width, height };
+			m_size		= size;
 			m_smooth	= smooth;
 			m_repeated	= repeat;
-			m_colorFmt	= colorFmt;
-			m_internalFmt	= internalFmt;
+			m_colFormat	= colFormat;
+			m_intFormat	= intFormat;
 
 			if (m_mipmapped && !OpenGL::framebuffersAvailable())
 			{
@@ -233,16 +230,16 @@ namespace ml
 			OpenGL::texImage2D(
 				m_type,
 				0,
-				m_colorFmt,
+				m_colFormat,
 				m_size[0],
 				m_size[1],
 				0,
-				m_internalFmt,
+				m_intFormat,
 				GL::UnsignedByte,
 				pixels);
 
 			OpenGL::texParameter( // TexWrapS
-				GL::Texture2D,
+				m_type,
 				GL::TexWrapS,
 					(m_repeated
 						? GL::Repeat
@@ -251,7 +248,7 @@ namespace ml
 							: GL::Clamp)));
 
 			OpenGL::texParameter( // TexWrapT
-				GL::Texture2D,
+				m_type,
 				GL::TexWrapT,
 					(m_repeated
 						? GL::Repeat
@@ -260,14 +257,14 @@ namespace ml
 							: GL::Clamp)));
 
 			OpenGL::texParameter( // TexMinFilter
-				GL::Texture2D,
+				m_type,
 				GL::TexMinFilter,
 				(m_smooth
 					? GL::Linear
 					: GL::Nearest));
 
 			OpenGL::texParameter( // TexMagFilter
-				GL::Texture2D,
+				m_type,
 				GL::TexMagFilter,
 				(m_smooth
 					? GL::Linear
@@ -291,8 +288,8 @@ namespace ml
 		std::swap(m_smooth,		other.m_smooth);
 		std::swap(m_repeated,	other.m_repeated);
 		std::swap(m_mipmapped,	other.m_mipmapped);
-		std::swap(m_colorFmt,	other.m_colorFmt);
-		std::swap(m_internalFmt,other.m_internalFmt);
+		std::swap(m_colFormat,	other.m_colFormat);
+		std::swap(m_intFormat,other.m_intFormat);
 
 		return other;
 	}
@@ -316,7 +313,7 @@ namespace ml
 			Texture::bind(this);
 
 			OpenGL::texParameter(
-				GL::Texture2D,
+				m_type,
 				GL::TexWrapS,
 				(m_repeated
 					? GL::Repeat
@@ -325,7 +322,7 @@ namespace ml
 						: GL::Clamp)));
 
 			OpenGL::texParameter(
-				GL::Texture2D,
+				m_type,
 				GL::TexWrapT,
 				(m_repeated
 					? GL::Repeat
@@ -352,14 +349,14 @@ namespace ml
 			if (m_mipmapped)
 			{
 				OpenGL::texParameter(
-					GL::Texture2D,
+					m_type,
 					GL::TexMinFilter,
 					(m_smooth
 						? GL::LinearMipmapLinear
 						: GL::LinearMipmapNearest));
 
 				OpenGL::texParameter(
-					GL::Texture2D,
+					m_type,
 					GL::TexMagFilter,
 					(m_smooth
 						? GL::LinearMipmapLinear
@@ -368,14 +365,14 @@ namespace ml
 			else
 			{
 				OpenGL::texParameter(
-					GL::Texture2D,
+					m_type,
 					GL::TexMinFilter,
 					(m_smooth
 						? GL::Linear
 						: GL::Nearest));
 
 				OpenGL::texParameter(
-					GL::Texture2D,
+					m_type,
 					GL::TexMagFilter,
 					(m_smooth
 						? GL::Linear
@@ -393,17 +390,17 @@ namespace ml
 		{
 			Texture::bind(this);
 
-			OpenGL::generateMipmap(GL::Texture2D);
+			OpenGL::generateMipmap(m_type);
 
 			OpenGL::texParameter(
-				GL::Texture2D,
+				m_type,
 				GL::TexMinFilter,
 				((m_smooth
 					? GL::LinearMipmapLinear
 					: GL::NearestMipmapNearest)));
 
 			OpenGL::texParameter(
-				GL::Texture2D,
+				m_type,
 				GL::TexMagFilter,
 				((m_smooth
 					? GL::LinearMipmapLinear
@@ -423,14 +420,14 @@ namespace ml
 			Texture::bind(this);
 
 			OpenGL::texParameter(
-				GL::Texture2D,
+				m_type,
 				GL::TexMinFilter,
 				(m_smooth
 					? GL::Linear
 					: GL::Nearest));
 
 			OpenGL::texParameter(
-				GL::Texture2D,
+				m_type,
 				GL::TexMagFilter,
 				(m_smooth
 					? GL::Linear
@@ -455,9 +452,9 @@ namespace ml
 				Texture::bind(this);
 
 				OpenGL::getTexImage(
-					GL::Texture2D,
+					m_type,
 					0,
-					m_colorFmt,
+					m_colFormat,
 					GL::UnsignedByte,
 					&pixels[0]);
 

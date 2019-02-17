@@ -1,6 +1,7 @@
 #include <MemeGraphics/Skybox.hpp>
 #include <MemeCore/FileSystem.hpp>
 #include <MemeCore/Debug.hpp>
+#include <MemeGraphics/OpenGL.hpp>
 
 namespace ml
 {
@@ -74,25 +75,26 @@ namespace ml
 		String line;
 		while (std::getline(in, line))
 		{
-			SStream pathSs;
-			if (parseLine(line, "path: ", pathSs))
-			{
-				pathSs >> path;
-				continue;
-			}
-
-			uint32_t current = MAX_FACE;
+			uint32_t cur = MAX_FACE;
 			switch (line.front())
 			{
-			case 'U': current = Up;		break;
-			case 'D': current = Down;	break;
-			case 'L': current = Left;	break;
-			case 'R': current = Right;	break;
-			case 'F': current = Front;	break;
-			case 'B': current = Back;	break;
+			case '#': break;
+			case 'U': cur = Up;		break;
+			case 'D': cur = Down;	break;
+			case 'L': cur = Left;	break;
+			case 'R': cur = Right;	break;
+			case 'F': cur = Front;	break;
+			case 'B': cur = Back;	break;
+			default:
+				SStream ss;
+				if (parseLine(line, "path: ", ss))
+				{
+					ss >> path;
+				}
+				break;
 			}
 
-			if (current == MAX_FACE)
+			if (cur == MAX_FACE)
 				continue;
 
 			const String type(String(1, line.front()) + ": ");
@@ -104,18 +106,13 @@ namespace ml
 
 				const String file = (path + line);
 
-				if (!m_faces[current])
+				if (!m_faces[cur] && (m_faces[cur] = new Texture()))
 				{
-					m_faces[current] = new Texture();
-
-					if (!m_faces[current]->loadFromFile(file))
+					if (!m_faces[cur]->loadFromFile(file, GL::TextureCubeMap))
 					{
-						Debug::logError("Failed Loading Skybox Face {0}: \'{1}\'", 
-							current,
-							file);
-
-						delete m_faces[current];
-						m_faces[current] = NULL;
+						Debug::logError("Failed Loading Skybox Face {0}: \'{1}\'", cur, file);
+						delete m_faces[cur];
+						m_faces[cur] = NULL;
 					}
 				}
 			}
@@ -126,8 +123,46 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void Skybox::draw(RenderTarget & target, RenderBatch batch) const
+	uint32_t Skybox::loadCubemap(const List<String>& faces)
 	{
+		if (uint32_t textureID = OpenGL::genTextures(1))
+		{
+			OpenGL::bindTexture(GL::TextureCubeMap, textureID);
+
+			for (uint32_t i = 0; i < faces.size(); i++)
+			{
+				Image image;
+				if (image.loadFromFile(faces[i]))
+				{
+					OpenGL::texImage2D(
+						GL::CubeMap_Positive_X + i,
+						0,
+						GL::RGB,
+						image.width(),
+						image.height(),
+						0,
+						GL::RGB,
+						GL::UnsignedByte,
+						image.ptr()
+					);
+				}
+				else
+				{
+					cout << "Cubemap texture failed to load at path: " << faces[i] << endl;
+				}
+			}
+
+			OpenGL::texParameter(GL::TextureCubeMap, GL::TexMinFilter, GL::Linear);
+			OpenGL::texParameter(GL::TextureCubeMap, GL::TexMagFilter, GL::Linear);
+			OpenGL::texParameter(GL::TextureCubeMap, GL::TexWrapS, GL::ClampToEdge);
+			OpenGL::texParameter(GL::TextureCubeMap, GL::TexWrapT, GL::ClampToEdge);
+			OpenGL::texParameter(GL::TextureCubeMap, GL::TexWrapR, GL::ClampToEdge);
+			
+			OpenGL::bindTexture(GL::TextureCubeMap, NULL);
+
+			return textureID;
+		}
+		return NULL;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

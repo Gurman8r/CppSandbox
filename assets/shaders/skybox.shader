@@ -5,11 +5,9 @@
 
 // Layout
 layout(location = 0) in vec3 a_Position;
-layout(location = 2) in vec2 a_Texcoord;
 
 // Varyings
-out vec3 Position;
-out vec2 Texcoord;
+out vec3 Texcoord;
 
 // Uniforms
 uniform mat4 u_proj;
@@ -17,12 +15,9 @@ uniform mat4 u_view;
 
 void main()
 {
-	Position = a_Position;
-	Texcoord = a_Texcoord;
+	Texcoord = a_Position;
 
-	mat4 mvp = (u_proj * u_view);
-
-	gl_Position = mvp * vec4(a_Position, 1.0);
+	gl_Position = u_proj * u_view * vec4(a_Position, 1.0);
 }
 
 // Fragment
@@ -31,16 +26,15 @@ void main()
 #version 410 core
 
 // Varyings
-out vec4	FragColor;
-in  vec2	Texcoord;
+out vec4 FragColor;
+in	vec3 Texcoord;
 
 // Uniforms
-uniform sampler2D	u_texture;
-uniform vec4		u_color;
+uniform samplerCube	u_skybox;
 
 void main()
 {
-	FragColor = u_color * texture(u_texture, Texcoord);
+	FragColor = texture(u_skybox, Texcoord);
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

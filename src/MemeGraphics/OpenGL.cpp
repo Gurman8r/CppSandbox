@@ -102,14 +102,14 @@ namespace ml
 	
 	// Flags
 
-	bool OpenGL::isEnabled(GL::Enum value)
+	bool OpenGL::isEnabled(uint32_t value)
 	{
 		static bool temp;
 		glCheck(temp = glIsEnabled(value));
 		return temp;
 	}
 
-	bool OpenGL::enable(GL::Enum value, bool check)
+	bool OpenGL::enable(uint32_t value, bool check)
 	{
 		glCheck(glEnable(value));
 		return check
@@ -117,7 +117,7 @@ namespace ml
 			: true;
 	}
 
-	bool OpenGL::disable(GL::Enum value, bool check)
+	bool OpenGL::disable(uint32_t value, bool check)
 	{
 		glCheck(glDisable(value));
 		return check
@@ -211,49 +211,49 @@ namespace ml
 
 	// Get
 
-	GL::Str OpenGL::getString(GL::Enum name)
+	GL::Str OpenGL::getString(uint32_t name)
 	{
 		static const char * temp;
 		glCheck(temp = reinterpret_cast<GL::Str>(glGetString(name)));
 		return temp;
 	}
 
-	GL::Str OpenGL::getString(GL::Enum name, uint32_t index)
+	GL::Str OpenGL::getString(uint32_t name, uint32_t index)
 	{
 		static const char * temp;
 		glCheck(temp = reinterpret_cast<GL::Str>(glGetStringi(name, index)));
 		return temp;
 	}
 
-	bool OpenGL::getBool(GL::Enum name)
+	bool OpenGL::getBool(uint32_t name)
 	{
 		static uint8_t temp;
 		glCheck(glGetBooleanv(name, &temp));
 		return (bool)temp;
 	}
 
-	double OpenGL::getDouble(GL::Enum name)
+	double OpenGL::getDouble(uint32_t name)
 	{
 		static double temp;
 		glCheck(glGetDoublev(name, &temp));
 		return temp;
 	}
 
-	float OpenGL::getFloat(GL::Enum name)
+	float OpenGL::getFloat(uint32_t name)
 	{
 		static float temp;
 		glCheck(glGetFloatv(name, &temp));
 		return temp;
 	}
 
-	int32_t OpenGL::getInt(GL::Enum name)
+	int32_t OpenGL::getInt(uint32_t name)
 	{
 		static int32_t temp;
 		getIntv(name, &temp);
 		return temp;
 	}
 
-	int32_t * OpenGL::getIntv(GL::Enum name, int32_t * params)
+	int32_t * OpenGL::getIntv(uint32_t name, int32_t * params)
 	{
 		glCheck(glGetIntegerv(name, params));
 
@@ -293,6 +293,11 @@ namespace ml
 		glCheck(glDepthFunc(cmp));
 	}
 
+	void OpenGL::depthMask(bool value)
+	{
+		glCheck(glDepthMask(value));
+	}
+
 	void OpenGL::viewport(int32_t x, int32_t y, int32_t w, int32_t h)
 	{
 		glCheck(glViewport(x, y, w, h));
@@ -308,7 +313,7 @@ namespace ml
 		glCheck(glBlendFuncSeparate(sfactorRGB, dfactorRGB, sfactorAlpha, dfactorAlpha));
 	}
 
-	void OpenGL::polygonMode(GL::Enum face, GL::Enum mode)
+	void OpenGL::polygonMode(uint32_t face, uint32_t mode)
 	{
 		glCheck(glPolygonMode(face, mode));
 	}
@@ -400,7 +405,7 @@ namespace ml
 		return temp;
 	}
 
-	void OpenGL::bindBuffer(GL::Target type, uint32_t buffer)
+	void OpenGL::bindBuffer(uint32_t type, uint32_t buffer)
 	{
 		glCheck(glBindBuffer(type, buffer));
 	}
@@ -410,12 +415,12 @@ namespace ml
 		glCheck(glBindVertexArray(value));
 	}
 
-	void OpenGL::bufferData(GL::Target type, uint32_t size, const void * data, GL::Usage usage)
+	void OpenGL::bufferData(uint32_t type, uint32_t size, const void * data, GL::Usage usage)
 	{
 		glCheck(glBufferData(type, size, data, usage));
 	}
 
-	void OpenGL::bufferSubData(GL::Target target, int32_t offset, int32_t size, const void * data)
+	void OpenGL::bufferSubData(uint32_t target, int32_t offset, int32_t size, const void * data)
 	{
 		glCheck(glBufferSubData(target, offset, size, data));
 	}
@@ -550,32 +555,32 @@ namespace ml
 		glCheck(glDeleteTextures(count, id));
 	}
 
-	void OpenGL::bindTexture(GL::Target target, uint32_t id)
+	void OpenGL::bindTexture(uint32_t target, uint32_t id)
 	{
 		glCheck(glBindTexture(target, id));
 	}
 
-	void OpenGL::texImage2D(GL::Target target, int32_t level, GL::Format internalFormat, int32_t width, int32_t height, int32_t border, GL::Format format, GL::Type type, const void * pixels)
+	void OpenGL::texImage2D(uint32_t target, int32_t level, GL::Format internalFormat, int32_t width, int32_t height, int32_t border, GL::Format format, GL::Type type, const void * pixels)
 	{
 		glCheck(glTexImage2D(target, level, internalFormat, width, height, border, format, type, pixels));
 	}
 
-	void OpenGL::texSubImage2D(GL::Target target, int32_t level, int32_t xoffset, int32_t yoffset, int32_t width, int32_t height, GL::Format format, GL::Type type, const void * pixels)
+	void OpenGL::texSubImage2D(uint32_t target, int32_t level, int32_t xoffset, int32_t yoffset, int32_t width, int32_t height, GL::Format format, GL::Type type, const void * pixels)
 	{
 		glCheck(glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, pixels));
 	}
 
-	void OpenGL::texParameter(GL::Target target, uint32_t name, GL::TexParam param)
+	void OpenGL::texParameter(uint32_t target, uint32_t name, GL::TexParam param)
 	{
 		glCheck(glTexParameteri(target, name, param));
 	}
 
-	void OpenGL::getTexImage(GL::Target target, int32_t level, GL::Format format, GL::Type type, void * pixels)
+	void OpenGL::getTexImage(uint32_t target, int32_t level, GL::Format format, GL::Type type, void * pixels)
 	{
 		glCheck(glGetTexImage(target, level, format, type, pixels));
 	}
 
-	void OpenGL::generateMipmap(GL::Target target)
+	void OpenGL::generateMipmap(uint32_t target)
 	{
 		glCheck(glGenerateMipmap(target));
 	}
@@ -617,14 +622,14 @@ namespace ml
 		return temp;
 	}
 
-	uint32_t OpenGL::checkFramebufferStatus(GL::Target target)
+	uint32_t OpenGL::checkFramebufferStatus(uint32_t target)
 	{
 		static uint32_t temp;
 		glCheck(temp = glCheckFramebufferStatus(target));
 		return temp;
 	}
 
-	void OpenGL::bindFramebuffer(GL::Target target, uint32_t framebuffer)
+	void OpenGL::bindFramebuffer(uint32_t target, uint32_t framebuffer)
 	{
 		glCheck(glBindFramebuffer(target, framebuffer));
 	}
@@ -643,7 +648,7 @@ namespace ml
 			filter));
 	}
 
-	void OpenGL::framebufferTexture2D(GL::Target target, GL::Attachment attachment, GL::Target textarget, uint32_t texture, int32_t level)
+	void OpenGL::framebufferTexture2D(uint32_t target, GL::Attachment attachment, uint32_t textarget, uint32_t texture, int32_t level)
 	{
 		glCheck(glFramebufferTexture2D(target, attachment, textarget, texture, level));
 	}
@@ -663,17 +668,17 @@ namespace ml
 		glCheck(glDeleteRenderbuffers(count, renderbuffers));
 	}
 
-	void OpenGL::bindRenderbuffer(GL::Target target, uint32_t renderbuffer)
+	void OpenGL::bindRenderbuffer(uint32_t target, uint32_t renderbuffer)
 	{
 		glCheck(glBindRenderbuffer(target, renderbuffer));
 	}
 
-	void OpenGL::renderbufferStorage(GL::Target target, uint32_t value, int32_t width, int32_t height)
+	void OpenGL::renderbufferStorage(uint32_t target, uint32_t value, int32_t width, int32_t height)
 	{
 		glCheck(glRenderbufferStorage(target, value, width, height));
 	}
 
-	void OpenGL::framebufferRenderbuffer(GL::Target target, uint32_t attachment, GL::Target renderbuffertarget, uint32_t renderbuffer)
+	void OpenGL::framebufferRenderbuffer(uint32_t target, uint32_t attachment, uint32_t renderbuffertarget, uint32_t renderbuffer)
 	{
 		glCheck(glFramebufferRenderbuffer(target, attachment, renderbuffertarget, renderbuffer));
 

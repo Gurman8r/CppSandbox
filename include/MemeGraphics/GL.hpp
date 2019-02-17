@@ -239,6 +239,7 @@ namespace ml
 			TexMinFilter,					// GL_TEXTURE_MIN_FILTER
 			TexWrapS,						// GL_TEXTURE_WRAP_S
 			TexWrapT,						// GL_TEXTURE_WRAP_T
+			TexWrapR			= 0x8072,	// GL_TEXTURE_WRAP_R
 			Clamp				= 0x2900,	// GL_CLAMP
 			Repeat,							// GL_REPEAT
 			ClampToEdge			= 0x812F,	// GL_CLAMP_TO_EDGE

@@ -25,6 +25,11 @@ namespace ml
 			const static VertexList	Vertices;
 			const static IndexList	Indices;
 		};
+
+		struct ML_GRAPHICS_API Sky final
+		{
+			const static FloatList Vertices;
+		};
 	};
 }
 

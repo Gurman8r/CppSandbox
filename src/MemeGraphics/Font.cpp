@@ -145,8 +145,7 @@ namespace ml
 		// Only load a texture for characters requiring a graphic
 		if ((value != ' ') && isgraph(value) && !glyph.texture.create(
 			face->glyph->bitmap.buffer,
-			face->glyph->bitmap.width,
-			face->glyph->bitmap.rows,
+			{ face->glyph->bitmap.width, face->glyph->bitmap.rows },
 			GL::RGBA,
 			GL::Red,
 			true, 

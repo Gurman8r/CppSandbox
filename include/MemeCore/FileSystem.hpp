@@ -25,6 +25,8 @@ namespace ml
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
 
+		inline const String & root() const { return m_root; }
+
 		bool	setWorkingDir(const String & value);
 		String	getWorkingDir() const;
 

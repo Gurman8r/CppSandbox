@@ -15,6 +15,10 @@ font:		minecraft	/fonts/minecraft.ttf
 
 # Models
 #***********************************************************************#
+model:		skybox
+model:		borg
+model:		sanic
+
 model:		cube		/meshes/cube.mesh
 model:		ground		/meshes/cube.mesh
 model:		light		/meshes/sphere8x6.mesh
@@ -34,6 +38,8 @@ shader:		skybox		/shaders/skybox.shader
 
 # Textures
 #***********************************************************************#
+texture:	framebuffer
+
 texture:	dean		/images/dean.png
 texture:	sanic		/images/sanic.png
 texture:	borg		/images/borg.png
