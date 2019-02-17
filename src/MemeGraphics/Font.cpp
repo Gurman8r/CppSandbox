@@ -150,7 +150,8 @@ namespace ml
 			GL::RGBA,
 			GL::Red,
 			true, 
-			true))
+			true,
+			GL::Texture2D))
 		{
 			Debug::logWarning("Failed Loading Glyph Texture: \'{0}\'", (char)value);
 		}

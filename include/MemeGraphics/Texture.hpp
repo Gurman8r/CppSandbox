@@ -21,20 +21,16 @@ namespace ml
 	public:
 		bool cleanup() override;
 		bool loadFromFile(const String & filename) override;
+		bool loadFromFile(const String & filename, GL::Target type);
 		bool loadFromImage(const Image & value);
+		bool loadFromImage(const Image & value, GL::Target type);
 
 		bool update(const Texture & texture);
 		bool update(const Image & image);
 		bool update(const uint8_t * pixels, const vec2u & size, const vec2u & pos);
-		bool update(
-			const uint8_t * pixels, 
-			uint32_t width, 
-			uint32_t height, 
-			uint32_t x, 
-			uint32_t y);
 
 		bool create(const vec2u & size);
-		bool create(uint32_t width, uint32_t height);
+		bool create(const vec2u & size, GL::Target type);
 		bool create(
 			const uint8_t * pixels, 
 			uint32_t width, 
@@ -42,7 +38,8 @@ namespace ml
 			GL::Format	colorFmt,
 			GL::Format	internalFmt, 
 			bool smooth,
-			bool repeat);
+			bool repeat,
+			GL::Target type);
 
 		Texture & swap(Texture & value);
 		Texture & setRepeated(bool value);
@@ -62,7 +59,7 @@ namespace ml
 		static void	bind(const Texture * value);
 
 	public:
-		inline const uint32_t	type()			const { return m_type; }
+		inline const GL::Target	type()			const { return m_type; }
 		inline const vec2u &	size()			const { return m_size; }
 		inline const vec2u &	actualSize()	const { return m_actualSize; }
 		inline const GL::Format colorFmt()		const { return m_colorFmt; }
@@ -74,7 +71,7 @@ namespace ml
 		inline const uint32_t	height()		const { return size()[1]; }
 
 	private:
-		uint32_t	m_type;
+		GL::Target	m_type;
 		vec2u		m_size;
 		vec2u		m_actualSize;
 		GL::Format	m_colorFmt;

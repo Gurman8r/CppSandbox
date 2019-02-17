@@ -6,6 +6,7 @@ namespace ml
 {
 	Texture::Texture()
 		: IHandle		(NULL)
+		, m_type		(GL::Texture2D)
 		, m_size		(vec2u::Zero)
 		, m_actualSize	(vec2u::Zero)
 		, m_smooth		(false)
@@ -18,6 +19,7 @@ namespace ml
 
 	Texture::Texture(const Texture & copy)
 		: IHandle		(NULL)
+		, m_type		(copy.m_type)
 		, m_size		(vec2u::Zero)
 		, m_actualSize	(vec2u::Zero)
 		, m_smooth		(copy.m_smooth)
@@ -28,7 +30,7 @@ namespace ml
 	{
 		if (copy)
 		{
-			if (create(copy.width(), copy.height()))
+			if (create(copy.size()))
 			{
 				update(copy);
 			}
@@ -57,13 +59,23 @@ namespace ml
 
 	bool Texture::loadFromFile(const String & filename)
 	{
+		return loadFromFile(filename, GL::Texture2D);
+	}
+
+	bool Texture::loadFromFile(const String & filename, GL::Target type)
+	{
 		static Image image;
-		return image.loadFromFile(filename) && loadFromImage(image);
+		return image.loadFromFile(filename) && loadFromImage(image, type);
 	}
 
 	bool Texture::loadFromImage(const Image & value)
 	{
-		return create(value.width(), value.height()) && update(value);
+		return loadFromImage(value, GL::Texture2D);
+	}
+
+	bool Texture::loadFromImage(const Image & value, GL::Target type)
+	{
+		return create(value.size()) && update(value);
 	}
 	
 	
@@ -79,16 +91,6 @@ namespace ml
 
 	bool Texture::update(const uint8_t * pixels, const vec2u & size, const vec2u & pos)
 	{
-		return update(pixels, size[0], size[1], pos[0], pos[1]);
-	}
-	
-	bool Texture::update(
-		const uint8_t * pixels, 
-		uint32_t width, 
-		uint32_t height, 
-		uint32_t x, 
-		uint32_t y)
-	{
 		if ((*this) && pixels)
 		{
 			Texture::bind(this);
@@ -96,10 +98,10 @@ namespace ml
 			OpenGL::texSubImage2D(
 				GL::Texture2D,
 				0,
-				x, 
-				y, 
-				width,
-				height,
+				pos[0],
+				pos[1],
+				size[0],
+				size[1],
 				m_colorFmt,
 				GL::UnsignedByte,
 				pixels);
@@ -144,23 +146,24 @@ namespace ml
 		}
 		return false;
 	}
-
-
+	
+	
 	bool Texture::create(const vec2u & size)
 	{
-		return create(size[0], size[1]);
+		return create(size, m_type);
 	}
 
-	bool Texture::create(uint32_t width, uint32_t height)
+	bool Texture::create(const vec2u & size, GL::Target type)
 	{
 		return create(
 			NULL,
-			width,
-			height,
+			size[0], 
+			size[1],
 			m_colorFmt,
 			m_internalFmt,
 			m_smooth,
-			m_repeated
+			m_repeated,
+			type
 		);
 	}
 
@@ -171,7 +174,8 @@ namespace ml
 		GL::Format	colorFmt,
 		GL::Format	internalFmt, 
 		bool		smooth, 
-		bool		repeat)
+		bool		repeat,
+		GL::Target	type)
 	{
 		if (!width || !height)
 		{
@@ -197,6 +201,7 @@ namespace ml
 					vec2u(maxSize));
 			}
 
+			m_type		= type;
 			m_size		= { width, height };
 			m_smooth	= smooth;
 			m_repeated	= repeat;
@@ -226,7 +231,7 @@ namespace ml
 			Texture::bind(this);
 
 			OpenGL::texImage2D(
-				GL::Texture2D,
+				m_type,
 				0,
 				m_colorFmt,
 				m_size[0],
@@ -466,9 +471,9 @@ namespace ml
 
 	void Texture::bind(const Texture * value)
 	{
-		if (value && (*value))
+		if (value)
 		{
-			OpenGL::bindTexture(GL::Texture2D, (uint32_t)(*value));
+			OpenGL::bindTexture(value->type(), (uint32_t)(*value));
 		}
 		else
 		{
