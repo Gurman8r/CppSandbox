@@ -77,14 +77,14 @@
     <Filter Include="Resource Files\scripts">
       <UniqueIdentifier>{59483728-d1a2-4120-9e4c-e3fdf1e83de8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\textures\earth_hi">
-      <UniqueIdentifier>{a6a1c69a-2efc-4182-b2f6-3774554e5bb3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\textures\earth_lo">
-      <UniqueIdentifier>{37f3295d-b266-4015-b79e-77d9a2b91aed}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\skyboxes">
       <UniqueIdentifier>{03731043-07d2-4623-8321-3729ce9db5ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\textures\earth">
+      <UniqueIdentifier>{5635fc2f-1ea8-4ae2-bedc-bdb6d50b839d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\textures\bg\sunset">
+      <UniqueIdentifier>{18f919de-96d6-4b0e-ad98-b8c0cce85c7a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -293,41 +293,50 @@
     <Image Include="..\..\assets\textures\bg\sky_water.png">
       <Filter>Resource Files\textures\bg</Filter>
     </Image>
-    <Image Include="..\..\assets\textures\earth_lo\earth_cm.png">
-      <Filter>Resource Files\textures\earth_lo</Filter>
+    <Image Include="..\..\assets\images\borg.png">
+      <Filter>Resource Files\images</Filter>
     </Image>
-    <Image Include="..\..\assets\textures\earth_lo\earth_dm.png">
-      <Filter>Resource Files\textures\earth_lo</Filter>
+    <Image Include="..\..\assets\images\grass.png">
+      <Filter>Resource Files\images</Filter>
     </Image>
-    <Image Include="..\..\assets\textures\earth_lo\earth_hm.png">
-      <Filter>Resource Files\textures\earth_lo</Filter>
+    <Image Include="..\..\assets\images\test_sky.png">
+      <Filter>Resource Files\images</Filter>
     </Image>
-    <Image Include="..\..\assets\textures\earth_lo\earth_lm.png">
-      <Filter>Resource Files\textures\earth_lo</Filter>
+    <Image Include="..\..\assets\textures\earth\earth_cm.png">
+      <Filter>Resource Files\textures\earth</Filter>
     </Image>
-    <Image Include="..\..\assets\textures\earth_lo\earth_nm.png">
-      <Filter>Resource Files\textures\earth_lo</Filter>
+    <Image Include="..\..\assets\textures\earth\earth_dm.png">
+      <Filter>Resource Files\textures\earth</Filter>
     </Image>
-    <Image Include="..\..\assets\textures\earth_lo\earth_sm.png">
-      <Filter>Resource Files\textures\earth_lo</Filter>
+    <Image Include="..\..\assets\textures\earth\earth_hm.png">
+      <Filter>Resource Files\textures\earth</Filter>
     </Image>
-    <Image Include="..\..\assets\textures\earth_hi\earth_cm_2k.png">
-      <Filter>Resource Files\textures\earth_hi</Filter>
+    <Image Include="..\..\assets\textures\earth\earth_lm.png">
+      <Filter>Resource Files\textures\earth</Filter>
     </Image>
-    <Image Include="..\..\assets\textures\earth_hi\earth_dm_2k.png">
-      <Filter>Resource Files\textures\earth_hi</Filter>
+    <Image Include="..\..\assets\textures\earth\earth_nm.png">
+      <Filter>Resource Files\textures\earth</Filter>
     </Image>
-    <Image Include="..\..\assets\textures\earth_hi\earth_hm_2k.png">
-      <Filter>Resource Files\textures\earth_hi</Filter>
+    <Image Include="..\..\assets\textures\earth\earth_sm.png">
+      <Filter>Resource Files\textures\earth</Filter>
     </Image>
-    <Image Include="..\..\assets\textures\earth_hi\earth_lm_2k.png">
-      <Filter>Resource Files\textures\earth_hi</Filter>
+    <Image Include="..\..\assets\textures\bg\sunset\sunset_back.png">
+      <Filter>Resource Files\textures\bg\sunset</Filter>
     </Image>
-    <Image Include="..\..\assets\textures\earth_hi\earth_nm_2k.png">
-      <Filter>Resource Files\textures\earth_hi</Filter>
+    <Image Include="..\..\assets\textures\bg\sunset\sunset_down.png">
+      <Filter>Resource Files\textures\bg\sunset</Filter>
     </Image>
-    <Image Include="..\..\assets\textures\earth_hi\earth_sm_2k.png">
-      <Filter>Resource Files\textures\earth_hi</Filter>
+    <Image Include="..\..\assets\textures\bg\sunset\sunset_front.png">
+      <Filter>Resource Files\textures\bg\sunset</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\bg\sunset\sunset_left.png">
+      <Filter>Resource Files\textures\bg\sunset</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\bg\sunset\sunset_right.png">
+      <Filter>Resource Files\textures\bg\sunset</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\bg\sunset\sunset_up.png">
+      <Filter>Resource Files\textures\bg\sunset</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

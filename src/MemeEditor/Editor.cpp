@@ -34,6 +34,17 @@ namespace ml
 	{
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 	}
+
+	CString Editor::FormatName(CString label) const
+	{
+		String name(label);
+		size_t i;
+		if ((i = name.find("##")) != String::npos)
+		{
+			name = name.substr(0, i);
+		}
+		return name.c_str();
+	}
 	
 	/* * * * * * * * * * * * * * * * * * * * */
 
@@ -80,40 +91,58 @@ namespace ml
 
 	vec2f & Editor::InputVec2f(CString label, vec2f & value) const
 	{
-		const String id = String("##") + label;
-
+		String name(label);
+		size_t i;
+		if ((i = name.find("##")) != String::npos)
+		{
+			name = name.substr(0, i);
+		}
+		ImGui::PushID(label);
 		ImGui::PushItemWidth(64);
-		ImGui::DragFloat((id + "##X").c_str(), &value[0], 1, 0, 0, "X:%.3f"); ImGui::SameLine();
-		ImGui::DragFloat((id + "##Y").c_str(), &value[1], 1, 0, 0, "Y:%.3f"); ImGui::SameLine();
+		ImGui::DragFloat("##X", &value[0], 0.1f, 0, 0, "X:%.3f"); ImGui::SameLine();
+		ImGui::DragFloat("##Y", &value[1], 0.1f, 0, 0, "Y:%.3f"); ImGui::SameLine();
 		ImGui::PopItemWidth();
-		ImGui::Text(label);
+		ImGui::Text(name.c_str());
+		ImGui::PopID();
 		return value;
 	}
 
 	vec3f & Editor::InputVec3f(CString label, vec3f & value) const
 	{
-		const String id = String("##") + label;
-
+		String name(label);
+		size_t i;
+		if ((i = name.find("##")) != String::npos)
+		{
+			name = name.substr(0, i);
+		}
+		ImGui::PushID(label);
 		ImGui::PushItemWidth(64);
-		ImGui::DragFloat((id + "##X").c_str(), &value[0], 1, 0, 0, "X:%.3f"); ImGui::SameLine();
-		ImGui::DragFloat((id + "##Y").c_str(), &value[1], 1, 0, 0, "Y:%.3f"); ImGui::SameLine();
-		ImGui::DragFloat((id + "##Z").c_str(), &value[2], 1, 0, 0, "Z:%.3f"); ImGui::SameLine();
+		ImGui::DragFloat("##X", &value[0], 0.1f, 0, 0, "X:%.3f"); ImGui::SameLine();
+		ImGui::DragFloat("##Y", &value[1], 0.1f, 0, 0, "Y:%.3f"); ImGui::SameLine();
+		ImGui::DragFloat("##Z", &value[2], 0.1f, 0, 0, "Z:%.3f"); ImGui::SameLine();
 		ImGui::PopItemWidth();
-		ImGui::Text(label);
+		ImGui::Text(name.c_str());
+		ImGui::PopID();
 		return value;
 	}
 
 	vec4f & Editor::InputVec4f(CString label, vec4f & value) const
 	{
-		const String id = String("##") + label;
-
+		String name(label);
+		size_t i;
+		if ((i = name.find("##")) != String::npos)
+		{
+			name = name.substr(0, i);
+		}
+		ImGui::PushID(label);
 		ImGui::PushItemWidth(64);
-		ImGui::DragFloat((id + "##X").c_str(), &value[0], 1, 0, 0, "X:%.3f"); ImGui::SameLine();
-		ImGui::DragFloat((id + "##Y").c_str(), &value[1], 1, 0, 0, "Y:%.3f"); ImGui::SameLine();
-		ImGui::DragFloat((id + "##Z").c_str(), &value[2], 1, 0, 0, "Z:%.3f"); ImGui::SameLine();
-		ImGui::DragFloat((id + "##W").c_str(), &value[2], 1, 0, 0, "W:%.3f"); ImGui::SameLine();
+		ImGui::DragFloat("##X", &value[0], 0.1f, 0, 0, "X:%.3f"); ImGui::SameLine();
+		ImGui::DragFloat("##Y", &value[1], 0.1f, 0, 0, "Y:%.3f"); ImGui::SameLine();
+		ImGui::DragFloat("##Z", &value[2], 0.1f, 0, 0, "Z:%.3f"); ImGui::SameLine();
+		ImGui::DragFloat("##W", &value[2], 0.1f, 0, 0, "W:%.3f"); ImGui::SameLine();
 		ImGui::PopItemWidth();
-		ImGui::Text(label);
+		ImGui::Text(name.c_str());
+		ImGui::PopID();
 		return value;
 	}
 

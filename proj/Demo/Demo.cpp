@@ -261,59 +261,54 @@ namespace DEMO
 				<< ml::endl << manifest 
 				<< ml::endl;
 
-			return ML_Res.loadManifest(manifest)
+			return ml::Debug::log("Loading...")
+				&& ML_Res.loadManifest(manifest)
 				&& ML_Res.models.load("borg")->loadFromMemory(ml::Shapes::Cube::Vertices, ml::Shapes::Cube::Indices)
 				&& ML_Res.models.load("sanic")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
 				&& ML_Res.textures.load("framebuffer")->create(this->size())
-				&& loadBuffers()
-				;
+				&& loadBuffers();
 		}
 		return ml::Debug::logError("Failed loading manifest");
 	}
 	
 	bool Demo::loadBuffers()
 	{
-		// Load Buffers
-		if (ml::Debug::log("Loading Buffers..."))
+		// Text
+		m_vaoText
+			.create(ml::GL::Triangles)
+			.bind();
+		m_vboText
+			.create(ml::GL::DynamicDraw)
+			.bind()
+			.bufferData(NULL, (ml::Glyph::VertexCount * ml::Vertex::Size));
+		ml::BufferLayout::Default.bind();
+		m_vboText.unbind();
+		m_vaoText.unbind();
+
+		// FBO
+		m_frameBuffer
+			.create()
+			.bind();
+		// RBO
+		m_renderBuffer
+			.create(this->width(), this->height())
+			.bind()
+			.bufferStorage(ml::GL::Depth24_Stencil8)
+			.bufferFramebuffer(ml::GL::DepthStencilAttachment)
+			.unbind();
+		// Texture
+		ml::OpenGL::framebufferTexture2D(
+			ml::GL::Framebuffer,
+			ml::GL::ColorAttachment0,
+			ml::GL::Texture2D,
+			*ML_Res.textures.get("framebuffer"),
+			0);
+		if (!ml::OpenGL::checkFramebufferStatus(ml::GL::Framebuffer))
 		{
-			// Text
-			m_vaoText
-				.create(ml::GL::Triangles)
-				.bind();
-			m_vboText
-				.create(ml::GL::DynamicDraw)
-				.bind()
-				.bufferData(NULL, (ml::Glyph::VertexCount * ml::Vertex::Size));
-			ml::BufferLayout::Default.bind();
-			m_vboText.unbind();
-			m_vaoText.unbind();
-
-
-			// FBO
-			m_frameBuffer
-				.create()
-				.bind();
-			// RBO
-			m_renderBuffer
-				.create(this->width(), this->height())
-				.bind()
-				.bufferStorage(ml::GL::Depth24_Stencil8)
-				.bufferFramebuffer(ml::GL::DepthStencilAttachment)
-				.unbind();
-			// Texture
-			ml::OpenGL::framebufferTexture2D(
-				ml::GL::Framebuffer,
-				ml::GL::ColorAttachment0,
-				ml::GL::Texture2D,
-				*ML_Res.textures.get("framebuffer"),
-				0);
-			if (!ml::OpenGL::checkFramebufferStatus(ml::GL::Framebuffer))
-			{
-				return ml::Debug::logError("Framebuffer is not complete");
-			}
-			m_frameBuffer.unbind();
-			
+			return ml::Debug::logError("Framebuffer is not complete");
 		}
+		m_frameBuffer.unbind();
+
 		return true;
 	}
 
@@ -416,12 +411,23 @@ namespace DEMO
 				}
 			}
 
-			m_error = ml::Debug::log("Loading...")
-				&& ml::OpenAL::init()
-				&& loadResources()
-				&& loadNetwork()
-				? ML_SUCCESS
-				: ML_FAILURE;
+			if (!ml::OpenAL::init())
+			{
+				m_error = ml::Debug::logError("Failed Initializing OpenAL");
+				return;
+			}
+
+			if (!loadResources())
+			{
+				m_error = ml::Debug::logError("Failed Loading Resources");
+				return;
+			}
+
+			if (!loadNetwork())
+			{
+				m_error = ml::Debug::logError("Failed Initializing Network");
+				return;
+			}
 		}
 		else
 		{
@@ -537,7 +543,7 @@ namespace DEMO
 				.rotate((m_animate ? ev.elapsed.delta() : 0.f), ml::vec3f::Up);
 
 			ML_Res.models.get("moon")->transform()
-				.rotate(ev.elapsed.delta(), ml::vec3f::Up);
+				.rotate(-ev.elapsed.delta(), ml::vec3f::Up);
 
 			ML_Res.models.get("sanic")->transform()
 				.rotate(-ev.elapsed.delta(), ml::vec3f::Forward);
@@ -552,11 +558,11 @@ namespace DEMO
 			const ml::vec3f pos = ML_Res.models.get("earth")->transform().getPosition();
 			const ml::vec3f dir = (pos - m_camPos).normalized();
 
-			m_camLook = m_camPos + (pos - m_camPos).normalized();
-			m_camera.lookAt(m_camPos, m_camLook, ml::vec3f::Up);
+			ml::vec3f look = m_camPos + (pos - m_camPos).normalized();
+			m_camera.lookAt(m_camPos, look, ml::vec3f::Up);
 
 			float speed = (m_camAnimate ? m_camSpd * ev.elapsed.delta() : 0.0f);
-			ml::vec3f fwd = (m_camLook - m_camPos);
+			ml::vec3f fwd = (look - m_camPos);
 			ml::vec3f right = (fwd.cross(ml::vec3f::Up) * ml::vec3f(1, 0, 1)).normalized();
 			m_camPos += right * speed;
 		}
@@ -759,6 +765,7 @@ namespace DEMO
 					ml::Uniform("u_color",		ml::Uniform::Vec4,	&m_lineColor),
 					ml::Uniform("u_lineMode",	ml::Uniform::Int,	&m_lineMode),
 					ml::Uniform("u_lineDelta",	ml::Uniform::Float, &m_lineDelta),
+					ml::Uniform("u_lineSize",	ml::Uniform::Float, &m_lineSize),
 					ml::Uniform("u_lineSamples",ml::Uniform::Int,	&m_lineSamples),
 				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("geometry"))
@@ -868,68 +875,57 @@ namespace DEMO
 			}
 			else
 			{
-				ML_Editor.ShowHelpMarker("Some help text");
 				ML_Editor.ShowFramerate();
 				ImGui::Separator();
 
-				if (ImGui::BeginTabBar("EditorTabBar", ImGuiTabBarFlags_None))
+				if (ImGui::Button("Reload Shaders"))
 				{
-					if (ImGui::BeginTabItem("Scene"))
-					{
-						ImGui::Separator();
-
-						if (ImGui::Button("Reload Shaders"))
-						{
-							reloadShaders();
-						}
-						ImGui::Separator();
-
-						ImGui::ColorEdit4("Clear Color", &m_clearColor[0]);
-						ImGui::Separator();
-
-						static ml::CString fbo_modes[] = {
-								"Normal",
-								"Grayscale",
-								"Blur",
-								"Juicy",
-								"Inverted",
-						};
-						ImGui::Combo("Framebuffer", &m_fboMode, fbo_modes, IM_ARRAYSIZE(fbo_modes));
-						ImGui::Separator();
-
-						ImGui::Checkbox("Camera Move", &m_camAnimate);
-						ML_Editor.InputVec3f("Camera Pos", m_camPos);
-						ML_Editor.InputVec3f("Camera Look", m_camLook);
-						ImGui::DragFloat("Camera Speed", &m_camSpd, 0.01f, 0.f, 1.f);
-						ImGui::Separator();
-
-						ML_Editor.InputVec3f("Light Position", m_lightPos);
-						ImGui::ColorEdit4("Light Color", &m_lightCol[0]);
-						ImGui::DragFloat("Light Ambient", &m_ambient, 0.01f, 0.f, 1.f);
-						ImGui::DragFloat("Light Specular", &m_specular, 0.01f, 0.1f, 10.f);
-						ImGui::DragInt("Light Shininess", &m_shininess, 1.f, 1, 256);
-						ImGui::Separator();
-
-						ImGui::SliderInt("Line Mode", &m_lineMode, -1, 3);
-						ImGui::ColorEdit4("Line Color", &m_lineColor[0]);
-						ImGui::SliderFloat("Line Delta", &m_lineDelta, 0.f, 1.f);
-						ImGui::SliderInt("Line Samples", &m_lineSamples, 1, 128);
-						ImGui::Separator();
-
-						ImGui::EndTabItem();
-					}
-					if (ImGui::BeginTabItem("Transform"))
-					{
-						ImGui::Checkbox("Animate", &m_animate);
-
-						ml::Transform & temp = ML_Res.models.get("earth")->transform();
-
-						ML_Editor.InputTransform("Matrix", temp);
-
-						ImGui::EndTabItem();
-					}
-					ImGui::EndTabBar();
+					reloadShaders();
 				}
+				ImGui::Separator();
+
+				ImGui::Text("Scene");
+				ImGui::ColorEdit4("Clear Color", &m_clearColor[0]);
+				ImGui::Separator();
+
+				ImGui::Text("Framebuffer");
+				static ml::CString fbo_modes[] = {
+						"Normal",
+						"Grayscale",
+						"Blur",
+						"Juicy",
+						"Inverted",
+				};
+				ImGui::Combo("Shader##Framebuffer", &m_fboMode, fbo_modes, IM_ARRAYSIZE(fbo_modes));
+				ImGui::Separator();
+
+				ImGui::Text("Camera");
+				ImGui::Checkbox("Move##Camera", &m_camAnimate);
+				ML_Editor.InputVec3f("Position##Camera", m_camPos);
+				ImGui::DragFloat("Speed##Camera", &m_camSpd, 0.1f, -5.f, 5.f);
+				ImGui::Separator();
+
+				ImGui::Text("Light");
+				ML_Editor.InputVec3f("Position##Light", m_lightPos);
+				ImGui::ColorEdit4("Color##Light", &m_lightCol[0]);
+				ImGui::DragFloat("Ambient##Light", &m_ambient, 0.01f, 0.f, 1.f);
+				ImGui::DragFloat("Specular##Light", &m_specular, 0.01f, 0.1f, 10.f);
+				ImGui::DragInt("Shininess##Light", &m_shininess, 1.f, 1, 256);
+				ImGui::Separator();
+
+				ImGui::Text("Geometry");
+				ImGui::SliderInt("Mode##Geometry", &m_lineMode, -1, 3);
+				ImGui::ColorEdit4("Color##Geometry", &m_lineColor[0]);
+				ImGui::SliderFloat("Delta##Geometry", &m_lineDelta, 0.f, 1.f);
+				ImGui::SliderFloat("Size##Geometry", &m_lineSize, 0.f, 1.f);
+				ImGui::SliderInt("Samples##Geometry", &m_lineSamples, 1, 128);
+				ImGui::Separator();
+
+				ImGui::Text("Transform");
+				ImGui::Checkbox("Animate", &m_animate);
+				ml::Transform & temp = ML_Res.models.get("earth")->transform();
+				ML_Editor.InputTransform("Matrix", temp);
+				ImGui::Separator();
 
 				ImGui::End();
 			}

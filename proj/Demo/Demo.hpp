@@ -99,7 +99,6 @@ namespace DEMO
 
 		bool		m_camAnimate	= true;
 		ml::vec3f	m_camPos		= { 0, 1, 10 };
-		ml::vec3f	m_camLook		= { 0 };
 		float		m_camSpd		= 1.f;
 		
 		ml::vec3f	m_lightPos		= { 0, 1, 15 };
@@ -114,6 +113,7 @@ namespace DEMO
 		int32_t		m_lineMode		= -1;
 		ml::vec4f	m_lineColor		= ml::Color::Red;
 		float		m_lineDelta		= 1.f;
+		float		m_lineSize		= 0.75f;
 		int32_t		m_lineSamples	= 16;
 		bool		m_animate		= true;
 

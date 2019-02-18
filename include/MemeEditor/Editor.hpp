@@ -24,6 +24,9 @@ namespace ml
 		void ShowFramerate() const;
 
 	public:
+		CString FormatName(CString label) const;
+
+	public:
 		Transform & InputTransform(CString label, Transform & value) const;
 		mat4f &	InputMat4f(CString label, mat4f & value) const;
 		mat3f &	InputMat3f(CString label, mat3f & value) const;

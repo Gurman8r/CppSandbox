@@ -61,6 +61,7 @@ layout(line_strip, max_vertices = SAMPLES_MAX) out;
 // Uniforms
 uniform int		u_lineMode;
 uniform float	u_lineDelta;
+uniform float	u_lineSize;
 uniform int		u_lineSamples;
 
 // Maths
@@ -214,10 +215,11 @@ void drawCubicHermiteSplineSegment(in vec4 p0, in vec4 m0, in vec4 p1, in vec4 m
 void stub(in int samples, in float dt)
 {
 	// test points
-	vec4 testP0 = vec4(-0.5, 0.5, 0.0, 1.0);
-	vec4 testP1 = vec4(0.5, 0.5, 0.0, 1.0);
-	vec4 testP2 = vec4(0.5, -0.5, 0.0, 1.0);
-	vec4 testP3 = vec4(-0.5, -0.5, 0.0, 1.0);
+	float size = u_lineSize;
+	vec4 testP0 = vec4(-size, +size, 0.0, 1.0);
+	vec4 testP1 = vec4(+size, +size, 0.0, 1.0);
+	vec4 testP2 = vec4(+size, -size, 0.0, 1.0);
+	vec4 testP3 = vec4(-size, -size, 0.0, 1.0);
 
 	vec4 p0, p1, p2, p3, pPrev, pNext, m0, m1;
 

@@ -33,7 +33,7 @@ model:		moon		/meshes/sphere32x24.mesh
 
 # Skyboxes
 #***********************************************************************#
-skybox:		sunset		/skyboxes/sunset.skybox
+#skybox:	sunset		/skyboxes/sunset.skybox
 
 # Shaders
 #***********************************************************************#
