@@ -22,17 +22,7 @@ namespace ml
 	}
 
 	Texture::Texture(GL::Target target, bool smooth, bool repeated)
-		: Texture(target, GL::RGBA, smooth, repeated)
-	{
-	}
-
-	Texture::Texture(GL::Target target, GL::Format intFormat, bool smooth, bool repeated)
-		: Texture(target, intFormat, smooth, repeated, false)
-	{
-	}
-
-	Texture::Texture(GL::Target target, GL::Format intFormat, bool smooth, bool repeated, bool mipmapped)
-		: Texture(target, intFormat, intFormat, smooth, repeated, mipmapped)
+		: Texture(target, GL::RGBA, GL::RGBA, smooth, repeated)
 	{
 	}
 
@@ -42,7 +32,7 @@ namespace ml
 	}
 
 	Texture::Texture(GL::Target target, GL::Format intFormat, GL::Format colFormat, bool smooth, bool repeated, bool mipmapped)
-		: Texture(target, intFormat, intFormat, smooth, repeated, mipmapped, 0, 0, GL::UnsignedByte)
+		: Texture(target, intFormat, colFormat, smooth, repeated, mipmapped, 0, 0, GL::UnsignedByte)
 	{
 	}
 
@@ -51,11 +41,11 @@ namespace ml
 		, m_size		(vec2u::Zero)
 		, m_realSize	(vec2u::Zero)
 		, m_target		(target)
+		, m_intFormat	(intFormat)
+		, m_colFormat	(colFormat)
 		, m_smooth		(smooth)
 		, m_repeated	(repeated)
 		, m_mipmapped	(mipmapped)
-		, m_intFormat		(intFormat)
-		, m_colFormat	(colFormat)
 		, m_level		(level)
 		, m_border		(border)
 		, m_type		(type)
@@ -130,17 +120,6 @@ namespace ml
 	}
 	
 	/* * * * * * * * * * * * * * * * * * * * */
-
-	void Texture::serialize(std::ostream & out) const
-	{
-		out << get_type().name();
-	}
-
-	void Texture::deserialize(std::istream & in)
-	{
-	}
-
-	/* * * * * * * * * * * * * * * * * * * * */
 	
 	bool Texture::update(const Texture & texture)
 	{
@@ -149,7 +128,8 @@ namespace ml
 
 	bool Texture::update(const Image & image)
 	{
-		return update(image, vec2u::Zero, image.size());
+		return update(image
+, vec2u::Zero, image.size());
 	}
 
 	bool Texture::update(const Image & image, const vec2u & pos, const vec2u & size)
@@ -191,36 +171,10 @@ namespace ml
 	
 	bool Texture::create(const vec2u & size)
 	{
-		return create(size, m_target);
-	}
-
-	bool Texture::create(const vec2u & size, GL::Target target)
-	{
-		return create(
-			target,
-			NULL,
-			size,
-			m_intFormat,
-			m_colFormat,
-			m_smooth,
-			m_repeated
-		);
+		return create(NULL, size);
 	}
 
 	bool Texture::create(const uint8_t * pixels, const vec2u & size)
-	{
-		return create(
-			m_target,
-			pixels,
-			size,
-			m_intFormat,
-			m_colFormat,
-			m_smooth,
-			m_repeated
-		);
-	}
-
-	bool Texture::create(GL::Target target, const uint8_t * pixels, const vec2u & size, GL::Format intFormat, GL::Format colFormat, bool smooth, bool repeated)
 	{
 		if (!size[0] || !size[1])
 		{
@@ -229,9 +183,12 @@ namespace ml
 
 		if (!(*this) && (get_ref() = OpenGL::genTextures(1)))
 		{
+			m_size = size;
+
 			m_realSize = vec2u(
-				OpenGL::getValidTextureSize(size[0]),
-				OpenGL::getValidTextureSize(size[1]));
+				OpenGL::getValidTextureSize(m_size[0]),
+				OpenGL::getValidTextureSize(m_size[1]));
+
 			static const uint32_t maxSize = OpenGL::getMaxTextureSize();
 			if ((m_realSize[0] > maxSize) || (m_realSize[1] > maxSize))
 			{
@@ -242,11 +199,6 @@ namespace ml
 					m_realSize,
 					vec2u(maxSize));
 			}
-
-			m_target	= target;
-			m_size		= size;
-			m_intFormat	= intFormat;
-			m_colFormat	= colFormat;
 
 			bind(this);
 
@@ -265,9 +217,9 @@ namespace ml
 
 			OpenGL::flush();
 
-			setRepeated(repeated);
+			setRepeated(m_repeated);
 
-			setSmooth(smooth);
+			setSmooth(m_smooth);
 
 			return true;
 		}
@@ -395,6 +347,28 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
+	Texture & Texture::swap(Texture & other)
+	{
+		std::swap(get_ref(),	other.get_ref());
+		std::swap(m_size,		other.m_size);
+		std::swap(m_realSize,	other.m_realSize);
+		std::swap(m_smooth,		other.m_smooth);
+		std::swap(m_repeated,	other.m_repeated);
+		std::swap(m_mipmapped,	other.m_mipmapped);
+		std::swap(m_intFormat,	other.m_intFormat);
+		std::swap(m_colFormat,	other.m_colFormat);
+
+		return other;
+	}
+	
+	Texture & Texture::operator=(const Texture & value)
+	{
+		static Texture temp;
+		return swap(temp);
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	const Image Texture::copyToImage() const
 	{
 		if ((*this))
@@ -420,26 +394,6 @@ namespace ml
 		return Image();
 	}
 
-	Texture & Texture::swap(Texture & other)
-	{
-		std::swap(get_ref(),	other.get_ref());
-		std::swap(m_size,		other.m_size);
-		std::swap(m_realSize,	other.m_realSize);
-		std::swap(m_smooth,		other.m_smooth);
-		std::swap(m_repeated,	other.m_repeated);
-		std::swap(m_mipmapped,	other.m_mipmapped);
-		std::swap(m_intFormat,	other.m_intFormat);
-		std::swap(m_colFormat,	other.m_colFormat);
-
-		return other;
-	}
-	
-	Texture & Texture::operator=(const Texture & value)
-	{
-		static Texture temp;
-		return swap(temp);
-	}
-
 	void Texture::bind(const Texture * value)
 	{
 		if (value)
@@ -452,5 +406,16 @@ namespace ml
 		}
 	}
 	
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	void Texture::serialize(std::ostream & out) const
+	{
+		out << get_type().name();
+	}
+
+	void Texture::deserialize(std::istream & in)
+	{
+	}
+
 	/* * * * * * * * * * * * * * * * * * * * */
 }

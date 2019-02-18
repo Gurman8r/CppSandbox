@@ -76,7 +76,7 @@ namespace DEMO
 			if (auto ev = value->Cast<ml::KeyEvent>())
 			{
 				// Toggle Smooth Textures
-				if (ev->getKeyDown(ml::S))
+				if (ev->getKeyDown(ml::Num1))
 				{
 					static bool smooth = false;
 					smooth = !smooth;
@@ -84,31 +84,34 @@ namespace DEMO
 					{
 						pair.second->setSmooth(smooth);
 					}
-					ml::OpenGL::flush();
 				}
 
 				// Reload Shaders
 				if (ev->getKeyDown(ml::KeyCode::R))
-				{ ml::Debug::log("Reloaded {0} Shaders.", ML_Res.shaders.reload()); }
+				{ 
+					ml::Debug::log("Reloaded {0} Shaders.", ML_Res.shaders.reload()); 
+				}
 
 				// Close
 				if (ev->getKeyDown(ml::KeyCode::Escape))
-				{ if (SETTINGS.escapeIsExit) { this->close(); } }
+				{
+					if (SETTINGS.escapeIsExit) { this->close(); } 
+				}
 
 				// Show Editor
-				if (ev->getKeyDown(ml::E) && this->getKey(ml::LeftControl))
+				if (ev->getKeyDown(ml::E) && (ev->mods & ML_MOD_CTRL))
 				{ show_ml_editor = true; }
 
 				// Show Console
-				if (ev->getKeyDown(ml::T) && this->getKey(ml::LeftControl) && this->getKey(ml::LeftAlt))
+				if (ev->getKeyDown(ml::T) && ((ev->mods & ML_MOD_CTRL) && (ev->mods & ML_MOD_ALT)))
 				{ show_ml_console = true; }
 
 				// Show Network Manager
-				if (ev->getKeyDown(ml::N) && this->getKey(ml::LeftControl) && this->getKey(ml::LeftAlt))
+				if (ev->getKeyDown(ml::N) && ((ev->mods & ML_MOD_CTRL) && (ev->mods & ML_MOD_ALT)))
 				{ show_ml_network = true; }
 
 				// Show Shader Builder
-				if (ev->getKeyDown(ml::B) && this->getKey(ml::LeftControl) && this->getKey(ml::LeftAlt))
+				if (ev->getKeyDown(ml::B) && ((ev->mods & ML_MOD_CTRL) && (ev->mods & ML_MOD_ALT)))
 				{ show_ml_shader = true; }
 			}
 			break;

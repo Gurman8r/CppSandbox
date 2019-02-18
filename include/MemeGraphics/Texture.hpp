@@ -18,8 +18,6 @@ namespace ml
 		Texture(GL::Target target);
 		Texture(bool smooth, bool repeated);
 		Texture(GL::Target target, bool smooth, bool repeated);
-		Texture(GL::Target target, GL::Format intFormat, bool smooth, bool repeated);
-		Texture(GL::Target target, GL::Format intFormat, bool smooth, bool repeated, bool mipmapped);
 		Texture(GL::Target target, GL::Format intFormat, GL::Format colFormat, bool smooth, bool repeated);
 		Texture(GL::Target target, GL::Format intFormat, GL::Format colFormat, bool smooth, bool repeated, bool mipmapped);
 		Texture(GL::Target target, GL::Format intFormat, GL::Format colFormat, bool smooth, bool repeated, bool mipmapped, int32_t level, int32_t border, GL::Type type);
@@ -34,10 +32,6 @@ namespace ml
 		bool loadFromImage(const Image & value, uint32_t target);
 
 	public:
-		void serialize(std::ostream & out) const override;
-		void deserialize(std::istream & in) override;
-
-	public:
 		bool update(const Texture & texture);
 		bool update(const Image & image);
 		bool update(const Image & image, const vec2u & pos, const vec2u & size);
@@ -45,26 +39,22 @@ namespace ml
 
 	public:
 		bool create(const vec2u & size);
-		bool create(const vec2u & size, GL::Target target);
 		bool create(const uint8_t * pixels, const vec2u & size);
-		bool create(
-			GL::Target	target,
-			const uint8_t * pixels, 
-			const vec2u & size,
-			GL::Format	intFormat,
-			GL::Format	colFormat, 
-			bool		smooth,
-			bool		repeated);
 
 	public:
 		Texture & setMipmapped(bool value);
 		Texture & setRepeated(bool value);
 		Texture & setSmooth(bool value);
 		
-		const Image copyToImage() const;
 		Texture & swap(Texture & value);
 		Texture & operator=(const Texture & value);
+
+		const Image copyToImage() const;
 		static void	bind(const Texture * value);
+
+	public:
+		void serialize(std::ostream & out) const override;
+		void deserialize(std::istream & in) override;
 
 	public:
 		inline const GL::Target	target()	const { return m_target;	}

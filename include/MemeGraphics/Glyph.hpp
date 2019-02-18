@@ -16,7 +16,7 @@ namespace ml
 		uint32_t	advance;
 
 		Glyph()
-			: texture(GL::Texture2D, GL::RGBA, GL::Red, true, true, false, 0, 0, GL::UnsignedByte)
+			: texture(GL::Texture2D, GL::RGBA, GL::Red, true, true)
 		{
 		}
 

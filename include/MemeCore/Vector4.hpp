@@ -50,6 +50,7 @@ namespace ml
 
 		virtual ~Vector4() {}
 
+	public:
 		static const self_type Zero;
 		static const self_type One;
 	};
