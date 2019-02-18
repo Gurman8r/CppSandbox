@@ -4,22 +4,6 @@
 
 namespace ml
 {
-	inline static String replaceAll(String str, const String & find, const String & repl)
-	{
-		if (!str.empty() && !find.empty())
-		{
-			for (size_t i = 0; (i = str.find(find, i)) != String::npos;)
-			{
-				str.replace(i, find.size(), repl);
-				i += repl.size();
-			}
-		}
-		return str;
-	}
-}
-
-namespace ml
-{
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	File::File()
@@ -33,7 +17,7 @@ namespace ml
 		for (size_t i = 0; i < count; i++)
 		{
 			String line(data[i]);
-			line = replaceAll(line, "\0", "");
+			line = String::ReplaceAll(line, "\0", "");
 			m_data.insert(end(), line.begin(), line.end());
 		}
 		m_data.push_back('\0');

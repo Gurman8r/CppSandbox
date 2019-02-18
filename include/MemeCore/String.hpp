@@ -226,6 +226,19 @@ namespace ml
 			}
 			return value;
 		}
+
+		inline static self_type ReplaceAll(self_type s, const self_type & f, const self_type & r)
+		{
+			if (!s.empty() && !f.empty())
+			{
+				for (size_t i = 0; (i = s.find(f, i)) != String::npos;)
+				{
+					s.replace(i, f.size(), r);
+					i += r.size();
+				}
+			}
+			return s;
+		}
 	};
 }
 

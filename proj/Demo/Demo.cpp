@@ -7,21 +7,6 @@
 
 namespace DEMO
 {
-	inline static void reloadShaders()
-	{
-		if (ML_Res.shaders.reload())
-		{
-			ml::Debug::log("Reloaded Shaders");
-		}
-		else
-		{
-			ml::Debug::logError("Failed Reloading Shaders");
-		}
-	}
-}
-
-namespace DEMO
-{
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Demo::Demo()
@@ -76,7 +61,7 @@ namespace DEMO
 			if (auto ev = value->Cast<ml::KeyEvent>())
 			{
 				// Toggle Smooth Textures
-				if (ev->getKeyDown(ml::Num1))
+				if (ev->getKeyDown(ml::KeyCode::Num1))
 				{
 					static bool smooth = false;
 					smooth = !smooth;
@@ -99,19 +84,19 @@ namespace DEMO
 				}
 
 				// Show Editor
-				if (ev->getKeyDown(ml::E) && (ev->mods & ML_MOD_CTRL))
+				if (ev->getKeyDown(ml::KeyCode::E) && (ev->mods & ML_MOD_CTRL))
 				{ show_ml_editor = true; }
 
 				// Show Console
-				if (ev->getKeyDown(ml::T) && ((ev->mods & ML_MOD_CTRL) && (ev->mods & ML_MOD_ALT)))
+				if (ev->getKeyDown(ml::KeyCode::T) && ((ev->mods & ML_MOD_CTRL) && (ev->mods & ML_MOD_ALT)))
 				{ show_ml_console = true; }
 
 				// Show Network Manager
-				if (ev->getKeyDown(ml::N) && ((ev->mods & ML_MOD_CTRL) && (ev->mods & ML_MOD_ALT)))
+				if (ev->getKeyDown(ml::KeyCode::N) && ((ev->mods & ML_MOD_CTRL) && (ev->mods & ML_MOD_ALT)))
 				{ show_ml_network = true; }
 
 				// Show Shader Builder
-				if (ev->getKeyDown(ml::B) && ((ev->mods & ML_MOD_CTRL) && (ev->mods & ML_MOD_ALT)))
+				if (ev->getKeyDown(ml::KeyCode::B) && ((ev->mods & ML_MOD_CTRL) && (ev->mods & ML_MOD_ALT)))
 				{ show_ml_shader = true; }
 			}
 			break;
@@ -419,14 +404,14 @@ namespace DEMO
 				ImGui::GetStyle().FrameBorderSize = 1;
 				if (!ImGui_ML_Init("#version 410", this, true))
 				{
-					m_error = ML_FAILURE;
+					m_error = ml::Debug::logError("Failed Loading ImGui");
 					return;
 				}
 			}
 
 			if (!ml::OpenAL::init())
 			{
-				m_error = ml::Debug::logError("Failed Initializing OpenAL");
+				m_error = ml::Debug::logError("Failed Loading OpenAL");
 				return;
 			}
 
@@ -438,13 +423,13 @@ namespace DEMO
 
 			if (!loadNetwork())
 			{
-				m_error = ml::Debug::logError("Failed Initializing Network");
+				m_error = ml::Debug::logError("Failed Loading Network");
 				return;
 			}
 		}
 		else
 		{
-			m_error = ml::Debug::logError("Failed Creating Window");
+			m_error = ml::Debug::logError("Failed Loading Window");
 		}
 	}
 	
@@ -901,7 +886,7 @@ namespace DEMO
 
 				if (ImGui::Button("Reload Shaders"))
 				{
-					reloadShaders();
+					ml::Debug::log("Reloaded {0} Shaders.", ML_Res.shaders.reload());
 				}
 				ImGui::Separator();
 

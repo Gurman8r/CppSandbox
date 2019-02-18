@@ -149,7 +149,7 @@ namespace ml
 
 		inline static self_type lerp(const self_type& a, const self_type& b, float t)
 		{
-			return self_type(a * t + b * ((T)(1) - t));
+			return Maths::lerp<self_type>(a, b, t);
 		};
 
 		inline static self_type reflect(const self_type& direction, const self_type& normal)
