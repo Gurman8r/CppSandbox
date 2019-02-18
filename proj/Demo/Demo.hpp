@@ -3,7 +3,6 @@
 
 #include <MemeAudio/Audio.hpp>
 #include <MemeCore/Time.hpp>
-#include <MemeCore/NativeInput.hpp>
 #include <MemeCore/FileSystem.hpp> 
 #include <MemeCore/Random.hpp>
 #include <MemeCore/Thread.hpp>

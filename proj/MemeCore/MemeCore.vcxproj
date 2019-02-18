@@ -161,7 +161,6 @@
     <ClInclude Include="..\..\include\MemeCore\File.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Function.hpp" />
     <ClInclude Include="..\..\include\MemeCore\IHandle.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\InputState.hpp" />
     <ClInclude Include="..\..\include\MemeCore\IO.hpp" />
     <ClInclude Include="..\..\include\MemeCore\IWritable.hpp" />
     <ClInclude Include="..\..\include\MemeCore\LibLoader.hpp" />
@@ -184,7 +183,6 @@
     <ClInclude Include="..\..\include\MemeCore\FileSystem.hpp" />
     <ClInclude Include="..\..\include\MemeCore\IComparable.hpp" />
     <ClInclude Include="..\..\include\MemeCore\INonCopyable.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\NativeInput.hpp" />
     <ClInclude Include="..\..\include\MemeCore\IReadable.hpp" />
     <ClInclude Include="..\..\include\MemeCore\ISerializable.hpp" />
     <ClInclude Include="..\..\include\MemeCore\ISingleton.hpp" />
@@ -215,7 +213,6 @@
     <ClCompile Include="..\..\src\MemeCore\File.cpp" />
     <ClCompile Include="..\..\src\MemeCore\FileSystem.cpp" />
     <ClCompile Include="..\..\src\MemeCore\LibLoader.cpp" />
-    <ClCompile Include="..\..\src\MemeCore\NativeInput.cpp" />
     <ClCompile Include="..\..\src\MemeCore\MemoryManager.cpp" />
     <ClCompile Include="..\..\src\MemeCore\MemoryTracker.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Maths.cpp" />

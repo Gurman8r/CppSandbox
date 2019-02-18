@@ -115,6 +115,19 @@ namespace ml
 			out << "[" << get_type().name() << "] "
 				<< button << " " << scan << " " << action << " " << mods;
 		}
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		inline bool getAction(int32_t a)	const { return (action == a); }
+		inline bool getKey(int32_t b)		const { return (button == b); }
+		inline bool getKeyDown(int32_t b)	const { return getKey(b) && getAction(ML_PRESS); }
+		inline bool getKeyRepeat(int32_t b) const { return getKey(b) && getAction(ML_REPEAT); }
+		inline bool getKeyUp(int32_t b)		const { return getKey(b) && getAction(ML_RELEASE); }
+		inline bool getMods(int32_t value)	const { return (mods & value); }
+
+		inline bool operator&(const KeyState value)	const { return getAction(value); }
+		inline bool operator&(const KeyCode value)	const { return getKey(value); }
+		inline bool operator&(const KeyMod value)		const { return getMods(value); }
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

@@ -43,20 +43,17 @@ int32_t main(int32_t argc, char ** argv)
 		// Loop
 		ml::Timer		loopTimer;
 		ml::Duration	elapsed;
-		ml::NativeInput	input;
 		do
 		{	// Begin Step
 			loopTimer.start();
-			input.beginStep();
 			{
 				// Update
-				ML_EventSystem.fireEvent(DEMO::UpdateEvent(elapsed, input));
+				ML_EventSystem.fireEvent(DEMO::UpdateEvent(elapsed));
 
 				// Draw
-				ML_EventSystem.fireEvent(DEMO::DrawEvent(elapsed, input));
+				ML_EventSystem.fireEvent(DEMO::DrawEvent(elapsed));
 			}
 			// End Step
-			input.endStep();
 			elapsed = loopTimer.stop().elapsed();
 
 		} while (program->isOpen());

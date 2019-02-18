@@ -1,5 +1,4 @@
 #include <MemeCore/Debug.hpp>
-#include <MemeCore/NativeInput.hpp>
 
 namespace ml
 {
@@ -22,9 +21,7 @@ namespace ml
 #ifdef ML_SYSTEM_WINDOWS
 		system("pause");
 #else
-		cout << "Press any key to continue..." << std::Endl;
-		ml::NativeInput input;
-		while (!input.beginStep().getAnyKey());
+		cin.get();
 #endif
 		return exitCode;
 	}

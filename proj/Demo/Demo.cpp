@@ -77,51 +77,35 @@ namespace DEMO
 		case ml::WindowEvent::EV_Key:
 			if (auto ev = value->Cast<ml::KeyEvent>())
 			{
-				switch (ev->button)
+				if (ev->getKeyDown(ml::KeyCode::R))
 				{
-				case ml::KeyCode::Escape:
-					if (ev->action == ML_PRESS)
-					{
-						if (SETTINGS.escapeIsExit) { this->close(); }
-					}
-					break;
-				case ml::KeyCode::R:
-					if (ev->action == ML_PRESS)
-					{
-						reloadShaders();
-					}
-					break;
-				case ml::KeyCode::E:
-					if (ev->action == ML_PRESS && (ev->mods & ML_MOD_CTRL))
-					{
-						show_ml_editor = true;
-					}
-					break;
-				case ml::KeyCode::H:
-					if (ev->action == ML_PRESS && (ev->mods & ML_MOD_CTRL) && (ev->mods & ML_MOD_ALT))
-					{
-						show_imgui_demo = true;
-					}
-					break;
-				case ml::KeyCode::T:
-					if (ev->action == ML_PRESS && (ev->mods & ML_MOD_CTRL) && (ev->mods & ML_MOD_ALT))
-					{
-						show_ml_console = true;
-					}
-					break;
-				case ml::KeyCode::N:
-					if (ev->action == ML_PRESS && (ev->mods & ML_MOD_CTRL) && (ev->mods & ML_MOD_ALT))
-					{
-						show_ml_network = true;
-					}
-					break;
-				case ml::KeyCode::B:
-					if (ev->action == ML_PRESS && (ev->mods & ML_MOD_CTRL) && (ev->mods & ML_MOD_ALT))
-					{
-						show_ml_shader = true;
-					}
-					break;
+					reloadShaders();
 				}
+
+				if (ev->getKeyDown(ml::KeyCode::Escape))
+				{
+					if (SETTINGS.escapeIsExit) { this->close(); }
+				}
+
+				// Show Editor
+				if ((*ev & ml::E) && (*ev & ml::Press) && (*ev & (ml::ModCtrl)))
+				{ show_ml_editor = true; }
+
+				// Show ImGui Demo
+				if ((*ev & ml::H) && (*ev & ml::Press) && (*ev & (ml::ModCtrl | ml::ModAlt)))
+				{ show_imgui_demo = true; }
+
+				// Show Console
+				if ((*ev & ml::T) && (*ev & ml::Press) && (*ev & (ml::ModCtrl | ml::ModAlt)))
+				{ show_ml_console = true; }
+
+				// Show Network Manager
+				if ((*ev & ml::N) && (*ev & ml::Press) && (*ev & (ml::ModCtrl | ml::ModAlt)))
+				{ show_ml_network = true; }
+
+				// Show Shader Builder
+				if ((*ev & ml::B) && (*ev & ml::Press) && (*ev & (ml::ModCtrl | ml::ModAlt)))
+				{ show_ml_shader = true; }
 			}
 			break;
 		}
@@ -812,7 +796,7 @@ namespace DEMO
 		ImGui_ML_NewFrame();
 		ImGui::NewFrame();
 		{
-			ML_EventSystem.fireEvent(GuiEvent(ev.elapsed, ev.input));
+			ML_EventSystem.fireEvent(GuiEvent(ev.elapsed));
 		}
 		ImGui::Render();
 		ImGui_ML_RenderDrawData(ImGui::GetDrawData());

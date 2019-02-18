@@ -25,12 +25,6 @@
     <Filter Include="Source Files\Time">
       <UniqueIdentifier>{035f9e6c-7836-4ba6-91e0-7f95ab678938}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Input">
-      <UniqueIdentifier>{91633fc4-9309-4b6a-9b6f-19ae66fdc149}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Input">
-      <UniqueIdentifier>{d1a3add3-e7bb-49d0-9c80-8908fba0b68b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Memory">
       <UniqueIdentifier>{c3db8fef-a046-47c0-93ce-fffddae2ad04}</UniqueIdentifier>
     </Filter>
@@ -83,12 +77,6 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\EventSystem.hpp">
       <Filter>Header Files\Event System</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\InputState.hpp">
-      <Filter>Header Files\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\NativeInput.hpp">
-      <Filter>Header Files\Input</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\IComparable.hpp">
       <Filter>Header Files\Interfaces</Filter>
@@ -247,9 +235,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\Console.cpp">
       <Filter>Source Files\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeCore\NativeInput.cpp">
-      <Filter>Source Files\Input</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\LibLoader.cpp">
       <Filter>Source Files\Utility</Filter>
