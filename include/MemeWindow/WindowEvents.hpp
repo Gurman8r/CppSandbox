@@ -125,9 +125,6 @@ namespace ml
 		inline bool getKeyUp(int32_t b)		const { return getKey(b) && getAction(ML_RELEASE); }
 		inline bool getMods(int32_t value)	const { return (mods & value); }
 
-		inline bool operator&(const KeyState value)	const { return getAction(value); }
-		inline bool operator&(const KeyCode value)	const { return getKey(value); }
-		inline bool operator&(const KeyMod value)		const { return getMods(value); }
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

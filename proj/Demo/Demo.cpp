@@ -88,23 +88,23 @@ namespace DEMO
 				}
 
 				// Show Editor
-				if ((*ev & ml::E) && (*ev & ml::Press) && (*ev & (ml::ModCtrl)))
+				if (ev->getKeyDown(ml::E) && (ev->getMods(ml::ModCtrl)))
 				{ show_ml_editor = true; }
-
+				
 				// Show ImGui Demo
-				if ((*ev & ml::H) && (*ev & ml::Press) && (*ev & (ml::ModCtrl | ml::ModAlt)))
+				if (ev->getKeyDown(ml::E) && (ev->getMods(ml::ModCtrl | ml::ModAlt)))
 				{ show_imgui_demo = true; }
 
 				// Show Console
-				if ((*ev & ml::T) && (*ev & ml::Press) && (*ev & (ml::ModCtrl | ml::ModAlt)))
+				if (ev->getKeyDown(ml::T) && (ev->getMods(ml::ModCtrl | ml::ModAlt)))
 				{ show_ml_console = true; }
 
 				// Show Network Manager
-				if ((*ev & ml::N) && (*ev & ml::Press) && (*ev & (ml::ModCtrl | ml::ModAlt)))
+				if (ev->getKeyDown(ml::N) && (ev->getMods(ml::ModCtrl | ml::ModAlt)))
 				{ show_ml_network = true; }
 
 				// Show Shader Builder
-				if ((*ev & ml::B) && (*ev & ml::Press) && (*ev & (ml::ModCtrl | ml::ModAlt)))
+				if (ev->getKeyDown(ml::B) && (ev->getMods(ml::ModCtrl | ml::ModAlt)))
 				{ show_ml_shader = true; }
 			}
 			break;
