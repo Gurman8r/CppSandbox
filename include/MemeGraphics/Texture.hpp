@@ -25,10 +25,15 @@ namespace ml
 		bool loadFromImage(const Image & value);
 		bool loadFromImage(const Image & value, uint32_t type);
 
+		void serialize(std::ostream & out) const override;
+		void deserialize(std::istream & in) override;
+
+	public:
 		bool update(const Texture & texture);
 		bool update(const Image & image);
 		bool update(const uint8_t * pixels, const vec2u & size, const vec2u & pos);
 
+	public:
 		bool create(const vec2u & size);
 		bool create(const vec2u & size, uint32_t type);
 		bool create(
@@ -40,6 +45,7 @@ namespace ml
 			bool repeat,
 			uint32_t type);
 
+	public:
 		Texture & swap(Texture & value);
 		Texture & setRepeated(bool value);
 		Texture & setSmooth(bool value);

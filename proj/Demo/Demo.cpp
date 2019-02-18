@@ -570,9 +570,20 @@ namespace DEMO
 	
 	void Demo::onDraw(const DrawEvent & ev)
 	{
+		// Shared Uniforms
+		/* * * * * * * * * * * * * * * * * * * * */
 		static ml::UniformSet camera_uniforms = {
 			ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
 			ml::Uniform("u_view",	ml::Uniform::Mat4,	&m_camera.matrix()),
+		};
+
+		static ml::UniformSet light_uniforms = {
+			ml::Uniform("u_viewPos",	ml::Uniform::Vec3,	&m_camPos),
+			ml::Uniform("u_lightPos",	ml::Uniform::Vec3,	&m_lightPos),
+			ml::Uniform("u_lightCol",	ml::Uniform::Vec4,	&m_lightCol),
+			ml::Uniform("u_ambient",	ml::Uniform::Float, &m_ambient),
+			ml::Uniform("u_specular",	ml::Uniform::Float, &m_specular),
+			ml::Uniform("u_shininess",	ml::Uniform::Int,	&m_shininess),
 		};
 
 		// Draw Scene
@@ -624,18 +635,13 @@ namespace DEMO
 			{
 				static ml::UniformSet uniforms = {
 					ml::Uniform("u_model",		ml::Uniform::Mat4,	&model->transform().matrix()),
-					ml::Uniform("u_viewPos",	ml::Uniform::Vec3,	&m_camPos),
-					ml::Uniform("u_lightPos",	ml::Uniform::Vec3,	&m_lightPos),
-					ml::Uniform("u_lightCol",	ml::Uniform::Vec4,	&m_lightCol),
-					ml::Uniform("u_ambient",	ml::Uniform::Float, &m_ambient),
-					ml::Uniform("u_specular",	ml::Uniform::Float, &m_specular),
-					ml::Uniform("u_shininess",	ml::Uniform::Int,	&m_shininess),
 					ml::Uniform("u_tex_dm",		ml::Uniform::Tex2D,	ML_Res.textures.get("earth_dm")),
 					ml::Uniform("u_tex_sm",		ml::Uniform::Tex2D,	ML_Res.textures.get("earth_sm")),
 				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("lighting"))
 				{
 					shader->setUniforms(camera_uniforms);
+					shader->setUniforms(light_uniforms);
 					shader->setUniforms(uniforms);
 					shader->bind();
 				}
@@ -647,18 +653,13 @@ namespace DEMO
 			{
 				static ml::UniformSet uniforms = {
 					ml::Uniform("u_model",		ml::Uniform::Mat4,	&model->transform().matrix()),
-					ml::Uniform("u_viewPos",	ml::Uniform::Vec3,	&m_camPos),
-					ml::Uniform("u_lightPos",	ml::Uniform::Vec3,	&m_lightPos),
-					ml::Uniform("u_lightCol",	ml::Uniform::Vec4,	&m_lightCol),
-					ml::Uniform("u_ambient",	ml::Uniform::Float, &m_ambient),
-					ml::Uniform("u_specular",	ml::Uniform::Float, &m_specular),
-					ml::Uniform("u_shininess",	ml::Uniform::Int,	&m_shininess),
 					ml::Uniform("u_tex_dm",		ml::Uniform::Tex2D,	ML_Res.textures.get("moon_dm")),
 					ml::Uniform("u_tex_sm",		ml::Uniform::Tex2D,	ML_Res.textures.get("moon_nm")),
 				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("lighting"))
 				{
 					shader->setUniforms(camera_uniforms);
+					shader->setUniforms(light_uniforms);
 					shader->setUniforms(uniforms);
 					shader->bind();
 				}
@@ -1071,6 +1072,7 @@ namespace DEMO
 						ImGui::Text("Edit:");
 
 						static ml::CString u_types[] = {
+							"None",
 							"Int",
 							"Float",
 							"Vec2",
@@ -1083,8 +1085,57 @@ namespace DEMO
 
 						if (ml::Uniform * u = (m_uniforms.empty() ? NULL : &m_uniforms[m_selected]))
 						{
+							ImGui::PushID(u->name.c_str());
 							ImGui::InputText("Name", &u->name[0], 32);
 							ImGui::Combo("Type", &u->type, u_types, IM_ARRAYSIZE(u_types));
+							switch (u->type)
+							{
+							case ml::Uniform::Int:
+							{
+								static int32_t temp;
+								ImGui::DragInt("Value", &temp);
+							}
+							break;
+							case ml::Uniform::Float:
+							{
+								static float temp;
+								ImGui::DragFloat("Value", &temp, 0.1f);
+							}
+							break;
+							case ml::Uniform::Vec2:
+							{
+								static ml::vec2f temp;
+								ML_Editor.InputVec2f("Value", temp);
+							}
+							break;
+							case ml::Uniform::Vec3:
+							{
+								static ml::vec3f temp;
+								ML_Editor.InputVec3f("Value", temp);
+							}
+							break;
+							case ml::Uniform::Vec4:
+							{
+								static ml::vec4f temp;
+								ML_Editor.InputVec4f("Value", temp);
+							}
+							break;
+							case ml::Uniform::Mat3:
+							{
+								static ml::mat3f temp;
+								ML_Editor.InputMat3f("Value", temp);
+							}
+							break;
+							case ml::Uniform::Mat4:
+							{
+								static ml::mat4f temp;
+								ML_Editor.InputMat4f("Value", temp);
+							}
+							break;
+							case ml::Uniform::Tex2D:
+								break;
+							}
+							ImGui::PopID();
 						}
 						else
 						{

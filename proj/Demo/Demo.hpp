@@ -128,7 +128,9 @@ namespace DEMO
 		bool show_imgui_style	= false;
 		bool show_imgui_about	= false;
 
-		ml::List<ml::Uniform> m_uniforms;
+		ml::List<ml::Uniform> m_uniforms = {
+			//ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
+		};
 		size_t m_selected = 0;
 
 		/* * * * * * * * * * * * * * * * * * * * */
