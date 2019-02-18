@@ -12,7 +12,10 @@ namespace ml
 		, public IReadable
 	{
 	public:
-		using FileMap = HashMap<String, HashMap<String, String>>;
+		using FileMap	= HashMap<String, String>;
+		using FilePair	= Pair<String, String>;
+		using DataMap	= HashMap<String, FileMap>;
+		using DataPair  = Pair<String, FileMap>;
 
 	public:
 		Manifest();
@@ -26,11 +29,11 @@ namespace ml
 
 	public:
 		inline const String &	getPath()	const { return m_path; }
-		inline const FileMap &	getFiles()	const { return m_files; }
+		inline const DataMap &	getDataMap()const { return m_data; }
 
 	private:
 		String	m_path;
-		FileMap	m_files;
+		DataMap	m_data;
 	};
 }
 #endif // !_MANIFEST_HPP_

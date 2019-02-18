@@ -19,7 +19,7 @@ namespace ml
 
 	bool Manifest::cleanup()
 	{
-		m_files.clear();
+		m_data.clear();
 		return true;
 	}
 
@@ -45,7 +45,7 @@ namespace ml
 			<< FG::Magenta << "\"" << m_path << "\"" 
 			<< endl;
 
-		for (auto pair : m_files)
+		for (auto pair : m_data)
 		{
 			out << FG::Green << pair.first
 				<< FG::White << " | "
@@ -87,11 +87,11 @@ namespace ml
 
 				if (ss.good())
 				{
-					ss >> m_files[type][name];
+					ss >> m_data[type][name];
 				}
 				else
 				{
-					m_files[type][name] = String();
+					m_data[type][name] = String();
 				}
 			}
 		};
@@ -120,7 +120,6 @@ namespace ml
 			else if (parseLine(line, "texture:",ss)) { loadData("textures",	ss); }
 		}
 
-		/* * * * * * * * * * * * * * * * * * * * */
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

@@ -17,34 +17,42 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	using FontMap		= ResourceMap<Font>;
-	using ImageMap		= ResourceMap<Image>;
-	using MeshMap		= ResourceMap<Mesh>;
-	using ModelMap		= ResourceMap<Model>;
-	using SkyboxMap		= ResourceMap<Skybox>;
-	using ShaderMap		= ResourceMap<Shader>;
-	using SoundMap		= ResourceMap<Sound>;
-	using SpriteMap		= ResourceMap<Sprite>;
-	using TextureMap	= ResourceMap<Texture>;
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
 	class ML_EDITOR_API ResourceManager
 		: public ITrackable
 		, public ISingleton<ResourceManager>
 	{
 		friend class ISingleton<ResourceManager>;
 
+	public:
+		using FontMap		= ResourceMap<Font>;
+		using ImageMap		= ResourceMap<Image>;
+		using MeshMap		= ResourceMap<Mesh>;
+		using ModelMap		= ResourceMap<Model>;
+		using SkyboxMap		= ResourceMap<Skybox>;
+		using ShaderMap		= ResourceMap<Shader>;
+		using SoundMap		= ResourceMap<Sound>;
+		using SpriteMap		= ResourceMap<Sprite>;
+		using TextureMap	= ResourceMap<Texture>;
+
 	private:
 		ResourceManager();
 		~ResourceManager();
 
 	public:
-		void clean();
+		void cleanAll();
+
+		size_t reloadAll();
 
 		bool loadManifest(const Manifest & value);
 
-		int32_t loadData(const String & type, const String & path, const HashMap<String, String> & files);
+	private:
+		int32_t loadManifestData(const String & type, const String & path, const Manifest::FileMap & files);
+
+		template <typename T>
+		inline bool loadData(ResourceMap<T> & data, const String & path, const Manifest::FileMap & files)
+		{
+			return data.load(files, path);
+		}
 
 	public:
 		FontMap		fonts;

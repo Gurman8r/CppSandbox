@@ -79,7 +79,7 @@ namespace DEMO
 			{
 				if (ev->getKeyDown(ml::KeyCode::R))
 				{
-					reloadShaders();
+					ml::Debug::log("Reloaded {0} Shaders.", ML_Res.shaders.reload());
 				}
 
 				if (ev->getKeyDown(ml::KeyCode::Escape))
@@ -90,10 +90,6 @@ namespace DEMO
 				// Show Editor
 				if (ev->getKeyDown(ml::E) && (ev->getMods(ml::ModCtrl)))
 				{ show_ml_editor = true; }
-				
-				// Show ImGui Demo
-				if (ev->getKeyDown(ml::E) && (ev->getMods(ml::ModCtrl | ml::ModAlt)))
-				{ show_imgui_demo = true; }
 
 				// Show Console
 				if (ev->getKeyDown(ml::T) && (ev->getMods(ml::ModCtrl | ml::ModAlt)))
@@ -846,7 +842,7 @@ namespace DEMO
 			}
 			if (ImGui::BeginMenu("Help"))
 			{
-				ImGui::MenuItem("ImGui Demo", "Ctrl+Alt+H", &show_imgui_demo);
+				ImGui::MenuItem("ImGui Demo", NULL, &show_imgui_demo);
 				ImGui::MenuItem("ImGui Metrics", NULL, &show_imgui_metrics);
 				ImGui::MenuItem("Style Editor", NULL, &show_imgui_style);
 				ImGui::MenuItem("About Dear ImGui", NULL, &show_imgui_about);
@@ -1114,7 +1110,7 @@ namespace DEMO
 	{
 		delete m_thread;
 
-		ML_Res.clean();
+		ML_Res.cleanAll();
 
 		ImGui_ML_Shutdown();
 	}

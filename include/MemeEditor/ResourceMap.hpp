@@ -19,8 +19,6 @@ namespace ml
 		: public ITrackable
 		, public INonCopyable
 	{
-		friend class ResourceManager;
-
 		static_assert(
 			std::is_base_of<ml::IReadable, _Elem>::value, 
 			"Type must derive ml::IReadable");
@@ -38,25 +36,19 @@ namespace ml
 		using const_iterator= typename PointerMap::const_iterator;
 
 	private:
-		ResourceMap() 
-			: m_data()
-			, m_path()
-			, m_files()
-		{
-		}
-		~ResourceMap() 
-		{
-			clear(); 
-		}
+		ResourceMap() {}
+		~ResourceMap() {}
 
 		PointerMap	m_data;
 		String		m_path;
 		FileMap		m_files;
 
+		friend class ResourceManager;
+
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		inline size_t clear()
+		inline size_t clean()
 		{
 			size_t count = 0;
 			for (auto it = m_data.begin(); it != m_data.end(); it++)
@@ -141,7 +133,7 @@ namespace ml
 			size_t count = 0;
 			for (FileMap::const_iterator it = files.cbegin(); it != files.end(); it++)
 			{
-				if (const_pointer temp = load(it->first, it->second, path))
+				if (const_pointer temp = load(it->first, it->second))
 				{
 					count++;
 				}
@@ -149,7 +141,8 @@ namespace ml
 			return count;
 		}
 
-		inline pointer load(const String & name, const String & file, const String & path)
+
+		inline pointer load(const String & name, const String & file)
 		{
 			if (!name.empty() && !get(name))
 			{
@@ -157,12 +150,15 @@ namespace ml
 				{
 					pointer temp = new value_type();
 
-					if (temp->loadFromFile(path + file))
+					if (temp->loadFromFile(pathTo(file)))
 					{
 						return set(name, temp);
 					}
-
+					
 					delete temp;
+
+					Debug::logError("Failed loading {0}: \'{1}\'", name, pathTo(file));
+
 				}
 				else
 				{
@@ -181,7 +177,11 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		inline bool reload()
+		inline const String pathTo(const String & file) const { return (m_path + file); }
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		inline size_t reload()
 		{
 			size_t count = 0;
 			for (FileMap::const_iterator it = m_files.cbegin(); it != m_files.end(); it++)
@@ -193,9 +193,13 @@ namespace ml
 				{
 					if (pointer temp = get(name))
 					{
-						if (temp->loadFromFile(m_path + file))
+						if (temp->loadFromFile(pathTo(file)))
 						{
 							count++;
+						}
+						else
+						{
+							Debug::logError("Failed reloading {0}: \'{1}\'", name, pathTo(file));
 						}
 					}
 				}
