@@ -11,7 +11,7 @@
 #include <MemeGraphics/Skybox.hpp>
 #include <MemeGraphics/Sprite.hpp>
 
-#define ML_Resources ml::ResourceManager::getInstance()
+#define ML_Res ml::ResourceManager::getInstance()
 
 namespace ml
 {
@@ -35,7 +35,7 @@ namespace ml
 	{
 		friend class ISingleton<ResourceManager>;
 
-	protected:
+	private:
 		ResourceManager();
 		~ResourceManager();
 
@@ -43,6 +43,8 @@ namespace ml
 		void clean();
 
 		bool loadManifest(const Manifest & value);
+
+		int32_t loadData(const String & type, const String & path, const HashMap<String, String> & files);
 
 	public:
 		FontMap		fonts;

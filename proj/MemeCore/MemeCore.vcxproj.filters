@@ -22,9 +22,6 @@
     <Filter Include="Header Files\Components">
       <UniqueIdentifier>{13ee360c-6001-4db0-9640-32f0da0d317c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Time">
-      <UniqueIdentifier>{fd5b1dcc-ce58-48cc-ac44-0685e0b911dc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Time">
       <UniqueIdentifier>{035f9e6c-7836-4ba6-91e0-7f95ab678938}</UniqueIdentifier>
     </Filter>
@@ -66,6 +63,9 @@
     </Filter>
     <Filter Include="Source Files\Threading">
       <UniqueIdentifier>{c5afbb30-6fd2-4557-8924-cdb640ab384d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Time">
+      <UniqueIdentifier>{fd5b1dcc-ce58-48cc-ac44-0685e0b911dc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

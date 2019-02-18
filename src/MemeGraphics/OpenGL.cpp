@@ -806,6 +806,32 @@ namespace ml
 		return getProgramParameter(obj, GL::ObjectCompileStatus);
 	}
 
+	int32_t OpenGL::compileShader(uint32_t & out, GL::ShaderType type, CString source)
+	{
+		static String name;
+		switch (type)
+		{
+		case GL::FragmentShader: name = "Fragment"; break;
+		case GL::VertexShader:	 name = "Vertex";	break;
+		case GL::GeometryShader: name = "Geometry"; break;
+		}
+		if (source)
+		{
+			out = createShaderObject(type);
+
+			shaderSource(out, 1, &source, NULL);
+
+			if (!compileShader(out))
+			{
+				CString log = getProgramInfoLog(out);
+				deleteShader(out);
+				return Debug::logError("Failed to compile {0} source: {1}", name, log);
+			}
+			return ML_SUCCESS;
+		}
+		return ML_WARNING;
+	}
+
 	bool OpenGL::linkShader(uint32_t obj)
 	{
 		glCheck(glLinkProgramARB(obj));

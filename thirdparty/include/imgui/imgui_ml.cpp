@@ -97,7 +97,7 @@ inline static bool ImGui_ML_CompileShader(uint32_t & program, ml::CString const 
 	}
 
 	// Vertex
-	switch (ml::Shader::compile(g_VertHandle, ml::GL::VertexShader, ml::File(2, vs)))
+	switch (ml::OpenGL::compileShader(g_VertHandle, ml::GL::VertexShader, ml::File(2, vs)))
 	{
 	case ML_SUCCESS:
 		ml::OpenGL::attachShader(program, g_VertHandle);
@@ -108,7 +108,7 @@ inline static bool ImGui_ML_CompileShader(uint32_t & program, ml::CString const 
 	}
 
 	// Fragment
-	switch (ml::Shader::compile(g_FragHandle, ml::GL::FragmentShader, ml::File(2, fs)))
+	switch (ml::OpenGL::compileShader(g_FragHandle, ml::GL::FragmentShader, ml::File(2, fs)))
 	{
 	case ML_SUCCESS:
 		ml::OpenGL::attachShader(program, g_FragHandle);

@@ -72,6 +72,8 @@ namespace ml
 
 	bool Shader::cleanup()
 	{
+		OpenGL::useShader(NULL);
+
 		m_textures.clear();
 		m_uniforms.clear();
 
@@ -469,7 +471,7 @@ namespace ml
 
 		// Vertex
 		uint32_t v = NULL;
-		switch (compile(v, GL::VertexShader, vs))
+		switch (OpenGL::compileShader(v, GL::VertexShader, vs))
 		{
 		case ML_SUCCESS:
 			OpenGL::attachShader((*this), v);
@@ -482,7 +484,7 @@ namespace ml
 
 		// Geometry
 		uint32_t g = NULL;
-		switch (compile(g, GL::GeometryShader, gs))
+		switch (OpenGL::compileShader(g, GL::GeometryShader, gs))
 		{
 		case ML_SUCCESS:
 			OpenGL::attachShader((*this), g);
@@ -495,7 +497,7 @@ namespace ml
 
 		// Fragment
 		uint32_t f = NULL;
-		switch (compile(f, GL::FragmentShader, fs))
+		switch (OpenGL::compileShader(f, GL::FragmentShader, fs))
 		{
 		case ML_SUCCESS:
 			OpenGL::attachShader((*this), f);
@@ -520,39 +522,7 @@ namespace ml
 
 		return true;
 	}
-
-	int32_t Shader::compile(uint32_t & out, GL::ShaderType type, CString source)
-	{
-		static String name;
-		switch (type)
-		{
-		case GL::FragmentShader: name = "Fragment"; break;
-		case GL::VertexShader:	 name = "Vertex";	break;
-		case GL::GeometryShader: name = "Geometry"; break;
-		}
-
-		if (source)
-		{
-			out = OpenGL::createShaderObject(type);
-
-			OpenGL::shaderSource(out, 1, &source, NULL);
-
-			// Check the Compile log
-			if (!OpenGL::compileShader(out))
-			{
-				CString log = OpenGL::getProgramInfoLog(out);
-
-				OpenGL::deleteShader(out);
-
-				return Debug::logError("Failed to compile {0} source: {1}", name, log);
-			}
-			return ML_SUCCESS;
-		}
-		return ML_WARNING;
-	}
 	
-	/* * * * * * * * * * * * * * * * * * * * */
-
 	int32_t Shader::getUniformLocation(const String & value) const
 	{
 		// Check the cache

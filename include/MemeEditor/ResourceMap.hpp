@@ -17,6 +17,7 @@ namespace ml
 	template <class _Elem>
 	class ResourceMap final
 		: public ITrackable
+		, public INonCopyable
 	{
 		friend class ResourceManager;
 
@@ -37,8 +38,20 @@ namespace ml
 		using const_iterator= typename PointerMap::const_iterator;
 
 	private:
-		ResourceMap() : m_data() {}
-		~ResourceMap() { clear(); }
+		ResourceMap() 
+			: m_data()
+			, m_path()
+			, m_files()
+		{
+		}
+		~ResourceMap() 
+		{
+			clear(); 
+		}
+
+		PointerMap	m_data;
+		String		m_path;
+		FileMap		m_files;
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -120,8 +133,11 @@ namespace ml
 			return load(files, String());
 		}
 
-		inline bool load(const FileMap & files, const String & path = String())
+		inline bool load(const FileMap & files, const String & path)
 		{
+			m_files = files;
+			m_path = path;
+
 			size_t count = 0;
 			for (FileMap::const_iterator it = files.cbegin(); it != files.end(); it++)
 			{
@@ -133,7 +149,7 @@ namespace ml
 			return count;
 		}
 
-		inline pointer load(const String & name, const String & file, const String & path = String())
+		inline pointer load(const String & name, const String & file, const String & path)
 		{
 			if (!name.empty() && !get(name))
 			{
@@ -163,6 +179,29 @@ namespace ml
 				: set(name, new value_type()));
 		}
 
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		inline bool reload()
+		{
+			size_t count = 0;
+			for (FileMap::const_iterator it = m_files.cbegin(); it != m_files.end(); it++)
+			{
+				const String & name = it->first;
+				const String & file = it->second;
+
+				if (!name.empty() && !file.empty())
+				{
+					if (pointer temp = get(name))
+					{
+						if (temp->loadFromFile(m_path + file))
+						{
+							count++;
+						}
+					}
+				}
+			}
+			return count;
+		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
@@ -183,7 +222,6 @@ namespace ml
 		inline const_iterator	cend()	 const	{ return m_data.cend();	  }
 
 	private:
-		PointerMap m_data;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */
