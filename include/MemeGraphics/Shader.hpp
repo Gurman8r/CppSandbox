@@ -64,6 +64,7 @@ namespace ml
 		struct	UniformBinder;
 
 		using	TextureTable = Map<int32_t, const Texture *>;
+		using	TexturePair  = Pair<int32_t, const Texture *>;
 		using	UniformTable = Map<String, int32_t>;
 
 		mutable TextureTable m_textures;

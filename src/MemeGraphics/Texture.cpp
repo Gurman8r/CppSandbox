@@ -49,9 +49,11 @@ namespace ml
 
 	bool Texture::cleanup()
 	{
+		bind(NULL);
 		if ((*this))
 		{
 			OpenGL::deleteTextures(1, (*this));
+			get_ref() = NULL;
 			return true;
 		}
 		return false;

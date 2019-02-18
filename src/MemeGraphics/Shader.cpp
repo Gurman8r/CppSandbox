@@ -72,17 +72,14 @@ namespace ml
 
 	bool Shader::cleanup()
 	{
-		OpenGL::useShader(NULL);
-
 		m_textures.clear();
 		m_uniforms.clear();
 
+		OpenGL::useShader(NULL);
 		if ((*this))
 		{
 			OpenGL::deleteShader((*this));
-			
 			get_ref() = NULL;
-
 			return true;
 		}
 		return false;
@@ -211,16 +208,13 @@ namespace ml
 			if (bindTextures)
 			{
 				GL::TextureID texID = GL::Texture0;
-
-				TextureTable::const_iterator it;
-				for (it = m_textures.cbegin(); it != m_textures.cend(); it++)
+				for (const TexturePair & pair : m_textures)
 				{
 					OpenGL::activeTexture(texID++);
 
-					Texture::bind(it->second);
+					Texture::bind(pair.second);
 				}
 			}
-
 			return true;
 		}
 		else

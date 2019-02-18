@@ -220,8 +220,6 @@ namespace ml
 		inline const_iterator	end()	 const	{ return m_data.end();	  }
 		inline const_iterator	cbegin() const	{ return m_data.cbegin(); }
 		inline const_iterator	cend()	 const	{ return m_data.cend();	  }
-
-	private:
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */
