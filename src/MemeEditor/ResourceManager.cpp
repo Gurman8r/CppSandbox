@@ -16,18 +16,18 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void ResourceManager::cleanAll()
+	size_t ResourceManager::cleanAll()
 	{
-		sounds.clean();
-		sprites.clean();
-		models.clean();
-		meshes.clean();
-		shaders.clean();
-		sprites.clean();
-		skyboxes.clean();
-		textures.clean();
-		images.clean();
-		fonts.clean();
+		return
+			sounds.clean() +
+			sprites.clean() +
+			models.clean() +
+			meshes.clean() +
+			shaders.clean() +
+			skyboxes.clean() +
+			textures.clean() +
+			images.clean() +
+			fonts.clean();
 	}
 
 	size_t ResourceManager::reloadAll()
@@ -54,7 +54,7 @@ namespace ml
 
 			if (!loadManifestData(type, path, files))
 			{
-				return false;
+				return Debug::logError("Failed Loading Manifest");
 			}
 		}
 		return true;

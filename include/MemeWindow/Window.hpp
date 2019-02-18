@@ -8,7 +8,6 @@
 #include <MemeWindow/Context.hpp>
 #include <MemeWindow/Icon.hpp>
 #include <MemeWindow/VideoMode.hpp>
-#include <MemeWindow/WindowInput.hpp>
 
 namespace ml
 {

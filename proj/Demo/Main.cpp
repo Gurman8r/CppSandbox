@@ -18,13 +18,17 @@ int32_t main(int32_t argc, char ** argv)
 			|| ml::Debug::pause(EXIT_FAILURE);
 	}
 
+	// TODO: System to hot-load programs
+	auto someProgramLoader = []() { return new DEMO::Demo(); };
+
 	// Create Program
-	if (DEMO::Demo * program = new DEMO::Demo())
+	if (DEMO::Demo * program = someProgramLoader())
 	{
 		// Enter
 		ML_EventSystem.fireEvent(DEMO::EnterEvent(argc, argv));
 		if (program->getError() == ML_FAILURE)
 		{
+			delete program;
 			return ml::Debug::logError("Failed Entering Program")
 				|| ml::Debug::pause(EXIT_FAILURE);
 		}
@@ -33,6 +37,7 @@ int32_t main(int32_t argc, char ** argv)
 		ML_EventSystem.fireEvent(DEMO::LoadEvent());
 		if (program->getError() == ML_FAILURE)
 		{
+			delete program;
 			return ml::Debug::logError("Failed Loading Resources")
 				|| ml::Debug::pause(EXIT_FAILURE);
 		}
@@ -62,12 +67,13 @@ int32_t main(int32_t argc, char ** argv)
 		ML_EventSystem.fireEvent(DEMO::ExitEvent());
 		
 		delete program;
-
-		return EXIT_SUCCESS && ml::Debug::log("Goodbye");
+		return EXIT_SUCCESS;
 	}
-
-	return ml::Debug::logError("Failed Creating Program")
-		|| ml::Debug::pause(EXIT_FAILURE);
+	else
+	{
+		return ml::Debug::logError("Failed Creating Program")
+			|| ml::Debug::pause(EXIT_FAILURE);
+	}
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

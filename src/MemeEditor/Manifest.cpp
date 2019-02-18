@@ -7,6 +7,14 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Manifest::Manifest()
+		: m_path(String())
+		, m_data(DataMap())
+	{
+	}
+
+	Manifest::Manifest(const Manifest & copy)
+		: m_path(copy.m_path)
+		, m_data(copy.m_data)
 	{
 	}
 

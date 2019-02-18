@@ -534,7 +534,7 @@ namespace ml
 			
 			if (location == -1)
 			{
-				Debug::logWarning("Uniform \"{0}\" not found in source", value);
+				Debug::logWarning("Unreferenced Uniform: \"{0}\"", value);
 			}
 
 			return location;

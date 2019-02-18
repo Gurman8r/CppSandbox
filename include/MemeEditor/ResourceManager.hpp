@@ -39,8 +39,7 @@ namespace ml
 		~ResourceManager();
 
 	public:
-		void cleanAll();
-
+		size_t cleanAll();
 		size_t reloadAll();
 
 		bool loadManifest(const Manifest & value);

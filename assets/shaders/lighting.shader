@@ -69,8 +69,8 @@ void main()
 	vec3	specular= (u_specular * spec * u_lightCol.xyz);
 
 	// textures
-	vec4	tex_dm = texture(u_tex_dm, Texcoord);
-	vec4	tex_sm = texture(u_tex_sm, Texcoord);
+	vec4	tex_dm	= texture(u_tex_dm, Texcoord);
+	vec4	tex_sm	= texture(u_tex_sm, Texcoord);
 
 	// result
 	FragColor =

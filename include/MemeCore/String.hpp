@@ -201,13 +201,7 @@ namespace ml
 
 	public: // Custom
 		template <class T, typename ... A>
-		inline static self_type Format(self_type value, const T & first, const A & ...args)
-		{
-			return value.format(first, (args)...);
-		}
-
-		template <class T, typename ... A>
-		inline self_type & format(const T & arg0, const A & ...args)
+		inline static self_type Format(self_type value, const T & arg0, const A & ...args)
 		{
 			self_type::Stream ss;
 			ss << arg0 << ml::endl;
@@ -223,16 +217,15 @@ namespace ml
 				if (std::getline(ss, arg))
 				{
 					for (size_type i = 0;
-						(i = (*this).find(fmt, i)) != self_type::npos;
+						(i = value.find(fmt, i)) != self_type::npos;
 						(i += arg.size()))
 					{
-						(*this).replace(i, fmt.size(), arg);
+						value.replace(i, fmt.size(), arg);
 					}
 				}
 			}
-			return (*this);
+			return value;
 		}
-		
 	};
 }
 

@@ -77,15 +77,13 @@ namespace DEMO
 		case ml::WindowEvent::EV_Key:
 			if (auto ev = value->Cast<ml::KeyEvent>())
 			{
+				// Reload Shaders
 				if (ev->getKeyDown(ml::KeyCode::R))
-				{
-					ml::Debug::log("Reloaded {0} Shaders.", ML_Res.shaders.reload());
-				}
+				{ ml::Debug::log("Reloaded {0} Shaders.", ML_Res.shaders.reload()); }
 
+				// Close
 				if (ev->getKeyDown(ml::KeyCode::Escape))
-				{
-					if (SETTINGS.escapeIsExit) { this->close(); }
-				}
+				{ if (SETTINGS.escapeIsExit) { this->close(); } }
 
 				// Show Editor
 				if (ev->getKeyDown(ml::E) && (ev->getMods(ml::ModCtrl)))
@@ -258,12 +256,15 @@ namespace DEMO
 		ml::Manifest manifest;
 		if (manifest.loadFromFile(SETTINGS.pathTo(SETTINGS.manifest)))
 		{
-			ml::cout << ml::endl << manifest << ml::endl;
+			ml::cout 
+				<< ml::endl << "Manifest: " 
+				<< ml::endl << manifest 
+				<< ml::endl;
 
 			return ML_Res.loadManifest(manifest)
-				&& ML_Res.models.get("borg")->loadFromMemory(ml::Shapes::Cube::Vertices, ml::Shapes::Cube::Indices)
-				&& ML_Res.models.get("sanic")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
-				&& ML_Res.textures.get("framebuffer")->create(this->size())
+				&& ML_Res.models.load("borg")->loadFromMemory(ml::Shapes::Cube::Vertices, ml::Shapes::Cube::Indices)
+				&& ML_Res.models.load("sanic")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
+				&& ML_Res.textures.load("framebuffer")->create(this->size())
 				&& loadBuffers()
 				;
 		}

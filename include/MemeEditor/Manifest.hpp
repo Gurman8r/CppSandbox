@@ -19,6 +19,7 @@ namespace ml
 
 	public:
 		Manifest();
+		Manifest(const Manifest & copy);
 		~Manifest();
 
 		bool cleanup() override;
