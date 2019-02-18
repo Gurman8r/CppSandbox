@@ -18,6 +18,8 @@ namespace ml
 		Texture(GL::Target target);
 		Texture(bool smooth, bool repeated);
 		Texture(GL::Target target, bool smooth, bool repeated);
+		Texture(GL::Target target, GL::Format format, bool smooth, bool repeated);
+		Texture(GL::Target target, GL::Format format, bool smooth, bool repeated, bool mipmapped);
 		Texture(GL::Target target, GL::Format intFormat, GL::Format colFormat, bool smooth, bool repeated);
 		Texture(GL::Target target, GL::Format intFormat, GL::Format colFormat, bool smooth, bool repeated, bool mipmapped);
 		Texture(GL::Target target, GL::Format intFormat, GL::Format colFormat, bool smooth, bool repeated, bool mipmapped, int32_t level, int32_t border, GL::Type type);
@@ -38,6 +40,7 @@ namespace ml
 		bool update(const uint8_t * pixels, const vec2u & pos, const vec2u & size);
 
 	public:
+		bool create(const Texture & copy);
 		bool create(const vec2u & size);
 		bool create(const uint8_t * pixels, const vec2u & size);
 

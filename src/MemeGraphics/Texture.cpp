@@ -22,7 +22,17 @@ namespace ml
 	}
 
 	Texture::Texture(GL::Target target, bool smooth, bool repeated)
-		: Texture(target, GL::RGBA, GL::RGBA, smooth, repeated)
+		: Texture(target, GL::RGBA, smooth, repeated)
+	{
+	}
+
+	Texture::Texture(GL::Target target, GL::Format format, bool smooth, bool repeated)
+		: Texture(target, format, smooth, repeated, false)
+	{
+	}
+
+	Texture::Texture(GL::Target target, GL::Format format, bool smooth, bool repeated, bool mipmapped)
+		: Texture(target, format, format, smooth, repeated, mipmapped)
 	{
 	}
 
@@ -53,30 +63,9 @@ namespace ml
 	}
 
 	Texture::Texture(const Texture & copy)
-		: IHandle		(NULL)
-		, m_size		(vec2u::Zero)
-		, m_realSize	(vec2u::Zero)
-		, m_target		(copy.m_target)
-		, m_smooth		(copy.m_smooth)
-		, m_repeated	(copy.m_repeated)
-		, m_mipmapped	(copy.m_mipmapped)
-		, m_intFormat		(copy.m_intFormat)
-		, m_colFormat	(copy.m_colFormat)
-		, m_level		(copy.m_level)
-		, m_border		(copy.m_border)
-		, m_type		(copy.m_type)
+		: Texture(copy.m_target, copy.m_intFormat, copy.m_colFormat, copy.m_smooth, copy.m_repeated, copy.m_mipmapped, copy.m_level, copy.m_border, copy.m_type)
 	{
-		if (copy)
-		{
-			if (create(copy.size()))
-			{
-				update(copy);
-			}
-			else
-			{
-				Debug::logError("Failed to copy texture, failed to create new texture");
-			}
-		}
+		create(copy);
 	}
 
 	Texture::~Texture()
@@ -128,8 +117,7 @@ namespace ml
 
 	bool Texture::update(const Image & image)
 	{
-		return update(image
-, vec2u::Zero, image.size());
+		return update(image, vec2u::Zero, image.size());
 	}
 
 	bool Texture::update(const Image & image, const vec2u & pos, const vec2u & size)
@@ -169,6 +157,22 @@ namespace ml
 	
 	/* * * * * * * * * * * * * * * * * * * * */
 	
+	bool Texture::create(const Texture & copy)
+	{
+		if (copy)
+		{
+			if (create(copy.size()))
+			{
+				return update(copy);
+			}
+			else
+			{
+				return Debug::logError("Failed to copy texture, failed to create new texture");
+			}
+		}
+		return false;
+	}
+
 	bool Texture::create(const vec2u & size)
 	{
 		return create(NULL, size);
@@ -350,13 +354,17 @@ namespace ml
 	Texture & Texture::swap(Texture & other)
 	{
 		std::swap(get_ref(),	other.get_ref());
+		std::swap(m_target,		other.m_target);
+		std::swap(m_level,		other.m_level);
 		std::swap(m_size,		other.m_size);
 		std::swap(m_realSize,	other.m_realSize);
+		std::swap(m_border,		other.m_border);
+		std::swap(m_intFormat,	other.m_intFormat);
+		std::swap(m_colFormat,	other.m_colFormat);
+		std::swap(m_type,		other.m_type);
 		std::swap(m_smooth,		other.m_smooth);
 		std::swap(m_repeated,	other.m_repeated);
 		std::swap(m_mipmapped,	other.m_mipmapped);
-		std::swap(m_intFormat,	other.m_intFormat);
-		std::swap(m_colFormat,	other.m_colFormat);
 
 		return other;
 	}
