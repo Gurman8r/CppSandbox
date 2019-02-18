@@ -93,7 +93,7 @@ namespace ml
 
 	bool Window::setup()
 	{
-		setErrorCallback([](int32_t code, const char * desc) 
+		setErrorCallback([](int32_t code, CString desc) 
 		{
 			Debug::logError("Window Error {0}: {1}", code, desc);
 		});

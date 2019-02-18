@@ -20,12 +20,12 @@ uniform mat4 u_model;
 
 void main()
 {
-	mat4 mvp = (u_proj * u_view * u_model);
-	vec4 pos = vec4(a_Position, 1.0);
+	mat4 mvp	= (u_proj * u_view * u_model);
+	vec4 pos	= vec4(a_Position, 1.0);
 
-	FragPos = vec3(mvp * pos);
-	Normal = mat3(transpose(inverse(u_model))) * a_Normal;
-	Texcoord = a_Texcoord;
+	FragPos		= vec3(mvp * pos);
+	Normal		= mat3(transpose(inverse(u_model))) * a_Normal;
+	Texcoord	= a_Texcoord;
 
 	gl_Position = mvp * pos;
 }

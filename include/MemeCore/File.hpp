@@ -23,6 +23,7 @@ namespace ml
 
 	public:
 		File();
+		File(size_t count, CString const * data);
 		File(const String & data);
 		File(const Data & data);
 		File(const File & copy);
@@ -38,21 +39,17 @@ namespace ml
 	public:
 		inline const char &		at(size_t i)const { return m_data[i]; }
 		inline const Data &		data()		const { return m_data; }
-		inline const char *		ptr()		const { return &at(0); }
 		
 		inline char &	at(size_t i){ return m_data[i]; }
 		inline Data &	data()		{ return m_data; }
-		inline char *	ptr()		{ return &at(0); }
 
 	public:
 		inline const char & operator[](size_t i) const { return at(i); }
 		inline char &		operator[](size_t i)	   { return at(i); }
 
-		inline const char * operator*() const	{ return ptr(); }
-		inline char *		operator*()			{ return ptr(); }
-
 		inline operator Data()	 const { return data(); }
 		inline operator String() const { return to_str(); }
+		inline operator CString()const { return &at(0); }
 
 	public:
 		inline iterator			begin()			{ return m_data.begin();  }

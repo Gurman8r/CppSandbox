@@ -2,6 +2,7 @@
 #define _OPEN_AL_HPP_
 
 #include <MemeAudio/AL.hpp>
+#include <MemeCore/CString.hpp>
 
 #ifdef ML_DEBUG
 	#define alCheck(expr) do { expr; ml::OpenAL::checkError(__FILE__, __LINE__, #expr); } while (false)
@@ -26,7 +27,7 @@ namespace ml
 	public:
 		/* Errors */
 		static AL::Err	getError();
-		static void		checkError(const char * file, uint32_t line, const char * expr);
+		static void		checkError(CString file, uint32_t line, CString expr);
 
 	public:
 		/* Devices */

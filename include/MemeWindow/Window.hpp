@@ -135,7 +135,7 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 
 	public:
-		using ErrorFun			= void(*)(int32_t, const char *);
+		using ErrorFun			= void(*)(int32_t, CString);
 		using CharFun			= void(*)(void *, uint32_t);
 		using CursorEnterFun	= void(*)(void *, int32_t);
 		using CursorPosFun		= void(*)(void *, double, double);

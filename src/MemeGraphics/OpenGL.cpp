@@ -50,7 +50,7 @@ namespace ml
 			
 			if (getError() == GL::InvalidEnum)
 			{
-				if (GL::Str version = getString(GL::Version))
+				if (CString version = getString(GL::Version))
 				{
 					majorVersion = version[0] - '0';
 					minorVersion = version[2] - '0';
@@ -138,7 +138,7 @@ namespace ml
 		m_errorPause = value;
 	}
 
-	void OpenGL::checkError(GL::Str file, uint32_t line, GL::Str expression)
+	void OpenGL::checkError(CString file, uint32_t line, CString expression)
 	{
 		// Get the last error
 		if (GL::Err errorCode = getError())
@@ -211,17 +211,17 @@ namespace ml
 
 	// Get
 
-	GL::Str OpenGL::getString(uint32_t name)
+	CString OpenGL::getString(uint32_t name)
 	{
-		static const char * temp;
-		glCheck(temp = reinterpret_cast<GL::Str>(glGetString(name)));
+		static CString temp;
+		glCheck(temp = reinterpret_cast<CString>(glGetString(name)));
 		return temp;
 	}
 
-	GL::Str OpenGL::getString(uint32_t name, uint32_t index)
+	CString OpenGL::getString(uint32_t name, uint32_t index)
 	{
-		static const char * temp;
-		glCheck(temp = reinterpret_cast<GL::Str>(glGetStringi(name, index)));
+		static CString temp;
+		glCheck(temp = reinterpret_cast<CString>(glGetStringi(name, index)));
 		return temp;
 	}
 
@@ -717,7 +717,7 @@ namespace ml
 	}
 
 
-	GL::Str OpenGL::getProgramInfoLog(uint32_t obj)
+	CString OpenGL::getProgramInfoLog(uint32_t obj)
 	{
 		static char log[ML_BUFFER_SIZE];
 		glCheck(glGetInfoLogARB(obj, sizeof(log), 0, log));
@@ -759,14 +759,14 @@ namespace ml
 		return temp;
 	}
 	
-	int32_t OpenGL::getAttribLocation(uint32_t program, GL::Str name)
+	int32_t OpenGL::getAttribLocation(uint32_t program, CString name)
 	{
 		static int32_t temp;
 		glCheck(temp = glGetAttribLocationARB(program, name));
 		return temp;
 	}
 
-	int32_t OpenGL::getUniformLocation(uint32_t program, GL::Str name)
+	int32_t OpenGL::getUniformLocation(uint32_t program, CString name)
 	{
 		static int32_t temp;
 		glCheck(temp = glGetUniformLocationARB(program, name));
@@ -794,19 +794,23 @@ namespace ml
 		glCheck(glAttachObjectARB(containerObj, obj));
 	}
 
-	void OpenGL::shaderSource(uint32_t obj, int32_t count, GL::Str const * src, const int32_t * length)
+	void OpenGL::shaderSource(uint32_t obj, int32_t count, CString const * src, const int32_t * length)
 	{
 		glCheck(glShaderSource(obj, count, src, length));
 	}
 
-	void OpenGL::compileShader(uint32_t obj)
+	bool OpenGL::compileShader(uint32_t obj)
 	{
 		glCheck(glCompileShaderARB(obj));
+
+		return getProgramParameter(obj, GL::ObjectCompileStatus);
 	}
 
-	void OpenGL::linkShader(uint32_t obj)
+	bool OpenGL::linkShader(uint32_t obj)
 	{
 		glCheck(glLinkProgramARB(obj));
+
+		return getProgramParameter(obj, GL::ObjectLinkStatus);
 	}
 
 

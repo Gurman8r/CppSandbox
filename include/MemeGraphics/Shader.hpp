@@ -55,8 +55,12 @@ namespace ml
 		bool setUniformArray(const String & name, int32_t count, const mat3f * value) const;
 		bool setUniformArray(const String & name, int32_t count, const mat4f * value) const;
 
+	public:
+		bool compile(CString vs, CString gs, CString fs);
+
+		static int32_t compile(uint32_t & out, GL::ShaderType type, CString source);
+
 	private:
-		bool	compile(const char * vs, const char * gs, const char * fs);
 		int32_t	getUniformLocation(const String & value) const;
 		int32_t	getAttribLocation(const String & value) const;
 

@@ -219,6 +219,9 @@
     <ClInclude Include="..\..\include\MemeCore\IWritable.hpp">
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\CString.hpp">
+      <Filter>Header Files\STD</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeCore\EventSystem.cpp">

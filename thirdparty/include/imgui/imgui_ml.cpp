@@ -7,6 +7,7 @@
 #include <MemeGraphics/OpenGL.hpp>
 #include <MemeGraphics/Shader.hpp>
 #include <MemeWindow/WindowEvents.hpp>
+#include <MemeCore/File.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -95,60 +96,36 @@ inline static bool ImGui_ML_CompileShader(uint32_t & program, ml::CString const 
 		return false;
 	}
 
-	// Create the vertex shader if needed
-	if (vs)
+	// Vertex
+	switch (ml::Shader::compile(g_VertHandle, ml::GL::VertexShader, ml::File(2, vs)))
 	{
-		// Create and Compile the shader
-		g_VertHandle = ml::OpenGL::createShaderObject(ml::GL::VertexShader);
-		ml::OpenGL::shaderSource(g_VertHandle, 2, vs, NULL);
-		ml::OpenGL::compileShader(g_VertHandle);
-
-		// Check the Compile log
-		if (!ml::OpenGL::getProgramParameter(g_VertHandle, ml::GL::ObjectCompileStatus))
-		{
-			ml::CString log = ml::OpenGL::getProgramInfoLog(g_VertHandle);
-			ml::OpenGL::deleteShader(g_VertHandle);
-			ml::OpenGL::deleteShader(program);
-			ml::cerr << ("Failed to compile vertex source: ") << log << ml::endl;
-			return false;
-		}
-
-		// Attach the shader to the program, and delete it
+	case ML_SUCCESS:
 		ml::OpenGL::attachShader(program, g_VertHandle);
+		break;
+	case ML_FAILURE:
+		ml::OpenGL::deleteShader(program);
+		return false;
 	}
 
-	// Create the fragment shader if needed
-	if (fs)
+	// Fragment
+	switch (ml::Shader::compile(g_FragHandle, ml::GL::FragmentShader, ml::File(2, fs)))
 	{
-		// Create and Compile the shader
-		g_FragHandle = ml::OpenGL::createShaderObject(ml::GL::FragmentShader);
-		ml::OpenGL::shaderSource(g_FragHandle, 2, fs, NULL);
-		ml::OpenGL::compileShader(g_FragHandle);
-
-		// Check the Compile log
-		if (!ml::OpenGL::getProgramParameter(g_FragHandle, ml::GL::ObjectCompileStatus))
-		{
-			ml::CString log = ml::OpenGL::getProgramInfoLog(g_FragHandle);
-			ml::OpenGL::deleteShader(g_FragHandle);
-			ml::OpenGL::deleteShader(program);
-			ml::cerr << ("Failed to compile fragment source: ") << log << ml::endl;
-			return false;
-		}
-
-		// Attach the shader to the program, and delete it
+	case ML_SUCCESS:
 		ml::OpenGL::attachShader(program, g_FragHandle);
+		break;
+	case ML_FAILURE:
+		ml::OpenGL::deleteShader(program);
+		return false;
 	}
 
 	// Link the program
-	ml::OpenGL::linkShader(program);
-
-	// Check the link log
-	if (!ml::OpenGL::getProgramParameter(program, ml::GL::ObjectLinkStatus))
+	if (!ml::OpenGL::linkShader(program))
 	{
 		ml::CString log = ml::OpenGL::getProgramInfoLog(program);
+
 		ml::OpenGL::deleteShader(program);
-		ml::cerr << ("Failed to link source: ") << log << ml::endl;
-		return false;
+
+		return ml::Debug::logError("Failed to link source: {0}", log);
 	}
 
 	ml::OpenGL::flush();

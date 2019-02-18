@@ -156,6 +156,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeCore\Check.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Chunk.hpp" />
+    <ClInclude Include="..\..\include\MemeCore\CString.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Directory.hpp" />
     <ClInclude Include="..\..\include\MemeCore\File.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Function.hpp" />

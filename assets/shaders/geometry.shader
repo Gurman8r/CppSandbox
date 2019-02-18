@@ -120,16 +120,12 @@ void drawLine(in vec4 p0, in vec4 p1, const int samples, const float dt)
 {
 	int i = 0;
 	float t = 0.0f;
-
 	for (i = 0; i <= samples; i++)
 	{
 		gl_Position = lerp(p0, p1, t);
-
 		EmitVertex();
-
 		t += dt;
 	}
-
 	EndPrimitive();
 }
 void drawLineFull(in vec4 p0, in vec4 p1)
@@ -144,100 +140,73 @@ void drawBezierCurve0(in vec4 p0, const int samples, const float dt)
 {
 	int i = 0;
 	float t = 0.0f;
-
 	for (i = 0; i <= samples; i++)
 	{
 		gl_Position = sampleBezier0(p0, t);
-
 		EmitVertex();
-
 		t += dt;
 	}
-
 	EndPrimitive();
 }
 void drawBezierCurve1(in vec4 p0, in vec4 p1, const int samples, const float dt)
 {
 	int i = 0;
 	float t = 0.0f;
-
 	for (i = 0; i <= samples; i++)
 	{
 		gl_Position = sampleBezier1(p0, p1, t);
-
 		EmitVertex();
-
 		t += dt;
 	}
-
 	EndPrimitive();
 }
 void drawBezierCurve2(in vec4 p0, in vec4 p1, in vec4 p2, const int samples, const float dt)
 {
 	int i = 0;
 	float t = 0.0f;
-
 	for (i = 0; i <= samples; i++)
 	{
 		gl_Position = sampleBezier2(p0, p1, p2, t);
-
 		EmitVertex();
-
 		t += dt;
 	}
-
 	EndPrimitive();
 }
 void drawBezierCurve3(in vec4 p0, in vec4 p1, in vec4 p2, in vec4 p3, const int samples, const float dt)
 {
 	int i = 0;
 	float t = 0.0f;
-
 	for (i = 0; i <= samples; i++)
 	{
 		gl_Position = sampleBezier3(p0, p1, p2, p3, t);
-
 		EmitVertex();
-
 		t += dt;
 	}
-
 	EndPrimitive();
 }
 void drawCatmullRomSplineSegment(in vec4 pPrev, in vec4 p0, in vec4 p1, in vec4 pNext, const int samples, const float dt)
 {
-	// vec4 sampleCatmullRom(in vec4 pPrev, in vec4 p0, in vec4 p1, in vec4 pNext, const float t)
-
 	int i = 0;
 	float t = 0.0f;
-
 	for (i = 0; i <= samples; i++)
 	{
 		gl_Position = sampleCatmullRom(pPrev, p0, p1, pNext, t);
-
 		EmitVertex();
-
 		t += dt;
 	}
-
 	EndPrimitive();
 }
 void drawCubicHermiteSplineSegment(in vec4 p0, in vec4 m0, in vec4 p1, in vec4 m1, const int samples, const float dt)
 {
-	// vec4 sampleCubicHermite(in vec4 p0, in vec4 m0, in vec4 p1, in vec4 m1, const float t)
-
 	int i = 0;
 	float t = 0.0f;
 
 	for (i = 0; i <= samples; i++)
 	{
 		gl_Position = sampleCubicHermite(p0, m0, p1, m1, t);
-
 		EmitVertex();
-
 		t += dt;
 	}
-
 	EndPrimitive();
 }
 
@@ -261,10 +230,12 @@ void stub(in int samples, in float dt)
 		drawLine(testP2, testP3, samples, dt);
 		drawLine(testP3, testP0, samples, dt);
 		break;
+
 	case CURVE_BEZIER:
 		// full curve
 		drawBezierCurve3(testP0, testP1, testP2, testP3, samples, dt);
 		break;
+
 	case CURVE_CATMULLROM:
 		// curve segment
 		pPrev = testP0;
@@ -273,6 +244,7 @@ void stub(in int samples, in float dt)
 		pNext = testP3;
 		drawCatmullRomSplineSegment(pPrev, p0, p1, pNext, samples, dt);
 		break;
+
 	case CURVE_HERMITE:
 		// curve segment
 		p0 = testP0;
@@ -284,6 +256,7 @@ void stub(in int samples, in float dt)
 		drawLineFull(p0, p0 + m0);
 		drawLineFull(p1, p1 + m1);
 		break;
+
 	default:
 		drawLineFull(testP0, testP1);
 		drawLineFull(testP1, testP2);

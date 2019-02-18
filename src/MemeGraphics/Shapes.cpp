@@ -81,7 +81,8 @@ namespace ml
 		20, 23, 22,
 	});
 
-	const FloatList Shapes::Sky::Vertices({ -1.0f,  1.0f, -1.0f,
+	const FloatList Shapes::Sky::Vertices({ 
+		-1.0f,  1.0f, -1.0f,
 		-1.0f, -1.0f, -1.0f,
 		 1.0f, -1.0f, -1.0f,
 		 1.0f, -1.0f, -1.0f,

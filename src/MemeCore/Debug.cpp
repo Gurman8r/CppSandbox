@@ -44,7 +44,7 @@ namespace ml
 			<< FG::White << "]"
 			<< FMT() << " " << message
 			<< ml::endl;
-		return Debug::Warning;
+		return ML_WARNING;
 	}
 
 	int32_t Debug::logError(const String & message)
@@ -56,7 +56,7 @@ namespace ml
 			<< FG::White << "]"
 			<< FMT() << " " << message
 			<< ml::endl;
-		return Debug::Error;
+		return ML_FAILURE;
 	}
 	
 	int32_t Debug::log(const String & message)
@@ -68,6 +68,6 @@ namespace ml
 			<< FG::White << "]"
 			<< FMT() << " " << message
 			<< ml::endl;
-		return Debug::Success;
+		return ML_SUCCESS;
 	}
 }

@@ -13,6 +13,12 @@ font:		consolas	/fonts/consolas.ttf
 font:		lconsole	/fonts/lucida_console.ttf
 font:		minecraft	/fonts/minecraft.ttf
 
+# Meshes
+#***********************************************************************#
+#mesh:		cube		/meshes/cube.mesh
+#mesh:		sphere8x6	/meshes/sphere8x6.mesh
+#mesh:		sphere32x6	/meshes/sphere32x24.mesh
+
 # Models
 #***********************************************************************#
 model:		skybox
@@ -23,7 +29,7 @@ model:		cube		/meshes/cube.mesh
 model:		ground		/meshes/cube.mesh
 model:		light		/meshes/sphere8x6.mesh
 model:		earth		/meshes/sphere32x24.mesh
-model:		moon		/meshes/sphere8x6.mesh
+model:		moon		/meshes/sphere32x24.mesh
 
 # Shaders
 #***********************************************************************#
@@ -69,3 +75,4 @@ texture:	moon_nm		/textures/moon/moon_nm.png
 # Skyboxes
 #***********************************************************************#
 skybox:		sunset		/skyboxes/sunset.skybox
+

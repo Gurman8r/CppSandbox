@@ -259,7 +259,7 @@ namespace ml
 	{
 		return insert(index, value_type(1, value));
 	}
-	Args::self_type&	Args::insert(size_t index, const char * value)
+	Args::self_type&	Args::insert(size_t index, CString value)
 	{
 		return insert(index, value_type(value));
 	}
@@ -316,7 +316,7 @@ namespace ml
 	{
 		return push_back(value_type(1, value));
 	}
-	Args::self_type&	Args::push_back(const char * value)
+	Args::self_type&	Args::push_back(CString value)
 	{
 		return push_back(value_type(value));
 	}
@@ -341,7 +341,7 @@ namespace ml
 	{
 		return push_front(value_type(1, value));
 	}
-	Args::self_type&	Args::push_front(const char * value)
+	Args::self_type&	Args::push_front(CString value)
 	{
 		return push_front(value_type(value));
 	}

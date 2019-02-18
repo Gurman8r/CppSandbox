@@ -2,6 +2,7 @@
 #define _OPENGL_HPP_
 
 #include <MemeGraphics/GL.hpp>
+#include <MemeCore/CString.hpp>
 
 // Macro to quickly check every OpenGL API call
 #ifdef ML_DEBUG
@@ -36,11 +37,11 @@ namespace ml
 	public: // Errors
 		static GL::Err	getError();
 		static void		errorPause(bool value);
-		static void		checkError(GL::Str file, uint32_t line, GL::Str expression);
+		static void		checkError(CString file, uint32_t line, CString expression);
 		
 	public: // Get
-		static GL::Str	getString(uint32_t name);
-		static GL::Str	getString(uint32_t name, uint32_t index);
+		static CString	getString(uint32_t name);
+		static CString	getString(uint32_t name, uint32_t index);
 		static bool		getBool(uint32_t name);
 		static double	getDouble(uint32_t name);
 		static float	getFloat(uint32_t name);
@@ -130,22 +131,22 @@ namespace ml
 		static bool		shadersAvailable();
 		static bool		geometryShadersAvailable();
 
-		static GL::Str	getProgramInfoLog(uint32_t obj);
+		static CString	getProgramInfoLog(uint32_t obj);
 		static uint32_t getProgramHandle(uint32_t name);
 		static uint32_t createProgramObject();
 		static uint32_t createShaderObject(GL::ShaderType type);
 		static int32_t	getProgramParameter(int32_t obj, GL::Status param);
 		static int32_t	getProgramiv(uint32_t program, uint32_t name);
-		static int32_t	getAttribLocation(uint32_t program, GL::Str name);
-		static int32_t	getUniformLocation(uint32_t program, GL::Str name);
+		static int32_t	getAttribLocation(uint32_t program, CString name);
+		static int32_t	getUniformLocation(uint32_t program, CString name);
 
 		static void		useShader(uint32_t obj);
 		static void		deleteShader(uint32_t obj);
 		static void		detachShader(uint32_t containerObj, uint32_t obj);
 		static void		attachShader(uint32_t containerObj, uint32_t obj);
-		static void		shaderSource(uint32_t obj, int32_t count, GL::Str const * src, const int32_t * length);
-		static void		compileShader(uint32_t obj);
-		static void		linkShader(uint32_t obj);
+		static void		shaderSource(uint32_t obj, int32_t count, CString const * src, const int32_t * length);
+		static bool		compileShader(uint32_t obj);
+		static bool		linkShader(uint32_t obj);
 
 		static void		uniform1f(int32_t location, float value);
 		static void		uniform1i(int32_t location, int32_t value);

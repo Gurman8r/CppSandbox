@@ -1,5 +1,3 @@
-
-
 #ifndef _DEMO_HPP_
 #define _DEMO_HPP_
 
@@ -100,19 +98,20 @@ namespace DEMO
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		bool		m_camAnimate = true;
-		ml::vec3f	m_camPos = { 0, 1, 10 };
-		ml::vec3f	m_camLook = { 0 };
-		float		m_camSpd = 1.f;
+		bool		m_camAnimate	= true;
+		ml::vec3f	m_camPos		= { 0, 1, 10 };
+		ml::vec3f	m_camLook		= { 0 };
+		float		m_camSpd		= 1.f;
 		
 		ml::vec3f	m_lightPos		= { 0, 1, 15 };
 		ml::vec4f	m_lightCol		= ml::Color::LightYellow;
 		float		m_ambient		= 0.01f;
-		float		m_specular		= 1.0f;
-		int32_t		m_shininess		= 32;
+		float		m_specular		= 0.5f;
+		int32_t		m_shininess		= 8;
 
 		ml::vec4f	m_clearColor	= ml::Color::Gray;
 		int32_t		m_fboMode		= 3;
+
 		int32_t		m_lineMode		= -1;
 		ml::vec4f	m_lineColor		= ml::Color::Red;
 		float		m_lineDelta		= 1.f;

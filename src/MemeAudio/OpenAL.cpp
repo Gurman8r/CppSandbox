@@ -42,7 +42,7 @@ namespace ml
 		return static_cast<AL::Err>(alGetError());
 	}
 
-	void OpenAL::checkError(const char * file, uint32_t line, const char * expr)
+	void OpenAL::checkError(CString file, uint32_t line, CString expr)
 	{
 		if (AL::Err errorCode = getError())
 		{

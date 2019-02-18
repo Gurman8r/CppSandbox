@@ -9,7 +9,6 @@ namespace ml
 	struct ML_GRAPHICS_API GL final
 	{
 		using Enum	= typename uint32_t;
-		using Str	= typename const char *;
 
 		enum Flag : Enum
 		{
@@ -42,7 +41,6 @@ namespace ml
 			TextureBinding2D = 0x8069,		// GL_TEXTURE_BINDING_2D
 			SamplerBinding = 0x8919,		// GL_SAMPLER_BINDING
 			ActiveTexture = 0x84E0,			// GL_ACTIVE_TEXTURE
-
 		};
 
 		enum Usage : Enum

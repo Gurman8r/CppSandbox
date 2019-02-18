@@ -194,7 +194,7 @@ namespace ml
 		Var & operator=(int32_t value);
 		Var & operator=(const Ptr & value);
 		Var & operator=(const String & value);
-		Var & operator=(const char * value);
+		Var & operator=(CString value);
 		Var & operator=(char value);
 
 	private:

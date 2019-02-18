@@ -7,21 +7,12 @@
 	{
 		dir	= getcwd();
 		exe = getTargetExeName();
-		msg	= "Hello, World!";
-		lib	= "MemeScript Version 1.0";
-		url	= "https://github.com/Gurman8r/CppSandbox";
 
-		#printl("# {dir}\{exe}");
-		#printl("# {msg}");
-		#printl("# {lib}");
-		#printl("# {url}");
-		
 		printl("{dir}\{exe}");
 		printl("* * * * * * * * * * * * * * * * * * * * * * *");
 		printl("*                                           *");
-		printl("*   {msg}                           *");
-		printl("*   {lib}                  *");
-		printl("*   {url}  *");
+		printl("*   Hello, World!                           *");
+		printl("*   https://github.com/Gurman8r/CppSandbox  *");
 		printl("*                                           *");
 		printl("* * * * * * * * * * * * * * * * * * * * * * *");
 	};

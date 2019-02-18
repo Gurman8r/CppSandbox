@@ -15,7 +15,7 @@ namespace ml
 		using value_type			= Token;
 		using string_type			= String;
 		using vector_type			= List<value_type>;
-		using cstring_list			= List<const char *>;
+		using cstring_list			= List<CString>;
 		using char_list				= List<char>;
 		using initializer_type		= std::initializer_list<value_type>;
 		using iterator				= vector_type::iterator;

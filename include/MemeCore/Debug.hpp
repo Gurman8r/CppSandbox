@@ -4,18 +4,14 @@
 #include <MemeCore/Console.hpp>
 #include <MemeCore/String.hpp>
 
+#define ML_WARNING -1
+#define ML_FAILURE	0
+#define ML_SUCCESS	1
+
 namespace ml
 {
 	class ML_CORE_API Debug final
 	{
-	public:
-		enum : int32_t
-		{
-			Warning = -1,
-			Error	=  0,
-			Success = +1,
-		};
-
 	public:
 		static int32_t	clear();
 		static void		exit(int32_t exitCode);

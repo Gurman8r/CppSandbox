@@ -2,7 +2,6 @@
 #include <MemeEditor/InterpreterConsole.hpp>
 #include <MemeCore/EventSystem.hpp>
 #include <MemeWindow/WindowEvents.hpp>
-
 #include <imgui/imgui.h>
 #include <imgui/imgui_ml.hpp>
 
@@ -11,7 +10,7 @@ namespace DEMO
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Demo::Demo()
-		: m_error(ml::Debug::Success)
+		: m_error(ML_SUCCESS)
 	{
 		ML_EventSystem.addListener(DemoEvent::EV_Enter, this);
 		ML_EventSystem.addListener(DemoEvent::EV_Load,	this);
@@ -71,6 +70,11 @@ namespace DEMO
 						if (SETTINGS.escapeIsExit) { this->close(); }
 					}
 					break;
+				case ml::KeyCode::R:
+					if (ev->action == ML_PRESS)
+					{
+					}
+					break;
 				case ml::KeyCode::E:
 					if (ev->action == ML_PRESS && (ev->mods & ML_MOD_CTRL))
 					{
@@ -93,6 +97,12 @@ namespace DEMO
 					if (ev->action == ML_PRESS && (ev->mods & ML_MOD_CTRL) && (ev->mods & ML_MOD_ALT))
 					{
 						show_ml_network = true;
+					}
+					break;
+				case ml::KeyCode::B:
+					if (ev->action == ML_PRESS && (ev->mods & ML_MOD_CTRL) && (ev->mods & ML_MOD_ALT))
+					{
+						show_ml_shader = true;
 					}
 					break;
 				}
@@ -355,8 +365,8 @@ namespace DEMO
 				m_error = ML_Interpreter.execFile(
 					SETTINGS.pathTo(SETTINGS.scrPath + SETTINGS.scrFile)
 				)
-				? ml::Debug::Success
-				: ml::Debug::Error;
+				? ML_SUCCESS
+				: ML_FAILURE;
 			}
 			else
 			{
@@ -365,7 +375,7 @@ namespace DEMO
 		}
 		else
 		{
-			m_error = ml::Debug::Error;
+			m_error = ML_FAILURE;
 		}
 	}
 	
@@ -399,7 +409,7 @@ namespace DEMO
 				ImGui::GetStyle().FrameBorderSize = 1;
 				if (!ImGui_ML_Init("#version 410", this, true))
 				{
-					m_error = ml::Debug::Error;
+					m_error = ML_FAILURE;
 					return;
 				}
 			}
@@ -408,8 +418,8 @@ namespace DEMO
 				&& ml::OpenAL::init()
 				&& loadResources()
 				&& loadNetwork()
-				? ml::Debug::Success
-				: ml::Debug::Error;
+				? ML_SUCCESS
+				: ML_FAILURE;
 		}
 		else
 		{
@@ -628,11 +638,17 @@ namespace DEMO
 			if (const ml::Model * model = ML_Resources.models.get("moon"))
 			{
 				static ml::UniformSet uniforms = {
-					ml::Uniform("u_model",	ml::Uniform::Mat4,	&model->transform().matrix()),
-					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
-					ml::Uniform("u_texture",ml::Uniform::Tex2D, ML_Resources.textures.get("moon_dm")),
+					ml::Uniform("u_model",		ml::Uniform::Mat4,	&model->transform().matrix()),
+					ml::Uniform("u_viewPos",	ml::Uniform::Vec3,	&m_camPos),
+					ml::Uniform("u_lightPos",	ml::Uniform::Vec3,	&m_lightPos),
+					ml::Uniform("u_lightCol",	ml::Uniform::Vec4,	&m_lightCol),
+					ml::Uniform("u_ambient",	ml::Uniform::Float, &m_ambient),
+					ml::Uniform("u_specular",	ml::Uniform::Float, &m_specular),
+					ml::Uniform("u_shininess",	ml::Uniform::Int,	&m_shininess),
+					ml::Uniform("u_tex_dm",		ml::Uniform::Tex2D,	ML_Resources.textures.get("moon_dm")),
+					ml::Uniform("u_tex_sm",		ml::Uniform::Tex2D,	ML_Resources.textures.get("moon_nm")),
 				};
-				if (const ml::Shader * shader = ML_Resources.shaders.get("basic3D"))
+				if (const ml::Shader * shader = ML_Resources.shaders.get("lighting"))
 				{
 					shader->setUniforms(camera_uniforms);
 					shader->setUniforms(uniforms);

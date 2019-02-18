@@ -72,6 +72,9 @@ namespace ml
 
 	bool Shader::cleanup()
 	{
+		m_textures.clear();
+		m_uniforms.clear();
+
 		if ((*this))
 		{
 			OpenGL::deleteShader((*this));
@@ -85,10 +88,10 @@ namespace ml
 
 	bool Shader::loadFromFile(const String & filename)
 	{
-		static String source;
-		if (ML_FileSystem.getFileContents(filename, source))
+		static File file;
+		if (file.loadFromFile(filename))
 		{
-			return loadFromMemory(source);
+			return loadFromMemory(file);
 		}
 		return Debug::logError("Failed to open shader source file \"{0}\"", filename);
 	}
@@ -110,7 +113,7 @@ namespace ml
 		}
 
 		// Compile the shader program
-		return compile((*vert), NULL, (*frag));
+		return compile(vert, NULL, frag);
 	}
 
 	bool Shader::loadFromFile(const String & vs, const String & gs, const String & fs)
@@ -137,12 +140,12 @@ namespace ml
 		}
 
 		// Compile the shader program
-		return compile((*vert), (*geom), (*frag));
+		return compile(vert, geom, frag);
 	}
 
 	bool Shader::loadFromMemory(const String & source)
 	{
-		enum : int8_t { NONE = -1, VERT, FRAG, GEOM, MAX };
+		enum { NONE = -1, VERT, FRAG, GEOM, MAX };
 
 		int8_t	srcType = NONE;
 		SStream	srcData[MAX];
@@ -445,7 +448,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Shader::compile(const char * vs, const char * gs, const char * fs)
+	bool Shader::compile(CString vs, CString gs, CString fs)
 	{
 		if (!OpenGL::shadersAvailable())
 		{
@@ -464,83 +467,52 @@ namespace ml
 			return Debug::logError("Failed creating shader object");
 		}
 
-		m_textures.clear();
-		m_uniforms.clear();
-
-		// Create the vertex shader if needed
-		if (vs)
+		// Vertex
+		uint32_t v = NULL;
+		switch (compile(v, GL::VertexShader, vs))
 		{
-			// Create and Compile the shader
-			uint32_t vertexShader = OpenGL::createShaderObject(GL::VertexShader);
-			OpenGL::shaderSource(vertexShader, 1, &vs, NULL);
-			OpenGL::compileShader(vertexShader);
-
-			// Check the Compile log
-			if (!OpenGL::getProgramParameter(vertexShader, GL::ObjectCompileStatus))
-			{
-				const char * log = OpenGL::getProgramInfoLog(vertexShader);
-				OpenGL::deleteShader(vertexShader);
-				OpenGL::deleteShader(*this);
-				return Debug::logError("Failed to compile vertex source: {0}", log);
-			}
-
-			// Attach the shader to the program, and delete it
-			OpenGL::attachShader(*this, vertexShader);
-			OpenGL::deleteShader(vertexShader);
+		case ML_SUCCESS:
+			OpenGL::attachShader((*this), v);
+			OpenGL::deleteShader(v);
+			break;
+		case ML_FAILURE:
+			OpenGL::deleteShader((*this));
+			return false;
 		}
 
-		// Create the geometry shader if needed
-		if (gs)
+		// Geometry
+		uint32_t g = NULL;
+		switch (compile(g, GL::GeometryShader, gs))
 		{
-			// Create and Compile the shader
-			uint32_t geometryShader = OpenGL::createShaderObject(GL::GeometryShader);
-			OpenGL::shaderSource(geometryShader, 1, &gs, NULL);
-			OpenGL::compileShader(geometryShader);
-
-			// Check the Compile log
-			if (!OpenGL::getProgramParameter(geometryShader, GL::ObjectCompileStatus))
-			{
-				const char * log = OpenGL::getProgramInfoLog(geometryShader);
-				OpenGL::deleteShader(geometryShader);
-				OpenGL::deleteShader(*this);
-				return Debug::logError("Failed to compile geometry source: {0}", log);
-			}
-
-			// Attach the shader to the program, and delete it
-			OpenGL::attachShader(*this, geometryShader);
-			OpenGL::deleteShader(geometryShader);
+		case ML_SUCCESS:
+			OpenGL::attachShader((*this), g);
+			OpenGL::deleteShader(g);
+			break;
+		case ML_FAILURE:
+			OpenGL::deleteShader((*this));
+			return false;
 		}
 
-		// Create the fragment shader if needed
-		if (fs)
+		// Fragment
+		uint32_t f = NULL;
+		switch (compile(f, GL::FragmentShader, fs))
 		{
-			// Create and Compile the shader
-			uint32_t fragmentShader = OpenGL::createShaderObject(GL::FragmentShader);
-			OpenGL::shaderSource(fragmentShader, 1, &fs, NULL);
-			OpenGL::compileShader(fragmentShader);
-
-			// Check the Compile log
-			if (!OpenGL::getProgramParameter(fragmentShader, GL::ObjectCompileStatus))
-			{
-				const char * log = OpenGL::getProgramInfoLog(fragmentShader);
-				OpenGL::deleteShader(fragmentShader);
-				OpenGL::deleteShader(*this);
-				return Debug::logError("Failed to compile fragment source: {0}", log);
-			}
-
-			// Attach the shader to the program, and delete it
-			OpenGL::attachShader(*this, fragmentShader);
-			OpenGL::deleteShader(fragmentShader);
+		case ML_SUCCESS:
+			OpenGL::attachShader((*this), f);
+			OpenGL::deleteShader(f);
+			break;
+		case ML_FAILURE:
+			OpenGL::deleteShader((*this));
+			return false;
 		}
 
 		// Link the program
-		OpenGL::linkShader(*this);
-
-		// Check the link log
-		if (!OpenGL::getProgramParameter(*this, GL::ObjectLinkStatus))
+		if (!OpenGL::linkShader(*this))
 		{
-			const char * log = OpenGL::getProgramInfoLog(*this);
+			CString log = OpenGL::getProgramInfoLog(*this);
+			
 			OpenGL::deleteShader(*this);
+			
 			return Debug::logError("Failed to link source: {0}", log);
 		}
 
@@ -548,7 +520,39 @@ namespace ml
 
 		return true;
 	}
+
+	int32_t Shader::compile(uint32_t & out, GL::ShaderType type, CString source)
+	{
+		static String name;
+		switch (type)
+		{
+		case GL::FragmentShader: name = "Fragment"; break;
+		case GL::VertexShader:	 name = "Vertex";	break;
+		case GL::GeometryShader: name = "Geometry"; break;
+		}
+
+		if (source)
+		{
+			out = OpenGL::createShaderObject(type);
+
+			OpenGL::shaderSource(out, 1, &source, NULL);
+
+			// Check the Compile log
+			if (!OpenGL::compileShader(out))
+			{
+				CString log = OpenGL::getProgramInfoLog(out);
+
+				OpenGL::deleteShader(out);
+
+				return Debug::logError("Failed to compile {0} source: {1}", name, log);
+			}
+			return ML_SUCCESS;
+		}
+		return ML_WARNING;
+	}
 	
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	int32_t Shader::getUniformLocation(const String & value) const
 	{
 		// Check the cache

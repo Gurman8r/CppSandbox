@@ -1076,7 +1076,7 @@ namespace ml
 	Var & Var::operator=(int32_t value)			{ return intValue(value); }
 	Var & Var::operator=(const Ptr & value)		{ return pointerValue(value); }
 	Var & Var::operator=(const String & value)	{ return stringValue(value); }
-	Var & Var::operator=(const char * value)	{ return stringValue(value); }
+	Var & Var::operator=(CString value)	{ return stringValue(value); }
 	Var & Var::operator=(char value)			{ return stringValue(String(1, value)); }
 	
 
