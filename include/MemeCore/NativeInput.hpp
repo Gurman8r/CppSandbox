@@ -66,7 +66,7 @@ namespace ml
 
 		bool checkKey(int32_t value) const override;
 
-		bool getAnyKey() const override;
+		bool getAnyKey() const;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

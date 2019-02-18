@@ -20,7 +20,6 @@ namespace ml
 
 	public:
 		virtual bool checkKey(int32_t value) const = 0;
-		virtual bool getAnyKey() const = 0;
 
 	public:
 		self_type & beginStep()

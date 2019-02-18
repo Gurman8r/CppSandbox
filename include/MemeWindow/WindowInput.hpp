@@ -4,9 +4,7 @@
 #include <MemeWindow/Export.hpp>
 #include <MemeCore/ITrackable.hpp>
 #include <MemeCore/BitHelper.hpp>
-#include <MemeCore/IntTypes.hpp>
-
-/* * * * * * * * * * * * * * * * * * * * */
+#include <MemeCore/InputState.hpp>
 
 #define ML_RELEASE	0
 #define ML_PRESS	1
@@ -16,9 +14,6 @@
 #define ML_MOD_CTRL		(1 << 1)
 #define ML_MOD_ALT		(1 << 2)
 #define ML_MOD_SUPER	(1 << 3)
-
-
-/* * * * * * * * * * * * * * * * * * * * */
 
 namespace ml
 {
