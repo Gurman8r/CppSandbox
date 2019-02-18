@@ -242,7 +242,7 @@ namespace ml
 			Repeat,							// GL_REPEAT
 			ClampToEdge			= 0x812F,	// GL_CLAMP_TO_EDGE
 
-			CubeMap_Positive_X =  0x8515,	// GL_TEXTURE_CUBE_MAP_POSITIVE_X
+			CubeMap_Positive_X = 0x8515,	// GL_TEXTURE_CUBE_MAP_POSITIVE_X
 			CubeMap_Negative_X,				// GL_TEXTURE_CUBE_MAP_NEGATIVE_X
 			CubeMap_Positive_Y,				// GL_TEXTURE_CUBE_MAP_POSITIVE_Y
 			CubeMap_Negative_Y,				// GL_TEXTURE_CUBE_MAP_NEGATIVE_Y

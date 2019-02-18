@@ -36,9 +36,7 @@ namespace DEMO
 		ML_EventSystem.addListener(DemoEvent::EV_Exit,	this);
 	}
 
-	Demo::~Demo()
-	{
-	}
+	Demo::~Demo() {}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
@@ -77,6 +75,18 @@ namespace DEMO
 		case ml::WindowEvent::EV_Key:
 			if (auto ev = value->Cast<ml::KeyEvent>())
 			{
+				// Toggle Smooth Textures
+				if (ev->getKeyDown(ml::S))
+				{
+					static bool smooth = false;
+					smooth = !smooth;
+					for (auto pair : ML_Res.textures.getAll())
+					{
+						pair.second->setSmooth(smooth);
+					}
+					ml::OpenGL::flush();
+				}
+
 				// Reload Shaders
 				if (ev->getKeyDown(ml::KeyCode::R))
 				{ ml::Debug::log("Reloaded {0} Shaders.", ML_Res.shaders.reload()); }
@@ -86,19 +96,19 @@ namespace DEMO
 				{ if (SETTINGS.escapeIsExit) { this->close(); } }
 
 				// Show Editor
-				if (ev->getKeyDown(ml::E) && (ev->getMods(ml::ModCtrl)))
+				if (ev->getKeyDown(ml::E) && this->getKey(ml::LeftControl))
 				{ show_ml_editor = true; }
 
 				// Show Console
-				if (ev->getKeyDown(ml::T) && (ev->getMods(ml::ModCtrl | ml::ModAlt)))
+				if (ev->getKeyDown(ml::T) && this->getKey(ml::LeftControl) && this->getKey(ml::LeftAlt))
 				{ show_ml_console = true; }
 
 				// Show Network Manager
-				if (ev->getKeyDown(ml::N) && (ev->getMods(ml::ModCtrl | ml::ModAlt)))
+				if (ev->getKeyDown(ml::N) && this->getKey(ml::LeftControl) && this->getKey(ml::LeftAlt))
 				{ show_ml_network = true; }
 
 				// Show Shader Builder
-				if (ev->getKeyDown(ml::B) && (ev->getMods(ml::ModCtrl | ml::ModAlt)))
+				if (ev->getKeyDown(ml::B) && this->getKey(ml::LeftControl) && this->getKey(ml::LeftAlt))
 				{ show_ml_shader = true; }
 			}
 			break;
@@ -438,6 +448,13 @@ namespace DEMO
 	void Demo::onStart(const StartEvent & ev)
 	{
 		ml::Debug::log("Starting...");
+
+		// Texture Properties
+		//ML_Res.textures.get("earth_dm")->setSmooth(true);
+		//ML_Res.textures.get("earth_sm")->setSmooth(true);
+		//ML_Res.textures.get("moon_dm")->setSmooth(true);
+		//ML_Res.textures.get("moon_nm")->setSmooth(true);
+		//ML_Res.textures.get("stone_dm")->setSmooth(true);
 
 		// Set Window Icon
 		if (ml::Image * icon = ML_Res.images.get("icon"))

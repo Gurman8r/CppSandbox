@@ -142,19 +142,6 @@ namespace ml
 			return glyph;
 		}
 
-		// Only load a texture for characters requiring a graphic
-		if ((value != ' ') && isgraph(value) && !glyph.texture.create(
-			face->glyph->bitmap.buffer,
-			{ face->glyph->bitmap.width, face->glyph->bitmap.rows },
-			GL::RGBA,
-			GL::Red,
-			true, 
-			true,
-			GL::Texture2D))
-		{
-			Debug::logWarning("Failed Loading Glyph Texture: \'{0}\'", (char)value);
-		}
-
 		glyph.bounds = {
 			(float)face->glyph->bitmap_left,
 			(float)face->glyph->bitmap_top,
@@ -163,6 +150,15 @@ namespace ml
 		};
 
 		glyph.advance = (uint32_t)face->glyph->advance.x;
+
+		// Only load a texture for characters requiring a graphic
+		if ((value != ' ') && isgraph(value))
+		{
+			if (!glyph.texture.create(face->glyph->bitmap.buffer, (vec2u)glyph.size()))
+			{
+				Debug::logWarning("Failed Loading Glyph Texture: \'{0}\'", (char)value);
+			}
+		}
 
 		return glyph;
 	}

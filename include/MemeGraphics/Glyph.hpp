@@ -15,6 +15,11 @@ namespace ml
 		FloatRect	bounds;
 		uint32_t	advance;
 
+		Glyph()
+			: texture(GL::Texture2D, GL::RGBA, GL::Red, true, true, false, 0, 0, GL::UnsignedByte)
+		{
+		}
+
 		inline const vec2f bearing()	const { return bounds.position(); }
 		inline const vec2f size()		const { return bounds.size(); }
 		inline const float x()			const { return bearing()[0]; }
