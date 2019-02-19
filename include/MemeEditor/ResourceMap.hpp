@@ -125,7 +125,7 @@ namespace ml
 			return load(files, String());
 		}
 
-		inline bool load(const FileMap & files, const String & path)
+		inline size_t load(const FileMap & files, const String & path)
 		{
 			m_files = files;
 			m_path = path;

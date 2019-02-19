@@ -26,7 +26,8 @@ namespace ml
 		template <typename _Ret, typename ... _Args>
 		inline bool callFunction(void * funHandle, _Ret & result, const _Args & ... args)
 		{
-			if (auto func = static_cast<_Ret(*)(_Args ...)>(funHandle))
+			using Func = _Ret(*)(_Args ...);
+			if (auto func = static_cast<Func>(funHandle))
 			{
 				result = func((args)...);
 				return true;

@@ -56,24 +56,24 @@ namespace ml
 		return true;
 	}
 
-	int32_t ResourceManager::loadManifestData(const String & type, const String & path, const file_map & files)
+	bool ResourceManager::loadManifestData(const String & type, const String & path, const file_map & files)
 	{
 		if (type.empty())
 		{
-			return ML_WARNING;
+			return true;
 		}
-		else if (type == "fonts"	&& !loadData(fonts, path, files))	{ return ML_FAILURE; }
-		else if (type == "images"	&& !loadData(images, path, files))	{ return ML_FAILURE; }
-		else if (type == "mats"		&& !loadData(mats, path, files))	{ return ML_FAILURE; }
-		else if (type == "meshes"	&& !loadData(meshes, path, files))	{ return ML_FAILURE; }
-		else if (type == "models"	&& !loadData(models, path, files))	{ return ML_FAILURE; }
-		else if (type == "shaders"	&& !loadData(shaders, path, files)) { return ML_FAILURE; }
-		else if (type == "skyboxes" && !loadData(skyboxes, path, files)){ return ML_FAILURE; }
-		else if (type == "sounds"	&& !loadData(sounds, path, files))	{ return ML_FAILURE; }
-		else if (type == "sprites"	&& !loadData(sprites, path, files)) { return ML_FAILURE; }
-		else if (type == "textures" && !loadData(textures, path, files)){ return ML_FAILURE; }
+		else if (type == "fonts"	&& !loadData(fonts,		path, files))	{ return false; }
+		else if (type == "images"	&& !loadData(images,	path, files))	{ return false; }
+		else if (type == "mats"		&& !loadData(mats,		path, files))	{ return false; }
+		else if (type == "meshes"	&& !loadData(meshes,	path, files))	{ return false; }
+		else if (type == "models"	&& !loadData(models,	path, files))	{ return false; }
+		else if (type == "shaders"	&& !loadData(shaders,	path, files))	{ return false; }
+		else if (type == "skyboxes" && !loadData(skyboxes,	path, files))	{ return false; }
+		else if (type == "sounds"	&& !loadData(sounds,	path, files))	{ return false; }
+		else if (type == "sprites"	&& !loadData(sprites,	path, files))	{ return false; }
+		else if (type == "textures" && !loadData(textures,	path, files))	{ return false; }
 		
-		return ML_SUCCESS;
+		return true;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

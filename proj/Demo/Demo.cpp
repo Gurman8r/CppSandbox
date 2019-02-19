@@ -267,6 +267,7 @@ namespace DEMO
 				&& ML_Res.loadManifest(manifest)
 				&& ML_Res.models.load("borg")->loadFromMemory(ml::Shapes::Cube::Vertices, ml::Shapes::Cube::Indices)
 				&& ML_Res.models.load("sanic")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
+				&& ML_Res.models.load("framebuffer")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
 				&& ML_Res.textures.load("framebuffer")->create(this->size())
 				&& loadBuffers();
 		}
@@ -576,18 +577,18 @@ namespace DEMO
 	{
 		// Shared Uniforms
 		/* * * * * * * * * * * * * * * * * * * * */
-		static ml::UniformSet camera_uniforms = {
+		static ml::UniformSet persp_uniforms = {
 			ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
 			ml::Uniform("u_view",	ml::Uniform::Mat4,	&m_camera.matrix()),
 		};
 
 		static ml::UniformSet light_uniforms = {
-			ml::Uniform("u_viewPos",	ml::Uniform::Vec3,	&m_camPos),
-			ml::Uniform("u_lightPos",	ml::Uniform::Vec3,	&m_lightPos),
-			ml::Uniform("u_lightCol",	ml::Uniform::Vec4,	&m_lightCol),
-			ml::Uniform("u_ambient",	ml::Uniform::Float, &m_ambient),
-			ml::Uniform("u_specular",	ml::Uniform::Float, &m_specular),
-			ml::Uniform("u_shininess",	ml::Uniform::Int,	&m_shininess),
+			ml::Uniform("u_viewPos",		ml::Uniform::Vec3,	&m_camPos),
+			ml::Uniform("u_light.position",	ml::Uniform::Vec3,	&m_lightPos),
+			ml::Uniform("u_light.color",	ml::Uniform::Vec4,	&m_lightCol),
+			ml::Uniform("u_mat.ambient",	ml::Uniform::Float, &m_ambient),
+			ml::Uniform("u_mat.specular",	ml::Uniform::Float, &m_specular),
+			ml::Uniform("u_mat.shininess",	ml::Uniform::Int,	&m_shininess),
 		};
 
 		// Draw Scene
@@ -609,7 +610,7 @@ namespace DEMO
 				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("solid"))
 				{
-					shader->setUniforms(camera_uniforms);
+					shader->setUniforms(persp_uniforms);
 					shader->setUniforms(uniforms);
 					shader->bind();
 				}
@@ -622,11 +623,11 @@ namespace DEMO
 				static ml::UniformSet uniforms = {
 					ml::Uniform("u_model",	ml::Uniform::Mat4,	&model->transform().matrix()),
 					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
-					ml::Uniform("u_texture",ml::Uniform::Tex2D, ML_Res.textures.get("borg")),
+					ml::Uniform("u_texture",ml::Uniform::Tex,	ML_Res.textures.get("borg")),
 				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("basic3D"))
 				{
-					shader->setUniforms(camera_uniforms);
+					shader->setUniforms(persp_uniforms);
 					shader->setUniforms(uniforms);
 					shader->bind();
 				}
@@ -638,12 +639,12 @@ namespace DEMO
 			{
 				static ml::UniformSet uniforms = {
 					ml::Uniform("u_model",		ml::Uniform::Mat4,	&model->transform().matrix()),
-					ml::Uniform("u_tex_dm",		ml::Uniform::Tex2D,	ML_Res.textures.get("earth_dm")),
-					ml::Uniform("u_tex_sm",		ml::Uniform::Tex2D,	ML_Res.textures.get("earth_sm")),
+					ml::Uniform("u_tex_dm",		ml::Uniform::Tex,	ML_Res.textures.get("earth_dm")),
+					ml::Uniform("u_tex_sm",		ml::Uniform::Tex,	ML_Res.textures.get("earth_sm")),
 				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("lighting"))
 				{
-					shader->setUniforms(camera_uniforms);
+					shader->setUniforms(persp_uniforms);
 					shader->setUniforms(light_uniforms);
 					shader->setUniforms(uniforms);
 					shader->bind();
@@ -656,12 +657,12 @@ namespace DEMO
 			{
 				static ml::UniformSet uniforms = {
 					ml::Uniform("u_model",		ml::Uniform::Mat4,	&model->transform().matrix()),
-					ml::Uniform("u_tex_dm",		ml::Uniform::Tex2D,	ML_Res.textures.get("moon_dm")),
-					ml::Uniform("u_tex_sm",		ml::Uniform::Tex2D,	ML_Res.textures.get("moon_nm")),
+					ml::Uniform("u_tex_dm",		ml::Uniform::Tex,	ML_Res.textures.get("moon_dm")),
+					ml::Uniform("u_tex_sm",		ml::Uniform::Tex,	ML_Res.textures.get("moon_nm")),
 				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("lighting"))
 				{
-					shader->setUniforms(camera_uniforms);
+					shader->setUniforms(persp_uniforms);
 					shader->setUniforms(light_uniforms);
 					shader->setUniforms(uniforms);
 					shader->bind();
@@ -675,11 +676,11 @@ namespace DEMO
 				static ml::UniformSet uniforms = {
 					ml::Uniform("u_model",	ml::Uniform::Mat4,	&model->transform().matrix()),
 					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
-					ml::Uniform("u_texture",ml::Uniform::Tex2D, ML_Res.textures.get("stone_dm")),
+					ml::Uniform("u_texture",ml::Uniform::Tex,	ML_Res.textures.get("stone_dm")),
 				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("normal3D"))
 				{
-					shader->setUniforms(camera_uniforms);
+					shader->setUniforms(persp_uniforms);
 					shader->setUniforms(uniforms);
 					shader->bind();
 				}
@@ -694,11 +695,11 @@ namespace DEMO
 				static ml::UniformSet uniforms = {
 					ml::Uniform("u_model",	ml::Uniform::Mat4,	&model->transform().matrix()),
 					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
-					ml::Uniform("u_texture",ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm")),
+					ml::Uniform("u_texture",ml::Uniform::Tex,	ML_Res.textures.get("stone_dm")),
 				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("normal3D"))
 				{
-					shader->setUniforms(camera_uniforms);
+					shader->setUniforms(persp_uniforms);
 					shader->setUniforms(uniforms);
 					shader->bind();
 				}
@@ -711,11 +712,11 @@ namespace DEMO
 				static ml::UniformSet uniforms = {
 					ml::Uniform("u_model",	ml::Uniform::Mat4,	&model->transform().matrix()),
 					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
-					ml::Uniform("u_texture",ml::Uniform::Tex2D,	ML_Res.textures.get("sanic")),
+					ml::Uniform("u_texture",ml::Uniform::Tex,	ML_Res.textures.get("sanic")),
 				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("basic3D"))
 				{
-					shader->setUniforms(camera_uniforms);
+					shader->setUniforms(persp_uniforms);
 					shader->setUniforms(uniforms);
 					shader->bind();
 				}
@@ -747,7 +748,7 @@ namespace DEMO
 				static ml::UniformSet uniforms = {
 					ml::Uniform("u_proj",	ml::Uniform::Mat4, &m_ortho.matrix()),
 					ml::Uniform("u_color",	ml::Uniform::Vec4),
-					ml::Uniform("u_texture",ml::Uniform::Tex2D),
+					ml::Uniform("u_texture",ml::Uniform::Tex),
 				};
 				static ml::RenderBatch batch(
 					&m_vaoText,
@@ -786,13 +787,13 @@ namespace DEMO
 		if(ml::Shader * shader = ML_Res.shaders.get("framebuffer"))
 		{
 			static ml::UniformSet uniforms = {
-				ml::Uniform("u_texture",ml::Uniform::Tex2D, ML_Res.textures.get("framebuffer")),
-				ml::Uniform("u_mode",	ml::Uniform::Int,	&m_fboMode),
+				ml::Uniform("u_texture",ml::Uniform::Tex, ML_Res.textures.get("framebuffer")),
+				ml::Uniform("u_mode",	ml::Uniform::Int, &m_fboMode),
 			};
 			shader->setUniforms(uniforms);
 			shader->bind();
 			this->clear(ml::Color::White);
-			this->draw(*ML_Res.models.get("sanic"));
+			this->draw(*ML_Res.models.get("framebuffer"));
 		}
 
 		// Draw GUI
@@ -1081,7 +1082,7 @@ namespace DEMO
 							"Vec4",
 							"Mat3",
 							"Mat4",
-							"Tex2D",
+							"Tex",
 						};
 
 						if (ml::Uniform * u = (m_uniforms.empty() ? NULL : &m_uniforms[m_selected]))
@@ -1133,7 +1134,7 @@ namespace DEMO
 								ML_Editor.InputMat4f("Value", temp);
 							}
 							break;
-							case ml::Uniform::Tex2D:
+							case ml::Uniform::Tex:
 								break;
 							}
 							ImGui::PopID();

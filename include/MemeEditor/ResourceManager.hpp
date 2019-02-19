@@ -48,10 +48,10 @@ namespace ml
 
 		bool loadManifest(const Manifest & value);
 
-		int32_t loadManifestData(const String & type, const String & path, const file_map & files);
+		bool loadManifestData(const String & type, const String & path, const file_map & files);
 
 		template <class T>
-		inline bool loadData(ResourceMap<T> & data, const String & path, const file_map & files)
+		inline size_t loadData(ResourceMap<T> & data, const String & path, const file_map & files)
 		{
 			return data.load(files, path);
 		}

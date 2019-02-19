@@ -34,7 +34,6 @@ namespace ml
 
 	RenderTarget & RenderTarget::draw(const RenderBatch & batch)
 	{
-		
 		return draw(batch.vertices, batch);
 	}
 
