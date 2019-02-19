@@ -7,6 +7,8 @@
 
 namespace ml
 {
+	class Texture;
+
 	class ML_GRAPHICS_API FrameBuffer final
 		: public ITrackable
 		, public IHandle<uint32_t>
@@ -19,8 +21,11 @@ namespace ml
 		FrameBuffer & clean();
 		FrameBuffer & create();
 
-		FrameBuffer & bind();
-		FrameBuffer & unbind();
+		void bind() const;
+		void unbind() const;
+
+		void setTexture(const Texture * value, GL::Attachment attchment) const;
+		void setTexture(uint32_t value, GL::Attachment attchment, GL::Target target, int32_t level) const;
 
 	private:
 

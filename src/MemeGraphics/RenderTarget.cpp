@@ -43,44 +43,43 @@ namespace ml
 		
 		if (batch.vbo && batch.vbo && batch.vertices)
 		{
-			(*batch.vbo)
-				.bind()
-				.bufferSubData(batch.vertices->contiguous(), 0)
-				.unbind();
+			batch.vbo->bind();
+			batch.vbo->bufferSubData(batch.vertices->contiguous(), 0);
+			batch.vbo->unbind();
 
-			return draw((*batch.vao), (*batch.vbo));
+			return draw(batch.vao, batch.vbo);
 		}
 		return (*this);
 	}
 
-	RenderTarget & RenderTarget::draw(VAO & vao, VBO & vbo, IBO & ibo)
+	RenderTarget & RenderTarget::draw(VAO * vao, const VBO * vbo, IBO * ibo)
 	{
 		if (vao && vbo && ibo)
 		{
-			vao.bind();
-			vbo.bind();
-			ibo.bind();
+			vao->bind();
+			vbo->bind();
+			ibo->bind();
 			{
-				OpenGL::drawElements(vao.mode(), ibo.count(), ibo.type(), NULL);
+				OpenGL::drawElements(vao->mode(), ibo->count(), ibo->type(), NULL);
 			}
-			ibo.unbind();
-			vbo.unbind();
-			vao.unbind();
+			ibo->unbind();
+			vbo->unbind();
+			vao->unbind();
 		}
 		return (*this);
 	}
-
-	RenderTarget & RenderTarget::draw(VAO & vao, VBO & vbo)
+	
+	RenderTarget & RenderTarget::draw(VAO * vao, const VBO * vbo)
 	{
 		if (vao && vbo)
 		{
-			vao.bind();
-			vbo.bind();
+			vao->bind();
+			vbo->bind();
 			{
-				OpenGL::drawArrays(vao.mode(), 0, vbo.size());
+				OpenGL::drawArrays(vao->mode(), 0, vbo->size());
 			}
-			vbo.unbind();
-			vao.unbind();
+			vbo->unbind();
+			vao->unbind();
 		}
 		return (*this);
 	}

@@ -19,11 +19,11 @@ namespace ml
 		IndexBuffer & clean();
 		IndexBuffer & create(GL::Usage usage, GL::Type type);
 
-		IndexBuffer & bind();
-		IndexBuffer & unbind();
+		void bind() const;
+		void unbind() const;
 
-		IndexBuffer & bufferData(const uint32_t * data, uint32_t count);
-		IndexBuffer & bufferData(const IndexList & data);
+		void bufferData(const uint32_t * data, uint32_t count) const;
+		void bufferData(const IndexList & data) const;
 
 		inline const uint32_t *		data()	const { return m_data; }
 		inline const uint32_t &		count() const { return m_count; }
@@ -31,10 +31,10 @@ namespace ml
 		inline const GL::Type &		type()	const { return m_type; }
 
 	private:
-		const uint32_t *	m_data;
-		uint32_t			m_count;
-		GL::Usage			m_usage;
-		GL::Type			m_type;
+		mutable const uint32_t *m_data;
+		mutable uint32_t		m_count;
+		mutable GL::Usage		m_usage;
+		mutable GL::Type		m_type;
 	};
 
 	using IBO = IndexBuffer;

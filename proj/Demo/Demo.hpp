@@ -83,8 +83,8 @@ namespace DEMO
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		ml::FBO m_frameBuffer;
-		ml::RBO m_renderBuffer;
+		ml::FBO m_fbo;
+		ml::RBO m_rbo;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 

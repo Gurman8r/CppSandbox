@@ -1,5 +1,6 @@
 #include <MemeGraphics/FrameBuffer.hpp>
 #include <MemeGraphics/OpenGL.hpp>
+#include <MemeGraphics/Texture.hpp>
 
 namespace ml
 {
@@ -38,15 +39,23 @@ namespace ml
 	}
 
 	
-	FrameBuffer & FrameBuffer::bind()
+	void FrameBuffer::bind() const
 	{
 		OpenGL::bindFramebuffer(GL::Framebuffer, (*this));
-		return (*this);
 	}
 
-	FrameBuffer & FrameBuffer::unbind()
+	void FrameBuffer::unbind() const
 	{
 		OpenGL::bindFramebuffer(GL::Framebuffer, NULL);
-		return (*this);
+	}
+
+	void FrameBuffer::setTexture(const Texture * value, GL::Attachment attchment) const
+	{
+		setTexture((*value), attchment, value->target(), value->level());
+	}
+
+	void FrameBuffer::setTexture(uint32_t value, GL::Attachment attchment, GL::Target target, int32_t level) const
+	{
+		OpenGL::framebufferTexture2D(ml::GL::Framebuffer, attchment, target, value, level);
 	}
 }

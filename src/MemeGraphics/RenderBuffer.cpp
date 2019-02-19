@@ -39,32 +39,28 @@ namespace ml
 	}
 	
 	
-	RenderBuffer & RenderBuffer::bind()
+	void RenderBuffer::bind() const
 	{
 		OpenGL::bindRenderbuffer(GL::Renderbuffer, (*this));
-		return (*this);
 	}
 	
-	RenderBuffer & RenderBuffer::unbind()
+	void RenderBuffer::unbind() const
 	{
 		OpenGL::bindRenderbuffer(GL::Renderbuffer, NULL);
-		return (*this);
 	}
 
 
-	RenderBuffer & RenderBuffer::bufferStorage(GL::Format format)
+	void RenderBuffer::bufferStorage(GL::Format format) const
 	{
 		OpenGL::renderbufferStorage(GL::Renderbuffer, format, m_width, m_height);
-		return (*this);
 	}
 
-	RenderBuffer & RenderBuffer::bufferFramebuffer(GL::FBO_Attachment attachment)
+	void RenderBuffer::setFramebuffer(GL::FBO_Attachment attachment) const
 	{
 		OpenGL::framebufferRenderbuffer(
 			GL::Framebuffer, 
 			attachment, 
 			GL::Renderbuffer,
 			(*this));
-		return (*this);
 	}
 }

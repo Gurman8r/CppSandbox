@@ -274,40 +274,28 @@ namespace DEMO
 	bool Demo::loadBuffers()
 	{
 		// Text
-		m_vaoText
-			.create(ml::GL::Triangles)
-			.bind();
-		m_vboText
-			.create(ml::GL::DynamicDraw)
-			.bind()
-			.bufferData(NULL, (ml::Glyph::VertexCount * ml::Vertex::Size));
+		m_vaoText.create(ml::GL::Triangles).bind();
+		m_vboText.create(ml::GL::DynamicDraw).bind();
+		m_vboText.bufferData(NULL, (ml::Glyph::VertexCount * ml::Vertex::Size));
 		ml::BufferLayout::Default.bind();
 		m_vboText.unbind();
 		m_vaoText.unbind();
 
 		// FBO
-		m_frameBuffer
-			.create()
-			.bind();
+		m_fbo.create().bind();
+		m_fbo.setTexture(ML_Res.textures.get("framebuffer"), ml::GL::ColorAttachment0);
 		// RBO
-		m_renderBuffer
-			.create(this->width(), this->height())
-			.bind()
-			.bufferStorage(ml::GL::Depth24_Stencil8)
-			.bufferFramebuffer(ml::GL::DepthStencilAttachment)
-			.unbind();
-		// Texture
-		ml::OpenGL::framebufferTexture2D(
-			ml::GL::Framebuffer,
-			ml::GL::ColorAttachment0,
-			ml::GL::Texture2D,
-			*ML_Res.textures.get("framebuffer"),
-			0);
+		m_rbo.create(this->width(), this->height());
+		m_rbo.bind();
+		m_rbo.bufferStorage(ml::GL::Depth24_Stencil8);
+		m_rbo.setFramebuffer(ml::GL::DepthStencilAttachment);
+		m_rbo.unbind();
+		// Check Framebuffer Status
 		if (!ml::OpenGL::checkFramebufferStatus(ml::GL::Framebuffer))
 		{
 			return ml::Debug::logError("Framebuffer is not complete");
 		}
-		m_frameBuffer.unbind();
+		m_fbo.unbind();
 
 		return true;
 	}
@@ -601,7 +589,7 @@ namespace DEMO
 
 		// Draw Scene
 		/* * * * * * * * * * * * * * * * * * * * */
-		m_frameBuffer.bind();
+		m_fbo.bind();
 		{
 			// Clear
 			this->clear(m_clearColor);
@@ -791,7 +779,7 @@ namespace DEMO
 			}
 
 		}
-		m_frameBuffer.unbind();
+		m_fbo.unbind();
 
 		// Draw Framebuffer
 		/* * * * * * * * * * * * * * * * * * * * */

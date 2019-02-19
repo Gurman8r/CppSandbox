@@ -19,13 +19,13 @@ namespace ml
 		VertexArray & clean();
 		VertexArray & create(GL::Mode mode);
 
-		VertexArray & bind();
-		VertexArray & unbind();
+		void bind() const;
+		void unbind() const;
 
 		inline const GL::Mode & mode()	const { return m_mode; }
 
 	private:
-		GL::Mode	m_mode;
+		mutable GL::Mode m_mode;
 	};
 
 	using VAO = VertexArray;

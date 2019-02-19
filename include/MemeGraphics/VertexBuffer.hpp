@@ -19,14 +19,12 @@ namespace ml
 		VertexBuffer & clean();
 		VertexBuffer & create(GL::Usage usage);
 
-		VertexBuffer & bind();
-		VertexBuffer & unbind();
-
-		VertexBuffer & bufferData(const void * data, uint32_t size);
-		VertexBuffer & bufferData(const FloatList & data);
-
-		VertexBuffer & bufferSubData(const void * data, uint32_t size, uint32_t offset);
-		VertexBuffer & bufferSubData(const FloatList & data, uint32_t offset);
+		void bind() const;
+		void unbind() const;
+		void bufferData(const void * data, uint32_t size) const;
+		void bufferData(const FloatList & data) const;
+		void bufferSubData(const void * data, uint32_t size, uint32_t offset) const;
+		void bufferSubData(const FloatList & data, uint32_t offset) const;
 
 		inline const void *			data()	const { return m_data;}
 		inline const GL::Usage &	usage() const { return m_usage; }
@@ -34,10 +32,10 @@ namespace ml
 		inline const int32_t &		count() const { return m_count; }
 
 	private:
-		const void *	m_data;
-		GL::Usage		m_usage;
-		uint32_t		m_size;		// total length of data
-		int32_t			m_count;	// vertex count
+		mutable const void *m_data;
+		mutable GL::Usage	m_usage;
+		mutable uint32_t	m_size;		// total length of data
+		mutable int32_t		m_count;	// vertex count
 	};
 
 	using VBO = VertexBuffer;

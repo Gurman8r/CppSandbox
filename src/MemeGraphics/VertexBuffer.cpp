@@ -1,6 +1,7 @@
 #include <MemeGraphics/VertexBuffer.hpp>
 #include <MemeGraphics/OpenGL.hpp>
 #include <MemeGraphics/Vertex.hpp>
+#include <MemeCore/Debug.hpp>
 
 namespace ml
 {
@@ -43,44 +44,39 @@ namespace ml
 	}
 
 
-	VertexBuffer & VertexBuffer::bind()
+	void VertexBuffer::bind() const
 	{
 		OpenGL::bindBuffer(GL::ArrayBuffer, (*this));
-		return (*this);
 	}
-
-	VertexBuffer & VertexBuffer::unbind()
+	
+	void VertexBuffer::unbind() const
 	{
 		OpenGL::bindBuffer(GL::ArrayBuffer, NULL);
-		return (*this);
 	}
-
-
-	VertexBuffer & VertexBuffer::bufferData(const void * data, uint32_t size)
+	
+	
+	void VertexBuffer::bufferData(const void * data, uint32_t size) const
 	{
 		m_data = data;
 		m_size = size;
 		m_count = size / Vertex::Size;
 		OpenGL::bufferData(GL::ArrayBuffer, (sizeof(float) * m_size), m_data, m_usage);
-		return (*this);
 	}
-
-	VertexBuffer & VertexBuffer::bufferData(const FloatList & data)
+	
+	void VertexBuffer::bufferData(const FloatList & data) const
 	{
 		return bufferData(&data[0], (uint32_t)data.size());
 	}
-
-
-	VertexBuffer & VertexBuffer::bufferSubData(const void * data, uint32_t size, uint32_t offset)
+	
+	void VertexBuffer::bufferSubData(const void * data, uint32_t size, uint32_t offset) const
 	{
 		m_data = data;
 		m_size = size;
 		m_count = size / Vertex::Size;
 		OpenGL::bufferSubData(GL::ArrayBuffer, offset, (sizeof(float) * m_size), m_data);
-		return (*this);
 	}
-
-	VertexBuffer & VertexBuffer::bufferSubData(const FloatList & data, uint32_t offset)
+	
+	void VertexBuffer::bufferSubData(const FloatList & data, uint32_t offset) const
 	{
 		return bufferSubData(&data[0], (uint32_t)data.size(), offset);
 	}

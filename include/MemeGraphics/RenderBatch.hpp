@@ -17,7 +17,7 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		VAO	* vao;
-		VBO	* vbo;
+		const VBO * vbo;
 		
 		const VertexList * vertices;
 		const Shader * shader;
@@ -25,7 +25,7 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		RenderBatch(VAO * vao, VBO * vbo, const Shader * shader, UniformSet * uniforms)
+		RenderBatch(VAO * vao, const VBO * vbo, const Shader * shader, UniformSet * uniforms)
 			: vao		(vao)
 			, vbo		(vbo)
 			, vertices	(NULL)

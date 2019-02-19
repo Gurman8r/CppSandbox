@@ -19,19 +19,20 @@ namespace ml
 		RenderBuffer & clean();
 		RenderBuffer & create(int32_t width, int32_t height);
 
-		RenderBuffer & bind();
-		RenderBuffer & unbind();
+		void bind() const;
+		void unbind() const;
 
-		RenderBuffer & bufferStorage(GL::Format internalFormat);
-		RenderBuffer & bufferFramebuffer(GL::FBO_Attachment attachment);
+		void bufferStorage(GL::Format internalFormat) const;
+		void setFramebuffer(GL::FBO_Attachment attachment) const;
+
 
 	public:
 		inline const int32_t width()  const { return m_width;  }
 		inline const int32_t height() const { return m_height; }
 
 	private:
-		int32_t m_width;
-		int32_t m_height;
+		mutable int32_t m_width;
+		mutable int32_t m_height;
 	};
 
 	using RBO = RenderBuffer;

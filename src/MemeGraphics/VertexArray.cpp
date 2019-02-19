@@ -1,5 +1,6 @@
 #include <MemeGraphics/VertexArray.hpp>
 #include <MemeGraphics/OpenGL.hpp>
+#include <MemeCore/Debug.hpp>
 
 namespace ml
 {
@@ -38,16 +39,14 @@ namespace ml
 	}
 	
 
-	VertexArray & VertexArray::bind()
+	void VertexArray::bind() const
 	{
 		OpenGL::bindVertexArray((*this));
-		return (*this);
 	}
 
-	VertexArray & VertexArray::unbind()
+	void VertexArray::unbind() const
 	{
 		OpenGL::bindVertexArray(NULL);
-		return (*this);
 	}
 
 }

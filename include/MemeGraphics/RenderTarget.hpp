@@ -23,8 +23,8 @@ namespace ml
 		RenderTarget & draw(const IDrawable & value);
 		RenderTarget & draw(const IDrawable & value, const RenderBatch & batch);
 		RenderTarget & draw(const RenderBatch & value);
-		RenderTarget & draw(VAO & vao, VBO & vbo, IBO & ibo);
-		RenderTarget & draw(VAO & vao, VBO & vbo);
+		RenderTarget & draw(VAO * vao, const VBO * vbo, IBO * ibo);
+		RenderTarget & draw(VAO * vao, const VBO * vbo);
 
 	public:
 		void setViewport(const vec2i & pos, const vec2i & size) const;
