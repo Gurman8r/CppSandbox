@@ -48,11 +48,7 @@ namespace ml
 	{
 		for (const type_pair & p : value.getDataMap())
 		{
-			const String & path = value.getPath();
-			const String & type = p.first;
-			const file_map & files = p.second;
-
-			if (!loadManifestData(type, path, files))
+			if (!loadManifestData(p.first, value.getPath(), p.second))
 			{
 				return Debug::logError("Failed Loading Manifest");
 			}
@@ -62,8 +58,6 @@ namespace ml
 
 	int32_t ResourceManager::loadManifestData(const String & type, const String & path, const file_map & files)
 	{
-		loadData<Material>(path, files);
-
 		if (type.empty())
 		{
 			return ML_WARNING;

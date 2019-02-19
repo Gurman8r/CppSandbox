@@ -505,19 +505,6 @@ namespace DEMO
 			ml::Debug::log("Exiting Dummy Thread");
 		});
 		if (SETTINGS.enableThreads) { m_thread->launch(); }
-
-		using data_type = ml::ResourceManager::data_type;
-		using map_type = ml::ResourceManager::map_type;
-
-		if (ml::Material * mat = ML_Res.find<ml::Material>("example"))
-		{
-
-		}
-
-		if (ml::Material * mat = ML_Res.mats.get("example"))
-		{
-
-		}
 	}
 
 	void Demo::onFixedUpdate(const FixedUpdateEvent & ev)

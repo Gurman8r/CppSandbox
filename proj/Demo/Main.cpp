@@ -17,9 +17,9 @@ void * loadProgram(const ml::String & filename)
 	{
 		if (void * fun = ML_Lib.loadFunction(lib, "ML_LoadInstance"))
 		{
-			if (void * prog = ML_Lib.callFunction<void *>(fun))
+			if (void * inst = ML_Lib.callFunction<void *>(fun))
 			{
-				return static_cast<void *>(prog);
+				return static_cast<void *>(inst);
 			}
 		}
 	}
