@@ -52,6 +52,12 @@
     <Filter Include="Source Files\Buffers">
       <UniqueIdentifier>{4977d517-feb9-4227-b6fb-ba795bdc1809}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Utility">
+      <UniqueIdentifier>{fb655a4d-392e-4e65-8913-1bf929303a33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility">
+      <UniqueIdentifier>{70520228-82c3-4544-8907-42e3e4ecce42}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeGraphics\Export.hpp">
@@ -75,9 +81,6 @@
     <ClInclude Include="..\..\include\MemeGraphics\Quaternion.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Shapes.hpp">
-      <Filter>Header Files\DS</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Uniform.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
@@ -92,9 +95,6 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\OpenGL.hpp">
       <Filter>Header Files\Wrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Lists.hpp">
-      <Filter>Header Files\DS</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Text.hpp">
       <Filter>Header Files\Drawable</Filter>
@@ -159,6 +159,15 @@
     <ClInclude Include="..\..\include\MemeGraphics\Shader.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\GraphicsEvents.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\Lists.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\Shapes.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeGraphics\Color.cpp">
@@ -182,9 +191,6 @@
     <ClCompile Include="..\..\src\MemeGraphics\Uniform.cpp">
       <Filter>Source Files\DS</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemeGraphics\Shapes.cpp">
-      <Filter>Source Files\DS</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Text.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
@@ -193,9 +199,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Model.cpp">
       <Filter>Source Files\Drawable</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeGraphics\Lists.cpp">
-      <Filter>Source Files\DS</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\RenderWindow.cpp">
       <Filter>Source Files\Rendering</Filter>
@@ -244,6 +247,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Texture.cpp">
       <Filter>Source Files\DS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\Shapes.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\Lists.cpp">
+      <Filter>Source Files\Utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

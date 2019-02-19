@@ -102,7 +102,6 @@ namespace ml
 					glyph.offset() + drawPos * m_scale,
 					glyph.size() * m_scale
 				);
-
 				static VertexList verts({
 					{ vec3f::Zero, Color::White, vec2f::Zero	},
 					{ vec3f::Zero, Color::White, vec2f::Up		},

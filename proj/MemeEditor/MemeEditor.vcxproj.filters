@@ -60,6 +60,9 @@
     <ClInclude Include="..\..\include\MemeEditor\InterpreterConsole.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeEditor\EditorEvents.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeEditor\Editor.cpp">

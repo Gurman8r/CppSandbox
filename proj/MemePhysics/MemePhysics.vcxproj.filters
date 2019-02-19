@@ -30,6 +30,9 @@
     <ClInclude Include="..\..\include\MemePhysics\Force.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemePhysics\PhysicsEvents.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemePhysics\Rigidbody.cpp">

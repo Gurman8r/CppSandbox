@@ -6,8 +6,8 @@ namespace ml
 	* * * * * * * * * */
 	const VertexList Shapes::Triangle::Vertices({
 		Vertex({  0.0f,  0.5f, 0.0f }, Color::White, { 0.5f, 1.0f }), // top right
-		Vertex({  0.5f, -0.5f, 0.0f }, Color::White, { 1.0f, 0.0f }), // bottom right
-		Vertex({ -0.5f, -0.5f, 0.0f }, Color::White, { 0.0f, 0.0f }), // bottom left
+		Vertex({  0.5f, -0.5f, 0.0f }, Color::White, { 1.0f, 0.0f }), // bot right
+		Vertex({ -0.5f, -0.5f, 0.0f }, Color::White, { 0.0f, 0.0f }), // bot left
 	});
 	const IndexList Shapes::Triangle::Indices({
 		0, 1, 2

@@ -161,6 +161,7 @@
     <ClInclude Include="..\..\include\MemeAudio\AL.hpp" />
     <ClInclude Include="..\..\include\MemeAudio\Audio.hpp" />
     <ClInclude Include="..\..\include\MemeAudio\AudioBuffer.hpp" />
+    <ClInclude Include="..\..\include\MemeAudio\AudioEvents.hpp" />
     <ClInclude Include="..\..\include\MemeAudio\AudioSource.hpp" />
     <ClInclude Include="..\..\include\MemeAudio\Export.hpp" />
     <ClInclude Include="..\..\include\MemeAudio\OpenAL.hpp" />

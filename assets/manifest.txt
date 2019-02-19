@@ -41,7 +41,8 @@ model:		moon		/meshes/sphere32x24.mesh
 
 # Shaders
 #***********************************************************************#
-shader:		basic3D		/shaders/basic3D.shader
+shader:		basic		/shaders/basic.shader
+shader:		sprites		/shaders/sprites.shader
 shader:		normal3D	/shaders/normal3D.shader
 shader:		text		/shaders/text.shader
 shader:		geometry	/shaders/geometry.shader

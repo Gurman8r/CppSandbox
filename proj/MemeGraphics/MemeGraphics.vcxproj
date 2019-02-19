@@ -24,6 +24,7 @@
     <ClInclude Include="..\..\include\MemeGraphics\Color.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\FrameBuffer.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\GL.hpp" />
+    <ClInclude Include="..\..\include\MemeGraphics\GraphicsEvents.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\IDrawable.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Export.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Font.hpp" />

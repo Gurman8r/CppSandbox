@@ -162,6 +162,7 @@
     <ClInclude Include="..\..\include\MemePhysics\Force.hpp" />
     <ClInclude Include="..\..\include\MemePhysics\Physics.hpp" />
     <ClInclude Include="..\..\include\MemePhysics\Particle.hpp" />
+    <ClInclude Include="..\..\include\MemePhysics\PhysicsEvents.hpp" />
     <ClInclude Include="..\..\include\MemePhysics\Rigidbody.hpp" />
   </ItemGroup>
   <ItemGroup>

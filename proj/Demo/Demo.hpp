@@ -41,7 +41,6 @@ namespace DEMO
 		~Demo();
 
 	public:
-		/* * * * * * * * * * * * * * * * * * * * */
 		void onEvent(const ml::Event * value) override;
 
 		inline int32_t getError() const
@@ -51,18 +50,13 @@ namespace DEMO
 			return temp;
 		}
 
-
 	private:
-		/* * * * * * * * * * * * * * * * * * * * */
-
 		bool	loadInterpreter();
 		bool	loadResources();
 		bool	loadBuffers();
 		bool	loadNetwork();
 
 	private:
-		/* * * * * * * * * * * * * * * * * * * * */
-
 		void	onEnter(const EnterEvent & ev);
 		void	onLoad(const LoadEvent & ev);
 		void	onStart(const StartEvent & ev);
@@ -128,6 +122,9 @@ namespace DEMO
 		bool show_imgui_metrics	= false;
 		bool show_imgui_style	= false;
 		bool show_imgui_about	= false;
+
+		ml::VAO m_sprVao;
+		ml::VBO m_sprVbo;
 
 		ml::List<ml::Uniform> m_uniforms;
 		size_t m_selected = 0;

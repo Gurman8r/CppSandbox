@@ -159,6 +159,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeEditor\Editor.hpp" />
+    <ClInclude Include="..\..\include\MemeEditor\EditorEvents.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Export.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\InterpreterConsole.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Manifest.hpp" />

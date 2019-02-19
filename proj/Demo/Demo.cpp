@@ -12,14 +12,14 @@ namespace DEMO
 	Demo::Demo()
 		: m_error(ML_SUCCESS)
 	{
-		ML_EventSystem.addListener(DemoEvent::EV_Enter,		 this);
-		ML_EventSystem.addListener(DemoEvent::EV_Load,		 this);
-		ML_EventSystem.addListener(DemoEvent::EV_Start,		 this);
-		ML_EventSystem.addListener(DemoEvent::EV_FixedUpdate,this);
-		ML_EventSystem.addListener(DemoEvent::EV_Update,	 this);
-		ML_EventSystem.addListener(DemoEvent::EV_Draw,		 this);
-		ML_EventSystem.addListener(DemoEvent::EV_Gui,		 this);
-		ML_EventSystem.addListener(DemoEvent::EV_Exit,		 this);
+		ML_EventSystem.addListener(DemoEvent::EV_Enter,			this);
+		ML_EventSystem.addListener(DemoEvent::EV_Load,			this);
+		ML_EventSystem.addListener(DemoEvent::EV_Start,			this);
+		ML_EventSystem.addListener(DemoEvent::EV_FixedUpdate,	this);
+		ML_EventSystem.addListener(DemoEvent::EV_Update,		this);
+		ML_EventSystem.addListener(DemoEvent::EV_Draw,			this);
+		ML_EventSystem.addListener(DemoEvent::EV_Gui,			this);
+		ML_EventSystem.addListener(DemoEvent::EV_Exit,			this);
 	}
 
 	Demo::~Demo() {}
@@ -267,6 +267,7 @@ namespace DEMO
 				&& ML_Res.loadManifest(manifest)
 				&& ML_Res.models.load("borg")->loadFromMemory(ml::Shapes::Cube::Vertices, ml::Shapes::Cube::Indices)
 				&& ML_Res.models.load("sanic")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
+				&& ML_Res.models.load("sprite")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
 				&& ML_Res.models.load("framebuffer")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
 				&& ML_Res.textures.load("framebuffer")->create(this->size())
 				&& loadBuffers();
@@ -283,6 +284,13 @@ namespace DEMO
 		ml::BufferLayout::Default.bind();
 		m_vboText.unbind();
 		m_vaoText.unbind();
+
+		m_sprVao.create(ml::GL::Triangles).bind();
+		m_sprVbo.create(ml::GL::DynamicDraw).bind();
+		m_sprVbo.bufferData(NULL, (ml::Glyph::VertexCount * ml::Vertex::Size));
+		ml::BufferLayout::Default.bind();
+		m_sprVbo.unbind();
+		m_sprVao.unbind();
 
 		// FBO
 		m_fbo.create().bind();
@@ -625,7 +633,7 @@ namespace DEMO
 					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
 					ml::Uniform("u_texture",ml::Uniform::Tex,	ML_Res.textures.get("borg")),
 				};
-				if (const ml::Shader * shader = ML_Res.shaders.get("basic3D"))
+				if (const ml::Shader * shader = ML_Res.shaders.get("basic"))
 				{
 					shader->setUniforms(persp_uniforms);
 					shader->setUniforms(uniforms);
@@ -714,7 +722,7 @@ namespace DEMO
 					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
 					ml::Uniform("u_texture",ml::Uniform::Tex,	ML_Res.textures.get("sanic")),
 				};
-				if (const ml::Shader * shader = ML_Res.shaders.get("basic3D"))
+				if (const ml::Shader * shader = ML_Res.shaders.get("basic"))
 				{
 					shader->setUniforms(persp_uniforms);
 					shader->setUniforms(uniforms);
@@ -779,6 +787,43 @@ namespace DEMO
 				this->draw(m_text["static"], batch);
 			}
 
+			// SPRITE
+			if (const ml::Texture * texture = ML_Res.textures.get("dean"))
+			{
+				using namespace ml;
+
+				static vec2f pos	= (vec2f)(this->size()) * vec2f(0.95f, 0.1f);
+				static vec2f scale	= { 0.5f };
+				static float rot	= 0.0f;
+				static vec2f origin = { 0.5f };
+				static vec2f size	= (vec2f)texture->size() * scale;
+				static vec2f dest	= (pos - size * origin);
+
+				rot += ev.elapsed.delta() * 5.f;
+
+				static Transform t;
+				t.translate(dest);
+				t.translate(size * origin);
+				t.rotate(rot, vec3f::Forward);
+				t.translate(size * -origin);
+				t.scale(size);
+
+				const VertexList & verts = Shapes::genQuadVerts({ dest, size });
+
+				static UniformSet uniforms = {
+					Uniform("u_color",	Uniform::Vec4,	&Color::White),
+					Uniform("u_texture",Uniform::Tex,	texture),
+					Uniform("u_proj",	Uniform::Mat4,	&m_ortho.matrix()),
+				};
+
+				static RenderBatch batch(
+					&m_sprVao, 
+					&m_sprVbo, 
+					ML_Res.shaders.get("sprites"),
+					&uniforms);
+
+				this->draw(&verts, batch);
+			}
 		}
 		m_fbo.unbind();
 
@@ -1155,7 +1200,7 @@ namespace DEMO
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	}
-	
+
 	void Demo::onExit(const ExitEvent & ev)
 	{
 		delete m_thread;

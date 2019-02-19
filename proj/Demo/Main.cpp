@@ -11,15 +11,15 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-void * loadProgram(const ml::String & filename)
+void * exampleProgramLoader(const ml::String & filename)
 {
 	if (void * lib = ML_Lib.loadLibrary(filename))
 	{
 		if (void * fun = ML_Lib.loadFunction(lib, "ML_LoadInstance"))
 		{
-			if (void * inst = ML_Lib.callFunction<void *>(fun))
+			if (void * ent = ML_Lib.callFunction<void *>(fun))
 			{
-				return static_cast<void *>(inst);
+				return static_cast<void *>(ent);
 			}
 		}
 	}
@@ -38,7 +38,7 @@ int32_t main(int32_t argc, char ** argv)
 	}
 
 	// Create Program
-	if (DEMO::Demo * program = (DEMO::Demo *)loadProgram("./Placeholder_Debug_x86.dll"))
+	if (DEMO::Demo * program = (DEMO::Demo *)exampleProgramLoader("./Placeholder_Debug_x86.dll"))
 	{
 		// Enter
 		ML_EventSystem.fireEvent(DEMO::EnterEvent(argc, argv));

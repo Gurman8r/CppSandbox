@@ -39,6 +39,11 @@ namespace ml
 
 	RenderTarget & RenderTarget::draw(const VertexList * vertices, const RenderBatch & batch)
 	{
+		return draw(vertices->contiguous(), batch);
+	}
+
+	RenderTarget & RenderTarget::draw(const FloatList & vertices, const RenderBatch & batch)
+	{
 		// Update Shader
 		if (batch.shader)
 		{
@@ -46,10 +51,10 @@ namespace ml
 			batch.shader->bind();
 		}
 
-		if (batch.vbo && batch.vbo && vertices)
+		if (batch.vbo && batch.vbo)
 		{
 			batch.vbo->bind();
-			batch.vbo->bufferSubData(vertices->contiguous(), 0);
+			batch.vbo->bufferSubData(vertices, 0);
 			batch.vbo->unbind();
 
 			return draw(batch.vao, batch.vbo);

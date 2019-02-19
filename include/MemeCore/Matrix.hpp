@@ -105,17 +105,22 @@ namespace ml
 			return m_data[index];
 		}
 
-		inline static self_type identity()
+		inline static self_type & identity()
 		{
-			self_type value;
-			for (size_type y = 0; y < Rows; y++)
+			static self_type temp;
+			static bool check = false;
+			if (!check)
 			{
-				for (size_type x = 0; x < Cols; x++)
+				check = true;
+				for (size_type y = 0; y < Rows; y++)
 				{
-					value[y * Cols + x] = (x == y) ? (data_type)1 : (data_type)0;
+					for (size_type x = 0; x < Cols; x++)
+					{
+						temp[y * Cols + x] = (x == y) ? (data_type)1 : (data_type)0;
+					}
 				}
 			}
-			return value;
+			return temp;
 		}
 
 	public:
