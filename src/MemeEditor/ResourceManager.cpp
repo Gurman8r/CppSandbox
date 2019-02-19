@@ -46,7 +46,7 @@ namespace ml
 
 	bool ResourceManager::loadManifest(const Manifest & value)
 	{
-		for (const Manifest::DataPair & p : value.getDataMap())
+		for (const Manifest::TypePair & p : value.getDataMap())
 		{
 			const String & path = value.getPath();
 			const String & type = p.first;

@@ -8,7 +8,7 @@ namespace ml
 
 	Manifest::Manifest()
 		: m_path(String())
-		, m_data(DataMap())
+		, m_data(TypeMap())
 	{
 	}
 
