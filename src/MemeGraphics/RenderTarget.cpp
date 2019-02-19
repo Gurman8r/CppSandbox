@@ -41,20 +41,14 @@ namespace ml
 			batch.shader->bind();
 		}
 		
-		if (batch.vbo && batch.vbo)
+		if (batch.vbo && batch.vbo && batch.vertices)
 		{
-			if (!batch.ibo && batch.vertices)
-			{
-				(*batch.vbo)
-					.bind()
-					.bufferSubData(batch.vertices->contiguous(), 0)
-					.unbind();
-				return draw((*batch.vao), (*batch.vbo));
-			}
-			else if (batch.ibo && !batch.vertices)
-			{
-				return draw((*batch.vao), (*batch.vbo), (*batch.ibo));
-			}
+			(*batch.vbo)
+				.bind()
+				.bufferSubData(batch.vertices->contiguous(), 0)
+				.unbind();
+
+			return draw((*batch.vao), (*batch.vbo));
 		}
 		return (*this);
 	}

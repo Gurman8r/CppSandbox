@@ -18,79 +18,11 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\include\MemeGraphics\Camera.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\Canvas.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\Color.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\FrameBuffer.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\GL.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\IDrawable.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\Export.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\Font.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\Glyph.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\Image.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\IndexBuffer.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\ITransformable.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\Lists.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\Mesh.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\Model.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\OpenGL.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\Quaternion.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\RenderBatch.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\RenderBuffer.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\RenderTarget.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\RenderWindow.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\Shader.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\Shapes.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\Skybox.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\Sprite.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\Text.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\Texture.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\Transform.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\Uniform.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\UniformSet.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\Vertex.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\VertexArray.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\VertexBuffer.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\BufferLayout.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\src\MemeGraphics\BufferLayout.cpp" />
-    <ClCompile Include="..\..\src\MemeGraphics\Camera.cpp" />
-    <ClCompile Include="..\..\src\MemeGraphics\Canvas.cpp" />
-    <ClCompile Include="..\..\src\MemeGraphics\Color.cpp" />
-    <ClCompile Include="..\..\src\MemeGraphics\Font.cpp" />
-    <ClCompile Include="..\..\src\MemeGraphics\FrameBuffer.cpp" />
-    <ClCompile Include="..\..\src\MemeGraphics\IndexBuffer.cpp" />
-    <ClCompile Include="..\..\src\MemeGraphics\Lists.cpp" />
-    <ClCompile Include="..\..\src\MemeGraphics\Model.cpp" />
-    <ClCompile Include="..\..\src\MemeGraphics\OpenGL.cpp" />
-    <ClCompile Include="..\..\src\MemeGraphics\Image.cpp" />
-    <ClCompile Include="..\..\src\MemeGraphics\Mesh.cpp" />
-    <ClCompile Include="..\..\src\MemeGraphics\RenderBuffer.cpp" />
-    <ClCompile Include="..\..\src\MemeGraphics\RenderTarget.cpp" />
-    <ClCompile Include="..\..\src\MemeGraphics\RenderWindow.cpp" />
-    <ClCompile Include="..\..\src\MemeGraphics\Shader.cpp" />
-    <ClCompile Include="..\..\src\MemeGraphics\Shapes.cpp" />
-    <ClCompile Include="..\..\src\MemeGraphics\Skybox.cpp" />
-    <ClCompile Include="..\..\src\MemeGraphics\Sprite.cpp" />
-    <ClCompile Include="..\..\src\MemeGraphics\Text.cpp" />
-    <ClCompile Include="..\..\src\MemeGraphics\Texture.cpp" />
-    <ClCompile Include="..\..\src\MemeGraphics\Transform.cpp" />
-    <ClCompile Include="..\..\src\MemeGraphics\Uniform.cpp" />
-    <ClCompile Include="..\..\src\MemeGraphics\UniformSet.cpp" />
-    <ClCompile Include="..\..\src\MemeGraphics\Vertex.cpp" />
-    <ClCompile Include="..\..\src\MemeGraphics\VertexArray.cpp" />
-    <ClCompile Include="..\..\src\MemeGraphics\VertexBuffer.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\include\MemeGraphics\GL.inl" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{2EF5E776-2FC0-479F-93A8-8D22D47AF3F6}</ProjectGuid>
-    <RootNamespace>MemeGraphics</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <ProjectGuid>{BE4213E1-C42D-46C4-A912-0A8B8E07ECC2}</ProjectGuid>
+    <RootNamespace>MemePhysics</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -164,15 +96,12 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)thirdparty\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>ML_GRAPHICS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ML_PHYSICS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <OutputFile>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\;$(SolutionDir)thirdparty\lib\$(Configuration)\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;glew32s.lib;opengl32.lib;freetype.lib</AdditionalDependencies>
-      <AdditionalOptions>/NODEFAULTLIB:LIBCMT.lib /NODEFAULTLIB:LIBCMTD.lib %(AdditionalOptions)</AdditionalOptions>
-      <DelayLoadDLLs>
-      </DelayLoadDLLs>
+      <AdditionalDependencies>MemeCore_$(Configuration)_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -182,15 +111,12 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)thirdparty\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>ML_GRAPHICS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ML_PHYSICS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <OutputFile>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\;$(SolutionDir)thirdparty\lib\$(Configuration)\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;glew32s.lib;opengl32.lib;freetype.lib</AdditionalDependencies>
-      <AdditionalOptions>/NODEFAULTLIB:LIBCMT.lib /NODEFAULTLIB:LIBCMTD.lib %(AdditionalOptions)</AdditionalOptions>
-      <DelayLoadDLLs>
-      </DelayLoadDLLs>
+      <AdditionalDependencies>MemeCore_$(Configuration)_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -202,15 +128,14 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)thirdparty\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>ML_GRAPHICS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ML_PHYSICS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <OutputFile>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\;$(SolutionDir)thirdparty\lib\$(Configuration)\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;glew32s.lib;opengl32.lib;freetype.lib</AdditionalDependencies>
-      <AdditionalOptions>/NODEFAULTLIB:LIBCMT.lib /NODEFAULTLIB:LIBCMTD.lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>MemeCore_$(Configuration)_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -222,17 +147,23 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)thirdparty\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>ML_GRAPHICS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ML_PHYSICS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <OutputFile>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\;$(SolutionDir)thirdparty\lib\$(Configuration)\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;glew32s.lib;opengl32.lib;freetype.lib</AdditionalDependencies>
-      <AdditionalOptions>/NODEFAULTLIB:LIBCMT.lib /NODEFAULTLIB:LIBCMTD.lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>MemeCore_$(Configuration)_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\MemePhysics\Export.hpp" />
+    <ClInclude Include="..\..\include\MemePhysics\Rigidbody.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\MemePhysics\Rigidbody.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

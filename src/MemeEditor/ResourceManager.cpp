@@ -46,11 +46,11 @@ namespace ml
 
 	bool ResourceManager::loadManifest(const Manifest & value)
 	{
-		for (const Manifest::TypePair & p : value.getDataMap())
+		for (const type_pair & p : value.getDataMap())
 		{
 			const String & path = value.getPath();
 			const String & type = p.first;
-			const Manifest::FileMap & files = p.second;
+			const file_map & files = p.second;
 
 			if (!loadManifestData(type, path, files))
 			{
@@ -60,7 +60,7 @@ namespace ml
 		return true;
 	}
 
-	int32_t ResourceManager::loadManifestData(const String & type, const String & path, const Manifest::FileMap & files)
+	int32_t ResourceManager::loadManifestData(const String & type, const String & path, const file_map & files)
 	{
 		if (type.empty())
 		{

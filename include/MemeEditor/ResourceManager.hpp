@@ -34,6 +34,9 @@ namespace ml
 		using SpriteMap		= ResourceMap<Sprite>;
 		using TextureMap	= ResourceMap<Texture>;
 
+		using file_map		= typename Manifest::file_map;
+		using type_pair		= typename Manifest::type_pair;
+
 	private:
 		ResourceManager();
 		~ResourceManager();
@@ -45,10 +48,10 @@ namespace ml
 		bool loadManifest(const Manifest & value);
 
 	private:
-		int32_t loadManifestData(const String & type, const String & path, const Manifest::FileMap & files);
+		int32_t loadManifestData(const String & type, const String & path, const file_map & files);
 
 		template <typename T>
-		inline bool loadData(ResourceMap<T> & data, const String & path, const Manifest::FileMap & files)
+		inline bool loadData(ResourceMap<T> & data, const String & path, const file_map & files)
 		{
 			return data.load(files, path);
 		}

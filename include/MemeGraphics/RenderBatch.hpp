@@ -18,11 +18,8 @@ namespace ml
 
 		VAO	* vao;
 		VBO	* vbo;
-		IBO	* ibo;
-		FBO	* fbo;
-		RBO	* rbo;
 		
-		const VertexList  * vertices;
+		const VertexList * vertices;
 		const Shader * shader;
 		UniformSet * uniforms;
 
@@ -31,9 +28,6 @@ namespace ml
 		RenderBatch(VAO * vao, VBO * vbo, const Shader * shader, UniformSet * uniforms)
 			: vao		(vao)
 			, vbo		(vbo)
-			, ibo		(NULL)
-			, fbo		(NULL)
-			, rbo		(NULL)
 			, vertices	(NULL)
 			, shader	(shader)
 			, uniforms	(uniforms)
@@ -42,9 +36,6 @@ namespace ml
 		RenderBatch()
 			: vao		(NULL)
 			, vbo		(NULL)
-			, ibo		(NULL)
-			, fbo		(NULL)
-			, rbo		(NULL)
 			, vertices	(NULL)
 			, shader	(NULL)
 			, uniforms	(NULL)
@@ -53,9 +44,6 @@ namespace ml
 		RenderBatch(const RenderBatch & copy)
 			: vao		(copy.vao)
 			, vbo		(copy.vbo)
-			, ibo		(copy.ibo)
-			, fbo		(copy.fbo)
-			, rbo		(copy.rbo)
 			, vertices	(copy.vertices)
 			, shader	(copy.shader)
 			, uniforms	(copy.uniforms)

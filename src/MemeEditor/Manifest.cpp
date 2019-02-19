@@ -7,8 +7,8 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Manifest::Manifest()
-		: m_path(String())
-		, m_data(TypeMap())
+		: m_path()
+		, m_data()
 	{
 	}
 

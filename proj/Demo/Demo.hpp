@@ -22,6 +22,7 @@
 #include <MemeNet/Server.hpp>
 #include <MemeScript/Interpreter.hpp>
 #include <MemeEditor/Editor.hpp>
+#include <MemePhysics/Rigidbody.hpp>
 
 #include "DemoEvents.hpp"
 #include "Settings.hpp"

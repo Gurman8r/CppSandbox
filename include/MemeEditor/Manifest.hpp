@@ -12,15 +12,15 @@ namespace ml
 		, public IReadable
 	{
 	public:
-		using file_path	= String;
 		using file_name	= String;
+		using file_path	= String;
 		using file_type	= String;
 
 		using file_map	= HashMap<file_name, file_path>;
 		using file_pair	= Pair<file_name, file_path>;
 
 		using type_map	= HashMap<file_type, file_map>;
-		using type_pair  = Pair<file_type, file_map>;
+		using type_pair = Pair<file_type, file_map>;
 
 	public:
 		Manifest();

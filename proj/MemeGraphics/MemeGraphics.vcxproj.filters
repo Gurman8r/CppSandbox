@@ -102,9 +102,6 @@
     <ClInclude Include="..\..\include\MemeGraphics\ITransformable.hpp">
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Gizmos.hpp">
-      <Filter>Header Files\Drawable</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\GL.hpp">
       <Filter>Header Files\Wrapper</Filter>
     </ClInclude>
@@ -202,9 +199,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\IndexBuffer.cpp">
       <Filter>Source Files\Buffers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeGraphics\Gizmos.cpp">
-      <Filter>Source Files\Drawable</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\FrameBuffer.cpp">
       <Filter>Source Files\Buffers</Filter>
