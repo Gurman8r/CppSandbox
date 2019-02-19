@@ -13,6 +13,10 @@ font:		consolas	/fonts/consolas.ttf
 font:		lconsole	/fonts/lucida_console.ttf
 font:		minecraft	/fonts/minecraft.ttf
 
+# Materials
+#***********************************************************************#
+mat:		example		/materials/example.mat
+
 # Meshes
 #***********************************************************************#
 #mesh:		cube		/meshes/cube.mesh

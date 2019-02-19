@@ -261,12 +261,9 @@ namespace DEMO
 		ml::Manifest manifest;
 		if (manifest.loadFromFile(SETTINGS.pathTo(SETTINGS.manifest)))
 		{
-			ml::cout 
-				<< ml::endl << "Manifest: " 
-				<< ml::endl << manifest 
-				<< ml::endl;
+			ml::cout << ml::endl << manifest << ml::endl;
 
-			return ml::Debug::log("Loading...")
+			return ml::Debug::log("Loading Resources...")
 				&& ML_Res.loadManifest(manifest)
 				&& ML_Res.models.load("borg")->loadFromMemory(ml::Shapes::Cube::Vertices, ml::Shapes::Cube::Indices)
 				&& ML_Res.models.load("sanic")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
@@ -288,7 +285,7 @@ namespace DEMO
 
 		// FBO
 		m_fbo.create().bind();
-		m_fbo.setTexture(ML_Res.textures.get("framebuffer"), ml::GL::ColorAttachment0);
+		m_fbo.setTexture(ml::GL::ColorAttachment0, ML_Res.textures.get("framebuffer"));
 		// RBO
 		m_rbo.create(this->width(), this->height());
 		m_rbo.bind();
@@ -391,7 +388,7 @@ namespace DEMO
 			this->setPosition((ml::VideoMode::desktop().size - this->size()) / 2);
 			this->setViewport(ml::vec2i::Zero, this->getFramebufferSize());
 
-			if (ml::Debug::log("Dear ImGui..."))
+			if (ml::Debug::log("Initializing ImGui..."))
 			{
 				IMGUI_CHECKVERSION();
 				ImGui::CreateContext();
@@ -404,22 +401,31 @@ namespace DEMO
 				}
 			}
 
-			if (!ml::OpenAL::init())
+			if (ml::Debug::log("Initializing OpenAL..."))
 			{
-				m_error = ml::Debug::logError("Failed Loading OpenAL");
-				return;
+				if (!ml::OpenAL::init())
+				{
+					m_error = ml::Debug::logError("Failed Loading OpenAL");
+					return;
+				}
 			}
 
-			if (!loadResources())
+			if (ml::Debug::log("Initializing Resources..."))
 			{
-				m_error = ml::Debug::logError("Failed Loading Resources");
-				return;
+				if (!loadResources())
+				{
+					m_error = ml::Debug::logError("Failed Loading Resources");
+					return;
+				}
 			}
 
-			if (!loadNetwork())
+			if (ml::Debug::log("Initializing Network..."))
 			{
-				m_error = ml::Debug::logError("Failed Loading Network");
-				return;
+				if (!loadNetwork())
+				{
+					m_error = ml::Debug::logError("Failed Loading Network");
+					return;
+				}
 			}
 		}
 		else
@@ -499,6 +505,19 @@ namespace DEMO
 			ml::Debug::log("Exiting Dummy Thread");
 		});
 		if (SETTINGS.enableThreads) { m_thread->launch(); }
+
+		using data_type = ml::ResourceManager::data_type;
+		using map_type = ml::ResourceManager::map_type;
+
+		if (ml::Material * mat = ML_Res.find<ml::Material>("example"))
+		{
+
+		}
+
+		if (ml::Material * mat = ML_Res.mats.get("example"))
+		{
+
+		}
 	}
 
 	void Demo::onFixedUpdate(const FixedUpdateEvent & ev)

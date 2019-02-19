@@ -28,12 +28,6 @@
     <Filter Include="Source Files\Wrapper">
       <UniqueIdentifier>{18eb3d43-0a77-4af5-9975-896e67ff95dc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Buffers">
-      <UniqueIdentifier>{6652bc3a-a5fa-44ca-8400-ad6093276177}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Buffers">
-      <UniqueIdentifier>{b05bb526-d2bd-4bc7-aa76-f105027d8beb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Drawable">
       <UniqueIdentifier>{d15342cc-d15c-402e-accc-c3a2c45796a3}</UniqueIdentifier>
     </Filter>
@@ -56,21 +50,6 @@
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeGraphics\Export.hpp">
       <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\BufferLayout.hpp">
-      <Filter>Header Files\Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\FrameBuffer.hpp">
-      <Filter>Header Files\Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\IndexBuffer.hpp">
-      <Filter>Header Files\Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\VertexArray.hpp">
-      <Filter>Header Files\Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\VertexBuffer.hpp">
-      <Filter>Header Files\Buffers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Color.hpp">
       <Filter>Header Files\DS</Filter>
@@ -120,9 +99,6 @@
     <ClInclude Include="..\..\include\MemeGraphics\Model.hpp">
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\RenderBuffer.hpp">
-      <Filter>Header Files\Buffers</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\RenderTarget.hpp">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
@@ -141,12 +117,6 @@
     <ClInclude Include="..\..\include\MemeGraphics\Camera.hpp">
       <Filter>Header Files\Transforms</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Texture.hpp">
-      <Filter>Header Files\DS</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Shader.hpp">
-      <Filter>Header Files\DS</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\UniformSet.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
@@ -159,6 +129,30 @@
     <ClInclude Include="..\..\include\MemeGraphics\Material.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\VertexBuffer.hpp">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\FrameBuffer.hpp">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\IndexBuffer.hpp">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\RenderBuffer.hpp">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\Shader.hpp">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\Texture.hpp">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\VertexArray.hpp">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\BufferLayout.hpp">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeGraphics\Color.cpp">
@@ -168,9 +162,6 @@
       <Filter>Source Files\DS</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Mesh.cpp">
-      <Filter>Source Files\DS</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeGraphics\Texture.cpp">
       <Filter>Source Files\DS</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Vertex.cpp">
@@ -188,24 +179,6 @@
     <ClCompile Include="..\..\src\MemeGraphics\Shapes.cpp">
       <Filter>Source Files\DS</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemeGraphics\Shader.cpp">
-      <Filter>Source Files\DS</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeGraphics\BufferLayout.cpp">
-      <Filter>Source Files\Buffers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeGraphics\VertexBuffer.cpp">
-      <Filter>Source Files\Buffers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeGraphics\VertexArray.cpp">
-      <Filter>Source Files\Buffers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeGraphics\IndexBuffer.cpp">
-      <Filter>Source Files\Buffers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeGraphics\FrameBuffer.cpp">
-      <Filter>Source Files\Buffers</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Text.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
@@ -214,9 +187,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Model.cpp">
       <Filter>Source Files\Drawable</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeGraphics\RenderBuffer.cpp">
-      <Filter>Source Files\Buffers</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Lists.cpp">
       <Filter>Source Files\DS</Filter>
@@ -244,6 +214,30 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Material.cpp">
       <Filter>Source Files\DS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\FrameBuffer.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\IndexBuffer.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\RenderBuffer.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\Shader.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\Texture.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\VertexArray.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\VertexBuffer.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\BufferLayout.cpp">
+      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

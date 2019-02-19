@@ -11,6 +11,9 @@ namespace ml
 	{
 	public:
 		Material();
+		Material(const Shader * shader);
+		Material(const Shader * shader, const UniformSet & uniforms);
+		Material(const Material & copy);
 		~Material();
 
 		bool cleanup() override;
@@ -20,8 +23,8 @@ namespace ml
 		void deserialize(std::istream & in) override;
 
 	private:
-		const Texture * m_highlightMap;
-		const Texture * m_normalMap;
+		const Shader *	m_shader;
+		UniformSet		m_uniforms;
 
 	};
 }

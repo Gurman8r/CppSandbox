@@ -38,6 +38,10 @@ namespace ml
 		using file_map		= typename Manifest::file_map;
 		using type_pair		= typename Manifest::type_pair;
 
+		using key_type = const std::type_info * ;
+		using data_type = HashMap<String, IReadable *>;
+		using map_type = HashMap<key_type, data_type>;
+
 	private:
 		ResourceManager();
 		~ResourceManager();
@@ -48,16 +52,42 @@ namespace ml
 
 		bool loadManifest(const Manifest & value);
 
-	private:
 		int32_t loadManifestData(const String & type, const String & path, const file_map & files);
 
-		template <typename T>
+		template <class T>
 		inline bool loadData(ResourceMap<T> & data, const String & path, const file_map & files)
 		{
 			return data.load(files, path);
 		}
 
+		template <class T>
+		inline data_type * find()
+		{
+			map_type::iterator it;
+			if ((it = m_map.find(&typeid(T))) != m_map.end())
+			{
+				return &it->second;
+			}
+			return NULL;
+		}
+
+		template <class T>
+		inline T * find(const String & name)
+		{
+			if (auto data = find<T>())
+			{
+				data_type::iterator it;
+				if ((it = data->find(name)) != data->end())
+				{
+					return dynamic_cast<T *>(it->second);
+				}
+			}
+			return NULL;
+		}
+
 	public:
+		map_type m_map;
+
 		FontMap		fonts;
 		ImageMap	images;
 		MaterialMap mats;

@@ -49,12 +49,12 @@ namespace ml
 		OpenGL::bindFramebuffer(GL::Framebuffer, NULL);
 	}
 
-	void FrameBuffer::setTexture(const Texture * value, GL::Attachment attchment) const
+	void FrameBuffer::setTexture(GL::Attachment attchment, const Texture * value) const
 	{
-		setTexture((*value), attchment, value->target(), value->level());
+		setTexture(attchment, (*value), value->target(), value->level());
 	}
 
-	void FrameBuffer::setTexture(uint32_t value, GL::Attachment attchment, GL::Target target, int32_t level) const
+	void FrameBuffer::setTexture(GL::Attachment attchment, uint32_t value, GL::Target target, int32_t level) const
 	{
 		OpenGL::framebufferTexture2D(ml::GL::Framebuffer, attchment, target, value, level);
 	}

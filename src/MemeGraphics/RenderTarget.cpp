@@ -34,17 +34,23 @@ namespace ml
 
 	RenderTarget & RenderTarget::draw(const RenderBatch & batch)
 	{
+		
+		return draw(batch.vertices, batch);
+	}
+
+	RenderTarget & RenderTarget::draw(const VertexList * vertices, const RenderBatch & batch)
+	{
 		// Update Shader
 		if (batch.shader)
 		{
 			batch.shader->setUniforms(*batch.uniforms);
 			batch.shader->bind();
 		}
-		
-		if (batch.vbo && batch.vbo && batch.vertices)
+
+		if (batch.vbo && batch.vbo && vertices)
 		{
 			batch.vbo->bind();
-			batch.vbo->bufferSubData(batch.vertices->contiguous(), 0);
+			batch.vbo->bufferSubData(vertices->contiguous(), 0);
 			batch.vbo->unbind();
 
 			return draw(batch.vao, batch.vbo);

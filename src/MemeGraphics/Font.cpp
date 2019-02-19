@@ -15,7 +15,6 @@ namespace ml
 		: m_pages	()
 		, m_library	(NULL)
 		, m_face	(NULL)
-		, m_stroker	(NULL)
 	{
 	}
 
@@ -23,7 +22,6 @@ namespace ml
 		: m_pages	(copy.m_pages)
 		, m_library	(copy.m_library)
 		, m_face	(copy.m_face)
-		, m_stroker	(copy.m_stroker)
 	{
 	}
 
@@ -89,7 +87,6 @@ namespace ml
 		}
 
 		// Store the loaded fonts in our ugly void * :)
-		m_stroker = stroker;
 		m_face = face;
 
 		// Store the fonts information

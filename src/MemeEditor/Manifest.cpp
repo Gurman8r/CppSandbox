@@ -33,10 +33,10 @@ namespace ml
 
 	bool Manifest::loadFromFile(const String & filename)
 	{
-		File file;
-		if (file.loadFromFile(filename))
+		SStream ss;
+		if (ML_FileSystem.getFileContents(filename, ss))
 		{
-			file >> (*this);
+			ss >> (*this);
 			return true;
 		}
 		return false;

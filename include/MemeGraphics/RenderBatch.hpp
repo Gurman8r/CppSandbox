@@ -16,7 +16,7 @@ namespace ml
 	{
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		VAO	* vao;
+		const VAO * vao;
 		const VBO * vbo;
 		
 		const VertexList * vertices;
@@ -25,28 +25,28 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		RenderBatch(VAO * vao, const VBO * vbo, const Shader * shader, UniformSet * uniforms)
+		RenderBatch(const VAO * vao, const VBO * vbo, const Shader * shader, UniformSet * uniforms)
 			: vao		(vao)
 			, vbo		(vbo)
-			, vertices	(NULL)
 			, shader	(shader)
 			, uniforms	(uniforms)
+			, vertices	(NULL)
 		{
 		}
 		RenderBatch()
 			: vao		(NULL)
 			, vbo		(NULL)
-			, vertices	(NULL)
 			, shader	(NULL)
 			, uniforms	(NULL)
+			, vertices	(NULL)
 		{
 		}
 		RenderBatch(const RenderBatch & copy)
 			: vao		(copy.vao)
 			, vbo		(copy.vbo)
-			, vertices	(copy.vertices)
 			, shader	(copy.shader)
 			, uniforms	(copy.uniforms)
+			, vertices	(copy.vertices)
 		{
 		}
 

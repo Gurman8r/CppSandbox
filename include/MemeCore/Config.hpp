@@ -72,8 +72,8 @@
 		// Windows compilers need different keywords for exports and imports
 		#define ML_API_EXPORT __declspec(dllexport)
 		#define ML_API_IMPORT __declspec(dllimport)
-		// For Visual C++ compilers, we also need to turn off this annoying C4251 warning
 		#ifdef _MSC_VER
+			#pragma warning(disable: 4099)
 			#pragma warning(disable: 4251)
 		#endif
 	#else

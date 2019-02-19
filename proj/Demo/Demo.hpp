@@ -2,6 +2,7 @@
 #define _DEMO_HPP_
 
 #include <MemeAudio/Audio.hpp>
+#include <MemeCore/Debug.hpp>
 #include <MemeCore/Time.hpp>
 #include <MemeCore/FileSystem.hpp> 
 #include <MemeCore/Random.hpp>
@@ -95,6 +96,8 @@ namespace DEMO
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
+		ml::Material m_mat;
+
 		bool		m_camAnimate	= true;
 		ml::vec3f	m_camPos		= { 0, 1, 10 };
 		float		m_camSpd		= 1.f;
@@ -126,9 +129,7 @@ namespace DEMO
 		bool show_imgui_style	= false;
 		bool show_imgui_about	= false;
 
-		ml::List<ml::Uniform> m_uniforms = {
-			//ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
-		};
+		ml::List<ml::Uniform> m_uniforms;
 		size_t m_selected = 0;
 
 		/* * * * * * * * * * * * * * * * * * * * */

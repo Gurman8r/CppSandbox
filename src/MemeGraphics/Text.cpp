@@ -154,9 +154,7 @@ namespace ml
 				u->data = m_textures[i]; 
 			}
 
-			batch.vertices = &m_vertices[i];
-
-			target.draw(batch);
+			target.draw(&m_vertices[i], batch);
 		}
 	}
 }

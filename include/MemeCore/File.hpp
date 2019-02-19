@@ -61,21 +61,12 @@ namespace ml
 		inline const_iterator	cend()	 const	{ return m_data.cend();	  }
 
 	public:
-		inline reverse_iterator			rbegin()		{ return m_data.rbegin();  }
-		inline reverse_iterator			rend()			{ return m_data.rend();	  }
-		inline const_reverse_iterator	rbegin()  const	{ return m_data.rbegin();  }
-		inline const_reverse_iterator	rend()	  const	{ return m_data.rend();	  }
-		inline const_reverse_iterator	crbegin() const	{ return m_data.crbegin(); }
-		inline const_reverse_iterator	crend()	  const	{ return m_data.crend();	  }
-
-
-		template <class T>
-		inline std::istream & operator>>(T & t)
-		{
-			SStream ss = to_stream();
-			ss >> t;
-			return ss;
-		}
+		inline reverse_iterator			rbegin()		{ return m_data.rbegin();	}
+		inline reverse_iterator			rend()			{ return m_data.rend();		}
+		inline const_reverse_iterator	rbegin()  const	{ return m_data.rbegin();	}
+		inline const_reverse_iterator	rend()	  const	{ return m_data.rend();		}
+		inline const_reverse_iterator	crbegin() const	{ return m_data.crbegin();	}
+		inline const_reverse_iterator	crend()	  const	{ return m_data.crend();	}
 
 	private:
 		Data m_data;

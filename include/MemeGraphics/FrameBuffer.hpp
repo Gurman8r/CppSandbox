@@ -24,8 +24,8 @@ namespace ml
 		void bind() const;
 		void unbind() const;
 
-		void setTexture(const Texture * value, GL::Attachment attchment) const;
-		void setTexture(uint32_t value, GL::Attachment attchment, GL::Target target, int32_t level) const;
+		void setTexture(GL::Attachment attchment, const Texture * value) const;
+		void setTexture(GL::Attachment attchment, uint32_t value, GL::Target target, int32_t level) const;
 
 	private:
 

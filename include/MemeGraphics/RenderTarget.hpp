@@ -23,6 +23,7 @@ namespace ml
 		RenderTarget & draw(const IDrawable & value);
 		RenderTarget & draw(const IDrawable & value, const RenderBatch & batch);
 		RenderTarget & draw(const RenderBatch & value);
+		RenderTarget & draw(const VertexList * vertices, const RenderBatch & value);
 		RenderTarget & draw(const VAO * vao, const VBO * vbo, const IBO * ibo);
 		RenderTarget & draw(const VAO * vao, const VBO * vbo);
 

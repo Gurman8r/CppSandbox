@@ -129,15 +129,22 @@ namespace ml
 		return false;
 	}
 	
+	String FileSystem::getFileName(const String & filename) const
+	{
+		size_t i;
+		if ((i = filename.find_last_of('/')) != String::npos)
+		{
+			return filename.substr(i, filename.size() - i);
+		}
+		return filename;
+	}
+
 	String FileSystem::getFileExtension(const String & filename) const
 	{
-		if (fileExists(filename))
+		size_t i;
+		if ((i = filename.find_last_of('.')) != String::npos)
 		{
-			size_t i;
-			if ((i = filename.find_last_of('.')) != String::npos)
-			{
-				return filename.substr(i, filename.size() - i);
-			}
+			return filename.substr(i, filename.size() - i);
 		}
 		return String();
 	}

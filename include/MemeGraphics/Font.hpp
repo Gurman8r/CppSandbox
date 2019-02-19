@@ -44,10 +44,9 @@ namespace ml
 	private:
 		mutable PageTable m_pages;
 		
-		Info  m_info;
-		void * m_library;
-		void * m_face;
-		void * m_stroker;
+		Info	m_info;
+		void *	m_library;
+		void *	m_face;
 
 		Glyph loadGlyph(uint32_t value, uint32_t size) const;
 	};

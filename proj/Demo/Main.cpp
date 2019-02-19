@@ -1,6 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * */
 
 #include "Demo.hpp"
+#include <MemeCore/Debug.hpp>
 #include <MemeCore/EventSystem.hpp>
 #include <MemeCore/LibLoader.hpp>
 

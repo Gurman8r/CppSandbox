@@ -4,6 +4,26 @@
 namespace ml
 {
 	Material::Material()
+		: m_shader(NULL)
+		, m_uniforms()
+	{
+	}
+
+	Material::Material(const Shader * shader)
+		: m_shader(shader)
+		, m_uniforms()
+	{
+	}
+
+	Material::Material(const Shader * shader, const UniformSet & uniforms)
+		: m_shader(shader)
+		, m_uniforms(uniforms)
+	{
+	}
+
+	Material::Material(const Material & copy)
+		: m_shader(copy.m_shader)
+		, m_uniforms(copy.m_uniforms)
 	{
 	}
 

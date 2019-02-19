@@ -5,8 +5,6 @@
 #include <MemeCore/ITrackable.hpp>
 #include <MemeCore/ISingleton.hpp>
 #include <MemeCore/IReadable.hpp>
-#include <MemeCore/Debug.hpp>
-#include <MemeWindow/Context.hpp>
 
 // Singleton to store program properties/settings (INIReader)
 #define SETTINGS DEMO::Settings::getInstance()
@@ -119,7 +117,7 @@ namespace DEMO
 
 				return true;
 			}
-			return ml::Debug::logError("Failed Loading Settings \"{0}\"", filename);
+			return false;
 		}
 
 		inline const ml::String pathTo(const ml::String & filename) const
