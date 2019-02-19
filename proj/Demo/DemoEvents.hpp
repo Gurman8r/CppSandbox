@@ -18,6 +18,7 @@ namespace DEMO
 			EV_Enter,
 			EV_Load,
 			EV_Start,
+			EV_FixedUpdate,
 			EV_Update,
 			EV_Draw,
 			EV_Gui,
@@ -63,6 +64,19 @@ namespace DEMO
 	{
 		StartEvent()
 			: DemoEvent(EV_Start)
+		{
+		}
+	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	struct FixedUpdateEvent final : public DemoEvent
+	{
+		const ml::Duration & elapsed;
+
+		FixedUpdateEvent(const ml::Duration & elapsed)
+			: DemoEvent(EV_FixedUpdate)
+			, elapsed(elapsed)
 		{
 		}
 	};

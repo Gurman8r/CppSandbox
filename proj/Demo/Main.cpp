@@ -52,6 +52,9 @@ int32_t main(int32_t argc, char ** argv)
 		{	// Begin Step
 			loopTimer.start();
 			{
+				// "Fixed" Update
+				ML_EventSystem.fireEvent(DEMO::FixedUpdateEvent(elapsed));
+
 				// Update
 				ML_EventSystem.fireEvent(DEMO::UpdateEvent(elapsed));
 

@@ -12,13 +12,14 @@ namespace DEMO
 	Demo::Demo()
 		: m_error(ML_SUCCESS)
 	{
-		ML_EventSystem.addListener(DemoEvent::EV_Enter, this);
-		ML_EventSystem.addListener(DemoEvent::EV_Load,	this);
-		ML_EventSystem.addListener(DemoEvent::EV_Start, this);
-		ML_EventSystem.addListener(DemoEvent::EV_Update,this);
-		ML_EventSystem.addListener(DemoEvent::EV_Draw,	this);
-		ML_EventSystem.addListener(DemoEvent::EV_Gui,	this);
-		ML_EventSystem.addListener(DemoEvent::EV_Exit,	this);
+		ML_EventSystem.addListener(DemoEvent::EV_Enter,			this);
+		ML_EventSystem.addListener(DemoEvent::EV_Load,			this);
+		ML_EventSystem.addListener(DemoEvent::EV_Start,			this);
+		ML_EventSystem.addListener(DemoEvent::EV_FixedUpdate,	this);
+		ML_EventSystem.addListener(DemoEvent::EV_Update,		this);
+		ML_EventSystem.addListener(DemoEvent::EV_Draw,			this);
+		ML_EventSystem.addListener(DemoEvent::EV_Gui,			this);
+		ML_EventSystem.addListener(DemoEvent::EV_Exit,			this);
 	}
 
 	Demo::~Demo() {}
@@ -31,13 +32,14 @@ namespace DEMO
 
 		switch (value->eventID())
 		{
-		case DemoEvent::EV_Enter:	return onEnter(*value->Cast<EnterEvent>());
-		case DemoEvent::EV_Load:	return onLoad(*value->Cast<LoadEvent>());
-		case DemoEvent::EV_Start:	return onStart(*value->Cast<StartEvent>());
-		case DemoEvent::EV_Update:	return onUpdate(*value->Cast<UpdateEvent>());
-		case DemoEvent::EV_Draw:	return onDraw(*value->Cast<DrawEvent>());
-		case DemoEvent::EV_Gui:		return onGui(*value->Cast<GuiEvent>());
-		case DemoEvent::EV_Exit:	return onExit(*value->Cast<ExitEvent>());
+		case DemoEvent::EV_Enter:		return onEnter(*value->Cast<EnterEvent>());
+		case DemoEvent::EV_Load:		return onLoad(*value->Cast<LoadEvent>());
+		case DemoEvent::EV_Start:		return onStart(*value->Cast<StartEvent>());
+		case DemoEvent::EV_FixedUpdate:	return onFixedUpdate(*value->Cast<FixedUpdateEvent>());
+		case DemoEvent::EV_Update:		return onUpdate(*value->Cast<UpdateEvent>());
+		case DemoEvent::EV_Draw:		return onDraw(*value->Cast<DrawEvent>());
+		case DemoEvent::EV_Gui:			return onGui(*value->Cast<GuiEvent>());
+		case DemoEvent::EV_Exit:		return onExit(*value->Cast<ExitEvent>());
 
 		case ml::WindowEvent::EV_WindowSize:
 			if (auto ev = value->Cast<ml::WindowSizeEvent>())
@@ -512,6 +514,11 @@ namespace DEMO
 			Debug::log("Exiting Dummy Thread");
 		});
 		if (SETTINGS.enableThreads) { m_thread->launch(); }
+	}
+
+	void Demo::onFixedUpdate(const FixedUpdateEvent & ev)
+	{
+		m_particle.applyForce(ml::Force::gravity(ml::vec3f::Up, m_particle.mass));
 	}
 	
 	void Demo::onUpdate(const UpdateEvent & ev)

@@ -23,23 +23,22 @@ namespace ml
 		void *	loadLibrary(const String & filename);
 		void *	loadFunction(void * value, const String & name);
 
-		template <typename T, typename ... A>
-		inline bool callFunc(void * value, T & result, const A & ... args)
+		template <typename _Ret, typename ... _Args>
+		inline bool callFunc(void * funHandle, _Ret & result, const _Args & ... args)
 		{
-			using Func = T(*)(A ...);
-			if (Func func = static_cast<Func>(value))
+			if (auto func = static_cast<_Ret(*)(_Args ...)>(funHandle))
 			{
 				result = func((args)...);
 				return true;
 			}
-			result = T();
+			result = _Ret();
 			return false;
 		}
 
-		template <typename T, typename ... A>
-		inline T callFunc(void * value, const A & ... args)
+		template <typename _Ret, typename ... _Args>
+		inline _Ret callFunc(void * value, const _Args & ... args)
 		{
-			using Func = T(*)(A ...);
+			using Func = _Ret(*)(_Args ...);
 			Func func;
 			assert(func = static_cast<Func>(value));
 			return func((args)...);

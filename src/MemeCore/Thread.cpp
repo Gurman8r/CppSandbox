@@ -19,7 +19,7 @@ namespace ml
 
 	Thread & Thread::clean()
 	{
-		wait();
+		join();
 
 		if (m_thr) 
 		{
@@ -35,6 +35,15 @@ namespace ml
 		if (alive())
 		{
 			m_thr->detach();
+		}
+		return (*this);
+	}
+
+	Thread & Thread::join()
+	{
+		if (joinable())
+		{
+			m_thr->join();
 		}
 		return (*this);
 	}
@@ -57,15 +66,6 @@ namespace ml
 				delete m_fun;
 			}
 			m_fun = fun;
-		}
-		return (*this);
-	}
-
-	Thread & Thread::wait()
-	{
-		if (joinable())
-		{
-			m_thr->join();
 		}
 		return (*this);
 	}

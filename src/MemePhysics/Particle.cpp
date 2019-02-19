@@ -71,4 +71,26 @@ namespace ml
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
+
+	Particle & Particle::integrateEulerExplicit(const float dt)
+	{
+		pos += (vel * dt);
+		vel += (acc * dt);
+		return (*this);
+	}
+
+	Particle & Particle::integrateEulerSemiImplicit(const float dt)
+	{
+		vel += (acc * dt);
+		pos += (vel * dt);
+		return (*this);
+	}
+
+	Particle & Particle::integrateEulerKinematic(const float dt)
+	{
+		pos += ((vel * dt) + (acc * (dt * dt * 0.5f)));
+		return (*this);
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

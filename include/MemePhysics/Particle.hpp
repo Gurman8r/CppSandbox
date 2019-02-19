@@ -1,7 +1,7 @@
 #ifndef _PARTICLE_HPP_
 #define _PARTICLE_HPP_
 
-#include <MemePhysics/Physics.hpp>
+#include <MemePhysics/Force.hpp>
 
 namespace ml
 {
@@ -32,6 +32,12 @@ namespace ml
 		Particle & convertForce();
 		Particle & resetForce();
 		Particle & setMass(float value);
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		Particle & integrateEulerExplicit(const float dt);
+		Particle & integrateEulerSemiImplicit(const float dt);
+		Particle & integrateEulerKinematic(const float dt);
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	};

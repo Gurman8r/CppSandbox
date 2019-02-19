@@ -58,7 +58,13 @@ namespace ml
 		{
 			for (auto it = value.begin(); it != value.end(); it++)
 			{
-				(*this)[(it - value.begin())] = (*it);
+				size_type i;
+				if ((i = (it - value.begin())) < Size)
+				{
+					(*this)[i] = (*it);
+					continue;
+				}
+				break;
 			}
 		}
 		
@@ -73,14 +79,9 @@ namespace ml
 		{
 			for (size_type i = 0; i < Size; i++)
 			{
-				if (i < copy.Size)
-				{
-					(*this)[i] = static_cast<data_type>(copy[i]);
-				}
-				else
-				{
-					(*this)[i] = dv;
-				}
+				(*this)[i] = ((i < copy.Size)
+					? static_cast<data_type>(copy[i])
+					: dv);
 			}
 		}
 

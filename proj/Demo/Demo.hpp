@@ -66,6 +66,7 @@ namespace DEMO
 		void	onEnter(const EnterEvent & ev);
 		void	onLoad(const LoadEvent & ev);
 		void	onStart(const StartEvent & ev);
+		void	onFixedUpdate(const FixedUpdateEvent & ev);
 		void	onUpdate(const UpdateEvent & ev);
 		void	onDraw(const DrawEvent & ev);
 		void	onGui(const GuiEvent & ev);

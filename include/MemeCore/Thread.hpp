@@ -48,9 +48,9 @@ namespace ml
 	public:
 		Thread & clean();
 		Thread & detatch();
+		Thread & join();
 		Thread & launch();
 		Thread & update(Function * fun);
-		Thread & wait();
 
 	public:
 		bool	alive() const;
