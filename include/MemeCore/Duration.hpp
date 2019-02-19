@@ -55,8 +55,6 @@ namespace ml
 	public:
 		inline operator uint64_t() const { return m_ms; }
 
-		inline operator float() const { return static_cast<float>(m_ms); }
-
 		inline const float delta() const { return (float)(*this) / 1000.f; }
 		
 	public:
