@@ -24,7 +24,7 @@ namespace ml
 		void *	loadFunction(void * value, const String & name);
 
 		template <typename _Ret, typename ... _Args>
-		inline bool callFunc(void * funHandle, _Ret & result, const _Args & ... args)
+		inline bool callFunction(void * funHandle, _Ret & result, const _Args & ... args)
 		{
 			if (auto func = static_cast<_Ret(*)(_Args ...)>(funHandle))
 			{
@@ -36,7 +36,7 @@ namespace ml
 		}
 
 		template <typename _Ret, typename ... _Args>
-		inline _Ret callFunc(void * value, const _Args & ... args)
+		inline _Ret callFunction(void * value, const _Args & ... args)
 		{
 			using Func = _Ret(*)(_Args ...);
 			Func func;

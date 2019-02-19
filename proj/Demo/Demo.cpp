@@ -12,14 +12,14 @@ namespace DEMO
 	Demo::Demo()
 		: m_error(ML_SUCCESS)
 	{
-		ML_EventSystem.addListener(DemoEvent::EV_Enter,			this);
-		ML_EventSystem.addListener(DemoEvent::EV_Load,			this);
-		ML_EventSystem.addListener(DemoEvent::EV_Start,			this);
-		ML_EventSystem.addListener(DemoEvent::EV_FixedUpdate,	this);
-		ML_EventSystem.addListener(DemoEvent::EV_Update,		this);
-		ML_EventSystem.addListener(DemoEvent::EV_Draw,			this);
-		ML_EventSystem.addListener(DemoEvent::EV_Gui,			this);
-		ML_EventSystem.addListener(DemoEvent::EV_Exit,			this);
+		ML_EventSystem.addListener(DemoEvent::EV_Enter,		 this);
+		ML_EventSystem.addListener(DemoEvent::EV_Load,		 this);
+		ML_EventSystem.addListener(DemoEvent::EV_Start,		 this);
+		ML_EventSystem.addListener(DemoEvent::EV_FixedUpdate,this);
+		ML_EventSystem.addListener(DemoEvent::EV_Update,	 this);
+		ML_EventSystem.addListener(DemoEvent::EV_Draw,		 this);
+		ML_EventSystem.addListener(DemoEvent::EV_Gui,		 this);
+		ML_EventSystem.addListener(DemoEvent::EV_Exit,		 this);
 	}
 
 	Demo::~Demo() {}
@@ -427,13 +427,6 @@ namespace DEMO
 	{
 		ml::Debug::log("Starting...");
 
-		// Texture Properties
-		//ML_Res.textures.get("earth_dm")->setSmooth(true);
-		//ML_Res.textures.get("earth_sm")->setSmooth(true);
-		//ML_Res.textures.get("moon_dm")->setSmooth(true);
-		//ML_Res.textures.get("moon_nm")->setSmooth(true);
-		//ML_Res.textures.get("stone_dm")->setSmooth(true);
-
 		// Set Window Icon
 		if (ml::Image * icon = ML_Res.images.get("icon"))
 		{
@@ -490,16 +483,15 @@ namespace DEMO
 		// Threads
 		m_thread = new ml::Thread([&]()
 		{
-			using namespace ml;
-			Debug::log("Entering Dummy Thread");
+			ml::Debug::log("Entering Dummy Thread");
 			do
 			{
-				cout << "*";
-				ML_Time.sleep(1_s);
+				ml::cout << "*";
+				ML_Time.sleep(1000);
 			}
 			while (this->isOpen());
-			cout << endl;
-			Debug::log("Exiting Dummy Thread");
+			ml::cout << ml::endl;
+			ml::Debug::log("Exiting Dummy Thread");
 		});
 		if (SETTINGS.enableThreads) { m_thread->launch(); }
 	}
@@ -594,7 +586,6 @@ namespace DEMO
 			// Clear
 			this->clear(m_clearColor);
 			
-			// 3D
 			ml::OpenGL::enable(ml::GL::CullFace);
 			ml::OpenGL::enable(ml::GL::DepthTest);
 
@@ -684,7 +675,6 @@ namespace DEMO
 				this->draw(*model);
 			}
 
-			// 2D
 			ml::OpenGL::disable(ml::GL::CullFace);
 
 			// Plane
@@ -721,8 +711,24 @@ namespace DEMO
 				this->draw(*model);
 			}
 
-			// GUI
 			ml::OpenGL::disable(ml::GL::DepthTest);
+
+			// Geometry
+			{
+				static ml::UniformSet uniforms = {
+					ml::Uniform("u_color",		ml::Uniform::Vec4,	&m_lineColor),
+					ml::Uniform("u_lineMode",	ml::Uniform::Int,	&m_lineMode),
+					ml::Uniform("u_lineDelta",	ml::Uniform::Float, &m_lineDelta),
+					ml::Uniform("u_lineSize",	ml::Uniform::Float, &m_lineSize),
+					ml::Uniform("u_lineSamples",ml::Uniform::Int,	&m_lineSamples),
+				};
+				if (const ml::Shader * shader = ML_Res.shaders.get("geometry"))
+				{
+					shader->setUniforms(uniforms);
+					shader->bind();
+				}
+				ml::OpenGL::drawArrays(ml::GL::Points, 0, 4);
+			}
 
 			// Text
 			if (true)
@@ -759,23 +765,6 @@ namespace DEMO
 
 				// Static Text
 				this->draw(m_text["static"], batch);
-			}
-
-			// Geometry
-			{
-				static ml::UniformSet uniforms = {
-					ml::Uniform("u_color",		ml::Uniform::Vec4,	&m_lineColor),
-					ml::Uniform("u_lineMode",	ml::Uniform::Int,	&m_lineMode),
-					ml::Uniform("u_lineDelta",	ml::Uniform::Float, &m_lineDelta),
-					ml::Uniform("u_lineSize",	ml::Uniform::Float, &m_lineSize),
-					ml::Uniform("u_lineSamples",ml::Uniform::Int,	&m_lineSamples),
-				};
-				if (const ml::Shader * shader = ML_Res.shaders.get("geometry"))
-				{
-					shader->setUniforms(uniforms);
-					shader->bind();
-				}
-				ml::OpenGL::drawArrays(ml::GL::Points, 0, 4);
 			}
 
 		}

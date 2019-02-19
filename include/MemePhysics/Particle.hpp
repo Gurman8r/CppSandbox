@@ -21,6 +21,7 @@ namespace ml
 
 		Particle();
 		Particle(const vec3f & pos, const float mass);
+		Particle(const vec3f & pos, const vec3f & vel, const vec3f & acc, const float mass);
 		Particle(const Particle & copy);
 		~Particle();
 

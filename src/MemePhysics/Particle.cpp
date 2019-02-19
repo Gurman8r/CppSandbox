@@ -15,9 +15,14 @@ namespace ml
 	}
 
 	Particle::Particle(const vec3f & pos, const float mass)
+		: Particle(pos, vec3f::Zero, vec3f::Zero, mass)
+	{
+	}
+
+	Particle::Particle(const vec3f & pos, const vec3f & vel, const vec3f & acc, const float mass)
 		: pos		(pos)
-		, vel		(vec3f::Zero)
-		, acc		(vec3f::Zero)
+		, vel		(vel)
+		, acc		(acc)
 		, force		(vec3f::Zero)
 	{
 		setMass(mass);

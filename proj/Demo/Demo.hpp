@@ -32,8 +32,7 @@
 /* * * * * * * * * * * * * * * * * * * * */
 namespace DEMO
 {
-	class Demo final 
-		: public ml::RenderWindow
+	class Demo final : public ml::RenderWindow
 	{
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -46,7 +45,7 @@ namespace DEMO
 
 		inline int32_t getError() const
 		{
-			int32_t temp = 1;
+			int32_t temp = ML_SUCCESS;
 			std::swap(m_error, temp);
 			return temp;
 		}
@@ -79,10 +78,6 @@ namespace DEMO
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		ml::Thread * m_thread;
-
-		/* * * * * * * * * * * * * * * * * * * * */
-
 		ml::FBO m_fbo;
 		ml::RBO m_rbo;
 
@@ -111,12 +106,12 @@ namespace DEMO
 		int32_t		m_shininess		= 8;
 
 		ml::vec4f	m_clearColor	= ml::Color::Gray;
-		int32_t		m_fboMode		= 0;
+		int32_t		m_fboMode		= 3;
 
 		int32_t		m_lineMode		= -1;
 		ml::vec4f	m_lineColor		= ml::Color::Red;
 		float		m_lineDelta		= 1.f;
-		float		m_lineSize		= 0.75f;
+		float		m_lineSize		= 0.925f;
 		int32_t		m_lineSamples	= 16;
 		bool		m_animate		= true;
 
@@ -135,6 +130,10 @@ namespace DEMO
 			//ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
 		};
 		size_t m_selected = 0;
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		ml::Thread *	m_thread;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 

@@ -16,7 +16,7 @@ void * loadProgram(const ml::String & filename)
 	{
 		if (void * fun = ML_Lib.loadFunction(lib, "ML_LoadInstance"))
 		{
-			if (void * prog = ML_Lib.callFunc<void *>(fun))
+			if (void * prog = ML_Lib.callFunction<void *>(fun))
 			{
 				return static_cast<void *>(prog);
 			}
@@ -84,7 +84,8 @@ int32_t main(int32_t argc, char ** argv)
 		// Exit
 		ML_EventSystem.fireEvent(DEMO::ExitEvent());
 		
-		// Delete Program
+		// Free Program
+		//ML_Lib.freeLibrary(program);
 		delete program;
 
 		return EXIT_SUCCESS;
