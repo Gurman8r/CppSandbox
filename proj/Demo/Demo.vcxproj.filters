@@ -86,6 +86,9 @@
     <Filter Include="Resource Files\textures\bg\sunset">
       <UniqueIdentifier>{18f919de-96d6-4b0e-ad98-b8c0cce85c7a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\materials">
+      <UniqueIdentifier>{915c2446-9cc8-41a6-b386-a55e4bcd2581}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\assets\shaders\fs\basic\drawColor_fs4x.shader">
@@ -237,6 +240,9 @@
     </None>
     <None Include="..\..\assets\skyboxes\sunset.skybox">
       <Filter>Resource Files\skyboxes</Filter>
+    </None>
+    <None Include="..\..\assets\materials\example.mat">
+      <Filter>Resource Files\materials</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

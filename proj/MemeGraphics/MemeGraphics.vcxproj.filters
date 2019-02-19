@@ -156,6 +156,9 @@
     <ClInclude Include="..\..\include\MemeGraphics\Skybox.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\Material.hpp">
+      <Filter>Header Files\DS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeGraphics\Color.cpp">
@@ -237,6 +240,9 @@
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Skybox.cpp">
+      <Filter>Source Files\DS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\Material.cpp">
       <Filter>Source Files\DS</Filter>
     </ClCompile>
   </ItemGroup>

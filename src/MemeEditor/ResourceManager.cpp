@@ -68,6 +68,7 @@ namespace ml
 		}
 		else if (type == "fonts"	&& !loadData(fonts, path, files))	{ return ML_FAILURE; }
 		else if (type == "images"	&& !loadData(images, path, files))	{ return ML_FAILURE; }
+		else if (type == "mats"		&& !loadData(mats, path, files))	{ return ML_FAILURE; }
 		else if (type == "meshes"	&& !loadData(meshes, path, files))	{ return ML_FAILURE; }
 		else if (type == "models"	&& !loadData(models, path, files))	{ return ML_FAILURE; }
 		else if (type == "shaders"	&& !loadData(shaders, path, files)) { return ML_FAILURE; }

@@ -4,6 +4,7 @@
 #include <MemeCore/ITrackable.hpp>
 #include <MemeCore/IReadable.hpp>
 #include <MemeCore/IWritable.hpp>
+#include <MemeCore/IStream.hpp>
 #include <MemeCore/List.hpp>
 
 namespace ml
@@ -66,6 +67,15 @@ namespace ml
 		inline const_reverse_iterator	rend()	  const	{ return m_data.rend();	  }
 		inline const_reverse_iterator	crbegin() const	{ return m_data.crbegin(); }
 		inline const_reverse_iterator	crend()	  const	{ return m_data.crend();	  }
+
+
+		template <class T>
+		inline std::istream & operator>>(T & t)
+		{
+			SStream ss = to_stream();
+			ss >> t;
+			return ss;
+		}
 
 	private:
 		Data m_data;

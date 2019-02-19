@@ -128,6 +128,11 @@ namespace DEMO
 				return ml::Var().intValue(ml::Debug::system(args.pop_front().str().c_str()));
 			} });
 
+			ML_Interpreter.addCmd({ "exit", [](ml::Args & args)
+			{
+				return ml::Var().voidValue();
+			} });
+
 			ML_Interpreter.addCmd({ "help", [](ml::Args & args)
 			{
 				for (auto n : ML_Interpreter.cmdNames())

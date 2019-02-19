@@ -33,10 +33,10 @@ namespace ml
 
 	bool Manifest::loadFromFile(const String & filename)
 	{
-		SStream ss;
-		if (ML_FileSystem.getFileContents(filename, ss))
+		File file;
+		if (file.loadFromFile(filename))
 		{
-			ss >> (*this);
+			file >> (*this);
 			return true;
 		}
 		return false;
@@ -120,6 +120,7 @@ namespace ml
 			else if (parseLine(line, "font:",	ss)) { loadData("fonts",	ss); }
 			else if (parseLine(line, "image:",	ss)) { loadData("images",	ss); }
 			else if (parseLine(line, "mesh:",	ss)) { loadData("meshes",	ss); }
+			else if (parseLine(line, "mat:",	ss)) { loadData("mats",		ss); }
 			else if (parseLine(line, "model:",	ss)) { loadData("models",	ss); }
 			else if (parseLine(line, "shader:",	ss)) { loadData("shaders",	ss); }
 			else if (parseLine(line, "skybox:",	ss)) { loadData("skyboxes",	ss); }

@@ -4,7 +4,7 @@
 #include <MemeGraphics/IDrawable.hpp>
 #include <MemeGraphics/ITransformable.hpp>
 #include <MemeGraphics/Mesh.hpp>
-#include <MemeGraphics/Shader.hpp>
+#include <MemeGraphics/Material.hpp>
 #include <MemeGraphics/BufferLayout.hpp>
 #include <MemeGraphics/VertexArray.hpp>
 #include <MemeGraphics/VertexBuffer.hpp>

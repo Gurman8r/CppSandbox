@@ -26,6 +26,7 @@ namespace ml
 	public:
 		using FontMap		= ResourceMap<Font>;
 		using ImageMap		= ResourceMap<Image>;
+		using MaterialMap	= ResourceMap<Material>;
 		using MeshMap		= ResourceMap<Mesh>;
 		using ModelMap		= ResourceMap<Model>;
 		using SkyboxMap		= ResourceMap<Skybox>;
@@ -59,6 +60,7 @@ namespace ml
 	public:
 		FontMap		fonts;
 		ImageMap	images;
+		MaterialMap mats;
 		MeshMap		meshes;
 		ModelMap	models;
 		SkyboxMap	skyboxes;

@@ -9,8 +9,7 @@ namespace ml
 		: public ITrackable
 	{
 	public:
-		using CharBuffer = std::vector<char>;
-		using const_iterator = CharBuffer::const_iterator;
+		using const_iterator = typename List<char>::const_iterator;
 
 		enum Flags : uint16_t
 		{
@@ -25,12 +24,12 @@ namespace ml
 		Lexer();
 		~Lexer();
 
-		CharBuffer	getBuffer() const;
-		String getString() const;
+		List<char>	getBuffer() const;
+		String		getString() const;
 
-		Lexer&		clearBuffer();
-		Lexer&		setBuffer(const String& value);
-		Lexer&		setBuffer(const CharBuffer& value);
+		Lexer &		clearBuffer();
+		Lexer &		setBuffer(const String & value);
+		Lexer &		setBuffer(const List<char> & value);
 
 		TokenList	splitTokens() const;
 
@@ -44,7 +43,7 @@ namespace ml
 
 	private:
 		Flags		m_flags;
-		CharBuffer	m_buffer;
+		List<char>	m_buffer;
 	};
 }
 

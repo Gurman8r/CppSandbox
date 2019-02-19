@@ -23,8 +23,8 @@ namespace ml
 		inline Var operator()(fn_args args)	{ return m_func(args); }
 
 	private:
-		String m_name;
-		fn_type		m_func;
+		String	m_name;
+		fn_type	m_func;
 	};
 }
 

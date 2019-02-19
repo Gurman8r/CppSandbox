@@ -1,4 +1,5 @@
 #include <MemeCore/Debug.hpp>
+#include <MemeCore/Thread.hpp>
 
 namespace ml
 {
@@ -28,20 +29,23 @@ namespace ml
 
 	int32_t	Debug::system(const char * cmd)
 	{
-		std::array<char, 128> buffer;
-		std::shared_ptr<FILE> file(_popen(cmd, "r"), _pclose);
-		if (file)
+		ml::Thread([&]() 
 		{
-			while (!feof(file.get()))
+			std::array<char, 128> buffer;
+			std::shared_ptr<FILE> file(_popen(cmd, "r"), _pclose);
+			if (file)
 			{
-				if (fgets(buffer.data(), 128, file.get()) != nullptr)
+				while (!feof(file.get()))
 				{
-					cout << String(buffer.data());
+					if (fgets(buffer.data(), 128, file.get()) != nullptr)
+					{
+						cout << String(buffer.data());
+					}	
 				}
 			}
-			return EXIT_SUCCESS;
-		}
-		return EXIT_FAILURE;
+		}).launch().join();
+		
+		return EXIT_SUCCESS;
 	}
 
 	void Debug::terminate()

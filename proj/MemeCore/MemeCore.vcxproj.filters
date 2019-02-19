@@ -210,6 +210,9 @@
     <ClInclude Include="..\..\include\MemeCore\ML_Types.hpp">
       <Filter>Header Files\STD</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\IStream.hpp">
+      <Filter>Header Files\STD</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeCore\EventSystem.cpp">

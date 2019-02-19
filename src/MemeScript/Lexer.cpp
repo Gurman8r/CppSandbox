@@ -24,7 +24,7 @@ namespace ml
 	}
 
 
-	Lexer::CharBuffer Lexer::getBuffer() const
+	List<char> Lexer::getBuffer() const
 	{
 		return m_buffer;
 	}
@@ -53,7 +53,7 @@ namespace ml
 		return (*this);
 	}
 
-	Lexer& Lexer::setBuffer(const CharBuffer & value)
+	Lexer& Lexer::setBuffer(const List<char> & value)
 	{
 		m_buffer = value;
 		return (*this);
@@ -64,7 +64,7 @@ namespace ml
 	{
 		TokenList tokens;
 
-		CharBuffer::const_iterator it;
+		List<char>::const_iterator it;
 		for (it = m_buffer.begin(); it != m_buffer.end(); it++)
 		{
 			String text;
