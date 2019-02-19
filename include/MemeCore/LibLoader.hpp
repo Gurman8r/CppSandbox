@@ -4,7 +4,7 @@
 #include <MemeCore/ISingleton.hpp>
 #include <MemeCore/ITrackable.hpp>
 
-#define ML_LibLoader ml::LibLoader::getInstance()
+#define ML_Lib ml::LibLoader::getInstance()
 
 namespace ml
 {
