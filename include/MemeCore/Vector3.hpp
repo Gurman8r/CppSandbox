@@ -56,6 +56,11 @@ namespace ml
 			return (*this) = cross((*this), other);
 		}
 
+		inline self_type & project(const self_type & other)
+		{
+			return (*this) = project((*this), other);
+		}
+
 		inline static self_type cross(const self_type & a, const self_type & b)
 		{
 			// (y - z) - (z - y)
@@ -65,6 +70,11 @@ namespace ml
 				(a[1] * b[2]) - (a[2] * b[1]),
 				(a[2] * b[0]) - (a[0] * b[2]),
 				(a[0] * b[1]) - (a[1] * b[0]));
+		}
+
+		inline static self_type project(const self_type & a, const self_type & b)
+		{
+			return self_type();
 		}
 
 	public:

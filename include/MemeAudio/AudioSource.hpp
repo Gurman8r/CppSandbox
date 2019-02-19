@@ -17,7 +17,7 @@ namespace ml
 		~AudioSource();
 
 		AudioSource & clean();
-		AudioSource & create();
+		AudioSource & create(size_t count);
 
 	private:
 		size_t m_count;

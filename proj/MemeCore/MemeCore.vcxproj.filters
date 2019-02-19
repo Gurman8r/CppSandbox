@@ -168,9 +168,6 @@
     <ClInclude Include="..\..\include\MemeCore\OStream.hpp">
       <Filter>Header Files\STD</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\IntTypes.hpp">
-      <Filter>Header Files\STD</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Directory.hpp">
       <Filter>Header Files\FS</Filter>
     </ClInclude>
@@ -208,6 +205,9 @@
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\CString.hpp">
+      <Filter>Header Files\STD</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\ML_Types.hpp">
       <Filter>Header Files\STD</Filter>
     </ClInclude>
   </ItemGroup>

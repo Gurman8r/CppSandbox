@@ -174,7 +174,7 @@
     <ClInclude Include="..\..\include\MemeCore\Console.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Debug.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Entity.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\IntTypes.hpp" />
+    <ClInclude Include="..\..\include\MemeCore\ML_Types.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Event.hpp" />
     <ClInclude Include="..\..\include\MemeCore\IEventListener.hpp" />
     <ClInclude Include="..\..\include\MemeCore\EventSystem.hpp" />

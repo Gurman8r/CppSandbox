@@ -49,7 +49,12 @@ namespace ml
 		template <class T>
 		inline const T & get_value() const
 		{
-			return (*get_pointer<T>());
+			if (const T * p = get_pointer<T>())
+			{
+				return (*get_pointer<T>());
+			}
+			static const T temp = T();
+			return temp;
 		}
 
 	public:

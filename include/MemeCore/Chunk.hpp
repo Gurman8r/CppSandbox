@@ -2,7 +2,7 @@
 #define _CHUNK_HPP_
 
 #include <MemeCore/Export.hpp>
-#include <MemeCore/IntTypes.hpp>
+#include <MemeCore/ML_Types.hpp>
 
 namespace ml
 {

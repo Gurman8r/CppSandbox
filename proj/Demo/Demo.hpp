@@ -23,6 +23,7 @@
 #include <MemeScript/Interpreter.hpp>
 #include <MemeEditor/Editor.hpp>
 #include <MemePhysics/Rigidbody.hpp>
+#include <MemePhysics/Particle.hpp>
 
 #include "DemoEvents.hpp"
 #include "Settings.hpp"
@@ -133,6 +134,11 @@ namespace DEMO
 			//ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
 		};
 		size_t m_selected = 0;
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		ml::Rigidbody	m_rigidbody;
+		ml::Particle	m_particle;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	};

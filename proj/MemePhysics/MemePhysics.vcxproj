@@ -159,9 +159,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemePhysics\Export.hpp" />
+    <ClInclude Include="..\..\include\MemePhysics\Physics.hpp" />
+    <ClInclude Include="..\..\include\MemePhysics\Particle.hpp" />
     <ClInclude Include="..\..\include\MemePhysics\Rigidbody.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\MemePhysics\Physics.cpp" />
+    <ClCompile Include="..\..\src\MemePhysics\Particle.cpp" />
     <ClCompile Include="..\..\src\MemePhysics\Rigidbody.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

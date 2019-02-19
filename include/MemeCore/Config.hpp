@@ -60,6 +60,11 @@
 	#endif
 #endif
 
+#if !defined(ML_x86) && !defined(ML_x64)
+#error Unknown CPU Type
+#endif
+
+
 //	Export / Import Macro
 /* * * * * * * * * * * * * * * * * * * */
 #if !defined(ML_STATIC)

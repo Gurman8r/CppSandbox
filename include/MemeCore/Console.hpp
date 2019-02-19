@@ -1,7 +1,7 @@
 #ifndef _CONSOLE_UTILITY_HPP_
 #define _CONSOLE_UTILITY_HPP_
 
-#include <MemeCore/IntTypes.hpp>
+#include <MemeCore/ML_Types.hpp>
 #include <MemeCore/IO.hpp>
 
 namespace ml

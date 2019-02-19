@@ -17,7 +17,7 @@ namespace ml
 		~AudioBuffer();
 
 		AudioBuffer & clean();
-		AudioBuffer & create();
+		AudioBuffer & create(size_t count);
 
 	private:
 		size_t m_count;

@@ -10,7 +10,7 @@ namespace ml
 	}
 	AudioSource::AudioSource(const AudioSource & copy)
 		: IHandle(copy)
-		,m_count(copy.m_count)
+		, m_count(copy.m_count)
 	{
 	}
 	AudioSource::~AudioSource()
@@ -22,16 +22,16 @@ namespace ml
 	{
 		if ((*this))
 		{
-
+			OpenAL::deleteBuffers(m_count, (*this));
 		}
 		return (*this);
 	}
 
-	AudioSource & AudioSource::create()
+	AudioSource & AudioSource::create(size_t count)
 	{
-		if (!(*this) && (get_ref() = OpenAL::genSources(1)))
+		if (!(*this) && (get_ref() = OpenAL::genSources(count)))
 		{
-
+			m_count = count;
 		}
 		return (*this);
 	}
