@@ -24,7 +24,8 @@ __________
 	- Run the OpenAL SDK installer "/thirdparty/tools/oalinst.exe"
 	- Try updating your graphics drivers.
 
-	
+
+Docs
 __________
-https://docs.google.com/document/d/1AGI_7HTSVHGOlaVBpLVQISlTbUbD0dpTw3lY-CR2HMA/edit?usp=sharing	
-https://i.imgur.com/gpnXgHE.jpg
+- https://docs.google.com/document/d/1AGI_7HTSVHGOlaVBpLVQISlTbUbD0dpTw3lY-CR2HMA/edit?usp=sharing	
+- https://i.imgur.com/gpnXgHE.jpg
