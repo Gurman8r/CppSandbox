@@ -1,7 +1,7 @@
 #ifndef _PARTICLE_HPP_
 #define _PARTICLE_HPP_
 
-#include <MemePhysics/Force.hpp>
+#include <MemePhysics/Physics.hpp>
 
 namespace ml
 {
