@@ -61,6 +61,16 @@ namespace ml
 		}
 
 		template <class T>
+		inline bool loadData(const String & path, const file_map & files)
+		{
+			if (data_type * data = find<T>())
+			{
+				return true;
+			}
+			return false;
+		}
+
+		template <class T>
 		inline data_type * find()
 		{
 			map_type::iterator it;

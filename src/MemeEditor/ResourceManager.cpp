@@ -62,6 +62,8 @@ namespace ml
 
 	int32_t ResourceManager::loadManifestData(const String & type, const String & path, const file_map & files)
 	{
+		loadData<Material>(path, files);
+
 		if (type.empty())
 		{
 			return ML_WARNING;
