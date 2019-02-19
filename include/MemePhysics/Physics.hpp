@@ -12,7 +12,7 @@ namespace ml
 		static const vec3f Gravity;
 
 	public:
-		class Force
+		class ML_PHYSICS_API Force
 		{
 		public:
 			static const vec3f & gravity(const vec3f & up, const float mass);

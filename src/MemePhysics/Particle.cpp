@@ -14,6 +14,25 @@ namespace ml
 	{
 	}
 
+	Particle::Particle(const vec3f & pos, const float mass)
+		: pos		(pos)
+		, vel		(vec3f::Zero)
+		, acc		(vec3f::Zero)
+		, force		(vec3f::Zero)
+	{
+		setMass(mass);
+	}
+
+	Particle::Particle(const Particle & copy)
+		: pos		(copy.pos)
+		, vel		(copy.vel)
+		, acc		(copy.acc)
+		, force		(copy.force)
+		, mass		(copy.mass)
+		, massInv	(copy.massInv)
+	{
+	}
+
 	Particle::~Particle()
 	{
 	}
@@ -22,7 +41,7 @@ namespace ml
 
 	bool Particle::isMoving() const
 	{
-		return vel.sqrMagnitude() != 0.0f;
+		return (vel.sqrMagnitude() != 0.0f);
 	}
 
 	Particle & Particle::applyForce(const vec3f & value)
@@ -45,8 +64,9 @@ namespace ml
 
 	Particle & Particle::setMass(float value)
 	{
+		if (value == 0.0f) { value = FLT_MIN; }
 		mass = value;
-		massInv = 1.0f / value;
+		massInv = (1.0f / value);
 		return (*this);
 	}
 

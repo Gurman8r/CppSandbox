@@ -8,7 +8,6 @@ namespace ml
 	struct ML_PHYSICS_API Particle
 		: public ITrackable
 	{
-
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		vec3f pos;
@@ -21,6 +20,8 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		Particle();
+		Particle(const vec3f & pos, const float mass);
+		Particle(const Particle & copy);
 		~Particle();
 
 		/* * * * * * * * * * * * * * * * * * * * */

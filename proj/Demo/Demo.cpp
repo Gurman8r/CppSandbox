@@ -571,6 +571,7 @@ namespace DEMO
 			ml::vec3f right = (fwd.cross(ml::vec3f::Up) * ml::vec3f(1, 0, 1)).normalized();
 			m_camPos += right * speed;
 		}
+
 	}
 	
 	void Demo::onDraw(const DrawEvent & ev)

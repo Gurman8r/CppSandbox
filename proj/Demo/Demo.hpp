@@ -89,7 +89,7 @@ namespace DEMO
 
 		ml::Transform	m_persp;
 		ml::Transform	m_ortho;
-		ml::Camera		m_camera;
+		ml::Transform	m_camera;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
