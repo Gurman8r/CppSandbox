@@ -99,7 +99,7 @@ namespace DEMO
 		ml::vec3f	m_camPos		= { 0, 1, 10 };
 		float		m_camSpd		= 1.f;
 		
-		ml::vec3f	m_lightPos		= { 0, 1, 15 };
+		ml::vec3f	m_lightPos		= { 0, 1, 30 };
 		ml::vec4f	m_lightCol		= ml::Color::LightYellow;
 		float		m_ambient		= 0.01f;
 		float		m_specular		= 0.5f;

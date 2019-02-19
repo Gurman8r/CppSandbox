@@ -52,7 +52,7 @@ namespace ml
 		return (*this);
 	}
 
-	RenderTarget & RenderTarget::draw(VAO * vao, const VBO * vbo, IBO * ibo)
+	RenderTarget & RenderTarget::draw(const VAO * vao, const VBO * vbo, const IBO * ibo)
 	{
 		if (vao && vbo && ibo)
 		{
@@ -69,7 +69,7 @@ namespace ml
 		return (*this);
 	}
 	
-	RenderTarget & RenderTarget::draw(VAO * vao, const VBO * vbo)
+	RenderTarget & RenderTarget::draw(const VAO * vao, const VBO * vbo)
 	{
 		if (vao && vbo)
 		{

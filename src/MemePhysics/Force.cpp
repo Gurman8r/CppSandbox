@@ -39,9 +39,9 @@ namespace ml
 
 	const vec3f Force::drag(const vec3f & vel, const vec3f & fluidVel, const float fluidDensity, const float area, const float coeff)
 	{
-		const vec3f u = ((fluidVel - vel) * (fluidVel - vel));
+		const vec3f u = (fluidVel - vel);
 
-		return (u * fluidDensity * area * coeff * 2.0f);
+		return ((u * u) * fluidDensity * area * coeff * 2.0f);
 	}
 
 	const vec3f Force::spring(const vec3f & pos, const vec3f & anchor, const float rest, const float coeff)
