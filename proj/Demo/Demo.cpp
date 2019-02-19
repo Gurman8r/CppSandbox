@@ -123,6 +123,11 @@ namespace DEMO
 
 			// Load Commands
 
+			ML_Interpreter.addCmd({ "/", [](ml::Args & args)
+			{
+				return ml::Var().intValue(ml::Debug::system(args.pop_front().str().c_str()));
+			} });
+
 			ML_Interpreter.addCmd({ "help", [](ml::Args & args)
 			{
 				for (auto n : ML_Interpreter.cmdNames())
@@ -195,11 +200,6 @@ namespace DEMO
 			ML_Interpreter.addCmd({ "exec", [](ml::Args & args)
 			{
 				return ML_Interpreter.execFile(args.pop_front().front());
-			} });
-
-			ML_Interpreter.addCmd({ "system", [](ml::Args & args)
-			{
-				return ml::Var().intValue(system(args.pop_front().str().c_str()));
 			} });
 
 			ML_Interpreter.addCmd({ "ls", [](ml::Args & args)
