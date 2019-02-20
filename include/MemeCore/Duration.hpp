@@ -97,21 +97,9 @@ namespace ml
 			return millis() < other;
 		}
 
-		inline void serialize(std::ostream & out) const override
-		{
-			out << (minutes()) / 10 % 10
-				<< (minutes()) % 10
-				<< ':'
-				<< (seconds() % 60) / 10 % 10
-				<< (seconds() % 60) % 10
-				<< ':'
-				<< (millis()) % 1000 / 100
-				<< (millis()) % 100 / 10;
-		}
-		inline void deserialize(std::istream & in) override
-		{
-			in >> m_ms;
-		}
+	public:
+		void serialize(std::ostream & out) const override;
+		void deserialize(std::istream & in) override;
 		
 	};
 

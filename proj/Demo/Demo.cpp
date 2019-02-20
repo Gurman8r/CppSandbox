@@ -399,7 +399,7 @@ namespace DEMO
 			this->setPosition((ml::VideoMode::desktop().size - this->size()) / 2);
 			this->setViewport(ml::vec2i::Zero, this->getFramebufferSize());
 
-			if (ml::Debug::log("Initializing ImGui..."))
+			if (ml::Debug::log("Dear ImGui..."))
 			{
 				IMGUI_CHECKVERSION();
 				ImGui::CreateContext();
@@ -412,31 +412,22 @@ namespace DEMO
 				}
 			}
 
-			if (ml::Debug::log("Initializing OpenAL..."))
+			if (!ml::OpenAL::init())
 			{
-				if (!ml::OpenAL::init())
-				{
-					ml::Debug::setError(ml::Debug::logError("Failed Loading OpenAL"));
-					return;
-				}
+				ml::Debug::setError(ml::Debug::logError("Failed Loading OpenAL"));
+				return;
 			}
 
-			if (ml::Debug::log("Initializing Resources..."))
+			if (ml::Debug::log("Loading Manifest...") && !loadResources())
 			{
-				if (!loadResources())
-				{
-					ml::Debug::setError(ml::Debug::logError("Failed Loading Resources"));
-					return;
-				}
+				ml::Debug::setError(ml::Debug::logError("Failed Loading Resources"));
+				return;
 			}
 
-			if (ml::Debug::log("Initializing Network..."))
+			if (!loadNetwork())
 			{
-				if (!loadNetwork())
-				{
-					ml::Debug::setError(ml::Debug::logError("Failed Loading Network"));
-					return;
-				}
+				ml::Debug::setError(ml::Debug::logError("Failed Loading Network"));
+				return;
 			}
 		}
 		else
