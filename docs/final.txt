@@ -15,14 +15,18 @@ Purpose:
 /* * * * * * * * * * * * * * * * * * * * */
 
 Motivation:
-	We were taught physics in C, so we feel it would be a good learning opportunity to reimplement animal3d's physics in C++.
+	Our main motivation is learning for the sake of learning.
+
+	We were taught physics in C, so we feel it would be a good learning opportunity to reimplement A3's physics in C++.
+
+	We feel that impementing a physics sandbox within our own custom framework will be a good way to further our understanding of game physics and engine design.
 
 /* * * * * * * * * * * * * * * * * * * * */
 
 Scope:
 	ML already has graphics/gui code, the base framework is mostly complete.
 	
-	We will need to implement some math functions, port animal3D's physics code, and build an interface.
+	We will need to implement some math functions, port A3's physics code, and build an interface.
 	
 	C++ has operator overloading, so porting A3 should not be too difficult.
 	
