@@ -37,7 +37,7 @@ int32_t main(int32_t argc, char ** argv)
 			|| ml::Debug::pause(EXIT_FAILURE);
 	}
 
-	// Create Program
+	// Load Program
 	if (ml::RenderWindow * program = exampleProgramLoader("./Placeholder_Debug_x86.dll"))
 	{
 		// Enter
