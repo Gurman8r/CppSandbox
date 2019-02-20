@@ -1,9 +1,29 @@
-High Concept:
+/* * * * * * * * * * * * * * * * * * * * */
+
+| Champlain College
+| EGP425 | SP2019
+| Breen  | Gurman
+| Game Physics Final Proposal
+
+/* * * * * * * * * * * * * * * * * * * * */
+
+Purpose:
 	To create a physics sandbox in MemeLib (ML).
+
+/* * * * * * * * * * * * * * * * * * * * */
 
 Motivation:
 	We were taught physics in C, so we feel it would be a good learning opportunity to reimplement animal3d's physics in C++.
 
+/* * * * * * * * * * * * * * * * * * * * */
+
 Scope:
 	ML already has graphics/gui code, the base framework is mostly complete.
-	We need to implement some math functions, port animal3D's physics code, and build an interface.
+	
+	We will need to implement some math functions, port animal3D's physics code, and build an interface.
+	
+	C++ has operator overloading, so porting A3 shouldn't be too difficult.
+	
+	ML is single threaded, so a physics thread may need to be implemented.
+
+/* * * * * * * * * * * * * * * * * * * * */
