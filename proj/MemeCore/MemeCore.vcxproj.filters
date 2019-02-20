@@ -19,9 +19,6 @@
     <Filter Include="Source Files\Utility">
       <UniqueIdentifier>{53169a05-2aa2-4f63-946b-1f27b92afd23}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Components">
-      <UniqueIdentifier>{13ee360c-6001-4db0-9640-32f0da0d317c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Time">
       <UniqueIdentifier>{035f9e6c-7836-4ba6-91e0-7f95ab678938}</UniqueIdentifier>
     </Filter>
@@ -63,15 +60,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\MemeCore\Component.hpp">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\ComponentMap.hpp">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Entity.hpp">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Event.hpp">
       <Filter>Header Files\Event System</Filter>
     </ClInclude>
@@ -215,6 +203,15 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\CoreEvents.hpp">
       <Filter>Header Files\Event System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\ComponentMap.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\IEntity.hpp">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\IComponent.hpp">
+      <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

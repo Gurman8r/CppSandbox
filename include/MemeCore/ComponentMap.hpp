@@ -1,10 +1,10 @@
-#ifndef _COMPONENT_POOL_HPP_
-#define _COMPONENT_POOL_HPP_
+#ifndef _COMPONENT_MAP_HPP_
+#define _COMPONENT_MAP_HPP_
 
-#include <MemeCore/Component.hpp>
+#include <MemeCore/IComponent.hpp>
 
 #define assert_typeof_component(T) \
-static_assert(std::is_base_of<ml::Component, T>::value, "Type must derive ml::Component")
+static_assert(std::is_base_of<ml::IComponent, T>::value, "Type must derive ml::IComponent")
 
 namespace ml
 {
@@ -13,7 +13,7 @@ namespace ml
 	{
 	public:
 		using key_type		= const std::type_info *;
-		using map_type		= HashMap<key_type, Component *>;
+		using map_type		= HashMap<key_type, IComponent *>;
 		using iterator		= typename map_type::iterator;
 		using const_iterator= typename map_type::const_iterator;
 
@@ -126,4 +126,4 @@ namespace ml
 	};
 }
 
-#endif // !_COMPONENT_POOL_HPP_
+#endif // !_COMPONENT_MAP_HPP_

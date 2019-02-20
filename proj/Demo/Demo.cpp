@@ -350,13 +350,10 @@ namespace DEMO
 			// Run Script
 			if (!SETTINGS.scrFile.empty())
 			{
-				int32_t err = ML_Interpreter.execFile(
-					SETTINGS.pathTo(SETTINGS.scrPath + SETTINGS.scrFile)
-				)
-				? ML_SUCCESS
-				: ML_FAILURE;
-
-				ml::Debug::setError(err);
+				ml::Debug::setError(
+					ML_Interpreter.execFile(SETTINGS.pathTo(SETTINGS.scrPath + SETTINGS.scrFile))
+						? ML_SUCCESS
+						: ML_FAILURE);
 			}
 			else
 			{

@@ -62,8 +62,8 @@ int32_t main(int32_t argc, char ** argv)
 		ML_EventSystem.fireEvent(DEMO::StartEvent());
 
 		// Loop
-		ml::Timer		loopTimer;
-		ml::Duration	elapsed;
+		ml::Timer	 loopTimer;
+		ml::Duration elapsed;
 		do
 		{	// Begin Step
 			loopTimer.start();
