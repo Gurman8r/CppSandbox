@@ -75,7 +75,9 @@ namespace DEMO
 
 		ml::VAO m_vaoText;
 		ml::VBO m_vboText;
-		ml::HashMap<ml::String, ml::Text> m_text;
+
+		using TextMap = ml::HashMap<ml::String, ml::Text>;
+		TextMap m_text;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 

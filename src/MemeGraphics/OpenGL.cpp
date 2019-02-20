@@ -192,20 +192,16 @@ namespace ml
 		return temp;
 	}
 
-	bool OpenGL::enable(uint32_t value, bool check)
+	bool OpenGL::enable(uint32_t value)
 	{
 		glCheck(glEnable(value));
-		return check
-			? isEnabled(value)
-			: true;
+		return isEnabled(value);
 	}
 
-	bool OpenGL::disable(uint32_t value, bool check)
+	bool OpenGL::disable(uint32_t value)
 	{
 		glCheck(glDisable(value));
-		return check
-			? !isEnabled(value)
-			: true;
+		return !isEnabled(value);
 	}
 
 

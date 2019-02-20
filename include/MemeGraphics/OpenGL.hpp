@@ -36,8 +36,8 @@ namespace ml
 
 	public: // Flags
 		static bool		isEnabled(uint32_t value);
-		static bool		enable(uint32_t value, bool check = false);
-		static bool		disable(uint32_t value, bool check = false);
+		static bool		enable(uint32_t value);
+		static bool		disable(uint32_t value);
 		
 	public: // Get
 		static CString	getString(uint32_t name);

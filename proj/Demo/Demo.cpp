@@ -493,15 +493,6 @@ namespace DEMO
 			.translate({ 0.0f, -2.5f, 0.0f })
 			.scale({ 12.5, 0.25f, 12.5 });
 
-		// Static Text
-		m_text["static"]
-			.setFont(ML_Res.fonts.get("minecraft"))
-			.setFontSize(72)
-			.setScale(ml::vec2f::One)
-			.setPosition({ 32, 128 })
-			.setColor(ml::Color::White)
-			.setString("there is no need\nto be upset");
-
 		// Threads
 		m_thread = new ml::Thread([&]()
 		{
@@ -526,13 +517,10 @@ namespace DEMO
 	void Demo::onUpdate(const UpdateEvent & ev)
 	{
 		// Update Title
-		this->setTitle(ml::String::Format(
-			"{0} | {1} | {2} ({3} fps) | {4}",
+		this->setTitle(ml::String::Format("{0} | {1} ({2} fps)",
 			SETTINGS.title,
-			ML_Time.elapsed(),
 			ev.elapsed.delta(),
-			ML_Time.calculateFPS(ev.elapsed.delta()),
-			this->getCursorPos()
+			ML_Time.calculateFPS(ev.elapsed.delta())
 		));
 
 		// Update Network
@@ -579,6 +567,51 @@ namespace DEMO
 			ml::vec3f fwd = (look - m_camPos);
 			ml::vec3f right = (fwd.cross(ml::vec3f::Up) * ml::vec3f(1, 0, 1)).normalized();
 			m_camPos += right * speed;
+		}
+
+		// Update Text
+		{
+			m_text["message"]
+				.setFont(ML_Res.fonts.get("minecraft"))
+				.setFontSize(72)
+				.setPosition({ 32, 128 })
+				.setString("there is no need\nto be upset");
+
+			static const uint32_t  fontSize = 24;
+			static const ml::vec2f offset = { 0.0f, -(float)fontSize };
+			static const ml::vec2f origin = { (float)fontSize, (float)this->height() - 64 };
+
+			ml::vec2f pos  = { 0 };
+			size_t	  line = 0;
+
+			auto nextLine = [&]() { return (pos = origin + (offset * (float)(line++))); };
+
+			m_text["fps"]
+				.setFont(ML_Res.fonts.get("consolas"))
+				.setFontSize(fontSize)
+				.setPosition(nextLine())
+				.setString(ml::String::Format("{0} ({1} fps)",
+					ev.elapsed.delta(),
+					ML_Time.calculateFPS(ev.elapsed.delta())));
+
+			m_text["time"]
+				.setFont(ML_Res.fonts.get("consolas"))
+				.setFontSize(fontSize)
+				.setPosition(nextLine())
+				.setString(ml::String::Format("{0}",
+					ML_Time.elapsed()));
+
+			m_text["cursor"]
+				.setFont(ML_Res.fonts.get("consolas"))
+				.setFontSize(fontSize)
+				.setPosition(nextLine())
+				.setString(ml::String::Format("{0}",
+					this->getCursorPos()));
+
+			for (auto pair : m_text)
+			{
+				pair.second.update();
+			}
 		}
 
 	}
@@ -736,6 +769,7 @@ namespace DEMO
 			ml::OpenGL::disable(ml::GL::DepthTest);
 
 			// Geometry
+			if (const ml::Shader * shader = ML_Res.shaders.get("geometry"))
 			{
 				static ml::UniformSet uniforms = {
 					ml::Uniform("u_color",		ml::Uniform::Vec4,	&m_lineColor),
@@ -744,11 +778,8 @@ namespace DEMO
 					ml::Uniform("u_lineSize",	ml::Uniform::Float, &m_lineSize),
 					ml::Uniform("u_lineSamples",ml::Uniform::Int,	&m_lineSamples),
 				};
-				if (const ml::Shader * shader = ML_Res.shaders.get("geometry"))
-				{
-					shader->setUniforms(uniforms);
-					shader->bind();
-				}
+				shader->setUniforms(uniforms);
+				shader->bind();
 				ml::OpenGL::drawArrays(ml::GL::Points, 0, 4);
 			}
 
@@ -766,30 +797,14 @@ namespace DEMO
 					ML_Res.shaders.get("text"),
 					&uniforms);
 
-				static const uint32_t  fontSize = 24;
-				static const ml::vec2f offset = { 0.0f, -(float)fontSize };
-				static const ml::vec2f origin = { (float)fontSize, (float)this->height() - 64 };
-
-				// Dynamic Text
-				size_t i = 0;
-				for (auto pair : ML_Res.fonts.getAll())
+				TextMap::const_iterator it;
+				for (it = m_text.begin(); it != m_text.end(); it++)
 				{
-					this->draw(m_text["dynamic"]
-						.setFont(pair.second)
-						.setFontSize(fontSize)
-						.setScale(ml::vec2f::One)
-						.setPosition(origin + (offset * (float)(i + 1)))
-						.setColor(ml::Color::White)
-						.setString(pair.second->to_str())// + " | " + this->title())
-					, batch);
-					i++;
+					this->draw(it->second, batch);
 				}
-
-				// Static Text
-				this->draw(m_text["static"], batch);
 			}
 
-			// SPRITE
+			// Sprite
 			if (const ml::Texture * texture = ML_Res.textures.get("icon"))
 			{
 				static ml::UniformSet uniforms = {
@@ -803,14 +818,14 @@ namespace DEMO
 					ML_Res.shaders.get("sprites"),
 					&uniforms);
 
-				auto drawSprite = [&](const ml::vec2f & pos, const ml::vec2f & scale, const float rot, const ml::vec2f & origin = { 0.5f })
+				auto drawSprite = [&](const ml::vec2f & pos, const ml::vec2f & scale, const float rot = 0.0f, const ml::vec2f & origin = { 0.5f })
 				{
 					ml::vec2f size = (ml::vec2f)texture->size() * scale;
 					ml::vec2f dest = (pos - size * origin);
 					this->draw(ml::Shapes::genQuadFloats({ dest, size }), batch);
 				};
 
-				drawSprite(((ml::vec2f)(this->size()) * ml::vec2f(0.95f, 0.075f)), { 0.5f }, 0.0f);
+				drawSprite(((ml::vec2f)(this->size()) * ml::vec2f(0.95f, 0.075f)), { 0.5f });
 			}
 		}
 		m_fbo.unbind();
@@ -1028,7 +1043,7 @@ namespace DEMO
 					ImGui::SameLine();
 					ImGui::BeginGroup();
 					{
-						const size_t count = m_uniforms.size();
+						const int32_t count = (int32_t)m_uniforms.size();
 
 						ImGui::Text("Uniforms:");
 

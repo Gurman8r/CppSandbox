@@ -105,8 +105,8 @@ namespace ml
 				<< (seconds() % 60) / 10 % 10
 				<< (seconds() % 60) % 10
 				<< ':'
-				<< (millis()) / 10 % 10
-				<< (millis()) % 10;
+				<< (millis()) % 1000 / 100
+				<< (millis()) % 100 / 10;
 		}
 		inline void deserialize(std::istream & in) override
 		{

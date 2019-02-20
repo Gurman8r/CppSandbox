@@ -38,7 +38,7 @@ namespace ml
 
 			if (m_context.srgbCapable)
 			{
-				if (!OpenGL::enable(GL::FramebufferSRGB, true))
+				if (!OpenGL::enable(GL::FramebufferSRGB))
 				{
 					ml::Debug::logWarning("Failed to enable Framebuffer SRGB");
 					m_context.srgbCapable = false;
