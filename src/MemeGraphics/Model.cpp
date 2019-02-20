@@ -42,6 +42,10 @@ namespace ml
 
 	bool Model::loadFromMemory(const Mesh & mesh)
 	{
+		if (!mesh.indices().empty())
+		{
+			return loadFromMemory(mesh.contiguous(), mesh.indices());
+		}
 		return loadFromMemory(mesh.contiguous());
 	}
 

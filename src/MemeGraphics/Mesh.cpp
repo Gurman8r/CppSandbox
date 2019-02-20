@@ -6,18 +6,28 @@ namespace ml
 {
 	Mesh::Mesh()
 		: m_vertices	()
+		, m_indices		()
 		, m_contiguous	()
 	{
 	}
 
 	Mesh::Mesh(const VertexList & vertices)
 		: m_vertices	(vertices)
+		, m_indices		()
+		, m_contiguous	(vertices.contiguous())
+	{
+	}
+
+	Mesh::Mesh(const VertexList & vertices, const IndexList & indices)
+		: m_vertices	(vertices)
+		, m_indices		(indices)
 		, m_contiguous	(vertices.contiguous())
 	{
 	}
 
 	Mesh::Mesh(const Mesh & copy)
 		: m_vertices	(copy.m_vertices)
+		, m_indices		(copy.m_indices)
 		, m_contiguous	(copy.m_contiguous)
 	{
 	}
@@ -39,6 +49,30 @@ namespace ml
 		if (ML_FileSystem.getFileContents(filename, file))
 		{
 			file >> (*this);
+			return true;
+		}
+		return false;
+	}
+
+	bool Mesh::loadFromMemory(const VertexList & vertices)
+	{
+		if (!vertices.empty())
+		{
+			m_indices.clear();
+			m_vertices = vertices;
+			m_contiguous = m_vertices.contiguous();
+			return true;
+		}
+		return false;
+	}
+
+	bool Mesh::loadFromMemory(const VertexList & vertices, const IndexList & indices)
+	{
+		if (!vertices.empty() && !indices.empty())
+		{
+			m_indices = indices;
+			m_vertices = vertices;
+			m_contiguous = m_vertices.contiguous();
 			return true;
 		}
 		return false;
@@ -144,6 +178,8 @@ namespace ml
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
+
+		m_indices.clear();
 		
 		m_vertices.resize(vi.size());
 

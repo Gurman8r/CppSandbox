@@ -9,6 +9,7 @@
 #include <MemeCore/Thread.hpp>
 #include <MemeEditor/Editor.hpp>
 #include <MemeGraphics/Text.hpp>
+#include <MemeGraphics/Effect.hpp>
 #include <MemeGraphics/RenderWindow.hpp>
 #include <MemeGraphics/Shapes.hpp>
 #include <MemeGraphics/VertexBuffer.hpp>
@@ -62,8 +63,7 @@ namespace DEMO
 	private:
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		ml::FBO m_fbo;
-		ml::RBO m_rbo;
+		
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
@@ -78,6 +78,9 @@ namespace DEMO
 
 		using TextMap = ml::HashMap<ml::String, ml::Text>;
 		TextMap m_text;
+
+		using EffectMap = ml::HashMap<ml::String, ml::Effect>;
+		EffectMap m_effects;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 

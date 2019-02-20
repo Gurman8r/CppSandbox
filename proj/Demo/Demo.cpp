@@ -31,14 +31,14 @@ namespace DEMO
 
 		switch (value->eventID())
 		{
-		case DemoEvent::EV_Enter:		return onEnter(*value->Cast<EnterEvent>());
-		case DemoEvent::EV_Load:		return onLoad(*value->Cast<LoadEvent>());
-		case DemoEvent::EV_Start:		return onStart(*value->Cast<StartEvent>());
+		case DemoEvent::EV_Enter:		return onEnter		(*value->Cast<EnterEvent>());
+		case DemoEvent::EV_Load:		return onLoad		(*value->Cast<LoadEvent>());
+		case DemoEvent::EV_Start:		return onStart		(*value->Cast<StartEvent>());
 		case DemoEvent::EV_FixedUpdate:	return onFixedUpdate(*value->Cast<FixedUpdateEvent>());
-		case DemoEvent::EV_Update:		return onUpdate(*value->Cast<UpdateEvent>());
-		case DemoEvent::EV_Draw:		return onDraw(*value->Cast<DrawEvent>());
-		case DemoEvent::EV_Gui:			return onGui(*value->Cast<GuiEvent>());
-		case DemoEvent::EV_Exit:		return onExit(*value->Cast<ExitEvent>());
+		case DemoEvent::EV_Update:		return onUpdate		(*value->Cast<UpdateEvent>());
+		case DemoEvent::EV_Draw:		return onDraw		(*value->Cast<DrawEvent>());
+		case DemoEvent::EV_Gui:			return onGui		(*value->Cast<GuiEvent>());
+		case DemoEvent::EV_Exit:		return onExit		(*value->Cast<ExitEvent>());
 
 		case ml::WindowEvent::EV_WindowSize:
 			if (auto ev = value->Cast<ml::WindowSizeEvent>())
@@ -115,21 +115,17 @@ namespace DEMO
 			checked = true;
 
 			// Setup Parser
+			/* * * * * * * * * * * * * * * * * * * * */
 			ML_Interpreter.parser()
-				.showToks(SETTINGS.scrShowToks)
-				.showTree(SETTINGS.scrShowTree)
-				.showItoP(SETTINGS.scrShowItoP);
+				.showToks(SETTINGS.scrShowToks) // Show Tokens
+				.showTree(SETTINGS.scrShowTree) // Show Tree
+				.showItoP(SETTINGS.scrShowItoP);// Show Infix to Postfix
 
 			// Load Commands
-
+			/* * * * * * * * * * * * * * * * * * * * */
 			ML_Interpreter.addCmd({ "/", [](ml::Args & args)
 			{
 				return ml::Var().intValue(ml::Debug::system(args.pop_front().str().c_str()));
-			} });
-
-			ML_Interpreter.addCmd({ "exit", [](ml::Args & args)
-			{
-				return ml::Var().voidValue();
 			} });
 
 			ML_Interpreter.addCmd({ "help", [](ml::Args & args)
@@ -143,12 +139,7 @@ namespace DEMO
 
 			ML_Interpreter.addCmd({ "cwd", [](ml::Args & args)
 			{
-				const ml::String str = ML_FileSystem.getWorkingDir();
-				if (args.pop_front().front() == "-p")
-				{
-					ml::cout << str;
-				}
-				return ml::Var().stringValue(str);
+				return ml::Var().stringValue(ML_FileSystem.getWorkingDir());
 			} });
 
 			ML_Interpreter.addCmd({ "cd", [](ml::Args & args)
@@ -171,7 +162,6 @@ namespace DEMO
 			ML_Interpreter.addCmd({ "read", [](ml::Args & args)
 			{
 				ml::String name = args.pop_front().front();
-
 				if (ML_FileSystem.fileExists(name))
 				{
 					ml::String buf;
@@ -246,11 +236,6 @@ namespace DEMO
 				}
 				return ml::Var().boolValue(true);
 			} });
-
-			ML_Interpreter.addCmd({ "load", [](ml::Args & args)
-			{
-				return ml::Var().boolValue(false);
-			} });
 		}
 		return checked;
 	}
@@ -264,10 +249,12 @@ namespace DEMO
 
 			return ml::Debug::log("Loading Resources...")
 				&& ML_Res.loadManifest(manifest)
-				&& ML_Res.models.load("borg")->loadFromMemory(ml::Shapes::Cube::Vertices, ml::Shapes::Cube::Indices)
-				&& ML_Res.models.load("sanic")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
-				&& ML_Res.models.load("sprite")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
-				&& ML_Res.models.load("framebuffer")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
+				&& ML_Res.meshes.load("quad1")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
+				&& ML_Res.meshes.load("cube1")->loadFromMemory(ml::Shapes::Cube::Vertices, ml::Shapes::Cube::Indices)
+				&& ML_Res.models.load("borg")->loadFromMemory(*ML_Res.meshes.get("cube1"))
+				&& ML_Res.models.load("sanic")->loadFromMemory(*ML_Res.meshes.get("quad1"))
+				&& ML_Res.models.load("sprite")->loadFromMemory(*ML_Res.meshes.get("quad1"))
+				&& ML_Res.models.load("framebuffer")->loadFromMemory(*ML_Res.meshes.get("quad1"))
 				&& ML_Res.textures.load("framebuffer")->create(this->size())
 				&& loadBuffers();
 		}
@@ -284,21 +271,11 @@ namespace DEMO
 		m_vbo.unbind();
 		m_vao.unbind();
 
-		// FBO
-		m_fbo.create().bind();
-		m_fbo.setTexture(ml::GL::ColorAttachment0, ML_Res.textures.get("framebuffer"));
-		// RBO
-		m_rbo.create(this->width(), this->height());
-		m_rbo.bind();
-		m_rbo.bufferStorage(ml::GL::Depth24_Stencil8);
-		m_rbo.setFramebuffer(ml::GL::DepthStencilAttachment);
-		m_rbo.unbind();
-		// Check Framebuffer Status
-		if (!ml::OpenGL::checkFramebufferStatus(ml::GL::Framebuffer))
-		{
-			return ml::Debug::logError("Framebuffer is not complete");
-		}
-		m_fbo.unbind();
+		// Effect
+		m_effects["default"].create(this->size());
+		m_effects["default"].setModel(ML_Res.models.get("framebuffer"));
+		m_effects["default"].setShader(ML_Res.shaders.get("framebuffer"));
+		m_effects["default"].setTexture(ML_Res.textures.get("framebuffer"));
 
 		return true;
 	}
@@ -644,9 +621,13 @@ namespace DEMO
 			ml::Uniform("u_mat.shininess",	ml::Uniform::Int,	&m_shininess),
 		};
 
+		static ml::UniformSet effect_uniforms = {
+			ml::Uniform("u_mode", ml::Uniform::Int, &m_fboMode),
+		};
+
 		// Draw Scene
 		/* * * * * * * * * * * * * * * * * * * * */
-		m_fbo.bind();
+		m_effects["default"].bind();
 		{
 			// Clear
 			this->clear(m_clearColor);
@@ -838,21 +819,12 @@ namespace DEMO
 				drawSprite(((ml::vec2f)(this->size()) * ml::vec2f(0.95f, 0.075f)), { 0.5f });
 			}
 		}
-		m_fbo.unbind();
+		m_effects["default"].unbind();
 
-		// Draw Framebuffer
+		// Draw Effects
 		/* * * * * * * * * * * * * * * * * * * * */
-		if(ml::Shader * shader = ML_Res.shaders.get("framebuffer"))
-		{
-			static ml::UniformSet uniforms = {
-				ml::Uniform("u_texture",ml::Uniform::Tex, ML_Res.textures.get("framebuffer")),
-				ml::Uniform("u_mode",	ml::Uniform::Int, &m_fboMode),
-			};
-			shader->setUniforms(uniforms);
-			shader->bind();
-			this->clear(ml::Color::White);
-			this->draw(*ML_Res.models.get("framebuffer"));
-		}
+		m_effects["default"].shader()->setUniforms(effect_uniforms);
+		this->draw(m_effects["default"]);
 
 		// Draw GUI
 		/* * * * * * * * * * * * * * * * * * * * */

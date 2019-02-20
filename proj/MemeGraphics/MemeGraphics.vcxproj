@@ -22,6 +22,7 @@
     <ClInclude Include="..\..\include\MemeGraphics\Camera.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Canvas.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Color.hpp" />
+    <ClInclude Include="..\..\include\MemeGraphics\Effect.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\FrameBuffer.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\GL.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\GraphicsEvents.hpp" />
@@ -61,6 +62,7 @@
     <ClCompile Include="..\..\src\MemeGraphics\Camera.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Canvas.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Color.cpp" />
+    <ClCompile Include="..\..\src\MemeGraphics\Effect.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Font.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\FrameBuffer.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\IndexBuffer.cpp" />
