@@ -7,7 +7,6 @@ rem Initialize
 set WorkingDir=%cd%\
 set VSVersion=Enterprise
 set MSBuildPath=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\%VSVersion%\
-set MSBuildExe=msbuild.exe
 set VCTargetsPath=%MSBuildPath%Common7\IDE\VC\VCTargets\
 set VCVarsPath=%MSBuildPath%VC\Auxiliary\Build\
 set VCVars32=vcvars32.bat
@@ -75,8 +74,7 @@ if "%PlatformTarget%"=="x86" (
 rem Build
 :build
 cd %MSBuildPath%
-echo Running %MSBuildExe%...
-%MSBuildExe% %SolutionPath% /p:Configuration=%Configuration% /p:PlatformTarget=%PlatformTarget%
+msbuild.exe %SolutionPath% /p:Configuration=%Configuration% /p:PlatformTarget=%PlatformTarget%
 if "%ERRORLEVEL%"!="0" (
 	pause
 )
