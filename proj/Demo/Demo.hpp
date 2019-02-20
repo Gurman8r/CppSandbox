@@ -73,8 +73,8 @@ namespace DEMO
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		ml::VAO m_vaoText;
-		ml::VBO m_vboText;
+		ml::VAO m_vao;
+		ml::VBO m_vbo;
 
 		using TextMap = ml::HashMap<ml::String, ml::Text>;
 		TextMap m_text;
@@ -113,9 +113,6 @@ namespace DEMO
 		bool show_imgui_metrics	= false;
 		bool show_imgui_style	= false;
 		bool show_imgui_about	= false;
-
-		ml::VAO m_sprVao;
-		ml::VBO m_sprVbo;
 
 		ml::List<ml::Uniform> m_uniforms;
 		size_t m_selected = 0;

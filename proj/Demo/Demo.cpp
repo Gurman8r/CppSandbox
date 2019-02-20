@@ -277,20 +277,12 @@ namespace DEMO
 	bool Demo::loadBuffers()
 	{
 		// Text
-		m_vaoText.create(ml::GL::Triangles).bind();
-		m_vboText.create(ml::GL::DynamicDraw).bind();
-		m_vboText.bufferData(NULL, (ml::Glyph::VertexCount * ml::Vertex::Size));
+		m_vao.create(ml::GL::Triangles).bind();
+		m_vbo.create(ml::GL::DynamicDraw).bind();
+		m_vbo.bufferData(NULL, (ml::Glyph::VertexCount * ml::Vertex::Size));
 		ml::BufferLayout::Default.bind();
-		m_vboText.unbind();
-		m_vaoText.unbind();
-
-		// Sprites
-		m_sprVao.create(ml::GL::Triangles).bind();
-		m_sprVbo.create(ml::GL::DynamicDraw).bind();
-		m_sprVbo.bufferData(NULL, (ml::Glyph::VertexCount * ml::Vertex::Size));
-		ml::BufferLayout::Default.bind();
-		m_sprVbo.unbind();
-		m_sprVao.unbind();
+		m_vbo.unbind();
+		m_vao.unbind();
 
 		// FBO
 		m_fbo.create().bind();
@@ -526,24 +518,47 @@ namespace DEMO
 
 		// Update Models
 		{
-			ML_Res.models.get("borg")->transform()
-				.rotate(+ev.elapsed.delta(), ml::vec3f::One);
+			if (ml::Model * m = ML_Res.models.get("borg"))
+			{
+				m->transform()
+					.rotate(+ev.elapsed.delta(), ml::vec3f::One);
+			}
 
-			ML_Res.models.get("cube")->transform()
-				.rotate(-ev.elapsed.delta(), ml::vec3f::One);
+			if (ml::Model * m = ML_Res.models.get("cube"))
+			{
+				m->transform()
+					.rotate(-ev.elapsed.delta(), ml::vec3f::One);
+			}
 
-			ML_Res.models.get("earth")->transform()
-				.rotate((m_animate ? ev.elapsed.delta() : 0.f), ml::vec3f::Up);
+			if (ml::Model * m = ML_Res.models.get("earth"))
+			{
+				m->transform()
+					.rotate((m_animate ? ev.elapsed.delta() : 0.f), ml::vec3f::Up);
+			}
 
-			ML_Res.models.get("moon")->transform()
-				.rotate(-ev.elapsed.delta(), ml::vec3f::Up);
+			if (ml::Model * m = ML_Res.models.get("moon"))
+			{
+				static float s = 0.f;
+				s += ev.elapsed.delta();
+				ml::vec3f pos = m->transform().getPosition();
+				pos[1] = sinf(s);
+				m->transform()
+					.setPosition(pos)
+					.rotate(-ev.elapsed.delta(), ml::vec3f::Up);
+			}
 
-			ML_Res.models.get("sanic")->transform()
-				.rotate(-ev.elapsed.delta(), ml::vec3f::Forward);
+			if (ml::Model * m = ML_Res.models.get("sanic"))
+			{
+				m->transform()
+					.rotate(-ev.elapsed.delta(), ml::vec3f::Forward);
+			}
 
-			ML_Res.models.get("light")->transform()
-				.setPosition(m_lightPos)
-				.rotate(-ev.elapsed.delta(), ml::vec3f::Forward);
+			if (ml::Model * m = ML_Res.models.get("light"))
+			{
+				m->transform()
+					.setPosition(m_lightPos)
+					.rotate(-ev.elapsed.delta(), ml::vec3f::Forward);
+			}
 		}
 
 		// Update Camera
@@ -599,10 +614,17 @@ namespace DEMO
 				.setString(ml::String::Format("{0}",
 					this->getCursorPos()));
 
-			for (auto pair : m_text)
-			{
-				pair.second.update();
-			}
+			static float s = 0.f;
+			s += ev.elapsed.delta();
+			m_text["sin"]
+				.setFont(ML_Res.fonts.get("consolas"))
+				.setFontSize(fontSize)
+				.setPosition(nextLine())
+				.setString(ml::String::Format("{0}",
+					sinf(s)));
+
+			// Force Update
+			for (auto pair : m_text) { pair.second.update(); }
 		}
 
 	}
@@ -721,9 +743,7 @@ namespace DEMO
 				this->draw(*model);
 			}
 
-			ml::OpenGL::disable(ml::GL::CullFace);
-
-			// Plane
+			// Ground
 			if (const ml::Model * model = ML_Res.models.get("ground"))
 			{
 				static ml::UniformSet uniforms = {
@@ -739,6 +759,8 @@ namespace DEMO
 				}
 				this->draw(*model);
 			}
+
+			ml::OpenGL::disable(ml::GL::CullFace);
 
 			// Sanic
 			if(const ml::Model * model = ML_Res.models.get("sanic"))
@@ -783,8 +805,8 @@ namespace DEMO
 					ml::Uniform("u_texture",ml::Uniform::Tex),
 				};
 				static ml::RenderBatch batch(
-					&m_vaoText,
-					&m_vboText,
+					&m_vao,
+					&m_vbo,
 					ML_Res.shaders.get("text"),
 					&uniforms);
 
@@ -799,13 +821,13 @@ namespace DEMO
 			if (const ml::Texture * texture = ML_Res.textures.get("icon"))
 			{
 				static ml::UniformSet uniforms = {
+					ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_ortho.matrix()),
 					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
 					ml::Uniform("u_texture",ml::Uniform::Tex,	texture),
-					ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_ortho.matrix()),
 				};
 				static ml::RenderBatch batch(
-					&m_sprVao, 
-					&m_sprVbo, 
+					&m_vao, 
+					&m_vbo, 
 					ML_Res.shaders.get("sprites"),
 					&uniforms);
 

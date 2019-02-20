@@ -59,21 +59,18 @@ namespace ml
 
 	void Duration::serialize(std::ostream & out) const
 	{
-		if (uint64_t h = hours())
-		{
-			out << h / 10 % 10
-				<< h % 10
-				<< ':';
-		}
-
-		out << (minutes()) / 10 % 10
-			<< (minutes()) % 10
+		const uint64_t m	= minutes();
+		const uint64_t s	= seconds();
+		const uint64_t ms	= millis();
+		
+		out << (m / 10) % 10
+			<< (m % 10)
 			<< ':'
-			<< (seconds() % 60) / 10 % 10
-			<< (seconds() % 60) % 10
-			<< ':'
-			<< (millis()) % 1000 / 100
-			<< (millis()) % 100 / 10;
+			<< (s % 60) / 10 % 10
+			<< (s % 60) % 10
+			<< ':' 
+			<< (ms % 1000) / 100
+			<< (ms % 100) / 10;
 	}
 
 	void Duration::deserialize(std::istream & in)

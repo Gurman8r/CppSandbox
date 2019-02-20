@@ -183,7 +183,7 @@ namespace ml
 			}
 		History.push_back(Strdup(command_line));
 
-		if (String(command_line) == "clearChildren")
+		if (String(command_line) == "clear")
 		{
 			ClearLog();
 		}
