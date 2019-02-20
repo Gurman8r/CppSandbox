@@ -8,7 +8,9 @@
 /* * * * * * * * * * * * * * * * * * * * */
 
 Purpose:
-	To create a physics sandbox in MemeLib (ML).
+	We will create a physics sandbox application within a custom C++ framework.
+
+	We will use MemeLib (ML) as our base, and port the physics code from Animal3D (A3).
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -22,8 +24,10 @@ Scope:
 	
 	We will need to implement some math functions, port animal3D's physics code, and build an interface.
 	
-	C++ has operator overloading, so porting A3 shouldn't be too difficult.
+	C++ has operator overloading, so porting A3 should not be too difficult.
 	
 	ML is single threaded, so a physics thread may need to be implemented.
+
+	We feel that we will be able to accomplish our goals in the time allotted.
 
 /* * * * * * * * * * * * * * * * * * * * */
