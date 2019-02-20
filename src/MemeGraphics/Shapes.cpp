@@ -2,8 +2,36 @@
 
 namespace ml
 {
-	/*	Triangle
-	* * * * * * * * * */
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	VertexList Shapes::genQuadVerts(const FloatRect & rect)
+	{
+		return {
+			{ { rect.left(),  rect.bot(), 0.0f }, Color::White, { 1, 1 } },
+			{ { rect.left(),  rect.top(), 0.0f }, Color::White, { 1, 0 } },
+			{ { rect.right(), rect.top(), 0.0f }, Color::White, { 0, 0 } },
+			{ { rect.left(),  rect.bot(), 0.0f }, Color::White, { 1, 1 } },
+			{ { rect.right(), rect.top(), 0.0f }, Color::White, { 0, 0 } },
+			{ { rect.right(), rect.bot(), 0.0f }, Color::White, { 0, 1 } },
+		};
+	}
+
+	FloatList Shapes::genQuadFloats(const FloatRect & r)
+	{
+		return {
+			r.left(),  r.bot(), 0.f,	1, 1, 1, 1,		0, 1,
+			r.left(),  r.top(), 0.f,	1, 1, 1, 1,		0, 0,
+			r.right(), r.top(), 0.f,	1, 1, 1, 1,		1, 0,
+			r.left(),  r.bot(), 0.f,	1, 1, 1, 1,		0, 1,
+			r.right(), r.top(), 0.f,	1, 1, 1, 1,		1, 0,
+			r.right(), r.bot(), 0.f,	1, 1, 1, 1,		1, 1,
+		};
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	// Triangle
+	/* * * * * * * * * * * * * * * * * * * * */
 	const VertexList Shapes::Triangle::Vertices({
 		Vertex({  0.0f,  0.5f, 0.0f }, Color::White, { 0.5f, 1.0f }), // top right
 		Vertex({  0.5f, -0.5f, 0.0f }, Color::White, { 1.0f, 0.0f }), // bot right
@@ -14,8 +42,8 @@ namespace ml
 	});
 
 
-	/*	Quad
-	* * * * * * * * * */
+	// Quad
+	/* * * * * * * * * * * * * * * * * * * * */
 	const VertexList Shapes::Quad::Vertices({
 		Vertex({ +1.0f, +1.0f, 0.0f }, Color::White, { 1.0f, 1.0f }),
 		Vertex({ +1.0f, -1.0f, 0.0f }, Color::White, { 1.0f, 0.0f }),
@@ -28,8 +56,8 @@ namespace ml
 	});
 
 
-	/*	Cube
-	* * * * * * * * * */
+	// Cube
+	/* * * * * * * * * * * * * * * * * * * * */
 	const VertexList Shapes::Cube::Vertices({
 		Vertex({ +0.5f, +0.5f, -0.5f }, Color::White, { 1, 1 }), // 0 front
 		Vertex({ +0.5f, -0.5f, -0.5f }, Color::White, { 1, 0 }), // 1

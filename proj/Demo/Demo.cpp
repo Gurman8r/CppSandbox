@@ -788,41 +788,27 @@ namespace DEMO
 			}
 
 			// SPRITE
-			if (const ml::Texture * texture = ML_Res.textures.get("dean"))
+			if (const ml::Texture * texture = ML_Res.textures.get("icon"))
 			{
-				using namespace ml;
+				static ml::vec2f pos	= (ml::vec2f)(this->size()) * ml::vec2f(0.95f, 0.075f);
+				static ml::vec2f scale	= { 0.5f };
+				static ml::vec2f origin = { 0.5f };
+				static ml::vec2f size	= (ml::vec2f)texture->size() * scale;
+				static ml::vec2f dest	= (pos - size * origin);
 
-				static vec2f pos	= (vec2f)(this->size()) * vec2f(0.95f, 0.1f);
-				static vec2f scale	= { 0.5f };
-				static float rot	= 0.0f;
-				static vec2f origin = { 0.5f };
-				static vec2f size	= (vec2f)texture->size() * scale;
-				static vec2f dest	= (pos - size * origin);
-
-				rot += ev.elapsed.delta() * 5.f;
-
-				static Transform t;
-				t.translate(dest);
-				t.translate(size * origin);
-				t.rotate(rot, vec3f::Forward);
-				t.translate(size * -origin);
-				t.scale(size);
-
-				const VertexList & verts = Shapes::genQuadVerts({ dest, size });
-
-				static UniformSet uniforms = {
-					Uniform("u_color",	Uniform::Vec4,	&Color::White),
-					Uniform("u_texture",Uniform::Tex,	texture),
-					Uniform("u_proj",	Uniform::Mat4,	&m_ortho.matrix()),
+				static ml::UniformSet uniforms = {
+					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
+					ml::Uniform("u_texture",ml::Uniform::Tex,	texture),
+					ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_ortho.matrix()),
 				};
 
-				static RenderBatch batch(
+				static ml::RenderBatch batch(
 					&m_sprVao, 
 					&m_sprVbo, 
 					ML_Res.shaders.get("sprites"),
 					&uniforms);
 
-				this->draw(&verts, batch);
+				this->draw(ml::Shapes::genQuadFloats({ dest, size }), batch);
 			}
 		}
 		m_fbo.unbind();

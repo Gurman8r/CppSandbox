@@ -9,17 +9,10 @@ namespace ml
 	class ML_GRAPHICS_API Shapes
 	{
 	public:
-		inline static VertexList genQuadVerts(const FloatRect & rect)
-		{
-			return {
-				{ { rect.left(),  rect.bot(), 0.0f }, Color::White, { 1, 1 } },
-				{ { rect.left(),  rect.top(), 0.0f }, Color::White, { 1, 0 } },
-				{ { rect.right(), rect.top(), 0.0f }, Color::White, { 0, 0 } },
-				{ { rect.left(),  rect.bot(), 0.0f }, Color::White, { 1, 1 } },
-				{ { rect.right(), rect.top(), 0.0f }, Color::White, { 0, 0 } },
-				{ { rect.right(), rect.bot(), 0.0f }, Color::White, { 0, 1 } },
-			};
-		}
+		static VertexList	genQuadVerts(const FloatRect & rect);
+		static FloatList	genQuadFloats(const FloatRect & rect);
+
+
 	public:
 		struct ML_GRAPHICS_API Triangle final
 		{
