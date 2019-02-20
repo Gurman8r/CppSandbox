@@ -4,14 +4,21 @@
 #include <MemeCore/Console.hpp>
 #include <MemeCore/String.hpp>
 
-#define ML_WARNING -1
-#define ML_FAILURE	0
-#define ML_SUCCESS	1
+#define ML_WARNING -1 // | -1  | true  |
+#define ML_FAILURE	0 // |  0  | false |
+#define ML_SUCCESS	1 // | +1  | true  |
 
 namespace ml
 {
 	class ML_CORE_API Debug final
 	{
+	private:
+		static int32_t m_error;
+	public:
+		static bool		checkError(const int32_t value);
+		static void		setError(const int32_t value);
+		static int32_t	getError();
+
 	public:
 		static int32_t	clear();
 		static void		exit(int32_t exitCode);

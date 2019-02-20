@@ -3,6 +3,26 @@
 
 namespace ml
 {
+	int32_t Debug::m_error = ML_SUCCESS;
+
+	bool Debug::checkError(const int32_t value)
+	{
+		return (m_error == value);
+	}
+
+	void Debug::setError(const int32_t value)
+	{
+		m_error = value;
+	}
+
+	int32_t Debug::getError()
+	{
+		int32_t temp = ML_SUCCESS;
+		std::swap(m_error, temp);
+		return temp;
+	}
+
+
 	int32_t Debug::clear()
 	{
 #ifdef ML_SYSTEM_WINDOWS

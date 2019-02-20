@@ -17,6 +17,89 @@ namespace ml
 	bool OpenGL::m_errorPause = false;
 
 
+	// Errors
+
+	GL::Err OpenGL::getError()
+	{
+		return static_cast<GL::Err>(glGetError());
+	}
+
+	void OpenGL::errorPause(bool value)
+	{
+		m_errorPause = value;
+	}
+
+	void OpenGL::checkError(CString file, uint32_t line, CString expression)
+	{
+		// Get the last error
+		if (GL::Err errorCode = getError())
+		{
+			String fileName(file);
+			fileName = fileName.substr(fileName.find_last_of("\\/") + 1);
+
+			// Decode the error code
+			String errorName;
+			String errorDesc;
+			switch (errorCode)
+			{
+			case GL::InvalidEnum:
+				errorName = "Invalid GL";
+				errorDesc = "An unacceptable value has been specified for an enumerated argument.";
+				break;
+			case GL::InvalidValue:
+				errorName = "Invalid value_type";
+				errorDesc = "A numeric argument is out of range.";
+				break;
+			case GL::InvalidOperation:
+				errorName = "Invalid Operation";
+				errorDesc = "The specified operation is not allowed in the current state.";
+				break;
+			case GL::StackOverflow:
+				errorName = "Stack Overflow";
+				errorDesc = "This command would cause a stack overflow.";
+				break;
+			case GL::StackUnderflow:
+				errorName = "Stack Underflow";
+				errorDesc = "This command would cause a stack underflow.";
+				break;
+			case GL::OutOfMemory:
+				errorName = "Out Of Memory";
+				errorDesc = "There is not enough memory left to execute the command.";
+				break;
+			case GL::InvalidFramebufferOperation:
+				errorName = "Invalid Framebuffer Operation";
+				errorDesc = "The object bound to framebuffer binding is not \"framebuffer complete\".";
+				break;
+			default:
+				errorName = "Unknown error";
+				errorDesc = "No description";
+				break;
+			}
+
+			cerr
+				<< FMT()
+				<< ml::endl
+				<< FG::Red
+				<< "An internal OpenGL call failed in " << fileName << "(" << line << ")"
+				<< FG::Yellow << ml::endl << "Code: "
+				<< FG::White << ml::endl << "\t" << errorCode
+				<< FG::Yellow << ml::endl << "Expression: "
+				<< FG::White << ml::endl << "\t" << expression
+				<< FG::Yellow << ml::endl << "Description:"
+				<< FG::White << ml::endl << "\t" << errorName
+				<< FG::White << ml::endl << "\t" << errorDesc
+				<< FMT()
+				<< ml::endl
+				<< ml::endl;
+
+			if (m_errorPause)
+			{
+				Debug::pause(EXIT_FAILURE);
+			}
+		}
+	}
+
+
 	// General
 
 	bool OpenGL::init(bool experimental)
@@ -123,89 +206,6 @@ namespace ml
 		return check
 			? !isEnabled(value)
 			: true;
-	}
-
-
-	// Errors
-
-	GL::Err OpenGL::getError()
-	{
-		return static_cast<GL::Err>(glGetError());
-	}
-
-	void OpenGL::errorPause(bool value)
-	{
-		m_errorPause = value;
-	}
-
-	void OpenGL::checkError(CString file, uint32_t line, CString expression)
-	{
-		// Get the last error
-		if (GL::Err errorCode = getError())
-		{
-			String fileName(file);
-			fileName = fileName.substr(fileName.find_last_of("\\/") + 1);
-
-			// Decode the error code
-			String errorName;
-			String errorDesc;
-			switch (errorCode)
-			{
-			case GL::InvalidEnum:
-				errorName = "Invalid GL";
-				errorDesc = "An unacceptable value has been specified for an enumerated argument.";
-				break;
-			case GL::InvalidValue:
-				errorName = "Invalid value_type";
-				errorDesc = "A numeric argument is out of range.";
-				break;
-			case GL::InvalidOperation:
-				errorName = "Invalid Operation";
-				errorDesc = "The specified operation is not allowed in the current state.";
-				break;
-			case GL::StackOverflow:
-				errorName = "Stack Overflow";
-				errorDesc = "This command would cause a stack overflow.";
-				break;
-			case GL::StackUnderflow:
-				errorName = "Stack Underflow";
-				errorDesc = "This command would cause a stack underflow.";
-				break;
-			case GL::OutOfMemory:
-				errorName = "Out Of Memory";
-				errorDesc = "There is not enough memory left to execute the command.";
-				break;
-			case GL::InvalidFramebufferOperation:
-				errorName = "Invalid Framebuffer Operation";
-				errorDesc = "The object bound to framebuffer binding is not \"framebuffer complete\".";
-				break;
-			default:
-				errorName = "Unknown error";
-				errorDesc = "No description";
-				break;
-			}
-			
-			cerr
-				<< FMT()
-				<< ml::endl 
-				<< FG::Red
-				<< "An internal OpenGL call failed in " << fileName << "(" << line << ")"
-				<< FG::Yellow	<< ml::endl << "Code: " 
-				<< FG::White	<< ml::endl << "\t" << errorCode
-				<< FG::Yellow	<< ml::endl << "Expression: "
-				<< FG::White	<< ml::endl << "\t" << expression
-				<< FG::Yellow	<< ml::endl << "Description:"
-				<< FG::White	<< ml::endl << "\t" << errorName
-				<< FG::White	<< ml::endl << "\t" << errorDesc
-				<< FMT()
-				<< ml::endl
-				<< ml::endl;
-
-			if (m_errorPause)
-			{
-				Debug::pause(EXIT_FAILURE);
-			}
-		}
 	}
 
 

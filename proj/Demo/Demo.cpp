@@ -10,7 +10,6 @@ namespace DEMO
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Demo::Demo()
-		: m_error(ML_SUCCESS)
 	{
 		ML_EventSystem.addListener(DemoEvent::EV_Enter,			this);
 		ML_EventSystem.addListener(DemoEvent::EV_Load,			this);
@@ -285,6 +284,7 @@ namespace DEMO
 		m_vboText.unbind();
 		m_vaoText.unbind();
 
+		// Sprites
 		m_sprVao.create(ml::GL::Triangles).bind();
 		m_sprVbo.create(ml::GL::DynamicDraw).bind();
 		m_sprVbo.bufferData(NULL, (ml::Glyph::VertexCount * ml::Vertex::Size));
@@ -358,20 +358,22 @@ namespace DEMO
 			// Run Script
 			if (!SETTINGS.scrFile.empty())
 			{
-				m_error = ML_Interpreter.execFile(
+				int32_t err = ML_Interpreter.execFile(
 					SETTINGS.pathTo(SETTINGS.scrPath + SETTINGS.scrFile)
 				)
 				? ML_SUCCESS
 				: ML_FAILURE;
+
+				ml::Debug::setError(err);
 			}
 			else
 			{
-				m_error = ml::Debug::logWarning("No Script");
+				ml::Debug::setError(ml::Debug::logWarning("No Script"));
 			}
 		}
 		else
 		{
-			m_error = ML_FAILURE;
+			ml::Debug::setError(ML_FAILURE);
 		}
 	}
 	
@@ -405,7 +407,7 @@ namespace DEMO
 				ImGui::GetStyle().FrameBorderSize = 1;
 				if (!ImGui_ML_Init("#version 410", this, true))
 				{
-					m_error = ml::Debug::logError("Failed Loading ImGui");
+					ml::Debug::setError(ml::Debug::logError("Failed Loading ImGui"));
 					return;
 				}
 			}
@@ -414,7 +416,7 @@ namespace DEMO
 			{
 				if (!ml::OpenAL::init())
 				{
-					m_error = ml::Debug::logError("Failed Loading OpenAL");
+					ml::Debug::setError(ml::Debug::logError("Failed Loading OpenAL"));
 					return;
 				}
 			}
@@ -423,7 +425,7 @@ namespace DEMO
 			{
 				if (!loadResources())
 				{
-					m_error = ml::Debug::logError("Failed Loading Resources");
+					ml::Debug::setError(ml::Debug::logError("Failed Loading Resources"));
 					return;
 				}
 			}
@@ -432,14 +434,14 @@ namespace DEMO
 			{
 				if (!loadNetwork())
 				{
-					m_error = ml::Debug::logError("Failed Loading Network");
+					ml::Debug::setError(ml::Debug::logError("Failed Loading Network"));
 					return;
 				}
 			}
 		}
 		else
 		{
-			m_error = ml::Debug::logError("Failed Loading Window");
+			ml::Debug::setError(ml::Debug::logError("Failed Loading Window"));
 		}
 	}
 	
@@ -790,25 +792,25 @@ namespace DEMO
 			// SPRITE
 			if (const ml::Texture * texture = ML_Res.textures.get("icon"))
 			{
-				static ml::vec2f pos	= (ml::vec2f)(this->size()) * ml::vec2f(0.95f, 0.075f);
-				static ml::vec2f scale	= { 0.5f };
-				static ml::vec2f origin = { 0.5f };
-				static ml::vec2f size	= (ml::vec2f)texture->size() * scale;
-				static ml::vec2f dest	= (pos - size * origin);
-
 				static ml::UniformSet uniforms = {
 					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
 					ml::Uniform("u_texture",ml::Uniform::Tex,	texture),
 					ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_ortho.matrix()),
 				};
-
 				static ml::RenderBatch batch(
 					&m_sprVao, 
 					&m_sprVbo, 
 					ML_Res.shaders.get("sprites"),
 					&uniforms);
 
-				this->draw(ml::Shapes::genQuadFloats({ dest, size }), batch);
+				auto drawSprite = [&](const ml::vec2f & pos, const ml::vec2f & scale, const float rot, const ml::vec2f & origin = { 0.5f })
+				{
+					ml::vec2f size = (ml::vec2f)texture->size() * scale;
+					ml::vec2f dest = (pos - size * origin);
+					this->draw(ml::Shapes::genQuadFloats({ dest, size }), batch);
+				};
+
+				drawSprite(((ml::vec2f)(this->size()) * ml::vec2f(0.95f, 0.075f)), { 0.5f }, 0.0f);
 			}
 		}
 		m_fbo.unbind();

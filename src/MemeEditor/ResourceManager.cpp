@@ -23,6 +23,7 @@ namespace ml
 			sprites.clean() +
 			models.clean() +
 			meshes.clean() +
+			mats.clean() +
 			shaders.clean() +
 			skyboxes.clean() +
 			textures.clean() +
@@ -37,6 +38,7 @@ namespace ml
 			images.reload() +
 			meshes.reload() +
 			models.reload() +
+			mats.reload() +
 			shaders.reload() +
 			skyboxes.reload() +
 			sounds.reload() +

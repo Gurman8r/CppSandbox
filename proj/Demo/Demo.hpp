@@ -43,13 +43,6 @@ namespace DEMO
 	public:
 		void onEvent(const ml::Event * value) override;
 
-		inline int32_t getError() const
-		{
-			int32_t temp = ML_SUCCESS;
-			std::swap(m_error, temp);
-			return temp;
-		}
-
 	private:
 		bool	loadInterpreter();
 		bool	loadResources();
@@ -67,10 +60,6 @@ namespace DEMO
 		void	onExit(const ExitEvent & ev);
 
 	private:
-		/* * * * * * * * * * * * * * * * * * * * */
-
-		mutable int32_t m_error;
-
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		ml::FBO m_fbo;

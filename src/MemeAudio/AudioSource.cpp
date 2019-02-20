@@ -27,7 +27,7 @@ namespace ml
 		return (*this);
 	}
 
-	AudioSource & AudioSource::create(size_t count)
+	AudioSource & AudioSource::create(uint32_t count)
 	{
 		if (!(*this) && (get_ref() = OpenAL::genSources(count)))
 		{

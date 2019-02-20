@@ -24,6 +24,11 @@ namespace ml
 		static bool m_good;
 		static bool m_errorPause;
 
+	public: // Errors
+		static GL::Err	getError();
+		static void		errorPause(bool value);
+		static void		checkError(CString file, uint32_t line, CString expression);
+
 	public: // General
 		static bool		init(bool experimental);
 		static bool		good();
@@ -33,11 +38,6 @@ namespace ml
 		static bool		isEnabled(uint32_t value);
 		static bool		enable(uint32_t value, bool check = false);
 		static bool		disable(uint32_t value, bool check = false);
-
-	public: // Errors
-		static GL::Err	getError();
-		static void		errorPause(bool value);
-		static void		checkError(CString file, uint32_t line, CString expression);
 		
 	public: // Get
 		static CString	getString(uint32_t name);

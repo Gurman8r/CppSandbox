@@ -11,7 +11,7 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-void * exampleProgramLoader(const ml::String & filename)
+ml::RenderWindow * exampleProgramLoader(const ml::String & filename)
 {
 	if (void * lib = ML_Lib.loadLibrary(filename))
 	{
@@ -19,11 +19,11 @@ void * exampleProgramLoader(const ml::String & filename)
 		{
 			if (void * ent = ML_Lib.callFunction<void *>(fun))
 			{
-				return static_cast<void *>(ent);
+				return static_cast<ml::RenderWindow *>(ent);
 			}
 		}
 	}
-	return (void *)(new DEMO::Demo());
+	return static_cast<ml::RenderWindow *>(new DEMO::Demo());
 }
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -38,11 +38,11 @@ int32_t main(int32_t argc, char ** argv)
 	}
 
 	// Create Program
-	if (DEMO::Demo * program = (DEMO::Demo *)exampleProgramLoader("./Placeholder_Debug_x86.dll"))
+	if (ml::RenderWindow * program = exampleProgramLoader("./Placeholder_Debug_x86.dll"))
 	{
 		// Enter
 		ML_EventSystem.fireEvent(DEMO::EnterEvent(argc, argv));
-		if (program->getError() == ML_FAILURE)
+		if (ml::Debug::checkError(ML_FAILURE))
 		{
 			delete program;
 			return ml::Debug::logError("Failed Entering Program")
@@ -51,7 +51,7 @@ int32_t main(int32_t argc, char ** argv)
 
 		// Load
 		ML_EventSystem.fireEvent(DEMO::LoadEvent());
-		if (program->getError() == ML_FAILURE)
+		if (ml::Debug::checkError(ML_FAILURE))
 		{
 			delete program;
 			return ml::Debug::logError("Failed Loading Resources")
@@ -70,10 +70,8 @@ int32_t main(int32_t argc, char ** argv)
 			{
 				// "Fixed" Update
 				ML_EventSystem.fireEvent(DEMO::FixedUpdateEvent(elapsed));
-
 				// Update
 				ML_EventSystem.fireEvent(DEMO::UpdateEvent(elapsed));
-
 				// Draw
 				ML_EventSystem.fireEvent(DEMO::DrawEvent(elapsed));
 			}
@@ -86,7 +84,6 @@ int32_t main(int32_t argc, char ** argv)
 		ML_EventSystem.fireEvent(DEMO::ExitEvent());
 		
 		// Free Program
-		//ML_Lib.freeLibrary(program);
 		delete program;
 
 		return EXIT_SUCCESS;

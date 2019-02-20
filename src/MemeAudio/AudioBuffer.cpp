@@ -28,7 +28,7 @@ namespace ml
 		return (*this);
 	}
 
-	AudioBuffer & AudioBuffer::create(size_t count)
+	AudioBuffer & AudioBuffer::create(uint32_t count)
 	{
 		if (!(*this) && (get_ref() = OpenAL::genBuffers(count)))
 		{

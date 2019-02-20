@@ -6,6 +6,7 @@
 
 namespace ml
 {
+	// Meant to replace RenderBatch
 	class ML_GRAPHICS_API Canvas
 		: public ITrackable
 		, public INonCopyable

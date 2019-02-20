@@ -17,10 +17,10 @@ namespace ml
 		~AudioBuffer();
 
 		AudioBuffer & clean();
-		AudioBuffer & create(size_t count);
+		AudioBuffer & create(uint32_t count);
 
 	private:
-		size_t m_count;
+		uint32_t m_count;
 	};
 }
 
