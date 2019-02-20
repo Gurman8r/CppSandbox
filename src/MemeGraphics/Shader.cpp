@@ -224,6 +224,20 @@ namespace ml
 		}
 	}
 
+	bool Shader::applyUniforms(const UniformSet & value) const
+	{
+		size_t count = 0;
+		UniformSet::const_iterator it;
+		for (it = value.begin(); it != value.end(); it++)
+		{
+			if (setUniform(it->second))
+			{
+				count++;
+			}
+		}
+		return count;
+	}
+
 	bool Shader::setUniform(const Uniform & u) const
 	{
 		if (u.good())
@@ -241,20 +255,6 @@ namespace ml
 			}
 		}
 		return Debug::logError("Invalid Uniform | {0}", u);
-	}
-
-	bool Shader::setUniforms(const UniformSet & value) const
-	{
-		size_t count = 0;
-		UniformSet::const_iterator it;
-		for (it = value.begin(); it != value.end(); it++)
-		{
-			if (setUniform(it->second))
-			{
-				count++;
-			}
-		}
-		return count;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

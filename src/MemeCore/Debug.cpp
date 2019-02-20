@@ -28,7 +28,7 @@ namespace ml
 #ifdef ML_SYSTEM_WINDOWS
 		return std::system("cls");
 #else
-		return std::system("clearChildren");
+		return std::system("clear");
 #endif
 	}
 
@@ -49,23 +49,25 @@ namespace ml
 
 	int32_t	Debug::system(const char * cmd)
 	{
-		ml::Thread([&]() 
+		return system(cmd, ml::cout);
+	}
+
+	int32_t Debug::system(const char * cmd, std::ostream & out)
+	{
+		std::array<char, 128> buffer;
+		std::shared_ptr<FILE> file(_popen(cmd, "r"), _pclose);
+		if (file)
 		{
-			std::array<char, 128> buffer;
-			std::shared_ptr<FILE> file(_popen(cmd, "r"), _pclose);
-			if (file)
+			while (!feof(file.get()))
 			{
-				while (!feof(file.get()))
+				if (fgets(buffer.data(), 128, file.get()) != nullptr)
 				{
-					if (fgets(buffer.data(), 128, file.get()) != nullptr)
-					{
-						cout << String(buffer.data());
-					}	
+					out << String(buffer.data());
 				}
 			}
-		}).launch().join();
-		
-		return EXIT_SUCCESS;
+			return EXIT_SUCCESS;
+		}
+		return EXIT_FAILURE;
 	}
 
 	void Debug::terminate()

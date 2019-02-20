@@ -36,14 +36,13 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		bool	fileExists(const String & filename) const;
-
 		bool	getFileContents(const String & filename, List<char> & value) const;
 		bool	getFileContents(const String & filename, String & value) const;
 		bool	getFileContents(const String & filename, SStream & value) const;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
+		bool	fileExists(const String & filename) const;
 		String  getFileName(const String & filename) const;
 		String	getFileExtension(const String & filename) const;
 

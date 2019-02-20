@@ -32,13 +32,11 @@ namespace ml
 		inline const Model * model() const { return m_model; }
 		inline const Shader * shader() const { return m_shader; }
 		inline const Texture * texture() const { return m_texture; }
-		inline const UniformSet * uniforms() const { return m_uniforms; }
 
 	private:
 		const Model *		m_model;
 		const Shader *		m_shader;
 		const Texture *		m_texture;
-		const UniformSet *	m_uniforms;
 
 		mutable FBO m_fbo;
 		mutable RBO m_rbo;

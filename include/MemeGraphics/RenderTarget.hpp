@@ -19,19 +19,19 @@ namespace ml
 		RenderTarget & clear();
 		RenderTarget & clear(const vec4f & color);
 
+		void setViewport(const vec2i & pos, const vec2i & size) const;
+
 	public:
 		RenderTarget & draw(const IDrawable & value);
 		RenderTarget & draw(const IDrawable & value, const RenderBatch & batch);
 		RenderTarget & draw(const RenderBatch & value);
+		
 		RenderTarget & draw(const VertexList * vertices, const RenderBatch & batch);
 		RenderTarget & draw(const FloatList & vertices, const RenderBatch & batch);
+		
 		RenderTarget & draw(const VAO * vao, const VBO * vbo, const IBO * ibo);
 		RenderTarget & draw(const VAO * vao, const VBO * vbo);
 
-	public:
-		void setViewport(const vec2i & pos, const vec2i & size) const;
-
-	private:
 	};
 
 	

@@ -1,6 +1,5 @@
 #include <MemeGraphics/FrameBuffer.hpp>
 #include <MemeGraphics/OpenGL.hpp>
-#include <MemeGraphics/Texture.hpp>
 
 namespace ml
 {
@@ -49,10 +48,6 @@ namespace ml
 		OpenGL::bindFramebuffer(GL::Framebuffer, NULL);
 	}
 
-	void FrameBuffer::setTexture(GL::Attachment attchment, const Texture * value) const
-	{
-		setTexture(attchment, (*value), value->target(), value->level());
-	}
 
 	void FrameBuffer::setTexture(GL::Attachment attchment, uint32_t value, GL::Target target, int32_t level) const
 	{

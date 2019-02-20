@@ -11,7 +11,6 @@ namespace ml
 		, m_model	(NULL)
 		, m_shader	(NULL)
 		, m_texture	(NULL)
-		, m_uniforms()
 	{
 	}
 
@@ -21,7 +20,6 @@ namespace ml
 		, m_model	(copy.m_model)
 		, m_shader	(copy.m_shader)
 		, m_texture	(copy.m_texture)
-		, m_uniforms(copy.m_uniforms)
 	{
 	}
 
@@ -34,11 +32,9 @@ namespace ml
 	{
 		if (!m_fbo && !m_rbo)
 		{
-			m_fbo.create();
-			m_fbo.bind();
+			m_fbo.create().bind();
 
-			m_rbo.create(size[0], size[1]);
-			m_rbo.bind();
+			m_rbo.create(size[0], size[1]).bind();
 			m_rbo.bufferStorage(ml::GL::Depth24_Stencil8);
 			m_rbo.setFramebuffer(ml::GL::DepthStencilAttachment);
 			m_rbo.unbind();
@@ -48,6 +44,7 @@ namespace ml
 			{
 				return ml::Debug::logError("Framebuffer is not complete");
 			}
+
 			m_fbo.unbind();
 
 			return true;

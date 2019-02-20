@@ -271,7 +271,7 @@ namespace DEMO
 		m_vbo.unbind();
 		m_vao.unbind();
 
-		// Effect
+		// Effects
 		m_effects["default"].create(this->size());
 		m_effects["default"].setModel(ML_Res.models.get("framebuffer"));
 		m_effects["default"].setShader(ML_Res.shaders.get("framebuffer"));
@@ -644,8 +644,8 @@ namespace DEMO
 				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("solid"))
 				{
-					shader->setUniforms(persp_uniforms);
-					shader->setUniforms(uniforms);
+					shader->applyUniforms(persp_uniforms);
+					shader->applyUniforms(uniforms);
 					shader->bind();
 				}
 				this->draw(*model);
@@ -661,8 +661,8 @@ namespace DEMO
 				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("basic"))
 				{
-					shader->setUniforms(persp_uniforms);
-					shader->setUniforms(uniforms);
+					shader->applyUniforms(persp_uniforms);
+					shader->applyUniforms(uniforms);
 					shader->bind();
 				}
 				this->draw(*model);
@@ -678,9 +678,9 @@ namespace DEMO
 				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("lighting"))
 				{
-					shader->setUniforms(persp_uniforms);
-					shader->setUniforms(light_uniforms);
-					shader->setUniforms(uniforms);
+					shader->applyUniforms(persp_uniforms);
+					shader->applyUniforms(light_uniforms);
+					shader->applyUniforms(uniforms);
 					shader->bind();
 				}
 				this->draw(*model);
@@ -696,9 +696,9 @@ namespace DEMO
 				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("lighting"))
 				{
-					shader->setUniforms(persp_uniforms);
-					shader->setUniforms(light_uniforms);
-					shader->setUniforms(uniforms);
+					shader->applyUniforms(persp_uniforms);
+					shader->applyUniforms(light_uniforms);
+					shader->applyUniforms(uniforms);
 					shader->bind();
 				}
 				this->draw(*model);
@@ -714,8 +714,8 @@ namespace DEMO
 				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("normal3D"))
 				{
-					shader->setUniforms(persp_uniforms);
-					shader->setUniforms(uniforms);
+					shader->applyUniforms(persp_uniforms);
+					shader->applyUniforms(uniforms);
 					shader->bind();
 				}
 				this->draw(*model);
@@ -731,8 +731,8 @@ namespace DEMO
 				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("normal3D"))
 				{
-					shader->setUniforms(persp_uniforms);
-					shader->setUniforms(uniforms);
+					shader->applyUniforms(persp_uniforms);
+					shader->applyUniforms(uniforms);
 					shader->bind();
 				}
 				this->draw(*model);
@@ -750,8 +750,8 @@ namespace DEMO
 				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("basic"))
 				{
-					shader->setUniforms(persp_uniforms);
-					shader->setUniforms(uniforms);
+					shader->applyUniforms(persp_uniforms);
+					shader->applyUniforms(uniforms);
 					shader->bind();
 				}
 				this->draw(*model);
@@ -769,7 +769,7 @@ namespace DEMO
 					ml::Uniform("u_lineSize",	ml::Uniform::Float, &m_lineSize),
 					ml::Uniform("u_lineSamples",ml::Uniform::Int,	&m_lineSamples),
 				};
-				shader->setUniforms(uniforms);
+				shader->applyUniforms(uniforms);
 				shader->bind();
 				ml::OpenGL::drawArrays(ml::GL::Points, 0, 4);
 			}
@@ -823,7 +823,7 @@ namespace DEMO
 
 		// Draw Effects
 		/* * * * * * * * * * * * * * * * * * * * */
-		m_effects["default"].shader()->setUniforms(effect_uniforms);
+		m_effects["default"].shader()->applyUniforms(effect_uniforms);
 		this->draw(m_effects["default"]);
 
 		// Draw GUI

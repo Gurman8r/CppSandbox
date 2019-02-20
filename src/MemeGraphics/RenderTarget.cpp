@@ -4,7 +4,7 @@
 
 namespace ml
 {
-	// Drawing
+	/* * * * * * * * * * * * * * * * * * * * */
 	
 	RenderTarget & RenderTarget::clear()
 	{
@@ -18,7 +18,13 @@ namespace ml
 		OpenGL::clear(GL::ColorBufferBit | GL::DepthBufferBit);
 		return (*this);
 	}
+
+	void RenderTarget::setViewport(const vec2i & pos, const vec2i & size) const
+	{
+		OpenGL::viewport(pos[0], pos[1], size[0], size[1]);
+	}
 	
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	RenderTarget & RenderTarget::draw(const IDrawable & value)
 	{
@@ -39,15 +45,19 @@ namespace ml
 
 	RenderTarget & RenderTarget::draw(const VertexList * vertices, const RenderBatch & batch)
 	{
-		return draw(vertices->contiguous(), batch);
+		if (vertices)
+		{
+			return draw(vertices->contiguous(), batch);
+		}
+		return (*this);
 	}
 
 	RenderTarget & RenderTarget::draw(const FloatList & vertices, const RenderBatch & batch)
 	{
 		// Update Shader
-		if (batch.shader)
+		if (batch.shader && batch.uniforms)
 		{
-			batch.shader->setUniforms(*batch.uniforms);
+			batch.shader->applyUniforms(*batch.uniforms);
 			batch.shader->bind();
 		}
 
@@ -59,6 +69,7 @@ namespace ml
 
 			return draw(batch.vao, batch.vbo);
 		}
+
 		return (*this);
 	}
 
@@ -94,9 +105,5 @@ namespace ml
 		return (*this);
 	}
 
-	
-	void RenderTarget::setViewport(const vec2i & pos, const vec2i & size) const
-	{
-		OpenGL::viewport(pos[0], pos[1], size[0], size[1]);
-	}
+	/* * * * * * * * * * * * * * * * * * * * */
 }

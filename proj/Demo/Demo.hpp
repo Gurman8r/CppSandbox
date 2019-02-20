@@ -9,6 +9,7 @@
 #include <MemeCore/Thread.hpp>
 #include <MemeEditor/Editor.hpp>
 #include <MemeGraphics/Text.hpp>
+#include <MemeGraphics/Canvas.hpp>
 #include <MemeGraphics/Effect.hpp>
 #include <MemeGraphics/RenderWindow.hpp>
 #include <MemeGraphics/Shapes.hpp>
@@ -61,10 +62,6 @@ namespace DEMO
 		void	onExit(const ExitEvent & ev);
 
 	private:
-		/* * * * * * * * * * * * * * * * * * * * */
-
-		
-
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		ml::Transform	m_persp;

@@ -22,6 +22,8 @@ ml::RenderWindow * exampleProgramLoader(const ml::String & filename)
 				return static_cast<ml::RenderWindow *>(ent);
 			}
 		}
+		ML_Lib.freeLibrary(lib);
+		return NULL;
 	}
 	return static_cast<ml::RenderWindow *>(new DEMO::Demo());
 }

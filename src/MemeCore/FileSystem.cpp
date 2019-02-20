@@ -88,12 +88,6 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool FileSystem::fileExists(const String & filename) const
-	{
-		return (bool)(std::ifstream(filename));
-	}
-
-
 	bool FileSystem::getFileContents(const String & filename, List<char> & value) const
 	{
 		static File file;
@@ -127,6 +121,13 @@ namespace ml
 		}
 		value.str(String());
 		return false;
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	bool FileSystem::fileExists(const String & filename) const
+	{
+		return (bool)(std::ifstream(filename));
 	}
 	
 	String FileSystem::getFileName(const String & filename) const

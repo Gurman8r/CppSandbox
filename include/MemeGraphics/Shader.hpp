@@ -30,8 +30,8 @@ namespace ml
 	public:
 		// Core
 		bool bind(bool bindTextures = true) const;
+		bool applyUniforms(const UniformSet & value) const;
 		bool setUniform(const Uniform & value) const;
-		bool setUniforms(const UniformSet & value) const;
 
 	public:
 		// Set Uniform
