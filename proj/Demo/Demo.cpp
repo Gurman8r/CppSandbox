@@ -375,7 +375,7 @@ namespace DEMO
 		}
 		else
 		{
-			ml::Debug::setError(ML_FAILURE);
+			ml::Debug::setError(ml::Debug::logWarning("Failed Loading Interpreter"));
 		}
 	}
 
@@ -403,6 +403,7 @@ namespace DEMO
 			this->setViewport(ml::vec2i::Zero, this->getFramebufferSize());
 			this->maximize();
 
+			// Load ImGui
 			if (ml::Debug::log("Dear ImGui..."))
 			{
 				IMGUI_CHECKVERSION();
@@ -416,18 +417,21 @@ namespace DEMO
 				}
 			}
 
+			// Load OpenAL
 			if (!ml::OpenAL::init())
 			{
 				ml::Debug::setError(ml::Debug::logError("Failed Loading OpenAL"));
 				return;
 			}
 
+			// Load Resources
 			if (ml::Debug::log("Loading Manifest...") && !loadResources())
 			{
 				ml::Debug::setError(ml::Debug::logError("Failed Loading Resources"));
 				return;
 			}
 
+			// Load Network
 			if (!loadNetwork())
 			{
 				ml::Debug::setError(ml::Debug::logError("Failed Loading Network"));
@@ -454,45 +458,52 @@ namespace DEMO
 			this->setIcons({ (*icon).flipVertically() });
 		}
 
-		// Orthographic
-		m_ortho = ml::Transform::Orthographic(
-			{ ml::vec2f::Zero, (ml::vec2f)this->getSize() },
-			{ SETTINGS.orthoNear, SETTINGS.orthoFar }
-		);
+		// Setup Projections
+		{
+			// Orthographic
+			m_ortho = ml::Transform::Orthographic(
+				{ ml::vec2f::Zero, (ml::vec2f)this->getSize() },
+				{ SETTINGS.orthoNear, SETTINGS.orthoFar }
+			);
 
-		// Perspective
-		m_persp = ml::Transform::Perspective(
-			SETTINGS.fieldOfView,
-			this->aspect(),
-			{ SETTINGS.perspNear, SETTINGS.perspFar }
-		);
+			// Perspective
+			m_persp = ml::Transform::Perspective(
+				SETTINGS.fieldOfView,
+				this->aspect(),
+				{ SETTINGS.perspNear, SETTINGS.perspFar }
+			);
+		}
 
-		// Camera
-		m_camera.LookAt(m_camPos, m_camPos + ml::vec3f::Back, ml::vec3f::Up);
+		// Setup Camera
+		{
+			m_camera.LookAt(m_camPos, m_camPos + ml::vec3f::Back, ml::vec3f::Up);
+		}
 
-		// Setup Model Transforms
-		ML_Res.models.get("borg")->transform()
-			.translate({ +5.0f, 0.0f, 0.0f });
+		// Setup Models
+		{
+			ML_Res.models.get("borg")->transform()
+				.translate({ +5.0f, 0.0f, 0.0f });
 
-		ML_Res.models.get("sanic")->transform()
-			.translate({ -5.0f, 0.0f, 0.0f });
+			ML_Res.models.get("sanic")->transform()
+				.translate({ -5.0f, 0.0f, 0.0f });
 
-		ML_Res.models.get("earth")->transform()
-			.translate({ 0.0f, 0.0f, 0.0f });
+			ML_Res.models.get("earth")->transform()
+				.translate({ 0.0f, 0.0f, 0.0f });
 
-		ML_Res.models.get("cube")->transform()
-			.translate({ 0.0f, 0.0f, -5.0f })
-			.scale(0.5f);
+			ML_Res.models.get("cube")->transform()
+				.translate({ 0.0f, 0.0f, -5.0f })
+				.scale(0.5f);
 
-		ML_Res.models.get("moon")->transform()
-			.translate({ 0.0f, 0.0f, 5.0f })
-			.scale(0.5f);
+			ML_Res.models.get("moon")->transform()
+				.translate({ 0.0f, 0.0f, 5.0f })
+				.scale(0.5f);
 
-		ML_Res.models.get("ground")->transform()
-			.translate({ 0.0f, -2.5f, 0.0f })
-			.scale({ 12.5, 0.25f, 12.5 });
+			ML_Res.models.get("ground")->transform()
+				.translate({ 0.0f, -2.5f, 0.0f })
+				.scale({ 12.5, 0.25f, 12.5 });
+		}
 
-		// Threads
+		// Setup Threads
 		m_thread = new ml::Thread([&]()
 		{
 			ml::Debug::log("Entering Dummy Thread");
@@ -904,7 +915,10 @@ namespace DEMO
 
 		// Draw Effects
 		/* * * * * * * * * * * * * * * * * * * * */
-		m_effects["default"].shader()->applyUniforms(effect_uniforms);
+		if (const ml::Shader * shader = m_effects["default"].shader())
+		{
+			shader->applyUniforms(effect_uniforms);
+		}
 		this->draw(m_effects["default"]);
 
 		// Draw GUI

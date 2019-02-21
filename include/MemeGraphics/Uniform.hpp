@@ -59,6 +59,8 @@ namespace ml
 
 	public:
 		bool good() const;
+		
+		inline operator bool() const { return good(); }
 
 		void serialize(std::ostream & out) const override;
 		void deserialize(std::istream & in) override;

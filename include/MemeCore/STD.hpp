@@ -9,6 +9,7 @@
 #include <cstddef>
 #include <ctime>
 #include <fstream>
+#include <future>
 #include <initializer_list>
 #include <iomanip>
 #include <iostream>

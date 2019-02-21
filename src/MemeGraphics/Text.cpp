@@ -87,6 +87,9 @@ namespace ml
 
 	void Text::update() const
 	{
+		if (!m_font)
+			return;
+
 		if (m_requiresUpdate)
 		{	m_requiresUpdate = false;
 			
@@ -136,6 +139,9 @@ namespace ml
 	
 	void Text::draw(RenderTarget & target, RenderBatch batch) const
 	{
+		if (!m_font)
+			return;
+
 		// Update Geometry/Textures
 		update();
 		

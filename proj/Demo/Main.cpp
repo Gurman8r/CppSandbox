@@ -12,7 +12,7 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-ml::RenderWindow * exampleProgramLoader(const ml::String & filename)
+ml::RenderWindow * loadProgram(const ml::String & filename)
 {
 	if (void * lib = ML_Lib.loadLibrary(filename))
 	{
@@ -41,15 +41,14 @@ int32_t main(int32_t argc, char ** argv)
 	}
 
 	// Load Program
-	if (ml::RenderWindow * program = exampleProgramLoader("./Placeholder_Debug_x86.dll"))
+	if (ml::RenderWindow * program = loadProgram("./Placeholder_Debug_x86.dll"))
 	{
 		// Enter
 		ML_EventSystem.fireEvent(DEMO::EnterEvent(argc, argv));
 		if (ml::Debug::checkError(ML_FAILURE))
 		{
 			delete program;
-			return ml::Debug::logError("Failed Entering Program")
-				|| ml::Debug::pause(EXIT_FAILURE);
+			return ml::Debug::pause(EXIT_FAILURE);
 		}
 
 		// Load
@@ -57,8 +56,7 @@ int32_t main(int32_t argc, char ** argv)
 		if (ml::Debug::checkError(ML_FAILURE))
 		{
 			delete program;
-			return ml::Debug::logError("Failed Loading Resources")
-				|| ml::Debug::pause(EXIT_FAILURE);
+			return ml::Debug::pause(EXIT_FAILURE);
 		}
 
 		// Start
@@ -66,8 +64,7 @@ int32_t main(int32_t argc, char ** argv)
 		if (ml::Debug::checkError(ML_FAILURE))
 		{
 			delete program;
-			return ml::Debug::logError("Failed Starting Program")
-				|| ml::Debug::pause(EXIT_FAILURE);
+			return ml::Debug::pause(EXIT_FAILURE);
 		}
 
 		// Loop

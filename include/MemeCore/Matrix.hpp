@@ -236,15 +236,15 @@ namespace ml
 		inline static self_type & identity()
 		{
 			static self_type temp;
-			static bool check = false;
-			if (!check)
-			{
-				check = true;
+			static bool checked = false;
+			if (!checked)
+			{	
+				checked = true;
 				for (size_t y = 0; y < Rows; y++)
 				{
 					for (size_t x = 0; x < Cols; x++)
 					{
-						temp[y * Cols + x] = (x == y) ? (value_type)1 : (value_type)0;
+						temp.at(x, y) = (x == y) ? (value_type)1 : (value_type)0;
 					}
 				}
 			}

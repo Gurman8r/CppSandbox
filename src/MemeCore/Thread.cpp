@@ -13,6 +13,7 @@ namespace ml
 	Thread::~Thread()
 	{
 		clean();
+		assert(!m_thr);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -21,12 +22,6 @@ namespace ml
 	{
 		join();
 
-		if (m_thr) 
-		{
-			delete m_thr;
-			m_thr = NULL;
-		}
-		
 		return update(NULL);
 	}
 
@@ -44,6 +39,8 @@ namespace ml
 		if (joinable())
 		{
 			m_thr->join();
+			delete m_thr;
+			m_thr = NULL;
 		}
 		return (*this);
 	}

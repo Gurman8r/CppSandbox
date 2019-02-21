@@ -25,10 +25,10 @@
     <Filter Include="Header Files\Editor">
       <UniqueIdentifier>{c085c6e6-146c-4fd9-a8b2-5ad3e21c5d75}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Resource Management">
+    <Filter Include="Header Files\Loading">
       <UniqueIdentifier>{a16a0ada-b5f8-488b-80ec-824f359d2fce}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Resource Management">
+    <Filter Include="Source Files\Loading">
       <UniqueIdentifier>{ca321d12-4abc-4177-bd20-bab7be77e764}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -58,13 +58,13 @@
       <Filter>Header Files\imgui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\ResourceMap.hpp">
-      <Filter>Header Files\Resource Management</Filter>
+      <Filter>Header Files\Loading</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\Manifest.hpp">
-      <Filter>Header Files\Resource Management</Filter>
+      <Filter>Header Files\Loading</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\ResourceManager.hpp">
-      <Filter>Header Files\Resource Management</Filter>
+      <Filter>Header Files\Loading</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\Editor.hpp">
       <Filter>Header Files\Editor</Filter>
@@ -93,10 +93,10 @@
       <Filter>Source Files\imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\Manifest.cpp">
-      <Filter>Source Files\Resource Management</Filter>
+      <Filter>Source Files\Loading</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\ResourceManager.cpp">
-      <Filter>Source Files\Resource Management</Filter>
+      <Filter>Source Files\Loading</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\Editor.cpp">
       <Filter>Source Files\Editor</Filter>
