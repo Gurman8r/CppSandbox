@@ -58,6 +58,9 @@ namespace DEMO
 					{ SETTINGS.perspNear, SETTINGS.perspFar }
 				);
 
+				if (ev->size() == ml::vec2i::Zero)
+					return;
+
 				// Reload Framebuffers
 				if (ml::Texture * tex = ML_Res.textures.get("framebuffer"))
 				{
@@ -523,14 +526,17 @@ namespace DEMO
 		{
 			if (ml::Model * m = ML_Res.models.get("borg"))
 			{
+				ml::vec3f pos = m->transform().getPosition();
+				pos[1] = +ML_Time.cos();
 				m->transform()
+					.setPosition(pos)
 					.rotate(+ev.elapsed.delta(), ml::vec3f::One);
 			}
 
 			if (ml::Model * m = ML_Res.models.get("cube"))
 			{
 				ml::vec3f pos = m->transform().getPosition();
-				pos[1] = -sinf(ML_Time.elapsed().delta());
+				pos[1] = -ML_Time.sin();
 				m->transform()
 					.setPosition(pos)
 					.rotate(-ev.elapsed.delta(), ml::vec3f::One);
@@ -545,7 +551,7 @@ namespace DEMO
 			if (ml::Model * m = ML_Res.models.get("moon"))
 			{
 				ml::vec3f pos = m->transform().getPosition();
-				pos[1] = sinf(ML_Time.elapsed().delta());
+				pos[1] = +ML_Time.sin();
 				m->transform()
 					.setPosition(pos)
 					.rotate(-ev.elapsed.delta(), ml::vec3f::Up);
@@ -553,7 +559,10 @@ namespace DEMO
 
 			if (ml::Model * m = ML_Res.models.get("sanic"))
 			{
+				ml::vec3f pos = m->transform().getPosition();
+				pos[1] = -ML_Time.cos();
 				m->transform()
+					.setPosition(pos)
 					.rotate(-ev.elapsed.delta(), ml::vec3f::Forward);
 			}
 
@@ -589,17 +598,18 @@ namespace DEMO
 				.setPosition({ 32, 128 })
 				.setString("there is no need\nto be upset");
 
-			uint32_t	fontSize	= 18;
-			float		hOff		= 0.0f;
-			float		vOff		= 4.0f;
-			ml::vec2f	offset		= { hOff, -(vOff + (float)fontSize) };
-			ml::vec2f	origin		= { (float)fontSize, (float)this->height() - 48 };
-			ml::vec2f	linePos		= 0;
-			size_t		lineNum		= 0;
-			auto		nextLine	= [&]() { return linePos = (origin + (offset * (float)(lineNum++))); };
+			const ml::Font *font		= ML_Res.fonts.get("consolas");
+			uint32_t		fontSize	= 18;
+			float			hOff		= 0.0f;
+			float			vOff		= 4.0f;
+			ml::vec2f		offset		= { hOff, -(vOff + (float)fontSize) };
+			ml::vec2f		origin		= { (float)fontSize, (float)this->height() - 48 };
+			ml::vec2f		linePos		= 0;
+			size_t			lineNum		= 0;
+			auto			nextLine	= [&]() { return linePos = (origin + (offset * (float)(lineNum++))); };
 
 			m_text["gl_version"]
-				.setFont(ML_Res.fonts.get("consolas"))
+				.setFont(font)
 				.setFontSize(fontSize)
 				.setPosition(nextLine())
 				.setString(ml::String("GL Version: {0}").format(
@@ -607,7 +617,7 @@ namespace DEMO
 
 
 			m_text["gl_vendor"]
-				.setFont(ML_Res.fonts.get("consolas"))
+				.setFont(font)
 				.setFontSize(fontSize)
 				.setPosition(nextLine())
 				.setString(ml::String("GL Vendor: {0}").format(
@@ -616,7 +626,7 @@ namespace DEMO
 			nextLine();
 
 			m_text["fps_str"]
-				.setFont(ML_Res.fonts.get("consolas"))
+				.setFont(font)
 				.setFontSize(fontSize)
 				.setPosition(nextLine())
 				.setString(ml::String("{0} ms/frame ({1} fps)").format(
@@ -624,55 +634,50 @@ namespace DEMO
 					ML_Time.calculateFPS(ev.elapsed.delta())));
 
 			m_text["time"]
-				.setFont(ML_Res.fonts.get("consolas"))
+				.setFont(font)
 				.setFontSize(fontSize)
 				.setPosition(nextLine())
 				.setString(ml::String("time: {0}").format(
 					ML_Time.elapsed()));
 
-			m_text["sine"]
-				.setFont(ML_Res.fonts.get("consolas"))
+			nextLine();
+
+			m_text["sin"]
+				.setFont(font)
 				.setFontSize(fontSize)
 				.setPosition(nextLine())
-				.setString(ml::String("sine: {0}").format(
-					ML_Time.sine()));
+				.setString(ml::String("sin: {0}").format(
+					ML_Time.sin()));
+
+			m_text["cos"]
+				.setFont(font)
+				.setFontSize(fontSize)
+				.setPosition(nextLine())
+				.setString(ml::String("cos: {0}").format(
+					ML_Time.cos()));
 
 			nextLine();
 
 			m_text["cursor_pos"]
-				.setFont(ML_Res.fonts.get("consolas"))
+				.setFont(font)
 				.setFontSize(fontSize)
 				.setPosition(nextLine())
 				.setString(ml::String("cx/cy: {0}").format(
 					this->getCursorPos()));
 
 			m_text["window_pos"]
-				.setFont(ML_Res.fonts.get("consolas"))
+				.setFont(font)
 				.setFontSize(fontSize)
 				.setPosition(nextLine())
 				.setString(ml::String("wx/wy: {0}").format(
 					this->getPosition()));
 
 			m_text["window_size"]
-				.setFont(ML_Res.fonts.get("consolas"))
+				.setFont(font)
 				.setFontSize(fontSize)
 				.setPosition(nextLine())
 				.setString(ml::String("ww/wh: {0}").format(
 					this->getSize()));
-
-			m_text["frame_size"]
-				.setFont(ML_Res.fonts.get("consolas"))
-				.setFontSize(fontSize)
-				.setPosition(nextLine())
-				.setString(ml::String("fw/fh: {0}").format(
-					this->getFramebufferSize()));
-
-			m_text["effect_size"]
-				.setFont(ML_Res.fonts.get("consolas"))
-				.setFontSize(fontSize)
-				.setPosition(nextLine())
-				.setString(ml::String("ew/eh: {0}").format(
-					m_effects["default"].texture()->size()));
 
 			// Update All
 			for (auto pair : m_text) { pair.second.update(); }

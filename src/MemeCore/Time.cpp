@@ -17,9 +17,14 @@ namespace ml
 		return mainTimer().elapsed();
 	}
 
-	float Time::sine() const
+	float Time::sin() const
 	{
 		return sinf(elapsed().delta());
+	}
+
+	float Time::cos() const
+	{
+		return cosf(elapsed().delta());
 	}
 
 	uint64_t Time::calculateFPS(float deltaTime)

@@ -21,7 +21,9 @@ namespace ml
 
 		const Duration & elapsed() const;
 
-		float sine() const;
+		float sin() const;
+
+		float cos() const;
 
 		uint64_t calculateFPS(float deltaTime);
 
