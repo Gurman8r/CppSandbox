@@ -885,6 +885,7 @@ namespace DEMO
 						const ml::vec2f dest = (pos - size * origin);
 
 						if (ml::Uniform * u = ortho_uniforms.find("u_texture")) { u->data = texture; }
+						if (ml::Uniform * u = ortho_uniforms.find("u_color"))	{ u->data = &ml::Color::White; }
 
 						this->draw(ml::Shapes::genQuadFloats({ dest, size }), batch);
 					}
