@@ -1,12 +1,12 @@
 #ifndef _SCRIPT_HPP_
 #define _SCRIPT_HPP_
 
-#include <MemeScript/Interpreter.hpp>
-#include <MemeCore/IReadable.hpp>
+#include <MemeScript/AST_Block.hpp>
+#include <MemeCore/File.hpp>
 
 namespace ml
 {
-	class Script
+	class ML_SCRIPT_API Script
 		: public ITrackable
 		, public IReadable
 	{
@@ -17,8 +17,15 @@ namespace ml
 		bool cleanup() override;
 		bool loadFromFile(const String & filename) override;
 
-	private:
+		bool run();
 
+		const Var & ret() const { return m_ret; }
+
+	private:
+		File		m_file;
+		TokenList	m_tokens;
+		AST_Block *	m_ast;
+		Var			m_ret;
 	};
 }
 

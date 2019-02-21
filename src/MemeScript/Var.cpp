@@ -110,21 +110,12 @@ namespace ml
 
 			switch (getTypeID())
 			{
-			case Var::Func:
-				return !(textValue()).empty();
-
-			case Var::Bool:
-				return isBoolType();
-
-			case Var::Float:
-				return isFloatType();
-
-			case Var::Integer:
-				return isIntType();
-
-			case Var::Pointer:
-				return isPointerType();
-
+			case Var::Func:		return !isEmptyValue();
+			case Var::Bool:		return isBoolType();
+			case Var::Float:	return isFloatType();
+			case Var::Integer:	return isIntType();
+			case Var::Pointer:	return isPointerType();
+			
 			case Var::Str:
 			default:
 				return true;

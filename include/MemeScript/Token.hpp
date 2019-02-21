@@ -31,7 +31,7 @@ namespace ml
 		TOK_MOD		= '%',	// % - Mod
 
 		TOK_HASH	= '#',	// # - Hash
-		TOK_TERM	= '\\',	// \ - erminate
+		TOK_TERM	= '\\',	// \ - terminate
 		TOK_SEMI	= ';',	// ; - Semicolon
 		TOK_CMMA	= ',',	// , - Comma
 		TOK_COLN	= ':',	// : - Colon

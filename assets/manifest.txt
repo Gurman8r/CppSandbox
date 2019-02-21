@@ -35,9 +35,11 @@ model:		light		/meshes/sphere8x6.mesh
 model:		earth		/meshes/sphere32x24.mesh
 model:		moon		/meshes/sphere32x24.mesh
 
-# Skyboxes
+# Scripts
 #***********************************************************************#
-#skybox:	sunset		/skyboxes/sunset.skybox
+script:		hello		/scripts/hello.meme
+script:		fibonacci	/scripts/fibonacci.meme
+script:		files		/scripts/files.meme
 
 # Shaders
 #***********************************************************************#
@@ -50,6 +52,10 @@ shader:		framebuffer	/shaders/framebuffer.shader
 shader:		lighting	/shaders/lighting.shader
 shader:		solid		/shaders/solid.shader
 shader:		skybox		/shaders/skybox.shader
+
+# Skyboxes
+#***********************************************************************#
+#skybox:	sunset		/skyboxes/sunset.skybox
 
 # Textures
 #***********************************************************************#

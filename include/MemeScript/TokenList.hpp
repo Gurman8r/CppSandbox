@@ -13,7 +13,6 @@ namespace ml
 	{
 	public:
 		using value_type			= Token;
-		using string_type			= String;
 		using vector_type			= List<value_type>;
 		using cstring_list			= List<CString>;
 		using char_list				= List<char>;
@@ -47,10 +46,10 @@ namespace ml
 		const size_t	size() const;
 
 		const bool	back(const value_type& value) const;
-		const bool	back(const string_type& value) const;
+		const bool	back(const String& value) const;
 		const bool	back(char value) const;
 		const bool	front(const value_type& value) const;
-		const bool	front(const string_type& value) const;
+		const bool	front(const String& value) const;
 		const bool	front(char value) const;
 
 		const bool	contains(const value_type& value) const;

@@ -87,9 +87,7 @@ namespace ml
 
 					if (++count > 100)
 					{
-						Debug::logError("Stack overflow");
-
-						return false;
+						return Debug::logError("Stack overflow");
 					}
 				}
 
@@ -437,7 +435,7 @@ namespace ml
 			{
 				return new AST_Command(params.front());
 			}
-			return new AST_TypeID(new AST_Int(0));
+			return new AST_Command(new AST_String(""));
 		}
 		// Size Of
 		else if (toks.matchData(toks.begin(), { "sizeof" }))
@@ -447,7 +445,7 @@ namespace ml
 			{
 				return new AST_SizeOf(params.front());
 			}
-			return new AST_TypeID(new AST_Int(0));
+			return new AST_SizeOf(new AST_Int(0));
 		}
 		// Type ID
 		else if (toks.matchData(toks.begin(), { "typeid" }))
@@ -727,7 +725,6 @@ namespace ml
 				{
 					call.push_back(*it);
 				}
-				//cout << "Call: " << call << std::Endl;
 				stk.push(genCall(call));
 			}
 

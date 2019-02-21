@@ -189,7 +189,7 @@ namespace ml
 		return back() == value;
 	}
 	
-	const bool	TokenList::back(const string_type & value) const
+	const bool	TokenList::back(const String & value) const
 	{
 		return back() == value;
 	}
@@ -205,7 +205,7 @@ namespace ml
 		return front() == value;
 	}
 	
-	const bool	TokenList::front(const string_type & value) const
+	const bool	TokenList::front(const String & value) const
 	{
 		return front() == value;
 	}
