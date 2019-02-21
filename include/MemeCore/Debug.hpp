@@ -14,6 +14,7 @@ namespace ml
 	{
 	private:
 		static int32_t m_error;
+
 	public:
 		static bool		checkError(const int32_t value);
 		static void		setError(const int32_t value);

@@ -7,7 +7,7 @@ namespace ml
 
 	bool Debug::checkError(const int32_t value)
 	{
-		return (m_error == value);
+		return (getError() == value);
 	}
 
 	void Debug::setError(const int32_t value)

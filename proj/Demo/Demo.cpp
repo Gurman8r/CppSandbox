@@ -633,7 +633,7 @@ namespace DEMO
 				.setString(ml::String("ww/wh: {0}").format(
 					this->size()));
 
-			m_text["framebuffer_size"]
+			m_text["frame_size"]
 				.setFont(ML_Res.fonts.get("consolas"))
 				.setFontSize(fontSize)
 				.setPosition(nextLine())

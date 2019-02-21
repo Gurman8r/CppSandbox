@@ -86,6 +86,14 @@ int32_t main(int32_t argc, char ** argv)
 			// End Step
 			elapsed = loopTimer.stop().elapsed();
 
+			// Check Errors
+			if (ml::Debug::checkError(ML_FAILURE))
+			{
+				delete program;
+				return ml::Debug::logError("Failed Starting Program")
+					|| ml::Debug::pause(EXIT_FAILURE);
+			}
+
 		} while (program->isOpen());
 
 		// Exit
