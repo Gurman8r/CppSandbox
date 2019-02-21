@@ -28,12 +28,14 @@ namespace ml
 			skyboxes.clean() +
 			textures.clean() +
 			images.clean() +
-			fonts.clean();
+			fonts.clean() +
+			scripts.clean();
 	}
 
 	size_t ResourceManager::reloadAll()
 	{
 		return
+			scripts.reload() +
 			fonts.reload() +
 			images.reload() +
 			meshes.reload() +
@@ -69,6 +71,7 @@ namespace ml
 		else if (type == "mats"		&& !loadData(mats,		path, files))	{ return false; }
 		else if (type == "meshes"	&& !loadData(meshes,	path, files))	{ return false; }
 		else if (type == "models"	&& !loadData(models,	path, files))	{ return false; }
+		else if (type == "scripts"	&& !loadData(scripts,	path, files))	{ return false; }
 		else if (type == "shaders"	&& !loadData(shaders,	path, files))	{ return false; }
 		else if (type == "skyboxes" && !loadData(skyboxes,	path, files))	{ return false; }
 		else if (type == "sounds"	&& !loadData(sounds,	path, files))	{ return false; }

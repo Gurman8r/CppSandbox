@@ -10,6 +10,7 @@
 #include <MemeGraphics/Model.hpp>
 #include <MemeGraphics/Skybox.hpp>
 #include <MemeGraphics/Sprite.hpp>
+#include <MemeScript/Script.hpp>
 
 #define ML_Res ml::ResourceManager::getInstance()
 
@@ -29,8 +30,9 @@ namespace ml
 		using MaterialMap	= ResourceMap<Material>;
 		using MeshMap		= ResourceMap<Mesh>;
 		using ModelMap		= ResourceMap<Model>;
-		using SkyboxMap		= ResourceMap<Skybox>;
+		using ScriptMap		= ResourceMap<Script>;
 		using ShaderMap		= ResourceMap<Shader>;
+		using SkyboxMap		= ResourceMap<Skybox>;
 		using SoundMap		= ResourceMap<Sound>;
 		using SpriteMap		= ResourceMap<Sprite>;
 		using TextureMap	= ResourceMap<Texture>;
@@ -62,8 +64,9 @@ namespace ml
 		MaterialMap mats;
 		MeshMap		meshes;
 		ModelMap	models;
-		SkyboxMap	skyboxes;
+		ScriptMap	scripts;
 		ShaderMap	shaders;
+		SkyboxMap	skyboxes;
 		SoundMap	sounds;
 		SpriteMap	sprites;
 		TextureMap	textures;

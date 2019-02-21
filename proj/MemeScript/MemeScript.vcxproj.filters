@@ -78,6 +78,9 @@
     <ClCompile Include="..\..\src\MemeScript\StringUtility.cpp">
       <Filter>Source Files\Interpreter</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\MemeScript\Script.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeScript\AST_Block.hpp">
@@ -129,6 +132,9 @@
       <Filter>Resource Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeScript\ScriptEvents.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\Script.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
