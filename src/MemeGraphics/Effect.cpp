@@ -39,11 +39,12 @@ namespace ml
 		return false;
 	}
 
-	bool Effect::create(const vec2i & size)
+	bool Effect::create(const vec2i & size, GL::Attachment attachment)
 	{
 		if (!m_fbo && !m_rbo)
 		{
 			m_size = size;
+			m_attachment = attachment;
 
 			// Create FBO
 			m_fbo.create();
@@ -71,11 +72,13 @@ namespace ml
 
 	bool Effect::reload(const vec2i & size)
 	{
-		if (cleanup() && create(m_size))
+		if (cleanup())
 		{
+			create(size, m_attachment);
 			setModel(m_model);
 			setShader(m_shader);
 			setTexture(m_texture);
+			return true;
 		}
 		return false;
 	}
@@ -109,7 +112,7 @@ namespace ml
 			m_fbo.bind();
 
 			m_fbo.setTexture(
-				GL::ColorAttachment0, 
+				m_attachment,
 				(*m_texture),
 				m_texture->target(),
 				m_texture->level());

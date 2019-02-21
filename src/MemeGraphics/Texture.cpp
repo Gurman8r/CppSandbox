@@ -182,7 +182,7 @@ namespace ml
 	{
 		if (!size[0] || !size[1])
 		{
-			return Debug::logError("Failed creating texture, invalid size {0}", size);
+			return Debug::logError("Failed creating texture, invalid getSize {0}", size);
 		}
 
 		if (!(*this) && (get_ref() = OpenGL::genTextures(1)))
@@ -198,7 +198,7 @@ namespace ml
 			{
 				return Debug::logError(
 					"Failed creating texture: "
-					"Internal size is too high {0} "
+					"Internal getSize is too high {0} "
 					"Maximum is {1}",
 					m_realSize,
 					vec2u(maxSize));

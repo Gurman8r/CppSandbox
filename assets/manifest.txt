@@ -60,7 +60,7 @@ shader:		skybox		/shaders/skybox.shader
 # Textures
 #***********************************************************************#
 texture:	dean		/images/dean.png
-texture:	icon		/images/icon.png
+texture:	neutrino	/images/neutrino.png
 texture:	sanic		/images/sanic.png
 texture:	borg		/images/borg.png
 texture:	grass		/images/grass.png

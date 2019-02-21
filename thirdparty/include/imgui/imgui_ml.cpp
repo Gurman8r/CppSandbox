@@ -234,7 +234,7 @@ void ImGui_ML_NewFrame()
 	IM_ASSERT(io.Fonts->IsBuilt() && "Font atlas not built! It is generally built by the renderer back-end. Missing call to renderer _NewFrame() function? e.g. ImGui_ImplOpenGL3_NewFrame().");
 
 	// Setup display size (every frame to accommodate for window resizing)
-	ml::vec2f size = ml::vec2f(g_Window->size());
+	ml::vec2f size = ml::vec2f(g_Window->getSize());
 	ml::vec2f display = ml::vec2f(g_Window->getFramebufferSize());
 	io.DisplaySize = ImVec2(size[0], size[1]);
 	io.DisplayFramebufferScale = ImVec2(size[0] > 0 ? (display[0] / size[0]) : 0, size[1] > 0 ? (display[1] / size[1]) : 0);

@@ -217,7 +217,7 @@
     <Image Include="..\..\assets\images\borg.png" />
     <Image Include="..\..\assets\images\dean.png" />
     <Image Include="..\..\assets\images\grass.png" />
-    <Image Include="..\..\assets\images\icon.png" />
+    <Image Include="..\..\assets\images\neutrino.png" />
     <Image Include="..\..\assets\images\Sanic.png" />
     <Image Include="..\..\assets\images\test_sky.png" />
     <Image Include="..\..\assets\textures\bg\bg_clouds.png" />

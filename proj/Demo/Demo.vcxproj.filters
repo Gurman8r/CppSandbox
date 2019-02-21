@@ -266,9 +266,6 @@
     <Image Include="..\..\assets\images\dean.png">
       <Filter>Resource Files\images</Filter>
     </Image>
-    <Image Include="..\..\assets\images\icon.png">
-      <Filter>Resource Files\images</Filter>
-    </Image>
     <Image Include="..\..\assets\images\Sanic.png">
       <Filter>Resource Files\images</Filter>
     </Image>
@@ -346,6 +343,9 @@
     </Image>
     <Image Include="..\..\assets\textures\bg\sunset\sunset_up.png">
       <Filter>Resource Files\textures\bg\sunset</Filter>
+    </Image>
+    <Image Include="..\..\assets\images\neutrino.png">
+      <Filter>Resource Files\images</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

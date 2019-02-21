@@ -18,7 +18,7 @@ namespace ml
 		~Effect();
 
 		bool cleanup();
-		bool create(const vec2i & size);
+		bool create(const vec2i & size, GL::Attachment attachment);
 		bool reload(const vec2i & size);
 
 		void bind() const;
@@ -41,6 +41,8 @@ namespace ml
 		const Texture *	m_texture;
 
 		vec2i m_size;
+
+		GL::Attachment m_attachment;
 
 		mutable FBO m_fbo;
 		mutable RBO m_rbo;

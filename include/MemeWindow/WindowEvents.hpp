@@ -191,6 +191,13 @@ namespace ml
 		}
 
 		inline vec2i size() const { return { width, height }; }
+
+		inline float aspect() const
+		{
+			return (width && height)
+				? (float)(width) / (float)(height)
+				: 0.0f;
+		}
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -268,6 +275,13 @@ namespace ml
 		}
 
 		inline vec2i size() const { return { width, height }; }
+
+		inline float aspect() const
+		{
+			return (width && height)
+				? (float)(width) / (float)(height)
+				: 0.0f;
+		}
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

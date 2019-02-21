@@ -90,7 +90,7 @@ int32_t main(int32_t argc, char ** argv)
 			if (ml::Debug::checkError(ML_FAILURE))
 			{
 				delete program;
-				return ml::Debug::logError("Failed Starting Program")
+				return ml::Debug::logError("Something went wrong...")
 					|| ml::Debug::pause(EXIT_FAILURE);
 			}
 

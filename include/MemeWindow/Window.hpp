@@ -97,17 +97,17 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 
 	public:
-		inline const Context &		context()	const { return m_context; }
-		inline const Style &		style()		const { return m_style; }
-		inline const vec2i &		position()	const { return m_position; }
-		inline const vec2u &		size()		const { return m_videoMode.size; }
-		inline const String &		title()		const { return m_title; }
+		inline const Context &		getContext()	const { return m_context; }
+		inline const Style &		getStyle()		const { return m_style; }
+		inline const vec2i &		getPosition()	const { return m_position; }
+		inline const vec2u &		getSize()		const { return m_videoMode.size; }
+		inline const String &		getTitle()		const { return m_title; }
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
 	public:
-		template <typename T = uint32_t> inline const T width()		  const { return static_cast<T>(size()[0]); }
-		template <typename T = uint32_t> inline const T height()	  const { return static_cast<T>(size()[1]); }
+		template <typename T = uint32_t> inline const T width()		  const { return static_cast<T>(getSize()[0]); }
+		template <typename T = uint32_t> inline const T height()	  const { return static_cast<T>(getSize()[1]); }
 		template <typename T = int32_t>  inline const T frameWidth()  const { return static_cast<T>(getFramebufferSize()[0]); }
 		template <typename T = int32_t>  inline const T frameHeight() const { return static_cast<T>(getFramebufferSize()[1]); }
 

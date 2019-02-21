@@ -19,6 +19,9 @@ namespace DEMO
 		friend class ml::ISingleton<Settings>;
 
 	public:
+		ml::String _file; // path to .ini
+
+	public:
 		// [General]
 		ml::String	rootPath;		// Solution Dir
 		ml::String	assetPath;		// Where's all the data?
@@ -69,7 +72,7 @@ namespace DEMO
 
 		inline bool loadFromFile(const ml::String & filename) override
 		{
-			INIReader ini(filename.c_str());
+			INIReader ini((_file = filename).c_str());
 			if (ini.ParseError() == 0)
 			{
 				// [General]
@@ -88,7 +91,7 @@ namespace DEMO
 				scrShowItoP	 = ini.GetBoolean("Script", "scrShowItoP", false);
 
 				// [Window]
-				title		 = ini.Get("Window", "title", "MemeLib");
+				title		 = ini.Get("Window", "getTitle", "MemeLib");
 				width		 = ini.GetInteger("Window", "width", 640);
 				height		 = ini.GetInteger("Window", "height", 480);
 				bitsPerPixel = ini.GetInteger("Window", "bitsPerPixel", 32);

@@ -40,32 +40,45 @@ namespace DEMO
 		case DemoEvent::EV_Gui:			return onGui(*value->Cast<GuiEvent>());
 		case DemoEvent::EV_Exit:		return onExit(*value->Cast<ExitEvent>());
 
-		case ml::WindowEvent::EV_WindowSize:
-			if (auto ev = value->Cast<ml::WindowSizeEvent>())
+		case ml::WindowEvent::EV_FramebufferSize:
+			if (const auto * ev = value->Cast<ml::FramebufferSizeEvent>())
 			{
+				this->setViewport(ml::vec2i::Zero, ev->size());
+
 				// Orthographic
 				m_ortho = ml::Transform::Orthographic(
-					{ ml::vec2f::Zero, (ml::vec2f)this->getFramebufferSize() },
+					{ ml::vec2f::Zero, (ml::vec2f)ev->size() },
 					{ SETTINGS.orthoNear, SETTINGS.orthoFar }
 				);
 
 				// Perspective
 				m_persp = ml::Transform::Perspective(
 					SETTINGS.fieldOfView,
-					this->aspect(),
+					ev->aspect(),
 					{ SETTINGS.perspNear, SETTINGS.perspFar }
 				);
 
 				// Reload Framebuffers
-				m_effects["default"].reload(this->size());
+				if (ml::Texture * tex = ML_Res.textures.get("framebuffer"))
+				{
+					tex->cleanup();
+					tex->create(ev->size());
+				}
+				m_effects["default"].reload(ev->size());
 			}
 			break;
 
 		case ml::WindowEvent::EV_Key:
-			if (auto ev = value->Cast<ml::KeyEvent>())
+			if (const auto * ev = value->Cast<ml::KeyEvent>())
 			{
-				// Toggle Smooth Textures
+				// Reload Shaders
 				if (ev->getKeyDown(ml::KeyCode::Num1))
+				{
+					ml::Debug::log("Reloaded {0} Shaders.", ML_Res.shaders.reload());
+				}
+
+				// Toggle Smooth Textures
+				if (ev->getKeyDown(ml::KeyCode::Num2))
 				{
 					static bool smooth = false;
 					smooth = !smooth;
@@ -73,12 +86,6 @@ namespace DEMO
 					{
 						pair.second->setSmooth(smooth);
 					}
-				}
-
-				// Reload Shaders
-				if (ev->getKeyDown(ml::KeyCode::R))
-				{
-					ml::Debug::log("Reloaded {0} Shaders.", ML_Res.shaders.reload());
 				}
 
 				// Close
@@ -266,7 +273,7 @@ namespace DEMO
 				&& ML_Res.models.load("sanic")->loadFromMemory(*ML_Res.meshes.get("quad1"))
 				&& ML_Res.models.load("sprite")->loadFromMemory(*ML_Res.meshes.get("quad1"))
 				&& ML_Res.models.load("framebuffer")->loadFromMemory(*ML_Res.meshes.get("quad1"))
-				&& ML_Res.textures.load("framebuffer")->create(this->size())
+				&& ML_Res.textures.load("framebuffer")->create(this->getFramebufferSize())
 				&& loadBuffers();
 		}
 		return ml::Debug::logError("Failed loading manifest");
@@ -283,7 +290,7 @@ namespace DEMO
 		m_vao.unbind();
 
 		// Effects
-		m_effects["default"].create(this->size());
+		m_effects["default"].create(this->getSize(), ml::GL::ColorAttachment0);
 		m_effects["default"].setModel(ML_Res.models.get("framebuffer"));
 		m_effects["default"].setShader(ML_Res.shaders.get("framebuffer"));
 		m_effects["default"].setTexture(ML_Res.textures.get("framebuffer"));
@@ -338,10 +345,25 @@ namespace DEMO
 			// Run Script
 			if (!SETTINGS.scrFile.empty())
 			{
-				ml::Debug::setError(
-					ML_Interpreter.execFile(SETTINGS.pathTo(SETTINGS.scrPath + SETTINGS.scrFile))
-						? ML_SUCCESS
-						: ML_FAILURE);
+				ml::Script scr;
+				if (scr.loadFromFile(SETTINGS.pathTo(SETTINGS.scrPath + SETTINGS.scrFile)))
+				{
+					if (scr.run())
+					{
+						if (!scr.ret())
+						{
+							ml::Debug::setError(ml::Debug::logError("Script returned an error"));
+						}
+					}
+					else
+					{
+						ml::Debug::setError(ml::Debug::logError("Failed running script"));
+					}
+				}
+				else
+				{
+					ml::Debug::setError(ml::Debug::logError("Failed loading script"));
+				}
 			}
 			else
 			{
@@ -370,10 +392,11 @@ namespace DEMO
 			SETTINGS.srgbCapable
 		);
 
-		if (this->create(SETTINGS.title, vMode, wStyle, cSettings) && this->setup())
+		if (this->create(SETTINGS.title, vMode, wStyle, cSettings) && 
+			this->setup())
 		{
 			this->setInputMode(ml::Cursor::Normal);
-			this->setPosition((ml::VideoMode::desktop().size - this->size()) / 2);
+			this->setPosition((ml::VideoMode::desktop().size - this->getSize()) / 2);
 			this->setViewport(ml::vec2i::Zero, this->getFramebufferSize());
 
 			if (ml::Debug::log("Dear ImGui..."))
@@ -409,7 +432,11 @@ namespace DEMO
 		}
 		else
 		{
-			ml::Debug::setError(ml::Debug::logError("Failed Loading Window"));
+			ml::Debug::setError(ml::Debug::logError(
+				"Failed Loading Window\n"
+				"Try checking your settings:\n"
+				"\"{0}\"\n",
+				SETTINGS._file));
 		}
 	}
 
@@ -425,7 +452,7 @@ namespace DEMO
 
 		// Orthographic
 		m_ortho = ml::Transform::Orthographic(
-			{ ml::vec2f::Zero, (ml::vec2f)this->size() },
+			{ ml::vec2f::Zero, (ml::vec2f)this->getSize() },
 			{ SETTINGS.orthoNear, SETTINGS.orthoFar }
 		);
 
@@ -561,15 +588,14 @@ namespace DEMO
 				.setPosition({ 32, 128 })
 				.setString("there is no need\nto be upset");
 
-			static const uint32_t	fontSize= 18;
-			static const ml::vec2f	origin	= { (float)fontSize, (float)this->height() - 64 };
-			static const float		hOff	= 0.0f;
-			static const float		vOff	= 4.0f;
-			static const ml::vec2f	offset	= { hOff, -(vOff + (float)fontSize) };
-
-			ml::vec2f linePos  = 0;
-			size_t	  lineNum  = 0;
-			auto	  nextLine = [&]() { return (linePos = origin + (offset * (float)(lineNum++))); };
+			uint32_t	fontSize	= 18;
+			float		hOff		= 0.0f;
+			float		vOff		= 4.0f;
+			ml::vec2f	offset		= { hOff, -(vOff + (float)fontSize) };
+			ml::vec2f	origin		= { (float)fontSize, (float)this->height() - 48 };
+			ml::vec2f	linePos		= 0;
+			size_t		lineNum		= 0;
+			auto		nextLine	= [&]() { return linePos = (origin + (offset * (float)(lineNum++))); };
 
 			m_text["gl_version"]
 				.setFont(ML_Res.fonts.get("consolas"))
@@ -603,12 +629,12 @@ namespace DEMO
 				.setString(ml::String("time: {0}").format(
 					ML_Time.elapsed()));
 
-			m_text["time_sin"]
+			m_text["sine"]
 				.setFont(ML_Res.fonts.get("consolas"))
 				.setFontSize(fontSize)
 				.setPosition(nextLine())
-				.setString(ml::String("sin time: {0}").format(
-					sinf(ML_Time.elapsed().delta())));
+				.setString(ml::String("sine: {0}").format(
+					ML_Time.sine()));
 
 			nextLine();
 
@@ -624,14 +650,14 @@ namespace DEMO
 				.setFontSize(fontSize)
 				.setPosition(nextLine())
 				.setString(ml::String("wx/wy: {0}").format(
-					this->position()));
+					this->getPosition()));
 
 			m_text["window_size"]
 				.setFont(ML_Res.fonts.get("consolas"))
 				.setFontSize(fontSize)
 				.setPosition(nextLine())
 				.setString(ml::String("ww/wh: {0}").format(
-					this->size()));
+					this->getSize()));
 
 			m_text["frame_size"]
 				.setFont(ML_Res.fonts.get("consolas"))
@@ -841,18 +867,6 @@ namespace DEMO
 				ml::OpenGL::drawArrays(ml::GL::Points, 0, 4);
 			}
 
-			// Text
-			if (const ml::Shader * shader = ML_Res.shaders.get("text"))
-			{
-				static ml::RenderBatch batch(&m_vao, &m_vbo, shader, &ortho_uniforms);
-
-				TextMap::const_iterator it;
-				for (it = m_text.begin(); it != m_text.end(); it++)
-				{
-					this->draw(it->second, batch);
-				}
-			}
-
 			// Sprites
 			if (const ml::Shader * shader = ML_Res.shaders.get("sprites"))
 			{
@@ -876,23 +890,33 @@ namespace DEMO
 					}
 				};
 
-				drawSprite(ML_Res.textures.get("icon"), (ml::vec2f(0.95f, 0.075f) * this->size()), { 0.5f });
+				drawSprite(ML_Res.textures.get("neutrino"), (ml::vec2f(0.95f, 0.075f) * this->getSize()), { 0.5f });
 			}
 		}
 		m_effects["default"].unbind();
 
 		// Draw Effects
 		/* * * * * * * * * * * * * * * * * * * * */
-		if (const ml::Shader * shader = m_effects["default"].shader())
-		{
-			shader->applyUniforms(effect_uniforms);
-		}
+		m_effects["default"].shader()->applyUniforms(effect_uniforms);
 		this->draw(m_effects["default"]);
 
 		// Draw GUI
 		/* * * * * * * * * * * * * * * * * * * * */
 		this->pollEvents();
 
+		// Text
+		if (const ml::Shader * shader = ML_Res.shaders.get("text"))
+		{
+			static ml::RenderBatch batch(&m_vao, &m_vbo, shader, &ortho_uniforms);
+
+			TextMap::const_iterator it;
+			for (it = m_text.begin(); it != m_text.end(); it++)
+			{
+				this->draw(it->second, batch);
+			}
+		}
+
+		// ImGui
 		ImGui_ML_NewFrame();
 		ImGui::NewFrame();
 		{

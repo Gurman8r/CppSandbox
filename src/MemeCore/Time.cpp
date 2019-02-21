@@ -4,39 +4,40 @@ namespace ml
 {
 	void Time::start()
 	{
-		m_timer.start();
+		m_mainTimer.start();
 	}
 
-	const Timer & Time::timer() const
+	const Timer & Time::mainTimer() const
 	{
-		return m_timer;
+		return m_mainTimer;
 	}
 
 	const Duration & Time::elapsed() const
 	{
-		return timer().elapsed();
+		return mainTimer().elapsed();
+	}
+
+	float Time::sine() const
+	{
+		return sinf(elapsed().delta());
 	}
 
 	uint64_t Time::calculateFPS(float deltaTime)
 	{
-		static uint64_t	frameCounter = 0;
-		static uint64_t	fps = 0;
-		static float	nextSecond = 0.0f;
-		static float	prevSecond = 0.0f;
-		frameCounter++;
-		if (((nextSecond += deltaTime) - prevSecond) > 1.0f)
+		m_frameCounter++;
+		if (((m_nextSecond += deltaTime) - m_prevSecond) > 1.0f)
 		{
-			prevSecond = nextSecond;
-			fps = frameCounter;
-			frameCounter = 0;
+			m_prevSecond = m_nextSecond;
+			m_fps = m_frameCounter;
+			m_frameCounter = 0;
 		}
-		return fps;
+		return m_fps;
 	}
 
 	void Time::sleep(const ml::Duration & value)
 	{
-		static Timer timer;
-		timer.reset();
-		while (timer.elapsed() < value);
+		static Timer t;
+		t.reset();
+		while (t.elapsed() < value);
 	}
 }

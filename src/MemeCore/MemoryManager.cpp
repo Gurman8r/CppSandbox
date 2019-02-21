@@ -111,7 +111,7 @@ namespace ml
 	{
 		const std::type_info & info(typeid(c));
 		out << FG::White << "[ " << FG::Gray << info.name() << FG::White << " ]"
-			<< FG::White << " { " << FG::Green << "size: " << FG::Yellow << std::setw(4) 
+			<< FG::White << " { " << FG::Green << "getSize: " << FG::Yellow << std::setw(4) 
 			<< (c.size - OFFSET) << " +" << OFFSET 
 			<< FG::White << " | " << (c.free ? FG::Cyan : FG::Red) << (c.free ? "free" : "used")
 			<< FG::White << " | " << FG::Green << "addr: " << FG::Yellow << (&c)

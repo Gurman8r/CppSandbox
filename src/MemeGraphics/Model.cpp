@@ -42,11 +42,9 @@ namespace ml
 
 	bool Model::loadFromMemory(const Mesh & mesh)
 	{
-		if (!mesh.indices().empty())
-		{
-			return loadFromMemory(mesh.contiguous(), mesh.indices());
-		}
-		return loadFromMemory(mesh.contiguous());
+		return mesh.indices().empty()
+			? loadFromMemory(mesh.contiguous())
+			: loadFromMemory(mesh.contiguous(), mesh.indices());
 	}
 
 	bool Model::loadFromMemory(const VertexList & vertices)

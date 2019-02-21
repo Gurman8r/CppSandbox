@@ -21,7 +21,7 @@ namespace ml
 		void serialize(std::ostream & out) const override
 		{
 			out << " { addr: " << addr
-				<< " | size: " << size
+				<< " | getSize: " << size
 				<< " | indx: " << index
 				<< " }";
 		}

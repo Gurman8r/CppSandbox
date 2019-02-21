@@ -17,19 +17,25 @@ namespace ml
 	public:
 		void start();
 		
-		const Timer & timer() const;
+		const Timer & mainTimer() const;
 
 		const Duration & elapsed() const;
+
+		float sine() const;
 
 		uint64_t calculateFPS(float deltaTime);
 
 		void sleep(const ml::Duration & value);
 	
 	private:
-		Time() { }
+		Time() {}
 		~Time() {}
 
-		Timer m_timer;
+		Timer		m_mainTimer;
+		uint64_t	m_frameCounter = 0;
+		uint64_t	m_fps = 0;
+		float		m_nextSecond = 0.0f;
+		float		m_prevSecond = 0.0f;
 	};
 }
 
