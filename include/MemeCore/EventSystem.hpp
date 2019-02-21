@@ -9,10 +9,14 @@
 namespace ml
 {
 	class ML_CORE_API EventSystem final
-		: public ISingleton<EventSystem>
-		, public ITrackable
+		: public ITrackable
+		, public ISingleton<EventSystem>
 	{
 		friend class ISingleton<EventSystem>;
+
+	public:
+		using multimap_type	= MultiMap<int32_t, IEventListener *>;
+		using iterator		= typename multimap_type::iterator;
 
 	public:
 		void addListener(const int32_t & type, IEventListener * listener);
@@ -26,7 +30,7 @@ namespace ml
 
 		void dispatchAllEvents(const Event * ev);
 
-		std::multimap<int32_t, IEventListener *> m_listeners;
+		multimap_type m_listeners;
 	};
 }
 

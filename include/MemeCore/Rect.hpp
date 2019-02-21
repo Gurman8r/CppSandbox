@@ -6,13 +6,13 @@
 
 namespace ml
 {
-	template <class T>
+	template <class _Elem>
 	class Rect final
-		: public Vector4<T>
+		: public Vector4<_Elem>
 	{
 	public:
-		using value_type	= T;
-		using base_type		= Vector4<T>;
+		using value_type	= _Elem;
+		using base_type		= Vector4<_Elem>;
 		using self_type		= Rect<value_type>;
 		using coord_type	= Vector2<value_type>;
 
@@ -24,11 +24,11 @@ namespace ml
 			: base_type()
 		{
 		}
-		Rect(const value_type & width, const value_type & height)
+		Rect(const value_type width, const value_type height)
 			: base_type(0, 0, width, height)
 		{
 		}
-		Rect(const value_type & left, const value_type & top, const value_type & width, const value_type & height)
+		Rect(const value_type left, const value_type top, const value_type width, const value_type height)
 			: base_type(left, top, width, height)
 		{
 		}
@@ -133,8 +133,8 @@ namespace ml
 		}
 	};
 
-	template <class T> const Rect<T> Rect<T>::Empty	= Rect<T>(0, 0, 0, 0);
-	template <class T> const Rect<T> Rect<T>::One	= Rect<T>(1, 1, 1, 1);
+	template <class _Elem> const Rect<_Elem> Rect<_Elem>::Empty	= Rect<_Elem>(0, 0, 0, 0);
+	template <class _Elem> const Rect<_Elem> Rect<_Elem>::One	= Rect<_Elem>(1, 1, 1, 1);
 
 	using FloatRect = Rect<float>;
 	using IntRect	= Rect<int32_t>;

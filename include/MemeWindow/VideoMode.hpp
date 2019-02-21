@@ -24,8 +24,8 @@ namespace ml
 		vec2u	 size;
 		uint32_t bitsPerPixel;
 
-		inline const uint32_t & width()  const { return size.front(); }
-		inline const uint32_t & height() const { return size.back(); }
+		inline const uint32_t & width()  const { return size[0]; }
+		inline const uint32_t & height() const { return size[1]; }
 
 	public:
 		void serialize(std::ostream & out) const override;

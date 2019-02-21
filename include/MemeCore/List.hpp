@@ -6,7 +6,7 @@
 
 namespace ml
 {
-	// std::vector with serialization and tracking
+	// std::vector with serialization
 	template <
 		class _Elem,
 		class _Alloc = std::allocator<_Elem>
@@ -17,7 +17,6 @@ namespace ml
 		, public IComparable<std::vector<_Elem, _Alloc>>
 		, public IComparable<List<_Elem, _Alloc>>
 	{
-		// elements need << operator
 		//static_assert(
 		//	check::has_leftshift_operator<_Elem>::value,
 		//	"ml::List | Element requires \"<<\" operator");

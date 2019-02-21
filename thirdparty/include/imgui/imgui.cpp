@@ -1055,7 +1055,7 @@ static void *   MallocWrapper(size_t size, void * user_data)    { (void)user_dat
 static void    FreeWrapper(void * ptr, void * user_data)        { (void)user_data; free(ptr); }
 #else
 static void *   MallocWrapper(size_t size, void * user_data)    { (void)user_data; (void)size; IM_ASSERT(0); return NULL; }
-static void    FreeWrapper(void * ptr, void * user_data)        { (void)user_data; (void)ptr; IM_ASSERT(0); }
+static void    FreeWrapper(void * data, void * user_data)        { (void)user_data; (void)data; IM_ASSERT(0); }
 #endif
 
 static void *  (*GImAllocatorAllocFunc)(size_t size, void * user_data) = MallocWrapper;

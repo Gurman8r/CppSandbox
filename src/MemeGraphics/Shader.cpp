@@ -344,7 +344,7 @@ namespace ml
 		UniformBinder u(this, name);
 		if (u)
 		{
-			OpenGL::uniformMatrix3fv(u.location, 1, false, value.ptr());
+			OpenGL::uniformMatrix3fv(u.location, 1, false, value.data());
 		}
 		return u;
 	}
@@ -354,7 +354,7 @@ namespace ml
 		UniformBinder u(this, name);
 		if (u)
 		{
-			OpenGL::uniformMatrix4fv(u.location, 1, false, value.ptr());
+			OpenGL::uniformMatrix4fv(u.location, 1, false, value.data());
 		}
 		return u;
 	}

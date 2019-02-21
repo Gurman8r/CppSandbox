@@ -5,14 +5,14 @@
 
 namespace ml
 {
-	template <class T>
+	template <class _Elem>
 	class Vector4
-		: public Vector<T, 4>
+		: public Vector<_Elem, 4>
 	{
 	public:
-		using base_type = Vector<T, 4>;
-		using self_type = Vector4<T>;
-		using data_type = T;
+		using base_type		= Vector<_Elem, 4>;
+		using self_type		= Vector4<_Elem>;
+		using value_type	= _Elem;
 
 	public:
 		Vector4()
@@ -20,18 +20,18 @@ namespace ml
 		{
 		}
 
-		Vector4(const T & xyzw)
+		Vector4(const value_type xyzw)
 			: base_type(xyzw)
 		{
 		}
 
-		Vector4(const T & x, const T & y, const T & z, const T & w)
+		Vector4(const value_type x, const value_type y, const value_type z, const value_type w)
 			: base_type({ x, y, z, w })
 		{
 		}
 
 		template <size_t N>
-		Vector4(const Vector<T, N> & copy)
+		Vector4(const Vector<_Elem, N> & copy)
 			: base_type(copy)
 		{
 		}
@@ -43,7 +43,7 @@ namespace ml
 		}
 
 		template <class U, size_t N>
-		Vector4(const Vector<U, N> & copy, const data_type dv = (data_type)(0))
+		Vector4(const Vector<U, N> & copy, const value_type dv = (value_type)(0))
 			: base_type(copy, dv)
 		{
 		}
@@ -55,8 +55,8 @@ namespace ml
 		static const self_type One;
 	};
 
-	template <class T> const Vector4<T> Vector4<T>::Zero = Vector4<T>(0);
-	template <class T> const Vector4<T> Vector4<T>::One  = Vector4<T>(1);
+	template <class _Elem> const Vector4<_Elem> Vector4<_Elem>::Zero = Vector4<_Elem>(0);
+	template <class _Elem> const Vector4<_Elem> Vector4<_Elem>::One  = Vector4<_Elem>(1);
 
 	using vec4f = Vector4<float>;
 	using vec4i = Vector4<int32_t>;

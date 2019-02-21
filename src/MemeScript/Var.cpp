@@ -58,7 +58,7 @@ namespace ml
 		"bool",
 		"float",
 		"int",
-		"ptr",
+		"data",
 		"string",
 		"array"
 		"func",

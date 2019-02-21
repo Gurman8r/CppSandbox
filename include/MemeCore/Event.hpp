@@ -65,10 +65,7 @@ namespace ml
 		}
 		virtual ~Event() {}
 
-		inline const int32_t & eventID() const 
-		{ 
-			return m_eventID;
-		}
+		inline const int32_t & eventID() const { return m_eventID; }
 
 	public:
 		template <class T>
@@ -87,7 +84,6 @@ namespace ml
 
 	private:
 		int32_t m_eventID;
-
 	};
 }
 

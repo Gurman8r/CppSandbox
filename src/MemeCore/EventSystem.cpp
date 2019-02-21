@@ -14,19 +14,13 @@ namespace ml
 	
 	void EventSystem::removeListener(const int32_t & type, IEventListener * listener)
 	{
-		Pair<
-			std::multimap<int32_t, IEventListener *>::iterator,
-			std::multimap<int32_t, IEventListener *>::iterator> ret;
+		Pair<iterator, iterator> found = m_listeners.equal_range(type);
 
-		ret = m_listeners.equal_range(type);
-
-		std::multimap<int32_t, IEventListener *>::iterator iter;
-
-		for (iter = ret.first; iter != ret.second; ++iter)
+		for (iterator it = found.first; it != found.second; ++it)
 		{
-			if (iter->second == listener)
+			if (it->second == listener)
 			{
-				m_listeners.erase(iter);
+				m_listeners.erase(it);
 
 				break; // to prevent using invalidated iterator
 			}
@@ -35,19 +29,17 @@ namespace ml
 	
 	void EventSystem::removeListenerFromAllEvents(IEventListener * listener)
 	{
-		std::multimap<int32_t, IEventListener *>::iterator iter;
-
 		bool allTheWayThrough = false;
 
 		while (!allTheWayThrough)
 		{
 			allTheWayThrough = true;
 
-			for (iter = m_listeners.begin(); iter != m_listeners.end(); ++iter)
+			for (iterator it = m_listeners.begin(); it != m_listeners.end(); ++it)
 			{
-				if (iter->second == listener)
+				if (it->second == listener)
 				{
-					m_listeners.erase(iter);
+					m_listeners.erase(it);
 
 					allTheWayThrough = false; // didn't make it the whole way through
 
@@ -59,15 +51,9 @@ namespace ml
 
 	void EventSystem::dispatchAllEvents(const Event * ev)
 	{
-		Pair<
-			std::multimap<int32_t, IEventListener *>::iterator,
-			std::multimap<int32_t, IEventListener *>::iterator> ret;
+		Pair<iterator, iterator> found = m_listeners.equal_range(ev->eventID());
 
-		ret = m_listeners.equal_range(ev->eventID());
-
-		std::multimap<int32_t, IEventListener *>::iterator it;
-
-		for (it = ret.first; it != ret.second; ++it)
+		for (iterator it = found.first; it != found.second; ++it)
 		{
 			it->second->onEvent(ev);
 		}

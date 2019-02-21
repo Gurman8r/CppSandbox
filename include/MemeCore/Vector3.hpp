@@ -5,14 +5,14 @@
 
 namespace ml
 {
-	template <class T>
+	template <class _Elem>
 	class Vector3
-		: public Vector<T, 3>
+		: public Vector<_Elem, 3>
 	{
 	public:
-		using base_type = Vector<T, 3>;
-		using self_type = Vector3<T>;
-		using data_type = T;
+		using base_type = Vector<_Elem, 3>;
+		using self_type = Vector3<_Elem>;
+		using value_type = _Elem;
 
 	public:
 		Vector3()
@@ -20,18 +20,18 @@ namespace ml
 		{
 		}
 
-		Vector3(const T & xyz)
+		Vector3(const value_type xyz)
 			: base_type(xyz)
 		{
 		}
 
-		Vector3(const T & x, const T & y, const T & z)
+		Vector3(const value_type x, const value_type y, const value_type z)
 			: base_type({ x, y, z })
 		{
 		}
 
 		template <size_t N>
-		Vector3(const Vector<T, N> & copy)
+		Vector3(const Vector<_Elem, N> & copy)
 			: base_type(copy)
 		{
 		}
@@ -43,7 +43,7 @@ namespace ml
 		}
 		
 		template <class U, size_t N>
-		Vector3(const Vector<U, N> & copy, const data_type dv = (data_type)(0))
+		Vector3(const Vector<U, N> & copy, const value_type dv = (value_type)(0))
 			: base_type(copy, dv)
 		{
 		}
@@ -88,14 +88,14 @@ namespace ml
 		static const self_type Back;
 	};
 
-	template <class T> const Vector3<T> Vector3<T>::Zero	= Vector3<T>( 0,  0,  0);
-	template <class T> const Vector3<T> Vector3<T>::One		= Vector3<T>( 1,  1,  1);
-	template <class T> const Vector3<T> Vector3<T>::Up		= Vector3<T>( 0,  1,  0);
-	template <class T> const Vector3<T> Vector3<T>::Down	= Vector3<T>( 0, -1,  0);
-	template <class T> const Vector3<T> Vector3<T>::Left	= Vector3<T>(-1,  0,  0);
-	template <class T> const Vector3<T> Vector3<T>::Right	= Vector3<T>( 1,  0,  0);
-	template <class T> const Vector3<T> Vector3<T>::Forward	= Vector3<T>( 0,  0,  1);
-	template <class T> const Vector3<T> Vector3<T>::Back	= Vector3<T>( 0,  0, -1);
+	template <class _Elem> const Vector3<_Elem> Vector3<_Elem>::Zero	= Vector3<_Elem>( 0,  0,  0);
+	template <class _Elem> const Vector3<_Elem> Vector3<_Elem>::One		= Vector3<_Elem>( 1,  1,  1);
+	template <class _Elem> const Vector3<_Elem> Vector3<_Elem>::Up		= Vector3<_Elem>( 0,  1,  0);
+	template <class _Elem> const Vector3<_Elem> Vector3<_Elem>::Down	= Vector3<_Elem>( 0, -1,  0);
+	template <class _Elem> const Vector3<_Elem> Vector3<_Elem>::Left	= Vector3<_Elem>(-1,  0,  0);
+	template <class _Elem> const Vector3<_Elem> Vector3<_Elem>::Right	= Vector3<_Elem>( 1,  0,  0);
+	template <class _Elem> const Vector3<_Elem> Vector3<_Elem>::Forward	= Vector3<_Elem>( 0,  0,  1);
+	template <class _Elem> const Vector3<_Elem> Vector3<_Elem>::Back	= Vector3<_Elem>( 0,  0, -1);
 
 	using vec3f = Vector3<float>;
 	using vec3i = Vector3<int32_t>;

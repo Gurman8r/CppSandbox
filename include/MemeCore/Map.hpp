@@ -3,16 +3,14 @@
 
 #include <MemeCore/STD.hpp>
 
+#define ML_KEY_VAL template <typename Key, typename Val>
+
 namespace ml
 {
-	template <typename Key, typename Val>
-	using Map = std::map<Key, Val>;
-
-	template <typename Key, typename Val>
-	using HashMap = std::unordered_map<Key, Val>;
-
-	template <typename Key, typename Val>
-	using Pair = std::pair<Key, Val>;
+	ML_KEY_VAL using Map		= std::map			<Key, Val>;
+	ML_KEY_VAL using MultiMap	= std::multimap		<Key, Val>;
+	ML_KEY_VAL using HashMap	= std::unordered_map<Key, Val>;
+	ML_KEY_VAL using Pair		= std::pair			<Key, Val>;
 }
 
 #endif // !_ML_MAP_HPP_

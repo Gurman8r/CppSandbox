@@ -6,15 +6,15 @@
 namespace ml
 {
 	// One Dimensional Matrix
-	template <class T, size_t N>
+	template <class _Elem, size_t N>
 	class Vector
-		: public Matrix<T, N, 1>
-		, public IComparable<Vector<T, N>>
+		: public Matrix<_Elem, N, 1>
+		, public IComparable<Vector<_Elem, N>>
 	{
 	public:
-		using base_type = Matrix<T, N, 1>;
-		using self_type = Vector<T, N>;
-		using data_type = T;
+		using value_type	= _Elem;
+		using self_type		= Vector<_Elem, N>;
+		using base_type		= Matrix<_Elem, N, 1>;
 
 	public:
 		Vector()
@@ -22,17 +22,17 @@ namespace ml
 		{
 		}
 		
-		Vector(const T & value)
+		Vector(const value_type value)
 			: base_type(value)
 		{
 		}
 		
-		Vector(const T * value)
+		Vector(const _Elem * value)
 			: base_type(value)
 		{
 		}
 		
-		Vector(const std::initializer_list<T> & value)
+		Vector(const std::initializer_list<_Elem> & value)
 			: base_type(value)
 		{
 		}
@@ -43,7 +43,7 @@ namespace ml
 		}
 
 		template <size_t N>
-		Vector(const Vector<T, N> & copy)
+		Vector(const Vector<_Elem, N> & copy)
 			: base_type(copy)
 		{
 		}
@@ -55,7 +55,7 @@ namespace ml
 		}
 
 		template <class U, size_t N>
-		Vector(const Vector<U, N> & copy, const data_type dv = (data_type)(0))
+		Vector(const Vector<U, N> & copy, const value_type dv = (value_type)(0))
 			: base_type(copy, dv)
 		{
 		}
@@ -154,7 +154,7 @@ namespace ml
 
 		inline static self_type reflect(const self_type & direction, const self_type & normal)
 		{
-			return (normal - direction) * ((T)2 * dot(direction, normal));
+			return (normal - direction) * ((_Elem)2 * dot(direction, normal));
 		};
 
 	public:
@@ -164,7 +164,7 @@ namespace ml
 			self_type tmp;
 			for (size_t i = 0; i < tmp.Size; i++)
 			{
-				tmp[i] = lhs[i] + static_cast<T>(rhs[i]);
+				tmp[i] = lhs[i] + static_cast<_Elem>(rhs[i]);
 			}
 			return tmp;
 		};
@@ -175,7 +175,7 @@ namespace ml
 			self_type tmp;
 			for (size_t i = 0; i < tmp.Size; i++)
 			{
-				tmp[i] = lhs[i] - static_cast<T>(rhs[i]);
+				tmp[i] = lhs[i] - static_cast<_Elem>(rhs[i]);
 			}
 			return tmp;
 		};
@@ -186,7 +186,7 @@ namespace ml
 			self_type tmp;
 			for (size_t i = 0; i < tmp.Size; i++)
 			{
-				tmp[i] = lhs[i] * static_cast<T>(rhs[i]);
+				tmp[i] = lhs[i] * static_cast<_Elem>(rhs[i]);
 			}
 			return tmp;
 		};
@@ -197,12 +197,12 @@ namespace ml
 			self_type tmp;
 			for (size_t i = 0; i < tmp.Size; i++)
 			{
-				tmp[i] = lhs[i] / static_cast<T>(rhs[i]);
+				tmp[i] = lhs[i] / static_cast<_Elem>(rhs[i]);
 			}
 			return tmp;
 		};
 		
-		inline friend self_type operator*(const self_type & lhs, const T & rhs)
+		inline friend self_type operator*(const self_type & lhs, const value_type rhs)
 		{
 			self_type tmp;
 			for (size_t i = 0; i < tmp.Size; i++)
@@ -212,7 +212,7 @@ namespace ml
 			return tmp;
 		};
 		
-		inline friend self_type operator/(const self_type & lhs, const T & rhs)
+		inline friend self_type operator/(const self_type & lhs, const value_type rhs)
 		{
 			self_type tmp;
 			for (size_t i = 0; i < tmp.Size; i++)
@@ -247,12 +247,12 @@ namespace ml
 			return (lhs = (lhs / rhs));
 		};
 		
-		inline friend self_type & operator*=(self_type & lhs, const T & rhs)
+		inline friend self_type & operator*=(self_type & lhs, const value_type rhs)
 		{
 			return (lhs = (lhs * rhs));
 		};
 		
-		inline friend self_type & operator/=(self_type & lhs, const T & rhs)
+		inline friend self_type & operator/=(self_type & lhs, const value_type rhs)
 		{
 			return (lhs = (lhs / rhs));
 		};
@@ -260,7 +260,7 @@ namespace ml
 
 		inline friend self_type operator-(const self_type & rhs)
 		{
-			return rhs * static_cast<T>(-1);
+			return rhs * static_cast<_Elem>(-1);
 		}
 	};
 }

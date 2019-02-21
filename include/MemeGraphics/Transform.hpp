@@ -2,7 +2,7 @@
 #define _TRANSFORM_HPP_
 
 #include <MemeGraphics/Export.hpp>
-#include <MemeGraphics/Quaternion.hpp>
+#include <MemeCore/Quaternion.hpp>
 #include <MemeCore/Vector3.hpp>
 #include <MemeCore/Vector2.hpp>
 #include <MemeCore/Rect.hpp>

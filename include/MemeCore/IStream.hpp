@@ -10,9 +10,9 @@ namespace ml
 		, public std::streambuf
 	{
 	public:
-		using base_type = std::basic_istream<char>;
-		using traits_type = std::char_traits<char>;
-		using self_type = BasicIStream;
+		using base_type		= std::basic_istream<char>;
+		using traits_type	= std::char_traits<char>;
+		using self_type		= BasicIStream;
 
 	public:
 		BasicIStream()

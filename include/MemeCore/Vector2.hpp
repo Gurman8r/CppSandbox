@@ -5,14 +5,14 @@
 
 namespace ml
 {
-	template <class T>
+	template <class _Elem>
 	class Vector2
-		: public Vector<T, 2>
+		: public Vector<_Elem, 2>
 	{
 	public:
-		using base_type = Vector<T, 2>;
-		using self_type = Vector2<T>;
-		using data_type = T;
+		using base_type = Vector<_Elem, 2>;
+		using self_type = Vector2<_Elem>;
+		using value_type = _Elem;
 
 	public:
 		Vector2()
@@ -20,18 +20,18 @@ namespace ml
 		{
 		}
 
-		Vector2(const T & xy)
+		Vector2(const value_type xy)
 			: base_type(xy)
 		{
 		}
 
-		Vector2(const T & x, const T & y)
+		Vector2(const value_type x, const value_type y)
 			: base_type({ x, y })
 		{
 		}
 		
 		template <size_t N>
-		Vector2(const Vector<T, N> & copy)
+		Vector2(const Vector<_Elem, N> & copy)
 			: base_type(copy)
 		{
 		}
@@ -43,7 +43,7 @@ namespace ml
 		}
 
 		template <class U, size_t N>
-		Vector2(const Vector<U, N> & copy, const data_type dv = (data_type)(0))
+		Vector2(const Vector<U, N> & copy, const value_type dv = (value_type)(0))
 			: base_type(copy, dv)
 		{
 		}
@@ -82,12 +82,12 @@ namespace ml
 		static const self_type Right;
 	};
 
-	template <class T> const Vector2<T> Vector2<T>::Zero	= Vector2<T>( 0,  0);
-	template <class T> const Vector2<T> Vector2<T>::One		= Vector2<T>( 1,  1);
-	template <class T> const Vector2<T> Vector2<T>::Up		= Vector2<T>( 0,  1);
-	template <class T> const Vector2<T> Vector2<T>::Down	= Vector2<T>( 0, -1);
-	template <class T> const Vector2<T> Vector2<T>::Left	= Vector2<T>(-1,  0);
-	template <class T> const Vector2<T> Vector2<T>::Right	= Vector2<T>( 1,  0);
+	template <class _Elem> const Vector2<_Elem> Vector2<_Elem>::Zero	= Vector2<_Elem>( 0,  0);
+	template <class _Elem> const Vector2<_Elem> Vector2<_Elem>::One		= Vector2<_Elem>( 1,  1);
+	template <class _Elem> const Vector2<_Elem> Vector2<_Elem>::Up		= Vector2<_Elem>( 0,  1);
+	template <class _Elem> const Vector2<_Elem> Vector2<_Elem>::Down	= Vector2<_Elem>( 0, -1);
+	template <class _Elem> const Vector2<_Elem> Vector2<_Elem>::Left	= Vector2<_Elem>(-1,  0);
+	template <class _Elem> const Vector2<_Elem> Vector2<_Elem>::Right	= Vector2<_Elem>( 1,  0);
 
 	using vec2f = Vector2<float>;
 	using vec2i = Vector2<int32_t>;
