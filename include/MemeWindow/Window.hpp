@@ -29,11 +29,13 @@ namespace ml
 			Maximized	= (1 << 6),
 
 			// Resizable | Visible | Decorated | Focused | AutoIconify
-			Default	= Resizable | Visible | Decorated | Focused | AutoIconify,
-
-			// Visible | Decorated | Focused | AutoIconify
-			DefaultNoResize = Visible | Decorated | Focused | AutoIconify,
+			Default	= Resizable | Decorated | Focused | AutoIconify,
 		};
+
+		inline friend Style operator|(Style lhs, Style rhs)
+		{
+			return (Window::Style)((uint32_t)lhs | (uint32_t)rhs);
+		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
@@ -60,6 +62,7 @@ namespace ml
 		Window & close();
 		Window & destroy();
 		Window & makeContextCurrent();
+		Window & maximize();
 		Window & restore();
 		Window & iconify();
 		Window & pollEvents();

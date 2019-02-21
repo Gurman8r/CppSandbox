@@ -240,6 +240,12 @@ namespace ml
 		glfwMakeContextCurrent(ML_WINDOW(m_window));
 		return (*this);
 	}
+	
+	Window & Window::maximize()
+	{
+		glfwMaximizeWindow(ML_WINDOW(m_window));
+		return (*this);
+	}
 
 	Window & Window::restore()
 	{

@@ -380,7 +380,7 @@ namespace DEMO
 	{
 		ml::OpenGL::errorPause(SETTINGS.glErrorPause);
 
-		const ml::Window::Style wStyle = ml::Window::Style::Default;
+		const ml::Window::Style wStyle = ml::Window::Default;
 		const ml::VideoMode vMode(SETTINGS.windowSize(), SETTINGS.bitsPerPixel);
 		const ml::Context cSettings(
 			SETTINGS.majorVersion,
@@ -398,6 +398,7 @@ namespace DEMO
 			this->setInputMode(ml::Cursor::Normal);
 			this->setPosition((ml::VideoMode::desktop().size - this->getSize()) / 2);
 			this->setViewport(ml::vec2i::Zero, this->getFramebufferSize());
+			this->maximize();
 
 			if (ml::Debug::log("Dear ImGui..."))
 			{
