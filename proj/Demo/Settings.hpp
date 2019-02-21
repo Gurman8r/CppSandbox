@@ -91,7 +91,7 @@ namespace DEMO
 				scrShowItoP	 = ini.GetBoolean("Script", "scrShowItoP", false);
 
 				// [Window]
-				title		 = ini.Get("Window", "getTitle", "MemeLib");
+				title		 = ini.Get("Window", "title", "MemeLib");
 				width		 = ini.GetInteger("Window", "width", 640);
 				height		 = ini.GetInteger("Window", "height", 480);
 				bitsPerPixel = ini.GetInteger("Window", "bitsPerPixel", 32);
