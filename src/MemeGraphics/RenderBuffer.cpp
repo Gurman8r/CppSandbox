@@ -24,6 +24,7 @@ namespace ml
 		if ((*this))
 		{
 			OpenGL::deleteRenderbuffers(1, (*this));
+			get_ref() = NULL;
 		}
 		return (*this);
 	}

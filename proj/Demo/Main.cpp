@@ -62,6 +62,12 @@ int32_t main(int32_t argc, char ** argv)
 
 		// Start
 		ML_EventSystem.fireEvent(DEMO::StartEvent());
+		if (ml::Debug::checkError(ML_FAILURE))
+		{
+			delete program;
+			return ml::Debug::logError("Failed Starting Program")
+				|| ml::Debug::pause(EXIT_FAILURE);
+		}
 
 		// Loop
 		ml::Timer	 loopTimer;

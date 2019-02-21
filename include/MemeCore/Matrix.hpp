@@ -87,6 +87,13 @@ namespace ml
 
 		virtual ~Matrix() {}
 
+
+	public:
+		inline self_type & operator=(const data_type & value)
+		{
+			return (*this) = self_type(value);
+		}
+
 	public:
 		inline const data_type * ptr() const
 		{

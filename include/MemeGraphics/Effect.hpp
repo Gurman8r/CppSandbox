@@ -17,7 +17,9 @@ namespace ml
 		Effect(const Effect & copy);
 		~Effect();
 
+		bool cleanup();
 		bool create(const vec2i & size);
+		bool reload(const vec2i & size);
 
 		void bind() const;
 		void unbind() const;
@@ -34,9 +36,11 @@ namespace ml
 		inline const Texture * texture() const { return m_texture; }
 
 	private:
-		const Model *		m_model;
-		const Shader *		m_shader;
-		const Texture *		m_texture;
+		const Model *	m_model;
+		const Shader *	m_shader;
+		const Texture *	m_texture;
+
+		vec2i m_size;
 
 		mutable FBO m_fbo;
 		mutable RBO m_rbo;

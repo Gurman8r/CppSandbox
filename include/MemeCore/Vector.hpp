@@ -126,12 +126,12 @@ namespace ml
 		};
 
 		
-		inline static float distance(const self_type& a, const self_type& b)
+		inline static float distance(const self_type & a, const self_type & b)
 		{
 			return self_type(a - b).magnitude();
 		};
 
-		inline static float dot(const self_type& a, const self_type& b)
+		inline static float dot(const self_type & a, const self_type & b)
 		{
 			float value = 0;
 			for (size_t i = 0; i < self_type::Size; i++)
@@ -142,63 +142,67 @@ namespace ml
 		};
 
 
-		inline static self_type direction(const self_type& from, const self_type& to)
+		inline static self_type direction(const self_type & from, const self_type & to)
 		{
 			return (to - from).normalized();
 		};
 
-		inline static self_type lerp(const self_type& a, const self_type& b, float t)
+		inline static self_type lerp(const self_type & a, const self_type & b, float t)
 		{
 			return Maths::lerp<self_type>(a, b, t);
 		};
 
-		inline static self_type reflect(const self_type& direction, const self_type& normal)
+		inline static self_type reflect(const self_type & direction, const self_type & normal)
 		{
 			return (normal - direction) * ((T)2 * dot(direction, normal));
 		};
 
 	public:
-		inline friend self_type operator+(const self_type& lhs, const self_type& rhs)
+		template <class U>
+		inline friend self_type operator+(const self_type & lhs, const Vector<U, N> & rhs)
 		{
 			self_type tmp;
 			for (size_t i = 0; i < tmp.Size; i++)
 			{
-				tmp[i] = lhs[i] + rhs[i];
+				tmp[i] = lhs[i] + static_cast<T>(rhs[i]);
 			}
 			return tmp;
 		};
 		
-		inline friend self_type operator-(const self_type& lhs, const self_type& rhs)
+		template <class U>
+		inline friend self_type operator-(const self_type & lhs, const Vector<U, N> & rhs)
 		{
 			self_type tmp;
 			for (size_t i = 0; i < tmp.Size; i++)
 			{
-				tmp[i] = lhs[i] - rhs[i];
+				tmp[i] = lhs[i] - static_cast<T>(rhs[i]);
 			}
 			return tmp;
 		};
 		
-		inline friend self_type operator*(const self_type& lhs, const self_type& rhs)
+		template <class U>
+		inline friend self_type operator*(const self_type & lhs, const Vector<U, N> & rhs)
 		{
 			self_type tmp;
 			for (size_t i = 0; i < tmp.Size; i++)
 			{
-				tmp[i] = lhs[i] * rhs[i];
+				tmp[i] = lhs[i] * static_cast<T>(rhs[i]);
 			}
 			return tmp;
 		};
 		
-		inline friend self_type operator/(const self_type& lhs, const self_type& rhs)
+		template <class U>
+		inline friend self_type operator/(const self_type & lhs, const Vector<U, N> & rhs)
 		{
 			self_type tmp;
 			for (size_t i = 0; i < tmp.Size; i++)
 			{
-				tmp[i] = lhs[i] / rhs[i];
+				tmp[i] = lhs[i] / static_cast<T>(rhs[i]);
 			}
 			return tmp;
 		};
 		
-		inline friend self_type operator*(const self_type& lhs, const T & rhs)
+		inline friend self_type operator*(const self_type & lhs, const T & rhs)
 		{
 			self_type tmp;
 			for (size_t i = 0; i < tmp.Size; i++)
@@ -208,7 +212,7 @@ namespace ml
 			return tmp;
 		};
 		
-		inline friend self_type operator/(const self_type& lhs, const T & rhs)
+		inline friend self_type operator/(const self_type & lhs, const T & rhs)
 		{
 			self_type tmp;
 			for (size_t i = 0; i < tmp.Size; i++)
@@ -219,37 +223,42 @@ namespace ml
 		};
 		
 
-		inline friend self_type & operator+=(self_type& lhs, const self_type& rhs)
+		template <class U>
+		inline friend self_type & operator+=(self_type & lhs, const Vector<U, N> & rhs)
 		{
 			return (lhs = (lhs + rhs));
 		};
 		
-		inline friend self_type & operator-=(self_type& lhs, const self_type& rhs)
+		template <class U>
+		inline friend self_type & operator-=(self_type & lhs, const Vector<U, N> & rhs)
 		{
 			return (lhs = (lhs - rhs));
 		};
 		
-		inline friend self_type & operator*=(self_type& lhs, const self_type& rhs)
+		template <class U>
+		inline friend self_type & operator*=(self_type & lhs, const Vector<U, N> & rhs)
 		{
 			return (lhs = (lhs * rhs));
 		};
 		
-		inline friend self_type & operator/=(self_type& lhs, const self_type& rhs)
+		template <class U>
+		inline friend self_type & operator/=(self_type & lhs, const Vector<U, N> & rhs)
 		{
 			return (lhs = (lhs / rhs));
 		};
 		
-		inline friend self_type & operator*=(self_type& lhs, const T & rhs)
+		inline friend self_type & operator*=(self_type & lhs, const T & rhs)
 		{
 			return (lhs = (lhs * rhs));
 		};
 		
-		inline friend self_type & operator/=(self_type& lhs, const T & rhs)
+		inline friend self_type & operator/=(self_type & lhs, const T & rhs)
 		{
 			return (lhs = (lhs / rhs));
 		};
 		
-		inline friend self_type operator-(const self_type& rhs)
+
+		inline friend self_type operator-(const self_type & rhs)
 		{
 			return rhs * static_cast<T>(-1);
 		}

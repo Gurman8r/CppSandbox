@@ -45,38 +45,28 @@ out vec4 FragColor;
 uniform vec3		u_viewPos;
 uniform sampler2D	u_tex_dm;
 uniform sampler2D	u_tex_sm;
-
-struct Light
-{
-	vec3 position;
-	vec4 color;
-};
-struct Mat
-{
-	float	ambient;
-	float	specular;
-	int		shininess;
-};
-
-uniform Light	u_light;
-uniform Mat		u_mat;
+uniform vec3		u_lightPos;
+uniform vec4		u_lightCol;
+uniform float		u_ambient;
+uniform float		u_specular;
+uniform int			u_shininess;
 
 void main()
 {
 	// ambient
-	vec3	ambient	= (u_mat.ambient * u_light.color.xyz);
+	vec3	ambient	= (u_ambient * u_lightCol.xyz);
 
 	// diffuse 
 	vec3	norm	= normalize(Normal);
-	vec3	lightDir= normalize(u_light.position - FragPos);
+	vec3	lightDir= normalize(u_lightPos - FragPos);
 	float	diff	= max(dot(norm, lightDir), 0.0);
-	vec3	diffuse	= (diff * u_light.color.xyz);
+	vec3	diffuse	= (diff * u_lightCol.xyz);
 
 	// specular		 
 	vec3	view	= normalize(u_viewPos - FragPos);
 	vec3	refl	= reflect(-lightDir, norm);
-	float	spec	= pow(max(dot(view, refl), 0.0), u_mat.shininess);
-	vec3	specular= (u_mat.specular * spec * u_light.color.xyz);
+	float	spec	= pow(max(dot(view, refl), 0.0), u_shininess);
+	vec3	specular= (u_specular * spec * u_lightCol.xyz);
 
 	// textures
 	vec4	tex_dm	= texture(u_tex_dm, Texcoord);

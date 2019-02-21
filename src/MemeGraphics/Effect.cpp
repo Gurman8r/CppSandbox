@@ -28,13 +28,30 @@ namespace ml
 	}
 
 
+	bool Effect::cleanup()
+	{
+		if (m_fbo && m_rbo)
+		{
+			m_fbo.clean();
+			m_rbo.clean();
+			return (!m_fbo && !m_rbo);
+		}
+		return false;
+	}
+
 	bool Effect::create(const vec2i & size)
 	{
 		if (!m_fbo && !m_rbo)
 		{
-			m_fbo.create().bind();
+			m_size = size;
 
-			m_rbo.create(size[0], size[1]).bind();
+			// Create FBO
+			m_fbo.create();
+			m_fbo.bind();
+
+			// Create RBO
+			m_rbo.create(m_size[0], m_size[1]);
+			m_rbo.bind();
 			m_rbo.bufferStorage(ml::GL::Depth24_Stencil8);
 			m_rbo.setFramebuffer(ml::GL::DepthStencilAttachment);
 			m_rbo.unbind();
@@ -47,10 +64,22 @@ namespace ml
 
 			m_fbo.unbind();
 
-			return true;
+			return (m_fbo && m_rbo);
 		}
 		return false;
 	}
+
+	bool Effect::reload(const vec2i & size)
+	{
+		if (cleanup() && create(m_size))
+		{
+			setModel(m_model);
+			setShader(m_shader);
+			setTexture(m_texture);
+		}
+		return false;
+	}
+
 
 	void Effect::bind() const
 	{

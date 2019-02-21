@@ -11,14 +11,14 @@ namespace DEMO
 
 	Demo::Demo()
 	{
-		ML_EventSystem.addListener(DemoEvent::EV_Enter,			this);
-		ML_EventSystem.addListener(DemoEvent::EV_Load,			this);
-		ML_EventSystem.addListener(DemoEvent::EV_Start,			this);
-		ML_EventSystem.addListener(DemoEvent::EV_FixedUpdate,	this);
-		ML_EventSystem.addListener(DemoEvent::EV_Update,		this);
-		ML_EventSystem.addListener(DemoEvent::EV_Draw,			this);
-		ML_EventSystem.addListener(DemoEvent::EV_Gui,			this);
-		ML_EventSystem.addListener(DemoEvent::EV_Exit,			this);
+		ML_EventSystem.addListener(DemoEvent::EV_Enter, this);
+		ML_EventSystem.addListener(DemoEvent::EV_Load, this);
+		ML_EventSystem.addListener(DemoEvent::EV_Start, this);
+		ML_EventSystem.addListener(DemoEvent::EV_FixedUpdate, this);
+		ML_EventSystem.addListener(DemoEvent::EV_Update, this);
+		ML_EventSystem.addListener(DemoEvent::EV_Draw, this);
+		ML_EventSystem.addListener(DemoEvent::EV_Gui, this);
+		ML_EventSystem.addListener(DemoEvent::EV_Exit, this);
 	}
 
 	Demo::~Demo() {}
@@ -31,14 +31,14 @@ namespace DEMO
 
 		switch (value->eventID())
 		{
-		case DemoEvent::EV_Enter:		return onEnter		(*value->Cast<EnterEvent>());
-		case DemoEvent::EV_Load:		return onLoad		(*value->Cast<LoadEvent>());
-		case DemoEvent::EV_Start:		return onStart		(*value->Cast<StartEvent>());
+		case DemoEvent::EV_Enter:		return onEnter(*value->Cast<EnterEvent>());
+		case DemoEvent::EV_Load:		return onLoad(*value->Cast<LoadEvent>());
+		case DemoEvent::EV_Start:		return onStart(*value->Cast<StartEvent>());
 		case DemoEvent::EV_FixedUpdate:	return onFixedUpdate(*value->Cast<FixedUpdateEvent>());
-		case DemoEvent::EV_Update:		return onUpdate		(*value->Cast<UpdateEvent>());
-		case DemoEvent::EV_Draw:		return onDraw		(*value->Cast<DrawEvent>());
-		case DemoEvent::EV_Gui:			return onGui		(*value->Cast<GuiEvent>());
-		case DemoEvent::EV_Exit:		return onExit		(*value->Cast<ExitEvent>());
+		case DemoEvent::EV_Update:		return onUpdate(*value->Cast<UpdateEvent>());
+		case DemoEvent::EV_Draw:		return onDraw(*value->Cast<DrawEvent>());
+		case DemoEvent::EV_Gui:			return onGui(*value->Cast<GuiEvent>());
+		case DemoEvent::EV_Exit:		return onExit(*value->Cast<ExitEvent>());
 
 		case ml::WindowEvent::EV_WindowSize:
 			if (auto ev = value->Cast<ml::WindowSizeEvent>())
@@ -55,6 +55,9 @@ namespace DEMO
 					this->aspect(),
 					{ SETTINGS.perspNear, SETTINGS.perspFar }
 				);
+
+				// Reload Framebuffers
+				m_effects["default"].reload(this->size());
 			}
 			break;
 
@@ -74,31 +77,39 @@ namespace DEMO
 
 				// Reload Shaders
 				if (ev->getKeyDown(ml::KeyCode::R))
-				{ 
-					ml::Debug::log("Reloaded {0} Shaders.", ML_Res.shaders.reload()); 
+				{
+					ml::Debug::log("Reloaded {0} Shaders.", ML_Res.shaders.reload());
 				}
 
 				// Close
 				if (ev->getKeyDown(ml::KeyCode::Escape))
 				{
-					if (SETTINGS.escapeIsExit) { this->close(); } 
+					if (SETTINGS.escapeIsExit) { this->close(); }
 				}
 
 				// Show Editor
 				if (ev->getKeyDown(ml::KeyCode::E) && (ev->mods & ML_MOD_CTRL))
-				{ show_ml_editor = true; }
+				{
+					show_ml_editor = true;
+				}
 
 				// Show Console
 				if (ev->getKeyDown(ml::KeyCode::T) && ((ev->mods & ML_MOD_CTRL) && (ev->mods & ML_MOD_ALT)))
-				{ show_ml_console = true; }
+				{
+					show_ml_console = true;
+				}
 
 				// Show Network Manager
 				if (ev->getKeyDown(ml::KeyCode::N) && ((ev->mods & ML_MOD_CTRL) && (ev->mods & ML_MOD_ALT)))
-				{ show_ml_network = true; }
+				{
+					show_ml_network = true;
+				}
 
 				// Show Shader Builder
 				if (ev->getKeyDown(ml::KeyCode::B) && ((ev->mods & ML_MOD_CTRL) && (ev->mods & ML_MOD_ALT)))
-				{ show_ml_shader = true; }
+				{
+					show_ml_shader = true;
+				}
 			}
 			break;
 		}
@@ -260,7 +271,7 @@ namespace DEMO
 		}
 		return ml::Debug::logError("Failed loading manifest");
 	}
-	
+
 	bool Demo::loadBuffers()
 	{
 		// Text
@@ -282,7 +293,7 @@ namespace DEMO
 
 	bool Demo::loadNetwork()
 	{
-		if ((SETTINGS.isServer || SETTINGS.isClient) && 
+		if ((SETTINGS.isServer || SETTINGS.isClient) &&
 			ml::Debug::log("Loading Network..."))
 		{
 			if (SETTINGS.isServer)
@@ -296,7 +307,7 @@ namespace DEMO
 					}
 				}
 			}
-			else if(SETTINGS.isClient)
+			else if (SETTINGS.isClient)
 			{
 				// Client Setup
 				if (ML_Client.setup())
@@ -342,12 +353,12 @@ namespace DEMO
 			ml::Debug::setError(ML_FAILURE);
 		}
 	}
-	
+
 	void Demo::onLoad(const LoadEvent & ev)
 	{
 		ml::OpenGL::errorPause(SETTINGS.glErrorPause);
 
-		const ml::Window::Style wStyle = ml::Window::Style::DefaultNoResize;
+		const ml::Window::Style wStyle = ml::Window::Style::Default;
 		const ml::VideoMode vMode(SETTINGS.windowSize(), SETTINGS.bitsPerPixel);
 		const ml::Context cSettings(
 			SETTINGS.majorVersion,
@@ -401,7 +412,7 @@ namespace DEMO
 			ml::Debug::setError(ml::Debug::logError("Failed Loading Window"));
 		}
 	}
-	
+
 	void Demo::onStart(const StartEvent & ev)
 	{
 		ml::Debug::log("Starting...");
@@ -431,7 +442,7 @@ namespace DEMO
 		// Setup Model Transforms
 		ML_Res.models.get("borg")->transform()
 			.translate({ +5.0f, 0.0f, 0.0f });
-		
+
 		ML_Res.models.get("sanic")->transform()
 			.translate({ -5.0f, 0.0f, 0.0f });
 
@@ -458,8 +469,7 @@ namespace DEMO
 			{
 				ml::cout << "*";
 				ML_Time.sleep(1000);
-			}
-			while (this->isOpen());
+			} while (this->isOpen());
 			ml::cout << ml::endl;
 			ml::Debug::log("Exiting Dummy Thread");
 		});
@@ -470,25 +480,16 @@ namespace DEMO
 	{
 		m_particle.applyForce(ml::Force::gravity(ml::vec3f::Up, m_particle.mass));
 	}
-	
+
 	void Demo::onUpdate(const UpdateEvent & ev)
 	{
 		// Update Title
-		this->setTitle(ml::String::Format("{0} | {1} ({2} fps)",
-			SETTINGS.title,
-			ev.elapsed.delta(),
-			ML_Time.calculateFPS(ev.elapsed.delta())
+		this->setTitle(ml::String::Format("{0} | {1}",
+			SETTINGS.title, 
+			ml::String("{0} ms/frame ({1} fps)").format(
+				ev.elapsed.delta(),
+				ML_Time.calculateFPS(ev.elapsed.delta()))
 		));
-
-		// Update Network
-		if (SETTINGS.isServer)
-		{
-			ML_Server.poll();
-		}
-		else if(SETTINGS.isClient)
-		{
-			ML_Client.poll();
-		}
 
 		// Update Models
 		{
@@ -500,7 +501,10 @@ namespace DEMO
 
 			if (ml::Model * m = ML_Res.models.get("cube"))
 			{
+				ml::vec3f pos = m->transform().getPosition();
+				pos[1] = -sinf(ML_Time.elapsed().delta());
 				m->transform()
+					.setPosition(pos)
 					.rotate(-ev.elapsed.delta(), ml::vec3f::One);
 			}
 
@@ -512,10 +516,8 @@ namespace DEMO
 
 			if (ml::Model * m = ML_Res.models.get("moon"))
 			{
-				static float s = 0.f;
-				s += ev.elapsed.delta();
 				ml::vec3f pos = m->transform().getPosition();
-				pos[1] = sinf(s);
+				pos[1] = sinf(ML_Time.elapsed().delta());
 				m->transform()
 					.setPosition(pos)
 					.rotate(-ev.elapsed.delta(), ml::vec3f::Up);
@@ -536,13 +538,15 @@ namespace DEMO
 		}
 
 		// Update Camera
+		if (const ml::Model * target = ML_Res.models.get("earth"))
 		{
-			const ml::vec3f pos = ML_Res.models.get("earth")->transform().getPosition();
-			const ml::vec3f dir = (pos - m_camPos).normalized();
-
+			// Look
+			ml::vec3f pos = target->transform().getPosition();
+			ml::vec3f dir = (pos - m_camPos).normalized();
 			ml::vec3f look = m_camPos + (pos - m_camPos).normalized();
 			m_camera.lookAt(m_camPos, look, ml::vec3f::Up);
 
+			// Orbit
 			float speed = (m_camAnimate ? m_camSpd * ev.elapsed.delta() : 0.0f);
 			ml::vec3f fwd = (look - m_camPos);
 			ml::vec3f right = (fwd.cross(ml::vec3f::Up) * ml::vec3f(1, 0, 1)).normalized();
@@ -557,20 +561,38 @@ namespace DEMO
 				.setPosition({ 32, 128 })
 				.setString("there is no need\nto be upset");
 
-			static const uint32_t  fontSize = 24;
-			static const ml::vec2f offset = { 0.0f, -(float)fontSize };
-			static const ml::vec2f origin = { (float)fontSize, (float)this->height() - 64 };
+			static const uint32_t	fontSize= 18;
+			static const ml::vec2f	origin	= { (float)fontSize, (float)this->height() - 64 };
+			static const float		hOff	= 0.0f;
+			static const float		vOff	= 4.0f;
+			static const ml::vec2f	offset	= { hOff, -(vOff + (float)fontSize) };
 
-			ml::vec2f pos  = { 0 };
-			size_t	  line = 0;
+			ml::vec2f linePos  = 0;
+			size_t	  lineNum  = 0;
+			auto	  nextLine = [&]() { return (linePos = origin + (offset * (float)(lineNum++))); };
 
-			auto nextLine = [&]() { return (pos = origin + (offset * (float)(line++))); };
-
-			m_text["fps"]
+			m_text["gl_version"]
 				.setFont(ML_Res.fonts.get("consolas"))
 				.setFontSize(fontSize)
 				.setPosition(nextLine())
-				.setString(ml::String::Format("{0} ({1} fps)",
+				.setString(ml::String("GL Version: {0}").format(
+					ml::OpenGL::getString(ml::GL::Version)));
+
+
+			m_text["gl_vendor"]
+				.setFont(ML_Res.fonts.get("consolas"))
+				.setFontSize(fontSize)
+				.setPosition(nextLine())
+				.setString(ml::String("GL Vendor: {0}").format(
+					ml::OpenGL::getString(ml::GL::Vendor)));
+
+			nextLine();
+
+			m_text["fps_str"]
+				.setFont(ML_Res.fonts.get("consolas"))
+				.setFontSize(fontSize)
+				.setPosition(nextLine())
+				.setString(ml::String("{0} ms/frame ({1} fps)").format(
 					ev.elapsed.delta(),
 					ML_Time.calculateFPS(ev.elapsed.delta())));
 
@@ -578,31 +600,70 @@ namespace DEMO
 				.setFont(ML_Res.fonts.get("consolas"))
 				.setFontSize(fontSize)
 				.setPosition(nextLine())
-				.setString(ml::String::Format("{0}",
+				.setString(ml::String("time: {0}").format(
 					ML_Time.elapsed()));
 
-			m_text["cursor"]
+			m_text["time_sin"]
 				.setFont(ML_Res.fonts.get("consolas"))
 				.setFontSize(fontSize)
 				.setPosition(nextLine())
-				.setString(ml::String::Format("{0}",
+				.setString(ml::String("sin time: {0}").format(
+					sinf(ML_Time.elapsed().delta())));
+
+			nextLine();
+
+			m_text["cursor_pos"]
+				.setFont(ML_Res.fonts.get("consolas"))
+				.setFontSize(fontSize)
+				.setPosition(nextLine())
+				.setString(ml::String("cx/cy: {0}").format(
 					this->getCursorPos()));
 
-			static float s = 0.f;
-			s += ev.elapsed.delta();
-			m_text["sin"]
+			m_text["window_pos"]
 				.setFont(ML_Res.fonts.get("consolas"))
 				.setFontSize(fontSize)
 				.setPosition(nextLine())
-				.setString(ml::String::Format("{0}",
-					sinf(s)));
+				.setString(ml::String("wx/wy: {0}").format(
+					this->position()));
 
-			// Force Update
+			m_text["window_size"]
+				.setFont(ML_Res.fonts.get("consolas"))
+				.setFontSize(fontSize)
+				.setPosition(nextLine())
+				.setString(ml::String("ww/wh: {0}").format(
+					this->size()));
+
+			m_text["framebuffer_size"]
+				.setFont(ML_Res.fonts.get("consolas"))
+				.setFontSize(fontSize)
+				.setPosition(nextLine())
+				.setString(ml::String("fw/fh: {0}").format(
+					this->getFramebufferSize()));
+
+			m_text["effect_size"]
+				.setFont(ML_Res.fonts.get("consolas"))
+				.setFontSize(fontSize)
+				.setPosition(nextLine())
+				.setString(ml::String("ew/eh: {0}").format(
+					m_effects["default"].texture()->size()));
+
+			// Update All
 			for (auto pair : m_text) { pair.second.update(); }
 		}
 
+		// Update Network
+		{
+			if (SETTINGS.isServer)
+			{
+				ML_Server.poll();
+			}
+			else if (SETTINGS.isClient)
+			{
+				ML_Client.poll();
+			}
+		}
 	}
-	
+
 	void Demo::onDraw(const DrawEvent & ev)
 	{
 		// Shared Uniforms
@@ -612,13 +673,19 @@ namespace DEMO
 			ml::Uniform("u_view",	ml::Uniform::Mat4,	&m_camera.matrix()),
 		};
 
+		static ml::UniformSet ortho_uniforms = {
+			ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_ortho.matrix()),
+			ml::Uniform("u_color",	ml::Uniform::Vec4),
+			ml::Uniform("u_texture",ml::Uniform::Tex),
+		};
+
 		static ml::UniformSet light_uniforms = {
-			ml::Uniform("u_viewPos",		ml::Uniform::Vec3,	&m_camPos),
-			ml::Uniform("u_light.position",	ml::Uniform::Vec3,	&m_lightPos),
-			ml::Uniform("u_light.color",	ml::Uniform::Vec4,	&m_lightCol),
-			ml::Uniform("u_mat.ambient",	ml::Uniform::Float, &m_ambient),
-			ml::Uniform("u_mat.specular",	ml::Uniform::Float, &m_specular),
-			ml::Uniform("u_mat.shininess",	ml::Uniform::Int,	&m_shininess),
+			ml::Uniform("u_viewPos",	ml::Uniform::Vec3,	&m_camPos),
+			ml::Uniform("u_lightPos",	ml::Uniform::Vec3,	&m_lightPos),
+			ml::Uniform("u_lightCol",	ml::Uniform::Vec4,	&m_lightCol),
+			ml::Uniform("u_ambient",	ml::Uniform::Float, &m_ambient),
+			ml::Uniform("u_specular",	ml::Uniform::Float, &m_specular),
+			ml::Uniform("u_shininess",	ml::Uniform::Int,	&m_shininess),
 		};
 
 		static ml::UniformSet effect_uniforms = {
@@ -631,7 +698,7 @@ namespace DEMO
 		{
 			// Clear
 			this->clear(m_clearColor);
-			
+
 			ml::OpenGL::enable(ml::GL::CullFace);
 			ml::OpenGL::enable(ml::GL::DepthTest);
 
@@ -741,7 +808,7 @@ namespace DEMO
 			ml::OpenGL::disable(ml::GL::CullFace);
 
 			// Sanic
-			if(const ml::Model * model = ML_Res.models.get("sanic"))
+			if (const ml::Model * model = ML_Res.models.get("sanic"))
 			{
 				static ml::UniformSet uniforms = {
 					ml::Uniform("u_model",	ml::Uniform::Mat4,	&model->transform().matrix()),
@@ -775,18 +842,9 @@ namespace DEMO
 			}
 
 			// Text
-			if (true)
+			if (const ml::Shader * shader = ML_Res.shaders.get("text"))
 			{
-				static ml::UniformSet uniforms = {
-					ml::Uniform("u_proj",	ml::Uniform::Mat4, &m_ortho.matrix()),
-					ml::Uniform("u_color",	ml::Uniform::Vec4),
-					ml::Uniform("u_texture",ml::Uniform::Tex),
-				};
-				static ml::RenderBatch batch(
-					&m_vao,
-					&m_vbo,
-					ML_Res.shaders.get("text"),
-					&uniforms);
+				static ml::RenderBatch batch(&m_vao, &m_vbo, shader, &ortho_uniforms);
 
 				TextMap::const_iterator it;
 				for (it = m_text.begin(); it != m_text.end(); it++)
@@ -795,41 +853,46 @@ namespace DEMO
 				}
 			}
 
-			// Sprite
-			if (const ml::Texture * texture = ML_Res.textures.get("icon"))
+			// Sprites
+			if (const ml::Shader * shader = ML_Res.shaders.get("sprites"))
 			{
-				static ml::UniformSet uniforms = {
-					ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_ortho.matrix()),
-					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
-					ml::Uniform("u_texture",ml::Uniform::Tex,	texture),
-				};
-				static ml::RenderBatch batch(
-					&m_vao, 
-					&m_vbo, 
-					ML_Res.shaders.get("sprites"),
-					&uniforms);
+				static ml::RenderBatch batch(&m_vao, &m_vbo, shader, &ortho_uniforms);
 
-				auto drawSprite = [&](const ml::vec2f & pos, const ml::vec2f & scale, const float rot = 0.0f, const ml::vec2f & origin = { 0.5f })
+				auto drawSprite = [&](
+					const ml::Texture * texture,
+					const ml::vec2f &	pos,
+					const ml::vec2f &	scale = { 1.0f },
+					const ml::vec2f &	origin = { 0.5f })
 				{
-					ml::vec2f size = (ml::vec2f)texture->size() * scale;
-					ml::vec2f dest = (pos - size * origin);
-					this->draw(ml::Shapes::genQuadFloats({ dest, size }), batch);
+					if (texture)
+					{
+						const ml::vec2f size = (ml::vec2f)texture->size() * scale;
+
+						const ml::vec2f dest = (pos - size * origin);
+
+						if (ml::Uniform * u = ortho_uniforms.find("u_texture")) { u->data = texture; }
+
+						this->draw(ml::Shapes::genQuadFloats({ dest, size }), batch);
+					}
 				};
 
-				drawSprite(((ml::vec2f)(this->size()) * ml::vec2f(0.95f, 0.075f)), { 0.5f });
+				drawSprite(ML_Res.textures.get("icon"), (ml::vec2f(0.95f, 0.075f) * this->size()), { 0.5f });
 			}
 		}
 		m_effects["default"].unbind();
 
 		// Draw Effects
 		/* * * * * * * * * * * * * * * * * * * * */
-		m_effects["default"].shader()->applyUniforms(effect_uniforms);
+		if (const ml::Shader * shader = m_effects["default"].shader())
+		{
+			shader->applyUniforms(effect_uniforms);
+		}
 		this->draw(m_effects["default"]);
 
 		// Draw GUI
 		/* * * * * * * * * * * * * * * * * * * * */
 		this->pollEvents();
-		
+
 		ImGui_ML_NewFrame();
 		ImGui::NewFrame();
 		{
@@ -893,11 +956,11 @@ namespace DEMO
 		}
 
 		// Windows
-		if (show_imgui_demo)	{ ImGui::ShowDemoWindow(&show_imgui_demo); }
+		if (show_imgui_demo) { ImGui::ShowDemoWindow(&show_imgui_demo); }
 		if (show_imgui_metrics) { ImGui::ShowMetricsWindow(&show_imgui_metrics); }
-		if (show_imgui_style)	{ ImGui::Begin("Style Editor", &show_imgui_style); ImGui::ShowStyleEditor(); ImGui::End(); }
-		if (show_imgui_about)	{ ImGui::ShowAboutWindow(&show_imgui_about); }
-		
+		if (show_imgui_style) { ImGui::Begin("Style Editor", &show_imgui_style); ImGui::ShowStyleEditor(); ImGui::End(); }
+		if (show_imgui_about) { ImGui::ShowAboutWindow(&show_imgui_about); }
+
 		// Editor
 		if (show_ml_editor)
 		{

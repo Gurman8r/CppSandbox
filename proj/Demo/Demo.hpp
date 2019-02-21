@@ -94,12 +94,12 @@ namespace DEMO
 		int32_t		m_shininess		= 8;
 
 		ml::vec4f	m_clearColor	= ml::Color::Gray;
-		int32_t		m_fboMode		= 3;
+		int32_t		m_fboMode		= 0;
 
 		int32_t		m_lineMode		= -1;
 		ml::vec4f	m_lineColor		= ml::Color::Red;
 		float		m_lineDelta		= 1.f;
-		float		m_lineSize		= 0.925f;
+		float		m_lineSize		= 0.5f;
 		int32_t		m_lineSamples	= 16;
 		bool		m_animate		= true;
 

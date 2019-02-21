@@ -227,6 +227,12 @@ namespace ml
 			return value;
 		}
 
+		template <class T, typename ... A>
+		inline self_type & format(const T & arg0, const A & ...args)
+		{
+			return ((*this) = Format((*this), arg0, (args)...));
+		}
+
 		inline static self_type ReplaceAll(self_type s, const self_type & f, const self_type & r)
 		{
 			if (!s.empty() && !f.empty())
