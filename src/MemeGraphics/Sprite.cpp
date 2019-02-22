@@ -26,7 +26,11 @@ namespace ml
 
 	Sprite & Sprite::setTexture(const Texture * value)
 	{
-		m_texture = value;
+		if (m_texture != value)
+		{
+			m_requiresUpdate = true;
+			m_texture = value;
+		}
 		return (*this);
 	}
 

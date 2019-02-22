@@ -260,7 +260,6 @@ namespace DEMO
 			ml::cout << ml::endl << manifest << ml::endl;
 
 			return ml::Debug::log("Loading Resources...")
-				&& ML_Res.loadManifest(manifest)
 				&& ML_Res.meshes.load("default_quad")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
 				&& ML_Res.meshes.load("default_cube")->loadFromMemory(ml::Shapes::Cube::Vertices, ml::Shapes::Cube::Indices)
 				&& ML_Res.models.load("borg")->loadFromMemory(*ML_Res.meshes.get("default_cube"))
@@ -268,6 +267,7 @@ namespace DEMO
 				&& ML_Res.models.load("sprite")->loadFromMemory(*ML_Res.meshes.get("default_quad"))
 				&& ML_Res.models.load("framebuffer")->loadFromMemory(*ML_Res.meshes.get("default_quad"))
 				&& ML_Res.textures.load("framebuffer")->create(this->getFramebufferSize())
+				&& ML_Res.loadManifest(manifest)
 				&& loadBuffers();
 		}
 		return ml::Debug::logError("Failed loading manifest");
@@ -275,7 +275,7 @@ namespace DEMO
 
 	bool Demo::loadBuffers()
 	{
-		// Text
+		// Batch
 		m_vao.create(ml::GL::Triangles).bind();
 		m_vbo.create(ml::GL::DynamicDraw).bind();
 		m_vbo.bufferData(NULL, ml::RectQuad::Size);
