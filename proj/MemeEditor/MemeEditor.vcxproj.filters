@@ -13,12 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\imgui">
-      <UniqueIdentifier>{2e3eeef7-cc0e-4b97-b53c-8882c024ca79}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\imgui">
-      <UniqueIdentifier>{4a73a721-10f3-4f59-8c82-ffdc3217d7dd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Editor">
       <UniqueIdentifier>{d2cd5d20-75c4-4b9b-ad66-6aec7911ae8c}</UniqueIdentifier>
     </Filter>
@@ -31,31 +25,13 @@
     <Filter Include="Source Files\Loading">
       <UniqueIdentifier>{ca321d12-4abc-4177-bd20-bab7be77e764}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\imgui">
+      <UniqueIdentifier>{2e3eeef7-cc0e-4b97-b53c-8882c024ca79}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeEditor\Export.hpp">
       <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\thirdparty\include\imgui\imstb_truetype.h">
-      <Filter>Header Files\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\thirdparty\include\imgui\imconfig.h">
-      <Filter>Header Files\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\thirdparty\include\imgui\imgui.h">
-      <Filter>Header Files\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\thirdparty\include\imgui\imgui_internal.h">
-      <Filter>Header Files\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\thirdparty\include\imgui\imstb_rectpack.h">
-      <Filter>Header Files\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\thirdparty\include\imgui\imstb_textedit.h">
-      <Filter>Header Files\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\thirdparty\include\imgui\imgui_ml.hpp">
-      <Filter>Header Files\imgui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\ResourceMap.hpp">
       <Filter>Header Files\Loading</Filter>
@@ -75,22 +51,43 @@
     <ClInclude Include="..\..\include\MemeEditor\EditorEvents.hpp">
       <Filter>Header Files\Editor</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\thirdparty\include\imgui\imstb_truetype.h">
+      <Filter>Resource Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\thirdparty\include\imgui\imstb_textedit.h">
+      <Filter>Resource Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\thirdparty\include\imgui\imconfig.h">
+      <Filter>Resource Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\thirdparty\include\imgui\imgui.h">
+      <Filter>Resource Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\thirdparty\include\imgui\imgui_internal.h">
+      <Filter>Resource Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\thirdparty\include\imgui\imgui_ml.hpp">
+      <Filter>Resource Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\thirdparty\include\imgui\imstb_rectpack.h">
+      <Filter>Resource Files\imgui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\thirdparty\include\imgui\imgui.cpp">
-      <Filter>Source Files\imgui</Filter>
+      <Filter>Resource Files\imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\thirdparty\include\imgui\imgui_demo.cpp">
-      <Filter>Source Files\imgui</Filter>
+      <Filter>Resource Files\imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\thirdparty\include\imgui\imgui_draw.cpp">
-      <Filter>Source Files\imgui</Filter>
+      <Filter>Resource Files\imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\thirdparty\include\imgui\imgui_widgets.cpp">
-      <Filter>Source Files\imgui</Filter>
+      <Filter>Resource Files\imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\thirdparty\include\imgui\imgui_ml.cpp">
-      <Filter>Source Files\imgui</Filter>
+      <Filter>Resource Files\imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\Manifest.cpp">
       <Filter>Source Files\Loading</Filter>

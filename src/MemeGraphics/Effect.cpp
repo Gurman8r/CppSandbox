@@ -14,15 +14,6 @@ namespace ml
 	{
 	}
 
-	Effect::Effect(const Effect & copy)
-		: m_fbo		(copy.m_fbo)
-		, m_rbo		(copy.m_rbo)
-		, m_model	(copy.m_model)
-		, m_shader	(copy.m_shader)
-		, m_texture	(copy.m_texture)
-	{
-	}
-
 	Effect::~Effect()
 	{
 	}

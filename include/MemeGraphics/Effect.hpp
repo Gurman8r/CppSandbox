@@ -14,7 +14,6 @@ namespace ml
 	{
 	public:
 		Effect();
-		Effect(const Effect & copy);
 		~Effect();
 
 		bool cleanup();
