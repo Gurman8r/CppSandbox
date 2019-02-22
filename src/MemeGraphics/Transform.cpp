@@ -49,106 +49,121 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	mat4f Transform::Orthographic(const FloatRect & rect, const vec2f & clip)
+	Transform & Transform::lookAt(const vec3f & eye, const vec3f & pos, const vec3f & up)
 	{
-		return Orthographic(rect, clip[0], clip[1]);
-	}
-
-	mat4f Transform::Orthographic(const FloatRect & rect, float N, float F)
-	{
-		return Orthographic(rect.left(), rect.right(), rect.top(), rect.bot(), N, F);
-	}
-
-	mat4f Transform::Orthographic(const FloatRect & rect)
-	{
-		return Orthographic(rect.left(), rect.right(), rect.top(), rect.bot());
-	}
-
-	mat4f Transform::Orthographic(float L, float R, float T, float B, float N, float F)
-	{
-		return mat4f(glm::value_ptr(glm::ortho(L, R, T, B, N, F)));
-	}
-
-	mat4f Transform::Orthographic(float L, float R, float T, float B)
-	{
-		return mat4f(glm::value_ptr(glm::ortho(L, R, T, B)));
-	}
-
-	mat4f Transform::Perspective(float fov, float aspect, const vec2f & clip)
-	{
-		return Perspective(fov, aspect, clip[0], clip[1]);
-	}
-
-	mat4f Transform::Perspective(float fov, float aspect, float N, float F)
-	{
-		return mat4f(glm::value_ptr(glm::perspective(fov, aspect, N, F)));
-	}
-
-	mat4f Transform::LookAt(const vec3f & eye, const vec3f & pos, const vec3f & up)
-	{
-		return mat4f(glm::value_ptr(glm::lookAt(
+		return (*this) = mat4f(glm::value_ptr(glm::lookAt(
 			glm::vec3(eye[0], eye[1], eye[2]),
 			glm::vec3(pos[0], pos[1], pos[2]),
 			glm::vec3( up[0],  up[1],  up[2]))));
 	}
 
-	mat4f Transform::Rotate(const mat4f & value, float angle, const vec3f & axis)
+	Transform & Transform::orthographic(const FloatRect & rect)
 	{
-		return mat4f(glm::value_ptr(glm::rotate(
-			glm::mat4(
-				value[0x0], value[0x1], value[0x2], value[0x3],
-				value[0x4], value[0x5], value[0x6], value[0x7],
-				value[0x8], value[0x9], value[0xA], value[0xB],
-				value[0xC], value[0xD], value[0xE], value[0xF]
-			),
-			angle,
-			glm::vec3(axis[0], axis[1], axis[2]))));
+		return (*this) = mat4f(glm::value_ptr(glm::ortho(
+			rect.left(),
+			rect.right(),
+			rect.top(),
+			rect.bot()))
+		);
 	}
 
-	mat4f Transform::Scale(const mat4f & value, const vec3f & vec)
+	Transform & Transform::orthographic(const FloatRect & rect, const vec2f & clip)
 	{
-		return mat4f(glm::value_ptr(glm::scale(
-			glm::mat4(
-				value[0x0],	value[0x1],	value[0x2],	value[0x3],
-				value[0x4],	value[0x5],	value[0x6],	value[0x7],
-				value[0x8],	value[0x9],	value[0xA],	value[0xB],
-				value[0xC],	value[0xD],	value[0xE],	value[0xF]
-			),
-			glm::vec3(vec[0], vec[1], vec[2]))));
+		return (*this) = mat4f(glm::value_ptr(glm::ortho(
+			rect.left(), 
+			rect.right(), 
+			rect.top(), 
+			rect.bot(), 
+			clip[0], 
+			clip[1]))
+		);
 	}
 
-	mat4f Transform::Translate(const mat4f & value, const vec3f & vec)
+	Transform & Transform::perspective(float fov, float aspect, float near, float far)
 	{
-		return mat4f(glm::value_ptr(glm::translate(
-			glm::mat4(
-				value[0x0], value[0x1], value[0x2], value[0x3],
-				value[0x4], value[0x5], value[0x6], value[0x7],
-				value[0x8], value[0x9], value[0xA], value[0xB],
-				value[0xC], value[0xD], value[0xE], value[0xF]
-			),
-			glm::vec3(vec[0], vec[1], vec[2]))));
-	}
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	Transform & Transform::lookAt(const vec3f & eye, const vec3f & pos, const vec3f & up)
-	{
-		return (*this) = LookAt(eye, pos, up);
+		return (*this) = mat4f(glm::value_ptr(glm::perspective(
+			fov,
+			aspect,
+			near,
+			far))
+		);
 	}
 
 	Transform & Transform::rotate(float angle, const vec3f & axis)
 	{
-		return (*this) = Rotate((*this), angle, axis);
+		return (*this) = mat4f(glm::value_ptr(glm::rotate(
+			glm::mat4(
+				matrix()[0x0], matrix()[0x1], matrix()[0x2], matrix()[0x3],
+				matrix()[0x4], matrix()[0x5], matrix()[0x6], matrix()[0x7],
+				matrix()[0x8], matrix()[0x9], matrix()[0xA], matrix()[0xB],
+				matrix()[0xC], matrix()[0xD], matrix()[0xE], matrix()[0xF]
+			),
+			angle,
+			glm::vec3(axis[0], axis[1], axis[2])))
+		);
 	}
 
 	Transform & Transform::scale(const vec3f & value)
 	{
-		return (*this) = Scale((*this), value);
+		return (*this) = mat4f(glm::value_ptr(glm::scale(
+			glm::mat4(
+				matrix()[0x0], matrix()[0x1], matrix()[0x2], matrix()[0x3],
+				matrix()[0x4], matrix()[0x5], matrix()[0x6], matrix()[0x7],
+				matrix()[0x8], matrix()[0x9], matrix()[0xA], matrix()[0xB],
+				matrix()[0xC], matrix()[0xD], matrix()[0xE], matrix()[0xF]
+			),
+			glm::vec3(value[0], value[1], value[2])))
+		);
 	}
 
 	Transform & Transform::translate(const vec3f & value)
 	{
-		return (*this) = Translate((*this), value);
+		return (*this) = mat4f(glm::value_ptr(glm::translate(
+			glm::mat4(
+				matrix()[0x0], matrix()[0x1], matrix()[0x2], matrix()[0x3],
+				matrix()[0x4], matrix()[0x5], matrix()[0x6], matrix()[0x7],
+				matrix()[0x8], matrix()[0x9], matrix()[0xA], matrix()[0xB],
+				matrix()[0xC], matrix()[0xD], matrix()[0xE], matrix()[0xF]
+			),
+			glm::vec3(value[0], value[1], value[2])))
+		);
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	bool Transform::decompose(vec3f & scale, quat & orient, vec3f & trans, vec3f & skew, vec4f & persp)
+	{
+		static glm::vec3 _scale;
+		static glm::quat _orient;
+		static glm::vec3 _trans;
+		static glm::vec3 _skew;
+		static glm::vec4 _persp;
+
+		if (glm::decompose(glm::mat4(
+			matrix()[0x0], matrix()[0x1], matrix()[0x2], matrix()[0x3],
+			matrix()[0x4], matrix()[0x5], matrix()[0x6], matrix()[0x7],
+			matrix()[0x8], matrix()[0x9], matrix()[0xA], matrix()[0xB],
+			matrix()[0xC], matrix()[0xD], matrix()[0xE], matrix()[0xF]
+		), _scale, _orient, _trans, _skew, _persp))
+		{
+			scale	= { _scale.x,	_scale.y,	_scale.z				};
+			orient	= { _orient.x,	_orient.y,	_orient.z,	_orient.w	};
+			trans	= { _trans.x,	_trans.y,	_trans.z				};
+			skew	= { _skew.x,	_skew.y,	_skew.z					};
+			persp	= { _persp.x,	_persp.y,	_persp.z,	_persp.w	};
+
+			return true;
+		}
+		else
+		{
+			scale	= 0.0f;
+			orient	= 0.0f;
+			trans	= 0.0f;
+			skew	= 0.0f;
+			persp	= 0.0f;
+
+			return false;
+		}
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

@@ -76,6 +76,27 @@ namespace ml
 	}
 
 
+	const String & Debug::platform()
+	{
+#if defined(ML_x64)
+		static String temp = "x64";
+#elif defined(ML_x86)
+		static String temp = "x86";
+#endif
+		return temp;
+	}
+
+	const String & Debug::configuration()
+	{
+#if defined(ML_DEBUG)
+		static String temp = "Debug";
+#else
+		static String temp = "Release";
+#endif
+		return temp;
+	}
+
+
 	int32_t Debug::logWarning(const String & message)
 	{
 		ml::cout

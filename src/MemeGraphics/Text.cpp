@@ -105,22 +105,8 @@ namespace ml
 					glyph.offset() + drawPos * m_scale,
 					glyph.size() * m_scale
 				);
-				static VertexList verts({
-					{ vec3f::Zero, Color::White, vec2f::Zero	},
-					{ vec3f::Zero, Color::White, vec2f::Up		},
-					{ vec3f::Zero, Color::White, vec2f::One		},
-					{ vec3f::Zero, Color::White, vec2f::Zero	},
-					{ vec3f::Zero, Color::White, vec2f::One		},
-					{ vec3f::Zero, Color::White, vec2f::Right	},
-				});
-				verts[0].position(rect.left(),  rect.bot(), 0.0f);
-				verts[1].position(rect.left(),  rect.top(), 0.0f);
-				verts[2].position(rect.right(), rect.top(), 0.0f);
-				verts[3].position(rect.left(),  rect.bot(), 0.0f);
-				verts[4].position(rect.right(), rect.top(), 0.0f);
-				verts[5].position(rect.right(), rect.bot(), 0.0f);
-				
-				m_vertices[i] = verts;
+
+				m_vertices[i] = Shapes::genGlyphQuad(rect);
 				m_textures[i] = (&glyph.texture);
 				
 				switch (m_string[i])
@@ -142,24 +128,17 @@ namespace ml
 		if (!m_font)
 			return;
 
-		// Update Geometry/Textures
 		update();
 		
-		// Color
-		if (Uniform * u = batch.uniforms->find("u_color")) 
-		{ 
-			u->data = &getColor(); 
-		}
+		if (Uniform * u = batch.uniforms->find("u_color"))
+			u->data = &m_color;
 
 		for (size_t i = 0, imax = m_string.size(); i < imax; i++)
 		{
-			// Glyph Texture
-			if (Uniform * u = batch.uniforms->find("u_texture")) 
-			{
-				u->data = m_textures[i]; 
-			}
+			if (Uniform * u = batch.uniforms->find("u_texture"))
+				u->data = m_textures[i];
 
-			target.draw(&m_vertices[i], batch);
+			target.draw(m_vertices[i].data(), RectQuad::Size, batch);
 		}
 	}
 }

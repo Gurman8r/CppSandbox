@@ -4,7 +4,6 @@
 #include <MemeCore/Debug.hpp>
 #include <MemeCore/EventSystem.hpp>
 #include <MemeCore/LibLoader.hpp>
-#include <MemeCore/Array.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -88,8 +87,7 @@ int32_t main(int32_t argc, char ** argv)
 			if (ml::Debug::checkError(ML_FAILURE))
 			{
 				delete program;
-				return ml::Debug::logError("Something went wrong...")
-					|| ml::Debug::pause(EXIT_FAILURE);
+				return ml::Debug::pause(EXIT_FAILURE);
 			}
 
 		} while (program->isOpen());

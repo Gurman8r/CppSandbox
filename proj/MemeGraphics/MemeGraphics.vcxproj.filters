@@ -171,6 +171,9 @@
     <ClInclude Include="..\..\include\MemeGraphics\Effect.hpp">
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\RectTransform.hpp">
+      <Filter>Header Files\Transforms</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeGraphics\Color.cpp">
@@ -259,6 +262,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Effect.cpp">
       <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\RectTransform.cpp">
+      <Filter>Source Files\Transforms</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -40,21 +40,26 @@ namespace ml
 
 	RenderTarget & RenderTarget::draw(const RenderBatch & batch)
 	{
-		return draw(batch.vertices, batch);
-	}
-
-	RenderTarget & RenderTarget::draw(const VertexList * vertices, const RenderBatch & batch)
-	{
-		if (vertices)
+		if (batch.vertices)
 		{
-			return draw(vertices->contiguous(), batch);
+			return draw((*batch.vertices), batch);
 		}
 		return (*this);
 	}
 
+
+	RenderTarget & RenderTarget::draw(const VertexList & vertices, const RenderBatch & batch)
+	{
+		return draw(vertices.contiguous(), batch);
+	}
+
 	RenderTarget & RenderTarget::draw(const FloatList & vertices, const RenderBatch & batch)
 	{
-		// Update Shader
+		return draw(vertices.data(), vertices.size(), batch);
+	}
+
+	RenderTarget & RenderTarget::draw(const float * vertices, size_t vertexCount, const RenderBatch & batch)
+	{
 		if (batch.shader && batch.uniforms)
 		{
 			batch.shader->applyUniforms(*batch.uniforms);
@@ -64,43 +69,44 @@ namespace ml
 		if (batch.vbo && batch.vbo)
 		{
 			batch.vbo->bind();
-			batch.vbo->bufferSubData(vertices, 0);
+			batch.vbo->bufferSubData(vertices, (uint32_t)vertexCount, 0);
 			batch.vbo->unbind();
 
-			return draw(batch.vao, batch.vbo);
+			return draw((*batch.vao), (*batch.vbo));
 		}
 
 		return (*this);
 	}
 
-	RenderTarget & RenderTarget::draw(const VAO * vao, const VBO * vbo, const IBO * ibo)
+
+	RenderTarget & RenderTarget::draw(const VAO & vao, const VBO & vbo, const IBO & ibo)
 	{
 		if (vao && vbo && ibo)
 		{
-			vao->bind();
-			vbo->bind();
-			ibo->bind();
+			vao.bind();
+			vbo.bind();
+			ibo.bind();
 			{
-				OpenGL::drawElements(vao->mode(), ibo->count(), ibo->type(), NULL);
+				OpenGL::drawElements(vao.mode(), ibo.count(), ibo.type(), NULL);
 			}
-			ibo->unbind();
-			vbo->unbind();
-			vao->unbind();
+			ibo.unbind();
+			vbo.unbind();
+			vao.unbind();
 		}
 		return (*this);
 	}
 	
-	RenderTarget & RenderTarget::draw(const VAO * vao, const VBO * vbo)
+	RenderTarget & RenderTarget::draw(const VAO & vao, const VBO & vbo)
 	{
 		if (vao && vbo)
 		{
-			vao->bind();
-			vbo->bind();
+			vao.bind();
+			vbo.bind();
 			{
-				OpenGL::drawArrays(vao->mode(), 0, vbo->size());
+				OpenGL::drawArrays(vao.mode(), 0, vbo.size());
 			}
-			vbo->unbind();
-			vao->unbind();
+			vbo.unbind();
+			vao.unbind();
 		}
 		return (*this);
 	}

@@ -4,27 +4,27 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	VertexList Shapes::genQuadVerts(const FloatRect & rect)
+	RectQuad Shapes::genSpriteQuad(const FloatRect & r)
 	{
-		return {
-			{ { rect.left(),  rect.bot(), 0.0f }, Color::White, { 1, 1 } },
-			{ { rect.left(),  rect.top(), 0.0f }, Color::White, { 1, 0 } },
-			{ { rect.right(), rect.top(), 0.0f }, Color::White, { 0, 0 } },
-			{ { rect.left(),  rect.bot(), 0.0f }, Color::White, { 1, 1 } },
-			{ { rect.right(), rect.top(), 0.0f }, Color::White, { 0, 0 } },
-			{ { rect.right(), rect.bot(), 0.0f }, Color::White, { 0, 1 } },
-		};
-	}
-
-	FloatList Shapes::genQuadFloats(const FloatRect & r)
-	{
-		return {
+		return RectQuad {
 			r.left(),  r.bot(), 0.f,	1, 1, 1, 1,		0, 1,
 			r.left(),  r.top(), 0.f,	1, 1, 1, 1,		0, 0,
 			r.right(), r.top(), 0.f,	1, 1, 1, 1,		1, 0,
 			r.left(),  r.bot(), 0.f,	1, 1, 1, 1,		0, 1,
 			r.right(), r.top(), 0.f,	1, 1, 1, 1,		1, 0,
 			r.right(), r.bot(), 0.f,	1, 1, 1, 1,		1, 1,
+		};
+	}
+
+	RectQuad Shapes::genGlyphQuad(const FloatRect & r)
+	{
+		return RectQuad {
+			r.left(),  r.bot(), 0.f,	1, 1, 1, 1,		0, 0,
+			r.left(),  r.top(), 0.f,	1, 1, 1, 1,		0, 1,
+			r.right(), r.top(), 0.f,	1, 1, 1, 1,		1, 1,
+			r.left(),  r.bot(), 0.f,	1, 1, 1, 1,		0, 0,
+			r.right(), r.top(), 0.f,	1, 1, 1, 1,		1, 1,
+			r.right(), r.bot(), 0.f,	1, 1, 1, 1,		1, 0,
 		};
 	}
 

@@ -46,16 +46,15 @@ namespace DEMO
 				this->setViewport(ml::vec2i::Zero, ev->size());
 
 				// Orthographic
-				m_ortho = ml::Transform::Orthographic(
+				m_ortho.orthographic(
 					{ ml::vec2f::Zero, (ml::vec2f)ev->size() },
 					{ SETTINGS.orthoNear, SETTINGS.orthoFar }
 				);
 
 				// Perspective
-				m_persp = ml::Transform::Perspective(
-					SETTINGS.fieldOfView,
-					ev->aspect(),
-					{ SETTINGS.perspNear, SETTINGS.perspFar }
+				m_persp.perspective(
+					SETTINGS.fieldOfView, ev->aspect(),
+					SETTINGS.perspNear, SETTINGS.perspFar
 				);
 
 				if (ev->size() == ml::vec2i::Zero)
@@ -240,19 +239,11 @@ namespace DEMO
 					}
 					else if (opt == "config")
 					{
-					#ifdef ML_DEBUG
-						return ml::Var().stringValue("Debug");
-					#else
-						return ml::Var().stringValue("Release");
-					#endif
+						return ml::Var().stringValue(ml::Debug::configuration());
 					}
 					else if (opt == "platform")
 					{
-					#if defined(ML_x64)
-						return ml::Var().stringValue("x64");
-					#elif defined(ML_x86)
-						return ml::Var().stringValue("x86");
-					#endif
+						return ml::Var().stringValue(ml::Debug::platform());
 					}
 				}
 				return ml::Var().boolValue(true);
@@ -270,12 +261,12 @@ namespace DEMO
 
 			return ml::Debug::log("Loading Resources...")
 				&& ML_Res.loadManifest(manifest)
-				&& ML_Res.meshes.load("quad1")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
-				&& ML_Res.meshes.load("cube1")->loadFromMemory(ml::Shapes::Cube::Vertices, ml::Shapes::Cube::Indices)
-				&& ML_Res.models.load("borg")->loadFromMemory(*ML_Res.meshes.get("cube1"))
-				&& ML_Res.models.load("sanic")->loadFromMemory(*ML_Res.meshes.get("quad1"))
-				&& ML_Res.models.load("sprite")->loadFromMemory(*ML_Res.meshes.get("quad1"))
-				&& ML_Res.models.load("framebuffer")->loadFromMemory(*ML_Res.meshes.get("quad1"))
+				&& ML_Res.meshes.load("default_quad")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
+				&& ML_Res.meshes.load("default_cube")->loadFromMemory(ml::Shapes::Cube::Vertices, ml::Shapes::Cube::Indices)
+				&& ML_Res.models.load("borg")->loadFromMemory(*ML_Res.meshes.get("default_cube"))
+				&& ML_Res.models.load("sanic")->loadFromMemory(*ML_Res.meshes.get("default_quad"))
+				&& ML_Res.models.load("sprite")->loadFromMemory(*ML_Res.meshes.get("default_quad"))
+				&& ML_Res.models.load("framebuffer")->loadFromMemory(*ML_Res.meshes.get("default_quad"))
 				&& ML_Res.textures.load("framebuffer")->create(this->getFramebufferSize())
 				&& loadBuffers();
 		}
@@ -287,7 +278,7 @@ namespace DEMO
 		// Text
 		m_vao.create(ml::GL::Triangles).bind();
 		m_vbo.create(ml::GL::DynamicDraw).bind();
-		m_vbo.bufferData(NULL, (ml::Glyph::VertexCount * ml::Vertex::Size));
+		m_vbo.bufferData(NULL, ml::RectQuad::Size);
 		ml::BufferLayout::Default.bind();
 		m_vbo.unbind();
 		m_vao.unbind();
@@ -461,22 +452,21 @@ namespace DEMO
 		// Setup Projections
 		{
 			// Orthographic
-			m_ortho = ml::Transform::Orthographic(
+			m_ortho.orthographic(
 				{ ml::vec2f::Zero, (ml::vec2f)this->getSize() },
 				{ SETTINGS.orthoNear, SETTINGS.orthoFar }
 			);
 
 			// Perspective
-			m_persp = ml::Transform::Perspective(
-				SETTINGS.fieldOfView,
-				this->aspect(),
-				{ SETTINGS.perspNear, SETTINGS.perspFar }
+			m_persp.perspective(
+				SETTINGS.fieldOfView, this->aspect(),
+				SETTINGS.perspNear, SETTINGS.perspFar
 			);
 		}
 
 		// Setup Camera
 		{
-			m_camera.LookAt(m_camPos, m_camPos + ml::vec3f::Back, ml::vec3f::Up);
+			m_camera.lookAt(m_camPos, m_camPos + ml::vec3f::Back, ml::vec3f::Up);
 		}
 
 		// Setup Models
@@ -525,6 +515,9 @@ namespace DEMO
 
 	void Demo::onUpdate(const UpdateEvent & ev)
 	{
+		// Poll Events
+		this->pollEvents();
+
 		// Update Title
 		this->setTitle(ml::String::Format("{0} | {1}",
 			SETTINGS.title, 
@@ -709,14 +702,14 @@ namespace DEMO
 
 	void Demo::onDraw(const DrawEvent & ev)
 	{
-		// Shared Uniforms
+		// Uniforms
 		/* * * * * * * * * * * * * * * * * * * * */
-		static ml::UniformSet persp_uniforms = {
+		static ml::UniformSet camera_uniforms = {
 			ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
 			ml::Uniform("u_view",	ml::Uniform::Mat4,	&m_camera.matrix()),
 		};
 
-		static ml::UniformSet ortho_uniforms = {
+		static ml::UniformSet batch_uniforms = {
 			ml::Uniform("u_proj",	ml::Uniform::Mat4,	&m_ortho.matrix()),
 			ml::Uniform("u_color",	ml::Uniform::Vec4),
 			ml::Uniform("u_texture",ml::Uniform::Tex),
@@ -754,7 +747,7 @@ namespace DEMO
 				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("solid"))
 				{
-					shader->applyUniforms(persp_uniforms);
+					shader->applyUniforms(camera_uniforms);
 					shader->applyUniforms(uniforms);
 					shader->bind();
 				}
@@ -771,7 +764,7 @@ namespace DEMO
 				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("basic"))
 				{
-					shader->applyUniforms(persp_uniforms);
+					shader->applyUniforms(camera_uniforms);
 					shader->applyUniforms(uniforms);
 					shader->bind();
 				}
@@ -788,7 +781,7 @@ namespace DEMO
 				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("lighting"))
 				{
-					shader->applyUniforms(persp_uniforms);
+					shader->applyUniforms(camera_uniforms);
 					shader->applyUniforms(light_uniforms);
 					shader->applyUniforms(uniforms);
 					shader->bind();
@@ -806,7 +799,7 @@ namespace DEMO
 				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("lighting"))
 				{
-					shader->applyUniforms(persp_uniforms);
+					shader->applyUniforms(camera_uniforms);
 					shader->applyUniforms(light_uniforms);
 					shader->applyUniforms(uniforms);
 					shader->bind();
@@ -824,7 +817,7 @@ namespace DEMO
 				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("normal3D"))
 				{
-					shader->applyUniforms(persp_uniforms);
+					shader->applyUniforms(camera_uniforms);
 					shader->applyUniforms(uniforms);
 					shader->bind();
 				}
@@ -841,7 +834,7 @@ namespace DEMO
 				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("normal3D"))
 				{
-					shader->applyUniforms(persp_uniforms);
+					shader->applyUniforms(camera_uniforms);
 					shader->applyUniforms(uniforms);
 					shader->bind();
 				}
@@ -860,7 +853,7 @@ namespace DEMO
 				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("basic"))
 				{
-					shader->applyUniforms(persp_uniforms);
+					shader->applyUniforms(camera_uniforms);
 					shader->applyUniforms(uniforms);
 					shader->bind();
 				}
@@ -887,28 +880,30 @@ namespace DEMO
 			// Sprites
 			if (const ml::Shader * shader = ML_Res.shaders.get("sprites"))
 			{
-				static ml::RenderBatch batch(&m_vao, &m_vbo, shader, &ortho_uniforms);
+				static ml::RenderBatch batch(&m_vao, &m_vbo, shader, &batch_uniforms);
 
-				auto drawSprite = [&](
-					const ml::Texture * texture,
-					const ml::vec2f &	pos,
-					const ml::vec2f &	scale = { 1.0f },
-					const ml::vec2f &	origin = { 0.5f })
+				static ml::Sprite sprite;
+				sprite
+					.setTexture(ML_Res.textures.get("neutrino"))
+					.setPosition((ml::vec2f{ 0.95f, 0.075f } * this->getSize()))
+					.setScale(0.5f)
+					.setRotation(0.0f)
+					.setOrigin(0.5f)
+					.setColor(ml::Color::White);
+
+				this->draw(sprite, batch);
+			}
+
+			// Text
+			if (const ml::Shader * shader = ML_Res.shaders.get("text"))
+			{
+				static ml::RenderBatch batch(&m_vao, &m_vbo, shader, &batch_uniforms);
+
+				TextMap::const_iterator it;
+				for (it = m_text.begin(); it != m_text.end(); it++)
 				{
-					if (texture)
-					{
-						const ml::vec2f size = (ml::vec2f)texture->size() * scale;
-
-						const ml::vec2f dest = (pos - size * origin);
-
-						if (ml::Uniform * u = ortho_uniforms.find("u_texture")) { u->data = texture; }
-						if (ml::Uniform * u = ortho_uniforms.find("u_color"))	{ u->data = &ml::Color::White; }
-
-						this->draw(ml::Shapes::genQuadFloats({ dest, size }), batch);
-					}
-				};
-
-				drawSprite(ML_Res.textures.get("neutrino"), (ml::vec2f(0.95f, 0.075f) * this->getSize()), { 0.5f });
+					this->draw(it->second, batch);
+				}
 			}
 		}
 		m_effects["default"].unbind();
@@ -923,19 +918,6 @@ namespace DEMO
 
 		// Draw GUI
 		/* * * * * * * * * * * * * * * * * * * * */
-		this->pollEvents();
-
-		// Text
-		if (const ml::Shader * shader = ML_Res.shaders.get("text"))
-		{
-			static ml::RenderBatch batch(&m_vao, &m_vbo, shader, &ortho_uniforms);
-
-			TextMap::const_iterator it;
-			for (it = m_text.begin(); it != m_text.end(); it++)
-			{
-				this->draw(it->second, batch);
-			}
-		}
 
 		// ImGui
 		ImGui_ML_NewFrame();

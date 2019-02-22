@@ -28,6 +28,9 @@ namespace ml
 		static int32_t	system(const char * cmd, std::ostream & out);
 		static void		terminate();
 
+		static const String & platform();
+		static const String & configuration();
+
 	public:
 		static int32_t logWarning(const String & message); // - 1 true
 		static int32_t logError(const String & message);   //   0 false

@@ -7,14 +7,21 @@
 namespace ml
 {
 	class ML_GRAPHICS_API RectTransform
-		: public ITrackable
+		: public Transform
 	{
 	public:
 		RectTransform();
+		RectTransform(const vec2f & position, const vec2f & scale, const float rotation);
+		RectTransform(const RectTransform & copy);
 		~RectTransform();
 
+		void update();
+
 	private:
-		FloatRect m_bounds;
+		vec2f m_origin;
+		vec2f m_position;
+		float m_rotation;
+		vec2f m_scale;
 	};
 }
 

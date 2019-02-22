@@ -7,6 +7,10 @@
 #include <MemeCore/Vector2.hpp>
 #include <MemeCore/Rect.hpp>
 
+
+
+
+
 namespace ml
 {
 	class ML_GRAPHICS_API Transform
@@ -20,22 +24,20 @@ namespace ml
 		Transform(const Transform & copy);
 		~Transform();
 
-		static mat4f Orthographic(const FloatRect & rect, const vec2f & clip);
-		static mat4f Orthographic(const FloatRect & rect, float N, float F);
-		static mat4f Orthographic(const FloatRect & rect);
-		static mat4f Orthographic(float L, float R, float T, float B, float N, float F);
-		static mat4f Orthographic(float L, float R, float T, float B);
-		static mat4f Perspective(float fov, float aspect, const vec2f & clip);
-		static mat4f Perspective(float fov, float aspect, float N, float F);
-		static mat4f LookAt(const vec3f & eye, const vec3f & pos, const vec3f & up);
-		static mat4f Rotate(const mat4f & value, float angle, const vec3f & axis);
-		static mat4f Scale(const mat4f & value, const vec3f & vec);
-		static mat4f Translate(const mat4f & value, const vec3f & vec);
-
 		Transform & lookAt(const vec3f & eye, const vec3f & pos, const vec3f & up);
+		Transform & orthographic(const FloatRect & rect);
+		Transform & orthographic(const FloatRect & rect, const vec2f & clip);
+		Transform & perspective(float fov, float aspect, float near, float far);
 		Transform &	rotate(float angle, const vec3f & axis);
 		Transform &	scale(const vec3f & value);
 		Transform &	translate(const vec3f & value);
+
+		bool decompose(
+			vec3f & scale,
+			quat  & orient,
+			vec3f & trans,
+			vec3f & skew, 
+			vec4f & persp);
 
 	public:
 		inline operator	const mat4f &()	const { return matrix(); }

@@ -18,9 +18,19 @@
 #if defined(_WIN64) || defined(_WIN32)
 	// Windows
 	#define ML_SYSTEM_WINDOWS
+
 	#ifndef NOMINMAX
 		#define NOMINMAX
 	#endif
+
+	#ifdef near
+		#undef near
+	#endif
+
+	#ifdef far
+		#undef far
+	#endif
+
 #elif defined(__APPLE__) && defined(__MACH__)
 	// Apple
 	#define ML_SYSTEM_APPLE

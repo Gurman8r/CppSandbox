@@ -1,8 +1,7 @@
 #ifndef _GLYPH_HPP_
 #define _GLYPH_HPP_
 
-#include <MemeGraphics/Texture.hpp>
-#include <MemeCore/Rect.hpp>
+#include <MemeGraphics/Shapes.hpp>
 
 namespace ml
 {

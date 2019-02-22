@@ -104,11 +104,11 @@ namespace ml
 		{
 			if (m_ibo)
 			{
-				target.draw(&m_vao, &m_vbo, &m_ibo);
+				target.draw(m_vao, m_vbo, m_ibo);
 			}
 			else
 			{
-				target.draw(&m_vao, &m_vbo);
+				target.draw(m_vao, m_vbo);
 			}
 		}
 	}

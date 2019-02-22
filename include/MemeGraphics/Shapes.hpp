@@ -1,6 +1,7 @@
 #ifndef _SHAPES_HPP_
 #define _SHAPES_HPP_
 
+#include <MemeCore/Array.hpp>
 #include <MemeCore/Rect.hpp>
 #include <MemeGraphics/Lists.hpp>
 
@@ -9,9 +10,15 @@ namespace ml
 	class ML_GRAPHICS_API Shapes
 	{
 	public:
-		static VertexList	genQuadVerts(const FloatRect & rect);
-		static FloatList	genQuadFloats(const FloatRect & rect);
+		enum 
+		{
+			RectSize = Vertex::Size * 6
+		};
 
+		using RectQuad = Array<float, RectSize>;
+
+		static RectQuad genSpriteQuad(const FloatRect & r);
+		static RectQuad genGlyphQuad(const FloatRect & r);
 
 	public:
 		struct ML_GRAPHICS_API Triangle final
@@ -37,6 +44,8 @@ namespace ml
 			const static FloatList Vertices;
 		};
 	};
+
+	using RectQuad = typename Shapes::RectQuad;
 }
 
 #endif // !_SHAPES_HPP_

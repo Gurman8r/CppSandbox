@@ -7,6 +7,7 @@
 #include <MemeGraphics/Lists.hpp>
 #include <MemeGraphics/VertexArray.hpp>
 #include <MemeGraphics/VertexBuffer.hpp>
+#include <MemeGraphics/Shapes.hpp>
 
 // TODO: 
 /*
@@ -46,9 +47,10 @@ namespace ml
 		void draw(RenderTarget & target, RenderBatch batch) const override;
 
 	private:
-		mutable bool			 m_requiresUpdate;
+		mutable bool m_requiresUpdate;
+
 		mutable TextureList		 m_textures;
-		mutable List<VertexList> m_vertices;
+		mutable List<RectQuad>	 m_vertices;
 
 		const Font *m_font;
 		uint32_t	m_fontSize;
