@@ -29,6 +29,14 @@ namespace ml
 		void update() const;
 		void draw(RenderTarget & target, RenderBatch batch) const override;
 
+	public:
+		inline const Texture *	texture()	const { return m_texture;	}
+		inline const vec2f &	position()	const { return m_position;	}
+		inline const vec2f &	scale()		const { return m_scale;		}
+		inline const float		rotation()	const { return m_rotation;	}
+		inline const vec2f &	origin()	const { return m_origin;	}
+		inline const vec4f &	color()		const { return m_color;		}
+
 	private:
 		mutable bool m_requiresUpdate;
 		mutable Transform m_transform;
