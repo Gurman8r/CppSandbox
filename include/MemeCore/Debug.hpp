@@ -40,19 +40,19 @@ namespace ml
 		template <class T, typename ... A>
 		inline static int32_t logWarning(const String & fmt, const T & arg0, const A &... args)
 		{
-			return Debug::logWarning(String::Format(fmt, arg0, (args)...));
+			return Debug::logWarning(fmt.format(arg0, (args)...));
 		}
 
 		template <class T, typename ... A>
 		inline static int32_t logError(const String & fmt, const T & arg0, const A &... args)
 		{
-			return Debug::logError(String::Format(fmt, arg0, (args)...));
+			return Debug::logError(fmt.format(arg0, (args)...));
 		}
 
 		template <class T, typename ... A>
 		inline static int32_t log(const String & fmt, const T & arg0, const A &... args)
 		{
-			return Debug::log(String::Format(fmt, arg0, (args)...));
+			return Debug::log(fmt.format(arg0, (args)...));
 		}
 	};
 	

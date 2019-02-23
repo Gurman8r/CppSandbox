@@ -9,9 +9,9 @@ namespace ml
 	{
 		TOK_ERR		= '\0', // \0 - Invalid / Null
 		TOK_VOID	= ' ',	// ' ' - Empty / Space
-		TOK_ENDL	= '\n',// \n - End of line
+		TOK_ENDL	= '\n',	// \n - End of line
 
-		TOK_NAME	= 'n',	// n - String
+		TOK_NAME	= 'n',	// n - Name
 		TOK_FLT		= 'f',	// f - Float / Decimal
 		TOK_INT		= 'i',	// i - Integer
 		TOK_STR		= 's',	// s - String
@@ -65,7 +65,7 @@ namespace ml
 		static const NameMap	TypeNames;
 		static const SymbolMap	Symbols;
 
-		TokenType		type;
+		TokenType	type;
 		String		data;
 
 		Token();

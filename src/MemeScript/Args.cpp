@@ -7,7 +7,7 @@ namespace ml
 		: m_values()
 	{
 	}
-	Args::Args(const value_type & value)
+	Args::Args(const String & value)
 		: m_values({ value })
 	{
 	}
@@ -15,11 +15,11 @@ namespace ml
 		: m_values(values)
 	{
 	}
-	Args::Args(const std::initializer_list<value_type>& values)
+	Args::Args(const std::initializer_list<String>& values)
 		: m_values(values)
 	{
 	}
-	Args::Args(const value_type & value, const value_type & delim)
+	Args::Args(const String & value, const String & delim)
 		: m_values(StringUtility::Split(value, delim))
 	{
 	}
@@ -31,45 +31,50 @@ namespace ml
 	{
 	}
 
-	const Args::value_type	Args::at(size_t index) const
+	String Args::pop()
+	{
+		return pop_front().front();
+	}
+
+	const String	Args::at(size_t index) const
 	{
 		return (*this)[index];
 	}
-	const Args::value_type	Args::back() const
+	const String	Args::back() const
 	{
 		if (!empty())
 		{
 			return m_values.back();
 		}
-		return value_type();
+		return String();
 	}
-	const Args::value_type	Args::front() const
+	const String	Args::front() const
 	{
 		if (!empty())
 		{
 			return m_values.front();
 		}
-		return value_type();
+		return String();
 	}
-	const Args::value_type	Args::str() const
+	const String	Args::str() const
 	{
-		value_type out;
-		for (const value_type& it : (*this))
+		String out;
+		for (const String& it : (*this))
 		{
 			out += it + " ";
 		}
 		return out;
 	}
-	const Args::value_type	Args::substr(size_t index, size_t count) const
+	const String	Args::substr(size_t index, size_t count) const
 	{
 		auto from = (begin() + index);
 
 		if (!inRange(from) || !inRange(from + count))
 		{
-			return value_type();
+			return String();
 		}
 
-		value_type toStr;
+		String toStr;
 
 		for (size_t i = 0; i < count; i++)
 		{
@@ -125,11 +130,11 @@ namespace ml
 		return ss;
 	}
 
-	const size_t	Args::count(const value_type & value) const
+	const size_t	Args::count(const String & value) const
 	{
 		return count(begin(), end(), value);
 	}
-	const size_t	Args::count(const_iterator first, const_iterator last, const value_type & val) const
+	const size_t	Args::count(const_iterator first, const_iterator last, const String & val) const
 	{
 		difference_type ret = 0;
 
@@ -145,7 +150,7 @@ namespace ml
 
 		return ret;
 	}
-	const size_t	Args::indexOf(const value_type& value) const
+	const size_t	Args::indexOf(const String& value) const
 	{
 		auto it = find(value);
 
@@ -161,7 +166,7 @@ namespace ml
 		return m_values.size();
 	}
 
-	const bool		Args::contains(const value_type & value) const
+	const bool		Args::contains(const String & value) const
 	{
 		return find_first(value) != end();
 	}
@@ -257,13 +262,13 @@ namespace ml
 	}
 	Args::self_type&	Args::insert(size_t index, char value)
 	{
-		return insert(index, value_type(1, value));
+		return insert(index, String(1, value));
 	}
 	Args::self_type&	Args::insert(size_t index, CString value)
 	{
-		return insert(index, value_type(value));
+		return insert(index, String(value));
 	}
-	Args::self_type&	Args::insert(size_t index, const value_type& value)
+	Args::self_type&	Args::insert(size_t index, const String& value)
 	{
 		m_values.insert(begin() + index, value);
 		return (*this);
@@ -314,13 +319,13 @@ namespace ml
 	}
 	Args::self_type&	Args::push_back(char value)
 	{
-		return push_back(value_type(1, value));
+		return push_back(String(1, value));
 	}
 	Args::self_type&	Args::push_back(CString value)
 	{
-		return push_back(value_type(value));
+		return push_back(String(value));
 	}
-	Args::self_type&	Args::push_back(const value_type& value)
+	Args::self_type&	Args::push_back(const String& value)
 	{
 		m_values.push_back(value);
 		return (*this);
@@ -339,13 +344,13 @@ namespace ml
 	}
 	Args::self_type&	Args::push_front(char value)
 	{
-		return push_front(value_type(1, value));
+		return push_front(String(1, value));
 	}
 	Args::self_type&	Args::push_front(CString value)
 	{
-		return push_front(value_type(value));
+		return push_front(String(value));
 	}
-	Args::self_type&	Args::push_front(const value_type& value)
+	Args::self_type&	Args::push_front(const String& value)
 	{
 		return insert(0, value);
 	}
@@ -361,11 +366,11 @@ namespace ml
 	{
 		return push_front(value.m_values);
 	}
-	Args::self_type&	Args::remove(const value_type& value)
+	Args::self_type&	Args::remove(const String& value)
 	{
 		return erase(find_first(value));
 	}
-	Args::self_type&	Args::removeAll(const value_type& value)
+	Args::self_type&	Args::removeAll(const String& value)
 	{
 		const_iterator it;
 		while ((it = find_first(value)) != end())
@@ -390,7 +395,7 @@ namespace ml
 	}
 
 
-	Args::const_iterator Args::find(const value_type& value, size_t index) const
+	Args::const_iterator Args::find(const String& value, size_t index) const
 	{
 		for (auto it = begin() + index; it != end(); it++)
 		{
@@ -401,7 +406,7 @@ namespace ml
 		}
 		return end();
 	}
-	Args::const_iterator Args::find_first(const value_type& value) const
+	Args::const_iterator Args::find_first(const String& value) const
 	{
 		for (auto it = begin(); it != end(); it++)
 		{
@@ -412,7 +417,7 @@ namespace ml
 		}
 		return end();
 	}
-	Args::const_iterator Args::find_first_not_of(const value_type& value, size_t index) const
+	Args::const_iterator Args::find_first_not_of(const String& value, size_t index) const
 	{
 		for (auto it = begin(); it != end(); it++)
 		{
@@ -423,7 +428,7 @@ namespace ml
 		}
 		return end();
 	}
-	Args::const_iterator Args::find_last(const value_type& value) const
+	Args::const_iterator Args::find_last(const String& value) const
 	{
 		for (auto it = end(); it != begin(); it--)
 		{
@@ -434,7 +439,7 @@ namespace ml
 		}
 		return end();
 	}
-	Args::const_iterator Args::find_last_not_of(const value_type& value) const
+	Args::const_iterator Args::find_last_not_of(const String& value) const
 	{
 		for (auto it = end(); it != begin(); it--)
 		{

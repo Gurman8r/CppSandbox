@@ -5,6 +5,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class  AST_Expr;
 	struct AST_Assign;
 	struct AST_Bool;
@@ -17,10 +19,12 @@ namespace ml
 	struct AST_BinOp;
 	struct AST_String;
 
+	// Statements
+	/* * * * * * * * * * * * * * * * * * * * */
 	class ML_SCRIPT_API AST_Stmt : public AST_Node
 	{
 	public:
-		enum Type
+		enum : int32_t
 		{
 			ST_INVALID = -1,
 			ST_Elif,
@@ -36,10 +40,10 @@ namespace ml
 			MAX_STMT_TYPE
 		};
 
-		AST_Stmt::Type stmtType;
+		int32_t stmtType;
 
 	public:
-		AST_Stmt(AST_Stmt::Type stmt);
+		AST_Stmt(int32_t stmt);
 		virtual ~AST_Stmt();
 
 		virtual std::ostream& display(std::ostream& out) const;
@@ -48,11 +52,8 @@ namespace ml
 		virtual bool run() = 0;
 	};
 
-
-	//	Statements
-	/* * * * * * * * * * * * * * * * */
-
 	// Elif
+	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Elif : public AST_Stmt
 	{
 		AST_Expr* expr;
@@ -65,6 +66,7 @@ namespace ml
 	};
 
 	// Else
+	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Else : public AST_Stmt
 	{
 		AST_Else();
@@ -75,6 +77,7 @@ namespace ml
 	};
 
 	// For
+	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_For : public AST_Stmt
 	{
 		AST_Assign* assn;
@@ -89,6 +92,7 @@ namespace ml
 	};
 
 	// Free
+	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Delete : public AST_Stmt
 	{
 		AST_Name* name;
@@ -101,6 +105,7 @@ namespace ml
 	};
 
 	// If
+	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_If : public AST_Stmt
 	{
 		AST_Expr* expr;
@@ -113,6 +118,7 @@ namespace ml
 	};
 
 	// Include
+	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Include : public AST_Stmt
 	{
 		AST_String* str;
@@ -125,13 +131,13 @@ namespace ml
 	};
 
 	// Print
+	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Print : public AST_Stmt
 	{
 		AST_Expr* expr;
-		bool endl;
+		bool newl;
 
-		AST_Print(AST_Expr* expr);
-		AST_Print(AST_Expr* expr, bool endl);
+		AST_Print(AST_Expr* expr, bool newl);
 		~AST_Print();
 
 		std::ostream& display(std::ostream& out) const override;
@@ -139,6 +145,7 @@ namespace ml
 	};
 
 	// Return
+	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Return : public AST_Stmt
 	{
 		AST_Expr* expr;
@@ -151,6 +158,7 @@ namespace ml
 	};
 
 	// While
+	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_While : public AST_Stmt
 	{
 		AST_Expr* expr;

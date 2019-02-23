@@ -233,6 +233,12 @@ namespace ml
 			return ((*this) = Format((*this), arg0, (args)...));
 		}
 
+		template <class T, typename ... A>
+		inline const self_type format(const T & arg0, const A & ...args) const
+		{
+			return self_type(*this).format(arg0, (args)...);
+		}
+
 		inline static self_type ReplaceAll(self_type s, const self_type & f, const self_type & r)
 		{
 			if (!s.empty() && !f.empty())
@@ -244,6 +250,16 @@ namespace ml
 				}
 			}
 			return s;
+		}
+
+		inline self_type & replaceAll(const self_type & f, const self_type & r)
+		{
+			return (*this) = ReplaceAll((*this), f, r);
+		}
+
+		inline const self_type replaceAll(const self_type & f, const self_type & r) const
+		{
+			return self_type(*this).replace_all(f, r);
 		}
 	};
 }

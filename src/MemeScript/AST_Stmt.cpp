@@ -7,7 +7,9 @@
 
 namespace ml
 {
-	AST_Stmt::AST_Stmt(AST_Stmt::Type type)
+	// Statement
+	/* * * * * * * * * * * * * * * * * * * * */
+	AST_Stmt::AST_Stmt(int32_t type)
 		: AST_Node()
 		, stmtType(type)
 	{
@@ -37,11 +39,8 @@ namespace ml
 	}
 
 
-	//	Statements
-	/* * * * * * * * * * * * * * * * */
-
-
 	// Elif
+	/* * * * * * * * * * * * * * * * * * * * */
 	AST_Elif::AST_Elif(AST_Expr * expr)
 		: AST_Stmt(ST_Elif)
 		, expr(expr)
@@ -65,6 +64,7 @@ namespace ml
 
 
 	// Else
+	/* * * * * * * * * * * * * * * * * * * * */
 	AST_Else::AST_Else()
 		: AST_Stmt(ST_Else)
 	{
@@ -86,6 +86,7 @@ namespace ml
 
 
 	// For
+	/* * * * * * * * * * * * * * * * * * * * */
 	AST_For::AST_For(AST_Assign * assn, AST_Expr * expr, AST_Stmt * stmt)
 		: AST_Stmt(ST_For)
 		, assn(assn)
@@ -141,6 +142,7 @@ namespace ml
 
 
 	// Free
+	/* * * * * * * * * * * * * * * * * * * * */
 	AST_Delete::AST_Delete(AST_Name* name)
 		: AST_Stmt(ST_Delete)
 		, name(name)
@@ -159,7 +161,7 @@ namespace ml
 
 	bool AST_Delete::run()
 	{
-		if (block()->delv(name->value))
+		if (block()->delVar(name->value))
 		{
 			return runNext();
 		}
@@ -168,6 +170,7 @@ namespace ml
 
 
 	// If
+	/* * * * * * * * * * * * * * * * * * * * */
 	AST_If::AST_If(AST_Expr * expr)
 		: AST_Stmt(ST_If)
 		, expr(expr)
@@ -257,8 +260,9 @@ namespace ml
 
 
 	// Include
+	/* * * * * * * * * * * * * * * * * * * * */
 	AST_Include::AST_Include(AST_String* str)
-		: AST_Stmt(AST_Stmt::Type::ST_Include)
+		: AST_Stmt(ST_Include)
 		, str(str)
 	{
 		addChild(str);
@@ -313,10 +317,11 @@ namespace ml
 
 
 	// Print
-	AST_Print::AST_Print(AST_Expr * expr, bool endl)
+	/* * * * * * * * * * * * * * * * * * * * */
+	AST_Print::AST_Print(AST_Expr * expr, bool newl)
 		: AST_Stmt(ST_Print)
 		, expr(expr)
-		, endl(endl)
+		, newl(newl)
 	{
 		addChild(expr);
 	}
@@ -327,7 +332,7 @@ namespace ml
 
 	std::ostream & AST_Print::display(std::ostream & out) const
 	{
-		return out << (endl ? "printl" : "print") << "(" << *expr << ") ";
+		return out << (newl ? "printl" : "print") << "(" << *expr << ") ";
 	}
 
 	bool AST_Print::run()
@@ -349,7 +354,7 @@ namespace ml
 						name += (*it);
 					}
 
-					if (Var * v = block()->getv(name))
+					if (Var * v = block()->getVar(name))
 					{
 						cout << (*v).textValue();
 					}
@@ -371,13 +376,14 @@ namespace ml
 		
 		cout << FMT();
 		
-		if(endl) { cout << ml::endl; }
+		if(newl) { cout << ml::endl; }
 		
 		return runNext();
 	}
 
 
 	// Return
+	/* * * * * * * * * * * * * * * * * * * * */
 	AST_Return::AST_Return(AST_Expr * expr)
 		: AST_Stmt(ST_Return)
 		, expr(expr)
@@ -398,13 +404,14 @@ namespace ml
 	{
 		if (block()->setRet(expr->evaluate()))
 		{
-			return true;
+			return true; // FIXME: Return does not halt execution
 		}
 		return Debug::logError("AST_Return : Failed Setting value_type");
 	}
 
 
 	// While
+	/* * * * * * * * * * * * * * * * * * * * */
 	AST_While::AST_While(AST_Expr * expr)
 		: AST_Stmt(ST_While)
 		, expr(expr)

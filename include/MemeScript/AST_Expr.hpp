@@ -6,15 +6,17 @@
 
 namespace ml
 {
+	// Expressions
+	/* * * * * * * * * * * * * * * * * * * * */
 	class ML_SCRIPT_API AST_Expr : public AST_Stmt
 	{
 	public:
-		enum Type : int32_t
+		enum : int32_t
 		{
 			EX_INVALID = -1,
 			EX_Array,
 			EX_Assign,
-			EX_Bool = AST_Stmt::Type::MAX_STMT_TYPE + 1,
+			EX_Bool,
 			EX_Call,
 			EX_Float,
 			EX_Func,
@@ -29,24 +31,24 @@ namespace ml
 			EX_SizeOf,
 			EX_TypeID,
 			EX_TypeName,
+			EX_Args,
 			MAX_EXPR_TYPE
 		};
 
-		AST_Expr::Type exprType;
+		int32_t exprType;
 
-		AST_Expr(AST_Expr::Type type);
+		AST_Expr(int32_t type);
 		virtual ~AST_Expr();
 
 		virtual std::ostream& display(std::ostream& out) const;
 
-		virtual Var evaluate() const = 0;
+		virtual Var evaluate() const;
 
 		virtual bool run();
 	};
 
-	//	Expressions
-	/* * * * * * * * * * * * * * * * */
-
+	// Array
+	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Array : public AST_Expr
 	{
 		using Values = std::vector<AST_Expr*>;
@@ -61,6 +63,7 @@ namespace ml
 	};
 
 	// Bool
+	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Bool : public AST_Expr
 	{
 		bool value;
@@ -73,6 +76,7 @@ namespace ml
 	};
 
 	// Float
+	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Flt : public AST_Expr
 	{
 		float value;
@@ -85,12 +89,13 @@ namespace ml
 	};
 
 	// Function
+	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Func : public AST_Expr
 	{
 		using Params = std::vector<AST_Name*>;
 
 		String name;
-		Params	args;
+		Params args;
 
 		AST_Func(const String& name, const Params& args);
 		~AST_Func();
@@ -101,6 +106,7 @@ namespace ml
 	};
 
 	// Input
+	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Input : public AST_Expr
 	{
 		AST_Input();
@@ -111,19 +117,20 @@ namespace ml
 	};
 
 	// Int
+	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Int : public AST_Expr
 	{
-		size_t value;
+		int32_t value;
 
-		AST_Int(size_t value);
+		AST_Int(int32_t value);
 		~AST_Int();
 
 		std::ostream& display(std::ostream& out) const override;
 		Var evaluate() const override;
 	};
 
-
 	// Name
+	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Name : public AST_Expr
 	{
 		String value;
@@ -136,6 +143,7 @@ namespace ml
 	};
 
 	// Assignment
+	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Assign : public AST_Expr
 	{
 		Operator	op;
@@ -151,6 +159,7 @@ namespace ml
 	};
 
 	// Call
+	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Call : public AST_Expr
 	{
 		using Params = std::vector<AST_Expr*>;
@@ -167,8 +176,8 @@ namespace ml
 		bool		run() override;
 	};
 
-
 	// Operation
+	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_BinOp : public AST_Expr
 	{
 		Operator op;
@@ -183,6 +192,7 @@ namespace ml
 	};
 
 	// String
+	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_String : public AST_Expr
 	{
 		String value;
@@ -195,6 +205,7 @@ namespace ml
 	};
 
 	// Struct
+	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Struct : public AST_Expr
 	{
 		AST_Struct();
@@ -205,6 +216,7 @@ namespace ml
 	};
 
 	// Subscript
+	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Subscr : public AST_Expr
 	{
 		AST_Name* name;
@@ -218,6 +230,7 @@ namespace ml
 	};
 
 	// Command
+	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Command : public AST_Expr
 	{
 		AST_Expr* expr;
@@ -231,6 +244,7 @@ namespace ml
 	};
 
 	// Size Of
+	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_SizeOf : public AST_Expr
 	{
 		AST_Expr * expr;
@@ -243,6 +257,7 @@ namespace ml
 	};
 
 	// Type ID
+	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_TypeID : public AST_Expr
 	{
 		AST_Expr * expr;
@@ -255,13 +270,14 @@ namespace ml
 	};
 
 	// Type Name
+	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_TypeName : public AST_Expr
 	{
 		AST_Expr * expr;
-		
+
 		AST_TypeName(AST_Expr * expr);
 		~AST_TypeName();
-		
+
 		std::ostream& display(std::ostream& out) const override;
 		Var evaluate() const override;
 	};

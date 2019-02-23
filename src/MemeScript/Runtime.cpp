@@ -1,4 +1,5 @@
 #include <MemeScript/Runtime.hpp>
+#include <MemeScript/Interpreter.hpp>
 #include <MemeCore/Debug.hpp>
 
 namespace ml
@@ -153,7 +154,7 @@ namespace ml
 		{
 			m_values->insert({ index, new VarMap() });
 
-			setVar(index, "?", Var().voidValue());
+			setVar(index, ML_RET, Var().voidValue());
 		}
 		return values(index);
 	}

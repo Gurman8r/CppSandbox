@@ -63,9 +63,6 @@
     <ClInclude Include="..\..\include\MemeGraphics\Export.hpp">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Color.hpp">
-      <Filter>Header Files\DS</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Font.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
@@ -76,9 +73,6 @@
       <Filter>Header Files\DS</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Mesh.hpp">
-      <Filter>Header Files\DS</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Quaternion.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Uniform.hpp">
@@ -173,6 +167,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\RectTransform.hpp">
       <Filter>Header Files\Transforms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\Color.hpp">
+      <Filter>Header Files\DS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

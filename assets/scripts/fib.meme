@@ -1,5 +1,7 @@
 # Script to show a Fibonacci sequence
 {
+	include("../../../assets/scripts/core.meme");
+
 	fib = [](num);
 	{
 		printl("Fibonacci: {num}");
@@ -26,5 +28,12 @@
 		};
 	};
 
-	fib(100);
+	if(checkArgType(0, "int"));
+	{
+		fib(ARGS[0]);
+	};
+	else;
+	{
+		fib(100);
+	};
 }

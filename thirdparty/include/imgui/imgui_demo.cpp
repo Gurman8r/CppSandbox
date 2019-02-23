@@ -3238,7 +3238,7 @@ struct ExampleAppConsole
         }
         else if (Stricmp(command_line, "HELP") == 0)
         {
-            AddLog("Commands:");
+            AddLog("m_auto:");
             for (int i = 0; i < Commands.Size; i++)
                 AddLog("- %s", Commands[i]);
         }

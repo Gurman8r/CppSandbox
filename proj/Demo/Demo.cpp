@@ -1,7 +1,7 @@
 #include "Demo.hpp"
-#include <MemeEditor/InterpreterConsole.hpp>
 #include <MemeCore/EventSystem.hpp>
 #include <MemeWindow/WindowEvents.hpp>
+#include <MemeEditor/EditorConsole.hpp>
 #include <imgui/imgui.h>
 #include <imgui/imgui_ml.hpp>
 
@@ -143,34 +143,70 @@ namespace DEMO
 
 			// Load Commands
 			/* * * * * * * * * * * * * * * * * * * * */
-			ML_Interpreter.addCmd({ "/", [](ml::Args & args)
-			{
-				return ml::Var().intValue(ml::Debug::system(args.pop_front().str().c_str()));
-			} });
-
 			ML_Interpreter.addCmd({ "help", [](ml::Args & args)
 			{
-				for (auto n : ML_Interpreter.cmdNames())
+				ml::SStream ss;
+				for (auto pair : ML_Interpreter.commands())
 				{
-					ml::cout << n << ml::endl;
+					ml::cout << pair.first << ml::endl;
 				}
 				return ml::Var().boolValue(true);
 			} });
 
-			ML_Interpreter.addCmd({ "cwd", [](ml::Args & args)
+			ML_Interpreter.addCmd({ "system", [](ml::Args & args)
+			{
+				return ml::Var().intValue(ml::Debug::system(args.pop_front().str().c_str()));
+			} });
+
+			ML_Interpreter.addCmd({ "clear", [](ml::Args & args)
+			{
+				ML_EditorConsole.clear();
+				return ml::Var().voidValue();
+			} });
+
+			ML_Interpreter.addCmd({ "run", [](ml::Args & args)
+			{
+				const ml::String name = args.pop();
+				if (ml::Script * scr = ML_Res.scripts.get(name))
+				{
+					args.pop_front();
+					if (scr->build(args) && scr->run())
+					{
+						return scr->out();
+					}
+				}
+				return ml::Var().errorValue("Script not found: {0}", name);
+			} });
+
+			ML_Interpreter.addCmd({ "getcwd", [](ml::Args & args)
 			{
 				return ml::Var().stringValue(ML_FileSystem.getWorkingDir());
 			} });
 
+			ML_Interpreter.addCmd({ "cwd", [](ml::Args & args)
+			{
+				return ML_Interpreter.execCommand("getcwd").print();
+			} });
+
+			ML_Interpreter.addCmd({ "pause", [](ml::Args & args)
+			{
+				return ml::Var().intValue(ml::Debug::pause(EXIT_SUCCESS));
+			} });
+
 			ML_Interpreter.addCmd({ "cd", [](ml::Args & args)
 			{
-				return ml::Var().boolValue(ML_FileSystem.setWorkingDir(args.pop_front().front()));
+				const ml::String path = args.pop();
+				if (path.empty())
+				{
+					return ml::Var().boolValue(ML_FileSystem.setWorkingDir(SETTINGS.assetPath));
+				}
+				return ml::Var().boolValue(ML_FileSystem.setWorkingDir(path));
 			} });
 
 			ML_Interpreter.addCmd({ "cat", [](ml::Args & args)
 			{
 				ml::String buf;
-				if (ML_FileSystem.getFileContents(args.pop_front().front(), buf))
+				if (ML_FileSystem.getFileContents(args.pop(), buf))
 				{
 					ml::cout << buf << ml::endl;
 
@@ -181,7 +217,7 @@ namespace DEMO
 
 			ML_Interpreter.addCmd({ "read", [](ml::Args & args)
 			{
-				ml::String name = args.pop_front().front();
+				const ml::String name = args.pop();
 				if (ML_FileSystem.fileExists(name))
 				{
 					ml::String buf;
@@ -203,7 +239,7 @@ namespace DEMO
 
 			ML_Interpreter.addCmd({ "exists", [](ml::Args & args)
 			{
-				auto name = args.pop_front().front();
+				const ml::String name = args.pop();
 				if (name == "." || name == "..")
 				{
 					return ml::Var().boolValue(true);
@@ -213,7 +249,7 @@ namespace DEMO
 
 			ML_Interpreter.addCmd({ "exec", [](ml::Args & args)
 			{
-				return ML_Interpreter.execFile(args.pop_front().front());
+				return ML_Interpreter.execFile(args.pop());
 			} });
 
 			ML_Interpreter.addCmd({ "ls", [](ml::Args & args)
@@ -245,6 +281,42 @@ namespace DEMO
 					{
 						return ml::Var().stringValue(ml::Debug::platform());
 					}
+				}
+				return ml::Var().boolValue(true);
+			} });
+
+			ML_Interpreter.addCmd({ "list", [](ml::Args & args)
+			{
+				const ml::String type = args.pop();
+				if (type.empty())
+				{
+					ml::cout 
+						<< ML_Res.fonts << ml::endl
+						<< ML_Res.images << ml::endl
+						<< ML_Res.mats << ml::endl
+						<< ML_Res.meshes << ml::endl
+						<< ML_Res.models << ml::endl
+						<< ML_Res.scripts << ml::endl
+						<< ML_Res.shaders << ml::endl
+						<< ML_Res.skyboxes << ml::endl
+						<< ML_Res.sounds << ml::endl
+						<< ML_Res.sprites << ml::endl
+						<< ML_Res.textures << ml::endl;
+				}
+				else if (type == "fonts"	) { ml::cout << ML_Res.fonts << ml::endl;	}
+				else if (type == "images"	) { ml::cout << ML_Res.images << ml::endl;	}
+				else if (type == "mats"		) { ml::cout << ML_Res.mats << ml::endl;	}
+				else if (type == "meshes"	) { ml::cout << ML_Res.meshes << ml::endl;	}
+				else if (type == "models"	) { ml::cout << ML_Res.models << ml::endl;	}
+				else if (type == "scripts"	) { ml::cout << ML_Res.scripts << ml::endl; }
+				else if (type == "shaders"	) { ml::cout << ML_Res.shaders << ml::endl; }
+				else if (type == "skyboxes" ) { ml::cout << ML_Res.skyboxes << ml::endl;}
+				else if (type == "sounds"	) { ml::cout << ML_Res.sounds << ml::endl;	}
+				else if (type == "sprites"	) { ml::cout << ML_Res.sprites << ml::endl;	}
+				else if (type == "textures" ) { ml::cout << ML_Res.textures << ml::endl;}
+				else
+				{
+					return ml::Var().errorValue("Type not found: {0}", type);
 				}
 				return ml::Var().boolValue(true);
 			} });
@@ -342,16 +414,23 @@ namespace DEMO
 				ml::Script scr;
 				if (scr.loadFromFile(SETTINGS.pathTo(SETTINGS.scrPath + SETTINGS.scrFile)))
 				{
-					if (scr.run())
+					if (scr.build({}))
 					{
-						if (!scr.ret())
+						if (scr.run())
 						{
-							ml::Debug::setError(ml::Debug::logError("Script returned an error"));
+							if (scr.out().isErrorType())
+							{
+								ml::Debug::setError(ml::Debug::logError("Script returned an error"));
+							}
+						}
+						else
+						{
+							ml::Debug::setError(ml::Debug::logError("Failed running script"));
 						}
 					}
 					else
 					{
-						ml::Debug::setError(ml::Debug::logError("Failed running script"));
+						ml::Debug::setError(ml::Debug::logError("Failed building script"));
 					}
 				}
 				else
@@ -1057,8 +1136,8 @@ namespace DEMO
 		// Console
 		if (show_ml_console)
 		{
-			static ml::InterpreterConsole console;
-			console.Draw("Console", &show_ml_console);
+			ML_EditorConsole.setup();
+			ML_EditorConsole.draw("Console", &show_ml_console);
 		}
 
 		// Network

@@ -47,6 +47,7 @@ namespace ml
 		inline const char & operator[](size_t i) const { return at(i); }
 		inline char &		operator[](size_t i)	   { return at(i); }
 
+		inline operator bool		() const { return !m_data.empty(); }
 		inline operator List<char>	() const { return data(); }
 		inline operator String		() const { return to_str(); }
 		inline operator CString		() const { return &at(0); }

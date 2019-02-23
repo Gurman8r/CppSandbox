@@ -60,6 +60,23 @@ namespace ml
 	}
 
 
+	Token Lexer::makeToken(const String & value) const
+	{
+		if (StringUtility::IsInt(value))
+			return Token('i', value);
+
+		if (StringUtility::IsDecimal(value))
+			return Token('f', value);
+
+		if (StringUtility::IsText(value))
+			return Token('s', value);
+
+		if (StringUtility::IsName(value))
+			return Token('n', value);
+
+		return Token('\0');
+	}
+
 	TokenList Lexer::splitTokens() const
 	{
 		TokenList tokens;
@@ -190,12 +207,6 @@ namespace ml
 
 			while (++it != m_buffer.end())
 			{
-				//if (*it == '\\')
-				//{
-				//	continue;
-				//}
-				//else if (*(it - 1) != '\\' && *it == '\"')
-
 				if (*it == '\"')
 				{
 					break;

@@ -31,6 +31,7 @@ namespace ml
 		Lexer &		setBuffer(const String & value);
 		Lexer &		setBuffer(const List<char> & value);
 
+		Token		makeToken(const String & value) const;
 		TokenList	splitTokens() const;
 
 		bool scanName(const_iterator& it, String& text) const;

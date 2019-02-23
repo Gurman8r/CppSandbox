@@ -3,7 +3,6 @@
 #include <MemeScript/Interpreter.hpp>
 #include <MemeCore/Debug.hpp>
 
-
 namespace ml
 {
 	AST_Block::AST_Block()
@@ -47,7 +46,7 @@ namespace ml
 	}
 
 
-	bool	AST_Block::delv(const String & name)
+	bool	AST_Block::delVar(const String & name)
 	{
 		if (ML_Interpreter.runtime().delVar(getID(), name))
 		{
@@ -55,7 +54,7 @@ namespace ml
 		}
 		else if (AST_Block* b = block())
 		{
-			return b->delv(name);
+			return b->delVar(name);
 		}
 		else
 		{
@@ -63,7 +62,7 @@ namespace ml
 		}
 	}
 
-	Var *	AST_Block::getv(const String & name) const
+	Var *	AST_Block::getVar(const String & name) const
 	{
 		if (Var * v = ML_Interpreter.runtime().getVar(getID(), name))
 		{
@@ -71,7 +70,7 @@ namespace ml
 		}
 		else if (AST_Block* b = block())
 		{
-			return b->getv(name);
+			return b->getVar(name);
 		}
 		else
 		{
@@ -79,7 +78,7 @@ namespace ml
 		}
 	}
 
-	Var *	AST_Block::newv(const String & name, const Var & value)
+	Var *	AST_Block::newVar(const String & name, const Var & value)
 	{
 		if (Var * v = ML_Interpreter.runtime().newVar(getID(), name, value))
 		{
@@ -87,7 +86,7 @@ namespace ml
 		}
 		else if (AST_Block* b = block())
 		{
-			return b->newv(name, value);
+			return b->newVar(name, value);
 		}
 		else
 		{
@@ -95,9 +94,9 @@ namespace ml
 		}
 	}
 
-	Var *	AST_Block::setv(const String & name, const Var & value)
+	Var *	AST_Block::setVar(const String & name, const Var & value)
 	{
-		if (Var * v = getv(name))
+		if (Var * v = getVar(name))
 		{
 			(*v) = value;
 			return v;
@@ -108,7 +107,7 @@ namespace ml
 		}
 		else if (AST_Block* b = block())
 		{
-			return b->setv(name, value);
+			return b->setVar(name, value);
 		}
 		else
 		{
@@ -119,7 +118,7 @@ namespace ml
 
 	Var *	AST_Block::getRet() const
 	{
-		if (Var * v = ML_Interpreter.runtime().getVar(getID(), "?"))
+		if (Var * v = ML_Interpreter.runtime().getVar(getID(), ML_RET))
 		{
 			return v;
 		}
@@ -128,7 +127,7 @@ namespace ml
 
 	Var *	AST_Block::setRet(const Var & value) const
 	{
-		return ML_Interpreter.runtime().setVar(getID(), "?", value);
+		return ML_Interpreter.runtime().setVar(getID(), ML_RET, value);
 	}
 
 
@@ -136,7 +135,7 @@ namespace ml
 	{
 		if (!getFunc(name))
 		{
-			if (Var * v = setv(name, Var().funcValue({ { TokenType::TOK_NAME, name } })))
+			if (Var * v = setVar(name, Var().funcValue({ { TokenType::TOK_NAME, name } })))
 			{
 				m_funcs.insert({ name, func });
 
@@ -202,7 +201,6 @@ namespace ml
 		{
 			return runNext();
 		}
-
 		return runFirst();
 	}
 		 

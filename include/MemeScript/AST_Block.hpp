@@ -8,6 +8,8 @@ namespace ml
 {
 	struct AST_Func;
 
+	// Block
+	/* * * * * * * * * * * * * * * * * * * * */
 	class ML_SCRIPT_API AST_Block
 		: public AST_Node
 	{
@@ -21,10 +23,10 @@ namespace ml
 
 		virtual std::ostream& display(std::ostream& out) const;
 
-		bool	delv(const String & name);
-		Var *	getv(const String & name) const;
-		Var *	newv(const String & name, const Var & value);
-		Var *	setv(const String & name, const Var & value);
+		bool	delVar(const String & name);
+		Var *	getVar(const String & name) const;
+		Var *	newVar(const String & name, const Var & value);
+		Var *	setVar(const String & name, const Var & value);
 
 		Var *	getRet() const;
 		Var *	setRet(const Var & value) const;

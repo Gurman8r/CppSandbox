@@ -3,20 +3,48 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	Command * Interpreter::addCmd(const Command & value)
+	{
+		if (!value.name().empty())
+		{
+			if (m_commands.find(value.name()) == m_commands.end())
+			{
+				m_commands.insert({ value.name(), value });
+
+				return &m_commands[value.name()];
+			}
+		}
+		return NULL;
+	}
+
+	Command * Interpreter::getCmd(const String & value)
+	{
+		CommandMap::iterator it;
+		if ((it = m_commands.find(value)) != m_commands.begin())
+		{
+			return &it->second;
+		}
+		return NULL;
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	Var	Interpreter::execCommand(const String & value)
 	{
 		if (!value.empty())
 		{
 			Args args(value, " ");
 
-			CmdTable::iterator it = m_cmdTable.find(args.front());
+			CommandMap::iterator it = m_commands.find(args.front());
 
-			if (it != m_cmdTable.end())
+			if ((it = m_commands.find(args.front())) != m_commands.end())
 			{
 				return it->second(args);
 			}
 
-			return execSource(value);
+			return execString(value);
 		}
 		return Var().voidValue();
 	}
@@ -28,34 +56,34 @@ namespace ml
 			List<char> buffer;
 			if (ML_FileSystem.getFileContents(value, buffer))
 			{
-				return execToks(lexer().setBuffer(buffer).splitTokens());
+				return execTokens(lexer().setBuffer(buffer).splitTokens());
 			}
 		}
 		return Var().errorValue("File not found {0}", value);
 	}
 
-	Var	Interpreter::execSource(const String & value)
+	Var	Interpreter::execString(const String & value)
 	{
 		if (!value.empty())
 		{
-			return execToks(lexer().setBuffer(value).splitTokens());
+			return execTokens(lexer().setBuffer(value).splitTokens());
 		}
 		return Var().errorValue("Buffer cannot be empty");
 	}
 
-	Var	Interpreter::execToks(const TokenList & value)
+	Var	Interpreter::execTokens(const TokenList & value)
 	{
 		if (!value.empty())
 		{
 			if (AST_Block* root = parser().genAST(value))
 			{
-				return execAST(root);
+				return execBlock(root);
 			}
 		}
 		return Var().errorValue("TokenList cannot be empty");
 	}
 
-	Var	Interpreter::execAST(AST_Block * value)
+	Var	Interpreter::execBlock(AST_Block * value)
 	{
 		if (value)
 		{
@@ -65,7 +93,7 @@ namespace ml
 
 				delete value;
 
-				if (runtime().setVar(0, "?", v))
+				if (runtime().setVar(0, ML_RET, v))
 				{
 					return v;
 				}
@@ -76,7 +104,7 @@ namespace ml
 			}
 			else
 			{
-				return Var().errorValue("Failed alive value");
+				return Var().errorValue("Failed running value");
 			}
 		}
 		else
@@ -85,30 +113,5 @@ namespace ml
 		}
 	}
 
-
-	Command * Interpreter::addCmd(const Command & value)
-	{
-		if (!value.name().empty())
-		{
-			if (m_cmdTable.find(value.name()) == m_cmdTable.end())
-			{
-				m_cmdTable.insert({ value.name(), value });
-
-				m_cmdNames.push_back(value.name());
-
-				return &m_cmdTable[value.name()];
-			}
-		}
-		return NULL;
-	}
-
-	Command * Interpreter::getCmd(const String & value)
-	{
-		CmdTable::iterator it;
-		if ((it = m_cmdTable.find(value)) != m_cmdTable.begin())
-		{
-			return &it->second;
-		}
-		return NULL;
-	}
+	/* * * * * * * * * * * * * * * * * * * * */
 }

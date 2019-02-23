@@ -38,7 +38,6 @@
     <ClInclude Include="..\..\include\MemeGraphics\Mesh.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Model.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\OpenGL.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\Quaternion.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\RectTransform.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\RenderBatch.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\RenderBuffer.hpp" />

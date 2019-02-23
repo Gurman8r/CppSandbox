@@ -46,6 +46,20 @@ namespace ml
 		friend class ResourceManager;
 
 	public:
+		inline void serialize(std::ostream & out) const override
+		{
+			for (auto pair : m_files)
+			{
+				out << std::left << std::setw(12)
+					<< pair.first << " \'" << pair.second << "\'"
+					<< ml::endl;
+			}
+		}
+		inline void deserialize(std::istream & in) override
+		{
+		}
+
+	public:
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		inline size_t clean()

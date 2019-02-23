@@ -11,8 +11,7 @@ namespace ml
 		, public IComparable<Args>
 	{
 	public:
-		using value_type			= String;
-		using vector_type			= List<value_type>;
+		using vector_type			= List<String>;
 		using iterator				= vector_type::iterator;
 		using const_iterator		= vector_type::const_iterator;
 		using reverse_iterator		= vector_type::reverse_iterator;
@@ -22,30 +21,32 @@ namespace ml
 
 	public:
 		Args();
-		Args(const value_type& value);
+		Args(const String& value);
 		Args(const vector_type& values);
-		Args(const std::initializer_list<value_type>& values);
-		Args(const value_type& value, const value_type& delim);
+		Args(const std::initializer_list<String>& values);
+		Args(const String& value, const String& delim);
 		Args(const self_type& copy);
 		~Args();
 
-		const value_type	at(size_t index) const;
-		const value_type	back() const;
-		const value_type	front() const;
-		const value_type	str() const;
-		const value_type	substr(size_t index, size_t count) const;
+		String pop();
+
+		const String	at(size_t index) const;
+		const String	back() const;
+		const String	front() const;
+		const String	str() const;
+		const String	substr(size_t index, size_t count) const;
 
 		const vector_type	subvec(size_t index, size_t count) const;
 		const vector_type&	values() const;
 
 		SStream	sstream() const;
 
-		const size_t	count(const value_type& value) const;
-		const size_t	count(const_iterator first, const_iterator last, const value_type& value) const;
-		const size_t	indexOf(const value_type& value) const;
+		const size_t	count(const String& value) const;
+		const size_t	count(const_iterator first, const_iterator last, const String& value) const;
+		const size_t	indexOf(const String& value) const;
 		const size_t	size() const;
 
-		const bool		contains(const value_type& value) const;
+		const bool		contains(const String& value) const;
 		const bool		empty() const;
 		const bool		inRange(size_t index) const;
 		const bool		inRange(const_iterator it) const;
@@ -68,31 +69,31 @@ namespace ml
 		self_type&	erase(const_iterator first, const_iterator last);
 		self_type&	insert(size_t index, char value);
 		self_type&	insert(size_t index, CString value);
-		self_type&	insert(size_t index, const value_type& value);
+		self_type&	insert(size_t index, const String& value);
 		self_type&	mergeNext(size_t index, size_t count);
 		self_type&	pop_back();
 		self_type&	pop_front();
 		self_type&	push_back(char value);
 		self_type&	push_back(CString value);
-		self_type&	push_back(const value_type& value);
+		self_type&	push_back(const String& value);
 		self_type&	push_back(const vector_type& value);
 		self_type&	push_back(const self_type& value);
 		self_type&	push_front(char value);
 		self_type&	push_front(CString value);
-		self_type&	push_front(const value_type& value);
+		self_type&	push_front(const String& value);
 		self_type&	push_front(const vector_type& value);
 		self_type&	push_front(const self_type& value);
-		self_type&	remove(const value_type& value);
-		self_type&	removeAll(const value_type& value);
+		self_type&	remove(const String& value);
+		self_type&	removeAll(const String& value);
 		self_type&	resize(size_t size);
 		self_type&	reverse();
 
 	public:
-		Args::const_iterator	find(const value_type& value, size_t begin = 0) const;
-		Args::const_iterator	find_first(const value_type& value) const;
-		Args::const_iterator	find_first_not_of(const value_type& value, size_t begin = 0) const;
-		Args::const_iterator	find_last(const value_type& value) const;
-		Args::const_iterator	find_last_not_of(const value_type& value) const;
+		Args::const_iterator	find(const String& value, size_t begin = 0) const;
+		Args::const_iterator	find_first(const String& value) const;
+		Args::const_iterator	find_first_not_of(const String& value, size_t begin = 0) const;
+		Args::const_iterator	find_last(const String& value) const;
+		Args::const_iterator	find_last_not_of(const String& value) const;
 
 	public:
 		Args::iterator					begin();
@@ -111,13 +112,13 @@ namespace ml
 		{
 			out << m_values;
 		}
-		inline value_type	operator[](size_t index) const
+		inline String	operator[](size_t index) const
 		{
 			if (inRange(index))
 			{
 				return m_values.at(index);
 			}
-			return value_type();
+			return String();
 		};
 		inline Args &		operator=(const Args& copy)
 		{

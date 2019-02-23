@@ -155,8 +155,7 @@ namespace ml
 
 		if (stk.empty())
 		{
-			Debug::logError("Missing left parenthesis (2)\n");
-			return false;
+			return Debug::logError("Missing left parenthesis (2)\n");
 		}
 
 		stk.erase(stk.begin());
@@ -185,13 +184,11 @@ namespace ml
 		}
 		else if (numOperands <= 1)
 		{
-			Debug::logError("Not enough operands");
-			return false;
+			return Debug::logError("Not enough operands");
 		}
 		else if (numOperators >= numOperands)
 		{
-			Debug::logError("Too many operators");
-			return false;
+			return Debug::logError("Too many operators");
 		}
 
 		return true;
@@ -205,7 +202,7 @@ namespace ml
 
 	// Upper Level
 
-	AST_Block*	Parser::genAST(const TokenList& tokens) const
+	AST_Block*	Parser::genAST(const TokenList & tokens) const
 	{
 		AST_Block* root = NULL;
 
@@ -407,18 +404,22 @@ namespace ml
 
 	AST_Expr*	Parser::genComplex(const TokenList & toks) const
 	{
+		// Nothing
 		if (toks.empty())
 		{
 			return NULL;
 		}
+		// Single Expression
 		else if (toks.size() == 1)
 		{
 			return genSimple(toks.front());
 		}
+		// Wrapped Expression
 		else if (toks.isWrap('(', ')'))
 		{
 			return genComplex(toks.unwrapped());
 		}
+		// Simple BinOp
 		else if (toks.size() == 4 && toks.matchStr(toks.begin(), "EOOE"))
 		{
 			Operator op;
@@ -428,44 +429,24 @@ namespace ml
 			}
 		}
 		// Command
-		else if (toks.matchData(toks.begin(), { "command" }))
+		else if (AST_Command * cmd = genCommand(toks))
 		{
-			AST_Call::Params params = genCallParams(toks.after(1));
-			if (!params.empty())
-			{
-				return new AST_Command(params.front());
-			}
-			return new AST_Command(new AST_String(""));
+			return cmd;
 		}
 		// Size Of
-		else if (toks.matchData(toks.begin(), { "sizeof" }))
+		else if (AST_SizeOf * size = genSizeof(toks))
 		{
-			AST_Call::Params params = genCallParams(toks.after(1));
-			if (!params.empty())
-			{
-				return new AST_SizeOf(params.front());
-			}
-			return new AST_SizeOf(new AST_Int(0));
+			return size;
 		}
 		// Type ID
-		else if (toks.matchData(toks.begin(), { "typeid" }))
+		else if (AST_TypeID * type = genTypeID(toks))
 		{
-			AST_Call::Params params = genCallParams(toks.after(1));
-			if (!params.empty())
-			{
-				return new AST_TypeID(params.front());
-			}
-			return new AST_TypeID(new AST_Int(0));
+			return type;
 		}
 		// Type Name
-		else if (toks.matchData(toks.begin(), { "typename" }))
+		else if (AST_TypeName * name = genTypeName(toks))
 		{
-			AST_Call::Params params = genCallParams(toks.after(1));
-			if (!params.empty())
-			{
-				return new AST_TypeName(params.front());
-			}
-			return new AST_TypeName(new AST_Int(0));
+			return name;
 		}
 		// Function
 		else if (AST_Func* func = genFunc(toks))
@@ -771,6 +752,65 @@ namespace ml
 		return NULL;
 	}
 
+
+	// Builtin Calls
+
+	AST_Command * Parser::genCommand(const TokenList & toks) const
+	{
+		if (toks.matchData(toks.begin(), { "command" }))
+		{
+			AST_Call::Params params = genCallParams(toks.after(1));
+			if (!params.empty())
+			{
+				return new AST_Command(params.front());
+			}
+			return new AST_Command(new AST_String(""));
+		}
+		return NULL;
+	}
+
+	AST_SizeOf * Parser::genSizeof(const TokenList & toks) const
+	{
+		if (toks.matchData(toks.begin(), { "sizeof" }))
+		{
+			AST_Call::Params params = genCallParams(toks.after(1));
+			if (!params.empty())
+			{
+				return new AST_SizeOf(params.front());
+			}
+			return new AST_SizeOf(new AST_Int(0));
+		}
+		return NULL;
+	}
+
+	AST_TypeID * Parser::genTypeID(const TokenList & toks) const
+	{
+		if (toks.matchData(toks.begin(), { "typeid" }))
+		{
+			AST_Call::Params params = genCallParams(toks.after(1));
+			if (!params.empty())
+			{
+				return new AST_TypeID(params.front());
+			}
+			return new AST_TypeID(new AST_Int(0));
+		}
+		return NULL;
+	}
+
+	AST_TypeName * Parser::genTypeName(const TokenList & toks) const
+	{
+		if (toks.matchData(toks.begin(), { "typename" }))
+		{
+			AST_Call::Params params = genCallParams(toks.after(1));
+			if (!params.empty())
+			{
+				return new AST_TypeName(params.front());
+			}
+			return new AST_TypeName(new AST_Int(0));
+		}
+		return NULL;
+	}
+	
 
 	// Expression Containers
 

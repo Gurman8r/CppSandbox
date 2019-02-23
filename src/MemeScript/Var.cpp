@@ -58,7 +58,7 @@ namespace ml
 		"bool",
 		"float",
 		"int",
-		"data",
+		"pointer",
 		"string",
 		"array"
 		"func",
@@ -67,21 +67,21 @@ namespace ml
 	Var::Var()
 		: m_scope(0)
 		, m_typeID(Var::Void)
-		, m_tokens(TokenList())
+		, m_data(TokenList())
 	{
 	}
 
 	Var::Var(const int32_t & type, const TokenList & data)
 		: m_scope(0)
 		, m_typeID(type)
-		, m_tokens(data)
+		, m_data(data)
 	{
 	}
 
 	Var::Var(const Var & copy)
 		: m_scope(copy.m_scope)
 		, m_typeID(copy.m_typeID)
-		, m_tokens(copy.m_tokens)
+		, m_data(copy.m_data)
 	{
 	}
 
@@ -146,7 +146,7 @@ namespace ml
 		 
 	bool Var::isEmptyValue() const
 	{
-		return m_tokens.empty();
+		return m_data.empty();
 	}
 		 
 	bool Var::isErrorType() const
@@ -156,7 +156,7 @@ namespace ml
 		 
 	bool Var::isFloatType() const
 	{
-		return tokensValue().front() == 'f' && StringUtility::IsDecimal((textValue()));
+		return tokensValue().front('f') && StringUtility::IsDecimal((textValue()));
 	}
 		 
 	bool Var::isFuncType() const
@@ -166,12 +166,12 @@ namespace ml
 		 
 	bool Var::isIntType() const
 	{
-		return tokensValue().front() == 'i' && StringUtility::IsInt((textValue()));
+		return tokensValue().front('i') && StringUtility::IsInt((textValue()));
 	}
 		 
 	bool Var::isNameType() const
 	{
-		return m_tokens.front() == 'n' && StringUtility::IsName((textValue()));
+		return m_data.front('n') && StringUtility::IsName((textValue()));
 	}
 		 
 	bool Var::isNullValue() const
@@ -227,6 +227,11 @@ namespace ml
 		return (!isEmptyValue() && !isErrorType() && !isVoidType());
 	}
 
+	TokenList	Var::dataValue() const
+	{
+		return m_data;
+	}
+
 	float		Var::floatValue() const
 	{
 		return isValid() ? StringUtility::ToFloat((textValue())) : 0;
@@ -238,9 +243,9 @@ namespace ml
 		{
 			if (isArrayType())
 			{
-				if (i < m_tokens.size())
+				if (i < dataValue().size())
 				{
-					const Token& t = m_tokens.at(i);
+					const Token& t = dataValue().at(i);
 
 					return Var::makeSingle(t);
 				}
@@ -304,14 +309,14 @@ namespace ml
 
 	String		Var::textValue() const
 	{
-		return m_tokens.str();
+		return dataValue().str();
 	}
 
 	TokenList	Var::tokensValue() const
 	{
 		if (compareType(Var::Func))
 		{
-			return m_tokens;
+			return dataValue();
 		}
 		else if (isPointerType())
 		{
@@ -320,20 +325,27 @@ namespace ml
 				return var->tokensValue();
 			}
 		}
-		return m_tokens;
+		return dataValue();
 	}
 
 	
 	Var & Var::arrayValue(const TokenList & value)
 	{
-		return setType(Var::Array).tokensValue(value);
+		return setType(Var::Array).dataValue(value);
 	}
 		  
 	Var & Var::boolValue(const bool & value)
 	{
-		return setType(Var::Bool).tokensValue({ { TokenType::TOK_NAME, (value ? "true" : "false") } });
+		return setType(Var::Bool).dataValue({ { TokenType::TOK_NAME, (value ? "true" : "false") } });
 	}
-		  
+
+	Var & Var::dataValue(const TokenList & value)
+	{
+		m_changed = !compareTokens(value);
+		m_data = value;
+		return (*this);
+	}
+
 	Var & Var::elemValue(size_t index, const Token & value)
 	{
 		if (isArrayType() || isStringType())
@@ -341,7 +353,7 @@ namespace ml
 			if (tokensValue().inRange(index))
 			{
 				m_changed = true;
-				m_tokens[index] = value;
+				m_data[index] = value;
 			}
 		}
 		return (*this);
@@ -349,53 +361,52 @@ namespace ml
 		  
 	Var & Var::errorValue(const String & value)
 	{
-		return voidValue().tokensValue({ { TokenType::TOK_ERR, value } });
+		return voidValue().dataValue({ { TokenType::TOK_ERR, value } });
 	}
 		  
 	Var & Var::floatValue(const float & value)
 	{
-		return setType(Var::Float).tokensValue({ { TokenType::TOK_FLT, std::to_string(value) } });
+		return setType(Var::Float).dataValue({ { TokenType::TOK_FLT, std::to_string(value) } });
 	}
 		  
 	Var & Var::funcValue(const TokenList & value)
 	{
-		return setType(Var::Func).tokensValue(value);
+		return setType(Var::Func).dataValue(value);
 	}
 		  
 	Var & Var::intValue(const size_t & value)
 	{
-		return setType(Var::Integer).tokensValue({ { TokenType::TOK_INT, std::to_string(value) } });
+		return setType(Var::Integer).dataValue({ { TokenType::TOK_INT, std::to_string(value) } });
 	}
  		  
 	Var & Var::nullValue()
 	{
-		return voidValue().tokensValue({});
+		return voidValue().dataValue({});
 	}
 		  
 	Var & Var::pointerValue(const Ptr & value)
 	{
-		return setType(Var::Pointer).tokensValue({ { TokenType::TOK_NAME, value.name } });
+		return setType(Var::Pointer).dataValue({ { TokenType::TOK_NAME, value.name } });
 	}
 		  
 	Var & Var::stringValue(const String & value)
 	{
-		return setType(Var::Str).tokensValue({ { TokenType::TOK_STR, value } });
+		return setType(Var::Str).dataValue({ { TokenType::TOK_STR, value } });
 	}
-		  
-	Var & Var::tokensValue(const TokenList & value)
-	{
-		m_changed = !compareTokens(value);
-		m_tokens = value;
-		return (*this);
-	}
-		  
+	  
 	Var & Var::voidValue()
 	{
-		return setType(Var::Void).tokensValue({ TokenType::TOK_VOID });
+		return setType(Var::Void).dataValue({ TokenType::TOK_VOID });
 	}
 
 
 	// Serialization
+
+	Var & Var::print()
+	{
+		cout << (*this);
+		return (*this);
+	}
 
 	void Var::serialize(std::ostream & out) const
 	{
@@ -1037,7 +1048,7 @@ namespace ml
 		{
 			return Set(*v);
 		}
-		return setType(other.getTypeID()).tokensValue(other.tokensValue());
+		return setType(other.getTypeID()).dataValue(other.tokensValue());
 	}
 
 

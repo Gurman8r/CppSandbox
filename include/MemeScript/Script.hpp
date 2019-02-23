@@ -17,15 +17,21 @@ namespace ml
 		bool cleanup() override;
 		bool loadFromFile(const String & filename) override;
 
-		bool run();
+		bool	build(const Args & args);
+		bool	run();
 
-		const Var & ret() const { return m_ret; }
+	public:
+		inline const String		& path() const { return m_path; }
+		inline const File		& file() const { return m_file; }
+		inline const TokenList	& toks() const { return m_toks; }
+		inline const Var		& out()  const { return m_out;  }
 
 	private:
+		String		m_path;
 		File		m_file;
-		TokenList	m_tokens;
-		AST_Block *	m_ast;
-		Var			m_ret;
+		TokenList	m_toks;
+		AST_Block *	m_tree;
+		Var			m_out;
 	};
 }
 

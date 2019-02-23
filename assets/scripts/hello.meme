@@ -15,7 +15,8 @@
 		printl("*   https://github.com/Gurman8r/CppSandbox  *");
 		printl("*                                           *");
 		printl("* * * * * * * * * * * * * * * * * * * * * * *");
-	};
 
-	hello();
+		return true;
+	};
+	return hello();
 }

@@ -4,8 +4,10 @@
 
 namespace ml
 {
-	AST_Expr::AST_Expr(AST_Expr::Type type)
-		: AST_Stmt(AST_Stmt::Type::ST_Expr)
+	// Expression
+	/* * * * * * * * * * * * * * * * * * * * */
+	AST_Expr::AST_Expr(int32_t type)
+		: AST_Stmt(ST_Expr)
 		, exprType(type)
 	{
 	}
@@ -19,22 +21,24 @@ namespace ml
 		return AST_Stmt::display(out);
 	}
 
-	bool AST_Expr::run()
+	Var AST_Expr::evaluate() const
 	{
-		Var v = evaluate();
-		if (v.isValid() && !v.isPointerType())
-		{
-			//out() << v << endln;
-			return true;
-		}
-		return Debug::logError("AST_Expr : Invalid Syntax: \'{0}\'", v.textValue());
+		return Var().voidValue();
 	}
 
+	bool AST_Expr::run()
+	{
+		const Var v = evaluate();
+		if (v.isErrorType())
+		{
+			return Debug::logError("AST_Expr : Invalid Syntax: \'{0}\'", v.textValue());
+		}
+		return true;
+	}
 
-	//	Expressions
-	/* * * * * * * * * * * * * * * * * * * * */
-
+	
 	// Array
+	/* * * * * * * * * * * * * * * * * * * * */
 	AST_Array::AST_Array(const Values & values)
 		: AST_Expr(EX_Array)
 		, values(values)
@@ -69,8 +73,9 @@ namespace ml
 
 
 	// Assignment
+	/* * * * * * * * * * * * * * * * * * * * */
 	AST_Assign::AST_Assign(Operator op, AST_Name * name, AST_Expr * expr)
-		: AST_Expr(AST_Expr::Type::EX_Assign)
+		: AST_Expr(EX_Assign)
 		, op(op)
 		, name(name)
 		, expr(expr)
@@ -92,12 +97,12 @@ namespace ml
 	{
 		if (op == OperatorType::OP_SET)
 		{
-			if (Var * v = block()->setv(name->value, expr->evaluate()))
+			if (Var * v = block()->setVar(name->value, expr->evaluate()))
 			{
 				return ( * v);
 			}
 		}
-		else if (Var * v = block()->getv(name->value))
+		else if (Var * v = block()->getVar(name->value))
 		{
 			switch (op.type)
 			{
@@ -131,8 +136,9 @@ namespace ml
 
 
 	// Bool
+	/* * * * * * * * * * * * * * * * * * * * */
 	AST_Bool::AST_Bool(bool value)
-		: AST_Expr(AST_Expr::Type::EX_Bool)
+		: AST_Expr(EX_Bool)
 		, value(value)
 	{
 	}
@@ -154,8 +160,9 @@ namespace ml
 
 
 	// Call
+	/* * * * * * * * * * * * * * * * * * * * */
 	AST_Call::AST_Call(AST_Name * name, const Params& args)
-		: AST_Expr(AST_Expr::Type::EX_Call)
+		: AST_Expr(EX_Call)
 		, name(name)
 		, args(args)
 	{
@@ -188,7 +195,7 @@ namespace ml
 	{
 		if (AST_Block * b = block())
 		{
-			if (Var * v = b->getv(name->value))
+			if (Var * v = b->getVar(name->value))
 			{
 				if (v->isFuncType())
 				{
@@ -209,7 +216,7 @@ namespace ml
 				{
 					for (size_t i = 0; i < f->args.size(); i++)
 					{
-						if (!b->setv(f->args[i]->value, args[i]->evaluate()))
+						if (!b->setVar(f->args[i]->value, args[i]->evaluate()))
 						{
 							return Var().errorValue("AST_Call : {0} Set Arg Failed",
 								f->args[i]->value);
@@ -220,7 +227,7 @@ namespace ml
 					{
 						for (size_t i = 0; i < f->args.size(); i++)
 						{
-							if (!b->delv(f->args[i]->value))
+							if (!b->delVar(f->args[i]->value))
 							{
 								return Var().errorValue("AST_Call : {0} Del Arg Failed",
 									f->args[i]->value);
@@ -264,8 +271,9 @@ namespace ml
 
 
 	// Float
+	/* * * * * * * * * * * * * * * * * * * * */
 	AST_Flt::AST_Flt(float value)
-		: AST_Expr(AST_Expr::Type::EX_Float)
+		: AST_Expr(EX_Float)
 		, value(value)
 	{
 	}
@@ -287,8 +295,9 @@ namespace ml
 
 
 	// Function
+	/* * * * * * * * * * * * * * * * * * * * */
 	AST_Func::AST_Func(const String& name, const Params& args)
-		: AST_Expr(AST_Expr::Type::EX_Func)
+		: AST_Expr(EX_Func)
 		, name(name)
 		, args(args)
 	{
@@ -328,8 +337,9 @@ namespace ml
 
 
 	// Input
+	/* * * * * * * * * * * * * * * * * * * * */
 	AST_Input::AST_Input()
-		: AST_Expr(AST_Expr::Type::EX_Input)
+		: AST_Expr(EX_Input)
 	{
 	}
 
@@ -358,8 +368,9 @@ namespace ml
 
 
 	// Int
-	AST_Int::AST_Int(size_t value)
-		: AST_Expr(AST_Expr::Type::EX_Int)
+	/* * * * * * * * * * * * * * * * * * * * */
+	AST_Int::AST_Int(int32_t value)
+		: AST_Expr(EX_Int)
 		, value(value)
 	{
 	}
@@ -381,8 +392,9 @@ namespace ml
 
 
 	// Name
+	/* * * * * * * * * * * * * * * * * * * * */
 	AST_Name::AST_Name(const String & value)
-		: AST_Expr(AST_Expr::Type::EX_Name)
+		: AST_Expr(EX_Name)
 		, value(value)
 	{
 	}
@@ -395,7 +407,7 @@ namespace ml
 	{
 		if (AST_Block * b = block())
 		{
-			if (Var * v = block()->getv(value))
+			if (Var * v = block()->getVar(value))
 			{
 				out << ( * v);
 			}
@@ -415,13 +427,13 @@ namespace ml
 	{
 		if (AST_Block * b = block())
 		{
-			if (Var * v = block()->getv(value))
+			if (Var * v = block()->getVar(value))
 			{
 				return ( * v);
 			}
 			else
 			{
-				return * block()->setv(value, Var().pointerValue({ block()->getID(), value }));
+				return * block()->setVar(value, Var().pointerValue({ block()->getID(), value }));
 			}
 		}
 
@@ -430,8 +442,9 @@ namespace ml
 
 
 	// BinOp
+	/* * * * * * * * * * * * * * * * * * * * */
 	AST_BinOp::AST_BinOp(const Operator & op, AST_Expr * lhs, AST_Expr * rhs)
-		: AST_Expr(AST_Expr::Type::EX_BinOp)
+		: AST_Expr(EX_BinOp)
 		, op(op)
 		, lhs(lhs)
 		, rhs(rhs)
@@ -491,8 +504,9 @@ namespace ml
 
 
 	// String 
+	/* * * * * * * * * * * * * * * * * * * * */
 	AST_String::AST_String(const String & value)
-		: AST_Expr(AST_Expr::Type::EX_String)
+		: AST_Expr(EX_String)
 		, value(value)
 	{
 	}
@@ -513,8 +527,9 @@ namespace ml
 
 
 	// Struct
+	/* * * * * * * * * * * * * * * * * * * * */
 	AST_Struct::AST_Struct()
-		: AST_Expr(AST_Expr::Type::EX_Struct)
+		: AST_Expr(EX_Struct)
 	{
 	}
 
@@ -534,8 +549,9 @@ namespace ml
 
 
 	// Subscript
+	/* * * * * * * * * * * * * * * * * * * * */
 	AST_Subscr::AST_Subscr(AST_Name * name, AST_Expr * index)
-		: AST_Expr(AST_Expr::Type::EX_Subscr)
+		: AST_Expr(EX_Subscr)
 		, name(name)
 		, index(index)
 	{
@@ -557,7 +573,7 @@ namespace ml
 	{
 		if (AST_Block * b = block())
 		{
-			if (Var * a = b->getv(name->value))
+			if (Var * a = b->getVar(name->value))
 			{
 				Var v = index->evaluate();
 				if (v.isIntType())
@@ -576,8 +592,9 @@ namespace ml
 
 
 	// Command
+	/* * * * * * * * * * * * * * * * * * * * */
 	AST_Command::AST_Command(AST_Expr * expr)
-		: AST_Expr(AST_Expr::Type::EX_Command)
+		: AST_Expr(EX_Command)
 		, expr(expr)
 	{
 		addChild(expr);
@@ -608,6 +625,7 @@ namespace ml
 
 
 	// Size Of
+	/* * * * * * * * * * * * * * * * * * * * */
 	AST_SizeOf::AST_SizeOf(AST_Expr * expr)
 		: AST_Expr(EX_SizeOf)
 		, expr(expr)
@@ -631,6 +649,7 @@ namespace ml
 
 
 	// Type ID
+	/* * * * * * * * * * * * * * * * * * * * */
 	AST_TypeID::AST_TypeID(AST_Expr * expr)
 		: AST_Expr(EX_TypeID)
 		, expr(expr)
@@ -654,6 +673,7 @@ namespace ml
 
 
 	// Type Name
+	/* * * * * * * * * * * * * * * * * * * * */
 	AST_TypeName::AST_TypeName(AST_Expr * expr)
 		: AST_Expr(EX_TypeName)
 		, expr(expr)

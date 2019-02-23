@@ -821,7 +821,7 @@ namespace ml
 			{
 				CString log = getProgramInfoLog(out);
 				deleteShader(out);
-				return Debug::logError("Failed to compile {0} source: {1}", name, log);
+				return Debug::logError("Failed compiling {0} source: {1}", name, log);
 			}
 			return ML_SUCCESS;
 		}

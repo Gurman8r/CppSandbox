@@ -17,6 +17,7 @@ namespace ml
 
 			//- Basic - - -//
 			MIN_BASIC,
+			
 			Void = MIN_BASIC,
 			Bool,
 			Float,
@@ -110,6 +111,7 @@ namespace ml
 
 	public: // Data Functions
 		bool		boolValue() const;
+		TokenList	dataValue() const;
 		float		floatValue() const;
 		Var			elemValue(size_t i) const;
 		String		errorValue() const;
@@ -122,6 +124,7 @@ namespace ml
 
 		Var & arrayValue(const TokenList & value);
 		Var & boolValue(const bool & value);
+		Var & dataValue(const TokenList & value);
 		Var & elemValue(size_t index, const Token & value);
 		Var & errorValue(const String & value);
 		Var & floatValue(const float & value);
@@ -130,7 +133,6 @@ namespace ml
 		Var & nullValue();
 		Var & pointerValue(const Ptr & value);
 		Var & stringValue(const String & value);
-		Var & tokensValue(const TokenList & value);
 		Var & voidValue();
 		
 		template <class T, typename ... A>
@@ -141,6 +143,8 @@ namespace ml
 
 
 	public: // Serialization
+		Var & print();
+
 		void serialize(std::ostream & out) const override;
 
 		static std::ostream& PrintList(std::ostream & out, const Var & value);
@@ -198,7 +202,7 @@ namespace ml
 		Var & operator=(char value);
 
 	private:
-		TokenList	m_tokens;
+		TokenList	m_data;
 		int32_t		m_scope;
 		int32_t		m_typeID;
 
