@@ -31,7 +31,7 @@ namespace ml
 			EX_SizeOf,
 			EX_TypeID,
 			EX_TypeName,
-			EX_Args,
+			EX_NodeID,
 			MAX_EXPR_TYPE
 		};
 
@@ -277,6 +277,19 @@ namespace ml
 
 		AST_TypeName(AST_Expr * expr);
 		~AST_TypeName();
+
+		std::ostream& display(std::ostream& out) const override;
+		Var evaluate() const override;
+	};
+
+	// Scope ID
+	/* * * * * * * * * * * * * * * * * * * * */
+	struct ML_SCRIPT_API AST_NodeID : public AST_Expr
+	{
+		AST_Expr * expr;
+
+		AST_NodeID(AST_Expr * expr);
+		~AST_NodeID();
 
 		std::ostream& display(std::ostream& out) const override;
 		Var evaluate() const override;

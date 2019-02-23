@@ -1,7 +1,7 @@
 #ifndef _I_EVENT_LISTENER_HPP_
 #define _I_EVENT_LISTENER_HPP_
 
-#include <MemeCore/Event.hpp>
+#include <MemeCore/CoreEvents.hpp>
 
 namespace ml
 {

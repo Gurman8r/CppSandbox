@@ -52,8 +52,9 @@ namespace ml
 			{
 				out << std::left << std::setw(12)
 					<< pair.first << " \'" << pair.second << "\'"
-					<< ml::endl;
+					<< endl;
 			}
+			out << endl;
 		}
 		inline void deserialize(std::istream & in) override
 		{

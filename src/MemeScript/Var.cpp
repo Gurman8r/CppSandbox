@@ -275,7 +275,7 @@ namespace ml
 		return isErrorType() ? (textValue()) : String();
 	}
 
-	size_t		Var::intValue() const
+	int32_t		Var::intValue() const
 	{
 		return isValid() ? StringUtility::ToInt((textValue())) : 0;
 	}
@@ -285,15 +285,15 @@ namespace ml
 		return Ptr(m_scope, (textValue()));
 	}
 
-	size_t		Var::sizeOfValue() const
+	int32_t		Var::sizeOfValue() const
 	{
 		if (isArrayType())
 		{
-			return tokensValue().size();
+			return (int32_t)tokensValue().size();
 		}
 		else if (isStringType())
 		{
-			return stringValue().size();
+			return (int32_t)stringValue().size();
 		}
 		else if (isNumericType())
 		{
@@ -374,7 +374,7 @@ namespace ml
 		return setType(Var::Func).dataValue(value);
 	}
 		  
-	Var & Var::intValue(const size_t & value)
+	Var & Var::intValue(const int32_t & value)
 	{
 		return setType(Var::Integer).dataValue({ { TokenType::TOK_INT, std::to_string(value) } });
 	}

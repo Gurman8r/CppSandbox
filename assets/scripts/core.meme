@@ -1,14 +1,14 @@
-#// MemeScript Core Library
+# MemeScript Core Library
+CORE = nodeid();
 
-#// Console
-#// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+
 clear	= []();		{ return command("clear"); };
 pause	= []();		{ return command("pause"); };
 system	= [](arg0); { return command("system " + arg0); };
 
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-#// File System
-#// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 getcwd	= []();		{ return command("getcwd");			};
 chdir	= [](arg0);	{ return command("cd " + arg0);		};
 lsdir	= [](arg0); { return command("ls " + arg0);		};
@@ -16,26 +16,26 @@ exists	= [](arg0); { return command("exists " + arg0); };
 read	= [](arg0); { return command("read " + arg0);	};
 exec	= [](arg0); { return command("exec " + arg0);	};
 
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-#// Target
-#// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
-checkArgType = [](argIndex, argType);
+IsArray		= [](arg0); { type = typename(arg0); return (type == "array");	};
+IsVoid		= [](arg0); { type = typename(arg0); return (type == "void");	};
+IsBool		= [](arg0); { type = typename(arg0); return (type == "bool");	};
+IsFloat		= [](arg0); { type = typename(arg0); return (type == "float");	};
+IsFunc		= [](arg0); { type = typename(arg0); return (type == "func");	};
+IsInt		= [](arg0); { type = typename(arg0); return (type == "int");	};
+IsPointer	= [](arg0); { type = typename(arg0); return (type == "pointer");};
+IsString	= [](arg0); { type = typename(arg0); return (type == "string"); };
+
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+
+varExists = [](argNodeId, argVarName);
 {
-	good = false;
-	if(ARGS);
-	{
-		name = typename(ARGS[argIndex]);
-		if(name == argType);
-		{
-			good = true;
-		};
-	};
-	return good;
+	return exists(argNodeId + " " + argVarName);
 };
 
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-#// Target
-#// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 getTargetName		= []();	{ return command("target name");	 };
 getTargetConfig		= []();	{ return command("target config");	 };
 getTargetPlatform	= [](); { return command("target platform"); };

@@ -1,34 +1,38 @@
 # Script to show a Fibonacci sequence
+FIB = nodeid();
 {
 	include("../../../assets/scripts/core.meme");
 
 	fib = [](num);
 	{
-		printl("Fibonacci: {num}");
-	
-		if(num >= 0);
+		if(IsInt(num));
 		{
-			a = 0;
-			printl("{a}");
+			printl("Fibonacci: {num}");
 		
-			if(num >= 1);
+			if(num >= 0);
 			{
-				b = 1;
-				printl("{b}");
-	
-				next = a + b;
-				while(next <= num);
+				a = 0;
+				printl("{a}");
+			
+				if(num >= 1);
 				{
-					printl("{next}");
-					a = b;
-					b = next;
+					b = 1;
+					printl("{b}");
+		
 					next = a + b;
+					while(next <= num);
+					{
+						printl("{next}");
+						a = b;
+						b = next;
+						next = a + b;
+					};
 				};
 			};
 		};
 	};
 
-	if(checkArgType(0, "int"));
+	if(varExists(FIB, "ARGS"));
 	{
 		fib(ARGS[0]);
 	};

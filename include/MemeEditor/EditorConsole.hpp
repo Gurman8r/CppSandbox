@@ -23,6 +23,8 @@ namespace ml
 		int32_t					m_historyPos;    // -1: new line, 0..History.Size-1 browsing history.
 		ImVector<CString>		m_auto;
 
+		bool m_visible = false;
+
 		EditorConsole();
 		~EditorConsole();
 
@@ -35,6 +37,9 @@ namespace ml
 		int32_t textEditCallback(ImGuiInputTextCallbackData* data);
 
 		static int32_t textEditCallbackStub(ImGuiInputTextCallbackData* data);
+
+		inline bool &	visible()	{ return m_visible; }
+		inline void		draw()		{ return draw("Console", &visible()); }
 	};
 
 }

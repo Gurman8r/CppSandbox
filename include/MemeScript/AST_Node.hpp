@@ -102,6 +102,13 @@ namespace ml
 
 	public: // Templates
 		template <class T>
+		T * selfAs()
+		{
+			assert_typeof_node(T);
+			return this->Cast<T>();
+		}
+
+		template <class T>
 		T * nextAs() const
 		{
 			assert_typeof_node(T);

@@ -1,5 +1,6 @@
-#// Script to run on start
-#// Displays some system information
+# Script to run on start
+# Displays some system information
+HELLO = nodeid();
 {
 	include("../../../assets/scripts/core.meme");
 

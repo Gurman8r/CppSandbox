@@ -207,9 +207,6 @@
     <ClInclude Include="..\..\include\MemeCore\IComponent.hpp">
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\CoreEvents.hpp">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\EventSystem.hpp">
       <Filter>Header Files\Event System</Filter>
     </ClInclude>
@@ -218,6 +215,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Array.hpp">
       <Filter>Header Files\STD</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\CoreEvents.hpp">
+      <Filter>Header Files\Event System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

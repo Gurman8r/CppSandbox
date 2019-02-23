@@ -95,11 +95,6 @@ namespace ml
 			ImGui::EndPopup();
 		}
 
-		if (ImGui::SmallButton("Clear")) { clear(); } ImGui::SameLine();
-		bool copy_to_clipboard = ImGui::SmallButton("Copy"); ImGui::SameLine();
-		if (ImGui::SmallButton("Scroll to bottom")) m_scrollToBottom = true;
-
-		ImGui::Separator();
 
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
 		static ImGuiTextFilter filter;
@@ -120,11 +115,6 @@ namespace ml
 
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1)); // Tighten spacing
 		
-		if (copy_to_clipboard) 
-		{
-			ImGui::LogToClipboard(); 
-		}
-		
 		ImVec4 col_default_text = ImGui::GetStyleColorVec4(ImGuiCol_Text);
 		for (int32_t i = 0; i < m_lines.Size; i++)
 		{
@@ -137,11 +127,6 @@ namespace ml
 			ImGui::PushStyleColor(ImGuiCol_Text, col);
 			ImGui::TextUnformatted(item);
 			ImGui::PopStyleColor();
-		}
-		
-		if (copy_to_clipboard) 
-		{
-			ImGui::LogFinish();
 		}
 		
 		if (m_scrollToBottom) 

@@ -33,6 +33,11 @@ namespace ml
 		return m_file.loadFromFile((m_path = filename));
 	}
 
+	bool Script::reload()
+	{
+		return loadFromFile(m_path);
+	}
+
 	bool Script::build(const Args & args)
 	{
 		if (m_file)
@@ -66,13 +71,6 @@ namespace ml
 							new AST_Name(ML_ARGS),
 							argArray));
 					}
-				}
-				else
-				{
-					m_tree->insertChild(0, new AST_Assign(
-						OperatorType::OP_SET,
-						new AST_Name(ML_ARGS),
-						new AST_Bool(false)));
 				}
 
 				return true;

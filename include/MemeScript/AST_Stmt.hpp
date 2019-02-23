@@ -48,7 +48,7 @@ namespace ml
 
 		virtual std::ostream& display(std::ostream& out) const;
 
-		AST_Block*	block() const;
+		AST_Block *	block() const;
 		virtual bool run() = 0;
 	};
 

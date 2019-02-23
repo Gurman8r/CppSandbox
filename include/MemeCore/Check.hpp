@@ -36,7 +36,7 @@ struct has_##NAME##_operator final \
 
 namespace ml
 {
-	namespace check
+	namespace checks
 	{
 		ML_CHECK_OPERATOR(operator<<, leftshift);
 		ML_CHECK_OPERATOR(operator>>, rightshift);

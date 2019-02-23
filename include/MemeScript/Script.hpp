@@ -17,6 +17,7 @@ namespace ml
 		bool cleanup() override;
 		bool loadFromFile(const String & filename) override;
 
+		bool	reload();
 		bool	build(const Args & args);
 		bool	run();
 

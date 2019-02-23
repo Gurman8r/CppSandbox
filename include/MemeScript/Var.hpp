@@ -115,9 +115,9 @@ namespace ml
 		float		floatValue() const;
 		Var			elemValue(size_t i) const;
 		String		errorValue() const;
-		size_t		intValue() const;
+		int32_t		intValue() const;
 		Ptr			pointerValue() const;
-		size_t		sizeOfValue() const;
+		int32_t		sizeOfValue() const;
 		String		stringValue() const;
 		String		textValue() const;
 		TokenList	tokensValue() const;
@@ -129,7 +129,7 @@ namespace ml
 		Var & errorValue(const String & value);
 		Var & floatValue(const float & value);
 		Var & funcValue(const TokenList & value);
-		Var & intValue(const size_t & value);
+		Var & intValue(const int32_t & value);
 		Var & nullValue();
 		Var & pointerValue(const Ptr & value);
 		Var & stringValue(const String & value);

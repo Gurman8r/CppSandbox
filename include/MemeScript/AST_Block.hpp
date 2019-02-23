@@ -10,8 +10,7 @@ namespace ml
 
 	// Block
 	/* * * * * * * * * * * * * * * * * * * * */
-	class ML_SCRIPT_API AST_Block
-		: public AST_Node
+	class ML_SCRIPT_API AST_Block : public AST_Node
 	{
 	public:
 		using FuncMap = HashMap<String, AST_Func*>;

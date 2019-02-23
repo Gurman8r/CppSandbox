@@ -250,12 +250,12 @@ namespace ml
 			}
 			else
 			{
-				return Var().errorValue("AST_Call : {0} Comparison Body Not Found", f->name);
+				return Var().errorValue("AST_Call : {0} Function Body Not Found", f->name);
 			}
 		}
 		else
 		{
-			return Var().errorValue("AST_Call : {0} Comparison Not Found", name->value);
+			return Var().errorValue("AST_Call : {0} Function Name Not Found", name->value);
 		}
 	}
 
@@ -693,5 +693,25 @@ namespace ml
 	Var AST_TypeName::evaluate() const
 	{
 		return Var().stringValue(expr->evaluate().getTypeName());
+	}
+
+	// Scope ID
+	/* * * * * * * * * * * * * * * * * * * * */
+	AST_NodeID::AST_NodeID(AST_Expr * expr)
+		: AST_Expr(EX_NodeID)
+		, expr(expr)
+	{
+		addChild(expr);
+	}
+	AST_NodeID::~AST_NodeID()
+	{
+	}
+	std::ostream & AST_NodeID::display(std::ostream & out) const
+	{
+		return out << "nodeid(" << (*expr) << ")";
+	}
+	Var AST_NodeID::evaluate() const
+	{
+		return Var().intValue(expr->block()->getID());
 	}
 }

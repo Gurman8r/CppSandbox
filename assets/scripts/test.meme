@@ -1,3 +1,15 @@
 {
-	command("pause");
+	include("../../../assets/scripts/core.meme");
+
+	test = [](arg0);
+	{
+		if(arg0 == 1);
+		{
+			return true;
+		};
+		return false;
+	};
+
+	value = test(1);
+	print(value);
 }

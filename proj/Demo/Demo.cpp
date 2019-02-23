@@ -19,6 +19,8 @@ namespace DEMO
 		ML_EventSystem.addListener(DemoEvent::EV_Draw, this);
 		ML_EventSystem.addListener(DemoEvent::EV_Gui, this);
 		ML_EventSystem.addListener(DemoEvent::EV_Exit, this);
+
+		ML_EventSystem.addListener(ml::CoreEvent::EV_RequestExit, this);
 	}
 
 	Demo::~Demo() {}
@@ -39,6 +41,13 @@ namespace DEMO
 		case DemoEvent::EV_Draw:		return onDraw(*value->Cast<DrawEvent>());
 		case DemoEvent::EV_Gui:			return onGui(*value->Cast<GuiEvent>());
 		case DemoEvent::EV_Exit:		return onExit(*value->Cast<ExitEvent>());
+
+		case ml::CoreEvent::EV_RequestExit:
+			if (const auto * ev = value->Cast<ml::RequestExitEvent>())
+			{
+				this->close();
+			}
+			break;
 
 		case ml::WindowEvent::EV_FramebufferSize:
 			if (const auto * ev = value->Cast<ml::FramebufferSizeEvent>())
@@ -105,7 +114,7 @@ namespace DEMO
 				// Show Console
 				if (ev->getKeyDown(ml::KeyCode::T) && ((ev->mods & ML_MOD_CTRL) && (ev->mods & ML_MOD_ALT)))
 				{
-					show_ml_console = true;
+					ML_EditorConsole.visible() = true;
 				}
 
 				// Show Network Manager
@@ -158,9 +167,21 @@ namespace DEMO
 				return ml::Var().intValue(ml::Debug::system(args.pop_front().str().c_str()));
 			} });
 
+			ML_Interpreter.addCmd({ "exit", [](ml::Args & args)
+			{
+				ML_EventSystem.fireEvent(ml::RequestExitEvent());
+				return ml::Var().voidValue();
+			} });
+
+			ML_Interpreter.addCmd({ "hide", [](ml::Args & args)
+			{
+				ML_EditorConsole.visible() = false;
+				return ml::Var().voidValue();
+			} });
+
 			ML_Interpreter.addCmd({ "clear", [](ml::Args & args)
 			{
-				ML_EditorConsole.clear();
+				ML_EditorConsole.clear(); 
 				return ml::Var().voidValue();
 			} });
 
@@ -239,12 +260,24 @@ namespace DEMO
 
 			ML_Interpreter.addCmd({ "exists", [](ml::Args & args)
 			{
-				const ml::String name = args.pop();
-				if (name == "." || name == "..")
+				const ml::String str = args.pop();
+
+				if (ml::StringUtility::IsInt(str) && !args.empty())
+				{
+					return ml::Var().boolValue(
+						ML_Interpreter.runtime().getVar(
+							ml::StringUtility::ToInt(str),
+							args.pop())
+					);
+				}
+				else if (str == "." || str == "..")
 				{
 					return ml::Var().boolValue(true);
 				}
-				return ml::Var().boolValue(ML_FileSystem.fileExists(name));
+				else
+				{
+					return ml::Var().boolValue(ML_FileSystem.fileExists(str));
+				}
 			} });
 
 			ML_Interpreter.addCmd({ "exec", [](ml::Args & args)
@@ -288,37 +321,62 @@ namespace DEMO
 			ML_Interpreter.addCmd({ "list", [](ml::Args & args)
 			{
 				const ml::String type = args.pop();
-				if (type.empty())
+				if (type == "all")
 				{
-					ml::cout 
-						<< ML_Res.fonts << ml::endl
-						<< ML_Res.images << ml::endl
-						<< ML_Res.mats << ml::endl
-						<< ML_Res.meshes << ml::endl
-						<< ML_Res.models << ml::endl
-						<< ML_Res.scripts << ml::endl
-						<< ML_Res.shaders << ml::endl
-						<< ML_Res.skyboxes << ml::endl
-						<< ML_Res.sounds << ml::endl
-						<< ML_Res.sprites << ml::endl
-						<< ML_Res.textures << ml::endl;
+					ml::cout
+						<< "# Fonts"	<< ml::endl << ML_Res.fonts
+						<< "# Images"	<< ml::endl << ML_Res.images
+						<< "# Materials"<< ml::endl << ML_Res.mats
+						<< "# Meshes"	<< ml::endl << ML_Res.meshes
+						<< "# Models"	<< ml::endl << ML_Res.models
+						<< "# Scripts"	<< ml::endl << ML_Res.scripts
+						<< "# Shaders"	<< ml::endl << ML_Res.shaders
+						<< "# Skyboxes" << ml::endl << ML_Res.skyboxes
+						<< "# Sounds"	<< ml::endl << ML_Res.sounds
+						<< "# Sprites"	<< ml::endl << ML_Res.sprites
+						<< "# Textures" << ml::endl << ML_Res.textures
+						<< ml::endl;
 				}
-				else if (type == "fonts"	) { ml::cout << ML_Res.fonts << ml::endl;	}
-				else if (type == "images"	) { ml::cout << ML_Res.images << ml::endl;	}
-				else if (type == "mats"		) { ml::cout << ML_Res.mats << ml::endl;	}
-				else if (type == "meshes"	) { ml::cout << ML_Res.meshes << ml::endl;	}
-				else if (type == "models"	) { ml::cout << ML_Res.models << ml::endl;	}
-				else if (type == "scripts"	) { ml::cout << ML_Res.scripts << ml::endl; }
-				else if (type == "shaders"	) { ml::cout << ML_Res.shaders << ml::endl; }
-				else if (type == "skyboxes" ) { ml::cout << ML_Res.skyboxes << ml::endl;}
-				else if (type == "sounds"	) { ml::cout << ML_Res.sounds << ml::endl;	}
-				else if (type == "sprites"	) { ml::cout << ML_Res.sprites << ml::endl;	}
-				else if (type == "textures" ) { ml::cout << ML_Res.textures << ml::endl;}
+				else if (type == "fonts"	) { ml::cout << ML_Res.fonts	<< ml::endl; }
+				else if (type == "images"	) { ml::cout << ML_Res.images	<< ml::endl; }
+				else if (type == "mats"		) { ml::cout << ML_Res.mats		<< ml::endl; }
+				else if (type == "meshes"	) { ml::cout << ML_Res.meshes	<< ml::endl; }
+				else if (type == "models"	) { ml::cout << ML_Res.models	<< ml::endl; }
+				else if (type == "scripts"	) { ml::cout << ML_Res.scripts	<< ml::endl; }
+				else if (type == "shaders"	) { ml::cout << ML_Res.shaders	<< ml::endl; }
+				else if (type == "skyboxes"	) { ml::cout << ML_Res.skyboxes << ml::endl; }
+				else if (type == "sounds"	) { ml::cout << ML_Res.sounds	<< ml::endl; }
+				else if (type == "sprites"	) { ml::cout << ML_Res.sprites	<< ml::endl; }
+				else if (type == "textures"	) { ml::cout << ML_Res.textures << ml::endl; }
 				else
 				{
 					return ml::Var().errorValue("Type not found: {0}", type);
 				}
 				return ml::Var().boolValue(true);
+			} });
+
+			ML_Interpreter.addCmd({ "reload", [](ml::Args & args)
+			{
+				const ml::String type = args.pop();
+				if (type == "all")
+				{
+					return ml::Var().intValue((int32_t)ML_Res.reloadAll());
+				}
+				else if (type == "fonts"	)	{ return ml::Var().intValue((int32_t)ML_Res.fonts.reload()); }
+				else if (type == "images"	)	{ return ml::Var().intValue((int32_t)ML_Res.images.reload()); }
+				else if (type == "mats"		)	{ return ml::Var().intValue((int32_t)ML_Res.mats.reload()); }
+				else if (type == "meshes"	)	{ return ml::Var().intValue((int32_t)ML_Res.meshes.reload()); }
+				else if (type == "models"	)	{ return ml::Var().intValue((int32_t)ML_Res.models.reload()); }
+				else if (type == "scripts"	)	{ return ml::Var().intValue((int32_t)ML_Res.scripts.reload()); }
+				else if (type == "shaders"	)	{ return ml::Var().intValue((int32_t)ML_Res.shaders.reload()); }
+				else if (type == "skyboxes"	)	{ return ml::Var().intValue((int32_t)ML_Res.skyboxes.reload()); }
+				else if (type == "sounds"	)	{ return ml::Var().intValue((int32_t)ML_Res.sounds.reload()); }
+				else if (type == "sprites"	)	{ return ml::Var().intValue((int32_t)ML_Res.sprites.reload()); }
+				else if (type == "textures"	)	{ return ml::Var().intValue((int32_t)ML_Res.textures.reload()); }
+				else
+				{
+					return ml::Var().errorValue("Type not found: {0}", type);
+				}
 			} });
 		}
 		return checked;
@@ -1045,7 +1103,7 @@ namespace DEMO
 			if (ImGui::BeginMenu("Window"))
 			{
 				ImGui::MenuItem("Editor", "Ctrl+E", &show_ml_editor);
-				ImGui::MenuItem("Console", "Ctrl+Alt+T", &show_ml_console);
+				ImGui::MenuItem("Console", "Ctrl+Alt+T", &ML_EditorConsole.visible());
 				ImGui::MenuItem("Network", "Ctrl+Alt+N", &show_ml_network);
 				ImGui::MenuItem("Shader Builder", "Ctrl+Alt+B", &show_ml_shader);
 				ImGui::EndMenu();
@@ -1134,10 +1192,10 @@ namespace DEMO
 		}
 
 		// Console
-		if (show_ml_console)
+		if(ML_EditorConsole.visible())
 		{
 			ML_EditorConsole.setup();
-			ML_EditorConsole.draw("Console", &show_ml_console);
+			ML_EditorConsole.draw();
 		}
 
 		// Network

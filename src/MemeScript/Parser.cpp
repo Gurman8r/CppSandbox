@@ -24,7 +24,7 @@ namespace ml
 			case '#':
 			{
 				String line;
-				while (*it != TokenType::TOK_ENDL)
+				while ((it != tokens.end()) && ((*it) != TokenType::TOK_ENDL))
 				{
 					line += (*it++).data;
 				}
@@ -130,7 +130,7 @@ namespace ml
 				{
 					stk.erase(stk.begin());
 				}
-				
+
 				if (stk.empty())
 				{
 					Debug::logError("Missing left parenthesis (1)\n");
@@ -142,7 +142,7 @@ namespace ml
 				pfx.push_back(arg);
 			}
 
-			if(show) cout << "P: " << pfx << ml::endl;
+			if (show) cout << "P: " << pfx << ml::endl;
 		}
 
 		while (!stk.empty() && stk.front() != TokenType::TOK_LPRN)
@@ -213,25 +213,25 @@ namespace ml
 			{
 				root = new AST_Block({});
 
-				ToksList::const_iterator it;
-				for (it = statements.begin(); it != statements.end(); it++)
+				ToksList::const_iterator toks;
+				for (toks = statements.begin(); toks != statements.end(); toks++)
 				{
 					if (m_showToks)
 					{
-						cout << (*it) << ml::endl;
+						cout << (*toks) << ml::endl;
 					}
 
 					// For
-					if (it->matchData(it->begin(), { "for" }))
+					if (toks->matchData(toks->begin(), { "for" }))
 					{
-						TokenList args = TokenList(*it).after(2);
+						TokenList args = TokenList(*toks).after(2);
 						if (AST_Assign* assn = genAssign(args))
 						{
-							args = TokenList((*++it));
+							args = TokenList((*++toks));
 
 							if (AST_Expr* expr = genComplex(args))
 							{
-								args = TokenList((*++it)).pop_back();
+								args = TokenList((*++toks)).pop_back();
 
 								if (AST_Stmt* stmt = genStatement(args))
 								{
@@ -246,7 +246,7 @@ namespace ml
 							delete assn;
 						}
 					}
-					else if (AST_Node* node = genNode(root, (*it)))
+					else if (AST_Node* node = genNode(root, (*toks)))
 					{
 						if (node == root)
 						{
@@ -447,6 +447,19 @@ namespace ml
 		else if (AST_TypeName * name = genTypeName(toks))
 		{
 			return name;
+		}
+		// Scope ID
+		else if (toks.matchData(toks.begin(), { "nodeid" }))
+		{
+			AST_Call::Params params = genCallParams(toks.after(1));
+			if (!params.empty())
+			{
+				return new AST_NodeID(params.front());
+			}
+			else
+			{
+				return new AST_NodeID(new AST_Int(0));
+			}
 		}
 		// Function
 		else if (AST_Func* func = genFunc(toks))
@@ -810,7 +823,7 @@ namespace ml
 		}
 		return NULL;
 	}
-	
+
 
 	// Expression Containers
 

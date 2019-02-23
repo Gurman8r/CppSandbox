@@ -404,7 +404,7 @@ namespace ml
 	{
 		if (block()->setRet(expr->evaluate()))
 		{
-			return true; // FIXME: Return does not halt execution
+			return true; // FIXME: Only halts containing block
 		}
 		return Debug::logError("AST_Return : Failed Setting value_type");
 	}

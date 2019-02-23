@@ -1,4 +1,6 @@
 #include <MemeScript/AST_Node.hpp>
+#include <MemeScript/AST_Block.hpp>
+#include <MemeScript/AST_Expr.hpp>
 
 namespace ml
 {
