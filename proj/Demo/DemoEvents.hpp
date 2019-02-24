@@ -4,6 +4,7 @@
 #include <MemeCore/IEvent.hpp>
 #include <MemeCore/Duration.hpp>
 #include <MemeGraphics/RenderWindow.hpp>
+#include <MemeScript/Args.hpp>
 
 namespace DEMO 
 {
@@ -37,13 +38,11 @@ namespace DEMO
 
 	struct EnterEvent final : public DemoEvent
 	{
-		int32_t argc;
-		char ** argv;
+		ml::Args args;
 
-		EnterEvent(int32_t argc, char ** argv)
+		EnterEvent(const ml::Args & args)
 			: DemoEvent(EV_Enter)
-			, argc(argc)
-			, argv(argv)
+			, args(args)
 		{
 		}
 	};

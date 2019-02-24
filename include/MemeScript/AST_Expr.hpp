@@ -34,7 +34,6 @@ namespace ml
 			EX_NodeID,
 			EX_New,
 			EX_Member,
-			EX_This,
 			MAX_EXPR_TYPE
 		};
 
@@ -317,7 +316,6 @@ namespace ml
 
 		std::ostream & display(std::ostream & out) const override;
 		Var evaluate() const override;
-		bool run() override;
 	};
 
 	// Member

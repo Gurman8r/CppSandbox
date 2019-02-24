@@ -21,6 +21,7 @@ namespace ml
 
 	public:
 		Args();
+		Args(int32_t argc, char ** argv);
 		Args(const String & value);
 		Args(const vector_type& values);
 		Args(const std::initializer_list<String>& values);

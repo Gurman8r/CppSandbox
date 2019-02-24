@@ -56,7 +56,7 @@ namespace ml
 			List<char> buffer;
 			if (ML_FileSystem.getFileContents(value, buffer))
 			{
-				return execTokens(lexer.setBuffer(buffer).splitTokens());
+				return execTokens(lexer.splitTokens(buffer));
 			}
 		}
 		return Var().errorValue("File not found {0}", value);
@@ -66,7 +66,7 @@ namespace ml
 	{
 		if (!value.empty())
 		{
-			return execTokens(lexer.setBuffer(value).splitTokens());
+			return execTokens(lexer.splitTokens(value));
 		}
 		return Var().errorValue("Buffer cannot be empty");
 	}

@@ -43,15 +43,18 @@ int32_t main(int32_t argc, char ** argv)
 	if (ml::RenderWindow * program = loadProgram("./Placeholder_Debug_x86.dll"))
 	{
 		// Enter
-		ML_EventSystem.fireEvent(DEMO::EnterEvent(argc, argv));
+		ML_EventSystem.fireEvent(DEMO::EnterEvent({ argc, argv }));
 		if (ml::Debug::checkError(ML_FAILURE))
 		{
 			delete program;
 			return ml::Debug::pause(EXIT_FAILURE);
 		}
 
-		delete program;
-		return ml::Debug::pause(EXIT_SUCCESS);
+		if (SETTINGS.runTests)
+		{
+			delete program;
+			return ml::Debug::pause(EXIT_SUCCESS);
+		}
 
 		// Load
 		ML_EventSystem.fireEvent(DEMO::LoadEvent());

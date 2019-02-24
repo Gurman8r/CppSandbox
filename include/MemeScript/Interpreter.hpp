@@ -55,7 +55,7 @@ namespace ml
 		Interpreter() {}
 		~Interpreter() {}
 
-		CommandMap		m_commands;
+		CommandMap m_commands;
 	};
 }
 

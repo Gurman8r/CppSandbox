@@ -7,6 +7,14 @@ namespace ml
 		: m_values()
 	{
 	}
+	Args::Args(int32_t argc, char ** argv)
+		: m_values()
+	{
+		for (size_t i = 0, imax = (size_t)argc; i < imax; i++)
+		{
+			push_back(argv[i]);
+		}
+	}
 	Args::Args(const String & value)
 		: m_values({ value })
 	{

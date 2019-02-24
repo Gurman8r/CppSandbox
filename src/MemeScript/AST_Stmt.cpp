@@ -25,7 +25,7 @@ namespace ml
 		AST_Node* p = getParent();
 		while (p)
 		{
-			if (AST_Block* b = p->as<AST_Block>())
+			if (AST_Block * b = p->as<AST_Block>())
 			{
 				return b;
 			}
@@ -93,7 +93,7 @@ namespace ml
 
 	bool AST_For::run()
 	{
-		if (AST_Block* blck = nextAs<AST_Block>())
+		if (AST_Block * blck = nextAs<AST_Block>())
 		{
 			if (assn->run())
 			{
@@ -165,13 +165,13 @@ namespace ml
 
 	bool AST_If::run()
 	{
-		if (AST_Block* iBlock = nextAs<AST_Block>())
+		if (AST_Block * ifBlock = nextAs<AST_Block>())
 		{
 			if (expr->evaluate().boolValue())
 			{
-				if (iBlock->runFirst())
+				if (ifBlock->runFirst())
 				{
-					return iBlock->runNext();
+					return ifBlock->runNext();
 				}
 				else
 				{
@@ -179,11 +179,11 @@ namespace ml
 				}
 			}
 
-			AST_Node* next = iBlock->getNext();
+			AST_Node* next = ifBlock->getNext();
 
 			while (AST_Elif* ei = next->as<AST_Elif>())
 			{
-				if (AST_Block* eiBlock = ei->nextAs<AST_Block>())
+				if (AST_Block * eiBlock = ei->nextAs<AST_Block>())
 				{
 					if (ei->expr->evaluate().boolValue())
 					{
@@ -207,9 +207,9 @@ namespace ml
 				}
 			}
 
-			if (AST_Else* el = next->as<AST_Else>())
+			if (AST_Else * el = next->as<AST_Else>())
 			{
-				if (AST_Block* elBlock = el->nextAs<AST_Block>())
+				if (AST_Block * elBlock = el->nextAs<AST_Block>())
 				{
 					if (elBlock->runFirst())
 					{
@@ -237,7 +237,7 @@ namespace ml
 
 	// Include
 	/* * * * * * * * * * * * * * * * * * * * */
-	AST_Include::AST_Include(AST_String* str)
+	AST_Include::AST_Include(AST_String * str)
 		: AST_Stmt(ST_Include)
 		, str(str)
 	{
@@ -256,7 +256,7 @@ namespace ml
 		List<char> buffer;
 		if (ML_FileSystem.getFileContents(filename, buffer))
 		{
-			const TokenList toks = ML_Lexer.setBuffer(buffer).splitTokens();
+			const TokenList toks = ML_Lexer.splitTokens(buffer);
 			if (AST_Block * root = ML_Parser.genAST(toks))
 			{
 				if (!root->empty())
@@ -305,7 +305,7 @@ namespace ml
 
 	bool AST_Print::run()
 	{
-		if (AST_String* str = expr->as<AST_String>())
+		if (AST_String * str = expr->as<AST_String>())
 		{
 			String::const_iterator it;
 			for (it = str->value.begin(); it != str->value.end(); it++)
@@ -370,7 +370,7 @@ namespace ml
 		{
 			return true; // FIXME: Only halts containing block
 		}
-		return Debug::logError("AST_Return : Failed Setting value_type");
+		return Debug::logError("AST_Return : Failed Setting Value");
 	}
 
 
@@ -390,26 +390,22 @@ namespace ml
 
 	bool AST_While::run()
 	{
-		if (AST_Block* blck = nextAs<AST_Block>())
+		if (!expr)
 		{
-			size_t count = 0;
-			while (expr->evaluate().boolValue())
+			if (AST_Block * blck = nextAs<AST_Block>())
 			{
-				if (blck->runFirst())
+				while (expr->evaluate().boolValue())
 				{
-					if (++count >= 100)
+					if (!blck->runFirst())
 					{
-						return Debug::logError("AST_While : Loops Exceded {0}", count);
+						return Debug::logError("AST_While : Failed Running Block");
 					}
 				}
-				else
-				{
-					return Debug::logError("AST_While : Block Run First Failed");
-				}
+				return blck->runNext();
 			}
-			return blck->runNext();
+			return Debug::logError("AST_While : No Block");
 		}
-		return Debug::logError("AST_While : Failure");
+		return Debug::logError("AST_While : No Expression");
 	}
 	
 }

@@ -2,25 +2,25 @@ TEST = nodeid();
 {
 	#/* * * * * * * * * * * * * * * * * * * * */#
 
-	find = [](_id, _name);
-	{
+	find = [](_id, _name); {
 		return command("exists " + _id + " " + _name);
 	};
 
-	get = [](_id, _name);
-	{
+	get = [](_id, _name); {
 		return command("get " + _id + " " + _name);
 	};
 
-	set = [](_id, _name, _value);
-	{
+	set = [](_id, _name, _value); {
 		return command("set " + _id + " " + _name + " " + _value);
 	};
 
 	#/* * * * * * * * * * * * * * * * * * * * */#
 
-	demo = $(_a, _b, _c);
+	DEMO = 0;
+	demo = $();
 	{
+		DEMO = nodeid();
+
 		a = 1;
 		b = 2.2;
 		c = "3E";
@@ -30,14 +30,30 @@ TEST = nodeid();
 
 	#/* * * * * * * * * * * * * * * * * * * * */#
 
-	main = []();
+	main = [](argc, argv);
 	{
+		for (i = 0; i < argc; i = i + 1);
+		{
+			printl(argv[i]);
+		};
+
 		printl(demo.a);
 		printl(demo.b);
 		printl(demo.c);
 	};
 
-	return main();
+	if(find(TEST, "ARGS"));
+	{
+		argv = ARGS;
+		argc = sizeof(ARGS);
+		return main(argc, argv);
+	};
+	else;
+	{
+		argv = [ "Hello, World!" ];
+		argc = sizeof(argv);
+		return main(argc, argv);
+	};
 
 	#/* * * * * * * * * * * * * * * * * * * * */#
 };

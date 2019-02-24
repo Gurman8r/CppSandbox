@@ -37,7 +37,7 @@ namespace ml
 	{
 		if (m_file)
 		{
-			m_toks = ML_Lexer.setBuffer(m_file.data()).splitTokens();
+			m_toks = ML_Lexer.splitTokens(m_file.data());
 
 			if (m_tree = ML_Parser.genAST(m_toks))
 			{
@@ -49,12 +49,13 @@ namespace ml
 					for (size_t i = 0, imax = args.size(); i < imax; i++)
 					{
 						argToks.push_back(ML_Lexer.makeToken(args[i]));
-						argToks.push_back((
-							(i < imax - 1)
-								? Token(',')
-								: Token(']')));
+						if (i < imax - 1)
+						{
+							argToks.push_back(Token(','));
+						}
 					}
-
+					argToks.push_back(Token(']'));
+					
 					if (AST_Array * argArray = ML_Parser.generate<AST_Array>(argToks))
 					{
 						m_tree->insertChild(0, new AST_Assign(

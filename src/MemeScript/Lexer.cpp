@@ -15,6 +15,8 @@ namespace
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	Lexer::Lexer()
 	{
 	}
@@ -23,42 +25,7 @@ namespace ml
 	{
 	}
 
-
-	List<char> Lexer::getBuffer() const
-	{
-		return m_buffer;
-	}
-
-	String Lexer::getString() const
-	{
-		String out;
-		for (const char& c : m_buffer)
-			out += c;
-		return out;
-	}
-
-	Lexer & Lexer::clearBuffer()
-	{
-		m_buffer.clear();
-		return (*this);
-	}
-
-	Lexer & Lexer::setBuffer(const String & value)
-	{
-		m_buffer.clear();
-		for (auto it = value.begin(); it != value.end(); it++)
-		{
-			m_buffer.push_back(*it);
-		}
-		return (*this);
-	}
-
-	Lexer& Lexer::setBuffer(const List<char> & value)
-	{
-		m_buffer = value;
-		return (*this);
-	}
-
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	Token Lexer::makeToken(const String & value) const
 	{
@@ -77,12 +44,22 @@ namespace ml
 		return Token('\0');
 	}
 
-	TokenList Lexer::splitTokens() const
+	TokenList Lexer::makeArray(const Args & args)
+	{
+		return TokenList();
+	}
+
+	TokenList Lexer::splitTokens(const String & value) const
+	{
+		return TokenList();
+	}
+
+	TokenList Lexer::splitTokens(const List<char> & value) const
 	{
 		TokenList tokens;
 
 		List<char>::const_iterator it;
-		for (it = m_buffer.begin(); it != m_buffer.end(); it++)
+		for (it = value.begin(); it != value.end(); it++)
 		{
 			String text;
 
@@ -92,17 +69,17 @@ namespace ml
 				tokens.push_back({ TokenType::TOK_ENDL });
 			}
 			// String
-			else if (scanString(it, text))
+			else if (scanString(value, it, text))
 			{
 				tokens.push_back({ TokenType::TOK_STR, text });
 			}
 			// Name
-			else if (scanName(it, text))
+			else if (scanName(value, it, text))
 			{
 				tokens.push_back({ TokenType::TOK_NAME, text });
 			}
 			// Number
-			else if (scanNumber(it, text))
+			else if (scanNumber(value, it, text))
 			{
 				// Integer
 				if (StringUtility::IsInt(text))
@@ -121,7 +98,7 @@ namespace ml
 				}
 			}
 			// Symbols
-			else if (scanSymbol(it, text))
+			else if (scanSymbol(value, it, text))
 			{
 				Token::SymbolMap::const_iterator it = Token::Symbols.find(text);
 
@@ -136,20 +113,18 @@ namespace ml
 			}
 		}
 
-		// End of file
-		//tokens.push_back({ TokenType::TOK_ENDF });
-
 		return tokens;
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Lexer::scanName(const_iterator & it, String & text) const
+	bool Lexer::scanName(const List<char> & value, const_iterator & it, String & text) const
 	{
 		if (isalpha(*it) || (*it) == '_')
 		{
 			String out;
 
-			while (it != m_buffer.end())
+			while (it != value.end())
 			{
 				if (isalnum(*it) || (*it) == '_')
 				{
@@ -171,13 +146,13 @@ namespace ml
 		return false;
 	}
 
-	bool Lexer::scanNumber(const_iterator& it, String & text) const
+	bool Lexer::scanNumber(const List<char> & value, const_iterator & it, String & text) const
 	{
 		if (isdigit(*it))
 		{
 			String out;
 
-			while (it != m_buffer.end())
+			while (it != value.end())
 			{
 				if (isdigit(*it) || *it == '.')
 				{
@@ -199,13 +174,13 @@ namespace ml
 		return false;
 	}
 
-	bool Lexer::scanString(const_iterator& it, String & text) const
+	bool Lexer::scanString(const List<char> & value, const_iterator & it, String & text) const
 	{
 		if (*it == '\"')
 		{
 			String out;
 
-			while (++it != m_buffer.end())
+			while (++it != value.end())
 			{
 				if (*it == '\"')
 				{
@@ -225,7 +200,7 @@ namespace ml
 		return false;
 	}
 
-	bool Lexer::scanSymbol(const_iterator & it, String & text) const
+	bool Lexer::scanSymbol(const List<char> & value, const_iterator & it, String & text) const
 	{
 		if (issymbol(*it))
 		{
@@ -237,7 +212,5 @@ namespace ml
 		return false;
 	}
 
-
-
-
+	/* * * * * * * * * * * * * * * * * * * * */
 }

@@ -30,9 +30,19 @@ IsString	= [](arg0); { type = typename(arg0); return (type == "string"); };
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-varExists = [](argNodeId, argVarName);
+find = [](_id, _name);
 {
-	return exists(argNodeId + " " + argVarName);
+	return command("exists " + _id + " " + _name);
+};
+
+get = [](_id, _name);
+{
+	return command("get " + _id + " " + _name);
+};
+
+set = [](_id, _name, _value);
+{
+	return command("set " + _id + " " + _name + " " + _value);
 };
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #

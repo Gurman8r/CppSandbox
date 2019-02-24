@@ -525,6 +525,7 @@ namespace ml
 
 	Var AST_Struct::evaluate() const
 	{
+		return Var().intValue(getID());
 		return Var().pointerValue({ getID(), name });
 	}
 
@@ -596,7 +597,7 @@ namespace ml
 
 	std::ostream & AST_Command::display(std::ostream & out) const
 	{
-		return out << "command(" << ( * expr) << ")";
+		return out << FG::Cyan << "command(" << FMT() << (*expr) << FG::Cyan << ")" << FMT();
 	}
 
 	Var AST_Command::evaluate() const
@@ -625,7 +626,7 @@ namespace ml
 
 	std::ostream & AST_SizeOf::display(std::ostream & out) const
 	{
-		return out << "sizeof(" << (*expr) << ")";
+		return out << FG::Cyan << "sizeof(" << FMT() << (*expr) << FG::Cyan << ")" << FMT();
 	}
 
 	Var AST_SizeOf::evaluate() const
@@ -645,7 +646,7 @@ namespace ml
 
 	std::ostream & AST_TypeID::display(std::ostream & out) const
 	{
-		return out << "typeid(" << (*expr) << ")";
+		return out << FG::Cyan << "typeid(" << FMT() << (*expr) << FG::Cyan << ")" << FMT();
 	}
 
 	Var AST_TypeID::evaluate() const
@@ -665,7 +666,7 @@ namespace ml
 
 	std::ostream & AST_TypeName::display(std::ostream & out) const
 	{
-		return out << "typename(" << (*expr) << ")";
+		return out << FG::Cyan << "typename(" << FMT() << (*expr) << FG::Cyan << ")" << FMT();
 	}
 
 	Var AST_TypeName::evaluate() const
@@ -685,7 +686,7 @@ namespace ml
 	
 	std::ostream & AST_NodeID::display(std::ostream & out) const
 	{
-		return out << "nodeid(" << (*expr) << ")";
+		return out << FG::Cyan << "nodeid(" << FMT() << (*expr) << FG::Cyan << ")" << FMT();
 	}
 	
 	Var AST_NodeID::evaluate() const
@@ -705,7 +706,7 @@ namespace ml
 	
 	std::ostream & AST_New::display(std::ostream & out) const
 	{
-		return out << "new(" << (*expr) << ")";
+		return out << FG::Cyan << "new(" << FMT() << (*expr) << FG::Cyan << ")" << FMT();
 	}
 	
 	Var AST_New::evaluate() const
@@ -720,7 +721,10 @@ namespace ml
 					{
 						if (AST_Struct * s = block()->getStruct(v->textValue()))
 						{
-							return s->evaluate();
+							if (AST_Block * body = s->getBody())
+							{
+								return s->evaluate();
+							}
 						}
 					}
 				}
@@ -730,16 +734,7 @@ namespace ml
 		}
 		return Var().errorValue("AST_New : No Expression");
 	}
-
-	bool AST_New::run()
-	{
-		if (!evaluate().isErrorType())
-		{
-			return runNext();
-		}
-		return false;
-	}
-
+	
 
 	// Member
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -790,13 +785,7 @@ namespace ml
 	
 	std::ostream & AST_Member::display(std::ostream & out) const
 	{
-		return out 
-			<< FG::Cyan  << "("
-			<< (*name) 
-			<< FG::Cyan << "." 
-			<< (*expr)
-			<< FG::Cyan << ")"
-			<< FMT();
+		return out << (*name) << FG::Cyan << "." << FMT() << (*expr) << FMT();
 	}
 	
 	Var AST_Member::evaluate() const

@@ -32,7 +32,7 @@ FIB = nodeid();
 		};
 	};
 
-	if(varExists(FIB, "ARGS"));
+	if(find(FIB, "ARGS"));
 	{
 		fib(ARGS[0]);
 	};

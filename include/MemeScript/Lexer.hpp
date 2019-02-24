@@ -5,6 +5,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_SCRIPT_API Lexer final
 		: public ITrackable
 	{
@@ -13,42 +15,24 @@ namespace ml
 	public:
 		using const_iterator = typename List<char>::const_iterator;
 
-		enum Flags : uint16_t
-		{
-			None = 0,
-		};
-		inline friend Flags operator|(const Lexer::Flags& lhs, const Lexer::Flags& rhs)
-		{
-			return static_cast<Lexer::Flags>(static_cast<uint16_t>(lhs) | static_cast<uint16_t>(rhs));
-		}
-
 	public:
-
-		List<char>	getBuffer() const;
-		String		getString() const;
-
-		Lexer &		clearBuffer();
-		Lexer &		setBuffer(const String & value);
-		Lexer &		setBuffer(const List<char> & value);
-
 		Token		makeToken(const String & value) const;
-		TokenList	splitTokens() const;
+		TokenList	makeArray(const Args & args);
 
-		bool scanName(const_iterator& it, String & text) const;
-		bool scanNumber(const_iterator& it, String & text) const;
-		bool scanString(const_iterator& it, String & text) const;
-		bool scanSymbol(const_iterator& it, String & text) const;
+		TokenList	splitTokens(const String & value) const;
+		TokenList	splitTokens(const List<char> & value) const;
 
-		inline Flags getFlags() const { return m_flags; }
-		inline void	 setFlags(Flags value) { m_flags = value; }
+		bool scanName(const List<char> & value, const_iterator& it, String & text) const;
+		bool scanNumber(const List<char> & value, const_iterator& it, String & text) const;
+		bool scanString(const List<char> & value, const_iterator& it, String & text) const;
+		bool scanSymbol(const List<char> & value, const_iterator& it, String & text) const;
 
 	private:
 		Lexer();
 		~Lexer();
-
-		Flags		m_flags;
-		List<char>	m_buffer;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_LEXER_HPP_
