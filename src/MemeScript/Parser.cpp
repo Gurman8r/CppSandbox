@@ -709,13 +709,14 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
+
 	AST_Block * Parser::genAST(const TokenList & tokens) const
 	{
 		AST_Block * root = NULL;
 
 		if (!tokens.empty())
 		{
-			Parser::SyntaxTree statements = SplitStatements(tokens);
+			SyntaxTree statements = SplitStatements(tokens);
 			if (!statements.empty())
 			{
 				root = new AST_Block({});
@@ -732,26 +733,27 @@ namespace ml
 					if (toks->matchData(toks->begin(), { "for" }))
 					{
 						TokenList args = TokenList(*toks).after(2);
-						if (AST_Assign * assn = generate<AST_Assign>(args))
+
+						if (AST_Assign * a = generate<AST_Assign>(args))
 						{
 							args = TokenList((*++toks));
 
-							if (AST_Expr * expr = genExpression(args))
+							if (AST_Expr * e = genExpression(args))
 							{
 								args = TokenList((*++toks)).pop_back();
 
-								if (AST_Stmt * stmt = genStatement(args))
+								if (AST_Stmt * s = genStatement(args))
 								{
-									if (root->addChild(new AST_For(assn, expr, stmt)))
+									if (root->addChild(new AST_For(a, e, s)))
 									{
 										continue;
 									}
-									delete stmt;
 								}
-								delete expr;
+								else { delete s; }
 							}
-							delete assn;
+							else { delete e; }
 						}
+						else { delete a; }
 					}
 					else if (AST_Node * node = genNode(root, (*toks)))
 					{
@@ -840,26 +842,26 @@ namespace ml
 		{
 			return genExpression(toks.unwrapped());
 		}
-		else if (AST_Float    * temp = generate<AST_Float>(toks))		{ return temp; }
-		else if (AST_Int      * temp = generate<AST_Int>(toks))			{ return temp; }
-		else if (AST_String   * temp = generate<AST_String>(toks))		{ return temp; }
-		else if (AST_Bool     * temp = generate<AST_Bool>(toks))		{ return temp; }
-		else if (AST_Name     * temp = generate<AST_Name>(toks))		{ return temp; }
-		else if (AST_BinOp	  * temp = generate<AST_BinOp>(toks))		{ return temp; }
-		else if (AST_Member	  * temp = generate<AST_Member>(toks))		{ return temp; }
-		else if (AST_New	  * temp = generate<AST_New>(toks))			{ return temp; }
-		else if (AST_Struct	  * temp = generate<AST_Struct>(toks))		{ return temp; }
-		else if (AST_Command  * temp = generate<AST_Command>(toks))		{ return temp; }
-		else if (AST_SizeOf	  * temp = generate<AST_SizeOf>(toks))		{ return temp; }
-		else if (AST_TypeID	  * temp = generate<AST_TypeID>(toks))		{ return temp; }
-		else if (AST_TypeName * temp = generate<AST_TypeName>(toks))	{ return temp; }
-		else if (AST_NodeID	  * temp = generate<AST_NodeID>(toks))		{ return temp; }
-		else if (AST_Func	  * temp = generate<AST_Func>(toks))		{ return temp; }
-		else if (AST_Assign	  * temp = generate<AST_Assign>(toks))		{ return temp; }
-		else if (AST_Input	  * temp = generate<AST_Input>(toks))		{ return temp; }
-		else if (AST_Call	  * temp = generate<AST_Call>(toks))		{ return temp; }
-		else if (AST_Subscr	  * temp = generate<AST_Subscr>(toks))		{ return temp; }
-		else if (AST_Array	  * temp = generate<AST_Array>(toks))		{ return temp; }
+		else if (AST_Float		* temp = generate<AST_Float>(toks))		{ return temp; }
+		else if (AST_Int		* temp = generate<AST_Int>(toks))		{ return temp; }
+		else if (AST_String		* temp = generate<AST_String>(toks))	{ return temp; }
+		else if (AST_Bool		* temp = generate<AST_Bool>(toks))		{ return temp; }
+		else if (AST_Name		* temp = generate<AST_Name>(toks))		{ return temp; }
+		else if (AST_BinOp		* temp = generate<AST_BinOp>(toks))		{ return temp; }
+		else if (AST_Member		* temp = generate<AST_Member>(toks))	{ return temp; }
+		else if (AST_New		* temp = generate<AST_New>(toks))		{ return temp; }
+		else if (AST_Struct		* temp = generate<AST_Struct>(toks))	{ return temp; }
+		else if (AST_Command	* temp = generate<AST_Command>(toks))	{ return temp; }
+		else if (AST_SizeOf		* temp = generate<AST_SizeOf>(toks))	{ return temp; }
+		else if (AST_TypeID		* temp = generate<AST_TypeID>(toks))	{ return temp; }
+		else if (AST_TypeName	* temp = generate<AST_TypeName>(toks))	{ return temp; }
+		else if (AST_NodeID		* temp = generate<AST_NodeID>(toks))	{ return temp; }
+		else if (AST_Func		* temp = generate<AST_Func>(toks))		{ return temp; }
+		else if (AST_Assign		* temp = generate<AST_Assign>(toks))	{ return temp; }
+		else if (AST_Input		* temp = generate<AST_Input>(toks))		{ return temp; }
+		else if (AST_Call		* temp = generate<AST_Call>(toks))		{ return temp; }
+		else if (AST_Subscr		* temp = generate<AST_Subscr>(toks))	{ return temp; }
+		else if (AST_Array		* temp = generate<AST_Array>(toks))		{ return temp; }
 		else
 		{
 			TokenList post;
@@ -885,6 +887,7 @@ namespace ml
 	AST_BinOp *	Parser::genNestedBinOp(const TokenList & toks) const
 	{
 		AST_BinOp * temp;
+
 		if (toks.empty())
 		{
 			return (temp = NULL);
@@ -911,7 +914,7 @@ namespace ml
 			{
 				if (stack.size() < 2)
 				{
-					return NULL;
+					return (temp = NULL);
 				}
 
 				AST_Expr * rhs = stack.top();
