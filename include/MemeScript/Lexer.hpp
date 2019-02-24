@@ -8,6 +8,8 @@ namespace ml
 	class ML_SCRIPT_API Lexer final
 		: public ITrackable
 	{
+		friend class Interpreter;
+
 	public:
 		using const_iterator = typename List<char>::const_iterator;
 
@@ -21,8 +23,6 @@ namespace ml
 		}
 
 	public:
-		Lexer();
-		~Lexer();
 
 		List<char>	getBuffer() const;
 		String		getString() const;
@@ -34,15 +34,18 @@ namespace ml
 		Token		makeToken(const String & value) const;
 		TokenList	splitTokens() const;
 
-		bool scanName(const_iterator& it, String& text) const;
-		bool scanNumber(const_iterator& it, String& text) const;
-		bool scanString(const_iterator& it, String& text) const;
-		bool scanSymbol(const_iterator& it, String& text) const;
+		bool scanName(const_iterator& it, String & text) const;
+		bool scanNumber(const_iterator& it, String & text) const;
+		bool scanString(const_iterator& it, String & text) const;
+		bool scanSymbol(const_iterator& it, String & text) const;
 
 		inline Flags getFlags() const { return m_flags; }
 		inline void	 setFlags(Flags value) { m_flags = value; }
 
 	private:
+		Lexer();
+		~Lexer();
+
 		Flags		m_flags;
 		List<char>	m_buffer;
 	};

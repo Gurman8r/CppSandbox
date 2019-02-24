@@ -100,7 +100,7 @@ namespace ml
 		String name;
 		Params args;
 
-		AST_Func(const String& name, const Params& args);
+		AST_Func(const String & name, const Params& args);
 		~AST_Func() {}
 
 		std::ostream & display(std::ostream & out) const override;
@@ -138,7 +138,7 @@ namespace ml
 	{
 		String value;
 
-		AST_Name(const String& value);
+		AST_Name(const String & value);
 		~AST_Name() {}
 
 		std::ostream & display(std::ostream & out) const override;
@@ -187,7 +187,7 @@ namespace ml
 		AST_Expr* lhs;
 		AST_Expr* rhs;
 
-		AST_BinOp(const Operator& op, AST_Expr* lhs, AST_Expr* rhs);
+		AST_BinOp(const Operator & op, AST_Expr* lhs, AST_Expr* rhs);
 		~AST_BinOp() {}
 
 		std::ostream & display(std::ostream & out) const override;
@@ -200,7 +200,7 @@ namespace ml
 	{
 		String value;
 
-		AST_String(const String& value);
+		AST_String(const String & value);
 		~AST_String() {}
 
 		std::ostream & display(std::ostream & out) const override;

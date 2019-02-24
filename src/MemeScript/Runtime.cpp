@@ -64,7 +64,7 @@ namespace ml
 	}
 
 
-	bool Runtime::delVar(int32_t index, const String& name)
+	bool Runtime::delVar(int32_t index, const String & name)
 	{
 		if (values(index))
 		{
@@ -82,7 +82,7 @@ namespace ml
 		return false;
 	}
 
-	Var * Runtime::getVar(int32_t index, const String& name) const
+	Var * Runtime::getVar(int32_t index, const String & name) const
 	{
 		if (values(index))
 		{

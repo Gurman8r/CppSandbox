@@ -37,9 +37,9 @@ namespace ml
 	{
 		if (m_file)
 		{
-			m_toks = ML_Interpreter.lexer().setBuffer(m_file.data()).splitTokens();
+			m_toks = ML_Lexer.setBuffer(m_file.data()).splitTokens();
 
-			if (m_tree = ML_Interpreter.parser().genAST(m_toks))
+			if (m_tree = ML_Parser.genAST(m_toks))
 			{
 				if (!args.empty())
 				{
@@ -47,19 +47,14 @@ namespace ml
 					argToks.push_back(Token('['));
 					for (size_t i = 0, imax = args.size(); i < imax; i++)
 					{
-						argToks.push_back(ML_Interpreter.lexer().makeToken(args[i]));
-
-						if (i < imax - 1)
-						{
-							argToks.push_back(Token(','));
-						}
-						else
-						{
-							argToks.push_back(Token(']'));
-						}
+						argToks.push_back(ML_Lexer.makeToken(args[i]));
+						argToks.push_back((
+							(i < imax - 1)
+								? Token(',')
+								: Token(']')));
 					}
 
-					if (AST_Array * argArray = ML_Interpreter.parser().genArray(argToks))
+					if (AST_Array * argArray = ML_Parser.generate<AST_Array>(argToks))
 					{
 						m_tree->insertChild(0, new AST_Assign(
 							OperatorType::OP_SET,

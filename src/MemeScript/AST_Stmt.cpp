@@ -251,13 +251,13 @@ namespace ml
 
 	bool AST_Include::run()
 	{
-		const String& filename = str->evaluate().stringValue();
+		const String & filename = str->evaluate().stringValue();
 		
 		List<char> buffer;
 		if (ML_FileSystem.getFileContents(filename, buffer))
 		{
-			const TokenList toks = ML_Interpreter.lexer().setBuffer(buffer).splitTokens();
-			if (AST_Block * root = ML_Interpreter.parser().genAST(toks))
+			const TokenList toks = ML_Lexer.setBuffer(buffer).splitTokens();
+			if (AST_Block * root = ML_Parser.genAST(toks))
 			{
 				if (!root->empty())
 				{

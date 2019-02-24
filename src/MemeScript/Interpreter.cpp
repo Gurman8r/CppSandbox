@@ -56,7 +56,7 @@ namespace ml
 			List<char> buffer;
 			if (ML_FileSystem.getFileContents(value, buffer))
 			{
-				return execTokens(lexer().setBuffer(buffer).splitTokens());
+				return execTokens(lexer.setBuffer(buffer).splitTokens());
 			}
 		}
 		return Var().errorValue("File not found {0}", value);
@@ -66,7 +66,7 @@ namespace ml
 	{
 		if (!value.empty())
 		{
-			return execTokens(lexer().setBuffer(value).splitTokens());
+			return execTokens(lexer.setBuffer(value).splitTokens());
 		}
 		return Var().errorValue("Buffer cannot be empty");
 	}
@@ -75,7 +75,7 @@ namespace ml
 	{
 		if (!value.empty())
 		{
-			if (AST_Block* root = parser().genAST(value))
+			if (AST_Block* root = parser.genAST(value))
 			{
 				return execBlock(root);
 			}
@@ -93,7 +93,7 @@ namespace ml
 
 				delete value;
 
-				if (runtime().setVar(0, ML_RET, v))
+				if (runtime.setVar(0, ML_RET, v))
 				{
 					return v;
 				}

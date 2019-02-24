@@ -8,18 +8,18 @@ namespace ml
 	AST_Block::AST_Block()
 		: AST_Node()
 	{
-		ML_Interpreter.runtime().makeScope(getID());
+		ML_Runtime.makeScope(getID());
 	}
 
 	AST_Block::AST_Block(const list_type & body)
 		: AST_Node(body)
 	{
-		ML_Interpreter.runtime().makeScope(getID());
+		ML_Runtime.makeScope(getID());
 	}
 
 	AST_Block::~AST_Block()
 	{
-		ML_Interpreter.runtime().clearScope(getID());
+		ML_Runtime.clearScope(getID());
 	}
 
 
@@ -48,7 +48,7 @@ namespace ml
 
 	bool	AST_Block::delVar(const String & name)
 	{
-		if (ML_Interpreter.runtime().delVar(getID(), name))
+		if (ML_Runtime.delVar(getID(), name))
 		{
 			return true;
 		}
@@ -64,7 +64,7 @@ namespace ml
 
 	Var *	AST_Block::getVar(const String & name) const
 	{
-		if (Var * v = ML_Interpreter.runtime().getVar(getID(), name))
+		if (Var * v = ML_Runtime.getVar(getID(), name))
 		{
 			return v;
 		}
@@ -80,7 +80,7 @@ namespace ml
 
 	Var *	AST_Block::newVar(const String & name, const Var & value)
 	{
-		if (Var * v = ML_Interpreter.runtime().newVar(getID(), name, value))
+		if (Var * v = ML_Runtime.newVar(getID(), name, value))
 		{
 			return v;
 		}
@@ -101,7 +101,7 @@ namespace ml
 			(*v) = value;
 			return v;
 		}
-		else if (Var * v = ML_Interpreter.runtime().setVar(getID(), name, value))
+		else if (Var * v = ML_Runtime.setVar(getID(), name, value))
 		{
 			return v;
 		}
@@ -118,7 +118,7 @@ namespace ml
 
 	Var *	AST_Block::getRet() const
 	{
-		if (Var * v = ML_Interpreter.runtime().getVar(getID(), ML_RET))
+		if (Var * v = ML_Runtime.getVar(getID(), ML_RET))
 		{
 			return v;
 		}
@@ -127,7 +127,7 @@ namespace ml
 
 	Var *	AST_Block::setRet(const Var & value) const
 	{
-		return ML_Interpreter.runtime().setVar(getID(), ML_RET, value);
+		return ML_Runtime.setVar(getID(), ML_RET, value);
 	}
 
 

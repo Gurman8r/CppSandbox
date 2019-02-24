@@ -35,6 +35,7 @@ TEST = nodeid();
 		printl(demo.a);
 		printl(demo.b);
 		printl(demo.c);
+
 	};
 
 	return main();

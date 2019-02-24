@@ -145,7 +145,7 @@ namespace DEMO
 
 			// Setup Parser
 			/* * * * * * * * * * * * * * * * * * * * */
-			ML_Interpreter.parser()
+			ML_Parser
 				.showToks(SETTINGS.scrShowToks) // Show Tokens
 				.showTree(SETTINGS.scrShowTree) // Show Tree
 				.showItoP(SETTINGS.scrShowItoP);// Show Infix to Postfix
@@ -288,7 +288,7 @@ namespace DEMO
 
 				if (ml::StringUtility::IsInt(scope) && !args.empty())
 				{
-					if (ml::Var * v = ML_Interpreter.runtime().getVar(
+					if (ml::Var * v = ML_Runtime.getVar(
 						ml::StringUtility::ToInt(scope), args.pop()))
 					{
 						return (*v);
@@ -307,9 +307,9 @@ namespace DEMO
 
 					if (ml::StringUtility::IsName(name) && !args.empty())
 					{
-						const ml::Token value = ML_Interpreter.lexer().makeToken(args.pop());
+						const ml::Token value = ML_Lexer.makeToken(args.pop());
 
-						if (ML_Interpreter.runtime().setVar(
+						if (ML_Runtime.setVar(
 							ml::StringUtility::ToInt(scope),
 							name,
 							ml::Var::makeSingle(value)
@@ -329,7 +329,7 @@ namespace DEMO
 				if (ml::StringUtility::IsInt(str) && !args.empty())
 				{
 					return ml::Var().boolValue(
-						ML_Interpreter.runtime().getVar(
+						ML_Runtime.getVar(
 							ml::StringUtility::ToInt(str),
 							args.pop())
 					);

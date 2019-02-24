@@ -3,7 +3,6 @@
 
 namespace ml
 {
-	//const String Operator::OpCodes[Operator::MAX_OP_TYPE] =
 	const Operator::OperMap Operator::OpValues = {
 	{ "=",	OperatorType::OP_SET },
 	{ "^=",	OperatorType::OP_POW_SET },
@@ -50,7 +49,7 @@ namespace ml
 	}
 
 
-	bool Operator::makeOperator(const String& str, Operator& op)
+	bool Operator::makeOperator(const String & str, Operator & op)
 	{
 		Operator::OperMap::const_iterator it = OpValues.find(str);
 		if (it != OpValues.end())
@@ -60,6 +59,11 @@ namespace ml
 		}
 		op = OperatorType::OP_INVALID;
 		return false;
+	}
+
+	bool Operator::makeOperator(const String & a, const String & b, Operator & op)
+	{
+		return makeOperator(a + b, op);
 	}
 
 

@@ -10,11 +10,10 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	class ML_SCRIPT_API Maker
-		: public ITrackable
+	class ML_SCRIPT_API INodeMaker : public ITrackable
 	{
 	public:
-		virtual ~Maker() {}
+		virtual ~INodeMaker() {}
 
 		virtual AST_Node * run(const TokenList & toks) const = 0;
 	};
@@ -22,35 +21,41 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	template <
-		class _Node,
-		class _Toks = const TokenList &,
-		typename _Fun = _Node * (*)(_Toks)
+		typename _Ret,
+		typename _Arg  = const TokenList &,
+		typename _Fun = _Ret * (*)(_Arg)
 	>
-	class NodeMaker : public Maker
+	class NodeMaker : public INodeMaker
 	{
 		_Fun m_fun;
 
 	public:
+		NodeMaker()
+			: m_fun(NULL)
+		{
+		}
 		NodeMaker(_Fun fun)
 			: m_fun(fun)
 		{
 		}
 		~NodeMaker() {}
 
-		inline _Node * run(_Toks toks) const override { return m_fun(toks); }
+		inline _Ret * run(_Arg toks) const override 
+		{ 
+			return m_fun(toks); 
+		}
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	class ML_SCRIPT_API Rule
-		: public ITrackable
+	class ML_SCRIPT_API Rule final : public ITrackable
 	{
 	public:
 		Rule() 
 			: m_maker(NULL)
 		{
 		}
-		Rule(Maker * maker)
+		Rule(INodeMaker * maker)
 			: m_maker(maker)
 		{
 		}
@@ -78,7 +83,7 @@ namespace ml
 		}
 
 	private:
-		Maker * m_maker;
+		INodeMaker * m_maker;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

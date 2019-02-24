@@ -45,7 +45,7 @@ namespace ml
 			int32_t		index;
 
 			Ptr();
-			Ptr(int32_t index, const String& name);
+			Ptr(int32_t index, const String & name);
 			Ptr(const Ptr& copy);
 
 			Var * get() const;

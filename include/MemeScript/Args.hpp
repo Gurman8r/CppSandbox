@@ -21,10 +21,10 @@ namespace ml
 
 	public:
 		Args();
-		Args(const String& value);
+		Args(const String & value);
 		Args(const vector_type& values);
 		Args(const std::initializer_list<String>& values);
-		Args(const String& value, const String& delim);
+		Args(const String & value, const String & delim);
 		Args(const self_type& copy);
 		~Args();
 
@@ -41,12 +41,12 @@ namespace ml
 
 		SStream	sstream() const;
 
-		const size_t	count(const String& value) const;
-		const size_t	count(const_iterator first, const_iterator last, const String& value) const;
-		const size_t	indexOf(const String& value) const;
+		const size_t	count(const String & value) const;
+		const size_t	count(const_iterator first, const_iterator last, const String & value) const;
+		const size_t	indexOf(const String & value) const;
 		const size_t	size() const;
 
-		const bool		contains(const String& value) const;
+		const bool		contains(const String & value) const;
 		const bool		empty() const;
 		const bool		inRange(size_t index) const;
 		const bool		inRange(const_iterator it) const;
@@ -69,31 +69,31 @@ namespace ml
 		self_type&	erase(const_iterator first, const_iterator last);
 		self_type&	insert(size_t index, char value);
 		self_type&	insert(size_t index, CString value);
-		self_type&	insert(size_t index, const String& value);
+		self_type&	insert(size_t index, const String & value);
 		self_type&	mergeNext(size_t index, size_t count);
 		self_type&	pop_back();
 		self_type&	pop_front();
 		self_type&	push_back(char value);
 		self_type&	push_back(CString value);
-		self_type&	push_back(const String& value);
+		self_type&	push_back(const String & value);
 		self_type&	push_back(const vector_type& value);
 		self_type&	push_back(const self_type& value);
 		self_type&	push_front(char value);
 		self_type&	push_front(CString value);
-		self_type&	push_front(const String& value);
+		self_type&	push_front(const String & value);
 		self_type&	push_front(const vector_type& value);
 		self_type&	push_front(const self_type& value);
-		self_type&	remove(const String& value);
-		self_type&	removeAll(const String& value);
+		self_type&	remove(const String & value);
+		self_type&	removeAll(const String & value);
 		self_type&	resize(size_t size);
 		self_type&	reverse();
 
 	public:
-		Args::const_iterator	find(const String& value, size_t begin = 0) const;
-		Args::const_iterator	find_first(const String& value) const;
-		Args::const_iterator	find_first_not_of(const String& value, size_t begin = 0) const;
-		Args::const_iterator	find_last(const String& value) const;
-		Args::const_iterator	find_last_not_of(const String& value) const;
+		Args::const_iterator	find(const String & value, size_t begin = 0) const;
+		Args::const_iterator	find_first(const String & value) const;
+		Args::const_iterator	find_first_not_of(const String & value, size_t begin = 0) const;
+		Args::const_iterator	find_last(const String & value) const;
+		Args::const_iterator	find_last_not_of(const String & value) const;
 
 	public:
 		Args::iterator					begin();

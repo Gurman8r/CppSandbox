@@ -8,8 +8,12 @@
 #include <MemeScript/Runtime.hpp>
 #include <MemeScript/Command.hpp>
 
-#define ML_Interpreter ml::Interpreter::getInstance()
-#define ML_RET "?"
+#define ML_Interpreter	ml::Interpreter::getInstance()
+#define ML_Lexer		ML_Interpreter.lexer
+#define ML_Parser		ML_Interpreter.parser
+#define ML_Runtime		ML_Interpreter.runtime
+
+#define ML_RET	"?"
 #define ML_ARGS "ARGS"
 
 namespace ml
@@ -24,16 +28,10 @@ namespace ml
 		using CommandMap	= HashMap<String, Command>;
 		using CommandPair	= Pair<String, Command>;
 
-	private:
-		Interpreter() {}
-		~Interpreter() {}
-
 	public:
-
 		Command * addCmd(const Command & value);
 		Command * getCmd(const String & value);
 
-	public:
 		template <typename T, typename ... A>
 		inline Var execCommand(const String & fmt, const T& arg0, const A&... args)
 		{
@@ -48,15 +46,16 @@ namespace ml
 
 		inline const CommandMap & commands() const { return m_commands; }
 
-		inline Lexer   & lexer()	{ return m_lexer; }
-		inline Runtime & runtime()	{ return m_runtime; }
-		inline Parser  & parser()	{ return m_parser; }
+	public:
+		Lexer   lexer;
+		Runtime runtime;
+		Parser  parser;
 
 	private:
+		Interpreter() {}
+		~Interpreter() {}
+
 		CommandMap		m_commands;
-		Lexer			m_lexer;
-		Runtime			m_runtime;
-		Parser			m_parser;
 	};
 }
 

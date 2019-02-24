@@ -19,6 +19,7 @@
 #include <mutex>
 #include <random>
 #include <regex>
+#include <stack>
 #include <sstream>
 #include <stdarg.h>
 #include <string>

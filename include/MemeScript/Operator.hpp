@@ -48,12 +48,13 @@ namespace ml
 
 		Operator();
 		Operator(OperatorType type);
-		Operator(const Operator& copy);
+		Operator(const Operator & copy);
 		~Operator();
 
 		OperatorType type;
 
-		static bool makeOperator(const String& str, Operator& op);
+		static bool makeOperator(const String & str, Operator & op);
+		static bool makeOperator(const String & a, const String & b, Operator & op);
 
 		bool equals(const Operator & value) const override;
 		bool equals(const OperatorType & value) const override;

@@ -59,7 +59,7 @@ namespace ml
 	const String	Args::str() const
 	{
 		String out;
-		for (const String& it : (*this))
+		for (const String & it : (*this))
 		{
 			out += it + " ";
 		}
@@ -150,7 +150,7 @@ namespace ml
 
 		return ret;
 	}
-	const size_t	Args::indexOf(const String& value) const
+	const size_t	Args::indexOf(const String & value) const
 	{
 		auto it = find(value);
 
@@ -268,7 +268,7 @@ namespace ml
 	{
 		return insert(index, String(value));
 	}
-	Args::self_type&	Args::insert(size_t index, const String& value)
+	Args::self_type&	Args::insert(size_t index, const String & value)
 	{
 		m_values.insert(begin() + index, value);
 		return (*this);
@@ -325,7 +325,7 @@ namespace ml
 	{
 		return push_back(String(value));
 	}
-	Args::self_type&	Args::push_back(const String& value)
+	Args::self_type&	Args::push_back(const String & value)
 	{
 		m_values.push_back(value);
 		return (*this);
@@ -350,7 +350,7 @@ namespace ml
 	{
 		return push_front(String(value));
 	}
-	Args::self_type&	Args::push_front(const String& value)
+	Args::self_type&	Args::push_front(const String & value)
 	{
 		return insert(0, value);
 	}
@@ -366,11 +366,11 @@ namespace ml
 	{
 		return push_front(value.m_values);
 	}
-	Args::self_type&	Args::remove(const String& value)
+	Args::self_type&	Args::remove(const String & value)
 	{
 		return erase(find_first(value));
 	}
-	Args::self_type&	Args::removeAll(const String& value)
+	Args::self_type&	Args::removeAll(const String & value)
 	{
 		const_iterator it;
 		while ((it = find_first(value)) != end())
@@ -395,7 +395,7 @@ namespace ml
 	}
 
 
-	Args::const_iterator Args::find(const String& value, size_t index) const
+	Args::const_iterator Args::find(const String & value, size_t index) const
 	{
 		for (auto it = begin() + index; it != end(); it++)
 		{
@@ -406,7 +406,7 @@ namespace ml
 		}
 		return end();
 	}
-	Args::const_iterator Args::find_first(const String& value) const
+	Args::const_iterator Args::find_first(const String & value) const
 	{
 		for (auto it = begin(); it != end(); it++)
 		{
@@ -417,7 +417,7 @@ namespace ml
 		}
 		return end();
 	}
-	Args::const_iterator Args::find_first_not_of(const String& value, size_t index) const
+	Args::const_iterator Args::find_first_not_of(const String & value, size_t index) const
 	{
 		for (auto it = begin(); it != end(); it++)
 		{
@@ -428,7 +428,7 @@ namespace ml
 		}
 		return end();
 	}
-	Args::const_iterator Args::find_last(const String& value) const
+	Args::const_iterator Args::find_last(const String & value) const
 	{
 		for (auto it = end(); it != begin(); it--)
 		{
@@ -439,7 +439,7 @@ namespace ml
 		}
 		return end();
 	}
-	Args::const_iterator Args::find_last_not_of(const String& value) const
+	Args::const_iterator Args::find_last_not_of(const String & value) const
 	{
 		for (auto it = end(); it != begin(); it--)
 		{

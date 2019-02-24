@@ -285,7 +285,7 @@ namespace ml
 
 	// Function
 	/* * * * * * * * * * * * * * * * * * * * */
-	AST_Func::AST_Func(const String& name, const Params& args)
+	AST_Func::AST_Func(const String & name, const Params& args)
 		: AST_Expr(EX_Func)
 		, name(name)
 		, args(args)

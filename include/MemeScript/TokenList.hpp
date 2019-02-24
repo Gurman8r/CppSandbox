@@ -40,11 +40,11 @@ namespace ml
 		size_t	size() const;
 
 		bool	back(const Token & value) const;
-		bool	back(const String& value) const;
+		bool	back(const String & value) const;
 		bool	back(char value) const;
 
 		bool	front(const Token & value) const;
-		bool	front(const String& value) const;
+		bool	front(const String & value) const;
 		bool	front(char value) const;
 
 		bool	contains(const Token & value) const;
@@ -57,8 +57,8 @@ namespace ml
 
 		bool	matchChar(size_t index, char c) const;
 		bool	matchChar(const const_iterator & it, char c) const;
-		bool	matchStr(size_t index, const String& str) const;
-		bool	matchStr(const const_iterator & it, const String& str) const;
+		bool	matchStr(size_t index, const String & str) const;
+		bool	matchStr(const const_iterator & it, const String & str) const;
 		bool	matchPat(size_t index, const List<char>& pattern) const;
 		bool	matchPat(const const_iterator & it, const List<char>& pattern) const;
 		bool	matchData(size_t index, const List<CString>& data) const;
