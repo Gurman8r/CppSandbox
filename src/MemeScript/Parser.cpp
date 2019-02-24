@@ -2,14 +2,88 @@
 #include <MemeScript/StringUtility.hpp>
 #include <MemeCore/Debug.hpp>
 #include <stack>
+#include <MemeCore/Function.hpp>
 
 namespace ml
 {
-	Parser::ToksList Parser::SplitStatements(const TokenList & tokens)
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	Parser::Parser()
+	{
+		addRule<AST_Bool>(new NodeMaker<AST_Bool>([](const TokenList & toks)
+		{
+			AST_Bool * temp;
+			return ( 
+				(toks.size() == 1) &&
+				(toks.front(TokenType::TOK_NAME)) &&
+				(StringUtility::IsBool(toks.front().data))
+					? (temp = new AST_Bool(StringUtility::ToBool(toks.front().data)))
+					: (temp = NULL)
+				);
+		}));
+		
+		addRule<AST_Int>(new NodeMaker<AST_Int>([](const TokenList & toks)
+		{
+			AST_Int * temp;
+			return (
+				(toks.size() == 1) &&
+				(toks.front(TokenType::TOK_INT)) &&
+				(StringUtility::IsInt(toks.front().data))
+					? (temp = new AST_Int(StringUtility::ToInt(toks.front().data)))
+					: (temp = NULL)
+				);
+		}));
+
+		addRule<AST_Float>(new NodeMaker<AST_Float>([](const TokenList & toks)
+		{
+			AST_Float * temp;
+			return (
+				(toks.size() == 1) &&
+				(toks.front(TokenType::TOK_FLT)) &&
+				(StringUtility::IsDecimal(toks.front().data))
+					? (temp = new AST_Float(StringUtility::ToFloat(toks.front().data)))
+					: (temp = NULL)
+				);
+		}));
+		
+		addRule<AST_Name>(new NodeMaker<AST_Name>([](const TokenList & toks)
+		{
+			AST_Name * temp;
+			return (
+				((toks.size() == 1) && (toks.front(TokenType::TOK_NAME)))
+					? (temp = new AST_Name(toks.front().data))
+					: (temp = NULL)
+				);
+		}));
+		
+		addRule<AST_String>(new NodeMaker<AST_String>([](const TokenList & toks)
+		{
+			AST_String * temp;
+			return (
+				((toks.size() == 1) && (toks.front(TokenType::TOK_STR)))
+					? (temp = new AST_String(toks.front().data))
+					: (temp = NULL)
+				);
+		}));
+	}
+
+	Parser::~Parser()
+	{
+		for (auto pair : m_rules)
+		{
+			delete pair.second;
+			pair.second = NULL;
+		}
+		m_rules.clear();
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	Parser::ToksTree Parser::SplitStatements(const TokenList & tokens)
 	{
 		static size_t id = 0;
 
-		ToksList out = { TokenList() };
+		ToksTree out = { TokenList() };
 
 		size_t i = 0;
 
@@ -56,7 +130,7 @@ namespace ml
 		return out;
 	}
 
-	bool	Parser::InfixToPostfix(const TokenList & ifx, TokenList & pfx, bool show)
+	bool Parser::InfixToPostfix(const TokenList & ifx, TokenList & pfx, bool show)
 	{
 		// just one operand
 		if (ifx.size() == 1 && ifx.front().isOperand())
@@ -194,7 +268,7 @@ namespace ml
 		return true;
 	}
 
-	bool	Parser::MakeOperator(const Token & lhs, const Token & rhs, Operator & op)
+	bool Parser::MakeOperator(const Token & lhs, const Token & rhs, Operator & op)
 	{
 		return Operator::makeOperator(lhs.data + rhs.data, op);
 	}
@@ -203,18 +277,18 @@ namespace ml
 	// Upper Level
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	AST_Block*	Parser::genAST(const TokenList & tokens) const
+	AST_Block * Parser::genAST(const TokenList & tokens) const
 	{
-		AST_Block* root = NULL;
+		AST_Block * root = NULL;
 
 		if (!tokens.empty())
 		{
-			Parser::ToksList statements = SplitStatements(tokens);
+			Parser::ToksTree statements = SplitStatements(tokens);
 			if (!statements.empty())
 			{
 				root = new AST_Block({});
 
-				ToksList::const_iterator toks;
+				ToksTree::const_iterator toks;
 				for (toks = statements.begin(); toks != statements.end(); toks++)
 				{
 					if (m_showToks)
@@ -226,15 +300,15 @@ namespace ml
 					if (toks->matchData(toks->begin(), { "for" }))
 					{
 						TokenList args = TokenList(*toks).after(2);
-						if (AST_Assign* assn = genAssign(args))
+						if (AST_Assign * assn = genAssign(args))
 						{
 							args = TokenList((*++toks));
 
-							if (AST_Expr* expr = genComplex(args))
+							if (AST_Expr * expr = genExpression(args))
 							{
 								args = TokenList((*++toks)).pop_back();
 
-								if (AST_Stmt* stmt = genStatement(args))
+								if (AST_Stmt * stmt = genStatement(args))
 								{
 									if (root->addChild(new AST_For(assn, expr, stmt)))
 									{
@@ -247,7 +321,7 @@ namespace ml
 							delete assn;
 						}
 					}
-					else if (AST_Node* node = genNode(root, (*toks)))
+					else if (AST_Node * node = genNode(root, (*toks)))
 					{
 						if (node == root)
 						{
@@ -257,7 +331,7 @@ namespace ml
 						{
 							root->addChild(node);
 
-							if (AST_Block* blck = node->Cast<AST_Block>())
+							if (AST_Block * blck = node->Cast<AST_Block>())
 							{
 								root = blck;
 							}
@@ -275,7 +349,7 @@ namespace ml
 		return root;
 	}
 
-	AST_Node*	Parser::genNode(AST_Node* root, const TokenList & toks) const
+	AST_Node * Parser::genNode(AST_Node* root, const TokenList & toks) const
 	{
 		if (toks.empty())
 			return NULL;
@@ -288,7 +362,7 @@ namespace ml
 				return new AST_Block({});
 
 			case '}':
-				if (AST_Node* parent = root->getParent())
+				if (AST_Node * parent = root->getParent())
 				{
 					return root;
 				}
@@ -304,7 +378,7 @@ namespace ml
 		return NULL;
 	}
 
-	AST_Stmt*	Parser::genStatement(const TokenList & toks) const
+	AST_Stmt * Parser::genStatement(const TokenList & toks) const
 	{
 		if (toks.empty())
 		{
@@ -313,7 +387,7 @@ namespace ml
 		// If
 		else if (toks.matchData(toks.begin(), { "if" }))
 		{
-			if (AST_Expr* expr = genComplex(toks.between('(', ')').pop_front()))
+			if (AST_Expr * expr = genExpression(toks.between('(', ')').pop_front()))
 			{
 				return new AST_If(expr);
 			}
@@ -321,7 +395,7 @@ namespace ml
 		// Elif
 		else if (toks.matchData(toks.begin(), { "elif" }))
 		{
-			if (AST_Expr* expr = genComplex(toks.between('(', ')').pop_front()))
+			if (AST_Expr * expr = genExpression(toks.between('(', ')').pop_front()))
 			{
 				return new AST_Elif(expr);
 			}
@@ -354,7 +428,7 @@ namespace ml
 		// Return
 		else if (toks.matchData(toks.begin(), { "return" }))
 		{
-			if (AST_Expr* expr = genComplex(toks.between('(', ')').pop_front()))
+			if (AST_Expr * expr = genExpression(toks.between('(', ')').pop_front()))
 			{
 				return new AST_Return(expr);
 			}
@@ -366,7 +440,7 @@ namespace ml
 		// While
 		else if (toks.matchData(toks.begin(), { "while" }))
 		{
-			if (AST_Expr* expr = genComplex(toks.between('(', ')').pop_front()))
+			if (AST_Expr * expr = genExpression(toks.between('(', ')').pop_front()))
 			{
 				return new AST_While(expr);
 			}
@@ -374,9 +448,9 @@ namespace ml
 		// Delete
 		else if (toks.matchData(toks.begin(), { "delete" }))
 		{
-			if (AST_Expr* expr = genComplex(toks.between('(', ')').pop_front()))
+			if (AST_Expr * expr = genExpression(toks.between('(', ')').pop_front()))
 			{
-				if (AST_Name* name = expr->Cast<AST_Name>())
+				if (AST_Name * name = expr->Cast<AST_Name>())
 				{
 					return new AST_Delete(name);
 				}
@@ -390,9 +464,9 @@ namespace ml
 		// Include
 		else if (toks.matchData(toks.begin(), { "include" }))
 		{
-			if (AST_Expr* expr = genComplex(toks.between('(', ')').pop_front()))
+			if (AST_Expr * expr = genExpression(toks.between('(', ')').pop_front()))
 			{
-				if (AST_String* str = expr->Cast<AST_String>())
+				if (AST_String * str = expr->Cast<AST_String>())
 				{
 					return new AST_Include(str);
 				}
@@ -400,202 +474,48 @@ namespace ml
 			}
 		}
 
-		return genComplex(toks);
+		return genExpression(toks);
 	}
-
-
-
-	// Simple Expressions
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	AST_Expr*	Parser::genSimple(const Token & token) const
-	{
-		switch (token.type)
-		{
-		case TokenType::TOK_FLT:
-			return new AST_Flt(StringUtility::ToFloat(token.data));
-
-		case TokenType::TOK_INT:
-			return new AST_Int(StringUtility::ToInt(token.data));
-
-		case TokenType::TOK_STR:
-			return new AST_String(token.data);
-
-		case TokenType::TOK_NAME:
-			if (StringUtility::IsBool(token.data))
-			{
-				return new AST_Bool(StringUtility::ToBool(token.data));
-			}
-			return new AST_Name(token.data);
-
-		default:
-			return NULL;
-		}
-	}
-
-	AST_Bool*	Parser::genBool(const Token & token) const
-	{
-		if (token == TokenType::TOK_NAME)
-		{
-			if (StringUtility::IsBool(token.data))
-			{
-				return new AST_Bool(StringUtility::ToBool(token.data));
-			}
-		}
-		return NULL;
-	}
-
-	AST_Flt*	Parser::genFlt(const Token & token) const
-	{
-		if (token == TokenType::TOK_FLT)
-		{
-			if (StringUtility::IsDecimal(token.data))
-			{
-				return new AST_Flt(StringUtility::ToFloat(token.data));
-			}
-		}
-		return NULL;
-	}
-
-	AST_Int*	Parser::genInt(const Token & token) const
-	{
-		if (token == TokenType::TOK_INT)
-		{
-			if (StringUtility::IsInt(token.data))
-			{
-				return new AST_Int(StringUtility::ToInt(token.data));
-			}
-		}
-		return NULL;
-	}
-
-	AST_Name*	Parser::genName(const Token & token) const
-	{
-		if (token == TokenType::TOK_NAME)
-		{
-			return new AST_Name(token.data);
-		}
-		return NULL;
-	}
-
-	AST_String*	Parser::genStr(const Token & token) const
-	{
-		if (token == TokenType::TOK_STR)
-		{
-			return new AST_String(token.data);
-		}
-		return NULL;
-	}
-
-
-	// Complex Expressions
-	/* * * * * * * * * * * * * * * * * * * * */
 	
-	AST_Expr*	Parser::genComplex(const TokenList & toks) const
+	AST_Expr * Parser::genExpression(const TokenList & toks) const
 	{
-		// Nothing
 		if (toks.empty())
 		{
 			return NULL;
 		}
-		// Single Expression
-		else if (toks.size() == 1)
-		{
-			return genSimple(toks.front());
-		}
-		// Wrapped Expression
 		else if (toks.isWrap('(', ')'))
 		{
-			return genComplex(toks.unwrapped());
+			return genExpression(toks.unwrapped());
 		}
-		// Simple BinOp
-		else if (toks.size() == 4 && toks.matchStr(toks.begin(), "EOOE"))
-		{
-			Operator op;
-			if (MakeOperator(toks[1], toks[2], op))
-			{
-				return new AST_BinOp(op, genSimple(toks.front()), genSimple(toks.back()));
-			}
-		}
-		// Member
-		else if (AST_Member * mem = genMember(toks))
-		{
-			return mem;
-		}
-		// New
-		else if (AST_New * n = genNew(toks))
-		{
-			return n;
-		}
-		// Struct
-		else if (AST_Struct * str = genStruct(toks))
-		{
-			return str;
-		}
-		// Command
-		else if (AST_Command * cmd = genCommand(toks))
-		{
-			return cmd;
-		}
-		// Size Of
-		else if (AST_SizeOf * size = genSizeof(toks))
-		{
-			return size;
-		}
-		// Type ID
-		else if (AST_TypeID * type = genTypeID(toks))
-		{
-			return type;
-		}
-		// Type Name
-		else if (AST_TypeName * name = genTypeName(toks))
-		{
-			return name;
-		}
-		// Node ID
-		else if (AST_NodeID * id = genNodeID(toks))
-		{
-			return id;
-		}
-		// Function
-		else if (AST_Func* func = genFunc(toks))
-		{
-			return func;
-		}
-		// Assignment
-		else if (AST_Assign* assign = genAssign(toks))
-		{
-			return assign;
-		}
-		// Input
-		else if (AST_Input* input = genInput(toks))
-		{
-			return input;
-		}
-		// Call
-		else if (AST_Call* call = genCall(toks))
-		{
-			return call;
-		}
-		// Subscript
-		else if (AST_Subscr* sub = genSubscr(toks))
-		{
-			return sub;
-		}
-		// Array
-		else if (AST_Array* arr = genArray(toks))
-		{
-			return arr;
-		}
+		else if (AST_Float    * temp = generate<AST_Float>(toks))	{ return temp; }
+		else if (AST_Int      * temp = generate<AST_Int>(toks))		{ return temp; }
+		else if (AST_String   * temp = generate<AST_String>(toks))	{ return temp; }
+		else if (AST_Bool     * temp = generate<AST_Bool>(toks))	{ return temp; }
+		else if (AST_Name     * temp = generate<AST_Name>(toks))	{ return temp; }
+		else if (AST_BinOp	  * temp = genBinOp1(toks))				{ return temp; }
+		else if (AST_Member	  * temp = genMember(toks))				{ return temp; }
+		else if (AST_New	  * temp = genNew(toks))				{ return temp; }
+		else if (AST_Struct	  * temp = genStruct(toks))				{ return temp; }
+		else if (AST_Command  * temp = genCommand(toks))			{ return temp; }
+		else if (AST_SizeOf	  * temp = genSizeof(toks))				{ return temp; }
+		else if (AST_TypeID	  * temp = genTypeID(toks))				{ return temp; }
+		else if (AST_TypeName * temp = genTypeName(toks))			{ return temp; }
+		else if (AST_NodeID	  * temp = genNodeID(toks))				{ return temp; }
+		else if (AST_Func	  * temp = genFunc(toks))				{ return temp; }
+		else if (AST_Assign	  * temp = genAssign(toks))				{ return temp; }
+		else if (AST_Input	  * temp = genInput(toks))				{ return temp; }
+		else if (AST_Call	  * temp = genCall(toks))				{ return temp; }
+		else if (AST_Subscr	  * temp = genSubscr(toks))				{ return temp; }
+		else if (AST_Array	  * temp = genArray(toks))				{ return temp; }
 
 		TokenList ifx(toks), pfx;
 		if (InfixToPostfix(ifx, pfx, m_showItoP))
 		{
-			if (AST_BinOp* oper = genBinOp(pfx))
+			if (AST_BinOp * oper = genBinOp2(pfx))
 			{
 				return oper;
 			}
-			else if (AST_Expr* expr = genComplex(pfx))
+			else if (AST_Expr * expr = genExpression(pfx))
 			{
 				return expr;
 			}
@@ -607,25 +527,20 @@ namespace ml
 
 		return NULL;
 	}
-
-	AST_Array*	Parser::genArray(const TokenList & toks) const
+	
+	/* * * * * * * * * * * * * * * * * * * * */
+	
+	AST_Array *	Parser::genArray(const TokenList & toks) const
 	{
-		if (toks.isWrap('[', ']'))
-		{
-			if (toks.matchStr(toks.begin(), "[]"))
-			{
-				return new AST_Array({});
-			}
-			else
-			{
-				return new AST_Array(genArrayElements(toks.unwrapped()));
-			}
-		}
-
-		return NULL;
+		AST_Array * temp;
+		return ((toks.isWrap('[', ']'))
+			? ((toks.matchStr(toks.begin(), "[]"))
+				? (temp = new AST_Array({}))
+				: (temp = new AST_Array(genArrayElements(toks.unwrapped()))))
+			: (temp = NULL));
 	}
 
-	AST_Assign* Parser::genAssign(const TokenList & toks) const
+	AST_Assign * Parser::genAssign(const TokenList & toks) const
 	{
 		TokenList::const_iterator it = toks.begin();
 
@@ -635,7 +550,7 @@ namespace ml
 
 			if (AST_Subscr* subscr = genSubscr(list))
 			{
-				if (AST_Expr* value = genComplex(toks.after(5)))
+				if (AST_Expr * value = genExpression(toks.after(5)))
 				{
 					return NULL;
 					//return new AST_Assign(OperatorType::OP_SET, subscr, value);
@@ -651,7 +566,7 @@ namespace ml
 				Operator op;
 				if (MakeOperator(*(it + 4), *(it + 5), op))
 				{
-					if (AST_Expr* value = genComplex(toks.after(6)))
+					if (AST_Expr * value = genExpression(toks.after(6)))
 					{
 						return NULL;
 						//return new AST_Assign(op, subscr, value);
@@ -664,7 +579,7 @@ namespace ml
 			return new AST_Assign(
 				OperatorType::OP_SET,
 				new AST_Name(it->data),
-				genComplex(toks.after(2))
+				genExpression(toks.after(2))
 			);
 		}
 		else if (toks.matchStr(it, "n.nO=A"))
@@ -675,7 +590,7 @@ namespace ml
 				return new AST_Assign(
 					op,
 					new AST_Name(it->data),
-					genComplex(toks.after(3))
+					genExpression(toks.after(3))
 				);
 			}
 		}
@@ -684,7 +599,7 @@ namespace ml
 			return new AST_Assign(
 				OperatorType::OP_SET,
 				new AST_Name(it->data),
-				genComplex(toks.after(2))
+				genExpression(toks.after(2))
 			);
 		}
 		else if (toks.matchStr(it, "nO=A"))
@@ -695,16 +610,32 @@ namespace ml
 				return new AST_Assign(
 					op,
 					new AST_Name(it->data),
-					genComplex(toks.after(3))
+					genExpression(toks.after(3))
 				);
 			}
 		}
 		return NULL;
 	}
 
-	AST_BinOp*	Parser::genBinOp(const TokenList & toks) const
+	AST_BinOp * Parser::genBinOp1(const TokenList & toks) const
 	{
-		std::stack<AST_Expr*> stk;
+		if (toks.size() == 4 && toks.matchStr(toks.begin(), "EOOE"))
+		{
+			Operator op;
+			if (MakeOperator(toks[1], toks[2], op))
+			{
+				return new AST_BinOp(
+					op, 
+					genExpression(toks.front()),
+					genExpression(toks.back()));
+			}
+		}
+		return NULL;
+	}
+
+	AST_BinOp *	Parser::genBinOp2(const TokenList & toks) const
+	{
+		std::stack<AST_Expr *> stk;
 
 		TokenList::const_iterator it;
 		for (it = toks.begin(); it != toks.end(); it++)
@@ -729,15 +660,15 @@ namespace ml
 					return NULL;
 				}
 
-				AST_Expr* rhs = stk.top();
+				AST_Expr * rhs = stk.top();
 				stk.pop();
-				AST_Expr* lhs = stk.top();
+				AST_Expr * lhs = stk.top();
 				stk.pop();
 				stk.push(new AST_BinOp(op, lhs, rhs));
 			}
 			else
 			{
-				stk.push(genComplex(*it));
+				stk.push(genExpression(*it));
 			}
 		}
 
@@ -749,7 +680,7 @@ namespace ml
 		return NULL;
 	}
 
-	AST_Call*	Parser::genCall(const TokenList & toks) const
+	AST_Call *	Parser::genCall(const TokenList & toks) const
 	{
 		if (toks.matchStr(toks.begin(), "n(") && toks.back(")"))
 		{
@@ -761,7 +692,7 @@ namespace ml
 		return NULL;
 	}
 
-	AST_Func*	Parser::genFunc(const TokenList & toks) const
+	AST_Func *	Parser::genFunc(const TokenList & toks) const
 	{
 		if (toks.matchStr(toks.begin(), "n=[](") && toks.back(')'))
 		{
@@ -789,9 +720,9 @@ namespace ml
 	{
 		if (toks.matchStr(toks.begin(), "n.n"))
 		{
-			if (AST_Name * n = genName(toks.front()))
+			if (AST_Name * n = generate<AST_Name>(toks.front()))
 			{
-				if (AST_Name * e = genName(toks.back()))
+				if (AST_Name * e = generate<AST_Name>(toks.back()))
 				{
 					return new AST_Member(n, e);
 				}
@@ -820,13 +751,13 @@ namespace ml
 		return NULL;
 	}
 
-	AST_Subscr* Parser::genSubscr(const TokenList & toks) const
+	AST_Subscr * Parser::genSubscr(const TokenList & toks) const
 	{
 		if (toks.matchStr(toks.begin(), "n[E]"))
 		{
-			if (AST_Name* name = new AST_Name(toks.front().data))
+			if (AST_Name * name = new AST_Name(toks.front().data))
 			{
-				if (AST_Expr* expr = genSimple(toks[2]))
+				if (AST_Expr * expr = genExpression(toks[2]))
 				{
 					return new AST_Subscr(name, expr);
 				}
@@ -927,7 +858,7 @@ namespace ml
 	// Expression Containers
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	AST_Array::Values	Parser::genArrayElements(const TokenList & toks) const
+	AST_Array::Values Parser::genArrayElements(const TokenList & toks) const
 	{
 		AST_Array::Values elems;
 
@@ -953,7 +884,7 @@ namespace ml
 			{
 				if (!arg.empty())
 				{
-					elems.push_back(genComplex(arg));
+					elems.push_back(genExpression(arg));
 
 					arg.clear();
 
@@ -970,13 +901,13 @@ namespace ml
 
 		if (!arg.empty())
 		{
-			elems.push_back(genComplex(arg));
+			elems.push_back(genExpression(arg));
 		}
 
 		return elems;
 	}
 
-	AST_Call::Params	Parser::genCallParams(const TokenList & toks) const
+	AST_Call::Params Parser::genCallParams(const TokenList & toks) const
 	{
 		AST_Call::Params params;
 
@@ -1007,7 +938,7 @@ namespace ml
 			{
 				if (!arg.empty())
 				{
-					params.push_back(genComplex(arg));
+					params.push_back(genExpression(arg));
 					arg.clear();
 					continue;
 				}
@@ -1022,13 +953,13 @@ namespace ml
 
 		if (!arg.empty())
 		{
-			params.push_back(genComplex(arg));
+			params.push_back(genExpression(arg));
 		}
 
 		return params;
 	}
 
-	AST_Func::Params	Parser::genFuncParams(const TokenList & toks) const
+	AST_Func::Params Parser::genFuncParams(const TokenList & toks) const
 	{
 		AST_Func::Params params;
 

@@ -9,15 +9,15 @@ namespace ml
 		: public ITrackable
 	{
 	public:
-		using ToksList = std::vector<TokenList>;
+		using ToksTree = std::vector<TokenList>;
+		using RuleMap = HashMap<const std::type_info *, Rule *>;
 
 	public:
-		Parser() {}
-		~Parser() {}
+		Parser();
+		~Parser();
 
-		bool addRule(const Rule & value);
-
-		static ToksList	SplitStatements(const TokenList & toks);
+		// Static
+		static ToksTree	SplitStatements(const TokenList & toks);
 		static bool		InfixToPostfix(const TokenList & ifx, TokenList & pfx, bool show);
 		static bool		MakeOperator(const Token& lhs, const Token& rhs, Operator& op);
 
@@ -25,20 +25,13 @@ namespace ml
 		AST_Block *		genAST(const TokenList & tokens) const;
 		AST_Node *		genNode(AST_Node* root, const TokenList & toks) const;
 		AST_Stmt *		genStatement(const TokenList & toks) const;
+		AST_Expr *		genExpression(const TokenList & toks) const;
 
-		// Simple Expressions
-		AST_Expr *		genSimple(const Token& token) const;
-		AST_Bool *		genBool(const Token& token) const;
-		AST_Flt *		genFlt(const Token& token) const;
-		AST_Int *		genInt(const Token& token) const;
-		AST_Name *		genName(const Token& token) const;
-		AST_String *	genStr(const Token& token) const;
-
-		// Complex Expressions
-		AST_Expr *		genComplex(const TokenList & toks) const;
+		// Expressions
 		AST_Array *		genArray(const TokenList & toks) const;
 		AST_Assign *	genAssign(const TokenList & toks) const;
-		AST_BinOp *		genBinOp(const TokenList & toks) const;
+		AST_BinOp *		genBinOp1(const TokenList & toks) const;
+		AST_BinOp *		genBinOp2(const TokenList & toks) const;
 		AST_Call *		genCall(const TokenList & toks) const;
 		AST_Func *		genFunc(const TokenList & toks) const;
 		AST_Input *		genInput(const TokenList & toks) const;
@@ -64,10 +57,35 @@ namespace ml
 		inline Parser & showTree(bool value) { m_showTree = value; return (*this); }
 		inline Parser & showItoP(bool value) { m_showItoP = value; return (*this); }
 
+	public:
+		template <class T>
+		inline Rule * addRule(Maker * maker)
+		{
+			RuleMap::iterator it;
+			if ((it = m_rules.find(&typeid(T))) == m_rules.end())
+			{
+				return (m_rules[&typeid(T)] = new Rule(maker));
+			}
+			return NULL;
+		}
+
+		template <class T>
+		inline T * generate(const TokenList & toks) const
+		{
+			RuleMap::const_iterator it;
+			if ((it = m_rules.find(&typeid(T))) != m_rules.end())
+			{
+				return (T *)it->second->run(toks);
+			}
+			return NULL;
+		}
+
 	private:
 		bool m_showToks;
 		bool m_showTree;
 		bool m_showItoP;
+
+		RuleMap m_rules;
 	};
 }
 

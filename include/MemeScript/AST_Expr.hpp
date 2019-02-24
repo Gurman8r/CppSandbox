@@ -80,12 +80,12 @@ namespace ml
 
 	// Float
 	/* * * * * * * * * * * * * * * * * * * * */
-	struct ML_SCRIPT_API AST_Flt : public AST_Expr
+	struct ML_SCRIPT_API AST_Float : public AST_Expr
 	{
 		float value;
 
-		AST_Flt(float value);
-		~AST_Flt() {}
+		AST_Float(float value);
+		~AST_Float() {}
 
 		std::ostream & display(std::ostream & out) const override;
 		Var evaluate() const override;

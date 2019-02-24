@@ -11,7 +11,7 @@ namespace ml
 	struct AST_Assign;
 	struct AST_Bool;
 	struct AST_Call;
-	struct AST_Flt;
+	struct AST_Float;
 	struct AST_Func;
 	struct AST_Int;
 	struct AST_Name;

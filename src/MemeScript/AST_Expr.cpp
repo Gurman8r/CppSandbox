@@ -265,19 +265,19 @@ namespace ml
 
 	// Float
 	/* * * * * * * * * * * * * * * * * * * * */
-	AST_Flt::AST_Flt(float value)
+	AST_Float::AST_Float(float value)
 		: AST_Expr(EX_Float)
 		, value(value)
 	{
 	}
 
-	std::ostream & AST_Flt::display(std::ostream & out) const
+	std::ostream & AST_Float::display(std::ostream & out) const
 	{
 		out << Var().floatValue(value);
 		return out;
 	}
 
-	Var AST_Flt::evaluate() const
+	Var AST_Float::evaluate() const
 	{
 		return Var().floatValue(value);
 	}
@@ -511,14 +511,14 @@ namespace ml
 
 	std::ostream & AST_Struct::display(std::ostream & out) const
 	{
-		out << (FG::Cyan | BG::Black) << name << " = $("
+		out << (FG::DarkBlue | BG::Black) << name << " = $("
 			<< FMT();
 		Params::const_iterator it;
 		for (it = args.begin(); it != args.end(); it++)
 		{
 			out << *(*it) << ((it != args.end() - 1) ? ", " : "");
 		}
-		out << (FG::Cyan | BG::Black) << ")"
+		out << (FG::DarkBlue | BG::Black) << ")"
 			<< FMT();
 		return out;
 	}

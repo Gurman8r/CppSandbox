@@ -1,6 +1,11 @@
 TEST = nodeid();
 {
-	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+	#/* * * * * * * * * * * * * * * * * * * * */#
+
+	exists = [](_scope, _name);
+	{
+		return command("exists " + _scope + " " + _name);
+	};
 
 	get = [](_scope, _name);
 	{
@@ -12,27 +17,27 @@ TEST = nodeid();
 		return command("set " + _scope + " " + _name + " " + _value);
 	};
 
-	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+	#/* * * * * * * * * * * * * * * * * * * * */#
 
-	demoStruct = $();
+	demo = $(_a, _b, _c);
 	{
 		a = 1;
-		b = 2;
-		c = 3;
+		b = 2.2;
+		c = "3E";
 
 		fun = [](); { printl("Hello from struct."); };
 	};
 
-	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+	#/* * * * * * * * * * * * * * * * * * * * */#
 
 	main = []();
 	{
-		printl(demoStruct.a);
-		printl(demoStruct.b);
-		printl(demoStruct.c);
+		printl(demo.a);
+		printl(demo.b);
+		printl(demo.c);
 	};
 
 	return main();
 
-	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+	#/* * * * * * * * * * * * * * * * * * * * */#
 };
