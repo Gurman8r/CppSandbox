@@ -62,6 +62,7 @@ namespace ml
 		"string",
 		"array"
 		"func",
+		"struct",
 	};
 
 	Var::Var()
@@ -193,7 +194,12 @@ namespace ml
 	{
 		return compareType(Var::Str) || tokensValue().front('s');
 	}
-		 
+
+	bool Var::isStructType() const
+	{
+		return compareType(Var::Struct);
+	}
+
 	bool Var::isVoidType() const
 	{
 		return compareType(Var::Void) || tokensValue().front(TokenType::TOK_VOID);
@@ -393,6 +399,11 @@ namespace ml
 	{
 		return setType(Var::Str).dataValue({ { TokenType::TOK_STR, value } });
 	}
+
+	Var & Var::structValue(const TokenList & value)
+	{
+		return setType(Var::Struct).dataValue(value);
+	}
 	  
 	Var & Var::voidValue()
 	{
@@ -460,6 +471,12 @@ namespace ml
 			out << (FG::Black | BG::Yellow) << "[" << FMT() << " ";
 			Var::PrintList(out, (*this));
 			out << " " << (FG::Black | BG::Yellow) << "]" << FMT();
+			break;
+
+		case Var::Struct:
+			out << (FG::White | BG::DarkGray) << "[](" << FMT();
+			Var::PrintList(out, (*this));
+			out << (FG::White | BG::DarkGray) << ")" << FMT();
 			break;
 
 		case Var::Void:
@@ -1003,15 +1020,6 @@ namespace ml
 				if (other.isFloatType())
 					return floatValue(floatValue() - other.floatValue());
 			}
-
-			//	// String
-			//case TokenType::String:
-			//	switch (other.getTypeID())
-			//	{
-			//	case Var::Str:
-			//	default:
-			//		return stringValue(stringValue() - other.tokensValue());
-			//	}
 		}
 
 		bool lp = compareType(Var::Pointer);

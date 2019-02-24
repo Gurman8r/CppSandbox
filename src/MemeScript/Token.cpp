@@ -19,10 +19,11 @@ namespace ml
 		{ TOK_DIV,	"DIV" },
 		{ TOK_ADD,	"ADD" },
 		{ TOK_SUB,	"SUB" },
+		{ TOK_MOD,	"MOD" },
 
 		{ TOK_EQU,	"EQU" },
-		{ TOK_LT,	"LT" },
-		{ TOK_GT,	"GT" },
+		{ TOK_LT,	"LT"  },
+		{ TOK_GT,	"GT"  },
 		{ TOK_NOT,  "NOT" },
 
 		{ TOK_HASH, "HASH" },
@@ -30,6 +31,7 @@ namespace ml
 		{ TOK_SEMI, "SEMI" },
 		{ TOK_CMMA, "CMMA" },
 		{ TOK_COLN, "COLN" },
+		{ TOK_DOT,  "DOT"  },
 
 		{ TOK_LPRN, "LPRN" },{ TOK_RPRN, "RPRN" } , // (paren)
 		{ TOK_LBRC, "LBRC" },{ TOK_RBRC, "RBRC" } , // {brace}
@@ -37,8 +39,9 @@ namespace ml
 
 		{ TOK_DQTE, "DQTE" },{ TOK_SQTE, "SQTE" },
 
-		{ TOK_USCR, "USCR" },
+		//{ TOK_USCR, "USCR" },
 		{ TOK_TNRY, "TNRY" },
+		{ TOK_DOLR, "DOLR" },
 		});
 
 	const Token::SymbolMap Token::Symbols({
@@ -66,6 +69,7 @@ namespace ml
 		{ ":", TOK_COLN },
 		{ "#", TOK_HASH },
 		{ "\\",TOK_TERM },
+		{ ".", TOK_DOT },
 
 		{ "(", TOK_LPRN },{ ")", TOK_RPRN },
 		{ "{", TOK_LBRC },{ "}", TOK_RBRC },
@@ -73,8 +77,9 @@ namespace ml
 
 		{ "\"", TOK_DQTE }, { "\'", TOK_SQTE},
 
-		{ "_", TOK_USCR },
+		//{ "_", TOK_USCR },
 		{ "_", TOK_TNRY },
+		{ "$", TOK_DOLR },
 
 		});
 
@@ -151,7 +156,8 @@ namespace ml
 			type == TOK_EQU ||
 			type == TOK_LT ||
 			type == TOK_GT ||
-			type == TOK_NOT;
+			type == TOK_NOT ||
+			type == TOK_MOD;
 	}
 
 	

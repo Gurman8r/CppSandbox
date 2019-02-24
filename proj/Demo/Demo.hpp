@@ -43,7 +43,7 @@ namespace DEMO
 		~Demo();
 
 	public:
-		void onEvent(const ml::Event * value) override;
+		void onEvent(const ml::IEvent * value) override;
 
 	private:
 		bool	loadInterpreter();

@@ -7,13 +7,15 @@
 namespace ml
 {
 	struct AST_Func;
+	struct AST_Struct;
 
 	// Block
 	/* * * * * * * * * * * * * * * * * * * * */
 	class ML_SCRIPT_API AST_Block : public AST_Node
 	{
 	public:
-		using FuncMap = HashMap<String, AST_Func*>;
+		using FuncTable = HashMap<String, AST_Func*>;
+		using StructTable = HashMap<String, AST_Struct *>;
 
 	public:
 		AST_Block();
@@ -30,9 +32,13 @@ namespace ml
 		Var *	getRet() const;
 		Var *	setRet(const Var & value) const;
 
-		bool		addFunc(const String & name, AST_Func * func);
+		bool		addFunc(const String & name, AST_Func * value);
 		AST_Func*	getFunc(const String & name);
-		FuncMap		getFuncs() const;
+		FuncTable	getFuncs() const;
+
+		bool		addStruct(const String & name, AST_Struct * value);
+		AST_Struct *getStruct(const String & name);
+		StructTable getStructs() const;
 
 		AST_Block*	block() const;
 
@@ -41,7 +47,8 @@ namespace ml
 		bool runFirst();
 
 	private:
-		FuncMap m_funcs;
+		FuncTable	m_funcs;
+		StructTable m_structs;
 	};
 }
 

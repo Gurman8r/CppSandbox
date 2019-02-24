@@ -72,6 +72,9 @@
     <ClInclude Include="..\..\include\MemeEditor\EditorConsole.hpp">
       <Filter>Header Files\Editor</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeEditor\EventSerializer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\thirdparty\include\imgui\imgui.cpp">
@@ -100,6 +103,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\EditorConsole.cpp">
       <Filter>Source Files\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeEditor\EventSerializer.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

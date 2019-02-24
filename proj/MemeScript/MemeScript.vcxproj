@@ -46,6 +46,7 @@
     <ClInclude Include="..\..\include\MemeScript\Export.hpp" />
     <ClInclude Include="..\..\include\MemeScript\Interpreter.hpp" />
     <ClInclude Include="..\..\include\MemeScript\Lexer.hpp" />
+    <ClInclude Include="..\..\include\MemeScript\Rule.hpp" />
     <ClInclude Include="..\..\include\MemeScript\Runtime.hpp" />
     <ClInclude Include="..\..\include\MemeScript\Operator.hpp" />
     <ClInclude Include="..\..\include\MemeScript\Parser.hpp" />

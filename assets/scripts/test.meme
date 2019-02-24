@@ -1,15 +1,38 @@
+TEST = nodeid();
 {
-	include("../../../assets/scripts/core.meme");
+	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-	test = [](arg0);
+	get = [](_scope, _name);
 	{
-		if(arg0 == 1);
-		{
-			return true;
-		};
-		return false;
+		return command("get " + _scope + " " + _name);
 	};
 
-	value = test(1);
-	print(value);
-}
+	set = [](_scope, _name, _value);
+	{
+		return command("set " + _scope + " " + _name + " " + _value);
+	};
+
+	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+
+	demoStruct = $();
+	{
+		a = 1;
+		b = 2;
+		c = 3;
+
+		fun = [](); { printl("Hello from struct."); };
+	};
+
+	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+
+	main = []();
+	{
+		printl(demoStruct.a);
+		printl(demoStruct.b);
+		printl(demoStruct.c);
+	};
+
+	return main();
+
+	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+};

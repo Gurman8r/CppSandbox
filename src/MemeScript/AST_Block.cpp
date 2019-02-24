@@ -131,13 +131,13 @@ namespace ml
 	}
 
 
-	bool AST_Block::addFunc(const String & name, AST_Func * func)
+	bool AST_Block::addFunc(const String & name, AST_Func * value)
 	{
 		if (!getFunc(name))
 		{
 			if (Var * v = setVar(name, Var().funcValue({ { TokenType::TOK_NAME, name } })))
 			{
-				m_funcs.insert({ name, func });
+				m_funcs.insert({ name, value });
 
 				return true;
 			}
@@ -147,26 +147,59 @@ namespace ml
 
 	AST_Func * AST_Block::getFunc(const String & name)
 	{
-		if (AST_Block* b = block())
+		if (AST_Block * b = block())
 		{
-			if (AST_Func* f = b->getFunc(name))
+			if (AST_Func * f = b->getFunc(name))
 			{
 				return f;
 			}
 		}
 
-		FuncMap::iterator it = m_funcs.find(name);
-		if (it != m_funcs.end())
-		{
-			return it->second;
-		}
-
-		return NULL;
+		FuncTable::iterator it;
+		return ((it = m_funcs.find(name)) != m_funcs.end())
+			? it->second
+			: NULL;
 	}
 
-	AST_Block::FuncMap AST_Block::getFuncs() const
+	AST_Block::FuncTable AST_Block::getFuncs() const
 	{
 		return m_funcs;
+	}
+
+
+	bool AST_Block::addStruct(const String & name, AST_Struct * value)
+	{
+		if (!getStruct(name))
+		{
+			if (Var * v = setVar(name, Var().structValue({ { TokenType::TOK_NAME, name } })))
+			{
+				m_structs.insert({ name, value });
+
+				return true;
+			}
+		}
+		return false;
+	}
+
+	AST_Struct * AST_Block::getStruct(const String & name)
+	{
+		if (AST_Block * b = block())
+		{
+			if (AST_Struct * s = b->getStruct(name))
+			{
+				return s;
+			}
+		}
+
+		StructTable::iterator it;
+		return ((it = m_structs.find(name)) != m_structs.end())
+			? it->second
+			: NULL;
+	}
+
+	AST_Block::StructTable AST_Block::getStructs() const
+	{
+		return m_structs;
 	}
 
 
@@ -197,7 +230,8 @@ namespace ml
 			prevAs<AST_Else>() ||
 			prevAs<AST_For>() ||
 			prevAs<AST_While>() ||
-			prevAs<AST_Func>())
+			prevAs<AST_Func>() ||
+			prevAs<AST_Struct>())
 		{
 			return runNext();
 		}

@@ -156,7 +156,7 @@ namespace ml
 		return true;
 	}
 
-	void Window::onEvent(const Event * value)
+	void Window::onEvent(const IEvent * value)
 	{
 		switch (value->eventID())
 		{

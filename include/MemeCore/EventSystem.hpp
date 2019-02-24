@@ -20,7 +20,7 @@ namespace ml
 
 	public:
 		void addListener(const int32_t & type, IEventListener * listener);
-		void fireEvent(const Event & ev);
+		void fireEvent(const IEvent & ev);
 		void removeListener(const int32_t & type, IEventListener * listener);
 		void removeListenerFromAllEvents(IEventListener * listener);
 
@@ -28,7 +28,7 @@ namespace ml
 		EventSystem() {}
 		~EventSystem() {}
 
-		void dispatchAllEvents(const Event * ev);
+		void dispatchAllEvents(const IEvent * ev);
 
 		multimap_type m_listeners;
 	};

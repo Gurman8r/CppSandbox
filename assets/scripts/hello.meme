@@ -1,12 +1,14 @@
-# Script to run on start
-# Displays some system information
 HELLO = nodeid();
 {
+	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+
 	include("../../../assets/scripts/core.meme");
 
-	hello = []();
+	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+
+	main = []();
 	{
-		dir	= getcwd();
+		dir = getcwd();
 		exe = getTargetExeName();
 
 		printl("{dir}\{exe}");
@@ -16,8 +18,9 @@ HELLO = nodeid();
 		printl("*   https://github.com/Gurman8r/CppSandbox  *");
 		printl("*                                           *");
 		printl("* * * * * * * * * * * * * * * * * * * * * * *");
-
-		return true;
 	};
-	return hello();
-}
+
+	return main();
+
+	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+};

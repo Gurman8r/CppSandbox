@@ -137,5 +137,8 @@
     <ClInclude Include="..\..\include\MemeScript\Script.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\Rule.hpp">
+      <Filter>Header Files\DS</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

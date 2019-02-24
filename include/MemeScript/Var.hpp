@@ -30,6 +30,7 @@ namespace ml
 			MIN_COMPLEX,
 			Array = MIN_COMPLEX,
 			Func,
+			Struct,
 			MAX_COMPLEX,
 
 			//- - - - - - -//
@@ -105,6 +106,7 @@ namespace ml
 		bool	isNumericType() const;
 		bool	isPointerType() const;
 		bool	isStringType() const;
+		bool	isStructType() const;
 		bool	isVoidType() const;
 
 		inline operator bool() const { return !isErrorType(); }
@@ -133,6 +135,7 @@ namespace ml
 		Var & nullValue();
 		Var & pointerValue(const Ptr & value);
 		Var & stringValue(const String & value);
+		Var & structValue(const TokenList & value);
 		Var & voidValue();
 		
 		template <class T, typename ... A>

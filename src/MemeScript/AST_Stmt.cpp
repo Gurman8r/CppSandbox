@@ -15,10 +15,6 @@ namespace ml
 	{
 	}
 
-	AST_Stmt::~AST_Stmt()
-	{
-	}
-
 	std::ostream & AST_Stmt::display(std::ostream & out) const
 	{
 		return AST_Node::display(out);
@@ -48,10 +44,6 @@ namespace ml
 		addChild(expr);
 	}
 
-	AST_Elif::~AST_Elif()
-	{
-	}
-
 	std::ostream & AST_Elif::display(std::ostream & out) const
 	{
 		return out << "elif(" << *expr << ")";
@@ -67,10 +59,6 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 	AST_Else::AST_Else()
 		: AST_Stmt(ST_Else)
-	{
-	}
-
-	AST_Else::~AST_Else()
 	{
 	}
 
@@ -96,10 +84,6 @@ namespace ml
 		addChild(assn);
 		addChild(expr);
 		addChild(stmt);
-	}
-
-	AST_For::~AST_For()
-	{
 	}
 
 	std::ostream & AST_For::display(std::ostream & out) const
@@ -150,10 +134,6 @@ namespace ml
 		addChild(name);
 	}
 
-	AST_Delete::~AST_Delete()
-	{
-	}
-
 	std::ostream & AST_Delete::display(std::ostream & out) const
 	{
 		return out << "delete(" << (*name) << ")";
@@ -176,10 +156,6 @@ namespace ml
 		, expr(expr)
 	{
 		addChild(expr);
-	}
-
-	AST_If::~AST_If()
-	{
 	}
 
 	std::ostream & AST_If::display(std::ostream & out) const
@@ -268,10 +244,6 @@ namespace ml
 		addChild(str);
 	}
 
-	AST_Include::~AST_Include()
-	{
-	}
-
 	std::ostream & AST_Include::display(std::ostream & out) const
 	{
 		return out << "include(" << (*str) << ")";
@@ -324,10 +296,6 @@ namespace ml
 		, newl(newl)
 	{
 		addChild(expr);
-	}
-
-	AST_Print::~AST_Print()
-	{
 	}
 
 	std::ostream & AST_Print::display(std::ostream & out) const
@@ -391,10 +359,6 @@ namespace ml
 		addChild(expr);
 	}
 
-	AST_Return::~AST_Return()
-	{
-	}
-
 	std::ostream & AST_Return::display(std::ostream & out) const
 	{
 		return out << "return " << (*expr);
@@ -417,10 +381,6 @@ namespace ml
 		, expr(expr)
 	{
 		addChild(expr);
-	}
-
-	AST_While::~AST_While()
-	{
 	}
 
 	std::ostream & AST_While::display(std::ostream & out) const

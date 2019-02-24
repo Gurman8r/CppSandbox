@@ -50,6 +50,9 @@ int32_t main(int32_t argc, char ** argv)
 			return ml::Debug::pause(EXIT_FAILURE);
 		}
 
+		delete program;
+		return ml::Debug::pause(EXIT_SUCCESS);
+
 		// Load
 		ML_EventSystem.fireEvent(DEMO::LoadEvent());
 		if (ml::Debug::checkError(ML_FAILURE))

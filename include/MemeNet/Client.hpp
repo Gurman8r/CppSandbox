@@ -20,7 +20,7 @@ namespace ml
 		~Client();
 
 	public:
-		void onEvent(const Event * value) override;
+		void onEvent(const IEvent * value) override;
 		
 		void onPacket(const Packet & value) override;
 

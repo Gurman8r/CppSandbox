@@ -201,6 +201,7 @@ namespace ml
 
 
 	// Upper Level
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	AST_Block*	Parser::genAST(const TokenList & tokens) const
 	{
@@ -402,115 +403,10 @@ namespace ml
 		return genComplex(toks);
 	}
 
-	AST_Expr*	Parser::genComplex(const TokenList & toks) const
-	{
-		// Nothing
-		if (toks.empty())
-		{
-			return NULL;
-		}
-		// Single Expression
-		else if (toks.size() == 1)
-		{
-			return genSimple(toks.front());
-		}
-		// Wrapped Expression
-		else if (toks.isWrap('(', ')'))
-		{
-			return genComplex(toks.unwrapped());
-		}
-		// Simple BinOp
-		else if (toks.size() == 4 && toks.matchStr(toks.begin(), "EOOE"))
-		{
-			Operator op;
-			if (MakeOperator(toks[1], toks[2], op))
-			{
-				return new AST_BinOp(op, genSimple(toks.front()), genSimple(toks.back()));
-			}
-		}
-		// Command
-		else if (AST_Command * cmd = genCommand(toks))
-		{
-			return cmd;
-		}
-		// Size Of
-		else if (AST_SizeOf * size = genSizeof(toks))
-		{
-			return size;
-		}
-		// Type ID
-		else if (AST_TypeID * type = genTypeID(toks))
-		{
-			return type;
-		}
-		// Type Name
-		else if (AST_TypeName * name = genTypeName(toks))
-		{
-			return name;
-		}
-		// Scope ID
-		else if (toks.matchData(toks.begin(), { "nodeid" }))
-		{
-			AST_Call::Params params = genCallParams(toks.after(1));
-			if (!params.empty())
-			{
-				return new AST_NodeID(params.front());
-			}
-			else
-			{
-				return new AST_NodeID(new AST_Int(0));
-			}
-		}
-		// Function
-		else if (AST_Func* func = genFunc(toks))
-		{
-			return func;
-		}
-		// Assignment
-		else if (AST_Assign* assign = genAssign(toks))
-		{
-			return assign;
-		}
-		// Input
-		else if (AST_Input* input = genInput(toks))
-		{
-			return input;
-		}
-		// Call
-		else if (AST_Call* call = genCall(toks))
-		{
-			return call;
-		}
-		// Subscript
-		else if (AST_Subscr* sub = genSubscr(toks))
-		{
-			return sub;
-		}
-		// Array
-		else if (AST_Array* arr = genArray(toks))
-		{
-			return arr;
-		}
 
-		TokenList ifx(toks), pfx;
-		if (InfixToPostfix(ifx, pfx, m_showItoP))
-		{
-			if (AST_BinOp* oper = genBinOp(pfx))
-			{
-				return oper;
-			}
-			else if (AST_Expr* expr = genComplex(pfx))
-			{
-				return expr;
-			}
-			else
-			{
-				return new AST_String(pfx.str());
-			}
-		}
 
-		return NULL;
-	}
+	// Simple Expressions
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	AST_Expr*	Parser::genSimple(const Token & token) const
 	{
@@ -536,9 +432,6 @@ namespace ml
 			return NULL;
 		}
 	}
-
-
-	// Simple Expressions
 
 	AST_Bool*	Parser::genBool(const Token & token) const
 	{
@@ -596,6 +489,124 @@ namespace ml
 
 
 	// Complex Expressions
+	/* * * * * * * * * * * * * * * * * * * * */
+	
+	AST_Expr*	Parser::genComplex(const TokenList & toks) const
+	{
+		// Nothing
+		if (toks.empty())
+		{
+			return NULL;
+		}
+		// Single Expression
+		else if (toks.size() == 1)
+		{
+			return genSimple(toks.front());
+		}
+		// Wrapped Expression
+		else if (toks.isWrap('(', ')'))
+		{
+			return genComplex(toks.unwrapped());
+		}
+		// Simple BinOp
+		else if (toks.size() == 4 && toks.matchStr(toks.begin(), "EOOE"))
+		{
+			Operator op;
+			if (MakeOperator(toks[1], toks[2], op))
+			{
+				return new AST_BinOp(op, genSimple(toks.front()), genSimple(toks.back()));
+			}
+		}
+		// Member
+		else if (AST_Member * mem = genMember(toks))
+		{
+			return mem;
+		}
+		// New
+		else if (AST_New * n = genNew(toks))
+		{
+			return n;
+		}
+		// Struct
+		else if (AST_Struct * str = genStruct(toks))
+		{
+			return str;
+		}
+		// Command
+		else if (AST_Command * cmd = genCommand(toks))
+		{
+			return cmd;
+		}
+		// Size Of
+		else if (AST_SizeOf * size = genSizeof(toks))
+		{
+			return size;
+		}
+		// Type ID
+		else if (AST_TypeID * type = genTypeID(toks))
+		{
+			return type;
+		}
+		// Type Name
+		else if (AST_TypeName * name = genTypeName(toks))
+		{
+			return name;
+		}
+		// Node ID
+		else if (AST_NodeID * id = genNodeID(toks))
+		{
+			return id;
+		}
+		// Function
+		else if (AST_Func* func = genFunc(toks))
+		{
+			return func;
+		}
+		// Assignment
+		else if (AST_Assign* assign = genAssign(toks))
+		{
+			return assign;
+		}
+		// Input
+		else if (AST_Input* input = genInput(toks))
+		{
+			return input;
+		}
+		// Call
+		else if (AST_Call* call = genCall(toks))
+		{
+			return call;
+		}
+		// Subscript
+		else if (AST_Subscr* sub = genSubscr(toks))
+		{
+			return sub;
+		}
+		// Array
+		else if (AST_Array* arr = genArray(toks))
+		{
+			return arr;
+		}
+
+		TokenList ifx(toks), pfx;
+		if (InfixToPostfix(ifx, pfx, m_showItoP))
+		{
+			if (AST_BinOp* oper = genBinOp(pfx))
+			{
+				return oper;
+			}
+			else if (AST_Expr* expr = genComplex(pfx))
+			{
+				return expr;
+			}
+			else
+			{
+				return new AST_String(pfx.str());
+			}
+		}
+
+		return NULL;
+	}
 
 	AST_Array*	Parser::genArray(const TokenList & toks) const
 	{
@@ -648,12 +659,33 @@ namespace ml
 				}
 			}
 		}
+		else if (toks.matchStr(it, "n.n=A"))
+		{
+			return new AST_Assign(
+				OperatorType::OP_SET,
+				new AST_Name(it->data),
+				genComplex(toks.after(2))
+			);
+		}
+		else if (toks.matchStr(it, "n.nO=A"))
+		{
+			Operator op;
+			if (MakeOperator(*(it + 1), *(it + 2), op))
+			{
+				return new AST_Assign(
+					op,
+					new AST_Name(it->data),
+					genComplex(toks.after(3))
+				);
+			}
+		}
 		else if (toks.matchStr(it, "n=A"))
 		{
 			return new AST_Assign(
 				OperatorType::OP_SET,
 				new AST_Name(it->data),
-				genComplex(toks.after(2)));
+				genComplex(toks.after(2))
+			);
 		}
 		else if (toks.matchStr(it, "nO=A"))
 		{
@@ -663,41 +695,8 @@ namespace ml
 				return new AST_Assign(
 					op,
 					new AST_Name(it->data),
-					genComplex(toks.after(3)));
-			}
-		}
-		return NULL;
-	}
-
-	AST_Call*	Parser::genCall(const TokenList & toks) const
-	{
-		if (toks.matchStr(toks.begin(), "n(") && toks.back(")"))
-		{
-			return new AST_Call(
-				new AST_Name(toks.front().data),
-				genCallParams(toks.after(1)));
-		}
-		return NULL;
-	}
-
-	AST_Func*	Parser::genFunc(const TokenList & toks) const
-	{
-		if (toks.matchStr(toks.begin(), "n=[](") && toks.back(')'))
-		{
-			return new AST_Func(
-				toks.front().data,
-				genFuncParams(toks.after(4)));
-		}
-		return NULL;
-	}
-
-	AST_Input * Parser::genInput(const TokenList & toks) const
-	{
-		if (toks.matchStr(toks.begin(), "n(") && toks.back(')'))
-		{
-			if (toks.front("input"))
-			{
-				return new AST_Input();
+					genComplex(toks.after(3))
+				);
 			}
 		}
 		return NULL;
@@ -750,6 +749,77 @@ namespace ml
 		return NULL;
 	}
 
+	AST_Call*	Parser::genCall(const TokenList & toks) const
+	{
+		if (toks.matchStr(toks.begin(), "n(") && toks.back(")"))
+		{
+			return new AST_Call(
+				new AST_Name(toks.front().data),
+				genCallParams(toks.after(1))
+			);
+		}
+		return NULL;
+	}
+
+	AST_Func*	Parser::genFunc(const TokenList & toks) const
+	{
+		if (toks.matchStr(toks.begin(), "n=[](") && toks.back(')'))
+		{
+			return new AST_Func(
+				toks.front().data,
+				genFuncParams(toks.after(4))
+			);
+		}
+		return NULL;
+	}
+
+	AST_Input * Parser::genInput(const TokenList & toks) const
+	{
+		if (toks.matchStr(toks.begin(), "n(") && toks.back(')'))
+		{
+			if (toks.front("input"))
+			{
+				return new AST_Input();
+			}
+		}
+		return NULL;
+	}
+
+	AST_Member * Parser::genMember(const TokenList & toks) const
+	{
+		if (toks.matchStr(toks.begin(), "n.n"))
+		{
+			if (AST_Name * n = genName(toks.front()))
+			{
+				if (AST_Name * e = genName(toks.back()))
+				{
+					return new AST_Member(n, e);
+				}
+				else
+				{
+					delete e;
+				}
+			}
+			else
+			{
+				delete n;
+			}
+		}
+		return NULL;
+	}
+
+	AST_Struct * Parser::genStruct(const TokenList & toks) const
+	{
+		if (toks.matchStr(toks.begin(), "n=$(") && toks.back(')'))
+		{
+			return new AST_Struct(
+				toks.front().data,
+				genFuncParams(toks.after(3))
+			);
+		}
+		return NULL;
+	}
+
 	AST_Subscr* Parser::genSubscr(const TokenList & toks) const
 	{
 		if (toks.matchStr(toks.begin(), "n[E]"))
@@ -767,17 +837,45 @@ namespace ml
 
 
 	// Builtin Calls
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	AST_Command * Parser::genCommand(const TokenList & toks) const
 	{
 		if (toks.matchData(toks.begin(), { "command" }))
 		{
 			AST_Call::Params params = genCallParams(toks.after(1));
-			if (!params.empty())
+			switch (params.size())
 			{
-				return new AST_Command(params.front());
+			case 1:	return new AST_Command(params.front());
+			default: return new AST_Command(new AST_String(""));
 			}
-			return new AST_Command(new AST_String(""));
+		}
+		return NULL;
+	}
+
+	AST_New * Parser::genNew(const TokenList & toks) const
+	{
+		if (toks.matchData(toks.begin(), { "new" }))
+		{
+			AST_Call::Params params = genCallParams(toks.after(1));
+			switch (params.size())
+			{
+			case 1:	return new AST_New(params.front());
+			}
+		}
+		return NULL;
+	}
+
+	AST_NodeID * Parser::genNodeID(const TokenList & toks) const
+	{
+		if (toks.matchData(toks.begin(), { "nodeid" }))
+		{
+			AST_Call::Params params = genCallParams(toks.after(1));
+			switch (params.size())
+			{
+			case 1: return new AST_NodeID(params.front());
+			default: return new AST_NodeID(new AST_Int(0));
+			}
 		}
 		return NULL;
 	}
@@ -787,11 +885,11 @@ namespace ml
 		if (toks.matchData(toks.begin(), { "sizeof" }))
 		{
 			AST_Call::Params params = genCallParams(toks.after(1));
-			if (!params.empty())
+			switch (params.size())
 			{
-				return new AST_SizeOf(params.front());
+			case 1: return new AST_SizeOf(params.front());
+			default: return new AST_SizeOf(new AST_Int(0));
 			}
-			return new AST_SizeOf(new AST_Int(0));
 		}
 		return NULL;
 	}
@@ -801,11 +899,11 @@ namespace ml
 		if (toks.matchData(toks.begin(), { "typeid" }))
 		{
 			AST_Call::Params params = genCallParams(toks.after(1));
-			if (!params.empty())
+			switch (params.size())
 			{
-				return new AST_TypeID(params.front());
+			case 1: return new AST_TypeID(params.front());
+			default: return new AST_TypeID(new AST_Int(0));
 			}
-			return new AST_TypeID(new AST_Int(0));
 		}
 		return NULL;
 	}
@@ -815,17 +913,19 @@ namespace ml
 		if (toks.matchData(toks.begin(), { "typename" }))
 		{
 			AST_Call::Params params = genCallParams(toks.after(1));
-			if (!params.empty())
+			switch (params.size())
 			{
-				return new AST_TypeName(params.front());
+			case 1: return new AST_TypeName(params.front());
+			default: return new AST_TypeName(new AST_Int(0));
 			}
-			return new AST_TypeName(new AST_Int(0));
+			
 		}
 		return NULL;
 	}
 
 
 	// Expression Containers
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	AST_Array::Values	Parser::genArrayElements(const TokenList & toks) const
 	{

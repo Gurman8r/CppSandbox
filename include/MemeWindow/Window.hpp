@@ -54,7 +54,7 @@ namespace ml
 
 		virtual void clean();
 		virtual bool setup();
-		virtual void onEvent(const Event * ev) override;
+		virtual void onEvent(const IEvent * ev) override;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 

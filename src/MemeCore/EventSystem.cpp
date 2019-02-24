@@ -7,7 +7,7 @@ namespace ml
 		m_listeners.insert({ type, listener });
 	}
 	
-	void EventSystem::fireEvent(const Event & ev)
+	void EventSystem::fireEvent(const IEvent & ev)
 	{
 		dispatchAllEvents(&ev);
 	}
@@ -49,7 +49,7 @@ namespace ml
 		}
 	}
 
-	void EventSystem::dispatchAllEvents(const Event * ev)
+	void EventSystem::dispatchAllEvents(const IEvent * ev)
 	{
 		Pair<iterator, iterator> found = m_listeners.equal_range(ev->eventID());
 

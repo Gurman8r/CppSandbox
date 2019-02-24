@@ -44,7 +44,7 @@ namespace ml
 
 	public:
 		AST_Stmt(int32_t stmt);
-		virtual ~AST_Stmt();
+		virtual ~AST_Stmt() {}
 
 		virtual std::ostream& display(std::ostream& out) const;
 
@@ -59,7 +59,7 @@ namespace ml
 		AST_Expr* expr;
 
 		AST_Elif(AST_Expr* expr);
-		~AST_Elif();
+		~AST_Elif() {}
 
 		std::ostream& display(std::ostream& out) const override;
 		bool run() override;
@@ -70,7 +70,7 @@ namespace ml
 	struct ML_SCRIPT_API AST_Else : public AST_Stmt
 	{
 		AST_Else();
-		~AST_Else();
+		~AST_Else() {}
 
 		std::ostream& display(std::ostream& out) const override;
 		bool run() override;
@@ -85,7 +85,7 @@ namespace ml
 		AST_Stmt* stmt;
 
 		AST_For(AST_Assign* assign, AST_Expr* expr, AST_Stmt* stmt);
-		~AST_For();
+		~AST_For() {}
 
 		std::ostream& display(std::ostream& out) const override;
 		bool run() override;
@@ -98,7 +98,7 @@ namespace ml
 		AST_Name* name;
 
 		AST_Delete(AST_Name* name);
-		~AST_Delete();
+		~AST_Delete() {}
 
 		std::ostream& display(std::ostream& out) const override;
 		bool run() override;
@@ -111,7 +111,7 @@ namespace ml
 		AST_Expr* expr;
 
 		AST_If(AST_Expr* expr);
-		~AST_If();
+		~AST_If() {}
 
 		std::ostream& display(std::ostream& out) const override;
 		bool run() override;
@@ -124,7 +124,7 @@ namespace ml
 		AST_String* str;
 		
 		AST_Include(AST_String* str);
-		~AST_Include();
+		~AST_Include() {}
 
 		std::ostream& display(std::ostream& out) const override;
 		bool run() override;
@@ -138,7 +138,7 @@ namespace ml
 		bool newl;
 
 		AST_Print(AST_Expr* expr, bool newl);
-		~AST_Print();
+		~AST_Print() {}
 
 		std::ostream& display(std::ostream& out) const override;
 		bool run() override;
@@ -151,7 +151,7 @@ namespace ml
 		AST_Expr* expr;
 
 		AST_Return(AST_Expr* expr);
-		~AST_Return();
+		~AST_Return() {}
 
 		std::ostream& display(std::ostream& out) const override;
 		bool run() override;
@@ -164,7 +164,7 @@ namespace ml
 		AST_Expr* expr;
 
 		AST_While(AST_Expr* expr);
-		~AST_While();
+		~AST_While() {}
 
 		std::ostream& display(std::ostream& out) const override;
 		bool run() override;

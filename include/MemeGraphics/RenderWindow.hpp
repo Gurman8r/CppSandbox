@@ -17,7 +17,7 @@ namespace ml
 		bool setup() override;
 		virtual bool setup(bool experimental);
 
-		void onEvent(const Event * ev) override;
+		void onEvent(const IEvent * ev) override;
 
 	private:
 

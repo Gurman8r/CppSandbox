@@ -60,9 +60,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\MemeCore\Event.hpp">
-      <Filter>Header Files\Event System</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\IComparable.hpp">
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
@@ -218,6 +215,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\CoreEvents.hpp">
       <Filter>Header Files\Event System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\IEvent.hpp">
+      <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

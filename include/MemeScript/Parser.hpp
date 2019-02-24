@@ -1,10 +1,7 @@
 #ifndef _PARSER_HPP_
 #define _PARSER_HPP_
 
-#include <MemeScript/TokenList.hpp>
-#include <MemeScript/AST_Block.hpp>
-#include <MemeScript/AST_Stmt.hpp>
-#include <MemeScript/AST_Expr.hpp>
+#include <MemeScript/Rule.hpp>
 
 namespace ml
 {
@@ -18,6 +15,8 @@ namespace ml
 		Parser() {}
 		~Parser() {}
 
+		bool addRule(const Rule & value);
+
 		static ToksList	SplitStatements(const TokenList & toks);
 		static bool		InfixToPostfix(const TokenList & ifx, TokenList & pfx, bool show);
 		static bool		MakeOperator(const Token& lhs, const Token& rhs, Operator& op);
@@ -26,10 +25,9 @@ namespace ml
 		AST_Block *		genAST(const TokenList & tokens) const;
 		AST_Node *		genNode(AST_Node* root, const TokenList & toks) const;
 		AST_Stmt *		genStatement(const TokenList & toks) const;
-		AST_Expr *		genComplex(const TokenList & toks) const;
-		AST_Expr *		genSimple(const Token& token) const;
 
 		// Simple Expressions
+		AST_Expr *		genSimple(const Token& token) const;
 		AST_Bool *		genBool(const Token& token) const;
 		AST_Flt *		genFlt(const Token& token) const;
 		AST_Int *		genInt(const Token& token) const;
@@ -37,16 +35,21 @@ namespace ml
 		AST_String *	genStr(const Token& token) const;
 
 		// Complex Expressions
+		AST_Expr *		genComplex(const TokenList & toks) const;
 		AST_Array *		genArray(const TokenList & toks) const;
 		AST_Assign *	genAssign(const TokenList & toks) const;
+		AST_BinOp *		genBinOp(const TokenList & toks) const;
 		AST_Call *		genCall(const TokenList & toks) const;
 		AST_Func *		genFunc(const TokenList & toks) const;
 		AST_Input *		genInput(const TokenList & toks) const;
-		AST_BinOp *		genBinOp(const TokenList & toks) const;
+		AST_Member *	genMember(const TokenList & toks) const;
+		AST_Struct *	genStruct(const TokenList & toks) const;
 		AST_Subscr *	genSubscr(const TokenList & toks) const;
 
 		// Builtin Calls
 		AST_Command *	genCommand(const TokenList & toks) const;
+		AST_New *		genNew(const TokenList & toks) const;
+		AST_NodeID *	genNodeID(const TokenList & toks) const;
 		AST_SizeOf *	genSizeof(const TokenList & toks) const;
 		AST_TypeID *	genTypeID(const TokenList & toks) const;
 		AST_TypeName *	genTypeName(const TokenList & toks) const;

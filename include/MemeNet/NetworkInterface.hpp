@@ -29,7 +29,7 @@ namespace ml
 		uint32_t send(const GUID & guid, const String & data, const SendSettings & settings);
 		uint32_t send(const Address & address, const String & data, const SendSettings & settings);
 
-		virtual void onEvent(const Event * ev) override = 0;
+		virtual void onEvent(const IEvent * ev) override = 0;
 		virtual void onPacket(const Packet & value) = 0;
 
 		Address getMyAddress() const;

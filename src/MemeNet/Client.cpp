@@ -23,7 +23,7 @@ namespace ml
 	}
 
 	
-	void Client::onEvent(const Event * value)
+	void Client::onEvent(const IEvent * value)
 	{
 		switch (value->eventID())
 		{

@@ -32,6 +32,7 @@ namespace ml
 		void	setup();
 		void    clear();
 		void    printf(CString fmt, ...) IM_FMTARGS(2);
+		void	printHistory();
 		void    draw(CString title, bool* p_open);
 		void    execCommand(CString command_line);
 		int32_t textEditCallback(ImGuiInputTextCallbackData* data);

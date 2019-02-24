@@ -12,64 +12,60 @@ namespace ml
 		, public IComparable<String>
 	{
 	public:
-		using value_type			= Token;
-		using vector_type			= List<value_type>;
-		using cstring_list			= List<CString>;
-		using char_list				= List<char>;
-		using initializer_type		= std::initializer_list<value_type>;
-		using iterator				= vector_type::iterator;
-		using const_iterator		= vector_type::const_iterator;
-		using reverse_iterator		= vector_type::reverse_iterator;
-		using const_reverse_iterator= vector_type::const_reverse_iterator;
-		using difference_type		= vector_type::difference_type;
-		using stream_type			= SStream;
+		using iterator				= List<Token>::iterator;
+		using const_iterator		= List<Token>::const_iterator;
+		using reverse_iterator		= List<Token>::reverse_iterator;
+		using const_reverse_iterator= List<Token>::const_reverse_iterator;
+		using difference_type		= List<Token>::difference_type;
 
 	public:
 		TokenList();
-		TokenList(const value_type& value);
-		TokenList(const vector_type& values);
+		TokenList(const Token & value);
+		TokenList(const List<Token>& values);
 		TokenList(const TokenList& copy);
 		~TokenList();
 
-		const value_type	at(size_t index) const;
-		const value_type	back() const;
-		const value_type	front() const;
+		const Token			at(size_t index) const;
+		const Token			back() const;
+		const Token			front() const;
 		const String		str() const;
 		const String		substr(size_t index, size_t count) const;
-		const vector_type	subvec(size_t index, size_t count) const;
-		const vector_type&	values() const;
-		const stream_type	sstream() const;
+		const List<Token>	subvec(size_t index, size_t count) const;
+		const List<Token> &	values() const;
+		const SStream		sstream() const;
 
-		const size_t	count(const value_type& value) const;
-		const size_t	count(const_iterator first, const_iterator last, const value_type& value) const;
-		const size_t	indexOf(const value_type& value) const;
-		const size_t	size() const;
+		size_t	count(const Token & value) const;
+		size_t	count(const_iterator first, const_iterator last, const Token & value) const;
+		size_t	indexOf(const Token & value) const;
+		size_t	size() const;
 
-		const bool	back(const value_type& value) const;
-		const bool	back(const String& value) const;
-		const bool	back(char value) const;
-		const bool	front(const value_type& value) const;
-		const bool	front(const String& value) const;
-		const bool	front(char value) const;
+		bool	back(const Token & value) const;
+		bool	back(const String& value) const;
+		bool	back(char value) const;
 
-		const bool	contains(const value_type& value) const;
-		const bool	empty() const;
-		const bool	inRange(size_t index) const;
-		const bool	inRange(const_iterator it) const;
-		const bool	isWrap(const value_type& value) const;
-		const bool	isWrap(const value_type& lhs, const value_type& rhs) const;
+		bool	front(const Token & value) const;
+		bool	front(const String& value) const;
+		bool	front(char value) const;
 
-		const bool	matchChar(size_t index, char c) const;
-		const bool	matchChar(const const_iterator& it, char c) const;
-		const bool	matchStr(size_t index, const String& str) const;
-		const bool	matchStr(const const_iterator& it, const String& str) const;
-		const bool	matchPat(size_t index, const char_list& pattern) const;
-		const bool	matchPat(const const_iterator& it, const char_list& pattern) const;
-		const bool	matchData(size_t index, const cstring_list& data) const;
-		const bool	matchData(const const_iterator& it, const cstring_list& data) const;
+		bool	contains(const Token & value) const;
+		bool	empty() const;
+
+		bool	inRange(size_t index) const;
+		bool	inRange(const_iterator it) const;
+		bool	isWrap(const Token & value) const;
+		bool	isWrap(const Token & lhs, const Token & rhs) const;
+
+		bool	matchChar(size_t index, char c) const;
+		bool	matchChar(const const_iterator & it, char c) const;
+		bool	matchStr(size_t index, const String& str) const;
+		bool	matchStr(const const_iterator & it, const String& str) const;
+		bool	matchPat(size_t index, const List<char>& pattern) const;
+		bool	matchPat(const const_iterator & it, const List<char>& pattern) const;
+		bool	matchData(size_t index, const List<CString>& data) const;
+		bool	matchData(const const_iterator & it, const List<CString>& data) const;
 
 		TokenList	after(size_t index) const;
-		TokenList	between(const value_type& lhs, const value_type& rhs) const;
+		TokenList	between(const Token & lhs, const Token & rhs) const;
 		TokenList	clone() const;
 		TokenList	clone(size_t index, size_t count = 1) const;
 		TokenList	clone(const TokenList& other) const;
@@ -78,7 +74,7 @@ namespace ml
 		TokenList	unwrapped() const;
 
 	public:
-		TokenList & assign(const vector_type& value);
+		TokenList & assign(const List<Token>& value);
 		TokenList &	clear();
 		TokenList &	copy(const TokenList& other);
 		TokenList &	copy(const TokenList& other, size_t index);
@@ -88,34 +84,34 @@ namespace ml
 		TokenList &	erase(const_iterator it, size_t count = 1);
 		TokenList &	erase(const_iterator first, const_iterator last);
 		TokenList &	insert(size_t index, char value);
-		TokenList &	insert(size_t index, const value_type& value);
-		TokenList &	insert(iterator it, const value_type& value);
+		TokenList &	insert(size_t index, const Token & value);
+		TokenList &	insert(iterator it, const Token & value);
 		TokenList &	pop_back();
 		TokenList &	pop_front();
 		TokenList &	push_back(char value);
-		TokenList &	push_back(const value_type& value);
-		TokenList &	push_back(const vector_type& value);
+		TokenList &	push_back(const Token & value);
+		TokenList &	push_back(const List<Token>& value);
 		TokenList &	push_back(const TokenList& value);
 		TokenList &	push_front(char value);
-		TokenList &	push_front(const value_type& value);
-		TokenList &	push_front(const vector_type& value);
+		TokenList &	push_front(const Token & value);
+		TokenList &	push_front(const List<Token>& value);
 		TokenList &	push_front(const TokenList& value);
-		TokenList &	remove(const value_type& value);
-		TokenList &	removeAll(const value_type& value);
+		TokenList &	remove(const Token & value);
+		TokenList &	removeAll(const Token & value);
 		TokenList &	resize(size_t size);
 		TokenList &	reverse();
 		TokenList &	unwrap();
-		TokenList &	unwrapIf(const value_type& value);
-		TokenList &	unwrapIf(const value_type& lhs, const value_type& rhs);
-		TokenList &	wrap(const value_type& value);
-		TokenList &	wrap(const value_type& lhs, const value_type& rhs);
+		TokenList &	unwrapIf(const Token & value);
+		TokenList &	unwrapIf(const Token & lhs, const Token & rhs);
+		TokenList &	wrap(const Token & value);
+		TokenList &	wrap(const Token & lhs, const Token & rhs);
 
 	public:
-		const_iterator	find(const value_type& value, size_t begin = 0) const;
-		const_iterator	find_first(const value_type& value) const;
-		const_iterator	find_first_not_of(const value_type& value, size_t begin = 0) const;
-		const_iterator	find_last(const value_type& value) const;
-		const_iterator	find_last_not_of(const value_type& value) const;
+		const_iterator	find(const Token & value, size_t begin = 0) const;
+		const_iterator	find_first(const Token & value) const;
+		const_iterator	find_first_not_of(const Token & value, size_t begin = 0) const;
+		const_iterator	find_last(const Token & value) const;
+		const_iterator	find_last_not_of(const Token & value) const;
 
 	public:
 		iterator				begin();
@@ -130,18 +126,18 @@ namespace ml
 		const_reverse_iterator	crend() const;
 
 	public:
-		inline const value_type & operator[](size_t index) const
+		inline const Token & operator[](size_t index) const
 		{
-			static value_type df;
+			static Token df;
 			if (inRange(index))
 			{
 				return m_values.at(index);
 			}
 			return df;
 		}
-		inline value_type & operator[](size_t index)
+		inline Token & operator[](size_t index)
 		{
-			static value_type df;
+			static Token df;
 			if (inRange(index))
 			{
 				return m_values[index];
@@ -152,7 +148,7 @@ namespace ml
 		{
 			return this->copy(copy);
 		}
-		inline TokenList & operator=(const vector_type& value)
+		inline TokenList & operator=(const List<Token>& value)
 		{
 			return this->assign(value);
 		}
@@ -167,7 +163,7 @@ namespace ml
 		bool lessThan(const String & value) const override;
 
 	private:
-		vector_type m_values;
+		List<Token> m_values;
 	};
 }
 

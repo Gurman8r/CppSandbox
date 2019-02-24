@@ -11,11 +11,11 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_WINDOW_API WindowEvent : public Event
+	struct ML_WINDOW_API WindowEvent : public IEvent
 	{
 		enum : int32_t
 		{
-			MIN_WINDOW_EVENT = Event::EV_WINDOW + 1,
+			MIN_WINDOW_EVENT = IEvent::EV_WINDOW + 1,
 
 			EV_Char,
 			EV_CursorEnter,
@@ -33,7 +33,7 @@ namespace ml
 		};
 
 		WindowEvent(int32_t eventID)
-			: Event(eventID)
+			: IEvent(eventID)
 		{
 		}
 	};

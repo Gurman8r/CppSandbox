@@ -2,18 +2,18 @@
 #define _NETWORK_EVENTS_HPP_
 
 #include <MemeNet/Export.hpp>
-#include <MemeCore/Event.hpp>
+#include <MemeCore/IEvent.hpp>
 
 namespace ml
 {
 	// base_type
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_NETWORK_API NetworkEvent : public Event
+	struct ML_NETWORK_API NetworkEvent : public IEvent
 	{
 		enum : int32_t
 		{
-			MIN_NETWORK_EVENT = Event::EV_NETWORK + 1,
+			MIN_NETWORK_EVENT = IEvent::EV_NETWORK + 1,
 
 			EV_ServerRecievePacket,
 			EV_ClientRecievePacket,
@@ -22,7 +22,7 @@ namespace ml
 		};
 		
 		NetworkEvent(int32_t id)
-			: Event(id)
+			: IEvent(id)
 		{
 		}
 	};

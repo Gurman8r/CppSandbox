@@ -32,15 +32,18 @@ namespace ml
 			EX_TypeID,
 			EX_TypeName,
 			EX_NodeID,
+			EX_New,
+			EX_Member,
+			EX_This,
 			MAX_EXPR_TYPE
 		};
 
 		int32_t exprType;
 
 		AST_Expr(int32_t type);
-		virtual ~AST_Expr();
+		virtual ~AST_Expr() {}
 
-		virtual std::ostream& display(std::ostream& out) const;
+		virtual std::ostream & display(std::ostream & out) const;
 
 		virtual Var evaluate() const;
 
@@ -51,14 +54,14 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Array : public AST_Expr
 	{
-		using Values = std::vector<AST_Expr*>;
+		using Values = std::vector<AST_Expr *>;
 
 		Values values;
 
-		AST_Array(const Values& values);
-		~AST_Array();
+		AST_Array(const Values & values);
+		~AST_Array() {}
 
-		std::ostream& display(std::ostream& out) const override;
+		std::ostream & display(std::ostream & out) const override;
 		Var evaluate() const override;
 	};
 
@@ -69,9 +72,9 @@ namespace ml
 		bool value;
 
 		AST_Bool(bool value);
-		~AST_Bool();
+		~AST_Bool() {}
 
-		std::ostream& display(std::ostream& out) const override;
+		std::ostream & display(std::ostream & out) const override;
 		Var evaluate() const override;
 	};
 
@@ -82,9 +85,9 @@ namespace ml
 		float value;
 
 		AST_Flt(float value);
-		~AST_Flt();
+		~AST_Flt() {}
 
-		std::ostream& display(std::ostream& out) const override;
+		std::ostream & display(std::ostream & out) const override;
 		Var evaluate() const override;
 	};
 
@@ -98,9 +101,9 @@ namespace ml
 		Params args;
 
 		AST_Func(const String& name, const Params& args);
-		~AST_Func();
+		~AST_Func() {}
 
-		std::ostream& display(std::ostream& out) const override;
+		std::ostream & display(std::ostream & out) const override;
 		Var evaluate() const override;
 		bool run() override;
 	};
@@ -110,9 +113,9 @@ namespace ml
 	struct ML_SCRIPT_API AST_Input : public AST_Expr
 	{
 		AST_Input();
-		~AST_Input();
+		~AST_Input() {}
 
-		std::ostream& display(std::ostream& out) const override;
+		std::ostream & display(std::ostream & out) const override;
 		Var evaluate() const override;
 	};
 
@@ -123,9 +126,9 @@ namespace ml
 		int32_t value;
 
 		AST_Int(int32_t value);
-		~AST_Int();
+		~AST_Int() {}
 
-		std::ostream& display(std::ostream& out) const override;
+		std::ostream & display(std::ostream & out) const override;
 		Var evaluate() const override;
 	};
 
@@ -136,24 +139,24 @@ namespace ml
 		String value;
 
 		AST_Name(const String& value);
-		~AST_Name();
+		~AST_Name() {}
 
-		std::ostream& display(std::ostream& out) const override;
+		std::ostream & display(std::ostream & out) const override;
 		Var evaluate() const override;
 	};
 
-	// Assignment
+	// Assign
 	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Assign : public AST_Expr
 	{
 		Operator	op;
-		AST_Name*	name;
+		AST_Expr*	name;
 		AST_Expr*	expr;
 
-		AST_Assign(Operator op, AST_Name* name, AST_Expr* expr);
-		~AST_Assign();
+		AST_Assign(Operator op, AST_Expr* name, AST_Expr* expr);
+		~AST_Assign() {}
 
-		std::ostream& display(std::ostream& out) const override;
+		std::ostream & display(std::ostream & out) const override;
 		Var evaluate() const override;
 		bool run() override;
 	};
@@ -168,9 +171,9 @@ namespace ml
 		Params		args;
 
 		AST_Call(AST_Name* name, const Params& args);
-		~AST_Call();
+		~AST_Call() {}
 
-		std::ostream& display(std::ostream& out) const override;
+		std::ostream & display(std::ostream & out) const override;
 		Var			evaluate() const override;
 		AST_Func*	getFunc() const;
 		bool		run() override;
@@ -185,9 +188,9 @@ namespace ml
 		AST_Expr* rhs;
 
 		AST_BinOp(const Operator& op, AST_Expr* lhs, AST_Expr* rhs);
-		~AST_BinOp();
+		~AST_BinOp() {}
 
-		std::ostream& display(std::ostream& out) const override;
+		std::ostream & display(std::ostream & out) const override;
 		Var evaluate() const override;
 	};
 
@@ -198,9 +201,9 @@ namespace ml
 		String value;
 
 		AST_String(const String& value);
-		~AST_String();
+		~AST_String() {}
 
-		std::ostream& display(std::ostream& out) const override;
+		std::ostream & display(std::ostream & out) const override;
 		Var evaluate() const override;
 	};
 
@@ -208,11 +211,19 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Struct : public AST_Expr
 	{
-		AST_Struct();
-		~AST_Struct();
+		using Params = std::vector<AST_Name*>;
 
-		std::ostream& display(std::ostream& out) const override;
+		String name;
+		Params args;
+
+		AST_Struct(const String & name, const Params & args);
+		~AST_Struct() {}
+
+		AST_Block * getBody() const;
+
+		std::ostream & display(std::ostream & out) const override;
 		Var evaluate() const override;
+		bool run() override;
 	};
 
 	// Subscript
@@ -223,9 +234,9 @@ namespace ml
 		AST_Expr* index;
 
 		AST_Subscr(AST_Name* name, AST_Expr* index);
-		~AST_Subscr();
+		~AST_Subscr() {}
 
-		std::ostream& display(std::ostream& out) const override;
+		std::ostream & display(std::ostream & out) const override;
 		Var evaluate() const override;
 	};
 
@@ -236,9 +247,9 @@ namespace ml
 		AST_Expr* expr;
 
 		AST_Command(AST_Expr* expr);
-		~AST_Command();
+		~AST_Command() {}
 
-		std::ostream& display(std::ostream& out) const override;
+		std::ostream & display(std::ostream & out) const override;
 		Var evaluate() const override;
 		bool run() override;
 	};
@@ -250,9 +261,9 @@ namespace ml
 		AST_Expr * expr;
 
 		AST_SizeOf(AST_Expr * expr);
-		~AST_SizeOf();
+		~AST_SizeOf() {}
 
-		std::ostream& display(std::ostream& out) const override;
+		std::ostream & display(std::ostream & out) const override;
 		Var evaluate() const override;
 	};
 
@@ -263,9 +274,9 @@ namespace ml
 		AST_Expr * expr;
 		
 		AST_TypeID(AST_Expr * expr);
-		~AST_TypeID();
+		~AST_TypeID() {}
 		
-		std::ostream& display(std::ostream& out) const override;
+		std::ostream & display(std::ostream & out) const override;
 		Var evaluate() const override;
 	};
 
@@ -276,9 +287,9 @@ namespace ml
 		AST_Expr * expr;
 
 		AST_TypeName(AST_Expr * expr);
-		~AST_TypeName();
+		~AST_TypeName() {}
 
-		std::ostream& display(std::ostream& out) const override;
+		std::ostream & display(std::ostream & out) const override;
 		Var evaluate() const override;
 	};
 
@@ -289,9 +300,40 @@ namespace ml
 		AST_Expr * expr;
 
 		AST_NodeID(AST_Expr * expr);
-		~AST_NodeID();
+		~AST_NodeID() {}
 
-		std::ostream& display(std::ostream& out) const override;
+		std::ostream & display(std::ostream & out) const override;
+		Var evaluate() const override;
+	};
+
+	// New
+	/* * * * * * * * * * * * * * * * * * * * */
+	struct ML_SCRIPT_API AST_New : public AST_Expr
+	{
+		AST_Expr * expr;
+
+		AST_New(AST_Expr * expr);
+		~AST_New() {}
+
+		std::ostream & display(std::ostream & out) const override;
+		Var evaluate() const override;
+		bool run() override;
+	};
+
+	// Member
+	/* * * * * * * * * * * * * * * * * * * * */
+	struct ML_SCRIPT_API AST_Member : public AST_Expr
+	{
+		AST_Name * name;
+		AST_Name * expr;
+
+		AST_Member(AST_Name * name, AST_Name * expr);
+		~AST_Member() {}
+
+		AST_Struct * getStruct() const;
+		Var * getMember() const;
+
+		std::ostream & display(std::ostream & out) const override;
 		Var evaluate() const override;
 	};
 }

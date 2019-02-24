@@ -33,11 +33,6 @@ namespace ml
 		return m_file.loadFromFile((m_path = filename));
 	}
 
-	bool Script::reload()
-	{
-		return loadFromFile(m_path);
-	}
-
 	bool Script::build(const Args & args)
 	{
 		if (m_file)

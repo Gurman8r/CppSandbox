@@ -77,6 +77,11 @@ namespace ml
 		m_scrollToBottom = true;
 	}
 
+	void EditorConsole::printHistory()
+	{
+		for (auto h : m_history) { this->printf(h); }
+	}
+
 	void EditorConsole::draw(CString title, bool* p_open)
 	{
 		ImGui::SetNextWindowSize(ImVec2(550, 600), ImGuiCond_FirstUseEver);
@@ -122,7 +127,9 @@ namespace ml
 			if (!filter.PassFilter(item))
 				continue;
 			ImVec4 col = col_default_text;
-			if (strstr(item, "[error]")) col = ImColor(1.0f, 0.4f, 0.4f, 1.0f);
+			if (strstr(item, "[ LOG ]")) col = ImColor(0.0f, 1.0f, 0.4f, 1.0f);
+			else if (strstr(item, "[ WRN ]")) col = ImColor(1.0f, 1.0f, 0.4f, 1.0f);
+			else if (strstr(item, "[ ERR ]")) col = ImColor(1.0f, 0.4f, 0.4f, 1.0f);
 			else if (strncmp(item, "# ", 2) == 0) col = ImColor(1.0f, 0.78f, 0.58f, 1.0f);
 			ImGui::PushStyleColor(ImGuiCol_Text, col);
 			ImGui::TextUnformatted(item);

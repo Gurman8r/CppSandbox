@@ -12,10 +12,6 @@ namespace ml
 	{
 	}
 
-	AST_Expr::~AST_Expr()
-	{
-	}
-
 	std::ostream & AST_Expr::display(std::ostream & out) const
 	{
 		return AST_Stmt::display(out);
@@ -47,16 +43,9 @@ namespace ml
 			addChild(v);
 	}
 
-	AST_Array::~AST_Array()
-	{
-		values.clear();
-	}
-
 	std::ostream & AST_Array::display(std::ostream & out) const
 	{
-		out << evaluate();
-
-		return out;
+		return out << evaluate();
 	}
 
 	Var AST_Array::evaluate() const
@@ -72,9 +61,9 @@ namespace ml
 	}
 
 
-	// Assignment
+	// Assign
 	/* * * * * * * * * * * * * * * * * * * * */
-	AST_Assign::AST_Assign(Operator op, AST_Name * name, AST_Expr * expr)
+	AST_Assign::AST_Assign(Operator op, AST_Expr * name, AST_Expr * expr)
 		: AST_Expr(EX_Assign)
 		, op(op)
 		, name(name)
@@ -84,10 +73,6 @@ namespace ml
 		addChild(expr);
 	}
 
-	AST_Assign::~AST_Assign()
-	{
-	}
-
 	std::ostream & AST_Assign::display(std::ostream & out) const
 	{
 		return out << ( * name) << " " << op << " " << ( * expr);
@@ -95,31 +80,37 @@ namespace ml
 
 	Var AST_Assign::evaluate() const
 	{
-		if (op == OperatorType::OP_SET)
+		if (AST_Name * n = name->Cast<AST_Name>())
 		{
-			if (Var * v = block()->setVar(name->value, expr->evaluate()))
+			if (op == OperatorType::OP_SET)
 			{
-				return ( * v);
+				if (Var * v = block()->setVar(n->value, expr->evaluate()))
+				{
+					return (*v);
+				}
 			}
-		}
-		else if (Var * v = block()->getVar(name->value))
-		{
-			switch (op.type)
+			else if (Var * v = block()->getVar(n->value))
 			{
-			case OperatorType::OP_ADD:
-				return v->Add(expr->evaluate());
+				switch (op.type)
+				{
+				case OperatorType::OP_ADD:
+					return v->Add(expr->evaluate());
 
-			case OperatorType::OP_SUB:
-				return v->Sub(expr->evaluate());
+				case OperatorType::OP_SUB:
+					return v->Sub(expr->evaluate());
 
-			case OperatorType::OP_MUL:
-				return v->Mul(expr->evaluate());
+				case OperatorType::OP_MUL:
+					return v->Mul(expr->evaluate());
 
-			case OperatorType::OP_DIV:
-				return v->Div(expr->evaluate());
+				case OperatorType::OP_DIV:
+					return v->Div(expr->evaluate());
 
-			case OperatorType::OP_POW:
-				return v->Pow(expr->evaluate());
+				case OperatorType::OP_POW:
+					return v->Pow(expr->evaluate());
+
+				case OperatorType::OP_MOD:
+					return v->Mod(expr->evaluate());
+				}
 			}
 		}
 		return Var().errorValue("AST_Assign : Set value_type Failed");
@@ -140,10 +131,6 @@ namespace ml
 	AST_Bool::AST_Bool(bool value)
 		: AST_Expr(EX_Bool)
 		, value(value)
-	{
-	}
-
-	AST_Bool::~AST_Bool()
 	{
 	}
 
@@ -169,11 +156,6 @@ namespace ml
 		addChild(name);
 		for (auto p : args)
 			addChild(p);
-	}
-
-	AST_Call::~AST_Call()
-	{
-		args.clear();
 	}
 
 	std::ostream & AST_Call::display(std::ostream & out) const
@@ -208,54 +190,65 @@ namespace ml
 
 	Var AST_Call::evaluate() const
 	{
-		if (AST_Func * f = getFunc())
+		if (AST_Func * func = getFunc())
 		{
-			if (AST_Block * b = f->nextAs<AST_Block>())
+			if (AST_Block * body = func->nextAs<AST_Block>())
 			{
-				if (f->args.size() == args.size())
+				if (func->args.size() == args.size())
 				{
-					for (size_t i = 0; i < f->args.size(); i++)
+					for (size_t i = 0; i < func->args.size(); i++)
 					{
-						if (!b->setVar(f->args[i]->value, args[i]->evaluate()))
+						if (!body->setVar(
+							func->args[i]->value,
+							args[i]->evaluate()))
 						{
-							return Var().errorValue("AST_Call : {0} Set Arg Failed",
-								f->args[i]->value);
+							return Var().errorValue(
+								"AST_Call : {0} Set Arg Failed",
+								func->args[i]->value);
 						}
 					}
 
-					if (b->runFirst())
+					if (body->runFirst())
 					{
-						for (size_t i = 0; i < f->args.size(); i++)
+						for (size_t i = 0; i < func->args.size(); i++)
 						{
-							if (!b->delVar(f->args[i]->value))
+							if (!body->delVar(func->args[i]->value))
 							{
-								return Var().errorValue("AST_Call : {0} Del Arg Failed",
-									f->args[i]->value);
+								return Var().errorValue(
+									"AST_Call : {0} Del Arg Failed",
+									func->args[i]->value);
 							}
 						}
 
-						return b->evaluate();
+						return body->evaluate();
 					}
 					else
 					{
-						return Var().errorValue("AST_Call : {0} Failed Running Comparison Body",
-							f->name);
+						return Var().errorValue(
+							"AST_Call : {0} Failed Running Function Body",
+							func->name);
 					}
 				}
 				else
 				{
-					return Var().errorValue("AST_Call : Expected {0} args, recieved {1}",
-						f->args.size(), args.size());
+					return Var().errorValue(
+						"AST_Call : Expected {0} args, recieved {1}",
+						func->args.size(), 
+						args.size());
 				}
 			}
 			else
 			{
-				return Var().errorValue("AST_Call : {0} Function Body Not Found", f->name);
+				return Var().errorValue(
+					"AST_Call : {0} Function Body Not Found", 
+					func->name);
 			}
 		}
 		else
 		{
-			return Var().errorValue("AST_Call : {0} Function Name Not Found", name->value);
+			return Var().errorValue(
+				"AST_Call : {0} Function Name Not Found",
+				name->value);
 		}
 	}
 
@@ -275,10 +268,6 @@ namespace ml
 	AST_Flt::AST_Flt(float value)
 		: AST_Expr(EX_Float)
 		, value(value)
-	{
-	}
-
-	AST_Flt::~AST_Flt()
 	{
 	}
 
@@ -305,10 +294,6 @@ namespace ml
 			addChild(p);
 	}
 
-	AST_Func::~AST_Func()
-	{
-	}
-
 	std::ostream & AST_Func::display(std::ostream & out) const
 	{
 		out << (FG::White | BG::DarkGray) << name << FMT() << " = [](";
@@ -323,7 +308,7 @@ namespace ml
 
 	Var AST_Func::evaluate() const
 	{
-		return Var();
+		return Var().pointerValue({ getID(), name });
 	}
 
 	bool AST_Func::run()
@@ -340,10 +325,6 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 	AST_Input::AST_Input()
 		: AST_Expr(EX_Input)
-	{
-	}
-
-	AST_Input::~AST_Input()
 	{
 	}
 
@@ -375,10 +356,6 @@ namespace ml
 	{
 	}
 
-	AST_Int::~AST_Int()
-	{
-	}
-
 	std::ostream & AST_Int::display(std::ostream & out) const
 	{
 		out << Var().intValue(value);
@@ -396,10 +373,6 @@ namespace ml
 	AST_Name::AST_Name(const String & value)
 		: AST_Expr(EX_Name)
 		, value(value)
-	{
-	}
-
-	AST_Name::~AST_Name()
 	{
 	}
 
@@ -453,10 +426,6 @@ namespace ml
 		addChild(rhs);
 	}
 
-	AST_BinOp::~AST_BinOp()
-	{
-	}
-
 	std::ostream & AST_BinOp::display(std::ostream & out) const
 	{
 		out << "(" << * lhs << " " << op << " " << * rhs << ")";
@@ -479,6 +448,8 @@ namespace ml
 				return lhs->evaluate() / rhs->evaluate();
 			case OperatorType::OP_POW:
 				return lhs->evaluate() ^ rhs->evaluate();
+			case OperatorType::OP_MOD:
+				return lhs->evaluate() % rhs->evaluate();
 
 			case OperatorType::OP_EQU:
 				return Var().boolValue(lhs->evaluate() == rhs->evaluate());
@@ -511,10 +482,6 @@ namespace ml
 	{
 	}
 
-	AST_String::~AST_String()
-	{
-	}
-
 	std::ostream & AST_String::display(std::ostream & out) const
 	{
 		return out << Var().stringValue(value);
@@ -528,23 +495,54 @@ namespace ml
 
 	// Struct
 	/* * * * * * * * * * * * * * * * * * * * */
-	AST_Struct::AST_Struct()
+	AST_Struct::AST_Struct(const String & name, const Params & args)
 		: AST_Expr(EX_Struct)
+		, name(name)
+		, args(args)
 	{
+		for (auto c : args)
+			addChild(c);
 	}
 
-	AST_Struct::~AST_Struct()
+	AST_Block * AST_Struct::getBody() const
 	{
+		return nextAs<AST_Block>();
 	}
 
 	std::ostream & AST_Struct::display(std::ostream & out) const
 	{
+		out << (FG::Cyan | BG::Black) << name << " = $("
+			<< FMT();
+		Params::const_iterator it;
+		for (it = args.begin(); it != args.end(); it++)
+		{
+			out << *(*it) << ((it != args.end() - 1) ? ", " : "");
+		}
+		out << (FG::Cyan | BG::Black) << ")"
+			<< FMT();
 		return out;
 	}
 
 	Var AST_Struct::evaluate() const
 	{
-		return Var();
+		return Var().pointerValue({ getID(), name });
+	}
+
+	bool AST_Struct::run()
+	{
+		if (AST_Block * body = getBody())
+		{
+			if (block()->addStruct(name, this))
+			{
+				if (body->runFirst())
+				{
+					return runNext();
+				}
+				return Debug::logError("AST_Struct : Failed initializing body : {0}", name);
+			}
+			return Debug::logError("AST_Struct : Struct redefinition : {0}", name);
+		}
+		return Debug::logError("AST_Struct : Body not found : {0}", name);
 	}
 
 
@@ -557,10 +555,6 @@ namespace ml
 	{
 		addChild(name);
 		addChild(index);
-	}
-
-	AST_Subscr::~AST_Subscr()
-	{
 	}
 
 	std::ostream & AST_Subscr::display(std::ostream & out) const
@@ -600,10 +594,6 @@ namespace ml
 		addChild(expr);
 	}
 
-	AST_Command::~AST_Command()
-	{
-	}
-
 	std::ostream & AST_Command::display(std::ostream & out) const
 	{
 		return out << "command(" << ( * expr) << ")";
@@ -633,10 +623,6 @@ namespace ml
 		addChild(expr);
 	}
 
-	AST_SizeOf::~AST_SizeOf()
-	{
-	}
-
 	std::ostream & AST_SizeOf::display(std::ostream & out) const
 	{
 		return out << "sizeof(" << (*expr) << ")";
@@ -655,10 +641,6 @@ namespace ml
 		, expr(expr)
 	{
 		addChild(expr);
-	}
-
-	AST_TypeID::~AST_TypeID()
-	{
 	}
 
 	std::ostream & AST_TypeID::display(std::ostream & out) const
@@ -681,10 +663,6 @@ namespace ml
 		addChild(expr);
 	}
 
-	AST_TypeName::~AST_TypeName()
-	{
-	}
-
 	std::ostream & AST_TypeName::display(std::ostream & out) const
 	{
 		return out << "typename(" << (*expr) << ")";
@@ -695,7 +673,8 @@ namespace ml
 		return Var().stringValue(expr->evaluate().getTypeName());
 	}
 
-	// Scope ID
+
+	// Node ID
 	/* * * * * * * * * * * * * * * * * * * * */
 	AST_NodeID::AST_NodeID(AST_Expr * expr)
 		: AST_Expr(EX_NodeID)
@@ -703,15 +682,130 @@ namespace ml
 	{
 		addChild(expr);
 	}
-	AST_NodeID::~AST_NodeID()
-	{
-	}
+	
 	std::ostream & AST_NodeID::display(std::ostream & out) const
 	{
 		return out << "nodeid(" << (*expr) << ")";
 	}
+	
 	Var AST_NodeID::evaluate() const
 	{
 		return Var().intValue(expr->block()->getID());
 	}
+
+
+	// New
+	/* * * * * * * * * * * * * * * * * * * * */
+	AST_New::AST_New(AST_Expr * expr)
+		: AST_Expr(EX_New)
+		, expr(expr)
+	{
+		addChild(expr);
+	}
+	
+	std::ostream & AST_New::display(std::ostream & out) const
+	{
+		return out << "new(" << (*expr) << ")";
+	}
+	
+	Var AST_New::evaluate() const
+	{
+		if (expr)
+		{
+			if (AST_Name * name = expr->selfAs<AST_Name>())
+			{
+				if (Var * v = block()->getVar(name->value))
+				{
+					if (v->isStructType())
+					{
+						if (AST_Struct * s = block()->getStruct(v->textValue()))
+						{
+							return s->evaluate();
+						}
+					}
+				}
+			}
+
+			return expr->evaluate();
+		}
+		return Var().errorValue("AST_New : No Expression");
+	}
+
+	bool AST_New::run()
+	{
+		if (!evaluate().isErrorType())
+		{
+			return runNext();
+		}
+		return false;
+	}
+
+
+	// Member
+	/* * * * * * * * * * * * * * * * * * * * */
+	AST_Member::AST_Member(AST_Name * name, AST_Name * expr)
+		: AST_Expr(EX_Member)
+		, name(name)
+		, expr(expr)
+	{
+		addChild(name);
+		addChild(expr);
+	}
+	
+	AST_Struct * AST_Member::getStruct() const
+	{
+		if (name)
+		{
+			if (AST_Block * b = block())
+			{
+				if (Var * v = block()->getVar(name->value))
+				{
+					if (v->isStructType())
+					{
+						return b->getStruct(v->textValue());
+					}
+				}
+			}
+		}
+		return NULL;
+	}
+
+	Var * AST_Member::getMember() const
+	{
+		if (expr)
+		{
+			if (AST_Struct * s = getStruct())
+			{
+				if (AST_Block * b = s->nextAs<AST_Block>())
+				{
+					if (Var * v = b->getVar(expr->value))
+					{
+						return v;
+					}
+				}
+			}
+		}
+		return NULL;
+	}
+	
+	std::ostream & AST_Member::display(std::ostream & out) const
+	{
+		return out 
+			<< FG::Cyan  << "("
+			<< (*name) 
+			<< FG::Cyan << "." 
+			<< (*expr)
+			<< FG::Cyan << ")"
+			<< FMT();
+	}
+	
+	Var AST_Member::evaluate() const
+	{
+		if (Var * v = getMember())
+		{
+			return (*v);
+		}
+		return Var().errorValue("AST_Member : No Value");
+	}
+	
 }

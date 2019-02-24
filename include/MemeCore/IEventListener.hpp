@@ -8,7 +8,7 @@ namespace ml
 	class ML_CORE_API IEventListener
 	{
 	public:
-		virtual void onEvent(const Event * ev) = 0;
+		virtual void onEvent(const IEvent * ev) = 0;
 	};
 }
 

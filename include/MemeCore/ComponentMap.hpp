@@ -13,7 +13,8 @@ namespace ml
 	{
 	public:
 		using key_type		= const std::type_info *;
-		using map_type		= HashMap<key_type, IComponent *>;
+		using value_type	= typename IComponent *;
+		using map_type		= HashMap<key_type, value_type>;
 		using iterator		= typename map_type::iterator;
 		using const_iterator= typename map_type::const_iterator;
 
@@ -46,7 +47,6 @@ namespace ml
 		template <class T> 
 		inline T * add()
 		{
-			assert_typeof_component(T);
 			if (!contains<T>())
 			{
 				m_map.insert({ &typeid(T), new T() });
@@ -58,14 +58,12 @@ namespace ml
 		template <class T> 
 		inline bool	contains() const
 		{
-			assert_typeof_component(T);
 			return find<T>() != end();
 		}
 		
 		template <class T> 
 		inline bool	erase()
 		{
-			assert_typeof_component(T);
 			if (T * temp = get<T>())
 			{
 				delete temp;
@@ -78,7 +76,6 @@ namespace ml
 		template <class T> 
 		inline iterator	find()
 		{
-			assert_typeof_component(T);
 			return m_map.find(&typeid(T));
 		}
 		
@@ -92,7 +89,6 @@ namespace ml
 		template <class T> 
 		inline T * get()
 		{
-			assert_typeof_component(T);
 			iterator it;
 			if ((it = find<T>()) != end())
 			{
@@ -104,7 +100,6 @@ namespace ml
 		template <class T> 
 		inline const T * get() const
 		{
-			assert_typeof_component(T);
 			const_iterator it;
 			if ((it = find<T>()) != end())
 			{
@@ -114,12 +109,12 @@ namespace ml
 		}
 		
 	public:
-		inline ComponentMap::iterator		begin()			{ return m_map.begin(); };
-		inline ComponentMap::const_iterator	begin()	const	{ return m_map.begin(); };
-		inline ComponentMap::const_iterator	cbegin()const	{ return m_map.cbegin(); }
-		inline ComponentMap::iterator		end()			{ return m_map.end(); };
-		inline ComponentMap::const_iterator	end()	const	{ return m_map.end(); }
-		inline ComponentMap::const_iterator	cend()	const	{ return m_map.cend(); }
+		inline iterator			begin()			{ return m_map.begin(); }
+		inline const_iterator	begin()	const	{ return m_map.begin(); }
+		inline const_iterator	cbegin()const	{ return m_map.cbegin();}
+		inline iterator			end()			{ return m_map.end();	}
+		inline const_iterator	end()	const	{ return m_map.end();	}
+		inline const_iterator	cend()	const	{ return m_map.cend();	}
 
 	private:
 		map_type m_map;

@@ -27,7 +27,7 @@ namespace DEMO
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void Demo::onEvent(const ml::Event * value)
+	void Demo::onEvent(const ml::IEvent * value)
 	{
 		ml::RenderWindow::onEvent(value);
 
@@ -162,9 +162,33 @@ namespace DEMO
 				return ml::Var().boolValue(true);
 			} });
 
+			ML_Interpreter.addCmd({ "history", [](ml::Args & args)
+			{
+				ML_EditorConsole.printHistory();
+				return ml::Var().boolValue(true);
+			} });
+
 			ML_Interpreter.addCmd({ "system", [](ml::Args & args)
 			{
 				return ml::Var().intValue(ml::Debug::system(args.pop_front().str().c_str()));
+			} });
+
+			ML_Interpreter.addCmd({ "log", [](ml::Args & args)
+			{
+				ml::Debug::log(args.pop());
+				return ml::Var().intValue(ML_SUCCESS);
+			} });
+
+			ML_Interpreter.addCmd({ "warn", [](ml::Args & args)
+			{
+				ml::Debug::logWarning(args.pop());
+				return ml::Var().intValue(ML_WARNING);
+			} });
+
+			ML_Interpreter.addCmd({ "err", [](ml::Args & args)
+			{
+				ml::Debug::logError(args.pop());
+				return ml::Var().intValue(ML_FAILURE);
 			} });
 
 			ML_Interpreter.addCmd({ "exit", [](ml::Args & args)
@@ -253,6 +277,46 @@ namespace DEMO
 					if (ML_FileSystem.getDirContents(name, ss))
 					{
 						return ml::Var().stringValue(ss.str());
+					}
+				}
+				return ml::Var().boolValue(false);
+			} });
+
+			ML_Interpreter.addCmd({ "get", [](ml::Args & args)
+			{
+				const ml::String scope = args.pop();
+
+				if (ml::StringUtility::IsInt(scope) && !args.empty())
+				{
+					if (ml::Var * v = ML_Interpreter.runtime().getVar(
+						ml::StringUtility::ToInt(scope), args.pop()))
+					{
+						return (*v);
+					}
+				}
+				return ml::Var().voidValue();
+			} });
+
+			ML_Interpreter.addCmd({ "set", [](ml::Args & args)
+			{
+				const ml::String scope = args.pop();
+
+				if (ml::StringUtility::IsInt(scope) && !args.empty())
+				{
+					const ml::String name = args.pop();
+
+					if (ml::StringUtility::IsName(name) && !args.empty())
+					{
+						const ml::Token value = ML_Interpreter.lexer().makeToken(args.pop());
+
+						if (ML_Interpreter.runtime().setVar(
+							ml::StringUtility::ToInt(scope),
+							name,
+							ml::Var::makeSingle(value)
+						))
+						{
+							return ml::Var().boolValue(true);
+						}
 					}
 				}
 				return ml::Var().boolValue(false);

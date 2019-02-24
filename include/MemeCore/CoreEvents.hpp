@@ -1,23 +1,23 @@
 #ifndef _CORE_EVENTS_HPP_
 #define _CORE_EVENTS_HPP_
 
-#include <MemeCore/Event.hpp>
+#include <MemeCore/IEvent.hpp>
 
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_CORE_API CoreEvent : public Event
+	struct ML_CORE_API CoreEvent : public IEvent
 	{
 		enum : int32_t
 		{
-			MIN_CORE_EVENT = Event::EV_CORE + 1,
+			MIN_CORE_EVENT = IEvent::EV_CORE + 1,
 			EV_RequestExit,
 			MAX_CORE_EVENT
 		};
 
 		CoreEvent(int32_t id)
-			: Event(id)
+			: IEvent(id)
 		{
 		}
 	};

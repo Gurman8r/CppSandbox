@@ -145,13 +145,13 @@ namespace ml
 
 	bool Lexer::scanName(const_iterator & it, String & text) const
 	{
-		if (isalpha(*it))
+		if (isalpha(*it) || (*it) == '_')
 		{
 			String out;
 
 			while (it != m_buffer.end())
 			{
-				if (isalnum(*it))
+				if (isalnum(*it) || (*it) == '_')
 				{
 					out += *it;
 					it++;

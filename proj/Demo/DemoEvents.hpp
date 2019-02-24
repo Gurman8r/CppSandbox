@@ -1,7 +1,7 @@
 #ifndef _DEMO_EVENTS_HPP_
 #define _DEMO_EVENTS_HPP_
 
-#include <MemeCore/Event.hpp>
+#include <MemeCore/IEvent.hpp>
 #include <MemeCore/Duration.hpp>
 #include <MemeGraphics/RenderWindow.hpp>
 
@@ -9,11 +9,11 @@ namespace DEMO
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct DemoEvent : public ml::Event
+	struct DemoEvent : public ml::IEvent
 	{
 		enum : int32_t
 		{
-			MIN_DEMO_EVENT = ml::Event::EV_CUSTOM_0 + 1,
+			MIN_DEMO_EVENT = ml::IEvent::EV_CUSTOM_0 + 1,
 
 			EV_Enter,
 			EV_Load,
@@ -28,7 +28,7 @@ namespace DEMO
 		};
 
 		DemoEvent(int32_t id)
-			: ml::Event(id)
+			: ml::IEvent(id)
 		{
 		}
 	};

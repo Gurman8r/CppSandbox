@@ -7,11 +7,11 @@
 #define ML_MAX_CUSTOM_EVENTS 256
 
 #define assert_typeof_event(T) \
-static_assert(std::is_base_of<ml::Event, T>::value, "Type must derive ml::Event") \
+static_assert(std::is_base_of<ml::IEvent, T>::value, "Type must derive ml::IEvent") \
 
 namespace ml
 {
-	class ML_CORE_API Event : public ITrackable
+	class ML_CORE_API IEvent : public ITrackable
 	{
 	public:
 		enum : int32_t
@@ -59,11 +59,11 @@ namespace ml
 		};
 
 	public:
-		Event(int32_t id)
+		IEvent(int32_t id)
 			: m_eventID(id)
 		{
 		}
-		virtual ~Event() {}
+		virtual ~IEvent() {}
 
 		inline const int32_t & eventID() const { return m_eventID; }
 

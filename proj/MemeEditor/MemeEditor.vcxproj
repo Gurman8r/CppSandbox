@@ -160,6 +160,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeEditor\Editor.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\EditorEvents.hpp" />
+    <ClInclude Include="..\..\include\MemeEditor\EventSerializer.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Export.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\EditorConsole.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Manifest.hpp" />
@@ -176,6 +177,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeEditor\Editor.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\EditorConsole.cpp" />
+    <ClCompile Include="..\..\src\MemeEditor\EventSerializer.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\Manifest.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\ResourceManager.cpp" />
     <ClCompile Include="..\..\thirdparty\include\imgui\imgui.cpp" />

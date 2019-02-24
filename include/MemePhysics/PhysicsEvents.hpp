@@ -1,23 +1,23 @@
 #ifndef _PHYSICS_EVENTS_HPP_
 #define _PHYSICS_EVENTS_HPP_
 
-#include <MemeCore/Event.hpp>
+#include <MemeCore/IEvent.hpp>
 #include <MemePhysics/Export.hpp>
 
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_PHYSICS_API PhysicsEvent : public Event
+	struct ML_PHYSICS_API PhysicsEvent : public IEvent
 	{
 		enum : int32_t
 		{
-			MIN_PHYSICS_EVENT = Event::EV_PHYSICS + 1,
+			MIN_PHYSICS_EVENT = IEvent::EV_PHYSICS + 1,
 			MAX_PHYSICS_EVENT
 		};
 
 		PhysicsEvent(int32_t id)
-			: Event(id)
+			: IEvent(id)
 		{
 		}
 	};
