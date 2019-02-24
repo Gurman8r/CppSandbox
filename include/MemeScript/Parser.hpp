@@ -19,6 +19,7 @@ namespace ml
 		~Parser();
 
 		void install_expressions();
+		void install_statements();
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -28,16 +29,14 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		AST_Block *		genAST(const TokenList & tokens) const;
-		AST_Node *		genNode(AST_Node* root, const TokenList & toks) const;
-		AST_Stmt *		genStatement(const TokenList & toks) const;
-		AST_Expr *		genExpression(const TokenList & toks) const;
+		AST_Block *	genAST(const TokenList & tokens) const;
+		AST_Node *	genNode(AST_Node* root, const TokenList & toks) const;
+		AST_Stmt *	genStatement(const TokenList & toks) const;
+		AST_Expr *	genExpression(const TokenList & toks) const;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		AST_Assign *	genAssign(const TokenList & toks) const;
-		AST_BinOp *		genBinOp1(const TokenList & toks) const;
-		AST_BinOp *		genBinOp2(const TokenList & toks) const;
+		AST_BinOp *	postfixToBinOp(const TokenList & toks) const;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
@@ -54,7 +53,7 @@ namespace ml
 
 	public:
 		template <class T>
-		inline Rule * addRule(INodeMaker * maker)
+		inline Rule * install(INodeMaker * maker)
 		{
 			RuleMap::iterator it;
 			if ((it = m_rules.find(&typeid(T))) == m_rules.end())

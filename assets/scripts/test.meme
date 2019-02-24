@@ -2,19 +2,19 @@ TEST = nodeid();
 {
 	#/* * * * * * * * * * * * * * * * * * * * */#
 
-	exists = [](_scope, _name);
+	find = [](_id, _name);
 	{
-		return command("exists " + _scope + " " + _name);
+		return command("exists " + _id + " " + _name);
 	};
 
-	get = [](_scope, _name);
+	get = [](_id, _name);
 	{
-		return command("get " + _scope + " " + _name);
+		return command("get " + _id + " " + _name);
 	};
 
-	set = [](_scope, _name, _value);
+	set = [](_id, _name, _value);
 	{
-		return command("set " + _scope + " " + _name + " " + _value);
+		return command("set " + _id + " " + _name + " " + _value);
 	};
 
 	#/* * * * * * * * * * * * * * * * * * * * */#
@@ -35,7 +35,6 @@ TEST = nodeid();
 		printl(demo.a);
 		printl(demo.b);
 		printl(demo.c);
-
 	};
 
 	return main();

@@ -80,7 +80,7 @@ namespace ml
 
 	Var AST_Assign::evaluate() const
 	{
-		if (AST_Name * n = name->Cast<AST_Name>())
+		if (AST_Name * n = name->as<AST_Name>())
 		{
 			if (op == OperatorType::OP_SET)
 			{
@@ -712,7 +712,7 @@ namespace ml
 	{
 		if (expr)
 		{
-			if (AST_Name * name = expr->selfAs<AST_Name>())
+			if (AST_Name * name = expr->as<AST_Name>())
 			{
 				if (Var * v = block()->getVar(name->value))
 				{

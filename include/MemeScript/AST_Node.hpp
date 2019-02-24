@@ -85,27 +85,19 @@ namespace ml
 		virtual bool run();
 		bool runNext();
 
-	public:
+	public: // Templates
 		template <class T>
-		inline const T * Cast() const
+		inline const T * as() const
 		{
 			assert_typeof_node(T);
 			return dynamic_cast<const T *>(this);
 		}
 		
 		template <class T>
-		inline T * Cast()
+		inline T * as()
 		{
 			assert_typeof_node(T);
 			return dynamic_cast<T *>(this);
-		}
-
-	public: // Templates
-		template <class T>
-		T * selfAs()
-		{
-			assert_typeof_node(T);
-			return this->Cast<T>();
 		}
 
 		template <class T>
@@ -114,7 +106,7 @@ namespace ml
 			assert_typeof_node(T);
 			if (AST_Node* n = getNext())
 			{
-				return n->Cast<T>();
+				return n->as<T>();
 			}
 			return NULL;
 		}
@@ -125,7 +117,7 @@ namespace ml
 			assert_typeof_node(T);
 			if (AST_Node* p = getPrev())
 			{
-				return p->Cast<T>();
+				return p->as<T>();
 			}
 			return NULL;
 		}
@@ -136,7 +128,7 @@ namespace ml
 			assert_typeof_node(T);
 			if (AST_Node* p = getParent())
 			{
-				return p->Cast<T>();
+				return p->as<T>();
 			}
 			return NULL;
 		}
@@ -147,7 +139,7 @@ namespace ml
 			assert_typeof_node(T);
 			if (AST_Node* c = getChild(index))
 			{
-				return c->Cast<T>();
+				return c->as<T>();
 			}
 			return NULL;
 		}
@@ -158,7 +150,7 @@ namespace ml
 			assert_typeof_node(T);
 			if (!empty())
 			{
-				return (*begin())->Cast<T>();
+				return (*begin())->as<T>();
 			}
 			return NULL;
 		}
@@ -169,7 +161,7 @@ namespace ml
 			assert_typeof_node(T);
 			if (!empty())
 			{
-				return (*end() - 1)->Cast<T>();
+				return (*end() - 1)->as<T>();
 			}
 			return NULL;
 		}

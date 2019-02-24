@@ -41,6 +41,7 @@ namespace ml
 
 			if (m_tree = ML_Parser.genAST(m_toks))
 			{
+				// Generate ARGS array
 				if (!args.empty())
 				{
 					TokenList argToks;

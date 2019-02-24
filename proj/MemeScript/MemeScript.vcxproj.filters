@@ -31,6 +31,12 @@
     <Filter Include="Source Files\AST">
       <UniqueIdentifier>{4b2e37b9-97fe-4253-aee8-aecf52b6932c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Utility">
+      <UniqueIdentifier>{0d6b3d68-041d-4145-8c94-7216dcc3fff6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility">
+      <UniqueIdentifier>{2eeccaec-a97f-4c8f-8cdb-75785cf1680a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeScript\Args.cpp">
@@ -76,10 +82,10 @@
       <Filter>Source Files\DS</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeScript\StringUtility.cpp">
-      <Filter>Source Files\Interpreter</Filter>
+      <Filter>Source Files\Utility</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeScript\Script.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Interpreter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -125,20 +131,20 @@
     <ClInclude Include="..\..\include\MemeScript\Runtime.hpp">
       <Filter>Header Files\Interpreter</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeScript\StringUtility.hpp">
-      <Filter>Header Files\Interpreter</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeScript\Export.hpp">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeScript\ScriptEvents.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeScript\Script.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeScript\Rule.hpp">
       <Filter>Header Files\DS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\Script.hpp">
+      <Filter>Header Files\Interpreter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\ScriptEvents.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\StringUtility.hpp">
+      <Filter>Header Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

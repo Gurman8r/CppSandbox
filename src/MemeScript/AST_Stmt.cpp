@@ -25,7 +25,7 @@ namespace ml
 		AST_Node* p = getParent();
 		while (p)
 		{
-			if (AST_Block* b = p->Cast<AST_Block>())
+			if (AST_Block* b = p->as<AST_Block>())
 			{
 				return b;
 			}
@@ -181,7 +181,7 @@ namespace ml
 
 			AST_Node* next = iBlock->getNext();
 
-			while (AST_Elif* ei = next->Cast<AST_Elif>())
+			while (AST_Elif* ei = next->as<AST_Elif>())
 			{
 				if (AST_Block* eiBlock = ei->nextAs<AST_Block>())
 				{
@@ -207,7 +207,7 @@ namespace ml
 				}
 			}
 
-			if (AST_Else* el = next->Cast<AST_Else>())
+			if (AST_Else* el = next->as<AST_Else>())
 			{
 				if (AST_Block* elBlock = el->nextAs<AST_Block>())
 				{
@@ -305,7 +305,7 @@ namespace ml
 
 	bool AST_Print::run()
 	{
-		if (AST_String* str = expr->Cast<AST_String>())
+		if (AST_String* str = expr->as<AST_String>())
 		{
 			String::const_iterator it;
 			for (it = str->value.begin(); it != str->value.end(); it++)
