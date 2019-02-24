@@ -414,7 +414,7 @@ namespace ml
 	}
 
 
-	// BinOp
+	// Binary Operation
 	/* * * * * * * * * * * * * * * * * * * * */
 	AST_BinOp::AST_BinOp(const Operator & op, AST_Expr * lhs, AST_Expr * rhs)
 		: AST_Expr(EX_BinOp)

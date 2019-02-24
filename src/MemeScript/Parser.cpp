@@ -865,7 +865,7 @@ namespace ml
 			TokenList post;
 			if (InfixToPostfix(toks, post, m_showItoP))
 			{
-				if (AST_BinOp * oper = postfixToBinOp(post))
+				if (AST_BinOp * oper = genNestedBinOp(post))
 				{
 					return oper;
 				}
@@ -882,18 +882,19 @@ namespace ml
 		}
 	}
 	
-	/* * * * * * * * * * * * * * * * * * * * */
-	
-	AST_BinOp *	Parser::postfixToBinOp(const TokenList & toks) const
+	AST_BinOp *	Parser::genNestedBinOp(const TokenList & toks) const
 	{
 		AST_BinOp * temp;
+		if (toks.empty())
+		{
+			return (temp = NULL);
+		}
 
 		std::stack<AST_Expr *> stack;
-
 		for (TokenList::const_iterator it = toks.begin(); it != toks.end(); it++)
 		{
 			// Call
-			if ((it)->type == TOK_NAME && (it + 1)->type == TOK_LPRN)
+			if (((it)->type == TOK_NAME) && ((it + 1)->type == TOK_LPRN))
 			{
 				TokenList params(*it);
 

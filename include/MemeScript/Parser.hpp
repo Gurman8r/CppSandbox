@@ -33,10 +33,7 @@ namespace ml
 		AST_Node *	genNode(AST_Node* root, const TokenList & toks) const;
 		AST_Stmt *	genStatement(const TokenList & toks) const;
 		AST_Expr *	genExpression(const TokenList & toks) const;
-
-		/* * * * * * * * * * * * * * * * * * * * */
-
-		AST_BinOp *	postfixToBinOp(const TokenList & toks) const;
+		AST_BinOp *	genNestedBinOp(const TokenList & toks) const;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 

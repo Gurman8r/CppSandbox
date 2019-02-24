@@ -179,7 +179,7 @@ namespace ml
 		bool		run() override;
 	};
 
-	// Operation
+	// Binary Operation
 	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_BinOp : public AST_Expr
 	{
