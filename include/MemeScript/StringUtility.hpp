@@ -41,7 +41,7 @@ namespace ml
 
 		static bool		MakeBool(const String & src, bool& value);
 		static bool		MakeInt(const String & src, int32_t& value);
-		static bool		MakeDecimal(const String & src, double& value);
+		static bool		MakeDouble(const String & src, double& value);
 		static bool		MakeFloat(const String & src, float& value);
 	};
 }

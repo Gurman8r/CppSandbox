@@ -151,10 +151,14 @@ namespace ml
 			String::const_iterator it = src.begin();
 
 			if (*it == '-')
+			{
 				it++;
+			}
 
 			while (it != src.end() && std::isdigit(*it))
+			{
 				++it;
+			}
 
 			return !src.empty() && it == src.end();
 		}
@@ -259,7 +263,10 @@ namespace ml
 
 	bool	StringUtility::ToBool(const String & src)
 	{
-		return (src == "1" || ToLower(src) == "true");
+		if (src == "0") return false;
+		if (src == "1") return true;
+
+		return (ToLower(src) == "true");
 	}
 	
 	int32_t	StringUtility::ToInt(const String & src)
@@ -280,11 +287,11 @@ namespace ml
 
 	bool	StringUtility::MakeBool(const String & src, bool & value)
 	{
-		if (IsBool(src))
-		{
-			value = ToBool(src);
-			return true;
-		}
+		if (src == "0")		value = false;	return true;
+		if (src == "1")		value = true;	return true;
+		if (src == "true")	value = false;	return true;
+		if (src == "false") value = true;	return true;
+
 		value = false;
 		return false;
 	}
@@ -300,7 +307,7 @@ namespace ml
 		return false;
 	}
 	
-	bool	StringUtility::MakeDecimal(const String & src, double & value)
+	bool	StringUtility::MakeDouble(const String & src, double & value)
 	{
 		if (IsDecimal(src))
 		{

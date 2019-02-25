@@ -459,47 +459,19 @@ namespace ml
 		return end();
 	}
 
+	bool Args::find_and_erase(const String & value)
+	{
+		const_iterator it;
+		if ((it = find(value)) != end())
+		{
+			erase(it);
+			return true;
+		}
+		return false;
+	}
 
-	Args::iterator					Args::begin()
-	{
-		return m_values.begin();
-	}
-	Args::iterator					Args::end()
-	{
-		return m_values.end();
-	}
-	Args::const_iterator			Args::begin() const
-	{
-		return m_values.begin();
-	}
-	Args::const_iterator			Args::end() const
-	{
-		return m_values.end();
-	}
-	Args::const_iterator			Args::cbegin() const
-	{
-		return m_values.cbegin();
-	}
-	Args::const_iterator			Args::cend() const
-	{
-		return m_values.cend();
-	}
-	Args::reverse_iterator			Args::rbegin()
-	{
-		return m_values.rbegin();
-	}
-	Args::reverse_iterator			Args::rend()
-	{
-		return m_values.rend();
-	}
-	Args::const_reverse_iterator	Args::crbegin() const
-	{
-		return m_values.crbegin();
-	}
-	Args::const_reverse_iterator	Args::crend() const
-	{
-		return m_values.crend();
-	}
+
+	
 	
 	
 	bool Args::equals(const self_type & value) const

@@ -4,7 +4,13 @@ HELLO = nodeid();
 
 	main = [](args);
 	{
-		if(args[0]); { printl(args[0]); };
+		if (argc = sizeof(args));
+		{
+			for (i = 0; i < argc; i = i + 1);
+			{
+				printl(args[i]);
+			};
+		};
 		
 		printl("* * * * * * * * * * * * * * * * * * * * * * *");
 		printl("*                                           *");
@@ -18,11 +24,11 @@ HELLO = nodeid();
 
 	if(command("exists " + HELLO + " __ARGS__"));
 	{
-		return main(__ARGS__);
+		main(__ARGS__);
 	};
 	else;
 	{
-		return main([ "" ]);
+		main([ "" ]);
 	};
 
 	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #

@@ -7,6 +7,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	Var::Ptr::Ptr()
 		: index(0)
 		, name(String())
@@ -48,10 +50,14 @@ namespace ml
 			out << (FG::White | BG::Red) << name;
 		}
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	const String Var::TypeNames[Var::MAX_VAR_TYPE] =
 	{
 		"void",
@@ -64,6 +70,8 @@ namespace ml
 		"func",
 		"struct",
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	Var::Var()
 		: m_scope(0)
@@ -90,8 +98,7 @@ namespace ml
 	{
 	}
 
-
-	// Check Functions
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool Var::compareTokens(const TokenList& value) const
 	{
@@ -137,7 +144,7 @@ namespace ml
 		 
 	bool Var::isBoolType() const
 	{
-		return isNameType() && StringUtility::IsBool((textValue()));
+		return isNameType() && StringUtility::IsBool(textValue());
 	}
 		 
 	bool Var::isComplexType() const
@@ -152,12 +159,12 @@ namespace ml
 		 
 	bool Var::isErrorType() const
 	{
-		return tokensValue().front(TokenType::TOK_ERR);
+		return tokensValue().front('\0');
 	}
 		 
 	bool Var::isFloatType() const
 	{
-		return tokensValue().front('f') && StringUtility::IsDecimal((textValue()));
+		return tokensValue().front('f') && StringUtility::IsDecimal(textValue());
 	}
 		 
 	bool Var::isFuncType() const
@@ -167,12 +174,12 @@ namespace ml
 		 
 	bool Var::isIntType() const
 	{
-		return tokensValue().front('i') && StringUtility::IsInt((textValue()));
+		return tokensValue().front('i') && StringUtility::IsInt(textValue());
 	}
 		 
 	bool Var::isNameType() const
 	{
-		return m_data.front('n') && StringUtility::IsName((textValue()));
+		return m_data.front('n') && StringUtility::IsName(textValue());
 	}
 		 
 	bool Var::isNullValue() const
@@ -205,14 +212,13 @@ namespace ml
 		return compareType(Var::Void) || tokensValue().front(TokenType::TOK_VOID);
 	}
 
-
-	// Data Functions
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool		Var::boolValue() const
 	{
 		if (isBoolType())
 		{
-			return StringUtility::ToBool((textValue()));
+			return StringUtility::ToBool(textValue());
 		}
 		else if (isIntType())
 		{
@@ -240,7 +246,7 @@ namespace ml
 
 	float		Var::floatValue() const
 	{
-		return isValid() ? StringUtility::ToFloat((textValue())) : 0;
+		return isValid() ? StringUtility::ToFloat(textValue()) : 0;
 	}
 
 	Var			Var::elemValue(size_t i) const
@@ -283,7 +289,7 @@ namespace ml
 
 	int32_t		Var::intValue() const
 	{
-		return isValid() ? StringUtility::ToInt((textValue())) : 0;
+		return isValid() ? StringUtility::ToInt(textValue()) : 0;
 	}
 
 	Var::Ptr	Var::pointerValue() const
@@ -334,6 +340,7 @@ namespace ml
 		return dataValue();
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 	
 	Var & Var::arrayValue(const TokenList & value)
 	{
@@ -410,8 +417,7 @@ namespace ml
 		return setType(Var::Void).dataValue({ TokenType::TOK_VOID });
 	}
 
-
-	// Serialization
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	Var & Var::print()
 	{
@@ -496,8 +502,7 @@ namespace ml
 		return out;
 	}
 
-
-	// Factory
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	Var Var::makeSingle(const Token & tok)
 	{
@@ -531,8 +536,7 @@ namespace ml
 		}
 	}
 
-
-	// Operator Functions
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool	Var::And(const Var & other) const
 	{
@@ -1060,7 +1064,7 @@ namespace ml
 	}
 
 
-	// Operators
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool operator&&(const Var & lhs, const Var & rhs)	{ return lhs.And(rhs); }
 	bool operator||(const Var & lhs, const Var & rhs)	{ return lhs.Or(rhs); }
@@ -1089,7 +1093,5 @@ namespace ml
 	Var & Var::operator=(CString value)			{ return stringValue(value); }
 	Var & Var::operator=(char value)			{ return stringValue(String(1, value)); }
 	
-
-	
-
+	/* * * * * * * * * * * * * * * * * * * * */
 }

@@ -225,7 +225,7 @@ namespace DEMO
 			.showItoP(SETTINGS.scrShowItoP);// Show Infix to Postfix
 
 		// Load Commands
-		install_demo_commands();
+		install_commands();
 
 		// Run Script
 		if (!SETTINGS.scrFile.empty())
@@ -859,7 +859,7 @@ namespace DEMO
 			if (ImGui::BeginMenu("Window"))
 			{
 				ImGui::MenuItem("Editor", "Ctrl+E", &show_ml_editor);
-				ImGui::MenuItem("Console", "Ctrl+Alt+T", &ML_EditorConsole.visible());
+				ImGui::MenuItem("Interpreter", "Ctrl+Alt+T", &ML_EditorConsole.visible());
 				ImGui::MenuItem("Network", "Ctrl+Alt+N", &show_ml_network);
 				ImGui::MenuItem("Shader Builder", "Ctrl+Alt+B", &show_ml_shader);
 				ImGui::EndMenu();

@@ -3,27 +3,27 @@ FIB = nodeid();
 {
 	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-	fib = [](_value);
+	fib = [](value);
 	{
-		type = typename(_value);
+		type = typename(value);
 		if(type == "int");
 		{
-			printl("Fibonacci: {_value}");
-			if(_value >= 0);
+			printl("Fibonacci: {value}");
+			if(value >= 0);
 			{
 				a = 0;
 				printl(a);
-				if(_value >= 1);
+				if(value >= 1);
 				{
 					b = 1;
 					printl(b);
-					next = a + b;
-					while(next <= _value);
+					c = a + b;
+					while(c <= value);
 					{
-						printl(next);
+						printl(c);
 						a = b;
-						b = next;
-						next = a + b;
+						b = c;
+						c = a + b;
 					};
 				};
 			};
@@ -38,11 +38,11 @@ FIB = nodeid();
 
 	if(command("exists " + FIB + " __ARGS__"));
 	{
-		return fib(__ARGS__[0]);
+		fib(__ARGS__[0]);
 	};
 	else;
 	{
-		return fib(100);
+		fib(100);
 	};
 
 	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #

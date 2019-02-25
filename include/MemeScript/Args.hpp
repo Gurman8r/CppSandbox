@@ -90,23 +90,55 @@ namespace ml
 		self_type&	reverse();
 
 	public:
-		Args::const_iterator	find(const String & value, size_t begin = 0) const;
-		Args::const_iterator	find_first(const String & value) const;
-		Args::const_iterator	find_first_not_of(const String & value, size_t begin = 0) const;
-		Args::const_iterator	find_last(const String & value) const;
-		Args::const_iterator	find_last_not_of(const String & value) const;
+		const_iterator	find(const String & value, size_t begin = 0) const;
+		const_iterator	find_first(const String & value) const;
+		const_iterator	find_first_not_of(const String & value, size_t begin = 0) const;
+		const_iterator	find_last(const String & value) const;
+		const_iterator	find_last_not_of(const String & value) const;
+
+		bool find_and_erase(const String & value);
 
 	public:
-		Args::iterator					begin();
-		Args::iterator					end();
-		Args::const_iterator			begin() const;
-		Args::const_iterator			end()	const;
-		Args::const_iterator			cbegin()const;
-		Args::const_iterator			cend()	const;
-		Args::reverse_iterator			rbegin();
-		Args::reverse_iterator			rend();
-		Args::const_reverse_iterator	crbegin() const;
-		Args::const_reverse_iterator	crend() const;
+		inline iterator					begin()
+		{
+			return m_values.begin();
+		}
+		inline iterator					end()
+		{
+			return m_values.end();
+		}
+		inline const_iterator			begin() const
+		{
+			return m_values.begin();
+		}
+		inline const_iterator			end() const
+		{
+			return m_values.end();
+		}
+		inline const_iterator			cbegin() const
+		{
+			return m_values.cbegin();
+		}
+		inline const_iterator			cend() const
+		{
+			return m_values.cend();
+		}
+		inline reverse_iterator			rbegin()
+		{
+			return m_values.rbegin();
+		}
+		inline reverse_iterator			rend()
+		{
+			return m_values.rend();
+		}
+		inline const_reverse_iterator	crbegin() const
+		{
+			return m_values.crbegin();
+		}
+		inline const_reverse_iterator	crend() const
+		{
+			return m_values.crend();
+		}
 
 	public:
 		inline void serialize(std::ostream & out) const override

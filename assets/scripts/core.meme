@@ -1,63 +1,97 @@
 # MemeScript Core Library
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-clear	= []();		{ return command("clear");	};
-pause	= []();		{ return command("pause");	};
-exit	= []();		{ return command("exit");	};
-getcwd	= []();		{ return command("getcwd");	};
-
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
-
-system	= [](_value); { return command("system "+ _value); };
-chdir	= [](_value); { return command("cd "	+ _value); };
-lsdir	= [](_value); { return command("ls "	+ _value); };
-exists	= [](_value); { return command("exists "+ _value); };
-read	= [](_value); { return command("read "	+ _value); };
-exec	= [](_value); { return command("exec "	+ _value); };
-
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
-
-log_msg = [](_message); { return command("log msg " + _message); };
-log_wrn = [](_message); { return command("log wrn "	+ _message); };
-log_err = [](_message); { return command("log err " + _message); };
-
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
-
-list	= [](_value); { return command("list "	+ _value); };
-reload	= [](_value); { return command("reload "+ _value); };
-run		= [](_value); { return command("run "	+ _value); };
-
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
-
-getFlag = [](_name);		{ return command("flag " + _name); };
-setFlag = [](_name, _value);{ return command("flag " + _name + " " + _value); };
-
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
-
-find = [](_nodeid, _name);
-{
-	return command("exists " + _nodeid + " " + _name);
+clear = [](); { 
+	return command("clear");
 };
-get = [](_nodeid, _name);
-{
-	return command("get " + _nodeid + " " + _name);
+
+pause = [](); { 
+	return command("pause");
 };
-set = [](_nodeid, _name, _value);
-{
-	return command("set " + _nodeid + " " + _name + " " + _value);
+
+exit = []();  { 
+	return command("exit");
+};
+
+getcwd = [](); {
+	return command("getcwd");
 };
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-getTargetName		= []();	{ return command("target name");	 };
-getTargetConfig		= []();	{ return command("target config");	 };
-getTargetPlatform	= [](); { return command("target platform"); };
-getTargetExeName	= []();
-{
+system = [](system_value); { 
+	return command("system " + system_value); 
+};
+
+chdir = [](chdir_value); { 
+	return command("cd " + chdir_value); 
+};
+
+lsdir = [](lsdir_value); {
+	return command("ls " + lsdir_value); 
+};
+
+exists = [](exists_value); { 
+	return command("exists " + exists_value);
+};
+
+read = [](read_value); {
+	return command("read " + read_value);
+};
+
+exec = [](exec_value);  { 
+	return command("exec " + exec_value);
+};
+
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+
+get_flag = [](get_flag_name); {
+	return command("flag " + get_flag_name);
+};
+
+set_flag = [](set_flag_name, set_flag_value); {
+	return command("flag " + set_flag_name + " " + set_flag_value);
+};
+
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+
+log_msg = [](log_msg_value); { return command("log msg " + log_msg_value); };
+log_wrn = [](log_wrn_value); { return command("log wrn " + log_wrn_value); };
+log_err = [](log_err_value); { return command("log err " + log_err_value); };
+
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+
+find_var = [](find_var_nodeid, find_var_name); {
+	return command("exists " + find_var_nodeid + " " + find_var_name);
+};
+
+get_var = [](get_var_nodeid, get_var_name); {
+	return command("get " + get_var_nodeid + " " + get_var_name);
+};
+
+set_var = [](set_var_nodeid, set_var_name, set_var_value); {
+	return command("set " + set_var_nodeid + " " + set_var_name + " " + set_var_value);
+};
+
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+
+get_target_name = [](); {
+	return command("target name");
+};
+
+get_target_config = [](); { 
+	return command("target config");
+};
+
+get_target_platform = [](); { 
+	return command("target platform"); 
+};
+
+get_target_file = [](); {
 	return
-		getTargetName() + "_" +
-		getTargetConfig() + "_" +
-		getTargetPlatform() + ".exe";
+		get_target_name() + "_" +
+		get_target_config() + "_" +
+		get_target_platform() + ".exe";
 };
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #

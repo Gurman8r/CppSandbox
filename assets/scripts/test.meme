@@ -6,8 +6,10 @@ TEST = nodeid();
 
 	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
+	flag_tree = command("flag tree");
 	command("flag tree 0");
 	include("../../../assets/scripts/core.meme");
+	command("flag tree " + flag_tree);
 
 	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
@@ -26,11 +28,11 @@ TEST = nodeid();
 
 	main = [](args);
 	{
-		imax = sizeof(args);
-		for (i = 0; i < imax; i = i + 1);
-		{
-			printl(args[i]);
-		};
+		f = fun;
+		f();
+
+		file = get_target_file();
+		printl(file);
 
 		printl(demo.a);
 		printl(demo.b);
@@ -41,12 +43,12 @@ TEST = nodeid();
 
 	if(command("exists " + TEST + " __ARGS__"));
 	{
-		return main(__ARGS__);
+		main(__ARGS__);
 	};
 	else;
 	{
-		return main([ "" ]);
+		main([ "" ]);
 	};
-
+	
 	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 };
