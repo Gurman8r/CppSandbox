@@ -7,7 +7,7 @@ namespace ml
 	Script::Script()
 		: m_file	()
 		, m_toks	()
-		, m_tree	(NULL)
+		, m_root	(NULL)
 		, m_out		()
 	{
 	}
@@ -20,12 +20,12 @@ namespace ml
 
 	bool Script::cleanup()
 	{
-		if (m_tree) 
+		if (m_root) 
 		{ 
-			delete m_tree;
-			m_tree = NULL;
+			delete m_root;
+			m_root = NULL;
 		}
-		return (!m_tree);
+		return (!m_root);
 	}
 
 	bool Script::loadFromFile(const String & filename)
@@ -37,46 +37,41 @@ namespace ml
 	{
 		if (m_file)
 		{
-			m_toks = ML_Lexer.splitTokens(m_file.data());
+			// Generate Tokens
+			m_toks = ML_Lexer.genTokenList(m_file.data());
 
-			if (m_tree = ML_Parser.genAST(m_toks))
+			// Generate Tree
+			if (m_root = ML_Parser.genFromList(m_toks))
 			{
 				// Generate ARGS array
 				if (!args.empty())
 				{
-					TokenList argToks;
-					argToks.push_back(Token('['));
-					for (size_t i = 0, imax = args.size(); i < imax; i++)
+					if (!m_root->insertChild(0, new AST_Assign(
+						OpType::OP_SET,
+						ML_Parser.generate<AST_Name>(Token('n', ML_ARGS)),
+						ML_Parser.generate<AST_Array>(ML_Lexer.genArgsArray(args)))))
 					{
-						argToks.push_back(ML_Lexer.makeToken(args[i]));
-						if (i < imax - 1)
-						{
-							argToks.push_back(Token(','));
-						}
-					}
-					argToks.push_back(Token(']'));
-					
-					if (AST_Array * argArray = ML_Parser.generate<AST_Array>(argToks))
-					{
-						m_tree->insertChild(0, new AST_Assign(
-							OperatorType::OP_SET,
-							new AST_Name(ML_ARGS),
-							argArray));
+						return Debug::logError("Script : Failed building {0} array", 
+							ML_ARGS);
 					}
 				}
-
 				return true;
 			}
 		}
-		m_tree = NULL;
+		m_root = NULL;
 		return false;
+	}
+
+	bool Script::rebuild(const Args & args)
+	{
+		return loadFromFile(m_path) && build(args);
 	}
 
 	bool Script::run()
 	{
-		if (m_tree && m_tree->run())
+		if (m_root && m_root->run())
 		{
-			m_out = m_tree->getRet();
+			m_out = m_root->getRet();
 
 			return cleanup();
 		}

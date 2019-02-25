@@ -474,7 +474,7 @@ namespace ml
 			break;
 
 		case Var::Struct:
-			out << (FG::White | BG::DarkGray) << "[](" << FMT();
+			out << (FG::White | BG::DarkGray) << "$(" << FMT();
 			Var::PrintList(out, (*this));
 			out << (FG::White | BG::DarkGray) << ")" << FMT();
 			break;
@@ -714,7 +714,7 @@ namespace ml
 
 		return errorValue(String::Format(
 			"Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
-			getTypeID(), (*this), OperatorType::OP_ADD, other.getTypeID(), other));
+			getTypeID(), (*this), OpType::OP_ADD, other.getTypeID(), other));
 	}
 
 	Var &	Var::Div(const Var & other)
@@ -786,7 +786,7 @@ namespace ml
 
 		return errorValue(String::Format(
 			"Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
-			getTypeID(), (*this), OperatorType::OP_DIV, other.getTypeID(), other));
+			getTypeID(), (*this), OpType::OP_DIV, other.getTypeID(), other));
 	}
 
 	Var &	Var::Mod(const Var & other)
@@ -849,7 +849,7 @@ namespace ml
 
 		return errorValue(String::Format(
 			"Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
-			getTypeID(), (*this), OperatorType::OP_MOD, other.getTypeID(), other));
+			getTypeID(), (*this), OpType::OP_MOD, other.getTypeID(), other));
 	}
 
 	Var &	Var::Mul(const Var & other)
@@ -921,7 +921,7 @@ namespace ml
 
 		return errorValue(String::Format(
 			"Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
-			getTypeID(), (*this), OperatorType::OP_MUL, other.getTypeID(), other));
+			getTypeID(), (*this), OpType::OP_MUL, other.getTypeID(), other));
 	}
 
 	Var &	Var::Pow(const Var & other)
@@ -984,7 +984,7 @@ namespace ml
 
 		return errorValue(String::Format(
 			"Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
-			getTypeID(), (*this), OperatorType::OP_POW, other.getTypeID(), other));
+			getTypeID(), (*this), OpType::OP_POW, other.getTypeID(), other));
 	}
 
 	Var &	Var::Sub(const Var & other)
@@ -1047,7 +1047,7 @@ namespace ml
 
 		return errorValue(String::Format(
 			"Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
-			getTypeID(), (*this), OperatorType::OP_SUB, other.getTypeID(), other));
+			getTypeID(), (*this), OpType::OP_SUB, other.getTypeID(), other));
 	}
 
 	Var &	Var::Set(const Var & other)
@@ -1086,7 +1086,7 @@ namespace ml
 	Var & Var::operator=(int32_t value)			{ return intValue(value); }
 	Var & Var::operator=(const Ptr & value)		{ return pointerValue(value); }
 	Var & Var::operator=(const String & value)	{ return stringValue(value); }
-	Var & Var::operator=(CString value)	{ return stringValue(value); }
+	Var & Var::operator=(CString value)			{ return stringValue(value); }
 	Var & Var::operator=(char value)			{ return stringValue(String(1, value)); }
 	
 

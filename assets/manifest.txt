@@ -37,10 +37,12 @@ model:		moon		/meshes/sphere32x24.mesh
 
 # Scripts
 #***********************************************************************#
+script:		core		/scripts/core.meme
 script:		hello		/scripts/hello.meme
 script:		fib			/scripts/fib.meme
 script:		files		/scripts/files.meme
 script:		test		/scripts/test.meme
+script:		stub		/scripts/stub.meme
 
 # Shaders
 #***********************************************************************#

@@ -14,7 +14,7 @@
 #define ML_Runtime		ML_Interpreter.runtime
 
 #define ML_RET	"?"
-#define ML_ARGS "ARGS"
+#define ML_ARGS "__ARGS__"
 
 namespace ml
 {
@@ -42,7 +42,8 @@ namespace ml
 		Var	execFile(const String & value);
 		Var	execString(const String & value);
 		Var	execTokens(const TokenList & value);
-		Var	execBlock(AST_Block * value);
+		Var execStatements(const TokenTree & value);
+		Var	execTree(AST_Block * value);
 
 		inline const CommandMap & commands() const { return m_commands; }
 

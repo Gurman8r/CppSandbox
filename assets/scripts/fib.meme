@@ -1,28 +1,26 @@
 # Script to show a Fibonacci sequence
 FIB = nodeid();
 {
-	include("../../../assets/scripts/core.meme");
+	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-	fib = [](num);
+	fib = [](_value);
 	{
-		if(IsInt(num));
+		type = typename(_value);
+		if(type == "int");
 		{
-			printl("Fibonacci: {num}");
-		
-			if(num >= 0);
+			printl("Fibonacci: {_value}");
+			if(_value >= 0);
 			{
 				a = 0;
-				printl("{a}");
-			
-				if(num >= 1);
+				printl(a);
+				if(_value >= 1);
 				{
 					b = 1;
-					printl("{b}");
-		
+					printl(b);
 					next = a + b;
-					while(next <= num);
+					while(next <= _value);
 					{
-						printl("{next}");
+						printl(next);
 						a = b;
 						b = next;
 						next = a + b;
@@ -30,14 +28,22 @@ FIB = nodeid();
 				};
 			};
 		};
+		else;
+		{
+			command("log err Value must be an integer");
+		};
 	};
 
-	if(find(FIB, "ARGS"));
+	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+
+	if(command("exists " + FIB + " __ARGS__"));
 	{
-		fib(ARGS[0]);
+		return fib(__ARGS__[0]);
 	};
 	else;
 	{
-		fib(100);
+		return fib(100);
 	};
-}
+
+	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+};

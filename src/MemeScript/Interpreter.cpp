@@ -51,22 +51,23 @@ namespace ml
 
 	Var	Interpreter::execFile(const String & value)
 	{
-		if (ML_FileSystem.fileExists(value.c_str()))
+		if (!value.empty())
 		{
-			List<char> buffer;
-			if (ML_FileSystem.getFileContents(value, buffer))
+			File file;
+			if (file.loadFromFile(value))
 			{
-				return execTokens(lexer.splitTokens(buffer));
+				return execTokens(lexer.genTokenList(file.data()));
 			}
+			return Var().errorValue("File not found {0}", value);
 		}
-		return Var().errorValue("File not found {0}", value);
+		return Var().errorValue("File cannot be empty", value);
 	}
 
 	Var	Interpreter::execString(const String & value)
 	{
 		if (!value.empty())
 		{
-			return execTokens(lexer.splitTokens(value));
+			return execTokens(lexer.genTokenList(value));
 		}
 		return Var().errorValue("Buffer cannot be empty");
 	}
@@ -75,15 +76,21 @@ namespace ml
 	{
 		if (!value.empty())
 		{
-			if (AST_Block* root = parser.genAST(value))
-			{
-				return execBlock(root);
-			}
+			return execStatements(lexer.genTokenTree(value));
 		}
 		return Var().errorValue("TokenList cannot be empty");
 	}
 
-	Var	Interpreter::execBlock(AST_Block * value)
+	Var Interpreter::execStatements(const TokenTree & value)
+	{
+		if (!value.empty())
+		{
+			return execTree(parser.genFromTree(value));
+		}
+		return Var().errorValue("Statements cannot be empty");
+	}
+
+	Var	Interpreter::execTree(AST_Block * value)
 	{
 		if (value)
 		{
@@ -93,23 +100,18 @@ namespace ml
 
 				delete value;
 
-				if (runtime.setVar(0, ML_RET, v))
-				{
-					return v;
-				}
-				else
-				{
-					return Var().errorValue("Failed setting return");
-				}
+				return runtime.setVar(0, ML_RET, v)
+					? v
+					: Var().errorValue("Interpreter : Failed setting return");
 			}
 			else
 			{
-				return Var().errorValue("Failed running value");
+				return Var().errorValue("Interpreter : Failed running Block");
 			}
 		}
 		else
 		{
-			return Var().errorValue("Root cannot be null");
+			return Var().errorValue("Interpreter : Root cannot be null");
 		}
 	}
 

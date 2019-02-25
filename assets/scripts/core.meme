@@ -1,6 +1,4 @@
 # MemeScript Core Library
-CORE = nodeid();
-
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
 clear	= []();		{ return command("clear");	};
@@ -10,39 +8,43 @@ getcwd	= []();		{ return command("getcwd");	};
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-system	= [](arg0); { return command("system " + arg0); };
-chdir	= [](arg0);	{ return command("cd " + arg0);		};
-lsdir	= [](arg0); { return command("ls " + arg0);		};
-exists	= [](arg0); { return command("exists " + arg0); };
-read	= [](arg0); { return command("read " + arg0);	};
-exec	= [](arg0); { return command("exec " + arg0);	};
+system	= [](_value); { return command("system "+ _value); };
+chdir	= [](_value); { return command("cd "	+ _value); };
+lsdir	= [](_value); { return command("ls "	+ _value); };
+exists	= [](_value); { return command("exists "+ _value); };
+read	= [](_value); { return command("read "	+ _value); };
+exec	= [](_value); { return command("exec "	+ _value); };
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-IsArray		= [](arg0); { type = typename(arg0); return (type == "array");	};
-IsVoid		= [](arg0); { type = typename(arg0); return (type == "void");	};
-IsBool		= [](arg0); { type = typename(arg0); return (type == "bool");	};
-IsFloat		= [](arg0); { type = typename(arg0); return (type == "float");	};
-IsFunc		= [](arg0); { type = typename(arg0); return (type == "func");	};
-IsInt		= [](arg0); { type = typename(arg0); return (type == "int");	};
-IsPointer	= [](arg0); { type = typename(arg0); return (type == "pointer");};
-IsString	= [](arg0); { type = typename(arg0); return (type == "string"); };
+log_msg = [](_message); { return command("log msg " + _message); };
+log_wrn = [](_message); { return command("log wrn "	+ _message); };
+log_err = [](_message); { return command("log err " + _message); };
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-find = [](_id, _name);
-{
-	return command("exists " + _id + " " + _name);
-};
+list	= [](_value); { return command("list "	+ _value); };
+reload	= [](_value); { return command("reload "+ _value); };
+run		= [](_value); { return command("run "	+ _value); };
 
-get = [](_id, _name);
-{
-	return command("get " + _id + " " + _name);
-};
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-set = [](_id, _name, _value);
+getFlag = [](_name);		{ return command("flag " + _name); };
+setFlag = [](_name, _value);{ return command("flag " + _name + " " + _value); };
+
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+
+find = [](_nodeid, _name);
 {
-	return command("set " + _id + " " + _name + " " + _value);
+	return command("exists " + _nodeid + " " + _name);
+};
+get = [](_nodeid, _name);
+{
+	return command("get " + _nodeid + " " + _name);
+};
+set = [](_nodeid, _name, _value);
+{
+	return command("set " + _nodeid + " " + _name + " " + _value);
 };
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
@@ -57,3 +59,7 @@ getTargetExeName	= []();
 		getTargetConfig() + "_" +
 		getTargetPlatform() + ".exe";
 };
+
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+
+CORE = nodeid();

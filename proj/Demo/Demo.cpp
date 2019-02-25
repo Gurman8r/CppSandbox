@@ -1,4 +1,5 @@
 #include "Demo.hpp"
+#include "DemoCommands.hpp"
 #include <MemeCore/EventSystem.hpp>
 #include <MemeWindow/WindowEvents.hpp>
 #include <MemeEditor/EditorConsole.hpp>
@@ -136,316 +137,6 @@ namespace DEMO
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Demo::loadInterpreter()
-	{
-		static bool checked = false;
-		if (!checked)
-		{
-			checked = true;
-
-			// Setup Parser
-			/* * * * * * * * * * * * * * * * * * * * */
-			ML_Parser
-				.showToks(SETTINGS.scrShowToks) // Show Tokens
-				.showTree(SETTINGS.scrShowTree) // Show Tree
-				.showItoP(SETTINGS.scrShowItoP);// Show Infix to Postfix
-
-			// Load Commands
-			/* * * * * * * * * * * * * * * * * * * * */
-			ML_Interpreter.addCmd({ "help", [](ml::Args & args)
-			{
-				ml::SStream ss;
-				for (auto pair : ML_Interpreter.commands())
-				{
-					ml::cout << pair.first << ml::endl;
-				}
-				return ml::Var().boolValue(true);
-			} });
-
-			ML_Interpreter.addCmd({ "history", [](ml::Args & args)
-			{
-				ML_EditorConsole.printHistory();
-				return ml::Var().boolValue(true);
-			} });
-
-			ML_Interpreter.addCmd({ "system", [](ml::Args & args)
-			{
-				return ml::Var().intValue(ml::Debug::system(args.pop_front().str().c_str()));
-			} });
-
-			ML_Interpreter.addCmd({ "log", [](ml::Args & args)
-			{
-				ml::Debug::log(args.pop());
-				return ml::Var().intValue(ML_SUCCESS);
-			} });
-
-			ML_Interpreter.addCmd({ "warn", [](ml::Args & args)
-			{
-				ml::Debug::logWarning(args.pop());
-				return ml::Var().intValue(ML_WARNING);
-			} });
-
-			ML_Interpreter.addCmd({ "err", [](ml::Args & args)
-			{
-				ml::Debug::logError(args.pop());
-				return ml::Var().intValue(ML_FAILURE);
-			} });
-
-			ML_Interpreter.addCmd({ "exit", [](ml::Args & args)
-			{
-				ML_EventSystem.fireEvent(ml::RequestExitEvent());
-				return ml::Var().voidValue();
-			} });
-
-			ML_Interpreter.addCmd({ "hide", [](ml::Args & args)
-			{
-				ML_EditorConsole.visible() = false;
-				return ml::Var().voidValue();
-			} });
-
-			ML_Interpreter.addCmd({ "clear", [](ml::Args & args)
-			{
-				ML_EditorConsole.clear(); 
-				return ml::Var().voidValue();
-			} });
-
-			ML_Interpreter.addCmd({ "run", [](ml::Args & args)
-			{
-				const ml::String name = args.pop();
-				if (ml::Script * scr = ML_Res.scripts.get(name))
-				{
-					args.pop_front();
-					if (scr->build(args) && scr->run())
-					{
-						return scr->out();
-					}
-				}
-				return ml::Var().errorValue("Script not found: {0}", name);
-			} });
-
-			ML_Interpreter.addCmd({ "getcwd", [](ml::Args & args)
-			{
-				return ml::Var().stringValue(ML_FileSystem.getWorkingDir());
-			} });
-
-			ML_Interpreter.addCmd({ "cwd", [](ml::Args & args)
-			{
-				return ML_Interpreter.execCommand("getcwd").print();
-			} });
-
-			ML_Interpreter.addCmd({ "pause", [](ml::Args & args)
-			{
-				return ml::Var().intValue(ml::Debug::pause(EXIT_SUCCESS));
-			} });
-
-			ML_Interpreter.addCmd({ "cd", [](ml::Args & args)
-			{
-				const ml::String path = args.pop();
-				if (path.empty())
-				{
-					return ml::Var().boolValue(ML_FileSystem.setWorkingDir(SETTINGS.assetPath));
-				}
-				return ml::Var().boolValue(ML_FileSystem.setWorkingDir(path));
-			} });
-
-			ML_Interpreter.addCmd({ "cat", [](ml::Args & args)
-			{
-				ml::String buf;
-				if (ML_FileSystem.getFileContents(args.pop(), buf))
-				{
-					ml::cout << buf << ml::endl;
-
-					return ml::Var().boolValue(true);
-				}
-				return ml::Var().boolValue(false);
-			} });
-
-			ML_Interpreter.addCmd({ "read", [](ml::Args & args)
-			{
-				const ml::String name = args.pop();
-				if (ML_FileSystem.fileExists(name))
-				{
-					ml::String buf;
-					if (ML_FileSystem.getFileContents(name, buf))
-					{
-						return ml::Var().stringValue(buf);
-					}
-				}
-				else
-				{
-					ml::SStream ss;
-					if (ML_FileSystem.getDirContents(name, ss))
-					{
-						return ml::Var().stringValue(ss.str());
-					}
-				}
-				return ml::Var().boolValue(false);
-			} });
-
-			ML_Interpreter.addCmd({ "get", [](ml::Args & args)
-			{
-				const ml::String scope = args.pop();
-
-				if (ml::StringUtility::IsInt(scope) && !args.empty())
-				{
-					if (ml::Var * v = ML_Runtime.getVar(
-						ml::StringUtility::ToInt(scope), args.pop()))
-					{
-						return (*v);
-					}
-				}
-				return ml::Var().voidValue();
-			} });
-
-			ML_Interpreter.addCmd({ "set", [](ml::Args & args)
-			{
-				const ml::String scope = args.pop();
-
-				if (ml::StringUtility::IsInt(scope) && !args.empty())
-				{
-					const ml::String name = args.pop();
-
-					if (ml::StringUtility::IsName(name) && !args.empty())
-					{
-						const ml::Token value = ML_Lexer.makeToken(args.pop());
-
-						if (ML_Runtime.setVar(
-							ml::StringUtility::ToInt(scope),
-							name,
-							ml::Var::makeSingle(value)
-						))
-						{
-							return ml::Var().boolValue(true);
-						}
-					}
-				}
-				return ml::Var().boolValue(false);
-			} });
-
-			ML_Interpreter.addCmd({ "exists", [](ml::Args & args)
-			{
-				const ml::String str = args.pop();
-
-				if (ml::StringUtility::IsInt(str) && !args.empty())
-				{
-					return ml::Var().boolValue(
-						ML_Runtime.getVar(
-							ml::StringUtility::ToInt(str),
-							args.pop())
-					);
-				}
-				else if (str == "." || str == "..")
-				{
-					return ml::Var().boolValue(true);
-				}
-				else
-				{
-					return ml::Var().boolValue(ML_FileSystem.fileExists(str));
-				}
-			} });
-
-			ML_Interpreter.addCmd({ "exec", [](ml::Args & args)
-			{
-				return ML_Interpreter.execFile(args.pop());
-			} });
-
-			ML_Interpreter.addCmd({ "ls", [](ml::Args & args)
-			{
-				const ml::String name = args.pop_front().empty() ? "." : args.str();
-				ml::SStream ss;
-				if (ML_FileSystem.getDirContents(name, ss))
-				{
-					ml::cout << ss.str();
-					return ml::Var().boolValue(true);
-				}
-				return ml::Var().boolValue(false);
-			} });
-
-			ML_Interpreter.addCmd({ "target", [](ml::Args & args)
-			{
-				if (!args.pop_front().empty())
-				{
-					const ml::String & opt = args.front();
-					if (opt == "name")
-					{
-						return ml::Var().stringValue(SETTINGS.title);
-					}
-					else if (opt == "config")
-					{
-						return ml::Var().stringValue(ml::Debug::configuration());
-					}
-					else if (opt == "platform")
-					{
-						return ml::Var().stringValue(ml::Debug::platform());
-					}
-				}
-				return ml::Var().boolValue(true);
-			} });
-
-			ML_Interpreter.addCmd({ "list", [](ml::Args & args)
-			{
-				const ml::String type = args.pop();
-				if (type == "all")
-				{
-					ml::cout
-						<< "# Fonts"	<< ml::endl << ML_Res.fonts
-						<< "# Images"	<< ml::endl << ML_Res.images
-						<< "# Materials"<< ml::endl << ML_Res.mats
-						<< "# Meshes"	<< ml::endl << ML_Res.meshes
-						<< "# Models"	<< ml::endl << ML_Res.models
-						<< "# Scripts"	<< ml::endl << ML_Res.scripts
-						<< "# Shaders"	<< ml::endl << ML_Res.shaders
-						<< "# Skyboxes" << ml::endl << ML_Res.skyboxes
-						<< "# Sounds"	<< ml::endl << ML_Res.sounds
-						<< "# Sprites"	<< ml::endl << ML_Res.sprites
-						<< "# Textures" << ml::endl << ML_Res.textures
-						<< ml::endl;
-				}
-				else if (type == "fonts"	) { ml::cout << ML_Res.fonts	<< ml::endl; }
-				else if (type == "images"	) { ml::cout << ML_Res.images	<< ml::endl; }
-				else if (type == "mats"		) { ml::cout << ML_Res.mats		<< ml::endl; }
-				else if (type == "meshes"	) { ml::cout << ML_Res.meshes	<< ml::endl; }
-				else if (type == "models"	) { ml::cout << ML_Res.models	<< ml::endl; }
-				else if (type == "scripts"	) { ml::cout << ML_Res.scripts	<< ml::endl; }
-				else if (type == "shaders"	) { ml::cout << ML_Res.shaders	<< ml::endl; }
-				else if (type == "skyboxes"	) { ml::cout << ML_Res.skyboxes << ml::endl; }
-				else if (type == "sounds"	) { ml::cout << ML_Res.sounds	<< ml::endl; }
-				else if (type == "sprites"	) { ml::cout << ML_Res.sprites	<< ml::endl; }
-				else if (type == "textures"	) { ml::cout << ML_Res.textures << ml::endl; }
-				else
-				{
-					return ml::Var().errorValue("Type not found: {0}", type);
-				}
-				return ml::Var().boolValue(true);
-			} });
-
-			ML_Interpreter.addCmd({ "reload", [](ml::Args & args)
-			{
-				const ml::String type = args.pop();
-				if (type == "all")
-				{
-					return ml::Var().intValue((int32_t)ML_Res.reloadAll());
-				}
-				else if (type == "fonts"	)	{ return ml::Var().intValue((int32_t)ML_Res.fonts.reload()); }
-				else if (type == "images"	)	{ return ml::Var().intValue((int32_t)ML_Res.images.reload()); }
-				else if (type == "mats"		)	{ return ml::Var().intValue((int32_t)ML_Res.mats.reload()); }
-				else if (type == "meshes"	)	{ return ml::Var().intValue((int32_t)ML_Res.meshes.reload()); }
-				else if (type == "models"	)	{ return ml::Var().intValue((int32_t)ML_Res.models.reload()); }
-				else if (type == "scripts"	)	{ return ml::Var().intValue((int32_t)ML_Res.scripts.reload()); }
-				else if (type == "shaders"	)	{ return ml::Var().intValue((int32_t)ML_Res.shaders.reload()); }
-				else if (type == "skyboxes"	)	{ return ml::Var().intValue((int32_t)ML_Res.skyboxes.reload()); }
-				else if (type == "sounds"	)	{ return ml::Var().intValue((int32_t)ML_Res.sounds.reload()); }
-				else if (type == "sprites"	)	{ return ml::Var().intValue((int32_t)ML_Res.sprites.reload()); }
-				else if (type == "textures"	)	{ return ml::Var().intValue((int32_t)ML_Res.textures.reload()); }
-				else
-				{
-					return ml::Var().errorValue("Type not found: {0}", type);
-				}
-			} });
-		}
-		return checked;
-	}
-
 	bool Demo::loadResources()
 	{
 		ml::Manifest manifest;
@@ -527,47 +218,48 @@ namespace DEMO
 		// Start Master Timer
 		ML_Time.start();
 
-		// Setup Interpreter
-		if (loadInterpreter())
+		// Set Parser Flags
+		ML_Parser
+			.showToks(SETTINGS.scrShowToks) // Show Tokens
+			.showTree(SETTINGS.scrShowTree) // Show Tree
+			.showItoP(SETTINGS.scrShowItoP);// Show Infix to Postfix
+
+		// Load Commands
+		install_demo_commands();
+
+		// Run Script
+		if (!SETTINGS.scrFile.empty())
 		{
-			// Run Script
-			if (!SETTINGS.scrFile.empty())
+			ml::Script scr;
+			if (scr.loadFromFile(SETTINGS.pathTo(SETTINGS.scrPath + SETTINGS.scrFile)))
 			{
-				ml::Script scr;
-				if (scr.loadFromFile(SETTINGS.pathTo(SETTINGS.scrPath + SETTINGS.scrFile)))
+				if (scr.build(ev.args))
 				{
-					if (scr.build({}))
+					if (scr.run())
 					{
-						if (scr.run())
+						if (scr.out().isErrorType())
 						{
-							if (scr.out().isErrorType())
-							{
-								ml::Debug::setError(ml::Debug::logError("Script returned an error"));
-							}
-						}
-						else
-						{
-							ml::Debug::setError(ml::Debug::logError("Failed running script"));
+							ml::Debug::setError(ml::Debug::logError("Script returned an error"));
 						}
 					}
 					else
 					{
-						ml::Debug::setError(ml::Debug::logError("Failed building script"));
+						ml::Debug::setError(ml::Debug::logError("Failed running script"));
 					}
 				}
 				else
 				{
-					ml::Debug::setError(ml::Debug::logError("Failed loading script"));
+					ml::Debug::setError(ml::Debug::logError("Failed building script"));
 				}
 			}
 			else
 			{
-				ml::Debug::setError(ml::Debug::logWarning("No Script"));
+				ml::Debug::setError(ml::Debug::logError("Failed loading script"));
 			}
 		}
 		else
 		{
-			ml::Debug::setError(ml::Debug::logWarning("Failed Loading Interpreter"));
+			ml::Debug::setError(ml::Debug::logWarning("No Script"));
 		}
 	}
 
@@ -636,7 +328,7 @@ namespace DEMO
 				"Failed Loading Window\n"
 				"Try checking your settings:\n"
 				"\"{0}\"\n",
-				SETTINGS._file));
+				SETTINGS.iniPath));
 		}
 	}
 

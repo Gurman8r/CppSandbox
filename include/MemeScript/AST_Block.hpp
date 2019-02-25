@@ -33,7 +33,7 @@ namespace ml
 		Var *	setRet(const Var & value) const;
 
 		bool		addFunc(const String & name, AST_Func * value);
-		AST_Func*	getFunc(const String & name);
+		AST_Func *	getFunc(const String & name);
 		FuncTable	getFuncs() const;
 
 		bool		addStruct(const String & name, AST_Struct * value);

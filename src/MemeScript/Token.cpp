@@ -32,20 +32,18 @@ namespace ml
 		{ TOK_CMMA, "CMMA" },
 		{ TOK_COLN, "COLN" },
 		{ TOK_DOT,  "DOT"  },
-
-		{ TOK_LPRN, "LPRN" },{ TOK_RPRN, "RPRN" } , // (paren)
-		{ TOK_LBRC, "LBRC" },{ TOK_RBRC, "RBRC" } , // {brace}
-		{ TOK_LBKT, "LBKT" },{ TOK_RBKT, "RBKT" } , // [bracket]
-
-		{ TOK_DQTE, "DQTE" },{ TOK_SQTE, "SQTE" },
-
-		//{ TOK_USCR, "USCR" },
-		{ TOK_TNRY, "TNRY" },
+		{ TOK_QSTN, "TNRY" },
 		{ TOK_DOLR, "DOLR" },
-		});
+		{ TOK_AT,	"AT"   },
+
+		{ TOK_LPRN, "LPRN" }, { TOK_RPRN, "RPRN" }, // (paren)
+		{ TOK_LBRC, "LBRC" }, { TOK_RBRC, "RBRC" }, // {brace}
+		{ TOK_LBKT, "LBKT" }, { TOK_RBKT, "RBKT" }, // [bracket]
+		{ TOK_DQTE, "DQTE" }, { TOK_SQTE, "SQTE" }, // quotes
+	});
 
 	const Token::SymbolMap Token::Symbols({
-		{ "ERR",  TOK_ERR },
+		{ "ERR",  TOK_ERR  },
 		{ "VOID", TOK_VOID },
 		{ "ENDL", TOK_ENDL },
 
@@ -55,7 +53,6 @@ namespace ml
 		{ "+", TOK_ADD },
 		{ "-", TOK_SUB },
 		{ "%", TOK_MOD },
-
 		{ "&", TOK_AND },
 		{ "|", TOK_OR  },
 
@@ -69,19 +66,17 @@ namespace ml
 		{ ":", TOK_COLN },
 		{ "#", TOK_HASH },
 		{ "\\",TOK_TERM },
-		{ ".", TOK_DOT },
-
-		{ "(", TOK_LPRN },{ ")", TOK_RPRN },
-		{ "{", TOK_LBRC },{ "}", TOK_RBRC },
-		{ "[", TOK_LBKT },{ "]", TOK_RBKT },
-
-		{ "\"", TOK_DQTE }, { "\'", TOK_SQTE},
-
-		//{ "_", TOK_USCR },
-		{ "_", TOK_TNRY },
+		{ ".", TOK_DOT  },
+		{ "?", TOK_QSTN },
 		{ "$", TOK_DOLR },
+		{ "@", TOK_AT   },
 
-		});
+		{ "(", TOK_LPRN }, { ")", TOK_RPRN },
+		{ "{", TOK_LBRC }, { "}", TOK_RBRC },
+		{ "[", TOK_LBKT }, { "]", TOK_RBKT },
+		{ "\"", TOK_DQTE }, { "\'", TOK_SQTE },
+
+	});
 
 
 	Token::Token()
@@ -148,16 +143,18 @@ namespace ml
 	bool Token::isOperator() const
 	{
 		return
-			type == TOK_POW ||
-			type == TOK_MUL ||
-			type == TOK_DIV ||
-			type == TOK_ADD ||
-			type == TOK_SUB ||
-			type == TOK_EQU ||
-			type == TOK_LT ||
-			type == TOK_GT ||
-			type == TOK_NOT ||
-			type == TOK_MOD;
+			type == '^' ||
+			type == '*' ||
+			type == '/' ||
+			type == '+' ||
+			type == '-' ||
+			type == '=' ||
+			type == '<' ||
+			type == '>' ||
+			type == '!' ||
+			type == '%' ||
+			type == '|' ||
+			type == '&';
 	}
 
 	

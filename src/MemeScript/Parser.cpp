@@ -8,8 +8,7 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	using SyntaxTree = typename Parser::SyntaxTree;
-	using RuleMap	 = typename Parser::RuleMap;
+	using RuleMap = typename Parser::RuleMap;
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
@@ -73,7 +72,8 @@ namespace ml
 		{
 			AST_Name * temp;
 			return (
-				((toks.size() == 1) && (toks.front(TokenType::TOK_NAME)))
+				(toks.size() == 1) && 
+				(toks.front(TokenType::TOK_NAME))
 					? (temp = new AST_Name(toks.front().data))
 					: (temp = NULL)
 				);
@@ -83,7 +83,8 @@ namespace ml
 		{
 			AST_String * temp;
 			return (
-				((toks.size() == 1) && (toks.front(TokenType::TOK_STR)))
+				(toks.size() == 1) && 
+				(toks.front(TokenType::TOK_STR))
 					? (temp = new AST_String(toks.front().data))
 					: (temp = NULL)
 				);
@@ -92,7 +93,8 @@ namespace ml
 		install<AST_BinOp>(new NodeMaker<AST_BinOp>([](const TokenList & toks)
 		{
 			AST_BinOp * temp;
-			if (toks.size() == 4 && toks.matchStr(toks.begin(), "EOOE"))
+			if ((toks.size() == 4) &&
+				(toks.matchStr(toks.begin(), "EOOE")))
 			{
 				Operator op;
 				if (Operator::makeOperator(
@@ -293,7 +295,7 @@ namespace ml
 			return ((toks.isWrap('[', ']'))
 				? ((toks.matchStr(toks.begin(), "[]"))
 					? (temp = new AST_Array({}))
-					: (temp = new AST_Array(ML_Parser.genArrayElements(toks.unwrapped()))))
+					: (temp = new AST_Array(ML_Parser.genArrayElems(toks.unwrapped()))))
 				: (temp = NULL));
 		}));
 
@@ -313,7 +315,7 @@ namespace ml
 				{
 					if (AST_Expr * value = ML_Parser.genExpression(toks.after(5)))
 					{
-						return (temp = new AST_Assign(OperatorType::OP_SET, subscr, value));
+						return (temp = new AST_Assign(OpType::OP_SET, subscr, value));
 					}
 				}
 			}
@@ -344,7 +346,7 @@ namespace ml
 			else if (toks.matchStr(toks.begin(), "n.n=A"))
 			{
 				return (temp = new AST_Assign(
-					OperatorType::OP_SET,
+					OpType::OP_SET,
 					new AST_Name(toks.begin()->data),
 					ML_Parser.genExpression(toks.after(2))
 				));
@@ -367,7 +369,7 @@ namespace ml
 			else if (toks.matchStr(toks.begin(), "n=A"))
 			{
 				return (temp = new AST_Assign(
-					OperatorType::OP_SET,
+					OpType::OP_SET,
 					new AST_Name(toks.begin()->data),
 					ML_Parser.genExpression(toks.after(2))
 				));
@@ -523,52 +525,6 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	SyntaxTree Parser::SplitStatements(const TokenList & tokens)
-	{
-		static size_t id = 0;
-
-		SyntaxTree out = { TokenList() };
-
-		size_t i = 0;
-
-		TokenList::const_iterator it;
-		for (it = tokens.begin(); it != tokens.end(); it++)
-		{
-			switch (it->type)
-			{
-			case '\n': // New Line
-				continue;
-
-			case '#': // Comment
-			{
-				String line;
-				while ((it != tokens.end()) && ((*it) != TokenType::TOK_ENDL))
-				{
-					line += (*it++).data;
-				}
-			}
-			break;
-
-			case '{': // Begin Block
-				out[i].push_back(*it);
-
-			case ';': // End Statement
-				if (!out[i].empty())
-				{
-					out.push_back(TokenList());
-					i++;
-				}
-				break;
-
-			default: // 
-				out[i].push_back(*it);
-				break;
-			}
-		}
-
-		return out;
-	}
-
 	bool Parser::InfixToPostfix(const TokenList & ifx, TokenList & pfx, bool show)
 	{
 		// just one operand
@@ -600,7 +556,7 @@ namespace ml
 
 					if (++count > 100)
 					{
-						return Debug::logError("Stack overflow");
+						return Debug::logError("Infix To Postfix Stack overflow");
 					}
 				}
 
@@ -709,83 +665,83 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
+	AST_Block * Parser::genFromList(const TokenList & value) const
+	{
+		return genFromTree(ML_Lexer.genTokenTree(value));
+	}
 
-	AST_Block * Parser::genAST(const TokenList & tokens) const
+	AST_Block * Parser::genFromTree(const TokenTree & value) const
 	{
 		AST_Block * root = NULL;
 
-		if (!tokens.empty())
+		if (!value.empty())
 		{
-			SyntaxTree statements = SplitStatements(tokens);
-			if (!statements.empty())
+			root = new AST_Block({});
+
+			TokenTree::const_iterator toks;
+			for (toks = value.begin(); toks != value.end(); toks++)
 			{
-				root = new AST_Block({});
-
-				SyntaxTree::const_iterator toks;
-				for (toks = statements.begin(); toks != statements.end(); toks++)
+				if (m_showToks)
 				{
-					if (m_showToks)
-					{
-						cout << (*toks) << ml::endl;
-					}
+					cout << (*toks) << ml::endl;
+				}
 
-					// For
-					if (toks->matchData(toks->begin(), { "for" }))
-					{
-						TokenList args = TokenList(*toks).after(2);
+				// For
+				if (toks->matchData(toks->begin(), { "for" }))
+				{
+					TokenList args = TokenList(*toks).after(2);
 
-						if (AST_Assign * a = generate<AST_Assign>(args))
+					if (AST_Assign * a = generate<AST_Assign>(args))
+					{
+						args = TokenList((*++toks));
+
+						if (AST_Expr * e = genExpression(args))
 						{
-							args = TokenList((*++toks));
+							args = TokenList((*++toks)).pop_back();
 
-							if (AST_Expr * e = genExpression(args))
+							if (AST_Stmt * s = genStatement(args))
 							{
-								args = TokenList((*++toks)).pop_back();
-
-								if (AST_Stmt * s = genStatement(args))
+								if (root->addChild(new AST_For(a, e, s)))
 								{
-									if (root->addChild(new AST_For(a, e, s)))
-									{
-										continue;
-									}
+									continue;
 								}
-								else { delete s; }
 							}
-							else { delete e; }
+							else { delete s; }
 						}
-						else { delete a; }
+						else { delete e; }
 					}
-					else if (AST_Node * node = genNode(root, (*toks)))
-					{
-						if (node == root)
-						{
-							root = root->block();
-						}
-						else
-						{
-							root->addChild(node);
-
-							if (AST_Block * blck = node->as<AST_Block>())
-							{
-								root = blck;
-							}
-						}
-					}
+					else { delete a; }
 				}
-
-				if (m_showTree)
+				else if (AST_Node * node = genNode(root, (*toks)))
 				{
-					cout << (*root) << ml::endl;
+					if (node == root)
+					{
+						root = root->block();
+					}
+					else
+					{
+						root->addChild(node);
+
+						if (AST_Block * blck = node->as<AST_Block>())
+						{
+							root = blck;
+						}
+					}
 				}
+			}
+
+			if (m_showTree)
+			{
+				cout << (*root) << ml::endl;
 			}
 		}
 
 		return root;
 	}
 
-	AST_Node * Parser::genNode(AST_Node* root, const TokenList & toks) const
+	AST_Node * Parser::genNode(AST_Node * root, const TokenList & toks) const
 	{
-		if (toks.empty())
+		if (!root || toks.empty())
 			return NULL;
 
 		for (TokenList::const_iterator it = toks.begin(); it != toks.end(); it++)
@@ -938,9 +894,9 @@ namespace ml
 	
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	AST_Array::Values Parser::genArrayElements(const TokenList & toks) const
+	AST_Array::Elems Parser::genArrayElems(const TokenList & toks) const
 	{
-		AST_Array::Values elems;
+		AST_Array::Elems elems;
 
 		TokenList	arg;
 		int32_t		depth = 0;
@@ -1049,7 +1005,10 @@ namespace ml
 			{
 				if ((*it).type != TokenType::TOK_CMMA)
 				{
-					params.push_back(new AST_Name(it->data));
+					if (AST_Name * name = generate<AST_Name>(*it))
+					{
+						params.push_back(name);
+					}
 				}
 			}
 		}

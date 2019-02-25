@@ -148,7 +148,7 @@ namespace ml
 	}
 
 
-	Runtime::VarMap* Runtime::makeScope(int32_t index)
+	Runtime::VarMap * Runtime::makeScope(int32_t index)
 	{
 		if (!values(index))
 		{

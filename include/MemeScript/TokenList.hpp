@@ -6,6 +6,14 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	class TokenList;
+
+	using TokenTree = List<TokenList>;
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_SCRIPT_API TokenList final
 		: public ITrackable
 		, public IComparable<TokenList>
@@ -21,8 +29,8 @@ namespace ml
 	public:
 		TokenList();
 		TokenList(const Token & value);
-		TokenList(const List<Token>& values);
-		TokenList(const TokenList& copy);
+		TokenList(const List<Token> & values);
+		TokenList(const TokenList & copy);
 		~TokenList();
 
 		const Token			at(size_t index) const;
@@ -165,6 +173,8 @@ namespace ml
 	private:
 		List<Token> m_values;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_TOKEN_LIST_HPP_

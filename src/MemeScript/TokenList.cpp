@@ -237,29 +237,19 @@ namespace ml
 	}
 
 
-	bool	TokenList::matchChar(size_t index, char c) const
+	bool	TokenList::matchChar(size_t index, char type) const
 	{
 		if (inRange(index))
 		{
-			switch (c)
+			switch (type)
 			{
-			case 'A':	// Any
-				return true;
-
-			case 'E':	// Operand
-				return at(index).isOperand();
-
-			case 'O':	// Operator
-				return at(index).isOperator();
-
-			case 'S':	// Non-Operand (Symbol?)
-				return !at(index).isOperand();
-
-			default:	// TokenType
-				return at(index).type == c;
+			case 'A':	return true;					// Any
+			case 'E':	return  at(index).isOperand();	// Expression
+			case 'O':	return  at(index).isOperator();	// Operator
+			case 'S':	return !at(index).isOperand();	// Symbol
+			default:	return  at(index).type == type;	// Match Type
 			}
 		}
-
 		return false;
 	}
 	

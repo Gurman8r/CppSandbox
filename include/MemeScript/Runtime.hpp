@@ -27,9 +27,9 @@ namespace ml
 		Var *	newVar(int32_t index, const String & name, const Var & value);
 		Var *	setVar(int32_t index, const String & name, const Var & value);
 
-		const VarMap*	values(int32_t index) const;
-		VarMap*			values(int32_t index);
-		VarMap*			makeScope(int32_t index);
+		const VarMap *	values(int32_t index) const;
+		VarMap *		values(int32_t index);
+		VarMap *		makeScope(int32_t index);
 		bool			clearScope(int32_t index);
 
 	private:

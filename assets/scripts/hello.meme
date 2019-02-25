@@ -2,16 +2,10 @@ HELLO = nodeid();
 {
 	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-	include("../../../assets/scripts/core.meme");
-
-	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
-
-	main = []();
+	main = [](args);
 	{
-		dir = getcwd();
-		exe = getTargetExeName();
-
-		printl("{dir}\{exe}");
+		if(args[0]); { printl(args[0]); };
+		
 		printl("* * * * * * * * * * * * * * * * * * * * * * *");
 		printl("*                                           *");
 		printl("*   Hello, World!                           *");
@@ -20,7 +14,16 @@ HELLO = nodeid();
 		printl("* * * * * * * * * * * * * * * * * * * * * * *");
 	};
 
-	return main();
+	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+
+	if(command("exists " + HELLO + " __ARGS__"));
+	{
+		return main(__ARGS__);
+	};
+	else;
+	{
+		return main([ "" ]);
+	};
 
 	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 };

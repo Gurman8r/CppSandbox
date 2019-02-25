@@ -1,40 +1,35 @@
 TEST = nodeid();
 {
-	#/* * * * * * * * * * * * * * * * * * * * */#
+	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-	find = [](_id, _name); {
-		return command("exists " + _id + " " + _name);
-	};
+	BODY = nodeid();
 
-	get = [](_id, _name); {
-		return command("get " + _id + " " + _name);
-	};
+	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-	set = [](_id, _name, _value); {
-		return command("set " + _id + " " + _name + " " + _value);
-	};
+	command("flag tree 0");
+	include("../../../assets/scripts/core.meme");
 
-	#/* * * * * * * * * * * * * * * * * * * * */#
+	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-	DEMO = 0;
+	fun = [](); { printl("Here"); };
+
+	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+
 	demo = $();
 	{
-		DEMO = nodeid();
-
 		a = 1;
-		b = 2.2;
-		c = "3E";
-
-		fun = [](); { printl("Hello from struct."); };
+		b = 2;
+		c = 3;
 	};
 
-	#/* * * * * * * * * * * * * * * * * * * * */#
+	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-	main = [](argc, argv);
+	main = [](args);
 	{
-		for (i = 0; i < argc; i = i + 1);
+		imax = sizeof(args);
+		for (i = 0; i < imax; i = i + 1);
 		{
-			printl(argv[i]);
+			printl(args[i]);
 		};
 
 		printl(demo.a);
@@ -42,18 +37,16 @@ TEST = nodeid();
 		printl(demo.c);
 	};
 
-	if(find(TEST, "ARGS"));
+	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+
+	if(command("exists " + TEST + " __ARGS__"));
 	{
-		argv = ARGS;
-		argc = sizeof(ARGS);
-		return main(argc, argv);
+		return main(__ARGS__);
 	};
 	else;
 	{
-		argv = [ "Hello, World!" ];
-		argc = sizeof(argv);
-		return main(argc, argv);
+		return main([ "" ]);
 	};
 
-	#/* * * * * * * * * * * * * * * * * * * * */#
+	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 };

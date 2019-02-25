@@ -18,6 +18,7 @@ namespace ml
 		bool loadFromFile(const String & filename) override;
 
 		bool	build(const Args & args);
+		bool	rebuild(const Args & args);
 		bool	run();
 
 	public:
@@ -30,7 +31,7 @@ namespace ml
 		String		m_path;
 		File		m_file;
 		TokenList	m_toks;
-		AST_Block *	m_tree;
+		AST_Block *	m_root;
 		Var			m_out;
 	};
 }

@@ -5,6 +5,7 @@
 #include <MemeCore/ITrackable.hpp>
 #include <MemeCore/ISingleton.hpp>
 #include <MemeCore/IReadable.hpp>
+#include <MemeWindow/Window.hpp>
 
 // Singleton to store program properties/settings (INIReader)
 #define SETTINGS DEMO::Settings::getInstance()
@@ -19,7 +20,7 @@ namespace DEMO
 		friend class ml::ISingleton<Settings>;
 
 	public:
-		ml::String _file; // path to .ini
+		ml::String iniPath; // path to .ini
 
 	public:
 		// [General]
@@ -72,7 +73,7 @@ namespace DEMO
 
 		inline bool loadFromFile(const ml::String & filename) override
 		{
-			INIReader ini((_file = filename).c_str());
+			INIReader ini((iniPath = filename).c_str());
 			if (ini.ParseError() == 0)
 			{
 				// [General]

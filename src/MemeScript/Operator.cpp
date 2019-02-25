@@ -4,37 +4,37 @@
 namespace ml
 {
 	const Operator::OperMap Operator::OpValues = {
-	{ "=",	OperatorType::OP_SET },
-	{ "^=",	OperatorType::OP_POW_SET },
-	{ "*=",	OperatorType::OP_MUL_SET },
-	{ "/=",	OperatorType::OP_DIV_SET },
-	{ "%=",	OperatorType::OP_DIV_SET },
-	{ "+=",	OperatorType::OP_ADD_SET },
-	{ "-=",	OperatorType::OP_SUB_SET },
+		{ "=",	OpType::OP_SET },
+		{ "^=",	OpType::OP_POW_SET },
+		{ "*=",	OpType::OP_MUL_SET },
+		{ "/=",	OpType::OP_DIV_SET },
+		{ "%=",	OpType::OP_DIV_SET },
+		{ "+=",	OpType::OP_ADD_SET },
+		{ "-=",	OpType::OP_SUB_SET },
 
-	{ "==", OperatorType::OP_EQU },
-	{ "!=", OperatorType::OP_NEQ },
-	{ "<=", OperatorType::OP_LTE },
-	{ ">=", OperatorType::OP_GTE },
-	{ "&&", OperatorType::OP_AND },
-	{ "||", OperatorType::OP_OR  },
-	{ "<",  OperatorType::OP_LT  },
-	{ ">",  OperatorType::OP_GT  },
+		{ "==", OpType::OP_EQU },
+		{ "!=", OpType::OP_NEQ },
+		{ "<=", OpType::OP_LTE },
+		{ ">=", OpType::OP_GTE },
+		{ "&&", OpType::OP_AND },
+		{ "||", OpType::OP_OR  },
+		{ "<",  OpType::OP_LT  },
+		{ ">",  OpType::OP_GT  },
 
-	{ "^",  OperatorType::OP_POW },
-	{ "*",  OperatorType::OP_MUL },
-	{ "/",  OperatorType::OP_DIV },
-	{ "%",  OperatorType::OP_MOD },
-	{ "+",  OperatorType::OP_ADD },
-	{ "-",  OperatorType::OP_SUB },
+		{ "^",  OpType::OP_POW },
+		{ "*",  OpType::OP_MUL },
+		{ "/",  OpType::OP_DIV },
+		{ "%",  OpType::OP_MOD },
+		{ "+",  OpType::OP_ADD },
+		{ "-",  OpType::OP_SUB },
 	};
 
 	Operator::Operator()
-		: type(OperatorType::OP_INVALID)
+		: type(OpType::OP_INVALID)
 	{
 	}
 
-	Operator::Operator(OperatorType type)
+	Operator::Operator(OpType type)
 		: type(type)
 	{
 	}
@@ -57,7 +57,7 @@ namespace ml
 			op = Operator(it->second);
 			return true;
 		}
-		op = OperatorType::OP_INVALID;
+		op = OpType::OP_INVALID;
 		return false;
 	}
 
@@ -72,7 +72,7 @@ namespace ml
 		return type == value.type;
 	}
 
-	bool Operator::equals(const OperatorType & value) const
+	bool Operator::equals(const OpType & value) const
 	{
 		return type == value;
 	}
@@ -82,7 +82,7 @@ namespace ml
 		return type < value.type;
 	}
 
-	bool Operator::lessThan(const OperatorType & value) const
+	bool Operator::lessThan(const OpType & value) const
 	{
 		return type < value;
 	}

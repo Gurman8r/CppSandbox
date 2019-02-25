@@ -46,7 +46,7 @@ namespace ml
 
 	std::ostream & AST_Elif::display(std::ostream & out) const
 	{
-		return out << "elif(" << *expr << ")";
+		return out << FG::Blue << "elif" << FMT() << "(" << (*expr) << FMT() << ")";
 	}
 
 	bool AST_Elif::run()
@@ -64,7 +64,7 @@ namespace ml
 
 	std::ostream & AST_Else::display(std::ostream & out) const
 	{
-		return out << "else";
+		return out << FG::Blue << "else" << FMT();
 	}
 
 	bool AST_Else::run()
@@ -136,7 +136,7 @@ namespace ml
 
 	std::ostream & AST_Delete::display(std::ostream & out) const
 	{
-		return out << "delete(" << (*name) << ")";
+		return out << FG::Blue << "delete" << FMT() << "(" << (*name) << FMT() << ")";
 	}
 
 	bool AST_Delete::run()
@@ -160,7 +160,7 @@ namespace ml
 
 	std::ostream & AST_If::display(std::ostream & out) const
 	{
-		return out << "if(" << *expr << ")";
+		return out << FG::Blue << "if" << FMT() << "(" << (*expr) << FMT() << ")";
 	}
 
 	bool AST_If::run()
@@ -246,7 +246,7 @@ namespace ml
 
 	std::ostream & AST_Include::display(std::ostream & out) const
 	{
-		return out << "include(" << (*str) << ")";
+		return out << FG::Blue << "include" << FMT() << "(" << (*str) << FMT() << ")";
 	}
 
 	bool AST_Include::run()
@@ -256,8 +256,7 @@ namespace ml
 		List<char> buffer;
 		if (ML_FileSystem.getFileContents(filename, buffer))
 		{
-			const TokenList toks = ML_Lexer.splitTokens(buffer);
-			if (AST_Block * root = ML_Parser.genAST(toks))
+			if (AST_Block * root = ML_Parser.genFromList(ML_Lexer.genTokenList(buffer)))
 			{
 				if (!root->empty())
 				{
@@ -300,7 +299,7 @@ namespace ml
 
 	std::ostream & AST_Print::display(std::ostream & out) const
 	{
-		return out << (newl ? "printl" : "print") << "(" << *expr << ") ";
+		return out << FG::Blue << (newl ? "printl" : "print") << FMT() << "(" << (*expr) << FMT() << ")";
 	}
 
 	bool AST_Print::run()
@@ -361,7 +360,7 @@ namespace ml
 
 	std::ostream & AST_Return::display(std::ostream & out) const
 	{
-		return out << "return " << (*expr);
+		return out << FG::Blue << "return" << FMT() << "(" << (*expr) << FMT() << ")";
 	}
 
 	bool AST_Return::run()
@@ -385,12 +384,12 @@ namespace ml
 
 	std::ostream & AST_While::display(std::ostream & out) const
 	{
-		return out << "while(" << (*expr) << ")";
+		return out << FG::Blue << "while" << FMT() << "(" << (*expr) << FMT() << ")";
 	}
 
 	bool AST_While::run()
 	{
-		if (!expr)
+		if (expr)
 		{
 			if (AST_Block * blck = nextAs<AST_Block>())
 			{

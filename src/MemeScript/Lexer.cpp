@@ -27,36 +27,61 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	Token Lexer::makeToken(const String & value) const
+	Token Lexer::genToken(const String & value) const
 	{
-		if (StringUtility::IsInt(value))
+		if (value.empty())
+		{
+			return Token(' ');
+		}
+		else if (StringUtility::IsInt(value))
+		{
 			return Token('i', value);
-
-		if (StringUtility::IsDecimal(value))
+		}
+		else if (StringUtility::IsDecimal(value))
+		{
 			return Token('f', value);
-
-		if (StringUtility::IsText(value))
+		}
+		else
+		{
 			return Token('s', value);
-
-		if (StringUtility::IsName(value))
-			return Token('n', value);
-
-		return Token('\0');
+		}
 	}
 
-	TokenList Lexer::makeArray(const Args & args)
+	TokenList Lexer::genArgsArray(const Args & value) const
 	{
-		return TokenList();
+		TokenList out;
+		out.push_back('[');
+		if (!value.empty())
+		{
+			TokenList temp = genTokenList(value.str());
+
+			for (size_t i = 0, imax = temp.size(); i < imax; i++)
+			{
+				if (temp[i].type == 'n')
+				{
+					temp[i] = Token('s', temp[i].data);
+				}
+
+				out.push_back(temp[i]);
+
+				if (i < imax - 1)
+				{
+					out.push_back(',');
+				}
+			}
+		}
+		out.push_back(']');
+		return out;
 	}
 
-	TokenList Lexer::splitTokens(const String & value) const
+	TokenList Lexer::genTokenList(const String & value) const
 	{
-		return TokenList();
+		return genTokenList(List<char>(value.begin(), value.end()));
 	}
 
-	TokenList Lexer::splitTokens(const List<char> & value) const
+	TokenList Lexer::genTokenList(const List<char> & value) const
 	{
-		TokenList tokens;
+		TokenList out;
 
 		List<char>::const_iterator it;
 		for (it = value.begin(); it != value.end(); it++)
@@ -66,17 +91,17 @@ namespace ml
 			// End of line
 			if (*it == '\n')
 			{
-				tokens.push_back({ TokenType::TOK_ENDL });
+				out.push_back(TokenType::TOK_ENDL);
 			}
 			// String
 			else if (scanString(value, it, text))
 			{
-				tokens.push_back({ TokenType::TOK_STR, text });
+				out.push_back({ TokenType::TOK_STR, text });
 			}
 			// Name
 			else if (scanName(value, it, text))
 			{
-				tokens.push_back({ TokenType::TOK_NAME, text });
+				out.push_back({ TokenType::TOK_NAME, text });
 			}
 			// Number
 			else if (scanNumber(value, it, text))
@@ -84,17 +109,17 @@ namespace ml
 				// Integer
 				if (StringUtility::IsInt(text))
 				{
-					tokens.push_back({ TokenType::TOK_INT, text });
+					out.push_back({ TokenType::TOK_INT, text });
 				}
 				// Float
 				else if (StringUtility::IsDecimal(text))
 				{
-					tokens.push_back({ TokenType::TOK_FLT, text });
+					out.push_back({ TokenType::TOK_FLT, text });
 				}
 				// Error
 				else
 				{
-					tokens.push_back({ TokenType::TOK_ERR, text });
+					out.push_back({ TokenType::TOK_ERR, text });
 				}
 			}
 			// Symbols
@@ -104,16 +129,58 @@ namespace ml
 
 				if (it != Token::Symbols.end())
 				{
-					tokens.push_back({ it->second, text });
+					out.push_back({ it->second, text });
 				}
 				else
 				{
-					tokens.push_back({ TokenType::TOK_ERR, text });
+					out.push_back({ TokenType::TOK_ERR, text });
 				}
 			}
 		}
 
-		return tokens;
+		return out;
+	}
+
+	TokenTree Lexer::genTokenTree(const TokenList & value) const
+	{
+		TokenTree out	= { TokenList() };
+		size_t	  index	= 0;
+		
+		for (TokenList::const_iterator it = value.begin(); it != value.end(); it++)
+		{
+			switch (it->type)
+			{
+			case '\n': // New Line
+				continue;
+
+			case '#': // Comment
+			{
+				String line;
+				while ((it != value.end()) && ((*it) != TokenType::TOK_ENDL))
+				{
+					line += (*it++).data;
+				}
+			}
+			break;
+
+			case '{': // Begin Block
+				out[index].push_back(*it);
+
+			case ';': // End Statement
+				if (!out[index].empty())
+				{
+					out.push_back(TokenList());
+					index++;
+				}
+				break;
+
+			default: // Other
+				out[index].push_back(*it);
+				break;
+			}
+		}
+
+		return out;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -207,7 +274,6 @@ namespace ml
 			text = String(1, *it);
 			return true;
 		}
-
 		text = String();
 		return false;
 	}

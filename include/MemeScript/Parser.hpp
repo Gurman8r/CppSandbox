@@ -11,8 +11,7 @@ namespace ml
 		friend class Interpreter;
 
 	public:
-		using SyntaxTree = List<TokenList>;
-		using RuleMap	 = HashMap<const std::type_info *, Rule *>;
+		using RuleMap = HashMap<const std::type_info *, Rule *>;
 
 	private:
 		Parser();
@@ -24,12 +23,12 @@ namespace ml
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		static SyntaxTree SplitStatements(const TokenList & toks);
 		static bool	InfixToPostfix(const TokenList & ifx, TokenList & pfx, bool show);
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		AST_Block *	genAST(const TokenList & tokens) const;
+		AST_Block *	genFromList(const TokenList & value) const;
+		AST_Block *	genFromTree(const TokenTree & value) const;
 		AST_Node *	genNode(AST_Node * root, const TokenList & toks) const;
 		AST_Stmt *	genStatement(const TokenList & toks) const;
 		AST_Expr *	genExpression(const TokenList & toks) const;
@@ -37,9 +36,9 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		AST_Array::Values genArrayElements(const TokenList & toks) const;
-		AST_Call::Params  genCallParams(const TokenList & toks) const;
-		AST_Func::Params  genFuncParams(const TokenList & toks) const;
+		AST_Array::Elems genArrayElems(const TokenList & toks) const;
+		AST_Call::Params genCallParams(const TokenList & toks) const;
+		AST_Func::Params genFuncParams(const TokenList & toks) const;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
@@ -47,6 +46,10 @@ namespace ml
 		inline Parser & showToks(bool value) { m_showToks = value; return (*this); }
 		inline Parser & showTree(bool value) { m_showTree = value; return (*this); }
 		inline Parser & showItoP(bool value) { m_showItoP = value; return (*this); }
+
+		inline bool showToks() const { return m_showToks; }
+		inline bool showTree() const { return m_showTree; }
+		inline bool showItoP() const { return m_showItoP; }
 
 	public:
 		template <class T>

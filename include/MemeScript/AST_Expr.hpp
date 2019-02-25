@@ -53,11 +53,11 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Array : public AST_Expr
 	{
-		using Values = std::vector<AST_Expr *>;
+		using Elems = std::vector<AST_Expr *>;
 
-		Values values;
+		Elems values;
 
-		AST_Array(const Values & values);
+		AST_Array(const Elems & values);
 		~AST_Array() {}
 
 		std::ostream & display(std::ostream & out) const override;
@@ -94,7 +94,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Func : public AST_Expr
 	{
-		using Params = std::vector<AST_Name*>;
+		using Params = std::vector<AST_Name *>;
 
 		String name;
 		Params args;
@@ -149,10 +149,10 @@ namespace ml
 	struct ML_SCRIPT_API AST_Assign : public AST_Expr
 	{
 		Operator	op;
-		AST_Expr*	name;
-		AST_Expr*	expr;
+		AST_Expr *	name;
+		AST_Expr *	expr;
 
-		AST_Assign(Operator op, AST_Expr* name, AST_Expr* expr);
+		AST_Assign(Operator op, AST_Expr * name, AST_Expr * expr);
 		~AST_Assign() {}
 
 		std::ostream & display(std::ostream & out) const override;
@@ -164,12 +164,12 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Call : public AST_Expr
 	{
-		using Params = std::vector<AST_Expr*>;
+		using Params = std::vector<AST_Expr *>;
 
-		AST_Name*	name;
+		AST_Name *	name;
 		Params		args;
 
-		AST_Call(AST_Name* name, const Params& args);
+		AST_Call(AST_Name * name, const Params & args);
 		~AST_Call() {}
 
 		std::ostream & display(std::ostream & out) const override;
@@ -183,10 +183,10 @@ namespace ml
 	struct ML_SCRIPT_API AST_BinOp : public AST_Expr
 	{
 		Operator op;
-		AST_Expr* lhs;
-		AST_Expr* rhs;
+		AST_Expr * lhs;
+		AST_Expr * rhs;
 
-		AST_BinOp(const Operator & op, AST_Expr* lhs, AST_Expr* rhs);
+		AST_BinOp(const Operator & op, AST_Expr * lhs, AST_Expr * rhs);
 		~AST_BinOp() {}
 
 		std::ostream & display(std::ostream & out) const override;
@@ -210,7 +210,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Struct : public AST_Expr
 	{
-		using Params = std::vector<AST_Name*>;
+		using Params = std::vector<AST_Name *>;
 
 		String name;
 		Params args;
@@ -229,10 +229,10 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Subscr : public AST_Expr
 	{
-		AST_Name* name;
-		AST_Expr* index;
+		AST_Name * name;
+		AST_Expr * index;
 
-		AST_Subscr(AST_Name* name, AST_Expr* index);
+		AST_Subscr(AST_Name * name, AST_Expr * index);
 		~AST_Subscr() {}
 
 		std::ostream & display(std::ostream & out) const override;
@@ -243,9 +243,9 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Command : public AST_Expr
 	{
-		AST_Expr* expr;
+		AST_Expr * expr;
 
-		AST_Command(AST_Expr* expr);
+		AST_Command(AST_Expr * expr);
 		~AST_Command() {}
 
 		std::ostream & display(std::ostream & out) const override;
@@ -292,7 +292,7 @@ namespace ml
 		Var evaluate() const override;
 	};
 
-	// Scope ID
+	// Node ID
 	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_NodeID : public AST_Expr
 	{
@@ -329,7 +329,6 @@ namespace ml
 		~AST_Member() {}
 
 		AST_Struct * getStruct() const;
-		Var * getMember() const;
 
 		std::ostream & display(std::ostream & out) const override;
 		Var evaluate() const override;

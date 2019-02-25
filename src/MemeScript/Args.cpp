@@ -12,7 +12,7 @@ namespace ml
 	{
 		for (size_t i = 0, imax = (size_t)argc; i < imax; i++)
 		{
-			push_back(argv[i]);
+			push_back("\"" + String(argv[i]) + "\"");
 		}
 	}
 	Args::Args(const String & value)

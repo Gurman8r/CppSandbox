@@ -46,7 +46,6 @@ namespace DEMO
 		void onEvent(const ml::IEvent * value) override;
 
 	private:
-		bool	loadInterpreter();
 		bool	loadResources();
 		bool	loadBuffers();
 		bool	loadNetwork();

@@ -6,7 +6,7 @@
 
 namespace ml
 {
-	enum OperatorType : int32_t
+	enum OpType : int32_t
 	{
 		OP_INVALID = -1,
 
@@ -33,39 +33,37 @@ namespace ml
 		OP_MOD,		//  %
 		OP_ADD,		//  +
 		OP_SUB,		//  -
-
-		MAX_OP_TYPE
 	};
 
 	struct ML_SCRIPT_API Operator final
 		: public ITrackable
 		, public IComparable<Operator>
-		, public IComparable<OperatorType>
+		, public IComparable<OpType>
 	{
-		using OperMap = HashMap<String, OperatorType>;
+		using OperMap = HashMap<String, OpType>;
 
-		static const HashMap<String, OperatorType> OpValues;
+		static const HashMap<String, OpType> OpValues;
 
 		Operator();
-		Operator(OperatorType type);
+		Operator(OpType type);
 		Operator(const Operator & copy);
 		~Operator();
 
-		OperatorType type;
+		OpType type;
 
 		static bool makeOperator(const String & str, Operator & op);
 		static bool makeOperator(const String & a, const String & b, Operator & op);
 
 		bool equals(const Operator & value) const override;
-		bool equals(const OperatorType & value) const override;
+		bool equals(const OpType & value) const override;
 
 		bool lessThan(const Operator & value) const override;
-		bool lessThan(const OperatorType & value) const override;
+		bool lessThan(const OpType & value) const override;
 
 		void serialize(std::ostream & out) const override;
 	};
 
-	inline std::ostream & operator<<(std::ostream & out, const OperatorType & rhs)
+	inline std::ostream & operator<<(std::ostream & out, const OpType & rhs)
 	{
 		for (auto pair : Operator::OpValues)
 		{

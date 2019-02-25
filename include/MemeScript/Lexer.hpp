@@ -2,6 +2,7 @@
 #define _LEXER_HPP_
 
 #include <MemeScript/TokenList.hpp>
+#include <MemeScript/Args.hpp>
 
 namespace ml
 {
@@ -16,16 +17,16 @@ namespace ml
 		using const_iterator = typename List<char>::const_iterator;
 
 	public:
-		Token		makeToken(const String & value) const;
-		TokenList	makeArray(const Args & args);
+		Token		genToken(const String & value) const;
+		TokenList	genArgsArray(const Args & value) const;
+		TokenList	genTokenList(const String & value) const;
+		TokenList	genTokenList(const List<char> & value) const;
+		TokenTree	genTokenTree(const TokenList & value) const;
 
-		TokenList	splitTokens(const String & value) const;
-		TokenList	splitTokens(const List<char> & value) const;
-
-		bool scanName(const List<char> & value, const_iterator& it, String & text) const;
-		bool scanNumber(const List<char> & value, const_iterator& it, String & text) const;
-		bool scanString(const List<char> & value, const_iterator& it, String & text) const;
-		bool scanSymbol(const List<char> & value, const_iterator& it, String & text) const;
+		bool scanName(const List<char> & value, const_iterator & it, String & text) const;
+		bool scanNumber(const List<char> & value, const_iterator & it, String & text) const;
+		bool scanString(const List<char> & value, const_iterator & it, String & text) const;
+		bool scanSymbol(const List<char> & value, const_iterator & it, String & text) const;
 
 	private:
 		Lexer();
