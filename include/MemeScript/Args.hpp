@@ -11,22 +11,20 @@ namespace ml
 		, public IComparable<Args>
 	{
 	public:
-		using vector_type			= List<String>;
-		using iterator				= vector_type::iterator;
-		using const_iterator		= vector_type::const_iterator;
-		using reverse_iterator		= vector_type::reverse_iterator;
-		using const_reverse_iterator= vector_type::const_reverse_iterator;
-		using difference_type		= vector_type::difference_type;
-		using self_type				= Args;
+		using iterator				= List<String>::iterator;
+		using const_iterator		= List<String>::const_iterator;
+		using reverse_iterator		= List<String>::reverse_iterator;
+		using const_reverse_iterator= List<String>::const_reverse_iterator;
+		using difference_type		= List<String>::difference_type;
 
 	public:
 		Args();
 		Args(int32_t argc, char ** argv);
 		Args(const String & value);
-		Args(const vector_type& values);
+		Args(const List<String> & values);
 		Args(const std::initializer_list<String>& values);
 		Args(const String & value, const String & delim);
-		Args(const self_type& copy);
+		Args(const Args & copy);
 		~Args();
 
 		String pop();
@@ -36,11 +34,10 @@ namespace ml
 		const String	front() const;
 		const String	str() const;
 		const String	substr(size_t index, size_t count) const;
+		const SStream	sstream() const;
 
-		const vector_type	subvec(size_t index, size_t count) const;
-		const vector_type&	values() const;
-
-		SStream	sstream() const;
+		const List<String> subvec(size_t index, size_t count) const;
+		const List<String> & values() const;
 
 		const size_t	count(const String & value) const;
 		const size_t	count(const_iterator first, const_iterator last, const String & value) const;
@@ -52,42 +49,42 @@ namespace ml
 		const bool		inRange(size_t index) const;
 		const bool		inRange(const_iterator it) const;
 
-		const self_type	clone() const;
-		const self_type	clone(size_t index, size_t count = 1) const;
-		const self_type	clone(const self_type& other) const;
-		const self_type	clone(const self_type& other, size_t index, size_t count = 1) const;
-		const self_type	clone(const_iterator first, const_iterator last) const;
+		const Args		clone() const;
+		const Args		clone(size_t index, size_t count = 1) const;
+		const Args		clone(const Args & other) const;
+		const Args		clone(const Args & other, size_t index, size_t count = 1) const;
+		const Args		clone(const_iterator first, const_iterator last) const;
 
 	public:
-		self_type&	assign(const vector_type& value);
-		self_type&	clear();
-		self_type&	copy(const self_type& other);
-		self_type&	copy(const self_type& other, size_t index);
-		self_type&	copy(const self_type& other, size_t index, size_t count);
-		self_type&	copy(const_iterator first, const_iterator last);
-		self_type&	erase(size_t index, size_t count = 1);
-		self_type&	erase(const_iterator it, size_t count = 1);
-		self_type&	erase(const_iterator first, const_iterator last);
-		self_type&	insert(size_t index, char value);
-		self_type&	insert(size_t index, CString value);
-		self_type&	insert(size_t index, const String & value);
-		self_type&	mergeNext(size_t index, size_t count);
-		self_type&	pop_back();
-		self_type&	pop_front();
-		self_type&	push_back(char value);
-		self_type&	push_back(CString value);
-		self_type&	push_back(const String & value);
-		self_type&	push_back(const vector_type& value);
-		self_type&	push_back(const self_type& value);
-		self_type&	push_front(char value);
-		self_type&	push_front(CString value);
-		self_type&	push_front(const String & value);
-		self_type&	push_front(const vector_type& value);
-		self_type&	push_front(const self_type& value);
-		self_type&	remove(const String & value);
-		self_type&	removeAll(const String & value);
-		self_type&	resize(size_t size);
-		self_type&	reverse();
+		Args & assign(const List<String> & value);
+		Args & clear();
+		Args & copy(const Args & other);
+		Args & copy(const Args & other, size_t index);
+		Args & copy(const Args & other, size_t index, size_t count);
+		Args & copy(const_iterator first, const_iterator last);
+		Args & erase(size_t index, size_t count = 1);
+		Args & erase(const_iterator it, size_t count = 1);
+		Args & erase(const_iterator first, const_iterator last);
+		Args & insert(size_t index, char value);
+		Args & insert(size_t index, CString value);
+		Args & insert(size_t index, const String & value);
+		Args & mergeNext(size_t index, size_t count);
+		Args & pop_back();
+		Args & pop_front();
+		Args & push_back(char value);
+		Args & push_back(CString value);
+		Args & push_back(const String & value);
+		Args & push_back(const List<String> & value);
+		Args & push_back(const Args & value);
+		Args & push_front(char value);
+		Args & push_front(CString value);
+		Args & push_front(const String & value);
+		Args & push_front(const List<String> & value);
+		Args & push_front(const Args & value);
+		Args & remove(const String & value);
+		Args & removeAll(const String & value);
+		Args & resize(size_t size);
+		Args & reverse();
 
 	public:
 		const_iterator	find(const String & value, size_t begin = 0) const;
@@ -141,11 +138,7 @@ namespace ml
 		}
 
 	public:
-		inline void serialize(std::ostream & out) const override
-		{
-			out << m_values;
-		}
-		inline String	operator[](size_t index) const
+		inline String operator[](size_t index) const
 		{
 			if (inRange(index))
 			{
@@ -153,23 +146,28 @@ namespace ml
 			}
 			return String();
 		};
-		inline Args &		operator=(const Args& copy)
+		
+		inline Args & operator=(const Args & copy)
 		{
-			m_values = copy.m_values;
-			return (*this);
+			return (*this).copy(copy);
 		}
-		inline Args &		operator=(const vector_type& value)
+		
+		inline Args & operator=(const List<String> & value)
 		{
-			(*this) = Args(value);
-			return (*this);
+			return (*this) = Args(value);
 		}
 
 	public:
-		bool equals(const self_type & value) const override;
-		bool lessThan(const self_type & value) const override;
+		inline void serialize(std::ostream & out) const override
+		{
+			out << m_values;
+		}
+
+		bool equals(const Args & value) const override;
+		bool lessThan(const Args & value) const override;
 
 	private:
-		vector_type m_values;
+		List<String> m_values;
 	};
 }
 

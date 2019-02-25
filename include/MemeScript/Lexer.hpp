@@ -11,10 +11,12 @@ namespace ml
 	class ML_SCRIPT_API Lexer final
 		: public ITrackable
 	{
-		friend class Interpreter;
-
 	public:
 		using const_iterator = typename List<char>::const_iterator;
+
+	public:
+		Lexer();
+		~Lexer();
 
 	public:
 		Token		genToken(const String & value) const;
@@ -27,10 +29,6 @@ namespace ml
 		bool scanNumber(const List<char> & value, const_iterator & it, String & text) const;
 		bool scanString(const List<char> & value, const_iterator & it, String & text) const;
 		bool scanSymbol(const List<char> & value, const_iterator & it, String & text) const;
-
-	private:
-		Lexer();
-		~Lexer();
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

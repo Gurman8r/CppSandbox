@@ -448,7 +448,8 @@ namespace ml
 			case OpType::OP_OR:  return Var().boolValue(lhs->evaluate() || rhs->evaluate());
 			}
 		}
-		return Var().errorValue("AST_Oper : Invalid Operation {0} {1} {2}", * lhs, op, * rhs);
+		return Var().errorValue("AST_BinOp : Invalid Operation {0} {1} {2}", 
+			(*lhs), op, (*rhs));
 	}
 
 

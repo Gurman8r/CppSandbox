@@ -8,12 +8,10 @@ namespace ml
 	class ML_SCRIPT_API Parser final
 		: public ITrackable
 	{
-		friend class Interpreter;
-
 	public:
 		using RuleMap = HashMap<const std::type_info *, Rule *>;
 
-	private:
+	public:
 		Parser();
 		~Parser();
 

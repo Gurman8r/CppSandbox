@@ -11,11 +11,13 @@ namespace ml
 	class ML_SCRIPT_API Runtime final
 		: public ITrackable
 	{
-		friend class Interpreter;
-
 	public:
 		using VarMap	= Map<String, Var *>;
 		using ScopeMap	= HashMap<int32_t, VarMap*>;
+
+	public:
+		Runtime();
+		~Runtime();
 
 	public:
 		std::ostream& display(std::ostream& out) const;
@@ -33,9 +35,6 @@ namespace ml
 		bool			clearScope(int32_t index);
 
 	private:
-		Runtime();
-		~Runtime();
-
 		ScopeMap * m_values;
 	};
 }

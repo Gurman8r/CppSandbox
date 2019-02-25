@@ -3,10 +3,16 @@ FIB = nodeid();
 {
 	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-	fib = [](value);
+	main = [](args);
 	{
+		value = 100;
+
+		if (args[0]); {
+			value = args[0];
+		};
+		
 		type = typename(value);
-		if(type == "int");
+		if(type == "int"); 
 		{
 			printl("Fibonacci: {value}");
 			if(value >= 0);
@@ -36,14 +42,7 @@ FIB = nodeid();
 
 	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-	if(command("exists " + FIB + " __ARGS__"));
-	{
-		fib(__ARGS__[0]);
-	};
-	else;
-	{
-		fib(100);
-	};
+	main(__ARGS__);
 
 	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 };

@@ -43,19 +43,14 @@ namespace ml
 			// Generate Tree
 			if (m_root = ML_Parser.genFromList(m_toks))
 			{
-				// Generate ARGS array
-				if (!args.empty())
+				// Generate __ARGS__ array
+				if (m_root->insertChild(0, new AST_Assign(
+					OpType::OP_SET,
+					ML_Parser.generate<AST_Name>(Token('n', ML_ARGS)),
+					ML_Parser.generate<AST_Array>(ML_Lexer.genArgsArray(args)))))
 				{
-					if (!m_root->insertChild(0, new AST_Assign(
-						OpType::OP_SET,
-						ML_Parser.generate<AST_Name>(Token('n', ML_ARGS)),
-						ML_Parser.generate<AST_Array>(ML_Lexer.genArgsArray(args)))))
-					{
-						return Debug::logError("Script : Failed building {0} array", 
-							ML_ARGS);
-					}
+					return true;
 				}
-				return true;
 			}
 		}
 		m_root = NULL;
