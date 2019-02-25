@@ -5,6 +5,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	AST_Block::AST_Block()
 		: AST_Node()
 	{
@@ -22,6 +24,7 @@ namespace ml
 		ML_Runtime.clearScope(getID());
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	std::ostream & AST_Block::display(std::ostream & out) const
 	{
@@ -45,6 +48,7 @@ namespace ml
 		return out;
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool	AST_Block::delVar(const String & name)
 	{
@@ -115,6 +119,7 @@ namespace ml
 		}
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	Var *	AST_Block::getRet() const
 	{
@@ -130,12 +135,13 @@ namespace ml
 		return ML_Runtime.setVar(getID(), ML_RET, value);
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool AST_Block::addFunc(const String & name, AST_Func * value)
 	{
 		if (!getFunc(name))
 		{
-			if (Var * v = setVar(name, Var().funcValue({ { TokenType::TOK_NAME, name } })))
+			if (Var * v = setVar(name, Var().funcValue({ { Token::T_Name, name } })))
 			{
 				m_funcs.insert({ name, value });
 
@@ -166,12 +172,13 @@ namespace ml
 		return m_funcs;
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool AST_Block::addStruct(const String & name, AST_Struct * value)
 	{
 		if (!getStruct(name))
 		{
-			if (Var * v = setVar(name, Var().structValue({ { TokenType::TOK_NAME, name } })))
+			if (Var * v = setVar(name, Var().structValue({ { Token::T_Name, name } })))
 			{
 				m_structs.insert({ name, value });
 
@@ -202,6 +209,7 @@ namespace ml
 		return m_structs;
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	AST_Block *	AST_Block::block() const
 	{
@@ -247,4 +255,5 @@ namespace ml
 		return Debug::logError("Block is empty");
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 }

@@ -5,106 +5,93 @@
 namespace ml
 {
 	const Token::NameMap Token::TypeNames({
-		{ TOK_ERR,	"ERR" },
-		{ TOK_VOID, "VOID" },
-		{ TOK_ENDL, "ENDL" },
-
-		{ TOK_NAME, "NAME" },
-		{ TOK_FLT,	"FLT" },
-		{ TOK_INT,	"INT" },
-		{ TOK_STR,	"STR" },
-
-		{ TOK_POW,	"POW" },
-		{ TOK_MUL,	"MUL" },
-		{ TOK_DIV,	"DIV" },
-		{ TOK_ADD,	"ADD" },
-		{ TOK_SUB,	"SUB" },
-		{ TOK_MOD,	"MOD" },
-
-		{ TOK_EQU,	"EQU" },
-		{ TOK_LT,	"LT"  },
-		{ TOK_GT,	"GT"  },
-		{ TOK_NOT,  "NOT" },
-
-		{ TOK_HASH, "HASH" },
-		{ TOK_TERM, "TERM" },
-		{ TOK_SEMI, "SEMI" },
-		{ TOK_CMMA, "CMMA" },
-		{ TOK_COLN, "COLN" },
-		{ TOK_DOT,  "DOT"  },
-		{ TOK_QSTN, "TNRY" },
-		{ TOK_DOLR, "DOLR" },
-		{ TOK_AT,	"AT"   },
-
-		{ TOK_LPRN, "LPRN" }, { TOK_RPRN, "RPRN" }, // (paren)
-		{ TOK_LBRC, "LBRC" }, { TOK_RBRC, "RBRC" }, // {brace}
-		{ TOK_LBKT, "LBKT" }, { TOK_RBKT, "RBKT" }, // [bracket]
-		{ TOK_DQTE, "DQTE" }, { TOK_SQTE, "SQTE" }, // quotes
+		{ T_Error,		"ERR"	},
+		{ T_Void,		"VOID"	},
+		{ T_Endl,		"ENDL"	},
+		{ T_Name,		"NAME"	},
+		{ T_Float,		"FLT"	},
+		{ T_Int,		"INT"	},
+		{ T_String,		"STR"	},
+		{ T_Pow,		"POW"	},
+		{ T_Mul,		"MUL"	},
+		{ T_Div,		"DIV"	},
+		{ T_Plus,		"ADD"	},
+		{ T_Minus,		"SUB"	},
+		{ T_Mod,		"MOD"	},
+		{ T_Equal,		"EQU"	},
+		{ T_Less,		"LT"	},
+		{ T_Greater,	"GT"	},
+		{ T_Not,		"NOT"	},
+		{ T_Hash,		"HASH"	},
+		{ T_Term,		"TERM"	},
+		{ T_SColon,		"SCOL"	},
+		{ T_Comma,		"CMMA"	},
+		{ T_Colon,		"COLN"	},
+		{ T_Dot,		"DOT"	},
+		{ T_QMark,		"QMRK"	},
+		{ T_Dollar,		"DOLR"	},
+		{ T_At,			"AT"	},
+		{ T_LParen,		"LPRN"	},
+		{ T_RParen,		"RPRN"	},
+		{ T_LBrace,		"LBRC"	},
+		{ T_RBrace,		"RBRC"	},
+		{ T_LBrack,		"LBKT"	},
+		{ T_RBrack,		"RBKT"	},
+		{ T_DQuote,		"DQTE"	},
+		{ T_SQuote,		"SQTE"	},
 	});
 
 	const Token::SymbolMap Token::Symbols({
-		{ "ERR",  TOK_ERR  },
-		{ "VOID", TOK_VOID },
-		{ "ENDL", TOK_ENDL },
-
-		{ "^", TOK_POW },
-		{ "*", TOK_MUL },
-		{ "/", TOK_DIV },
-		{ "+", TOK_ADD },
-		{ "-", TOK_SUB },
-		{ "%", TOK_MOD },
-		{ "&", TOK_AND },
-		{ "|", TOK_OR  },
-
-		{ "=", TOK_EQU },
-		{ "<", TOK_LT  },
-		{ ">", TOK_GT  },
-		{ "!", TOK_NOT },
-
-		{ ";", TOK_SEMI },
-		{ ",", TOK_CMMA },
-		{ ":", TOK_COLN },
-		{ "#", TOK_HASH },
-		{ "\\",TOK_TERM },
-		{ ".", TOK_DOT  },
-		{ "?", TOK_QSTN },
-		{ "$", TOK_DOLR },
-		{ "@", TOK_AT   },
-
-		{ "(", TOK_LPRN }, { ")", TOK_RPRN },
-		{ "{", TOK_LBRC }, { "}", TOK_RBRC },
-		{ "[", TOK_LBKT }, { "]", TOK_RBKT },
-		{ "\"", TOK_DQTE }, { "\'", TOK_SQTE },
+		{ "ERR",	T_Error		},
+		{ "VOID",	T_Void		},
+		{ "ENDL",	T_Endl		},
+		{ "^",		T_Pow		},
+		{ "*",		T_Mul		},
+		{ "/",		T_Div		},
+		{ "+",		T_Plus		},
+		{ "-",		T_Minus		},
+		{ "%",		T_Mod		},
+		{ "&",		T_And		},
+		{ "|",		T_Or		},
+		{ "=",		T_Equal		},
+		{ "<",		T_Less		},
+		{ ">",		T_Greater	},
+		{ "!",		T_Not		},
+		{ ";",		T_SColon	},
+		{ ",",		T_Comma		},
+		{ ":",		T_Colon		},
+		{ "#",		T_Hash		},
+		{ "\\",		T_Term		},
+		{ ".",		T_Dot		},
+		{ "?",		T_QMark		},
+		{ "$",		T_Dollar	},
+		{ "@",		T_At		},
+		{ "(",		T_LParen	}, 
+		{ ")",		T_RParen	},
+		{ "{",		T_LBrace	}, 
+		{ "}",		T_RBrace	},
+		{ "[",		T_LBrack	}, 
+		{ "]",		T_RBrack	},
+		{ "\"",		T_DQuote	},
+		{ "\'",		T_SQuote	},
 
 	});
 
 
 	Token::Token()
-		: type(TOK_ERR)
-		, data(Token::TypeNames.at(type))
-	{
-	}
-
-	Token::Token(TokenType type)
-		: type(type)
+		: type(T_Error)
 		, data(Token::TypeNames.at(type))
 	{
 	}
 
 	Token::Token(char type)
-		: type((TokenType)type)
+		: type(type)
 		, data(String())
 	{
 	}
 
-	Token::Token(TokenType type, const String & data)
-		: type(type)
-		, data(data)
-	{
-	}
-
 	Token::Token(char type, const String & data)
-		: type((TokenType)type)
+		: type(type)
 		, data(data)
 	{
 	}
@@ -123,7 +110,7 @@ namespace ml
 		return (*this);
 	}
 
-	Token & Token::operator=(const TokenType & value)
+	Token & Token::operator=(const char & value)
 	{
 		type = value;
 		data = Token::TypeNames.at(value);
@@ -163,11 +150,6 @@ namespace ml
 		return (type == value.type) && (data == value.data);
 	}
 
-	bool Token::equals(const TokenType & value) const
-	{
-		return type == value;
-	}
-
 	bool Token::equals(const char & value) const
 	{
 		return (char)type == value;
@@ -193,11 +175,6 @@ namespace ml
 		return false;
 	}
 
-	bool Token::lessThan(const TokenType & value) const
-	{
-		return type < value;
-	}
-	
 	bool Token::lessThan(const char & value) const
 	{
 		return (char)type < value;
@@ -213,7 +190,7 @@ namespace ml
 	{
 		out << FMT()
 			<< FG::White << "[ "
-			<< FG::Green << type
+			<< FG::Green << TypeNames.at(type)
 			<< FG::White << " "
 			<< FG::Yellow << data
 			<< FG::White << " ]"

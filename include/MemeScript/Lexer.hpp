@@ -25,6 +25,7 @@ namespace ml
 		TokenList	genTokenList(const List<char> & value) const;
 		TokenTree	genTokenTree(const TokenList & value) const;
 
+	public:
 		bool scanName(const List<char> & value, const_iterator & it, String & text) const;
 		bool scanNumber(const List<char> & value, const_iterator & it, String & text) const;
 		bool scanString(const List<char> & value, const_iterator & it, String & text) const;

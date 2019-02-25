@@ -1,18 +1,6 @@
 #include <MemeScript/Lexer.hpp>
 #include <MemeScript/StringUtility.hpp>
 
-namespace
-{
-	inline bool issymbol(const char& c)
-	{
-		return
-			(c >= '!'  && c <= '/') ||
-			(c >= ':'  && c <= '@') ||
-			(c >= '['  && c <= '`') ||
-			(c >= '{'  && c <= '~');
-	}
-}
-
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -89,19 +77,19 @@ namespace ml
 			String text;
 
 			// End of line
-			if (*it == '\n')
+			if ((*it) == '\n')
 			{
-				out.push_back(TokenType::TOK_ENDL);
+				out.push_back({ '\n' });
 			}
 			// String
 			else if (scanString(value, it, text))
 			{
-				out.push_back({ TokenType::TOK_STR, text });
+				out.push_back({ 's', text });
 			}
 			// Name
 			else if (scanName(value, it, text))
 			{
-				out.push_back({ TokenType::TOK_NAME, text });
+				out.push_back({ 'n', text });
 			}
 			// Number
 			else if (scanNumber(value, it, text))
@@ -109,31 +97,30 @@ namespace ml
 				// Integer
 				if (StringUtility::IsInt(text))
 				{
-					out.push_back({ TokenType::TOK_INT, text });
+					out.push_back({ 'i', text });
 				}
 				// Float
 				else if (StringUtility::IsDecimal(text))
 				{
-					out.push_back({ TokenType::TOK_FLT, text });
+					out.push_back({ 'f', text });
 				}
 				// Error
 				else
 				{
-					out.push_back({ TokenType::TOK_ERR, text });
+					out.push_back({ '\0', text });
 				}
 			}
 			// Symbols
 			else if (scanSymbol(value, it, text))
 			{
-				Token::SymbolMap::const_iterator it = Token::Symbols.find(text);
-
-				if (it != Token::Symbols.end())
+				Token::SymbolMap::const_iterator it;
+				if ((it = Token::Symbols.find(text)) != Token::Symbols.end())
 				{
 					out.push_back({ it->second, text });
 				}
 				else
 				{
-					out.push_back({ TokenType::TOK_ERR, text });
+					out.push_back({ '\0', text });
 				}
 			}
 		}
@@ -156,7 +143,7 @@ namespace ml
 			case '#': // Comment
 			{
 				String line;
-				while ((it != value.end()) && ((*it) != TokenType::TOK_ENDL))
+				while ((it != value.end()) && ((*it) != '\n'))
 				{
 					line += (*it++).data;
 				}
@@ -190,12 +177,11 @@ namespace ml
 		if (isalpha(*it) || (*it) == '_')
 		{
 			String out;
-
 			while (it != value.end())
 			{
 				if (isalnum(*it) || (*it) == '_')
 				{
-					out += *it;
+					out += (*it);
 					it++;
 				}
 				else
@@ -203,12 +189,10 @@ namespace ml
 					break;
 				}
 			}
-
 			it--;
 			text = out;
 			return true;
 		}
-
 		text = String();
 		return false;
 	}
@@ -218,12 +202,11 @@ namespace ml
 		if (isdigit(*it))
 		{
 			String out;
-
 			while (it != value.end())
 			{
-				if (isdigit(*it) || *it == '.')
+				if (isdigit(*it) || (*it) == '.')
 				{
-					out += *it;
+					out += (*it);
 					it++;
 				}
 				else
@@ -231,47 +214,51 @@ namespace ml
 					break;
 				}
 			}
-
 			it--;
 			text = out;
 			return true;
 		}
-
 		text = String();
 		return false;
 	}
 
 	bool Lexer::scanString(const List<char> & value, const_iterator & it, String & text) const
 	{
-		if (*it == '\"')
+		if ((*it) == '\"')
 		{
 			String out;
-
 			while (++it != value.end())
 			{
-				if (*it == '\"')
+				if ((*it) == '\"')
 				{
 					break;
 				}
 				else if (isprint(*it))
 				{
-					out += *it;
+					out += (*it);
 				}
 			}
-
 			text = out;
 			return true;
 		}
-
 		text = String();
 		return false;
 	}
 
 	bool Lexer::scanSymbol(const List<char> & value, const_iterator & it, String & text) const
 	{
+		auto issymbol = [](const char c)
+		{
+			return
+				(c >= '!'  && c <= '/') ||
+				(c >= ':'  && c <= '@') ||
+				(c >= '['  && c <= '`') ||
+				(c >= '{'  && c <= '~');
+		};
+
 		if (issymbol(*it))
 		{
-			text = String(1, *it);
+			text = String(1, (*it));
 			return true;
 		}
 		text = String();

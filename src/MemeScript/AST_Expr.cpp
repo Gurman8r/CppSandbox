@@ -63,28 +63,28 @@ namespace ml
 
 	// Assign
 	/* * * * * * * * * * * * * * * * * * * * */
-	AST_Assign::AST_Assign(Operator op, AST_Expr * name, AST_Expr * expr)
+	AST_Assign::AST_Assign(Operator op, AST_Expr * lhs, AST_Expr * rhs)
 		: AST_Expr(EX_Assign)
 		, op(op)
-		, name(name)
-		, expr(expr)
+		, lhs(lhs)
+		, rhs(rhs)
 	{
-		addChild(name);
-		addChild(expr);
+		addChild(lhs);
+		addChild(rhs);
 	}
 
 	std::ostream & AST_Assign::display(std::ostream & out) const
 	{
-		return out << ( * name) << " " << op << " " << ( * expr);
+		return out << (*lhs) << " " << op << " " << (*rhs);
 	}
 
 	Var AST_Assign::evaluate() const
 	{
-		if (AST_Name * n = name->as<AST_Name>())
+		if (AST_Name * n = lhs->as<AST_Name>())
 		{
 			if (op == OpType::OP_SET)
 			{
-				if (Var * v = block()->setVar(n->value, expr->evaluate()))
+				if (Var * v = block()->setVar(n->value, rhs->evaluate()))
 				{
 					return (*v);
 				}
@@ -97,12 +97,12 @@ namespace ml
 			{
 				switch (op.type)
 				{
-				case OpType::OP_ADD: return v->Add(expr->evaluate());
-				case OpType::OP_SUB: return v->Sub(expr->evaluate());
-				case OpType::OP_MUL: return v->Mul(expr->evaluate());
-				case OpType::OP_DIV: return v->Div(expr->evaluate());
-				case OpType::OP_POW: return v->Pow(expr->evaluate());
-				case OpType::OP_MOD: return v->Mod(expr->evaluate());
+				case OpType::OP_ADD: return v->Add(rhs->evaluate());
+				case OpType::OP_SUB: return v->Sub(rhs->evaluate());
+				case OpType::OP_MUL: return v->Mul(rhs->evaluate());
+				case OpType::OP_DIV: return v->Div(rhs->evaluate());
+				case OpType::OP_POW: return v->Pow(rhs->evaluate());
+				case OpType::OP_MOD: return v->Mod(rhs->evaluate());
 				}
 			}
 		}
@@ -406,7 +406,7 @@ namespace ml
 	}
 
 
-	// Binary Operation
+	// BinOp
 	/* * * * * * * * * * * * * * * * * * * * */
 	AST_BinOp::AST_BinOp(const Operator & op, AST_Expr * lhs, AST_Expr * rhs)
 		: AST_Expr(EX_BinOp)

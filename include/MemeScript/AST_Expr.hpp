@@ -149,10 +149,10 @@ namespace ml
 	struct ML_SCRIPT_API AST_Assign : public AST_Expr
 	{
 		Operator	op;
-		AST_Expr *	name;
-		AST_Expr *	expr;
+		AST_Expr *	lhs;
+		AST_Expr *	rhs;
 
-		AST_Assign(Operator op, AST_Expr * name, AST_Expr * expr);
+		AST_Assign(Operator op, AST_Expr * lhs, AST_Expr * rhs);
 		~AST_Assign() {}
 
 		std::ostream & display(std::ostream & out) const override;
@@ -178,7 +178,7 @@ namespace ml
 		bool		run() override;
 	};
 
-	// Binary Operation
+	// BinOp
 	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_BinOp : public AST_Expr
 	{

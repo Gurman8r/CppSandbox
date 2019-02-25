@@ -46,7 +46,7 @@ namespace ml
 
 			Ptr();
 			Ptr(int32_t index, const String & name);
-			Ptr(const Ptr& copy);
+			Ptr(const Ptr & copy);
 
 			Var * get() const;
 
@@ -150,7 +150,7 @@ namespace ml
 
 		void serialize(std::ostream & out) const override;
 
-		static std::ostream& PrintList(std::ostream & out, const Var & value);
+		static std::ostream & PrintList(std::ostream & out, const Var & value);
 		
 	public: // Factory
 		static Var makeSingle(const Token & tok);
@@ -159,7 +159,6 @@ namespace ml
 	public: // Operator Functions
 		bool	And(const Var & other) const;	// &&
 		bool	Or(const Var & other) const;	// ||
-
 		bool	Equals(const Var & other) const;// ==
 		bool	Less(const Var & other) const;	// <
 

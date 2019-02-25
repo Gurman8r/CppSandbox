@@ -40,7 +40,7 @@ namespace ml
 		AST_Struct *getStruct(const String & name);
 		StructTable getStructs() const;
 
-		AST_Block*	block() const;
+		AST_Block *	block() const;
 
 		Var	 evaluate() const;
 		bool run() override;

@@ -209,7 +209,7 @@ namespace ml
 
 	bool Var::isVoidType() const
 	{
-		return compareType(Var::Void) || tokensValue().front(TokenType::TOK_VOID);
+		return compareType(Var::Void) || tokensValue().front(Token::T_Void);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -349,7 +349,7 @@ namespace ml
 		  
 	Var & Var::boolValue(const bool & value)
 	{
-		return setType(Var::Bool).dataValue({ { TokenType::TOK_NAME, (value ? "true" : "false") } });
+		return setType(Var::Bool).dataValue(Token('n', (value ? "true" : "false")));
 	}
 
 	Var & Var::dataValue(const TokenList & value)
@@ -374,12 +374,12 @@ namespace ml
 		  
 	Var & Var::errorValue(const String & value)
 	{
-		return voidValue().dataValue({ { TokenType::TOK_ERR, value } });
+		return voidValue().dataValue(Token('\0', value));
 	}
 		  
 	Var & Var::floatValue(const float & value)
 	{
-		return setType(Var::Float).dataValue({ { TokenType::TOK_FLT, std::to_string(value) } });
+		return setType(Var::Float).dataValue(Token('f', std::to_string(value)));
 	}
 		  
 	Var & Var::funcValue(const TokenList & value)
@@ -389,7 +389,7 @@ namespace ml
 		  
 	Var & Var::intValue(const int32_t & value)
 	{
-		return setType(Var::Integer).dataValue({ { TokenType::TOK_INT, std::to_string(value) } });
+		return setType(Var::Integer).dataValue(Token('i', std::to_string(value)));
 	}
  		  
 	Var & Var::nullValue()
@@ -399,12 +399,12 @@ namespace ml
 		  
 	Var & Var::pointerValue(const Ptr & value)
 	{
-		return setType(Var::Pointer).dataValue({ { TokenType::TOK_NAME, value.name } });
+		return setType(Var::Pointer).dataValue(Token('n', value.name));
 	}
 		  
 	Var & Var::stringValue(const String & value)
 	{
-		return setType(Var::Str).dataValue({ { TokenType::TOK_STR, value } });
+		return setType(Var::Str).dataValue(Token('s', value));
 	}
 
 	Var & Var::structValue(const TokenList & value)
@@ -414,7 +414,7 @@ namespace ml
 	  
 	Var & Var::voidValue()
 	{
-		return setType(Var::Void).dataValue({ TokenType::TOK_VOID });
+		return setType(Var::Void).dataValue(Token(' '));
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -538,18 +538,17 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool	Var::And(const Var & other) const
+	bool Var::And(const Var & other) const
 	{
 		return boolValue() && other.boolValue();
 	}
-
-	bool	Var::Or(const Var & other) const
+		 
+	bool Var::Or(const Var & other) const
 	{
 		return boolValue() && other.boolValue();
 	}
-
-
-	bool	Var::Equals(const Var & other) const
+		 
+	bool Var::Equals(const Var & other) const
 	{
 		switch (getTypeID())
 		{
@@ -557,22 +556,16 @@ namespace ml
 		case Var::Integer:
 			switch (other.getTypeID())
 			{
-			case Var::Integer:
-				return intValue() == other.intValue();
-
-			case Var::Float:
-				return intValue() == other.floatValue();
+			case Var::Integer: return intValue() == other.intValue();
+			case Var::Float: return intValue() == other.floatValue();
 			}
 
 			// Float
 		case Var::Float:
 			switch (other.getTypeID())
 			{
-			case Var::Integer:
-				return floatValue() == other.intValue();
-
-			case Var::Float:
-				return floatValue() == other.floatValue();
+			case Var::Integer: return floatValue() == other.intValue();
+			case Var::Float: return floatValue() == other.floatValue();
 			}
 		}
 
@@ -596,8 +589,8 @@ namespace ml
 
 		return textValue() == other.textValue();
 	}
-
-	bool	Var::Less(const Var & other) const
+		 
+	bool Var::Less(const Var & other) const
 	{
 		switch (getTypeID())
 		{
@@ -605,22 +598,16 @@ namespace ml
 		case Var::Integer:
 			switch (other.getTypeID())
 			{
-			case Var::Integer:
-				return intValue() < other.intValue();
-
-			case Var::Float:
-				return intValue() < other.floatValue();
+			case Var::Integer: return intValue() < other.intValue();
+			case Var::Float: return intValue() < other.floatValue();
 			}
 
 			// Float
 		case Var::Float:
 			switch (other.getTypeID())
 			{
-			case Var::Integer:
-				return floatValue() < other.intValue();
-
-			case Var::Float:
-				return floatValue() < other.floatValue();
+			case Var::Integer: return floatValue() < other.intValue();
+			case Var::Float: return floatValue() < other.floatValue();
 			}
 		}
 
@@ -646,7 +633,7 @@ namespace ml
 	}
 
 
-	Var &	Var::Add(const Var & other)
+	Var & Var::Add(const Var & other)
 	{
 		switch (getTypeID())
 		{
@@ -654,12 +641,8 @@ namespace ml
 		case Var::Integer:
 			switch (other.getTypeID())
 			{
-			case Var::Integer:
-				return intValue(intValue() + other.intValue());
-
-			case Var::Float:
-				return intValue(intValue() + (int32_t)other.floatValue());
-
+			case Var::Integer: return intValue(intValue() + other.intValue());
+			case Var::Float: return intValue(intValue() + (int32_t)other.floatValue());
 			default:
 				if (other.isIntType())
 					return intValue(intValue() + other.intValue());
@@ -669,12 +652,8 @@ namespace ml
 		case Var::Float:
 			switch (other.getTypeID())
 			{
-			case Var::Float:
-				return floatValue(floatValue() + other.floatValue());
-
-			case Var::Integer:
-				return floatValue(floatValue() + (float)other.intValue());
-
+			case Var::Float: return floatValue(floatValue() + other.floatValue());
+			case Var::Integer: return floatValue(floatValue() + (float)other.intValue());
 			default:
 				if (other.isFloatType())
 					return floatValue(floatValue() + other.floatValue());
@@ -688,10 +667,6 @@ namespace ml
 			default:
 				return stringValue(stringValue() + other.stringValue());
 			}
-
-		//case Var::Array:
-		//	tokensValue().push_back(other.tokensValue());
-		//	return (*this);
 		}
 
 		bool lp = compareType(Var::Pointer);
@@ -714,14 +689,12 @@ namespace ml
 			}
 		}
 
-		//return (*this);
-
 		return errorValue(String::Format(
 			"Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
 			getTypeID(), (*this), OpType::OP_ADD, other.getTypeID(), other));
 	}
-
-	Var &	Var::Div(const Var & other)
+		  
+	Var & Var::Div(const Var & other)
 	{
 		switch (getTypeID())
 		{
@@ -729,12 +702,8 @@ namespace ml
 		case Var::Integer:
 			switch (other.getTypeID())
 			{
-			case Var::Integer:
-				return intValue(intValue() / other.intValue());
-
-			case Var::Float:
-				return intValue(intValue() / (int32_t)other.floatValue());
-
+			case Var::Integer: return intValue(intValue() / other.intValue());
+			case Var::Float: return intValue(intValue() / (int32_t)other.floatValue());
 			default:
 				if (other.isIntType())
 					return intValue(intValue() / other.intValue());
@@ -744,25 +713,12 @@ namespace ml
 		case Var::Float:
 			switch (other.getTypeID())
 			{
-			case Var::Float:
-				return floatValue(floatValue() / other.floatValue());
-
-			case Var::Integer:
-				return floatValue(floatValue() / (float)other.intValue());
-
+			case Var::Float: return floatValue(floatValue() / other.floatValue());
+			case Var::Integer: return floatValue(floatValue() / (float)other.intValue());
 			default:
 				if (other.isFloatType())
 					return floatValue(floatValue() / other.floatValue());
 			}
-
-			//	// String
-			//case TokenType::String:
-			//	switch (other.getTypeID())
-			//	{
-			//	case Var::Str:
-			//	default:
-			//		return stringValue(stringValue() / other.tokensValue());
-			//	}
 		}
 
 		bool lp = compareType(Var::Pointer);
@@ -792,8 +748,8 @@ namespace ml
 			"Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
 			getTypeID(), (*this), OpType::OP_DIV, other.getTypeID(), other));
 	}
-
-	Var &	Var::Mod(const Var & other)
+		  
+	Var & Var::Mod(const Var & other)
 	{
 		switch (getTypeID())
 		{
@@ -801,12 +757,8 @@ namespace ml
 		case Var::Integer:
 			switch (other.getTypeID())
 			{
-			case Var::Integer:
-				return intValue(intValue() % other.intValue());
-
-			case Var::Float:
-				return intValue(intValue() % (int32_t)other.floatValue());
-
+			case Var::Integer: return intValue(intValue() % other.intValue());
+			case Var::Float: return intValue(intValue() % (int32_t)other.floatValue());
 			default:
 				if (other.isIntType())
 					return intValue(intValue() % other.intValue());
@@ -816,12 +768,8 @@ namespace ml
 		case Var::Float:
 			switch (other.getTypeID())
 			{
-			case Var::Float:
-				return intValue((int32_t)floatValue() % (int32_t)other.floatValue());
-
-			case Var::Integer:
-				return intValue((int32_t)floatValue() % other.intValue());
-
+			case Var::Float: return intValue((int32_t)floatValue() % (int32_t)other.floatValue());
+			case Var::Integer: return intValue((int32_t)floatValue() % other.intValue());
 			default:
 				if (other.isFloatType())
 					return intValue((int32_t)floatValue() % (int32_t)other.floatValue());
@@ -855,8 +803,8 @@ namespace ml
 			"Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
 			getTypeID(), (*this), OpType::OP_MOD, other.getTypeID(), other));
 	}
-
-	Var &	Var::Mul(const Var & other)
+		  
+	Var & Var::Mul(const Var & other)
 	{
 		switch (getTypeID())
 		{
@@ -864,12 +812,8 @@ namespace ml
 		case Var::Integer:
 			switch (other.getTypeID())
 			{
-			case Var::Integer:
-				return intValue(intValue() * other.intValue());
-
-			case Var::Float:
-				return intValue(intValue() * (int32_t)other.floatValue());
-
+			case Var::Integer: return intValue(intValue() * other.intValue());
+			case Var::Float: return intValue(intValue() * (int32_t)other.floatValue());
 			default:
 				if (other.isIntType())
 					return intValue(intValue() * other.intValue());
@@ -879,25 +823,12 @@ namespace ml
 		case Var::Float:
 			switch (other.getTypeID())
 			{
-			case Var::Float:
-				return floatValue(floatValue() * other.floatValue());
-
-			case Var::Integer:
-				return floatValue(floatValue() * (float)other.intValue());
-
+			case Var::Float: return floatValue(floatValue() * other.floatValue());
+			case Var::Integer: return floatValue(floatValue() * (float)other.intValue());
 			default:
 				if (other.isFloatType())
 					return floatValue(floatValue() * other.floatValue());
 			}
-
-			//	// String
-			//case TokenType::String:
-			//	switch (other.getTypeID())
-			//	{
-			//	case Var::Str:
-			//	default:
-			//		return stringValue(stringValue() * other.tokensValue());
-			//	}
 		}
 
 		bool lp = compareType(Var::Pointer);
@@ -927,9 +858,34 @@ namespace ml
 			"Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
 			getTypeID(), (*this), OpType::OP_MUL, other.getTypeID(), other));
 	}
-
-	Var &	Var::Pow(const Var & other)
+		  
+	Var & Var::Pow(const Var & other)
 	{
+		switch (getTypeID())
+		{
+			// Int
+		case Var::Integer:
+			switch (other.getTypeID())
+			{
+			case Var::Integer: return intValue((int32_t)pow(intValue(), other.intValue()));
+			case Var::Float: return intValue((int32_t)pow(intValue(), (int32_t)other.floatValue()));
+			default:
+				if (other.isIntType())
+					return intValue((int32_t)pow(intValue(), other.intValue()));
+			}
+
+			// Float
+		case Var::Float:
+			switch (other.getTypeID())
+			{
+			case Var::Float: return floatValue(powf(floatValue(), other.floatValue()));
+			case Var::Integer: return floatValue(powf(floatValue(), (float)other.intValue()));
+			default:
+				if (other.isFloatType())
+					return floatValue(powf(floatValue(), other.floatValue()));
+			}
+		}
+
 		bool lp = compareType(Var::Pointer);
 		bool lg = isValid();
 		bool rp = other.compareType(Var::Pointer);
@@ -953,45 +909,12 @@ namespace ml
 			}
 		}
 
-		switch (getTypeID())
-		{
-			// Int
-		case Var::Integer:
-			switch (other.getTypeID())
-			{
-			case Var::Integer:
-				return intValue((int32_t)pow(intValue(), other.intValue()));
-
-			case Var::Float:
-				return intValue((int32_t)pow(intValue(), (int32_t)other.floatValue()));
-
-			default:
-				if (other.isIntType())
-					return intValue((int32_t)pow(intValue(), other.intValue()));
-			}
-
-			// Float
-		case Var::Float:
-			switch (other.getTypeID())
-			{
-			case Var::Float:
-				return floatValue(powf(floatValue(), other.floatValue()));
-
-			case Var::Integer:
-				return floatValue(powf(floatValue(), (float)other.intValue()));
-
-			default:
-				if (other.isFloatType())
-					return floatValue(powf(floatValue(), other.floatValue()));
-			}
-		}
-
 		return errorValue(String::Format(
 			"Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
 			getTypeID(), (*this), OpType::OP_POW, other.getTypeID(), other));
 	}
-
-	Var &	Var::Sub(const Var & other)
+		  
+	Var & Var::Sub(const Var & other)
 	{
 		switch (getTypeID())
 		{
@@ -999,12 +922,8 @@ namespace ml
 		case Var::Integer:
 			switch (other.getTypeID())
 			{
-			case Var::Integer:
-				return intValue(intValue() - other.intValue());
-
-			case Var::Float:
-				return intValue(intValue() - (int32_t)other.floatValue());
-
+			case Var::Integer: return intValue(intValue() - other.intValue());
+			case Var::Float: return intValue(intValue() - (int32_t)other.floatValue());
 			default:
 				if (other.isIntType())
 					return intValue(intValue() - other.intValue());
@@ -1014,12 +933,8 @@ namespace ml
 		case Var::Float:
 			switch (other.getTypeID())
 			{
-			case Var::Float:
-				return floatValue(floatValue() - other.floatValue());
-
-			case Var::Integer:
-				return floatValue(floatValue() - (float)other.intValue());
-
+			case Var::Float: return floatValue(floatValue() - other.floatValue());
+			case Var::Integer: return floatValue(floatValue() - (float)other.intValue());
 			default:
 				if (other.isFloatType())
 					return floatValue(floatValue() - other.floatValue());
@@ -1053,8 +968,8 @@ namespace ml
 			"Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
 			getTypeID(), (*this), OpType::OP_SUB, other.getTypeID(), other));
 	}
-
-	Var &	Var::Set(const Var & other)
+		  
+	Var & Var::Set(const Var & other)
 	{
 		if (Var * v = other.pointerValue().get())
 		{

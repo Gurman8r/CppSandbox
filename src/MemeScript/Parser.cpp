@@ -37,7 +37,7 @@ namespace ml
 			AST_Bool * temp;
 			return (
 				(toks.size() == 1) &&
-				(toks.front(TokenType::TOK_NAME)) &&
+				(toks.front('n')) &&
 				(StringUtility::IsBool(toks.front().data))
 					? (temp = new AST_Bool(StringUtility::ToBool(toks.front().data)))
 					: (temp = NULL)
@@ -49,7 +49,7 @@ namespace ml
 			AST_Int * temp;
 			return (
 				(toks.size() == 1) &&
-				(toks.front(TokenType::TOK_INT)) &&
+				(toks.front('i')) &&
 				(StringUtility::IsInt(toks.front().data))
 					? (temp = new AST_Int(StringUtility::ToInt(toks.front().data)))
 					: (temp = NULL)
@@ -61,7 +61,7 @@ namespace ml
 			AST_Float * temp;
 			return (
 				(toks.size() == 1) &&
-				(toks.front(TokenType::TOK_FLT)) &&
+				(toks.front('f')) &&
 				(StringUtility::IsDecimal(toks.front().data))
 					? (temp = new AST_Float(StringUtility::ToFloat(toks.front().data)))
 					: (temp = NULL)
@@ -73,7 +73,7 @@ namespace ml
 			AST_Name * temp;
 			return (
 				(toks.size() == 1) && 
-				(toks.front(TokenType::TOK_NAME))
+				(toks.front('n'))
 					? (temp = new AST_Name(toks.front().data))
 					: (temp = NULL)
 				);
@@ -84,7 +84,7 @@ namespace ml
 			AST_String * temp;
 			return (
 				(toks.size() == 1) && 
-				(toks.front(TokenType::TOK_STR))
+				(toks.front('s'))
 					? (temp = new AST_String(toks.front().data))
 					: (temp = NULL)
 				);
@@ -535,7 +535,7 @@ namespace ml
 			return true;
 		}
 
-		TokenList stack = { TokenType::TOK_LPRN };
+		TokenList stack = { '(' };
 
 		pfx = TokenList();
 
@@ -562,10 +562,10 @@ namespace ml
 
 				stack.insert(stack.begin(), arg);
 			}
-			else if (arg == TokenType::TOK_LPRN) // (
+			else if (arg == '(')
 			{
 				TokenList::const_iterator prev = (it - 1);
-				if (!func && ((prev >= ifx.begin()) && prev->type == TokenType::TOK_NAME))
+				if (!func && ((prev >= ifx.begin()) && prev->type == 'n'))
 				{
 					pfx.push_back(arg);
 					func = true;
@@ -575,12 +575,12 @@ namespace ml
 					stack.insert(stack.begin(), arg);
 				}
 			}
-			else if (arg == TokenType::TOK_RPRN) // )
+			else if (arg == ')')
 			{
 				size_t count = 0;
 				while (!stack.empty())
 				{
-					if (stack.front() == TokenType::TOK_LPRN)
+					if (stack.front() == '(')
 					{
 						break;
 					}
@@ -614,7 +614,7 @@ namespace ml
 			if (show) cout << "P: " << pfx << ml::endl;
 		}
 
-		while (!stack.empty() && stack.front() != TokenType::TOK_LPRN)
+		while (!stack.empty() && stack.front() != '(')
 		{
 			pfx.push_back(stack.front());
 			stack.erase(stack.begin());
@@ -853,11 +853,11 @@ namespace ml
 		for (TokenList::const_iterator it = toks.begin(); it != toks.end(); it++)
 		{
 			// Call
-			if (((it)->type == TOK_NAME) && ((it + 1)->type == TOK_LPRN))
+			if (((it)->type == 'n') && ((it + 1)->type == '('))
 			{
 				TokenList params(*it);
 
-				while ((it++)->type != TOK_RPRN)
+				while ((it++)->type != ')')
 				{
 					params.push_back(*it);
 				}
@@ -1003,7 +1003,7 @@ namespace ml
 		{
 			for (TokenList::const_iterator it = toks.begin() + 1; it != toks.end() - 1; it++)
 			{
-				if ((*it).type != TokenType::TOK_CMMA)
+				if ((*it).type != ',')
 				{
 					if (AST_Name * name = generate<AST_Name>(*it))
 					{

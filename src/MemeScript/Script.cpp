@@ -4,6 +4,8 @@
 
 namespace ml
 {
+
+	/* * * * * * * * * * * * * * * * * * * * */
 	Script::Script()
 		: m_file	()
 		, m_toks	()
@@ -17,6 +19,7 @@ namespace ml
 		cleanup();
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool Script::cleanup()
 	{
@@ -32,6 +35,8 @@ namespace ml
 	{
 		return m_file.loadFromFile((m_path = filename));
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool Script::build(const Args & args)
 	{
@@ -72,4 +77,6 @@ namespace ml
 		}
 		return false;
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

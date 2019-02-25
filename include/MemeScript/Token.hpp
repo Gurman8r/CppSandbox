@@ -5,96 +5,84 @@
 
 namespace ml
 {
-	enum TokenType : char
-	{
-		TOK_ERR		= '\0', // '\0' | Invalid / Null
-		TOK_VOID	= ' ',	// '  ' | Empty / Space
-		TOK_ENDL	= '\n',	// '\n' | End of line
-
-		TOK_NAME	= 'n',	// 'n'	| Name
-		TOK_FLT		= 'f',	// 'f'	| Float / Decimal
-		TOK_INT		= 'i',	// 'i'	| Integer
-		TOK_STR		= 's',	// 's'	| String
-
-		TOK_POW		= '^',	// '^'	| Pow
-		TOK_MUL		= '*',	// '*'	| Multiply
-		TOK_DIV		= '/',	// '/'	| Divide
-		TOK_ADD		= '+',	// '+'	| Add
-		TOK_SUB		= '-',	// '-'	| Subtract
-		TOK_EQU		= '=',	// '='	| Equal
-		TOK_LT		= '<',	// '<'	| Less Than
-		TOK_GT		= '>',	// '>'	| Greater Than
-		TOK_NOT		= '!',	// '!'	| Not
-		TOK_MOD		= '%',	// '%'	| Mod
-		TOK_OR		= '|',	// '|'	| Or
-		TOK_AND		= '&',	// '&'	| And
-
-		TOK_HASH	= '#',	// '#'	| Hash
-		TOK_TERM	= '\\',	// '\\' | Terminate
-		TOK_SEMI	= ';',	// ';'	| Semicolon
-		TOK_CMMA	= ',',	// ','	| Comma
-		TOK_COLN	= ':',	// ':'	| Colon
-		TOK_DOT		= '.',	// '.'	| Dot
-		TOK_QSTN	= '?',	// '?'	| Ternary
-		TOK_DOLR	= '$',	// '$'	| Dollar
-		TOK_AT		= '@',	// '@'	| At
-
-		TOK_LPRN	= '(',	// '('	| Left Paren
-		TOK_RPRN	= ')',	// ')'	| Right Paren
-		TOK_LBRC	= '{',	// '{'	| Left Brace
-		TOK_RBRC	= '}',	// '}'	| Right Brace
-		TOK_LBKT	= '[',	// '['	| Left Bracket
-		TOK_RBKT	= ']',	// ']'	| Right Bracket
-		TOK_DQTE	= '\"', // '\"' | Double Quote
-		TOK_SQTE	= '\'', // '\'' | Single Quote
-	};
-
-	struct ML_SCRIPT_API Token final
+	class ML_SCRIPT_API Token final
 		: public ITrackable
 		, public IComparable<Token>
 		, public IComparable<char>
-		, public IComparable<TokenType>
 		, public IComparable<String>
 	{
-		using SymbolMap = HashMap<String, TokenType>;
-		using NameMap = HashMap<TokenType, String>;
+	public:
+		enum : char
+		{
+			T_Error		= '\0', // '\0' | Error
+			T_Void		= ' ',	// '  ' | Nothing / Space
+			T_Endl		= '\n',	// '\n' | End of line
+			T_Name		= 'n',	// 'n'	| Name
+			T_Float		= 'f',	// 'f'	| Float / Decimal
+			T_Int		= 'i',	// 'i'	| Integer
+			T_String	= 's',	// 's'	| String
+			T_Pow		= '^',	// '^'	| Pow
+			T_Mul		= '*',	// '*'	| Multiply
+			T_Div		= '/',	// '/'	| Divide
+			T_Plus		= '+',	// '+'	| Add
+			T_Minus		= '-',	// '-'	| Subtract
+			T_Equal		= '=',	// '='	| Equal
+			T_Less		= '<',	// '<'	| Less Than
+			T_Greater	= '>',	// '>'	| Greater Than
+			T_Not		= '!',	// '!'	| Not
+			T_Mod		= '%',	// '%'	| Mod
+			T_Or		= '|',	// '|'	| Or
+			T_And		= '&',	// '&'	| And
+			T_Hash		= '#',	// '#'	| Hash
+			T_Term		= '\\',	// '\\' | Terminate
+			T_SColon	= ';',	// ';'	| Semicolon
+			T_Comma		= ',',	// ','	| Comma
+			T_Colon		= ':',	// ':'	| Colon
+			T_Dot		= '.',	// '.'	| Dot
+			T_QMark		= '?',	// '?'	| Ternary
+			T_Dollar	= '$',	// '$'	| Dollar
+			T_At		= '@',	// '@'	| At
+			T_LParen	= '(',	// '('	| Left Paren
+			T_RParen	= ')',	// ')'	| Right Paren
+			T_LBrace	= '{',	// '{'	| Left Brace
+			T_RBrace	= '}',	// '}'	| Right Brace
+			T_LBrack	= '[',	// '['	| Left Bracket
+			T_RBrack	= ']',	// ']'	| Right Bracket
+			T_DQuote	= '\"', // '\"' | Double Quote
+			T_SQuote	= '\'', // '\'' | Single Quote
+		};
+
+	public:
+		using SymbolMap = HashMap<String, char>;
+		using NameMap = HashMap<char, String>;
 
 		static const NameMap	TypeNames;
 		static const SymbolMap	Symbols;
 
-		TokenType	type;
-		String		data;
+		char	type;
+		String	data;
 
 		Token();
-		Token(TokenType type);
 		Token(char type);
-		Token(TokenType type, const String & data);
 		Token(char type, const String & data);
 		Token(const Token & copy);
 
 		Token & operator=(const Token & value);
-		Token & operator=(const TokenType & value);
+		Token & operator=(const char & value);
 
 		bool isOperand() const;
 		bool isOperator() const;
 
 		bool equals(const Token & value) const override;
-		bool equals(const TokenType & value) const override;
 		bool equals(const char & value) const override;
 		bool equals(const String & value) const override;
 
 		bool lessThan(const Token & value) const override;
-		bool lessThan(const TokenType & value) const override;
 		bool lessThan(const char & value) const override;
 		bool lessThan(const String & value) const override;
 
 		void serialize(std::ostream & out) const override;
 	};
-
-	inline std::ostream& operator<<(std::ostream& out, const TokenType& rhs)
-	{
-		return out << Token::TypeNames.at(rhs);
-	}
 }
 
 #endif // !_TOKEN_HPP_

@@ -35,11 +35,12 @@ namespace ml
 		OP_SUB,		//  -
 	};
 
-	struct ML_SCRIPT_API Operator final
+	class ML_SCRIPT_API Operator final
 		: public ITrackable
 		, public IComparable<Operator>
 		, public IComparable<OpType>
 	{
+	public:
 		using OperMap = HashMap<String, OpType>;
 
 		static const HashMap<String, OpType> OpValues;
