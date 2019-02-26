@@ -139,19 +139,19 @@ namespace ml
 		{
 			switch (it->type)
 			{
-			case Token::Endl: // New Line
+			case '\n': // New Line
 				continue;
 
-			case Token::Hash: // Comment
-			case Token::At:
+			case '#': // Comment
+			case '@':
 			{
 				while ((it != value.end()) && ((*it) != '\n')) { it++; }
 			}
 			break;
 
-			case Token::LBrace: // Begin Block
+			case '{': // Begin Block
 				tree[index].push_back(*it);
-			case Token::SColon: // End Statement
+			case ';': // End Statement
 			{
 				if (!tree[index].empty())
 				{

@@ -684,11 +684,11 @@ namespace ml
 		}
 		else if (numOperands <= 1)
 		{
-			return Debug::logError("Not enough operands");
+			return Debug::logError("Parser : Not enough operands");
 		}
 		else if (numOperators >= numOperands)
 		{
-			return Debug::logError("Too many operators");
+			return Debug::logError("Parser : Too many operators");
 		}
 
 		return true;
@@ -726,11 +726,11 @@ namespace ml
 
 				if (toks.front("for"))
 				{
-					if (AST_Assign * a = generate<AST_Assign>(TokenList(*it).after(2)))
+					if (AST_Expr * a = generate<AST_Assign>(TokenList(*it).after(2)))
 					{
 						if (AST_Expr * e = genExpression(TokenList((*++it))))
 						{
-							if (AST_Stmt * s = genStatement(TokenList((*++it)).pop_back()))
+							if (AST_Expr * s = genExpression(TokenList((*++it)).pop_back()))
 							{
 								if (root->addChild(new AST_For(a, e, s)))
 								{

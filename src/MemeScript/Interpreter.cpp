@@ -5,7 +5,7 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	Command * Interpreter::addCmd(const Command & value)
+	Command * Interpreter::install(const Command & value)
 	{
 		if (!value.name().empty())
 		{
@@ -19,7 +19,7 @@ namespace ml
 		return NULL;
 	}
 
-	Command * Interpreter::getCmd(const String & value)
+	Command * Interpreter::getCommand(const String & value)
 	{
 		CommandMap::iterator it;
 		if ((it = m_commands.find(value)) != m_commands.begin())

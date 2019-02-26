@@ -15,31 +15,31 @@ namespace DEMO
 	void install_commands()
 	{
 		// Core
-		ML_Interpreter.addCmd({ "cat",		cmd_cat		});
-		ML_Interpreter.addCmd({ "cd",		cmd_cd		});
-		ML_Interpreter.addCmd({ "cwd",		cmd_cwd		});
-		ML_Interpreter.addCmd({ "exec",		cmd_exec	});
-		ML_Interpreter.addCmd({ "exists",	cmd_exists	});
-		ML_Interpreter.addCmd({ "exit",		cmd_exit	});
-		ML_Interpreter.addCmd({ "flag",		cmd_flag	});
-		ML_Interpreter.addCmd({ "get",		cmd_get		});
-		ML_Interpreter.addCmd({ "getcwd",	cmd_getcwd	});
-		ML_Interpreter.addCmd({ "help",		cmd_help	});
-		ML_Interpreter.addCmd({ "log",		cmd_log		});
-		ML_Interpreter.addCmd({ "ls",		cmd_ls		});
-		ML_Interpreter.addCmd({ "pause",	cmd_pause	});
-		ML_Interpreter.addCmd({ "read",		cmd_read	});
-		ML_Interpreter.addCmd({ "set",		cmd_set		});
-		ML_Interpreter.addCmd({ "system",	cmd_system	});
-		ML_Interpreter.addCmd({ "target",	cmd_target	});
+		ML_Interpreter.install({ "cat",		cmd_cat		});
+		ML_Interpreter.install({ "cd",		cmd_cd		});
+		ML_Interpreter.install({ "cwd",		cmd_cwd		});
+		ML_Interpreter.install({ "exec",	cmd_exec	});
+		ML_Interpreter.install({ "exists",	cmd_exists	});
+		ML_Interpreter.install({ "exit",	cmd_exit	});
+		ML_Interpreter.install({ "flag",	cmd_flag	});
+		ML_Interpreter.install({ "get",		cmd_get		});
+		ML_Interpreter.install({ "getcwd",	cmd_getcwd	});
+		ML_Interpreter.install({ "help",	cmd_help	});
+		ML_Interpreter.install({ "log",		cmd_log		});
+		ML_Interpreter.install({ "ls",		cmd_ls		});
+		ML_Interpreter.install({ "pause",	cmd_pause	});
+		ML_Interpreter.install({ "read",	cmd_read	});
+		ML_Interpreter.install({ "set",		cmd_set		});
+		ML_Interpreter.install({ "system",	cmd_system	});
+		ML_Interpreter.install({ "target",	cmd_target	});
 
 		// Editor
-		ML_Interpreter.addCmd({ "clear",	cmd_clear	});
-		ML_Interpreter.addCmd({ "hide",		cmd_hide	});
-		ML_Interpreter.addCmd({ "history",	cmd_history });
-		ML_Interpreter.addCmd({ "list",		cmd_list	});
-		ML_Interpreter.addCmd({ "reload",	cmd_reload	});
-		ML_Interpreter.addCmd({ "run",		cmd_run		});
+		ML_Interpreter.install({ "clear",	cmd_clear	});
+		ML_Interpreter.install({ "hide",	cmd_hide	});
+		ML_Interpreter.install({ "history",	cmd_history });
+		ML_Interpreter.install({ "list",	cmd_list	});
+		ML_Interpreter.install({ "reload",	cmd_reload	});
+		ML_Interpreter.install({ "run",		cmd_run		});
 	}
 
 	// Core
@@ -298,19 +298,25 @@ namespace DEMO
 
 	ml::Var cmd_clear(ml::Args & args)
 	{
+#ifdef ML_EditorConsole
 		ML_EditorConsole.clear();
-		return ml::Var().voidValue();
+#endif
+		return ml::Var().intValue(ml::Debug::clear());
 	}
 
 	ml::Var cmd_hide(ml::Args & args)
 	{
+#ifdef ML_EditorConsole
 		ML_EditorConsole.visible() = false;
+#endif
 		return ml::Var().voidValue();
 	}
 
 	ml::Var cmd_history(ml::Args & args)
 	{
+#ifdef ML_EditorConsole
 		ML_EditorConsole.printHistory();
+#endif
 		return ml::Var().boolValue(true);
 	}
 

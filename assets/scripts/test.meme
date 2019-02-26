@@ -17,18 +17,11 @@ TEST = nodeid();
 
 	main = [](args);
 	{
-		if (argc = sizeof(args));
+		argc = sizeof(args);
+		for (i = 0; i < argc; i = i + 1);
 		{
-			for (i = 0; i < argc; i = i + 1);
-			{
-				printl(args[i]);
-			};
+			printl(args[i]);
 		};
-
-		int = 123;
-		flt = 4.56;
-		str = "abc";
-		ptr = s;
 
 		if (true && true && false);
 		{
@@ -45,10 +38,6 @@ TEST = nodeid();
 		};
 		
 		printl(typename(typename(flt)));
-
-		f = fun;
-		f();
-		fun();
 
 		printl(demo.a);
 		printl(demo.b);

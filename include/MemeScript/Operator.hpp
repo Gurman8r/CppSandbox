@@ -14,28 +14,28 @@ namespace ml
 	public:
 		enum : int32_t
 		{
-			OP_INVALID,	//	' '	
-			OP_SET,		//	'='	
-			OP_POW_SET,	//	'^='	
-			OP_MUL_SET,	//	'*='	
-			OP_DIV_SET,	//	'/='	
-			OP_MOD_SET,	//	'%='	
-			OP_ADD_SET,	//	'+='	
-			OP_SUB_SET,	//	'-='	
-			OP_EQU,		//	'=='	
-			OP_NEQ,		//	'!='	
-			OP_LT,		//	'<'	
-			OP_GT,		//	'>'	
-			OP_LTE,		//	'<='	
-			OP_GTE,		//	'>='	
-			OP_AND,		//	'&&'	
-			OP_OR,		//	'||'	
-			OP_POW,		//	'^'	
-			OP_MUL,		//	'*'	
-			OP_DIV,		//	'/'	
-			OP_MOD,		//	'%'	
-			OP_ADD,		//	'+'	
-			OP_SUB,		//	'-'	
+			OP_INVALID,	//	" "	
+			OP_SET,		//	"="	
+			OP_POW_SET,	//	"^="	
+			OP_MUL_SET,	//	"*="	
+			OP_DIV_SET,	//	"/="	
+			OP_MOD_SET,	//	"%="	
+			OP_ADD_SET,	//	"+="	
+			OP_SUB_SET,	//	"-="	
+			OP_EQU,		//	"=="	
+			OP_NEQ,		//	"!="	
+			OP_LT,		//	"<"	
+			OP_GT,		//	">"	
+			OP_LTE,		//	"<="	
+			OP_GTE,		//	">="	
+			OP_AND,		//	"&&"	
+			OP_OR,		//	"||"	
+			OP_POW,		//	"^"	
+			OP_MUL,		//	"*"	
+			OP_DIV,		//	"/"	
+			OP_MOD,		//	"%"	
+			OP_ADD,		//	"+"	
+			OP_SUB,		//	"-"	
 		};
 	public:
 		using const_iterator = typename HashMap<String, int32_t>::const_iterator;

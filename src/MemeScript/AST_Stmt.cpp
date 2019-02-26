@@ -75,7 +75,7 @@ namespace ml
 
 	// For
 	/* * * * * * * * * * * * * * * * * * * * */
-	AST_For::AST_For(AST_Assign * assn, AST_Expr * expr, AST_Stmt * stmt)
+	AST_For::AST_For(AST_Expr * assn, AST_Expr * expr, AST_Expr * stmt)
 		: AST_Stmt(ST_For)
 		, assn(assn)
 		, expr(expr)
@@ -88,7 +88,7 @@ namespace ml
 
 	std::ostream & AST_For::display(std::ostream & out) const
 	{
-		return out << "for(" << (*assn) << "; " << (*expr) << "; " << (*stmt) << ")";
+		return out << FG::Blue << "for" << FMT() << "(" << (*assn) << "; " << (*expr) << "; " << (*stmt) << ")";
 	}
 
 	bool AST_For::run()
@@ -237,21 +237,21 @@ namespace ml
 
 	// Include
 	/* * * * * * * * * * * * * * * * * * * * */
-	AST_Include::AST_Include(AST_String * str)
+	AST_Include::AST_Include(AST_Expr * expr)
 		: AST_Stmt(ST_Include)
-		, str(str)
+		, expr(expr)
 	{
-		addChild(str);
+		addChild(expr);
 	}
 
 	std::ostream & AST_Include::display(std::ostream & out) const
 	{
-		return out << FG::Blue << "include" << FMT() << "(" << (*str) << FMT() << ")";
+		return out << FG::Blue << "include" << FMT() << "(" << (*expr) << FMT() << ")";
 	}
 
 	bool AST_Include::run()
 	{
-		const String & filename = str->evaluate().stringValue();
+		const String & filename = expr->evaluate().stringValue();
 		
 		List<char> buffer;
 		if (ML_FileSystem.getFileContents(filename, buffer))

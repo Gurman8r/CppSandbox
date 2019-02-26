@@ -46,7 +46,7 @@ namespace ml
 		AST_Stmt(int32_t stmt);
 		virtual ~AST_Stmt() {}
 
-		virtual std::ostream& display(std::ostream& out) const;
+		virtual std::ostream & display(std::ostream & out) const;
 
 		AST_Block *	block() const;
 		virtual bool run() = 0;
@@ -56,12 +56,12 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Elif : public AST_Stmt
 	{
-		AST_Expr* expr;
+		AST_Expr * expr;
 
-		AST_Elif(AST_Expr* expr);
+		AST_Elif(AST_Expr * expr);
 		~AST_Elif() {}
 
-		std::ostream& display(std::ostream& out) const override;
+		std::ostream & display(std::ostream & out) const override;
 		bool run() override;
 	};
 
@@ -72,7 +72,7 @@ namespace ml
 		AST_Else();
 		~AST_Else() {}
 
-		std::ostream& display(std::ostream& out) const override;
+		std::ostream & display(std::ostream & out) const override;
 		bool run() override;
 	};
 
@@ -80,14 +80,14 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_For : public AST_Stmt
 	{
-		AST_Assign* assn;
-		AST_Expr* expr;
-		AST_Stmt* stmt;
+		AST_Expr * assn;
+		AST_Expr * expr;
+		AST_Expr * stmt;
 
-		AST_For(AST_Assign* assign, AST_Expr* expr, AST_Stmt* stmt);
+		AST_For(AST_Expr * assn, AST_Expr * expr, AST_Expr * stmt);
 		~AST_For() {}
 
-		std::ostream& display(std::ostream& out) const override;
+		std::ostream & display(std::ostream & out) const override;
 		bool run() override;
 	};
 
@@ -95,12 +95,12 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Delete : public AST_Stmt
 	{
-		AST_Name* name;
+		AST_Name * name;
 
-		AST_Delete(AST_Name* name);
+		AST_Delete(AST_Name * name);
 		~AST_Delete() {}
 
-		std::ostream& display(std::ostream& out) const override;
+		std::ostream & display(std::ostream & out) const override;
 		bool run() override;
 	};
 
@@ -108,12 +108,12 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_If : public AST_Stmt
 	{
-		AST_Expr* expr;
+		AST_Expr * expr;
 
-		AST_If(AST_Expr* expr);
+		AST_If(AST_Expr * expr);
 		~AST_If() {}
 
-		std::ostream& display(std::ostream& out) const override;
+		std::ostream & display(std::ostream & out) const override;
 		bool run() override;
 	};
 
@@ -121,12 +121,12 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Include : public AST_Stmt
 	{
-		AST_String* str;
+		AST_Expr * expr;
 		
-		AST_Include(AST_String* str);
+		AST_Include(AST_Expr * expr);
 		~AST_Include() {}
 
-		std::ostream& display(std::ostream& out) const override;
+		std::ostream & display(std::ostream & out) const override;
 		bool run() override;
 	};
 
@@ -134,13 +134,13 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Print : public AST_Stmt
 	{
-		AST_Expr* expr;
+		AST_Expr * expr;
 		bool newl;
 
-		AST_Print(AST_Expr* expr, bool newl);
+		AST_Print(AST_Expr * expr, bool newl);
 		~AST_Print() {}
 
-		std::ostream& display(std::ostream& out) const override;
+		std::ostream & display(std::ostream & out) const override;
 		bool run() override;
 	};
 
@@ -148,12 +148,12 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Return : public AST_Stmt
 	{
-		AST_Expr* expr;
+		AST_Expr * expr;
 
-		AST_Return(AST_Expr* expr);
+		AST_Return(AST_Expr * expr);
 		~AST_Return() {}
 
-		std::ostream& display(std::ostream& out) const override;
+		std::ostream & display(std::ostream & out) const override;
 		bool run() override;
 	};
 
@@ -161,12 +161,12 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_While : public AST_Stmt
 	{
-		AST_Expr* expr;
+		AST_Expr * expr;
 
-		AST_While(AST_Expr* expr);
+		AST_While(AST_Expr * expr);
 		~AST_While() {}
 
-		std::ostream& display(std::ostream& out) const override;
+		std::ostream & display(std::ostream & out) const override;
 		bool run() override;
 	};
 }

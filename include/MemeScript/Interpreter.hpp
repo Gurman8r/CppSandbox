@@ -29,8 +29,8 @@ namespace ml
 		using CommandPair	= Pair<String, Command>;
 
 	public:
-		Command * addCmd(const Command & value);
-		Command * getCmd(const String & value);
+		Command * install(const Command & value);
+		Command * getCommand(const String & value);
 
 		template <typename T, typename ... A>
 		inline Var execCommand(const String & fmt, const T& arg0, const A&... args)

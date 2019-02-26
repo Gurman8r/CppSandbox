@@ -2,7 +2,7 @@
 #define _STRING_UTILITY_HPP_
 
 #include <MemeScript/Export.hpp>
-#include <MemeCore/String.hpp>
+#include <MemeCore/List.hpp>
 
 namespace ml
 {
@@ -14,10 +14,9 @@ namespace ml
 		static String	ToLower(const String & src);
 		static String	ToUpper(const String & src);
 
-		static std::vector<String> Split(const String & src, const String & delims);
+		static List<String> Split(const String & value, const String & delim);
 
 	public: // Checks
-		static bool		Contains(const String & src, char c);
 		static bool		IsAlpha(const String & src);
 		static bool		IsAlnum(const String & src);
 		static bool		IsBool(const String & src);

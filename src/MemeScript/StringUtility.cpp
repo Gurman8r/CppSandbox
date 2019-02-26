@@ -64,35 +64,24 @@ namespace ml
 		return toStr;
 	}
 
-	std::vector<String> StringUtility::Split(const String & src, const String & delims)
+	List<String> StringUtility::Split(const String & value, const String & delim)
 	{
 		std::vector<String> list;
-
-		String	cpy = src;
+		String	cpy = value;
 		size_t	pos = 0;
 		String	tok;
-
-		while ((pos = cpy.find(delims)) != String::npos)
+		while ((pos = cpy.find(delim)) != String::npos)
 		{
 			tok = cpy.substr(0, pos);
-
 			list.push_back(tok);
-
-			cpy.erase(0, pos + delims.length());
+			cpy.erase(0, pos + delim.length());
 		}
-
 		list.push_back(cpy);
-
 		return list;
 	}
 
 
 
-	bool	StringUtility::Contains(const String & src, char c)
-	{
-		return (src.find(c) != String::npos);
-	}
-	
 	bool	StringUtility::IsAlpha(const String & src)
 	{
 		for (char c : src)
@@ -263,10 +252,7 @@ namespace ml
 
 	bool	StringUtility::ToBool(const String & src)
 	{
-		if (src == "0") return false;
-		if (src == "1") return true;
-
-		return (ToLower(src) == "true");
+		return (src == "1" || ToLower(src) == "true");
 	}
 	
 	int32_t	StringUtility::ToInt(const String & src)
@@ -287,13 +273,15 @@ namespace ml
 
 	bool	StringUtility::MakeBool(const String & src, bool & value)
 	{
+		if (value = ToBool(src))
+		{
+			return true;
+		}
+
 		if (src == "0")		value = false;	return true;
-		if (src == "1")		value = true;	return true;
-		if (src == "true")	value = false;	return true;
 		if (src == "false") value = true;	return true;
 
-		value = false;
-		return false;
+		return (value = 0);
 	}
 	
 	bool	StringUtility::MakeInt(const String & src, int32_t & value)
@@ -303,8 +291,7 @@ namespace ml
 			value = std::stoi(src);
 			return true;
 		}
-		value = 0;
-		return false;
+		return (value = 0);
 	}
 	
 	bool	StringUtility::MakeDouble(const String & src, double & value)
@@ -314,8 +301,7 @@ namespace ml
 			value = std::stod(src);
 			return true;
 		}
-		value = 0.0;
-		return false;
+		return (value = 0);
 	}
 	
 	bool	StringUtility::MakeFloat(const String & src, float & value)
@@ -325,7 +311,6 @@ namespace ml
 			value = std::stof(src);
 			return true;
 		}
-		value = 0.f;
-		return false;
+		return (value = 0);
 	}
 }
