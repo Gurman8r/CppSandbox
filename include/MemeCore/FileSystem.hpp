@@ -25,7 +25,17 @@ namespace ml
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		inline const String & root() const { return m_root; }
+		inline const String & root() const 
+		{ 
+			return m_root; 
+		}
+
+		inline const String pathTo(const String & value) const
+		{
+			return root() + "\\" + value;
+		}
+
+		/* * * * * * * * * * * * * * * * * * * * */
 
 		bool	setWorkingDir(const String & value);
 		String	getWorkingDir() const;

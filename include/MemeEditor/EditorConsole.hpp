@@ -40,7 +40,7 @@ namespace ml
 		static int32_t textEditCallbackStub(ImGuiInputTextCallbackData* data);
 
 		inline bool &	visible()	{ return m_visible; }
-		inline void		draw()		{ return draw("Interpreter", &visible()); }
+		inline void		draw()		{ return draw("Console", &visible()); }
 	};
 
 }

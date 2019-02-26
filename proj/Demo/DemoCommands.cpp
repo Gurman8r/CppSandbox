@@ -60,19 +60,15 @@ namespace DEMO
 	ml::Var cmd_cd(ml::Args & args)
 	{
 		const ml::String path = args.pop();
-		if (path.empty())
-		{
-			return ml::Var().boolValue(ML_FileSystem.setWorkingDir(SETTINGS.assetPath));
-		}
-		else if (path == "/")
+		if (path.empty() || path == "/")
 		{
 			return ml::Var().boolValue(ML_FileSystem.setWorkingDir(
-				ML_FileSystem.root() + "\\"));
+				ML_FileSystem.pathTo("")));
 		}
 		else if (path == "~")
 		{
 			return ml::Var().boolValue(ML_FileSystem.setWorkingDir(
-				ML_FileSystem.root() + "\\" + SETTINGS.pathTo("")));
+				ML_FileSystem.pathTo(SETTINGS.pathTo(""))));
 		}
 		else
 		{

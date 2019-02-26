@@ -859,7 +859,7 @@ namespace DEMO
 			if (ImGui::BeginMenu("Window"))
 			{
 				ImGui::MenuItem("Editor", "Ctrl+E", &show_ml_editor);
-				ImGui::MenuItem("Interpreter", "Ctrl+Alt+T", &ML_EditorConsole.visible());
+				ImGui::MenuItem("Console", "Ctrl+Alt+T", &ML_EditorConsole.visible());
 				ImGui::MenuItem("Network", "Ctrl+Alt+N", &show_ml_network);
 				ImGui::MenuItem("Shader Builder", "Ctrl+Alt+B", &show_ml_shader);
 				ImGui::EndMenu();
