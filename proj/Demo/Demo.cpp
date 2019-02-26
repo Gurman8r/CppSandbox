@@ -5,6 +5,7 @@
 #include <MemeEditor/EditorConsole.hpp>
 #include <imgui/imgui.h>
 #include <imgui/imgui_ml.hpp>
+#include <MemeEditor/ShaderBuilder.hpp>
 
 namespace DEMO
 {
@@ -964,10 +965,7 @@ namespace DEMO
 			}
 			else
 			{
-				ML_Editor.ShowHelpMarker("Some help text");
-				ML_Editor.ShowFramerate();
 				ImGui::Separator();
-
 				ImGui::Text("Network Manager Placeholder");
 				ImGui::End();
 			}
@@ -976,193 +974,7 @@ namespace DEMO
 		// Shader
 		if (show_ml_shader)
 		{
-			if (!ImGui::Begin("Shader Builder", &show_ml_shader, ImGuiWindowFlags_AlwaysAutoResize))
-			{
-				ImGui::End();
-				return;
-			}
-			else
-			{
-				// Shader Source
-				ImGui::BeginGroup();
-				{
-					ImGui::Text("Source:");
-
-					static ml::String source(1024, '\0');
-
-					ImGui::InputTextMultiline(
-						"##Source",
-						&source[0],
-						source.capacity(),
-						{ 512, ImGui::GetTextLineHeight() * 16 },
-						0);
-
-					if (ImGui::Button("Compile")) {}
-				}
-				ImGui::EndGroup();
-
-				// Uniform Editor
-				ImGui::PushItemWidth(256);
-				{
-					// List Uniforms
-					ImGui::SameLine();
-					ImGui::BeginGroup();
-					{
-						const int32_t count = (int32_t)m_uniforms.size();
-
-						ImGui::Text("Uniforms:");
-
-						// List
-						if (ImGui::ListBoxHeader("##Uniforms", count))
-						{
-							for (size_t i = 0; i < count; i++)
-							{
-								const ml::String name = (std::to_string(i) + " : " + m_uniforms[i].name);
-								if (ImGui::Selectable(name.c_str(), (i == m_selected)))
-								{
-									m_selected = i;
-								}
-							}
-							ImGui::ListBoxFooter();
-						}
-
-						// Buttons
-						ImGui::BeginGroup();
-						{
-							if (ImGui::Button("Up"))
-							{
-								if (m_selected > 0)
-								{
-									std::swap(m_uniforms[m_selected], m_uniforms[m_selected - 1]);
-									m_selected--;
-								}
-							}
-							ImGui::SameLine();
-							if (ImGui::Button("Dn"))
-							{
-								if (m_selected + 1 < count)
-								{
-									std::swap(m_uniforms[m_selected], m_uniforms[m_selected + 1]);
-									m_selected++;
-								}
-							}
-							ImGui::SameLine();
-							if (ImGui::Button("New"))
-							{
-								m_uniforms.push_back(ml::Uniform("new_uniform"));
-								m_selected = m_uniforms.size() - 1;
-							}
-							ImGui::SameLine();
-							if (ImGui::Button("Ins"))
-							{
-								m_uniforms.insert(m_uniforms.begin() + m_selected, ml::Uniform("new_uniform"));
-							}
-							ImGui::SameLine();
-							if (ImGui::Button("Dup"))
-							{
-								if (count > 0)
-								{
-									m_uniforms.push_back(ml::Uniform(m_uniforms[m_selected]));
-									m_selected = m_uniforms.size() - 1;
-								}
-							}
-							ImGui::SameLine();
-							if (ImGui::Button("Del"))
-							{
-								if (count > 0)
-								{
-									m_uniforms.erase(m_uniforms.begin() + m_selected);
-									m_selected = (m_selected > 0 ? m_selected - 1 : m_uniforms.size() - 1);
-								}
-							}
-						}
-						ImGui::EndGroup();
-					}
-					ImGui::EndGroup();
-
-					// Edit Uniforms
-					ImGui::SameLine();
-					ImGui::BeginGroup();
-					{
-						ImGui::Text("Edit:");
-
-						static ml::CString u_types[] = {
-							"None",
-							"Int",
-							"Float",
-							"Vec2",
-							"Vec3",
-							"Vec4",
-							"Mat3",
-							"Mat4",
-							"Tex",
-						};
-
-						if (ml::Uniform * u = (m_uniforms.empty() ? NULL : &m_uniforms[m_selected]))
-						{
-							ImGui::PushID(u->name.c_str());
-							ImGui::InputText("Name", &u->name[0], 32);
-							ImGui::Combo("Type", &u->type, u_types, IM_ARRAYSIZE(u_types));
-							switch (u->type)
-							{
-							case ml::Uniform::Int:
-							{
-								static int32_t temp;
-								ImGui::DragInt("Value", &temp);
-							}
-							break;
-							case ml::Uniform::Float:
-							{
-								static float temp;
-								ImGui::DragFloat("Value", &temp, 0.1f);
-							}
-							break;
-							case ml::Uniform::Vec2:
-							{
-								static ml::vec2f temp;
-								ML_Editor.InputVec2f("Value", temp);
-							}
-							break;
-							case ml::Uniform::Vec3:
-							{
-								static ml::vec3f temp;
-								ML_Editor.InputVec3f("Value", temp);
-							}
-							break;
-							case ml::Uniform::Vec4:
-							{
-								static ml::vec4f temp;
-								ML_Editor.InputVec4f("Value", temp);
-							}
-							break;
-							case ml::Uniform::Mat3:
-							{
-								static ml::mat3f temp;
-								ML_Editor.InputMat3f("Value", temp);
-							}
-							break;
-							case ml::Uniform::Mat4:
-							{
-								static ml::mat4f temp;
-								ML_Editor.InputMat4f("Value", temp);
-							}
-							break;
-							case ml::Uniform::Tex:
-								break;
-							}
-							ImGui::PopID();
-						}
-						else
-						{
-							ImGui::Text("Nothing Selected");
-						}
-					}
-					ImGui::EndGroup();
-				}
-				ImGui::PopItemWidth();
-
-				ImGui::End();
-			}
+			ML_ShaderBuilder.draw("Shader Builder", &show_ml_shader);
 		}
 
 

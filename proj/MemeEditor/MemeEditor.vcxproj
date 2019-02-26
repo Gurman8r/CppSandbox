@@ -166,6 +166,7 @@
     <ClInclude Include="..\..\include\MemeEditor\Manifest.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\ResourceMap.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\ResourceManager.hpp" />
+    <ClInclude Include="..\..\include\MemeEditor\ShaderBuilder.hpp" />
     <ClInclude Include="..\..\thirdparty\include\imgui\imconfig.h" />
     <ClInclude Include="..\..\thirdparty\include\imgui\imgui.h" />
     <ClInclude Include="..\..\thirdparty\include\imgui\imgui_internal.h" />
@@ -180,6 +181,7 @@
     <ClCompile Include="..\..\src\MemeEditor\EventSerializer.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\Manifest.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\ResourceManager.cpp" />
+    <ClCompile Include="..\..\src\MemeEditor\ShaderBuilder.cpp" />
     <ClCompile Include="..\..\thirdparty\include\imgui\imgui.cpp" />
     <ClCompile Include="..\..\thirdparty\include\imgui\imgui_demo.cpp" />
     <ClCompile Include="..\..\thirdparty\include\imgui\imgui_draw.cpp" />

@@ -1,3 +1,4 @@
+
 #include "DemoCommands.hpp"
 #include "Settings.hpp"
 #include <MemeScript/Interpreter.hpp>

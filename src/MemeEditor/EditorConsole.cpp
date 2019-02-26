@@ -56,10 +56,6 @@ namespace ml
 
 	void EditorConsole::clear()
 	{
-		for (int32_t i = 0; i < m_lines.Size; i++)
-		{
-			free(m_lines[i]);
-		}
 		m_lines.clear();
 		m_scrollToBottom = true;
 	}
@@ -121,9 +117,9 @@ namespace ml
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1)); // Tighten spacing
 		
 		ImVec4 col_default_text = ImGui::GetStyleColorVec4(ImGuiCol_Text);
-		for (int32_t i = 0; i < m_lines.Size; i++)
+		for (int32_t i = 0; i < m_lines.size(); i++)
 		{
-			CString item = m_lines[i];
+			CString item = m_lines[i].c_str();
 			if (!filter.PassFilter(item))
 				continue;
 			ImVec4 col = col_default_text;

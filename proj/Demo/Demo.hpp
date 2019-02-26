@@ -112,9 +112,6 @@ namespace DEMO
 		bool show_imgui_style	= false;
 		bool show_imgui_about	= false;
 
-		ml::List<ml::Uniform> m_uniforms;
-		size_t m_selected = 0;
-
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		ml::Thread *	m_thread;
