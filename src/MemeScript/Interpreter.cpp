@@ -76,21 +76,21 @@ namespace ml
 	{
 		if (!value.empty())
 		{
-			return execStatements(lexer.genTokenTree(value));
+			return execTree(lexer.genTokenTree(value));
 		}
 		return Var().errorValue("TokenList cannot be empty");
 	}
 
-	Var Interpreter::execStatements(const TokenTree & value)
+	Var Interpreter::execTree(const TokenTree & value)
 	{
 		if (!value.empty())
 		{
-			return execTree(parser.genFromTree(value));
+			return execBlock(parser.genFromTree(value));
 		}
 		return Var().errorValue("Statements cannot be empty");
 	}
 
-	Var	Interpreter::execTree(AST_Block * value)
+	Var	Interpreter::execBlock(AST_Block * value)
 	{
 		if (value)
 		{

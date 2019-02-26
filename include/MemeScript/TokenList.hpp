@@ -63,14 +63,19 @@ namespace ml
 		bool	isWrap(const Token & value) const;
 		bool	isWrap(const Token & lhs, const Token & rhs) const;
 
-		bool	matchChar(size_t index, char c) const;
-		bool	matchChar(const const_iterator & it, char c) const;
-		bool	matchStr(size_t index, const String & str) const;
-		bool	matchStr(const const_iterator & it, const String & str) const;
-		bool	matchPat(size_t index, const List<char>& pattern) const;
-		bool	matchPat(const const_iterator & it, const List<char>& pattern) const;
-		bool	matchData(size_t index, const List<CString>& data) const;
-		bool	matchData(const const_iterator & it, const List<CString>& data) const;
+		bool	match_type(size_t index, char c) const;
+		bool	match_type(const const_iterator & it, char c) const;
+		
+		bool	match_type_str(const String & str) const;
+		bool	match_type_str(size_t index, const String & str) const;
+		bool	match_type_str(const const_iterator & it, const String & str) const;
+		
+		bool	match_type_list(size_t index, const List<char> & pattern) const;
+		bool	match_type_list(const const_iterator & it, const List<char> & pattern) const;
+		
+		bool	match_data(const List<CString> & data) const;
+		bool	match_data(size_t index, const List<CString> & data) const;
+		bool	match_data(const const_iterator & it, const List<CString> & data) const;
 
 		TokenList	after(size_t index) const;
 		TokenList	between(const Token & lhs, const Token & rhs) const;

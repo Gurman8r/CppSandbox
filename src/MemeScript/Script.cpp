@@ -50,7 +50,7 @@ namespace ml
 			{
 				// Generate __ARGS__ array
 				if (m_root->insertChild(0, new AST_Assign(
-					OpType::OP_SET,
+					Operator::OP_SET,
 					ML_Parser.generate<AST_Name>(Token('n', ML_ARGS)),
 					ML_Parser.generate<AST_Array>(ML_Lexer.genArgsArray(args)))))
 				{

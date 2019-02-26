@@ -237,7 +237,7 @@ namespace ml
 	}
 
 
-	bool	TokenList::matchChar(size_t index, char type) const
+	bool	TokenList::match_type(size_t index, char type) const
 	{
 		if (inRange(index))
 		{
@@ -253,22 +253,27 @@ namespace ml
 		return false;
 	}
 	
-	bool	TokenList::matchChar(const const_iterator & it, char c) const
+	bool	TokenList::match_type(const const_iterator & it, char c) const
 	{
-		return matchChar((it - begin()), c);
+		return match_type((it - begin()), c);
 	}
 	
-	bool	TokenList::matchStr(size_t index, const String & str) const
+	bool TokenList::match_type_str(const String & str) const
 	{
-		return matchStr(begin() + index, str);
+		return match_type_str(begin(), str);
+	}
+
+	bool	TokenList::match_type_str(size_t index, const String & str) const
+	{
+		return match_type_str(begin() + index, str);
 	}
 	
-	bool	TokenList::matchStr(const const_iterator & it, const String & str) const
+	bool	TokenList::match_type_str(const const_iterator & it, const String & str) const
 	{
-		return matchPat(it, List<char>(str.begin(), str.end()));
+		return match_type_list(it, List<char>(str.begin(), str.end()));
 	}
 	
-	bool	TokenList::matchPat(size_t index, const List<char> & pattern) const
+	bool	TokenList::match_type_list(size_t index, const List<char> & pattern) const
 	{
 		if (!empty() && !pattern.empty())
 		{
@@ -278,7 +283,7 @@ namespace ml
 				{
 					for (size_t i = index; i < pattern.size(); i++)
 					{
-						if (!matchChar(i, pattern.at(i)))
+						if (!match_type(i, pattern.at(i)))
 						{
 							return false;
 						}
@@ -290,12 +295,17 @@ namespace ml
 		return false;
 	}
 	
-	bool	TokenList::matchPat(const const_iterator & it, const List<char> & pattern) const
+	bool	TokenList::match_type_list(const const_iterator & it, const List<char> & pattern) const
 	{
-		return matchPat((it - begin()), pattern);
+		return match_type_list((it - begin()), pattern);
 	}
 	
-	bool	TokenList::matchData(size_t index, const List<CString> & data) const
+	bool TokenList::match_data(const List<CString>& data) const
+	{
+		return match_data(begin(), data);
+	}
+
+	bool	TokenList::match_data(size_t index, const List<CString> & data) const
 	{
 		if (!empty() && !data.empty())
 		{
@@ -317,9 +327,9 @@ namespace ml
 		return false;
 	}
 	
-	bool	TokenList::matchData(const const_iterator & it, const List<CString> & data) const
+	bool	TokenList::match_data(const const_iterator & it, const List<CString> & data) const
 	{
-		return matchData((it - begin()), data);
+		return match_data((it - begin()), data);
 	}
 
 
@@ -768,7 +778,7 @@ namespace ml
 
 	bool TokenList::equals(const String & value) const
 	{
-		return matchStr(begin(), value);
+		return match_type_str(begin(), value);
 	}
 
 	bool TokenList::lessThan(const String & value) const

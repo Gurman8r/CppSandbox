@@ -23,6 +23,8 @@ namespace ml
 
 		static bool	InfixToPostfix(const TokenList & ifx, TokenList & pfx, bool show);
 
+		TokenList infixToPostfix(const TokenList & ifx, bool show) const;
+
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		AST_Block *	genFromList(const TokenList & value) const;

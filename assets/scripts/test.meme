@@ -25,6 +25,27 @@ TEST = nodeid();
 			};
 		};
 
+		int = 123;
+		flt = 4.56;
+		str = "abc";
+		ptr = s;
+
+		if (true && true && false);
+		{
+			printl(true);
+		};
+		else;
+		{
+			printl(false);
+		};
+		
+		if ("int" == typename(int));
+		{
+			printl("first");
+		};
+		
+		printl(typename(typename(flt)));
+
 		f = fun;
 		f();
 		fun();

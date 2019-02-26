@@ -54,25 +54,28 @@ namespace ml
 
 	public:
 		using SymbolMap = HashMap<String, char>;
-		using NameMap = HashMap<char, String>;
-
-		static const NameMap	TypeNames;
+		
 		static const SymbolMap	Symbols;
 
-		char	type;
-		String	data;
-
+	public:
 		Token();
 		Token(char type);
 		Token(char type, const String & data);
 		Token(const Token & copy);
 
+	public:
+		char	type;
+		String	data;
+		
+	public:
 		Token & operator=(const Token & value);
 		Token & operator=(const char & value);
 
+	public:
 		bool isOperand() const;
 		bool isOperator() const;
 
+	public:
 		bool equals(const Token & value) const override;
 		bool equals(const char & value) const override;
 		bool equals(const String & value) const override;

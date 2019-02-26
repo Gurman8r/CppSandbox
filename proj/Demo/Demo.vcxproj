@@ -164,6 +164,7 @@
     <None Include="..\..\assets\meshes\teddy.mesh" />
     <None Include="..\..\assets\scripts\fib.meme" />
     <None Include="..\..\assets\scripts\files.meme" />
+    <None Include="..\..\assets\scripts\fizzbuzz.meme" />
     <None Include="..\..\assets\scripts\hello.meme" />
     <None Include="..\..\assets\scripts\core.meme" />
     <None Include="..\..\assets\scripts\stub.meme" />

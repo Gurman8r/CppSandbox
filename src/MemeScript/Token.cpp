@@ -4,47 +4,10 @@
 
 namespace ml
 {
-	const Token::NameMap Token::TypeNames({
-		{ T_Error,		"ERR"	},
-		{ T_Void,		"VOID"	},
-		{ T_Endl,		"ENDL"	},
-		{ T_Name,		"NAME"	},
-		{ T_Float,		"FLT"	},
-		{ T_Int,		"INT"	},
-		{ T_String,		"STR"	},
-		{ T_Pow,		"POW"	},
-		{ T_Mul,		"MUL"	},
-		{ T_Div,		"DIV"	},
-		{ T_Plus,		"ADD"	},
-		{ T_Minus,		"SUB"	},
-		{ T_Mod,		"MOD"	},
-		{ T_Equal,		"EQU"	},
-		{ T_Less,		"LT"	},
-		{ T_Greater,	"GT"	},
-		{ T_Not,		"NOT"	},
-		{ T_Hash,		"HASH"	},
-		{ T_Term,		"TERM"	},
-		{ T_SColon,		"SCOL"	},
-		{ T_Comma,		"CMMA"	},
-		{ T_Colon,		"COLN"	},
-		{ T_Dot,		"DOT"	},
-		{ T_QMark,		"QMRK"	},
-		{ T_Dollar,		"DOLR"	},
-		{ T_At,			"AT"	},
-		{ T_LParen,		"LPRN"	},
-		{ T_RParen,		"RPRN"	},
-		{ T_LBrace,		"LBRC"	},
-		{ T_RBrace,		"RBRC"	},
-		{ T_LBrack,		"LBKT"	},
-		{ T_RBrack,		"RBKT"	},
-		{ T_DQuote,		"DQTE"	},
-		{ T_SQuote,		"SQTE"	},
-	});
-
 	const Token::SymbolMap Token::Symbols({
-		{ "ERR",	T_Error		},
-		{ "VOID",	T_Void		},
-		{ "ENDL",	T_Endl		},
+		{ "\0",		T_Error		},
+		{ " ",		T_Void		},
+		{ "\n",		T_Endl		},
 		{ "^",		T_Pow		},
 		{ "*",		T_Mul		},
 		{ "/",		T_Div		},
@@ -80,7 +43,7 @@ namespace ml
 
 	Token::Token()
 		: type(T_Error)
-		, data(Token::TypeNames.at(type))
+		, data(String(1, type))
 	{
 	}
 
@@ -113,7 +76,7 @@ namespace ml
 	Token & Token::operator=(const char & value)
 	{
 		type = value;
-		data = Token::TypeNames.at(value);
+		data = String(1, type);
 		return (*this);
 	}
 
@@ -163,13 +126,11 @@ namespace ml
 	
 	bool Token::lessThan(const Token & value) const
 	{
-		Operator lo;
-		if (Operator::makeOperator(data, lo))
+		if (Operator lhs = Operator(data))
 		{
-			Operator ro;
-			if (Operator::makeOperator(value.data, ro))
+			if (Operator rhs = Operator(value.data))
 			{
-				return lo < ro;
+				return lhs < rhs;
 			}
 		}
 		return false;
@@ -190,8 +151,8 @@ namespace ml
 	{
 		out << FMT()
 			<< FG::White << "[ "
-			<< FG::Green << TypeNames.at(type)
-			<< FG::White << " "
+			<< FG::Green << type
+			<< FG::White << ", "
 			<< FG::Yellow << data
 			<< FG::White << " ]"
 			<< FMT();

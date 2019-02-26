@@ -7,36 +7,29 @@ FIB = nodeid();
 	{
 		value = 100;
 
-		if (args[0]); {
+		if ("int" == typename(args[0])); 
+		{
 			value = args[0];
 		};
 		
-		type = typename(value);
-		if(type == "int"); 
+		printl("Fibonacci: {value}");
+		if(value >= 0);
 		{
-			printl("Fibonacci: {value}");
-			if(value >= 0);
+			a = 0;
+			printl(a);
+			if(value >= 1);
 			{
-				a = 0;
-				printl(a);
-				if(value >= 1);
+				b = 1;
+				printl(b);
+				c = a + b;
+				while(c <= value);
 				{
-					b = 1;
-					printl(b);
+					printl(c);
+					a = b;
+					b = c;
 					c = a + b;
-					while(c <= value);
-					{
-						printl(c);
-						a = b;
-						b = c;
-						c = a + b;
-					};
 				};
 			};
-		};
-		else;
-		{
-			command("log err Value must be an integer");
 		};
 	};
 

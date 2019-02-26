@@ -42,8 +42,8 @@ namespace ml
 		Var	execFile(const String & value);
 		Var	execString(const String & value);
 		Var	execTokens(const TokenList & value);
-		Var execStatements(const TokenTree & value);
-		Var	execTree(AST_Block * value);
+		Var execTree(const TokenTree & value);
+		Var	execBlock(AST_Block * value);
 
 		inline const CommandMap & commands() const { return m_commands; }
 

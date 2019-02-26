@@ -6,76 +6,66 @@
 
 namespace ml
 {
-	enum OpType : int32_t
-	{
-		OP_INVALID = -1,
-
-		OP_SET,		//  =
-		OP_POW_SET,	// ^=
-		OP_MUL_SET,	// *=
-		OP_DIV_SET,	// /=
-		OP_MOD_SET,	// %=
-		OP_ADD_SET,	// +=
-		OP_SUB_SET,	// -=
-
-		OP_EQU,		// ==
-		OP_NEQ,		// !=
-		OP_LT,		//  <
-		OP_GT,		//  >
-		OP_LTE,		// <=
-		OP_GTE,		// >=
-		OP_AND,		// &&
-		OP_OR,		// ||
-
-		OP_POW,		//  ^
-		OP_MUL,		//  *
-		OP_DIV,		//  /
-		OP_MOD,		//  %
-		OP_ADD,		//  +
-		OP_SUB,		//  -
-	};
-
 	class ML_SCRIPT_API Operator final
 		: public ITrackable
 		, public IComparable<Operator>
-		, public IComparable<OpType>
+		, public IComparable<int32_t>
 	{
 	public:
-		using OperMap = HashMap<String, OpType>;
+		enum : int32_t
+		{
+			OP_INVALID	= 0x00,	//	' '	
+			OP_SET		= 0x01,	//	'='	
+			OP_POW_SET	= 0x02,	//	'^='	
+			OP_MUL_SET	= 0x03,	//	'*='	
+			OP_DIV_SET	= 0x04,	//	'/='	
+			OP_MOD_SET	= 0x05,	//	'%='	
+			OP_ADD_SET	= 0x06,	//	'+='	
+			OP_SUB_SET	= 0x07,	//	'-='	
+			OP_EQU		= 0x08,	//	'=='	
+			OP_NEQ		= 0x09,	//	'!='	
+			OP_LT		= 0x0A,	//	'<'	
+			OP_GT		= 0x0B,	//	'>'	
+			OP_LTE		= 0x0C,	//	'<='	
+			OP_GTE		= 0x0D,	//	'>='	
+			OP_AND		= 0x0E,	//	'&&'	
+			OP_OR		= 0x0F,	//	'||'	
+			OP_POW		= 0x10,	//	'^'	
+			OP_MUL		= 0x20,	//	'*'	
+			OP_DIV		= 0x30,	//	'/'	
+			OP_MOD		= 0x40,	//	'%'	
+			OP_ADD		= 0x50,	//	'+'	
+			OP_SUB		= 0x60,	//	'-'	
+		};
+	public:
+		using const_iterator = typename HashMap<String, int32_t>::const_iterator;
 
-		static const HashMap<String, OpType> OpValues;
+		static const HashMap<String, int32_t> Names;
 
+	public:
 		Operator();
-		Operator(OpType type);
+		Operator(int32_t type);
+		Operator(const String & text);
+		Operator(const String & lhs, const String & rhs);
 		Operator(const Operator & copy);
-		~Operator();
+		~Operator() {}
 
-		OpType type;
+	public:
+		int32_t type;
 
-		static bool makeOperator(const String & str, Operator & op);
-		static bool makeOperator(const String & a, const String & b, Operator & op);
+		inline operator bool() const { return (type != OP_INVALID); }
 
+		String getName() const;
+
+	public:
 		bool equals(const Operator & value) const override;
-		bool equals(const OpType & value) const override;
+		bool equals(const int32_t & value) const override;
 
 		bool lessThan(const Operator & value) const override;
-		bool lessThan(const OpType & value) const override;
+		bool lessThan(const int32_t & value) const override;
 
 		void serialize(std::ostream & out) const override;
 	};
-
-	inline std::ostream & operator<<(std::ostream & out, const OpType & rhs)
-	{
-		for (auto pair : Operator::OpValues)
-		{
-			if (pair.second == rhs)
-			{
-				out << pair.first;
-				break;
-			}
-		}
-		return out;
-	}
 }
 
 #endif // !_OPERATOR_HPP_

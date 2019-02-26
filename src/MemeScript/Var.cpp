@@ -691,7 +691,7 @@ namespace ml
 
 		return errorValue(String::Format(
 			"Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
-			getTypeID(), (*this), OpType::OP_ADD, other.getTypeID(), other));
+			getTypeID(), (*this), "+", other.getTypeID(), other));
 	}
 		  
 	Var & Var::Div(const Var & other)
@@ -746,7 +746,7 @@ namespace ml
 
 		return errorValue(String::Format(
 			"Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
-			getTypeID(), (*this), OpType::OP_DIV, other.getTypeID(), other));
+			getTypeID(), (*this), "/", other.getTypeID(), other));
 	}
 		  
 	Var & Var::Mod(const Var & other)
@@ -801,7 +801,7 @@ namespace ml
 
 		return errorValue(String::Format(
 			"Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
-			getTypeID(), (*this), OpType::OP_MOD, other.getTypeID(), other));
+			getTypeID(), (*this), "%", other.getTypeID(), other));
 	}
 		  
 	Var & Var::Mul(const Var & other)
@@ -856,7 +856,7 @@ namespace ml
 
 		return errorValue(String::Format(
 			"Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
-			getTypeID(), (*this), OpType::OP_MUL, other.getTypeID(), other));
+			getTypeID(), (*this), "*", other.getTypeID(), other));
 	}
 		  
 	Var & Var::Pow(const Var & other)
@@ -911,7 +911,7 @@ namespace ml
 
 		return errorValue(String::Format(
 			"Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
-			getTypeID(), (*this), OpType::OP_POW, other.getTypeID(), other));
+			getTypeID(), (*this), "^", other.getTypeID(), other));
 	}
 		  
 	Var & Var::Sub(const Var & other)
@@ -966,7 +966,7 @@ namespace ml
 
 		return errorValue(String::Format(
 			"Invalid Operation: {0} \'{1}\' {2} {3} \'{4}\'",
-			getTypeID(), (*this), OpType::OP_SUB, other.getTypeID(), other));
+			getTypeID(), (*this), "-", other.getTypeID(), other));
 	}
 		  
 	Var & Var::Set(const Var & other)

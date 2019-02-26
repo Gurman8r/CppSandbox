@@ -82,7 +82,7 @@ namespace ml
 	{
 		if (AST_Name * n = lhs->as<AST_Name>())
 		{
-			if (op == OpType::OP_SET)
+			if (op == Operator::OP_SET)
 			{
 				if (Var * v = block()->setVar(n->value, rhs->evaluate()))
 				{
@@ -97,12 +97,12 @@ namespace ml
 			{
 				switch (op.type)
 				{
-				case OpType::OP_ADD: return v->Add(rhs->evaluate());
-				case OpType::OP_SUB: return v->Sub(rhs->evaluate());
-				case OpType::OP_MUL: return v->Mul(rhs->evaluate());
-				case OpType::OP_DIV: return v->Div(rhs->evaluate());
-				case OpType::OP_POW: return v->Pow(rhs->evaluate());
-				case OpType::OP_MOD: return v->Mod(rhs->evaluate());
+				case Operator::OP_ADD: return v->Add(rhs->evaluate());
+				case Operator::OP_SUB: return v->Sub(rhs->evaluate());
+				case Operator::OP_MUL: return v->Mul(rhs->evaluate());
+				case Operator::OP_DIV: return v->Div(rhs->evaluate());
+				case Operator::OP_POW: return v->Pow(rhs->evaluate());
+				case Operator::OP_MOD: return v->Mod(rhs->evaluate());
 				}
 			}
 		}
@@ -430,22 +430,22 @@ namespace ml
 		{
 			switch (op.type)
 			{
-			case OpType::OP_ADD: return lhs->evaluate() + rhs->evaluate();
-			case OpType::OP_SUB: return lhs->evaluate() - rhs->evaluate();
-			case OpType::OP_MUL: return lhs->evaluate() * rhs->evaluate();
-			case OpType::OP_DIV: return lhs->evaluate() / rhs->evaluate();
-			case OpType::OP_POW: return lhs->evaluate() ^ rhs->evaluate();
-			case OpType::OP_MOD: return lhs->evaluate() % rhs->evaluate();
+			case Operator::OP_ADD: return lhs->evaluate() + rhs->evaluate();
+			case Operator::OP_SUB: return lhs->evaluate() - rhs->evaluate();
+			case Operator::OP_MUL: return lhs->evaluate() * rhs->evaluate();
+			case Operator::OP_DIV: return lhs->evaluate() / rhs->evaluate();
+			case Operator::OP_POW: return lhs->evaluate() ^ rhs->evaluate();
+			case Operator::OP_MOD: return lhs->evaluate() % rhs->evaluate();
 
-			case OpType::OP_EQU: return Var().boolValue(lhs->evaluate() == rhs->evaluate());
-			case OpType::OP_NEQ: return Var().boolValue(lhs->evaluate() != rhs->evaluate());
-			case OpType::OP_LT:  return Var().boolValue(lhs->evaluate()  < rhs->evaluate());
-			case OpType::OP_GT:  return Var().boolValue(lhs->evaluate()  > rhs->evaluate());
-			case OpType::OP_LTE: return Var().boolValue(lhs->evaluate() <= rhs->evaluate());
-			case OpType::OP_GTE: return Var().boolValue(lhs->evaluate() >= rhs->evaluate());
+			case Operator::OP_EQU: return Var().boolValue(lhs->evaluate() == rhs->evaluate());
+			case Operator::OP_NEQ: return Var().boolValue(lhs->evaluate() != rhs->evaluate());
+			case Operator::OP_LT:  return Var().boolValue(lhs->evaluate()  < rhs->evaluate());
+			case Operator::OP_GT:  return Var().boolValue(lhs->evaluate()  > rhs->evaluate());
+			case Operator::OP_LTE: return Var().boolValue(lhs->evaluate() <= rhs->evaluate());
+			case Operator::OP_GTE: return Var().boolValue(lhs->evaluate() >= rhs->evaluate());
 
-			case OpType::OP_AND: return Var().boolValue(lhs->evaluate() && rhs->evaluate());
-			case OpType::OP_OR:  return Var().boolValue(lhs->evaluate() || rhs->evaluate());
+			case Operator::OP_AND: return Var().boolValue(lhs->evaluate() && rhs->evaluate());
+			case Operator::OP_OR:  return Var().boolValue(lhs->evaluate() || rhs->evaluate());
 			}
 		}
 		return Var().errorValue("AST_BinOp : Invalid Operation {0} {1} {2}", 

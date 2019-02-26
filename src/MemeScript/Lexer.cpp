@@ -1,5 +1,6 @@
 #include <MemeScript/Lexer.hpp>
 #include <MemeScript/StringUtility.hpp>
+#include <MemeCore/Debug.hpp>
 
 namespace ml
 {
@@ -61,6 +62,7 @@ namespace ml
 		out.push_back(']');
 		return out;
 	}
+
 
 	TokenList Lexer::genTokenList(const String & value) const
 	{
@@ -130,7 +132,7 @@ namespace ml
 
 	TokenTree Lexer::genTokenTree(const TokenList & value) const
 	{
-		TokenTree out	= { TokenList() };
+		TokenTree tree	= { TokenList() };
 		size_t	  index	= 0;
 		
 		for (TokenList::const_iterator it = value.begin(); it != value.end(); it++)
@@ -141,33 +143,27 @@ namespace ml
 				continue;
 
 			case '#': // Comment
-			{
-				String line;
-				while ((it != value.end()) && ((*it) != '\n'))
-				{
-					line += (*it++).data;
-				}
-			}
-			break;
+				while ((it != value.end()) && ((*it) != '\n')) { it++; }
+				break;
 
 			case '{': // Begin Block
-				out[index].push_back(*it);
+				tree[index].push_back(*it);
 
 			case ';': // End Statement
-				if (!out[index].empty())
+				if (!tree[index].empty())
 				{
-					out.push_back(TokenList());
+					tree.push_back(TokenList());
 					index++;
 				}
 				break;
 
 			default: // Other
-				out[index].push_back(*it);
+				tree[index].push_back(*it);
 				break;
 			}
 		}
 
-		return out;
+		return tree;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
