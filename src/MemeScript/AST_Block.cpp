@@ -141,7 +141,7 @@ namespace ml
 	{
 		if (!getFunc(name))
 		{
-			if (Var * v = setVar(name, Var().funcValue({ { Token::T_Name, name } })))
+			if (Var * v = setVar(name, Var().funcValue({ { Token::Name, name } })))
 			{
 				m_funcs.insert({ name, value });
 
@@ -178,7 +178,7 @@ namespace ml
 	{
 		if (!getStruct(name))
 		{
-			if (Var * v = setVar(name, Var().structValue({ { Token::T_Name, name } })))
+			if (Var * v = setVar(name, Var().structValue({ { Token::Name, name } })))
 			{
 				m_structs.insert({ name, value });
 

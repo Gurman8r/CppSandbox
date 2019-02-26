@@ -14,42 +14,42 @@ namespace ml
 	public:
 		enum : char
 		{
-			T_Error		= '\0', // '\0' | Error
-			T_Void		= ' ',	// '  ' | Nothing / Space
-			T_Endl		= '\n',	// '\n' | End of line
-			T_Name		= 'n',	// 'n'	| Name
-			T_Float		= 'f',	// 'f'	| Float / Decimal
-			T_Int		= 'i',	// 'i'	| Integer
-			T_String	= 's',	// 's'	| String
-			T_Pow		= '^',	// '^'	| Pow
-			T_Mul		= '*',	// '*'	| Multiply
-			T_Div		= '/',	// '/'	| Divide
-			T_Plus		= '+',	// '+'	| Add
-			T_Minus		= '-',	// '-'	| Subtract
-			T_Equal		= '=',	// '='	| Equal
-			T_Less		= '<',	// '<'	| Less Than
-			T_Greater	= '>',	// '>'	| Greater Than
-			T_Not		= '!',	// '!'	| Not
-			T_Mod		= '%',	// '%'	| Mod
-			T_Or		= '|',	// '|'	| Or
-			T_And		= '&',	// '&'	| And
-			T_Hash		= '#',	// '#'	| Hash
-			T_Term		= '\\',	// '\\' | Terminate
-			T_SColon	= ';',	// ';'	| Semicolon
-			T_Comma		= ',',	// ','	| Comma
-			T_Colon		= ':',	// ':'	| Colon
-			T_Dot		= '.',	// '.'	| Dot
-			T_QMark		= '?',	// '?'	| Ternary
-			T_Dollar	= '$',	// '$'	| Dollar
-			T_At		= '@',	// '@'	| At
-			T_LParen	= '(',	// '('	| Left Paren
-			T_RParen	= ')',	// ')'	| Right Paren
-			T_LBrace	= '{',	// '{'	| Left Brace
-			T_RBrace	= '}',	// '}'	| Right Brace
-			T_LBrack	= '[',	// '['	| Left Bracket
-			T_RBrack	= ']',	// ']'	| Right Bracket
-			T_DQuote	= '\"', // '\"' | Double Quote
-			T_SQuote	= '\'', // '\'' | Single Quote
+			Error	= '\0', // '\0' | Error
+			Empty	= ' ',	// '  ' | Nothing / Space
+			Endl	= '\n',	// '\n' | End of line
+			Name	= 'n',	// 'n'	| Name
+			Float	= 'f',	// 'f'	| Float / Decimal
+			Int		= 'i',	// 'i'	| Integer
+			Str		= 's',	// 's'	| String
+			Pow		= '^',	// '^'	| Pow
+			Mul		= '*',	// '*'	| Multiply
+			Div		= '/',	// '/'	| Divide
+			Plus	= '+',	// '+'	| Add
+			Minus	= '-',	// '-'	| Subtract
+			Equal	= '=',	// '='	| Equal
+			Less	= '<',	// '<'	| Less Than
+			Greater	= '>',	// '>'	| Greater Than
+			Not		= '!',	// '!'	| Not
+			Mod		= '%',	// '%'	| Mod
+			Or		= '|',	// '|'	| Or
+			And		= '&',	// '&'	| And
+			Hash	= '#',	// '#'	| Hash
+			Term	= '\\',	// '\\' | Terminate
+			SColon	= ';',	// ';'	| Semicolon
+			Comma	= ',',	// ','	| Comma
+			Colon	= ':',	// ':'	| Colon
+			Dot		= '.',	// '.'	| Dot
+			QMark	= '?',	// '?'	| Question Mark
+			Dollar	= '$',	// '$'	| Dollar
+			At		= '@',	// '@'	| At
+			LParen	= '(',	// '('	| Left Paren
+			RParen	= ')',	// ')'	| Right Paren
+			LBrace	= '{',	// '{'	| Left Brace
+			RBrace	= '}',	// '}'	| Right Brace
+			LBrack	= '[',	// '['	| Left Bracket
+			RBrack	= ']',	// ']'	| Right Bracket
+			DQuote	= '\"', // '\"' | Double Quote
+			SQuote	= '\'', // '\'' | Single Quote
 		};
 
 	public:

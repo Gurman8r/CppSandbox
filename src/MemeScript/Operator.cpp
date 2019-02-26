@@ -32,18 +32,13 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	Operator::Operator()
-		: type(OP_INVALID)
-	{
-	}
-
 	Operator::Operator(int32_t type)
 		: type(type)
 	{
 	}
 
 	Operator::Operator(const String & text)
-		: type(OP_INVALID)
+		: Operator(OP_INVALID)
 	{
 		const_iterator it;
 		if ((it = Names.find(text)) != Names.end())

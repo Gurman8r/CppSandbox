@@ -14,28 +14,28 @@ namespace ml
 	public:
 		enum : int32_t
 		{
-			OP_INVALID	= 0x00,	//	' '	
-			OP_SET		= 0x01,	//	'='	
-			OP_POW_SET	= 0x02,	//	'^='	
-			OP_MUL_SET	= 0x03,	//	'*='	
-			OP_DIV_SET	= 0x04,	//	'/='	
-			OP_MOD_SET	= 0x05,	//	'%='	
-			OP_ADD_SET	= 0x06,	//	'+='	
-			OP_SUB_SET	= 0x07,	//	'-='	
-			OP_EQU		= 0x08,	//	'=='	
-			OP_NEQ		= 0x09,	//	'!='	
-			OP_LT		= 0x0A,	//	'<'	
-			OP_GT		= 0x0B,	//	'>'	
-			OP_LTE		= 0x0C,	//	'<='	
-			OP_GTE		= 0x0D,	//	'>='	
-			OP_AND		= 0x0E,	//	'&&'	
-			OP_OR		= 0x0F,	//	'||'	
-			OP_POW		= 0x10,	//	'^'	
-			OP_MUL		= 0x20,	//	'*'	
-			OP_DIV		= 0x30,	//	'/'	
-			OP_MOD		= 0x40,	//	'%'	
-			OP_ADD		= 0x50,	//	'+'	
-			OP_SUB		= 0x60,	//	'-'	
+			OP_INVALID,	//	' '	
+			OP_SET,		//	'='	
+			OP_POW_SET,	//	'^='	
+			OP_MUL_SET,	//	'*='	
+			OP_DIV_SET,	//	'/='	
+			OP_MOD_SET,	//	'%='	
+			OP_ADD_SET,	//	'+='	
+			OP_SUB_SET,	//	'-='	
+			OP_EQU,		//	'=='	
+			OP_NEQ,		//	'!='	
+			OP_LT,		//	'<'	
+			OP_GT,		//	'>'	
+			OP_LTE,		//	'<='	
+			OP_GTE,		//	'>='	
+			OP_AND,		//	'&&'	
+			OP_OR,		//	'||'	
+			OP_POW,		//	'^'	
+			OP_MUL,		//	'*'	
+			OP_DIV,		//	'/'	
+			OP_MOD,		//	'%'	
+			OP_ADD,		//	'+'	
+			OP_SUB,		//	'-'	
 		};
 	public:
 		using const_iterator = typename HashMap<String, int32_t>::const_iterator;
@@ -43,7 +43,6 @@ namespace ml
 		static const HashMap<String, int32_t> Names;
 
 	public:
-		Operator();
 		Operator(int32_t type);
 		Operator(const String & text);
 		Operator(const String & lhs, const String & rhs);

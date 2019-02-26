@@ -209,7 +209,7 @@ namespace ml
 
 	bool Var::isVoidType() const
 	{
-		return compareType(Var::Void) || tokensValue().front(Token::T_Void);
+		return compareType(Var::Void) || tokensValue().front(Token::Empty);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

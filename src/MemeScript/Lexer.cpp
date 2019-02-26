@@ -109,7 +109,7 @@ namespace ml
 				// Error
 				else
 				{
-					out.push_back({ '\0', text });
+					out.push_back({ Token::Error, text });
 				}
 			}
 			// Symbols
@@ -122,7 +122,7 @@ namespace ml
 				}
 				else
 				{
-					out.push_back({ '\0', text });
+					out.push_back({ Token::Error, text });
 				}
 			}
 		}
@@ -139,27 +139,33 @@ namespace ml
 		{
 			switch (it->type)
 			{
-			case '\n': // New Line
+			case Token::Endl: // New Line
 				continue;
 
-			case '#': // Comment
+			case Token::Hash: // Comment
+			case Token::At:
+			{
 				while ((it != value.end()) && ((*it) != '\n')) { it++; }
-				break;
+			}
+			break;
 
-			case '{': // Begin Block
+			case Token::LBrace: // Begin Block
 				tree[index].push_back(*it);
-
-			case ';': // End Statement
+			case Token::SColon: // End Statement
+			{
 				if (!tree[index].empty())
 				{
 					tree.push_back(TokenList());
 					index++;
 				}
-				break;
+			}
+			break;
 
 			default: // Other
+			{
 				tree[index].push_back(*it);
-				break;
+			}
+			break;
 			}
 		}
 
