@@ -44,7 +44,10 @@ namespace ml
 				return it->second(args);
 			}
 
-			return execString(value);
+			if (value.find(';') != String::npos)
+			{
+				return execString(value);
+			}
 		}
 		return Var().voidValue();
 	}
