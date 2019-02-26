@@ -46,6 +46,7 @@ namespace ml
 		size_t	count(const_iterator first, const_iterator last, const Token & value) const;
 		size_t	indexOf(const Token & value) const;
 		size_t	size() const;
+		bool	size(const size_t value) const;
 
 		bool	back(const Token & value) const;
 		bool	back(const String & value) const;

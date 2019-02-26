@@ -1,5 +1,11 @@
+@"flag tree 1"
 TEST = nodeid();
 {
+	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+
+	command("flag tree 0");
+	include("../../../assets/scripts/core.meme");
+
 	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
 	BODY = nodeid();
@@ -28,22 +34,6 @@ TEST = nodeid();
 		{
 			printl("It's an integer!");
 		};
-
-		if (true && true && false);
-		{
-			printl(true);
-		};
-		else;
-		{
-			printl(false);
-		};
-		
-		if ("int" == typename(int));
-		{
-			printl("first");
-		};
-		
-		printl(typename(typename(0.0)));
 
 		printl(demo.a);
 		printl(demo.b);

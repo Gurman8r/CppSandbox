@@ -58,6 +58,12 @@
     <Filter Include="Header Files\Time">
       <UniqueIdentifier>{fd5b1dcc-ce58-48cc-ac44-0685e0b911dc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\State Machine">
+      <UniqueIdentifier>{a4a192e3-5d10-4312-b34b-01c0d990ad6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\State Machine">
+      <UniqueIdentifier>{63f0fa51-4923-4f00-b82b-a60dc2c2fca6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeCore\IComparable.hpp">
@@ -219,6 +225,9 @@
     <ClInclude Include="..\..\include\MemeCore\IEvent.hpp">
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\StateMachine.hpp">
+      <Filter>Header Files\State Machine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeCore\EventSystem.cpp">
@@ -268,6 +277,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\File.cpp">
       <Filter>Source Files\FS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeCore\StateMachine.cpp">
+      <Filter>Source Files\State Machine</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

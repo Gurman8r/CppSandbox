@@ -1,5 +1,6 @@
 #include <MemeScript/Lexer.hpp>
 #include <MemeScript/StringUtility.hpp>
+#include <MemeScript/Interpreter.hpp>
 #include <MemeCore/Debug.hpp>
 
 namespace ml
@@ -133,7 +134,6 @@ namespace ml
 	TokenTree Lexer::genTokenTree(const TokenList & value) const
 	{
 		TokenTree tree	= { TokenList() };
-		size_t	  index	= 0;
 		
 		for (TokenList::const_iterator it = value.begin(); it != value.end(); it++)
 		{
@@ -143,27 +143,39 @@ namespace ml
 				continue;
 
 			case '#': // Comment
-			case '@':
-			{
 				while ((it != value.end()) && ((*it) != '\n')) { it++; }
-			}
-			break;
+				break;
 
-			case '{': // Begin Block
-				tree[index].push_back(*it);
-			case ';': // End Statement
+			case '@': // Preprocessor
 			{
-				if (!tree[index].empty())
+				String line;
+				while ((it != value.end()) && ((*it) != '\n')) 
 				{
-					tree.push_back(TokenList());
-					index++;
+					line += it->data;
+					it++; 
+				}
+				line.erase(line.begin());
+				if (!ML_Interpreter.execCommand(line))
+				{
+					Debug::logError("Lexer : Failed executing preprocessor command \"{0}\"", 
+						line);
 				}
 			}
 			break;
 
+			case '{': // Begin Block
+				tree.back().push_back(*it);
+
+			case ';': // End Statement
+				if (!tree.back().empty())
+				{
+					tree.push_back(TokenList());
+				}
+				break;
+
 			default: // Other
 			{
-				tree[index].push_back(*it);
+				tree.back().push_back(*it);
 			}
 			break;
 			}

@@ -15,9 +15,6 @@ namespace ml
 		Parser();
 		~Parser();
 
-		void install_expressions();
-		void install_statements();
-
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
 
@@ -33,6 +30,11 @@ namespace ml
 		AST_Stmt *	genStatement(const TokenList & toks) const;
 		AST_Expr *	genExpression(const TokenList & toks) const;
 		AST_BinOp *	genNestedBinOp(const TokenList & toks) const;
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		void install_statements();
+		void install_expressions();
 
 		/* * * * * * * * * * * * * * * * * * * * */
 

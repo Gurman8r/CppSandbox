@@ -172,6 +172,11 @@ namespace ml
 		return m_values.size();
 	}
 
+	bool TokenList::size(const size_t value) const
+	{
+		return size() == value;
+	}
+
 
 	bool	TokenList::contains(const Token & value) const
 	{
