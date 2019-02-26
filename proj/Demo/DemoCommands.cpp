@@ -64,7 +64,20 @@ namespace DEMO
 		{
 			return ml::Var().boolValue(ML_FileSystem.setWorkingDir(SETTINGS.assetPath));
 		}
-		return ml::Var().boolValue(ML_FileSystem.setWorkingDir(path));
+		else if (path == "/")
+		{
+			return ml::Var().boolValue(ML_FileSystem.setWorkingDir(
+				ML_FileSystem.root() + "\\"));
+		}
+		else if (path == "~")
+		{
+			return ml::Var().boolValue(ML_FileSystem.setWorkingDir(
+				ML_FileSystem.root() + "\\" + SETTINGS.pathTo("")));
+		}
+		else
+		{
+			return ml::Var().boolValue(ML_FileSystem.setWorkingDir(path));
+		}
 	}
 	
 	ml::Var cmd_cwd(ml::Args & args)
@@ -300,8 +313,10 @@ namespace DEMO
 	{
 #ifdef ML_EditorConsole
 		ML_EditorConsole.clear();
-#endif
+		return ml::Var().voidValue();
+#else
 		return ml::Var().intValue(ml::Debug::clear());
+#endif
 	}
 
 	ml::Var cmd_hide(ml::Args & args)

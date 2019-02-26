@@ -16,12 +16,12 @@ namespace ml
 		friend class ISingleton<EditorConsole>;
 
 	private:
-		char					m_inputBuf[256];
-		ImVector<char *>		m_lines;
-		bool					m_scrollToBottom;
-		ImVector<char *>		m_history;
-		int32_t					m_historyPos;    // -1: new line, 0..History.Size-1 browsing history.
-		ImVector<CString>		m_auto;
+		char				m_inputBuf[256];
+		ImVector<char *>	m_lines;
+		bool				m_scrollToBottom;
+		ImVector<char *>	m_history;
+		int32_t				m_historyPos;    // -1: new line, 0..History.Size-1 browsing history.
+		ImVector<CString>	m_auto;
 
 		bool m_visible = false;
 

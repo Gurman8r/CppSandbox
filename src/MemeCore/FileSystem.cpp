@@ -12,6 +12,17 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
+	FileSystem::FileSystem()
+		: m_root(getWorkingDir())
+	{
+	}
+
+	FileSystem::~FileSystem()
+	{
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	bool FileSystem::setWorkingDir(const String & value)
 	{
 #ifdef ML_SYSTEM_WINDOWS

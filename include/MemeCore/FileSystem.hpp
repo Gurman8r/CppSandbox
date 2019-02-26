@@ -17,8 +17,8 @@ namespace ml
 		friend class ISingleton<FileSystem>;
 
 	private:
-		FileSystem() : m_root(getWorkingDir()) {}
-		~FileSystem() {}
+		FileSystem();
+		~FileSystem();
 
 		String m_root;
 

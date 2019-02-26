@@ -5,13 +5,9 @@ FIZZBUZZ = nodeid();
 	main = [](args);
 	{
 		value = 100;
-		if (args[0]);
+		if ("int" == typename(args[0]));
 		{
-			type = typename(args[0]);
-			if (type == "int");
-			{
-				value = args[0];
-			};
+			value = args[0];
 		};
 
 		for (i = 1; i < value; i = i + 1);

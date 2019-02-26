@@ -23,6 +23,12 @@ TEST = nodeid();
 			printl(args[i]);
 		};
 
+		i = 123;
+		if ("int" == typename(i));
+		{
+			printl("It's an integer!");
+		};
+
 		if (true && true && false);
 		{
 			printl(true);
@@ -37,7 +43,7 @@ TEST = nodeid();
 			printl("first");
 		};
 		
-		printl(typename(typename(flt)));
+		printl(typename(typename(0.0)));
 
 		printl(demo.a);
 		printl(demo.b);
