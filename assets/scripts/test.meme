@@ -1,18 +1,27 @@
-@"flag tree 1"
+# Test Script
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+
+@"config b flag_itop 0"
+@"config b flag_toks 0"
+@"config b flag_tree 1"
+@"config i runTests 1"
+
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+
 TEST = nodeid();
 {
 	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-	command("flag tree 0");
+	command("config b flag_tree 0");
 	include("../../../assets/scripts/core.meme");
 
 	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-	BODY = nodeid();
+	fun = [](a, b, c); { printl("Here"); };
 
-	fun = [](); { printl("Here"); };
+	arr = [ "a", "b", "c", 1, 2, 3, "you", "and", "me" ];
 
-	demo = $();
+	demo = $(a, b, c);
 	{
 		a = 1;
 		b = 2;
@@ -23,16 +32,13 @@ TEST = nodeid();
 
 	main = [](args);
 	{
+		printl("File: {__FILE__}");
+		printl("Path: {__PATH__}");
+		
 		argc = sizeof(args);
 		for (i = 0; i < argc; i = i + 1);
 		{
 			printl(args[i]);
-		};
-
-		i = 123;
-		if ("int" == typename(i));
-		{
-			printl("It's an integer!");
 		};
 
 		printl(demo.a);

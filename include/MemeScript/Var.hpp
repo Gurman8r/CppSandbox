@@ -28,7 +28,7 @@ namespace ml
 
 			//- Complex - -//
 			MIN_COMPLEX,
-			Array = MIN_COMPLEX,
+			Arr = MIN_COMPLEX,
 			Func,
 			Struct,
 			MAX_COMPLEX,
@@ -118,14 +118,17 @@ namespace ml
 		Var			elemValue(size_t i) const;
 		String		errorValue() const;
 		int32_t		intValue() const;
+		List<Var>	listValue() const;
 		Ptr			pointerValue() const;
 		int32_t		sizeOfValue() const;
 		String		stringValue() const;
 		String		textValue() const;
 		TokenList	tokensValue() const;
 
+	public:
 		Var & arrayValue(const TokenList & value);
 		Var & boolValue(const bool & value);
+		Var & dataValue(const Token & value);
 		Var & dataValue(const TokenList & value);
 		Var & elemValue(size_t index, const Token & value);
 		Var & errorValue(const String & value);
@@ -149,9 +152,8 @@ namespace ml
 		Var & print();
 
 		void serialize(std::ostream & out) const override;
+		void deserialize(std::istream & in) override;
 
-		static std::ostream & PrintList(std::ostream & out, const Var & value);
-		
 	public: // Factory
 		static Var makeSingle(const Token & tok);
 		static Var makeRecursive(const TokenList & toks);

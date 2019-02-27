@@ -2,8 +2,6 @@
 #define _RULE_HPP_
 
 #include <MemeScript/TokenList.hpp>
-#include <MemeScript/AST_Block.hpp>
-#include <MemeScript/AST_Stmt.hpp>
 #include <MemeScript/AST_Expr.hpp>
 
 namespace ml
@@ -21,28 +19,28 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	template <
-		typename _Ret,
-		typename _Arg  = const TokenList &,
-		typename _Fun = _Ret * (*)(_Arg)
+		typename Ret,
+		typename Arg  = const TokenList &,
+		typename Fun = Ret * (*)(Arg)
 	>
 	class NodeMaker : public INodeMaker
 	{
-		_Fun m_fun;
+		Fun m_fun;
 
 	public:
 		NodeMaker()
 			: m_fun(NULL)
 		{
 		}
-		NodeMaker(_Fun fun)
+		NodeMaker(Fun fun)
 			: m_fun(fun)
 		{
 		}
 		~NodeMaker() {}
 
-		inline _Ret * run(_Arg toks) const override 
+		inline Ret * run(Arg toks) const override 
 		{ 
-			return m_fun(toks); 
+			return ((m_fun) ? (m_fun(toks)) : ((Ret *)NULL));
 		}
 	};
 
@@ -70,11 +68,7 @@ namespace ml
 
 		inline AST_Node * run(const TokenList & toks) const
 		{
-			if (m_maker)
-			{
-				return m_maker->run(toks);
-			}
-			return NULL;
+			return ((m_maker) ? (m_maker->run(toks)) : (NULL));
 		}
 
 		inline AST_Node * operator()(const TokenList & toks) const

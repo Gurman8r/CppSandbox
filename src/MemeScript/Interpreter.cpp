@@ -1,4 +1,5 @@
 #include <MemeScript/Interpreter.hpp>	
+#include <MemeScript/Builtin.hpp>
 #include <MemeCore/FileSystem.hpp>
 
 namespace ml
@@ -103,7 +104,7 @@ namespace ml
 
 				delete value;
 
-				return runtime.setVar(0, ML_RET, v)
+				return runtime.setVar(0, ML_NAME_RETV, v)
 					? v
 					: Var().errorValue("Interpreter : Failed setting return");
 			}

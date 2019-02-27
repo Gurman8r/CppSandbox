@@ -12,7 +12,7 @@ namespace ml
 	{
 	}
 	
-	TokenList::TokenList(const List<Token>& values)
+	TokenList::TokenList(const List<Token> & values)
 		: m_values(values)
 	{
 	}
@@ -26,13 +26,14 @@ namespace ml
 	{
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
-	const Token		TokenList::at(size_t index) const
+	Token	TokenList::at(size_t index) const
 	{
 		return (*this)[index];
 	}
-	
-	const Token		TokenList::back() const
+
+	Token	TokenList::back() const
 	{
 		if (!empty())
 		{
@@ -40,8 +41,8 @@ namespace ml
 		}
 		return Token();
 	}
-	
-	const Token		TokenList::front() const
+
+	Token	TokenList::front() const
 	{
 		if (!empty())
 		{
@@ -50,7 +51,7 @@ namespace ml
 		return Token();
 	}
 	
-	const String	TokenList::str() const
+	String	TokenList::str() const
 	{
 		if (empty())
 			return String();
@@ -66,60 +67,7 @@ namespace ml
 		return out;
 	}
 
-	const String	TokenList::substr(size_t index, size_t count) const
-	{
-		auto from = (begin() + index);
-
-		if (!inRange(from) || !inRange(from + count))
-		{
-			return String();
-		}
-
-		String toStr;
-
-		for (size_t i = 0; i < count; i++)
-		{
-			auto it = (from + i);
-
-			if (it == end())
-				break;
-
-			toStr += (*it).data + (i < count - 1 ? " " : "");
-		}
-
-		return toStr;
-	}
-	
-	const List<Token> TokenList::subvec(size_t index, size_t count) const
-	{
-		auto from = (begin() + index);
-
-		if (!inRange(from) || !inRange(from + count))
-		{
-			return List<Token>();
-		}
-
-		List<Token> out;
-
-		for (size_t i = 0; i < count; i++)
-		{
-			auto it = (from + i);
-
-			if (it == end())
-				break;
-
-			out.push_back(*it);
-		}
-
-		return out;
-	}
-	
-	const List<Token> &	TokenList::values() const
-	{
-		return m_values;
-	}
-	
-	const SStream	TokenList::sstream() const
+	SStream	TokenList::sstream() const
 	{
 		SStream ss;
 		if (!empty())
@@ -131,40 +79,12 @@ namespace ml
 		}
 		return ss;
 	}
-
-
-	size_t	TokenList::count(const Token & value) const
-	{
-		return count(begin(), end(), value);
-	}
 	
-	size_t	TokenList::count(const_iterator first, const_iterator last, const Token & val) const
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	bool	TokenList::empty() const
 	{
-		difference_type ret = 0;
-
-		while (first != last)
-		{
-			if (*first == val)
-			{
-				++ret;
-			}
-
-			++first;
-		}
-
-		return ret;
-	}
-	
-	size_t	TokenList::indexOf(const Token& value) const
-	{
-		auto it = find(value);
-
-		if (it != end())
-		{
-			return (it - begin());
-		}
-
-		return size();
+		return m_values.empty();
 	}
 	
 	size_t	TokenList::size() const
@@ -172,22 +92,12 @@ namespace ml
 		return m_values.size();
 	}
 
-	bool TokenList::size(const size_t value) const
+	bool	TokenList::size(const size_t value) const
 	{
 		return size() == value;
 	}
 
-
-	bool	TokenList::contains(const Token & value) const
-	{
-		return find_first(value) != end();
-	}
-	
-	bool	TokenList::empty() const
-	{
-		return m_values.empty();
-	}
-
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool	TokenList::back(const Token & value) const
 	{
@@ -241,6 +151,7 @@ namespace ml
 		return size() >= 2 && front().type == lhs.type && back().type == rhs.type;
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool	TokenList::match_type(size_t index, char type) const
 	{
@@ -248,11 +159,11 @@ namespace ml
 		{
 			switch (type)
 			{
-			case 'A':	return true;					// Any
+			case 'A':	return	true;					// Any
 			case 'E':	return  at(index).isOperand();	// Expression
 			case 'O':	return  at(index).isOperator();	// Operator
 			case 'S':	return !at(index).isOperand();	// Symbol
-			default:	return  at(index).type == type;	// Match Type
+			default	:	return  at(index).type == type;	// Match Type
 			}
 		}
 		return false;
@@ -263,7 +174,8 @@ namespace ml
 		return match_type((it - begin()), c);
 	}
 	
-	bool TokenList::match_type_str(const String & str) const
+
+	bool	TokenList::match_type_str(const String & str) const
 	{
 		return match_type_str(begin(), str);
 	}
@@ -277,7 +189,8 @@ namespace ml
 	{
 		return match_type_list(it, List<char>(str.begin(), str.end()));
 	}
-	
+
+
 	bool	TokenList::match_type_list(size_t index, const List<char> & pattern) const
 	{
 		if (!empty() && !pattern.empty())
@@ -305,7 +218,8 @@ namespace ml
 		return match_type_list((it - begin()), pattern);
 	}
 	
-	bool TokenList::match_data(const List<CString>& data) const
+
+	bool	TokenList::match_data(const List<CString> & data) const
 	{
 		return match_data(begin(), data);
 	}
@@ -337,6 +251,7 @@ namespace ml
 		return match_data((it - begin()), data);
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	TokenList	TokenList::after(size_t index) const
 	{
@@ -377,36 +292,12 @@ namespace ml
 		return m_values;
 	}
 	
-	TokenList	TokenList::clone() const
-	{
-		return TokenList().copy(*this);
-	}
-	
-	TokenList	TokenList::clone(size_t index, size_t count) const
-	{
-		return TokenList().copy(*this, index, count);
-	}
-	
-	TokenList	TokenList::clone(const TokenList & other) const
-	{
-		return TokenList().copy(other);
-	}
-	
-	TokenList	TokenList::clone(const TokenList & other, size_t index, size_t count) const
-	{
-		return TokenList().copy(other, index, count);
-	}
-	
-	TokenList	TokenList::clone(const_iterator first, const_iterator last) const
-	{
-		return TokenList().assign(List<Token>(first, last));
-	}
-	
 	TokenList	TokenList::unwrapped() const
 	{
 		return TokenList(*this).unwrap();
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 	
 	TokenList &	TokenList::assign(const List<Token> & value)
 	{
@@ -418,38 +309,6 @@ namespace ml
 	{
 		m_values.clear();
 		return (*this);
-	}
-	
-	TokenList &	TokenList::copy(const TokenList & other)
-	{
-		return copy(other, 0);
-	}
-	
-	TokenList &	TokenList::copy(const TokenList & other, size_t index)
-	{
-		if (other.inRange(index))
-		{
-			return copy(other.begin() + index, other.end());
-		}
-
-		return (*this);
-	}
-	
-	TokenList &	TokenList::copy(const TokenList & other, size_t index, size_t count)
-	{
-		if (other.inRange(index))
-		{
-			auto start = (other.begin() + index);
-
-			return copy(start, start + count);
-		}
-
-		return (*this);
-	}
-	
-	TokenList &	TokenList::copy(const_iterator first, const_iterator last)
-	{
-		return assign(List<Token>(first, last));
 	}
 	
 	TokenList &	TokenList::erase(size_t index, size_t count)
@@ -519,7 +378,7 @@ namespace ml
 		return (*this);
 	}
 	
-	TokenList &	TokenList::push_back(const List<Token>& value)
+	TokenList &	TokenList::push_back(const List<Token> & value)
 	{
 		for (auto it = value.begin(); it != value.end(); it++)
 		{
@@ -530,7 +389,7 @@ namespace ml
 	
 	TokenList &	TokenList::push_back(const TokenList & value)
 	{
-		return push_back(value.values());
+		return push_back(value.m_values);
 	}
 	
 	TokenList &	TokenList::push_front(char value)
@@ -543,7 +402,7 @@ namespace ml
 		return insert(0, value);
 	}
 	
-	TokenList &	TokenList::push_front(const List<Token>& value)
+	TokenList &	TokenList::push_front(const List<Token> & value)
 	{
 		for (auto it = value.end(); it != value.begin(); it--)
 		{
@@ -557,59 +416,10 @@ namespace ml
 		return push_front(value.m_values);
 	}
 	
-	TokenList &	TokenList::remove(const Token& value)
-	{
-		return erase(find_first(value));
-	}
-	
-	TokenList &	TokenList::removeAll(const Token& value)
-	{
-		const_iterator it;
-		while ((it = find_first(value)) != end())
-		{
-			(*this) = erase(it);
-		}
-		return (*this);
-	}
-	
-	TokenList &	TokenList::resize(size_t size)
-	{
-		m_values.resize(size);
-		return (*this);
-	}
-	
-	TokenList &	TokenList::reverse()
-	{
-		if (!empty())
-		{
-			std::reverse(begin(), end());
-		}
-
-		return (*this);
-	}
-	
 	TokenList &	TokenList::unwrap()
 	{
 		pop_front();
 		return pop_back();
-	}
-	
-	TokenList &	TokenList::unwrapIf(const Token & value)
-	{
-		if (isWrap(value))
-		{
-			return unwrap();
-		}
-		return (*this);
-	}
-	
-	TokenList &	TokenList::unwrapIf(const Token & lhs, const Token & rhs)
-	{
-		if (isWrap(lhs, rhs))
-		{
-			return unwrap();
-		}
-		return (*this);
 	}
 	
 	TokenList &	TokenList::wrap(const Token & value)
@@ -622,6 +432,7 @@ namespace ml
 		return push_front(lhs).push_back(rhs);
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	TokenList::const_iterator TokenList::find(const Token& value, size_t index) const
 	{
@@ -683,57 +494,7 @@ namespace ml
 		return end();
 	}
 
-
-	TokenList::iterator					TokenList::begin()
-	{
-		return m_values.begin();
-	}
-	
-	TokenList::iterator					TokenList::end()
-	{
-		return m_values.end();
-	}
-	
-	TokenList::const_iterator			TokenList::begin() const
-	{
-		return m_values.begin();
-	}
-	
-	TokenList::const_iterator			TokenList::end() const
-	{
-		return m_values.end();
-	}
-	
-	TokenList::const_iterator			TokenList::cbegin() const
-	{
-		return m_values.cbegin();
-	}
-	
-	TokenList::const_iterator			TokenList::cend() const
-	{
-		return m_values.cend();
-	}
-	
-	TokenList::reverse_iterator			TokenList::rbegin()
-	{
-		return m_values.rbegin();
-	}
-	
-	TokenList::reverse_iterator			TokenList::rend()
-	{
-		return m_values.rend();
-	}
-	
-	TokenList::const_reverse_iterator	TokenList::crbegin() const
-	{
-		return m_values.crbegin();
-	}
-	
-	TokenList::const_reverse_iterator	TokenList::crend() const
-	{
-		return m_values.crend();
-	}
-
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	void TokenList::serialize(std::ostream & out) const
 	{
@@ -747,6 +508,10 @@ namespace ml
 			}
 			out << (*it) << (it != end() - 1 ? ", " : "");
 		}
+	}
+
+	void TokenList::deserialize(std::istream & in)
+	{
 	}
 
 	bool TokenList::equals(const TokenList & value) const
@@ -781,17 +546,6 @@ namespace ml
 		return size() < value.size();
 	}
 
-	bool TokenList::equals(const String & value) const
-	{
-		return match_type_str(begin(), value);
-	}
 
-	bool TokenList::lessThan(const String & value) const
-	{
-		if (!equals(value))
-		{
-			return str() < value;
-		}
-		return false;
-	}
+	/* * * * * * * * * * * * * * * * * * * * */
 }

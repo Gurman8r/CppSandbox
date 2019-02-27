@@ -32,7 +32,9 @@ namespace ml
 
 		bool cleanup() override;
 		bool loadFromFile(const String & filename) override;
+		bool loadFromFile();
 		bool saveToFile(const String & filename) const override;
+		bool saveToFile() const;
 
 		void serialize(std::ostream & out) const override;
 		void deserialize(std::istream & in) override;
@@ -42,6 +44,7 @@ namespace ml
 		inline char &			at(size_t i)		{ return m_data[i]; }
 		inline const Data &		data() const		{ return m_data;	}
 		inline Data &			data()				{ return m_data;	}
+		inline const String &	path() const		{ return m_path;	}
 
 	public:
 		inline const char & operator[](size_t i) const { return at(i); }
@@ -67,7 +70,8 @@ namespace ml
 		inline const_reverse_iterator	crend()	  const	{ return m_data.crend();	}
 
 	private:
-		Data m_data;
+		String	m_path;
+		Data	m_data;
 	};
 }
 

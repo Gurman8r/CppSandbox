@@ -33,16 +33,19 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		void install_statements();
-		void install_expressions();
+		List<AST_Expr *> genArrayElems(const TokenList & toks) const;
+		List<AST_Expr *> genCallParams(const TokenList & toks) const;
+		List<AST_Expr *> genFuncParams(const TokenList & toks) const;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		AST_Array::Elems genArrayElems(const TokenList & toks) const;
-		AST_Call::Params genCallParams(const TokenList & toks) const;
-		AST_Func::Params genFuncParams(const TokenList & toks) const;
-
-		/* * * * * * * * * * * * * * * * * * * * */
+	private:
+		void install_core_statements();
+		void install_core_expressions();
+		void install_core_basic_types();
+		void install_core_complex_types();
+		void install_core_opers();
+		void install_core_calls();
 
 	public:
 		inline Parser & showToks(bool value) { m_showToks = value; return (*this); }

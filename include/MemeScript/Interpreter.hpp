@@ -13,9 +13,6 @@
 #define ML_Parser		ML_Interpreter.parser
 #define ML_Runtime		ML_Interpreter.runtime
 
-#define ML_RET	"?"
-#define ML_ARGS "__ARGS__"
-
 namespace ml
 {
 	class ML_SCRIPT_API Interpreter final

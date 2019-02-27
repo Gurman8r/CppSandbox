@@ -27,7 +27,7 @@ namespace ml
 			OP_LT,		//	"<"	
 			OP_GT,		//	">"	
 			OP_LTE,		//	"<="	
-			OP_GTE,		//	">="	
+			OP_GTE,		//	">="
 			OP_AND,		//	"&&"	
 			OP_OR,		//	"||"	
 			OP_POW,		//	"^"	
@@ -54,8 +54,6 @@ namespace ml
 
 		inline operator bool() const { return (type != OP_INVALID); }
 
-		String getName() const;
-
 	public:
 		bool equals(const Operator & value) const override;
 		bool equals(const int32_t & value) const override;
@@ -64,6 +62,7 @@ namespace ml
 		bool lessThan(const int32_t & value) const override;
 
 		void serialize(std::ostream & out) const override;
+		void deserialize(std::istream & in) override;
 	};
 }
 

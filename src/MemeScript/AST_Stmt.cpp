@@ -252,25 +252,20 @@ namespace ml
 	bool AST_Include::run()
 	{
 		const String & filename = expr->evaluate().stringValue();
-		
-		List<char> buffer;
-		if (ML_FileSystem.getFileContents(filename, buffer))
+
+		static File file;
+		if (file.loadFromFile(filename))
 		{
-			if (AST_Block * root = ML_Parser.genFromList(ML_Lexer.genTokenList(buffer)))
+			if (AST_Block * root = ML_Parser.genFromList(ML_Lexer.genTokenList(file.data())))
 			{
 				if (!root->empty())
 				{
-					AST_Node * prev = this;
-
-					AST_Node::const_iterator it;
-					for (it = root->begin(); it != root->end(); it++)
+					for (auto it = root->rbegin(); it != root->rend(); it++)
 					{
-						if (!block()->insertChildAfter(prev, (*it)))
+						if (!block()->push_front(*it))
 						{
 							Debug::logError("AST_Include : Failed loading node");
 						}
-
-						prev = (*it);
 					}
 				}
 				else

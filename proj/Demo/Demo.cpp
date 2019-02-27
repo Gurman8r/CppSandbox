@@ -238,7 +238,7 @@ namespace DEMO
 				{
 					if (scr.run())
 					{
-						if (scr.out().isErrorType())
+						if (scr.retv().isErrorType())
 						{
 							ml::Debug::setError(ml::Debug::logError("Script returned an error"));
 						}

@@ -55,7 +55,7 @@ namespace ml
 	public:
 		using SymbolMap = HashMap<String, char>;
 		
-		static const SymbolMap	Symbols;
+		static const SymbolMap Symbols;
 
 	public:
 		Token();
@@ -84,7 +84,9 @@ namespace ml
 		bool lessThan(const char & value) const override;
 		bool lessThan(const String & value) const override;
 
+	public:
 		void serialize(std::ostream & out) const override;
+		void deserialize(std::istream & in) override;
 	};
 }
 

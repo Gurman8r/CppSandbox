@@ -14,11 +14,11 @@ namespace DEMO
 	/* * * * * * * * * * * * * * * * * * * * */
 	static ml::Var cmd_cat		(ml::Args & args); // Display File
 	static ml::Var cmd_cd		(ml::Args & args); // Change Directory
+	static ml::Var cmd_config	(ml::Args & args); // 
 	static ml::Var cmd_cwd		(ml::Args & args); // Print Working Directory
 	static ml::Var cmd_exec		(ml::Args & args); // Execute File
 	static ml::Var cmd_exists	(ml::Args & args); // Check Exists (File/Var)
 	static ml::Var cmd_exit		(ml::Args & args); // Fire RequestExitEvent
-	static ml::Var cmd_flag		(ml::Args & args); // Set Interpreter Flag
 	static ml::Var cmd_get		(ml::Args & args); // Get Variable
 	static ml::Var cmd_getcwd	(ml::Args & args); // Return Working Directory
 	static ml::Var cmd_help		(ml::Args & args); // Display Installed Commands

@@ -29,31 +29,20 @@ namespace ml
 
 		String pop();
 
-		const String	at(size_t index) const;
-		const String	back() const;
-		const String	front() const;
-		const String	str() const;
-		const String	substr(size_t index, size_t count) const;
-		const SStream	sstream() const;
+		String	at(size_t index) const;
+		String	back() const;
+		String	front() const;
+		SStream	sstream() const;
 
-		const List<String> subvec(size_t index, size_t count) const;
-		const List<String> & values() const;
+		size_t	count(const String & value) const;
+		size_t	count(const_iterator first, const_iterator last, const String & value) const;
+		size_t	indexOf(const String & value) const;
+		size_t	size() const;
 
-		const size_t	count(const String & value) const;
-		const size_t	count(const_iterator first, const_iterator last, const String & value) const;
-		const size_t	indexOf(const String & value) const;
-		const size_t	size() const;
-
-		const bool		contains(const String & value) const;
-		const bool		empty() const;
-		const bool		inRange(size_t index) const;
-		const bool		inRange(const_iterator it) const;
-
-		const Args		clone() const;
-		const Args		clone(size_t index, size_t count = 1) const;
-		const Args		clone(const Args & other) const;
-		const Args		clone(const Args & other, size_t index, size_t count = 1) const;
-		const Args		clone(const_iterator first, const_iterator last) const;
+		bool	contains(const String & value) const;
+		bool	empty() const;
+		bool	inRange(size_t index) const;
+		bool	inRange(const_iterator it) const;
 
 	public:
 		Args & assign(const List<String> & value);
@@ -68,7 +57,6 @@ namespace ml
 		Args & insert(size_t index, char value);
 		Args & insert(size_t index, CString value);
 		Args & insert(size_t index, const String & value);
-		Args & mergeNext(size_t index, size_t count);
 		Args & pop_back();
 		Args & pop_front();
 		Args & push_back(char value);
@@ -96,46 +84,16 @@ namespace ml
 		bool find_and_erase(const String & value);
 
 	public:
-		inline iterator					begin()
-		{
-			return m_values.begin();
-		}
-		inline iterator					end()
-		{
-			return m_values.end();
-		}
-		inline const_iterator			begin() const
-		{
-			return m_values.begin();
-		}
-		inline const_iterator			end() const
-		{
-			return m_values.end();
-		}
-		inline const_iterator			cbegin() const
-		{
-			return m_values.cbegin();
-		}
-		inline const_iterator			cend() const
-		{
-			return m_values.cend();
-		}
-		inline reverse_iterator			rbegin()
-		{
-			return m_values.rbegin();
-		}
-		inline reverse_iterator			rend()
-		{
-			return m_values.rend();
-		}
-		inline const_reverse_iterator	crbegin() const
-		{
-			return m_values.crbegin();
-		}
-		inline const_reverse_iterator	crend() const
-		{
-			return m_values.crend();
-		}
+		inline iterator					begin()				{ return m_values.begin();	}
+		inline iterator					end()				{ return m_values.end();	}
+		inline const_iterator			begin()		const	{ return m_values.begin();	}
+		inline const_iterator			end()		const	{ return m_values.end();	}
+		inline const_iterator			cbegin()	const	{ return m_values.cbegin(); }
+		inline const_iterator			cend()		const	{ return m_values.cend();	}
+		inline reverse_iterator			rbegin()			{ return m_values.rbegin(); }
+		inline reverse_iterator			rend()				{ return m_values.rend();	}
+		inline const_reverse_iterator	crbegin()	const	{ return m_values.crbegin();}
+		inline const_reverse_iterator	crend()		const	{ return m_values.crend();	}
 
 	public:
 		inline String operator[](size_t index) const

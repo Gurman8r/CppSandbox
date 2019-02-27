@@ -18,11 +18,11 @@ namespace DEMO
 		// Core
 		ML_Interpreter.install({ "cat",		cmd_cat		});
 		ML_Interpreter.install({ "cd",		cmd_cd		});
+		ML_Interpreter.install({ "config",	cmd_config	});
 		ML_Interpreter.install({ "cwd",		cmd_cwd		});
 		ML_Interpreter.install({ "exec",	cmd_exec	});
 		ML_Interpreter.install({ "exists",	cmd_exists	});
 		ML_Interpreter.install({ "exit",	cmd_exit	});
-		ML_Interpreter.install({ "flag",	cmd_flag	});
 		ML_Interpreter.install({ "get",		cmd_get		});
 		ML_Interpreter.install({ "getcwd",	cmd_getcwd	});
 		ML_Interpreter.install({ "help",	cmd_help	});
@@ -76,6 +76,107 @@ namespace DEMO
 			return ml::Var().boolValue(ML_FileSystem.setWorkingDir(path));
 		}
 	}
+
+	ml::Var cmd_config(ml::Args & args)
+	{
+		if (!args.pop_front().empty())
+		{
+			if (args.front().size() == 1)
+			{
+				const char type = args.front().front();
+				if (!args.pop_front().empty())
+				{
+					const ml::String name = args.front();
+					if (!args.pop_front().empty())
+					{
+						switch (type)
+						{
+						case 'b':
+						{
+							bool value;
+							if (ml::StringUtility::MakeBool(args.front(), value))
+							{
+								if (name == "flag_itop")
+								{
+									ML_Parser.showItoP(value);
+									return ml::Var().boolValue(ML_Parser.showItoP());
+								}
+								else if (name == "flag_toks")
+								{
+									ML_Parser.showToks(value);
+									return ml::Var().boolValue(ML_Parser.showToks());
+								}
+								else if (name == "flag_tree")
+								{
+									ML_Parser.showTree(value);
+									return ml::Var().boolValue(ML_Parser.showTree());
+								}
+								else
+								{
+									return ml::Var().errorValue("Unknown Bool {0}", name);
+								}
+							}
+						}
+						break;
+						case 'f': 
+						{
+							float value;
+							if (ml::StringUtility::MakeFloat(args.front(), value))
+							{
+								if (true)
+								{
+								}
+								else
+								{
+									return ml::Var().errorValue("Unknown Float {0}", name);
+								}
+							}
+						}
+						break;
+						case 'i': 
+						{
+							int32_t value;
+							if (ml::StringUtility::MakeInt(args.front(), value))
+							{
+								if (name == "runTests")
+								{
+									return ml::Var().intValue(SETTINGS.runTests = value);
+								}
+								else
+								{
+									return ml::Var().errorValue("Unknown Int {0}", name);
+								}
+							}
+						}
+						break;
+						case 's': 
+						{
+							ml::String value;
+							if (!(value = args.to_str()).empty())
+							{
+								if (name == "title")
+								{
+									return ml::Var().stringValue(SETTINGS.title = value);
+								}
+								else if (name == "scrFile")
+								{
+									return ml::Var().stringValue(SETTINGS.scrFile = value);
+								}
+								else
+								{
+									return ml::Var().errorValue("Unknown String {0}", name);
+								}
+							}
+						}
+						break;
+						}
+					}
+				}
+			}
+
+		}
+		return ml::Var().voidValue();
+	}
 	
 	ml::Var cmd_cwd(ml::Args & args)
 	{
@@ -113,49 +214,6 @@ namespace DEMO
 	{
 		ML_EventSystem.fireEvent(ml::RequestExitEvent());
 		return ml::Var().voidValue();
-	}
-	
-	ml::Var cmd_flag(ml::Args & args)
-	{
-		if (!args.pop_front().empty())
-		{
-			const ml::String name = args.front();
-
-			bool value;
-			if (ml::StringUtility::MakeBool(args.pop(), value) && !args.empty())
-			{
-				if (name == "toks")
-				{
-					ML_Parser.showToks(value);
-				}
-				else if (name == "tree")
-				{
-					ML_Parser.showTree(value);
-				}
-				else if (name == "itop")
-				{
-					ML_Parser.showItoP(value);
-				}
-			}
-
-			if (name == "toks")
-			{
-				return ml::Var().boolValue(ML_Parser.showToks());
-			}
-			else if (name == "tree")
-			{
-				return ml::Var().boolValue(ML_Parser.showTree());
-			}
-			else if (name == "itop")
-			{
-				return ml::Var().boolValue(ML_Parser.showItoP());
-			}
-			else
-			{
-				return ml::Var().errorValue("Flag Not Found {0}", name);
-			}
-		}
-		return ml::Var().errorValue("No Flag Specified");
 	}
 	
 	ml::Var cmd_get(ml::Args & args)
@@ -197,15 +255,15 @@ namespace DEMO
 		}
 		else if (name == "msg")
 		{
-			return ml::Var().intValue(ml::Debug::log(args.pop_front().str()));
+			return ml::Var().intValue(ml::Debug::log(args.pop_front().to_str()));
 		}
 		else if (name == "wrn")
 		{
-			return ml::Var().intValue(ml::Debug::logWarning(args.pop_front().str()));
+			return ml::Var().intValue(ml::Debug::logWarning(args.pop_front().to_str()));
 		}
 		else if (name == "err")
 		{
-			return ml::Var().intValue(ml::Debug::logError(args.pop_front().str()));
+			return ml::Var().intValue(ml::Debug::logError(args.pop_front().to_str()));
 		}
 		else
 		{
@@ -215,7 +273,7 @@ namespace DEMO
 	
 	ml::Var cmd_ls(ml::Args & args)
 	{
-		const ml::String name = args.pop_front().empty() ? "." : args.str();
+		const ml::String name = args.pop_front().empty() ? "." : args.to_str();
 		ml::SStream ss;
 		if (ML_FileSystem.getDirContents(name, ss))
 		{
@@ -278,7 +336,7 @@ namespace DEMO
 	
 	ml::Var cmd_system(ml::Args & args)
 	{
-		return ml::Var().intValue(ml::Debug::system(args.pop_front().str().c_str()));
+		return ml::Var().intValue(ml::Debug::system(args.pop_front().to_str().c_str()));
 	}
 	
 	ml::Var cmd_target(ml::Args & args)
@@ -408,7 +466,7 @@ namespace DEMO
 
 			if ((scr->*build_fun)(args) && scr->run())
 			{
-				return scr->out();
+				return scr->retv();
 			}
 		}
 		return ml::Var().errorValue("Script not found: {0}", name);

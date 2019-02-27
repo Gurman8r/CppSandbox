@@ -1,6 +1,8 @@
 #include <MemeScript/Script.hpp>
 #include <MemeScript/Interpreter.hpp>
+#include <MemeScript/Builtin.hpp>
 #include <MemeCore/Debug.hpp>
+#include <MemeCore/FileSystem.hpp>
 
 namespace ml
 {
@@ -10,7 +12,7 @@ namespace ml
 		: m_file	()
 		, m_toks	()
 		, m_root	(NULL)
-		, m_out		()
+		, m_retv		()
 	{
 	}
 
@@ -36,6 +38,15 @@ namespace ml
 		return m_file.loadFromFile((m_path = filename));
 	}
 
+	bool Script::loadFromMemory(const File & file)
+	{
+		if (file)
+		{
+			return true;
+		}
+		return false;
+	}
+
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool Script::build(const Args & args)
@@ -48,14 +59,34 @@ namespace ml
 			// Generate Tree
 			if (m_root = ML_Parser.genFromList(m_toks))
 			{
-				// Generate __ARGS__ array
-				if (m_root->insertChild(0, new AST_Assign(
+				// __ARGS__
+				if (!m_root->push_front(new AST_Assign(
 					Operator::OP_SET,
-					ML_Parser.generate<AST_Name>(Token('n', ML_ARGS)),
+					new AST_Name(ML_NAME_ARGS),
 					ML_Parser.generate<AST_Array>(ML_Lexer.genArgsArray(args)))))
 				{
-					return true;
+					return Debug::logError("Script : Failed Generating {0}", ML_NAME_ARGS);
 				}
+
+				// __FILE__
+				if (!m_root->push_front(new AST_Assign(
+					Operator::OP_SET,
+					new AST_Name(ML_NAME_FILE),
+					new AST_String(m_path))))
+				{
+					return Debug::logError("Script : Failed Generating {0}", ML_NAME_FILE);
+				}
+
+				// __PATH__
+				if (!m_root->push_front(new AST_Assign(
+					Operator::OP_SET,
+					new AST_Name(ML_NAME_PATH),
+					new AST_String(ML_FileSystem.pathTo("")))))
+				{
+					return Debug::logError("Script : Failed Generating {0}", ML_NAME_FILE);
+				}
+
+				return true;
 			}
 		}
 		m_root = NULL;
@@ -71,7 +102,7 @@ namespace ml
 	{
 		if (m_root && m_root->run())
 		{
-			m_out = m_root->getRet();
+			m_retv = m_root->getRet();
 
 			return cleanup();
 		}

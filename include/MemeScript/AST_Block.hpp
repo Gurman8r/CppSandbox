@@ -19,7 +19,7 @@ namespace ml
 
 	public:
 		AST_Block();
-		AST_Block(const list_type& body);
+		AST_Block(const List<AST_Node *> & body);
 		~AST_Block();
 
 		virtual std::ostream& display(std::ostream& out) const;

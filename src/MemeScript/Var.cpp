@@ -134,7 +134,7 @@ namespace ml
 		 
 	bool Var::isArrayType() const
 	{
-		return compareType(Var::Array);
+		return compareType(Var::Arr);
 	}
 		 
 	bool Var::isBasicType() const
@@ -159,12 +159,12 @@ namespace ml
 		 
 	bool Var::isErrorType() const
 	{
-		return tokensValue().front('\0');
+		return tokensValue().front(Token::Error);
 	}
 		 
 	bool Var::isFloatType() const
 	{
-		return tokensValue().front('f') && StringUtility::IsDecimal(textValue());
+		return tokensValue().front(Token::Float) && StringUtility::IsDecimal(textValue());
 	}
 		 
 	bool Var::isFuncType() const
@@ -174,12 +174,12 @@ namespace ml
 		 
 	bool Var::isIntType() const
 	{
-		return tokensValue().front('i') && StringUtility::IsInt(textValue());
+		return tokensValue().front(Token::Int) && StringUtility::IsInt(textValue());
 	}
 		 
 	bool Var::isNameType() const
 	{
-		return m_data.front('n') && StringUtility::IsName(textValue());
+		return m_data.front(Token::Name) && StringUtility::IsName(textValue());
 	}
 		 
 	bool Var::isNullValue() const
@@ -199,7 +199,7 @@ namespace ml
 		 
 	bool Var::isStringType() const
 	{
-		return compareType(Var::Str) || tokensValue().front('s');
+		return compareType(Var::Str) || tokensValue().front(Token::Str);
 	}
 
 	bool Var::isStructType() const
@@ -253,17 +253,16 @@ namespace ml
 	{
 		if (!isEmptyValue())
 		{
-			if (isArrayType())
+			List<Var> list;
+			if (!(list = listValue()).empty())
 			{
-				if (i < dataValue().size())
+				if (i < list.size())
 				{
-					const Token& t = dataValue().at(i);
-
-					return Var::makeSingle(t);
+					return list[i];
 				}
 				else
 				{
-					return Var().errorValue("Index out of range {0}");
+					return Var().errorValue("Var::Arr : Cannot access element at index {0}", i);
 				}
 			}
 			else if (isStringType())
@@ -274,12 +273,13 @@ namespace ml
 					return Var().stringValue(String(1, str[i]));
 				}
 			}
-			else if (isIntType())
+			else
 			{
-				return Var().boolValue(bitRead(intValue(), i));
+				return Var().errorValue("Var::Arr : Cannot access element on type \"{0}\"", 
+					getTypeName());
 			}
 		}
-		return Var().errorValue("Var : Cannot access element {0}[{1}]", *this, i);
+		return Var().errorValue("Var::Arr : Cannot access element on empty data");
 	}
 
 	String		Var::errorValue() const
@@ -290,6 +290,22 @@ namespace ml
 	int32_t		Var::intValue() const
 	{
 		return isValid() ? StringUtility::ToInt(textValue()) : 0;
+	}
+
+	List<Var>	Var::listValue() const
+	{
+		List<Var> out;
+		if (!isEmptyValue())
+		{
+			if (isArrayType())
+			{
+				for (const Token & t : dataValue())
+				{
+					out.push_back(makeSingle(t));
+				}
+			}
+		}
+		return out;
 	}
 
 	Var::Ptr	Var::pointerValue() const
@@ -344,12 +360,17 @@ namespace ml
 	
 	Var & Var::arrayValue(const TokenList & value)
 	{
-		return setType(Var::Array).dataValue(value);
+		return setType(Var::Arr).dataValue(value);
 	}
 		  
 	Var & Var::boolValue(const bool & value)
 	{
-		return setType(Var::Bool).dataValue(Token('n', (value ? "true" : "false")));
+		return setType(Var::Bool).dataValue(Token(Token::Name, (value ? "true" : "false")));
+	}
+
+	Var & Var::dataValue(const Token & value)
+	{
+		return dataValue(TokenList(value));
 	}
 
 	Var & Var::dataValue(const TokenList & value)
@@ -374,12 +395,12 @@ namespace ml
 		  
 	Var & Var::errorValue(const String & value)
 	{
-		return voidValue().dataValue(Token('\0', value));
+		return voidValue().dataValue(Token(Token::Error, value));
 	}
 		  
 	Var & Var::floatValue(const float & value)
 	{
-		return setType(Var::Float).dataValue(Token('f', std::to_string(value)));
+		return setType(Var::Float).dataValue({ Token::Float, std::to_string(value) });
 	}
 		  
 	Var & Var::funcValue(const TokenList & value)
@@ -389,22 +410,22 @@ namespace ml
 		  
 	Var & Var::intValue(const int32_t & value)
 	{
-		return setType(Var::Integer).dataValue(Token('i', std::to_string(value)));
+		return setType(Var::Integer).dataValue({ Token::Int, std::to_string(value) });
 	}
  		  
 	Var & Var::nullValue()
 	{
-		return voidValue().dataValue({});
+		return voidValue().dataValue(TokenList());
 	}
 		  
 	Var & Var::pointerValue(const Ptr & value)
 	{
-		return setType(Var::Pointer).dataValue(Token('n', value.name));
+		return setType(Var::Pointer).dataValue({ Token::Name, value.name });
 	}
 		  
 	Var & Var::stringValue(const String & value)
 	{
-		return setType(Var::Str).dataValue(Token('s', value));
+		return setType(Var::Str).dataValue({ Token::Str, value });
 	}
 
 	Var & Var::structValue(const TokenList & value)
@@ -414,7 +435,7 @@ namespace ml
 	  
 	Var & Var::voidValue()
 	{
-		return setType(Var::Void).dataValue(Token(' '));
+		return setType(Var::Void).dataValue({ Token::Empty, " " });
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -468,21 +489,21 @@ namespace ml
 			break;
 
 		case Var::Func:
-			out << (FG::White | BG::DarkGray) << "[](" << FMT();
-			Var::PrintList(out, (*this));
-			out << (FG::White | BG::DarkGray) << ")" << FMT();
+			out << (FG::White | BG::DarkGray) << "[](" << FMT()
+				<< listValue()
+				<< (FG::White | BG::DarkGray) << ")" << FMT();
 			break;
 
-		case Var::Array:
-			out << (FG::Black | BG::Yellow) << "[" << FMT() << " ";
-			Var::PrintList(out, (*this));
-			out << " " << (FG::Black | BG::Yellow) << "]" << FMT();
+		case Var::Arr:
+			out << (FG::Black | BG::Yellow) << "[ " << FMT() 
+				<< listValue()
+				<< (FG::Black | BG::Yellow) << "]" << FMT();
 			break;
 
 		case Var::Struct:
-			out << (FG::White | BG::DarkGray) << "$(" << FMT();
-			Var::PrintList(out, (*this));
-			out << (FG::White | BG::DarkGray) << ")" << FMT();
+			out << (FG::White | BG::DarkGray) << "$(" << FMT()
+				<< listValue()
+				<< (FG::White | BG::DarkGray) << ")" << FMT();
 			break;
 
 		case Var::Void:
@@ -491,15 +512,8 @@ namespace ml
 		}
 	}
 
-	std::ostream & Var::PrintList(std::ostream & out, const Var & value)
+	void Var::deserialize(std::istream & in)
 	{
-		out << FMT();
-		const TokenList & data = value.tokensValue();
-		for (TokenList::const_iterator it = data.cbegin(); it != data.cend(); it++)
-		{
-			out << Var::makeSingle(*it) << (it != data.cend() - 1 ? ", " : "") << FMT();
-		}
-		return out;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -508,13 +522,13 @@ namespace ml
 	{
 		switch (tok.type)
 		{
-		case 's':
+		case Token::Str:
 			return Var().stringValue(tok.data);
-		case 'i':
+		case Token::Int:
 			return Var().intValue(std::stoi(tok.data));
-		case 'f':
+		case Token::Float:
 			return Var().floatValue(std::stof(tok.data));
-		case 'n':
+		case Token::Name:
 			return StringUtility::IsBool(tok.data)
 				? Var().boolValue(StringUtility::ToBool(tok.data))
 				: Var().pointerValue(Var::Ptr(0, tok.data));

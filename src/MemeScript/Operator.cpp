@@ -59,19 +59,6 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	String Operator::getName() const
-	{
-		auto it = std::find_if(Names.begin(), Names.end(), [&](auto && pair)
-		{
-			return (pair.second == type);
-		});
-		return (it != Names.end())
-			? it->first
-			: String(" ");
-	}
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
 	bool Operator::equals(const Operator & value) const
 	{
 		return type == value.type;
@@ -96,7 +83,19 @@ namespace ml
 
 	void Operator::serialize(std::ostream & out) const
 	{
-		out << (FG::Black | BG::Cyan) << getName() << FMT();
+		auto it = std::find_if(Names.begin(), Names.end(), [&](auto && pair)
+		{
+			return (pair.second == type);
+		});
+		out << (FG::Black | BG::Cyan) 
+			<< ((it != Names.end())
+				? it->first
+				: String(" "))
+			<< FMT();
+	}
+
+	void Operator::deserialize(std::istream & in)
+	{
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

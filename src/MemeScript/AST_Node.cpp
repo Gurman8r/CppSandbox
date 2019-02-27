@@ -4,7 +4,11 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	int32_t AST_Node::s_id = 0;
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	AST_Node::AST_Node()
 		: m_parent(NULL)
@@ -13,7 +17,7 @@ namespace ml
 	{
 	}
 
-	AST_Node::AST_Node(const list_type & children)
+	AST_Node::AST_Node(const List<AST_Node *> & children)
 		: m_parent(NULL)
 		, m_children(children)
 		, m_id(++s_id)
@@ -37,15 +41,16 @@ namespace ml
 		clearChildren();
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
-	const AST_Node::list_type& AST_Node::getChildren() const
+	const List<AST_Node *> & AST_Node::getChildren() const
 	{
 		return m_children;
 	}
 
-	const AST_Node::list_type& AST_Node::getSiblings() const
+	const List<AST_Node *> & AST_Node::getSiblings() const
 	{
-		static list_type empty;
+		static List<AST_Node *> empty;
 
 		if (AST_Node * n = getParent())
 		{
@@ -55,6 +60,7 @@ namespace ml
 		return empty;
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	void AST_Node::clearChildren()
 	{
@@ -69,22 +75,19 @@ namespace ml
 		}
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool AST_Node::empty() const
 	{
 		return m_children.empty();
 	}
 		 
-	bool AST_Node::isChildOf(AST_Node * node) const
-	{
-		return false;
-	}
-		 
-	bool AST_Node::isParentOf(AST_Node * node) const
+	bool AST_Node::contains(AST_Node * node) const
 	{
 		return find(node) != end();
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	size_t	AST_Node::getDepth() const
 	{
@@ -125,6 +128,7 @@ namespace ml
 		return 0;
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	AST_Node * AST_Node::addChild(AST_Node * value)
 	{
@@ -156,12 +160,17 @@ namespace ml
 
 	AST_Node * AST_Node::getSibling(size_t index) const
 	{
-		list_type siblings = getSiblings();
+		List<AST_Node *> siblings = getSiblings();
 		if (index < siblings.size())
 		{
 			return siblings[index];
 		}
 		return NULL;
+	}
+
+	AST_Node * AST_Node::push_front(AST_Node * value)
+	{
+		return insertChild(0, value);
 	}
 
 	AST_Node * AST_Node::insertChild(size_t index, AST_Node * value)
@@ -179,8 +188,8 @@ namespace ml
 	{
 		if (value)
 		{
-			AST_Node::const_iterator it = find(pos);
-			if (it != end())
+			AST_Node::const_iterator it;
+			if ((it = find(pos)) != end())
 			{
 				value->setParent(this);
 				m_children.insert(it + 1, value);
@@ -194,8 +203,8 @@ namespace ml
 	{
 		if (value)
 		{
-			AST_Node::const_iterator it = find(pos);
-			if (it != end())
+			AST_Node::const_iterator it;
+			if ((it = find(pos)) != end())
 			{
 				value->setParent(this);
 				m_children.insert(it, value);
@@ -232,134 +241,9 @@ namespace ml
 		return m_parent;
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
-	// Iterators
-	AST_Node::iterator AST_Node::begin()
-	{
-		return m_children.begin();
-	}
-
-	AST_Node::iterator AST_Node::end()
-	{
-		return m_children.end();
-	}
-
-	AST_Node::const_iterator AST_Node::begin() const
-	{
-		return m_children.begin();
-	}
-
-	AST_Node::const_iterator AST_Node::end() const
-	{
-		return m_children.end();
-	}
-
-	AST_Node::const_iterator AST_Node::cbegin() const
-	{
-		return m_children.cbegin();
-	}
-
-	AST_Node::const_iterator AST_Node::cend() const
-	{
-		return m_children.cend();
-	}
-
-	AST_Node::reverse_iterator AST_Node::rbegin()
-	{
-		return m_children.rbegin();
-	}
-
-	AST_Node::reverse_iterator AST_Node::rend()
-	{
-		return m_children.rend();
-	}
-
-	AST_Node::const_reverse_iterator AST_Node::crbegin() const
-	{
-		return m_children.crbegin();
-	}
-
-	AST_Node::const_reverse_iterator AST_Node::crend() const
-	{
-		return m_children.crend();
-	}
-
-
-	// Search
-	AST_Node::const_iterator	AST_Node::find(const value_type & value, size_t index) const
-	{
-		if (value)
-		{
-			return std::find(begin() + index, end(), value);
-		}
-
-		return end();
-	}
-
-	AST_Node::const_iterator	AST_Node::find_first(const value_type & value) const
-	{
-		if (value)
-		{
-			for (auto it = begin(); it != end(); it++)
-			{
-				if (*it == value)
-				{
-					return it;
-				}
-			}
-		}
-
-		return end();
-	}
-
-	AST_Node::const_iterator	AST_Node::find_first_not_of(const value_type & value, size_t index) const
-	{
-		if (value)
-		{
-			for (auto it = begin(); it != end(); it++)
-			{
-				if (*it != value)
-				{
-					return it;
-				}
-			}
-		}
-		return end();
-	}
-
-	AST_Node::const_iterator	AST_Node::find_last(const value_type & value) const
-	{
-		if (value)
-		{
-			for (auto it = end(); it != begin(); it--)
-			{
-				if (*it == value)
-				{
-					return it;
-				}
-			}
-		}
-		return end();
-	}
-
-	AST_Node::const_iterator	AST_Node::find_last_not_of(const value_type & value) const
-	{
-		if (value)
-		{
-			for (auto it = end(); it != begin(); it--)
-			{
-				if (*it != value)
-				{
-					return it;
-				}
-			}
-		}
-		return end();
-	}
-
-
-	// Operators
-	std::ostream&	AST_Node::display(std::ostream & out) const
+	std::ostream & AST_Node::display(std::ostream & out) const
 	{
 		for (AST_Node * n : (*this))
 		{
@@ -368,9 +252,9 @@ namespace ml
 		return out;
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
-	// Execution
-	int32_t		AST_Node::getID() const
+	int32_t	AST_Node::getID() const
 	{
 		return m_id;
 	}
@@ -388,4 +272,6 @@ namespace ml
 		}
 		return true;
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

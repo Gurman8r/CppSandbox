@@ -57,12 +57,12 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	const String Args::at(size_t index) const
+	String Args::at(size_t index) const
 	{
 		return (*this)[index];
 	}
 	
-	const String Args::back() const
+	String Args::back() const
 	{
 		if (!empty())
 		{
@@ -71,7 +71,7 @@ namespace ml
 		return String();
 	}
 	
-	const String Args::front() const
+	String Args::front() const
 	{
 		if (!empty())
 		{
@@ -80,92 +80,14 @@ namespace ml
 		return String();
 	}
 	
-	const String Args::str() const
-	{
-		String out;
-		for (const String & it : (*this))
-		{
-			out += it + " ";
-		}
-		return out;
-	}
-	
-	const String Args::substr(size_t index, size_t count) const
-	{
-		auto from = (begin() + index);
-
-		if (!inRange(from) || !inRange(from + count))
-		{
-			return String();
-		}
-
-		String toStr;
-
-		for (size_t i = 0; i < count; i++)
-		{
-			auto it = (from + i);
-
-			if (it == end())
-				break;
-
-			toStr += (*it) + (i < count - 1 ? " " : "");
-		}
-
-		return toStr;
-	}
-
-	const SStream Args::sstream() const
-	{
-		SStream ss;
-		if (!empty())
-		{
-			for (auto e : (*this))
-			{
-				ss << e << '\n';
-			}
-		}
-		return ss;
-	}
-
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	const List<String> Args::subvec(size_t index, size_t count) const
-	{
-		auto from = (begin() + index);
-
-		if (!inRange(from) || !inRange(from + count))
-		{
-			return List<String>();
-		}
-
-		List<String> toStr;
-
-		for (size_t i = 0; i < count; i++)
-		{
-			auto it = (from + i);
-
-			if (it == end())
-				break;
-
-			toStr.push_back((*it) + (i < count - 1 ? " " : ""));
-		}
-
-		return toStr;
-	}
-	
-	const List<String> & Args::values() const
-	{
-		return m_values;
-	}
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	const size_t Args::count(const String & value) const
+	size_t Args::count(const String & value) const
 	{
 		return count(begin(), end(), value);
 	}
 	
-	const size_t Args::count(const_iterator first, const_iterator last, const String & val) const
+	size_t Args::count(const_iterator first, const_iterator last, const String & val) const
 	{
 		difference_type ret = 0;
 
@@ -182,7 +104,7 @@ namespace ml
 		return ret;
 	}
 	
-	const size_t Args::indexOf(const String & value) const
+	size_t Args::indexOf(const String & value) const
 	{
 		auto it = find(value);
 
@@ -194,58 +116,31 @@ namespace ml
 		return size();
 	}
 	
-	const size_t Args::size() const
+	size_t Args::size() const
 	{
 		return m_values.size();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	const bool Args::contains(const String & value) const
+	bool Args::contains(const String & value) const
 	{
 		return find_first(value) != end();
 	}
 	
-	const bool Args::empty() const
+	bool Args::empty() const
 	{
 		return m_values.empty();
 	}
 	
-	const bool Args::inRange(size_t index) const
+	bool Args::inRange(size_t index) const
 	{
 		return (index < size());
 	}
 	
-	const bool Args::inRange(const_iterator it) const
+	bool Args::inRange(const_iterator it) const
 	{
 		return it < end();
-	}
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	const Args Args::clone() const
-	{
-		return Args().copy(*this);
-	}
-	
-	const Args Args::clone(size_t index, size_t count) const
-	{
-		return Args().copy(*this, index, count);
-	}
-	
-	const Args Args::clone(const Args & other) const
-	{
-		return Args().copy(other);
-	}
-	
-	const Args Args::clone(const Args & other, size_t index, size_t count) const
-	{
-		return Args().copy(other, index, count);
-	}
-	
-	const Args Args::clone(const_iterator first, const_iterator last) const
-	{
-		return Args().assign(List<String>(first, last));
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -326,33 +221,6 @@ namespace ml
 	Args & Args::insert(size_t index, const String & value)
 	{
 		m_values.insert(begin() + index, value);
-		return (*this);
-	}
-  		   
-	Args & Args::mergeNext(size_t index, size_t count)
-	{
-		auto from = (begin() + index);
-		auto to = (from + count);
-
-		if (!inRange(from) || !inRange(to))
-			return (*this);
-
-		Args tmp;
-
-		for (auto it = begin(); it != from; it++)
-		{
-			tmp.push_back(*it);
-		}
-
-		tmp.push_back(substr(index, count));
-
-		for (auto it = to; it != end(); it++)
-		{
-			tmp.push_back(*it);
-		}
-
-		(*this) = Args(tmp);
-
 		return (*this);
 	}
   		   

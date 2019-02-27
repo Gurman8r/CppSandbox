@@ -21,19 +21,19 @@ namespace ml
 	{
 		if (value.empty())
 		{
-			return Token(' ');
+			return { Token::Empty, value };
 		}
 		else if (StringUtility::IsInt(value))
 		{
-			return Token('i', value);
+			return { Token::Int, value };
 		}
 		else if (StringUtility::IsDecimal(value))
 		{
-			return Token('f', value);
+			return { Token::Float, value };
 		}
 		else
 		{
-			return Token('s', value);
+			return { Token::Str, value };
 		}
 	}
 
@@ -43,13 +43,13 @@ namespace ml
 		out.push_back('[');
 		if (!value.empty())
 		{
-			TokenList temp = genTokenList(value.str());
+			TokenList temp = genTokenList(value.to_str());
 
 			for (size_t i = 0, imax = temp.size(); i < imax; i++)
 			{
-				if (temp[i].type == 'n')
+				if (temp[i].type == Token::Name)
 				{
-					temp[i] = Token('s', temp[i].data);
+					temp[i] = { Token::Str, temp[i].data };
 				}
 
 				out.push_back(temp[i]);
@@ -87,12 +87,12 @@ namespace ml
 			// String
 			else if (scanString(value, it, text))
 			{
-				out.push_back({ 's', text });
+				out.push_back({ Token::Str, text });
 			}
 			// Name
 			else if (scanName(value, it, text))
 			{
-				out.push_back({ 'n', text });
+				out.push_back({ Token::Name, text });
 			}
 			// Number
 			else if (scanNumber(value, it, text))
@@ -100,12 +100,12 @@ namespace ml
 				// Integer
 				if (StringUtility::IsInt(text))
 				{
-					out.push_back({ 'i', text });
+					out.push_back({ Token::Int, text });
 				}
 				// Float
 				else if (StringUtility::IsDecimal(text))
 				{
-					out.push_back({ 'f', text });
+					out.push_back({ Token::Float, text });
 				}
 				// Error
 				else
@@ -155,7 +155,7 @@ namespace ml
 					it++; 
 				}
 				line.erase(line.begin());
-				if (!ML_Interpreter.execCommand(line))
+				if (ML_Interpreter.execCommand(line).isErrorType())
 				{
 					Debug::logError("Lexer : Failed executing preprocessor command \"{0}\"", 
 						line);

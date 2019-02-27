@@ -1,3 +1,5 @@
+@"config b flag_tree 1"
+@"config i runTests 1"
 # Script for testing the Interpreter
 STUB = nodeid();
 {

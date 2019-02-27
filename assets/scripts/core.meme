@@ -45,16 +45,6 @@ exec = [](exec_value);  {
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-get_flag = [](get_flag_name); {
-	return command("flag " + get_flag_name);
-};
-
-set_flag = [](set_flag_name, set_flag_value); {
-	return command("flag " + set_flag_name + " " + set_flag_value);
-};
-
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
-
 log_msg = [](log_msg_value); { return command("log msg " + log_msg_value); };
 log_wrn = [](log_wrn_value); { return command("log wrn " + log_wrn_value); };
 log_err = [](log_err_value); { return command("log err " + log_err_value); };

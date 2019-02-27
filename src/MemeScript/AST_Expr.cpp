@@ -35,7 +35,7 @@ namespace ml
 	
 	// Array
 	/* * * * * * * * * * * * * * * * * * * * */
-	AST_Array::AST_Array(const Elems & values)
+	AST_Array::AST_Array(const List<AST_Expr *> & values)
 		: AST_Expr(EX_Array)
 		, values(values)
 	{
@@ -45,7 +45,18 @@ namespace ml
 
 	std::ostream & AST_Array::display(std::ostream & out) const
 	{
-		return out << evaluate();
+		Var v;
+		if ((v = evaluate()).isArrayType())
+		{
+			out << (FG::Black | BG::Yellow) << "[" << FMT() << " ";
+			const List<Var> list(v.listValue());
+			for (size_t i = 0, imax = list.size(); i < imax; i++)
+			{
+				out << list[i] << ((i < imax - 1) ? ", " : " ");
+			}
+			return out << (FG::Black | BG::Yellow) << "]" << FMT();
+		}
+		return out << v;
 	}
 
 	Var AST_Array::evaluate() const
@@ -54,7 +65,7 @@ namespace ml
 
 		for (auto it = values.begin(); it != values.end(); it++)
 		{
-			items.push_back(( * it)->evaluate().tokensValue());
+			items.push_back((*it)->evaluate().tokensValue());
 		}
 
 		return Var().arrayValue(items);
@@ -111,11 +122,11 @@ namespace ml
 
 	bool AST_Assign::run()
 	{
-		if (evaluate().isValid())
+		if (evaluate().isErrorType())
 		{
-			return runNext();
+			return Debug::logError("AST_Assign : Mod value_type Failed");
 		}
-		return Debug::logError("AST_Assign : Mod value_type Failed");
+		return runNext();
 	}
 
 
@@ -141,7 +152,7 @@ namespace ml
 
 	// Call
 	/* * * * * * * * * * * * * * * * * * * * */
-	AST_Call::AST_Call(AST_Name * name, const Params & args)
+	AST_Call::AST_Call(AST_Name * name, const List<AST_Expr *> & args)
 		: AST_Expr(EX_Call)
 		, name(name)
 		, args(args)
@@ -156,7 +167,7 @@ namespace ml
 		out << (FG::Green | BG::Black)
 			<< name->value << "("
 			<< FMT();
-		Params::const_iterator it;
+		List<AST_Expr *>::const_iterator it;
 		for (it = args.begin(); it != args.end(); it++)
 		{
 			out << * ( * it) << ((it != args.end() - 1) ? ", " : "");
@@ -191,13 +202,18 @@ namespace ml
 				{
 					for (size_t i = 0; i < func->args.size(); i++)
 					{
-						if (!body->setVar(
-							func->args[i]->value,
-							args[i]->evaluate()))
+						if (AST_Name * n = func->args[i]->as<AST_Name>())
+						{
+							if (!body->setVar(n->value, args[i]->evaluate()))
+							{
+								return Var().errorValue(
+									"AST_Call : {0} Set Arg Failed", n->value);
+							}
+						}
+						else
 						{
 							return Var().errorValue(
-								"AST_Call : {0} Set Arg Failed",
-								func->args[i]->value);
+								"AST_Call : Funcion argument did not evaluate to a Name");
 						}
 					}
 
@@ -205,11 +221,17 @@ namespace ml
 					{
 						for (size_t i = 0; i < func->args.size(); i++)
 						{
-							if (!body->delVar(func->args[i]->value))
+							if (AST_Name * n = func->args[i]->as<AST_Name>())
 							{
-								return Var().errorValue(
-									"AST_Call : {0} Del Arg Failed",
-									func->args[i]->value);
+								if (!body->delVar(n->value))
+								{
+									return Var().errorValue(
+										"AST_Call : {0} Del Arg Failed", n->value);
+								}
+							}
+							else
+							{
+
 							}
 						}
 
@@ -250,7 +272,7 @@ namespace ml
 		Var v;
 		if ((v = evaluate()).isErrorType())
 		{
-			return Debug::logError("AST_Call : Call Failed {0}", v);
+			return Debug::logError(v.textValue());
 		}
 		return runNext();
 	}
@@ -278,7 +300,7 @@ namespace ml
 
 	// Function
 	/* * * * * * * * * * * * * * * * * * * * */
-	AST_Func::AST_Func(const String & name, const Params& args)
+	AST_Func::AST_Func(const String & name, const List<AST_Expr *> & args)
 		: AST_Expr(EX_Func)
 		, name(name)
 		, args(args)
@@ -290,7 +312,7 @@ namespace ml
 	std::ostream & AST_Func::display(std::ostream & out) const
 	{
 		out << (FG::White | BG::DarkGray) << name << FMT() << " = [](";
-		Params::const_iterator it;
+		List<AST_Expr *>::const_iterator it;
 		for (it = args.begin(); it != args.end(); it++)
 		{
 			out << * ( * it) << ((it != args.end() - 1) ? ", " : "");
@@ -316,9 +338,11 @@ namespace ml
 
 	// Input
 	/* * * * * * * * * * * * * * * * * * * * */
-	AST_Input::AST_Input()
+	AST_Input::AST_Input(AST_Expr * prompt)
 		: AST_Expr(EX_Input)
+		, prompt(prompt)
 	{
+		addChild(prompt);
 	}
 
 	std::ostream & AST_Input::display(std::ostream & out) const
@@ -328,15 +352,13 @@ namespace ml
 
 	Var AST_Input::evaluate() const
 	{
-#ifdef ML_DEBUG
-
-		cout << "$: ";
+		if (prompt)
+		{
+			cout << (*prompt).evaluate().textValue();
+		}
 		String line;
 		std::getline(cin, line);
 		return Var().stringValue(line);
-#else
-		return Var();
-#endif
 	}
 
 
@@ -474,7 +496,7 @@ namespace ml
 
 	// Struct
 	/* * * * * * * * * * * * * * * * * * * * */
-	AST_Struct::AST_Struct(const String & name, const Params & args)
+	AST_Struct::AST_Struct(const String & name, const List<AST_Expr *> & args)
 		: AST_Expr(EX_Struct)
 		, name(name)
 		, args(args)
@@ -492,7 +514,7 @@ namespace ml
 		out << (FG::White | BG::DarkBlue)
 			<< name << FMT() << " = $(";
 		
-		Params::const_iterator it;
+		List<AST_Expr *>::const_iterator it;
 		for (it = args.begin(); it != args.end(); it++)
 		{
 			out << *(*it) << ((it != args.end() - 1) ? ", " : "");

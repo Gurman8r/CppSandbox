@@ -4,6 +4,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	const Token::SymbolMap Token::Symbols({
 		{ "\0"	,	Token::Error	},
 		{ " "	,	Token::Empty	},
@@ -40,6 +42,7 @@ namespace ml
 
 	});
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	Token::Token()
 		: type(Token::Error)
@@ -65,6 +68,7 @@ namespace ml
 	{
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	Token & Token::operator=(const Token & value)
 	{
@@ -80,6 +84,7 @@ namespace ml
 		return (*this);
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool Token::isOperand() const
 	{
@@ -107,6 +112,7 @@ namespace ml
 			type == '&';
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 	
 	bool Token::equals(const Token & value) const
 	{
@@ -146,6 +152,7 @@ namespace ml
 		return data < value;
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	void Token::serialize(std::ostream & out) const
 	{
@@ -157,4 +164,10 @@ namespace ml
 			<< FG::White << " ]"
 			<< FMT();
 	}
+
+	void Token::deserialize(std::istream & in)
+	{
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

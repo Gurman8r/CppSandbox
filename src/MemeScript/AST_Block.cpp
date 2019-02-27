@@ -1,6 +1,7 @@
 #include <MemeScript/AST_Block.hpp>
 #include <MemeScript/AST_Expr.hpp>
 #include <MemeScript/Interpreter.hpp>
+#include <MemeScript/Builtin.hpp>
 #include <MemeCore/Debug.hpp>
 
 namespace ml
@@ -13,7 +14,7 @@ namespace ml
 		ML_Runtime.makeScope(getID());
 	}
 
-	AST_Block::AST_Block(const list_type & body)
+	AST_Block::AST_Block(const List<AST_Node *> & body)
 		: AST_Node(body)
 	{
 		ML_Runtime.makeScope(getID());
@@ -123,7 +124,7 @@ namespace ml
 
 	Var *	AST_Block::getRet() const
 	{
-		if (Var * v = ML_Runtime.getVar(getID(), ML_RET))
+		if (Var * v = ML_Runtime.getVar(getID(), ML_NAME_RETV))
 		{
 			return v;
 		}
@@ -132,7 +133,7 @@ namespace ml
 
 	Var *	AST_Block::setRet(const Var & value) const
 	{
-		return ML_Runtime.setVar(getID(), ML_RET, value);
+		return ML_Runtime.setVar(getID(), ML_NAME_RETV, value);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

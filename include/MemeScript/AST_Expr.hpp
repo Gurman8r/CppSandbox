@@ -53,11 +53,9 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Array : public AST_Expr
 	{
-		using Elems = std::vector<AST_Expr *>;
+		List<AST_Expr *> values;
 
-		Elems values;
-
-		AST_Array(const Elems & values);
+		AST_Array(const List<AST_Expr *> & values);
 		~AST_Array() {}
 
 		std::ostream & display(std::ostream & out) const override;
@@ -94,12 +92,10 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Func : public AST_Expr
 	{
-		using Params = std::vector<AST_Name *>;
-
 		String name;
-		Params args;
+		List<AST_Expr *> args;
 
-		AST_Func(const String & name, const Params& args);
+		AST_Func(const String & name, const List<AST_Expr *> & args);
 		~AST_Func() {}
 
 		std::ostream & display(std::ostream & out) const override;
@@ -111,7 +107,9 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Input : public AST_Expr
 	{
-		AST_Input();
+		AST_Expr * prompt;
+
+		AST_Input(AST_Expr * prompt);
 		~AST_Input() {}
 
 		std::ostream & display(std::ostream & out) const override;
@@ -164,12 +162,10 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Call : public AST_Expr
 	{
-		using Params = std::vector<AST_Expr *>;
+		AST_Name * name;
+		List<AST_Expr *> args;
 
-		AST_Name *	name;
-		Params		args;
-
-		AST_Call(AST_Name * name, const Params & args);
+		AST_Call(AST_Name * name, const List<AST_Expr *> & args);
 		~AST_Call() {}
 
 		std::ostream & display(std::ostream & out) const override;
@@ -210,12 +206,10 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 	struct ML_SCRIPT_API AST_Struct : public AST_Expr
 	{
-		using Params = std::vector<AST_Name *>;
-
 		String name;
-		Params args;
+		List<AST_Expr *> args;
 
-		AST_Struct(const String & name, const Params & args);
+		AST_Struct(const String & name, const List<AST_Expr *> & args);
 		~AST_Struct() {}
 
 		AST_Block * getBody() const;

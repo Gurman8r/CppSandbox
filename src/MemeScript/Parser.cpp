@@ -1,8 +1,7 @@
 #include <MemeScript/Parser.hpp>
 #include <MemeScript/StringUtility.hpp>
-#include <MemeCore/Debug.hpp>
-#include <MemeCore/Function.hpp>
 #include <MemeScript/Interpreter.hpp>
+#include <MemeCore/Debug.hpp>
 
 namespace ml
 {
@@ -14,8 +13,8 @@ namespace ml
 
 	Parser::Parser()
 	{
-		install_expressions();
-		install_statements();
+		install_core_statements();
+		install_core_expressions();
 	}
 
 	Parser::~Parser()
@@ -405,7 +404,131 @@ namespace ml
 	
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void Parser::install_statements()
+	List<AST_Expr *> Parser::genArrayElems(const TokenList & toks) const
+	{
+		List<AST_Expr *> elems;
+
+		TokenList	temp;
+		int32_t		depth = 0;
+
+		for (TokenList::const_iterator it = toks.begin(); it != toks.end(); it++)
+		{
+			if ((*it) == '(')
+			{
+				depth++;
+
+				temp.push_back(*it);
+			}
+			else if ((*it) == ')')
+			{
+				if (--depth > 0)
+				{
+					temp.push_back(*it);
+				}
+			}
+			else if ((*it) == ',' && !depth)
+			{
+				if (!temp.empty())
+				{
+					elems.push_back(genExpression(temp));
+
+					temp.clear();
+
+					continue;
+				}
+
+				temp.push_back(*it);
+			}
+			else
+			{
+				temp.push_back(*it);
+			}
+		}
+
+		if (!temp.empty())
+		{
+			elems.push_back(genExpression(temp));
+		}
+
+		return elems;
+	}
+
+	List<AST_Expr *> Parser::genCallParams(const TokenList & toks) const
+	{
+		List<AST_Expr *> params;
+
+		if (toks.match_type_str("()"))
+		{
+			return params;
+		}
+
+		TokenList	temp;
+		int32_t		depth = 0;
+
+		for (TokenList::const_iterator it = toks.begin() + 1; it != toks.end(); it++)
+		{
+			if ((*it) == '(')
+			{
+				depth++;
+
+				temp.push_back(*it);
+			}
+			else if ((*it) == ')')
+			{
+				if (--depth > 0)
+				{
+					temp.push_back(*it);
+				}
+			}
+			else if ((*it) == ',' && !depth)
+			{
+				if (!temp.empty())
+				{
+					params.push_back(genExpression(temp));
+					temp.clear();
+					continue;
+				}
+
+				temp.push_back(*it);
+			}
+			else
+			{
+				temp.push_back(*it);
+			}
+		}
+
+		if (!temp.empty())
+		{
+			params.push_back(genExpression(temp));
+		}
+
+		return params;
+	}
+
+	List<AST_Expr *> Parser::genFuncParams(const TokenList & toks) const
+	{
+		List<AST_Expr *> params;
+
+		if (toks.isWrap('(', ')'))
+		{
+			for (TokenList::const_iterator it = toks.begin() + 1; it != toks.end() - 1; it++)
+			{
+				if ((*it).type != ',')
+				{
+					if (AST_Name * name = generate<AST_Name>(*it))
+					{
+						params.push_back(name);
+					}
+				}
+			}
+		}
+
+		return params;
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	void Parser::install_core_statements()
 	{
 		install<AST_If>(new NodeMaker<AST_If>([](const TokenList & toks)
 		{
@@ -447,39 +570,6 @@ namespace ml
 				(toks.front("else")))
 				? (temp = new AST_Else())
 				: (temp = NULL);
-		}));
-
-		install<AST_Print>(new NodeMaker<AST_Print>([](const TokenList & toks)
-		{
-			AST_Print * temp;
-			if (toks.match_type_str("n(") && toks.back(")"))
-			{
-				// Printl
-				if (toks.front("printl"))
-				{
-					if (AST_Expr * e = ML_Parser.genExpression(toks.after(1)))
-					{
-						return (temp = new AST_Print(e, true));
-					}
-					else
-					{
-						return (temp = new AST_Print(new AST_String(String()), true));
-					}
-				}
-				// Print
-				else if (toks.front("print"))
-				{
-					if (AST_Expr * e = ML_Parser.genExpression(toks.after(1)))
-					{
-						return (temp = new AST_Print(e, false));
-					}
-					else
-					{
-						return (temp = new AST_Print(new AST_String(String()), false));
-					}
-				}
-			}
-			return (temp = NULL);
 		}));
 
 		install<AST_Return>(new NodeMaker<AST_Return>([](const TokenList & toks)
@@ -554,9 +644,50 @@ namespace ml
 			}
 			return (temp = NULL);
 		}));
+
+		install<AST_Print>(new NodeMaker<AST_Print>([](const TokenList & toks)
+		{
+			AST_Print * temp;
+			if (toks.match_type_str("n(") && toks.back(")"))
+			{
+				// Printl
+				if (toks.front("printl"))
+				{
+					if (AST_Expr * e = ML_Parser.genExpression(toks.after(1)))
+					{
+						return (temp = new AST_Print(e, true));
+					}
+					else
+					{
+						return (temp = new AST_Print(new AST_String(String()), true));
+					}
+				}
+				// Print
+				else if (toks.front("print"))
+				{
+					if (AST_Expr * e = ML_Parser.genExpression(toks.after(1)))
+					{
+						return (temp = new AST_Print(e, false));
+					}
+					else
+					{
+						return (temp = new AST_Print(new AST_String(String()), false));
+					}
+				}
+			}
+			return (temp = NULL);
+		}));
 	}
 
-	void Parser::install_expressions()
+	void Parser::install_core_expressions()
+	{
+		install_core_basic_types();
+		install_core_complex_types();
+		install_core_opers();
+		install_core_calls();
+	}
+
+	void Parser::install_core_basic_types()
 	{
 		install<AST_Bool>(new NodeMaker<AST_Bool>([](const TokenList & toks)
 		{
@@ -615,7 +746,62 @@ namespace ml
 					: (temp = NULL)
 				);
 		}));
+	}
 
+	void Parser::install_core_complex_types()
+	{
+		install<AST_Array>(new NodeMaker<AST_Array>([](const TokenList & toks)
+		{
+			AST_Array * temp;
+			return ((toks.isWrap('[', ']'))
+				? ((toks.match_type_str("[]"))
+					? (temp = new AST_Array({}))
+					: (temp = new AST_Array(ML_Parser.genArrayElems(toks.unwrapped()))))
+				: (temp = NULL));
+		}));
+
+		install<AST_Struct>(new NodeMaker<AST_Struct>([](const TokenList & toks)
+		{
+			AST_Struct * temp;
+			if (toks.match_type_str("n=$(") && toks.back(')'))
+			{
+				return (temp = new AST_Struct(
+					toks.front().data,
+					ML_Parser.genCallParams(toks.after(3))
+				));
+			}
+			return (temp = NULL);
+		}));
+
+		install<AST_Call>(new NodeMaker<AST_Call>([](const TokenList & toks)
+		{
+			AST_Call * temp;
+			if (toks.match_type_str("n(") && toks.back(")"))
+			{
+				return (temp = new AST_Call(
+					new AST_Name(toks.front().data),
+					ML_Parser.genCallParams(toks.after(1))
+				));
+			}
+			return (temp = NULL);
+		}));
+
+		install<AST_Func>(new NodeMaker<AST_Func>([](const TokenList & toks)
+		{
+			AST_Func * temp;
+			if (toks.match_type_str("n=[](") && toks.back(')'))
+			{
+				return (temp = new AST_Func(
+					toks.front().data,
+					ML_Parser.genFuncParams(toks.after(4))
+				));
+			}
+			return (temp = NULL);
+		}));
+	}
+
+	void Parser::install_core_opers()
+	{
 		install<AST_BinOp>(new NodeMaker<AST_BinOp>([](const TokenList & toks)
 		{
 			AST_BinOp * temp;
@@ -631,6 +817,24 @@ namespace ml
 						ML_Parser.genExpression(toks.front()),
 						ML_Parser.genExpression(toks.after(3))));
 				}
+			}
+			return (temp = NULL);
+		}));
+
+		install<AST_Subscr>(new NodeMaker<AST_Subscr>([](const TokenList & toks)
+		{
+			AST_Subscr * temp;
+			if (toks.match_type_str("n[E]"))
+			{
+				if (AST_Name * n = new AST_Name(toks.front().data))
+				{
+					if (AST_Expr * e = ML_Parser.genExpression(toks[2]))
+					{
+						return (temp = new AST_Subscr(n, e));
+					}
+					else { delete e; }
+				}
+				else { delete n; }
 			}
 			return (temp = NULL);
 		}));
@@ -653,15 +857,106 @@ namespace ml
 			return (temp = NULL);
 		}));
 
-		install<AST_Struct>(new NodeMaker<AST_Struct>([](const TokenList & toks)
+		install<AST_Assign>(new NodeMaker<AST_Assign>([](const TokenList & toks)
 		{
-			AST_Struct * temp;
-			if (toks.match_type_str("n=$(") && toks.back(')'))
+			AST_Assign * temp;
+			if (toks.match_type_str("n[E]=A"))
 			{
-				return (temp = new AST_Struct(
-					toks.front().data,
-					ML_Parser.genFuncParams(toks.after(3))
+				TokenList list({
+					*(toks.begin() + 0),
+					*(toks.begin() + 1),
+					*(toks.begin() + 2),
+					*(toks.begin() + 3)
+				});
+
+				if (AST_Subscr* subscr = ML_Parser.generate<AST_Subscr>(list))
+				{
+					if (AST_Expr * value = ML_Parser.genExpression(toks.after(5)))
+					{
+						return (temp = new AST_Assign(Operator::OP_SET, subscr, value));
+					}
+				}
+			}
+			else if (toks.match_type_str("n[E]O=A"))
+			{
+				TokenList list({
+					*(toks.begin() + 0),
+					*(toks.begin() + 1),
+					*(toks.begin() + 2),
+					*(toks.begin() + 3)
+				});
+
+				if (AST_Subscr* subscr = ML_Parser.generate<AST_Subscr>(list))
+				{
+					if (Operator op = Operator(
+						(toks.begin() + 4)->data,
+						(toks.begin() + 5)->data))
+					{
+						if (AST_Expr * value = ML_Parser.genExpression(toks.after(6)))
+						{
+							return (temp = new AST_Assign(op, subscr, value));
+						}
+					}
+				}
+			}
+			else if (toks.match_type_str("n.n=A"))
+			{
+				return (temp = new AST_Assign(
+					Operator::OP_SET,
+					new AST_Name(toks.begin()->data),
+					ML_Parser.genExpression(toks.after(2))
 				));
+			}
+			else if (toks.match_type_str("n.nO=A"))
+			{
+				if (Operator op = Operator(
+					(toks.begin() + 1)->data,
+					(toks.begin() + 2)->data))
+				{
+					return (temp = new AST_Assign(
+						op,
+						new AST_Name(toks.begin()->data),
+						ML_Parser.genExpression(toks.after(3))
+					));
+				}
+			}
+			else if (toks.match_type_str("n=A"))
+			{
+				return (temp = new AST_Assign(
+					Operator::OP_SET,
+					new AST_Name(toks.begin()->data),
+					ML_Parser.genExpression(toks.after(2))
+				));
+			}
+			else if (toks.match_type_str("nO=A"))
+			{
+				if (Operator op = Operator(
+					(toks.begin() + 1)->data,
+					(toks.begin() + 2)->data))
+				{
+					return (temp = new AST_Assign(
+						op,
+						new AST_Name(toks.begin()->data),
+						ML_Parser.genExpression(toks.after(3))
+					));
+				}
+			}
+			return (temp = NULL);
+		}));
+
+	}
+
+	void Parser::install_core_calls()
+	{
+		install<AST_Input>(new NodeMaker<AST_Input>([](const TokenList & toks)
+		{
+			AST_Input * temp;
+			if (toks.match_type_str("n(") && toks.back(')'))
+			{
+				if (toks.match_data(toks.begin(), { "input" }))
+				{
+					return (temp = new AST_Input(ML_Parser.genExpression(toks.after(1))));
+				}
 			}
 			return (temp = NULL);
 		}));
@@ -773,284 +1068,6 @@ namespace ml
 			}
 			return (temp = NULL);
 		}));
-
-		install<AST_Call>(new NodeMaker<AST_Call>([](const TokenList & toks)
-		{
-			AST_Call * temp;
-			if (toks.match_type_str("n(") && toks.back(")"))
-			{
-				return (temp = new AST_Call(
-					new AST_Name(toks.front().data),
-					ML_Parser.genCallParams(toks.after(1))
-				));
-			}
-			return (temp = NULL);
-		}));
-
-		install<AST_Func>(new NodeMaker<AST_Func>([](const TokenList & toks)
-		{
-			AST_Func * temp;
-			if (toks.match_type_str("n=[](") && toks.back(')'))
-			{
-				return (temp = new AST_Func(
-					toks.front().data,
-					ML_Parser.genFuncParams(toks.after(4))
-				));
-			}
-			return (temp = NULL);
-		}));
-
-		install<AST_Input>(new NodeMaker<AST_Input>([](const TokenList & toks)
-		{
-			AST_Input * temp;
-			if (toks.match_type_str("n(") && toks.back(')'))
-			{
-				if (toks.match_data(toks.begin(), { "input" }))
-				{
-					return (temp = new AST_Input());
-				}
-			}
-			return (temp = NULL);
-		}));
-
-		install<AST_Subscr>(new NodeMaker<AST_Subscr>([](const TokenList & toks)
-		{
-			AST_Subscr * temp;
-			if (toks.match_type_str("n[E]"))
-			{
-				if (AST_Name * n = new AST_Name(toks.front().data))
-				{
-					if (AST_Expr * e = ML_Parser.genExpression(toks[2]))
-					{
-						return (temp = new AST_Subscr(n, e));
-					}
-					else { delete e; }
-				}
-				else { delete n; }
-			}
-			return (temp = NULL);
-		}));
-
-		install<AST_Array>(new NodeMaker<AST_Array>([](const TokenList & toks)
-		{
-			AST_Array * temp;
-			return ((toks.isWrap('[', ']'))
-				? ((toks.match_type_str("[]"))
-					? (temp = new AST_Array({}))
-					: (temp = new AST_Array(ML_Parser.genArrayElems(toks.unwrapped()))))
-				: (temp = NULL));
-		}));
-
-		install<AST_Assign>(new NodeMaker<AST_Assign>([](const TokenList & toks)
-		{
-			AST_Assign * temp;
-			if (toks.match_type_str("n[E]=A"))
-			{
-				TokenList list({
-					*(toks.begin() + 0),
-					*(toks.begin() + 1),
-					*(toks.begin() + 2),
-					*(toks.begin() + 3)
-				});
-
-				if (AST_Subscr* subscr = ML_Parser.generate<AST_Subscr>(list))
-				{
-					if (AST_Expr * value = ML_Parser.genExpression(toks.after(5)))
-					{
-						return (temp = new AST_Assign(Operator::OP_SET, subscr, value));
-					}
-				}
-			}
-			else if (toks.match_type_str("n[E]O=A"))
-			{
-				TokenList list({
-					*(toks.begin() + 0),
-					*(toks.begin() + 1),
-					*(toks.begin() + 2),
-					*(toks.begin() + 3)
-				});
-
-				if (AST_Subscr* subscr = ML_Parser.generate<AST_Subscr>(list))
-				{
-					if (Operator op = Operator(
-						(toks.begin() + 4)->data,
-						(toks.begin() + 5)->data))
-					{
-						if (AST_Expr * value = ML_Parser.genExpression(toks.after(6)))
-						{
-							return (temp = new AST_Assign(op, subscr, value));
-						}
-					}
-				}
-			}
-			else if (toks.match_type_str("n.n=A"))
-			{
-				return (temp = new AST_Assign(
-					Operator::OP_SET,
-					new AST_Name(toks.begin()->data),
-					ML_Parser.genExpression(toks.after(2))
-				));
-			}
-			else if (toks.match_type_str("n.nO=A"))
-			{
-				if (Operator op = Operator(
-					(toks.begin() + 1)->data,
-					(toks.begin() + 2)->data))
-				{
-					return (temp = new AST_Assign(
-						op,
-						new AST_Name(toks.begin()->data),
-						ML_Parser.genExpression(toks.after(3))
-					));
-				}
-			}
-			else if (toks.match_type_str("n=A"))
-			{
-				return (temp = new AST_Assign(
-					Operator::OP_SET,
-					new AST_Name(toks.begin()->data),
-					ML_Parser.genExpression(toks.after(2))
-				));
-			}
-			else if (toks.match_type_str("nO=A"))
-			{
-				if (Operator op = Operator(
-					(toks.begin() + 1)->data,
-					(toks.begin() + 2)->data))
-				{
-					return (temp = new AST_Assign(
-						op,
-						new AST_Name(toks.begin()->data),
-						ML_Parser.genExpression(toks.after(3))
-					));
-				}
-			}
-			return (temp = NULL);
-		}));
-	}
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	AST_Array::Elems Parser::genArrayElems(const TokenList & toks) const
-	{
-		AST_Array::Elems elems;
-
-		TokenList	temp;
-		int32_t		depth = 0;
-
-		for (TokenList::const_iterator it = toks.begin(); it != toks.end(); it++)
-		{
-			if ((*it) == '(')
-			{
-				depth++;
-
-				temp.push_back(*it);
-			}
-			else if ((*it) == ')')
-			{
-				if (--depth > 0)
-				{
-					temp.push_back(*it);
-				}
-			}
-			else if ((*it) == ',' && !depth)
-			{
-				if (!temp.empty())
-				{
-					elems.push_back(genExpression(temp));
-
-					temp.clear();
-
-					continue;
-				}
-
-				temp.push_back(*it);
-			}
-			else
-			{
-				temp.push_back(*it);
-			}
-		}
-
-		if (!temp.empty())
-		{
-			elems.push_back(genExpression(temp));
-		}
-
-		return elems;
-	}
-
-	AST_Call::Params Parser::genCallParams(const TokenList & toks) const
-	{
-		AST_Call::Params params;
-
-		if (toks.match_type_str("()"))
-		{
-			return params;
-		}
-
-		TokenList	temp;
-		int32_t		depth = 0;
-
-		for (TokenList::const_iterator it = toks.begin() + 1; it != toks.end(); it++)
-		{
-			if ((*it) == '(')
-			{
-				depth++;
-
-				temp.push_back(*it);
-			}
-			else if ((*it) == ')')
-			{
-				if (--depth > 0)
-				{
-					temp.push_back(*it);
-				}
-			}
-			else if ((*it) == ',' && !depth)
-			{
-				if (!temp.empty())
-				{
-					params.push_back(genExpression(temp));
-					temp.clear();
-					continue;
-				}
-
-				temp.push_back(*it);
-			}
-			else
-			{
-				temp.push_back(*it);
-			}
-		}
-
-		if (!temp.empty())
-		{
-			params.push_back(genExpression(temp));
-		}
-
-		return params;
-	}
-
-	AST_Func::Params Parser::genFuncParams(const TokenList & toks) const
-	{
-		AST_Func::Params params;
-
-		if (toks.isWrap('(', ')'))
-		{
-			for (TokenList::const_iterator it = toks.begin() + 1; it != toks.end() - 1; it++)
-			{
-				if ((*it).type != ',')
-				{
-					if (AST_Name * name = generate<AST_Name>(*it))
-					{
-						params.push_back(name);
-					}
-				}
-			}
-		}
-
-		return params;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

@@ -42,6 +42,7 @@
     <ClInclude Include="..\..\include\MemeScript\AST_Expr.hpp" />
     <ClInclude Include="..\..\include\MemeScript\AST_Node.hpp" />
     <ClInclude Include="..\..\include\MemeScript\AST_Stmt.hpp" />
+    <ClInclude Include="..\..\include\MemeScript\Builtin.hpp" />
     <ClInclude Include="..\..\include\MemeScript\Command.hpp" />
     <ClInclude Include="..\..\include\MemeScript\Export.hpp" />
     <ClInclude Include="..\..\include\MemeScript\Interpreter.hpp" />
