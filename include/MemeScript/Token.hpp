@@ -5,6 +5,8 @@
 
 namespace ml
 {
+	class Var;
+
 	class ML_SCRIPT_API Token final
 		: public ITrackable
 		, public IComparable<Token>
@@ -62,6 +64,7 @@ namespace ml
 		Token(char type);
 		Token(char type, const String & data);
 		Token(const Token & copy);
+		Token(const Var & v);
 
 	public:
 		char	type;

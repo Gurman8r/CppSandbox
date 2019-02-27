@@ -53,12 +53,6 @@ namespace ml
 	
 	String	TokenList::str() const
 	{
-		if (empty())
-			return String();
-
-		if (size() == 1)
-			return front().data;
-
 		String out;
 		for (const_iterator it = begin(); it != end(); it++)
 		{
@@ -67,17 +61,9 @@ namespace ml
 		return out;
 	}
 
-	SStream	TokenList::sstream() const
+	Token TokenList::pop()
 	{
-		SStream ss;
-		if (!empty())
-		{
-			for (auto e : (*this))
-			{
-				ss << e << '\n';
-			}
-		}
-		return ss;
+		return pop_front().front();
 	}
 	
 	/* * * * * * * * * * * * * * * * * * * * */

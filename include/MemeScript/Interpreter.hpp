@@ -22,8 +22,8 @@ namespace ml
 		friend ISingleton<Interpreter>;
 
 	public:
-		using CommandMap	= HashMap<String, Command>;
-		using CommandPair	= Pair<String, Command>;
+		using CommandMap  = HashMap<String, Command>;
+		using CommandPair = Pair<String, Command>;
 
 	public:
 		Command * install(const Command & value);
@@ -41,6 +41,8 @@ namespace ml
 		Var	execTokens(const TokenList & value);
 		Var execTree(const TokenTree & value);
 		Var	execBlock(AST_Block * value);
+
+		Var sysCall(TokenList & args);
 
 		inline const CommandMap & commands() const { return m_commands; }
 

@@ -65,7 +65,8 @@ namespace ml
 
 	public:
 		Var();
-		Var(const int32_t& type, const TokenList& data);
+		Var(const TokenList & token);
+		Var(const int32_t & type, const TokenList & data);
 		Var(const Var & other);
 		~Var();
 
@@ -145,6 +146,12 @@ namespace ml
 		inline Var & errorValue(const String & fmt, const T & arg0, const A &... args)
 		{
 			return errorValue(String::Format(fmt, arg0, (args)...));
+		};
+
+		template <class T, typename ... A>
+		inline Var & stringValue(const String & fmt, const T & arg0, const A &... args)
+		{
+			return stringValue(String::Format(fmt, arg0, (args)...));
 		};
 
 

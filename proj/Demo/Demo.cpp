@@ -220,10 +220,9 @@ namespace DEMO
 		ML_Time.start();
 
 		// Set Parser Flags
-		ML_Parser
-			.showToks(SETTINGS.scrShowToks) // Show Tokens
-			.showTree(SETTINGS.scrShowTree) // Show Tree
-			.showItoP(SETTINGS.scrShowItoP);// Show Infix to Postfix
+		ML_Parser.showToks(SETTINGS.scrShowToks); // Show Tokens
+		ML_Parser.showTree(SETTINGS.scrShowTree); // Show Tree
+		ML_Parser.showItoP(SETTINGS.scrShowItoP); // Show Infix to Postfix
 
 		// Load Commands
 		install_commands();

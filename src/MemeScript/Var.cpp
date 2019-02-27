@@ -80,6 +80,12 @@ namespace ml
 	{
 	}
 
+	Var::Var(const TokenList & token)
+		: Var()
+	{
+		(*this) = makeRecursive(token);
+	}
+
 	Var::Var(const int32_t & type, const TokenList & data)
 		: m_scope(0)
 		, m_typeID(type)

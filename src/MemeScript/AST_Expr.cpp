@@ -796,5 +796,46 @@ namespace ml
 		}
 		return Var().errorValue("AST_Member : No Name");
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 	
+	AST_System::AST_System(const List<AST_Expr *> & args)
+		: AST_Expr(EX_System)
+		, args(args)
+	{
+		for (auto a : args)
+			addChild(a);
+	}
+
+	std::ostream & AST_System::display(std::ostream & out) const
+	{
+		out << FG::Cyan << "system" << FMT() << "(";
+		for (auto it = args.begin(); it != args.end(); it++)
+		{
+			out << *(*it) << ((it != args.end() - 1) ? ", " : "");
+		}
+		return out << FMT() << ")";
+	}
+
+	Var AST_System::evaluate() const
+	{
+		TokenList list;
+		for (auto it = args.begin(); it != args.end(); it++)
+		{
+			list.push_back(Token((*it)->evaluate()));
+		}
+		return ML_Interpreter.sysCall(list);
+	}
+
+	bool AST_System::run()
+	{
+		Var v;
+		if ((v = evaluate()).isErrorType())
+		{
+			return Debug::logError("AST_System : {0}", v.textValue());
+		}
+		return runNext();
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

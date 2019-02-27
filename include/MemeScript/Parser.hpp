@@ -48,9 +48,9 @@ namespace ml
 		void install_core_calls();
 
 	public:
-		inline Parser & showToks(bool value) { m_showToks = value; return (*this); }
-		inline Parser & showTree(bool value) { m_showTree = value; return (*this); }
-		inline Parser & showItoP(bool value) { m_showItoP = value; return (*this); }
+		inline bool showToks(bool value) { return m_showToks = value; }
+		inline bool showTree(bool value) { return m_showTree = value; }
+		inline bool showItoP(bool value) { return m_showItoP = value; }
 
 		inline bool showToks() const { return m_showToks; }
 		inline bool showTree() const { return m_showTree; }

@@ -3,7 +3,7 @@
 
 @"config b flag_itop 0"
 @"config b flag_toks 0"
-@"config b flag_tree 1"
+@"config b flag_tree 0"
 @"config i runTests 1"
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
@@ -12,43 +12,37 @@ TEST = nodeid();
 {
 	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-	command("config b flag_tree 0");
+	system("config", "flag", "itop", 0);
+	system("config", "flag", "toks", 0);
+	system("config", "flag", "tree", 0);
 	include("../../../assets/scripts/core.meme");
 
 	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-	fun = [](a, b, c); { printl("Here"); };
-
-	arr = [ "a", "b", "c", 1, 2, 3, "you", "and", "me" ];
-
-	demo = $(a, b, c);
-	{
-		a = 1;
-		b = 2;
-		c = 3;
-	};
-
+	arr = [ "a", "b", "c", 1, 2, 3 ];
+	
 	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
 	main = [](args);
 	{
+		command("log msg Hello, World!");
+
 		printl("File: {__FILE__}");
 		printl("Path: {__PATH__}");
 		
 		argc = sizeof(args);
 		for (i = 0; i < argc; i = i + 1);
 		{
-			printl(args[i]);
+			temp = args[i];
+			printl("Args[{i}]: {temp}");
 		};
 
-		printl(demo.a);
-		printl(demo.b);
-		printl(demo.c);
+		return true;
 	};
 
 	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-	main(__ARGS__);
+	return main(__ARGS__);
 	
 	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 };

@@ -33,12 +33,12 @@ namespace ml
 		~TokenList();
 
 	public:
-		Token		at(size_t index) const;
-		Token		back() const;
-		Token		front() const;
-		String		str() const;
-		SStream		sstream() const;
-	
+		Token	at(size_t index) const;
+		Token	back() const;
+		Token	front() const;
+		String	str() const;
+		Token	pop();
+
 	public:
 		bool	empty() const;
 
@@ -48,7 +48,6 @@ namespace ml
 		bool	back(const Token & value) const;
 		bool	back(const String & value) const;
 		bool	back(char value) const;
-
 		bool	front(const Token & value) const;
 		bool	front(const String & value) const;
 		bool	front(char value) const;

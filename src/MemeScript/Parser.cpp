@@ -317,9 +317,10 @@ namespace ml
 		else if (AST_TypeID		* temp = generate<AST_TypeID>(toks))	{ return temp; }
 		else if (AST_TypeName	* temp = generate<AST_TypeName>(toks))	{ return temp; }
 		else if (AST_NodeID		* temp = generate<AST_NodeID>(toks))	{ return temp; }
+		else if (AST_System		* temp = generate<AST_System>(toks))	{ return temp; }
+		else if (AST_Input		* temp = generate<AST_Input>(toks))		{ return temp; }
 		else if (AST_Func		* temp = generate<AST_Func>(toks))		{ return temp; }
 		else if (AST_Assign		* temp = generate<AST_Assign>(toks))	{ return temp; }
-		else if (AST_Input		* temp = generate<AST_Input>(toks))		{ return temp; }
 		else if (AST_Call		* temp = generate<AST_Call>(toks))		{ return temp; }
 		else if (AST_Subscr		* temp = generate<AST_Subscr>(toks))	{ return temp; }
 		else if (AST_Array		* temp = generate<AST_Array>(toks))		{ return temp; }
@@ -1064,6 +1065,21 @@ namespace ml
 					{
 						return (temp = new AST_TypeName(e));
 					}
+				}
+			}
+			return (temp = NULL);
+		}));
+
+		install<AST_System>(new NodeMaker<AST_System>([](const TokenList & toks)
+		{
+			AST_System * temp;
+			if (toks.match_type_str("n(") && toks.back(")"))
+			{
+				if (toks.front("system"))
+				{
+					return (temp = new AST_System(
+						ML_Parser.genCallParams(toks.after(1))
+					));
 				}
 			}
 			return (temp = NULL);

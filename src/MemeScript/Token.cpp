@@ -1,5 +1,6 @@
 #include <MemeScript/Token.hpp>
 #include <MemeScript/Operator.hpp>
+#include <MemeScript/Var.hpp>
 #include <MemeCore/Debug.hpp>
 
 namespace ml
@@ -66,6 +67,33 @@ namespace ml
 		: type(copy.type)
 		, data(copy.data)
 	{
+	}
+
+	Token::Token(const Var & v)
+		: type(Token::Error)
+		, data(v.textValue())
+	{
+		switch (v.getTypeID())
+		{
+		case Var::Bool:
+		case Var::Func:
+		case Var::Pointer:	
+			type = 'n'; 
+			break;
+		
+		case Var::Float:
+			type = 'f'; 
+			break;
+		
+		case Var::Integer:	
+			type = 'i'; 
+			break;
+		
+		case Var::Str:
+		default:
+			type = 's'; 
+			break;
+		}
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -159,7 +187,7 @@ namespace ml
 		out << FMT()
 			<< FG::White << "[ "
 			<< FG::Green << type
-			<< FG::White << ", "
+			<< FG::White << " "
 			<< FG::Yellow << data
 			<< FG::White << " ]"
 			<< FMT();

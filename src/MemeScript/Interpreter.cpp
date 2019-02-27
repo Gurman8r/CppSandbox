@@ -120,4 +120,89 @@ namespace ml
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
+
+	Var Interpreter::sysCall(TokenList & args)
+	{
+		// Testing things
+		switch (args.front().type)
+		{
+		case 'n':
+		case 's':
+		{
+			if (args.front("command"))
+			{
+				return execCommand(args.pop_front().str());
+			}
+			else if (args.front("config"))
+			{
+				// group
+				const Token group = args.pop();
+				switch (group.type)
+				{
+				case 'n':
+				case 's':
+				{
+					// name
+					const Token name = args.pop();
+					switch (name.type)
+					{
+					case 'n':
+					case 's':
+					{
+						// value
+						const Token value = args.pop();
+						switch (value.type)
+						{
+						case 'n':
+						case 'i':
+						case 'f':
+						case 's':
+						{
+							if (group.data == "flag")
+							{
+								if (name.data == "itop")
+								{
+									return Var().boolValue(ML_Parser.showItoP(
+										StringUtility::ToBool(value.data)));
+								}
+								else if (name.data == "toks")
+								{
+									return Var().boolValue(ML_Parser.showToks(
+										StringUtility::ToBool(value.data)));
+								}
+								else if (name.data == "tree")
+								{
+									return Var().boolValue(ML_Parser.showTree(
+										StringUtility::ToBool(value.data)));
+								}
+								else
+								{
+									return Var().errorValue("Unknown Name {0}", name.data);
+								}
+							}
+							else
+							{
+								return Var().errorValue("Unknown Group {0}", group.data);
+							}
+						}
+						break;
+						}
+					}
+					break;
+					}
+				}
+				break;
+				}
+			}
+			else
+			{
+				return Var().errorValue("Invalid System Call");
+			}
+		}
+		break;
+		}
+		return Var().voidValue();
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
