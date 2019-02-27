@@ -19,10 +19,6 @@ getcwd = [](); {
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-system = [](system_value); { 
-	return command("system " + system_value); 
-};
-
 chdir = [](chdir_value); { 
 	return command("cd " + chdir_value); 
 };

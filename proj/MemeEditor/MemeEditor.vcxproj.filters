@@ -19,14 +19,14 @@
     <Filter Include="Header Files\Editor">
       <UniqueIdentifier>{c085c6e6-146c-4fd9-a8b2-5ad3e21c5d75}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Loading">
-      <UniqueIdentifier>{a16a0ada-b5f8-488b-80ec-824f359d2fce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Loading">
-      <UniqueIdentifier>{ca321d12-4abc-4177-bd20-bab7be77e764}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\imgui">
       <UniqueIdentifier>{2e3eeef7-cc0e-4b97-b53c-8882c024ca79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utility">
+      <UniqueIdentifier>{a16a0ada-b5f8-488b-80ec-824f359d2fce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility">
+      <UniqueIdentifier>{ca321d12-4abc-4177-bd20-bab7be77e764}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -34,18 +34,15 @@
       <Filter>Resource Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\ResourceMap.hpp">
-      <Filter>Header Files\Loading</Filter>
+      <Filter>Header Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\Manifest.hpp">
-      <Filter>Header Files\Loading</Filter>
+      <Filter>Header Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\ResourceManager.hpp">
-      <Filter>Header Files\Loading</Filter>
+      <Filter>Header Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\Editor.hpp">
-      <Filter>Header Files\Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeEditor\EditorEvents.hpp">
       <Filter>Header Files\Editor</Filter>
     </ClInclude>
     <ClInclude Include="..\..\thirdparty\include\imgui\imstb_truetype.h">
@@ -72,11 +69,14 @@
     <ClInclude Include="..\..\include\MemeEditor\EditorConsole.hpp">
       <Filter>Header Files\Editor</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeEditor\EventSerializer.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\ShaderBuilder.hpp">
       <Filter>Header Files\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeEditor\EventSerializer.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeEditor\EditorEvents.hpp">
+      <Filter>Header Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -96,10 +96,10 @@
       <Filter>Resource Files\imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\Manifest.cpp">
-      <Filter>Source Files\Loading</Filter>
+      <Filter>Source Files\Utility</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\ResourceManager.cpp">
-      <Filter>Source Files\Loading</Filter>
+      <Filter>Source Files\Utility</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\Editor.cpp">
       <Filter>Source Files\Editor</Filter>
@@ -107,11 +107,11 @@
     <ClCompile Include="..\..\src\MemeEditor\EditorConsole.cpp">
       <Filter>Source Files\Editor</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemeEditor\EventSerializer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\ShaderBuilder.cpp">
       <Filter>Source Files\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeEditor\EventSerializer.cpp">
+      <Filter>Source Files\Utility</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

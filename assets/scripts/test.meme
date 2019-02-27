@@ -12,30 +12,40 @@ TEST = nodeid();
 {
 	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-	system("config", "flag", "itop", 0);
-	system("config", "flag", "toks", 0);
-	system("config", "flag", "tree", 0);
-	include("../../../assets/scripts/core.meme");
+	box = [](box_width, box_height);
+	{
+		for (y = 0; y < box_height; y = y + 1);
+		{
+			for (x = 0; x < box_width; x = x + 1);
+			{
+				xmin = (x == 0);
+				xmax = (x == (box_width - 1));
+				xmod = (0 == (x % 2));
+				
+				ymin = (y == 0);
+				ymax = (y == (box_height - 1));
+				ymod = (0 == (y % 2));
 
-	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+				  if (xmin); { print("|"); };
+				elif (xmax); { print("|"); };
+				elif (ymin); { print("-"); };
+				elif (ymax); { print("-"); };
+				elif (xmod); { print("*"); };
+				elif (ymod); { print("."); };
+				else;
+				{
+					print(" ");
+				};
+			};
+			printl("");
+		};
+	};
 
-	arr = [ "a", "b", "c", 1, 2, 3 ];
-	
 	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
 	main = [](args);
 	{
-		command("log msg Hello, World!");
-
-		printl("File: {__FILE__}");
-		printl("Path: {__PATH__}");
-		
-		argc = sizeof(args);
-		for (i = 0; i < argc; i = i + 1);
-		{
-			temp = args[i];
-			printl("Args[{i}]: {temp}");
-		};
+		box(100, 50);
 
 		return true;
 	};

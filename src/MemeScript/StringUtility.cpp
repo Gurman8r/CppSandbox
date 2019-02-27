@@ -273,9 +273,9 @@ namespace ml
 
 	bool	StringUtility::MakeBool(const String & src, bool & value)
 	{
-		if (value = ToBool(src))
+		if (ToBool(src))
 		{
-			return true;
+			return (value = true);
 		}
 
 		if (src == "0")		value = false;	return true;

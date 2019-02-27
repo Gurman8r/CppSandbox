@@ -43,6 +43,7 @@ script:		fib			/scripts/fib.meme
 script:		files		/scripts/files.meme
 script:		test		/scripts/test.meme
 script:		stub		/scripts/stub.meme
+script:		tool		/scripts/tool.meme
 script:		fizzbuzz	/scripts/fizzbuzz.meme
 
 # Shaders

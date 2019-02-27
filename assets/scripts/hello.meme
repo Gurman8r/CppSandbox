@@ -1,15 +1,21 @@
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+
+@"config b flag_itop 0"
+@"config b flag_toks 0"
+@"config b flag_tree 0"
+
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+
 HELLO = nodeid();
 {
 	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
 	main = [](args);
 	{
-		if (argc = sizeof(args));
+		argc = sizeof(args);
+		for (i = 0; i < argc; i = i + 1);
 		{
-			for (i = 0; i < argc; i = i + 1);
-			{
-				printl(args[i]);
-			};
+			printl(args[i]);
 		};
 		
 		printl("* * * * * * * * * * * * * * * * * * * * * * *");

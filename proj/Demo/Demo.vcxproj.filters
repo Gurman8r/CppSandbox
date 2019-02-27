@@ -253,6 +253,9 @@
     <None Include="..\..\assets\scripts\fizzbuzz.meme">
       <Filter>Resource Files\scripts</Filter>
     </None>
+    <None Include="..\..\assets\scripts\tool.meme">
+      <Filter>Resource Files\scripts</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="..\..\assets\fonts\clacon.ttf">
