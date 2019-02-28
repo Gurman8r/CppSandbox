@@ -824,7 +824,7 @@ namespace ml
 		{
 			list.push_back(Token((*it)->evaluate()));
 		}
-		return ML_Interpreter.sysCall(list);
+		return ML_Interpreter.execCommand(list.str());
 	}
 
 	bool AST_System::run()

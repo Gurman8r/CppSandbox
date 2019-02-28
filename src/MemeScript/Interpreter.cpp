@@ -121,10 +121,8 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	Var Interpreter::sysCall(TokenList & args)
+	Var Interpreter::system_callback(TokenList & args)
 	{
-		// Testing things
-
 		// action
 		const Token action = args.pop();
 		switch (action.type)

@@ -38,7 +38,6 @@ namespace DEMO
 	class Demo final : public ml::RenderWindow
 	{
 	public:
-		/* * * * * * * * * * * * * * * * * * * * */
 		Demo();
 		~Demo();
 

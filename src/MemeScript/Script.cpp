@@ -60,31 +60,22 @@ namespace ml
 			if (m_root = ML_Parser.genFromList(m_toks))
 			{
 				// __ARGS__
-				if (!m_root->push_front(new AST_Assign(
+				m_root->push_front(new AST_Assign(
 					Operator::OP_SET,
 					new AST_Name(ML_NAME_ARGS),
-					ML_Parser.generate<AST_Array>(ML_Lexer.genArgsArray(args)))))
-				{
-					return Debug::logError("Script : Failed Generating {0}", ML_NAME_ARGS);
-				}
+					ML_Parser.generate<AST_Array>(ML_Lexer.genArgsArray(args))));
 
 				// __FILE__
-				if (!m_root->push_front(new AST_Assign(
+				m_root->push_front(new AST_Assign(
 					Operator::OP_SET,
 					new AST_Name(ML_NAME_FILE),
-					new AST_String(m_path))))
-				{
-					return Debug::logError("Script : Failed Generating {0}", ML_NAME_FILE);
-				}
+					new AST_String(m_path)));
 
 				// __PATH__
-				if (!m_root->push_front(new AST_Assign(
+				m_root->push_front(new AST_Assign(
 					Operator::OP_SET,
 					new AST_Name(ML_NAME_PATH),
-					new AST_String(ML_FileSystem.pathTo("")))))
-				{
-					return Debug::logError("Script : Failed Generating {0}", ML_NAME_FILE);
-				}
+					new AST_String(ML_FileSystem.pathTo(""))));
 
 				return true;
 			}
