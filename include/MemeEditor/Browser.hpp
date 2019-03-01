@@ -47,7 +47,8 @@ namespace ml
 		String	get_selected_path() const;
 		String	get_selected_ext() const;
 		size_t	get_selected_size() const;
-		String	get_selected_unit() const;
+		size_t	get_selected_size_bytes() const;
+		String	get_selected_size_unit() const;
 
 	private:
 		inline const List<String> * getList() const

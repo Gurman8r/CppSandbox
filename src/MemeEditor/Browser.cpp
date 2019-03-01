@@ -6,9 +6,12 @@
 #include <imgui/imgui.h>
 #include <imgui/imgui_ml.hpp>
 
-#define ML_KILO (1000)
-#define ML_MEGA (ML_KILO * 1000)
-#define ML_GIGA (ML_MEGA * 1000)
+#define ML_KILO		(1000)
+#define ML_MEGA		(ML_KILO * 1000)
+#define ML_GIGA		(ML_MEGA * 1000)
+
+#define ML_MAX_BYTE 50
+#define ML_MAX_SIZE	(ML_KILO * ML_MAX_BYTE)
 
 namespace ml
 {
@@ -208,8 +211,8 @@ namespace ml
 			ImGui::Text("Name: %s", get_selected_name().c_str());
 			ImGui::Text("Type: %s", get_selected_ext().c_str());
 			ImGui::Text("Size: %u %s",
-				get_selected_size(),
-				get_selected_unit().c_str());
+				get_selected_size_bytes(),
+				get_selected_size_unit().c_str());
 			ImGui::EndTabItem();
 		}
 	}
@@ -224,11 +227,24 @@ namespace ml
 		switch (m_type)
 		{
 		case T_Reg:
-			if (!ML_FileSystem.getFileContents(get_selected_path(), m_preview))
+		{
+			if (get_selected_size() < ML_MAX_SIZE)
 			{
-				m_preview = get_selected_path();
+				if (!ML_FileSystem.getFileContents(get_selected_path(), m_preview))
+				{
+					m_preview = get_selected_path();
+				}
 			}
-			break;
+			else
+			{
+				m_preview = String("File Size Exceeds Maximum: {0} {1}")
+					.format(
+						get_selected_size_bytes(), 
+						get_selected_size_unit()
+					);
+			}
+		}
+		break;
 
 		case T_Dir:
 			if (!ML_FileSystem.getDirContents(get_selected_path(), m_preview))
@@ -238,7 +254,7 @@ namespace ml
 			break;
 
 		default: 
-			m_preview = get_selected_name(); 
+			m_preview = get_selected_path();
 			break;
 		}
 	}
@@ -262,7 +278,7 @@ namespace ml
 	{
 		switch (m_type)
 		{
-		case T_Reg: return ML_FileSystem.getFileExt(get_selected_name());
+		case T_Reg: return ML_FileSystem.getFileExt(get_selected_path());
 		case T_Dir: return String("Directory");
 		case T_Lnk: return String("Link");
 		case T_Unk:
@@ -272,40 +288,38 @@ namespace ml
 
 	size_t Browser::get_selected_size() const
 	{
-		switch (m_type)
+		return ML_FileSystem.getFileSize(get_selected_path());;
+	}
+
+	size_t Browser::get_selected_size_bytes() const
+	{
+		const size_t size = get_selected_size();
+		if (size == 0)
 		{
-		case T_Reg:
-		{
-			const size_t size = ML_FileSystem.getFileSize(get_selected_name());
-			if (size == 0)
-			{
-				return 0;
-			}
-			else if (size < ML_KILO) { return size; }
-			else if (size < ML_MEGA) { return size / ML_KILO; }
-			else if (size < ML_GIGA) { return size / ML_MEGA; }
-			else
-			{
-				return size / ML_GIGA;
-			}
+			return 0;
 		}
-		default: return 0;
+		else if (size < ML_KILO) { return size; }
+		else if (size < ML_MEGA) { return size / ML_KILO; }
+		else if (size < ML_GIGA) { return size / ML_MEGA; }
+		else
+		{
+			return size / ML_GIGA;
 		}
 	}
 
-	String Browser::get_selected_unit() const
+	String Browser::get_selected_size_unit() const
 	{
-		const size_t size = ML_FileSystem.getFileSize(get_selected_name());
+		const size_t size = get_selected_size();
 		if (size == 0)
 		{
-			return "";
+			return String(" ");
 		}
-		else if (size < ML_KILO) { return "B"; }
-		else if (size < ML_MEGA) { return "kB"; }
-		else if (size < ML_GIGA) { return "MB"; }
+		else if (size < ML_KILO) { return String("B"); }
+		else if (size < ML_MEGA) { return String("kB"); }
+		else if (size < ML_GIGA) { return String("MB"); }
 		else
 		{
-			return "GB";
+			return String("GB");
 		}
 	}
 
