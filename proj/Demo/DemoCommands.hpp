@@ -25,6 +25,7 @@ namespace DEMO
 	static ml::Var cmd_log		(ml::Args & args); // Debug Log (msg/wrn/err)
 	static ml::Var cmd_ls		(ml::Args & args); // Display a Directory
 	static ml::Var cmd_pause	(ml::Args & args); // System Pause
+	static ml::Var cmd_os		(ml::Args & args); // 
 	static ml::Var cmd_read		(ml::Args & args); // Return File/Dir Contents
 	static ml::Var cmd_set		(ml::Args & args); // Set Variable
 	static ml::Var cmd_system	(ml::Args & args); // System Call

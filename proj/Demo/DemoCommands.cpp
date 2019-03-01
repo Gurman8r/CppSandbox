@@ -7,6 +7,7 @@
 #include <MemeCore/EventSystem.hpp>
 #include <MemeEditor/ResourceManager.hpp>
 #include <MemeCore/FileSystem.hpp>
+#include <MemeCore/OS.hpp>
 
 namespace DEMO
 {
@@ -29,6 +30,7 @@ namespace DEMO
 		ML_Interpreter.install({ "log",		cmd_log		});
 		ML_Interpreter.install({ "ls",		cmd_ls		});
 		ML_Interpreter.install({ "pause",	cmd_pause	});
+		ML_Interpreter.install({ "os",		cmd_os		});
 		ML_Interpreter.install({ "read",	cmd_read	});
 		ML_Interpreter.install({ "set",		cmd_set		});
 		ML_Interpreter.install({ "system",	cmd_system	});
@@ -61,12 +63,17 @@ namespace DEMO
 	ml::Var cmd_cd(ml::Args & args)
 	{
 		const ml::String path = args.pop();
-		if (path.empty() || path == "/")
+		if (path == "/")
 		{
 			return ml::Var().boolValue(ML_FileSystem.setWorkingDir(
 				ML_FileSystem.pathTo("")));
 		}
 		else if (path == "~")
+		{
+			return ml::Var().boolValue(ML_FileSystem.setWorkingDir(
+				ML_FileSystem.pathTo(SETTINGS.pathTo(""))));
+		}
+		else if (path == "")
 		{
 			return ml::Var().boolValue(ML_FileSystem.setWorkingDir(
 				ML_FileSystem.pathTo(SETTINGS.pathTo(""))));
@@ -286,6 +293,18 @@ namespace DEMO
 	ml::Var cmd_pause(ml::Args & args)
 	{
 		return ml::Var().intValue(ml::Debug::pause(EXIT_SUCCESS));
+	}
+
+	ml::Var cmd_os(ml::Args & args)
+	{
+		switch (args.pop_front().size())
+		{
+		case 0	: return ml::Var().errorValue("");
+		case 1	: return ml::Var().boolValue(ML_OS.execute(args[0]));
+		case 2	: return ml::Var().boolValue(ML_OS.execute(args[0], args[1]));
+		case 3	: return ml::Var().boolValue(ML_OS.execute(args[0], args[1], args[2]));
+		default	: return ml::Var().errorValue("");
+		}
 	}
 	
 	ml::Var cmd_read(ml::Args & args)

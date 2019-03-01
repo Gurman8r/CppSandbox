@@ -56,16 +56,19 @@ namespace ml
 		return true;
 	}
 
-	bool File::loadFromFile(const String & filename)
+	bool File::loadFromFile(const String & path)
 	{
-		std::ifstream file((m_path = filename), std::ios_base::binary);
+		std::ifstream file((m_path = path), std::ios_base::binary);
 		if (file)
 		{
 			file >> (*this);
 			file.close();
 			return true;
 		}
-		return Debug::logError("Failed reading file \'{0}\'", filename);
+		else
+		{
+			return Debug::logError("Failed reading file \'{0}\'", path);
+		}
 	}
 
 	bool File::loadFromFile()

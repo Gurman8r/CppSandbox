@@ -104,9 +104,8 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		bool show_ml_editor		= false;
-		bool show_ml_network	= false;
+		bool show_ml_explorer	= false;
 		bool show_ml_shader		= false;
-		bool show_ml_browser	= true;
 		bool show_imgui_demo	= false;
 		bool show_imgui_metrics	= false;
 		bool show_imgui_style	= false;

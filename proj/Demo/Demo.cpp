@@ -108,10 +108,16 @@ namespace DEMO
 					if (SETTINGS.escapeIsExit) { this->close(); }
 				}
 
-				// Show Editor
 				if (ev->getKeyDown(ml::KeyCode::E) && (ev->mods & ML_MOD_CTRL))
 				{
-					show_ml_editor = true;
+					if (ev->mods & ML_MOD_ALT)
+					{
+						show_ml_explorer = true;
+					}
+					else
+					{
+						show_ml_editor = true;
+					}
 				}
 
 				// Show Console
@@ -120,14 +126,8 @@ namespace DEMO
 					ML_EditorConsole.visible() = true;
 				}
 
-				// Show Network Manager
-				if (ev->getKeyDown(ml::KeyCode::N) && ((ev->mods & ML_MOD_CTRL) && (ev->mods & ML_MOD_ALT)))
-				{
-					show_ml_network = true;
-				}
-
 				// Show Shader Builder
-				if (ev->getKeyDown(ml::KeyCode::B) && ((ev->mods & ML_MOD_CTRL) && (ev->mods & ML_MOD_ALT)))
+				if (ev->getKeyDown(ml::KeyCode::B) && ((ev->mods & ML_MOD_CTRL) && (ev->mods & ML_MOD_SHIFT)))
 				{
 					show_ml_shader = true;
 				}
@@ -861,9 +861,8 @@ namespace DEMO
 			{
 				ImGui::MenuItem("Editor", "Ctrl+E", &show_ml_editor);
 				ImGui::MenuItem("Console", "Ctrl+Alt+T", &ML_EditorConsole.visible());
-				ImGui::MenuItem("Network", "Ctrl+Alt+N", &show_ml_network);
+				ImGui::MenuItem("Browser", "Ctrl+Alt+E", &show_ml_explorer);
 				ImGui::MenuItem("Shader Builder", "Ctrl+Alt+B", &show_ml_shader);
-				ImGui::MenuItem("Browser", NULL, &show_ml_browser);
 				ImGui::EndMenu();
 			}
 			if (ImGui::BeginMenu("Help"))
@@ -956,26 +955,10 @@ namespace DEMO
 			ML_EditorConsole.draw();
 		}
 
-		if (show_ml_browser)
+		if (show_ml_explorer)
 		{
 			static ml::Browser browser;
-			browser.draw(&show_ml_browser);
-		}
-
-		// Network
-		if (show_ml_network)
-		{
-			if (!ImGui::Begin("Network", &show_ml_network, ImGuiWindowFlags_AlwaysAutoResize))
-			{
-				ImGui::End();
-				return;
-			}
-			else
-			{
-				ImGui::Separator();
-				ImGui::Text("Placeholder Network Manager");
-				ImGui::End();
-			}
+			browser.draw(&show_ml_explorer);
 		}
 
 		// Shader

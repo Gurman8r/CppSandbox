@@ -1,0 +1,35 @@
+#ifndef _ML_OS_HPP_
+#define _ML_OS_HPP_
+
+#include <MemeCore/ITrackable.hpp>
+#include <MemeCore/IEventListener.hpp>
+
+#define ML_OS ml::OS::getInstance()
+
+namespace ml
+{
+	class ML_CORE_API OS
+		: public ITrackable
+		, public IEventListener
+		, public ISingleton<OS>
+	{
+		friend class ISingleton<OS>;
+
+	private:
+		OS();
+		~OS();
+
+	public:
+		void onEvent(const IEvent * value) override;
+
+	public:
+		void * execute(const String & cmd);
+		void * execute(const String & cmd, const String & file);
+		void * execute(const String & cmd, const String & file, const String & args);
+		void * execute(const String & cmd, const String & file, const String & args, const String & path);
+	};
+
+	
+}
+
+#endif // !_ML_OS_HPP_

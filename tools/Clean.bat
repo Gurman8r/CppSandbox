@@ -1,5 +1,4 @@
-rem Clean.bat
-@echo off
+@echo off & setlocal
 
 set WorkingDir=%cd%\
 set BinDir=%WorkingDir%..\bin
@@ -20,5 +19,8 @@ if exist "%TmpDir%" (
 	rd /s /q %TmpDir%
 	echo Cleaned "%TmpDir%"
 )
+
+cd ..\
+del /S imgui.ini
 
 exit %ERRORLEVEL%

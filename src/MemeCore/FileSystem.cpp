@@ -2,11 +2,12 @@
 #include <MemeCore/EventSystem.hpp>
 #include <MemeCore/Debug.hpp>
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <dirent.h>
+
 #ifdef ML_SYSTEM_WINDOWS
 #include <direct.h>
-#include <../thirdparty/include/dirent.h>
-#else
-#include <dirent.h>
 #endif
 
 namespace ml
@@ -74,55 +75,15 @@ namespace ml
 
 	bool FileSystem::getDirContents(const String & dirName, SStream & value) const
 	{
+		value.str(String());
 		if(DIR * dir = opendir(dirName.c_str()))
 		{
 			while (dirent * e = readdir(dir))
 			{
 				switch (e->d_type)
 				{
-				case DT_REG:
-					value << e->d_name << "";
-					break;
-				case DT_DIR:
-					value << e->d_name << "/";
-					break;
-				case DT_LNK:
-					value << e->d_name << "@";
-					break;
-				default:
-					value << e->d_name << "*";
-					break;
-				}
-				value << ml::endl;
-			}
-			closedir(dir);
-			return true;
-		}
-		value.str(String());
-		return false;
-	}
-
-	bool FileSystem::getDirContents(const String & dirName, List<String> & value) const
-	{
-		value.clear();
-		if (DIR * dir = opendir(dirName.c_str()))
-		{
-			while (dirent * e = readdir(dir))
-			{
-				switch (e->d_type)
-				{
-				case DT_REG:
-					value.push_back(String(e->d_name) + "");
-					break;
-				case DT_DIR:
-					value.push_back(String(e->d_name) + "/");
-					break;
-				case DT_LNK:
-					value.push_back(String(e->d_name) + "@");
-					break;
-				default:
-					value.push_back(String(e->d_name) + "*");
-					break;
+				case DT_DIR	: value << e->d_name << "/" << ml::endl; break;
+				default		: value << e->d_name << " " << ml::endl; break;
 				}
 			}
 			closedir(dir);
@@ -146,7 +107,7 @@ namespace ml
 				case DT_LNK: (type = '@'); break;
 				default:	 (type = '*'); break;
 				}
-				value[type].push_back(String(e->d_name) + type);
+				value[type].push_back(e->d_name);
 			}
 			closedir(dir);
 			return true;
@@ -193,11 +154,39 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
+	bool FileSystem::dirExists(const String & name) const
+	{
+		struct stat info;
+
+		if (stat(name.c_str(), &info) != EXIT_SUCCESS)
+		{
+			return false;
+		}
+		else if (info.st_mode & S_IFDIR)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 	bool FileSystem::fileExists(const String & filename) const
 	{
 		return (bool)(std::ifstream(filename));
 	}
 	
+	String FileSystem::getFileExt(const String & filename) const
+	{
+		size_t i;
+		if ((i = filename.find_last_of('.')) != String::npos)
+		{
+			return filename.substr(i + 1, filename.size() - i - 1);
+		}
+		return String();
+	}
+
 	String FileSystem::getFileName(const String & filename) const
 	{
 		size_t i;
@@ -208,14 +197,14 @@ namespace ml
 		return filename;
 	}
 
-	String FileSystem::getFileExtension(const String & filename) const
+	size_t FileSystem::getFileSize(const String & filename) const
 	{
-		size_t i;
-		if ((i = filename.find_last_of('.')) != String::npos)
+		std::ifstream in(filename, std::ifstream::ate | std::ifstream::binary);
+		if (in)
 		{
-			return filename.substr(i, filename.size() - i);
+			return in.tellg();
 		}
-		return String();
+		return 0;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

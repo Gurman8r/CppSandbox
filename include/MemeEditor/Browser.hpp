@@ -1,7 +1,8 @@
 #ifndef _BROWSER_HPP_
 #define _BROWSER_HPP_
 
-#include <MemeEditor/Editor.hpp>
+#include <MemeEditor/Export.hpp>
+#include <MemeCore/File.hpp>
 #include <MemeCore/IEventListener.hpp>
 
 namespace ml
@@ -11,36 +12,85 @@ namespace ml
 		, public IEventListener
 	{
 	public:
-		using Directory	= HashMap<char, List<String>>;
+		enum : char
+		{
+			T_Reg = ' ',
+			T_Dir = '/',
+			T_Lnk = '@',
+			T_Unk = '*',
+		};
+
+		using Directory = HashMap<char, List<String>>;
 
 	public:
 		Browser();
 		~Browser();
 
-		void onEvent(const IEvent * value);
-
-		void update(const String & path);
+		void onEvent(const IEvent * value) override;
 
 		void draw(bool * p_open);
 
-	private:
-		void draw_file_list();
-		void draw_file_data();
-
-		void	setSelected(char type, size_t index, bool isDouble);
-		String	selectedFile() const;
-		String	selectedType() const;
-
-		inline bool isSelected(char type, size_t index)
+		inline String pathTo(const String & value) const
 		{
-			return (m_type == type) && (m_index == index);
+			return (m_path + "\\" + value);
 		}
 
 	private:
+		void draw_menu();
+		void draw_directory();
+		void draw_file();
+		void draw_file_preview();
+		void draw_file_details();
+
+		void	set_selected(char type, int32_t index);
+		char	get_selected_type() const;
+		String	get_selected_name() const;
+		String	get_selected_ext() const;
+		size_t	get_selected_size() const;
+
+	private:
+		inline List<String> * getList()
+		{
+			Directory::iterator it;
+			return (((it = m_dir.find(m_type)) != m_dir.end())
+				? (&it->second)
+				: (NULL));
+		}
+
+		inline const List<String> * getList() const
+		{
+			Directory::const_iterator it;
+			return (((it = m_dir.find(m_type)) != m_dir.end())
+				? (&it->second)
+				: (NULL));
+		}
+
+		inline String * getFile()
+		{
+			List<String> * list;
+			return ((list = getList())
+				? ((m_index != -1) && ((size_t)m_index < list->size())
+					? &(*list).at((size_t)m_index)
+					: NULL)
+				: NULL);
+		}
+
+		inline const String * getFile() const
+		{
+			const List<String> * list;
+			return ((list = getList())
+				? ((m_index != -1) && ((size_t)m_index < list->size())
+					? &(*list).at((size_t)m_index)
+					: NULL)
+				: NULL);
+		}
+
+	private:
+		bool *		m_open;		// Is Open?
 		String		m_path;		// Working Directory
 		Directory	m_dir;		// Directory Contents
 		char		m_type;		// Selected List
-		size_t		m_index;	// Selected File
+		int32_t		m_index;	// Selected File
 		File		m_preview;	// File Contents
 		bool		m_isDouble;	// Has Double Click
 	};

@@ -55,6 +55,11 @@ namespace ml
 		inline operator String		() const { return to_str(); }
 		inline operator CString		() const { return &at(0); }
 
+		inline File & operator=(const String & value)
+		{
+			return (*this) = File(value);
+		}
+
 	public:
 		inline iterator					begin()			{ return m_data.begin();	}
 		inline iterator					end()			{ return m_data.end();		}

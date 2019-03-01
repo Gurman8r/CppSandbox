@@ -2,22 +2,25 @@
 #include <MemeCore/Debug.hpp>
 #include <MemeCore/FileSystem.hpp>
 #include <MemeCore/EventSystem.hpp>
+#include <MemeCore/OS.hpp>
 #include <imgui/imgui.h>
 #include <imgui/imgui_ml.hpp>
+
+
 
 namespace ml
 {
 	Browser::Browser()
 		: m_path	()
 		, m_dir		()
-		, m_type	('/')
-		, m_index	(0)
+		, m_type	(T_Dir)
+		, m_index	(-1)
 		, m_preview	()
 		, m_isDouble(false)
 	{
 		ML_EventSystem.addListener(CoreEvent::EV_FileSystem, this);
 
-		update(ML_FileSystem.getWorkingDir());
+		onEvent(&FileSystemEvent());
 	}
 
 	Browser::~Browser()
@@ -33,46 +36,33 @@ namespace ml
 		case CoreEvent::EV_FileSystem:
 			if (const auto * ev = value->as<FileSystemEvent>())
 			{
-				update(ML_FileSystem.getWorkingDir());
+				m_path = ML_FileSystem.getWorkingDir();
+				if (ML_FileSystem.getDirContents(m_path, m_dir))
+				{
+					set_selected(T_Unk, -1);
+				}
 			}
 			break;
-		}
-	}
-
-	void Browser::update(const String & path)
-	{
-		if (!ML_FileSystem.getDirContents(path, m_dir))
-		{
-			Debug::logError("Failed Reading Directory: {0}", m_path);
 		}
 	}
 
 	void Browser::draw(bool * p_open)
 	{
 		ImGui::SetNextWindowSize(ImVec2(640, 480), ImGuiCond_FirstUseEver);
-		if (!ImGui::Begin("Browser", p_open, ImGuiWindowFlags_MenuBar))
+		if (!ImGui::Begin("Browser", (m_open = p_open), ImGuiWindowFlags_MenuBar))
 		{
 			ImGui::End();
 			return;
 		}
 		else
 		{
-			// menu bar
-			if (ImGui::BeginMenuBar())
-			{
-				if (ImGui::BeginMenu("File"))
-				{
-					if (ImGui::MenuItem("Close")) { (*p_open) = false; }
-					ImGui::EndMenu();
-				}
-				ImGui::EndMenuBar();
-			}
+			draw_menu();
 
-			ImGui::Text("%s", ML_FileSystem.getWorkingDir().c_str());
-			
-			draw_file_list();
+			draw_directory();
+
 			ImGui::SameLine();
-			draw_file_data();
+
+			draw_file();
 
 			// Handle Double Clicks
 			if (m_isDouble)
@@ -80,12 +70,7 @@ namespace ml
 				m_isDouble = false;
 				switch (m_type)
 				{
-				case '/': 
-				if (!ML_FileSystem.setWorkingDir(selectedFile()))
-				{
-					Debug::logError("Failed Opening Directory {0}", selectedFile());
-				}
-				break;
+				case T_Dir: ML_FileSystem.setWorkingDir(get_selected_name()); break;
 				}
 			}
 			
@@ -95,30 +80,74 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void Browser::draw_file_list()
+	void Browser::draw_menu()
+	{
+		if (ImGui::BeginMenuBar())
+		{
+			if (ImGui::BeginMenu("File"))
+			{
+				if (ImGui::MenuItem("Close")) { (*m_open) = false; }
+
+				ImGui::EndMenu();
+			}
+			ImGui::EndMenuBar();
+		}
+
+		ImGui::Text("%s", m_path.c_str());
+	}
+
+	void Browser::draw_directory()
 	{
 		ImGui::BeginChild("Directory View", { 256, 0 }, true);
 		{
 			m_isDouble = false;
 
+			ImVec4 col_default_text = ImGui::GetStyleColorVec4(ImGuiCol_Text);
+
 			for (const Pair<char, List<String>> & pair : m_dir)
 			{
-				for (size_t i = 0; i < pair.second.size(); i++)
+				const char & type = pair.first;
+				const List<String> & list = pair.second;
+
+				ImVec4 col;
+				switch (type)
 				{
+				case T_Dir	: col = ImColor(0.0f, 0.4f, 1.0f, 1.0f); break;
+				case T_Reg	: col = ImColor(0.0f, 1.0f, 0.4f, 1.0f); break;
+				case T_Lnk	: col = ImColor(0.0f, 1.0f, 1.0f, 0.0f); break;
+				default		: col = (col_default_text); break;
+				}
+
+				ImGui::PushStyleColor(ImGuiCol_Text, col);
+				for (size_t i = 0, imax = list.size(); i < imax; i++)
+				{
+					const String & name = list.at(i);
+
 					if (ImGui::Selectable(
-						(pair.second.at(i).c_str()),
-						(isSelected(pair.first, i)),
+						((name + type).c_str()),
+						((m_type == type) && ((size_t)m_index == i)),
 						(ImGuiSelectableFlags_AllowDoubleClick)))
 					{
-						setSelected(pair.first, i, ImGui::IsMouseDoubleClicked(0));
+						if (ImGui::IsMouseDoubleClicked(0))
+						{
+							(m_isDouble = true); break;
+						}
+						else
+						{
+							set_selected(pair.first, (int32_t)i);
+						}
 					}
 				}
+				ImGui::PopStyleColor();
+				ImGui::Separator();
+
+				if (m_isDouble) break;
 			}
 		}
 		ImGui::EndChild();
 	}
 
-	void Browser::draw_file_data()
+	void Browser::draw_file()
 	{
 		ImGui::BeginGroup();
 		{
@@ -128,75 +157,109 @@ namespace ml
 
 				if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None))
 				{
-					if (ImGui::BeginTabItem("Preview"))
-					{
-						switch (m_type)
-						{
-						case ' ':
-							ImGui::TextWrapped("%s", (CString)m_preview);
-							break;
-						default: 
-							ImGui::TextWrapped("%s", selectedFile().c_str());
-							break;
-						}
-						ImGui::EndTabItem();
-					}
-					if (ImGui::BeginTabItem("Details"))
-					{
-						ImGui::Text("Name: %s", selectedFile().c_str());
-						ImGui::Text("Type: %s", selectedType().c_str());
-						ImGui::EndTabItem();
-					}
+					draw_file_preview();
+					
+					draw_file_details();
+					
 					ImGui::EndTabBar();
 				}
 			}
 			ImGui::EndChild();
 
-			if (ImGui::Button("Revert"))
+			ImGui::Separator();
+
+			if (ImGui::Button("Open"))
 			{
-			}
-			ImGui::SameLine();
-			if (ImGui::Button("Save"))
-			{
+				ML_OS.execute("open", this->pathTo(get_selected_name()));
 			}
 		}
 		ImGui::EndGroup();
 	}
 
+	void Browser::draw_file_preview()
+	{
+		if (ImGui::BeginTabItem("Preview"))
+		{
+			switch (m_type)
+			{
+			case T_Dir:
+			case T_Reg: 
+				ImGui::TextWrapped("%s", (CString)m_preview); 
+				break;
+
+			default: ImGui::TextWrapped("%s", get_selected_name().c_str()); break;
+			}
+			ImGui::EndTabItem();
+		}
+	}
+
+	void Browser::draw_file_details()
+	{
+		if (ImGui::BeginTabItem("Details"))
+		{
+			ImGui::Text("Name: %s", get_selected_name().c_str());
+			ImGui::Text("Type: %s", get_selected_ext().c_str());
+			ImGui::Text("Size: %u (B)", ML_FileSystem.getFileSize(get_selected_name()));
+			ImGui::EndTabItem();
+		}
+	}
+
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void Browser::setSelected(char type, size_t index, bool isDouble)
+	void Browser::set_selected(char type, int32_t index)
 	{
 		m_type = type;
 		m_index = index;
-		m_preview.loadFromFile(selectedFile());
-		
-		if (isDouble)
-		{
-			m_isDouble = true;
-		}
-	}
 
-	String Browser::selectedFile() const
-	{
-		Directory::const_iterator it;
-		if ((it = m_dir.find(m_type)) != m_dir.end())
+		switch (m_type)
 		{
-			if (m_index < it->second.size())
+		case T_Reg:
+			m_preview.loadFromFile(get_selected_name());
+			break;
+
+		case T_Dir:
+			if (!ML_FileSystem.getDirContents(pathTo(get_selected_name()), m_preview.data()))
 			{
-				return it->second.at(m_index);
+				m_preview = get_selected_name();
 			}
+			break;
+
+		default:
+			m_preview = get_selected_name();
+			break;
 		}
-		return String();
 	}
 
-	String Browser::selectedType() const
+	char Browser::get_selected_type() const
+	{
+		return m_type;
+	}
+
+	String Browser::get_selected_name() const
+	{
+		const String * file;
+		return ((file = getFile())
+			? (*file)
+			: String());
+	}
+
+	String Browser::get_selected_ext() const
 	{
 		switch (m_type)
 		{
-		case ' ': return ML_FileSystem.getFileExtension(selectedFile());
-		case '/': return String("Directory");
-		default	: return String("?");
+		case T_Reg	: return ML_FileSystem.getFileExt(get_selected_name());
+		case T_Dir	: return String("Directory");
+		case T_Lnk	: return String("Link");
+		default		: return String();
+		}
+	}
+
+	size_t Browser::get_selected_size() const
+	{
+		switch (m_type)
+		{
+		case T_Reg	: ML_FileSystem.getFileSize(get_selected_name());
+		default		: return 0;
 		}
 	}
 

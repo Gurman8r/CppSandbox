@@ -42,7 +42,6 @@ namespace ml
 		bool	getDirContents(const String & dirName, List<char> & value) const;
 		bool	getDirContents(const String & dirName, String & value) const;
 		bool	getDirContents(const String & dirName, SStream & value) const;
-		bool	getDirContents(const String & dirName, List<String> & value) const;
 		bool	getDirContents(const String & dirName, HashMap<char, List<String>> & value) const;
 
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -53,9 +52,11 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
+		bool	dirExists(const String & dirName) const;
 		bool	fileExists(const String & filename) const;
+		String	getFileExt(const String & filename) const;
 		String  getFileName(const String & filename) const;
-		String	getFileExtension(const String & filename) const;
+		size_t	getFileSize(const String & filename) const;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	};

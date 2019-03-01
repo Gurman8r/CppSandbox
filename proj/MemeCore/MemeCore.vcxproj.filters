@@ -225,6 +225,9 @@
     <ClInclude Include="..\..\include\MemeCore\StateMachine.hpp">
       <Filter>Header Files\State Machine</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\OS.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeCore\EventSystem.cpp">
@@ -274,6 +277,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\StateMachine.cpp">
       <Filter>Source Files\State Machine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeCore\OS.cpp">
+      <Filter>Source Files\Utility</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
