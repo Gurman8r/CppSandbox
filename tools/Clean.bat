@@ -20,7 +20,4 @@ if exist "%TmpDir%" (
 	echo Cleaned "%TmpDir%"
 )
 
-cd ..\
-del /S imgui.ini
-
 exit %ERRORLEVEL%
