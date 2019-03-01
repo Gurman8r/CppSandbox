@@ -3,9 +3,10 @@
 #include <MemeCore/EventSystem.hpp>
 #include <MemeWindow/WindowEvents.hpp>
 #include <MemeEditor/EditorConsole.hpp>
+#include <MemeEditor/ShaderBuilder.hpp>
+#include <MemeEditor/Browser.hpp>
 #include <imgui/imgui.h>
 #include <imgui/imgui_ml.hpp>
-#include <MemeEditor/ShaderBuilder.hpp>
 
 namespace DEMO
 {
@@ -35,24 +36,24 @@ namespace DEMO
 
 		switch (value->eventID())
 		{
-		case DemoEvent::EV_Enter:		return onEnter(*value->Cast<EnterEvent>());
-		case DemoEvent::EV_Load:		return onLoad(*value->Cast<LoadEvent>());
-		case DemoEvent::EV_Start:		return onStart(*value->Cast<StartEvent>());
-		case DemoEvent::EV_FixedUpdate:	return onFixedUpdate(*value->Cast<FixedUpdateEvent>());
-		case DemoEvent::EV_Update:		return onUpdate(*value->Cast<UpdateEvent>());
-		case DemoEvent::EV_Draw:		return onDraw(*value->Cast<DrawEvent>());
-		case DemoEvent::EV_Gui:			return onGui(*value->Cast<GuiEvent>());
-		case DemoEvent::EV_Exit:		return onExit(*value->Cast<ExitEvent>());
+		case DemoEvent::EV_Enter:		return onEnter(*value->as<EnterEvent>());
+		case DemoEvent::EV_Load:		return onLoad(*value->as<LoadEvent>());
+		case DemoEvent::EV_Start:		return onStart(*value->as<StartEvent>());
+		case DemoEvent::EV_FixedUpdate:	return onFixedUpdate(*value->as<FixedUpdateEvent>());
+		case DemoEvent::EV_Update:		return onUpdate(*value->as<UpdateEvent>());
+		case DemoEvent::EV_Draw:		return onDraw(*value->as<DrawEvent>());
+		case DemoEvent::EV_Gui:			return onGui(*value->as<GuiEvent>());
+		case DemoEvent::EV_Exit:		return onExit(*value->as<ExitEvent>());
 
 		case ml::CoreEvent::EV_RequestExit:
-			if (const auto * ev = value->Cast<ml::RequestExitEvent>())
+			if (const auto * ev = value->as<ml::RequestExitEvent>())
 			{
 				this->close();
 			}
 			break;
 
 		case ml::WindowEvent::EV_FramebufferSize:
-			if (const auto * ev = value->Cast<ml::FramebufferSizeEvent>())
+			if (const auto * ev = value->as<ml::FramebufferSizeEvent>())
 			{
 				this->setViewport(ml::vec2i::Zero, ev->size());
 
@@ -82,7 +83,7 @@ namespace DEMO
 			break;
 
 		case ml::WindowEvent::EV_Key:
-			if (const auto * ev = value->Cast<ml::KeyEvent>())
+			if (const auto * ev = value->as<ml::KeyEvent>())
 			{
 				// Reload Shaders
 				if (ev->getKeyDown(ml::KeyCode::Num1))
@@ -862,6 +863,7 @@ namespace DEMO
 				ImGui::MenuItem("Console", "Ctrl+Alt+T", &ML_EditorConsole.visible());
 				ImGui::MenuItem("Network", "Ctrl+Alt+N", &show_ml_network);
 				ImGui::MenuItem("Shader Builder", "Ctrl+Alt+B", &show_ml_shader);
+				ImGui::MenuItem("Browser", NULL, &show_ml_browser);
 				ImGui::EndMenu();
 			}
 			if (ImGui::BeginMenu("Help"))
@@ -954,6 +956,12 @@ namespace DEMO
 			ML_EditorConsole.draw();
 		}
 
+		if (show_ml_browser)
+		{
+			static ml::Browser browser;
+			browser.draw(&show_ml_browser);
+		}
+
 		// Network
 		if (show_ml_network)
 		{
@@ -965,7 +973,7 @@ namespace DEMO
 			else
 			{
 				ImGui::Separator();
-				ImGui::Text("Network Manager Placeholder");
+				ImGui::Text("Placeholder Network Manager");
 				ImGui::End();
 			}
 		}

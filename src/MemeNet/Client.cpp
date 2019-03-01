@@ -28,7 +28,7 @@ namespace ml
 		switch (value->eventID())
 		{
 		case NetworkEvent::EV_ClientRecievePacket:
-			if (auto ev = value->Cast<ClientRecievePacketEvent>())
+			if (auto ev = value->as<ClientRecievePacketEvent>())
 			{
 				Debug::log("CLIENT -> {0}", (*ev));
 			}

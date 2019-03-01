@@ -69,14 +69,14 @@ namespace ml
 
 	public:
 		template <class T>
-		inline const T * Cast() const
+		inline const T * as() const
 		{
 			assert_typeof_event(T);
 			return dynamic_cast<const T *>(this);
 		}
 
 		template <class T>
-		inline T * Cast()
+		inline T * as()
 		{
 			assert_typeof_event(T);
 			return dynamic_cast<T *>(this);

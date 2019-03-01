@@ -1,4 +1,5 @@
 #include <MemeCore/FileSystem.hpp>
+#include <MemeCore/EventSystem.hpp>
 #include <MemeCore/Debug.hpp>
 
 #ifdef ML_SYSTEM_WINDOWS
@@ -26,7 +27,12 @@ namespace ml
 	bool FileSystem::setWorkingDir(const String & value)
 	{
 #ifdef ML_SYSTEM_WINDOWS
-		return (_chdir(value.c_str()) == EXIT_SUCCESS);
+		if (_chdir(value.c_str()) == EXIT_SUCCESS)
+		{
+			ML_EventSystem.fireEvent(FileSystemEvent());
+			return true;
+		}
+		return false;
 #else
 		return false;
 #endif
@@ -96,6 +102,57 @@ namespace ml
 		return false;
 	}
 
+	bool FileSystem::getDirContents(const String & dirName, List<String> & value) const
+	{
+		value.clear();
+		if (DIR * dir = opendir(dirName.c_str()))
+		{
+			while (dirent * e = readdir(dir))
+			{
+				switch (e->d_type)
+				{
+				case DT_REG:
+					value.push_back(String(e->d_name) + "");
+					break;
+				case DT_DIR:
+					value.push_back(String(e->d_name) + "/");
+					break;
+				case DT_LNK:
+					value.push_back(String(e->d_name) + "@");
+					break;
+				default:
+					value.push_back(String(e->d_name) + "*");
+					break;
+				}
+			}
+			closedir(dir);
+			return true;
+		}
+		return false;
+	}
+
+	bool FileSystem::getDirContents(const String & dirName, HashMap<char, List<String>> & value) const
+	{
+		value.clear();
+		if (DIR * dir = opendir(dirName.c_str()))
+		{
+			while (dirent * e = readdir(dir))
+			{
+				char type;
+				switch (e->d_type)
+				{
+				case DT_DIR: (type = '/'); break;
+				case DT_REG: (type = ' '); break;
+				case DT_LNK: (type = '@'); break;
+				default:	 (type = '*'); break;
+				}
+				value[type].push_back(String(e->d_name) + type);
+			}
+			closedir(dir);
+			return true;
+		}
+		return false;
+	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 

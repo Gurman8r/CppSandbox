@@ -2,7 +2,6 @@
 #define _FILE_SYSTEM_HPP_
 
 #include <MemeCore/ISingleton.hpp>
-#include <MemeCore/Directory.hpp>
 #include <MemeCore/File.hpp>
 #include <MemeCore/List.hpp>
 
@@ -43,6 +42,8 @@ namespace ml
 		bool	getDirContents(const String & dirName, List<char> & value) const;
 		bool	getDirContents(const String & dirName, String & value) const;
 		bool	getDirContents(const String & dirName, SStream & value) const;
+		bool	getDirContents(const String & dirName, List<String> & value) const;
+		bool	getDirContents(const String & dirName, HashMap<char, List<String>> & value) const;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 

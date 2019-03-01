@@ -57,12 +57,12 @@ namespace ml
 		switch (value->eventID())
 		{
 		case WindowEvent::EV_WindowSize:
-			if(auto ev = value->Cast<WindowSizeEvent>())
+			if(auto ev = value->as<WindowSizeEvent>())
 			{
 			}
 		break;
 		case WindowEvent::EV_FramebufferSize:
-			if (auto ev = value->Cast<FramebufferSizeEvent>())
+			if (auto ev = value->as<FramebufferSizeEvent>())
 			{
 				setViewport({ 0, 0 }, getFramebufferSize());
 			}

@@ -158,6 +158,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\include\MemeEditor\Browser.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Editor.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\EditorEvents.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\EventSerializer.hpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="..\..\thirdparty\include\imgui\imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\MemeEditor\Browser.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\Editor.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\EditorConsole.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\EventSerializer.cpp" />

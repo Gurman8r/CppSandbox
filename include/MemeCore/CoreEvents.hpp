@@ -13,6 +13,7 @@ namespace ml
 		{
 			MIN_CORE_EVENT = IEvent::EV_CORE + 1,
 			EV_RequestExit,
+			EV_FileSystem,
 			MAX_CORE_EVENT
 		};
 
@@ -28,6 +29,21 @@ namespace ml
 	{
 		RequestExitEvent()
 			: CoreEvent(EV_RequestExit)
+		{
+		}
+
+		inline void serialize(std::ostream & out) const override
+		{
+			out << "[" << get_type().name() << "] ";
+		}
+	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	struct ML_CORE_API FileSystemEvent : public CoreEvent
+	{
+		FileSystemEvent()
+			: CoreEvent(EV_FileSystem)
 		{
 		}
 

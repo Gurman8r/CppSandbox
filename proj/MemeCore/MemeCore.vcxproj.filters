@@ -156,9 +156,6 @@
     <ClInclude Include="..\..\include\MemeCore\OStream.hpp">
       <Filter>Header Files\STD</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Directory.hpp">
-      <Filter>Header Files\FS</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\FileSystem.hpp">
       <Filter>Header Files\FS</Filter>
     </ClInclude>
@@ -261,9 +258,6 @@
       <Filter>Header Files\Interfaces</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\FileSystem.cpp">
-      <Filter>Source Files\FS</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeCore\Directory.cpp">
       <Filter>Source Files\FS</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\Maths.cpp">

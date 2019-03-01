@@ -159,7 +159,6 @@
     <ClInclude Include="..\..\include\MemeCore\Chunk.hpp" />
     <ClInclude Include="..\..\include\MemeCore\CoreEvents.hpp" />
     <ClInclude Include="..\..\include\MemeCore\CString.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\Directory.hpp" />
     <ClInclude Include="..\..\include\MemeCore\File.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Function.hpp" />
     <ClInclude Include="..\..\include\MemeCore\IHandle.hpp" />
@@ -213,7 +212,6 @@
     <ClCompile Include="..\..\include\MemeCore\IEnumerable.hpp" />
     <ClCompile Include="..\..\src\MemeCore\Console.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Debug.cpp" />
-    <ClCompile Include="..\..\src\MemeCore\Directory.cpp" />
     <ClCompile Include="..\..\src\MemeCore\EventSystem.cpp" />
     <ClCompile Include="..\..\src\MemeCore\File.cpp" />
     <ClCompile Include="..\..\src\MemeCore\FileSystem.cpp" />
