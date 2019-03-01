@@ -6,17 +6,19 @@
 #include <imgui/imgui.h>
 #include <imgui/imgui_ml.hpp>
 
-#define ML_MAX_KILO (1000)
-#define ML_MAX_MEGA (1000 * 1000)
-#define ML_MAX_GIGA (1000 * 1000 * 1000)
+#define ML_KILO (1000)
+#define ML_MEGA (ML_KILO * 1000)
+#define ML_GIGA (ML_MEGA * 1000)
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	Browser::Browser()
 		: m_path()
 		, m_dir()
 		, m_type(T_Dir)
-		, m_index(-1)
+		, m_index(0)
 		, m_preview()
 		, m_isDouble(false)
 	{
@@ -41,7 +43,7 @@ namespace ml
 				m_path = ML_FileSystem.getWorkingDir();
 				if (ML_FileSystem.getDirContents(m_path, m_dir))
 				{
-					set_selected(T_Unk, -1);
+					set_selected(T_Dir, 0);
 				}
 			}
 			break;
@@ -129,7 +131,7 @@ namespace ml
 
 					if (ImGui::Selectable(
 						((name + type).c_str()),
-						((m_type == type) && ((size_t)m_index == i)),
+						((m_type == type) && (m_index == i)),
 						(ImGuiSelectableFlags_AllowDoubleClick)))
 					{
 						if (ImGui::IsMouseDoubleClicked(0))
@@ -207,7 +209,7 @@ namespace ml
 			ImGui::Text("Type: %s", get_selected_ext().c_str());
 			ImGui::Text("Size: %u %s",
 				get_selected_size(),
-				get_selected_unit());
+				get_selected_unit().c_str());
 			ImGui::EndTabItem();
 		}
 	}
@@ -279,12 +281,12 @@ namespace ml
 			{
 				return 0;
 			}
-			else if (size < ML_MAX_KILO) { return size; }
-			else if (size < ML_MAX_MEGA) { return size / ML_MAX_KILO; }
-			else if (size < ML_MAX_GIGA) { return size / ML_MAX_MEGA; }
+			else if (size < ML_KILO) { return size; }
+			else if (size < ML_MEGA) { return size / ML_KILO; }
+			else if (size < ML_GIGA) { return size / ML_MEGA; }
 			else
 			{
-				return size / ML_MAX_GIGA;
+				return size / ML_GIGA;
 			}
 		}
 		default: return 0;
@@ -298,9 +300,9 @@ namespace ml
 		{
 			return "";
 		}
-		else if (size < ML_MAX_KILO) { return "B"; }
-		else if (size < ML_MAX_MEGA) { return "kB"; }
-		else if (size < ML_MAX_GIGA) { return "MB"; }
+		else if (size < ML_KILO) { return "B"; }
+		else if (size < ML_MEGA) { return "kB"; }
+		else if (size < ML_GIGA) { return "MB"; }
 		else
 		{
 			return "GB";

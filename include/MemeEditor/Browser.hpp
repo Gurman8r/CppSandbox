@@ -62,8 +62,8 @@ namespace ml
 		{
 			const List<String> * list;
 			return ((list = getList())
-				? ((m_index != -1) && ((size_t)m_index < list->size())
-					? &(*list).at((size_t)m_index)
+				? ((m_index < list->size())
+					? &(*list).at(m_index)
 					: NULL)
 				: NULL);
 		}
@@ -73,7 +73,7 @@ namespace ml
 		String		m_path;		// Working Directory
 		Directory	m_dir;		// Directory Contents
 		char		m_type;		// Selected List
-		int32_t		m_index;	// Selected File
+		size_t		m_index;	// Selected File
 		String		m_preview;	// File Contents
 		bool		m_isDouble;	// Has Double Click
 	};
