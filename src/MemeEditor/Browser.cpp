@@ -10,8 +10,7 @@
 #define ML_MEGA		(ML_KILO * 1000)
 #define ML_GIGA		(ML_MEGA * 1000)
 
-#define ML_MAX_BYTE 50
-#define ML_MAX_SIZE	(ML_KILO * ML_MAX_BYTE)
+#define ML_MAX_SIZE	(ML_KILO * 50)
 
 namespace ml
 {
@@ -237,8 +236,12 @@ namespace ml
 			}
 			else
 			{
-				m_preview = String("File Size Exceeds Maximum: {0} {1}")
+				m_preview = String(
+					"File Size Exceeds Maximum of {0} {1}.\n"
+					"Size is {2} {3}.")
 					.format(
+						(ML_MAX_SIZE / 1000),
+						"kB",
 						get_selected_size_bytes(), 
 						get_selected_size_unit()
 					);
