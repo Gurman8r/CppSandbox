@@ -6,16 +6,18 @@
 #include <imgui/imgui.h>
 #include <imgui/imgui_ml.hpp>
 
-
+#define ML_MAX_KILO (1000)
+#define ML_MAX_MEGA (1000 * 1000)
+#define ML_MAX_GIGA (1000 * 1000 * 1000)
 
 namespace ml
 {
 	Browser::Browser()
-		: m_path	()
-		, m_dir		()
-		, m_type	(T_Dir)
-		, m_index	(-1)
-		, m_preview	()
+		: m_path()
+		, m_dir()
+		, m_type(T_Dir)
+		, m_index(-1)
+		, m_preview()
 		, m_isDouble(false)
 	{
 		ML_EventSystem.addListener(CoreEvent::EV_FileSystem, this);
@@ -70,10 +72,12 @@ namespace ml
 				m_isDouble = false;
 				switch (m_type)
 				{
-				case T_Dir: ML_FileSystem.setWorkingDir(get_selected_name()); break;
+				case T_Dir: 
+					ML_FileSystem.setWorkingDir(get_selected_name()); 
+					break;
 				}
 			}
-			
+
 		}
 		ImGui::End();
 	}
@@ -112,10 +116,10 @@ namespace ml
 				ImVec4 col;
 				switch (type)
 				{
-				case T_Dir	: col = ImColor(0.0f, 0.4f, 1.0f, 1.0f); break;
-				case T_Reg	: col = ImColor(0.0f, 1.0f, 0.4f, 1.0f); break;
-				case T_Lnk	: col = ImColor(0.0f, 1.0f, 1.0f, 0.0f); break;
-				default		: col = (col_default_text); break;
+				case T_Dir: col = ImColor(0.0f, 0.4f, 1.0f, 1.0f); break; // blue
+				case T_Reg: col = ImColor(0.0f, 1.0f, 0.4f, 1.0f); break; // green
+				case T_Lnk: col = ImColor(0.0f, 1.0f, 1.0f, 0.0f); break; // cyan
+				default: col = (col_default_text); break;
 				}
 
 				ImGui::PushStyleColor(ImGuiCol_Text, col);
@@ -158,9 +162,9 @@ namespace ml
 				if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None))
 				{
 					draw_file_preview();
-					
+
 					draw_file_details();
-					
+
 					ImGui::EndTabBar();
 				}
 			}
@@ -170,7 +174,7 @@ namespace ml
 
 			if (ImGui::Button("Open"))
 			{
-				ML_OS.execute("open", this->pathTo(get_selected_name()));
+				ML_OS.execute("open", get_selected_path());
 			}
 		}
 		ImGui::EndGroup();
@@ -183,11 +187,13 @@ namespace ml
 			switch (m_type)
 			{
 			case T_Dir:
-			case T_Reg: 
-				ImGui::TextWrapped("%s", (CString)m_preview); 
+			case T_Reg:
+				ImGui::TextWrapped("%s", m_preview.c_str());
 				break;
 
-			default: ImGui::TextWrapped("%s", get_selected_name().c_str()); break;
+			default:
+				ImGui::TextWrapped("%s", get_selected_name().c_str());
+				break;
 			}
 			ImGui::EndTabItem();
 		}
@@ -199,7 +205,9 @@ namespace ml
 		{
 			ImGui::Text("Name: %s", get_selected_name().c_str());
 			ImGui::Text("Type: %s", get_selected_ext().c_str());
-			ImGui::Text("Size: %u (B)", ML_FileSystem.getFileSize(get_selected_name()));
+			ImGui::Text("Size: %u %s",
+				get_selected_size(),
+				get_selected_unit());
 			ImGui::EndTabItem();
 		}
 	}
@@ -214,43 +222,49 @@ namespace ml
 		switch (m_type)
 		{
 		case T_Reg:
-			m_preview.loadFromFile(get_selected_name());
-			break;
-
-		case T_Dir:
-			if (!ML_FileSystem.getDirContents(pathTo(get_selected_name()), m_preview.data()))
+			if (!ML_FileSystem.getFileContents(get_selected_path(), m_preview))
 			{
-				m_preview = get_selected_name();
+				m_preview = get_selected_path();
 			}
 			break;
 
-		default:
-			m_preview = get_selected_name();
+		case T_Dir:
+			if (!ML_FileSystem.getDirContents(get_selected_path(), m_preview))
+			{
+				m_preview = get_selected_path();
+			}
+			break;
+
+		default: 
+			m_preview = get_selected_name(); 
 			break;
 		}
 	}
 
-	char Browser::get_selected_type() const
-	{
-		return m_type;
-	}
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	String Browser::get_selected_name() const
 	{
 		const String * file;
 		return ((file = getFile())
-			? (*file)
-			: String());
+			? (*file).c_str()
+			: "");
+	}
+
+	String Browser::get_selected_path() const
+	{
+		return pathTo(get_selected_name());
 	}
 
 	String Browser::get_selected_ext() const
 	{
 		switch (m_type)
 		{
-		case T_Reg	: return ML_FileSystem.getFileExt(get_selected_name());
-		case T_Dir	: return String("Directory");
-		case T_Lnk	: return String("Link");
-		default		: return String();
+		case T_Reg: return ML_FileSystem.getFileExt(get_selected_name());
+		case T_Dir: return String("Directory");
+		case T_Lnk: return String("Link");
+		case T_Unk:
+		default: return String("?");
 		}
 	}
 
@@ -258,8 +272,38 @@ namespace ml
 	{
 		switch (m_type)
 		{
-		case T_Reg	: ML_FileSystem.getFileSize(get_selected_name());
-		default		: return 0;
+		case T_Reg:
+		{
+			const size_t size = ML_FileSystem.getFileSize(get_selected_name());
+			if (size == 0)
+			{
+				return 0;
+			}
+			else if (size < ML_MAX_KILO) { return size; }
+			else if (size < ML_MAX_MEGA) { return size / ML_MAX_KILO; }
+			else if (size < ML_MAX_GIGA) { return size / ML_MAX_MEGA; }
+			else
+			{
+				return size / ML_MAX_GIGA;
+			}
+		}
+		default: return 0;
+		}
+	}
+
+	String Browser::get_selected_unit() const
+	{
+		const size_t size = ML_FileSystem.getFileSize(get_selected_name());
+		if (size == 0)
+		{
+			return "";
+		}
+		else if (size < ML_MAX_KILO) { return "B"; }
+		else if (size < ML_MAX_MEGA) { return "kB"; }
+		else if (size < ML_MAX_GIGA) { return "MB"; }
+		else
+		{
+			return "GB";
 		}
 	}
 

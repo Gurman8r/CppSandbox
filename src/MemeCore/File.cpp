@@ -65,10 +65,7 @@ namespace ml
 			file.close();
 			return true;
 		}
-		else
-		{
-			return Debug::logError("Failed reading file \'{0}\'", path);
-		}
+		return false;
 	}
 
 	bool File::loadFromFile()
@@ -85,7 +82,7 @@ namespace ml
 			file.close();
 			return true;
 		}
-		return Debug::logError("Failed writing file \'{0}\'", filename);
+		return false;
 	}
 
 	bool File::saveToFile() const

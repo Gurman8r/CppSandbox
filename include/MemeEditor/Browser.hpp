@@ -43,36 +43,19 @@ namespace ml
 		void draw_file_details();
 
 		void	set_selected(char type, int32_t index);
-		char	get_selected_type() const;
 		String	get_selected_name() const;
+		String	get_selected_path() const;
 		String	get_selected_ext() const;
 		size_t	get_selected_size() const;
+		String	get_selected_unit() const;
 
 	private:
-		inline List<String> * getList()
-		{
-			Directory::iterator it;
-			return (((it = m_dir.find(m_type)) != m_dir.end())
-				? (&it->second)
-				: (NULL));
-		}
-
 		inline const List<String> * getList() const
 		{
 			Directory::const_iterator it;
 			return (((it = m_dir.find(m_type)) != m_dir.end())
 				? (&it->second)
 				: (NULL));
-		}
-
-		inline String * getFile()
-		{
-			List<String> * list;
-			return ((list = getList())
-				? ((m_index != -1) && ((size_t)m_index < list->size())
-					? &(*list).at((size_t)m_index)
-					: NULL)
-				: NULL);
 		}
 
 		inline const String * getFile() const
@@ -91,7 +74,7 @@ namespace ml
 		Directory	m_dir;		// Directory Contents
 		char		m_type;		// Selected List
 		int32_t		m_index;	// Selected File
-		File		m_preview;	// File Contents
+		String		m_preview;	// File Contents
 		bool		m_isDouble;	// Has Double Click
 	};
 }
