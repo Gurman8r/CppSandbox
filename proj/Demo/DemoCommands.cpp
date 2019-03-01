@@ -483,10 +483,14 @@ namespace DEMO
 
 			args.pop_front();
 
-			if ((scr->*build_fun)(args) && scr->run())
+			if ((scr->*build_fun)(args))
 			{
-				return scr->retv();
+				if (scr->run())
+				{
+					return scr->retv();
+				}
 			}
+			return ml::Var().stringValue(name);
 		}
 		return ml::Var().errorValue("Script not found: {0}", name);
 	}

@@ -42,8 +42,6 @@ namespace ml
 		Var execTree(const TokenTree & value);
 		Var	execBlock(AST_Block * value);
 
-		Var system_callback(TokenList & args);
-
 		inline const CommandMap & commands() const { return m_commands; }
 
 	public:

@@ -4,7 +4,7 @@
 @"config b flag_itop 0"
 @"config b flag_toks 0"
 @"config b flag_tree 1"
-@"config i runTests  1"
+@"config i runTests 0"
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
@@ -12,13 +12,15 @@ TEST = nodeid();
 {
 	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
-
 	main = [](args);
 	{
-		system("log", "msg", "Here!");
+		argc = sizeof(args);
+		for (i = 0; i < argc; i = i + 1);
+		{
+			printl(args[i]);
+		};
 
-		system("pause");
+		system("log", "msg", "Here!");
 	};
 
 	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #

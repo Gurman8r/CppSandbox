@@ -401,7 +401,8 @@ namespace ml
 		  
 	Var & Var::errorValue(const String & value)
 	{
-		return voidValue().dataValue(Token(Token::Error, value));
+		return setType(Var::Error).dataValue({ Token::Error, value });
+		//return voidValue().dataValue(Token(Token::Error, value));
 	}
 		  
 	Var & Var::floatValue(const float & value)

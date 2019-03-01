@@ -13,7 +13,7 @@ namespace ml
 	public:
 		enum : int32_t
 		{
-			INVALID_TYPE = -1,
+			Error = -1,
 
 			//- Basic - - -//
 			MIN_BASIC,

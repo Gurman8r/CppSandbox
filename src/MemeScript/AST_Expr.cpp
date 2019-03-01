@@ -45,30 +45,34 @@ namespace ml
 
 	std::ostream & AST_Array::display(std::ostream & out) const
 	{
+		out << (FG::Black | BG::Yellow) << "[" << FMT() << " ";
+
 		Var v;
 		if ((v = evaluate()).isArrayType())
 		{
-			out << (FG::Black | BG::Yellow) << "[" << FMT() << " ";
-			const List<Var> list(v.listValue());
+			const List<Var> list = v.listValue();
 			for (size_t i = 0, imax = list.size(); i < imax; i++)
 			{
 				out << list[i] << ((i < imax - 1) ? ", " : " ");
 			}
-			return out << (FG::Black | BG::Yellow) << "]" << FMT();
 		}
-		return out << v;
+		return out << (FG::Black | BG::Yellow) << "]" << FMT();
 	}
 
 	Var AST_Array::evaluate() const
 	{
-		TokenList items;
-
+		TokenList list;
 		for (auto it = values.begin(); it != values.end(); it++)
 		{
-			items.push_back((*it)->evaluate().tokensValue());
+			list.push_back(Token((*it)->evaluate()));
 		}
-
-		return Var().arrayValue(items);
+		return Var().arrayValue(list);
+		//TokenList items;
+		//for (auto it = values.begin(); it != values.end(); it++)
+		//{
+		//	items.push_back((*it)->evaluate().tokensValue());
+		//}
+		//return Var().arrayValue(items);
 	}
 
 
@@ -124,7 +128,7 @@ namespace ml
 	{
 		if (evaluate().isErrorType())
 		{
-			return Debug::logError("AST_Assign : Mod value_type Failed");
+			// breaking here not always needed?
 		}
 		return runNext();
 	}
