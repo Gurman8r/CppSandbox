@@ -11,7 +11,7 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	const Bytes Browser::MaxPreviewSize(100_kB);
+	const Bytes Browser::MaxPreviewSize(10_MB);
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
@@ -75,9 +75,7 @@ namespace ml
 				m_isDouble = false;
 				switch (m_type)
 				{
-				case T_Dir: 
-					ML_FileSystem.setWorkingDir(get_selected_name()); 
-					break;
+				case T_Dir: ML_FileSystem.setWorkingDir(get_selected_name()); break;
 				}
 			}
 
@@ -101,7 +99,6 @@ namespace ml
 		}
 
 		ImGui::Text("%s", m_path.c_str());
-		ImGui::Text("Max: %s", MaxPreviewSize.to_str().c_str());
 	}
 
 	void Browser::draw_directory()
@@ -110,23 +107,23 @@ namespace ml
 		{
 			m_isDouble = false;
 
-			ImVec4 col_default_text = ImGui::GetStyleColorVec4(ImGuiCol_Text);
-
 			for (const Pair<char, List<String>> & pair : m_dir)
 			{
 				const char & type = pair.first;
 				const List<String> & list = pair.second;
 
-				ImVec4 col;
+				ImVec4 color;
 				switch (type)
 				{
-				case T_Dir: col = ImColor(0.0f, 0.4f, 1.0f, 1.0f); break; // blue
-				case T_Reg: col = ImColor(0.0f, 1.0f, 0.4f, 1.0f); break; // green
-				case T_Lnk: col = ImColor(0.0f, 1.0f, 1.0f, 0.0f); break; // cyan
-				default: col = (col_default_text); break;
+				case T_Dir: color = ImColor(0.0f, 0.4f, 1.0f, 1.0f); break; // blue
+				case T_Reg: color = ImColor(0.0f, 1.0f, 0.4f, 1.0f); break; // green
+				case T_Lnk: color = ImColor(0.0f, 1.0f, 1.0f, 0.0f); break; // cyan
+				default: 
+					color = ImGui::GetStyleColorVec4(ImGuiCol_Text);
+					break;
 				}
 
-				ImGui::PushStyleColor(ImGuiCol_Text, col);
+				ImGui::PushStyleColor(ImGuiCol_Text, color);
 				for (size_t i = 0, imax = list.size(); i < imax; i++)
 				{
 					const String & name = list.at(i);
@@ -159,27 +156,32 @@ namespace ml
 	{
 		ImGui::BeginGroup();
 		{
-			ImGui::BeginChild("Content View", { 0, -ImGui::GetFrameHeightWithSpacing() });
+			// Actions
+			ImGui::Separator();
 			{
-				ImGui::Separator();
+				if (ImGui::Button("Open"))
+				{
+					ML_OS.execute("open", get_selected_path());
+				}
+			}
+			ImGui::Separator();
 
+			// Information
+			ImGui::BeginChild("Tabs", { 0, -ImGui::GetFrameHeightWithSpacing() });
+			{
+				// Tabs
 				if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None))
 				{
+					// Preview
 					draw_file_preview();
 
+					// Details
 					draw_file_details();
 
 					ImGui::EndTabBar();
 				}
 			}
 			ImGui::EndChild();
-
-			ImGui::Separator();
-
-			if (ImGui::Button("Open"))
-			{
-				ML_OS.execute("open", get_selected_path());
-			}
 		}
 		ImGui::EndGroup();
 	}
@@ -188,13 +190,13 @@ namespace ml
 	{
 		if (ImGui::BeginTabItem("Preview"))
 		{
-			switch (m_type)
+			ImGui::BeginChild("Content", { 0, -ImGui::GetFrameHeightWithSpacing() });
 			{
-			case T_Reg:
-			default:
-				ImGui::TextWrapped("%s", m_preview.c_str());
-				break;
+				ImGui::TextUnformatted(
+					&m_preview[0], 
+					&m_preview[m_preview.size() - 1]);
 			}
+			ImGui::EndChild();
 			ImGui::EndTabItem();
 		}
 	}

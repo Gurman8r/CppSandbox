@@ -28,16 +28,22 @@ namespace ml
 
 		using Directory = HashMap<char, List<String>>;
 
+		static const Bytes MaxPreviewSize;
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
 	private:
 		Browser();
 		~Browser();
+
+		/* * * * * * * * * * * * * * * * * * * * */
 
 	public:
 		void onEvent(const IEvent * value) override;
 
 		void draw(bool * p_open);
 
-		static const Bytes MaxPreviewSize;
+		/* * * * * * * * * * * * * * * * * * * * */
 
 	private:
 		void draw_menu();
@@ -46,6 +52,8 @@ namespace ml
 		void draw_file_preview();
 		void draw_file_details();
 
+		/* * * * * * * * * * * * * * * * * * * * */
+
 	public:
 		void	set_selected(char type, size_t index);
 		String	get_selected_name() const;
@@ -53,12 +61,14 @@ namespace ml
 		String	get_selected_ext() const;
 		size_t	get_selected_size() const;
 
+		/* * * * * * * * * * * * * * * * * * * * */
+
+	private:
 		inline String pathTo(const String & value) const
 		{
 			return (m_path + "\\" + value);
 		}
 
-	private:
 		inline const List<String> * getList() const
 		{
 			Directory::const_iterator it;
@@ -77,6 +87,8 @@ namespace ml
 				: NULL);
 		}
 
+		/* * * * * * * * * * * * * * * * * * * * */
+
 	private:
 		bool *		m_open;		// Is Open?
 		String		m_path;		// Working Directory
@@ -85,6 +97,8 @@ namespace ml
 		size_t		m_index;	// Selected File
 		String		m_preview;	// File Contents
 		bool		m_isDouble;	// Has Double Click
+
+		/* * * * * * * * * * * * * * * * * * * * */
 	};
 }
 #endif // !_BROWSER_HPP_

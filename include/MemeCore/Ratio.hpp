@@ -38,8 +38,8 @@ namespace ml
 	>
 	constexpr T ratio_cast(const T value, const Ratio<N, D> & r)
 	{
-		const T num = static_cast<T>(r.num);
-		const T den = static_cast<T>(r.den);
+		const T num = static_cast<T>(r.num); // Numerator
+		const T den = static_cast<T>(r.den); // Denominator
 		return 
 			((num == 1 && den == 1)
 				? (value)

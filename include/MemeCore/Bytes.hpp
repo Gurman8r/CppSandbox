@@ -7,22 +7,29 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct Bytes final
+	constexpr uint64_t operator "" _kB(uint64_t value) { return ratio_cast(value, Kilo()); }
+	constexpr uint64_t operator "" _MB(uint64_t value) { return ratio_cast(value, Mega()); }
+	constexpr uint64_t operator "" _GB(uint64_t value) { return ratio_cast(value, Giga()); }
+	constexpr uint64_t operator "" _TB(uint64_t value) { return ratio_cast(value, Tera()); }
+	constexpr uint64_t operator "" _PB(uint64_t value) { return ratio_cast(value, Peta()); }
+	constexpr uint64_t operator "" _EB(uint64_t value) { return ratio_cast(value, Exa());  }
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	class Bytes final
 		: public ITrackable
 		, public IComparable<uint64_t>
 	{
-		/* * * * * * * * * * * * * * * * * * * * */
+	private:
+		uint64_t	m_real;	// Size before ratio
+		uint64_t	m_size;	// Size after ratio
+		CString		m_name;	// Unit of display size
 
-		uint64_t	count;	// Scaled display size
-		CString		unit;	// Unit of display size
-		uint64_t	real;	// Real size in bytes
-
-		/* * * * * * * * * * * * * * * * * * * * */
-
+	public:
 		Bytes(const Bytes & copy)
-			: count(copy.count)
-			, unit(copy.unit)
-			, real(copy.real)
+			: m_size(copy.m_size)
+			, m_name(copy.m_name)
+			, m_real(copy.m_real)
 		{
 		}
 
@@ -36,59 +43,65 @@ namespace ml
 		}
 
 		Bytes(const uint64_t value)
-			: real(value)
+			: m_real(value)
 		{
 			if (value == 0) // 
 			{
-				count = 0;
-				unit = "-";
+				m_size = 0;
+				m_name = "-";
 			}
 			else if (value < Kilo::num) // Bytes
 			{
-				count = ratio_cast(value, Ratio<1, 1>());
-				unit = "B";
+				m_size = ratio_cast(value, Ratio<1, 1>());
+				m_name = "B";
 			}
 			else if (value < Mega::num) // Kilobytes
 			{
-				count = ratio_cast(value, Milli());
-				unit = "kB";
+				m_size = ratio_cast(value, Milli());
+				m_name = "kB";
 			}
 			else if (value < Giga::num) // Megabytes
 			{
-				count = ratio_cast(value, Micro());
-				unit = "MB";
+				m_size = ratio_cast(value, Micro());
+				m_name = "MB";
 			}
 			else if (value < Tera::num) // Gigabytes
 			{
-				count = ratio_cast(value, Nano());
-				unit = "GB";
+				m_size = ratio_cast(value, Nano());
+				m_name = "GB";
 			}
 			else if (value < Peta::num) // Terabytes
 			{
-				count = ratio_cast(value, Pico());
-				unit = "TB";
+				m_size = ratio_cast(value, Pico());
+				m_name = "TB";
 			}
 			else if (value < Exa::num) // Petabytes
 			{
-				count = ratio_cast(value, Femto());
-				unit = "TB";
+				m_size = ratio_cast(value, Femto());
+				m_name = "TB";
 			}
 			else // Exabytes
 			{
-				count = ratio_cast(value, Atto());
-				unit = "EB";
+				m_size = ratio_cast(value, Atto());
+				m_name = "EB";
 			}
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
+		inline uint64_t real() const { return m_real; }
+		inline uint64_t size() const { return m_size; }
+		inline CString	name() const { return m_name; }
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
 		inline void serialize(std::ostream & out) const override
 		{
-			if (count)
+			if (m_size)
 			{
-				out << count;
+				out << m_size;
 			}
-			out << unit;
+			out << m_name;
 		}
 
 		inline void deserialize(std::istream & in) override
@@ -102,53 +115,21 @@ namespace ml
 
 		inline operator uint64_t() const
 		{
-			return real;
+			return m_real;
 		}
 
 		inline bool equals(const uint64_t & other) const override
 		{
-			return real == other;
+			return (m_real == other);
 		}
 
 		inline bool lessThan(const uint64_t & other) const override
 		{
-			return real < other;
+			return (m_real < other);
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	};
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	constexpr uint64_t operator "" _kB(const uint64_t value)
-	{
-		return ratio_cast(value, Kilo());
-	}
-
-	constexpr uint64_t operator "" _MB(const uint64_t value)
-	{
-		return ratio_cast(value, Mega());
-	}
-
-	constexpr uint64_t operator "" _GB(const uint64_t value)
-	{
-		return ratio_cast(value, Giga());
-	}
-
-	constexpr uint64_t operator "" _TB(const uint64_t value)
-	{
-		return ratio_cast(value, Tera());
-	}
-
-	constexpr uint64_t operator "" _PB(const uint64_t value)
-	{
-		return ratio_cast(value, Peta());
-	}
-
-	constexpr uint64_t operator "" _EB(const uint64_t value)
-	{
-		return ratio_cast(value, Exa());
-	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 }
