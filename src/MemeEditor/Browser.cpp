@@ -11,7 +11,7 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	const Bytes Browser::MaxPreviewSize(10_MB);
+	const Bytes Browser::MaxPreviewSize(15_MB);
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
@@ -225,7 +225,7 @@ namespace ml
 		{
 		case T_Reg:
 		{
-			if (get_selected_size() < MaxPreviewSize)
+			if (get_selected_size() <= MaxPreviewSize)
 			{
 				if (!ML_FileSystem.getFileContents(get_selected_path(), m_preview))
 				{
@@ -273,11 +273,10 @@ namespace ml
 	{
 		switch (m_type)
 		{
-		case T_Reg: return ML_FileSystem.getFileExt(get_selected_path());
-		case T_Dir: return String("Directory");
-		case T_Lnk: return String("Link");
-		case T_Unk:
-		default: return String("?");
+		case T_Reg	: return ML_FileSystem.getFileExt(get_selected_path());
+		case T_Dir	: return String("Directory");
+		case T_Lnk	: return String("Link");
+		default		: return String("?");
 		}
 	}
 

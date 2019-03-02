@@ -5,6 +5,7 @@
 #include <MemeEditor/EditorConsole.hpp>
 #include <MemeEditor/ShaderBuilder.hpp>
 #include <MemeEditor/Browser.hpp>
+#include <MemeCore/OS.hpp>
 #include <imgui/imgui.h>
 #include <imgui/imgui_ml.hpp>
 
@@ -867,6 +868,11 @@ namespace DEMO
 			}
 			if (ImGui::BeginMenu("Help"))
 			{
+				if (ImGui::MenuItem("Github"))
+				{
+					ML_OS.execute("open", "https://www.github.com/Gurman8r/Cppsandbox");
+				}
+				ImGui::Separator();
 				ImGui::MenuItem("ImGui Demo", NULL, &show_imgui_demo);
 				ImGui::MenuItem("ImGui Metrics", NULL, &show_imgui_metrics);
 				ImGui::MenuItem("Style Editor", NULL, &show_imgui_style);

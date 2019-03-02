@@ -10,6 +10,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_EDITOR_API Browser
 		: public ITrackable
 		, public IEventListener
@@ -30,20 +32,14 @@ namespace ml
 
 		static const Bytes MaxPreviewSize;
 
-		/* * * * * * * * * * * * * * * * * * * * */
-
 	private:
 		Browser();
 		~Browser();
-
-		/* * * * * * * * * * * * * * * * * * * * */
 
 	public:
 		void onEvent(const IEvent * value) override;
 
 		void draw(bool * p_open);
-
-		/* * * * * * * * * * * * * * * * * * * * */
 
 	private:
 		void draw_menu();
@@ -54,7 +50,6 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-	public:
 		void	set_selected(char type, size_t index);
 		String	get_selected_name() const;
 		String	get_selected_path() const;
@@ -63,7 +58,6 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-	private:
 		inline String pathTo(const String & value) const
 		{
 			return (m_path + "\\" + value);
@@ -97,8 +91,8 @@ namespace ml
 		size_t		m_index;	// Selected File
 		String		m_preview;	// File Contents
 		bool		m_isDouble;	// Has Double Click
-
-		/* * * * * * * * * * * * * * * * * * * * */
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 #endif // !_BROWSER_HPP_

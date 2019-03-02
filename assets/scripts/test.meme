@@ -14,8 +14,6 @@ TEST = nodeid();
 
 	main = [](args);
 	{
-		system("log", "msg", args);
-
 		argc = sizeof(args);
 
 		for (i = 0; i < argc; i = i + 1);
