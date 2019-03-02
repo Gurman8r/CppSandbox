@@ -60,22 +60,11 @@ namespace ml
 			if (m_root = ML_Parser.genFromList(m_toks))
 			{
 				// __ARGS__
-				if (!args.empty())
-				{
-					m_root->push_front(new AST_Assign(
-						Operator::OP_SET,
-						new AST_Name(ML_NAME_ARGS),
-						ML_Parser.generate<AST_Array>(ML_Lexer.genArgsArray(args)))
-					);
-				}
-				else
-				{
-					m_root->push_front(new AST_Assign(
-						Operator::OP_SET,
-						new AST_Name(ML_NAME_ARGS),
-						new AST_Array({ }))
-					);
-				}
+				m_root->push_front(new AST_Assign(
+					Operator::OP_SET,
+					new AST_Name(ML_NAME_ARGS),
+					ML_Parser.generate<AST_Array>(ML_Lexer.genArgsArray(args)))
+				);
 
 				// __FILE__
 				m_root->push_front(new AST_Assign(

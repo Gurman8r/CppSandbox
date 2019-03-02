@@ -112,7 +112,7 @@ namespace DEMO
 				{
 					if (ev->mods & ML_MOD_ALT)
 					{
-						show_ml_explorer = true;
+						show_ml_browser = true;
 					}
 					else
 					{
@@ -861,7 +861,7 @@ namespace DEMO
 			{
 				ImGui::MenuItem("Editor", "Ctrl+E", &show_ml_editor);
 				ImGui::MenuItem("Console", "Ctrl+Alt+T", &ML_EditorConsole.visible());
-				ImGui::MenuItem("Browser", "Ctrl+Alt+E", &show_ml_explorer);
+				ImGui::MenuItem("Browser", "Ctrl+Alt+E", &show_ml_browser);
 				ImGui::MenuItem("Shader Builder", "Ctrl+Alt+B", &show_ml_shader);
 				ImGui::EndMenu();
 			}
@@ -955,10 +955,10 @@ namespace DEMO
 			ML_EditorConsole.draw();
 		}
 
-		if (show_ml_explorer)
+		// Browser
+		if (show_ml_browser)
 		{
-			static ml::Browser browser;
-			browser.draw(&show_ml_explorer);
+			ML_Browser.draw(&show_ml_browser);
 		}
 
 		// Shader

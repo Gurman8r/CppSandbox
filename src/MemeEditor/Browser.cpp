@@ -3,17 +3,16 @@
 #include <MemeCore/FileSystem.hpp>
 #include <MemeCore/EventSystem.hpp>
 #include <MemeCore/OS.hpp>
+
 #include <imgui/imgui.h>
 #include <imgui/imgui_ml.hpp>
 
-#define ML_KILO		(1000)
-#define ML_MEGA		(ML_KILO * 1000)
-#define ML_GIGA		(ML_MEGA * 1000)
-
-#define ML_MAX_SIZE	(ML_KILO * 50)
-
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	const Bytes Browser::MaxPreviewSize(100_kB);
+
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Browser::Browser()
@@ -102,6 +101,7 @@ namespace ml
 		}
 
 		ImGui::Text("%s", m_path.c_str());
+		ImGui::Text("Max: %s", MaxPreviewSize.to_str().c_str());
 	}
 
 	void Browser::draw_directory()
@@ -190,13 +190,9 @@ namespace ml
 		{
 			switch (m_type)
 			{
-			case T_Dir:
 			case T_Reg:
-				ImGui::TextWrapped("%s", m_preview.c_str());
-				break;
-
 			default:
-				ImGui::TextWrapped("%s", get_selected_name().c_str());
+				ImGui::TextWrapped("%s", m_preview.c_str());
 				break;
 			}
 			ImGui::EndTabItem();
@@ -207,18 +203,18 @@ namespace ml
 	{
 		if (ImGui::BeginTabItem("Details"))
 		{
+			const Bytes size(get_selected_size());
+
 			ImGui::Text("Name: %s", get_selected_name().c_str());
 			ImGui::Text("Type: %s", get_selected_ext().c_str());
-			ImGui::Text("Size: %u %s",
-				get_selected_size_bytes(),
-				get_selected_size_unit().c_str());
+			ImGui::Text("Size: %s", size.to_str().c_str());
 			ImGui::EndTabItem();
 		}
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void Browser::set_selected(char type, int32_t index)
+	void Browser::set_selected(char type, size_t index)
 	{
 		m_type = type;
 		m_index = index;
@@ -227,7 +223,7 @@ namespace ml
 		{
 		case T_Reg:
 		{
-			if (get_selected_size() < ML_MAX_SIZE)
+			if (get_selected_size() < MaxPreviewSize)
 			{
 				if (!ML_FileSystem.getFileContents(get_selected_path(), m_preview))
 				{
@@ -237,14 +233,10 @@ namespace ml
 			else
 			{
 				m_preview = String(
-					"File Size Exceeds Maximum of {0} {1}.\n"
-					"Size is {2} {3}.")
-					.format(
-						(ML_MAX_SIZE / 1000),
-						"kB",
-						get_selected_size_bytes(), 
-						get_selected_size_unit()
-					);
+					"File size of {0} exceeds preview limit of {1}."
+				).format(
+					Bytes(get_selected_size()), 
+					MaxPreviewSize);
 			}
 		}
 		break;
@@ -261,8 +253,6 @@ namespace ml
 			break;
 		}
 	}
-
-	/* * * * * * * * * * * * * * * * * * * * */
 
 	String Browser::get_selected_name() const
 	{
@@ -291,39 +281,7 @@ namespace ml
 
 	size_t Browser::get_selected_size() const
 	{
-		return ML_FileSystem.getFileSize(get_selected_path());;
-	}
-
-	size_t Browser::get_selected_size_bytes() const
-	{
-		const size_t size = get_selected_size();
-		if (size == 0)
-		{
-			return 0;
-		}
-		else if (size < ML_KILO) { return size; }
-		else if (size < ML_MEGA) { return size / ML_KILO; }
-		else if (size < ML_GIGA) { return size / ML_MEGA; }
-		else
-		{
-			return size / ML_GIGA;
-		}
-	}
-
-	String Browser::get_selected_size_unit() const
-	{
-		const size_t size = get_selected_size();
-		if (size == 0)
-		{
-			return String(" ");
-		}
-		else if (size < ML_KILO) { return String("B"); }
-		else if (size < ML_MEGA) { return String("kB"); }
-		else if (size < ML_GIGA) { return String("MB"); }
-		else
-		{
-			return String("GB");
-		}
+		return ML_FileSystem.getFileSize(get_selected_path());
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

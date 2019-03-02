@@ -4,13 +4,19 @@
 #include <MemeEditor/Export.hpp>
 #include <MemeCore/File.hpp>
 #include <MemeCore/IEventListener.hpp>
+#include <MemeCore/Bytes.hpp>
+
+#define ML_Browser ml::Browser::getInstance()
 
 namespace ml
 {
 	class ML_EDITOR_API Browser
 		: public ITrackable
 		, public IEventListener
+		, public ISingleton<Browser>
 	{
+		friend class ISingleton<Browser>;
+
 	public:
 		enum : char
 		{
@@ -22,18 +28,16 @@ namespace ml
 
 		using Directory = HashMap<char, List<String>>;
 
-	public:
+	private:
 		Browser();
 		~Browser();
 
+	public:
 		void onEvent(const IEvent * value) override;
 
 		void draw(bool * p_open);
 
-		inline String pathTo(const String & value) const
-		{
-			return (m_path + "\\" + value);
-		}
+		static const Bytes MaxPreviewSize;
 
 	private:
 		void draw_menu();
@@ -42,13 +46,17 @@ namespace ml
 		void draw_file_preview();
 		void draw_file_details();
 
-		void	set_selected(char type, int32_t index);
+	public:
+		void	set_selected(char type, size_t index);
 		String	get_selected_name() const;
 		String	get_selected_path() const;
 		String	get_selected_ext() const;
 		size_t	get_selected_size() const;
-		size_t	get_selected_size_bytes() const;
-		String	get_selected_size_unit() const;
+
+		inline String pathTo(const String & value) const
+		{
+			return (m_path + "\\" + value);
+		}
 
 	private:
 		inline const List<String> * getList() const

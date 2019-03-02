@@ -1,7 +1,7 @@
 #ifndef _TIME_POINT_HPP_
 #define _TIME_POINT_HPP_
 
-#include <MemeCore/ITrackable.hpp>
+#include <MemeCore/Ratio.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * */
 
