@@ -2,7 +2,7 @@
 #include "DemoCommands.hpp"
 #include "Settings.hpp"
 #include <MemeScript/Interpreter.hpp>
-#include <MemeEditor/EditorConsole.hpp>
+#include <MemeEditor/Terminal.hpp>
 #include <MemeCore/Debug.hpp>
 #include <MemeCore/EventSystem.hpp>
 #include <MemeEditor/ResourceManager.hpp>

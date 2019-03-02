@@ -1,4 +1,4 @@
-#include <MemeEditor/EditorConsole.hpp>
+#include <MemeEditor/Terminal.hpp>
 #include <MemeScript/Interpreter.hpp>
 
 namespace ml
@@ -14,11 +14,11 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	EditorConsole::EditorConsole()
+	Terminal::Terminal()
 	{
 	}
 	
-	EditorConsole::~EditorConsole()
+	Terminal::~Terminal()
 	{
 		clear();
 		
@@ -30,7 +30,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void EditorConsole::setup()
+	void Terminal::setup()
 	{
 		static bool checked = false;
 		if (!checked) checked = true;
@@ -54,13 +54,13 @@ namespace ml
 		}
 	}
 
-	void EditorConsole::clear()
+	void Terminal::clear()
 	{
 		m_lines.clear();
 		m_scrollToBottom = true;
 	}
 
-	void EditorConsole::printf(CString fmt, ...)
+	void Terminal::printf(CString fmt, ...)
 	{
 		// FIXME-OPT
 		char buf[1024];
@@ -73,12 +73,12 @@ namespace ml
 		m_scrollToBottom = true;
 	}
 
-	void EditorConsole::printHistory()
+	void Terminal::printHistory()
 	{
 		for (auto h : m_history) { this->printf(h); }
 	}
 
-	void EditorConsole::draw(CString title, bool* p_open)
+	void Terminal::draw(CString title, bool* p_open)
 	{
 		ImGui::SetNextWindowSize(ImVec2(550, 600), ImGuiCond_FirstUseEver);
 		if (!ImGui::Begin(title, p_open))
@@ -149,10 +149,10 @@ namespace ml
 			m_inputBuf,
 			IM_ARRAYSIZE(m_inputBuf),
 			(
-				ImGuiInputTextFlags_EnterReturnsTrue |
-				ImGuiInputTextFlags_CallbackCompletion |
-				ImGuiInputTextFlags_CallbackHistory
-				),
+			ImGuiInputTextFlags_EnterReturnsTrue |
+			ImGuiInputTextFlags_CallbackCompletion |
+			ImGuiInputTextFlags_CallbackHistory
+			),
 			&textEditCallbackStub,
 			(void *)this))
 		{
@@ -176,7 +176,7 @@ namespace ml
 		ImGui::End();
 	}
 
-	void EditorConsole::execCommand(CString value)
+	void Terminal::execCommand(CString value)
 	{
 		this->printf("# %s\n", value);
 
@@ -211,7 +211,7 @@ namespace ml
 		ml::cout.rdbuf(old);
 	}
 
-	int32_t EditorConsole::textEditCallback(ImGuiInputTextCallbackData* data)
+	int32_t Terminal::textEditCallback(ImGuiInputTextCallbackData* data)
 	{
 		//AddLog("cursor: %d, selection: %d-%d", data->CursorPos, data->SelectionStart, data->SelectionEnd);
 		switch (data->EventFlag)
@@ -333,9 +333,9 @@ namespace ml
 		return 0;
 	}
 
-	int32_t	EditorConsole::textEditCallbackStub(ImGuiInputTextCallbackData* data) // In C++11 you are better off using lambdas for this sort of forwarding callbacks
+	int32_t	Terminal::textEditCallbackStub(ImGuiInputTextCallbackData* data) // In C++11 you are better off using lambdas for this sort of forwarding callbacks
 	{
-		EditorConsole * console = (EditorConsole*)data->UserData;
+		Terminal * console = (Terminal*)data->UserData;
 
 		return console->textEditCallback(data);
 	}

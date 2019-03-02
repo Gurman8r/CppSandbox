@@ -5,15 +5,15 @@
 #include <MemeCore/List.hpp>
 #include <imgui/imgui.h>
 
-#define ML_EditorConsole ml::EditorConsole::getInstance()
+#define ML_EditorConsole ml::Terminal::getInstance()
 
 namespace ml
 {
-	class ML_EDITOR_API EditorConsole
+	class ML_EDITOR_API Terminal
 		: public ITrackable
-		, public ISingleton<EditorConsole>
+		, public ISingleton<Terminal>
 	{
-		friend class ISingleton<EditorConsole>;
+		friend class ISingleton<Terminal>;
 
 	private:
 		char				m_inputBuf[256];
@@ -25,8 +25,8 @@ namespace ml
 
 		bool m_visible = false;
 
-		EditorConsole();
-		~EditorConsole();
+		Terminal();
+		~Terminal();
 
 	public:
 		void	setup();

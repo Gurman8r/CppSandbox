@@ -2,8 +2,8 @@
 #include "DemoCommands.hpp"
 #include <MemeCore/EventSystem.hpp>
 #include <MemeWindow/WindowEvents.hpp>
-#include <MemeEditor/EditorConsole.hpp>
-#include <MemeEditor/ShaderBuilder.hpp>
+#include <MemeEditor/Terminal.hpp>
+#include <MemeEditor/Builder.hpp>
 #include <MemeEditor/Browser.hpp>
 #include <MemeCore/OS.hpp>
 #include <imgui/imgui.h>
@@ -127,10 +127,10 @@ namespace DEMO
 					ML_EditorConsole.visible() = true;
 				}
 
-				// Show Shader Builder
+				// Show Builder
 				if (ev->getKeyDown(ml::KeyCode::B) && ((ev->mods & ML_MOD_CTRL) && (ev->mods & ML_MOD_SHIFT)))
 				{
-					show_ml_shader = true;
+					show_ml_builder = true;
 				}
 			}
 			break;
@@ -414,11 +414,16 @@ namespace DEMO
 		this->pollEvents();
 
 		// Update Title
-		this->setTitle(ml::String::Format("{0} | {1}",
-			SETTINGS.title, 
+		this->setTitle(ml::String::Format("{0} | {1} | {2}",
+			SETTINGS.title,
+			ml::String("{0}-{1}").format(
+				ml::Debug::configuration(),
+				ml::Debug::platform()
+			),
 			ml::String("{0} ms/frame ({1} fps)").format(
 				ev.elapsed.delta(),
-				ML_Time.calculateFPS(ev.elapsed.delta()))
+				ML_Time.calculateFPS(ev.elapsed.delta())
+			)
 		));
 
 		// Update Models
@@ -863,7 +868,7 @@ namespace DEMO
 				ImGui::MenuItem("Editor", "Ctrl+E", &show_ml_editor);
 				ImGui::MenuItem("Console", "Ctrl+Alt+T", &ML_EditorConsole.visible());
 				ImGui::MenuItem("Browser", "Ctrl+Alt+E", &show_ml_browser);
-				ImGui::MenuItem("Shader Builder", "Ctrl+Alt+B", &show_ml_shader);
+				ImGui::MenuItem("Builder", "Ctrl+Alt+B", &show_ml_builder);
 				ImGui::EndMenu();
 			}
 			if (ImGui::BeginMenu("Help"))
@@ -968,9 +973,9 @@ namespace DEMO
 		}
 
 		// Shader
-		if (show_ml_shader)
+		if (show_ml_builder)
 		{
-			ML_ShaderBuilder.draw("Shader Builder", &show_ml_shader);
+			ML_Builder.draw(&show_ml_builder);
 		}
 
 
