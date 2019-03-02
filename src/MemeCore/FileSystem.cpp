@@ -179,12 +179,20 @@ namespace ml
 	
 	String FileSystem::getFileExt(const String & filename) const
 	{
-		size_t i;
-		if ((i = filename.find_last_of('.')) != String::npos)
+		auto find_in = [](const String & value, const char c)
 		{
-			return filename.substr(i + 1, filename.size() - i - 1);
-		}
-		return String();
+			size_t i;
+			if ((i = value.find_last_of(c)) != String::npos)
+			{
+				return (String)value.substr(i + 1, value.size() - i - 1);
+			}
+			return String();
+		};
+		String temp;
+		if (!(temp = find_in(filename, '.')).empty())	{ return temp; }
+		if (!(temp = find_in(filename, '\\')).empty())	{ return temp; }
+		if (!(temp = find_in(filename, '/')).empty())	{ return temp; }
+		return temp;
 	}
 
 	String FileSystem::getFileName(const String & filename) const

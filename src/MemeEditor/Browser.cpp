@@ -91,8 +91,10 @@ namespace ml
 		{
 			if (ImGui::BeginMenu("File"))
 			{
-				if (ImGui::MenuItem("Close")) { (*m_open) = false; }
-
+				if (ImGui::MenuItem("Open"))
+				{
+					ML_OS.execute("open", get_selected_path());
+				}
 				ImGui::EndMenu();
 			}
 			ImGui::EndMenuBar();
@@ -156,18 +158,8 @@ namespace ml
 	{
 		ImGui::BeginGroup();
 		{
-			// Actions
-			ImGui::Separator();
-			{
-				if (ImGui::Button("Open"))
-				{
-					ML_OS.execute("open", get_selected_path());
-				}
-			}
-			ImGui::Separator();
-
 			// Information
-			ImGui::BeginChild("Tabs", { 0, -ImGui::GetFrameHeightWithSpacing() });
+			ImGui::BeginChild("Tabs");
 			{
 				// Tabs
 				if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None))
@@ -190,7 +182,7 @@ namespace ml
 	{
 		if (ImGui::BeginTabItem("Preview"))
 		{
-			ImGui::BeginChild("Content", { 0, -ImGui::GetFrameHeightWithSpacing() });
+			ImGui::BeginChild("Content", { -1.f, -1.f }, true, ImGuiWindowFlags_AlwaysHorizontalScrollbar);
 			{
 				ImGui::TextUnformatted(
 					&m_preview[0], 
