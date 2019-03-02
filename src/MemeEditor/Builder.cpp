@@ -85,7 +85,7 @@ namespace ml
 			{
 				if (ImGui::Button("Up"))
 				{
-					if (m_selected > 0)
+					if (!m_uniforms.empty() && m_selected > 0)
 					{
 						std::swap(m_uniforms[m_selected], m_uniforms[m_selected - 1]);
 						m_selected--;
@@ -180,7 +180,7 @@ namespace ml
 						{
 							ImGui::TextUnformatted(
 								&m_source[0],
-								&m_source[m_source.size() - 1]);
+								&m_source[m_source.size()]);
 
 							if (ImGui::Button("Compile")) {}
 						}

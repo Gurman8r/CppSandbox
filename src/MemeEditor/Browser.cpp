@@ -186,7 +186,7 @@ namespace ml
 			{
 				ImGui::TextUnformatted(
 					&m_preview[0], 
-					&m_preview[m_preview.size() - 1]);
+					&m_preview[m_preview.size()]);
 			}
 			ImGui::EndChild();
 			ImGui::EndTabItem();
