@@ -128,7 +128,7 @@ namespace DEMO
 				}
 
 				// Show Builder
-				if (ev->getKeyDown(ml::KeyCode::B) && ((ev->mods & ML_MOD_CTRL) && (ev->mods & ML_MOD_SHIFT)))
+				if (ev->getKeyDown(ml::KeyCode::B) && ((ev->mods & ML_MOD_CTRL) && (ev->mods & ML_MOD_ALT)))
 				{
 					show_ml_builder = true;
 				}
