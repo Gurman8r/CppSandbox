@@ -5,7 +5,7 @@
 #include <MemeCore/List.hpp>
 #include <imgui/imgui.h>
 
-#define ML_EditorConsole ml::Terminal::getInstance()
+#define ML_Terminal ml::Terminal::getInstance()
 
 namespace ml
 {

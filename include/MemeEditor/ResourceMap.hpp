@@ -232,6 +232,13 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
+		inline const size_t size() const
+		{
+			return m_data.size();
+		}
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
 	public:
 		inline iterator			begin()			{ return m_data.begin();  }
 		inline iterator			end()			{ return m_data.end();	  }

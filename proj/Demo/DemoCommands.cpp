@@ -385,8 +385,8 @@ namespace DEMO
 
 	ml::Var cmd_clear(ml::Args & args)
 	{
-#ifdef ML_EditorConsole
-		ML_EditorConsole.clear();
+#ifdef ML_Terminal
+		ML_Terminal.clear();
 		return ml::Var().voidValue();
 #else
 		return ml::Var().intValue(ml::Debug::clear());
@@ -395,16 +395,16 @@ namespace DEMO
 
 	ml::Var cmd_hide(ml::Args & args)
 	{
-#ifdef ML_EditorConsole
-		ML_EditorConsole.visible() = false;
+#ifdef ML_Terminal
+		ML_Terminal.visible() = false;
 #endif
 		return ml::Var().voidValue();
 	}
 
 	ml::Var cmd_history(ml::Args & args)
 	{
-#ifdef ML_EditorConsole
-		ML_EditorConsole.printHistory();
+#ifdef ML_Terminal
+		ML_Terminal.printHistory();
 #endif
 		return ml::Var().boolValue(true);
 	}

@@ -124,7 +124,7 @@ namespace DEMO
 				// Show Console
 				if (ev->getKeyDown(ml::KeyCode::T) && ((ev->mods & ML_MOD_CTRL) && (ev->mods & ML_MOD_ALT)))
 				{
-					ML_EditorConsole.visible() = true;
+					ML_Terminal.visible() = true;
 				}
 
 				// Show Builder
@@ -416,7 +416,7 @@ namespace DEMO
 		// Update Title
 		this->setTitle(ml::String::Format("{0} | {1} | {2}",
 			SETTINGS.title,
-			ml::String("{0}-{1}").format(
+			ml::String("{0} | {1}").format(
 				ml::Debug::configuration(),
 				ml::Debug::platform()
 			),
@@ -866,7 +866,7 @@ namespace DEMO
 			if (ImGui::BeginMenu("Window"))
 			{
 				ImGui::MenuItem("Editor", "Ctrl+E", &show_ml_editor);
-				ImGui::MenuItem("Console", "Ctrl+Alt+T", &ML_EditorConsole.visible());
+				ImGui::MenuItem("Console", "Ctrl+Alt+T", &ML_Terminal.visible());
 				ImGui::MenuItem("Browser", "Ctrl+Alt+E", &show_ml_browser);
 				ImGui::MenuItem("Builder", "Ctrl+Alt+B", &show_ml_builder);
 				ImGui::EndMenu();
@@ -960,10 +960,10 @@ namespace DEMO
 		}
 
 		// Console
-		if(ML_EditorConsole.visible())
+		if(ML_Terminal.visible())
 		{
-			ML_EditorConsole.setup();
-			ML_EditorConsole.draw();
+			ML_Terminal.setup();
+			ML_Terminal.draw();
 		}
 
 		// Browser

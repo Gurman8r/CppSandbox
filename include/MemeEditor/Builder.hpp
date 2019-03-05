@@ -5,6 +5,7 @@
 #include <MemeGraphics/Shader.hpp>
 
 #define ML_Builder ml::Builder::getInstance()
+#define ML_MAX_SRC 1024
 
 namespace ml
 {
@@ -22,12 +23,17 @@ namespace ml
 		void draw(bool * p_open);
 
 	private:
-
 		void draw_menu();
 		void draw_list();
+		void draw_list_buttons();
 		void draw_preview();
-		void draw_uniform(Uniform & uniform);
+		void draw_uniform(Uniform * u);
+		void draw_source(CString label, List<char> & source);
+		
+	public:
+		int32_t textEditCallback();
 
+	private:
 		inline Uniform * get_uniform(const size_t i)
 		{
 			return (!m_uniforms.empty()
@@ -44,9 +50,12 @@ namespace ml
 
 	private:
 		bool *			m_open;
-		String			m_source = "Placeholder Source";
 		List<Uniform>	m_uniforms;
 		size_t			m_selected = 0;
+
+		List<char> m_vert, m_geom, m_frag;
+
+		char m_buf[64];
 	};
 }
 

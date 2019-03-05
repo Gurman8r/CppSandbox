@@ -210,7 +210,7 @@ namespace ml
 		std::ifstream in(filename, std::ifstream::ate | std::ifstream::binary);
 		if (in)
 		{
-			return in.tellg();
+			return (size_t)in.tellg();
 		}
 		return 0;
 	}
