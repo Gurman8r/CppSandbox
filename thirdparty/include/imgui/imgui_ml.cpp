@@ -135,16 +135,13 @@ inline static bool ImGui_ML_CompileShader(uint32_t & program, ml::CString const 
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-bool ImGui_ML_Init(ml::CString glsl_version, ml::Window * window, bool install_callbacks)
+bool ImGui_ML_Init(ml::CString glsl_version, ml::Window * window, bool install_callbacks, ml::CString iniName)
 {
-	// Store GLSL version string so we can refer to it later in case we recreate shaders. Note: GLSL version is NOT the same as GL version. Leave this to NULL if unsure.
-#ifdef USE_GL_ES3
-	if (glsl_version == NULL)
-		glsl_version = "#version 300 es";
-#else
-	if (glsl_version == NULL)
-		glsl_version = "#version 130";
-#endif
+	g_ClientApi = API_OpenGL;
+
+	// Store GLSL version string so we can refer to it later in case we recreate shaders.
+	// Note: GLSL version is NOT the same as GL version. Leave this to NULL if unsure.
+	glsl_version = (!glsl_version ? "#version 130" : glsl_version);
 	IM_ASSERT((int32_t)strlen(glsl_version) + 2 < IM_ARRAYSIZE(g_GlslVersionString));
 	strcpy(g_GlslVersionString, glsl_version);
 	strcat(g_GlslVersionString, "\n");
@@ -152,14 +149,15 @@ bool ImGui_ML_Init(ml::CString glsl_version, ml::Window * window, bool install_c
 	g_Window = window;
 	g_Time = 0.0;
 
-	// Back-end capabilities flags
+	// Setup Flags
 	ImGuiIO& io = ImGui::GetIO();
 	io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;	// We can honor GetMouseCursor() values (optional)
 	io.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;	// We can honor io.WantSetMousePos requests (optional, rarely used)
 	io.BackendPlatformName = "imgui_impl_glfw3";
 	io.BackendRendererName = "imgui_impl_opengl3";
+	io.IniFilename = iniName;
 
-	// Keyboard mapping
+	// Keyboard
 	io.KeyMap[ImGuiKey_Tab] = ml::KeyCode::Tab;
 	io.KeyMap[ImGuiKey_LeftArrow] = ml::KeyCode::Left;
 	io.KeyMap[ImGuiKey_RightArrow] = ml::KeyCode::Right;
@@ -211,9 +209,6 @@ bool ImGui_ML_Init(ml::CString glsl_version, ml::Window * window, bool install_c
 		window->setKeyCallback(ImGui_ML_KeyCallback);
 		window->setCharCallback(ImGui_ML_CharCallback);
 	}
-
-	// Client
-	g_ClientApi = API_OpenGL;
 
 	// Docking
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;	// Enable Docking
@@ -292,14 +287,19 @@ void ImGui_ML_NewFrame()
 #endif // ML_MAP_GAMEPAD
 }
 
-void ImGui_ML_Render(ImDrawData * draw_data)
+void ImGui_ML_Render(void * value)
 {
+	ImDrawData * draw_data = static_cast<ImDrawData *>(value);
+
 	// Avoid rendering when minimized, scale coordinates for retina displays (screen coordinates != framebuffer coordinates)
 	ImGuiIO& io = ImGui::GetIO();
 	int32_t fb_width = (int32_t)(draw_data->DisplaySize.x * io.DisplayFramebufferScale.x);
 	int32_t fb_height = (int32_t)(draw_data->DisplaySize.y * io.DisplayFramebufferScale.y);
+	
 	if (fb_width <= 0 || fb_height <= 0)
+	{
 		return;
+	}
 	draw_data->ScaleClipRects(io.DisplayFramebufferScale);
 
 	// Backup GL state
@@ -335,7 +335,9 @@ void ImGui_ML_Render(ImDrawData * draw_data)
 
 	uint32_t last_clip_origin = ml::OpenGL::getInt(ml::GL::ClipOrigin); // Support for GL 4.5's glClipControl(ml::GL::UpperLeft)
 	if (last_clip_origin == ml::GL::UpperLeft)
+	{
 		clip_origin_lower_left = false;
+	}
 
 	// Setup render state: alpha-blending enabled, no face culling, no depth testing, scissor enabled, polygon fill
 	ml::OpenGL::enable(ml::GL::Blend);
@@ -347,7 +349,9 @@ void ImGui_ML_Render(ImDrawData * draw_data)
 	ml::OpenGL::polygonMode(ml::GL::FrontAndBack, ml::GL::Fill);
 
 	// Setup viewport, orthographic projection matrix
-	// Our visible imgui space lies from draw_data->DisplayPos (top left) to draw_data->DisplayPos+data_data->DisplaySize (bottom right). DisplayMin is typically (0,0) for single viewport apps.
+	// Our visible imgui space lies from draw_data->DisplayPos (top left) 
+	// to draw_data->DisplayPos+data_data->DisplaySize (bottom right). 
+	// DisplayMin is typically (0,0) for single viewport apps.
 	ml::OpenGL::viewport(0, 0, (int32_t)fb_width, (int32_t)fb_height);
 	float L = draw_data->DisplayPos.x;
 	float R = draw_data->DisplayPos.x + draw_data->DisplaySize.x;
@@ -386,18 +390,26 @@ void ImGui_ML_Render(ImDrawData * draw_data)
 	ImVec2 pos = draw_data->DisplayPos;
 	for (int32_t n = 0; n < draw_data->CmdListsCount; n++)
 	{
-		const ImDrawList* cmd_list = draw_data->CmdLists[n];
-		const ImDrawIdx* idx_buffer_offset = 0;
+		const ImDrawList * cmd_list = draw_data->CmdLists[n];
+		const ImDrawIdx * idx_buffer_offset = 0;
 
 		ml::OpenGL::bindBuffer(ml::GL::ArrayBuffer, g_VboHandle);
-		ml::OpenGL::bufferData(ml::GL::ArrayBuffer, (int32_t)cmd_list->VtxBuffer.Size * sizeof(ImDrawVert), (const void *)cmd_list->VtxBuffer.Data, ml::GL::StreamDraw);
+		ml::OpenGL::bufferData(
+			ml::GL::ArrayBuffer, 
+			(int32_t)cmd_list->VtxBuffer.Size * sizeof(ImDrawVert), 
+			(const void *)cmd_list->VtxBuffer.Data, 
+			ml::GL::StreamDraw);
 
 		ml::OpenGL::bindBuffer(ml::GL::ElementArrayBuffer, g_ElementsHandle);
-		ml::OpenGL::bufferData(ml::GL::ElementArrayBuffer, (int32_t)cmd_list->IdxBuffer.Size * sizeof(ImDrawIdx), (const void *)cmd_list->IdxBuffer.Data, ml::GL::StreamDraw);
+		ml::OpenGL::bufferData(
+			ml::GL::ElementArrayBuffer,
+			(int32_t)cmd_list->IdxBuffer.Size * sizeof(ImDrawIdx), 
+			(const void *)cmd_list->IdxBuffer.Data,
+			ml::GL::StreamDraw);
 
 		for (int32_t cmd_i = 0; cmd_i < cmd_list->CmdBuffer.Size; cmd_i++)
 		{
-			const ImDrawCmd* pcmd = &cmd_list->CmdBuffer[cmd_i];
+			const ImDrawCmd * pcmd = &cmd_list->CmdBuffer[cmd_i];
 			if (pcmd->UserCallback)
 			{
 				// User callback (registered via ImDrawList::AddCallback)
@@ -410,9 +422,22 @@ void ImGui_ML_Render(ImDrawData * draw_data)
 				{
 					// Apply scissor/clipping rectangle
 					if (clip_origin_lower_left)
-						ml::OpenGL::scissor((int32_t)clip_rect.x, (int32_t)(fb_height - clip_rect.w), (int32_t)(clip_rect.z - clip_rect.x), (int32_t)(clip_rect.w - clip_rect.y));
+					{
+						ml::OpenGL::scissor(
+							(int32_t)clip_rect.x,
+							(int32_t)(fb_height - clip_rect.w),
+							(int32_t)(clip_rect.z - clip_rect.x),
+							(int32_t)(clip_rect.w - clip_rect.y));
+					}
 					else
-						ml::OpenGL::scissor((int32_t)clip_rect.x, (int32_t)clip_rect.y, (int32_t)clip_rect.z, (int32_t)clip_rect.w); // Support for GL 4.5's glClipControl(ml::GL::UpperLeft)
+					{
+						// Support for GL 4.5's glClipControl(ml::GL::UpperLeft)
+						ml::OpenGL::scissor(
+							(int32_t)clip_rect.x, 
+							(int32_t)clip_rect.y,
+							(int32_t)clip_rect.z,
+							(int32_t)clip_rect.w);
+					}
 
 					// Bind texture, Draw
 					ml::OpenGL::bindTexture(ml::GL::Texture2D, (uint32_t)(intptr_t)pcmd->TextureId);

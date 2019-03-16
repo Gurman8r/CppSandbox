@@ -30,6 +30,7 @@ namespace DEMO
 		bool		escapeIsExit;	// Escape key is Exit?
 		bool		enableThreads;	// Enable threads?
 		ml::String	manifest;		// Name of manifest file
+		ml::String	imguiIni;	// Name of imgui.ini
 
 		// [Script]
 		ml::String	scrPath;		// Location of scripts
@@ -77,43 +78,44 @@ namespace DEMO
 			if (ini.ParseError() == 0)
 			{
 				// [General]
-				rootPath	 = ini.Get("General", "rootPath", "../../../");
-				assetPath	 = ini.Get("General", "assetPath", "assets/");
-				runTests	 = ini.GetInteger("General", "runTests", false);
-				escapeIsExit = ini.GetBoolean("General", "escapeIsExit", true);
-				enableThreads= ini.GetBoolean("General", "enableThreads", false);
-				manifest	 = ini.Get("General", "manifest", "manifest.txt");
+				rootPath		= ini.Get("General", "rootPath", "../../../");
+				assetPath		= ini.Get("General", "assetPath", "assets/");
+				runTests		= ini.GetInteger("General", "runTests", false);
+				escapeIsExit	= ini.GetBoolean("General", "escapeIsExit", true);
+				enableThreads	= ini.GetBoolean("General", "enableThreads", false);
+				manifest		= ini.Get("General", "manifest", "manifest.txt");
+				imguiIni		= ini.Get("General", "imguiIni", "");
 
 				// [Script]
-				scrPath		 = ini.Get("Script", "scrPath", "scripts/");
-				scrFile		 = ini.Get("Script", "scrFile", "hello.meme");
-				scrShowToks	 = ini.GetBoolean("Script", "scrShowToks", false);
-				scrShowTree	 = ini.GetBoolean("Script", "scrShowTree", false);
-				scrShowItoP	 = ini.GetBoolean("Script", "scrShowItoP", false);
+				scrPath			= ini.Get("Script", "scrPath", "scripts/");
+				scrFile			= ini.Get("Script", "scrFile", "hello.meme");
+				scrShowToks		= ini.GetBoolean("Script", "scrShowToks", false);
+				scrShowTree		= ini.GetBoolean("Script", "scrShowTree", false);
+				scrShowItoP		= ini.GetBoolean("Script", "scrShowItoP", false);
 
 				// [Window]
-				title		 = ini.Get("Window", "title", "MemeLib");
-				width		 = ini.GetInteger("Window", "width", 640);
-				height		 = ini.GetInteger("Window", "height", 480);
-				bitsPerPixel = ini.GetInteger("Window", "bitsPerPixel", 32);
-				majorVersion = ini.GetInteger("Window", "majorVersion", 3);
-				minorVersion = ini.GetInteger("Window", "minorVersion", 3);
-				depthBits	 = ini.GetInteger("Window", "depthBits", 24);
-				stencilBits	 = ini.GetInteger("Window", "stencilBits", 8);
-				profile		 = ini.GetInteger("Window", "profile", ml::Context::Compat);
-				multisample	 = ini.GetBoolean("Window", "multisample", false);
-				srgbCapable	 = ini.GetBoolean("Window", "srgbCapable", false);
+				title			= ini.Get("Window", "title", "MemeLib");
+				width			= ini.GetInteger("Window", "width", 640);
+				height			= ini.GetInteger("Window", "height", 480);
+				bitsPerPixel	= ini.GetInteger("Window", "bitsPerPixel", 32);
+				majorVersion	= ini.GetInteger("Window", "majorVersion", 3);
+				minorVersion	= ini.GetInteger("Window", "minorVersion", 3);
+				depthBits		= ini.GetInteger("Window", "depthBits", 24);
+				stencilBits		= ini.GetInteger("Window", "stencilBits", 8);
+				profile			= ini.GetInteger("Window", "profile", ml::Context::Compat);
+				multisample		= ini.GetBoolean("Window", "multisample", false);
+				srgbCapable		= ini.GetBoolean("Window", "srgbCapable", false);
 
-				// [Graphics]
-				glErrorPause = ini.GetBoolean("Graphics", "glErrorPause", true);
-				fieldOfView	 = (float)ini.GetReal("Graphics", "fieldOfView", 90.0);
-				perspNear	 = (float)ini.GetReal("Graphics", "perspNear", 0.1);
-				perspFar	 = (float)ini.GetReal("Graphics", "perspFar", 1000.0);
-				orthoNear	 = (float)ini.GetReal("Graphics", "orthoNear", -1.0);
-				orthoFar	 = (float)ini.GetReal("Graphics", "orthoFar", +1.0);
+				// [Graphics]	
+				glErrorPause	= ini.GetBoolean("Graphics", "glErrorPause", true);
+				fieldOfView		= (float)ini.GetReal("Graphics", "fieldOfView", 90.0);
+				perspNear		= (float)ini.GetReal("Graphics", "perspNear", 0.1);
+				perspFar		= (float)ini.GetReal("Graphics", "perspFar", 1000.0);
+				orthoNear		= (float)ini.GetReal("Graphics", "orthoNear", -1.0);
+				orthoFar		= (float)ini.GetReal("Graphics", "orthoFar", +1.0);
 
 				// [Audio]
-				isMuted = ini.GetBoolean("Audio", "isMuted", false);
+				isMuted			= ini.GetBoolean("Audio", "isMuted", false);
 
 				// [Network]
 				isServer = ini.GetBoolean("Network", "isServer", false);

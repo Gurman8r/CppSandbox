@@ -8,6 +8,7 @@
 #include <MemeEditor/Browser.hpp>
 #include <MemeEditor/Editor.hpp>
 #include <MemeEditor/ImGuiBuiltin.hpp>
+#include <MemeEditor/Dockspace.hpp>
 #include <imgui/imgui.h>
 #include <imgui/imgui_ml.hpp>
 
@@ -300,7 +301,8 @@ namespace DEMO
 				ImGui::CreateContext();
 				ImGui::StyleColorsDark();
 				ImGui::GetStyle().FrameBorderSize = 1;
-				if (!ImGui_ML_Init("#version 410", this, true))
+				ml::Debug::log("ImGui Ini: \"{0}\"", SETTINGS.imguiIni.c_str());
+				if (!ImGui_ML_Init("#version 410", this, true, SETTINGS.imguiIni.c_str()))
 				{
 					return ml::Debug::setError(ml::Debug::logError("Failed Loading ImGui"));
 				}
