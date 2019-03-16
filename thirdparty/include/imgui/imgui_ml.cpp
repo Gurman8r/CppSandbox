@@ -152,18 +152,14 @@ bool ImGui_ML_Init(ml::CString glsl_version, ml::Window * window, bool install_c
 	g_Window = window;
 	g_Time = 0.0;
 
-	// Setup back-end capabilities flags
+	// Back-end capabilities flags
 	ImGuiIO& io = ImGui::GetIO();
-	io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors; // We can honor GetMouseCursor() values (optional)
-	io.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;  // We can honor io.WantSetMousePos requests (optional, rarely used)
+	io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;	// We can honor GetMouseCursor() values (optional)
+	io.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;	// We can honor io.WantSetMousePos requests (optional, rarely used)
 	io.BackendPlatformName = "imgui_impl_glfw3";
 	io.BackendRendererName = "imgui_impl_opengl3";
 
-	// Docking
-	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
-	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
-
-	// Keyboard mapping. ImGui will use those indices to peek into the io.KeysDown[] array.
+	// Keyboard mapping
 	io.KeyMap[ImGuiKey_Tab] = ml::KeyCode::Tab;
 	io.KeyMap[ImGuiKey_LeftArrow] = ml::KeyCode::Left;
 	io.KeyMap[ImGuiKey_RightArrow] = ml::KeyCode::Right;
@@ -186,6 +182,7 @@ bool ImGui_ML_Init(ml::CString glsl_version, ml::Window * window, bool install_c
 	io.KeyMap[ImGuiKey_Y] = ml::KeyCode::Y;
 	io.KeyMap[ImGuiKey_Z] = ml::KeyCode::Z;
 
+	// Clipboard
 	io.SetClipboardTextFn = [](void * user_data, ml::CString text)
 	{
 		static_cast<ml::Window *>(user_data)->setClipboardString(text);
@@ -196,6 +193,7 @@ bool ImGui_ML_Init(ml::CString glsl_version, ml::Window * window, bool install_c
 	};
 	io.ClipboardUserData = g_Window;
 
+	// Cursors
 	g_MouseCursors[ImGuiMouseCursor_Arrow] = g_Window->createCursor(ml::Cursor::Arrow);
 	g_MouseCursors[ImGuiMouseCursor_TextInput] = g_Window->createCursor(ml::Cursor::IBeam);
 	g_MouseCursors[ImGuiMouseCursor_ResizeAll] = g_Window->createCursor(ml::Cursor::Arrow);   // FIXME: GLFW doesn't have this.
@@ -205,6 +203,7 @@ bool ImGui_ML_Init(ml::CString glsl_version, ml::Window * window, bool install_c
 	g_MouseCursors[ImGuiMouseCursor_ResizeNWSE] = g_Window->createCursor(ml::Cursor::Arrow);  // FIXME: GLFW doesn't have this.
 	g_MouseCursors[ImGuiMouseCursor_Hand] = g_Window->createCursor(ml::Cursor::Hand);
 
+	// Callbacks
 	if (install_callbacks)
 	{
 		window->setMouseButtonCallback(ImGui_ML_MouseButtonCallback);
@@ -213,7 +212,13 @@ bool ImGui_ML_Init(ml::CString glsl_version, ml::Window * window, bool install_c
 		window->setCharCallback(ImGui_ML_CharCallback);
 	}
 
+	// Client
 	g_ClientApi = API_OpenGL;
+
+	// Docking
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;	// Enable Docking
+	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;	// Enable Multi-Viewport / Platform Windows
+	
 	return true;
 }
 
@@ -285,10 +290,9 @@ void ImGui_ML_NewFrame()
 			io.BackendFlags &= ~ImGuiBackendFlags_HasGamepad;
 	}
 #endif // ML_MAP_GAMEPAD
-
 }
 
-void ImGui_ML_RenderDrawData(ImDrawData * draw_data)
+void ImGui_ML_Render(ImDrawData * draw_data)
 {
 	// Avoid rendering when minimized, scale coordinates for retina displays (screen coordinates != framebuffer coordinates)
 	ImGuiIO& io = ImGui::GetIO();

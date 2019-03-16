@@ -31,9 +31,9 @@ namespace DEMO
 	static ml::Var cmd_system	(ml::Args & args); // System Call
 	static ml::Var cmd_target	(ml::Args & args); // Return Program Info
 	
-	// Editor
+	// Inspector
 	/* * * * * * * * * * * * * * * * * * * * */
-	static ml::Var cmd_clear	(ml::Args & args); // Clear Editor Console
+	static ml::Var cmd_clear	(ml::Args & args); // Clear Inspector Console
 	static ml::Var cmd_history	(ml::Args & args); // Display History
 	static ml::Var cmd_list		(ml::Args & args); // Display Resources
 	static ml::Var cmd_reload	(ml::Args & args); // Reload Resources

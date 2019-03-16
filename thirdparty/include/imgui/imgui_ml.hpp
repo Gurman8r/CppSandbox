@@ -13,7 +13,7 @@ struct ImDrawData;
 ML_EDITOR_API bool ImGui_ML_Init(ml::CString glsl_version, ml::Window * window, bool install_callbacks);
 ML_EDITOR_API void ImGui_ML_Shutdown();
 ML_EDITOR_API void ImGui_ML_NewFrame();
-ML_EDITOR_API void ImGui_ML_RenderDrawData(ImDrawData * draw_data);
+ML_EDITOR_API void ImGui_ML_Render(ImDrawData * draw_data);
 
 /* * * * * * * * * * * * * * * * * * * * */
 

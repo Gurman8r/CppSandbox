@@ -36,7 +36,7 @@ namespace DEMO
 		ML_Interpreter.install({ "system",	cmd_system	});
 		ML_Interpreter.install({ "target",	cmd_target	});
 
-		// Editor
+		// Inspector
 		ML_Interpreter.install({ "clear",	cmd_clear	});
 		ML_Interpreter.install({ "history",	cmd_history });
 		ML_Interpreter.install({ "list",	cmd_list	});
@@ -379,7 +379,7 @@ namespace DEMO
 	}
 
 
-	// Editor
+	// Inspector
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	ml::Var cmd_clear(ml::Args & args)

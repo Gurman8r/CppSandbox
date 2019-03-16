@@ -16,6 +16,7 @@ namespace ml
 
 	Terminal::Terminal()
 	{
+		setup();
 	}
 	
 	Terminal::~Terminal()
@@ -32,10 +33,6 @@ namespace ml
 
 	void Terminal::setup()
 	{
-		static bool checked = false;
-		if (!checked) checked = true;
-		else return;
-
 		clear();
 		memset(m_inputBuf, 0, sizeof(m_inputBuf));
 		m_historyPos = -1;
@@ -78,10 +75,10 @@ namespace ml
 		for (auto h : m_history) { this->printf(h); }
 	}
 
-	void Terminal::draw(CString title, bool* p_open)
+	void Terminal::draw(bool * p_open)
 	{
 		ImGui::SetNextWindowSize(ImVec2(550, 600), ImGuiCond_FirstUseEver);
-		if (!ImGui::Begin(title, p_open))
+		if (!ImGui::Begin("Terminal", p_open))
 		{
 			ImGui::End();
 			return;
@@ -153,7 +150,7 @@ namespace ml
 			ImGuiInputTextFlags_CallbackCompletion |
 			ImGuiInputTextFlags_CallbackHistory
 			),
-			&textEditCallbackStub,
+			[](auto data) { return ((Terminal *)data->UserData)->textEditCallback(data); },
 			(void *)this))
 		{
 			char * s = m_inputBuf;
@@ -331,13 +328,6 @@ namespace ml
 		}
 		}
 		return 0;
-	}
-
-	int32_t	Terminal::textEditCallbackStub(ImGuiInputTextCallbackData* data) // In C++11 you are better off using lambdas for this sort of forwarding callbacks
-	{
-		Terminal * console = (Terminal*)data->UserData;
-
-		return console->textEditCallback(data);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

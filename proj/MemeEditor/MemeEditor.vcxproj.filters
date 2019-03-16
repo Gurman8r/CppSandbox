@@ -45,9 +45,6 @@
     <ClInclude Include="..\..\include\MemeEditor\ResourceManager.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeEditor\Editor.hpp">
-      <Filter>Header Files\Editor</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\thirdparty\include\imgui\imstb_truetype.h">
       <Filter>Header Files\imgui</Filter>
     </ClInclude>
@@ -84,6 +81,15 @@
     <ClInclude Include="..\..\include\MemeEditor\Builder.hpp">
       <Filter>Header Files\Editor</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeEditor\Inspector.hpp">
+      <Filter>Header Files\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeEditor\Editor.hpp">
+      <Filter>Header Files\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeEditor\Dockspace.hpp">
+      <Filter>Header Files\Editor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeEditor\Manifest.cpp">
@@ -91,9 +97,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\ResourceManager.cpp">
       <Filter>Source Files\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeEditor\Editor.cpp">
-      <Filter>Source Files\Editor</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\EventSerializer.cpp">
       <Filter>Source Files\Utility</Filter>
@@ -120,6 +123,15 @@
       <Filter>Source Files\Editor</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\Builder.cpp">
+      <Filter>Source Files\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeEditor\Inspector.cpp">
+      <Filter>Source Files\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeEditor\Editor.cpp">
+      <Filter>Source Files\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeEditor\Dockspace.cpp">
       <Filter>Source Files\Editor</Filter>
     </ClCompile>
   </ItemGroup>

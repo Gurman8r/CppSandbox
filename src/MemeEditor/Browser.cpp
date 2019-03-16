@@ -3,7 +3,6 @@
 #include <MemeCore/FileSystem.hpp>
 #include <MemeCore/EventSystem.hpp>
 #include <MemeCore/OS.hpp>
-
 #include <imgui/imgui.h>
 #include <imgui/imgui_ml.hpp>
 
@@ -56,8 +55,7 @@ namespace ml
 		ImGui::SetNextWindowSize(ImVec2(640, 480), ImGuiCond_FirstUseEver);
 		if (!ImGui::Begin("Browser", (m_open = p_open), ImGuiWindowFlags_MenuBar))
 		{
-			ImGui::End();
-			return;
+			return ImGui::End();
 		}
 		else
 		{

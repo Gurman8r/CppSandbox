@@ -293,31 +293,31 @@ namespace ml
 			case Uniform::Vec2:
 			{
 				static vec2f temp;
-				ML_Editor.InputVec2f("Value", temp);
+				ML_Inspector.InputVec2f("Value", temp);
 			}
 			break;
 			case Uniform::Vec3:
 			{
 				static vec3f temp;
-				ML_Editor.InputVec3f("Value", temp);
+				ML_Inspector.InputVec3f("Value", temp);
 			}
 			break;
 			case Uniform::Vec4:
 			{
 				static vec4f temp;
-				ML_Editor.InputVec4f("Value", temp);
+				ML_Inspector.InputVec4f("Value", temp);
 			}
 			break;
 			case Uniform::Mat3:
 			{
 				static mat3f temp;
-				ML_Editor.InputMat3f("Value", temp);
+				ML_Inspector.InputMat3f("Value", temp);
 			}
 			break;
 			case Uniform::Mat4:
 			{
 				static mat4f temp;
-				ML_Editor.InputMat4f("Value", temp);
+				ML_Inspector.InputMat4f("Value", temp);
 			}
 			break;
 			case Uniform::Tex:

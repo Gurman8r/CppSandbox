@@ -159,7 +159,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeEditor\Browser.hpp" />
+    <ClInclude Include="..\..\include\MemeEditor\Dockspace.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Editor.hpp" />
+    <ClInclude Include="..\..\include\MemeEditor\Inspector.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\EditorEvents.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\EventSerializer.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Export.hpp" />
@@ -178,7 +180,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeEditor\Browser.cpp" />
+    <ClCompile Include="..\..\src\MemeEditor\Dockspace.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\Editor.cpp" />
+    <ClCompile Include="..\..\src\MemeEditor\Inspector.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\Terminal.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\EventSerializer.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\Manifest.cpp" />
