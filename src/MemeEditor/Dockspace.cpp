@@ -8,71 +8,101 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Dockspace::Dockspace()
-		: opt_fullscreen_persistant(true)
-		, opt_flags(ImGuiDockNodeFlags_None)
+		: Dockspace("Dockspace")
 	{
 	}
 
-	Dockspace::~Dockspace()
+	Dockspace::Dockspace(const String & title)
+		: Dockspace(title, ImGuiDockNodeFlags_PassthruDockspace)
 	{
 	}
+
+	Dockspace::Dockspace(const String & title, int32_t dock_flags)
+		: dock_flags	(dock_flags)
+		, fullscreen	(true)
+		, border		(0.0f)
+		, padding		(vec2f::Zero)
+		, rounding		(0.0f)
+		, size			(vec2f::Zero)
+		, title			(title)
+		, win_flags		(ImGuiWindowFlags_None)
+	{
+	}
+
+	Dockspace::Dockspace(const Dockspace & copy)
+		: dock_flags	(copy.dock_flags)
+		, fullscreen	(copy.fullscreen)
+		, border		(copy.border)
+		, padding		(copy.padding)
+		, rounding		(copy.rounding)
+		, size			(copy.size)
+		, title			(copy.title)
+		, win_flags		(copy.win_flags)
+	{
+	}
+
+	Dockspace::~Dockspace() {}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void Dockspace::draw(bool * p_open)
+	void Dockspace::update()
 	{
-		static bool opt_fullscreen_persistant = true;
-		static ImGuiDockNodeFlags opt_flags = ImGuiDockNodeFlags_None;
-		bool opt_fullscreen = opt_fullscreen_persistant;
-
-		// We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
-		// because it would be confusing to have two docking targets within each others.
-		window_flags = ImGuiWindowFlags_MenuBar;
-		if (opt_fullscreen)
+		// We are using the ImGuiWindowFlags_NoDocking flag to make 
+		// the parent window not dockable into, because it would be 
+		// confusing to have two docking targets within each others.
+		win_flags = (ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking);
+		if (fullscreen)
 		{
-			ImGuiViewport* viewport = ImGui::GetMainViewport();
+			ImGuiViewport * viewport = ImGui::GetMainViewport();
 			ImGui::SetNextWindowPos(viewport->Pos);
 			ImGui::SetNextWindowSize(viewport->Size);
 			ImGui::SetNextWindowViewport(viewport->ID);
-			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
-			ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
-			window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
-			window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, rounding);
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, border);
+
+			win_flags |=
+				ImGuiWindowFlags_NoTitleBar |
+				ImGuiWindowFlags_NoCollapse |
+				ImGuiWindowFlags_NoResize |
+				ImGuiWindowFlags_NoMove;
+
+			win_flags |=
+				ImGuiWindowFlags_NoBringToFrontOnFocus |
+				ImGuiWindowFlags_NoNavFocus;
 		}
 
-		// When using ImGuiDockNodeFlags_PassthruDockspace, DockSpace() will render our background and handle the pass-thru hole, so we ask Begin() to not render a background.
-		if (opt_flags & ImGuiDockNodeFlags_PassthruDockspace)
-			window_flags |= ImGuiWindowFlags_NoBackground;
-
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-		ImGui::Begin("Editor DockSpace Demo", p_open, window_flags);
-		ImGui::PopStyleVar();
-
-		if (opt_fullscreen)
-			ImGui::PopStyleVar(2);
-
-		if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_DockingEnable)
+		// When using ImGuiDockNodeFlags_PassthruDockspace, 
+		// DockSpace() will render our background and handle the 
+		// pass-thru hole, so we ask Begin() to not render a background.
+		if (dock_flags & ImGuiDockNodeFlags_PassthruDockspace)
 		{
-			ImGuiID dockspace_id = ImGui::GetID("EditorDockSpace");
-			ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), opt_flags);
-		}
-		else
-		{
-			ImGuiIO& io = ImGui::GetIO();
-			ImGui::Text("ERROR: Docking is not enabled! See Demo > Configuration.");
-			ImGui::Text("Set io.ConfigFlags |= ImGuiConfigFlags_DockingEnable in your code, or ");
-			ImGui::SameLine(0.0f, 0.0f);
-			if (ImGui::SmallButton("click here"))
-				io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+			win_flags |= ImGuiWindowFlags_NoBackground;
 		}
 
-		ML_Inspector.ShowHelpMarker(
-			"You can _always_ dock _any_ window into another by holding the SHIFT key while moving a window. Try it now!" "\n"
-			"This demo app has nothing to do with it!" "\n\n"
-			"This demo app only demonstrate the use of ImGui::DockSpace() which allows you to manually create a docking node _within_ another window. This is useful so you can decorate your main application window (e.g. with a menu bar)." "\n\n"
-			"ImGui::DockSpace() comes with one hard constraint: it needs to be submitted _before_ any window which may be docked into it. Therefore, if you use a dock spot as the central point of your application, you'll probably want it to be part of the very first window you are submitting to imgui every frame." "\n\n"
-			"(NB: because of this constraint, the implicit \"Debug\" window can not be docked into an explicit DockSpace() node, because that window is submitted as part of the NewFrame() call. An easy workaround is that you can create your own implicit \"Debug##2\" window after calling DockSpace() and leave it in the window stack for anyone to use.)"
-		);
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { padding[0], padding[1] });
+	}
+
+	bool Dockspace::draw(const String & title, bool * p_open)
+	{
+		update();
+
+		bool good;
+		if (good = (ImGui::Begin((this->title = title).c_str(), p_open, win_flags)))
+		{
+			ImGui::PopStyleVar(fullscreen ? 3 : 1);
+
+			if (good = (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_DockingEnable))
+			{
+				ImGui::DockSpace(getID(), { size[0], size[1] }, dock_flags);
+			}
+		}
+		return good;
+	}
+
+	uint32_t Dockspace::getID() const
+	{
+		return ImGui::GetID((title + "_ID").c_str());
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

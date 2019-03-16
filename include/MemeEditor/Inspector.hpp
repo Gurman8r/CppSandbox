@@ -9,6 +9,7 @@
 
 namespace ml
 {
+	// Property / Object Editor
 	class ML_EDITOR_API Inspector
 		: public ITrackable
 		, public ISingleton<Inspector>

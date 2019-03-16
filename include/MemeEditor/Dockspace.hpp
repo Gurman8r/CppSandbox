@@ -2,24 +2,36 @@
 #define _DOCKSPACE_HPP_
 
 #include <MemeEditor/Export.hpp>
-#include <MemeCore/ITrackable.hpp>
+#include <MemeCore/Vector2.hpp>
 
 namespace ml
 {
-	class ML_EDITOR_API Dockspace
+	// Used for docking windows
+	class ML_EDITOR_API Dockspace final : public ITrackable
 	{
 	public:
 		Dockspace();
+		Dockspace(const String & title);
+		Dockspace(const String & title, int32_t dock_flags);
+		Dockspace(const Dockspace & copy);
 		~Dockspace();
 
 	public:
-		void draw(bool * p_open);
+		void update();
+		
+		bool draw(const String & title, bool * p_open);
+		
+		uint32_t getID() const;
 
 	public:
-		int32_t opt_flags;
-		bool	opt_fullscreen;
-		bool	opt_fullscreen_persistant;
-		int32_t window_flags;
+		int32_t dock_flags;
+		bool	fullscreen;
+		float	border;
+		vec2f	padding;
+		float	rounding;
+		vec2f	size;
+		String	title;
+		int32_t win_flags;
 	};
 }
 

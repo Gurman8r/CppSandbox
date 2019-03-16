@@ -1,14 +1,15 @@
 #ifndef _EDITOR_HPP_
 #define _EDITOR_HPP_
 
-#include <MemeEditor/Dockspace.hpp>
+#include <MemeEditor/Export.hpp>
 #include <MemeCore/IEventListener.hpp>
 
 #define ML_Editor ml::Editor::getInstance()
 
 namespace ml
 {
-	class ML_EDITOR_API Editor
+
+	class ML_EDITOR_API Editor final
 		: public ITrackable
 		, public ISingleton<Editor>
 		, public IEventListener
@@ -20,11 +21,7 @@ namespace ml
 		~Editor();
 
 	public:
-		void onEvent(const IEvent * value);
-		void draw(bool * p_open);
-
-	private:
-		Dockspace m_dock;
+		void onEvent(const IEvent * value) override;
 	};
 }
 

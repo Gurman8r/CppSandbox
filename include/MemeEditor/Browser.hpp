@@ -12,6 +12,7 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
+	// File Browser
 	class ML_EDITOR_API Browser
 		: public ITrackable
 		, public IEventListener
