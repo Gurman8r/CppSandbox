@@ -14,33 +14,29 @@ namespace ml
 		, public ISingleton<Terminal>
 	{
 		friend class ISingleton<Terminal>;
+	public:
+		void	setup();
+		void    clear();
+		void    printf(CString fmt, ...) IM_FMTARGS(2);
+		void	printHistory();
+		void    draw(CString title, bool * p_open);
+		void    execCommand(CString command_line);
+		int32_t textEditCallback(ImGuiInputTextCallbackData* data);
+
+		static int32_t textEditCallbackStub(ImGuiInputTextCallbackData* data);
 
 	private:
 		char				m_inputBuf[256];
 		List<String>		m_lines;
 		bool				m_scrollToBottom;
 		ImVector<char *>	m_history;
-		int32_t				m_historyPos;    // -1: new line, 0..History.Size-1 browsing history.
+		int32_t				m_historyPos;
 		ImVector<CString>	m_auto;
 
-		bool m_visible = false;
+		bool * m_open = NULL;
 
 		Terminal();
 		~Terminal();
-
-	public:
-		void	setup();
-		void    clear();
-		void    printf(CString fmt, ...) IM_FMTARGS(2);
-		void	printHistory();
-		void    draw(CString title, bool* p_open);
-		void    execCommand(CString command_line);
-		int32_t textEditCallback(ImGuiInputTextCallbackData* data);
-
-		static int32_t textEditCallbackStub(ImGuiInputTextCallbackData* data);
-
-		inline bool &	visible()	{ return m_visible; }
-		inline void		draw()		{ return draw("Console", &visible()); }
 	};
 
 }

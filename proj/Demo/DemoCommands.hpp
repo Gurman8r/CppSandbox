@@ -34,7 +34,6 @@ namespace DEMO
 	// Editor
 	/* * * * * * * * * * * * * * * * * * * * */
 	static ml::Var cmd_clear	(ml::Args & args); // Clear Editor Console
-	static ml::Var cmd_hide		(ml::Args & args); // Hide Editor Console
 	static ml::Var cmd_history	(ml::Args & args); // Display History
 	static ml::Var cmd_list		(ml::Args & args); // Display Resources
 	static ml::Var cmd_reload	(ml::Args & args); // Reload Resources

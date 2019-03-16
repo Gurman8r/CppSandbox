@@ -347,7 +347,7 @@ namespace ml
 					&index,
 					vector_getter, 
 					static_cast<void *>(&names), 
-					names.size());
+					(int32_t)names.size());
 			}
 			break;
 			}

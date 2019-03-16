@@ -159,6 +159,10 @@ bool ImGui_ML_Init(ml::CString glsl_version, ml::Window * window, bool install_c
 	io.BackendPlatformName = "imgui_impl_glfw3";
 	io.BackendRendererName = "imgui_impl_opengl3";
 
+	// Docking
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
+	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
+
 	// Keyboard mapping. ImGui will use those indices to peek into the io.KeysDown[] array.
 	io.KeyMap[ImGuiKey_Tab] = ml::KeyCode::Tab;
 	io.KeyMap[ImGuiKey_LeftArrow] = ml::KeyCode::Left;

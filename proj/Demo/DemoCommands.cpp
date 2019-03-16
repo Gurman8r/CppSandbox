@@ -38,7 +38,6 @@ namespace DEMO
 
 		// Editor
 		ML_Interpreter.install({ "clear",	cmd_clear	});
-		ML_Interpreter.install({ "hide",	cmd_hide	});
 		ML_Interpreter.install({ "history",	cmd_history });
 		ML_Interpreter.install({ "list",	cmd_list	});
 		ML_Interpreter.install({ "reload",	cmd_reload	});
@@ -391,14 +390,6 @@ namespace DEMO
 #else
 		return ml::Var().intValue(ml::Debug::clear());
 #endif
-	}
-
-	ml::Var cmd_hide(ml::Args & args)
-	{
-#ifdef ML_Terminal
-		ML_Terminal.visible() = false;
-#endif
-		return ml::Var().voidValue();
 	}
 
 	ml::Var cmd_history(ml::Args & args)
