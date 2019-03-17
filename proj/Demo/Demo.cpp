@@ -1070,9 +1070,14 @@ namespace DEMO
 			{
 				if (auto tex = std::remove_cv_t<ml::Texture *>(m_effects["default"].texture()))
 				{
+					ml::vec2f sa = ml::vec2f { ImGui::GetWindowSize() .x, ImGui::GetWindowSize().y };
+					ml::vec2f sb = sa * 0.975f;
+					ml::vec2f off = (sa - sb) * 0.5f;
+
+					ImGui::SetCursorPos({ off[0], off[1] });
 					ImGui::Image(
 						(void *)(intptr_t)tex->get_ref(),
-						ImGui::GetWindowSize(),
+						{ sb[0], sb[1] },
 						{ 0, 1 }, { 1, 0 });
 				}
 			}
