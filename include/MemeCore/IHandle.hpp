@@ -24,8 +24,8 @@ namespace ml
 		virtual ~IHandle() {}
 
 	public:
-		inline bool				good() const			{ return m_ID; }
-		inline reference		get_ref()				{ return m_ID; }
+		inline bool				good() const			{ return  m_ID; }
+		inline reference		get_ref()				{ return  m_ID; }
 		inline pointer			get_ptr()				{ return &m_ID; }
 		inline const_pointer	get_const_ptr() const	{ return &m_ID; }
 		inline const_reference	get_const_ref() const	{ return  m_ID; }

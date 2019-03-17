@@ -52,9 +52,7 @@ namespace DEMO
 
 		case ml::CoreEvent::EV_RequestExit:
 			if (const auto * ev = value->as<ml::RequestExitEvent>())
-			{
 				this->close();
-			}
 			break;
 
 		case ml::WindowEvent::EV_FramebufferSize:
@@ -1070,14 +1068,33 @@ namespace DEMO
 			{
 				if (auto tex = std::remove_cv_t<ml::Texture *>(m_effects["default"].texture()))
 				{
-					ml::vec2f sa = ml::vec2f { ImGui::GetWindowSize() .x, ImGui::GetWindowSize().y };
-					ml::vec2f sb = sa * 0.975f;
-					ml::vec2f off = (sa - sb) * 0.5f;
+					// Texture Size
+					const ml::vec2f src = tex->size();
 
-					ImGui::SetCursorPos({ off[0], off[1] });
+					// Window Size
+					const ml::vec2f dst = ml::vec2f { 
+						ImGui::GetWindowSize().x,
+						ImGui::GetWindowSize().y
+					};
+
+					// Scaled to Fit
+					const ml::vec2f 
+						hs = (dst[0] / src[0]),
+						vs = (dst[1] / src[1]);
+
+					const ml::vec2f scale = (((hs) < (vs)) ? (hs) : (vs));
+					
+					// Image Size
+					const ml::vec2f scl = (src * scale);
+
+					// Position
+					const ml::vec2f pos = ((dst - scl) * 0.5f);
+
+					ImGui::SetCursorPos({ pos[0], pos[1] });
+
 					ImGui::Image(
 						(void *)(intptr_t)tex->get_ref(),
-						{ sb[0], sb[1] },
+						{ scl[0], scl[1] },
 						{ 0, 1 }, { 1, 0 });
 				}
 			}
