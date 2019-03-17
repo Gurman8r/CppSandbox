@@ -990,8 +990,7 @@ namespace DEMO
 		
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		//dock.dock_flags = ImGuiDockNodeFlags_NoResize;
-		dock.bgAlpha	= 1.0f;
+		dock.bgAlpha = 1.0f;
 
 		if (dock.draw(p_open, setup_dockspace)) { }
 
