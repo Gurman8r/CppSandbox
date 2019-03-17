@@ -52,7 +52,7 @@ namespace ml
 			for (size_t x = 0; x < value.Cols; x++)
 			{
 				const size_t i = y * value.Cols + x;
-				const String l = (i > 9 ? std::to_string(i) : ("0" + std::to_string(i)));
+				const String l = String("##") + (i > 9 ? std::to_string(i) : ("0" + std::to_string(i)));
 
 				ImGui::DragFloat((l + id).c_str(), &value[i], 0.01f);
 				ImGui::SameLine();

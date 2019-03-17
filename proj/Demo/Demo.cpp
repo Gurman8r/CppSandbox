@@ -131,6 +131,9 @@ namespace DEMO
 				// Builder (Ctrl+Alt+B)
 				if (ev->getKeyDown(ml::KeyCode::B) && (mod_ctrl && mod_alt)) { show_ml_builder = true; }
 
+				// Scene (Ctrl+Alt+S)
+				if (ev->getKeyDown(ml::KeyCode::S) && (mod_ctrl && mod_alt)) { show_ml_scene = true; }
+
 				// Inspector (Ctrl+Alt+I)
 				if (ev->getKeyDown(ml::KeyCode::I) && (mod_ctrl && mod_alt)) { show_ml_inspector = true; }
 				
@@ -846,7 +849,20 @@ namespace DEMO
 		draw_MainMenuBar();
 
 		// Dockspace
-		draw_Dockspace(&show_ml_dockspace);
+		if (show_ml_dockspace)	{ draw_Dockspace(&show_ml_dockspace); }
+
+		// ImGui
+		if (show_imgui_demo)	{ ml::ImGuiBuiltin::showDemoWindow(show_imgui_demo); }
+		if (show_imgui_metrics) { ml::ImGuiBuiltin::showMetricsWindow(show_imgui_metrics); }
+		if (show_imgui_style)	{ ml::ImGuiBuiltin::showStyleWindow(show_imgui_style); }
+		if (show_imgui_about)	{ ml::ImGuiBuiltin::showAboutWindow(show_imgui_about); }
+
+		// Editor
+		if (show_ml_browser)	{ ML_Browser.draw(&show_ml_browser); }
+		if (show_ml_terminal)	{ ML_Terminal.draw(&show_ml_terminal); }
+		if (show_ml_builder)	{ ML_Builder.draw(&show_ml_builder); }
+		if (show_ml_scene)		{ draw_Scene(&show_ml_scene); }
+		if (show_ml_inspector)	{ draw_Inspector(&show_ml_inspector); }
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	}
@@ -864,12 +880,19 @@ namespace DEMO
 
 	void Demo::draw_MainMenuBar()
 	{
+		/* * * * * * * * * * * * * * * * * * * * */
+
 		if (ImGui::BeginMainMenuBar())
 		{
+			// File
+			/* * * * * * * * * * * * * * * * * * * * */
 			if (ImGui::BeginMenu("File"))
 			{
 				if (ImGui::MenuItem("New", "Ctrl+N", false, false)) {}
-				if (ImGui::MenuItem("Open", "Ctrl+O", false, false)) {}
+				if (ImGui::MenuItem("Open", "Ctrl+O", false, ML_Browser.get_selected())) 
+				{
+					ML_OS.execute("open", ML_Browser.get_selected_path());
+				}
 				ImGui::Separator();
 				if (ImGui::MenuItem("Save", "Ctrl+S", false, false)) {}
 				if (ImGui::MenuItem("Save All", "Ctrl+Shift+S", false, false)) {}
@@ -877,6 +900,8 @@ namespace DEMO
 				if (ImGui::MenuItem("Quit", "Alt+F4")) { this->close(); }
 				ImGui::EndMenu();
 			}
+			// Edit
+			/* * * * * * * * * * * * * * * * * * * * */
 			if (ImGui::BeginMenu("Edit"))
 			{
 				if (ImGui::MenuItem("Undo", "Ctrl+Z", false, false)) {}
@@ -887,18 +912,22 @@ namespace DEMO
 				if (ImGui::MenuItem("Paste", "Ctrl+V", false, false)) {}
 				ImGui::EndMenu();
 			}
+			// Window
+			/* * * * * * * * * * * * * * * * * * * * */
 			if (ImGui::BeginMenu("Window"))
 			{
-				ml::String str(ml::String(show_ml_dockspace ? "Hide" : "Show") + " All");
-				ImGui::MenuItem(str.c_str(), NULL, &show_ml_dockspace);
+				ImGui::MenuItem("Dockspace", NULL, &show_ml_dockspace);
 				ImGui::Separator();
 
-				ImGui::MenuItem("Terminal", "Ctrl+Alt+T", &show_ml_terminal, show_ml_dockspace);
-				ImGui::MenuItem("Browser", "Ctrl+Alt+E", &show_ml_browser, show_ml_dockspace);
-				ImGui::MenuItem("Builder", "Ctrl+Alt+B", &show_ml_builder, show_ml_dockspace);
-				ImGui::MenuItem("Inspector", "Ctrl+Alt+I", &show_ml_inspector, show_ml_dockspace);
+				ImGui::MenuItem("Terminal", "Ctrl+Alt+T", &show_ml_terminal);
+				ImGui::MenuItem("Browser", "Ctrl+Alt+E", &show_ml_browser);
+				ImGui::MenuItem("Builder", "Ctrl+Alt+B", &show_ml_builder);
+				ImGui::MenuItem("Scene", "Ctrl+Alt+S", &show_ml_scene);
+				ImGui::MenuItem("Inspector", "Ctrl+Alt+I", &show_ml_inspector);
 				ImGui::EndMenu();
 			}
+			// Help
+			/* * * * * * * * * * * * * * * * * * * * */
 			if (ImGui::BeginMenu("Help"))
 			{
 				if (ImGui::MenuItem("Project Page"))
@@ -912,15 +941,19 @@ namespace DEMO
 				ImGui::MenuItem("About Dear ImGui", NULL, &show_imgui_about);
 				ImGui::EndMenu();
 			}
-			ImGui::EndMainMenuBar();
 		}
+		ImGui::EndMainMenuBar();
+
+		/* * * * * * * * * * * * * * * * * * * * */
 	}
 
 	void Demo::draw_Dockspace(bool * p_open)
 	{
-		// Setup Dockspace
 		/* * * * * * * * * * * * * * * * * * * * */
-		static ml::Dockspace dock("EditorDockspace");
+		
+		static ml::Dockspace dock("EditorDockspace", ImGuiDockNodeFlags_PassthruDockspace);
+
+		/* * * * * * * * * * * * * * * * * * * * */
 		
 		auto setup_dockspace = []()
 		{
@@ -934,54 +967,40 @@ namespace DEMO
 
 			uint32_t origin = dockID;
 
-			uint32_t left_C = ImGui::DockBuilderSplitNode(origin, ImGuiDir_Left, 0.333f, NULL, &origin);
-			const uint32_t left_U = ImGui::DockBuilderSplitNode(left_C, ImGuiDir_Up, 0.6f, NULL, &left_C);
-			const uint32_t left_D = ImGui::DockBuilderSplitNode(left_C, ImGuiDir_Down, 0.4f, NULL, &left_C);
+			uint32_t left_C = ImGui::DockBuilderSplitNode(origin, ImGuiDir_Left, 0.3f, NULL, &origin);
+			const uint32_t left_U = ImGui::DockBuilderSplitNode(left_C, ImGuiDir_Up, 0.5f, NULL, &left_C);
+			const uint32_t left_D = ImGui::DockBuilderSplitNode(left_C, ImGuiDir_Down, 0.5f, NULL, &left_C);
 
-			uint32_t center_C = ImGui::DockBuilderSplitNode(origin, ImGuiDir_Right, 0.333f, NULL, &origin);
+			uint32_t center_C = ImGui::DockBuilderSplitNode(origin, ImGuiDir_Right, 0.4f, NULL, &origin);
 			const uint32_t center_U = ImGui::DockBuilderSplitNode(center_C, ImGuiDir_Up, 0.5f, NULL, &center_C);
 			const uint32_t center_D = ImGui::DockBuilderSplitNode(center_C, ImGuiDir_Down, 0.5f, NULL, &center_C);
 
-			uint32_t right_C = ImGui::DockBuilderSplitNode(center_C, ImGuiDir_Right, 0.333f, NULL, &center_C);
+			uint32_t right_C = ImGui::DockBuilderSplitNode(center_C, ImGuiDir_Right, 0.3f, NULL, &center_C);
 			const uint32_t right_U = ImGui::DockBuilderSplitNode(right_C, ImGuiDir_Up, 0.5f, NULL, &right_C);
 			const uint32_t right_D = ImGui::DockBuilderSplitNode(right_C, ImGuiDir_Down, 0.5f, NULL, &right_C);
 			
-
-			ImGui::DockBuilderDockWindow("Builder", left_U);
-			ImGui::DockBuilderDockWindow("Browser", left_U);
-			ImGui::DockBuilderDockWindow("Terminal", left_D);
-			ImGui::DockBuilderDockWindow("Scene", center_C);
-			ImGui::DockBuilderDockWindow("Inspector", right_U);
+			ImGui::DockBuilderDockWindow("Browser",		left_U);
+			ImGui::DockBuilderDockWindow("Terminal",	left_D);
+			ImGui::DockBuilderDockWindow("Builder",		center_C);
+			ImGui::DockBuilderDockWindow("Scene",		center_C);
+			ImGui::DockBuilderDockWindow("Inspector",	right_U);
 
 			ImGui::DockBuilderFinish(origin);
 		};
 		
-		// Draw Dockspace
 		/* * * * * * * * * * * * * * * * * * * * */
-		if (show_ml_dockspace && dock.draw(&show_ml_dockspace, setup_dockspace))
-		{
-			// ImGui Windows
-			if (show_imgui_demo) { ml::ImGuiBuiltin::showDemoWindow(show_imgui_demo); }
-			if (show_imgui_metrics) { ml::ImGuiBuiltin::showMetricsWindow(show_imgui_metrics); }
-			if (show_imgui_style) { ml::ImGuiBuiltin::showStyleWindow(show_imgui_style); }
-			if (show_imgui_about) { ml::ImGuiBuiltin::showAboutWindow(show_imgui_about); }
 
-			// Editor Windows
-			if (show_ml_builder)	{ ML_Builder.draw(&show_ml_builder); }
-			if (show_ml_browser)	{ ML_Browser.draw(&show_ml_browser); }
-			if (show_ml_terminal)	{ ML_Terminal.draw(&show_ml_terminal); }
-			if (show_ml_scene)		{ draw_Scene(&show_ml_scene); }
-			if (show_ml_inspector)	{ draw_Inspector(&show_ml_inspector); }
+		//dock.dock_flags = ImGuiDockNodeFlags_NoResize;
+		dock.bgAlpha	= 1.0f;
 
-			ImGui::End();
-		}
+		if (dock.draw(p_open, setup_dockspace)) { }
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	}
 
 	void Demo::draw_Inspector(bool * p_open)
 	{
-		if (!ImGui::Begin("Inspector", p_open))
+		if (!ImGui::Begin("Inspector", p_open, ImGuiWindowFlags_AlwaysAutoResize))
 		{
 			return ImGui::End();
 		}
@@ -1044,17 +1063,24 @@ namespace DEMO
 
 	void Demo::draw_Scene(bool * p_open)
 	{
-		if (ImGui::Begin("Scene", p_open, ImGuiWindowFlags_MenuBar))
+		if (ImGui::Begin("Scene", p_open))
 		{
 			/* * * * * * * * * * * * * * * * * * * * */
 
-			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.f, 1.f, 1.f, 1.f));
-			ImGui::Text("Hello, World!");
-			ImGui::PopStyleColor();
+			ImGui::BeginChild("SceneView", { -1, -1 }, false);
+			{
+				if (auto tex = std::remove_cv_t<ml::Texture *>(m_effects["default"].texture()))
+				{
+					ImGui::Image(
+						(void *)(intptr_t)tex->get_ref(),
+						ImGui::GetWindowSize(),
+						{ 0, 1 }, { 1, 0 });
+				}
+			}
+			ImGui::EndChild();
 
 			/* * * * * * * * * * * * * * * * * * * * */
 		}
-		
 		return ImGui::End();
 	}
 

@@ -53,13 +53,15 @@ namespace ml
 	void Browser::draw(bool * p_open)
 	{
 		//ImGui::SetNextWindowSize(ImVec2(640, 480), ImGuiCond_FirstUseEver);
-		if (!ImGui::Begin("Browser", (m_open = p_open), ImGuiWindowFlags_MenuBar))
+		if (!ImGui::Begin("Browser", (m_open = p_open)))
 		{
 			return ImGui::End();
 		}
 		else
 		{
-			draw_menu();
+			//draw_menu();
+
+			ImGui::Text("%s", m_path.c_str());
 
 			draw_directory();
 
@@ -97,8 +99,6 @@ namespace ml
 			}
 			ImGui::EndMenuBar();
 		}
-
-		ImGui::Text("%s", m_path.c_str());
 	}
 
 	void Browser::draw_directory()
@@ -249,9 +249,9 @@ namespace ml
 	String Browser::get_selected_name() const
 	{
 		const String * file;
-		return ((file = getFile())
+		return ((file = get_selected())
 			? (*file).c_str()
-			: "");
+			: String());
 	}
 
 	String Browser::get_selected_path() const

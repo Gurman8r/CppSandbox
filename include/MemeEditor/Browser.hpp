@@ -51,6 +51,7 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
+	public:
 		void	set_selected(char type, size_t index);
 		String	get_selected_name() const;
 		String	get_selected_path() const;
@@ -59,12 +60,9 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		inline String pathTo(const String & value) const
-		{
-			return (m_path + "\\" + value);
-		}
+		inline String pathTo(const String & value) const { return (m_path + "\\" + value); }
 
-		inline const List<String> * getList() const
+		inline const List<String> * get_list() const
 		{
 			Directory::const_iterator it;
 			return (((it = m_dir.find(m_type)) != m_dir.end())
@@ -72,10 +70,10 @@ namespace ml
 				: (NULL));
 		}
 
-		inline const String * getFile() const
+		inline const String * get_selected() const
 		{
 			const List<String> * list;
-			return ((list = getList())
+			return ((list = get_list())
 				? ((m_index < list->size())
 					? &(*list).at(m_index)
 					: NULL)

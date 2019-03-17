@@ -60,11 +60,6 @@ namespace ml
 		}
 		else
 		{
-			//editSource(m_source);
-			//editUniforms(m_uniforms);
-
-			draw_menu();
-
 			draw_list();
 
 			ImGui::SameLine();
@@ -75,21 +70,6 @@ namespace ml
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
-
-	void Builder::draw_menu()
-	{
-		if (ImGui::BeginMenuBar())
-		{
-			if (ImGui::BeginMenu("File"))
-			{
-				if (ImGui::MenuItem("Open"))
-				{
-				}
-				ImGui::EndMenu();
-			}
-			ImGui::EndMenuBar();
-		}
-	}
 
 	void Builder::draw_list()
 	{

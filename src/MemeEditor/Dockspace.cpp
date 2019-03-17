@@ -27,7 +27,7 @@ namespace ml
 		, size			(vec2f::Zero)
 		, title			(title)
 		, win_flags		(ImGuiWindowFlags_None)
-		, bgAlpha		(0.0f)
+		, bgAlpha		(1.0f)
 	{
 	}
 
@@ -54,19 +54,19 @@ namespace ml
 		if (good = (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_DockingEnable))
 		{
 			// Flags
-			win_flags = 
-				ImGuiWindowFlags_MenuBar | 
-				ImGuiWindowFlags_NoDocking;
+			win_flags =
+				ImGuiWindowFlags_NoTitleBar |
+				ImGuiWindowFlags_NoCollapse;
 
 			if (fullscreen)
 			{
 				win_flags |=
-					ImGuiWindowFlags_NoTitleBar |
-					ImGuiWindowFlags_NoCollapse |
 					ImGuiWindowFlags_NoResize |
 					ImGuiWindowFlags_NoMove |
 					ImGuiWindowFlags_NoBringToFrontOnFocus |
-					ImGuiWindowFlags_NoNavFocus;
+					ImGuiWindowFlags_NoNavFocus |
+					ImGuiWindowFlags_MenuBar |
+					ImGuiWindowFlags_NoDocking;
 			}
 
 			if (dock_flags & ImGuiDockNodeFlags_PassthruDockspace)
@@ -75,12 +75,10 @@ namespace ml
 			}
 
 			// Bounds
-			if (const ImGuiViewport * viewport = ImGui::GetMainViewport())
-			{
-				ImGui::SetNextWindowPos(viewport->Pos);
-				ImGui::SetNextWindowSize(viewport->Size);
-				ImGui::SetNextWindowViewport(viewport->ID);
-			}
+			const ImGuiViewport * viewport = ImGui::GetMainViewport();
+			ImGui::SetNextWindowPos(viewport->Pos);
+			ImGui::SetNextWindowSize(viewport->Size);
+			ImGui::SetNextWindowViewport(viewport->ID);
 
 			// Style
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, rounding);
@@ -91,13 +89,15 @@ namespace ml
 			// Begin
 			if (good = (ImGui::Begin(title.c_str(), p_open, win_flags)))
 			{
-				ImGui::PopStyleVar(fullscreen ? 3 : 1);
+				ImGui::PopStyleVar(3);
 
-				// Run pointer to a setup function before calling ImGui::DockSpace.
-				// Used for building docked window layouts.
+				// Run function before calling ImGui::DockSpace.
+				// Build Dockspace layouts here.
 				if (fun) { fun(); }
 
 				ImGui::DockSpace(getID(), { size[0], size[1] }, dock_flags);
+
+				ImGui::End();
 			}
 		}
 		return good;

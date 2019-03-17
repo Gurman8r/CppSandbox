@@ -57,6 +57,11 @@ namespace ml
 		m_scrollToBottom = true;
 	}
 
+	void Terminal::print(const String & str)
+	{
+		printf("%s", str.c_str());
+	}
+
 	void Terminal::printf(CString fmt, ...)
 	{
 		// FIXME-OPT
@@ -77,7 +82,7 @@ namespace ml
 
 	void Terminal::draw(bool * p_open)
 	{
-		//ImGui::SetNextWindowSize(ImVec2(550, 600), ImGuiCond_FirstUseEver);
+		ImGui::SetNextWindowSize(ImVec2(550, 600), ImGuiCond_FirstUseEver);
 		if (!ImGui::Begin("Terminal", p_open))
 		{
 			ImGui::End();

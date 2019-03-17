@@ -10,14 +10,16 @@
 namespace ml
 {
 	// Command Line Interface
-	class ML_EDITOR_API Terminal
+	class ML_EDITOR_API Terminal final
 		: public ITrackable
 		, public ISingleton<Terminal>
 	{
 		friend class ISingleton<Terminal>;
+	
 	public:
 		void	setup();
 		void    clear();
+		void	print(const String & str);
 		void    printf(CString fmt, ...) IM_FMTARGS(2);
 		void	printHistory();
 		void    draw(bool * p_open);

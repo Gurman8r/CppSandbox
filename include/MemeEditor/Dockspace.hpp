@@ -24,8 +24,6 @@ namespace ml
 		uint32_t	getID() const;
 		CString		getTitle() const;
 
-		inline operator bool() const { return (getID() > 0); }
-
 	public:
 		int32_t dock_flags;
 		bool	fullscreen;

@@ -110,10 +110,10 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		bool show_ml_dockspace	= true;
-		bool show_ml_terminal	= true;
-		bool show_ml_browser	= true;
-		bool show_ml_builder	= true;
-		bool show_ml_inspector	= true;
+		bool show_ml_terminal	= false;
+		bool show_ml_browser	= false;
+		bool show_ml_builder	= false;
+		bool show_ml_inspector	= false;
 		bool show_ml_scene		= true;
 
 		bool show_imgui_demo	= false;

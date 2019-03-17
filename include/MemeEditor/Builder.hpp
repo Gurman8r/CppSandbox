@@ -24,7 +24,6 @@ namespace ml
 		void draw(bool * p_open);
 
 	private:
-		void draw_menu();
 		void draw_list();
 		void draw_list_buttons();
 		void draw_preview();
