@@ -13,12 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Editor">
-      <UniqueIdentifier>{d2cd5d20-75c4-4b9b-ad66-6aec7911ae8c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Editor">
-      <UniqueIdentifier>{c085c6e6-146c-4fd9-a8b2-5ad3e21c5d75}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Utility">
       <UniqueIdentifier>{a16a0ada-b5f8-488b-80ec-824f359d2fce}</UniqueIdentifier>
     </Filter>
@@ -30,6 +24,18 @@
     </Filter>
     <Filter Include="Source Files\imgui">
       <UniqueIdentifier>{adcf5ab3-0484-4eb4-82c6-502347b34478}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Editors">
+      <UniqueIdentifier>{c085c6e6-146c-4fd9-a8b2-5ad3e21c5d75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Editors">
+      <UniqueIdentifier>{d2cd5d20-75c4-4b9b-ad66-6aec7911ae8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DS">
+      <UniqueIdentifier>{a740db58-683d-46df-9dfa-8d3a195dbcd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DS">
+      <UniqueIdentifier>{4e9592a2-09b6-4845-8ee9-7bd04c1b754e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -73,25 +79,28 @@
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\Browser.hpp">
-      <Filter>Header Files\Editor</Filter>
+      <Filter>Header Files\Editors</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\Terminal.hpp">
-      <Filter>Header Files\Editor</Filter>
+      <Filter>Header Files\Editors</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\Builder.hpp">
-      <Filter>Header Files\Editor</Filter>
+      <Filter>Header Files\Editors</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\Inspector.hpp">
-      <Filter>Header Files\Editor</Filter>
+      <Filter>Header Files\Editors</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\Editor.hpp">
-      <Filter>Header Files\Editor</Filter>
+      <Filter>Header Files\Editors</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\Dockspace.hpp">
-      <Filter>Header Files\Editor</Filter>
+      <Filter>Header Files\Editors</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\ImGuiBuiltin.hpp">
-      <Filter>Header Files\Editor</Filter>
+      <Filter>Header Files\Editors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeEditor\SourceFile.hpp">
+      <Filter>Header Files\DS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -120,25 +129,28 @@
       <Filter>Source Files\imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\Browser.cpp">
-      <Filter>Source Files\Editor</Filter>
+      <Filter>Source Files\Editors</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\Terminal.cpp">
-      <Filter>Source Files\Editor</Filter>
+      <Filter>Source Files\Editors</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\Builder.cpp">
-      <Filter>Source Files\Editor</Filter>
+      <Filter>Source Files\Editors</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\Inspector.cpp">
-      <Filter>Source Files\Editor</Filter>
+      <Filter>Source Files\Editors</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\Editor.cpp">
-      <Filter>Source Files\Editor</Filter>
+      <Filter>Source Files\Editors</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\Dockspace.cpp">
-      <Filter>Source Files\Editor</Filter>
+      <Filter>Source Files\Editors</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\ImGuiBuiltin.cpp">
-      <Filter>Source Files\Editor</Filter>
+      <Filter>Source Files\Editors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeEditor\SourceFile.cpp">
+      <Filter>Source Files\DS</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -2,6 +2,7 @@
 #include <MemeEditor/ResourceManager.hpp>
 #include <imgui/imgui.h>
 #include <imgui/imgui_ml.hpp>
+#include <MemeEditor/Inspector.hpp>
 
 namespace ml
 {
@@ -53,12 +54,7 @@ namespace ml
 	void Builder::draw(bool * p_open)
 	{
 		ImGui::SetNextWindowSize(ImVec2(640, 480), ImGuiCond_FirstUseEver);
-		if (!ImGui::Begin("Builder", (m_open = p_open), ImGuiWindowFlags_MenuBar))
-		{
-			ImGui::End();
-			return;
-		}
-		else
+		if (ImGui::Begin("Builder", (m_open = p_open), ImGuiWindowFlags_MenuBar))
 		{
 			draw_list();
 

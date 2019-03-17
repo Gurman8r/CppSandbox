@@ -1,7 +1,7 @@
 #ifndef _SHADER_BUILDER_HPP_
 #define _SHADER_BUILDER_HPP_
 
-#include <MemeEditor/Inspector.hpp>
+#include <MemeEditor/SourceFile.hpp>
 #include <MemeGraphics/Shader.hpp>
 
 #define ML_Builder ml::Builder::getInstance()
