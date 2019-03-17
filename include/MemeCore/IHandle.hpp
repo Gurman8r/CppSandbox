@@ -30,6 +30,8 @@ namespace ml
 		inline const_pointer	get_const_ptr() const	{ return &m_ID; }
 		inline const_reference	get_const_ref() const	{ return  m_ID; }
 
+		inline void * get_raw() { return (void *)(intptr_t)(get_ref()); }
+
 	public:
 		inline operator bool			() const	{ return good(); }
 		inline operator reference		()			{ return get_ref(); }

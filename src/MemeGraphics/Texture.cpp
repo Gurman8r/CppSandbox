@@ -12,7 +12,7 @@ namespace ml
 	}
 
 	Texture::Texture(GL::Target target)
-		: Texture(target, false, false)
+		: Texture(target, true, false)
 	{
 	}
 
