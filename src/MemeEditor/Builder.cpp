@@ -95,7 +95,7 @@ namespace ml
 	{
 		ImVec4 color = ImGui::GetStyleColorVec4(ImGuiCol_Text);
 
-		ImGui::BeginChild("Directory View", { 256, 0 }, true);
+		ImGui::BeginChild("List View", { 224, 0 }, true);
 		{
 			ImGui::PushStyleColor(ImGuiCol_Text, color);
 			for (size_t i = 0, imax = m_uniforms.size(); i < imax; i++)

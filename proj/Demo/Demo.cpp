@@ -10,6 +10,7 @@
 #include <MemeEditor/ImGuiBuiltin.hpp>
 #include <MemeEditor/Dockspace.hpp>
 #include <imgui/imgui.h>
+#include <imgui/imgui_internal.h>
 #include <imgui/imgui_ml.hpp>
 
 namespace DEMO
@@ -130,8 +131,8 @@ namespace DEMO
 				// Builder (Ctrl+Alt+B)
 				if (ev->getKeyDown(ml::KeyCode::B) && (mod_ctrl && mod_alt)) { show_ml_builder = true; }
 
-				// Inspector (Ctrl+I)
-				if (ev->getKeyDown(ml::KeyCode::I)) { show_ml_inspector = true; }
+				// Inspector (Ctrl+Alt+I)
+				if (ev->getKeyDown(ml::KeyCode::I) && (mod_ctrl && mod_alt)) { show_ml_inspector = true; }
 				
 				// ImGui Demo (Ctrl+H)
 				if (ev->getKeyDown(ml::KeyCode::H) && (mod_ctrl)) { show_imgui_demo = true; }
@@ -840,135 +841,12 @@ namespace DEMO
 	void Demo::onGui(const GuiEvent & ev)
 	{
 		/* * * * * * * * * * * * * * * * * * * * */
+		
+		// Main Menu Bar
+		draw_MainMenuBar();
 
-		static bool show_dockspace = true;
-		static ml::Dockspace dockspace;
-		if (dockspace.draw("EditorDockspace", &show_dockspace))
-		{
-			// Menu Bar
-			if (ImGui::BeginMainMenuBar())
-			{
-				if (ImGui::BeginMenu("File"))
-				{
-					if (ImGui::MenuItem("New", "Ctrl+N", false, false)) {}
-					if (ImGui::MenuItem("Open", "Ctrl+O", false, false)) {}
-					ImGui::Separator();
-					if (ImGui::MenuItem("Save", "Ctrl+S", false, false)) {}
-					if (ImGui::MenuItem("Save All", "Ctrl+Shift+S", false, false)) {}
-					ImGui::Separator();
-					if (ImGui::MenuItem("Quit", "Alt+F4")) { this->close(); }
-					ImGui::EndMenu();
-				}
-				if (ImGui::BeginMenu("Edit"))
-				{
-					if (ImGui::MenuItem("Undo", "Ctrl+Z", false, false)) {}
-					if (ImGui::MenuItem("Redo", "Ctrl+Y", false, false)) {}
-					ImGui::Separator();
-					if (ImGui::MenuItem("Cut", "Ctrl+X", false, false)) {}
-					if (ImGui::MenuItem("Copy", "Ctrl+C", false, false)) {}
-					if (ImGui::MenuItem("Paste", "Ctrl+V", false, false)) {}
-					ImGui::EndMenu();
-				}
-				if (ImGui::BeginMenu("Window"))
-				{
-					ImGui::MenuItem("Terminal", "Ctrl+Alt+T", &show_ml_terminal);
-					ImGui::MenuItem("Browser", "Ctrl+Alt+E", &show_ml_browser);
-					ImGui::MenuItem("Builder", "Ctrl+Alt+B", &show_ml_builder);
-					ImGui::MenuItem("Inspector", "Ctrl+I", &show_ml_inspector);
-					ImGui::EndMenu();
-				}
-				if (ImGui::BeginMenu("Help"))
-				{
-					if (ImGui::MenuItem("Project Page"))
-					{
-						ML_OS.execute("open", "https://www.github.com/Gurman8r/Cppsandbox");
-					}
-					ImGui::Separator();
-					ImGui::MenuItem("ImGui Demo", "Ctrl+H", &show_imgui_demo);
-					ImGui::MenuItem("ImGui Metrics", NULL, &show_imgui_metrics);
-					ImGui::MenuItem("Style Editor", NULL, &show_imgui_style);
-					ImGui::MenuItem("About Dear ImGui", NULL, &show_imgui_about);
-					ImGui::EndMenu();
-				}
-				ImGui::EndMainMenuBar();
-			}
-
-			// ImGui Windows
-			if (show_imgui_demo)	{ ml::ImGuiBuiltin::showDemoWindow(show_imgui_demo); }
-			if (show_imgui_metrics) { ml::ImGuiBuiltin::showMetricsWindow(show_imgui_metrics); }
-			if (show_imgui_style)	{ ml::ImGuiBuiltin::showStyleWindow(show_imgui_style); }
-			if (show_imgui_about)	{ ml::ImGuiBuiltin::showAboutWindow(show_imgui_about); }
-
-			// Editor Windows
-			if (show_ml_terminal)	{ ML_Terminal.draw(&show_ml_terminal); }
-			if (show_ml_browser)	{ ML_Browser.draw(&show_ml_browser); }
-			if (show_ml_builder)	{ ML_Builder.draw(&show_ml_builder); }
-			if (show_ml_inspector)
-			{
-				if (!ImGui::Begin("Inspector", &show_ml_inspector, ImGuiWindowFlags_AlwaysAutoResize))
-				{
-					ImGui::End();
-					return;
-				}
-				else
-				{
-					ImGui::Separator();
-
-					if (ImGui::Button("Reload Shaders"))
-					{
-						ml::Debug::log("Reloaded {0} Shaders.", ML_Res.shaders.reload());
-					}
-					ImGui::Separator();
-
-					ImGui::Text("Scene");
-					ImGui::ColorEdit4("Clear Color", &m_clearColor[0]);
-					ImGui::Separator();
-
-					ImGui::Text("Framebuffer");
-					static ml::CString fbo_modes[] = {
-							"Normal",
-							"Grayscale",
-							"Blur",
-							"Juicy",
-							"Inverted",
-					};
-					ImGui::Combo("Shader##Framebuffer", &m_fboMode, fbo_modes, IM_ARRAYSIZE(fbo_modes));
-					ImGui::Separator();
-
-					ImGui::Text("Camera");
-					ImGui::Checkbox("Move##Camera", &m_camAnimate);
-					ML_Inspector.InputVec3f("Position##Camera", m_camPos);
-					ImGui::DragFloat("Speed##Camera", &m_camSpd, 0.1f, -5.f, 5.f);
-					ImGui::Separator();
-
-					ImGui::Text("Light");
-					ML_Inspector.InputVec3f("Position##Light", m_lightPos);
-					ImGui::ColorEdit4("Color##Light", &m_lightCol[0]);
-					ImGui::DragFloat("Ambient##Light", &m_ambient, 0.01f, 0.f, 1.f);
-					ImGui::DragFloat("Specular##Light", &m_specular, 0.01f, 0.1f, 10.f);
-					ImGui::DragInt("Shininess##Light", &m_shininess, 1.f, 1, 256);
-					ImGui::Separator();
-
-					ImGui::Text("Geometry");
-					ImGui::SliderInt("Mode##Geometry", &m_lineMode, -1, 3);
-					ImGui::ColorEdit4("Color##Geometry", &m_lineColor[0]);
-					ImGui::SliderFloat("Delta##Geometry", &m_lineDelta, 0.f, 1.f);
-					ImGui::SliderFloat("Size##Geometry", &m_lineSize, 0.f, 1.f);
-					ImGui::SliderInt("Samples##Geometry", &m_lineSamples, 1, 128);
-					ImGui::Separator();
-
-					ImGui::Text("Transform");
-					ImGui::Checkbox("Animate", &m_animate);
-					ml::Transform & temp = ML_Res.models.get("earth")->transform();
-					ML_Inspector.InputTransform("Matrix", temp);
-					ImGui::Separator();
-
-					ImGui::End();
-				}
-			}
-
-		}
-		ImGui::End();
+		// Dockspace
+		draw_Dockspace(&show_ml_dockspace);
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	}
@@ -980,6 +858,204 @@ namespace DEMO
 		ML_Res.cleanAll();
 
 		ImGui_ML_Shutdown();
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	void Demo::draw_MainMenuBar()
+	{
+		if (ImGui::BeginMainMenuBar())
+		{
+			if (ImGui::BeginMenu("File"))
+			{
+				if (ImGui::MenuItem("New", "Ctrl+N", false, false)) {}
+				if (ImGui::MenuItem("Open", "Ctrl+O", false, false)) {}
+				ImGui::Separator();
+				if (ImGui::MenuItem("Save", "Ctrl+S", false, false)) {}
+				if (ImGui::MenuItem("Save All", "Ctrl+Shift+S", false, false)) {}
+				ImGui::Separator();
+				if (ImGui::MenuItem("Quit", "Alt+F4")) { this->close(); }
+				ImGui::EndMenu();
+			}
+			if (ImGui::BeginMenu("Edit"))
+			{
+				if (ImGui::MenuItem("Undo", "Ctrl+Z", false, false)) {}
+				if (ImGui::MenuItem("Redo", "Ctrl+Y", false, false)) {}
+				ImGui::Separator();
+				if (ImGui::MenuItem("Cut", "Ctrl+X", false, false)) {}
+				if (ImGui::MenuItem("Copy", "Ctrl+C", false, false)) {}
+				if (ImGui::MenuItem("Paste", "Ctrl+V", false, false)) {}
+				ImGui::EndMenu();
+			}
+			if (ImGui::BeginMenu("Window"))
+			{
+				ml::String str(ml::String(show_ml_dockspace ? "Hide" : "Show") + " All");
+				ImGui::MenuItem(str.c_str(), NULL, &show_ml_dockspace);
+				ImGui::Separator();
+
+				ImGui::MenuItem("Terminal", "Ctrl+Alt+T", &show_ml_terminal, show_ml_dockspace);
+				ImGui::MenuItem("Browser", "Ctrl+Alt+E", &show_ml_browser, show_ml_dockspace);
+				ImGui::MenuItem("Builder", "Ctrl+Alt+B", &show_ml_builder, show_ml_dockspace);
+				ImGui::MenuItem("Inspector", "Ctrl+Alt+I", &show_ml_inspector, show_ml_dockspace);
+				ImGui::EndMenu();
+			}
+			if (ImGui::BeginMenu("Help"))
+			{
+				if (ImGui::MenuItem("Project Page"))
+				{
+					ML_OS.execute("open", "https://www.github.com/Gurman8r/Cppsandbox");
+				}
+				ImGui::Separator();
+				ImGui::MenuItem("ImGui Demo", "Ctrl+H", &show_imgui_demo);
+				ImGui::MenuItem("ImGui Metrics", NULL, &show_imgui_metrics);
+				ImGui::MenuItem("Style Editor", NULL, &show_imgui_style);
+				ImGui::MenuItem("About Dear ImGui", NULL, &show_imgui_about);
+				ImGui::EndMenu();
+			}
+			ImGui::EndMainMenuBar();
+		}
+	}
+
+	void Demo::draw_Dockspace(bool * p_open)
+	{
+		// Setup Dockspace
+		/* * * * * * * * * * * * * * * * * * * * */
+		static ml::Dockspace dock("EditorDockspace");
+		
+		auto setup_dockspace = []()
+		{
+			const uint32_t dockID = dock.getID();
+
+			if (ImGui::DockBuilderGetNode(dockID)) { return; }
+
+			// Reset/clear current docking state
+			ImGui::DockBuilderRemoveNode(dockID);
+			ImGui::DockBuilderAddNode(dockID, ImGuiDockNodeFlags_None);
+
+			uint32_t origin = dockID;
+
+			uint32_t left_C = ImGui::DockBuilderSplitNode(origin, ImGuiDir_Left, 0.333f, NULL, &origin);
+			const uint32_t left_U = ImGui::DockBuilderSplitNode(left_C, ImGuiDir_Up, 0.6f, NULL, &left_C);
+			const uint32_t left_D = ImGui::DockBuilderSplitNode(left_C, ImGuiDir_Down, 0.4f, NULL, &left_C);
+
+			uint32_t center_C = ImGui::DockBuilderSplitNode(origin, ImGuiDir_Right, 0.333f, NULL, &origin);
+			const uint32_t center_U = ImGui::DockBuilderSplitNode(center_C, ImGuiDir_Up, 0.5f, NULL, &center_C);
+			const uint32_t center_D = ImGui::DockBuilderSplitNode(center_C, ImGuiDir_Down, 0.5f, NULL, &center_C);
+
+			uint32_t right_C = ImGui::DockBuilderSplitNode(center_C, ImGuiDir_Right, 0.333f, NULL, &center_C);
+			const uint32_t right_U = ImGui::DockBuilderSplitNode(right_C, ImGuiDir_Up, 0.5f, NULL, &right_C);
+			const uint32_t right_D = ImGui::DockBuilderSplitNode(right_C, ImGuiDir_Down, 0.5f, NULL, &right_C);
+			
+
+			ImGui::DockBuilderDockWindow("Builder", left_U);
+			ImGui::DockBuilderDockWindow("Browser", left_U);
+			ImGui::DockBuilderDockWindow("Terminal", left_D);
+			ImGui::DockBuilderDockWindow("Scene", center_C);
+			ImGui::DockBuilderDockWindow("Inspector", right_U);
+
+			ImGui::DockBuilderFinish(origin);
+		};
+		
+		// Draw Dockspace
+		/* * * * * * * * * * * * * * * * * * * * */
+		if (show_ml_dockspace && dock.draw(&show_ml_dockspace, setup_dockspace))
+		{
+			// ImGui Windows
+			if (show_imgui_demo) { ml::ImGuiBuiltin::showDemoWindow(show_imgui_demo); }
+			if (show_imgui_metrics) { ml::ImGuiBuiltin::showMetricsWindow(show_imgui_metrics); }
+			if (show_imgui_style) { ml::ImGuiBuiltin::showStyleWindow(show_imgui_style); }
+			if (show_imgui_about) { ml::ImGuiBuiltin::showAboutWindow(show_imgui_about); }
+
+			// Editor Windows
+			if (show_ml_builder)	{ ML_Builder.draw(&show_ml_builder); }
+			if (show_ml_browser)	{ ML_Browser.draw(&show_ml_browser); }
+			if (show_ml_terminal)	{ ML_Terminal.draw(&show_ml_terminal); }
+			if (show_ml_scene)		{ draw_Scene(&show_ml_scene); }
+			if (show_ml_inspector)	{ draw_Inspector(&show_ml_inspector); }
+
+			ImGui::End();
+		}
+
+		/* * * * * * * * * * * * * * * * * * * * */
+	}
+
+	void Demo::draw_Inspector(bool * p_open)
+	{
+		if (!ImGui::Begin("Inspector", p_open))
+		{
+			return ImGui::End();
+		}
+		else
+		{
+			ImGui::Separator();
+
+			if (ImGui::Button("Reload Shaders"))
+			{
+				ml::Debug::log("Reloaded {0} Shaders.", ML_Res.shaders.reload());
+			}
+			ImGui::Separator();
+
+			ImGui::Text("Scene");
+			ImGui::ColorEdit4("Clear Color", &m_clearColor[0]);
+			ImGui::Separator();
+
+			ImGui::Text("Framebuffer");
+			static ml::CString fbo_modes[] = {
+					"Normal",
+					"Grayscale",
+					"Blur",
+					"Juicy",
+					"Inverted",
+			};
+			ImGui::Combo("Shader##Framebuffer", &m_fboMode, fbo_modes, IM_ARRAYSIZE(fbo_modes));
+			ImGui::Separator();
+
+			ImGui::Text("Camera");
+			ImGui::Checkbox("Move##Camera", &m_camAnimate);
+			ML_Inspector.InputVec3f("Position##Camera", m_camPos);
+			ImGui::DragFloat("Speed##Camera", &m_camSpd, 0.1f, -5.f, 5.f);
+			ImGui::Separator();
+
+			ImGui::Text("Light");
+			ML_Inspector.InputVec3f("Position##Light", m_lightPos);
+			ImGui::ColorEdit4("Color##Light", &m_lightCol[0]);
+			ImGui::DragFloat("Ambient##Light", &m_ambient, 0.01f, 0.f, 1.f);
+			ImGui::DragFloat("Specular##Light", &m_specular, 0.01f, 0.1f, 10.f);
+			ImGui::DragInt("Shininess##Light", &m_shininess, 1.f, 1, 256);
+			ImGui::Separator();
+
+			ImGui::Text("Geometry");
+			ImGui::SliderInt("Mode##Geometry", &m_lineMode, -1, 3);
+			ImGui::ColorEdit4("Color##Geometry", &m_lineColor[0]);
+			ImGui::SliderFloat("Delta##Geometry", &m_lineDelta, 0.f, 1.f);
+			ImGui::SliderFloat("Size##Geometry", &m_lineSize, 0.f, 1.f);
+			ImGui::SliderInt("Samples##Geometry", &m_lineSamples, 1, 128);
+			ImGui::Separator();
+
+			ImGui::Text("Transform");
+			ImGui::Checkbox("Animate", &m_animate);
+			ml::Transform & temp = ML_Res.models.get("earth")->transform();
+			ML_Inspector.InputTransform("Matrix", temp);
+			ImGui::Separator();
+
+			return ImGui::End();
+		}
+	}
+
+	void Demo::draw_Scene(bool * p_open)
+	{
+		if (ImGui::Begin("Scene", p_open, ImGuiWindowFlags_MenuBar))
+		{
+			/* * * * * * * * * * * * * * * * * * * * */
+
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.f, 1.f, 1.f, 1.f));
+			ImGui::Text("Hello, World!");
+			ImGui::PopStyleColor();
+
+			/* * * * * * * * * * * * * * * * * * * * */
+		}
+		
+		return ImGui::End();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

@@ -52,7 +52,7 @@ namespace ml
 
 	void Browser::draw(bool * p_open)
 	{
-		ImGui::SetNextWindowSize(ImVec2(640, 480), ImGuiCond_FirstUseEver);
+		//ImGui::SetNextWindowSize(ImVec2(640, 480), ImGuiCond_FirstUseEver);
 		if (!ImGui::Begin("Browser", (m_open = p_open), ImGuiWindowFlags_MenuBar))
 		{
 			return ImGui::End();
@@ -103,7 +103,7 @@ namespace ml
 
 	void Browser::draw_directory()
 	{
-		ImGui::BeginChild("Directory View", { 256, 0 }, true);
+		ImGui::BeginChild("Directory View", { 224, 0 }, true);
 		{
 			m_isDouble = false;
 

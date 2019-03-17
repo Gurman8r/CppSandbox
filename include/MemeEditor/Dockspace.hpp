@@ -10,6 +10,9 @@ namespace ml
 	class ML_EDITOR_API Dockspace final : public ITrackable
 	{
 	public:
+		using void_fun = void(*)();
+
+	public:
 		Dockspace();
 		Dockspace(const String & title);
 		Dockspace(const String & title, int32_t dock_flags);
@@ -17,11 +20,11 @@ namespace ml
 		~Dockspace();
 
 	public:
-		void update();
-		
-		bool draw(const String & title, bool * p_open);
-		
-		uint32_t getID() const;
+		bool		draw(bool * p_open, void_fun fun = NULL);
+		uint32_t	getID() const;
+		CString		getTitle() const;
+
+		inline operator bool() const { return (getID() > 0); }
 
 	public:
 		int32_t dock_flags;
@@ -32,6 +35,7 @@ namespace ml
 		vec2f	size;
 		String	title;
 		int32_t win_flags;
+		float	bgAlpha;
 	};
 }
 
