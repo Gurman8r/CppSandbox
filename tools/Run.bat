@@ -4,15 +4,18 @@ set TargetName=%1
 set Configuration=%2
 set PlatformTarget=%3
 
-set FilePath=.\bin\%Configuration%\%PlatformTarget%
-set FileName=%TargetName%_%Configuration%_%PlatformTarget%.exe
+set Path=.\bin\%Configuration%\%PlatformTarget%
+set Name=%TargetName%_%Configuration%_%PlatformTarget%.exe
+set File=%Path%\%Name%
 
-if not exist %FilePath%\%FileName% (
-	echo File Not Found: "%FilePath%\%FileName%"
+if not exist %File% (
+	echo File Not Found: "%File%"
 	pause
 	exit 1
 )
 
-cd %FilePath%
-start %FileName%
+echo %File%
+
+cd %Path%
+call %Name%
 exit %ERRORLEVEL%
