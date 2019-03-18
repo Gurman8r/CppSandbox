@@ -168,7 +168,7 @@ namespace DEMO
 		ml::Manifest manifest;
 		if (manifest.loadFromFile(SETTINGS.pathTo(SETTINGS.manifest)))
 		{
-			ml::cout << ml::endl << manifest << ml::endl;
+			//ml::cout << ml::endl << manifest << ml::endl;
 
 			return ml::Debug::log("Loading Resources...")
 				&& ML_Res.meshes.load("default_quad")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
