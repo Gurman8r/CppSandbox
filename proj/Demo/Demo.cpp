@@ -858,8 +858,8 @@ namespace DEMO
 		// Editor
 		if (show_ml_browser)	{ ML_Browser.draw(&show_ml_browser); }
 		if (show_ml_terminal)	{ ML_Terminal.draw(&show_ml_terminal); }
-		if (show_ml_scene)		{ draw_Scene(&show_ml_scene); }
 		if (show_ml_builder)	{ ML_Builder.draw(&show_ml_builder); }
+		if (show_ml_scene)		{ draw_Scene(&show_ml_scene); }
 		if (show_ml_inspector)	{ draw_Inspector(&show_ml_inspector); }
 
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -988,9 +988,12 @@ namespace DEMO
 		
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		dock.bgAlpha = 1.0f;
+		if (dock.begin_dock(p_open))
+		{
+			setup_dockspace();
 
-		if (dock.draw(p_open, setup_dockspace)) { }
+			dock.end_dock();
+		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	}

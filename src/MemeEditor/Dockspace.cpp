@@ -48,10 +48,9 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Dockspace::draw(bool * p_open, void_fun fun)
+	bool Dockspace::begin_dock(bool * p_open)
 	{
-		bool good;
-		if (good = (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_DockingEnable))
+		if (m_good = (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_DockingEnable))
 		{
 			// Flags
 			win_flags =
@@ -87,20 +86,22 @@ namespace ml
 			ImGui::SetNextWindowBgAlpha(bgAlpha);
 
 			// Begin
-			if (good = (ImGui::Begin(title.c_str(), p_open, win_flags)))
+			if (m_good = (ImGui::Begin(title.c_str(), p_open, win_flags)))
 			{
 				ImGui::PopStyleVar(3);
-
-				// Run function before calling ImGui::DockSpace.
-				// Build Dockspace layouts here.
-				if (fun) { fun(); }
-
-				ImGui::DockSpace(getID(), { size[0], size[1] }, dock_flags);
-
-				ImGui::End();
 			}
 		}
-		return good;
+		return m_good;
+	}
+
+	void Dockspace::end_dock()
+	{
+		if (m_good)
+		{
+			ImGui::DockSpace(getID(), { size[0], size[1] }, dock_flags);
+		}
+
+		ImGui::End();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

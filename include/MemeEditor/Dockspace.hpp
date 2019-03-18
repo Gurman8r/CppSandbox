@@ -6,8 +6,9 @@
 
 namespace ml
 {
-	// Used for docking windows
-	class ML_EDITOR_API Dockspace final : public ITrackable
+	// Docking/snapping area for windows
+	class ML_EDITOR_API Dockspace final 
+		: public ITrackable
 	{
 	public:
 		using void_fun = void(*)();
@@ -20,9 +21,11 @@ namespace ml
 		~Dockspace();
 
 	public:
-		bool		draw(bool * p_open, void_fun fun = NULL);
-		uint32_t	getID() const;
-		CString		getTitle() const;
+		bool begin_dock(bool * p_open);
+		void end_dock();
+
+		uint32_t getID() const;
+		CString	 getTitle() const;
 
 	public:
 		int32_t dock_flags;
@@ -34,6 +37,9 @@ namespace ml
 		String	title;
 		int32_t win_flags;
 		float	bgAlpha;
+
+	private:
+		bool m_good = false;
 	};
 }
 

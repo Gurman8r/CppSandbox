@@ -25,13 +25,13 @@ namespace DEMO
 	static ml::Var cmd_log		(ml::Args & args); // Debug Log (msg/wrn/err)
 	static ml::Var cmd_ls		(ml::Args & args); // Display a Directory
 	static ml::Var cmd_pause	(ml::Args & args); // System Pause
-	static ml::Var cmd_os		(ml::Args & args); // 
+	static ml::Var cmd_os		(ml::Args & args); // Execute OS Command
 	static ml::Var cmd_read		(ml::Args & args); // Return File/Dir Contents
 	static ml::Var cmd_set		(ml::Args & args); // Set Variable
 	static ml::Var cmd_system	(ml::Args & args); // System Call
 	static ml::Var cmd_target	(ml::Args & args); // Return Program Info
 	
-	// Inspector
+	// Editor
 	/* * * * * * * * * * * * * * * * * * * * */
 	static ml::Var cmd_clear	(ml::Args & args); // Clear Inspector Console
 	static ml::Var cmd_history	(ml::Args & args); // Display History
