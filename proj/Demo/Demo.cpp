@@ -647,7 +647,7 @@ namespace DEMO
 			ml::Uniform("u_mode", ml::Uniform::Int, &m_fboMode),
 		};
 
-		// Draw Scene
+		// Draw Scene Objects
 		/* * * * * * * * * * * * * * * * * * * * */
 		m_effects["default"].bind();
 		{
@@ -831,18 +831,17 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 		m_effects["post"].bind();
 		{
-			if (const ml::Shader * shader = m_effects["default"].shader())
-			{
-				shader->applyUniforms(effect_uniforms);
-			}
+			m_effects["default"].shader()->applyUniforms(effect_uniforms);
 			this->draw(m_effects["default"]);
 		}
 		m_effects["post"].unbind();
+		{
+			m_effects["post"].shader()->applyUniforms(effect_uniforms);
+			this->draw(m_effects["post"]);
+		}
 
 		// Draw GUI
 		/* * * * * * * * * * * * * * * * * * * * */
-
-		// ImGui
 		ImGui_ML_NewFrame();
 		ImGui::NewFrame();
 		{
