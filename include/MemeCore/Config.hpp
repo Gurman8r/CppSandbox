@@ -28,7 +28,6 @@
 #	endif
 # elif defined(__APPLE__) && defined(__MACH__)
 #	define ML_SYSTEM_APPLE
-#	error This APPLE operating system does not support memes.
 # elif defined(__unix__)
 #	define ML_SYSTEM_UNIX
 #	if defined(__ANDROID__)
@@ -77,13 +76,11 @@
 //	Export / Import Macro
 /* * * * * * * * * * * * * * * * * * * */
 # if !defined(ML_STATIC)
-#	if defined(ML_SYSTEM_WINDOWS)
+#	if defined(ML_MSB)
 #		define ML_API_EXPORT __declspec(dllexport)
 #		define ML_API_IMPORT __declspec(dllimport)
-#		ifdef ML_MSB
-#			pragma warning(disable: 4099)
-#			pragma warning(disable: 4251)
-#		endif
+#		pragma warning(disable: 4099)
+#		pragma warning(disable: 4251)
 #	elif (ML_GCC >= 4)
 #		define ML_API_EXPORT __attribute__ ((__visibility__ ("default")))
 #		define ML_API_IMPORT __attribute__ ((__visibility__ ("default")))
@@ -92,19 +89,5 @@
 #		define ML_API_IMPORT
 #	endif
 # endif
-
-//	Implicit OS Macro for Release
-/* * * * * * * * * * * * * * * * * * * */
-# ifndef ML_DEBUG
-#	if defined(ML_SYSTEM_WINDOWS)
-#		define ML_IMPL_WINDOWS
-#	elif defined(ML_SYSTEM_APPLE)
-#		define ML_IMPL_APPLE
-#	elif defined (ML_SYSTEM_UNIX)
-#		define(ML_IMPL_UNIX)
-#	endif
-# endif
-
-
 
 #endif // !_CONFIG_HPP_
