@@ -3,10 +3,10 @@
 
 #include <MemeCore/Config.hpp>
 
-#if defined(ML_GRAPHICS_EXPORTS)
-	#define ML_GRAPHICS_API ML_API_EXPORT
-#else
-	#define ML_GRAPHICS_API ML_API_IMPORT
-#endif
+# if defined(ML_GRAPHICS_EXPORTS)
+#	define ML_GRAPHICS_API ML_API_EXPORT
+# else
+#	define ML_GRAPHICS_API ML_API_IMPORT
+# endif
 
 #endif // !_ML_WINDOW_EXPORT_HPP_
