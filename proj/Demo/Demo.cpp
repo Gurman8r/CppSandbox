@@ -993,7 +993,8 @@ namespace DEMO
 
 			if (ImGui::Button("Reload Shaders"))
 			{
-				ml::Debug::log("Reloaded {0} Shaders.", ML_Res.shaders.reload());
+				//ml::Debug::log("Reloaded {0} Shaders.", ML_Res.shaders.reload());
+				ML_Terminal.printf("Reloaded %u Shaders.", ML_Res.shaders.reload());
 			}
 			ImGui::Separator();
 

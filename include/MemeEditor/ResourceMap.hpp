@@ -3,8 +3,7 @@
 #define _RESOURCE_MAP_HPP_
 
 #include <MemeEditor/Export.hpp>
-#include <MemeCore/ITrackable.hpp>
-#include <MemeCore/IReadable.hpp>
+#include <MemeCore/FileSystem.hpp>
 
 namespace ml
 {
@@ -192,7 +191,10 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		inline const String pathTo(const String & file) const { return (m_path + file); }
+		inline const String pathTo(const String & file) const 
+		{ 
+			return ML_FileSystem.pathTo(m_path + file); 
+		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
