@@ -25,7 +25,13 @@ namespace ml
 		void end_dock();
 
 		uint32_t getID() const;
-		CString	 getTitle() const;
+		CString getTitle() const;
+
+		uint32_t split(uint32_t dir, float ratio, uint32_t * out, uint32_t * other);
+		uint32_t split(uint32_t id, int32_t dir, float ratio, uint32_t * other);
+		uint32_t split(uint32_t id, int32_t dir, float ratio, uint32_t * out, uint32_t * other);
+
+		void dock_window(CString name, uint32_t id);
 
 	public:
 		int32_t dock_flags;

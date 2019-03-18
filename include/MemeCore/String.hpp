@@ -200,6 +200,8 @@ namespace ml
 
 
 	public: // Custom
+		inline operator bool() const { return !(this->empty()); }
+
 		template <class T, typename ... A>
 		inline static self_type Format(self_type value, const T & arg0, const A & ...args)
 		{
@@ -254,7 +256,7 @@ namespace ml
 
 		inline self_type & replaceAll(const self_type & f, const self_type & r)
 		{
-			return (*this) = ReplaceAll((*this), f, r);
+			return ((*this) = ReplaceAll((*this), f, r));
 		}
 
 		inline const self_type replaceAll(const self_type & f, const self_type & r) const

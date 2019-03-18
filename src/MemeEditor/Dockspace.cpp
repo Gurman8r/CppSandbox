@@ -100,7 +100,6 @@ namespace ml
 		{
 			ImGui::DockSpace(getID(), { size[0], size[1] }, dock_flags);
 		}
-
 		ImGui::End();
 	}
 
@@ -108,12 +107,36 @@ namespace ml
 
 	uint32_t Dockspace::getID() const
 	{
-		return ImGui::GetID(getTitle());
+		return (ImGui::GetID(getTitle()));
 	}
 
 	CString Dockspace::getTitle() const
 	{
-		return title.c_str();
+		return (title.c_str());
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	uint32_t Dockspace::split(uint32_t dir, float ratio, uint32_t * out, uint32_t * other)
+	{
+		return split(getID(), dir, ratio, out, other);
+	}
+
+	uint32_t Dockspace::split(uint32_t id, int32_t dir, float ratio, uint32_t * other)
+	{
+		return split(id, dir, ratio, NULL, other);
+	}
+
+	uint32_t Dockspace::split(uint32_t id, int32_t dir, float ratio, uint32_t * out, uint32_t * other)
+	{
+		return ImGui::DockBuilderSplitNode(id, dir, ratio, out, other);
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	void Dockspace::dock_window(CString name, uint32_t id)
+	{
+		return ImGui::DockBuilderDockWindow(name, id);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

@@ -949,50 +949,44 @@ namespace DEMO
 	{
 		/* * * * * * * * * * * * * * * * * * * * */
 		
-		static ml::Dockspace dock("EditorDockspace", ImGuiDockNodeFlags_PassthruDockspace);
+		static ml::Dockspace d("EditorDockspace", ImGuiDockNodeFlags_PassthruDockspace);
 
 		/* * * * * * * * * * * * * * * * * * * * */
 		
-		auto setup_dockspace = []()
+		auto setup_dockspace = [](uint32_t root)
 		{
-			const uint32_t dockID = dock.getID();
+			if (ImGui::DockBuilderGetNode(root)) { return; }
+			ImGui::DockBuilderRemoveNode(root);
+			ImGui::DockBuilderAddNode(root, ImGuiDockNodeFlags_None);
 
-			if (ImGui::DockBuilderGetNode(dockID)) { return; }
-
-			// Reset/clear current docking state
-			ImGui::DockBuilderRemoveNode(dockID);
-			ImGui::DockBuilderAddNode(dockID, ImGuiDockNodeFlags_None);
-
-			uint32_t origin = dockID;
-
-			uint32_t left_C = ImGui::DockBuilderSplitNode(origin, ImGuiDir_Left, 0.3f, NULL, &origin);
-			const uint32_t left_U = ImGui::DockBuilderSplitNode(left_C, ImGuiDir_Up, 0.5f, NULL, &left_C);
-			const uint32_t left_D = ImGui::DockBuilderSplitNode(left_C, ImGuiDir_Down, 0.5f, NULL, &left_C);
-
-			uint32_t center_C = ImGui::DockBuilderSplitNode(origin, ImGuiDir_Right, 0.4f, NULL, &origin);
-			const uint32_t center_U = ImGui::DockBuilderSplitNode(center_C, ImGuiDir_Up, 0.5f, NULL, &center_C);
-			const uint32_t center_D = ImGui::DockBuilderSplitNode(center_C, ImGuiDir_Down, 0.5f, NULL, &center_C);
-
-			uint32_t right_C = ImGui::DockBuilderSplitNode(center_C, ImGuiDir_Right, 0.3f, NULL, &center_C);
-			const uint32_t right_U = ImGui::DockBuilderSplitNode(right_C, ImGuiDir_Up, 0.5f, NULL, &right_C);
-			const uint32_t right_D = ImGui::DockBuilderSplitNode(right_C, ImGuiDir_Down, 0.5f, NULL, &right_C);
+			uint32_t	   left		= d.split(root,		ImGuiDir_Left,	0.25f,	&root);
+			const uint32_t left_U	= d.split(left,		ImGuiDir_Up,	0.5f,	&left);
+			const uint32_t left_D	= d.split(left,		ImGuiDir_Down,	0.5f,	&left);
+						   
+			uint32_t	   center	= d.split(root,		ImGuiDir_Right, 0.5f,	&root);
+			const uint32_t center_U = d.split(center,	ImGuiDir_Up,	0.5f,	&center);
+			const uint32_t center_D = d.split(center,	ImGuiDir_Down,	0.5f,	&center);
+						   
+			uint32_t	   right	= d.split(center,	ImGuiDir_Right, 0.25f,	&center);
+			const uint32_t right_U	= d.split(right,	ImGuiDir_Up,	0.5f,	&right);
+			const uint32_t right_D	= d.split(right,	ImGuiDir_Down,	0.5f,	&right);
 			
-			ImGui::DockBuilderDockWindow("Browser",		left_U);
-			ImGui::DockBuilderDockWindow("Terminal",	left_D);
-			ImGui::DockBuilderDockWindow("Builder",		center_C);
-			ImGui::DockBuilderDockWindow("Scene",		center_C);
-			ImGui::DockBuilderDockWindow("Inspector",	right_U);
+			d.dock_window("Browser",	left_U);
+			d.dock_window("Terminal",	left_D);
+			d.dock_window("Builder",	center);
+			d.dock_window("Scene",		center);
+			d.dock_window("Inspector",	right_U);
 
-			ImGui::DockBuilderFinish(origin);
+			return ImGui::DockBuilderFinish(root);
 		};
 		
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		if (dock.begin_dock(p_open))
+		if (d.begin_dock(p_open))
 		{
-			setup_dockspace();
+			setup_dockspace(d.getID());
 
-			dock.end_dock();
+			d.end_dock();
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
