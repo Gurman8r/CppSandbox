@@ -88,17 +88,14 @@ namespace DEMO
 					{
 						tex->cleanup();
 						tex->create(ev->size());
+						m_effects["default"].reload(ev->size());
 					}
 
 					if (ml::Texture * tex = ML_Res.textures.get("post"))
 					{
 						tex->cleanup();
 						tex->create(ev->size());
-					}
-
-					for (auto pair : m_effects)
-					{
-						pair.second.reload(ev->size());
+						m_effects["post"].reload(ev->size());
 					}
 				}
 			}
@@ -203,7 +200,6 @@ namespace DEMO
 		m_effects["default"].setModel(ML_Res.models.get("framebuffer"));
 		m_effects["default"].setShader(ML_Res.shaders.get("framebuffer"));
 		m_effects["default"].setTexture(ML_Res.textures.get("framebuffer"));
-
 
 		m_effects["post"].create(this->getSize(), ml::GL::ColorAttachment0);
 		m_effects["post"].setModel(ML_Res.models.get("framebuffer"));
