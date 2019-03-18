@@ -831,10 +831,10 @@ namespace DEMO
 			this->draw(m_effects["default"]);
 		}
 		m_effects["post"].unbind();
-		{
-			m_effects["post"].shader()->applyUniforms(effect_uniforms);
-			this->draw(m_effects["post"]);
-		}
+		//{
+		//	m_effects["post"].shader()->applyUniforms(effect_uniforms);
+		//	this->draw(m_effects["post"]);
+		//}
 
 		// Draw GUI
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -928,8 +928,8 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ImGui::BeginMenu("Window"))
 			{
-				ImGui::MenuItem("Dockspace", NULL, &show_ml_dockspace);
-				ImGui::Separator();
+				//ImGui::MenuItem("Dockspace", NULL, &show_ml_dockspace);
+				//ImGui::Separator();
 
 				ImGui::MenuItem("Terminal", "Ctrl+Alt+T", &show_ml_terminal);
 				ImGui::MenuItem("Browser", "Ctrl+Alt+E", &show_ml_browser);
