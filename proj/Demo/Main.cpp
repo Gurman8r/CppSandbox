@@ -30,7 +30,7 @@ ml::RenderWindow * loadProgram(const ml::String & filename)
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-int32_t ml_main(int32_t argc, char ** argv)
+int32_t main(int32_t argc, char ** argv)
 {
 	// Load Settings
 	if (!SETTINGS.loadFromFile(CONFIG_INI))
@@ -88,13 +88,6 @@ int32_t ml_main(int32_t argc, char ** argv)
 			}
 			// End Step
 			elapsed = loopTimer.stop().elapsed();
-
-			// Check Errors
-			if (ml::Debug::checkError(ML_FAILURE))
-			{
-				delete program;
-				return ml::Debug::pause(EXIT_FAILURE);
-			}
 
 		} while (program->isOpen());
 

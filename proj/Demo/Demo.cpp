@@ -974,9 +974,9 @@ namespace DEMO
 				ImGui::DockBuilderRemoveNode(root);
 				ImGui::DockBuilderAddNode(root, ImGuiDockNodeFlags_None);
 
-				uint32_t left = d.split(root, ImGuiDir_Left, 0.25f, &root);
+				uint32_t left = d.split(root, ImGuiDir_Left, 0.29f, &root);
 				uint32_t center = d.split(root, ImGuiDir_Right, 0.5f, &root);
-				uint32_t right = d.split(center, ImGuiDir_Right, 0.25f, &center);
+				uint32_t right = d.split(center, ImGuiDir_Right, 0.21f, &center);
 
 				const uint32_t left_U = d.split(left, ImGuiDir_Up, 0.65f, &left);
 				const uint32_t left_D = d.split(left, ImGuiDir_Down, 0.35f, &left);
@@ -1027,7 +1027,7 @@ namespace DEMO
 			ImGui::Separator();
 
 			ImGui::Text("Scene");
-			ImGui::ColorEdit4("Clear Color", &m_clearColor[0]);
+			ImGui::ColorEdit4("Color##Scene", &m_clearColor[0]);
 			ImGui::Separator();
 
 			ImGui::Text("Framebuffer");

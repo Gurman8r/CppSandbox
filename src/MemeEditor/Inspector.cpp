@@ -48,7 +48,7 @@ namespace ml
 		ImGui::Text(label);
 		for (size_t y = 0; y < value.Rows; y++)
 		{
-			ImGui::PushItemWidth(80);
+			ImGui::PushItemWidth(50);
 			for (size_t x = 0; x < value.Cols; x++)
 			{
 				const size_t i = y * value.Cols + x;
