@@ -75,7 +75,4 @@ rem Build
 :build
 cd %MSBuildPath%
 msbuild.exe %SolutionPath% /p:Configuration=%Configuration% /p:PlatformTarget=%PlatformTarget%
-if "%ERRORLEVEL%"!="0" (
-	pause
-)
 exit %ERRORLEVEL%
