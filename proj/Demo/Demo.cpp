@@ -973,29 +973,31 @@ namespace DEMO
 		
 		auto setup_dockspace = [](uint32_t root)
 		{
-			if (ImGui::DockBuilderGetNode(root)) { return; }
-			ImGui::DockBuilderRemoveNode(root);
-			ImGui::DockBuilderAddNode(root, ImGuiDockNodeFlags_None);
+			if (!ImGui::DockBuilderGetNode(root)) 
+			{
+				ImGui::DockBuilderRemoveNode(root);
+				ImGui::DockBuilderAddNode(root, ImGuiDockNodeFlags_None);
 
-			uint32_t	   left		= d.split(root,		ImGuiDir_Left,	0.25f,	&root);
-			const uint32_t left_U	= d.split(left,		ImGuiDir_Up,	0.5f,	&left);
-			const uint32_t left_D	= d.split(left,		ImGuiDir_Down,	0.5f,	&left);
+				uint32_t	   left = d.split(root, ImGuiDir_Left, 0.25f, &root);
+				const uint32_t left_U = d.split(left, ImGuiDir_Up, 0.5f, &left);
+				const uint32_t left_D = d.split(left, ImGuiDir_Down, 0.5f, &left);
 
-			uint32_t	   center	= d.split(root,		ImGuiDir_Right, 0.5f,	&root);
-			const uint32_t center_U = d.split(center,	ImGuiDir_Up,	0.5f,	&center);
-			const uint32_t center_D = d.split(center,	ImGuiDir_Down,	0.5f,	&center);
+				uint32_t	   center = d.split(root, ImGuiDir_Right, 0.5f, &root);
+				const uint32_t center_U = d.split(center, ImGuiDir_Up, 0.5f, &center);
+				const uint32_t center_D = d.split(center, ImGuiDir_Down, 0.5f, &center);
 
-			uint32_t	   right	= d.split(center,	ImGuiDir_Right, 0.25f,	&center);
-			const uint32_t right_U	= d.split(right,	ImGuiDir_Up,	0.5f,	&right);
-			const uint32_t right_D	= d.split(right,	ImGuiDir_Down,	0.5f,	&right);
-			
-			d.dock_window("Browser",	left_U);
-			d.dock_window("Terminal",	left_D);
-			d.dock_window("Builder",	center);
-			d.dock_window("Scene",		center);
-			d.dock_window("Inspector",	right_U);
+				uint32_t	   right = d.split(center, ImGuiDir_Right, 0.25f, &center);
+				const uint32_t right_U = d.split(right, ImGuiDir_Up, 0.5f, &right);
+				const uint32_t right_D = d.split(right, ImGuiDir_Down, 0.5f, &right);
 
-			return ImGui::DockBuilderFinish(root);
+				d.dock_window("Browser", left_U);
+				d.dock_window("Terminal", left_D);
+				d.dock_window("Builder", center);
+				d.dock_window("Scene", center);
+				d.dock_window("Inspector", right_U);
+
+				ImGui::DockBuilderFinish(root);
+			}
 		};
 		
 		/* * * * * * * * * * * * * * * * * * * * */
