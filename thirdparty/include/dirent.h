@@ -1,3 +1,5 @@
+#if defined(_WIN32) || defined(_WIN64)
+
 /*
 * Dirent interface for Microsoft Visual Studio
 * Version 1.21
@@ -953,3 +955,5 @@ extern "C" {
 }
 #endif
 #endif /*DIRENT_H*/
+
+#endif
