@@ -217,7 +217,11 @@ namespace ml
 		{
 			if (get_selected_size() <= MaxPreviewSize)
 			{
-				if (!ML_FileSystem.getFileContents(get_selected_path(), m_preview))
+				if (ML_FileSystem.getFileContents(get_selected_path(), m_preview))
+				{
+					m_preview.pop_back(); // remove last char, shows up as '?'
+				}
+				else
 				{
 					m_preview = get_selected_path();
 				}
