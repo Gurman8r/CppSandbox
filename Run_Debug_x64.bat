@@ -1,3 +1,20 @@
 @echo off
-call tools\\Run.bat Demo Debug x64
+
+set TargetName=Demo
+set Configuration=Debug
+set PlatformTarget=x64
+
+set Path=.\bin\%Configuration%\%PlatformTarget%
+set Name=%TargetName%_%Configuration%_%PlatformTarget%.exe
+set File=%Path%\%Name%
+
+if not exist %File% (
+	echo File Not Found: "%File%"
+	pause
+	exit 1
+)
+
+echo %File%
+cd %Path%
+start %Name%
 exit %ERRORLEVEL%
