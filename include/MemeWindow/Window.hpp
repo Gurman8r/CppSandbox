@@ -17,7 +17,7 @@ namespace ml
 		, public IEventListener
 	{
 	public:
-		enum Style : uint32_t
+		enum : uint32_t
 		{
 			None		= (0 << 0),
 			Resizable	= (1 << 0),
@@ -32,11 +32,6 @@ namespace ml
 			Default	= Resizable | Decorated | Focused | AutoIconify,
 		};
 
-		inline friend Style operator|(Style lhs, Style rhs)
-		{
-			return (Window::Style)((uint32_t)lhs | (uint32_t)rhs);
-		}
-
 		/* * * * * * * * * * * * * * * * * * * * */
 
 	public:
@@ -46,11 +41,7 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 
 	public:
-		bool create(
-			const String	& title, 
-			const VideoMode	& mode, 
-			const Style		& style, 
-			const Context	& context);
+		bool create(const String & title, const VideoMode & mode, uint32_t style, const Context	& context);
 
 		virtual void clean();
 		virtual bool setup();
@@ -101,7 +92,7 @@ namespace ml
 
 	public:
 		inline const Context &		getContext()	const { return m_context; }
-		inline const Style &		getStyle()		const { return m_style; }
+		inline const uint32_t &		getStyle()		const { return m_style; }
 		inline const vec2i &		getPosition()	const { return m_position; }
 		inline const vec2u &		getSize()		const { return m_videoMode.size; }
 		inline const String &		getTitle()		const { return m_title; }
@@ -171,7 +162,7 @@ namespace ml
 		void *			m_share;
 		Context			m_context;
 		VideoMode		m_videoMode;
-		Style			m_style;
+		uint32_t		m_style;
 		vec2i			m_position;
 		String			m_title;
 		mutable char	m_char;

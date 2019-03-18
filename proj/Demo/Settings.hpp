@@ -3,15 +3,16 @@
 
 #include <INIReader.h>
 #include <MemeCore/ITrackable.hpp>
-#include <MemeCore/ISingleton.hpp>
 #include <MemeCore/IReadable.hpp>
 #include <MemeWindow/Window.hpp>
 
-// Singleton to store program properties/settings (INIReader)
+// Singleton to store program properties/settings for Demo (INIReader)
 #define SETTINGS DEMO::Settings::getInstance()
 
 namespace DEMO
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class Settings final
 		: public ml::ITrackable
 		, public ml::IReadable
@@ -24,15 +25,17 @@ namespace DEMO
 
 	public:
 		// [General]
+		/* * * * * * * * * * * * * * * * * * * * */
 		ml::String	rootPath;		// Solution Dir
 		ml::String	assetPath;		// Where's all the data?
 		uint32_t	runTests;		// Run test functions
 		bool		escapeIsExit;	// Escape key is Exit?
 		bool		enableThreads;	// Enable threads?
 		ml::String	manifest;		// Name of manifest file
-		ml::String	imguiIni;	// Name of imgui.ini
+		ml::String	imguiIni;		// Name of imgui.ini
 
 		// [Script]
+		/* * * * * * * * * * * * * * * * * * * * */
 		ml::String	scrPath;		// Location of scripts
 		ml::String	scrFile;		// Script to run on start
 		bool		scrShowToks;	// Show Script Tokens
@@ -40,10 +43,12 @@ namespace DEMO
 		bool		scrShowItoP;	// Show Script Infix to Postfix
 
 		// [Window]
+		/* * * * * * * * * * * * * * * * * * * * */
 		ml::String	title;			// Window Title
 		uint32_t	width;			// Window Width
 		uint32_t	height;			// Window Height
 		uint32_t	bitsPerPixel;	// Bits Per Pixel
+		uint32_t	style;
 		uint32_t	majorVersion;	// Major Version
 		uint32_t	minorVersion;	// Minor Version
 		uint32_t	depthBits;		// Depth Bits
@@ -52,9 +57,9 @@ namespace DEMO
 		bool		multisample;	// Multisample
 		bool		srgbCapable;	// sRGB Capable
 
-		inline ml::vec2u windowSize() const { return { width, height }; }
 
 		// [Graphics]
+		/* * * * * * * * * * * * * * * * * * * * */
 		bool		glErrorPause;	// OpenGL Error Pause?
 		float		fieldOfView;	// Field of View
 		float		perspNear;		// Persp Near Clipping Range 
@@ -63,9 +68,11 @@ namespace DEMO
 		float		orthoFar;		// Ortho Far  Clipping Range
 
 		// [Audio]
+		/* * * * * * * * * * * * * * * * * * * * */
 		bool		isMuted;		// Is Muted?
 
 		// [Network]
+		/* * * * * * * * * * * * * * * * * * * * */
 		bool		isServer;		// Is Server?
 		bool		isClient;		// Is Client?
 
@@ -78,6 +85,7 @@ namespace DEMO
 			if (ini.ParseError() == 0)
 			{
 				// [General]
+				/* * * * * * * * * * * * * * * * * * * * */
 				rootPath		= ini.Get("General", "rootPath", "../../../");
 				assetPath		= ini.Get("General", "assetPath", "assets/");
 				runTests		= ini.GetInteger("General", "runTests", false);
@@ -87,6 +95,7 @@ namespace DEMO
 				imguiIni		= ini.Get("General", "imguiIni", "");
 
 				// [Script]
+				/* * * * * * * * * * * * * * * * * * * * */
 				scrPath			= ini.Get("Script", "scrPath", "scripts/");
 				scrFile			= ini.Get("Script", "scrFile", "hello.meme");
 				scrShowToks		= ini.GetBoolean("Script", "scrShowToks", false);
@@ -94,10 +103,12 @@ namespace DEMO
 				scrShowItoP		= ini.GetBoolean("Script", "scrShowItoP", false);
 
 				// [Window]
+				/* * * * * * * * * * * * * * * * * * * * */
 				title			= ini.Get("Window", "title", "MemeLib");
 				width			= ini.GetInteger("Window", "width", 640);
 				height			= ini.GetInteger("Window", "height", 480);
 				bitsPerPixel	= ini.GetInteger("Window", "bitsPerPixel", 32);
+				style			= ini.GetInteger("Window", "style", ml::Window::Default);
 				majorVersion	= ini.GetInteger("Window", "majorVersion", 3);
 				minorVersion	= ini.GetInteger("Window", "minorVersion", 3);
 				depthBits		= ini.GetInteger("Window", "depthBits", 24);
@@ -107,6 +118,7 @@ namespace DEMO
 				srgbCapable		= ini.GetBoolean("Window", "srgbCapable", false);
 
 				// [Graphics]	
+				/* * * * * * * * * * * * * * * * * * * * */
 				glErrorPause	= ini.GetBoolean("Graphics", "glErrorPause", true);
 				fieldOfView		= (float)ini.GetReal("Graphics", "fieldOfView", 90.0);
 				perspNear		= (float)ini.GetReal("Graphics", "perspNear", 0.1);
@@ -115,12 +127,15 @@ namespace DEMO
 				orthoFar		= (float)ini.GetReal("Graphics", "orthoFar", +1.0);
 
 				// [Audio]
+				/* * * * * * * * * * * * * * * * * * * * */
 				isMuted			= ini.GetBoolean("Audio", "isMuted", false);
 
 				// [Network]
-				isServer = ini.GetBoolean("Network", "isServer", false);
-				isClient = ini.GetBoolean("Network", "isClient", false);
+				/* * * * * * * * * * * * * * * * * * * * */
+				isServer		= ini.GetBoolean("Network", "isServer", false);
+				isClient		= ini.GetBoolean("Network", "isClient", false);
 
+				/* * * * * * * * * * * * * * * * * * * * */
 				return true;
 			}
 			return false;
@@ -130,7 +145,25 @@ namespace DEMO
 		{
 			return rootPath + assetPath + filename;
 		}
+
+	public:
+		inline ml::vec2u	 winSize()	const { return { width, height }; }
+		inline ml::VideoMode video()	const { return { winSize(), bitsPerPixel }; }
+		inline ml::Context	 context()	const
+		{
+			return {
+				majorVersion,
+				minorVersion,
+				profile,
+				depthBits,
+				stencilBits,
+				multisample,
+				srgbCapable
+			};
+		}
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_SETTINGS_HPP_

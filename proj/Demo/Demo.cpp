@@ -276,19 +276,8 @@ namespace DEMO
 	{
 		ml::OpenGL::errorPause(SETTINGS.glErrorPause);
 
-		const ml::Window::Style wStyle = ml::Window::Default;
-		const ml::VideoMode vMode(SETTINGS.windowSize(), SETTINGS.bitsPerPixel);
-		const ml::Context cSettings(
-			SETTINGS.majorVersion,
-			SETTINGS.minorVersion,
-			SETTINGS.profile,
-			SETTINGS.depthBits,
-			SETTINGS.stencilBits,
-			SETTINGS.multisample,
-			SETTINGS.srgbCapable
-		);
 
-		if (this->create(SETTINGS.title, vMode, wStyle, cSettings) && 
+		if (this->create(SETTINGS.title, SETTINGS.video(), SETTINGS.style, SETTINGS.context()) && 
 			this->setup())
 		{
 			this->setInputMode(ml::Cursor::Normal);

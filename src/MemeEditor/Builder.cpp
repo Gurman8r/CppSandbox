@@ -54,7 +54,7 @@ namespace ml
 	void Builder::draw(bool * p_open)
 	{
 		ImGui::SetNextWindowSize(ImVec2(640, 480), ImGuiCond_FirstUseEver);
-		if (ImGui::Begin("Builder", (m_open = p_open), ImGuiWindowFlags_MenuBar))
+		if (ImGui::Begin("Builder", (m_open = p_open)))
 		{
 			draw_list();
 

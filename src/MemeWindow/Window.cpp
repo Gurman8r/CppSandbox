@@ -40,11 +40,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Window::create(
-		const String		& title, 
-		const VideoMode		& videoMode, 
-		const Style			& style, 
-		const Context		& context)
+	bool Window::create(const String & title, const VideoMode & videoMode, uint32_t style, const Context & context)
 	{
 		m_title		= title;
 		m_videoMode	= videoMode;
@@ -61,13 +57,13 @@ namespace ml
 			glfwWindowHint(GLFW_STENCIL_BITS,	m_context.stencilBits);
 			glfwWindowHint(GLFW_SRGB_CAPABLE,	m_context.srgbCapable);
 			
-			glfwWindowHint(GLFW_RESIZABLE,		(m_style & Style::Resizable));
-			glfwWindowHint(GLFW_VISIBLE,		(m_style & Style::Visible));
-			glfwWindowHint(GLFW_DECORATED,		(m_style & Style::Decorated));
-			glfwWindowHint(GLFW_FOCUSED,		(m_style & Style::Focused));
-			glfwWindowHint(GLFW_AUTO_ICONIFY,	(m_style & Style::AutoIconify));
-			glfwWindowHint(GLFW_FLOATING,		(m_style & Style::Floating));
-			glfwWindowHint(GLFW_MAXIMIZED,		(m_style & Style::Maximized));
+			glfwWindowHint(GLFW_RESIZABLE,		(m_style & Window::Resizable));
+			glfwWindowHint(GLFW_VISIBLE,		(m_style & Window::Visible));
+			glfwWindowHint(GLFW_DECORATED,		(m_style & Window::Decorated));
+			glfwWindowHint(GLFW_FOCUSED,		(m_style & Window::Focused));
+			glfwWindowHint(GLFW_AUTO_ICONIFY,	(m_style & Window::AutoIconify));
+			glfwWindowHint(GLFW_FLOATING,		(m_style & Window::Floating));
+			glfwWindowHint(GLFW_MAXIMIZED,		(m_style & Window::Maximized));
 
 			if (m_window = ML_WINDOW(glfwCreateWindow(
 				width(), 
