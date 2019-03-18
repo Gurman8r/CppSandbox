@@ -75,12 +75,31 @@ namespace DEMO
 				// Framebuffers
 				if (ev->size() != ml::vec2i::Zero)
 				{
+					auto resizeFBO = [](ml::Texture * tex, auto size) 
+					{
+						tex->cleanup();
+						tex->create(size);
+					};
+
+					//resizeFBO(ML_Res.textures.get("framebuffer"), ev->size());
+					//resizeFBO(ML_Res.textures.get("post"), ev->size());
+
 					if (ml::Texture * tex = ML_Res.textures.get("framebuffer"))
 					{
 						tex->cleanup();
 						tex->create(ev->size());
 					}
-					m_effects["default"].reload(ev->size());
+
+					if (ml::Texture * tex = ML_Res.textures.get("post"))
+					{
+						tex->cleanup();
+						tex->create(ev->size());
+					}
+
+					for (auto pair : m_effects)
+					{
+						pair.second.reload(ev->size());
+					}
 				}
 			}
 			break;
@@ -162,6 +181,7 @@ namespace DEMO
 				&& ML_Res.models.load("sprite")->loadFromMemory(*ML_Res.meshes.get("default_quad"))
 				&& ML_Res.models.load("framebuffer")->loadFromMemory(*ML_Res.meshes.get("default_quad"))
 				&& ML_Res.textures.load("framebuffer")->create(this->getFramebufferSize())
+				&& ML_Res.textures.load("post")->create(this->getFramebufferSize())
 				&& ML_Res.loadManifest(manifest)
 				&& loadBuffers();
 		}
@@ -183,6 +203,12 @@ namespace DEMO
 		m_effects["default"].setModel(ML_Res.models.get("framebuffer"));
 		m_effects["default"].setShader(ML_Res.shaders.get("framebuffer"));
 		m_effects["default"].setTexture(ML_Res.textures.get("framebuffer"));
+
+
+		m_effects["post"].create(this->getSize(), ml::GL::ColorAttachment0);
+		m_effects["post"].setModel(ML_Res.models.get("framebuffer"));
+		m_effects["post"].setShader(ML_Res.shaders.get("framebuffer"));
+		m_effects["post"].setTexture(ML_Res.textures.get("post"));
 
 		return true;
 	}
@@ -803,11 +829,15 @@ namespace DEMO
 
 		// Draw Effects
 		/* * * * * * * * * * * * * * * * * * * * */
-		if (const ml::Shader * shader = m_effects["default"].shader())
+		m_effects["post"].bind();
 		{
-			shader->applyUniforms(effect_uniforms);
+			if (const ml::Shader * shader = m_effects["default"].shader())
+			{
+				shader->applyUniforms(effect_uniforms);
+			}
+			this->draw(m_effects["default"]);
 		}
-		this->draw(m_effects["default"]);
+		m_effects["post"].unbind();
 
 		// Draw GUI
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -1047,13 +1077,21 @@ namespace DEMO
 
 	void Demo::draw_Scene(bool * p_open)
 	{
-		if (ImGui::Begin("Scene", p_open))
+		static bool preserve_aspect = true;
+
+		if (ImGui::Begin("Scene", p_open, ImGuiWindowFlags_MenuBar))
 		{
 			/* * * * * * * * * * * * * * * * * * * * */
 
+			if (ImGui::BeginMenuBar())
+			{
+				ImGui::Checkbox("Preserve Aspect", &preserve_aspect);
+				ImGui::EndMenuBar();
+			}
+
 			ImGui::BeginChild("SceneView", { -1, -1 }, false);
 			{
-				if (auto tex = std::remove_cv_t<ml::Texture *>(m_effects["default"].texture()))
+				if (auto tex = std::remove_cv_t<ml::Texture *>(m_effects["post"].texture()))
 				{
 					// Texture Size
 					const ml::vec2f src = tex->size();
@@ -1067,12 +1105,14 @@ namespace DEMO
 					auto scaleToFit = [](const ml::vec2f & src, const ml::vec2f & dst)
 					{
 						const ml::vec2f
-							hScl = (dst[0] / src[0]),
-							vScl = (dst[1] / src[1]);
-						return (src * (((hScl) < (vScl)) ? (hScl) : (vScl)));
+							hs = (dst[0] / src[0]),
+							vs = (dst[1] / src[1]);
+						return (src * (((hs) < (vs)) ? (hs) : (vs)));
 					};
 
-					const ml::vec2f scl = scaleToFit(src, dst);
+					const ml::vec2f scl = (preserve_aspect
+						? scaleToFit(src, dst)
+						: (dst * 0.975f));
 
 					const ml::vec2f pos = ((dst - scl) * 0.5f);
 
