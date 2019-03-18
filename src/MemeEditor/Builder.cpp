@@ -27,19 +27,16 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Builder::Builder()
-		: m_vert(ML_MAX_SRC)
-		, m_geom(ML_MAX_SRC)
-		, m_frag(ML_MAX_SRC)
 	{
-		copy_range(m_vert, 0, 
+		copy_range(m_s["Vertex"], 0, 
 			"#shader vertex\n"
 			"#version 410 core\n"
 		);
-		copy_range(m_geom, 0, 
+		copy_range(m_s["Geometry"], 0, 
 			"#shader geometry\n"
 			"#version 410 core\n"
 		);
-		copy_range(m_frag, 0, 
+		copy_range(m_s["Fragement"], 0, 
 			"#shader fragment\n"
 			"#version 410 core\n"
 		);
@@ -56,145 +53,67 @@ namespace ml
 		ImGui::SetNextWindowSize(ImVec2(640, 480), ImGuiCond_FirstUseEver);
 		if (ImGui::Begin("Builder", (m_open = p_open)))
 		{
-			draw_list();
+			ImGui::BeginGroup();
+			{
+				// Information
+				ImGui::BeginChild("Tabs");
+				{
+					// Tabs
+					if (ImGui::BeginTabBar("##Tabs"))
+					{
+						draw_shader_tab("Vertex", m_s["Vertex"]);
+						draw_shader_tab("Geometry", m_s["Geometry"]);
+						draw_shader_tab("Fragement", m_s["Fragement"]);
 
-			ImGui::SameLine();
-
-			draw_preview();
+						ImGui::EndTabBar();
+					}
+				}
+				ImGui::EndChild();
+			}
+			ImGui::EndGroup();
 		}
 		ImGui::End();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void Builder::draw_list()
+	void Builder::draw_shader_tab(const String & label, List<char>& source)
 	{
-		ImVec4 color = ImGui::GetStyleColorVec4(ImGuiCol_Text);
-
-		ImGui::BeginChild("List View", { 224, 0 }, true);
+		if (ImGui::BeginTabItem(label.c_str()))
 		{
-			ImGui::PushStyleColor(ImGuiCol_Text, color);
-			for (size_t i = 0, imax = m_uniforms.size(); i < imax; i++)
+			if (ImGui::BeginTabBar((label + "##Tabs").c_str()))
 			{
-				if (Uniform * u = get_uniform(i))
+				if (ImGui::BeginTabItem(("Uniforms##" + label).c_str()))
 				{
-					if (ImGui::Selectable(
-						(u->name.c_str()),
-						(m_selected == i),
-						(ImGuiSelectableFlags_AllowDoubleClick)))
+					draw_uniform_list(label);
+
+					ImGui::SameLine();
+
+					if (ImGui::BeginChild(
+						("Content##" + label + "##Tabs").c_str(),
+						(ImVec2(-1.0f, -1.0f)),
+						(true),
+						(ImGuiWindowFlags_AlwaysHorizontalScrollbar)))
 					{
-						m_selected = i;
-					}
-				}
-			}
-			ImGui::PopStyleColor();
-			ImGui::Separator();
+						draw_uniform_edit(get_selected(label));
 
-			// Buttons
-			draw_list_buttons();
-		}
-		ImGui::EndChild();
-	}
-
-	void Builder::draw_list_buttons()
-	{
-		ImGui::BeginGroup();
-		{
-			if (ImGui::Button("Up"))
-			{
-				if (!m_uniforms.empty() && m_selected > 0)
-				{
-					std::swap(m_uniforms[m_selected], m_uniforms[m_selected - 1]);
-					m_selected--;
-				}
-			}
-			ImGui::SameLine();
-			if (ImGui::Button("Dn"))
-			{
-				if (m_selected + 1 < m_uniforms.size())
-				{
-					std::swap(m_uniforms[m_selected], m_uniforms[m_selected + 1]);
-					m_selected++;
-				}
-			}
-			ImGui::SameLine();
-			if (ImGui::Button("New"))
-			{
-				m_uniforms.push_back(Uniform("new_uniform"));
-				m_selected = m_uniforms.size() - 1;
-			}
-			ImGui::SameLine();
-			if (ImGui::Button("Ins"))
-			{
-				if (m_uniforms.size() > 0)
-				{
-					m_uniforms.insert(m_uniforms.begin() + m_selected, Uniform("new_uniform"));
-				}
-			}
-			ImGui::SameLine();
-			if (ImGui::Button("Dup"))
-			{
-				if (m_uniforms.size() > 0)
-				{
-					m_uniforms.push_back(Uniform(m_uniforms[m_selected]));
-					m_selected = m_uniforms.size() - 1;
-				}
-			}
-			ImGui::SameLine();
-			if (ImGui::Button("Del"))
-			{
-				if (m_uniforms.size() > 0)
-				{
-					m_uniforms.erase(m_uniforms.begin() + m_selected);
-					m_selected = (m_selected > 0 ? m_selected - 1 : m_uniforms.size() - 1);
-				}
-			}
-		}
-		ImGui::EndGroup();
-	}
-
-	void Builder::draw_preview()
-	{
-		ImGui::BeginGroup();
-		{
-			// Information
-			ImGui::BeginChild("Tabs");
-			{
-				// Tabs
-				if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None))
-				{
-					// Uniform
-					if (ImGui::BeginTabItem("Uniform"))
-					{
-						ImGui::BeginChild(
-							("Content"),
-							(ImVec2(-1.0f, -1.0f)),
-							(true),
-							(ImGuiWindowFlags_AlwaysHorizontalScrollbar));
-						{
-							draw_uniform(get_selected());
-						}
 						ImGui::EndChild();
-						ImGui::EndTabItem();
-					}
-					// Source
-					{
-						draw_source("Vertex", m_vert);
-						draw_source("Geometry", m_geom);
-						draw_source("Fragment", m_frag);
 					}
 
-					ImGui::EndTabBar();
+					ImGui::EndTabItem();
 				}
+
+				draw_source_tab(("Source##" + label).c_str(), m_s["Vertex"]);
+
+				ImGui::EndTabBar();
 			}
-			ImGui::EndChild();
+			ImGui::EndTabItem();
 		}
-		ImGui::EndGroup();
 	}
 
-	void Builder::draw_uniform(Uniform * u)
+	void Builder::draw_uniform_edit(Uniform * value)
 	{
-		if (!u)
+		if (!value)
 		{
 			ImGui::Text("Nothing Selected");
 			return;
@@ -212,14 +131,12 @@ namespace ml
 			"Tex",
 		};
 
-		ImGui::PushID(u->name.c_str());
+		ImGui::PushID(value->name.c_str());
 		{
 			static const ImGuiInputTextFlags flags = 
 				ImGuiInputTextFlags_EnterReturnsTrue |
 				ImGuiInputTextFlags_CallbackCompletion |
 				ImGuiInputTextFlags_CallbackHistory;
-
-			//char * b = std::remove_cv_t<char *>(u->name.data());
 
 			auto textEditCallback = [](ImGuiInputTextCallbackData * data)
 			{
@@ -233,8 +150,8 @@ namespace ml
 			bool reclaim_focus = false;
 			if (ImGui::InputText(
 				"Name",
-				m_buf,
-				IM_ARRAYSIZE(m_buf),
+				m_inputBuf,
+				IM_ARRAYSIZE(m_inputBuf),
 				flags,
 				textEditCallback,
 				(void *)(this)
@@ -248,11 +165,8 @@ namespace ml
 				ImGui::SetKeyboardFocusHere(-1); // Auto focus previous widget
 			}
 
-			//u->name = String(buf);
-			//ImGui::InputText("Name", &u->name[0], 32);
-			
-			ImGui::Combo("Type", &u->type, u_types, IM_ARRAYSIZE(u_types));
-			switch (u->type)
+			ImGui::Combo("Type", &value->type, u_types, IM_ARRAYSIZE(u_types));
+			switch (value->type)
 			{
 			case Uniform::Int:
 			{
@@ -331,7 +245,93 @@ namespace ml
 		ImGui::PopID();
 	}
 
-	void Builder::draw_source(CString label, List<char> & source)
+	void Builder::draw_uniform_list(const String & value)
+	{
+		ImVec4 color = ImGui::GetStyleColorVec4(ImGuiCol_Text);
+
+		ImGui::BeginChild("List View", { 224, 0 }, true);
+		{
+			ImGui::PushStyleColor(ImGuiCol_Text, color);
+			for (size_t i = 0, imax = m_u[value].size(); i < imax; i++)
+			{
+				if (Uniform * u = get_uniform(value, i))
+				{
+					if (ImGui::Selectable(
+						(u->name.c_str()),
+						(m_selected == i),
+						(ImGuiSelectableFlags_AllowDoubleClick)))
+					{
+						m_selected = i;
+					}
+				}
+			}
+			ImGui::PopStyleColor();
+			ImGui::Separator();
+
+			// Buttons
+			draw_uniform_list_buttons(m_u[value]);
+		}
+		ImGui::EndChild();
+	}
+
+	void Builder::draw_uniform_list_buttons(List<Uniform> & value)
+	{
+		ImGui::BeginGroup();
+		{
+			if (ImGui::Button("Up"))
+			{
+				if (!value.empty() && m_selected > 0)
+				{
+					std::swap(value[m_selected], value[m_selected - 1]);
+					m_selected--;
+				}
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Dn"))
+			{
+				if (m_selected + 1 < value.size())
+				{
+					std::swap(value[m_selected], value[m_selected + 1]);
+					m_selected++;
+				}
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("New"))
+			{
+				value.push_back(Uniform("new_uniform"));
+				m_selected = value.size() - 1;
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Ins"))
+			{
+				if (value.size() > 0)
+				{
+					value.insert(value.begin() + m_selected, Uniform("new_uniform"));
+				}
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Dup"))
+			{
+				if (value.size() > 0)
+				{
+					value.push_back(Uniform(value[m_selected]));
+					m_selected = value.size() - 1;
+				}
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Del"))
+			{
+				if (value.size() > 0)
+				{
+					value.erase(value.begin() + m_selected);
+					m_selected = (m_selected > 0 ? m_selected - 1 : value.size() - 1);
+				}
+			}
+		}
+		ImGui::EndGroup();
+	}
+
+	void Builder::draw_source_tab(CString label, List<char> & source)
 	{
 			// Vertex
 			if (ImGui::BeginTabItem(label))

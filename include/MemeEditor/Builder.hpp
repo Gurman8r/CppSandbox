@@ -24,38 +24,44 @@ namespace ml
 		void draw(bool * p_open);
 
 	private:
-		void draw_list();
-		void draw_list_buttons();
-		void draw_preview();
-		void draw_uniform(Uniform * u);
-		void draw_source(CString label, List<char> & source);
+		void draw_shader_tab(const String & label, List<char> & source);
+
+		void draw_uniform_edit(Uniform * u);
+		void draw_uniform_list(const String & value);
+		void draw_uniform_list_buttons(List<Uniform> & value);
+		void draw_source_tab(CString label, List<char> & source);
 		
 	public:
 		int32_t textEditCallback();
 
 	private:
-		inline Uniform * get_uniform(const size_t i)
+		inline Uniform * get_uniform(List<Uniform> & u, const size_t i)
 		{
-			return (!m_uniforms.empty()
-				? (i < m_uniforms.size())
-					? &m_uniforms.at(i)
+			return (!u.empty()
+				? (i < u.size())
+					? &u.at(i)
 					: NULL
 				: NULL);
 		}
 
-		inline Uniform * get_selected()
+		inline Uniform * get_uniform(const String & label, const size_t i)
 		{
-			return get_uniform(m_selected);
+			return get_uniform(m_u[label], i);
+		}
+
+		inline Uniform * get_selected(const String & label)
+		{
+			return get_uniform(label, m_selected);
 		}
 
 	private:
-		bool *			m_open;
-		List<Uniform>	m_uniforms;
-		size_t			m_selected = 0;
+		bool *	m_open		= 0;
+		size_t	m_selected	= 0;
+		char	m_inputBuf	[64];
 
-		List<char> m_vert, m_geom, m_frag;
+		HashMap<String, List<char>>		m_s; // Sources
+		HashMap<String, List<Uniform>>	m_u; // Uniforms
 
-		char m_buf[64];
 	};
 }
 
