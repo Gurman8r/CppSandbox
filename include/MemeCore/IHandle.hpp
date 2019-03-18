@@ -1,7 +1,7 @@
 #ifndef _I_HANDLE_HPP_
 #define _I_HANDLE_HPP_
 
-#include <MemeCore/ML_Types.hpp>
+#include <MemeCore/Export.hpp>
 
 namespace ml
 {

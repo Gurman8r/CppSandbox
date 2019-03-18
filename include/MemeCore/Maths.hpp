@@ -4,7 +4,7 @@
 /* * * * * * * * * * * * * * * * * * * * */
 
 #include <MemeCore/Export.hpp>
-#include <MemeCore/ML_Types.hpp>
+#include <MemeCore/STD.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -16,7 +16,7 @@
 	: (max)) \
 
 #define ML_TYPE_CLAMP(T, value, min, max) \
-static_cast<T>(ML_CLAMP(value, min, max)) \
+	static_cast<T>(ML_CLAMP(value, min, max)) \
 
 /* * * * * * * * * * * * * * * * * * * * */
 

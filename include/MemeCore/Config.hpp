@@ -1,106 +1,110 @@
 #ifndef _CONFIG_HPP_
 #define _CONFIG_HPP_
 
-//	Debug Macro
+//	Configuration Macro
 /* * * * * * * * * * * * * * * * * * * */
-#if defined(_DEBUG)
-	#define ML_DEBUG
-#endif
+# if defined(_DEBUG)
+#	define ML_DEBUG
+# endif
 
-// C++ Macro
+//	C/C++ Macro
 /* * * * * * * * * * * * * * * * * * * */
-#if defined(__cplusplus)
-	#define ML_CPP
-#endif
+# if defined(__cplusplus)
+#	define ML_CPP
+# endif
 
 //	Operating System Macro
 /* * * * * * * * * * * * * * * * * * * */
-#if defined(_WIN64) || defined(_WIN32)
-	// Windows
-	#define ML_SYSTEM_WINDOWS
-
-	#ifndef NOMINMAX
-		#define NOMINMAX
-	#endif
-
-	#ifdef near
-		#undef near
-	#endif
-
-	#ifdef far
-		#undef far
-	#endif
-
-#elif defined(__APPLE__) && defined(__MACH__)
-	// Apple
-	#define ML_SYSTEM_APPLE
-	#error This APPLE operating system does not support memes.
-#elif defined(__unix__)
-	#if defined(__ANDROID__)
-		// Android
-		#define ML_SYSTEM_ANDROID
-	#elif defined(__linux__)
-		// Linux
-		#define ML_SYSTEM_LINUX
-	#elif defined(__FreeBSD__) || defined(__FreeBSD_kernel__)	
-		// Free BSD
-		#define ML_SYSTEM_FREEBSD
-	#else
-		// Unsupported Unix OS
-		#error This UNIX operating system does not support memes.
-	#endif
-#else
-	// Unsupported OS
-	#error This operating system does not support memes.
-#endif
+# if defined(_WIN64) || defined(_WIN32)
+#	define ML_SYSTEM_WINDOWS
+#	ifndef NOMINMAX
+#		define NOMINMAX
+#	endif
+#	ifdef near
+#		undef near
+#	endif
+#	ifdef far
+#		undef far
+#	endif
+# elif defined(__APPLE__) && defined(__MACH__)
+#	define ML_SYSTEM_APPLE
+#	error This APPLE operating system does not support memes.
+# elif defined(__unix__)
+#	define ML_SYSTEM_UNIX
+#	if defined(__ANDROID__)
+#		define ML_SYSTEM_ANDROID
+#	elif defined(__linux__)
+#		define ML_SYSTEM_LINUX
+#	elif defined(__FreeBSD__) || defined(__FreeBSD_kernel__)	
+#		define ML_SYSTEM_FREEBSD
+#	else
+#		error This UNIX operating system does not support memes.
+#	endif
+# else
+#	error This operating system does not support memes.
+# endif
 
 //	Platform Macro
 /* * * * * * * * * * * * * * * * * * * */
-#if defined(ML_SYSTEM_WINDOWS)
-	#if defined(_WIN64)
-		#define ML_x64
-	#else
-		#define ML_x86
-	#endif
-#elif defined(__GNUC__)
-	#if defined( __x86_64__) || defined(__ppc64__)
-		#define ML_x64
-	#else
-		#define ML_x86
-	#endif
-#endif
+# if defined(ML_SYSTEM_WINDOWS)
+#	if defined(_WIN64)
+#		define ML_x64
+#	else
+#		define ML_x86
+#	endif
+# elif defined(__GNUC__)
+#	if defined( __x86_64__) || defined(__ppc64__)
+#		define ML_x64
+#	else
+#		define ML_x86
+#	endif
+# else
+#	error The target platform does not support memes.
+# endif
 
-#if !defined(ML_x86) && !defined(ML_x64)
-#error Unknown CPU Type
-#endif
-
+//	MsBuild / GCC Macro
+/* * * * * * * * * * * * * * * * * * * */
+# ifdef ML_SYSTEM_WINDOWS
+# 	ifdef _MSC_VER
+#		define ML_MSB _MSC_VER
+# 	endif
+# else
+# 	ifdef __GNUC__
+#		define ML_GCC __GNUC__
+# 	endif
+# endif
 
 //	Export / Import Macro
 /* * * * * * * * * * * * * * * * * * * */
-#if !defined(ML_STATIC)
-	#if defined(ML_SYSTEM_WINDOWS)
-		// Windows compilers need different keywords for exports and imports
-		#define ML_API_EXPORT __declspec(dllexport)
-		#define ML_API_IMPORT __declspec(dllimport)
-		#ifdef _MSC_VER
-			#pragma warning(disable: 4099)
-			#pragma warning(disable: 4251)
-		#endif
-	#else
-		#if __GNUC__ >= 4
-			// GCC 4 has special keywords for showing/hidding symbols,
-			// the same keyword is used for both importing and exporting
-			#define ML_API_EXPORT __attribute__ ((__visibility__ ("default")))
-			#define ML_API_IMPORT __attribute__ ((__visibility__ ("default")))
-		#else
-			// GCC < 4 has no mechanism to explicitely hide symbols, everything's exported
-			#define ML_API_EXPORT
-			#define ML_API_IMPORT
-		#endif
-	#endif
-#else
-	#define ML_API_EXPORT
-	#define ML_API_IMPORT
-#endif
+# if !defined(ML_STATIC)
+#	if defined(ML_SYSTEM_WINDOWS)
+#		define ML_API_EXPORT __declspec(dllexport)
+#		define ML_API_IMPORT __declspec(dllimport)
+#		ifdef ML_MSB
+#			pragma warning(disable: 4099)
+#			pragma warning(disable: 4251)
+#		endif
+#	elif (ML_GCC >= 4)
+#		define ML_API_EXPORT __attribute__ ((__visibility__ ("default")))
+#		define ML_API_IMPORT __attribute__ ((__visibility__ ("default")))
+#	else
+#		define ML_API_EXPORT
+#		define ML_API_IMPORT
+#	endif
+# endif
+
+//	Implicit OS Macro for Release
+/* * * * * * * * * * * * * * * * * * * */
+# ifndef ML_DEBUG
+#	if defined(ML_SYSTEM_WINDOWS)
+#		define ML_IMPL_WINDOWS
+#	elif defined(ML_SYSTEM_APPLE)
+#		define ML_IMPL_APPLE
+#	elif defined (ML_SYSTEM_UNIX)
+#		define(ML_IMPL_UNIX)
+#	endif
+# endif
+
+
 
 #endif // !_CONFIG_HPP_

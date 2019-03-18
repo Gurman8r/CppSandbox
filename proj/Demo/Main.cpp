@@ -113,17 +113,4 @@ int32_t main(int32_t argc, char ** argv)
 	}
 }
 
-#ifndef ML_DEBUG
-#ifdef ML_SYSTEM_WINDOWS
-
-#include <Windows.h>
-
-INT WinMain(HINSTANCE, HINSTANCE, PSTR, INT)
-{
-	return main(__argc, __argv);
-}
-
-#endif
-#endif
-
 /* * * * * * * * * * * * * * * * * * * * */

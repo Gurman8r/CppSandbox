@@ -1,7 +1,6 @@
 #ifndef _CONSOLE_UTILITY_HPP_
 #define _CONSOLE_UTILITY_HPP_
 
-#include <MemeCore/ML_Types.hpp>
 #include <MemeCore/IO.hpp>
 
 namespace ml
@@ -20,15 +19,15 @@ namespace ml
 	{
 		enum Color : uint16_t
 		{
-			Black		= ML_ENUM_0,
-			DarkBlue	= ML_ENUM_1,
-			DarkGreen	= ML_ENUM_2,
+			Black,
+			DarkBlue	= (1 << 0),
+			DarkGreen	= (1 << 1),
 			DarkCyan	= DarkGreen | DarkBlue,
-			DarkRed		= ML_ENUM_4,
+			DarkRed		= (1 << 2),
 			DarkMagenta = DarkRed | DarkBlue,
 			DarkYellow	= DarkRed | DarkGreen,
 			Normal		= DarkRed | DarkGreen | DarkBlue,
-			Gray		= ML_ENUM_8,
+			Gray		= (1 << 3),
 			Blue		= Gray | DarkBlue,
 			Green		= Gray | DarkGreen,
 			Cyan		= Gray | DarkGreen | DarkBlue,
@@ -49,15 +48,15 @@ namespace ml
 	{
 		enum Color : uint16_t
 		{
-			Black		= ML_ENUM_0,
-			DarkBlue	= ML_ENUM_16,
-			DarkGreen	= ML_ENUM_32,
+			Black,
+			DarkBlue	= (1 << 4),
+			DarkGreen	= (1 << 5),
 			DarkCyan	= DarkGreen | DarkBlue,
-			DarkRed		= ML_ENUM_64,
+			DarkRed		= (1 << 6),
 			DarkMagenta = DarkRed | DarkBlue,
 			DarkYellow	= DarkRed | DarkGreen,
 			Gray		= DarkRed | DarkGreen | DarkBlue,
-			DarkGray	= ML_ENUM_128,
+			DarkGray	= (1 << 7),
 			Blue		= DarkGray | DarkBlue,
 			Green		= DarkGray | DarkGreen,
 			Cyan		= DarkGray | DarkGreen | DarkBlue,

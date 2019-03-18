@@ -22,6 +22,7 @@
 #include <stack>
 #include <sstream>
 #include <stdarg.h>
+#include <stdint.h>
 #include <string>
 #include <thread>
 #include <type_traits>

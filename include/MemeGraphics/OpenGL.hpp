@@ -2,7 +2,7 @@
 #define _OPENGL_HPP_
 
 #include <MemeGraphics/GL.hpp>
-#include <MemeCore/CString.hpp>
+#include <MemeCore/String.hpp>
 
 // Macro to quickly check every OpenGL API call
 #ifdef ML_DEBUG

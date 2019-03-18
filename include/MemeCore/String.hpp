@@ -3,7 +3,13 @@
 
 #include <MemeCore/IComparable.hpp>
 #include <MemeCore/IO.hpp>
-#include <MemeCore/CString.hpp>
+
+/* * * * * * * * * * * * * * * * * * * * */
+
+namespace ml
+{
+	using CString = typename const char *;
+}
 
 /* * * * * * * * * * * * * * * * * * * * */
 

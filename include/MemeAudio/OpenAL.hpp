@@ -2,7 +2,7 @@
 #define _OPEN_AL_HPP_
 
 #include <MemeAudio/AL.hpp>
-#include <MemeCore/CString.hpp>
+#include <MemeCore/String.hpp>
 
 #ifdef ML_DEBUG
 	#define alCheck(expr) do { expr; ml::OpenAL::checkError(__FILE__, __LINE__, #expr); } while (false)
