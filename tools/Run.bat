@@ -15,7 +15,11 @@ if not exist %File% (
 )
 
 echo %File%
-
 cd %Path%
-call %Name%
+if "%Configuration%"=="Release" (
+	start %Name%
+) else ( 
+	call %Name%
+)
+
 exit %ERRORLEVEL%
