@@ -96,11 +96,11 @@
     <ClInclude Include="..\..\include\MemeEditor\Dockspace.hpp">
       <Filter>Header Files\Editors</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeEditor\ImGuiBuiltin.hpp">
-      <Filter>Header Files\Editors</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\SourceFile.hpp">
       <Filter>Header Files\DS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeEditor\ImGuiBuiltin.hpp">
+      <Filter>Header Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -146,11 +146,11 @@
     <ClCompile Include="..\..\src\MemeEditor\Dockspace.cpp">
       <Filter>Source Files\Editors</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemeEditor\ImGuiBuiltin.cpp">
-      <Filter>Source Files\Editors</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\SourceFile.cpp">
       <Filter>Source Files\DS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeEditor\ImGuiBuiltin.cpp">
+      <Filter>Source Files\Utility</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
