@@ -1,3 +1,7 @@
+@"config b flag_itop 0"
+@"config b flag_toks 0"
+@"config b flag_tree 1"
+
 # File Functions
 FILES = nodeid();
 {

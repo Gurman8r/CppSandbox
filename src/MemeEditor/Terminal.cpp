@@ -208,7 +208,7 @@ namespace ml
 		}
 		else
 		{
-			this->printf("Unknown command: '%s'\n", value);
+			this->printf("[ ERR ] %s\n", value);
 		}
 		ml::cout.rdbuf(old);
 	}
