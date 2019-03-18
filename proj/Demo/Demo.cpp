@@ -951,11 +951,11 @@ namespace DEMO
 			uint32_t	   left		= d.split(root,		ImGuiDir_Left,	0.25f,	&root);
 			const uint32_t left_U	= d.split(left,		ImGuiDir_Up,	0.5f,	&left);
 			const uint32_t left_D	= d.split(left,		ImGuiDir_Down,	0.5f,	&left);
-						   
+
 			uint32_t	   center	= d.split(root,		ImGuiDir_Right, 0.5f,	&root);
 			const uint32_t center_U = d.split(center,	ImGuiDir_Up,	0.5f,	&center);
 			const uint32_t center_D = d.split(center,	ImGuiDir_Down,	0.5f,	&center);
-						   
+
 			uint32_t	   right	= d.split(center,	ImGuiDir_Right, 0.25f,	&center);
 			const uint32_t right_U	= d.split(right,	ImGuiDir_Up,	0.5f,	&right);
 			const uint32_t right_D	= d.split(right,	ImGuiDir_Down,	0.5f,	&right);
