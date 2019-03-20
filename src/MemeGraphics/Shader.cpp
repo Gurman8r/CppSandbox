@@ -142,42 +142,76 @@ namespace ml
 		return compile(vert, geom, frag);
 	}
 
-	bool Shader::loadFromMemory(const String & source)
+	inline static int32_t parseSource(
+		const String & source, int32_t & flag, SStream * selected, SStream & v, SStream & g, SStream & f)
 	{
-		enum { NONE = -1, VERT, FRAG, GEOM, MAX };
-
-		int8_t	srcType = NONE;
-		SStream	srcData[MAX];
-
 		SStream	stream(source);
 		String	line;
 		while (std::getline(stream, line))
 		{
-			if (line.find("#shader") != String::npos)
+			if (line.find("#include") != String::npos)
+			{
+				size_t first;
+				if ((first = line.find_first_of('\"')) != String::npos)
+				{
+					size_t last;
+					if ((last = line.find_last_not_of('\"')) != String::npos)
+					{
+						const String name = line.substr((first + 1), (last - first - 2));
+						const String path = ML_FileSystem.pathTo(name);
+						
+						String file;
+						if (ML_FileSystem.getFileContents(path, file))
+						{
+							file = file.replaceAll("\0", "");
+
+							if (parseSource(file, flag, selected, v, g, f))
+							{
+								Debug::log("Include: [{0}]", name);
+
+								flag = -1;
+							}
+						}
+					}
+				}
+			}
+			else if (line.find("#shader") != String::npos)
 			{
 				if (line.find("vertex") != String::npos)
 				{
-					srcType = VERT;
+					selected = &v;
 				}
 				else if (line.find("fragment") != String::npos)
 				{
-					srcType = FRAG;
+					selected = &f;
 				}
 				else if (line.find("geometry") != String::npos)
 				{
-					srcType = GEOM;
+					selected = &g;
 				}
 			}
-			else if (srcType > NONE)
+			else if (selected)
 			{
-				srcData[srcType] << line << std::endl;
+				(*selected) << line << endl;
 			}
 		}
+		return flag;
+	}
 
+	bool Shader::loadFromMemory(const String & source)
+	{
+		int32_t flag = 1;
+		SStream vert, geom, frag;
+		SStream * selected = NULL;
+
+		if (parseSource(source, flag, selected, vert, geom, frag) == -1)
+		{
+			cout << vert.str() << endl;
+		}
 		return loadFromMemory(
-			srcData[VERT].str(),
-			srcData[GEOM].str(),
-			srcData[FRAG].str());
+			vert.str(),
+			geom.str(),
+			frag.str());
 	}
 
 	bool Shader::loadFromMemory(const String & vs, const String & gs, const String & fs)
