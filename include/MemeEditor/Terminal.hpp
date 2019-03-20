@@ -34,9 +34,6 @@ namespace ml
 		int32_t				m_historyPos;
 		ImVector<CString>	m_auto;
 
-		SStream m_ss;
-		std::streambuf * m_old;
-
 		bool * m_open = NULL;
 
 		Terminal();

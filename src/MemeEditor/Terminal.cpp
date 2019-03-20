@@ -196,6 +196,8 @@ namespace ml
 		m_history.push_back(Strdup(value));
 
 		
+		SStream m_ss;
+		std::streambuf * m_old;
 		if (m_old = cout.rdbuf(m_ss.rdbuf()))
 		{
 			if (!(ML_Interpreter.execCommand(value)).isErrorType())

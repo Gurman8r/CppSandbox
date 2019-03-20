@@ -72,12 +72,7 @@ namespace DEMO
 			return ml::Var().boolValue(ML_FileSystem.setWorkingDir(
 				ML_FileSystem.pathTo(SETTINGS.pathTo(""))));
 		}
-		else if (path == "")
-		{
-			return ml::Var().boolValue(ML_FileSystem.setWorkingDir(
-				ML_FileSystem.pathTo(SETTINGS.pathTo(""))));
-		}
-		else
+		else if (path)
 		{
 			return ml::Var().boolValue(ML_FileSystem.setWorkingDir(path));
 		}
