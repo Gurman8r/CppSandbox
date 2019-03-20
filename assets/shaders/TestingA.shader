@@ -34,11 +34,9 @@ vec4 vertOutput()
 {
 	mat4 mvp = (Vert.proj * Vert.view * Vert.model);
 	vec4 pos = mvp * vec4(a_Position, 1.0);
-
 	Out.Position = vec3(pos);
 	Out.Normal	 = vec4(mat3(transpose(inverse(Vert.model))) * a_Normal, 1.0);
 	Out.Texcoord = a_Texcoord;
-
 	return pos;
 }
 

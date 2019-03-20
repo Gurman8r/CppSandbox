@@ -216,10 +216,8 @@ namespace ml
 		if (check)
 		{
 			cout
-				<< "/* * * * * * * * * * * * * * * * * * * * */" << endl
 				<< "--VERTEX" << endl << vert.str() << endl
-				<< "--FRAGMENT" << endl << frag.str() << endl
-				<< "/* * * * * * * * * * * * * * * * * * * * */" << endl;
+				<< "--FRAGMENT" << endl << frag.str() << endl;
 		}
 
 		return loadFromMemory(vert.str(), geom.str(), frag.str());

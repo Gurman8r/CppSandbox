@@ -677,7 +677,7 @@ namespace DEMO
 					ml::Uniform("Frag.color",	ml::Uniform::Vec4,	&ml::Color::White),
 					ml::Uniform("Frag.tex0",	ml::Uniform::Tex,	ML_Res.textures.get("borg")),
 				};
-				if (const ml::Shader * shader = ML_Res.shaders.get("testB"))
+				if (const ml::Shader * shader = ML_Res.shaders.get("basic2"))
 				{
 					shader->applyUniforms(uniforms);
 					shader->bind();

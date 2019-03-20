@@ -43,7 +43,7 @@
 #	error This operating system does not support memes.
 # endif
 
-//	Compiler Macro
+//	MsBuild / GCC Macro
 /* * * * * * * * * * * * * * * * * * * */
 # ifdef ML_SYSTEM_WINDOWS
 # 	ifdef _MSC_VER

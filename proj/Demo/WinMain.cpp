@@ -9,7 +9,7 @@ extern int32_t main(int32_t argc, char ** argv);
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-#if !defined(ML_DEBUG) && defined(ML_SYSTEM_WINDOWS)
+#ifdef ML_SYSTEM_WINDOWS
 
 extern "C" ML_API_EXPORT unsigned long NvOptimusEnablement = 1;
 extern "C" ML_API_EXPORT unsigned long AmdPowerXpressRequestHighPerformance = 1;

@@ -14,6 +14,7 @@
 #include <iomanip>
 #include <iostream>
 #include <iterator>
+#include <limits>
 #include <locale>
 #include <map>
 #include <mutex>
