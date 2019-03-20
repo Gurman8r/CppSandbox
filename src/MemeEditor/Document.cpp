@@ -12,10 +12,10 @@ namespace ml
 	}
 
 	Document::Document(CString name, const char value)
-		: data	()
-		, name	()
-		, open	(true)
-		, dirty	(false)
+		: data()
+		, name()
+		, open(true)
+		, dirty(false)
 	{
 		strcpy(this->name, name);
 

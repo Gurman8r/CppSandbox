@@ -19,10 +19,12 @@ namespace ml
 	private:
 		void draw_menu();
 		void draw_tabs();
-		bool draw_document(int32_t index);
+		bool edit_document(int32_t index);
+		bool edit_document_name(char * buf, Document * doc);
+		bool edit_document_data(Document * doc);
 
 	private:
-		inline Document * get_doc(const size_t index)
+		inline Document * get_document(const size_t index)
 		{
 			return ((!m_files.empty())
 				? ((index < m_files.size())
@@ -31,9 +33,9 @@ namespace ml
 				: (NULL));
 		}
 
-		inline Document * get_selected_doc()
+		inline Document * get_selected_document()
 		{
-			return get_doc((size_t)m_selected);
+			return get_document((size_t)m_selected);
 		}
 
 	private:

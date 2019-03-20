@@ -25,8 +25,8 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		using Name = char[NameSize];
-		using Data = char[DataSize];
+		using Name = typename char[NameSize];
+		using Data = typename char[DataSize];
 
 		/* * * * * * * * * * * * * * * * * * * * */
 

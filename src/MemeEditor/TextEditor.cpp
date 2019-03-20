@@ -62,7 +62,7 @@ namespace ml
 				
 				if (ImGui::MenuItem("Save", NULL, false, true))
 				{
-					if (Document * doc = get_selected_doc())
+					if (Document * doc = get_selected_document())
 					{
 						doc->dirty = false;
 					}
@@ -84,61 +84,84 @@ namespace ml
 			m_selected = -1;
 			for (size_t i = 0; i < m_files.size(); i++)
 			{
-				if (draw_document((int32_t)i))
+				if (!edit_document((int32_t)i))
 				{
-					m_selected = (int32_t)i;
+					m_files.erase(m_files.begin() + i);
+					break;
 				}
 			}
 			ImGui::EndTabBar();
 		}
 	}
 
-	bool TextEditor::draw_document(int32_t index)
+	bool TextEditor::edit_document(int32_t index)
 	{
-		if (Document * doc = get_doc((size_t)index))
+		if (Document * doc = get_document((size_t)index))
 		{
 			ImGuiTabItemFlags flags = (doc->dirty ? ImGuiTabItemFlags_UnsavedDocument : 0);
 
 			if (ImGui::BeginTabItem(doc->name, &doc->open, flags))
 			{
+				// Name
+				/* * * * * * * * * * * * * * * * * * * * */
 				Document::Name buf;
-				strcpy(buf, doc->name);
-				if (ImGui::InputText(
-					("Name"),
-					(buf),
-					(Document::NameSize),
-					(ImGuiInputTextFlags_EnterReturnsTrue),
-					(NULL), 
-					(NULL)))
+				if (edit_document_name(buf, doc))
 				{
 					strcpy(doc->name, buf);
 				}
 
 				ImGui::Separator();
 
-				if (ImGui::InputTextMultiline(
-					("##Data"),
-					(doc->data),
-					(Document::DataSize),
-					(ImVec2(-1.0f, ImGui::GetTextLineHeight() * 16)),
-					(ImGuiInputTextFlags_AllowTabInput),
-					(NULL),
-					(NULL)))
+				// Data
+				/* * * * * * * * * * * * * * * * * * * * */
+				if (edit_document_data(doc))
 				{
 					doc->dirty = true;
 				}
 
 				ImGui::Separator();
 
+				// Info
+				/* * * * * * * * * * * * * * * * * * * * */
 				ImGui::Text("%u/%u", doc->sizeUsed(), doc->sizeMax());
 				ImGui::Text("Data:\n\"%s\"", String(doc->data).c_str());
 
 				ImGui::EndTabItem();
 
-				return true;
+				m_selected = index;
 			}
+			
+			if (!doc->open)
+			{
+				return false; // Indicates file removed
+			}
+
 		}
-		return false;
+		return true;
+	}
+
+	bool TextEditor::edit_document_name(char * buf, Document * doc)
+	{
+		strcpy(buf, doc->name);
+		return ImGui::InputText(
+			("Name"),
+			(buf),
+			(Document::NameSize),
+			(ImGuiInputTextFlags_EnterReturnsTrue),
+			(NULL),
+			(NULL));
+	}
+
+	bool TextEditor::edit_document_data(Document * doc)
+	{
+		return ImGui::InputTextMultiline(
+			("##Data"),
+			(doc->data),
+			(Document::DataSize),
+			(ImVec2(-1.0f, ImGui::GetTextLineHeight() * 16)),
+			(ImGuiInputTextFlags_AllowTabInput),
+			(NULL),
+			(NULL));
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
