@@ -6,18 +6,11 @@
 
 namespace ml
 {
-	inline static void copy_range(List<char> & buf, size_t index, const String & str)
+	inline static void copy_range(Builder::SourceBuf & buf, size_t index, const String & str)
 	{
-		if (buf.size() < str.size())
+		for (size_t i = 0; i < str.size(); i++)
 		{
-			buf = List<char>(str.begin(), str.end());
-		}
-		else if (str.size() <= buf.size())
-		{
-			for (size_t i = 0; i < str.size(); i++)
-			{
-				buf[index + i] = str[i];
-			}
+			buf[index + i] = str[i];
 		}
 	}
 }
@@ -27,6 +20,8 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Builder::Builder()
+		: m_open(NULL)
+		, m_selected(0)
 	{
 		copy_range(m_s["Vertex"], 0, 
 			"#shader vertex\n"
@@ -77,10 +72,12 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void Builder::draw_shader_tab(const String & label, List<char>& source)
+	void Builder::draw_shader_tab(const String & label, SourceBuf & source)
 	{
 		if (ImGui::BeginTabItem(label.c_str()))
 		{
+			ImGui::Text(label.c_str());
+
 			if (ImGui::BeginTabBar((label + "##Tabs").c_str()))
 			{
 				if (ImGui::BeginTabItem(("Uniforms##" + label).c_str()))
@@ -95,7 +92,7 @@ namespace ml
 						(true),
 						(ImGuiWindowFlags_AlwaysHorizontalScrollbar)))
 					{
-						draw_uniform_edit(get_selected(label));
+						draw_uniform_data(get_selected(label));
 
 						ImGui::EndChild();
 					}
@@ -103,7 +100,7 @@ namespace ml
 					ImGui::EndTabItem();
 				}
 
-				draw_source_tab(("Source##" + label).c_str(), m_s["Vertex"]);
+				draw_source_tab(("Source##" + label).c_str(), source);
 
 				ImGui::EndTabBar();
 			}
@@ -111,7 +108,7 @@ namespace ml
 		}
 	}
 
-	void Builder::draw_uniform_edit(Uniform * value)
+	void Builder::draw_uniform_data(Uniform * value)
 	{
 		if (!value)
 		{
@@ -133,20 +130,20 @@ namespace ml
 
 		ImGui::PushID(value->name.c_str());
 		{
+			// Name
+			/* * * * * * * * * * * * * * * * * * * * */
 			static const ImGuiInputTextFlags flags = 
 				ImGuiInputTextFlags_EnterReturnsTrue |
 				ImGuiInputTextFlags_CallbackCompletion |
 				ImGuiInputTextFlags_CallbackHistory;
-
 			auto textEditCallback = [](ImGuiInputTextCallbackData * data)
 			{
 				if (Builder * b = static_cast<Builder *>(data->UserData))
 				{
-					b->textEditCallback();
+					return 1;
 				}
 				return 0;
 			};
-
 			bool reclaim_focus = false;
 			if (ImGui::InputText(
 				"Name",
@@ -165,7 +162,12 @@ namespace ml
 				ImGui::SetKeyboardFocusHere(-1); // Auto focus previous widget
 			}
 
+			// Type
+			/* * * * * * * * * * * * * * * * * * * * */
 			ImGui::Combo("Type", &value->type, u_types, IM_ARRAYSIZE(u_types));
+
+			// Data
+			/* * * * * * * * * * * * * * * * * * * * */
 			switch (value->type)
 			{
 			case Uniform::Int:
@@ -331,7 +333,7 @@ namespace ml
 		ImGui::EndGroup();
 	}
 
-	void Builder::draw_source_tab(CString label, List<char> & source)
+	void Builder::draw_source_tab(CString label, SourceBuf & source)
 	{
 			// Vertex
 			if (ImGui::BeginTabItem(label))
@@ -344,8 +346,8 @@ namespace ml
 				{
 					ImGui::InputTextMultiline(
 						"Source", 
-						source.data(), 
-						source.size(), 
+						source, 
+						IM_ARRAYSIZE(source),
 						ImVec2(-1.0f, ImGui::GetTextLineHeight() * 16),
 						ImGuiInputTextFlags_AllowTabInput,
 						NULL, 
@@ -356,11 +358,6 @@ namespace ml
 				ImGui::EndChild();
 				ImGui::EndTabItem();
 			}
-	}
-
-	int32_t Builder::textEditCallback()
-	{
-		return 0;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

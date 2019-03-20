@@ -9,6 +9,7 @@
 #include <MemeEditor/Editor.hpp>
 #include <MemeEditor/ImGuiBuiltin.hpp>
 #include <MemeEditor/Dockspace.hpp>
+#include <MemeEditor/TextEditor.hpp>
 #include <imgui/imgui.h>
 #include <imgui/imgui_internal.h>
 #include <imgui/imgui_ml.hpp>
@@ -168,8 +169,6 @@ namespace DEMO
 		ml::Manifest manifest;
 		if (manifest.loadFromFile(SETTINGS.pathTo(SETTINGS.manifest)))
 		{
-			//ml::cout << ml::endl << manifest << ml::endl;
-
 			return ml::Debug::log("Loading Resources...")
 				&& ML_Res.meshes.load("default_quad")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
 				&& ML_Res.meshes.load("default_cube")->loadFromMemory(ml::Shapes::Cube::Vertices, ml::Shapes::Cube::Indices)
@@ -328,7 +327,7 @@ namespace DEMO
 			}
 
 			// Load Resources
-			if (ml::Debug::log("Loading Manifest...") && !loadResources())
+			if (!loadResources())
 			{
 				return ml::Debug::setError(ml::Debug::logError("Failed Loading Resources"));
 			}
@@ -876,6 +875,12 @@ namespace DEMO
 		if (show_ml_scene)		{ draw_Scene(&show_ml_scene); }
 		if (show_ml_inspector)	{ draw_Inspector(&show_ml_inspector); }
 
+		static ml::TextEditor textEditor("Sample Text");
+		if (show_ml_text_editor)
+		{
+			textEditor.draw("Text Editor", &show_ml_text_editor);
+		}
+
 		/* * * * * * * * * * * * * * * * * * * * */
 	}
 
@@ -936,6 +941,7 @@ namespace DEMO
 				ImGui::MenuItem("Builder", "Ctrl+Alt+B", &show_ml_builder);
 				ImGui::MenuItem("Scene", "Ctrl+Alt+S", &show_ml_scene);
 				ImGui::MenuItem("Inspector", "Ctrl+Alt+I", &show_ml_inspector);
+				ImGui::MenuItem("Text Editor", NULL, &show_ml_text_editor);
 				ImGui::EndMenu();
 			}
 			// Help
@@ -991,6 +997,7 @@ namespace DEMO
 				d.dock_window("Terminal", left_D);
 				d.dock_window("Scene", center_U);
 				d.dock_window("Builder", center_D);
+				d.dock_window("Text Editor", center_D);
 				d.dock_window("Inspector", right);
 
 				ImGui::DockBuilderFinish(root);
@@ -1021,8 +1028,7 @@ namespace DEMO
 
 			if (ImGui::Button("Reload Shaders"))
 			{
-				//ml::Debug::log("Reloaded {0} Shaders.", ML_Res.shaders.reload());
-				ML_Terminal.printf("Reloaded %u Shaders.", ML_Res.shaders.reload());
+				ml::Debug::log("Reloaded {0} Shaders.", ML_Res.shaders.reload());
 			}
 			ImGui::Separator();
 

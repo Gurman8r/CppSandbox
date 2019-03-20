@@ -3,7 +3,11 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	int32_t Debug::m_error = ML_SUCCESS;
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool Debug::checkError(const int32_t value)
 	{
@@ -22,6 +26,7 @@ namespace ml
 		return temp;
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	int32_t Debug::clear()
 	{
@@ -75,6 +80,7 @@ namespace ml
 		return std::terminate();
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	const String & Debug::platform()
 	{
@@ -96,6 +102,7 @@ namespace ml
 		return temp;
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	int32_t Debug::logWarning(const String & message)
 	{
@@ -132,4 +139,6 @@ namespace ml
 			<< ml::endl;
 		return ML_SUCCESS;
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

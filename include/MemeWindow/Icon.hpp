@@ -6,10 +6,9 @@
 
 namespace ml
 {
-	class ML_WINDOW_API Icon final
+	struct ML_WINDOW_API Icon final
 		: public ITrackable
 	{
-	public:
 		uint32_t		width;
 		uint32_t		height;
 		const uint8_t *	pixels;

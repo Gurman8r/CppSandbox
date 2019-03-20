@@ -9,11 +9,16 @@ extern int32_t main(int32_t argc, char ** argv);
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-# if !defined(ML_DEBUG) && defined(ML_SYSTEM_WINDOWS)
+#if !defined(ML_DEBUG) && defined(ML_SYSTEM_WINDOWS)
+
+extern "C" ML_API_EXPORT unsigned long NvOptimusEnablement = 1;
+extern "C" ML_API_EXPORT unsigned long AmdPowerXpressRequestHighPerformance = 1;
+
 int32_t WinMain(void *, void *, char **, int32_t)
 {
 	return main(__argc, __argv);
 }
-# endif
+
+#endif
 
 /* * * * * * * * * * * * * * * * * * * * */

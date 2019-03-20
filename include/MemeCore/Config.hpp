@@ -1,5 +1,5 @@
-#ifndef _CONFIG_HPP_
-#define _CONFIG_HPP_
+#ifndef _ML_CONFIG_HPP_
+#define _ML_CONFIG_HPP_
 
 //	Configuration Macro
 /* * * * * * * * * * * * * * * * * * * */
@@ -43,25 +43,7 @@
 #	error This operating system does not support memes.
 # endif
 
-//	Platform Macro
-/* * * * * * * * * * * * * * * * * * * */
-# if defined(ML_SYSTEM_WINDOWS)
-#	if defined(_WIN64)
-#		define ML_x64
-#	else
-#		define ML_x86
-#	endif
-# elif defined(__GNUC__)
-#	if defined( __x86_64__) || defined(__ppc64__)
-#		define ML_x64
-#	else
-#		define ML_x86
-#	endif
-# else
-#	error The target platform does not support memes.
-# endif
-
-//	MsBuild / GCC Macro
+//	Compiler Macro
 /* * * * * * * * * * * * * * * * * * * */
 # ifdef ML_SYSTEM_WINDOWS
 # 	ifdef _MSC_VER
@@ -73,21 +55,46 @@
 # 	endif
 # endif
 
-//	Export / Import Macro
+//	Platform Macro
 /* * * * * * * * * * * * * * * * * * * */
-# if !defined(ML_STATIC)
-#	if defined(ML_MSB)
-#		define ML_API_EXPORT __declspec(dllexport)
-#		define ML_API_IMPORT __declspec(dllimport)
-#		pragma warning(disable: 4099)
-#		pragma warning(disable: 4251)
-#	elif (ML_GCC >= 4)
-#		define ML_API_EXPORT __attribute__ ((__visibility__ ("default")))
-#		define ML_API_IMPORT __attribute__ ((__visibility__ ("default")))
+# if defined(ML_SYSTEM_WINDOWS)
+#	if defined(_WIN64)
+#		define ML_x64
 #	else
-#		define ML_API_EXPORT
-#		define ML_API_IMPORT
+#		define ML_x86
 #	endif
+# elif defined(ML_GCC)
+#	if defined(__x86_64__) || defined(__ppc64__)
+#		define ML_x64
+#	else
+#		define ML_x86
+#	endif
+# else
+#	error The target platform does not support memes.
 # endif
 
-#endif // !_CONFIG_HPP_
+//	Export / Import Macro
+/* * * * * * * * * * * * * * * * * * * */
+# ifndef ML_STATIC
+#	ifdef ML_SYSTEM_WINDOWS
+#		define ML_API_EXPORT __declspec(dllexport)
+#		define ML_API_IMPORT __declspec(dllimport)
+#		ifdef ML_MSB
+#			pragma warning(disable: 4099)
+#			pragma warning(disable: 4251)
+#		endif
+#	else
+#		if ML_GCC >= 4
+#			define ML_API_EXPORT __attribute__ ((__visibility__ ("default")))
+#			define ML_API_IMPORT __attribute__ ((__visibility__ ("default")))
+#		else
+#			define ML_API_EXPORT
+#			define ML_API_IMPORT
+#		endif
+#	endif
+# else
+#	define ML_API_EXPORT
+#	define ML_API_IMPORT
+# endif
+
+#endif // !_ML_CONFIG_HPP_

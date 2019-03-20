@@ -195,22 +195,23 @@ namespace ml
 		}
 		m_history.push_back(Strdup(value));
 
-		SStream	stream;
-		std::streambuf * old = ml::cout.rdbuf(stream.rdbuf());
-
-		if (!(ML_Interpreter.execCommand(value)).isErrorType())
+		
+		if (m_old = cout.rdbuf(m_ss.rdbuf()))
 		{
-			String str;
-			while (std::getline(stream, str))
+			if (!(ML_Interpreter.execCommand(value)).isErrorType())
 			{
-				this->printf(str.c_str());
+				String str;
+				while (std::getline(m_ss, str))
+				{
+					this->printf(str.c_str());
+				}
 			}
+			else
+			{
+				this->printf("[ ERR ] %s\n", value);
+			}
+			cout.rdbuf(m_old);
 		}
-		else
-		{
-			this->printf("[ ERR ] %s\n", value);
-		}
-		ml::cout.rdbuf(old);
 	}
 
 	int32_t Terminal::textEditCallback(ImGuiInputTextCallbackData* data)

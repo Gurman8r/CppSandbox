@@ -115,6 +115,7 @@ namespace DEMO
 		bool show_ml_builder	= true;
 		bool show_ml_inspector	= true;
 		bool show_ml_scene		= true;
+		bool show_ml_text_editor= true;
 
 		bool show_imgui_demo	= false;
 		bool show_imgui_metrics	= false;
