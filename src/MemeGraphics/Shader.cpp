@@ -142,9 +142,10 @@ namespace ml
 		return compile(vert, geom, frag);
 	}
 
-	inline static int32_t parseSource(
-		const String & source, int32_t & flag, SStream * selected, SStream & v, SStream & g, SStream & f)
+
+	inline static String parseIncludes(const String & source)
 	{
+		SStream	out;
 		SStream	stream(source);
 		String	line;
 		while (std::getline(stream, line))
@@ -159,35 +160,51 @@ namespace ml
 					{
 						const String name = line.substr((first + 1), (last - first - 2));
 						const String path = ML_FileSystem.pathTo(name);
-						
+
 						String file;
 						if (ML_FileSystem.getFileContents(path, file))
 						{
-							file = file.replaceAll("\0", "");
-
-							if (parseSource(file, flag, selected, v, g, f))
-							{
-								Debug::log("Include: [{0}]", name);
-
-								flag = -1;
-							}
+							out << parseIncludes(file);
+						}
+						else
+						{
+							Debug::logError("Shader Include Failed: \'{0}\'", name);
 						}
 					}
 				}
 			}
-			else if (line.find("#shader") != String::npos)
+			else
+			{
+				out << line << endl;
+			}
+		}
+		return out.str();
+	}
+
+	bool Shader::loadFromMemory(const String & source)
+	{
+		bool check = (source.find("#include") != String::npos);
+
+		SStream vert, geom, frag;
+		SStream * selected = NULL;
+
+		SStream	stream(parseIncludes(source));
+		String	line;
+		while (std::getline(stream, line))
+		{
+			if (line.find("#shader") != String::npos)
 			{
 				if (line.find("vertex") != String::npos)
 				{
-					selected = &v;
+					selected = &vert;
 				}
 				else if (line.find("fragment") != String::npos)
 				{
-					selected = &f;
+					selected = &frag;
 				}
 				else if (line.find("geometry") != String::npos)
 				{
-					selected = &g;
+					selected = &geom;
 				}
 			}
 			else if (selected)
@@ -195,23 +212,17 @@ namespace ml
 				(*selected) << line << endl;
 			}
 		}
-		return flag;
-	}
 
-	bool Shader::loadFromMemory(const String & source)
-	{
-		int32_t flag = 1;
-		SStream vert, geom, frag;
-		SStream * selected = NULL;
-
-		if (parseSource(source, flag, selected, vert, geom, frag) == -1)
+		if (check)
 		{
-			cout << vert.str() << endl;
+			cout
+				<< "/* * * * * * * * * * * * * * * * * * * * */" << endl
+				<< "--VERTEX" << endl << vert.str() << endl
+				<< "--FRAGMENT" << endl << frag.str() << endl
+				<< "/* * * * * * * * * * * * * * * * * * * * */" << endl;
 		}
-		return loadFromMemory(
-			vert.str(),
-			geom.str(),
-			frag.str());
+
+		return loadFromMemory(vert.str(), geom.str(), frag.str());
 	}
 
 	bool Shader::loadFromMemory(const String & vs, const String & gs, const String & fs)

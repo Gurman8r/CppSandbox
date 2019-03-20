@@ -1,9 +1,8 @@
-// Fragment
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-#shader fragment
 #version 410 core
 
 // In Data
+/* * * * * * * * * * * * * * * * * * * * */
 in VertexData
 {
 	vec3 Position;
@@ -12,9 +11,11 @@ in VertexData
 } In;
 
 // Out Data
+/* * * * * * * * * * * * * * * * * * * * */
 out vec4 FragColor;
 
 // Uniforms
+/* * * * * * * * * * * * * * * * * * * * */
 struct Frag_Uniforms
 {
 	vec4 color;
@@ -23,16 +24,11 @@ struct Frag_Uniforms
 
 uniform Frag_Uniforms Frag;
 
-// Program
-vec4 fragOutput()
-{
-	return (Frag.color * texture(Frag.tex0, In.Texcoord));
-}
-
 // Main
+/* * * * * * * * * * * * * * * * * * * * */
 void main()
 {
-	FragColor = fragOutput();
+	FragColor = (Frag.color * texture(Frag.tex0, In.Texcoord));
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
