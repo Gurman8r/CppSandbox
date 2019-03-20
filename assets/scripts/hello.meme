@@ -6,7 +6,7 @@ HELLO = nodeid();
 
 	main = [](args);
 	{
-		system("cd", "../../../");
+		system("cd", (__PATH__ + "../../../"));
 	
 		argc = sizeof(args);
 		for (i = 0; i < argc; i = i + 1);
