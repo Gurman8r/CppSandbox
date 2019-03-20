@@ -167,7 +167,7 @@ namespace DEMO
 	bool Demo::loadResources()
 	{
 		ml::Manifest manifest;
-		if (manifest.loadFromFile(SETTINGS.pathTo(SETTINGS.manifest)))
+		if (manifest.loadFromFile(ML_FileSystem.pathTo(SETTINGS.pathTo(SETTINGS.manifest))))
 		{
 			return ml::Debug::log("Loading Resources...")
 				&& ML_Res.meshes.load("default_quad")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
@@ -296,7 +296,6 @@ namespace DEMO
 	void Demo::onLoad(const LoadEvent & ev)
 	{
 		ml::OpenGL::errorPause(SETTINGS.glErrorPause);
-
 
 		if (this->create(SETTINGS.title, SETTINGS.video(), SETTINGS.style, SETTINGS.context()) && 
 			this->setup())

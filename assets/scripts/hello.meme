@@ -6,6 +6,8 @@ HELLO = nodeid();
 
 	main = [](args);
 	{
+		system("cd", "../../../");
+	
 		argc = sizeof(args);
 		for (i = 0; i < argc; i = i + 1);
 		{

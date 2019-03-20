@@ -2,8 +2,7 @@
 #define _SETTINGS_HPP_
 
 #include <INIReader.h>
-#include <MemeCore/ITrackable.hpp>
-#include <MemeCore/IReadable.hpp>
+#include <MemeCore/FileSystem.hpp>
 #include <MemeWindow/Window.hpp>
 
 // Singleton to store program properties/settings for Demo (INIReader)
