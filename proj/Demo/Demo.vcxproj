@@ -197,6 +197,8 @@
     <None Include="..\..\assets\shaders\skybox.shader" />
     <None Include="..\..\assets\shaders\solid.shader" />
     <None Include="..\..\assets\shaders\sprites.shader" />
+    <None Include="..\..\assets\shaders\TestingA.shader" />
+    <None Include="..\..\assets\shaders\TestingB.shader" />
     <None Include="..\..\assets\shaders\text.shader" />
     <None Include="..\..\assets\shaders\vs\animation\drawBone_vs4x.shader" />
     <None Include="..\..\assets\shaders\vs\animation\morphing_passKeyframes_vs4x.shader" />

@@ -671,13 +671,14 @@ namespace DEMO
 			if (const ml::Model * model = ML_Res.models.get("borg"))
 			{
 				static ml::UniformSet uniforms = {
-					ml::Uniform("u_model",	ml::Uniform::Mat4,	&model->transform().matrix()),
-					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
-					ml::Uniform("u_texture",ml::Uniform::Tex,	ML_Res.textures.get("borg")),
+					ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&model->transform().matrix()),
+					ml::Uniform("Vert.view",	ml::Uniform::Mat4,	&m_camera.matrix()),
+					ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
+					ml::Uniform("Frag.color",	ml::Uniform::Vec4,	&ml::Color::White),
+					ml::Uniform("Frag.tex0",	ml::Uniform::Tex,	ML_Res.textures.get("borg")),
 				};
-				if (const ml::Shader * shader = ML_Res.shaders.get("basic"))
+				if (const ml::Shader * shader = ML_Res.shaders.get("testB"))
 				{
-					shader->applyUniforms(camera_uniforms);
 					shader->applyUniforms(uniforms);
 					shader->bind();
 				}
@@ -688,14 +689,20 @@ namespace DEMO
 			if (const ml::Model * model = ML_Res.models.get("earth"))
 			{
 				static ml::UniformSet uniforms = {
-					ml::Uniform("u_model",		ml::Uniform::Mat4,	&model->transform().matrix()),
-					ml::Uniform("u_tex_dm",		ml::Uniform::Tex,	ML_Res.textures.get("earth_dm")),
-					ml::Uniform("u_tex_sm",		ml::Uniform::Tex,	ML_Res.textures.get("earth_sm")),
+					ml::Uniform("Vert.model",		ml::Uniform::Mat4,	&model->transform().matrix()),
+					ml::Uniform("Vert.view",		ml::Uniform::Mat4,	&m_camera.matrix()),
+					ml::Uniform("Vert.proj",		ml::Uniform::Mat4,	&m_persp.matrix()),
+					ml::Uniform("View.position",	ml::Uniform::Vec3,	&m_camPos),
+					ml::Uniform("Light.position",	ml::Uniform::Vec3,	&m_lightPos),
+					ml::Uniform("Light.color",		ml::Uniform::Vec4,	&m_lightCol),
+					ml::Uniform("Light.ambient",	ml::Uniform::Float, &m_ambient),
+					ml::Uniform("Light.specular",	ml::Uniform::Float, &m_specular),
+					ml::Uniform("Light.shininess",	ml::Uniform::Int,	&m_shininess),
+					ml::Uniform("Tex.dm",			ml::Uniform::Tex,	ML_Res.textures.get("earth_dm")),
+					ml::Uniform("Tex.sm",			ml::Uniform::Tex,	ML_Res.textures.get("earth_sm")),
 				};
-				if (const ml::Shader * shader = ML_Res.shaders.get("lighting"))
+				if (const ml::Shader * shader = ML_Res.shaders.get("testA"))
 				{
-					shader->applyUniforms(camera_uniforms);
-					shader->applyUniforms(light_uniforms);
 					shader->applyUniforms(uniforms);
 					shader->bind();
 				}

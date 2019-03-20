@@ -167,6 +167,7 @@
     <ClInclude Include="..\..\include\MemeEditor\EventSerializer.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Export.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Document.hpp" />
+    <ClInclude Include="..\..\include\MemeEditor\ShaderParser.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Terminal.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Manifest.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\ResourceMap.hpp" />
@@ -188,6 +189,7 @@
     <ClCompile Include="..\..\src\MemeEditor\ImGuiBuiltin.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\Inspector.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\Document.cpp" />
+    <ClCompile Include="..\..\src\MemeEditor\ShaderParser.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\Terminal.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\EventSerializer.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\Manifest.cpp" />

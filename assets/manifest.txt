@@ -48,6 +48,8 @@ script:		fizzbuzz	/scripts/fizzbuzz.meme
 
 # Shaders
 #***********************************************************************#
+shader:		testA		/shaders/TestingA.shader
+shader:		testB		/shaders/TestingB.shader
 shader:		basic		/shaders/basic.shader
 shader:		sprites		/shaders/sprites.shader
 shader:		normal3D	/shaders/normal3D.shader
