@@ -1,9 +1,8 @@
 #ifndef _EXAMPLE_APP_CONSOLE_HPP_
 #define _EXAMPLE_APP_CONSOLE_HPP_
 
-#include <MemeEditor/Export.hpp>
+#include <MemeEditor/Editor.hpp>
 #include <MemeCore/List.hpp>
-#include <imgui/imgui.h>
 
 #define ML_Terminal ml::Terminal::getInstance()
 
@@ -11,28 +10,27 @@ namespace ml
 {
 	// Command Line Interface
 	class ML_EDITOR_API Terminal final
-		: public ITrackable
+		: public Editor
 		, public ISingleton<Terminal>
 	{
 		friend class ISingleton<Terminal>;
 	
 	public:
-		void	setup();
 		void    clear();
 		void	print(const String & str);
-		void    printf(CString fmt, ...) IM_FMTARGS(2);
+		void    printf(CString fmt, ...);
 		void	printHistory();
-		void    draw(bool * p_open);
+		bool	draw(CString title, bool * p_open) override;
 		void    execCommand(CString command_line);
-		int32_t textEditCallback(ImGuiInputTextCallbackData* data);
+		int32_t textEditCallback(void * value);
 
 	private:
 		char				m_inputBuf[256];
 		List<String>		m_lines;
 		bool				m_scrollToBottom;
-		ImVector<char *>	m_history;
+		List<char *>		m_history;
 		int32_t				m_historyPos;
-		ImVector<CString>	m_auto;
+		List<CString>		m_auto;
 
 		bool * m_open = NULL;
 

@@ -1,5 +1,5 @@
-#ifndef _CURSOR_HPP_
-#define _CURSOR_HPP_
+#ifndef _ML_CURSOR_HPP_
+#define _ML_CURSOR_HPP_
 
 #include <MemeWindow/Export.hpp>
 
@@ -26,4 +26,4 @@ namespace ml
 	};
 }
 
-#endif // !_CURSOR_HPP_
+#endif // !_ML_CURSOR_HPP_

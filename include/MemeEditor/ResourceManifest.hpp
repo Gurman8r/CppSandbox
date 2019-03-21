@@ -1,5 +1,5 @@
-#ifndef _MANIFEST_HPP_
-#define _MANIFEST_HPP_
+#ifndef _RESOURCE_MANIFEST_HPP_
+#define _RESOURCE_MANIFEST_HPP_
 
 #include <MemeEditor/Export.hpp>
 #include <MemeCore/ITrackable.hpp>
@@ -7,7 +7,7 @@
 
 namespace ml
 {
-	class ML_EDITOR_API Manifest final
+	class ML_EDITOR_API ResourceManifest final
 		: public ITrackable
 		, public IReadable
 	{
@@ -23,9 +23,9 @@ namespace ml
 		using type_pair = Pair<file_type, file_map>;
 
 	public:
-		Manifest();
-		Manifest(const Manifest & copy);
-		~Manifest();
+		ResourceManifest();
+		ResourceManifest(const ResourceManifest & copy);
+		~ResourceManifest();
 
 		bool cleanup() override;
 		bool loadFromFile(const String & filename) override;
@@ -42,4 +42,4 @@ namespace ml
 		type_map m_data;
 	};
 }
-#endif // !_MANIFEST_HPP_
+#endif // !_RESOURCE_MANIFEST_HPP_

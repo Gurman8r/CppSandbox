@@ -1,5 +1,5 @@
-#ifndef _I_READABLE_HPP_
-#define _I_READABLE_HPP_
+#ifndef _ML_I_READABLE_HPP_
+#define _ML_I_READABLE_HPP_
 
 #include <MemeCore/String.hpp>
 
@@ -13,4 +13,4 @@ namespace ml
 	};
 }
 
-#endif // !_I_READABLE_HPP_
+#endif // !_ML_I_READABLE_HPP_

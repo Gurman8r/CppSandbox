@@ -1,5 +1,5 @@
-#ifndef _BYTES_HPP_
-#define _BYTES_HPP_
+#ifndef _ML_BYTES_HPP_
+#define _ML_BYTES_HPP_
 
 #include <MemeCore/Ratio.hpp>
 
@@ -134,4 +134,4 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 }
 
-#endif // !_BYTES_HPP_
+#endif // !_ML_BYTES_HPP_

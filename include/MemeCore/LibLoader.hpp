@@ -1,9 +1,11 @@
-#ifndef _LIB_LOADER_HPP_
-#define _LIB_LOADER_HPP_
+#ifndef _ML_LIB_LOADER_HPP_
+#define _ML_LIB_LOADER_HPP_
 
 #include <MemeCore/ITrackable.hpp>
 
 #define ML_Lib ml::LibLoader::getInstance()
+
+#define ML_Plugin_Main ML_Plugin_Main
 
 extern "C"
 {
@@ -34,4 +36,4 @@ namespace ml
 	};
 }
 
-#endif // !_LIB_LOADER_HPP_
+#endif // !_ML_LIB_LOADER_HPP_

@@ -1,4 +1,5 @@
 #include <MemeEditor/Terminal.hpp>
+#include <MemeEditor/ImGui.hpp>
 #include <MemeScript/Interpreter.hpp>
 
 namespace ml
@@ -15,23 +16,6 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Terminal::Terminal()
-	{
-		setup();
-	}
-	
-	Terminal::~Terminal()
-	{
-		clear();
-		
-		for (int32_t i = 0; i < m_history.Size; i++)
-		{
-			free(m_history[i]);
-		}
-	}
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	void Terminal::setup()
 	{
 		clear();
 		memset(m_inputBuf, 0, sizeof(m_inputBuf));
@@ -50,6 +34,13 @@ namespace ml
 			m_auto.push_back(it->first.c_str());
 		}
 	}
+	
+	Terminal::~Terminal()
+	{
+		clear();
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	void Terminal::clear()
 	{
@@ -80,13 +71,13 @@ namespace ml
 		for (auto h : m_history) { this->printf(h); }
 	}
 
-	void Terminal::draw(bool * p_open)
+	bool Terminal::draw(CString title, bool * p_open)
 	{
 		ImGui::SetNextWindowSize(ImVec2(550, 600), ImGuiCond_FirstUseEver);
-		if (!ImGui::Begin("Terminal", p_open))
+		if (!ImGui::Begin(title, p_open))
 		{
 			ImGui::End();
-			return;
+			return false;
 		}
 
 		if (ImGui::BeginPopupContextItem())
@@ -97,7 +88,6 @@ namespace ml
 			}
 			ImGui::EndPopup();
 		}
-
 
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
 		static ImGuiTextFilter filter;
@@ -176,6 +166,7 @@ namespace ml
 		}
 
 		ImGui::End();
+		return true;
 	}
 
 	void Terminal::execCommand(CString value)
@@ -184,7 +175,7 @@ namespace ml
 
 		// Insert into history. First find match and delete it so it can be pushed to the back. This isn't trying to be smart or optimal.
 		m_historyPos = -1;
-		for (int32_t i = m_history.Size - 1; i >= 0; i--)
+		for (int32_t i = (int32_t)m_history.size() - 1; i >= 0; i--)
 		{
 			if (Stricmp(m_history[i], value) == 0)
 			{
@@ -216,8 +207,14 @@ namespace ml
 		}
 	}
 
-	int32_t Terminal::textEditCallback(ImGuiInputTextCallbackData* data)
+	int32_t Terminal::textEditCallback(void * value)
 	{
+		ImGuiInputTextCallbackData * data;
+		if (!(data = (ImGuiInputTextCallbackData *)(value))) 
+		{ 
+			return 0; 
+		}
+
 		//AddLog("cursor: %d, selection: %d-%d", data->CursorPos, data->SelectionStart, data->SelectionEnd);
 		switch (data->EventFlag)
 		{
@@ -240,7 +237,7 @@ namespace ml
 
 			// Build a list of candidates
 			ImVector<CString> candidates;
-			for (int32_t i = 0; i < m_auto.Size; i++)
+			for (int32_t i = 0; i < m_auto.size(); i++)
 				if (Strnicmp(m_auto[i], word_start, (int32_t)(word_end - word_start)) == 0)
 					candidates.push_back(m_auto[i]);
 
@@ -308,7 +305,7 @@ namespace ml
 			{
 				if (m_historyPos == -1)
 				{
-					m_historyPos = m_history.Size - 1;
+					m_historyPos = (int32_t)m_history.size() - 1;
 				}
 				else if (m_historyPos > 0)
 				{
@@ -319,7 +316,7 @@ namespace ml
 			{
 				if (m_historyPos != -1)
 				{
-					if (++m_historyPos >= m_history.Size)
+					if (++m_historyPos >= m_history.size())
 					{
 						m_historyPos = -1;
 					}

@@ -1,5 +1,5 @@
-#ifndef _VECTOR_2_HPP_
-#define _VECTOR_2_HPP_
+#ifndef _ML_VECTOR_2_HPP_
+#define _ML_VECTOR_2_HPP_
 
 #include <MemeCore/Vector.hpp>
 
@@ -96,4 +96,4 @@ namespace ml
 	using vec2u = Vector2<uint32_t>;
 }
 
-#endif // !_VECTOR_2_HPP_
+#endif // !_ML_VECTOR_2_HPP_

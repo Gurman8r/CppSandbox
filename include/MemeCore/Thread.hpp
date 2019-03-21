@@ -1,5 +1,5 @@
-#ifndef _THREAD_HPP_
-#define _THREAD_HPP_
+#ifndef _ML_THREAD_HPP_
+#define _ML_THREAD_HPP_
 
 #include <MemeCore/Function.hpp>
 #include <MemeCore/INonCopyable.hpp>
@@ -66,4 +66,4 @@ namespace ml
 	};
 }
 
-#endif // !_THREAD_HPP_
+#endif // !_ML_THREAD_HPP_

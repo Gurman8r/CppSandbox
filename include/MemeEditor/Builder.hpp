@@ -1,6 +1,7 @@
 #ifndef _SHADER_BUILDER_HPP_
 #define _SHADER_BUILDER_HPP_
 
+#include <MemeEditor/Editor.hpp>
 #include <MemeEditor/Document.hpp>
 #include <MemeGraphics/Shader.hpp>
 
@@ -9,11 +10,9 @@
 
 namespace ml
 {
-	/* * * * * * * * * * * * * * * * * * * * */
-
 	// Shader Builder/Editor
 	class ML_EDITOR_API Builder
-		: public ITrackable
+		: public Editor
 		, public ISingleton<Builder>
 	{
 		friend class ISingleton<Builder>;
@@ -26,7 +25,7 @@ namespace ml
 		~Builder();
 
 	public:
-		void draw(bool * p_open);
+		bool draw(CString title, bool * p_open) override;
 
 	private:
 		void draw_shader_tab(const String & label, SourceBuf & source);
@@ -64,8 +63,6 @@ namespace ml
 		HashMap<String, List<Uniform>>	m_u; // Uniforms
 
 	};
-
-	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_SHADER_BUILDER_HPP_

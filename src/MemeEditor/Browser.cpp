@@ -3,8 +3,7 @@
 #include <MemeCore/FileSystem.hpp>
 #include <MemeCore/EventSystem.hpp>
 #include <MemeCore/OS.hpp>
-#include <imgui/imgui.h>
-#include <imgui/imgui_ml.hpp>
+#include <MemeEditor/ImGui.hpp>
 
 namespace ml
 {
@@ -50,17 +49,16 @@ namespace ml
 		}
 	}
 
-	void Browser::draw(bool * p_open)
+	bool Browser::draw(CString title, bool * p_open)
 	{
 		//ImGui::SetNextWindowSize(ImVec2(640, 480), ImGuiCond_FirstUseEver);
-		if (!ImGui::Begin("Browser", (m_open = p_open)))
+		if (!ImGui::Begin(title, (m_open = p_open)))
 		{
-			return ImGui::End();
+			ImGui::End();
+			return false;
 		}
 		else
 		{
-			//draw_menu();
-
 			ImGui::Text("%s", m_path.c_str());
 
 			draw_directory();
@@ -79,8 +77,9 @@ namespace ml
 				}
 			}
 
+			ImGui::End();
+			return true;
 		}
-		ImGui::End();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

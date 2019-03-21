@@ -1,6 +1,6 @@
 
-#ifndef _RESOURCE_MAP_HPP_
-#define _RESOURCE_MAP_HPP_
+#ifndef _RESOURCE_TABLE_HPP_
+#define _RESOURCE_TABLE_HPP_
 
 #include <MemeEditor/Export.hpp>
 #include <MemeCore/FileSystem.hpp>
@@ -14,7 +14,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	template <class _Elem>
-	class ResourceMap final
+	class ResourceTable final
 		: public ITrackable
 		, public INonCopyable
 	{
@@ -35,8 +35,8 @@ namespace ml
 		using const_iterator= typename PointerMap::const_iterator;
 
 	private:
-		ResourceMap() {}
-		~ResourceMap() {}
+		ResourceTable() {}
+		~ResourceTable() {}
 
 		PointerMap	m_data;
 		String		m_path;
@@ -253,4 +253,4 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 }
 
-#endif // !_RESOURCE_MAP_HPP_
+#endif // !_RESOURCE_TABLE_HPP_

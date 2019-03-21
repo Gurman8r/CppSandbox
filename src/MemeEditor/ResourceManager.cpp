@@ -48,13 +48,13 @@ namespace ml
 			textures.reload();
 	}
 
-	bool ResourceManager::loadManifest(const Manifest & value)
+	bool ResourceManager::loadManifest(const ResourceManifest & value)
 	{
 		for (const type_pair & p : value.getDataMap())
 		{
 			if (!loadManifestData(p.first, value.getPath(), p.second))
 			{
-				return Debug::logError("Failed Loading Manifest");
+				return Debug::logError("Failed Loading ResourceManifest");
 			}
 		}
 		return true;

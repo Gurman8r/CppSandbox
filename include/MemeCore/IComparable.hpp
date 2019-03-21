@@ -1,5 +1,5 @@
-#ifndef _I_COMPARABLE_HPP_
-#define _I_COMPARABLE_HPP_
+#ifndef _ML_I_COMPARABLE_HPP_
+#define _ML_I_COMPARABLE_HPP_
 
 namespace ml
 {
@@ -59,4 +59,4 @@ namespace ml
 
 }
 
-#endif // !_I_COMPARABLE_HPP_
+#endif // !_ML_I_COMPARABLE_HPP_

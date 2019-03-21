@@ -1,5 +1,5 @@
-#ifndef _FUNCTION_HPP_
-#define _FUNCTION_HPP_
+#ifndef _ML_FUNCTION_HPP_
+#define _ML_FUNCTION_HPP_
 
 #include <MemeCore/ITrackable.hpp>
 
@@ -93,4 +93,4 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 }
 
-#endif // !_FUNCTION_HPP_
+#endif // !_ML_FUNCTION_HPP_

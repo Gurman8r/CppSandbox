@@ -1,5 +1,5 @@
-#ifndef _I_TRACKABLE_HPP_
-#define _I_TRACKABLE_HPP_
+#ifndef _ML_I_TRACKABLE_HPP_
+#define _ML_I_TRACKABLE_HPP_
 
 #include <MemeCore/MemoryTracker.hpp>
 
@@ -33,4 +33,4 @@ namespace ml
 	};
 }
 
-#endif // !_I_TRACKABLE_HPP_
+#endif // !_ML_I_TRACKABLE_HPP_

@@ -1,5 +1,5 @@
-#ifndef _I_HANDLE_HPP_
-#define _I_HANDLE_HPP_
+#ifndef _ML_I_HANDLE_HPP_
+#define _ML_I_HANDLE_HPP_
 
 #include <MemeCore/Export.hpp>
 
@@ -44,4 +44,4 @@ namespace ml
 	};
 }
 
-#endif // !_I_HANDLE_HPP_
+#endif // !_ML_I_HANDLE_HPP_

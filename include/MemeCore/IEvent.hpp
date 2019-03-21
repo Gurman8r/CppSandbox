@@ -1,5 +1,5 @@
-#ifndef _EVENT_HPP_
-#define _EVENT_HPP_
+#ifndef _ML_I_EVENT_HPP_
+#define _ML_I_EVENT_HPP_
 
 #include <MemeCore/ITrackable.hpp>
 

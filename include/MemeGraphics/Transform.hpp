@@ -40,11 +40,11 @@ namespace ml
 			vec4f & persp);
 
 	public:
-		inline operator	const mat4f &()	const { return matrix(); }
-		inline const mat4f & matrix()	const { return m_matrix; }
+		inline operator	const mat4f & () const { return matrix(); }
+		inline operator mat4f & () { return matrix(); }
 
-		inline operator mat4f &() { return matrix(); }
-		inline mat4f &	matrix()  { return m_matrix; }
+		inline const mat4f & matrix() const { return m_matrix; }
+		inline mat4f & matrix() { return m_matrix; }
 
 	public:
 		const vec3f & getPosition() const;

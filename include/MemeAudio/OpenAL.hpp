@@ -1,5 +1,5 @@
-#ifndef _OPEN_AL_HPP_
-#define _OPEN_AL_HPP_
+#ifndef _ML_OPEN_AL_HPP_
+#define _ML_OPEN_AL_HPP_
 
 #include <MemeAudio/AL.hpp>
 #include <MemeCore/String.hpp>
@@ -122,4 +122,4 @@ namespace ml
 	};
 }
 
-#endif // !_OPEN_AL_HPP_
+#endif // !_ML_OPEN_AL_HPP_

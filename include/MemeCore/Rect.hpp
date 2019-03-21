@@ -1,5 +1,5 @@
-#ifndef _RECT_HPP_
-#define _RECT_HPP_
+#ifndef _ML_RECT_HPP_
+#define _ML_RECT_HPP_
 
 #include <MemeCore/Vector2.hpp>
 #include <MemeCore/Vector4.hpp>

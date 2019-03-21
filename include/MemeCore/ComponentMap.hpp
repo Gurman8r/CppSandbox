@@ -1,5 +1,5 @@
-#ifndef _COMPONENT_MAP_HPP_
-#define _COMPONENT_MAP_HPP_
+#ifndef _ML_COMPONENT_MAP_HPP_
+#define _ML_COMPONENT_MAP_HPP_
 
 #include <MemeCore/IComponent.hpp>
 
@@ -121,4 +121,4 @@ namespace ml
 	};
 }
 
-#endif // !_COMPONENT_MAP_HPP_
+#endif // !_ML_COMPONENT_MAP_HPP_

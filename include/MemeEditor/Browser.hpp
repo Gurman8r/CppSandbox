@@ -1,7 +1,7 @@
 #ifndef _BROWSER_HPP_
 #define _BROWSER_HPP_
 
-#include <MemeEditor/Export.hpp>
+#include <MemeEditor/Editor.hpp>
 #include <MemeCore/File.hpp>
 #include <MemeCore/IEventListener.hpp>
 #include <MemeCore/Bytes.hpp>
@@ -10,11 +10,9 @@
 
 namespace ml
 {
-	/* * * * * * * * * * * * * * * * * * * * */
-
 	// File Browser
 	class ML_EDITOR_API Browser
-		: public ITrackable
+		: public Editor
 		, public IEventListener
 		, public ISingleton<Browser>
 	{
@@ -40,7 +38,7 @@ namespace ml
 	public:
 		void onEvent(const IEvent * value) override;
 
-		void draw(bool * p_open);
+		bool draw(CString title, bool * p_open) override;
 
 	private:
 		void draw_menu();
@@ -91,7 +89,5 @@ namespace ml
 		String		m_preview;	// File Contents
 		bool		m_isDouble;	// Has Double Click
 	};
-
-	/* * * * * * * * * * * * * * * * * * * * */
 }
 #endif // !_BROWSER_HPP_

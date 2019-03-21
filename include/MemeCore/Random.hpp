@@ -1,5 +1,5 @@
-#ifndef _RANDOM_HPP_
-#define _RANDOM_HPP_
+#ifndef _ML_RANDOM_HPP_
+#define _ML_RANDOM_HPP_
 
 #include <MemeCore/Maths.hpp>
 #include <MemeCore/STD.hpp>
@@ -33,4 +33,4 @@ namespace ml
 	};
 }
 
-#endif // !_RANDOM_HPP_
+#endif // !_ML_RANDOM_HPP_

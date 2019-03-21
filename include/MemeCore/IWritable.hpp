@@ -1,5 +1,5 @@
-#ifndef _I_WRITABLE_HPP_
-#define _I_WRITABLE_HPP_
+#ifndef _ML_I_WRITABLE_HPP_
+#define _ML_I_WRITABLE_HPP_
 
 #include <MemeCore/String.hpp>
 
@@ -12,4 +12,4 @@ namespace ml
 	};
 }
 
-#endif // !_I_WRITABLE_HPP_
+#endif // !_ML_I_WRITABLE_HPP_

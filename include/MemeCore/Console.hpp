@@ -1,5 +1,5 @@
-#ifndef _CONSOLE_UTILITY_HPP_
-#define _CONSOLE_UTILITY_HPP_
+#ifndef _ML_CONSOLE_HPP_
+#define _ML_CONSOLE_HPP_
 
 #include <MemeCore/IO.hpp>
 
@@ -140,4 +140,4 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 }
 
-#endif // !_CONSOLE_UTILITY_HPP_
+#endif // !_ML_CONSOLE_HPP_

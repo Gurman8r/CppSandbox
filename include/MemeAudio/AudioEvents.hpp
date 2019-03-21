@@ -1,5 +1,5 @@
-#ifndef _AUDIO_EVENTS_HPP_
-#define _AUDIO_EVENTS_HPP_
+#ifndef _ML_AUDIO_EVENTS_HPP_
+#define _ML_AUDIO_EVENTS_HPP_
 
 #include <MemeAudio/Export.hpp>
 #include <MemeCore/IEvent.hpp>
@@ -25,4 +25,4 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 }
 
-#endif // !_AUDIO_EVENTS_HPP_
+#endif // !_ML_AUDIO_EVENTS_HPP_

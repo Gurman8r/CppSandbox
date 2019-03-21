@@ -1,4 +1,4 @@
-#include <MemeEditor/Manifest.hpp>
+#include <MemeEditor/ResourceManifest.hpp>
 #include <MemeCore/FileSystem.hpp>
 #include <MemeCore/Debug.hpp>
 
@@ -6,32 +6,32 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	Manifest::Manifest()
+	ResourceManifest::ResourceManifest()
 		: m_path()
 		, m_data()
 	{
 	}
 
-	Manifest::Manifest(const Manifest & copy)
+	ResourceManifest::ResourceManifest(const ResourceManifest & copy)
 		: m_path(copy.m_path)
 		, m_data(copy.m_data)
 	{
 	}
 
-	Manifest::~Manifest()
+	ResourceManifest::~ResourceManifest()
 	{
 		cleanup();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Manifest::cleanup()
+	bool ResourceManifest::cleanup()
 	{
 		m_data.clear();
 		return true;
 	}
 
-	bool Manifest::loadFromFile(const String & filename)
+	bool ResourceManifest::loadFromFile(const String & filename)
 	{
 		SStream ss;
 		if (ML_FileSystem.getFileContents(filename, ss))
@@ -44,7 +44,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void Manifest::serialize(std::ostream & out) const
+	void ResourceManifest::serialize(std::ostream & out) const
 	{
 		out << std::left;
 
@@ -71,7 +71,7 @@ namespace ml
 		out << FMT();
 	}
 
-	void Manifest::deserialize(std::istream & in)
+	void ResourceManifest::deserialize(std::istream & in)
 	{
 		/* * * * * * * * * * * * * * * * * * * * */
 

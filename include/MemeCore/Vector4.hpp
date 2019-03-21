@@ -1,5 +1,5 @@
-#ifndef _VECTOR_4_HPP_
-#define _VECTOR_4_HPP_
+#ifndef _ML_VECTOR_4_HPP_
+#define _ML_VECTOR_4_HPP_
 
 #include <MemeCore/Vector.hpp>
 
@@ -64,4 +64,4 @@ namespace ml
 	using vec4b = Vector4<uint8_t>;
 	using vec4u = Vector4<uint32_t>;
 }
-#endif // !_VECTOR_4_HPP_
+#endif // !_ML_VECTOR_4_HPP_

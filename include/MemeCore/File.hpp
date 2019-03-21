@@ -1,5 +1,5 @@
-#ifndef _FILE_HPP_
-#define _FILE_HPP_
+#ifndef _ML_FILE_HPP_
+#define _ML_FILE_HPP_
 
 #include <MemeCore/ITrackable.hpp>
 #include <MemeCore/IReadable.hpp>
@@ -80,4 +80,4 @@ namespace ml
 	};
 }
 
-#endif // !_FILE_HPP_
+#endif // !_ML_FILE_HPP_

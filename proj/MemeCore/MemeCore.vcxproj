@@ -163,6 +163,8 @@
     <ClInclude Include="..\..\include\MemeCore\Function.hpp" />
     <ClInclude Include="..\..\include\MemeCore\IHandle.hpp" />
     <ClInclude Include="..\..\include\MemeCore\IntTypes.hpp" />
+    <ClInclude Include="..\..\include\MemeCore\Macros.hpp" />
+    <ClInclude Include="..\..\include\MemeCore\Plugin.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Ratio.hpp" />
     <ClInclude Include="..\..\include\MemeCore\IO.hpp" />
     <ClInclude Include="..\..\include\MemeCore\IStream.hpp" />
@@ -198,7 +200,6 @@
     <ClInclude Include="..\..\include\MemeCore\Quaternion.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Random.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Rect.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\StateMachine.hpp" />
     <ClInclude Include="..\..\include\MemeCore\STD.hpp" />
     <ClInclude Include="..\..\include\MemeCore\String.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Thread.hpp" />
@@ -222,8 +223,8 @@
     <ClCompile Include="..\..\src\MemeCore\MemoryTracker.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Maths.cpp" />
     <ClCompile Include="..\..\src\MemeCore\OS.cpp" />
+    <ClCompile Include="..\..\src\MemeCore\Plugin.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Random.cpp" />
-    <ClCompile Include="..\..\src\MemeCore\StateMachine.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Thread.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Time.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Duration.cpp" />

@@ -1,5 +1,5 @@
-#ifndef _QUATERNION_HPP_
-#define _QUATERNION_HPP_
+#ifndef _ML_QUATERNION_HPP_
+#define _ML_QUATERNION_HPP_
 
 #include <MemeCore/Vector4.hpp>
 #include <MemeCore/Maths.hpp>
@@ -120,4 +120,4 @@ namespace ml
 	using quat = Quaternion;
 }
 
-#endif // !_QUATERNION_HPP_
+#endif // !_ML_QUATERNION_HPP_

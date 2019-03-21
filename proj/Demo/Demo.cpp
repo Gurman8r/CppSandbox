@@ -3,16 +3,15 @@
 #include <MemeCore/EventSystem.hpp>
 #include <MemeCore/OS.hpp>
 #include <MemeWindow/WindowEvents.hpp>
+#include <MemeEditor/ResourceManager.hpp>
+#include <MemeEditor/EditorGUI.hpp>
 #include <MemeEditor/Terminal.hpp>
 #include <MemeEditor/Builder.hpp>
 #include <MemeEditor/Browser.hpp>
-#include <MemeEditor/Editor.hpp>
-#include <MemeEditor/ImGuiBuiltin.hpp>
+#include <MemeEditor/ImGui_Builtin.hpp>
 #include <MemeEditor/Dockspace.hpp>
 #include <MemeEditor/TextEditor.hpp>
-#include <imgui/imgui.h>
-#include <imgui/imgui_internal.h>
-#include <imgui/imgui_ml.hpp>
+#include <MemeEditor/ImGui.hpp>
 
 namespace DEMO
 {
@@ -166,7 +165,7 @@ namespace DEMO
 
 	bool Demo::loadResources()
 	{
-		ml::Manifest manifest;
+		ml::ResourceManifest manifest;
 		if (manifest.loadFromFile(ML_FileSystem.pathTo(SETTINGS.pathTo(SETTINGS.manifest))))
 		{
 			return ml::Debug::log("Loading Resources...")
@@ -863,9 +862,9 @@ namespace DEMO
 		if (show_imgui_about)	{ ml::ImGuiBuiltin::showAboutWindow(show_imgui_about); }
 
 		// Editor
-		if (show_ml_browser)	{ ML_Browser.draw(&show_ml_browser); }
-		if (show_ml_terminal)	{ ML_Terminal.draw(&show_ml_terminal); }
-		if (show_ml_builder)	{ ML_Builder.draw(&show_ml_builder); }
+		if (show_ml_browser)	{ ML_Browser.draw("Browser", &show_ml_browser); }
+		if (show_ml_terminal)	{ ML_Terminal.draw("Terminal", &show_ml_terminal); }
+		if (show_ml_builder)	{ ML_Builder.draw("Builder", &show_ml_builder); }
 		if (show_ml_scene)		{ draw_Scene(&show_ml_scene); }
 		if (show_ml_inspector)	{ draw_Inspector(&show_ml_inspector); }
 
@@ -927,9 +926,6 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ImGui::BeginMenu("Window"))
 			{
-				//ImGui::MenuItem("Dockspace", NULL, &show_ml_dockspace);
-				//ImGui::Separator();
-
 				ImGui::MenuItem("Terminal", "Ctrl+Alt+T", &show_ml_terminal);
 				ImGui::MenuItem("Browser", "Ctrl+Alt+E", &show_ml_browser);
 				ImGui::MenuItem("Builder", "Ctrl+Alt+B", &show_ml_builder);
@@ -1000,7 +996,7 @@ namespace DEMO
 		
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		if (d.begin_dock(p_open))
+		if (d.begin_dock("Dockspace", p_open))
 		{
 			setup_dockspace(d.getID());
 
@@ -1043,12 +1039,12 @@ namespace DEMO
 
 			ImGui::Text("Camera");
 			ImGui::Checkbox("Move##Camera", &m_camAnimate);
-			ML_Inspector.InputVec3f("Position##Camera", m_camPos);
+			ml::EditorGUI::InputVec3f("Position##Camera", m_camPos);
 			ImGui::DragFloat("Speed##Camera", &m_camSpd, 0.1f, -5.f, 5.f);
 			ImGui::Separator();
 
 			ImGui::Text("Light");
-			ML_Inspector.InputVec3f("Position##Light", m_lightPos);
+			ml::EditorGUI::InputVec3f("Position##Light", m_lightPos);
 			ImGui::ColorEdit4("Color##Light", &m_lightCol[0]);
 			ImGui::DragFloat("Ambient##Light", &m_ambient, 0.01f, 0.f, 1.f);
 			ImGui::DragFloat("Specular##Light", &m_specular, 0.01f, 0.1f, 10.f);
@@ -1066,7 +1062,8 @@ namespace DEMO
 			ImGui::Text("Transform");
 			ImGui::Checkbox("Animate", &m_animate);
 			ml::Transform & temp = ML_Res.models.get("earth")->transform();
-			ML_Inspector.InputTransform("Matrix", temp);
+			
+			ml::EditorGUI::InputMat4f("Matrix", temp.matrix());
 			ImGui::Separator();
 
 			return ImGui::End();

@@ -1,7 +1,6 @@
 #include <MemeEditor/TextEditor.hpp>
 #include <MemeEditor/Terminal.hpp>
-#include <imgui/imgui.h>
-#include <imgui/imgui_ml.hpp>
+#include <MemeEditor/ImGui.hpp>
 
 namespace ml
 {
@@ -29,18 +28,24 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void TextEditor::draw(CString label, bool * p_open)
+	bool TextEditor::draw(CString label, bool * p_open)
 	{
-		if (ImGui::Begin(label, p_open, 
+		if (!ImGui::Begin(label, p_open,
 			ImGuiWindowFlags_MenuBar |
 			ImGuiWindowFlags_AlwaysHorizontalScrollbar |
 			ImGuiWindowFlags_AlwaysVerticalScrollbar))
 		{
-			draw_menu();
-			
-			draw_tabs();
+			ImGui::End();
+			return false;
 		}
-		ImGui::End();
+		else
+		{
+			draw_menu();
+			draw_tabs();
+			
+			ImGui::End();
+			return true;
+		}
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -58,8 +63,6 @@ namespace ml
 					));
 				}
 
-
-				
 				if (ImGui::MenuItem("Save", NULL, false, true))
 				{
 					if (Document * doc = get_selected_document())

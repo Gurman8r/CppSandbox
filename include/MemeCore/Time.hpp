@@ -1,5 +1,5 @@
-#ifndef _TIME_HPP_
-#define _TIME_HPP_
+#ifndef _ML_TIME_HPP_
+#define _ML_TIME_HPP_
 
 #include <MemeCore/ISingleton.hpp>
 #include <MemeCore/Timer.hpp>
@@ -41,4 +41,4 @@ namespace ml
 	};
 }
 
-#endif // !_TIME_HPP_
+#endif // !_ML_TIME_HPP_

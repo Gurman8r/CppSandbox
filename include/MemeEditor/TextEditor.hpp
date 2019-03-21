@@ -1,12 +1,13 @@
 #ifndef _TEXT_EDITOR_HPP_
 #define _TEXT_EDITOR_HPP_
 
+#include <MemeEditor/Editor.hpp>
 #include <MemeEditor/Document.hpp>
 
 namespace ml
 {
 	class ML_EDITOR_API TextEditor final
-		: public ITrackable
+		: public Editor
 	{
 	public:
 		TextEditor();
@@ -14,7 +15,7 @@ namespace ml
 		TextEditor(CString text, size_t size);
 		~TextEditor();
 
-		void draw(CString label, bool * p_open);
+		bool draw(CString title, bool * p_open) override;
 
 	private:
 		void draw_menu();

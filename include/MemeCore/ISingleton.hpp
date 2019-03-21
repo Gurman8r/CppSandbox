@@ -1,5 +1,5 @@
-#ifndef _I_SINGLETON_HPP_
-#define _I_SINGLETON_HPP_
+#ifndef _ML_I_SINGLETON_HPP_
+#define _ML_I_SINGLETON_HPP_
 
 #include <MemeCore/INonCopyable.hpp>
 
@@ -18,4 +18,4 @@ namespace ml
 	};
 }
 
-#endif // !_I_SINGLETON_HPP_
+#endif // !_ML_I_SINGLETON_HPP_

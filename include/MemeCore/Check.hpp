@@ -1,5 +1,5 @@
-#ifndef _CHECK_HPP_
-#define _CHECK_HPP_
+#ifndef _ML_CHECK_HPP_
+#define _ML_CHECK_HPP_
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -45,4 +45,4 @@ namespace ml
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-#endif // !_CHECK_HPP_
+#endif // !_ML_CHECK_HPP_

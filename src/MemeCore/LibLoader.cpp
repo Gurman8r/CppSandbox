@@ -1,4 +1,5 @@
 #include <MemeCore/LibLoader.hpp>
+#include <MemeCore/Macros.hpp>
 #include <MemeCore/Debug.hpp>
 
 #ifdef ML_SYSTEM_WINDOWS
@@ -19,7 +20,7 @@ namespace ml
 	void * LibLoader::loadLibrary(const String & filename)
 	{
 #ifdef ML_SYSTEM_WINDOWS
-		return LoadLibrary(filename.c_str());
+		return LoadLibraryA(filename.c_str());
 #else
 		return NULL;
 #endif
@@ -38,9 +39,9 @@ namespace ml
 	{
 		if (void * lib = loadLibrary(filename))
 		{
-			if (auto mainFun = (PluginMainFun)loadFunction(lib, "ML_Plugin_Main"))
+			if (auto fun = (PluginMainFun)loadFunction(lib, ML_STRINGIFY(ML_Plugin_Main)))
 			{
-				mainFun(data);
+				fun(data);
 			}
 			return lib;
 		}

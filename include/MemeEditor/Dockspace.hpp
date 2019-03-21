@@ -21,7 +21,7 @@ namespace ml
 		~Dockspace();
 
 	public:
-		bool begin_dock(bool * p_open);
+		bool begin_dock(CString title, bool * p_open);
 		void end_dock();
 
 		uint32_t getID() const;

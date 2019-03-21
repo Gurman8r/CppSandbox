@@ -1,8 +1,6 @@
 #include <MemeEditor/Dockspace.hpp>
-#include <MemeEditor/Inspector.hpp>
-#include <imgui/imgui.h>
-#include <imgui/imgui_internal.h>
-#include <imgui/imgui_ml.hpp>
+#include <MemeEditor/EditorGUI.hpp>
+#include <MemeEditor/ImGui.hpp>
 
 namespace ml
 {
@@ -48,7 +46,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Dockspace::begin_dock(bool * p_open)
+	bool Dockspace::begin_dock(CString title, bool * p_open)
 	{
 		if (m_good = (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_DockingEnable))
 		{
@@ -86,7 +84,7 @@ namespace ml
 			ImGui::SetNextWindowBgAlpha(bgAlpha);
 
 			// Begin
-			if (m_good = (ImGui::Begin(title.c_str(), p_open, win_flags)))
+			if (m_good = (ImGui::Begin((this->title = title).c_str(), p_open, win_flags)))
 			{
 				ImGui::PopStyleVar(3);
 			}

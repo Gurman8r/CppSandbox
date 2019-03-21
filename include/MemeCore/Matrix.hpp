@@ -1,5 +1,5 @@
-#ifndef _MATRIX_HPP_
-#define _MATRIX_HPP_
+#ifndef _ML_MATRIX_HPP_
+#define _ML_MATRIX_HPP_
 
 #include <MemeCore/IEnumerable.hpp>
 #include <MemeCore/List.hpp>
@@ -286,4 +286,4 @@ namespace ml
 	using mat4f = Matrix4<float>;
 }
 
-#endif // !_MATRIX_HPP_
+#endif // !_ML_MATRIX_HPP_

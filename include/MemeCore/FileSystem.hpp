@@ -1,5 +1,5 @@
-#ifndef _FILE_SYSTEM_HPP_
-#define _FILE_SYSTEM_HPP_
+#ifndef _ML_FILE_SYSTEM_HPP_
+#define _ML_FILE_SYSTEM_HPP_
 
 #include <MemeCore/ISingleton.hpp>
 #include <MemeCore/File.hpp>
@@ -62,4 +62,4 @@ namespace ml
 	};
 }
 
-#endif // !_FILE_SYSTEM_HPP_
+#endif // !_ML_FILE_SYSTEM_HPP_

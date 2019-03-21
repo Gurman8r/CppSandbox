@@ -1,5 +1,5 @@
-#ifndef _VECTOR_HPP_
-#define _VECTOR_HPP_
+#ifndef _ML_VECTOR_HPP_
+#define _ML_VECTOR_HPP_
 
 #include <MemeCore/Matrix.hpp>
 
@@ -265,4 +265,4 @@ namespace ml
 	};
 }
 
-#endif // !_VECTOR_HPP_
+#endif // !_ML_VECTOR_HPP_

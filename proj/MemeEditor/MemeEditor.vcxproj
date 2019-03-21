@@ -160,23 +160,23 @@
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeEditor\Browser.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Dockspace.hpp" />
+    <ClInclude Include="..\..\include\MemeEditor\EditorGUI.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Editor.hpp" />
-    <ClInclude Include="..\..\include\MemeEditor\ImGuiBuiltin.hpp" />
-    <ClInclude Include="..\..\include\MemeEditor\Inspector.hpp" />
+    <ClInclude Include="..\..\include\MemeEditor\ImGui.hpp" />
+    <ClInclude Include="..\..\include\MemeEditor\ImGui_Builtin.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\EditorEvents.hpp" />
-    <ClInclude Include="..\..\include\MemeEditor\EventSerializer.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Export.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Document.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Terminal.hpp" />
-    <ClInclude Include="..\..\include\MemeEditor\Manifest.hpp" />
-    <ClInclude Include="..\..\include\MemeEditor\ResourceMap.hpp" />
+    <ClInclude Include="..\..\include\MemeEditor\ResourceManifest.hpp" />
+    <ClInclude Include="..\..\include\MemeEditor\ResourceTable.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\ResourceManager.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Builder.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\TextEditor.hpp" />
     <ClInclude Include="..\..\thirdparty\include\imgui\imconfig.h" />
     <ClInclude Include="..\..\thirdparty\include\imgui\imgui.h" />
     <ClInclude Include="..\..\thirdparty\include\imgui\imgui_internal.h" />
-    <ClInclude Include="..\..\thirdparty\include\imgui\imgui_ml.hpp" />
+    <ClInclude Include="..\..\thirdparty\include\imgui\imgui_impl_ml.hpp" />
     <ClInclude Include="..\..\thirdparty\include\imgui\imstb_rectpack.h" />
     <ClInclude Include="..\..\thirdparty\include\imgui\imstb_textedit.h" />
     <ClInclude Include="..\..\thirdparty\include\imgui\imstb_truetype.h" />
@@ -184,20 +184,19 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeEditor\Browser.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\Dockspace.cpp" />
+    <ClCompile Include="..\..\src\MemeEditor\EditorGUI.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\Editor.cpp" />
-    <ClCompile Include="..\..\src\MemeEditor\ImGuiBuiltin.cpp" />
-    <ClCompile Include="..\..\src\MemeEditor\Inspector.cpp" />
+    <ClCompile Include="..\..\src\MemeEditor\ImGui_Builtin.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\Document.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\Terminal.cpp" />
-    <ClCompile Include="..\..\src\MemeEditor\EventSerializer.cpp" />
-    <ClCompile Include="..\..\src\MemeEditor\Manifest.cpp" />
+    <ClCompile Include="..\..\src\MemeEditor\ResourceManifest.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\ResourceManager.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\Builder.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\TextEditor.cpp" />
     <ClCompile Include="..\..\thirdparty\include\imgui\imgui.cpp" />
     <ClCompile Include="..\..\thirdparty\include\imgui\imgui_demo.cpp" />
     <ClCompile Include="..\..\thirdparty\include\imgui\imgui_draw.cpp" />
-    <ClCompile Include="..\..\thirdparty\include\imgui\imgui_ml.cpp" />
+    <ClCompile Include="..\..\thirdparty\include\imgui\imgui_impl_ml.cpp" />
     <ClCompile Include="..\..\thirdparty\include\imgui\imgui_widgets.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

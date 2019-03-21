@@ -1,8 +1,7 @@
 #include <MemeEditor/Builder.hpp>
 #include <MemeEditor/ResourceManager.hpp>
-#include <imgui/imgui.h>
-#include <imgui/imgui_ml.hpp>
-#include <MemeEditor/Inspector.hpp>
+#include <MemeEditor/EditorGUI.hpp>
+#include <MemeEditor/ImGui.hpp>
 
 namespace ml
 {
@@ -43,10 +42,15 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void Builder::draw(bool * p_open)
+	bool Builder::draw(CString title, bool * p_open)
 	{
 		ImGui::SetNextWindowSize(ImVec2(640, 480), ImGuiCond_FirstUseEver);
-		if (ImGui::Begin("Builder", (m_open = p_open)))
+		if (!ImGui::Begin(title, (m_open = p_open)))
+		{
+			ImGui::End();
+			return false;
+		}
+		else
 		{
 			ImGui::BeginGroup();
 			{
@@ -66,8 +70,10 @@ namespace ml
 				ImGui::EndChild();
 			}
 			ImGui::EndGroup();
+
+			ImGui::End();
+			return true;
 		}
-		ImGui::End();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -185,31 +191,31 @@ namespace ml
 			case Uniform::Vec2:
 			{
 				static vec2f temp;
-				ML_Inspector.InputVec2f("Value", temp);
+				ml::EditorGUI::InputVec2f("Value", temp);
 			}
 			break;
 			case Uniform::Vec3:
 			{
 				static vec3f temp;
-				ML_Inspector.InputVec3f("Value", temp);
+				ml::EditorGUI::InputVec3f("Value", temp);
 			}
 			break;
 			case Uniform::Vec4:
 			{
 				static vec4f temp;
-				ML_Inspector.InputVec4f("Value", temp);
+				ml::EditorGUI::InputVec4f("Value", temp);
 			}
 			break;
 			case Uniform::Mat3:
 			{
 				static mat3f temp;
-				ML_Inspector.InputMat3f("Value", temp);
+				ml::EditorGUI::InputMat3f("Value", temp);
 			}
 			break;
 			case Uniform::Mat4:
 			{
 				static mat4f temp;
-				ML_Inspector.InputMat4f("Value", temp);
+				ml::EditorGUI::InputMat4f("Value", temp);
 			}
 			break;
 			case Uniform::Tex:

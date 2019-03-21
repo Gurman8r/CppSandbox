@@ -1,5 +1,5 @@
-#ifndef _SOUND_HPP_
-#define _SOUND_HPP_
+#ifndef _ML_SOUND_HPP_
+#define _ML_SOUND_HPP_
 
 #include <MemeAudio/Export.hpp>
 #include <MemeCore/ITrackable.hpp>
@@ -23,4 +23,4 @@ namespace ml
 	};
 }
 
-#endif // !_SOUND_HPP_
+#endif // !_ML_SOUND_HPP_

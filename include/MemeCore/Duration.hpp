@@ -1,5 +1,5 @@
-#ifndef _TIME_POINT_HPP_
-#define _TIME_POINT_HPP_
+#ifndef _ML_DURATION_HPP_
+#define _ML_DURATION_HPP_
 
 #include <MemeCore/Ratio.hpp>
 
@@ -106,4 +106,4 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 }
 
-#endif // !_TIME_POINT_HPP_
+#endif // !_ML_DURATION_HPP_

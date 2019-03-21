@@ -1,5 +1,5 @@
-#ifndef _WINDOW_INPUT_HPP_
-#define _WINDOW_INPUT_HPP_
+#ifndef _ML_WINDOW_INPUT_HPP_
+#define _ML_WINDOW_INPUT_HPP_
 
 #include <MemeWindow/Export.hpp>
 #include <MemeCore/ITrackable.hpp>
@@ -171,4 +171,4 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 }
 
-#endif // !_WINDOW_INPUT_HPP_
+#endif // !_ML_WINDOW_INPUT_HPP_

@@ -2,26 +2,28 @@
 #define _EDITOR_HPP_
 
 #include <MemeEditor/Export.hpp>
-#include <MemeCore/IEventListener.hpp>
-
-#define ML_Editor ml::Editor::getInstance()
+#include <MemeCore/ITrackable.hpp>
 
 namespace ml
 {
-
-	class ML_EDITOR_API Editor final
+	// Base Editor Window Class
+	class ML_EDITOR_API Editor
 		: public ITrackable
-		, public ISingleton<Editor>
-		, public IEventListener
 	{
-		friend class ISingleton<Editor>;
-
-	private:
-		Editor();
-		~Editor();
+	public:
+		using MyCallback = void(*)();
 
 	public:
-		void onEvent(const IEvent * value) override;
+		Editor();
+		virtual ~Editor();
+
+		bool beginWindow(CString title, bool * p_open, int32_t flags = 0);
+		void endWindow();
+
+		virtual bool draw(CString title, bool * p_open);
+
+	private:
+		bool m_good = false;
 	};
 }
 

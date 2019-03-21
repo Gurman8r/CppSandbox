@@ -1,5 +1,5 @@
-#ifndef _CORE_EVENTS_HPP_
-#define _CORE_EVENTS_HPP_
+#ifndef _ML_CORE_EVENTS_HPP_
+#define _ML_CORE_EVENTS_HPP_
 
 #include <MemeCore/IEvent.hpp>
 
@@ -56,4 +56,4 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 }
 
-#endif // !_CORE_EVENTS_HPP_
+#endif // !_ML_CORE_EVENTS_HPP_

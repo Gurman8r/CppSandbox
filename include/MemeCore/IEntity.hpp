@@ -1,5 +1,5 @@
-#ifndef _I_ENTITY_HPP_
-#define _I_ENTITY_HPP_
+#ifndef _ML_I_ENTITY_HPP_
+#define _ML_I_ENTITY_HPP_
 
 #include <MemeCore/ComponentMap.hpp>
 

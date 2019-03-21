@@ -5,7 +5,7 @@
 
 namespace ml
 {
-	// Wrappers for builtin ImGui functions
+	// ImGui Demo Windows
 	class ML_EDITOR_API ImGuiBuiltin final
 	{
 	public:

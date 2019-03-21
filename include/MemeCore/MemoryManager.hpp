@@ -1,5 +1,5 @@
-#ifndef _MEMORY_MANAGER_HPP_
-#define _MEMORY_MANAGER_HPP_
+#ifndef _ML_MEMORY_MANAGER_HPP_
+#define _ML_MEMORY_MANAGER_HPP_
 
 #include <MemeCore/ITrackable.hpp>
 #include <MemeCore/ISingleton.hpp>
@@ -69,4 +69,4 @@ namespace ml
 
 }
 
-#endif // !_MEMORY_MANAGER_HPP_
+#endif // !_ML_MEMORY_MANAGER_HPP_

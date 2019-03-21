@@ -1,5 +1,5 @@
-#ifndef _I_COMPONENT_HPP_
-#define _I_COMPONENT_HPP_
+#ifndef _ML_I_COMPONENT_HPP_
+#define _ML_I_COMPONENT_HPP_
 
 #include <MemeCore/ITrackable.hpp>
 

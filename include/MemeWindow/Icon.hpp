@@ -1,5 +1,5 @@
-#ifndef _ICON_HPP_
-#define _ICON_HPP_
+#ifndef _ML_ICON_HPP_
+#define _ML_ICON_HPP_
 
 #include <MemeWindow/Export.hpp>
 #include <MemeCore/ITrackable.hpp>
@@ -39,4 +39,4 @@ namespace ml
 	};
 }
 
-#endif // !_ICON_HPP_
+#endif // !_ML_ICON_HPP_

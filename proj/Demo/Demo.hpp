@@ -7,7 +7,6 @@
 #include <MemeCore/FileSystem.hpp> 
 #include <MemeCore/Random.hpp>
 #include <MemeCore/Thread.hpp>
-#include <MemeEditor/Inspector.hpp>
 #include <MemeGraphics/Text.hpp>
 #include <MemeGraphics/Canvas.hpp>
 #include <MemeGraphics/Effect.hpp>
@@ -24,7 +23,6 @@
 #include <MemeNet/Client.hpp>
 #include <MemeNet/Server.hpp>
 #include <MemeScript/Interpreter.hpp>
-#include <MemeEditor/Inspector.hpp>
 #include <MemePhysics/Rigidbody.hpp>
 #include <MemePhysics/Particle.hpp>
 

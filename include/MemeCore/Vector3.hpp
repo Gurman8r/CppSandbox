@@ -1,5 +1,5 @@
-#ifndef _VECTOR_3_HPP_
-#define _VECTOR_3_HPP_
+#ifndef _ML_VECTOR_3_HPP_
+#define _ML_VECTOR_3_HPP_
 
 #include <MemeCore/Vector.hpp>
 
@@ -104,4 +104,4 @@ namespace ml
 	using vec3u = Vector3<uint32_t>;
 }
 
-#endif // !_VECTOR_3_HPP_
+#endif // !_ML_VECTOR_3_HPP_
