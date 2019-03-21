@@ -1,20 +1,13 @@
-// Frag.shader
+// Util.View.shader
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#shader fragment
-#version 410 core
-
-/* * * * * * * * * * * * * * * * * * * * */
-
-in VertexData
+struct View_Uniforms
 {
-	vec3 Position;
-	vec4 Normal;
-	vec2 Texcoord;
-} In;
+	vec3 position;
+};
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-out vec4 gl_Color;
+uniform View_Uniforms View;
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

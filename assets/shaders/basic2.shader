@@ -1,5 +1,6 @@
-// Vertex
+// basic2.shader
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 #shader vertex
 #version 410 core
 
@@ -35,8 +36,8 @@ void main()
 	gl_Position = mvp * vec4(a_Position, 1.0);
 }
 
-// Fragment
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 #shader fragment
 #version 410 core
 
@@ -54,7 +55,7 @@ out vec4 gl_Color;
 // Uniforms
 struct Frag_Uniforms
 {
-	vec4 color;
+	vec4 mainCol;
 	sampler2D mainTex;
 };
 uniform Frag_Uniforms Frag;
@@ -62,7 +63,7 @@ uniform Frag_Uniforms Frag;
 // Main
 void main()
 {
-	gl_Color = (Frag.color * texture(Frag.mainTex, In.Texcoord));
+	gl_Color = (Frag.mainCol * texture(Frag.mainTex, In.Texcoord));
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

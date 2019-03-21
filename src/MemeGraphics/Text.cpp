@@ -130,12 +130,12 @@ namespace ml
 
 		update();
 		
-		if (Uniform * u = batch.uniforms->find("u_color"))
+		if (Uniform * u = batch.uniforms->find("Frag.mainCol"))
 			u->data = &m_color;
 
 		for (size_t i = 0, imax = m_string.size(); i < imax; i++)
 		{
-			if (Uniform * u = batch.uniforms->find("u_texture"))
+			if (Uniform * u = batch.uniforms->find("Frag.mainTex"))
 				u->data = m_textures[i];
 
 			target.draw(m_vertices[i].data(), RectQuad::Size, batch);

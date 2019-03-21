@@ -120,7 +120,7 @@ namespace ml
 	{
 		if (m_model && m_shader && m_texture)
 		{
-			m_shader->setUniform("u_texture", (*m_texture));
+			m_shader->setUniform("Frag.mainTex", (*m_texture));
 
 			m_shader->bind();
 

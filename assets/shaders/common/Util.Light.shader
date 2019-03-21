@@ -1,20 +1,17 @@
-// Frag.shader
+// Util.Light.shader
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#shader fragment
-#version 410 core
-
-/* * * * * * * * * * * * * * * * * * * * */
-
-in VertexData
+struct Light_Uniforms
 {
-	vec3 Position;
-	vec4 Normal;
-	vec2 Texcoord;
-} In;
+	vec3	position;
+	vec4	color;
+	float	ambient;
+	float	specular;
+	int		shininess;
+};
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-out vec4 gl_Color;
+uniform Light_Uniforms Light;
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

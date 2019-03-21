@@ -1,75 +1,57 @@
-// Vertex
-/* * * * * * * * * * * * * * * * * * * * */
+// geometry.shader
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 #shader vertex
-#version 410 core
-
-// Attributes
-layout(location = 0) in vec3 a_Position;
-layout(location = 1) in vec4 a_Normal;
-layout(location = 2) in vec2 a_Texcoord;
-
-// Varyings
-out vec3 Position;
+#include "../../../assets/shaders/common/Vert.MVP.shader"
 
 void main()
 {
-	Position = a_Position;
-
-	gl_Position = vec4(a_Position, 1.0);
+	gl_Position = ml_Vert_Position();
 }
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-// Fragment
-/* * * * * * * * * * * * * * * * * * * * */
 #shader fragment
-#version 410 core
-
-// Varyings
-out vec4 gl_Color;
-
-// Uniforms
-uniform vec4 u_color;
+#include "../../../assets/shaders/common/Frag.Draw.shader"
 
 void main()
 {
-	gl_Color = u_color;
+	gl_Color = ml_Frag_MainCol();
 }
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-// Geometry
-/* * * * * * * * * * * * * * * * * * * * */
 #shader geometry
-#version 410 core
-#include "../../../assets/shaders/common/Curve.shader"
+#include "../../../assets/shaders/common/Geom.Curve.shader"
 
-// Macros
 #define SAMPLES_PER_SEGMENT 16
 #define SAMPLES_MAX 128
 
-#define CURVE_LINES 0
-#define CURVE_BEZIER 1
-#define CURVE_CATMULLROM 2
-#define CURVE_HERMITE 3
+#define CURVE_MODE_LINES 0
+#define CURVE_MODE_BEZIER 1
+#define CURVE_MODE_CATMULLROM 2
+#define CURVE_MODE_HERMITE 3
 
-#define RED		vec4(1.0, 0.5, 0.0, 1.0)
-#define BLUE	vec4(0.0, 0.5, 1.0, 1.0)
-#define GREEN	vec4(0.0, 1.0, 0.5, 1.0)
-
-// Attributes
 layout(points) in;
 layout(line_strip, max_vertices = SAMPLES_MAX) out;
 
-// Uniforms
-uniform int		u_lineMode;
-uniform float	u_lineDelta;
-uniform float	u_lineSize;
-uniform int		u_lineSamples;
+/* * * * * * * * * * * * * * * * * * * * */
 
-// Stub
+struct Curve_Uniforms
+{
+	int		mode;
+	float	delta;
+	float	size;
+	int		samples;
+};
+uniform Curve_Uniforms Curve;
+
+/* * * * * * * * * * * * * * * * * * * * */
+
 void stub(in int samples, in float dt)
 {
 	// test points
-	float size = u_lineSize;
+	float size = Curve.size;
 	vec4 testP0 = vec4(-size, +size, 0.0, 1.0);
 	vec4 testP1 = vec4(+size, +size, 0.0, 1.0);
 	vec4 testP2 = vec4(+size, -size, 0.0, 1.0);
@@ -77,9 +59,9 @@ void stub(in int samples, in float dt)
 
 	vec4 p0, p1, p2, p3, pPrev, pNext, m0, m1;
 
-	switch (u_lineMode)
+	switch (Curve.mode)
 	{
-	case CURVE_LINES:
+	case CURVE_MODE_LINES:
 		// multiple segments
 		drawLine(testP0, testP1, samples, dt);
 		drawLine(testP1, testP2, samples, dt);
@@ -87,12 +69,12 @@ void stub(in int samples, in float dt)
 		drawLine(testP3, testP0, samples, dt);
 		break;
 
-	case CURVE_BEZIER:
+	case CURVE_MODE_BEZIER:
 		// full curve
 		drawBezierCurve3(testP0, testP1, testP2, testP3, samples, dt);
 		break;
 
-	case CURVE_CATMULLROM:
+	case CURVE_MODE_CATMULLROM:
 		// curve segment
 		pPrev = testP0;
 		p0 = testP1;
@@ -101,7 +83,7 @@ void stub(in int samples, in float dt)
 		drawCatmullRomSplineSegment(pPrev, p0, p1, pNext, samples, dt);
 		break;
 
-	case CURVE_HERMITE:
+	case CURVE_MODE_HERMITE:
 		// curve segment
 		p0 = testP0;
 		m0 = testP1 - p0;
@@ -122,11 +104,11 @@ void stub(in int samples, in float dt)
 	};
 }
 
-// Main
-/* * * * * * * * * * * * * * * * * * * * */
 void main()
 {
-	float dt = u_lineDelta / float(u_lineSamples);
+	float dt = Curve.delta / float(Curve.samples);
 
-	stub(u_lineSamples, dt);
+	stub(Curve.samples, dt);
 }
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

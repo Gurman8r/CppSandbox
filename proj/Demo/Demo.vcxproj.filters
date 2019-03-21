@@ -250,30 +250,39 @@
     <None Include="..\..\assets\scripts\tool.meme">
       <Filter>Resource Files\scripts</Filter>
     </None>
-    <None Include="..\..\assets\shaders\basic2.shader">
-      <Filter>Resource Files\shaders</Filter>
-    </None>
     <None Include="..\..\config.ini" />
-    <None Include="..\..\assets\shaders\basic3.shader">
-      <Filter>Resource Files\shaders</Filter>
-    </None>
     <None Include="..\..\assets\shaders\common\Frag.shader">
       <Filter>Resource Files\shaders\common</Filter>
     </None>
     <None Include="..\..\assets\shaders\common\Vert.shader">
       <Filter>Resource Files\shaders\common</Filter>
     </None>
-    <None Include="..\..\assets\shaders\common\Curve.shader">
+    <None Include="..\..\assets\shaders\common\Vert.MVP.shader">
       <Filter>Resource Files\shaders\common</Filter>
     </None>
-    <None Include="..\..\assets\shaders\lighting1.shader">
+    <None Include="..\..\assets\shaders\basic.shader">
       <Filter>Resource Files\shaders</Filter>
     </None>
-    <None Include="..\..\assets\shaders\lighting2.shader">
+    <None Include="..\..\assets\shaders\lighting.shader">
       <Filter>Resource Files\shaders</Filter>
     </None>
-    <None Include="..\..\assets\shaders\basic1.shader">
-      <Filter>Resource Files\shaders</Filter>
+    <None Include="..\..\assets\shaders\common\Geom.Curve.shader">
+      <Filter>Resource Files\shaders\common</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\common\Util.View.shader">
+      <Filter>Resource Files\shaders\common</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\common\Util.Light.shader">
+      <Filter>Resource Files\shaders\common</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\common\Util.Curve.shader">
+      <Filter>Resource Files\shaders\common</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\common\Geom.shader">
+      <Filter>Resource Files\shaders\common</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\common\Frag.Draw.shader">
+      <Filter>Resource Files\shaders\common</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

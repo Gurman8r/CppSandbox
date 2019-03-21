@@ -1,27 +1,22 @@
-/* * * * * * * * * * * * * * * * * * * * */
-
-#include "../../../assets/shaders/common/Vert.shader"
-#include "../../../assets/shaders/common/Frag.shader"
-
-/* * * * * * * * * * * * * * * * * * * * */
+// normal3D.shader
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #shader vertex
+#include "../../../assets/shaders/common/Vert.MVP.shader"
 
 void main()
 {
-	Out.Position = a_Position;
-	Out.Normal = a_Normal;
-	Out.Texcoord = a_Texcoord;
-	gl_Position = (Vert.proj * Vert.view * Vert.model) * vec4(a_Position, 1.0);
+	gl_Position = ml_Vert_Position();
 }
 
-/* * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #shader fragment
+#include "../../../assets/shaders/common/Frag.Draw.shader"
 
 void main()
 {
-	gl_Color = Frag.color * In.Normal * texture(Frag.mainTex, In.Texcoord);
+	gl_Color = In.Normal * ml_Frag_MainCol() * ml_Frag_MainPixel();
 }
 
-/* * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
