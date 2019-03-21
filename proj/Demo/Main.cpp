@@ -7,7 +7,7 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-#define CONFIG_INI "../../../config.ini"
+#define CONFIG_INI "../../../ML_Config.ini"
 
 /* * * * * * * * * * * * * * * * * * * * */
 
