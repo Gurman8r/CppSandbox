@@ -16,7 +16,7 @@ void main()
 
 void main()
 {
-	gl_Color = ml_Frag_MainCol();
+	gl_Color = Frag.mainCol;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

@@ -20,15 +20,6 @@ void main()
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-struct Tex_Uniforms
-{
-	sampler2D dm;
-	sampler2D sm;
-};
-uniform Tex_Uniforms Tex;
-
-/* * * * * * * * * * * * * * * * * * * * */
-
 void main()
 {
 	// Ambient
@@ -38,13 +29,13 @@ void main()
 	vec3	norm = normalize(In.Normal.xyz);
 	vec3	dir = normalize(Light.position - In.Position);
 	float	diffAmt = max(dot(norm, dir), 0.0);
-	vec3	diffuse = (diffAmt * Light.color.xyz);
+	vec3	diffuse = (diffAmt * Light.color.rgb);
 
 	// Specular		 
 	vec3	view = normalize(View.position - In.Position);
 	vec3	refl = reflect(-dir, norm);
 	float	specAmt = pow(max(dot(view, refl), 0.0), Light.shininess);
-	vec3	specular = (Light.specular * specAmt * Light.color.xyz);
+	vec3	specular = (Light.specular * specAmt * Light.color.rgb);
 
 	// Textures
 	vec4 tex_dm = texture(Tex.dm, In.Texcoord);

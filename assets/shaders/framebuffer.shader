@@ -32,21 +32,26 @@ uniform Effect_Uniforms Effect;
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-vec4 drawInverted()
+void drawNormal()
 {
-	return vec4(vec3(1.0 - ml_Frag_MainTex()), 1.0);
+	gl_Color = texture(Frag.mainTex, In.Texcoord);
 }
 
-vec4 drawGrayscale()
+void drawInverted()
 {
-	vec4 temp = ml_Frag_MainTex();
-
-	float average = (temp.r + temp.g + temp.b) / 3.0;
-
-	return vec4(average, average, average, 1.0);
+	gl_Color = vec4(vec3(1.0 - texture(Frag.mainTex, In.Texcoord)), 1.0);
 }
 
-vec4 drawKernel(in float kernel[9])
+void drawGrayscale()
+{
+	gl_Color = texture(Frag.mainTex, In.Texcoord);
+
+	float average = (gl_Color.r + gl_Color.g + gl_Color.b) / 3.0;
+
+	gl_Color = vec4(average, average, average, 1.0);
+}
+
+void drawKernel(in float kernel[9])
 {
 	const float offset = 1.0 / 300.0;
 
@@ -65,7 +70,7 @@ vec4 drawKernel(in float kernel[9])
 	vec3 samples[9];
 	for (int i = 0; i < 9; i++)
 	{
-		samples[i] = vec3(ml_Frag_GetPixel(In.Texcoord.st + offsets[i]));
+		samples[i] = vec3(texture(Frag.mainTex, In.Texcoord.st + offsets[i]));
 	}
 
 	vec3 color = vec3(0.0);
@@ -74,7 +79,7 @@ vec4 drawKernel(in float kernel[9])
 		color += samples[i] * kernel[i];
 	}
 
-	return vec4(color, 1.0);
+	gl_Color = vec4(color, 1.0);
 }
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -84,11 +89,11 @@ void main()
 	switch (Effect.mode)
 	{
 	case MODE_GRAYSCALE:
-		gl_Color = drawGrayscale();
+		drawGrayscale();
 		break;
 
 	case MODE_JUICY:
-		gl_Color = drawKernel(float[9](
+		drawKernel(float[9](
 			-1, -1, -1,
 			-1, +9, -1,
 			-1, -1, -1
@@ -96,7 +101,7 @@ void main()
 		break;
 
 	case MODE_BLUR:
-		gl_Color = drawKernel(float[9](
+		drawKernel(float[9](
 			1.0 / 16, 2.0 / 16, 1.0 / 16,
 			2.0 / 16, 4.0 / 16, 2.0 / 16,
 			1.0 / 16, 2.0 / 16, 1.0 / 16
@@ -104,12 +109,12 @@ void main()
 		break;
 
 	case MODE_INVERTED:
-		gl_Color = drawInverted();
+		drawInverted();
 		break;
 
 	case MODE_NORMAL:
 	default:
-		gl_Color = ml_Frag_MainTex();
+		drawNormal();
 		break;
 	};
 }

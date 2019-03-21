@@ -11,4 +11,11 @@ struct Light_Uniforms
 };
 uniform Light_Uniforms Light;
 
+struct Tex_Uniforms
+{
+	sampler2D dm;
+	sampler2D sm;
+};
+uniform Tex_Uniforms Tex;
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

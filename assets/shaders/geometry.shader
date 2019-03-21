@@ -16,7 +16,7 @@ void main()
 
 void main()
 {
-	gl_Color = ml_Frag_MainCol();
+	gl_Color = Frag.mainCol;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -46,9 +46,6 @@ struct Curve_Uniforms
 	float	size;
 	int		samples;
 };
-
-/* * * * * * * * * * * * * * * * * * * * */
-
 uniform Curve_Uniforms Curve;
 
 /* * * * * * * * * * * * * * * * * * * * */

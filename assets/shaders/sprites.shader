@@ -18,7 +18,7 @@ void main()
 
 void main()
 {
-	gl_Color = ml_Frag_MainCol() * ml_Frag_MainTex();
+	gl_Color = Frag.mainCol * texture(Frag.mainTex, In.Texcoord);
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
