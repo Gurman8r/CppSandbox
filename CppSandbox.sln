@@ -60,7 +60,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MemePhysics", "proj\MemePhy
 		{BCF9C343-33E2-4BDE-BAFA-1C570DFF525F} = {BCF9C343-33E2-4BDE-BAFA-1C570DFF525F}
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{79CA3F06-1FDD-4E1D-8CF5-F2DD51756A8F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{79CA3F06-1FDD-4E1D-8CF5-F2DD51756A8F}"
 	ProjectSection(SolutionItems) = preProject
 		config.ini = config.ini
 		LICENSE.txt = LICENSE.txt

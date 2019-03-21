@@ -1,7 +1,6 @@
 #ifndef _LIB_LOADER_HPP_
 #define _LIB_LOADER_HPP_
 
-#include <MemeCore/ISingleton.hpp>
 #include <MemeCore/ITrackable.hpp>
 
 #define ML_Lib ml::LibLoader::getInstance()

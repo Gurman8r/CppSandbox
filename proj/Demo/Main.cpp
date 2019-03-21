@@ -30,7 +30,7 @@ int32_t main(int32_t argc, char ** argv)
 	}
 
 	// Load Program
-	if (auto * program = new DEMO::Demo())
+	if (auto * program = (ml::RenderWindow *)(new DEMO::Demo()))
 	{
 		// Enter
 		ML_EventSystem.fireEvent(DEMO::EnterEvent(ml::Args(argc, argv)));

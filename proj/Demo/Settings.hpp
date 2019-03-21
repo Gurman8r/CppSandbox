@@ -140,7 +140,7 @@ namespace DEMO
 
 		inline const ml::String pathTo(const ml::String & filename) const
 		{
-			return rootPath + filename;
+			return (rootPath + filename);
 		}
 
 	public:
