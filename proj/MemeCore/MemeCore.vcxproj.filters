@@ -222,9 +222,6 @@
     <ClInclude Include="..\..\include\MemeCore\Bytes.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\IntTypes.hpp">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Macros.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
@@ -233,6 +230,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Plugin.hpp">
       <Filter>Header Files\Plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Usings.hpp">
+      <Filter>Header Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

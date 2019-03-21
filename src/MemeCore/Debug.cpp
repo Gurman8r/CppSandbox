@@ -92,7 +92,7 @@ namespace ml
 		return temp;
 	}
 
-	const String & Debug::configuration()
+	const String & Debug::config()
 	{
 #if defined(ML_DEBUG)
 		static String temp = "Debug";

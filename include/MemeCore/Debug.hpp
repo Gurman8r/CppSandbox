@@ -30,7 +30,7 @@ namespace ml
 
 	public:
 		static const String & platform();
-		static const String & configuration();
+		static const String & config();
 
 	public:
 		static int32_t logWarning(const String & message); // - 1 true

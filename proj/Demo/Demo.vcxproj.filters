@@ -154,6 +154,7 @@
     <None Include="..\..\assets\shaders\common\Frag.Light.shader">
       <Filter>Resource Files\shaders\common</Filter>
     </None>
+    <None Include="..\..\ML_Config.ini" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="..\..\assets\fonts\clacon.ttf">

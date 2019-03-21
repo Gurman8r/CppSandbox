@@ -31,6 +31,7 @@ namespace DEMO
 		bool		enableThreads;	// Enable threads?
 		ml::String	manifest;		// Name of manifest file
 		ml::String	imguiIni;		// Name of imgui.ini
+		ml::String	pluginName;		// Name of DLL to run
 
 		// [Script]
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -90,6 +91,7 @@ namespace DEMO
 				enableThreads	= ini.GetBoolean("General", "enableThreads", false);
 				manifest		= ini.Get("General", "manifest", "manifest.txt");
 				imguiIni		= ini.Get("General", "imguiIni", "");
+				pluginName		= ini.Get("General", "pluginName", "");
 
 				// [Script]
 				/* * * * * * * * * * * * * * * * * * * * */

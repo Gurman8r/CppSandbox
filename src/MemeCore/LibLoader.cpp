@@ -1,17 +1,18 @@
 #include <MemeCore/LibLoader.hpp>
-#include <MemeCore/Macros.hpp>
 #include <MemeCore/Debug.hpp>
 
 #ifdef ML_SYSTEM_WINDOWS
 #include <Windows.h>
+#else
+#
 #endif
 
 namespace ml
 {
-	bool LibLoader::freeLibrary(void * value)
+	bool LibLoader::freeLibrary(void * instance)
 	{
 #ifdef ML_SYSTEM_WINDOWS
-		return FreeLibrary((HINSTANCE)(value));
+		return FreeLibrary((HINSTANCE)(instance));
 #else
 		return false;
 #endif
@@ -26,25 +27,12 @@ namespace ml
 #endif
 	}
 
-	void * LibLoader::loadFunction(void * value, const String & name)
+	void * LibLoader::loadFunction(void * instance, const String & func)
 	{
 #ifdef ML_SYSTEM_WINDOWS
-		return GetProcAddress((HINSTANCE)(value), name.c_str());
+		return GetProcAddress((HINSTANCE)(instance), func.c_str());
 #else
 		return NULL;
 #endif
-	}
-
-	void * LibLoader::loadPlugin(const String & filename, void * data)
-	{
-		if (void * lib = loadLibrary(filename))
-		{
-			if (auto fun = (PluginMainFun)loadFunction(lib, ML_STRINGIFY(ML_Plugin_Main)))
-			{
-				fun(data);
-			}
-			return lib;
-		}
-		return NULL;
 	}
 }

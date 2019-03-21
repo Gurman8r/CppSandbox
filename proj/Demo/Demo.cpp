@@ -429,7 +429,7 @@ namespace DEMO
 		this->setTitle(ml::String::Format("{0} | {1} | {2}",
 			SETTINGS.title,
 			ml::String("{0} | {1}").format(
-				ml::Debug::configuration(),
+				ml::Debug::config(),
 				ml::Debug::platform()
 			),
 			ml::String("{0} ms/frame ({1} fps)").format(
