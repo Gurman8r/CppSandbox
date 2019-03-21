@@ -16,16 +16,16 @@ uniform Vert_Uniforms Vert;
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-mat4 ml_Vert_MVP()
+mat4 ml_MVP()
 {
 	return (Vert.proj * Vert.view * Vert.model);
 }
 
-vec4 ml_Vert_Position()
+vec4 ml_MVP_Position()
 {
-	ml_Vert_Update();
+	ml_Update_Vertex();
 
-	return ml_Vert_MVP() * vec4(Out.Position, 1.0);
+	return ml_MVP() * vec4(Out.Position, 1.0);
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

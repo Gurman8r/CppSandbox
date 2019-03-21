@@ -629,12 +629,12 @@ namespace DEMO
 		};
 
 		static ml::UniformSet light_uniforms = {
-			ml::Uniform("View.position",	ml::Uniform::Vec3,	&m_camPos),
-			ml::Uniform("Light.position",	ml::Uniform::Vec3,	&m_lightPos),
-			ml::Uniform("Light.color",		ml::Uniform::Vec4,	&m_lightCol),
-			ml::Uniform("Light.ambient",	ml::Uniform::Float, &m_ambient),
-			ml::Uniform("Light.specular",	ml::Uniform::Float, &m_specular),
-			ml::Uniform("Light.shininess",	ml::Uniform::Int,	&m_shininess),
+			ml::Uniform("Frag.camera",		ml::Uniform::Vec3,	&m_camPos),
+			ml::Uniform("Frag.position",	ml::Uniform::Vec3,	&m_lightPos),
+			ml::Uniform("Frag.color",		ml::Uniform::Vec4,	&m_lightCol),
+			ml::Uniform("Frag.ambient",		ml::Uniform::Float, &m_ambient),
+			ml::Uniform("Frag.specular",	ml::Uniform::Float, &m_specular),
+			ml::Uniform("Frag.shininess",	ml::Uniform::Int,	&m_shininess),
 		};
 
 		static ml::UniformSet effect_uniforms = {
@@ -688,8 +688,8 @@ namespace DEMO
 			{
 				static ml::UniformSet uniforms = {
 					ml::Uniform("Vert.model",		ml::Uniform::Mat4,	&model->transform().matrix()),
-					ml::Uniform("Tex.dm",			ml::Uniform::Tex,	ML_Res.textures.get("earth_dm")),
-					ml::Uniform("Tex.sm",			ml::Uniform::Tex,	ML_Res.textures.get("earth_sm")),
+					ml::Uniform("Frag.tex_dm",		ml::Uniform::Tex,	ML_Res.textures.get("earth_dm")),
+					ml::Uniform("Frag.tex_sm",		ml::Uniform::Tex,	ML_Res.textures.get("earth_sm")),
 				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("lighting"))
 				{
@@ -706,8 +706,8 @@ namespace DEMO
 			{
 				static ml::UniformSet uniforms = {
 					ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&model->transform().matrix()),
-					ml::Uniform("Tex.dm",		ml::Uniform::Tex,	ML_Res.textures.get("moon_dm")),
-					ml::Uniform("Tex.sm",		ml::Uniform::Tex,	ML_Res.textures.get("moon_nm")),
+					ml::Uniform("Frag.tex_dm",	ml::Uniform::Tex,	ML_Res.textures.get("moon_dm")),
+					ml::Uniform("Frag.tex_sm",	ml::Uniform::Tex,	ML_Res.textures.get("moon_nm")),
 				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("lighting"))
 				{

@@ -6,7 +6,7 @@
 
 void main()
 {
-	ml_Vert_Update();
+	ml_Update_Vertex();
 
 	gl_Position = vec4(Out.Position.x, Out.Position.y, 0.0, 1.0);
 }

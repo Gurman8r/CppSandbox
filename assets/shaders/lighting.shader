@@ -6,7 +6,7 @@
 
 void main()
 {
-	gl_Position = ml_Vert_Position();
+	gl_Position = ml_MVP_Position();
 	Out.Position = gl_Position.xyz;
 	Out.Normal = transpose(inverse(Vert.model)) * Out.Normal;
 }
@@ -14,32 +14,30 @@ void main()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #shader fragment
-#include <common/Frag.shader>
-#include <common/Util.View.shader>
-#include <common/Util.Light.shader>
+#include <common/Frag.Light.shader>
 
 /* * * * * * * * * * * * * * * * * * * * */
 
 void main()
 {
 	// Ambient
-	vec4 ambient = (Light.ambient * Light.color);
+	vec4 ambient = (Frag.ambient * Frag.color);
 
 	// Diffuse 
 	vec3	norm = normalize(In.Normal.xyz);
-	vec3	dir = normalize(Light.position - In.Position);
+	vec3	dir = normalize(Frag.position - In.Position);
 	float	diffAmt = max(dot(norm, dir), 0.0);
-	vec3	diffuse = (diffAmt * Light.color.rgb);
+	vec3	diffuse = (diffAmt * Frag.color.rgb);
 
 	// Specular		 
-	vec3	view = normalize(View.position - In.Position);
+	vec3	view = normalize(Frag.camera - In.Position);
 	vec3	refl = reflect(-dir, norm);
-	float	specAmt = pow(max(dot(view, refl), 0.0), Light.shininess);
-	vec3	specular = (Light.specular * specAmt * Light.color.rgb);
+	float	specAmt = pow(max(dot(view, refl), 0.0), Frag.shininess);
+	vec3	specular = (Frag.specular * specAmt * Frag.color.rgb);
 
 	// Textures
-	vec4 tex_dm = texture(Tex.dm, In.Texcoord);
-	vec4 tex_sm = texture(Tex.sm, In.Texcoord);
+	vec4 tex_dm = texture(Frag.tex_dm, In.Texcoord);
+	vec4 tex_sm = texture(Frag.tex_sm, In.Texcoord);
 
 	gl_Color =
 		(ambient) +

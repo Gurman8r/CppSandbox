@@ -21,7 +21,7 @@ out VertexData
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-void ml_Vert_Update()
+void ml_Update_Vertex()
 {
 	Out.Position = a_Position;
 	Out.Normal = a_Normal;

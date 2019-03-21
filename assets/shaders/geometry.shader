@@ -6,7 +6,7 @@
 
 void main()
 {
-	gl_Position = ml_Vert_Position();
+	gl_Position = ml_MVP_Position();
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
