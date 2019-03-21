@@ -3,7 +3,7 @@
 
 vec4 lerp(in vec4 a, in vec4 b, const float t)
 {
-	return (b * t) + (a * (1.0f - t));
+	return (b * t) + (a * (1.0 - t));
 }
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -32,13 +32,13 @@ vec4 sampleCatmullRom(in vec4 pPrev, in vec4 p0, in vec4 p1, in vec4 pNext, cons
 	mat4 a = mat4(pPrev, p0, p1, pNext);
 
 	mat4 b = mat4(
-		0.0f, -1.0f, 2.0f, -1.0f,
-		2.0f, 0.0f, -5.0f, 3.0f,
-		0.0f, 1.0f, 4.0f, -3.0f,
-		0.0f, 0.0f, -1.0f, 1.0f) * 0.5f;
+		0.0, -1.0, 2.0, -1.0,
+		2.0, 0.0, -5.0, 3.0,
+		0.0, 1.0, 4.0, -3.0,
+		0.0, 0.0, -1.0, 1.0) * 0.5f;
 	b = transpose(b);
 
-	vec4 c = vec4(1.0f, t, t * t, t * t * t);
+	vec4 c = vec4(1.0, t, t * t, t * t * t);
 
 	return a * b * c;
 }
@@ -50,13 +50,13 @@ vec4 sampleCubicHermite(in vec4 p0, in vec4 m0, in vec4 p1, in vec4 m1, const fl
 	mat4 a = mat4(p0, m0, p1, m1);
 
 	mat4 b = mat4(
-		1.0f, 0.0f, -3.0f, 2.0f,
-		0.0f, 1.0f, -2.0f, 1.0f,
-		0.0f, 0.0f, 3.0f, -2.0f,
-		0.0f, 0.0f, -1.0f, 1.0f);
+		1.0, 0.0, -3.0, 2.0,
+		0.0, 1.0, -2.0, 1.0,
+		0.0, 0.0, 3.0, -2.0,
+		0.0, 0.0, -1.0, 1.0);
 	b = transpose(b);
 
-	vec4 c = vec4(1.0f, t, t * t, t * t * t);
+	vec4 c = vec4(1.0, t, t * t, t * t * t);
 
 	return a * b * c;
 }
