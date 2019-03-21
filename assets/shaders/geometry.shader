@@ -1,8 +1,8 @@
 // geometry.shader
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#shader vertex
 #include <common/Vert.MVP.shader>
+#shader vertex
 
 void main()
 {
@@ -11,8 +11,8 @@ void main()
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#shader fragment
 #include <common/Frag.Draw.shader>
+#shader fragment
 
 void main()
 {
@@ -20,9 +20,9 @@ void main()
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 #shader geometry
 #include <common/Geom.Curve.shader>
+
 
 #define SAMPLES_PER_SEGMENT 16
 #define SAMPLES_MAX 128

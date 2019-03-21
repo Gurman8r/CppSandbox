@@ -1,10 +1,8 @@
 // Vert.MVP.shader
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#shader vertex
 #include <common/Vert.shader>
-
-/* * * * * * * * * * * * * * * * * * * * */
+#shader vertex
 
 struct Vert_Uniforms
 {

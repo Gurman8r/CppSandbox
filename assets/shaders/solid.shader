@@ -1,8 +1,8 @@
 // solid.shader
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#shader vertex
 #include <common/Vert.MVP.shader>
+#shader vertex
 
 void main()
 {
@@ -11,8 +11,8 @@ void main()
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#shader fragment
 #include <common/Frag.Draw.shader>
+#shader fragment
 
 void main()
 {

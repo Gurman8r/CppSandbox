@@ -1,8 +1,8 @@
 // Frag.Light.shader
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#shader fragment
 #include <common/Frag.shader>
+#shader fragment
 
 struct Frag_Uniforms
 {

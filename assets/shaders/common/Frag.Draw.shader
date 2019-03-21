@@ -1,8 +1,8 @@
 // Frag.Draw.shader
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#shader fragment
 #include <common/Frag.shader>
+#shader fragment
 
 /* * * * * * * * * * * * * * * * * * * * */
 
