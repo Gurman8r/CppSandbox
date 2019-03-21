@@ -1,5 +1,9 @@
+// Frag.shader
+/* * * * * * * * * * * * * * * * * * * * */
+#shader fragment
 #version 410 core
 
+// In Vertex
 in VertexData
 {
 	vec3 Position;
@@ -7,17 +11,17 @@ in VertexData
 	vec2 Texcoord;
 } In;
 
+// Frag Color
 out vec4 FragColor;
 
+// Structs
 struct Frag_Uniforms
 {
 	vec4 color;
 	sampler2D tex0;
 };
 
+// Uniforms
 uniform Frag_Uniforms Frag;
 
-void main()
-{
-	FragColor = (Frag.color * texture(Frag.tex0, In.Texcoord));
-}
+/* * * * * * * * * * * * * * * * * * * * */

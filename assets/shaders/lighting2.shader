@@ -37,6 +37,7 @@ vec4 vertOutput()
 	Out.Position = vec3(pos);
 	Out.Normal	 = vec4(mat3(transpose(inverse(Vert.model))) * a_Normal, 1.0);
 	Out.Texcoord = a_Texcoord;
+
 	return pos;
 }
 

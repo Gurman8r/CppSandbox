@@ -44,6 +44,7 @@
     <ClInclude Include="..\..\include\MemeGraphics\RenderTarget.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\RenderWindow.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Shader.hpp" />
+    <ClInclude Include="..\..\include\MemeGraphics\ShaderParser.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Shapes.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Skybox.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Sprite.hpp" />
@@ -77,6 +78,7 @@
     <ClCompile Include="..\..\src\MemeGraphics\RenderTarget.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\RenderWindow.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Shader.cpp" />
+    <ClCompile Include="..\..\src\MemeGraphics\ShaderParser.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Shapes.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Skybox.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Sprite.cpp" />

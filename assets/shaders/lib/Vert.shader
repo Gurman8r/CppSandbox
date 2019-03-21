@@ -1,9 +1,14 @@
+// Vert.shader
+/* * * * * * * * * * * * * * * * * * * * */
+#shader vertex
 #version 410 core
 
+// Attributes
 layout(location = 0) in vec3 a_Position;
 layout(location = 1) in vec4 a_Normal;
 layout(location = 2) in vec2 a_Texcoord;
 
+// Out Vertex
 out VertexData
 {
 	vec3 Position;
@@ -11,6 +16,7 @@ out VertexData
 	vec2 Texcoord;
 } Out;
 
+// Structs
 struct Vert_Uniforms
 {
 	mat4 proj;
@@ -18,13 +24,7 @@ struct Vert_Uniforms
 	mat4 model;
 };
 
+// Uniforms
 uniform Vert_Uniforms Vert;
 
-void main()
-{
-	mat4 mvp = (Vert.proj * Vert.view * Vert.model);
-	Out.Position = a_Position;
-	Out.Normal = a_Normal;
-	Out.Texcoord = a_Texcoord;
-	gl_Position = mvp * vec4(a_Position, 1.0);
-}
+/* * * * * * * * * * * * * * * * * * * * */

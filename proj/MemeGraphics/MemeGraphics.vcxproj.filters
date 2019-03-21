@@ -171,6 +171,9 @@
     <ClInclude Include="..\..\include\MemeGraphics\Color.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\ShaderParser.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeGraphics\Color.cpp">
@@ -262,6 +265,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\RectTransform.cpp">
       <Filter>Source Files\Transforms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\ShaderParser.cpp">
+      <Filter>Source Files\Utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -89,6 +89,9 @@
     <Filter Include="Resource Files\materials">
       <UniqueIdentifier>{915c2446-9cc8-41a6-b386-a55e4bcd2581}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\shaders\lib">
+      <UniqueIdentifier>{0e9a8c9c-8055-491a-879a-d1707eca19d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\assets\shaders\fs\basic\drawColor_fs4x.shader">
@@ -199,9 +202,6 @@
     <None Include="..\..\assets\scripts\core.meme">
       <Filter>Resource Files\scripts</Filter>
     </None>
-    <None Include="..\..\config.ini">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="..\..\assets\shaders\framebuffer.shader">
       <Filter>Resource Files\shaders</Filter>
     </None>
@@ -238,9 +238,6 @@
     <None Include="..\..\assets\materials\example.mat">
       <Filter>Resource Files\materials</Filter>
     </None>
-    <None Include="..\..\assets\shaders\basic.shader">
-      <Filter>Resource Files\shaders</Filter>
-    </None>
     <None Include="..\..\assets\shaders\sprites.shader">
       <Filter>Resource Files\shaders</Filter>
     </None>
@@ -256,19 +253,23 @@
     <None Include="..\..\assets\scripts\tool.meme">
       <Filter>Resource Files\scripts</Filter>
     </None>
-    <None Include="..\..\assets\shaders\TestingA.shader">
-      <Filter>Resource Files\shaders</Filter>
-    </None>
-    <None Include="..\..\assets\shaders\TestingB.shader">
-      <Filter>Resource Files\shaders</Filter>
-    </None>
-    <None Include="..\..\assets\shaders\TestVert.shader">
-      <Filter>Resource Files\shaders</Filter>
-    </None>
-    <None Include="..\..\assets\shaders\TestFrag.shader">
-      <Filter>Resource Files\shaders</Filter>
-    </None>
     <None Include="..\..\assets\shaders\basic2.shader">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="..\..\config.ini" />
+    <None Include="..\..\assets\shaders\basic.shader">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\basic3.shader">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\lib\Frag.shader">
+      <Filter>Resource Files\shaders\lib</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\lib\Vert.shader">
+      <Filter>Resource Files\shaders\lib</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\lighting2.shader">
       <Filter>Resource Files\shaders</Filter>
     </None>
   </ItemGroup>

@@ -105,9 +105,6 @@
     <ClInclude Include="..\..\include\MemeEditor\Document.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeEditor\ShaderParser.hpp">
-      <Filter>Header Files\DS</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeEditor\Manifest.cpp">
@@ -159,9 +156,6 @@
       <Filter>Source Files\Editor</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\Document.cpp">
-      <Filter>Source Files\DS</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeEditor\ShaderParser.cpp">
       <Filter>Source Files\DS</Filter>
     </ClCompile>
   </ItemGroup>

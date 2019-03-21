@@ -2,6 +2,7 @@
 #include <MemeGraphics/OpenGL.hpp>
 #include <MemeCore/Debug.hpp>
 #include <MemeCore/FileSystem.hpp>
+#include <MemeGraphics/ShaderParser.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -142,85 +143,15 @@ namespace ml
 		return compile(vert, geom, frag);
 	}
 
-
-	inline static String parseIncludes(const String & source)
-	{
-		SStream	out;
-		SStream	stream(source);
-		String	line;
-		while (std::getline(stream, line))
-		{
-			if (line.find("#include") != String::npos)
-			{
-				size_t first;
-				if ((first = line.find_first_of('\"')) != String::npos)
-				{
-					size_t last;
-					if ((last = line.find_last_not_of('\"')) != String::npos)
-					{
-						const String name = line.substr((first + 1), (last - first - 2));
-						const String path = ML_FileSystem.pathTo(name);
-
-						String file;
-						if (ML_FileSystem.getFileContents(path, file))
-						{
-							out << parseIncludes(file);
-						}
-						else
-						{
-							Debug::logError("Shader Include Failed: \'{0}\'", name);
-						}
-					}
-				}
-			}
-			else
-			{
-				out << line << endl;
-			}
-		}
-		return out.str();
-	}
-
 	bool Shader::loadFromMemory(const String & source)
 	{
-		bool check = (source.find("#include") != String::npos);
-
 		SStream vert, geom, frag;
-		SStream * selected = NULL;
-
-		SStream	stream(parseIncludes(source));
-		String	line;
-		while (std::getline(stream, line))
-		{
-			if (line.find("#shader") != String::npos)
-			{
-				if (line.find("vertex") != String::npos)
-				{
-					selected = &vert;
-				}
-				else if (line.find("fragment") != String::npos)
-				{
-					selected = &frag;
-				}
-				else if (line.find("geometry") != String::npos)
-				{
-					selected = &geom;
-				}
-			}
-			else if (selected)
-			{
-				(*selected) << line << endl;
-			}
-		}
-
-		if (check)
-		{
-			cout
-				<< "--VERTEX" << endl << vert.str() << endl
-				<< "--FRAGMENT" << endl << frag.str() << endl;
-		}
-
-		return loadFromMemory(vert.str(), geom.str(), frag.str());
+		return (ShaderParser::parseShader(source, vert, geom, frag)
+			? (loadFromMemory(
+				vert.str(), 
+				geom.str(), 
+				frag.str()))
+			: (Debug::logError("Failed Parsing Shader")));
 	}
 
 	bool Shader::loadFromMemory(const String & vs, const String & gs, const String & fs)

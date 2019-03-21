@@ -175,7 +175,7 @@
     <None Include="..\..\assets\scripts\test.meme" />
     <None Include="..\..\assets\scripts\tool.meme" />
     <None Include="..\..\assets\shaders\basic2.shader" />
-    <None Include="..\..\assets\shaders\TestFrag.shader" />
+    <None Include="..\..\assets\shaders\basic3.shader" />
     <None Include="..\..\assets\shaders\framebuffer.shader" />
     <None Include="..\..\assets\shaders\fs\basic\drawColor_fs4x.shader" />
     <None Include="..\..\assets\shaders\fs\basic\drawSolid_fs4x.shader" />
@@ -194,15 +194,15 @@
     <None Include="..\..\assets\shaders\gs\basic\drawCurve_gs4x.shader" />
     <None Include="..\..\assets\shaders\gs\basic\drawCurve_morphing_gs4x.shader" />
     <None Include="..\..\assets\shaders\basic.shader" />
+    <None Include="..\..\assets\shaders\lib\Frag.shader" />
+    <None Include="..\..\assets\shaders\lib\Vert.shader" />
     <None Include="..\..\assets\shaders\lighting.shader" />
+    <None Include="..\..\assets\shaders\lighting2.shader" />
     <None Include="..\..\assets\shaders\normal3D.shader" />
     <None Include="..\..\assets\shaders\skybox.shader" />
     <None Include="..\..\assets\shaders\solid.shader" />
     <None Include="..\..\assets\shaders\sprites.shader" />
-    <None Include="..\..\assets\shaders\TestingA.shader" />
-    <None Include="..\..\assets\shaders\TestingB.shader" />
     <None Include="..\..\assets\shaders\text.shader" />
-    <None Include="..\..\assets\shaders\TestVert.shader" />
     <None Include="..\..\assets\shaders\vs\animation\drawBone_vs4x.shader" />
     <None Include="..\..\assets\shaders\vs\animation\morphing_passKeyframes_vs4x.shader" />
     <None Include="..\..\assets\shaders\vs\animation\morphing_vs4x.shader" />
