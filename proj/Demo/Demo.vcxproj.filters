@@ -269,19 +269,19 @@
     <None Include="..\..\assets\shaders\common\Geom.Curve.shader">
       <Filter>Resource Files\shaders\common</Filter>
     </None>
-    <None Include="..\..\assets\shaders\common\Util.View.shader">
+    <None Include="..\..\assets\shaders\common\Geom.shader">
+      <Filter>Resource Files\shaders\common</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\common\Frag.Draw.shader">
       <Filter>Resource Files\shaders\common</Filter>
     </None>
     <None Include="..\..\assets\shaders\common\Util.Light.shader">
       <Filter>Resource Files\shaders\common</Filter>
     </None>
-    <None Include="..\..\assets\shaders\common\Util.Curve.shader">
+    <None Include="..\..\assets\shaders\common\Util.View.shader">
       <Filter>Resource Files\shaders\common</Filter>
     </None>
-    <None Include="..\..\assets\shaders\common\Geom.shader">
-      <Filter>Resource Files\shaders\common</Filter>
-    </None>
-    <None Include="..\..\assets\shaders\common\Frag.Draw.shader">
+    <None Include="..\..\assets\shaders\common\Util.Math.shader">
       <Filter>Resource Files\shaders\common</Filter>
     </None>
   </ItemGroup>

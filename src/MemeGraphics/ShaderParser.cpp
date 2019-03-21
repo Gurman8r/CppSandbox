@@ -63,7 +63,7 @@ namespace ml
 				}
 				else if (parseWrapped(line, '<', '>', name))
 				{
-					path = ML_FileSystem.pathTo(name);
+					path = ML_FileSystem.pathTo("../../../assets/shaders/" + name);
 				}
 				else
 				{

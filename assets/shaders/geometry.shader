@@ -2,7 +2,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #shader vertex
-#include "../../../assets/shaders/common/Vert.MVP.shader"
+#include <common/Vert.MVP.shader>
 
 void main()
 {
@@ -12,7 +12,7 @@ void main()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #shader fragment
-#include "../../../assets/shaders/common/Frag.Draw.shader"
+#include <common/Frag.Draw.shader>
 
 void main()
 {
@@ -22,7 +22,7 @@ void main()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #shader geometry
-#include "../../../assets/shaders/common/Geom.Curve.shader"
+#include <common/Geom.Curve.shader>
 
 #define SAMPLES_PER_SEGMENT 16
 #define SAMPLES_MAX 128
@@ -31,6 +31,8 @@ void main()
 #define CURVE_MODE_BEZIER 1
 #define CURVE_MODE_CATMULLROM 2
 #define CURVE_MODE_HERMITE 3
+
+/* * * * * * * * * * * * * * * * * * * * */
 
 layout(points) in;
 layout(line_strip, max_vertices = SAMPLES_MAX) out;
@@ -44,6 +46,9 @@ struct Curve_Uniforms
 	float	size;
 	int		samples;
 };
+
+/* * * * * * * * * * * * * * * * * * * * */
+
 uniform Curve_Uniforms Curve;
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -106,9 +111,7 @@ void stub(in int samples, in float dt)
 
 void main()
 {
-	float dt = Curve.delta / float(Curve.samples);
-
-	stub(Curve.samples, dt);
+	stub(Curve.samples, (Curve.delta / float(Curve.samples)));
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

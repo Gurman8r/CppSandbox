@@ -2,7 +2,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #shader vertex
-#include "../../../assets/shaders/common/Vert.shader"
+#include <common/Vert.shader>
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -12,9 +12,6 @@ struct Vert_Uniforms
 	mat4 view;
 	mat4 model;
 };
-
-/* * * * * * * * * * * * * * * * * * * * */
-
 uniform Vert_Uniforms Vert;
 
 /* * * * * * * * * * * * * * * * * * * * */

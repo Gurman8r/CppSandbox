@@ -2,7 +2,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #shader vertex
-#include "../../../assets/shaders/common/Vert.MVP.shader"
+#include <common/Vert.MVP.shader>
 
 void main()
 {
@@ -14,7 +14,7 @@ void main()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #shader fragment
-#include "../../../assets/shaders/common/Frag.Draw.shader"
+#include <common/Frag.Draw.shader>
 
 #define MODE_NORMAL		0
 #define MODE_GRAYSCALE	1
@@ -34,12 +34,12 @@ uniform Effect_Uniforms Effect;
 
 vec4 drawInverted()
 {
-	return vec4(vec3(1.0 - ml_Frag_MainPixel()), 1.0);
+	return vec4(vec3(1.0 - ml_Frag_MainTex()), 1.0);
 }
 
 vec4 drawGrayscale()
 {
-	vec4 temp = ml_Frag_MainPixel();
+	vec4 temp = ml_Frag_MainTex();
 
 	float average = (temp.r + temp.g + temp.b) / 3.0;
 
@@ -52,9 +52,9 @@ vec4 drawKernel(in float kernel[9])
 
 	vec2 offsets[9] = vec2[](
 		vec2(-offset, offset),	// top-left
-		vec2(0.0f, offset),	// top-center
+		vec2(0.0f, offset),		// top-center
 		vec2(offset, offset),	// top-right
-		vec2(-offset, 0.0f),		// center-left
+		vec2(-offset, 0.0f),	// center-left
 		vec2(0.0f, 0.0f),		// center-center
 		vec2(offset, 0.0f),		// center-right
 		vec2(-offset, -offset),	// bottom-left
@@ -109,7 +109,7 @@ void main()
 
 	case MODE_NORMAL:
 	default:
-		gl_Color = ml_Frag_MainPixel();
+		gl_Color = ml_Frag_MainTex();
 		break;
 	};
 }

@@ -1,4 +1,4 @@
-// Geom.Curve.shader
+// Geom.shader
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #shader geometry

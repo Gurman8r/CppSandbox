@@ -2,7 +2,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #shader vertex
-#include "../../../assets/shaders/common/Vert.MVP.shader"
+#include <common/Vert.MVP.shader>
 
 void main()
 {
@@ -14,11 +14,11 @@ void main()
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #shader fragment
-#include "../../../assets/shaders/common/Frag.Draw.shader"
+#include <common/Frag.Draw.shader>
 
 void main()
 {
-	gl_Color = ml_Frag_MainCol() * ml_Frag_MainPixel();
+	gl_Color = ml_Frag_MainCol() * ml_Frag_MainTex();
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

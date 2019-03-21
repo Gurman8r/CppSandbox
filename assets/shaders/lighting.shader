@@ -2,21 +2,21 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #shader vertex
-#include "../../../assets/shaders/common/Vert.MVP.shader"
+#include <common/Vert.MVP.shader>
 
 void main()
 {
 	gl_Position = ml_Vert_Position();
-	Out.Position = vec3(gl_Position);
+	Out.Position = gl_Position.xyz;
 	Out.Normal = transpose(inverse(Vert.model)) * Out.Normal;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #shader fragment
-#include "../../../assets/shaders/common/Frag.shader"
-#include "../../../assets/shaders/common/Util.View.shader"
-#include "../../../assets/shaders/common/Util.Light.shader"
+#include <common/Frag.shader>
+#include <common/Util.View.shader>
+#include <common/Util.Light.shader>
 
 /* * * * * * * * * * * * * * * * * * * * */
 

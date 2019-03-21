@@ -9,9 +9,6 @@ struct Light_Uniforms
 	float	specular;
 	int		shininess;
 };
-
-/* * * * * * * * * * * * * * * * * * * * */
-
 uniform Light_Uniforms Light;
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
