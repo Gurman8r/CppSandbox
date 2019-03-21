@@ -26,7 +26,6 @@ namespace DEMO
 		// [General]
 		/* * * * * * * * * * * * * * * * * * * * */
 		ml::String	rootPath;		// Solution Dir
-		ml::String	assetPath;		// Where's all the data?
 		uint32_t	runTests;		// Run test functions
 		bool		escapeIsExit;	// Escape key is Exit?
 		bool		enableThreads;	// Enable threads?
@@ -86,7 +85,6 @@ namespace DEMO
 				// [General]
 				/* * * * * * * * * * * * * * * * * * * * */
 				rootPath		= ini.Get("General", "rootPath", "../../../");
-				assetPath		= ini.Get("General", "assetPath", "assets/");
 				runTests		= ini.GetInteger("General", "runTests", false);
 				escapeIsExit	= ini.GetBoolean("General", "escapeIsExit", true);
 				enableThreads	= ini.GetBoolean("General", "enableThreads", false);
@@ -142,7 +140,7 @@ namespace DEMO
 
 		inline const ml::String pathTo(const ml::String & filename) const
 		{
-			return rootPath + assetPath + filename;
+			return rootPath + filename;
 		}
 
 	public:

@@ -190,7 +190,6 @@
     <None Include="..\..\assets\shaders\sprites.shader" />
     <None Include="..\..\assets\shaders\text.shader" />
     <None Include="..\..\assets\skyboxes\sunset.skybox" />
-    <None Include="..\..\config.ini" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="..\..\assets\fonts\clacon.ttf" />

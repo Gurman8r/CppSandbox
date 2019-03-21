@@ -130,7 +130,6 @@
     <None Include="..\..\assets\scripts\tool.meme">
       <Filter>Resource Files\scripts</Filter>
     </None>
-    <None Include="..\..\config.ini" />
     <None Include="..\..\assets\shaders\common\Frag.shader">
       <Filter>Resource Files\shaders\common</Filter>
     </None>

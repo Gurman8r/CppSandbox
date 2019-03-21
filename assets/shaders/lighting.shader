@@ -21,28 +21,25 @@ void main()
 void main()
 {
 	// Ambient
-	vec4 ambient = (Frag.ambient * Frag.color);
+	vec4	ambient = (Frag.ambient * Frag.color);
 
 	// Diffuse 
-	vec3	norm = normalize(In.Normal.xyz);
-	vec3	dir = normalize(Frag.position - In.Position);
-	float	diffAmt = max(dot(norm, dir), 0.0);
-	vec3	diffuse = (diffAmt * Frag.color.rgb);
+	vec3	diffNml = normalize(In.Normal.xyz);
+	vec3	diffDir = normalize(Frag.position - In.Position);
+	float	diffAmt = max(dot(diffNml, diffDir), 0.0);
+	vec4	diffCol = vec4(diffAmt * Frag.color.rgb, 1.0);
+	vec4	diffTex = texture(Frag.tex_dm, In.Texcoord);
+	vec4	diffuse = (diffCol * diffTex);
 
 	// Specular		 
-	vec3	view = normalize(Frag.camera - In.Position);
-	vec3	refl = reflect(-dir, norm);
-	float	specAmt = pow(max(dot(view, refl), 0.0), Frag.shininess);
-	vec3	specular = (Frag.specular * specAmt * Frag.color.rgb);
+	vec3	specCam = normalize(Frag.camera - In.Position);
+	vec3	specRfl = reflect(-diffDir, diffNml);
+	float	specAmt = pow(max(dot(specCam, specRfl), 0.0), Frag.shininess);
+	vec4	specCol = vec4(Frag.specular * specAmt * Frag.color.rgb, 1.0);
+	vec4	specTex = texture(Frag.tex_sm, In.Texcoord);
+	vec4	specular= (specCol * specTex);
 
-	// Textures
-	vec4 tex_dm = texture(Frag.tex_dm, In.Texcoord);
-	vec4 tex_sm = texture(Frag.tex_sm, In.Texcoord);
-
-	gl_Color =
-		(ambient) +
-		(vec4(diffuse, 1.0) * tex_dm) +
-		(vec4(specular, 1.0) * tex_sm);
+	gl_Color = (ambient + diffuse + specular);
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

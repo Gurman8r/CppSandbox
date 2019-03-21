@@ -62,7 +62,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MemePhysics", "proj\MemePhy
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{E65A3E63-01E7-4414-A48B-F8B2CB55B5F7}"
 	ProjectSection(SolutionItems) = preProject
-		docs\final.txt = docs\final.txt
+		config.ini = config.ini
 		LICENSE.txt = LICENSE.txt
 		README.md = README.md
 	EndProjectSection
