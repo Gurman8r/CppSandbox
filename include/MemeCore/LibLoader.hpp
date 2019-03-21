@@ -6,6 +6,11 @@
 
 #define ML_Lib ml::LibLoader::getInstance()
 
+extern "C"
+{
+	ML_API_EXPORT int32_t ML_Plugin_Main(void * data);
+}
+
 namespace ml
 {
 	class ML_CORE_API LibLoader
@@ -13,6 +18,9 @@ namespace ml
 		, public ISingleton<LibLoader>
 	{
 		friend class ISingleton<LibLoader>;
+
+	public:
+		using PluginMainFun = int32_t(*)(void *);
 
 	private:
 		LibLoader() {}
@@ -22,28 +30,7 @@ namespace ml
 		bool	freeLibrary(void * value);
 		void *	loadLibrary(const String & filename);
 		void *	loadFunction(void * value, const String & name);
-
-		template <typename _Ret, typename ... _Args>
-		inline bool callFunction(void * funHandle, _Ret & result, const _Args & ... args)
-		{
-			using Func = _Ret(*)(_Args ...);
-			if (auto func = static_cast<Func>(funHandle))
-			{
-				result = func((args)...);
-				return true;
-			}
-			result = _Ret();
-			return false;
-		}
-
-		template <typename _Ret, typename ... _Args>
-		inline _Ret callFunction(void * value, const _Args & ... args)
-		{
-			using Func = _Ret(*)(_Args ...);
-			Func func;
-			assert(func = static_cast<Func>(value));
-			return func((args)...);
-		}
+		void *	loadPlugin(const String & filename, void * data);
 
 	private:
 

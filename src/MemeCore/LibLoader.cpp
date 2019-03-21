@@ -1,50 +1,46 @@
 #include <MemeCore/LibLoader.hpp>
 #include <MemeCore/FileSystem.hpp>
+#include <MemeCore/Debug.hpp>
 
 #ifdef ML_SYSTEM_WINDOWS
-#include <Windows.h>
-#define ML_INSTANCE static_cast<HINSTANCE>
+#	include <Windows.h>
+#	define ML_INSTANCE(expr) ((HINSTANCE)(expr))
+#	define ML_FreeLibrary FreeLibrary
+#	define ML_LoadLibrary LoadLibrary
+#	define ML_LoadFunction GetProcAddress
 #else
-#define ML_INSTANCE static_cast<void *>
+#	define ML_INSTANCE(expr) ((void *)(expr))
+#	define ML_FreeLibrary(expr)
+#	define ML_LoadLibrary(expr) 
+#	define ML_LoadFunction(expr)
 #endif
 
 namespace ml
 {
 	bool LibLoader::freeLibrary(void * value)
 	{
-		if (value)
-		{
-#ifdef ML_SYSTEM_WINDOWS
-			return FreeLibrary(ML_INSTANCE(value));
-#else
-			return false;
-#endif
-		}
-		return false;
+		return ML_FreeLibrary(ML_INSTANCE(value));
 	}
 
 	void * LibLoader::loadLibrary(const String & filename)
 	{
-		if (ML_FileSystem.fileExists(filename))
-		{
-#ifdef ML_SYSTEM_WINDOWS
-			return static_cast<void *>(LoadLibrary(filename.c_str()));
-#else
-			return NULL;
-#endif
-		}
-		return NULL;
+		return ML_LoadLibrary(filename.c_str());
 	}
 
 	void * LibLoader::loadFunction(void * value, const String & name)
 	{
-		if (value)
+		return ML_LoadFunction(ML_INSTANCE(value), name.c_str());
+	}
+
+	void * LibLoader::loadPlugin(const String & filename, void * data)
+	{
+		if (void * lib = loadLibrary(filename))
 		{
-#ifdef ML_SYSTEM_WINDOWS
-			return static_cast<void *>(GetProcAddress(ML_INSTANCE(value), name.c_str()));
-#else
-			return NULL;
-#endif
+			if (PluginMainFun fun = (PluginMainFun)loadFunction(lib, "ML_Plugin_Main"))
+			{
+				fun(data);
+			}
+			return lib;
 		}
 		return NULL;
 	}

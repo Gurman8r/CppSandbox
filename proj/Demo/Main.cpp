@@ -11,25 +11,6 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-ml::RenderWindow * loadProgram(const ml::String & filename)
-{
-	if (void * lib = ML_Lib.loadLibrary(filename))
-	{
-		if (void * fun = ML_Lib.loadFunction(lib, "ML_LoadInstance"))
-		{
-			if (void * ent = ML_Lib.callFunction<void *>(fun))
-			{
-				return static_cast<ml::RenderWindow *>(ent);
-			}
-		}
-		ML_Lib.freeLibrary(lib);
-		return NULL;
-	}
-	return static_cast<ml::RenderWindow *>(new DEMO::Demo());
-}
-
-/* * * * * * * * * * * * * * * * * * * * */
-
 int32_t main(int32_t argc, char ** argv)
 {
 	// Load Settings
@@ -39,8 +20,22 @@ int32_t main(int32_t argc, char ** argv)
 			|| ml::Debug::pause(EXIT_FAILURE);
 	}
 
+	// Load Plugins
+	if (void * lib = ML_Lib.loadPlugin(ml::String("./TestPlugin_{0}_{1}.dll").format(
+		ml::Debug::configuration(),
+		ml::Debug::platform()),
+		(void *)("Data Received by Plugin")))
+	{
+		ML_Lib.freeLibrary(lib);
+	}
+	else
+	{
+		return ml::Debug::logError("Failed Loading Plugins")
+			|| ml::Debug::pause(EXIT_FAILURE);
+	}
+
 	// Load Program
-	if (ml::RenderWindow * program = loadProgram("./Placeholder_Debug_x86.dll"))
+	if (auto * program = new DEMO::Demo())
 	{
 		// Enter
 		ML_EventSystem.fireEvent(DEMO::EnterEvent(ml::Args(argc, argv)));
@@ -48,12 +43,6 @@ int32_t main(int32_t argc, char ** argv)
 		{
 			delete program;
 			return ml::Debug::pause(EXIT_FAILURE);
-		}
-
-		if (SETTINGS.runTests)
-		{
-			delete program;
-			return ml::Debug::pause(EXIT_SUCCESS);
 		}
 
 		// Load
