@@ -25,14 +25,14 @@ void main()
 #version 410 core
 
 // Varyings
-out vec4 FragColor;
+out vec4 gl_Color;
 
 // Uniforms
 uniform vec4 u_color;
 
 void main()
 {
-	FragColor = u_color;
+	gl_Color = u_color;
 }
 
 
@@ -40,7 +40,7 @@ void main()
 /* * * * * * * * * * * * * * * * * * * * */
 #shader geometry
 #version 410 core
-#include "../../../assets/shaders/common/Geom.shader"
+#include "../../../assets/shaders/common/Curve.shader"
 
 // Macros
 #define SAMPLES_PER_SEGMENT 16

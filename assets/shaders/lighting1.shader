@@ -39,7 +39,7 @@ void main()
 in	vec3 FragPos;
 in  vec3 Normal;
 in  vec2 Texcoord;
-out vec4 FragColor;
+out vec4 gl_Color;
 
 // Uniforms
 uniform vec3		u_viewPos;
@@ -73,7 +73,7 @@ void main()
 	vec4	tex_sm = texture(u_tex_sm, Texcoord);
 
 	// result
-	FragColor =
+	gl_Color =
 		(vec4(ambient, 1.0)) +
 		(vec4(diffuse, 1.0) * tex_dm) +
 		(vec4(specular, 1.0) * tex_sm);

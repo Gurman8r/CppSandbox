@@ -24,14 +24,14 @@ void main()
 #version 410 core
 
 // Varyings
-out vec4 FragColor;
+out vec4 gl_Color;
 
 // Uniforms
 uniform vec4 u_color;
 
 void main()
 {
-	FragColor = u_color;
+	gl_Color = u_color;
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

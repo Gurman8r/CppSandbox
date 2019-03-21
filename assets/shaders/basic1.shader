@@ -32,7 +32,7 @@ void main()
 #version 410 core
 
 // Varyings
-out vec4	FragColor;
+out vec4	gl_Color;
 in  vec2	Texcoord;
 
 // Uniforms
@@ -41,7 +41,7 @@ uniform vec4		u_color;
 
 void main()
 {
-	FragColor = u_color * texture(u_texture, Texcoord);
+	gl_Color = u_color * texture(u_texture, Texcoord);
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

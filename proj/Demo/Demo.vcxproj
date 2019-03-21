@@ -177,7 +177,7 @@
     <None Include="..\..\assets\shaders\basic2.shader" />
     <None Include="..\..\assets\shaders\basic3.shader" />
     <None Include="..\..\assets\shaders\common\Frag.shader" />
-    <None Include="..\..\assets\shaders\common\Geom.shader" />
+    <None Include="..\..\assets\shaders\common\Curve.shader" />
     <None Include="..\..\assets\shaders\common\Vert.shader" />
     <None Include="..\..\assets\shaders\framebuffer.shader" />
     <None Include="..\..\assets\shaders\fs\basic\drawColor_fs4x.shader" />
@@ -196,9 +196,8 @@
     <None Include="..\..\assets\shaders\geometry.shader" />
     <None Include="..\..\assets\shaders\gs\basic\drawCurve_gs4x.shader" />
     <None Include="..\..\assets\shaders\gs\basic\drawCurve_morphing_gs4x.shader" />
-    <None Include="..\..\assets\shaders\basic.shader" />
-    <None Include="..\..\assets\shaders\lib\Test.shader" />
-    <None Include="..\..\assets\shaders\lighting.shader" />
+    <None Include="..\..\assets\shaders\basic1.shader" />
+    <None Include="..\..\assets\shaders\lighting1.shader" />
     <None Include="..\..\assets\shaders\lighting2.shader" />
     <None Include="..\..\assets\shaders\normal3D.shader" />
     <None Include="..\..\assets\shaders\skybox.shader" />

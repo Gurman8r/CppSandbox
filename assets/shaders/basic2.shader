@@ -49,20 +49,20 @@ in VertexData
 } In;
 
 // Frag Color
-out vec4 FragColor;
+out vec4 gl_Color;
 
 // Uniforms
 struct Frag_Uniforms
 {
 	vec4 color;
-	sampler2D tex0;
+	sampler2D mainTex;
 };
 uniform Frag_Uniforms Frag;
 
 // Main
 void main()
 {
-	FragColor = (Frag.color * texture(Frag.tex0, In.Texcoord));
+	gl_Color = (Frag.color * texture(Frag.mainTex, In.Texcoord));
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

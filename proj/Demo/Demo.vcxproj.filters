@@ -205,9 +205,6 @@
     <None Include="..\..\assets\shaders\framebuffer.shader">
       <Filter>Resource Files\shaders</Filter>
     </None>
-    <None Include="..\..\assets\shaders\lighting.shader">
-      <Filter>Resource Files\shaders</Filter>
-    </None>
     <None Include="..\..\assets\meshes\cube.mesh">
       <Filter>Resource Files\meshes</Filter>
     </None>
@@ -257,26 +254,26 @@
       <Filter>Resource Files\shaders</Filter>
     </None>
     <None Include="..\..\config.ini" />
-    <None Include="..\..\assets\shaders\basic.shader">
-      <Filter>Resource Files\shaders</Filter>
-    </None>
     <None Include="..\..\assets\shaders\basic3.shader">
-      <Filter>Resource Files\shaders</Filter>
-    </None>
-    <None Include="..\..\assets\shaders\lighting2.shader">
       <Filter>Resource Files\shaders</Filter>
     </None>
     <None Include="..\..\assets\shaders\common\Frag.shader">
       <Filter>Resource Files\shaders\common</Filter>
     </None>
-    <None Include="..\..\assets\shaders\common\Geom.shader">
-      <Filter>Resource Files\shaders\common</Filter>
-    </None>
     <None Include="..\..\assets\shaders\common\Vert.shader">
       <Filter>Resource Files\shaders\common</Filter>
     </None>
-    <None Include="..\..\assets\shaders\lib\Test.shader">
+    <None Include="..\..\assets\shaders\common\Curve.shader">
       <Filter>Resource Files\shaders\common</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\lighting1.shader">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\lighting2.shader">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\basic1.shader">
+      <Filter>Resource Files\shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

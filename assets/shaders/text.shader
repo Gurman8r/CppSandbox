@@ -30,7 +30,7 @@ void main()
 #version 410 core
 
 // Varyings
-out vec4	FragColor;
+out vec4	gl_Color;
 in  vec2	Texcoord;
 
 // Uniforms
@@ -41,7 +41,7 @@ void main()
 {
 	float a = texture(u_texture, Texcoord).r;
 
-	FragColor = vec4(1, 1, 1, a) * u_color;
+	gl_Color = vec4(1, 1, 1, a) * u_color;
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

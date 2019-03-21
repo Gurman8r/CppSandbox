@@ -24,7 +24,7 @@ void main()
 #version 410 core
 
 // Varyings
-out vec4	FragColor;
+out vec4	gl_Color;
 in  vec2	Texcoord;
 
 // Uniforms
@@ -34,21 +34,21 @@ uniform int			u_mode;
 // Functions
 void drawNormal()
 {
-	FragColor = texture(u_texture, Texcoord);
+	gl_Color = texture(u_texture, Texcoord);
 }
 
 void drawInverted()
 {
-	FragColor = vec4(vec3(1.0 - texture(u_texture, Texcoord)), 1.0);
+	gl_Color = vec4(vec3(1.0 - texture(u_texture, Texcoord)), 1.0);
 }
 
 void drawGrayscale()
 {
-	FragColor = texture(u_texture, Texcoord);
+	gl_Color = texture(u_texture, Texcoord);
 
-	float average = (FragColor.r + FragColor.g + FragColor.b) / 3.0;
+	float average = (gl_Color.r + gl_Color.g + gl_Color.b) / 3.0;
 	
-	FragColor = vec4(average, average, average, 1.0);
+	gl_Color = vec4(average, average, average, 1.0);
 }
 
 void drawKernel(in float kernel[9])
@@ -79,7 +79,7 @@ void drawKernel(in float kernel[9])
 		color += samples[i] * kernel[i];
 	}
 
-	FragColor = vec4(color, 1.0);
+	gl_Color = vec4(color, 1.0);
 }
 
 // Enums

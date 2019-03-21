@@ -26,7 +26,7 @@ void main()
 #version 410 core
 
 // Varyings
-out vec4 FragColor;
+out vec4 gl_Color;
 in	vec3 Texcoord;
 
 // Uniforms
@@ -34,7 +34,7 @@ uniform samplerCube	u_skybox;
 
 void main()
 {
-	FragColor = texture(u_skybox, Texcoord);
+	gl_Color = texture(u_skybox, Texcoord);
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

@@ -48,7 +48,7 @@ script:		fizzbuzz	/scripts/fizzbuzz.meme
 
 # Shaders
 #***********************************************************************#
-shader:		basic		/shaders/basic.shader
+shader:		basic		/shaders/basic1.shader
 shader:		basic2		/shaders/basic2.shader
 shader:		basic3		/shaders/basic3.shader
 shader:		sprites		/shaders/sprites.shader
@@ -56,7 +56,7 @@ shader:		normal3D	/shaders/normal3D.shader
 shader:		text		/shaders/text.shader
 shader:		geometry	/shaders/geometry.shader
 shader:		framebuffer	/shaders/framebuffer.shader
-shader:		lighting	/shaders/lighting.shader
+shader:		lighting	/shaders/lighting1.shader
 shader:		lighting2	/shaders/lighting2.shader
 shader:		solid		/shaders/solid.shader
 shader:		skybox		/shaders/skybox.shader

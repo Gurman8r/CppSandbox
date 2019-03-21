@@ -21,7 +21,7 @@ void main()
 
 void main()
 {
-	gl_Color = (Frag.color * texture(Frag.tex0, In.Texcoord));
+	gl_Color = (Frag.color * texture(Frag.mainTex, In.Texcoord));
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

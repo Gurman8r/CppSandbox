@@ -18,7 +18,7 @@ out vec4 gl_Color;
 struct Frag_Uniforms
 {
 	vec4 color;
-	sampler2D tex0;
+	sampler2D mainTex;
 };
 
 // Uniforms

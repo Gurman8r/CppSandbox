@@ -64,7 +64,7 @@ in VertexData
 
 // Out Data
 /* * * * * * * * * * * * * * * * * * * * */
-out vec4 FragColor;
+out vec4 gl_Color;
 
 // Uniforms
 /* * * * * * * * * * * * * * * * * * * * */
@@ -123,7 +123,7 @@ vec4 fragOutput()
 /* * * * * * * * * * * * * * * * * * * * */
 void main()
 {
-	FragColor = fragOutput();
+	gl_Color = fragOutput();
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

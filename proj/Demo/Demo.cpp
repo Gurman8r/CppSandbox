@@ -675,7 +675,7 @@ namespace DEMO
 					ml::Uniform("Vert.view",	ml::Uniform::Mat4,	&m_camera.matrix()),
 					ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
 					ml::Uniform("Frag.color",	ml::Uniform::Vec4,	&ml::Color::White),
-					ml::Uniform("Frag.tex0",	ml::Uniform::Tex,	ML_Res.textures.get("borg")),
+					ml::Uniform("Frag.mainTex",	ml::Uniform::Tex,	ML_Res.textures.get("borg")),
 				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("basic3"))
 				{
@@ -735,7 +735,7 @@ namespace DEMO
 					ml::Uniform("Vert.view",	ml::Uniform::Mat4,	&m_camera.matrix()),
 					ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
 					ml::Uniform("Frag.color",	ml::Uniform::Vec4,	&ml::Color::White),
-					ml::Uniform("Frag.tex0",	ml::Uniform::Tex,	ML_Res.textures.get("stone_dm")),
+					ml::Uniform("Frag.mainTex",	ml::Uniform::Tex,	ML_Res.textures.get("stone_dm")),
 				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("normal3D"))
 				{
@@ -753,7 +753,7 @@ namespace DEMO
 					ml::Uniform("Vert.view",	ml::Uniform::Mat4,	&m_camera.matrix()),
 					ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
 					ml::Uniform("Frag.color",	ml::Uniform::Vec4,	&ml::Color::White),
-					ml::Uniform("Frag.tex0",	ml::Uniform::Tex,	ML_Res.textures.get("stone_dm")),
+					ml::Uniform("Frag.mainTex",	ml::Uniform::Tex,	ML_Res.textures.get("stone_dm")),
 				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("normal3D"))
 				{
