@@ -3,7 +3,7 @@
 #shader vertex
 #version 410 core
 
-// Layout
+// Attributes
 layout(location = 0) in vec3 a_Position;
 
 // Varyings

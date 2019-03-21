@@ -731,13 +731,14 @@ namespace DEMO
 			if (const ml::Model * model = ML_Res.models.get("cube"))
 			{
 				static ml::UniformSet uniforms = {
-					ml::Uniform("u_model",	ml::Uniform::Mat4,	&model->transform().matrix()),
-					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
-					ml::Uniform("u_texture",ml::Uniform::Tex,	ML_Res.textures.get("stone_dm")),
+					ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&model->transform().matrix()),
+					ml::Uniform("Vert.view",	ml::Uniform::Mat4,	&m_camera.matrix()),
+					ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
+					ml::Uniform("Frag.color",	ml::Uniform::Vec4,	&ml::Color::White),
+					ml::Uniform("Frag.tex0",	ml::Uniform::Tex,	ML_Res.textures.get("stone_dm")),
 				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("normal3D"))
 				{
-					shader->applyUniforms(camera_uniforms);
 					shader->applyUniforms(uniforms);
 					shader->bind();
 				}
@@ -748,13 +749,14 @@ namespace DEMO
 			if (const ml::Model * model = ML_Res.models.get("ground"))
 			{
 				static ml::UniformSet uniforms = {
-					ml::Uniform("u_model",	ml::Uniform::Mat4,	&model->transform().matrix()),
-					ml::Uniform("u_color",	ml::Uniform::Vec4,	&ml::Color::White),
-					ml::Uniform("u_texture",ml::Uniform::Tex,	ML_Res.textures.get("stone_dm")),
+					ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&model->transform().matrix()),
+					ml::Uniform("Vert.view",	ml::Uniform::Mat4,	&m_camera.matrix()),
+					ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&m_persp.matrix()),
+					ml::Uniform("Frag.color",	ml::Uniform::Vec4,	&ml::Color::White),
+					ml::Uniform("Frag.tex0",	ml::Uniform::Tex,	ML_Res.textures.get("stone_dm")),
 				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("normal3D"))
 				{
-					shader->applyUniforms(camera_uniforms);
 					shader->applyUniforms(uniforms);
 					shader->bind();
 				}

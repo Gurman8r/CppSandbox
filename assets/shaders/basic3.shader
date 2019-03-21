@@ -1,23 +1,27 @@
-// Vertex
 /* * * * * * * * * * * * * * * * * * * * */
-#include "../../../assets/shaders/lib/Vert.shader"
+
+#include "../../../assets/shaders/common/Vert.shader"
+#include "../../../assets/shaders/common/Frag.shader"
+
+/* * * * * * * * * * * * * * * * * * * * */
+
+#shader vertex
 
 void main()
 {
-	mat4 mvp = (Vert.proj * Vert.view * Vert.model);
 	Out.Position = a_Position;
 	Out.Normal = a_Normal;
 	Out.Texcoord = a_Texcoord;
-	gl_Position = mvp * vec4(a_Position, 1.0);
+	gl_Position = (Vert.proj * Vert.view * Vert.model) * vec4(a_Position, 1.0);
 }
 
-// Fragment
 /* * * * * * * * * * * * * * * * * * * * */
-#include "../../../assets/shaders/lib/Frag.shader"
+
+#shader fragment
 
 void main()
 {
-	FragColor = (Frag.color * texture(Frag.tex0, In.Texcoord));
+	gl_Color = (Frag.color * texture(Frag.tex0, In.Texcoord));
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

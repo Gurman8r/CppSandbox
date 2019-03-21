@@ -1,51 +1,27 @@
-// Vertex
 /* * * * * * * * * * * * * * * * * * * * */
+
+#include "../../../assets/shaders/common/Vert.shader"
+#include "../../../assets/shaders/common/Frag.shader"
+
+/* * * * * * * * * * * * * * * * * * * * */
+
 #shader vertex
-#version 410 core
-
-// Layout
-layout(location = 0) in vec3 a_Position;
-layout(location = 1) in vec4 a_Normal;
-layout(location = 2) in vec2 a_Texcoord;
-
-// Varyings
-out vec3 Position;
-out vec4 Normal;
-out vec2 Texcoord;
-
-// Uniforms
-uniform mat4 u_proj;
-uniform mat4 u_view;
-uniform mat4 u_model;
 
 void main()
 {
-	Position	= a_Position;
-	Texcoord	= a_Texcoord;
-	Normal		= a_Normal;
-
-	mat4 mvp = (u_proj * u_view * u_model);
-
-	gl_Position = mvp * vec4(a_Position, 1.0);
+	Out.Position = a_Position;
+	Out.Normal = a_Normal;
+	Out.Texcoord = a_Texcoord;
+	gl_Position = (Vert.proj * Vert.view * Vert.model) * vec4(a_Position, 1.0);
 }
 
-// Fragment
 /* * * * * * * * * * * * * * * * * * * * */
+
 #shader fragment
-#version 410 core
-
-// Varyings
-out vec4	FragColor;
-in  vec2	Texcoord;
-in  vec4	Normal;
-
-// Uniforms
-uniform sampler2D	u_texture;
-uniform vec4		u_color;
 
 void main()
 {
-	FragColor = u_color * Normal * texture(u_texture, Texcoord);
+	gl_Color = Frag.color * In.Normal * texture(Frag.tex0, In.Texcoord);
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

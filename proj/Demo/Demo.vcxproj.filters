@@ -89,7 +89,7 @@
     <Filter Include="Resource Files\materials">
       <UniqueIdentifier>{915c2446-9cc8-41a6-b386-a55e4bcd2581}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\shaders\lib">
+    <Filter Include="Resource Files\shaders\common">
       <UniqueIdentifier>{0e9a8c9c-8055-491a-879a-d1707eca19d1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -263,14 +263,20 @@
     <None Include="..\..\assets\shaders\basic3.shader">
       <Filter>Resource Files\shaders</Filter>
     </None>
-    <None Include="..\..\assets\shaders\lib\Frag.shader">
-      <Filter>Resource Files\shaders\lib</Filter>
-    </None>
-    <None Include="..\..\assets\shaders\lib\Vert.shader">
-      <Filter>Resource Files\shaders\lib</Filter>
-    </None>
     <None Include="..\..\assets\shaders\lighting2.shader">
       <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\common\Frag.shader">
+      <Filter>Resource Files\shaders\common</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\common\Geom.shader">
+      <Filter>Resource Files\shaders\common</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\common\Vert.shader">
+      <Filter>Resource Files\shaders\common</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\lib\Test.shader">
+      <Filter>Resource Files\shaders\common</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

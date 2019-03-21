@@ -12,7 +12,7 @@ in VertexData
 } In;
 
 // Frag Color
-out vec4 FragColor;
+out vec4 gl_Color;
 
 // Structs
 struct Frag_Uniforms
