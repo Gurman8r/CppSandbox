@@ -34,7 +34,6 @@ int32_t main(int32_t argc, char ** argv)
 		case EXIT_SUCCESS:
 			if (plugin.cleanup())
 			{
-				ml::Debug::log("Successfully Finalized Plugin");
 			}
 			break;
 		}
