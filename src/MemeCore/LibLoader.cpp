@@ -5,21 +5,21 @@
 #ifdef ML_SYSTEM_WINDOWS
 #	include <Windows.h>
 #	define ML_INSTANCE(expr) ((HINSTANCE)(expr))
-#	define ML_FreeLibrary FreeLibrary
-#	define ML_LoadLibrary LoadLibrary
-#	define ML_LoadFunction GetProcAddress
+#	define ML_FreeLibrary(expr) FreeLibrary(ML_INSTANCE(expr))
+#	define ML_LoadLibrary(expr) LoadLibrary(expr)
+#	define ML_LoadFunction(expr, name) GetProcAddress(ML_INSTANCE(expr), name)
 #else
 #	define ML_INSTANCE(expr) ((void *)(expr))
 #	define ML_FreeLibrary(expr)
-#	define ML_LoadLibrary(expr) 
-#	define ML_LoadFunction(expr)
+#	define ML_LoadLibrary(expr)
+#	define ML_LoadFunction(expr, name)
 #endif
 
 namespace ml
 {
 	bool LibLoader::freeLibrary(void * value)
 	{
-		return ML_FreeLibrary(ML_INSTANCE(value));
+		return ML_FreeLibrary(value);
 	}
 
 	void * LibLoader::loadLibrary(const String & filename)
@@ -29,7 +29,7 @@ namespace ml
 
 	void * LibLoader::loadFunction(void * value, const String & name)
 	{
-		return ML_LoadFunction(ML_INSTANCE(value), name.c_str());
+		return ML_LoadFunction(value, name.c_str());
 	}
 
 	void * LibLoader::loadPlugin(const String & filename, void * data)

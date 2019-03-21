@@ -28,11 +28,6 @@ int32_t main(int32_t argc, char ** argv)
 	{
 		ML_Lib.freeLibrary(lib);
 	}
-	else
-	{
-		return ml::Debug::logError("Failed Loading Plugins")
-			|| ml::Debug::pause(EXIT_FAILURE);
-	}
 
 	// Load Program
 	if (auto * program = new DEMO::Demo())

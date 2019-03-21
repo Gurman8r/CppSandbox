@@ -32,8 +32,6 @@ namespace ml
 		void *	loadFunction(void * value, const String & name);
 		void *	loadPlugin(const String & filename, void * data);
 
-	private:
-
 	};
 }
 
