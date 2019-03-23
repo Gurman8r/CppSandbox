@@ -67,6 +67,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestPlugin", "plugins\TestP
 		{2E2EE9AD-06FF-4A73-B09D-EC42CB1A9923} = {2E2EE9AD-06FF-4A73-B09D-EC42CB1A9923}
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{47761FD6-8EC5-46D5-B2A9-134E48CBF7E4}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE.txt = LICENSE.txt
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64

@@ -1,7 +1,7 @@
 // framebuffer.shader
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#include <common/Vert.MVP.shader>
+#include <common/Vert.shader>
 #shader vertex
 
 void main()
