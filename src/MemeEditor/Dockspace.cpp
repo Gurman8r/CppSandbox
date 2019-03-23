@@ -1,5 +1,5 @@
 #include <MemeEditor/Dockspace.hpp>
-#include <MemeEditor/EditorGUI.hpp>
+#include <MemeEditor/GUI.hpp>
 #include <MemeEditor/ImGui.hpp>
 
 namespace ml

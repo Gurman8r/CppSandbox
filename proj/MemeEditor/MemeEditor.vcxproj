@@ -161,7 +161,7 @@
     <ClInclude Include="..\..\include\MemeEditor\Browser.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Dockspace.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\GUI_Base.hpp" />
-    <ClInclude Include="..\..\include\MemeEditor\EditorGUI.hpp" />
+    <ClInclude Include="..\..\include\MemeEditor\GUI.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\GUI_Tool.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\GUI_Window.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Hierarchy.hpp" />
@@ -191,7 +191,7 @@
     <ClCompile Include="..\..\src\MemeEditor\Browser.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\Dockspace.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\GUI_Base.cpp" />
-    <ClCompile Include="..\..\src\MemeEditor\EditorGUI.cpp" />
+    <ClCompile Include="..\..\src\MemeEditor\GUI.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\GUI_Tool.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\GUI_Window.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\Hierarchy.cpp" />

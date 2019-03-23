@@ -5,7 +5,7 @@
 #include <MemeWindow/WindowEvents.hpp>
 #include <MemeEditor/ImGui.hpp>
 #include <MemeEditor/ResourceManager.hpp>
-#include <MemeEditor/EditorGUI.hpp>
+#include <MemeEditor/GUI.hpp>
 #include <MemeEditor/Terminal.hpp>
 #include <MemeEditor/Builder.hpp>
 #include <MemeEditor/Browser.hpp>
@@ -1031,14 +1031,14 @@ namespace DEMO
 
 			ImGui::Text("Camera");
 			ImGui::Checkbox("Move##Camera", &m_camAnimate);
-			ml::EditorGUI::InputVec3f("Position##Camera", m_camPos);
+			ml::GUI::EditVec3f("Position##Camera", m_camPos);
 			ImGui::DragFloat("Speed##Camera", &m_camSpd, 0.1f, -5.f, 5.f);
 			ImGui::Separator();
 
 			/* * * * * * * * * * * * * * * * * * * * */
 
 			ImGui::Text("Light");
-			ml::EditorGUI::EditVec3f("Position##Light", m_lightPos);
+			ml::GUI::EditVec3f("Position##Light", m_lightPos);
 			ImGui::ColorEdit4("Color##Light", &m_lightCol[0]);
 			ImGui::DragFloat("Ambient##Light", &m_ambient, 0.01f, 0.f, 1.f);
 			ImGui::DragFloat("Specular##Light", &m_specular, 0.01f, 0.1f, 10.f);
@@ -1059,7 +1059,7 @@ namespace DEMO
 
 			ImGui::Text("Transform");
 			ImGui::Checkbox("Animate##Transform", &m_animate);
-			ml::EditorGUI::InputMat4f("Matrix##Transform", ML_Res.models.get("earth")->transform().matrix());
+			ml::GUI::EditMat4f("Matrix", ML_Res.models.get("earth")->transform().matrix());
 			ImGui::Separator();
 
 			/* * * * * * * * * * * * * * * * * * * * */
@@ -1079,7 +1079,7 @@ namespace DEMO
 
 	bool Demo::draw_TestWindow(bool * p_open)
 	{
-		return ml::EditorGUI::DrawFun("Test Window", p_open, ImGuiWindowFlags_MenuBar, [&]()
+		return ml::GUI::DrawFun("Test Window", p_open, ImGuiWindowFlags_MenuBar, [&]()
 		{
 			if (ImGui::BeginMenuBar())
 			{

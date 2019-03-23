@@ -1,6 +1,6 @@
 #include <MemeEditor/Builder.hpp>
 #include <MemeEditor/ResourceManager.hpp>
-#include <MemeEditor/EditorGUI.hpp>
+#include <MemeEditor/GUI.hpp>
 #include <MemeEditor/ImGui.hpp>
 
 namespace ml
@@ -188,31 +188,31 @@ namespace ml
 			case Uniform::Vec2:
 			{
 				static vec2f temp;
-				ml::EditorGUI::InputVec2f("Value", temp);
+				ml::GUI::EditVec2f("Value", temp);
 			}
 			break;
 			case Uniform::Vec3:
 			{
 				static vec3f temp;
-				ml::EditorGUI::InputVec3f("Value", temp);
+				ml::GUI::EditVec3f("Value", temp);
 			}
 			break;
 			case Uniform::Vec4:
 			{
 				static vec4f temp;
-				ml::EditorGUI::InputVec4f("Value", temp);
+				ml::GUI::EditVec4f("Value", temp);
 			}
 			break;
 			case Uniform::Mat3:
 			{
 				static mat3f temp;
-				ml::EditorGUI::InputMat3f("Value", temp);
+				ml::GUI::EditMat3f("Value", temp);
 			}
 			break;
 			case Uniform::Mat4:
 			{
 				static mat4f temp;
-				ml::EditorGUI::InputMat4f("Value", temp);
+				ml::GUI::EditMat4f("Value", temp);
 			}
 			break;
 			case Uniform::Tex:

@@ -6,27 +6,26 @@
 
 namespace ml
 {
-	class ML_EDITOR_API EditorGUI final
+	class ML_EDITOR_API GUI final
 	{
 	public:
-		static void InputMat4f(CString label, mat4f & value);
-		static void InputMat3f(CString label, mat3f & value);
-		static void InputVec2f(CString label, vec2f & value);
-		static void InputVec3f(CString label, vec3f & value);
-		static void InputVec4f(CString label, vec4f & value);
-
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		static void DrawLabel(CString label);
-		static bool EditVec3f(CString label, vec3f & value, float speed = 1.f, float min = 0.f, float max = 0.f);
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		static bool EditVec2f(CString label, vec2f & value, float speed = 1.f);
+		static bool EditVec3f(CString label, vec3f & value, float speed = 1.f);
+		static bool EditVec4f(CString label, vec4f & value, float speed = 1.f);
+		static bool EditMat3f(CString label, mat3f & value, float speed = 1.f);
+		static bool EditMat4f(CString label, mat4f & value, float speed = 1.f);
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		static bool Begin(CString label, bool * p_open, int32_t flags);
 		static void End();
 
-		/* * * * * * * * * * * * * * * * * * * * */
-		
 		template <
 			typename _Fun
 		> inline static bool DrawFun(CString label, bool * p_open, int32_t flags, _Fun fun)

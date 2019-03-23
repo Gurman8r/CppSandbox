@@ -132,13 +132,13 @@
     <ClInclude Include="..\..\include\MemeEditor\EditorEvents.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeEditor\EditorGUI.hpp">
-      <Filter>Header Files\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeEditor\ImGui.hpp">
+    <ClInclude Include="..\..\include\MemeEditor\GUI.hpp">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\ImGui_Builtin.hpp">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeEditor\ImGui.hpp">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
   </ItemGroup>
@@ -203,10 +203,10 @@
     <ClCompile Include="..\..\src\MemeEditor\TextEditor.cpp">
       <Filter>Source Files\GUI\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemeEditor\EditorGUI.cpp">
+    <ClCompile Include="..\..\src\MemeEditor\ImGui_Builtin.cpp">
       <Filter>Source Files\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemeEditor\ImGui_Builtin.cpp">
+    <ClCompile Include="..\..\src\MemeEditor\GUI.cpp">
       <Filter>Source Files\GUI</Filter>
     </ClCompile>
   </ItemGroup>
