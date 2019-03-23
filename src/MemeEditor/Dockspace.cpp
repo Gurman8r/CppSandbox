@@ -56,7 +56,7 @@ namespace ml
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { padding[0], padding[1] });
 			ImGui::SetNextWindowBgAlpha(bgAlpha);
 
-			// Begin
+			// Begi
 			if (base_type::beginDraw(title, p_open, flags))
 			{
 				ImGui::PopStyleVar(3);

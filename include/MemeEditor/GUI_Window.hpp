@@ -21,15 +21,13 @@ namespace ml
 	public:
 		uint32_t getID() const;
 
+	public:
 		virtual void onEvent(const IEvent * value) override = 0;
 		virtual bool draw(CString title, bool * p_open) = 0;
 
+	public:
 		virtual bool beginDraw(CString title, bool * p_open, int32_t flags = 0);
 		virtual bool endDraw();
-
-		inline CString	title() const { return m_title; }
-		inline bool *	open()	const { return m_open; }
-		inline int32_t	flags() const { return m_flags; }
 
 	public:
 		template <
@@ -42,6 +40,11 @@ namespace ml
 			}
 			return endDraw();
 		}
+
+	public:
+		inline CString	title() const { return m_title; }
+		inline bool *	open()	const { return m_open; }
+		inline int32_t	flags() const { return m_flags; }
 
 	protected:
 		CString	m_title;

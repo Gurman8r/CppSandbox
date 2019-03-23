@@ -52,6 +52,12 @@
     <Filter Include="Header Files\GUI\Tools">
       <UniqueIdentifier>{170c2bac-0d65-404a-9d6c-f1631acd3794}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\GUI\Internal">
+      <UniqueIdentifier>{ef7e1106-e122-44c3-a51b-1de51be0c629}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GUI\Internal">
+      <UniqueIdentifier>{9ffffa8a-b418-48ef-810b-63056b26cf58}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Header Files\Utility">
       <UniqueIdentifier>{bbbe9001-f7d0-41f8-92c0-f02c8e793139}</UniqueIdentifier>
     </Filter>
@@ -132,14 +138,14 @@
     <ClInclude Include="..\..\include\MemeEditor\EditorEvents.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeEditor\EditorGUI.hpp">
-      <Filter>Header Files\GUI</Filter>
+    <ClInclude Include="..\..\include\MemeEditor\ImGui_Builtin.hpp">
+      <Filter>Header Files\GUI\Internal</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\ImGui.hpp">
-      <Filter>Header Files\GUI</Filter>
+      <Filter>Header Files\GUI\Internal</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeEditor\ImGui_Builtin.hpp">
-      <Filter>Header Files\GUI</Filter>
+    <ClInclude Include="..\..\include\MemeEditor\EditorGUI.hpp">
+      <Filter>Header Files\GUI\Internal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -203,11 +209,11 @@
     <ClCompile Include="..\..\src\MemeEditor\Inspector.cpp">
       <Filter>Source Files\GUI\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemeEditor\EditorGUI.cpp">
-      <Filter>Source Files\GUI</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\ImGui_Builtin.cpp">
-      <Filter>Source Files\GUI</Filter>
+      <Filter>Source Files\GUI\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeEditor\EditorGUI.cpp">
+      <Filter>Source Files\GUI\Internal</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

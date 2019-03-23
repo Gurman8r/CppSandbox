@@ -1079,8 +1079,7 @@ namespace DEMO
 
 	bool Demo::draw_Tester(ml::CString title, bool * p_open)
 	{
-		bool good;
-		if (good = ImGui::Begin(title, p_open, ImGuiWindowFlags_MenuBar))
+		return ml::EditorGUI::DrawFun(title, p_open, ImGuiWindowFlags_MenuBar, [&]()
 		{
 			if (ImGui::BeginMenuBar())
 			{
@@ -1097,11 +1096,8 @@ namespace DEMO
 				}
 				ImGui::EndMenuBar();
 			}
-
 			ImGui::Separator();
-		}
-		ImGui::End();
-		return good;
+		});
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

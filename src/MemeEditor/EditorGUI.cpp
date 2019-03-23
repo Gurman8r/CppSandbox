@@ -92,6 +92,8 @@ namespace ml
 		ImGui::PopID();
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	void EditorGUI::DrawLabel(CString label)
 	{
 		CString label_end;
@@ -134,6 +136,18 @@ namespace ml
 			return changed;
 		}
 		return false;
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	bool EditorGUI::Begin(CString label, bool * p_open, int32_t flags)
+	{
+		return ImGui::Begin(label, p_open, flags);
+	}
+
+	void EditorGUI::End()
+	{
+		return ImGui::End();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
