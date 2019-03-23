@@ -19,7 +19,6 @@ namespace ml
 
 	public:
 		void onEvent(const IEvent * value) override;
-
 		bool draw(CString title, bool * p_open) override;
 	};
 }

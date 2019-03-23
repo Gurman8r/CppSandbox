@@ -3,10 +3,10 @@
 
 #include <MemeEditor/GUI_Base.hpp>
 #include <MemeCore/IEventListener.hpp>
+#include <MemeCore/Function.hpp>
 
 namespace ml
 {
-	// Base class for GUI Windows
 	class ML_EDITOR_API GUI_Window
 		: public GUI_Base
 		, public IEventListener
@@ -30,6 +30,18 @@ namespace ml
 		inline CString	title() const { return m_title; }
 		inline bool *	open()	const { return m_open; }
 		inline int32_t	flags() const { return m_flags; }
+
+	public:
+		template <
+			typename _Fun
+		> inline bool drawFun(CString title, bool * p_open, _Fun fun)
+		{
+			if (draw(title, p_open))
+			{
+				fun();
+			}
+			return endDraw();
+		}
 
 	protected:
 		CString	m_title;

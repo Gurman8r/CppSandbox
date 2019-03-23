@@ -5,7 +5,6 @@
 
 namespace ml
 {
-	// Base GUI Tool
 	class ML_EDITOR_API GUI_Tool
 		: public GUI_Base
 	{
@@ -19,6 +18,18 @@ namespace ml
 	public:
 		virtual bool beginDraw() = 0;
 		virtual bool endDraw() = 0;
+
+	public:
+		template <
+			typename _Fun
+		> inline bool drawFun(_Fun fun)
+		{
+			if (beginDraw())
+			{
+				fun();
+			}
+			return endDraw();
+		}
 	};
 }
 

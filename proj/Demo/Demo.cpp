@@ -903,7 +903,7 @@ namespace DEMO
 
 	bool Demo::draw_MainMenuBar()
 	{
-		if (ML_MainMenuBar.beginDraw())
+		return ML_MainMenuBar.drawFun([&]()
 		{
 			// File
 			/* * * * * * * * * * * * * * * * * * * * */
@@ -962,45 +962,43 @@ namespace DEMO
 				ImGui::MenuItem("About Dear ImGui", NULL, &show_imgui_about);
 				ImGui::EndMenu();
 			}
-		}
-		return ML_MainMenuBar.endDraw();
+		});
 	}
 
 	bool Demo::draw_Dockspace(ml::CString title, bool * p_open)
 	{
-		if (ML_Dockspace.draw(title, p_open))
+		return ML_Dockspace.drawFun(title, p_open, [&]() 
 		{
-			if(uint32_t root = ML_Dockspace.beginBuilder(ImGuiDockNodeFlags_None))
+			if (uint32_t root = ML_Dockspace.beginBuilder(ImGuiDockNodeFlags_None))
 			{
-				uint32_t left	= ML_Dockspace.splitNode(root, ImGuiDir_Left, 0.29f, &root);
+				uint32_t left = ML_Dockspace.splitNode(root, ImGuiDir_Left, 0.29f, &root);
 				uint32_t center = ML_Dockspace.splitNode(root, ImGuiDir_Right, 0.5f, &root);
-				uint32_t right	= ML_Dockspace.splitNode(center, ImGuiDir_Right, 0.21f, &center);
+				uint32_t right = ML_Dockspace.splitNode(center, ImGuiDir_Right, 0.21f, &center);
 
-				const uint32_t left_U	= ML_Dockspace.splitNode(left, ImGuiDir_Up, 0.65f, &left);
-				const uint32_t left_D	= ML_Dockspace.splitNode(left, ImGuiDir_Down, 0.35f, &left);
+				const uint32_t left_U = ML_Dockspace.splitNode(left, ImGuiDir_Up, 0.65f, &left);
+				const uint32_t left_D = ML_Dockspace.splitNode(left, ImGuiDir_Down, 0.35f, &left);
 				const uint32_t center_U = ML_Dockspace.splitNode(center, ImGuiDir_Up, 0.65f, &center);
 				const uint32_t center_D = ML_Dockspace.splitNode(center, ImGuiDir_Down, 0.35f, &center);
-				const uint32_t right_U	= ML_Dockspace.splitNode(right, ImGuiDir_Up, 0.5f, &right);
-				const uint32_t right_D	= ML_Dockspace.splitNode(right, ImGuiDir_Down, 0.5f, &right);
+				const uint32_t right_U = ML_Dockspace.splitNode(right, ImGuiDir_Up, 0.5f, &right);
+				const uint32_t right_D = ML_Dockspace.splitNode(right, ImGuiDir_Down, 0.5f, &right);
 
-				ML_Dockspace.dockWindow("Browser",		left_U);
-				ML_Dockspace.dockWindow("Hierarchy",	left_U);
-				ML_Dockspace.dockWindow("Terminal",		left_D);
-				ML_Dockspace.dockWindow("Scene",		center_U);
-				ML_Dockspace.dockWindow("Builder",		center_D);
-				ML_Dockspace.dockWindow("Text Editor",	center_D);
-				ML_Dockspace.dockWindow("Tester",		center_D);
-				ML_Dockspace.dockWindow("Inspector",	right);
+				ML_Dockspace.dockWindow("Browser", left_U);
+				ML_Dockspace.dockWindow("Hierarchy", left_U);
+				ML_Dockspace.dockWindow("Terminal", left_D);
+				ML_Dockspace.dockWindow("Scene", center_U);
+				ML_Dockspace.dockWindow("Builder", center_D);
+				ML_Dockspace.dockWindow("Text Editor", center_D);
+				ML_Dockspace.dockWindow("Tester", center_D);
+				ML_Dockspace.dockWindow("Inspector", right);
 
 				ML_Dockspace.endBuilder(root);
 			};
-		}
-		return ML_Dockspace.endDraw();
+		});
 	}
 
 	bool Demo::draw_Inspector(ml::CString title, bool * p_open)
 	{
-		if (ML_Inspector.draw(title, p_open))
+		return ML_Inspector.drawFun(title, p_open, [&]()
 		{
 			/* * * * * * * * * * * * * * * * * * * * */
 
@@ -1065,20 +1063,18 @@ namespace DEMO
 			ImGui::Separator();
 
 			/* * * * * * * * * * * * * * * * * * * * */
-		}
-		return ML_Inspector.endDraw();
+		});
 	}
 
 	bool Demo::draw_Scene(ml::CString title, bool * p_open)
 	{
-		if (ML_SceneView.draw(title, p_open))
+		return ML_SceneView.drawFun(title, p_open, [&]() 
 		{
 			if (!ML_SceneView.updateScene(m_effects["fbo_post"].texture()))
 			{
 				ImGui::Text("Failed Rendering Scene");
 			}
-		}
-		return ML_SceneView.endDraw();
+		});
 	}
 
 	bool Demo::draw_Tester(ml::CString title, bool * p_open)

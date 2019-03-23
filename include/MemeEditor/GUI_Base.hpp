@@ -6,16 +6,18 @@
 
 namespace ml
 {
-	// Base class for GUI
 	class ML_EDITOR_API GUI_Base
 		: public ITrackable
 	{
 	public:
 		GUI_Base();
-
 		virtual ~GUI_Base();
 
-		inline bool	good() const { return m_good; }
+	public:
+		inline bool	good() const 
+		{ 
+			return (m_good);
+		}
 
 	protected:
 		inline bool goodCheck(const bool value)
