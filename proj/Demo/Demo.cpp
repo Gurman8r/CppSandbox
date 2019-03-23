@@ -13,6 +13,7 @@
 #include <MemeEditor/Dockspace.hpp>
 #include <MemeEditor/TextEditor.hpp>
 #include <MemeEditor/Hierarchy.hpp>
+#include <MemeEditor/MainMenuBar.hpp>
 
 namespace DEMO
 {
@@ -353,6 +354,9 @@ namespace DEMO
 			{
 				ml::Debug::setError(ml::Debug::logError("Failed Loading Plugin"));
 			}
+
+			// CD
+			ML_FileSystem.setWorkingDir("../../../");
 		}
 		else
 		{
@@ -865,30 +869,27 @@ namespace DEMO
 
 	void Demo::onGui(const GuiEvent & ev)
 	{
-		/* * * * * * * * * * * * * * * * * * * * */
-		
 		// Main Menu Bar
 		draw_MainMenuBar();
 
 		// Dockspace
 		if (show_ml_dockspace)	{ draw_Dockspace("Dockspace", &show_ml_dockspace); }
 
-		// ImGui
-		if (show_imgui_demo)	{ ml::ImGuiBuiltin::showDemoWindow(show_imgui_demo); }
-		if (show_imgui_metrics) { ml::ImGuiBuiltin::showMetricsWindow(show_imgui_metrics); }
-		if (show_imgui_style)	{ ml::ImGuiBuiltin::showStyleWindow(show_imgui_style); }
-		if (show_imgui_about)	{ ml::ImGuiBuiltin::showAboutWindow(show_imgui_about); }
+		// ImGui Builtin
+		if (show_imgui_demo)	{ ml::ImGui_Builtin::showDemoWindow(show_imgui_demo); }
+		if (show_imgui_metrics) { ml::ImGui_Builtin::showMetricsWindow(show_imgui_metrics); }
+		if (show_imgui_style)	{ ml::ImGui_Builtin::showStyleWindow(show_imgui_style); }
+		if (show_imgui_about)	{ ml::ImGui_Builtin::showAboutWindow(show_imgui_about); }
 
 		// Editor
-		if (show_ml_browser)	{ ML_Browser.draw("Browser", &show_ml_browser); }
 		if (show_ml_hierarchy)	{ ML_Hierarchy.draw("Hierarchy", &show_ml_hierarchy); }
+		if (show_ml_browser)	{ ML_Browser.draw("Browser", &show_ml_browser); }
 		if (show_ml_terminal)	{ ML_Terminal.draw("Terminal", &show_ml_terminal); }
 		if (show_ml_builder)	{ ML_Builder.draw("Builder", &show_ml_builder); }
 		if (show_ml_texteditor) { ML_TextEditor.draw("Text Editor", &show_ml_texteditor); }
 		if (show_ml_scene)		{ draw_Scene("Scene", &show_ml_scene); }
 		if (show_ml_inspector)	{ draw_Inspector("Inspector", &show_ml_inspector); }
-
-		/* * * * * * * * * * * * * * * * * * * * */
+		if (show_ml_tester)		{ draw_Tester("Tester", &show_ml_tester); }
 	}
 
 	void Demo::onExit(const ExitEvent & ev)
@@ -904,8 +905,7 @@ namespace DEMO
 
 	bool Demo::draw_MainMenuBar()
 	{
-		bool good;
-		if (good = ImGui::BeginMainMenuBar())
+		if (ML_MainMenuBar.beginDraw())
 		{
 			// File
 			/* * * * * * * * * * * * * * * * * * * * */
@@ -946,6 +946,7 @@ namespace DEMO
 				ImGui::MenuItem("Inspector", "Ctrl+Alt+I", &show_ml_inspector);
 				ImGui::MenuItem("Text Editor", NULL, &show_ml_texteditor);
 				ImGui::MenuItem("Hierarchy", NULL, &show_ml_hierarchy);
+				ImGui::MenuItem("Tester", NULL, &show_ml_tester);
 				ImGui::EndMenu();
 			}
 			// Help
@@ -964,42 +965,36 @@ namespace DEMO
 				ImGui::EndMenu();
 			}
 		}
-		ImGui::EndMainMenuBar();
-		return good;
+		return ML_MainMenuBar.endDraw();
 	}
 
 	bool Demo::draw_Dockspace(ml::CString title, bool * p_open)
 	{
-		if (ML_Dockspace.beginDraw(title, p_open, ImGuiDockNodeFlags_PassthruDockspace))
+		if (ML_Dockspace.draw(title, p_open))
 		{
-			if(uint32_t root = ML_Dockspace.getID())
+			if(uint32_t root = ML_Dockspace.beginBuilder(ImGuiDockNodeFlags_None))
 			{
-				if (!ImGui::DockBuilderGetNode(root))
-				{
-					ImGui::DockBuilderRemoveNode(root);
-					ImGui::DockBuilderAddNode(root, ImGuiDockNodeFlags_None);
+				uint32_t left	= ML_Dockspace.splitNode(root, ImGuiDir_Left, 0.29f, &root);
+				uint32_t center = ML_Dockspace.splitNode(root, ImGuiDir_Right, 0.5f, &root);
+				uint32_t right	= ML_Dockspace.splitNode(center, ImGuiDir_Right, 0.21f, &center);
 
-					uint32_t left = ML_Dockspace.split(root, ImGuiDir_Left, 0.29f, &root);
-					uint32_t center = ML_Dockspace.split(root, ImGuiDir_Right, 0.5f, &root);
-					uint32_t right = ML_Dockspace.split(center, ImGuiDir_Right, 0.21f, &center);
+				const uint32_t left_U	= ML_Dockspace.splitNode(left, ImGuiDir_Up, 0.65f, &left);
+				const uint32_t left_D	= ML_Dockspace.splitNode(left, ImGuiDir_Down, 0.35f, &left);
+				const uint32_t center_U = ML_Dockspace.splitNode(center, ImGuiDir_Up, 0.65f, &center);
+				const uint32_t center_D = ML_Dockspace.splitNode(center, ImGuiDir_Down, 0.35f, &center);
+				const uint32_t right_U	= ML_Dockspace.splitNode(right, ImGuiDir_Up, 0.5f, &right);
+				const uint32_t right_D	= ML_Dockspace.splitNode(right, ImGuiDir_Down, 0.5f, &right);
 
-					const uint32_t left_U = ML_Dockspace.split(left, ImGuiDir_Up, 0.65f, &left);
-					const uint32_t left_D = ML_Dockspace.split(left, ImGuiDir_Down, 0.35f, &left);
-					const uint32_t center_U = ML_Dockspace.split(center, ImGuiDir_Up, 0.65f, &center);
-					const uint32_t center_D = ML_Dockspace.split(center, ImGuiDir_Down, 0.35f, &center);
-					//const uint32_t right_U = ML_Dockspace.split(right, ImGuiDir_Up, 0.5f, &right);
-					//const uint32_t right_D = ML_Dockspace.split(right, ImGuiDir_Down, 0.5f, &right);
+				ML_Dockspace.dockWindow("Browser",		left_U);
+				ML_Dockspace.dockWindow("Hierarchy",	left_U);
+				ML_Dockspace.dockWindow("Terminal",		left_D);
+				ML_Dockspace.dockWindow("Scene",		center_U);
+				ML_Dockspace.dockWindow("Builder",		center_D);
+				ML_Dockspace.dockWindow("Text Editor",	center_D);
+				ML_Dockspace.dockWindow("Tester",		center_D);
+				ML_Dockspace.dockWindow("Inspector",	right);
 
-					ML_Dockspace.dock_window("Browser", left_U);
-					ML_Dockspace.dock_window("Hierarchy", left_U);
-					ML_Dockspace.dock_window("Terminal", left_D);
-					ML_Dockspace.dock_window("Scene", center_U);
-					ML_Dockspace.dock_window("Builder", center_D);
-					ML_Dockspace.dock_window("Text Editor", center_D);
-					ML_Dockspace.dock_window("Inspector", right);
-
-					ImGui::DockBuilderFinish(root);
-				}
+				ML_Dockspace.endBuilder(root);
 			};
 		}
 		return ML_Dockspace.endDraw();
@@ -1010,7 +1005,7 @@ namespace DEMO
 		bool good;
 		if (good = ImGui::Begin(title, p_open, ImGuiWindowFlags_AlwaysAutoResize))
 		{
-			ImGui::Separator();
+			/* * * * * * * * * * * * * * * * * * * * */
 
 			if (ImGui::Button("Reload Shaders"))
 			{
@@ -1018,26 +1013,34 @@ namespace DEMO
 			}
 			ImGui::Separator();
 
+			/* * * * * * * * * * * * * * * * * * * * */
+
 			ImGui::Text("Scene");
 			ImGui::ColorEdit4("Color##Scene", &m_clearColor[0]);
 			ImGui::Separator();
 
+			/* * * * * * * * * * * * * * * * * * * * */
+
 			ImGui::Text("Framebuffer");
 			static ml::CString fbo_modes[] = {
-					"Normal",
-					"Grayscale",
-					"Blur",
-					"Juicy",
-					"Inverted",
+				"Normal",
+				"Grayscale",
+				"Blur",
+				"Juicy",
+				"Inverted",
 			};
 			ImGui::Combo("Shader##Framebuffer", &m_effectMode, fbo_modes, IM_ARRAYSIZE(fbo_modes));
 			ImGui::Separator();
+
+			/* * * * * * * * * * * * * * * * * * * * */
 
 			ImGui::Text("Camera");
 			ImGui::Checkbox("Move##Camera", &m_camAnimate);
 			ml::EditorGUI::InputVec3f("Position##Camera", m_camPos);
 			ImGui::DragFloat("Speed##Camera", &m_camSpd, 0.1f, -5.f, 5.f);
 			ImGui::Separator();
+
+			/* * * * * * * * * * * * * * * * * * * * */
 
 			ImGui::Text("Light");
 			ml::EditorGUI::InputVec3f("Position##Light", m_lightPos);
@@ -1047,6 +1050,8 @@ namespace DEMO
 			ImGui::DragInt("Shininess##Light", &m_shininess, 1.f, 1, 256);
 			ImGui::Separator();
 
+			/* * * * * * * * * * * * * * * * * * * * */
+
 			ImGui::Text("Geometry");
 			ImGui::SliderInt("Mode##Geometry", &m_lineMode, -1, 3);
 			ImGui::ColorEdit4("Color##Geometry", &m_lineColor[0]);
@@ -1055,12 +1060,14 @@ namespace DEMO
 			ImGui::SliderInt("Samples##Geometry", &m_lineSamples, 1, 128);
 			ImGui::Separator();
 
+			/* * * * * * * * * * * * * * * * * * * * */
+
 			ImGui::Text("Transform");
-			ImGui::Checkbox("Animate", &m_animate);
-			ml::Transform & temp = ML_Res.models.get("earth")->transform();
-			
-			ml::EditorGUI::InputMat4f("Matrix", temp.matrix());
+			ImGui::Checkbox("Animate##Transform", &m_animate);
+			ml::EditorGUI::InputMat4f("Matrix##Transform", ML_Res.models.get("earth")->transform().matrix());
 			ImGui::Separator();
+
+			/* * * * * * * * * * * * * * * * * * * * */
 		}
 		ImGui::End();
 		return good;
@@ -1101,6 +1108,33 @@ namespace DEMO
 				}
 			}
 			ImGui::EndChild();
+		}
+		ImGui::End();
+		return good;
+	}
+
+	bool Demo::draw_Tester(ml::CString title, bool * p_open)
+	{
+		bool good;
+		if (good = ImGui::Begin(title, p_open, ImGuiWindowFlags_MenuBar))
+		{
+			if (ImGui::BeginMenuBar())
+			{
+				if (ImGui::BeginMenu("Shader"))
+				{
+					if (ImGui::BeginMenu("New"))
+					{
+						if (ImGui::MenuItem("Vertex", 0, false, true)) {}
+						if (ImGui::MenuItem("Fragment", 0, false, true)) {}
+						if (ImGui::MenuItem("Geometry", 0, false, true)) {}
+						ImGui::EndMenu();
+					}
+					ImGui::EndMenu();
+				}
+				ImGui::EndMenuBar();
+			}
+
+			ImGui::Separator();
 		}
 		ImGui::End();
 		return good;

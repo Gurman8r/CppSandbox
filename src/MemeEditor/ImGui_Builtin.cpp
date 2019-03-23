@@ -3,17 +3,17 @@
 
 namespace ml
 {
-	void ImGuiBuiltin::showDemoWindow(bool & p_open)
+	void ImGui_Builtin::showDemoWindow(bool & p_open)
 	{
 		if (p_open) { ImGui::ShowDemoWindow(&p_open); }
 	}
 	
-	void ImGuiBuiltin::showMetricsWindow(bool & p_open)
+	void ImGui_Builtin::showMetricsWindow(bool & p_open)
 	{
 		if (p_open) { ImGui::ShowMetricsWindow(&p_open); }
 	}
 	
-	void ImGuiBuiltin::showStyleWindow(bool & p_open)
+	void ImGui_Builtin::showStyleWindow(bool & p_open)
 	{
 		if (p_open) 
 		{ 
@@ -23,7 +23,7 @@ namespace ml
 		}
 	}
 	
-	void ImGuiBuiltin::showAboutWindow(bool & p_open)
+	void ImGui_Builtin::showAboutWindow(bool & p_open)
 	{
 		if (p_open) { ImGui::ShowAboutWindow(&p_open); }
 	}

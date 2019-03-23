@@ -398,7 +398,7 @@ CODE
  - 2018/08/01 (1.63) - renamed io.OptCursorBlink to io.ConfigCursorBlink [-> io.ConfigInputTextCursorBlink in 1.65], io.OptMacOSXBehaviors to ConfigMacOSXBehaviors for consistency.
  - 2018/07/22 (1.63) - changed ImGui::GetTime() return value from float to double to avoid accumulating floating point imprecisions over time.
  - 2018/07/08 (1.63) - style: renamed ImGuiCol_ModalWindowDarkening to ImGuiCol_ModalWindowDimBg for consistency with other features. Kept redirection enum (will obsolete).
- - 2018/06/08 (1.62) - examples: the imgui_impl_xxx files have been split to separate platform (Win32, Glfw, SDL2, etc.) from renderer (DX11, OpenGL, Vulkan,  etc.).
+ - 2018/06/08 (1.62) - examples: the imgui_impl_xxx files have been splitNode to separate platform (Win32, Glfw, SDL2, etc.) from renderer (DX11, OpenGL, Vulkan,  etc.).
                        old binding will still work as is, however prefer using the separated bindings as they will be updated to be multi-viewport conformant.
                        when adopting new bindings follow the main.cpp code of your preferred examples/ folder to know which functions to call.
  - 2018/06/06 (1.62) - renamed GetGlyphRangesChinese() to GetGlyphRangesChineseFull() to distinguish other variants and discourage using the full set.
@@ -497,7 +497,7 @@ CODE
                        GetCursorPos()/SetCursorPos() functions now include the scrolled amount. It shouldn't affect the majority of users, but take note that SetCursorPosX(100.0f) puts you at +100 from the starting x position which may include scrolling, not at +100 from the window left side.
                        GetContentRegionMax()/GetWindowContentRegionMin()/GetWindowContentRegionMax() functions allow include the scrolled amount. Typically those were used in cases where no scrolling would happen so it may not be a problem, but watch out!
  - 2015/08/29 (1.45) - renamed style.ScrollbarWidth to style.ScrollbarSize
- - 2015/08/05 (1.44) - split imgui.cpp into extra files: imgui_demo.cpp imgui_draw.cpp imgui_internal.h that you need to add to your project.
+ - 2015/08/05 (1.44) - splitNode imgui.cpp into extra files: imgui_demo.cpp imgui_draw.cpp imgui_internal.h that you need to add to your project.
  - 2015/07/18 (1.44) - fixed angles in ImDrawList::PathArcTo(), PathArcToFast() (introduced in 1.43) being off by an extra PI for no justifiable reason
  - 2015/07/14 (1.43) - add new ImFontAtlas::AddFont() API. For the old AddFont***, moved the 'font_no' parameter of ImFontAtlas::AddFont** functions to the ImFontConfig structure.
                        you need to render your textured triangles with bilinear filtering to benefit from sub-pixel positioning of text.
@@ -3932,7 +3932,7 @@ static void AddDrawListToDrawData(ImVector<ImDrawList*>* out_list, ImDrawList* d
     //    You'll need to handle the 4-bytes indices to your renderer. For example, the OpenGL example code detect index size at compile-time by doing:
     //      glDrawElements(GL_TRIANGLES, (GLsizei)pcmd->ElemCount, sizeof(ImDrawIdx) == 2 ? GL_UNSIGNED_SHORT : GL_UNSIGNED_INT, idx_buffer_offset);
     //    Your own engine or render API may use different parameters or function calls to specify index sizes. 2 and 4 bytes indices are generally supported by most API.
-    // C) If for some reason you cannot use 4 bytes indices or don't want to, a workaround is to call BeginChild()/EndChild() before reaching the 64K limit to split your draw commands in multiple draw lists.
+    // C) If for some reason you cannot use 4 bytes indices or don't want to, a workaround is to call BeginChild()/EndChild() before reaching the 64K limit to splitNode your draw commands in multiple draw lists.
     if (sizeof(ImDrawIdx) == 2)
         IM_ASSERT(draw_list->_VtxCurrentIdx < (1 << 16) && "Too many vertices in ImDrawList using 16-bit indices. Read comment above");
 
@@ -9522,7 +9522,7 @@ void ImGui::LogText(const char* fmt, ...)
 }
 
 // Internal version that takes a position to decide on newline placement and pad items according to their depth.
-// We split text into individual lines to add current tree level padding
+// We splitNode text into individual lines to add current tree level padding
 void ImGui::LogRenderedText(const ImVec2* ref_pos, const char* text, const char* text_end)
 {
     ImGuiContext& g = *GImGui;
@@ -11191,7 +11191,7 @@ void ImGui::DockContextProcessDock(ImGuiContext* ctx, ImGuiDockRequest* req)
     }
 
     // FIXME-DOCK: When we are trying to dock an existing single-window node into a loose window, transfer Node ID as well
-    // When processing an interactive split, usually LastFrameAlive will be < g.FrameCount. But DockBuilder operations can make it ==.
+    // When processing an interactive splitNode, usually LastFrameAlive will be < g.FrameCount. But DockBuilder operations can make it ==.
     if (target_node)
         IM_ASSERT(target_node->LastFrameAlive <= g.FrameCount);
     if (target_node && target_window && target_node == target_window->DockNodeAsHost)
@@ -12393,7 +12393,7 @@ static bool ImGui::DockNodePreviewDockCalc(ImGuiWindow* host_window, ImGuiDockNo
     if (!is_explicit_target && !data->IsSplitDirExplicit && !g.IO.ConfigDockingWithShift)
         data->IsDropAllowed = false;
 
-    // Calculate split area
+    // Calculate splitNode area
     data->SplitRatio = 0.0f;
     if (data->SplitDir != ImGuiDir_None)
     {
@@ -12403,7 +12403,7 @@ static bool ImGui::DockNodePreviewDockCalc(ImGuiWindow* host_window, ImGuiDockNo
         ImVec2 size_new, size_old = data->FutureNode.Size;
         DockNodeCalcSplitRects(pos_old, size_old, pos_new, size_new, split_dir, root_payload->Size);
 
-        // Calculate split ratio so we can pass it down the docking request
+        // Calculate splitNode ratio so we can pass it down the docking request
         float split_ratio = ImSaturate(size_new[split_axis] / data->FutureNode.Size[split_axis]);
         data->FutureNode.Pos = pos_new;
         data->FutureNode.Size = size_new;
@@ -12850,7 +12850,7 @@ void ImGui::SetWindowDock(ImGuiWindow* window, ImGuiID dock_id, ImGuiCond cond)
     if (window->DockId == dock_id)
         return;
 
-    // If the user attempt to set a dock id that is a split node, we'll dig within to find a suitable docking spot
+    // If the user attempt to set a dock id that is a splitNode node, we'll dig within to find a suitable docking spot
     ImGuiContext* ctx = GImGui;
     if (ImGuiDockNode* new_node = DockContextFindNodeByID(ctx, dock_id))
         if (new_node->IsSplitNode())
@@ -13285,7 +13285,7 @@ void ImGui::DockBuilderCopyDockspace(ImGuiID src_dockspace_id, ImGuiID dst_docks
     IM_ASSERT((in_window_remap_pairs->Size % 2) == 0);
 
     // Duplicate entire dock
-    // FIXME: When overwriting dst_dockspace_id, windows that aren't part of our dockspace window class but that are docked in a same node will be split apart,
+    // FIXME: When overwriting dst_dockspace_id, windows that aren't part of our dockspace window class but that are docked in a same node will be splitNode apart,
     // whereas we could attempt to at least keep them together in a new, same floating node.
     ImVector<ImGuiID> node_remap_pairs;
     DockBuilderCopyNode(src_dockspace_id, dst_dockspace_id, &node_remap_pairs);
@@ -13396,7 +13396,7 @@ void ImGui::BeginDocked(ImGuiWindow* window, bool* p_open)
     {
         node = DockContextFindNodeByID(ctx, window->DockId);
         
-        // We should not be docking into a split node (SetWindowDock should avoid this)
+        // We should not be docking into a splitNode node (SetWindowDock should avoid this)
         if (node && node->IsSplitNode())
         {
             DockContextProcessUndockWindow(ctx, window);
@@ -13554,7 +13554,7 @@ void ImGui::BeginAsDockableDragDropTarget(ImGuiWindow* window)
         const ImRect explicit_target_rect = (target_node && target_node->TabBar && !target_node->IsHiddenTabBar) ? target_node->TabBar->BarRect : ImRect(window->Pos, window->Pos + ImVec2(window->Size.x, GetFrameHeight()));
         const bool is_explicit_target = g.IO.ConfigDockingWithShift || IsMouseHoveringRect(explicit_target_rect.Min, explicit_target_rect.Max);
 
-        // Preview docking request and find out split direction/ratio
+        // Preview docking request and find out splitNode direction/ratio
         //const bool do_preview = true;     // Ignore testing for payload->IsPreview() which removes one frame of delay, but breaks overlapping drop targets within the same window.        
         const bool do_preview = payload->IsPreview() || payload->IsDelivery();
         if (do_preview && (target_node != NULL || allow_null_target_node))

@@ -1,25 +1,25 @@
-#include <MemeEditor/GUIDrawer.hpp>
+#include <MemeEditor/GUI_Base.hpp>
 #include <MemeEditor/ImGui.hpp>
 
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	GUIDrawer::GUIDrawer()
+	GUI_Base::GUI_Base()
 		: m_good (false)
 		, m_title(NULL)
 		, m_open (NULL)
-		, m_flags(0)
+		, m_flags(ImGuiWindowFlags_None)
 	{
 	}
 
-	GUIDrawer::~GUIDrawer()
+	GUI_Base::~GUI_Base()
 	{
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool GUIDrawer::beginDraw(CString title, bool * p_open, int32_t flags)
+	bool GUI_Base::beginDraw(CString title, bool * p_open, int32_t flags)
 	{
 		return m_good = ImGui::Begin(
 			(m_title = title),
@@ -27,7 +27,7 @@ namespace ml
 			(m_flags = flags));
 	}
 
-	bool GUIDrawer::endDraw()
+	bool GUI_Base::endDraw()
 	{
 		ImGui::End();
 		return m_good;
@@ -35,7 +35,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	uint32_t GUIDrawer::getID() const
+	uint32_t GUI_Base::getID() const
 	{
 		return ImGui::GetID(m_title);
 	}

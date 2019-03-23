@@ -1,6 +1,8 @@
 #include <MemeEditor/Terminal.hpp>
 #include <MemeEditor/ImGui.hpp>
 #include <MemeScript/Interpreter.hpp>
+#include <MemeCore/FileSystem.hpp>
+#include <MemeCore/EventSystem.hpp>
 
 namespace ml
 {
@@ -16,7 +18,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Terminal::Terminal()
-		: WindowDrawer()
+		: GUI_Window()
 	{
 		clear();
 		memset(m_inputBuf, 0, sizeof(m_inputBuf));
@@ -45,6 +47,14 @@ namespace ml
 
 	void Terminal::onEvent(const IEvent * value)
 	{
+		switch (value->eventID())
+		{
+		case CoreEvent::EV_FileSystem:
+			if (const auto * ev = value->as<FileSystemEvent>())
+			{
+			}
+			break;
+		}
 	}
 
 	bool Terminal::draw(CString title, bool * p_open)
@@ -57,25 +67,26 @@ namespace ml
 			ImGui::PopStyleVar();
 			ImGui::Separator();
 
-			const float footer_height_to_reserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing(); // 1 separator, 1 input text
-			ImGui::BeginChild("ScrollingRegion", ImVec2(0, -footer_height_to_reserve), false, ImGuiWindowFlags_HorizontalScrollbar); // Leave room for 1 separator + 1 InputText
+			const float footer_height_to_reserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing();
+			ImGui::BeginChild("ScrollingRegion", ImVec2(0, -footer_height_to_reserve), false, ImGuiWindowFlags_HorizontalScrollbar);
 			
-			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1)); // Tighten spacing
+			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1));
 
 			ImVec4 col_default_text = ImGui::GetStyleColorVec4(ImGuiCol_Text);
 			for (size_t i = 0; i < m_lines.size(); i++)
 			{
 				CString item = m_lines[i].c_str();
-				if (!filter.PassFilter(item))
-					continue;
-				ImVec4 col = col_default_text;
-				if (strstr(item, "[ LOG ]")) col = ImColor(0.0f, 1.0f, 0.4f, 1.0f);
-				else if (strstr(item, "[ WRN ]")) col = ImColor(1.0f, 1.0f, 0.4f, 1.0f);
-				else if (strstr(item, "[ ERR ]")) col = ImColor(1.0f, 0.4f, 0.4f, 1.0f);
-				else if (strncmp(item, "# ", 2) == 0) col = ImColor(1.0f, 0.78f, 0.58f, 1.0f);
-				ImGui::PushStyleColor(ImGuiCol_Text, col);
-				ImGui::TextUnformatted(item);
-				ImGui::PopStyleColor();
+				if (filter.PassFilter(item))
+				{
+					ImVec4 col = col_default_text;
+					if (strstr(item, "[ LOG ]")) col = ImColor(0.0f, 1.0f, 0.4f, 1.0f);
+					else if (strstr(item, "[ WRN ]")) col = ImColor(1.0f, 1.0f, 0.4f, 1.0f);
+					else if (strstr(item, "[ ERR ]")) col = ImColor(1.0f, 0.4f, 0.4f, 1.0f);
+					else if (strncmp(item, "# ", 2) == 0) col = ImColor(1.0f, 0.78f, 0.58f, 1.0f);
+					ImGui::PushStyleColor(ImGuiCol_Text, col);
+					ImGui::TextUnformatted(item);
+					ImGui::PopStyleColor();
+				}
 			}
 
 			if (m_scrollToBottom)
@@ -137,7 +148,6 @@ namespace ml
 
 	void Terminal::printf(CString fmt, ...)
 	{
-		// FIXME-OPT
 		char buf[1024];
 		va_list args;
 		va_start(args, fmt);
@@ -222,8 +232,12 @@ namespace ml
 			// Build a list of candidates
 			ImVector<CString> candidates;
 			for (int32_t i = 0; i < m_auto.size(); i++)
+			{
 				if (Strnicmp(m_auto[i], word_start, (int32_t)(word_end - word_start)) == 0)
+				{
 					candidates.push_back(m_auto[i]);
+				}
+			}
 
 			if (candidates.Size == 0)
 			{

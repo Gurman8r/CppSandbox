@@ -160,15 +160,16 @@
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeEditor\Browser.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Dockspace.hpp" />
-    <ClInclude Include="..\..\include\MemeEditor\GUIDrawer.hpp" />
+    <ClInclude Include="..\..\include\MemeEditor\GUI_Base.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\EditorGUI.hpp" />
-    <ClInclude Include="..\..\include\MemeEditor\WindowDrawer.hpp" />
+    <ClInclude Include="..\..\include\MemeEditor\GUI_Window.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Hierarchy.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\ImGui.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\ImGui_Builtin.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\EditorEvents.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Export.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Document.hpp" />
+    <ClInclude Include="..\..\include\MemeEditor\MainMenuBar.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Terminal.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\ResourceManifest.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\ResourceTable.hpp" />
@@ -186,11 +187,13 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeEditor\Browser.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\Dockspace.cpp" />
-    <ClCompile Include="..\..\src\MemeEditor\GUIDrawer.cpp" />
+    <ClCompile Include="..\..\src\MemeEditor\GUI_Base.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\EditorGUI.cpp" />
+    <ClCompile Include="..\..\src\MemeEditor\GUI_Window.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\Hierarchy.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\ImGui_Builtin.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\Document.cpp" />
+    <ClCompile Include="..\..\src\MemeEditor\MainMenuBar.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\Terminal.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\ResourceManifest.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\ResourceManager.cpp" />

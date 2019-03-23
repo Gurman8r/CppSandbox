@@ -1669,12 +1669,12 @@ namespace ImGui
 
     // Docking - Builder function needs to be generally called before the DockSpace() node is submitted.
     IMGUI_API void          DockBuilderDockWindow(const char* window_name, ImGuiID node_id);
-    IMGUI_API ImGuiDockNode*DockBuilderGetNode(ImGuiID node_id);                    // Warning: DO NOT HOLD ON ImGuiDockNode* pointer, will be invalided by any split/merge/remove operation.
+    IMGUI_API ImGuiDockNode*DockBuilderGetNode(ImGuiID node_id);                    // Warning: DO NOT HOLD ON ImGuiDockNode* pointer, will be invalided by any splitNode/merge/remove operation.
     inline ImGuiDockNode*   DockBuilderGetCentralNode(ImGuiID node_id)              { ImGuiDockNode* node = DockBuilderGetNode(node_id); if (!node) return NULL; return DockNodeGetRootNode(node)->CentralNode; }
     IMGUI_API ImGuiID       DockBuilderAddNode(ImGuiID node_id, ImGuiDockNodeFlags flags = 0);  // Use (flags == ImGuiDockNodeFlags_Dockspace) to create a dockspace, otherwise it'll create a floating node.
     IMGUI_API void          DockBuilderRemoveNode(ImGuiID node_id);                 // Remove node and all its child, undock all windows
     IMGUI_API void          DockBuilderRemoveNodeDockedWindows(ImGuiID node_id, bool clear_persistent_docking_references = true);
-    IMGUI_API void          DockBuilderRemoveNodeChildNodes(ImGuiID node_id);       // Remove all split/hierarchy. All remaining docked windows will be re-docked to the root.
+    IMGUI_API void          DockBuilderRemoveNodeChildNodes(ImGuiID node_id);       // Remove all splitNode/hierarchy. All remaining docked windows will be re-docked to the root.
     IMGUI_API void          DockBuilderSetNodePos(ImGuiID node_id, ImVec2 pos);
     IMGUI_API void          DockBuilderSetNodeSize(ImGuiID node_id, ImVec2 size);
     IMGUI_API ImGuiID       DockBuilderSplitNode(ImGuiID node_id, ImGuiDir split_dir, float size_ratio_for_node_at_dir, ImGuiID* out_id_dir, ImGuiID* out_id_other);

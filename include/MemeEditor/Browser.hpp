@@ -1,7 +1,7 @@
 #ifndef _ML_BROWSER_HPP_
 #define _ML_BROWSER_HPP_
 
-#include <MemeEditor/WindowDrawer.hpp>
+#include <MemeEditor/GUI_Window.hpp>
 #include <MemeCore/File.hpp>
 #include <MemeCore/Bytes.hpp>
 
@@ -11,7 +11,7 @@ namespace ml
 {
 	// File Browser
 	class ML_EDITOR_API Browser final
-		: public WindowDrawer
+		: public GUI_Window
 		, public ISingleton<Browser>
 	{
 		friend class ISingleton<Browser>;
@@ -50,7 +50,7 @@ namespace ml
 		void	set_selected(char type, size_t index);
 		String	get_selected_name() const;
 		String	get_selected_path() const;
-		String	get_selected_ext() const;
+		String	get_selected_type() const;
 		size_t	get_selected_size() const;
 
 		/* * * * * * * * * * * * * * * * * * * * */

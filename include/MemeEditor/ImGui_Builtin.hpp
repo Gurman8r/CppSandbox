@@ -6,7 +6,7 @@
 namespace ml
 {
 	// ImGui Demo Windows
-	class ML_EDITOR_API ImGuiBuiltin final
+	class ML_EDITOR_API ImGui_Builtin final
 	{
 	public:
 		static void showDemoWindow(bool & p_open);

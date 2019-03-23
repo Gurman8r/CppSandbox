@@ -1,14 +1,14 @@
 #ifndef _ML_HIERARCHY_HPP_
 #define _ML_HIERARCHY_HPP_
 
-#include <MemeEditor/WindowDrawer.hpp>
+#include <MemeEditor/GUI_Window.hpp>
 
 #define ML_Hierarchy ml::Hierarchy::getInstance()
 
 namespace ml
 {
 	class ML_EDITOR_API Hierarchy final
-		: public WindowDrawer
+		: public GUI_Window
 		, public ISingleton<Hierarchy>
 	{
 		friend ISingleton<Hierarchy>;

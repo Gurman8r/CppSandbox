@@ -1,7 +1,7 @@
 #ifndef _ML_DOCKSPACE_HPP_
 #define _ML_DOCKSPACE_HPP_
 
-#include <MemeEditor/WindowDrawer.hpp>
+#include <MemeEditor/GUI_Window.hpp>
 #include <MemeCore/Vector2.hpp>
 
 #define ML_Dockspace ml::Dockspace::getInstance()
@@ -10,7 +10,7 @@ namespace ml
 {
 	// Docking/snapping area for windows
 	class ML_EDITOR_API Dockspace final 
-		: public GUIDrawer
+		: public GUI_Window
 		, public ISingleton<Dockspace>
 	{
 		friend class ISingleton<Dockspace>;
@@ -20,19 +20,21 @@ namespace ml
 		~Dockspace();
 
 	public:
+		void onEvent(const IEvent * value) override;
+		bool draw(CString title, bool * p_open) override;
+
+	public:
 		bool beginDraw(CString title, bool * p_open, int32_t flags = 0) override;
 		bool endDraw() override;
 
 	public:
-		uint32_t split(uint32_t dir, float ratio, uint32_t * out, uint32_t * other);
-		uint32_t split(uint32_t id, int32_t dir, float ratio, uint32_t * other);
-		uint32_t split(uint32_t id, int32_t dir, float ratio, uint32_t * out, uint32_t * other);
-
-		void dock_window(CString name, uint32_t id);
+		uint32_t beginBuilder(int32_t flags);
+		uint32_t endBuilder(uint32_t root);
+		uint32_t dockWindow(CString name, uint32_t id);
+		uint32_t splitNode(uint32_t id, int32_t dir, float ratio, uint32_t * other);
+		uint32_t splitNode(uint32_t id, int32_t dir, float ratio, uint32_t * out, uint32_t * other);
 
 	public:
-		int32_t dock_flags;
-		bool	fullscreen;
 		float	border;
 		vec2f	padding;
 		float	rounding;

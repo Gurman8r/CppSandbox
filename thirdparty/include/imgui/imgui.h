@@ -1875,7 +1875,7 @@ struct ImDrawVert
 IMGUI_OVERRIDE_DRAWVERT_STRUCT_LAYOUT;
 #endif
 
-// Draw channels are used by the Columns API to "split" the render list into different channels while building, so items of each column can be batched together.
+// Draw channels are used by the Columns API to "splitNode" the render list into different channels while building, so items of each column can be batched together.
 // You can also use them to simulate drawing layers and submit primitives in a different order than how they will be rendered.
 struct ImDrawChannel
 {

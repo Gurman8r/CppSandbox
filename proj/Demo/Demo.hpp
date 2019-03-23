@@ -63,6 +63,7 @@ namespace DEMO
 		bool draw_Dockspace(ml::CString title, bool * p_open);
 		bool draw_Inspector(ml::CString title, bool * p_open);
 		bool draw_Scene(ml::CString title, bool * p_open);
+		bool draw_Tester(ml::CString title, bool * p_open);
 
 	private:
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -114,8 +115,9 @@ namespace DEMO
 		bool show_ml_builder	= true;
 		bool show_ml_inspector	= true;
 		bool show_ml_scene		= true;
-		bool show_ml_texteditor= true;
+		bool show_ml_texteditor	= true;
 		bool show_ml_hierarchy	= true;
+		bool show_ml_tester		= true;
 
 		bool show_imgui_demo	= false;
 		bool show_imgui_metrics	= false;

@@ -7,10 +7,8 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Dockspace::Dockspace()
-		: GUIDrawer()
-		, dock_flags(0)
+		: GUI_Window()
 		, border	(0.0f)
-		, fullscreen(true)
 		, padding	(vec2f::Zero)
 		, rounding	(0.0f)
 		, size		(vec2f::Zero)
@@ -22,31 +20,30 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
+	void Dockspace::onEvent(const IEvent * value)
+	{
+	}
+
+	bool Dockspace::draw(CString title, bool * p_open)
+	{
+		return beginDraw(title, p_open, 
+			ImGuiWindowFlags_NoTitleBar |
+			ImGuiWindowFlags_NoCollapse |
+			ImGuiWindowFlags_NoResize |
+			ImGuiWindowFlags_NoMove |
+			ImGuiWindowFlags_NoBringToFrontOnFocus |
+			ImGuiWindowFlags_NoNavFocus |
+			ImGuiWindowFlags_MenuBar |
+			ImGuiWindowFlags_NoDocking |
+			ImGuiWindowFlags_NoBackground);
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	bool Dockspace::beginDraw(CString title, bool * p_open, int32_t flags)
 	{
 		if (m_good = (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_DockingEnable))
 		{
-			// Flags
-			ImGuiWindowFlags window_flags =
-				ImGuiWindowFlags_NoTitleBar |
-				ImGuiWindowFlags_NoCollapse;
-
-			if (fullscreen)
-			{
-				window_flags |=
-					ImGuiWindowFlags_NoResize |
-					ImGuiWindowFlags_NoMove |
-					ImGuiWindowFlags_NoBringToFrontOnFocus |
-					ImGuiWindowFlags_NoNavFocus |
-					ImGuiWindowFlags_MenuBar |
-					ImGuiWindowFlags_NoDocking;
-			}
-
-			if (dock_flags & ImGuiDockNodeFlags_PassthruDockspace)
-			{
-				window_flags |= ImGuiWindowFlags_NoBackground;
-			}
-
 			// Bounds
 			const ImGuiViewport * viewport = ImGui::GetMainViewport();
 			ImGui::SetNextWindowPos(viewport->Pos);
@@ -60,7 +57,7 @@ namespace ml
 			ImGui::SetNextWindowBgAlpha(bgAlpha);
 
 			// Begin
-			if (GUIDrawer::beginDraw(title, p_open, window_flags))
+			if (GUI_Base::beginDraw(title, p_open, flags))
 			{
 				ImGui::PopStyleVar(3);
 			}
@@ -72,33 +69,58 @@ namespace ml
 	{
 		if (m_good)
 		{
-			ImGui::DockSpace(getID(), { size[0], size[1] }, dock_flags);
+			ImGui::DockSpace(
+				getID(),
+				{ size[0], size[1] }, 
+				ImGuiDockNodeFlags_PassthruDockspace
+			);
 		}
-		return GUIDrawer::endDraw();
+		return GUI_Base::endDraw();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	uint32_t Dockspace::split(uint32_t dir, float ratio, uint32_t * out, uint32_t * other)
+	uint32_t Dockspace::beginBuilder(int32_t flags)
 	{
-		return split(getID(), dir, ratio, out, other);
+		if (uint32_t root = getID())
+		{
+			if (!ImGui::DockBuilderGetNode(root))
+			{
+				ImGui::DockBuilderRemoveNode(root);
+				ImGui::DockBuilderAddNode(root, flags);
+				return root;
+			}
+		}
+		return 0;
 	}
 
-	uint32_t Dockspace::split(uint32_t id, int32_t dir, float ratio, uint32_t * other)
+	uint32_t Dockspace::endBuilder(uint32_t root)
 	{
-		return split(id, dir, ratio, NULL, other);
+		if (root)
+		{
+			ImGui::DockBuilderFinish(root);
+		}
+		return root;
 	}
 
-	uint32_t Dockspace::split(uint32_t id, int32_t dir, float ratio, uint32_t * out, uint32_t * other)
+	uint32_t Dockspace::dockWindow(CString name, uint32_t id)
+	{
+		if (name && id)
+		{
+			ImGui::DockBuilderDockWindow(name, id);
+			return id;
+		}
+		return 0;
+	}
+
+	uint32_t Dockspace::splitNode(uint32_t id, int32_t dir, float ratio, uint32_t * other)
+	{
+		return splitNode(id, dir, ratio, NULL, other);
+	}
+
+	uint32_t Dockspace::splitNode(uint32_t id, int32_t dir, float ratio, uint32_t * out, uint32_t * other)
 	{
 		return ImGui::DockBuilderSplitNode(id, dir, ratio, out, other);
-	}
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	void Dockspace::dock_window(CString name, uint32_t id)
-	{
-		return ImGui::DockBuilderDockWindow(name, id);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

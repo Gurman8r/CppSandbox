@@ -14,7 +14,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Browser::Browser()
-		: WindowDrawer()
+		: GUI_Window()
 		, m_path()
 		, m_dir()
 		, m_type(T_Dir)
@@ -172,13 +172,16 @@ namespace ml
 	{
 		if (ImGui::BeginTabItem("Preview"))
 		{
-			ImGui::BeginChild("Content", { -1.f, -1.f }, true, ImGuiWindowFlags_AlwaysHorizontalScrollbar);
+			if (ImGui::BeginChild(
+				"Content", 
+				{ -1.f, -1.f }, 
+				true, 
+				ImGuiWindowFlags_AlwaysHorizontalScrollbar))
 			{
-				ImGui::TextUnformatted(
-					&m_preview[0], 
-					&m_preview[m_preview.size()]);
+				ImGui::TextUnformatted(&m_preview[0], &m_preview[m_preview.size()]);
+				
+				ImGui::EndChild();
 			}
-			ImGui::EndChild();
 			ImGui::EndTabItem();
 		}
 	}
@@ -190,7 +193,7 @@ namespace ml
 			const Bytes size(get_selected_size());
 
 			ImGui::Text("Name: %s", get_selected_name().c_str());
-			ImGui::Text("Type: %s", get_selected_ext().c_str());
+			ImGui::Text("Type: %s", get_selected_type().c_str());
 			ImGui::Text("Size: %s", size.to_str().c_str());
 			ImGui::EndTabItem();
 		}
@@ -244,10 +247,11 @@ namespace ml
 
 	String Browser::get_selected_name() const
 	{
-		const String * file;
-		return ((file = get_selected())
-			? (*file).c_str()
-			: String());
+		if (const String * file = get_selected())
+		{
+			return file->c_str();
+		}
+		return String();
 	}
 
 	String Browser::get_selected_path() const
@@ -255,7 +259,7 @@ namespace ml
 		return pathTo(get_selected_name());
 	}
 
-	String Browser::get_selected_ext() const
+	String Browser::get_selected_type() const
 	{
 		switch (m_type)
 		{
