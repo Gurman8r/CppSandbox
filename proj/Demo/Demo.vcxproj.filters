@@ -23,11 +23,17 @@
     <Filter Include="Resource Files\shaders">
       <UniqueIdentifier>{f0ce37f6-161c-4c7e-9b01-30e5675bfdc0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\shaders\common">
+      <UniqueIdentifier>{0e9a8c9c-8055-491a-879a-d1707eca19d1}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Resource Files\textures">
       <UniqueIdentifier>{8ec56f32-edb8-4d6c-aeb7-0dd2c21de9b5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files\textures\bg">
       <UniqueIdentifier>{429d3244-a0c2-4ebb-a7c4-ecd4f6fc52c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\textures\bg\sunset">
+      <UniqueIdentifier>{18f919de-96d6-4b0e-ad98-b8c0cce85c7a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files\textures\mars">
       <UniqueIdentifier>{0cf74065-1eb0-40f0-bef7-73636e1e6991}</UniqueIdentifier>
@@ -38,23 +44,17 @@
     <Filter Include="Resource Files\textures\stone">
       <UniqueIdentifier>{51081792-8bda-4c88-a5d5-d30941816518}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\textures\earth">
+      <UniqueIdentifier>{5635fc2f-1ea8-4ae2-bedc-bdb6d50b839d}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Resource Files\scripts">
       <UniqueIdentifier>{59483728-d1a2-4120-9e4c-e3fdf1e83de8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files\skyboxes">
       <UniqueIdentifier>{03731043-07d2-4623-8321-3729ce9db5ea}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\textures\earth">
-      <UniqueIdentifier>{5635fc2f-1ea8-4ae2-bedc-bdb6d50b839d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\textures\bg\sunset">
-      <UniqueIdentifier>{18f919de-96d6-4b0e-ad98-b8c0cce85c7a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\materials">
       <UniqueIdentifier>{915c2446-9cc8-41a6-b386-a55e4bcd2581}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\shaders\common">
-      <UniqueIdentifier>{0e9a8c9c-8055-491a-879a-d1707eca19d1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

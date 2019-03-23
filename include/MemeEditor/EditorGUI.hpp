@@ -1,5 +1,5 @@
-#ifndef _EDITOR_GUI_HPP_
-#define _EDITOR_GUI_HPP_
+#ifndef _ML_EDITOR_GUI_HPP_
+#define _ML_EDITOR_GUI_HPP_
 
 #include <MemeEditor/Editor.hpp>
 #include <MemeGraphics/Transform.hpp>
@@ -17,4 +17,4 @@ namespace ml
 	};
 }
 
-#endif // !_EDITOR_GUI_HPP_
+#endif // !_ML_EDITOR_GUI_HPP_

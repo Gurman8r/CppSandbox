@@ -1,5 +1,5 @@
-#ifndef _DOCUMENT_HPP_
-#define _DOCUMENT_HPP_
+#ifndef _ML_DOCUMENT_HPP_
+#define _ML_DOCUMENT_HPP_
 
 #include <MemeEditor/Export.hpp>
 #include <MemeCore/File.hpp>
@@ -115,4 +115,4 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 }
 
-#endif // !_DOCUMENT_HPP_
+#endif // !_ML_DOCUMENT_HPP_

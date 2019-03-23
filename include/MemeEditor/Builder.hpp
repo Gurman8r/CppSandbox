@@ -1,5 +1,5 @@
-#ifndef _SHADER_BUILDER_HPP_
-#define _SHADER_BUILDER_HPP_
+#ifndef _ML_BUILDER_HPP_
+#define _ML_BUILDER_HPP_
 
 #include <MemeEditor/Editor.hpp>
 #include <MemeEditor/Document.hpp>
@@ -65,4 +65,4 @@ namespace ml
 	};
 }
 
-#endif // !_SHADER_BUILDER_HPP_
+#endif // !_ML_BUILDER_HPP_

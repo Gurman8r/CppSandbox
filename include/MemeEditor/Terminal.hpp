@@ -1,5 +1,5 @@
-#ifndef _EXAMPLE_APP_CONSOLE_HPP_
-#define _EXAMPLE_APP_CONSOLE_HPP_
+#ifndef _ML_TERMINAL_HPP_
+#define _ML_TERMINAL_HPP_
 
 #include <MemeEditor/Editor.hpp>
 #include <MemeCore/List.hpp>
@@ -40,4 +40,4 @@ namespace ml
 
 }
 
-#endif // !_EXAMPLE_APP_CONSOLE_HPP_
+#endif // !_ML_TERMINAL_HPP_

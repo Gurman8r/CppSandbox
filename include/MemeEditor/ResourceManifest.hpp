@@ -1,5 +1,5 @@
-#ifndef _RESOURCE_MANIFEST_HPP_
-#define _RESOURCE_MANIFEST_HPP_
+#ifndef _ML_RESOURCE_MANIFEST_HPP_
+#define _ML_RESOURCE_MANIFEST_HPP_
 
 #include <MemeEditor/Export.hpp>
 #include <MemeCore/ITrackable.hpp>
@@ -42,4 +42,4 @@ namespace ml
 		type_map m_data;
 	};
 }
-#endif // !_RESOURCE_MANIFEST_HPP_
+#endif // !_ML_RESOURCE_MANIFEST_HPP_

@@ -1,10 +1,10 @@
-#ifndef _RESOURCE_MANAGER_H_
-#define _RESOURCE_MANAGER_H_
+#ifndef _ML_RESOURCE_MANAGER_H_
+#define _ML_RESOURCE_MANAGER_H_
 
 #include <MemeEditor/ResourceTable.hpp>
 #include <MemeEditor/ResourceManifest.hpp>
-#include <MemeCore/ISingleton.hpp>
 #include <MemeCore/List.hpp>
+#include <MemeCore/Plugin.hpp>
 #include <MemeAudio/Sound.hpp>
 #include <MemeGraphics/Font.hpp>
 #include <MemeGraphics/Model.hpp>
@@ -30,6 +30,7 @@ namespace ml
 		using MaterialMap	= ResourceTable<Material>;
 		using MeshMap		= ResourceTable<Mesh>;
 		using ModelMap		= ResourceTable<Model>;
+		using PluginMap		= ResourceTable<Plugin>;
 		using ScriptMap		= ResourceTable<Script>;
 		using ShaderMap		= ResourceTable<Shader>;
 		using SkyboxMap		= ResourceTable<Skybox>;
@@ -74,4 +75,4 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 }
-#endif // !_RESOURCE_MANAGER_H_
+#endif // !_ML_RESOURCE_MANAGER_H_

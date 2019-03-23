@@ -1,5 +1,5 @@
-#ifndef _BROWSER_HPP_
-#define _BROWSER_HPP_
+#ifndef _ML_BROWSER_HPP_
+#define _ML_BROWSER_HPP_
 
 #include <MemeEditor/Editor.hpp>
 #include <MemeCore/File.hpp>
@@ -90,4 +90,4 @@ namespace ml
 		bool		m_isDouble;	// Has Double Click
 	};
 }
-#endif // !_BROWSER_HPP_
+#endif // !_ML_BROWSER_HPP_

@@ -1,5 +1,5 @@
-#ifndef _DOCKSPACE_HPP_
-#define _DOCKSPACE_HPP_
+#ifndef _ML_DOCKSPACE_HPP_
+#define _ML_DOCKSPACE_HPP_
 
 #include <MemeEditor/Export.hpp>
 #include <MemeCore/Vector2.hpp>
@@ -10,9 +10,6 @@ namespace ml
 	class ML_EDITOR_API Dockspace final 
 		: public ITrackable
 	{
-	public:
-		using void_fun = void(*)();
-
 	public:
 		Dockspace();
 		Dockspace(const String & title);
@@ -49,4 +46,4 @@ namespace ml
 	};
 }
 
-#endif // !_DOCKSPACE_HPP_
+#endif // !_ML_DOCKSPACE_HPP_

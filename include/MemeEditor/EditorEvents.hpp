@@ -1,5 +1,5 @@
-#ifndef _EDITOR_EVENTS_HPP_
-#define _EDITOR_EVENTS_HPP_
+#ifndef _ML_EDITOR_EVENTS_HPP_
+#define _ML_EDITOR_EVENTS_HPP_
 
 #include <MemeCore/IEvent.hpp>
 #include <MemeEditor/Export.hpp>
@@ -25,4 +25,4 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 }
 
-#endif // !_EDITOR_EVENTS_HPP_
+#endif // !_ML_EDITOR_EVENTS_HPP_

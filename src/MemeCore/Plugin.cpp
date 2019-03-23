@@ -1,6 +1,5 @@
 #include <MemeCore/Plugin.hpp>
 #include <MemeCore/Debug.hpp>
-#include <MemeCore/CoreMacros.hpp>
 
 namespace ml
 {
@@ -46,7 +45,7 @@ namespace ml
 
 	bool Plugin::main(void * data)
 	{
-		return call(ML_PluginMain_Name, data);
+		return call(ML_LITERAL(ML_PluginMain), data);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

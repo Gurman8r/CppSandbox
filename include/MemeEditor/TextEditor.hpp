@@ -1,5 +1,5 @@
-#ifndef _TEXT_EDITOR_HPP_
-#define _TEXT_EDITOR_HPP_
+#ifndef _ML_TEXT_EDITOR_HPP_
+#define _ML_TEXT_EDITOR_HPP_
 
 #include <MemeEditor/Editor.hpp>
 #include <MemeEditor/Document.hpp>
@@ -45,4 +45,4 @@ namespace ml
 	};
 }
 
-#endif // !_TEXT_EDITOR_HPP_
+#endif // !_ML_TEXT_EDITOR_HPP_

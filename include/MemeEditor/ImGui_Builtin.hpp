@@ -1,5 +1,5 @@
-#ifndef _IMGUI_BUILTIN_HPP_
-#define _IMGUI_BUILTIN_HPP_
+#ifndef _ML_IMGUI_BUILTIN_HPP_
+#define _ML_IMGUI_BUILTIN_HPP_
 
 #include <MemeEditor/Export.hpp>
 
@@ -16,4 +16,4 @@ namespace ml
 	};
 }
 
-#endif // !_IMGUI_BUILTIN_HPP_
+#endif // !_ML_IMGUI_BUILTIN_HPP_

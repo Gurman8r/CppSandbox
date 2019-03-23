@@ -1,6 +1,5 @@
-
-#ifndef _RESOURCE_TABLE_HPP_
-#define _RESOURCE_TABLE_HPP_
+#ifndef _ML_RESOURCE_TABLE_HPP_
+#define _ML_RESOURCE_TABLE_HPP_
 
 #include <MemeEditor/Export.hpp>
 #include <MemeCore/FileSystem.hpp>
@@ -253,4 +252,4 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 }
 
-#endif // !_RESOURCE_TABLE_HPP_
+#endif // !_ML_RESOURCE_TABLE_HPP_

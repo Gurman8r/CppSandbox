@@ -25,12 +25,6 @@
     <Filter Include="Resource Files\imgui">
       <UniqueIdentifier>{2e3eeef7-cc0e-4b97-b53c-8882c024ca79}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Resource Management">
-      <UniqueIdentifier>{af8e0fdd-cd68-4998-9458-5d63a92741fd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Resource Management">
-      <UniqueIdentifier>{e5c57efa-a866-43fc-851a-89c70c9a1189}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\GUI">
       <UniqueIdentifier>{c085c6e6-146c-4fd9-a8b2-5ad3e21c5d75}</UniqueIdentifier>
     </Filter>
@@ -48,6 +42,9 @@
     </Filter>
     <Filter Include="Source Files\GUI\Internal">
       <UniqueIdentifier>{ca321d12-4abc-4177-bd20-bab7be77e764}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility">
+      <UniqueIdentifier>{e5c57efa-a866-43fc-851a-89c70c9a1189}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -78,23 +75,8 @@
     <ClInclude Include="..\..\include\MemeEditor\Document.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeEditor\EditorGUI.hpp">
-      <Filter>Header Files\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeEditor\ResourceManager.hpp">
-      <Filter>Header Files\Resource Management</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeEditor\ResourceManifest.hpp">
-      <Filter>Header Files\Resource Management</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeEditor\ResourceTable.hpp">
-      <Filter>Header Files\Resource Management</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\thirdparty\include\imgui\imgui_impl_ml.hpp">
       <Filter>Resource Files\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeEditor\Dockspace.hpp">
-      <Filter>Header Files\GUI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\TextEditor.hpp">
       <Filter>Header Files\GUI\Editors</Filter>
@@ -114,11 +96,26 @@
     <ClInclude Include="..\..\include\MemeEditor\ImGui.hpp">
       <Filter>Header Files\GUI\Internal</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeEditor\Hierarchy.hpp">
+      <Filter>Header Files\GUI\Editors</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\Editor.hpp">
       <Filter>Header Files\GUI\Editors</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeEditor\Hierarchy.hpp">
-      <Filter>Header Files\GUI\Editors</Filter>
+    <ClInclude Include="..\..\include\MemeEditor\EditorGUI.hpp">
+      <Filter>Header Files\GUI\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeEditor\Dockspace.hpp">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeEditor\ResourceManager.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeEditor\ResourceManifest.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeEditor\ResourceTable.hpp">
+      <Filter>Header Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -129,10 +126,7 @@
       <Filter>Source Files\GUI\Internal</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\ResourceManager.cpp">
-      <Filter>Source Files\Resource Management</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeEditor\ResourceManifest.cpp">
-      <Filter>Source Files\Resource Management</Filter>
+      <Filter>Source Files\Utility</Filter>
     </ClCompile>
     <ClCompile Include="..\..\thirdparty\include\imgui\imgui.cpp">
       <Filter>Resource Files\imgui</Filter>
@@ -161,9 +155,6 @@
     <ClCompile Include="..\..\src\MemeEditor\TextEditor.cpp">
       <Filter>Source Files\GUI\Editors</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemeEditor\Dockspace.cpp">
-      <Filter>Source Files\GUI</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\Editor.cpp">
       <Filter>Source Files\GUI\Editors</Filter>
     </ClCompile>
@@ -171,7 +162,13 @@
       <Filter>Source Files\GUI\Editors</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\EditorGUI.cpp">
+      <Filter>Source Files\GUI\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeEditor\Dockspace.cpp">
       <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeEditor\ResourceManifest.cpp">
+      <Filter>Source Files\Utility</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -3,10 +3,8 @@
 
 #include <MemeCore/LibLoader.hpp>
 #include <MemeCore/IReadable.hpp>
-#include <MemeCore/CoreMacros.hpp>
 
-#define ML_PluginMain		ML_PluginMain
-#define ML_PluginMain_Name	ML_LITERAL(ML_PluginMain)
+#define ML_PluginMain ML_PluginMain
 
 extern "C"
 {

@@ -78,12 +78,9 @@ namespace DEMO
 				{
 					auto resizeFBO = [](ml::Texture * tex, auto size) 
 					{
-						tex->cleanup();
+						tex->cleanup(); 
 						tex->create(size);
 					};
-
-					//resizeFBO(ML_Res.textures.get("framebuffer"), ev->size());
-					//resizeFBO(ML_Res.textures.get("post"), ev->size());
 
 					if (ml::Texture * tex = ML_Res.textures.get("framebuffer"))
 					{
@@ -92,11 +89,11 @@ namespace DEMO
 						m_effects["default"].reload(ev->size());
 					}
 
-					if (ml::Texture * tex = ML_Res.textures.get("post"))
+					if (ml::Texture * tex = ML_Res.textures.get("fbo_post"))
 					{
 						tex->cleanup();
 						tex->create(ev->size());
-						m_effects["post"].reload(ev->size());
+						m_effects["fbo_post"].reload(ev->size());
 					}
 				}
 			}
@@ -177,7 +174,7 @@ namespace DEMO
 				&& ML_Res.models.load("sprite")->loadFromMemory(*ML_Res.meshes.get("default_quad"))
 				&& ML_Res.models.load("framebuffer")->loadFromMemory(*ML_Res.meshes.get("default_quad"))
 				&& ML_Res.textures.load("framebuffer")->create(this->getFramebufferSize())
-				&& ML_Res.textures.load("post")->create(this->getFramebufferSize())
+				&& ML_Res.textures.load("fbo_post")->create(this->getFramebufferSize())
 				&& ML_Res.loadManifest(manifest)
 				&& loadBuffers();
 		}
@@ -200,10 +197,10 @@ namespace DEMO
 		m_effects["default"].setShader(ML_Res.shaders.get("framebuffer"));
 		m_effects["default"].setTexture(ML_Res.textures.get("framebuffer"));
 
-		m_effects["post"].create(this->getSize(), ml::GL::ColorAttachment0);
-		m_effects["post"].setModel(ML_Res.models.get("framebuffer"));
-		m_effects["post"].setShader(ML_Res.shaders.get("framebuffer"));
-		m_effects["post"].setTexture(ML_Res.textures.get("post"));
+		m_effects["fbo_post"].create(this->getSize(), ml::GL::ColorAttachment0);
+		m_effects["fbo_post"].setModel(ML_Res.models.get("framebuffer"));
+		m_effects["fbo_post"].setShader(ML_Res.shaders.get("framebuffer"));
+		m_effects["fbo_post"].setTexture(ML_Res.textures.get("fbo_post"));
 
 		return true;
 	}
@@ -839,12 +836,12 @@ namespace DEMO
 
 		// Draw Effects
 		/* * * * * * * * * * * * * * * * * * * * */
-		m_effects["post"].bind();
+		m_effects["fbo_post"].bind();
 		{
 			m_effects["default"].shader()->applyUniforms(effect_uniforms);
 			this->draw(m_effects["default"]);
 		}
-		m_effects["post"].unbind();
+		m_effects["fbo_post"].unbind();
 
 		// Draw GUI
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -951,6 +948,7 @@ namespace DEMO
 				ImGui::MenuItem("Scene", "Ctrl+Alt+S", &show_ml_scene);
 				ImGui::MenuItem("Inspector", "Ctrl+Alt+I", &show_ml_inspector);
 				ImGui::MenuItem("Text Editor", NULL, &show_ml_text_editor);
+				ImGui::MenuItem("Hierarchy", NULL, &show_ml_hierarchy);
 				ImGui::EndMenu();
 			}
 			// Help
@@ -995,10 +993,8 @@ namespace DEMO
 
 				const uint32_t left_U = d.split(left, ImGuiDir_Up, 0.65f, &left);
 				const uint32_t left_D = d.split(left, ImGuiDir_Down, 0.35f, &left);
-				
 				const uint32_t center_U = d.split(center, ImGuiDir_Up, 0.65f, &center);
 				const uint32_t center_D = d.split(center, ImGuiDir_Down, 0.35f, &center);
-				
 				//const uint32_t right_U = d.split(right, ImGuiDir_Up, 0.5f, &right);
 				//const uint32_t right_D = d.split(right, ImGuiDir_Down, 0.5f, &right);
 
@@ -1106,7 +1102,7 @@ namespace DEMO
 
 			ImGui::BeginChild("Scene View", { -1, -1 }, false);
 			{
-				if (auto tex = std::remove_cv_t<ml::Texture *>(m_effects["post"].texture()))
+				if (auto tex = std::remove_cv_t<ml::Texture *>(m_effects["fbo_post"].texture()))
 				{
 					// Texture Size
 					const ml::vec2f src = tex->size();

@@ -20,6 +20,7 @@ namespace ml
 	public:
 		bool draw(CString title, bool * p_open) override;
 
+	private:
 
 	};
 }
