@@ -27,21 +27,24 @@ int32_t main(int32_t argc, char ** argv)
 		// Enter
 		ML_EventSystem.fireEvent(DEMO::EnterEvent(ml::Args(argc, argv)));
 		if (ml::Debug::checkError(ML_FAILURE))
-		{	delete program;
+		{	
+			delete program;
 			return ml::Debug::pause(EXIT_FAILURE);
 		}
 
 		// Load
 		ML_EventSystem.fireEvent(DEMO::LoadEvent());
 		if (ml::Debug::checkError(ML_FAILURE))
-		{	delete program;
+		{	
+			delete program;
 			return ml::Debug::pause(EXIT_FAILURE);
 		}
 
 		// Start
 		ML_EventSystem.fireEvent(DEMO::StartEvent());
 		if (ml::Debug::checkError(ML_FAILURE))
-		{	delete program;
+		{	
+			delete program;
 			return ml::Debug::pause(EXIT_FAILURE);
 		}
 
