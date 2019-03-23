@@ -45,12 +45,7 @@ namespace ml
 	bool Builder::draw(CString title, bool * p_open)
 	{
 		ImGui::SetNextWindowSize(ImVec2(640, 480), ImGuiCond_FirstUseEver);
-		if (!ImGui::Begin(title, (m_open = p_open)))
-		{
-			ImGui::End();
-			return false;
-		}
-		else
+		if (beginWindow(title, (m_open = p_open)))
 		{
 			ImGui::BeginGroup();
 			{
@@ -70,10 +65,8 @@ namespace ml
 				ImGui::EndChild();
 			}
 			ImGui::EndGroup();
-
-			ImGui::End();
-			return true;
 		}
+		return endWindow();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

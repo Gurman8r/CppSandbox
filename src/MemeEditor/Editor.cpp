@@ -20,22 +20,13 @@ namespace ml
 		return m_good;
 	}
 
-	void Editor::endWindow()
+	bool Editor::endWindow()
 	{
 		if (m_good)
 		{
 
 		}
 		ImGui::End();
-	}
-
-	bool Editor::draw(CString title, bool * p_open)
-	{
-		if (beginWindow(title, p_open))
-		{
-			endWindow();
-			return true;
-		}
-		return false;
+		return m_good;
 	}
 }

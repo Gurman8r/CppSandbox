@@ -30,22 +30,15 @@ namespace ml
 
 	bool TextEditor::draw(CString label, bool * p_open)
 	{
-		if (!ImGui::Begin(label, p_open,
+		if (beginWindow(label, p_open,
 			ImGuiWindowFlags_MenuBar |
 			ImGuiWindowFlags_AlwaysHorizontalScrollbar |
 			ImGuiWindowFlags_AlwaysVerticalScrollbar))
 		{
-			ImGui::End();
-			return false;
-		}
-		else
-		{
 			draw_menu();
 			draw_tabs();
-			
-			ImGui::End();
-			return true;
 		}
+		return endWindow();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

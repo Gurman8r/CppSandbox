@@ -74,99 +74,94 @@ namespace ml
 	bool Terminal::draw(CString title, bool * p_open)
 	{
 		ImGui::SetNextWindowSize(ImVec2(550, 600), ImGuiCond_FirstUseEver);
-		if (!ImGui::Begin(title, p_open))
+		if (beginWindow(title, p_open))
 		{
-			ImGui::End();
-			return false;
-		}
-
-		if (ImGui::BeginPopupContextItem())
-		{
-			if (ImGui::MenuItem("Close Console"))
+			if (ImGui::BeginPopupContextItem())
 			{
-				*p_open = false;
+				if (ImGui::MenuItem("Close Console"))
+				{
+					*p_open = false;
+				}
+				ImGui::EndPopup();
 			}
-			ImGui::EndPopup();
-		}
 
-		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
-		static ImGuiTextFilter filter;
-		filter.Draw("Filter (\"incl,-excl\") (\"error\")", 180);
-		ImGui::PopStyleVar();
-		ImGui::Separator();
+			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+			static ImGuiTextFilter filter;
+			filter.Draw("Filter (\"incl,-excl\") (\"error\")", 180);
+			ImGui::PopStyleVar();
+			ImGui::Separator();
 
-		const float footer_height_to_reserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing(); // 1 separator, 1 input text
-		ImGui::BeginChild("ScrollingRegion", ImVec2(0, -footer_height_to_reserve), false, ImGuiWindowFlags_HorizontalScrollbar); // Leave room for 1 separator + 1 InputText
-		if (ImGui::BeginPopupContextWindow())
-		{
-			if (ImGui::Selectable("Clear"))
+			const float footer_height_to_reserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing(); // 1 separator, 1 input text
+			ImGui::BeginChild("ScrollingRegion", ImVec2(0, -footer_height_to_reserve), false, ImGuiWindowFlags_HorizontalScrollbar); // Leave room for 1 separator + 1 InputText
+			if (ImGui::BeginPopupContextWindow())
 			{
-				clear();
+				if (ImGui::Selectable("Clear"))
+				{
+					clear();
+				}
+				ImGui::EndPopup();
 			}
-			ImGui::EndPopup();
-		}
 
-		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1)); // Tighten spacing
-		
-		ImVec4 col_default_text = ImGui::GetStyleColorVec4(ImGuiCol_Text);
-		for (size_t i = 0; i < m_lines.size(); i++)
-		{
-			CString item = m_lines[i].c_str();
-			if (!filter.PassFilter(item))
-				continue;
-			ImVec4 col = col_default_text;
-			if (strstr(item, "[ LOG ]")) col = ImColor(0.0f, 1.0f, 0.4f, 1.0f);
-			else if (strstr(item, "[ WRN ]")) col = ImColor(1.0f, 1.0f, 0.4f, 1.0f);
-			else if (strstr(item, "[ ERR ]")) col = ImColor(1.0f, 0.4f, 0.4f, 1.0f);
-			else if (strncmp(item, "# ", 2) == 0) col = ImColor(1.0f, 0.78f, 0.58f, 1.0f);
-			ImGui::PushStyleColor(ImGuiCol_Text, col);
-			ImGui::TextUnformatted(item);
-			ImGui::PopStyleColor();
-		}
-		
-		if (m_scrollToBottom) 
-		{ 
-			ImGui::SetScrollHereY(1.0f);
-		}
+			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1)); // Tighten spacing
 
-		m_scrollToBottom = false;
-		ImGui::PopStyleVar();
-		ImGui::EndChild();
-		ImGui::Separator();
-
-		// Command-line
-		bool reclaim_focus = false;
-		if (ImGui::InputText(
-			"Input",
-			m_inputBuf,
-			IM_ARRAYSIZE(m_inputBuf),
-			(
-			ImGuiInputTextFlags_EnterReturnsTrue |
-			ImGuiInputTextFlags_CallbackCompletion |
-			ImGuiInputTextFlags_CallbackHistory
-			),
-			[](auto data) { return ((Terminal *)data->UserData)->textEditCallback(data); },
-			(void *)this))
-		{
-			char * s = m_inputBuf;
-			Strtrim(s);
-			if (s[0])
+			ImVec4 col_default_text = ImGui::GetStyleColorVec4(ImGuiCol_Text);
+			for (size_t i = 0; i < m_lines.size(); i++)
 			{
-				execCommand(s);
+				CString item = m_lines[i].c_str();
+				if (!filter.PassFilter(item))
+					continue;
+				ImVec4 col = col_default_text;
+				if (strstr(item, "[ LOG ]")) col = ImColor(0.0f, 1.0f, 0.4f, 1.0f);
+				else if (strstr(item, "[ WRN ]")) col = ImColor(1.0f, 1.0f, 0.4f, 1.0f);
+				else if (strstr(item, "[ ERR ]")) col = ImColor(1.0f, 0.4f, 0.4f, 1.0f);
+				else if (strncmp(item, "# ", 2) == 0) col = ImColor(1.0f, 0.78f, 0.58f, 1.0f);
+				ImGui::PushStyleColor(ImGuiCol_Text, col);
+				ImGui::TextUnformatted(item);
+				ImGui::PopStyleColor();
 			}
-			strcpy(s, "");
-			reclaim_focus = true;
-		}
 
-		// Auto-focus on window apparition
-		ImGui::SetItemDefaultFocus();
-		if (reclaim_focus)
-		{
-			ImGui::SetKeyboardFocusHere(-1); // Auto focus previous widget
-		}
+			if (m_scrollToBottom)
+			{
+				ImGui::SetScrollHereY(1.0f);
+			}
 
-		ImGui::End();
-		return true;
+			m_scrollToBottom = false;
+			ImGui::PopStyleVar();
+			ImGui::EndChild();
+			ImGui::Separator();
+
+			// Command-line
+			bool reclaim_focus = false;
+			if (ImGui::InputText(
+				"Input",
+				m_inputBuf,
+				IM_ARRAYSIZE(m_inputBuf),
+				(
+					ImGuiInputTextFlags_EnterReturnsTrue |
+					ImGuiInputTextFlags_CallbackCompletion |
+					ImGuiInputTextFlags_CallbackHistory
+					),
+				[](auto data) { return ((Terminal *)data->UserData)->textEditCallback(data); },
+				(void *)this))
+			{
+				char * s = m_inputBuf;
+				Strtrim(s);
+				if (s[0])
+				{
+					execCommand(s);
+				}
+				strcpy(s, "");
+				reclaim_focus = true;
+			}
+
+			// Auto-focus on window apparition
+			ImGui::SetItemDefaultFocus();
+			if (reclaim_focus)
+			{
+				ImGui::SetKeyboardFocusHere(-1); // Auto focus previous widget
+			}
+		}
+		return endWindow();
 	}
 
 	void Terminal::execCommand(CString value)

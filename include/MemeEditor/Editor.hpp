@@ -11,16 +11,13 @@ namespace ml
 		: public ITrackable
 	{
 	public:
-		using MyCallback = void(*)();
-
-	public:
 		Editor();
 		virtual ~Editor();
 
-		bool beginWindow(CString title, bool * p_open, int32_t flags = 0);
-		void endWindow();
+		virtual bool beginWindow(CString title, bool * p_open, int32_t flags = 0);
+		virtual bool endWindow();
 
-		virtual bool draw(CString title, bool * p_open);
+		virtual bool draw(CString title, bool * p_open) = 0;
 
 	private:
 		bool m_good = false;

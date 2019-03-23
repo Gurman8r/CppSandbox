@@ -52,12 +52,7 @@ namespace ml
 	bool Browser::draw(CString title, bool * p_open)
 	{
 		//ImGui::SetNextWindowSize(ImVec2(640, 480), ImGuiCond_FirstUseEver);
-		if (!ImGui::Begin(title, (m_open = p_open)))
-		{
-			ImGui::End();
-			return false;
-		}
-		else
+		if (beginWindow(title, (m_open = p_open)))
 		{
 			ImGui::Text("%s", m_path.c_str());
 
@@ -76,10 +71,8 @@ namespace ml
 				case T_Dir: ML_FileSystem.setWorkingDir(get_selected_name()); break;
 				}
 			}
-
-			ImGui::End();
-			return true;
 		}
+		return endWindow();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

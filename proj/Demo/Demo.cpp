@@ -11,6 +11,7 @@
 #include <MemeEditor/ImGui_Builtin.hpp>
 #include <MemeEditor/Dockspace.hpp>
 #include <MemeEditor/TextEditor.hpp>
+#include <MemeEditor/Hierarchy.hpp>
 #include <MemeEditor/ImGui.hpp>
 
 namespace DEMO
@@ -879,6 +880,7 @@ namespace DEMO
 		if (show_imgui_about)	{ ml::ImGuiBuiltin::showAboutWindow(show_imgui_about); }
 
 		// Editor
+		if (show_ml_hierarchy)	{ ML_Hierarchy.draw("Hierarchy", &show_ml_hierarchy); }
 		if (show_ml_browser)	{ ML_Browser.draw("Browser", &show_ml_browser); }
 		if (show_ml_terminal)	{ ML_Terminal.draw("Terminal", &show_ml_terminal); }
 		if (show_ml_builder)	{ ML_Builder.draw("Builder", &show_ml_builder); }
@@ -1001,6 +1003,7 @@ namespace DEMO
 				//const uint32_t right_D = d.split(right, ImGuiDir_Down, 0.5f, &right);
 
 				d.dock_window("Browser", left_U);
+				d.dock_window("Hierarchy", left_U);
 				d.dock_window("Terminal", left_D);
 				d.dock_window("Scene", center_U);
 				d.dock_window("Builder", center_D);
@@ -1101,7 +1104,7 @@ namespace DEMO
 				ImGui::EndMenuBar();
 			}
 
-			ImGui::BeginChild("SceneView", { -1, -1 }, false);
+			ImGui::BeginChild("Scene View", { -1, -1 }, false);
 			{
 				if (auto tex = std::remove_cv_t<ml::Texture *>(m_effects["post"].texture()))
 				{
