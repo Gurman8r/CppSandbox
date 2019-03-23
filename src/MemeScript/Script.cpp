@@ -1,6 +1,6 @@
 #include <MemeScript/Script.hpp>
 #include <MemeScript/Interpreter.hpp>
-#include <MemeScript/Macros.hpp>
+#include <MemeScript/ScriptMacros.hpp>
 #include <MemeCore/Debug.hpp>
 #include <MemeCore/FileSystem.hpp>
 

@@ -1,5 +1,5 @@
 #include <MemeScript/Interpreter.hpp>	
-#include <MemeScript/Macros.hpp>
+#include <MemeScript/ScriptMacros.hpp>
 #include <MemeCore/FileSystem.hpp>
 
 namespace ml

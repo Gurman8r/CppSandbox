@@ -60,12 +60,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MemePhysics", "proj\MemePhy
 		{BCF9C343-33E2-4BDE-BAFA-1C570DFF525F} = {BCF9C343-33E2-4BDE-BAFA-1C570DFF525F}
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{79CA3F06-1FDD-4E1D-8CF5-F2DD51756A8F}"
-	ProjectSection(SolutionItems) = preProject
-		LICENSE.txt = LICENSE.txt
-		README.md = README.md
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{AA6AF900-060F-41BB-B6E4-0A4B9080BF0C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestPlugin", "plugins\TestPlugin\TestPlugin.vcxproj", "{460A52CB-AFC0-451A-8223-943538090422}"

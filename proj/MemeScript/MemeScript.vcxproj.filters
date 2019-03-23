@@ -146,7 +146,7 @@
     <ClInclude Include="..\..\include\MemeScript\StringUtility.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeScript\Macros.hpp">
+    <ClInclude Include="..\..\include\MemeScript\ScriptMacros.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>

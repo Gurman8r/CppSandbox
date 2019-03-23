@@ -27,12 +27,6 @@ namespace ml
 		bool	freeLibrary(void * instance);
 		void *	loadLibrary(const String & filename);
 		void *	loadFunction(void * instance, const String & func);
-
-		template <typename T>
-		inline T loadFunction(void * value, const String & name)
-		{
-			return reinterpret_cast<T>(loadFunction(value, name));
-		}
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

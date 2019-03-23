@@ -3,17 +3,15 @@
 
 #include <MemeCore/LibLoader.hpp>
 #include <MemeCore/IReadable.hpp>
+#include <MemeCore/CoreMacros.hpp>
 
-/* * * * * * * * * * * * * * * * * * * * */
-
-#define ML_Plugin_Main ML_Plugin_Main
+#define ML_PluginMain		ML_PluginMain
+#define ML_PluginMain_Name	ML_LITERAL(ML_PluginMain)
 
 extern "C"
 {
-	ML_API_EXPORT int32_t ML_Plugin_Main(void * user_data);
+	ML_API_EXPORT void ML_PluginMain(void * data);
 }
-
-/* * * * * * * * * * * * * * * * * * * * */
 
 namespace ml
 {
@@ -25,7 +23,7 @@ namespace ml
 		, public INonCopyable
 	{
 	public:
-		using PluginFun = int32_t (*)(void *);
+		using PluginFun = void(*)(void *);
 
 	public:
 		Plugin();
@@ -33,14 +31,8 @@ namespace ml
 
 		bool	cleanup() override;
 		bool	loadFromFile(const String & filename) override;
-		int32_t entryPoint(void * user_data);
-
-	public:
-		template <typename T>
-		inline int32_t entryPoint(T user_data)
-		{
-			return entryPoint((void *)(user_data));
-		}
+		bool	call(const String & func, void * data);
+		bool	main(void * data);
 
 	private:
 		String		m_name; // File Name

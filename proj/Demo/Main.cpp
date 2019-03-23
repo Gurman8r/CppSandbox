@@ -3,7 +3,6 @@
 #include "Demo.hpp"
 #include <MemeCore/Debug.hpp>
 #include <MemeCore/EventSystem.hpp>
-#include <MemeCore/Plugin.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
@@ -20,23 +19,6 @@ int32_t main(int32_t argc, char ** argv)
 	{
 		return ml::Debug::logError("Failed Loading Settings")
 			|| ml::Debug::pause(EXIT_FAILURE);
-	}
-
-	// Load Plugins
-	ml::Plugin plugin;
-	if (plugin.loadFromFile(ml::String("./{0}_{1}_{2}.dll").format(
-		(SETTINGS.pluginName), 
-		(ml::Debug::config()), 
-		(ml::Debug::platform()))))
-	{
-		switch (plugin.entryPoint("Plugin Received Data"))
-		{
-		case EXIT_SUCCESS:
-			if (plugin.cleanup())
-			{
-			}
-			break;
-		}
 	}
 
 	// Load Program

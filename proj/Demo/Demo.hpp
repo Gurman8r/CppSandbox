@@ -7,6 +7,7 @@
 #include <MemeCore/FileSystem.hpp> 
 #include <MemeCore/Random.hpp>
 #include <MemeCore/Thread.hpp>
+#include <MemeCore/Plugin.hpp>
 #include <MemeGraphics/Text.hpp>
 #include <MemeGraphics/Canvas.hpp>
 #include <MemeGraphics/Effect.hpp>
@@ -123,6 +124,7 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		ml::Thread *	m_thread;
+		ml::Plugin		m_plugin;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 

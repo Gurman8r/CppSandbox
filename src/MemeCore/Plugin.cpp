@@ -1,6 +1,6 @@
 #include <MemeCore/Plugin.hpp>
 #include <MemeCore/Debug.hpp>
-#include <MemeCore/Macros.hpp>
+#include <MemeCore/CoreMacros.hpp>
 
 namespace ml
 {
@@ -22,19 +22,31 @@ namespace ml
 
 	bool Plugin::cleanup()
 	{
-		return ML_Lib.freeLibrary(m_inst);
+		if (ML_Lib.freeLibrary(m_inst))
+		{
+			m_inst = NULL;
+		}
+		return !(m_inst);
 	}
 
 	bool Plugin::loadFromFile(const String & filename)
 	{
-		return 
-			(!m_inst && (m_inst = ML_Lib.loadLibrary(m_name = filename))) &&
-			(m_main = ML_Lib.loadFunction<PluginFun>(m_inst, ML_STR(ML_Plugin_Main)));
+		return (cleanup()) && (m_inst = ML_Lib.loadLibrary(m_name = filename));
 	}
 
-	int32_t Plugin::entryPoint(void * data)
+	bool Plugin::call(const String & func, void * data)
 	{
-		return ((m_main) ? (m_main(data)) : (-1));
+		PluginFun fun;
+		if (fun = (PluginFun)ML_Lib.loadFunction(m_inst, func))
+		{
+			fun(data);
+		}
+		return (bool)(fun);
+	}
+
+	bool Plugin::main(void * data)
+	{
+		return call(ML_PluginMain_Name, data);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

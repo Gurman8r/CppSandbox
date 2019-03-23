@@ -1,14 +1,12 @@
 /* * * * * * * * * * * * * * * * * * * * */
 
 #include "TestPlugin.hpp"
+#include <MemeCore/Debug.hpp>
 
-ML_API_EXPORT int32_t ML_Plugin_Main(void * user_data)
+ML_API_EXPORT void ML_PluginMain(void * user_data)
 {
-	ml::cout 
-		<< "Hello, from Test Plugin!" << ml::endl
-		<< ((ml::CString)user_data) << ml::endl;
-	
-	return EXIT_SUCCESS;
+	ml::cout << "Hello from Test Plugin!" << ml::endl;
+	ml::cout << ((ml::CString)user_data) << ml::endl;
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

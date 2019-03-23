@@ -7,7 +7,7 @@
 
 extern "C"
 {
-	ML_API_EXPORT int32_t ML_Plugin_Main(void * user_data);
+	ML_API_EXPORT void ML_PluginMain(void * data);
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

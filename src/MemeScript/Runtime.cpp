@@ -1,6 +1,6 @@
 #include <MemeScript/Runtime.hpp>
 #include <MemeScript/Interpreter.hpp>
-#include <MemeScript/Macros.hpp>
+#include <MemeScript/ScriptMacros.hpp>
 #include <MemeCore/Debug.hpp>
 
 namespace ml

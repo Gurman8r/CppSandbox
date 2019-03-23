@@ -335,6 +335,23 @@ namespace DEMO
 			{
 				return ml::Debug::setError(ml::Debug::logError("Failed Loading Network"));
 			}
+
+			// Load Plugins
+			if (m_plugin.loadFromFile(ml::String("./{0}_{1}_{2}.dll").format(
+				(SETTINGS.pluginName),
+				(ml::Debug::config()),
+				(ml::Debug::platform()))))
+			{
+				m_plugin.main((void *)"Plugin Received Data");
+				if (m_plugin.cleanup())
+				{
+					ml::Debug::log("Plugin Finalized");
+				}
+			}
+			else
+			{
+				ml::Debug::setError(ml::Debug::logError("Failed Loading Plugin"));
+			}
 		}
 		else
 		{
