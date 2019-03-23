@@ -1,5 +1,6 @@
 #include <MemeEditor/GUI.hpp>
 #include <MemeEditor/ImGui.hpp>
+#include <MemeEditor/ResourceManager.hpp>
 
 namespace ml
 {
@@ -168,6 +169,113 @@ namespace ml
 	bool GUI::EditMat4f(CString label, mat4f & value, float speed)
 	{
 		return EditMatrix<float, 4, 4>(label, value, speed);
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	bool GUI::EditUniform(CString label, Uniform * value)
+	{
+		if (value)
+		{
+			static CString u_types[] = {
+				"None",
+				"Int",
+				"Float",
+				"Vec2",
+				"Vec3",
+				"Vec4",
+				"Mat3",
+				"Mat4",
+				"Tex",
+			};
+
+			ImGui::PushID(value->name.c_str());
+			{
+				// Type
+				/* * * * * * * * * * * * * * * * * * * * */
+				ImGui::Combo("Type", &value->type, u_types, IM_ARRAYSIZE(u_types));
+
+				// Data
+				/* * * * * * * * * * * * * * * * * * * * */
+				switch (value->type)
+				{
+				case Uniform::Int:
+				{
+					static int32_t temp;
+					ImGui::DragInt("Value", &temp);
+				}
+				break;
+				case Uniform::Float:
+				{
+					static float temp;
+					ImGui::DragFloat("Value", &temp, 0.1f);
+				}
+				break;
+				case Uniform::Vec2:
+				{
+					static vec2f temp;
+					EditVec2f("Value", temp);
+				}
+				break;
+				case Uniform::Vec3:
+				{
+					static vec3f temp;
+					EditVec3f("Value", temp);
+				}
+				break;
+				case Uniform::Vec4:
+				{
+					static vec4f temp;
+					EditVec4f("Value", temp);
+				}
+				break;
+				case Uniform::Mat3:
+				{
+					static mat3f temp;
+					EditMat3f("Value", temp);
+				}
+				break;
+				case Uniform::Mat4:
+				{
+					static mat4f temp;
+					EditMat4f("Value", temp);
+				}
+				break;
+				case Uniform::Tex:
+				{
+					auto vector_getter = [](void* vec, int idx, const char** out_text)
+					{
+						auto& vector = *static_cast<List<String>*>(vec);
+						if (idx < 0 || idx >= static_cast<int32_t>(vector.size()))
+						{
+							return false;
+						}
+						*out_text = vector.at(idx).c_str();
+						return true;
+					};
+
+					const ResourceManager::TextureMap & textures = ML_Res.textures;
+					List<String> names;
+					for (auto pair : textures)
+					{
+						names.push_back(pair.first);
+					}
+
+					static int32_t index = 0;
+
+					ImGui::Combo(
+						"Texture",
+						&index,
+						vector_getter,
+						static_cast<void *>(&names),
+						(int32_t)names.size());
+				}
+				break;
+				}
+			}
+			ImGui::PopID();
+		}
+		return (bool)(value);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

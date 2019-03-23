@@ -11,7 +11,7 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_EDITOR_API Document final
+	struct ML_EDITOR_API Document
 		: public ITrackable
 	{
 		/* * * * * * * * * * * * * * * * * * * * */

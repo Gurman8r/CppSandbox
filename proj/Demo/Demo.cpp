@@ -17,6 +17,7 @@
 #include <MemeEditor/Hierarchy.hpp>
 #include <MemeEditor/SceneView.hpp>
 #include <MemeEditor/Inspector.hpp>
+#include <MemeEditor/GameObject.hpp>
 
 namespace DEMO
 {
@@ -864,16 +865,16 @@ namespace DEMO
 	void Demo::onGui(const GuiEvent & ev)
 	{
 		// Main Menu Bar
-		ML_MainMenuBar_draw();
+		if (ML_MainMenuBar_draw()) {}
 
 		// Dockspace
 		if (show_ml_dockspace)	{ ML_Dockspace_draw(&show_ml_dockspace); }
 
-		// ImGui Builtin
-		if (show_imgui_demo)	{ ml::ImGui_Builtin::showDemoWindow(show_imgui_demo); }
-		if (show_imgui_metrics) { ml::ImGui_Builtin::showMetricsWindow(show_imgui_metrics); }
-		if (show_imgui_style)	{ ml::ImGui_Builtin::showStyleWindow(show_imgui_style); }
-		if (show_imgui_about)	{ ml::ImGui_Builtin::showAboutWindow(show_imgui_about); }
+		// ImGui
+		if (show_imgui_demo)	{ ml::ImGui_Builtin::showDemo(&show_imgui_demo); }
+		if (show_imgui_metrics) { ml::ImGui_Builtin::showMetrics(&show_imgui_metrics); }
+		if (show_imgui_style)	{ ml::ImGui_Builtin::showStyle(&show_imgui_style); }
+		if (show_imgui_about)	{ ml::ImGui_Builtin::showAbout(&show_imgui_about); }
 
 		// Editor
 		if (show_ml_hierarchy)	{ ML_Hierarchy.draw(&show_ml_hierarchy); }
@@ -963,7 +964,7 @@ namespace DEMO
 				ImGui::MenuItem("About Dear ImGui", NULL, &show_imgui_about);
 				ImGui::EndMenu();
 			}
-			// Other
+			// Events
 			/* * * * * * * * * * * * * * * * * * * * */
 			ML_EventSystem.fireEvent(ml::MainMenuBarEvent());
 		});
@@ -1083,24 +1084,66 @@ namespace DEMO
 
 	bool Demo::ML_TestWindow_draw(bool * p_open)
 	{
-		return ml::GUI::DrawFun("Test Window", p_open, ImGuiWindowFlags_MenuBar, [&]()
+		return ml::GUI::DrawWindow("Test Window", p_open, ImGuiWindowFlags_MenuBar, [&]()
 		{
-			if (ImGui::BeginMenuBar())
-			{
-				if (ImGui::BeginMenu("Shader"))
-				{
-					if (ImGui::BeginMenu("New"))
-					{
-						if (ImGui::MenuItem("Vertex", 0, false, true)) {}
-						if (ImGui::MenuItem("Fragment", 0, false, true)) {}
-						if (ImGui::MenuItem("Geometry", 0, false, true)) {}
-						ImGui::EndMenu();
-					}
-					ImGui::EndMenu();
-				}
-				ImGui::EndMenuBar();
-			}
+			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
+			ImGui::Columns(2);
 			ImGui::Separator();
+
+			struct funcs
+			{
+				static void ShowDummyObject(const char* prefix, int32_t uid)
+				{
+					ImGui::PushID(uid);
+					ImGui::AlignTextToFramePadding();
+					bool node_open = ImGui::TreeNode("Object", "%s_%u", prefix, uid);
+					ImGui::NextColumn();
+					ImGui::AlignTextToFramePadding();
+					ImGui::Text("my sailor is rich");
+					ImGui::NextColumn();
+					if (node_open)
+					{
+						static float dummy_members[8] = { 0.0f, 0.0f, 1.0f, 3.1416f, 100.0f, 999.0f };
+						for (int32_t i = 0; i < 8; i++)
+						{
+							ImGui::PushID(i);
+							if (i < 2)
+							{
+								ShowDummyObject("Child", 424242);
+							}
+							else
+							{
+								ImGui::AlignTextToFramePadding();
+								ImGui::TreeNodeEx("Field", ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_Bullet, "Field_%d", i);
+								ImGui::NextColumn();
+								ImGui::PushItemWidth(-1);
+								if (i >= 5)
+								{
+									ImGui::InputFloat("##value", &dummy_members[i], 1.0f);
+								}
+								else
+								{
+									ImGui::DragFloat("##value", &dummy_members[i], 0.01f);
+								}
+								ImGui::PopItemWidth();
+								ImGui::NextColumn();
+							}
+							ImGui::PopID();
+						}
+						ImGui::TreePop();
+					}
+					ImGui::PopID();
+				}
+			};
+
+			for (int32_t obj_i = 0; obj_i < 3; obj_i++)
+			{
+				funcs::ShowDummyObject("Object", obj_i);
+			}
+
+			ImGui::Columns(1);
+			ImGui::Separator();
+			ImGui::PopStyleVar();
 		});
 	}
 

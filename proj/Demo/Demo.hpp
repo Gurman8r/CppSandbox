@@ -109,6 +109,11 @@ namespace DEMO
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
+		bool show_imgui_demo	= false;
+		bool show_imgui_metrics	= false;
+		bool show_imgui_style	= false;
+		bool show_imgui_about	= false;
+
 		bool show_ml_dockspace	= true;
 		bool show_ml_terminal	= true;
 		bool show_ml_browser	= true;
@@ -118,11 +123,6 @@ namespace DEMO
 		bool show_ml_texteditor	= true;
 		bool show_ml_hierarchy	= true;
 		bool show_ml_tester		= true;
-
-		bool show_imgui_demo	= false;
-		bool show_imgui_metrics	= false;
-		bool show_imgui_style	= false;
-		bool show_imgui_about	= false;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 

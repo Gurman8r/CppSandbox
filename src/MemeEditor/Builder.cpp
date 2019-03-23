@@ -188,31 +188,31 @@ namespace ml
 			case Uniform::Vec2:
 			{
 				static vec2f temp;
-				ml::GUI::EditVec2f("Value", temp);
+				GUI::EditVec2f("Value", temp);
 			}
 			break;
 			case Uniform::Vec3:
 			{
 				static vec3f temp;
-				ml::GUI::EditVec3f("Value", temp);
+				GUI::EditVec3f("Value", temp);
 			}
 			break;
 			case Uniform::Vec4:
 			{
 				static vec4f temp;
-				ml::GUI::EditVec4f("Value", temp);
+				GUI::EditVec4f("Value", temp);
 			}
 			break;
 			case Uniform::Mat3:
 			{
 				static mat3f temp;
-				ml::GUI::EditMat3f("Value", temp);
+				GUI::EditMat3f("Value", temp);
 			}
 			break;
 			case Uniform::Mat4:
 			{
 				static mat4f temp;
-				ml::GUI::EditMat4f("Value", temp);
+				GUI::EditMat4f("Value", temp);
 			}
 			break;
 			case Uniform::Tex:

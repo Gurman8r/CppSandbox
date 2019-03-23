@@ -138,6 +138,9 @@
     <ClInclude Include="..\..\include\MemeEditor\EditorEvents.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeEditor\GameObject.hpp">
+      <Filter>Header Files\Editor\DS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeEditor\Document.cpp">
@@ -205,6 +208,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\ImGui_Builtin.cpp">
       <Filter>Source Files\Editor\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeEditor\GameObject.cpp">
+      <Filter>Source Files\Editor\DS</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

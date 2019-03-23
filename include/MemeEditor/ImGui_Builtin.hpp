@@ -9,10 +9,10 @@ namespace ml
 	class ML_EDITOR_API ImGui_Builtin final
 	{
 	public:
-		static void showDemoWindow(bool & p_open);
-		static void showMetricsWindow(bool & p_open);
-		static void showStyleWindow(bool & p_open);
-		static void showAboutWindow(bool & p_open);
+		static void showDemo(bool * p_open);
+		static void showMetrics(bool * p_open);
+		static void showStyle(bool * p_open);
+		static void showAbout(bool * p_open);
 	};
 }
 

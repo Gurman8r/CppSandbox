@@ -3,6 +3,7 @@
 
 #include <MemeEditor/Export.hpp>
 #include <MemeGraphics/Transform.hpp>
+#include <MemeGraphics/Shader.hpp>
 
 namespace ml
 {
@@ -23,12 +24,16 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
+		static bool EditUniform(CString label, Uniform * u);
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
 		static bool Begin(CString label, bool * p_open, int32_t flags);
 		static void End();
 
 		template <
 			typename _Fun
-		> inline static bool DrawFun(CString label, bool * p_open, int32_t flags, _Fun fun)
+		> inline static bool DrawWindow(CString label, bool * p_open, int32_t flags, _Fun fun)
 		{
 			bool good;
 			if (good = Begin(label, p_open, flags))
