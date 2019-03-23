@@ -11,7 +11,7 @@ namespace ml
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		static void DrawLabel(CString label);
+		static bool DrawLabel(CString label);
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
