@@ -4,7 +4,7 @@ GLEW
 GLFW
 GLM
 RakNet
-dirent.h (windows)
+dirent.h
 INIReader
 stb_image
 tinyxml2
