@@ -60,10 +60,10 @@ namespace DEMO
 
 	private:
 		bool draw_MainMenuBar();
-		bool draw_Dockspace(ml::CString title, bool * p_open);
-		bool draw_Inspector(ml::CString title, bool * p_open);
-		bool draw_Scene(ml::CString title, bool * p_open);
-		bool draw_Tester(ml::CString title, bool * p_open);
+		bool draw_Dockspace(bool * p_open);
+		bool draw_Inspector(bool * p_open);
+		bool draw_Scene(bool * p_open);
+		bool draw_TestWindow(bool * p_open);
 
 	private:
 		/* * * * * * * * * * * * * * * * * * * * */

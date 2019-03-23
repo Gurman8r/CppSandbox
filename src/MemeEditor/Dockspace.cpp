@@ -7,7 +7,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Dockspace::Dockspace()
-		: base_type	()
+		: base_type	("Dockspace")
 		, border	(0.0f)
 		, padding	(vec2f::Zero)
 		, rounding	(0.0f)
@@ -24,9 +24,9 @@ namespace ml
 	{
 	}
 
-	bool Dockspace::draw(CString title, bool * p_open)
+	bool Dockspace::draw(bool * p_open)
 	{
-		return beginDraw(title, p_open, 
+		return beginDraw(p_open, 
 			ImGuiWindowFlags_NoTitleBar |
 			ImGuiWindowFlags_NoCollapse |
 			ImGuiWindowFlags_NoResize |
@@ -40,7 +40,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Dockspace::beginDraw(CString title, bool * p_open, int32_t flags)
+	bool Dockspace::beginDraw(bool * p_open, int32_t flags)
 	{
 		if (goodCheck(ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_DockingEnable))
 		{
@@ -57,7 +57,7 @@ namespace ml
 			ImGui::SetNextWindowBgAlpha(bgAlpha);
 
 			// Begi
-			if (base_type::beginDraw(title, p_open, flags))
+			if (base_type::beginDraw(p_open, flags))
 			{
 				ImGui::PopStyleVar(3);
 			}

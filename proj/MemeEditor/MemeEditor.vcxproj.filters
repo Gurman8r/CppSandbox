@@ -13,12 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\DS">
-      <UniqueIdentifier>{a740db58-683d-46df-9dfa-8d3a195dbcd2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\DS">
-      <UniqueIdentifier>{4e9592a2-09b6-4845-8ee9-7bd04c1b754e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\imgui">
       <UniqueIdentifier>{2e3eeef7-cc0e-4b97-b53c-8882c024ca79}</UniqueIdentifier>
     </Filter>
@@ -52,14 +46,14 @@
     <Filter Include="Header Files\GUI\Tools">
       <UniqueIdentifier>{170c2bac-0d65-404a-9d6c-f1631acd3794}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\GUI\Internal">
-      <UniqueIdentifier>{ef7e1106-e122-44c3-a51b-1de51be0c629}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GUI\Internal">
-      <UniqueIdentifier>{9ffffa8a-b418-48ef-810b-63056b26cf58}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Utility">
       <UniqueIdentifier>{bbbe9001-f7d0-41f8-92c0-f02c8e793139}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GUI\DS">
+      <UniqueIdentifier>{4e9592a2-09b6-4845-8ee9-7bd04c1b754e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GUI\DS">
+      <UniqueIdentifier>{a740db58-683d-46df-9dfa-8d3a195dbcd2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -85,7 +79,7 @@
       <Filter>Resource Files\imgui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\Document.hpp">
-      <Filter>Header Files\DS</Filter>
+      <Filter>Header Files\GUI\DS</Filter>
     </ClInclude>
     <ClInclude Include="..\..\thirdparty\include\imgui\imgui_impl_ml.hpp">
       <Filter>Resource Files\imgui</Filter>
@@ -138,19 +132,19 @@
     <ClInclude Include="..\..\include\MemeEditor\EditorEvents.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeEditor\ImGui_Builtin.hpp">
-      <Filter>Header Files\GUI\Internal</Filter>
+    <ClInclude Include="..\..\include\MemeEditor\EditorGUI.hpp">
+      <Filter>Header Files\GUI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\ImGui.hpp">
-      <Filter>Header Files\GUI\Internal</Filter>
+      <Filter>Header Files\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeEditor\EditorGUI.hpp">
-      <Filter>Header Files\GUI\Internal</Filter>
+    <ClInclude Include="..\..\include\MemeEditor\ImGui_Builtin.hpp">
+      <Filter>Header Files\GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeEditor\Document.cpp">
-      <Filter>Source Files\DS</Filter>
+      <Filter>Source Files\GUI\DS</Filter>
     </ClCompile>
     <ClCompile Include="..\..\thirdparty\include\imgui\imgui.cpp">
       <Filter>Resource Files\imgui</Filter>
@@ -194,9 +188,6 @@
     <ClCompile Include="..\..\src\MemeEditor\Terminal.cpp">
       <Filter>Source Files\GUI\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemeEditor\TextEditor.cpp">
-      <Filter>Source Files\GUI\Windows</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\MainMenuBar.cpp">
       <Filter>Source Files\GUI\Tools</Filter>
     </ClCompile>
@@ -209,11 +200,14 @@
     <ClCompile Include="..\..\src\MemeEditor\Inspector.cpp">
       <Filter>Source Files\GUI\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemeEditor\ImGui_Builtin.cpp">
-      <Filter>Source Files\GUI\Internal</Filter>
+    <ClCompile Include="..\..\src\MemeEditor\TextEditor.cpp">
+      <Filter>Source Files\GUI\Windows</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\EditorGUI.cpp">
-      <Filter>Source Files\GUI\Internal</Filter>
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeEditor\ImGui_Builtin.cpp">
+      <Filter>Source Files\GUI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

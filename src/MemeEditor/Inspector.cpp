@@ -6,6 +6,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Inspector::Inspector()
+		: base_type("Inspector")
 	{
 	}
 
@@ -19,9 +20,9 @@ namespace ml
 	{
 	}
 
-	bool Inspector::draw(CString title, bool * p_open)
+	bool Inspector::draw(bool * p_open)
 	{
-		return beginDraw(title, p_open, ImGuiWindowFlags_AlwaysAutoResize);
+		return beginDraw(p_open, ImGuiWindowFlags_AlwaysAutoResize);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

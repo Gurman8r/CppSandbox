@@ -18,7 +18,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Terminal::Terminal()
-		: base_type()
+		: base_type("Terminal")
 	{
 		clear();
 		memset(m_inputBuf, 0, sizeof(m_inputBuf));
@@ -57,9 +57,9 @@ namespace ml
 		}
 	}
 
-	bool Terminal::draw(CString title, bool * p_open)
+	bool Terminal::draw(bool * p_open)
 	{
-		if (beginDraw(title, p_open))
+		if (beginDraw(p_open))
 		{
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
 			static ImGuiTextFilter filter;

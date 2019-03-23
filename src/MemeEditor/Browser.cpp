@@ -14,7 +14,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Browser::Browser()
-		: base_type()
+		: base_type("Browser")
 		, m_path()
 		, m_dir()
 		, m_type(T_Dir)
@@ -50,9 +50,9 @@ namespace ml
 		}
 	}
 
-	bool Browser::draw(CString title, bool * p_open)
+	bool Browser::draw(bool * p_open)
 	{
-		if (beginDraw(title, (m_open = p_open)))
+		if (beginDraw(p_open))
 		{
 			ImGui::Text("%s", m_path.c_str());
 

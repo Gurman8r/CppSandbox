@@ -15,26 +15,23 @@ namespace ml
 		using base_type = typename GUI_Window;
 
 	public:
-		GUI_Window();
+		GUI_Window(CString title);
 		virtual ~GUI_Window();
 
 	public:
-		uint32_t getID() const;
-
-	public:
 		virtual void onEvent(const IEvent * value) override = 0;
-		virtual bool draw(CString title, bool * p_open) = 0;
+		virtual bool draw(bool * p_open) = 0;
 
-	public:
-		virtual bool beginDraw(CString title, bool * p_open, int32_t flags = 0);
+	protected:
+		virtual bool beginDraw(bool * p_open, int32_t flags = 0);
 		virtual bool endDraw();
 
 	public:
 		template <
 			typename _Fun
-		> inline bool drawFun(CString title, bool * p_open, _Fun fun)
+		> inline bool drawFun(bool * p_open, _Fun fun)
 		{
-			if (draw(title, p_open))
+			if (draw(p_open))
 			{
 				fun();
 			}
@@ -45,6 +42,8 @@ namespace ml
 		inline CString	title() const { return m_title; }
 		inline bool *	open()	const { return m_open; }
 		inline int32_t	flags() const { return m_flags; }
+
+		uint32_t getID() const;
 
 	protected:
 		CString	m_title;

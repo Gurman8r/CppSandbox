@@ -6,6 +6,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	SceneView::SceneView()
+		: base_type("Scene View")
 	{
 	}
 
@@ -19,16 +20,16 @@ namespace ml
 	{
 	}
 
-	bool SceneView::draw(CString title, bool * p_open)
+	bool SceneView::draw(bool * p_open)
 	{
-		return beginDraw(title, p_open, ImGuiWindowFlags_None);
+		return beginDraw(p_open, ImGuiWindowFlags_None);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool SceneView::beginDraw(CString title, bool * p_open, int32_t flags)
+	bool SceneView::beginDraw(bool * p_open, int32_t flags)
 	{
-		if (base_type::beginDraw(title, p_open, flags))
+		if (base_type::beginDraw(p_open, flags))
 		{
 			ImGui::BeginChild("Viewport", { -1, -1 });
 		}

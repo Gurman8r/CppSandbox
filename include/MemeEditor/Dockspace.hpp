@@ -21,10 +21,10 @@ namespace ml
 
 	public:
 		void onEvent(const IEvent * value) override;
-		bool draw(CString title, bool * p_open) override;
+		bool draw(bool * p_open) override;
 
-	public:
-		bool beginDraw(CString title, bool * p_open, int32_t flags = 0) override;
+	protected:
+		bool beginDraw(bool * p_open, int32_t flags = 0) override;
 		bool endDraw() override;
 
 	public:

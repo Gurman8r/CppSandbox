@@ -4,7 +4,7 @@
 namespace ml
 {
 	Hierarchy::Hierarchy()
-		: base_type()
+		: base_type("Hierarchy")
 	{
 	}
 
@@ -16,9 +16,9 @@ namespace ml
 	{
 	}
 
-	bool Hierarchy::draw(CString title, bool * p_open)
+	bool Hierarchy::draw(bool * p_open)
 	{
-		if (beginDraw(title, p_open))
+		if (beginDraw(p_open))
 		{
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
 			ImGui::Columns(2);

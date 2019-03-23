@@ -7,7 +7,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	TextEditor::TextEditor()
-		: base_type()
+		: base_type("Text Editor")
 		, m_selected(-1)
 	{
 	}
@@ -22,9 +22,9 @@ namespace ml
 	{
 	}
 
-	bool TextEditor::draw(CString label, bool * p_open)
+	bool TextEditor::draw(bool * p_open)
 	{
-		if (beginDraw(label, p_open,
+		if (beginDraw(p_open,
 			ImGuiWindowFlags_MenuBar |
 			ImGuiWindowFlags_AlwaysHorizontalScrollbar |
 			ImGuiWindowFlags_AlwaysVerticalScrollbar))

@@ -5,9 +5,9 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	GUI_Window::GUI_Window()
+	GUI_Window::GUI_Window(CString title)
 		: GUI_Base()
-		, m_title(NULL)
+		, m_title(title)
 		, m_open (NULL)
 		, m_flags(ImGuiWindowFlags_None)
 	{
@@ -18,15 +18,10 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	uint32_t GUI_Window::getID() const
-	{
-		return ImGui::GetID(m_title);
-	}
-
-	bool GUI_Window::beginDraw(CString title, bool * p_open, int32_t flags)
+	bool GUI_Window::beginDraw(bool * p_open, int32_t flags)
 	{
 		return goodCheck(ImGui::Begin(
-			(m_title = title),
+			(m_title),
 			(m_open = p_open),
 			(m_flags = flags))
 		);
@@ -36,6 +31,13 @@ namespace ml
 	{
 		ImGui::End();
 		return good();
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	uint32_t GUI_Window::getID() const
+	{
+		return ImGui::GetID(m_title);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
