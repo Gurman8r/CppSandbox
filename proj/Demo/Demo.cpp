@@ -82,11 +82,11 @@ namespace DEMO
 						tex->create(size);
 					};
 
-					if (ml::Texture * tex = ML_Res.textures.get("framebuffer"))
+					if (ml::Texture * tex = ML_Res.textures.get("fbo_main"))
 					{
 						tex->cleanup();
 						tex->create(ev->size());
-						m_effects["default"].reload(ev->size());
+						m_effects["fbo_scene"].reload(ev->size());
 					}
 
 					if (ml::Texture * tex = ML_Res.textures.get("fbo_post"))
@@ -173,7 +173,7 @@ namespace DEMO
 				&& ML_Res.models.load("sanic")->loadFromMemory(*ML_Res.meshes.get("default_quad"))
 				&& ML_Res.models.load("sprite")->loadFromMemory(*ML_Res.meshes.get("default_quad"))
 				&& ML_Res.models.load("framebuffer")->loadFromMemory(*ML_Res.meshes.get("default_quad"))
-				&& ML_Res.textures.load("framebuffer")->create(this->getFramebufferSize())
+				&& ML_Res.textures.load("fbo_main")->create(this->getFramebufferSize())
 				&& ML_Res.textures.load("fbo_post")->create(this->getFramebufferSize())
 				&& ML_Res.loadManifest(manifest)
 				&& loadBuffers();
@@ -192,10 +192,10 @@ namespace DEMO
 		m_vao.unbind();
 
 		// Effects
-		m_effects["default"].create(this->getSize(), ml::GL::ColorAttachment0);
-		m_effects["default"].setModel(ML_Res.models.get("framebuffer"));
-		m_effects["default"].setShader(ML_Res.shaders.get("framebuffer"));
-		m_effects["default"].setTexture(ML_Res.textures.get("framebuffer"));
+		m_effects["fbo_scene"].create(this->getSize(), ml::GL::ColorAttachment0);
+		m_effects["fbo_scene"].setModel(ML_Res.models.get("framebuffer"));
+		m_effects["fbo_scene"].setShader(ML_Res.shaders.get("framebuffer"));
+		m_effects["fbo_scene"].setTexture(ML_Res.textures.get("fbo_main"));
 
 		m_effects["fbo_post"].create(this->getSize(), ml::GL::ColorAttachment0);
 		m_effects["fbo_post"].setModel(ML_Res.models.get("framebuffer"));
@@ -655,9 +655,9 @@ namespace DEMO
 			ml::Uniform("Effect.mode", ml::Uniform::Int, &m_effectMode),
 		};
 
-		// Draw Scene Objects
+		// Draw Scene
 		/* * * * * * * * * * * * * * * * * * * * */
-		m_effects["default"].bind();
+		m_effects["fbo_scene"].bind();
 		{
 			// Clear
 			this->clear(m_clearColor);
@@ -832,14 +832,14 @@ namespace DEMO
 				}
 			}
 		}
-		m_effects["default"].unbind();
+		m_effects["fbo_scene"].unbind();
 
 		// Draw Effects
 		/* * * * * * * * * * * * * * * * * * * * */
 		m_effects["fbo_post"].bind();
 		{
-			m_effects["default"].shader()->applyUniforms(effect_uniforms);
-			this->draw(m_effects["default"]);
+			m_effects["fbo_scene"].shader()->applyUniforms(effect_uniforms);
+			this->draw(m_effects["fbo_scene"]);
 		}
 		m_effects["fbo_post"].unbind();
 

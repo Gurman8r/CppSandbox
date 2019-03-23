@@ -35,7 +35,6 @@ namespace ml
 	private:
 		String		m_name; // File Name
 		void *		m_inst; // Instance Handle
-		PluginFun	m_main; // Entry Point
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

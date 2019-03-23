@@ -16,13 +16,14 @@ namespace ml
 		Editor();
 		virtual ~Editor();
 
+	public:
 		virtual void onEvent(const IEvent * value) override;
 
-		virtual bool beginWindow(CString title, bool * p_open, int32_t flags = 0);
-
-		virtual bool endWindow();
-
 		virtual bool draw(CString title, bool * p_open) = 0;
+
+	public:
+		bool beginWindow(CString title, bool * p_open, int32_t flags = 0);
+		bool endWindow();
 
 	private:
 		bool m_good = false;

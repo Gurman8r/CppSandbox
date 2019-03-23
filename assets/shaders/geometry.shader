@@ -23,7 +23,6 @@ void main()
 #shader geometry
 #include <common/Geom.Curve.shader>
 
-
 #define SAMPLES_PER_SEGMENT 16
 #define SAMPLES_MAX 128
 

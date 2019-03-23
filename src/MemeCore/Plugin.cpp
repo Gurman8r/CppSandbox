@@ -8,7 +8,6 @@ namespace ml
 	Plugin::Plugin()
 		: m_name(String())
 		, m_inst(NULL)
-		, m_main(NULL)
 	{
 	}
 

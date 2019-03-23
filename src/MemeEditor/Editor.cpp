@@ -26,10 +26,6 @@ namespace ml
 
 	bool Editor::endWindow()
 	{
-		if (m_good)
-		{
-
-		}
 		ImGui::End();
 		return m_good;
 	}
