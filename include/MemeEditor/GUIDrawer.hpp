@@ -1,5 +1,5 @@
-#ifndef _ML_EDITOR_BASE_HPP_
-#define _ML_EDITOR_BASE_HPP_
+#ifndef _ML_GUI_DRAWER_HPP_
+#define _ML_GUI_DRAWER_HPP_
 
 #include <MemeEditor/Export.hpp>
 #include <MemeCore/ITrackable.hpp>
@@ -7,12 +7,12 @@
 namespace ml
 {
 	// Base Editor Class
-	class ML_EDITOR_API EditorBase
+	class ML_EDITOR_API GUIDrawer
 		: public ITrackable
 	{
 	public:
-		EditorBase();
-		virtual ~EditorBase();
+		GUIDrawer();
+		virtual ~GUIDrawer();
 
 	public:
 		virtual bool beginDraw(CString title, bool * p_open, int32_t flags = 0);
@@ -35,4 +35,4 @@ namespace ml
 	};
 }
 
-#endif // !_ML_EDITOR_BASE_HPP_
+#endif // !_ML_GUI_DRAWER_HPP_

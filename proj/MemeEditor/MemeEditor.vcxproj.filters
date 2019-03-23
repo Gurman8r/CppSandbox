@@ -29,16 +29,22 @@
       <UniqueIdentifier>{e5c57efa-a866-43fc-851a-89c70c9a1189}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Internal">
-      <UniqueIdentifier>{c4d78bba-26e9-4357-9db0-26bd8086a8d2}</UniqueIdentifier>
+      <UniqueIdentifier>{600a5631-8383-4adc-9ce5-6a3fb5109bf1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Internal">
+      <UniqueIdentifier>{624dd2a9-4082-4a59-b9b9-354c1409879e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Editor">
       <UniqueIdentifier>{ca321d12-4abc-4177-bd20-bab7be77e764}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Windows">
-      <UniqueIdentifier>{d2cd5d20-75c4-4b9b-ad66-6aec7911ae8c}</UniqueIdentifier>
+    <Filter Include="Header Files\Editor">
+      <UniqueIdentifier>{c4d78bba-26e9-4357-9db0-26bd8086a8d2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Windows">
+    <Filter Include="Header Files\Drawers">
       <UniqueIdentifier>{c085c6e6-146c-4fd9-a8b2-5ad3e21c5d75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Drawers">
+      <UniqueIdentifier>{d2cd5d20-75c4-4b9b-ad66-6aec7911ae8c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -72,12 +78,6 @@
     <ClInclude Include="..\..\thirdparty\include\imgui\imgui_impl_ml.hpp">
       <Filter>Resource Files\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeEditor\ImGui_Builtin.hpp">
-      <Filter>Header Files\Internal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeEditor\ImGui.hpp">
-      <Filter>Header Files\Internal</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\ResourceManager.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
@@ -88,39 +88,42 @@
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\Browser.hpp">
-      <Filter>Header Files\Windows</Filter>
+      <Filter>Header Files\Drawers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\Builder.hpp">
-      <Filter>Header Files\Windows</Filter>
+      <Filter>Header Files\Drawers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\Dockspace.hpp">
-      <Filter>Header Files\Windows</Filter>
+      <Filter>Header Files\Drawers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\Hierarchy.hpp">
-      <Filter>Header Files\Windows</Filter>
+      <Filter>Header Files\Drawers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\Terminal.hpp">
-      <Filter>Header Files\Windows</Filter>
+      <Filter>Header Files\Drawers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\TextEditor.hpp">
-      <Filter>Header Files\Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeEditor\EditorWindow.hpp">
-      <Filter>Header Files\Internal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeEditor\EditorBase.hpp">
-      <Filter>Header Files\Internal</Filter>
+      <Filter>Header Files\Drawers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\EditorGUI.hpp">
+      <Filter>Header Files\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeEditor\GUIDrawer.hpp">
+      <Filter>Header Files\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeEditor\WindowDrawer.hpp">
+      <Filter>Header Files\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeEditor\ImGui_Builtin.hpp">
+      <Filter>Header Files\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeEditor\ImGui.hpp">
       <Filter>Header Files\Internal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeEditor\Document.cpp">
       <Filter>Source Files\DS</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeEditor\ImGui_Builtin.cpp">
-      <Filter>Source Files\Internal</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\ResourceManager.cpp">
       <Filter>Source Files\Utility</Filter>
@@ -144,30 +147,30 @@
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\Dockspace.cpp">
-      <Filter>Source Files\Windows</Filter>
+      <Filter>Source Files\Drawers</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\TextEditor.cpp">
-      <Filter>Source Files\Windows</Filter>
+      <Filter>Source Files\Drawers</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\Browser.cpp">
-      <Filter>Source Files\Windows</Filter>
+      <Filter>Source Files\Drawers</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\Builder.cpp">
-      <Filter>Source Files\Windows</Filter>
+      <Filter>Source Files\Drawers</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\Hierarchy.cpp">
-      <Filter>Source Files\Windows</Filter>
+      <Filter>Source Files\Drawers</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\Terminal.cpp">
-      <Filter>Source Files\Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeEditor\EditorWindow.cpp">
-      <Filter>Source Files\Internal</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeEditor\EditorBase.cpp">
-      <Filter>Source Files\Internal</Filter>
+      <Filter>Source Files\Drawers</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\EditorGUI.cpp">
+      <Filter>Source Files\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeEditor\GUIDrawer.cpp">
+      <Filter>Source Files\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeEditor\ImGui_Builtin.cpp">
       <Filter>Source Files\Internal</Filter>
     </ClCompile>
   </ItemGroup>

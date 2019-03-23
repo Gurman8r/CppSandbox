@@ -7,7 +7,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	TextEditor::TextEditor()
-		: EditorWindow()
+		: WindowDrawer()
 		, m_selected(-1)
 	{
 	}

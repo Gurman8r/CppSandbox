@@ -1,7 +1,7 @@
 #ifndef _ML_BROWSER_HPP_
 #define _ML_BROWSER_HPP_
 
-#include <MemeEditor/EditorWindow.hpp>
+#include <MemeEditor/WindowDrawer.hpp>
 #include <MemeCore/File.hpp>
 #include <MemeCore/Bytes.hpp>
 
@@ -11,7 +11,7 @@ namespace ml
 {
 	// File Browser
 	class ML_EDITOR_API Browser final
-		: public EditorWindow
+		: public WindowDrawer
 		, public ISingleton<Browser>
 	{
 		friend class ISingleton<Browser>;

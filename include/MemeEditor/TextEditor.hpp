@@ -1,7 +1,7 @@
 #ifndef _ML_TEXT_EDITOR_HPP_
 #define _ML_TEXT_EDITOR_HPP_
 
-#include <MemeEditor/EditorWindow.hpp>
+#include <MemeEditor/WindowDrawer.hpp>
 #include <MemeEditor/Document.hpp>
 
 #define ML_TextEditor ml::TextEditor::getInstance()
@@ -9,7 +9,7 @@
 namespace ml
 {
 	class ML_EDITOR_API TextEditor final
-		: public EditorWindow
+		: public WindowDrawer
 		, public ISingleton<TextEditor>
 	{
 		friend class ISingleton<TextEditor>;

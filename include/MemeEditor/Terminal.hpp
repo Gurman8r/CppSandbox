@@ -1,7 +1,7 @@
 #ifndef _ML_TERMINAL_HPP_
 #define _ML_TERMINAL_HPP_
 
-#include <MemeEditor/EditorWindow.hpp>
+#include <MemeEditor/WindowDrawer.hpp>
 #include <MemeCore/List.hpp>
 
 #define ML_Terminal ml::Terminal::getInstance()
@@ -10,7 +10,7 @@ namespace ml
 {
 	// Command Line Interface
 	class ML_EDITOR_API Terminal final
-		: public EditorWindow
+		: public WindowDrawer
 		, public ISingleton<Terminal>
 	{
 		friend class ISingleton<Terminal>;

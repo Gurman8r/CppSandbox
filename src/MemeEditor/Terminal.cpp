@@ -16,7 +16,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Terminal::Terminal()
-		: EditorWindow()
+		: WindowDrawer()
 	{
 		clear();
 		memset(m_inputBuf, 0, sizeof(m_inputBuf));

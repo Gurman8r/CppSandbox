@@ -84,6 +84,7 @@
 #		define ML_API_EXPORT __declspec(dllexport)
 #		define ML_API_IMPORT __declspec(dllimport)
 #		ifdef ML_MSB
+#			pragma warning(disable: 4031)
 #			pragma warning(disable: 4099)
 #			pragma warning(disable: 4251)
 #		endif

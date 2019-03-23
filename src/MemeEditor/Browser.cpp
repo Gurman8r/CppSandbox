@@ -14,7 +14,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Browser::Browser()
-		: EditorWindow()
+		: WindowDrawer()
 		, m_path()
 		, m_dir()
 		, m_type(T_Dir)

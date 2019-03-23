@@ -7,7 +7,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Dockspace::Dockspace()
-		: EditorBase()
+		: GUIDrawer()
 		, dock_flags(0)
 		, border	(0.0f)
 		, fullscreen(true)
@@ -27,13 +27,13 @@ namespace ml
 		if (m_good = (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_DockingEnable))
 		{
 			// Flags
-			flags =
+			ImGuiWindowFlags window_flags =
 				ImGuiWindowFlags_NoTitleBar |
 				ImGuiWindowFlags_NoCollapse;
 
 			if (fullscreen)
 			{
-				flags |=
+				window_flags |=
 					ImGuiWindowFlags_NoResize |
 					ImGuiWindowFlags_NoMove |
 					ImGuiWindowFlags_NoBringToFrontOnFocus |
@@ -44,7 +44,7 @@ namespace ml
 
 			if (dock_flags & ImGuiDockNodeFlags_PassthruDockspace)
 			{
-				flags |= ImGuiWindowFlags_NoBackground;
+				window_flags |= ImGuiWindowFlags_NoBackground;
 			}
 
 			// Bounds
@@ -60,7 +60,7 @@ namespace ml
 			ImGui::SetNextWindowBgAlpha(bgAlpha);
 
 			// Begin
-			if (EditorBase::beginDraw(title, p_open, flags))
+			if (GUIDrawer::beginDraw(title, p_open, window_flags))
 			{
 				ImGui::PopStyleVar(3);
 			}
@@ -74,7 +74,7 @@ namespace ml
 		{
 			ImGui::DockSpace(getID(), { size[0], size[1] }, dock_flags);
 		}
-		return EditorBase::endDraw();
+		return GUIDrawer::endDraw();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

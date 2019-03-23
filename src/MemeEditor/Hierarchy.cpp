@@ -4,7 +4,7 @@
 namespace ml
 {
 	Hierarchy::Hierarchy()
-		: EditorWindow()
+		: WindowDrawer()
 	{
 	}
 

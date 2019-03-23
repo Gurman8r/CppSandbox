@@ -19,7 +19,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Builder::Builder()
-		: EditorWindow()
+		: WindowDrawer()
 		, m_selected(0)
 	{
 		copy_range(m_s["Vertex"], 0, 

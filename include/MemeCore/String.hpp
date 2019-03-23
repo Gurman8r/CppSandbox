@@ -10,13 +10,6 @@
 
 namespace ml
 {
-	using CString = typename const char *;
-}
-
-/* * * * * * * * * * * * * * * * * * * * */
-
-namespace ml
-{
 	template <
 		class _Elem,
 		class _Traits = std::char_traits<_Elem>,
@@ -309,19 +302,13 @@ namespace std
 
 namespace ml
 {
-#ifdef ML_STD_STRING
-	using String	= std::basic_string<char>;
-	using WString	= std::basic_string<wchar_t>;
-	using U16string = std::basic_string<char16_t>;
-	using U32string	= std::basic_string<char32_t>;
-#else
 	using String	= BasicString<char>;
 	using Wstring	= BasicString<wchar_t>;
 	using U16string = BasicString<char16_t>;
 	using U32string	= BasicString<char32_t>;
 
 	using SStream	= String::Stream;
-#endif
+	using CString	= typename const char *;
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

@@ -1,7 +1,7 @@
 #ifndef _ML_DOCKSPACE_HPP_
 #define _ML_DOCKSPACE_HPP_
 
-#include <MemeEditor/EditorWindow.hpp>
+#include <MemeEditor/WindowDrawer.hpp>
 #include <MemeCore/Vector2.hpp>
 
 #define ML_Dockspace ml::Dockspace::getInstance()
@@ -10,7 +10,7 @@ namespace ml
 {
 	// Docking/snapping area for windows
 	class ML_EDITOR_API Dockspace final 
-		: public EditorBase
+		: public GUIDrawer
 		, public ISingleton<Dockspace>
 	{
 		friend class ISingleton<Dockspace>;

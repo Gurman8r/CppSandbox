@@ -1,7 +1,7 @@
 #ifndef _ML_BUILDER_HPP_
 #define _ML_BUILDER_HPP_
 
-#include <MemeEditor/EditorWindow.hpp>
+#include <MemeEditor/WindowDrawer.hpp>
 #include <MemeEditor/Document.hpp>
 #include <MemeGraphics/Shader.hpp>
 
@@ -12,7 +12,7 @@ namespace ml
 {
 	// Shader Builder/Editor
 	class ML_EDITOR_API Builder final
-		: public EditorWindow
+		: public WindowDrawer
 		, public ISingleton<Builder>
 	{
 		friend class ISingleton<Builder>;

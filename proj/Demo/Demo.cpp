@@ -972,7 +972,7 @@ namespace DEMO
 	{
 		if (ML_Dockspace.beginDraw(title, p_open, ImGuiDockNodeFlags_PassthruDockspace))
 		{
-			auto setup_dockspace = [](uint32_t root)
+			if(uint32_t root = ML_Dockspace.getID())
 			{
 				if (!ImGui::DockBuilderGetNode(root))
 				{
@@ -1001,8 +1001,6 @@ namespace DEMO
 					ImGui::DockBuilderFinish(root);
 				}
 			};
-
-			setup_dockspace(ML_Dockspace.getID());
 		}
 		return ML_Dockspace.endDraw();
 	}

@@ -60,7 +60,7 @@ shader:		skybox		/shaders/skybox.shader
 
 # Skyboxes
 #***********************************************************************#
-#skybox:		sunset		/skyboxes/sunset.skybox
+#skybox:	sunset		/skyboxes/sunset.skybox
 
 # Textures
 #***********************************************************************#
@@ -91,3 +91,4 @@ texture:	moon_nm		/textures/moon/moon_nm.png
 #texture:	sky_clouds	/textures/bg/sky_clouds.png
 #texture:	sky_water	/textures/bg/sky_water.png
 
+#***********************************************************************#
