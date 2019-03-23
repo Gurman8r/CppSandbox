@@ -453,12 +453,9 @@ namespace ml
 	
 	Window::CursorPosFun Window::setCursorPosCallback(CursorPosFun callback)
 	{
-		if (glfwSetCursorPosCallback(ML_WINDOW(m_window),
-			reinterpret_cast<GLFWcursorposfun>(callback)))
-		{
-			return callback;
-		}
-		return NULL;
+		return glfwSetCursorPosCallback(ML_WINDOW(m_window), reinterpret_cast<GLFWcursorposfun>(callback))
+			? callback
+			: NULL;
 	}
 	
 	Window::FramebufferSizeFun Window::setFramebufferSizeCallback(FramebufferSizeFun callback)
