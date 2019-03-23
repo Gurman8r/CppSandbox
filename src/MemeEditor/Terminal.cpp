@@ -18,7 +18,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Terminal::Terminal()
-		: GUI_Window()
+		: base_type()
 	{
 		clear();
 		memset(m_inputBuf, 0, sizeof(m_inputBuf));

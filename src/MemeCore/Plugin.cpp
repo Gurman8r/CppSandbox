@@ -29,20 +29,26 @@ namespace ml
 
 	bool Plugin::loadFromFile(const String & filename)
 	{
-		return (cleanup()) && (m_inst = ML_Lib.loadLibrary(m_name = filename));
+		return cleanup() && (m_inst = ML_Lib.loadLibrary(m_name = filename));
 	}
 
-	bool Plugin::call(const String & func, void * data)
+	bool Plugin::call(const String & name, void * data)
 	{
-		PluginFun fun;
-		if (fun = (PluginFun)ML_Lib.loadFunction(m_inst, func))
+		if (m_inst)
 		{
-			fun(data);
+			if (PluginFun func = (PluginFun)ML_Lib.loadFunction(m_inst, name))
+			{
+				func(data);
+
+				return true;
+			}
 		}
-		return (bool)(fun);
+		return false;
 	}
 
-	bool Plugin::main(void * data)
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	bool Plugin::call_main(void * data)
 	{
 		return call(ML_LITERAL(ML_PluginMain), data);
 	}

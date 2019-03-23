@@ -3,11 +3,7 @@
 
 #include <MemeCore/ITrackable.hpp>
 
-/* * * * * * * * * * * * * * * * * * * * */
-
 #define ML_Lib ml::LibLoader::getInstance()
-
-/* * * * * * * * * * * * * * * * * * * * */
 
 namespace ml
 {

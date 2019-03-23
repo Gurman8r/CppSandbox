@@ -1,13 +1,13 @@
 #ifndef _TEST_PLUGIN_HPP_
 #define _TEST_PLUGIN_HPP_
 
-#include <MemeCore/Plugin.hpp>
+#include <MemeCore/PluginAPI.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * */
 
 extern "C"
 {
-	ML_API_EXPORT void ML_PluginMain(void * data);
+	ML_PLUGIN_API void ML_PluginMain(void * data);
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

@@ -13,6 +13,8 @@
 #include <MemeEditor/Dockspace.hpp>
 #include <MemeEditor/TextEditor.hpp>
 #include <MemeEditor/Hierarchy.hpp>
+#include <MemeEditor/SceneView.hpp>
+#include <MemeEditor/Inspector.hpp>
 #include <MemeEditor/MainMenuBar.hpp>
 
 namespace DEMO
@@ -340,19 +342,10 @@ namespace DEMO
 				(ml::Debug::config()),
 				(ml::Debug::platform()))))
 			{
-				if (m_plugin.main((void *)"Plugin Received Data"))
+				if (m_plugin.call_main((void *)"Plugin Received Data"))
 				{
 
 				}
-
-				if (m_plugin.cleanup())
-				{
-					ml::Debug::log("Plugin Finalized");
-				}
-			}
-			else
-			{
-				ml::Debug::setError(ml::Debug::logError("Failed Loading Plugin"));
 			}
 
 			// CD
@@ -896,6 +889,11 @@ namespace DEMO
 	{
 		delete m_thread;
 
+		if (m_plugin.cleanup())
+		{
+			ml::Debug::log("Plugin Finalized");
+		}
+
 		ML_Res.cleanAll();
 
 		ImGui_ML_Shutdown();
@@ -1002,8 +1000,7 @@ namespace DEMO
 
 	bool Demo::draw_Inspector(ml::CString title, bool * p_open)
 	{
-		bool good;
-		if (good = ImGui::Begin(title, p_open, ImGuiWindowFlags_AlwaysAutoResize))
+		if (ML_Inspector.draw(title, p_open))
 		{
 			/* * * * * * * * * * * * * * * * * * * * */
 
@@ -1069,48 +1066,19 @@ namespace DEMO
 
 			/* * * * * * * * * * * * * * * * * * * * */
 		}
-		ImGui::End();
-		return good;
+		return ML_Inspector.endDraw();
 	}
 
 	bool Demo::draw_Scene(ml::CString title, bool * p_open)
 	{
-		bool good;
-		if (good = ImGui::Begin(title, p_open))
+		if (ML_SceneView.draw(title, p_open))
 		{
-			ImGui::BeginChild("Viewport", { -1, -1 }, false);
+			if (!ML_SceneView.updateScene(m_effects["fbo_post"].texture()))
 			{
-				if (auto tex = std::remove_cv_t<ml::Texture *>(m_effects["fbo_post"].texture()))
-				{
-					// Texture Size
-					const ml::vec2f src = tex->size();
-
-					// Window Size
-					const ml::vec2f dst = ml::vec2f { 
-						ImGui::GetWindowSize().x,
-						ImGui::GetWindowSize().y
-					};
-
-					auto scaleToFit = [](const ml::vec2f & src, const ml::vec2f & dst)
-					{
-						const ml::vec2f
-							hs = (dst[0] / src[0]),
-							vs = (dst[1] / src[1]);
-						return (src * (((hs) < (vs)) ? (hs) : (vs)));
-					};
-
-					const ml::vec2f scl = scaleToFit(src, dst);
-					const ml::vec2f pos = ((dst - scl) * 0.5f);
-
-					ImGui::SetCursorPos({ pos[0], pos[1] });
-
-					ImGui::Image(tex->get_address(), { scl[0], scl[1] }, { 0, 1 }, { 1, 0 });
-				}
+				ImGui::Text("Failed Rendering Scene");
 			}
-			ImGui::EndChild();
 		}
-		ImGui::End();
-		return good;
+		return ML_SceneView.endDraw();
 	}
 
 	bool Demo::draw_Tester(ml::CString title, bool * p_open)

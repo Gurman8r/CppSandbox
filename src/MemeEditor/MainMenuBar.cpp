@@ -6,6 +6,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	MainMenuBar::MainMenuBar()
+		: base_type()
 	{
 	}
 
@@ -17,13 +18,13 @@ namespace ml
 
 	bool MainMenuBar::beginDraw()
 	{
-		return (m_good = ImGui::BeginMainMenuBar());
+		return goodCheck(ImGui::BeginMainMenuBar());
 	}
 
 	bool MainMenuBar::endDraw()
 	{
 		ImGui::EndMainMenuBar();
-		return m_good;
+		return good();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

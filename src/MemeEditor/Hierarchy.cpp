@@ -4,7 +4,7 @@
 namespace ml
 {
 	Hierarchy::Hierarchy()
-		: GUI_Window()
+		: base_type()
 	{
 	}
 

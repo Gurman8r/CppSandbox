@@ -14,7 +14,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Browser::Browser()
-		: GUI_Window()
+		: base_type()
 		, m_path()
 		, m_dir()
 		, m_type(T_Dir)

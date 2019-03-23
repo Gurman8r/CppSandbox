@@ -7,7 +7,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Dockspace::Dockspace()
-		: GUI_Window()
+		: base_type	()
 		, border	(0.0f)
 		, padding	(vec2f::Zero)
 		, rounding	(0.0f)
@@ -42,7 +42,7 @@ namespace ml
 
 	bool Dockspace::beginDraw(CString title, bool * p_open, int32_t flags)
 	{
-		if (m_good = (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_DockingEnable))
+		if (goodCheck(ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_DockingEnable))
 		{
 			// Bounds
 			const ImGuiViewport * viewport = ImGui::GetMainViewport();
@@ -57,17 +57,17 @@ namespace ml
 			ImGui::SetNextWindowBgAlpha(bgAlpha);
 
 			// Begin
-			if (GUI_Base::beginDraw(title, p_open, flags))
+			if (base_type::beginDraw(title, p_open, flags))
 			{
 				ImGui::PopStyleVar(3);
 			}
 		}
-		return m_good;
+		return good();
 	}
 
 	bool Dockspace::endDraw()
 	{
-		if (m_good)
+		if (good())
 		{
 			ImGui::DockSpace(
 				getID(),
@@ -75,7 +75,7 @@ namespace ml
 				ImGuiDockNodeFlags_PassthruDockspace
 			);
 		}
-		return GUI_Base::endDraw();
+		return base_type::endDraw();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

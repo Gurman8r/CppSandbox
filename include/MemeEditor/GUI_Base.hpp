@@ -12,26 +12,19 @@ namespace ml
 	{
 	public:
 		GUI_Base();
+
 		virtual ~GUI_Base();
 
-	public:
-		virtual bool beginDraw(CString title, bool * p_open, int32_t flags = 0);
-		virtual bool endDraw();
-
-	public:
-		uint32_t getID() const;
-
-	public:
-		inline bool		good()	const { return m_good; }
-		inline CString	title() const { return m_title; }
-		inline bool *	open()	const { return m_open; }
-		inline int32_t	flags() const { return m_flags; }
+		inline bool	good() const { return m_good; }
 
 	protected:
-		bool	m_good;
-		CString	m_title;
-		bool *	m_open;
-		int32_t m_flags;
+		inline bool goodCheck(const bool value)
+		{ 
+			return (m_good = value); 
+		}
+
+	private:
+		bool m_good;
 	};
 }
 
