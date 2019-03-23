@@ -309,7 +309,6 @@ namespace DEMO
 				ImGui::CreateContext();
 				ImGui::StyleColorsDark();
 				ImGui::GetStyle().FrameBorderSize = 1;
-				ml::Debug::log("ImGui Ini: \"{0}\"", SETTINGS.imguiIni.c_str());
 				if (!ImGui_ML_Init("#version 410", this, true, SETTINGS.imguiIni.c_str()))
 				{
 					return ml::Debug::setError(ml::Debug::logError("Failed Loading ImGui"));
@@ -340,7 +339,11 @@ namespace DEMO
 				(ml::Debug::config()),
 				(ml::Debug::platform()))))
 			{
-				m_plugin.main((void *)"Plugin Received Data");
+				if (m_plugin.main((void *)"Plugin Received Data"))
+				{
+
+				}
+
 				if (m_plugin.cleanup())
 				{
 					ml::Debug::log("Plugin Finalized");
@@ -357,7 +360,7 @@ namespace DEMO
 				"Failed Loading Window\n"
 				"Try checking your settings:\n"
 				"\"{0}\"\n",
-				SETTINGS.iniPath));
+				SETTINGS.configIni));
 		}
 	}
 
@@ -877,8 +880,8 @@ namespace DEMO
 		if (show_imgui_about)	{ ml::ImGuiBuiltin::showAboutWindow(show_imgui_about); }
 
 		// Editor
-		if (show_ml_hierarchy)	{ ML_Hierarchy.draw("Hierarchy", &show_ml_hierarchy); }
 		if (show_ml_browser)	{ ML_Browser.draw("Browser", &show_ml_browser); }
+		if (show_ml_hierarchy)	{ ML_Hierarchy.draw("Hierarchy", &show_ml_hierarchy); }
 		if (show_ml_terminal)	{ ML_Terminal.draw("Terminal", &show_ml_terminal); }
 		if (show_ml_builder)	{ ML_Builder.draw("Builder", &show_ml_builder); }
 		if (show_ml_scene)		{ draw_Scene(&show_ml_scene); }

@@ -28,7 +28,7 @@
 #include <MemePhysics/Particle.hpp>
 
 #include "DemoEvents.hpp"
-#include "Settings.hpp"
+#include "DemoSettings.hpp"
 
 // Demo
 /* * * * * * * * * * * * * * * * * * * * */

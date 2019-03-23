@@ -242,7 +242,7 @@
     <ClInclude Include="DemoCommands.hpp" />
     <ClInclude Include="DemoEvents.hpp" />
     <ClInclude Include="Demo.hpp" />
-    <ClInclude Include="Settings.hpp" />
+    <ClInclude Include="DemoSettings.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\assets\manifest.txt" />

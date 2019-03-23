@@ -1,6 +1,6 @@
 
 #include "DemoCommands.hpp"
-#include "Settings.hpp"
+#include "DemoSettings.hpp"
 #include <MemeScript/Interpreter.hpp>
 #include <MemeEditor/Terminal.hpp>
 #include <MemeCore/Debug.hpp>

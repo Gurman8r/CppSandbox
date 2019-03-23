@@ -8,6 +8,7 @@
 
 namespace ml
 {
+	// Effect is a Framebuffer + Renderbuffer
 	class ML_GRAPHICS_API Effect
 		: public ITrackable
 		, public IDrawable

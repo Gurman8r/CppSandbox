@@ -6,21 +6,21 @@
 #include <MemeWindow/Window.hpp>
 
 // Singleton to store program properties/settings for Demo (INIReader)
-#define SETTINGS DEMO::Settings::getInstance()
+#define SETTINGS DEMO::DemoSettings::getInstance()
 
 namespace DEMO
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	class Settings final
+	class DemoSettings final
 		: public ml::ITrackable
 		, public ml::IReadable
-		, public ml::ISingleton<Settings>
+		, public ml::ISingleton<DemoSettings>
 	{	
-		friend class ml::ISingleton<Settings>;
+		friend class ml::ISingleton<DemoSettings>;
 
 	public:
-		ml::String iniPath; // path to .ini
+		ml::String	configIni; // path to ML_Config.ini
 
 	public:
 		// [General]
@@ -80,8 +80,8 @@ namespace DEMO
 
 		inline bool loadFromFile(const ml::String & filename) override
 		{
-			INIReader ini((iniPath = filename).c_str());
-			if (ini.ParseError() == 0)
+			INIReader ini((configIni = filename).c_str());
+			if (ini.ParseError() == EXIT_SUCCESS)
 			{
 				// [General]
 				/* * * * * * * * * * * * * * * * * * * * */
@@ -118,7 +118,7 @@ namespace DEMO
 
 				// [Graphics]	
 				/* * * * * * * * * * * * * * * * * * * * */
-				glErrorPause	= ini.GetBoolean("Graphics", "glErrorPause", true);
+				glErrorPause	= ini.GetBoolean("Graphics", "glErrorPause", false);
 				fieldOfView		= (float)ini.GetReal("Graphics", "fieldOfView", 90.0);
 				perspNear		= (float)ini.GetReal("Graphics", "perspNear", 0.1);
 				perspFar		= (float)ini.GetReal("Graphics", "perspFar", 1000.0);
