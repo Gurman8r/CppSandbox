@@ -3,8 +3,6 @@
 
 namespace ml
 {
-	/* * * * * * * * * * * * * * * * * * * * */
-
 	template <typename T, size_t C, size_t R>
 	inline static bool EditMatrix(CString label, Matrix<T, C, R> & value, float speed)
 	{
@@ -38,7 +36,12 @@ namespace ml
 		}
 		return false;
 	}
+}
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+namespace ml
+{
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool GUI::DrawLabel(CString label)

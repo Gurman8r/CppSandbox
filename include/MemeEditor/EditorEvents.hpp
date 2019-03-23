@@ -13,12 +13,30 @@ namespace ml
 		enum : int32_t
 		{
 			MIN_EDITOR_EVENT = IEvent::EV_EDITOR + 1,
+
+			EV_MainMenuBar,
+
 			MAX_EDITOR_EVENT
 		};
 
 		EditorEvent(int32_t id)
 			: IEvent(id)
 		{
+		}
+	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	struct ML_EDITOR_API MainMenuBarEvent : public EditorEvent
+	{
+		MainMenuBarEvent()
+			: EditorEvent(EV_MainMenuBar)
+		{
+		}
+
+		void serialize(std::ostream & out) const override
+		{
+			out << get_type().name();
 		}
 	};
 

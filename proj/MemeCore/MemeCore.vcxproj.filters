@@ -43,12 +43,6 @@
     <Filter Include="Header Files\Matrices">
       <UniqueIdentifier>{31b96231-5819-483e-b653-76572a31bbb8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Event System">
-      <UniqueIdentifier>{554f9adc-6997-4716-b5ca-b25faeaa10a6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Event System">
-      <UniqueIdentifier>{5a5d991b-8f10-4633-8a19-e25a1692d05c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Threading">
       <UniqueIdentifier>{c04760b5-ba7d-4cfb-bde9-91f5bce95b72}</UniqueIdentifier>
     </Filter>
@@ -198,17 +192,11 @@
     <ClInclude Include="..\..\include\MemeCore\IComponent.hpp">
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\EventSystem.hpp">
-      <Filter>Header Files\Event System</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Quaternion.hpp">
       <Filter>Header Files\Matrices</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Array.hpp">
       <Filter>Header Files\STD</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\CoreEvents.hpp">
-      <Filter>Header Files\Event System</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\IEvent.hpp">
       <Filter>Header Files\Interfaces</Filter>
@@ -237,11 +225,14 @@
     <ClInclude Include="..\..\include\MemeCore\PluginAPI.hpp">
       <Filter>Header Files\Plugins</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\EventSystem.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\CoreEvents.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\MemeCore\EventSystem.cpp">
-      <Filter>Source Files\Event System</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\Timer.cpp">
       <Filter>Source Files\Time</Filter>
     </ClCompile>
@@ -291,6 +282,9 @@
       <Filter>Source Files\Plugins</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\Assert.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeCore\EventSystem.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
   </ItemGroup>

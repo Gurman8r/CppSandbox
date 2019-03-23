@@ -2,6 +2,7 @@
 #include <MemeCore/Debug.hpp>
 #include <MemeCore/FileSystem.hpp>
 #include <MemeCore/EventSystem.hpp>
+#include <MemeEditor/EditorEvents.hpp>
 #include <MemeCore/OS.hpp>
 #include <MemeEditor/ImGui.hpp>
 

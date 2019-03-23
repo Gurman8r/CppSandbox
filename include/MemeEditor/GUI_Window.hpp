@@ -7,6 +7,7 @@
 
 namespace ml
 {
+	// A GUI drawer for Window
 	class ML_EDITOR_API GUI_Window
 		: public GUI_Base
 		, public IEventListener

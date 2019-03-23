@@ -140,14 +140,14 @@
     <ClInclude Include="..\..\include\MemeScript\Script.hpp">
       <Filter>Header Files\Interpreter</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeScript\ScriptEvents.hpp">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeScript\StringUtility.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeScript\ScriptMacros.hpp">
       <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeScript\ScriptEvents.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

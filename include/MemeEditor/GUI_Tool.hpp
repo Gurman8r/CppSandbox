@@ -5,6 +5,7 @@
 
 namespace ml
 {
+	// A GUI drawer for draw(void)
 	class ML_EDITOR_API GUI_Tool
 		: public GUI_Base
 	{

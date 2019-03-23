@@ -3,8 +3,10 @@
 #include <MemeCore/EventSystem.hpp>
 #include <MemeCore/OS.hpp>
 #include <MemeWindow/WindowEvents.hpp>
-#include <MemeEditor/ImGui.hpp>
 #include <MemeEditor/ResourceManager.hpp>
+#include <MemeEditor/ImGui.hpp>
+#include <MemeEditor/EditorEvents.hpp>
+#include <MemeEditor/MainMenuBar.hpp>
 #include <MemeEditor/GUI.hpp>
 #include <MemeEditor/Terminal.hpp>
 #include <MemeEditor/Builder.hpp>
@@ -15,7 +17,6 @@
 #include <MemeEditor/Hierarchy.hpp>
 #include <MemeEditor/SceneView.hpp>
 #include <MemeEditor/Inspector.hpp>
-#include <MemeEditor/MainMenuBar.hpp>
 
 namespace DEMO
 {
@@ -863,10 +864,10 @@ namespace DEMO
 	void Demo::onGui(const GuiEvent & ev)
 	{
 		// Main Menu Bar
-		draw_MainMenuBar();
+		ML_MainMenuBar_draw();
 
 		// Dockspace
-		if (show_ml_dockspace)	{ draw_Dockspace(&show_ml_dockspace); }
+		if (show_ml_dockspace)	{ ML_Dockspace_draw(&show_ml_dockspace); }
 
 		// ImGui Builtin
 		if (show_imgui_demo)	{ ml::ImGui_Builtin::showDemoWindow(show_imgui_demo); }
@@ -880,9 +881,9 @@ namespace DEMO
 		if (show_ml_terminal)	{ ML_Terminal.draw(&show_ml_terminal); }
 		if (show_ml_builder)	{ ML_Builder.draw(&show_ml_builder); }
 		if (show_ml_texteditor) { ML_TextEditor.draw(&show_ml_texteditor); }
-		if (show_ml_scene)		{ draw_Scene(&show_ml_scene); }
-		if (show_ml_inspector)	{ draw_Inspector(&show_ml_inspector); }
-		if (show_ml_tester)		{ draw_TestWindow(&show_ml_tester); }
+		if (show_ml_scene)		{ ML_SceneView_draw(&show_ml_scene); }
+		if (show_ml_inspector)	{ ML_Inspector_draw(&show_ml_inspector); }
+		if (show_ml_tester)		{ ML_TestWindow_draw(&show_ml_tester); }
 	}
 
 	void Demo::onExit(const ExitEvent & ev)
@@ -901,7 +902,7 @@ namespace DEMO
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Demo::draw_MainMenuBar()
+	bool Demo::ML_MainMenuBar_draw()
 	{
 		return ML_MainMenuBar.drawFun([&]()
 		{
@@ -962,10 +963,13 @@ namespace DEMO
 				ImGui::MenuItem("About Dear ImGui", NULL, &show_imgui_about);
 				ImGui::EndMenu();
 			}
+			// Other
+			/* * * * * * * * * * * * * * * * * * * * */
+			ML_EventSystem.fireEvent(ml::MainMenuBarEvent());
 		});
 	}
 
-	bool Demo::draw_Dockspace(bool * p_open)
+	bool Demo::ML_Dockspace_draw(bool * p_open)
 	{
 		return ML_Dockspace.drawFun(p_open, [&]() 
 		{
@@ -996,7 +1000,7 @@ namespace DEMO
 		});
 	}
 
-	bool Demo::draw_Inspector(bool * p_open)
+	bool Demo::ML_Inspector_draw(bool * p_open)
 	{
 		return ML_Inspector.drawFun(p_open, [&]()
 		{
@@ -1066,7 +1070,7 @@ namespace DEMO
 		});
 	}
 
-	bool Demo::draw_Scene(bool * p_open)
+	bool Demo::ML_SceneView_draw(bool * p_open)
 	{
 		return ML_SceneView.drawFun(p_open, [&]() 
 		{
@@ -1077,7 +1081,7 @@ namespace DEMO
 		});
 	}
 
-	bool Demo::draw_TestWindow(bool * p_open)
+	bool Demo::ML_TestWindow_draw(bool * p_open)
 	{
 		return ml::GUI::DrawFun("Test Window", p_open, ImGuiWindowFlags_MenuBar, [&]()
 		{

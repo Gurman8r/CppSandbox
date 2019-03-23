@@ -153,9 +153,6 @@
     <ClInclude Include="..\..\include\MemeGraphics\Shader.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\GraphicsEvents.hpp">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Lists.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
@@ -173,6 +170,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\ShaderParser.hpp">
       <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\GraphicsEvents.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

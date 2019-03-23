@@ -11,10 +11,9 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	class ML_EDITOR_API Document final
+	struct ML_EDITOR_API Document final
 		: public ITrackable
 	{
-	public:
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		enum : size_t 

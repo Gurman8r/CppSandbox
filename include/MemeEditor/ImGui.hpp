@@ -1,7 +1,6 @@
 #ifndef _ML_IMGUI_HPP_
 #define _ML_IMGUI_HPP_
 
-#include <MemeEditor/Export.hpp>
 #include <imgui/imgui.h>
 #include <imgui/imgui_internal.h>
 #include <imgui/imgui_impl_ml.hpp>

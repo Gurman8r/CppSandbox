@@ -3,6 +3,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	Hierarchy::Hierarchy()
 		: base_type("Hierarchy")
 	{
@@ -11,6 +13,8 @@ namespace ml
 	Hierarchy::~Hierarchy()
 	{
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	void Hierarchy::onEvent(const IEvent * value)
 	{
@@ -77,4 +81,6 @@ namespace ml
 		}
 		return endDraw();
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
