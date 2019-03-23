@@ -1,5 +1,5 @@
-#ifndef _TOKEN_LIST_HPP_
-#define _TOKEN_LIST_HPP_
+#ifndef _ML_TOKEN_LIST_HPP_
+#define _ML_TOKEN_LIST_HPP_
 
 #include <MemeScript/Token.hpp>
 #include <MemeCore/List.hpp>
@@ -149,4 +149,4 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 }
 
-#endif // !_TOKEN_LIST_HPP_
+#endif // !_ML_TOKEN_LIST_HPP_

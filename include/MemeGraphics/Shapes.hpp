@@ -1,5 +1,5 @@
-#ifndef _SHAPES_HPP_
-#define _SHAPES_HPP_
+#ifndef _ML_SHAPES_HPP_
+#define _ML_SHAPES_HPP_
 
 #include <MemeCore/Array.hpp>
 #include <MemeCore/Rect.hpp>
@@ -48,4 +48,4 @@ namespace ml
 	using RectQuad = typename Shapes::RectQuad;
 }
 
-#endif // !_SHAPES_HPP_
+#endif // !_ML_SHAPES_HPP_

@@ -1,5 +1,5 @@
-#ifndef _OPENGL_HPP_
-#define _OPENGL_HPP_
+#ifndef _ML_OPENGL_HPP_
+#define _ML_OPENGL_HPP_
 
 #include <MemeGraphics/GL.hpp>
 #include <MemeCore/String.hpp>
@@ -168,4 +168,4 @@ namespace ml
 
 }
 
-#endif // !_OPENGL_HPP_
+#endif // !_ML_OPENGL_HPP_

@@ -1,5 +1,5 @@
-#ifndef _SHADER_PARSER_HPP_
-#define _SHADER_PARSER_HPP_
+#ifndef _ML_SHADER_PARSER_HPP_
+#define _ML_SHADER_PARSER_HPP_
 
 #include <MemeGraphics/Export.hpp>
 #include <MemeCore/File.hpp>
@@ -17,4 +17,4 @@ namespace ml
 	};
 }
 
-#endif // !_SHADER_PARSER_HPP_
+#endif // !_ML_SHADER_PARSER_HPP_

@@ -1,5 +1,5 @@
-#ifndef _INDEX_BUFFER_HPP_
-#define _INDEX_BUFFER_HPP_
+#ifndef _ML_INDEX_BUFFER_HPP_
+#define _ML_INDEX_BUFFER_HPP_
 
 #include <MemeGraphics/GL.hpp>
 #include <MemeGraphics/Lists.hpp>
@@ -40,4 +40,4 @@ namespace ml
 	using IBO = IndexBuffer;
 }
 
-#endif // !_INDEX_BUFFER_HPP_
+#endif // !_ML_INDEX_BUFFER_HPP_

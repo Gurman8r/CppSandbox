@@ -1,5 +1,5 @@
-#ifndef _IMAGE_HPP_
-#define _IMAGE_HPP_
+#ifndef _ML_IMAGE_HPP_
+#define _ML_IMAGE_HPP_
 
 #include <MemeCore/IReadable.hpp>
 #include <MemeCore/Vector2.hpp>
@@ -53,4 +53,4 @@ namespace ml
 	};
 }
 
-#endif // !_IMAGE_HPP_
+#endif // !_ML_IMAGE_HPP_

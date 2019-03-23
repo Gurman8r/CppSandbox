@@ -1,5 +1,5 @@
-#ifndef _LEXER_HPP_
-#define _LEXER_HPP_
+#ifndef _ML_LEXER_HPP_
+#define _ML_LEXER_HPP_
 
 #include <MemeScript/TokenList.hpp>
 #include <MemeScript/Args.hpp>
@@ -35,4 +35,4 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 }
 
-#endif // !_LEXER_HPP_
+#endif // !_ML_LEXER_HPP_

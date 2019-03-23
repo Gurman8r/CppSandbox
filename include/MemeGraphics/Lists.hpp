@@ -1,5 +1,5 @@
-#ifndef _LISTS_HPP_
-#define _LISTS_HPP_
+#ifndef _ML_LISTS_HPP_
+#define _ML_LISTS_HPP_
 
 #include <MemeCore/List.hpp>
 #include <MemeGraphics/Vertex.hpp>
@@ -49,4 +49,4 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 }
 
-#endif // !_LISTS_HPP_
+#endif // !_ML_LISTS_HPP_

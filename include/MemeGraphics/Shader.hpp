@@ -1,5 +1,5 @@
-#ifndef _SHADER_HPP_
-#define _SHADER_HPP_
+#ifndef _ML_SHADER_HPP_
+#define _ML_SHADER_HPP_
 
 #include <MemeGraphics/UniformSet.hpp>
 #include <MemeGraphics/Texture.hpp>
@@ -72,4 +72,4 @@ namespace ml
 	};
 }
 
-#endif // !_SHADER_HPP_
+#endif // !_ML_SHADER_HPP_

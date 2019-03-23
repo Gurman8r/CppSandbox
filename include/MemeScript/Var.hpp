@@ -1,5 +1,5 @@
-#ifndef _VAR_HPP_
-#define _VAR_HPP_
+#ifndef _ML_VAR_HPP_
+#define _ML_VAR_HPP_
 
 #include <MemeScript/TokenList.hpp>
 #include <MemeScript/StringUtility.hpp>
@@ -221,4 +221,4 @@ namespace ml
 	};
 }
 
-#endif // !_VAR_HPP_
+#endif // !_ML_VAR_HPP_

@@ -1,5 +1,5 @@
-#ifndef _TEXT_HPP_
-#define _TEXT_HPP_
+#ifndef _ML_TEXT_HPP_
+#define _ML_TEXT_HPP_
 
 #include <MemeGraphics/IDrawable.hpp>
 #include <MemeGraphics/Font.hpp>
@@ -60,4 +60,4 @@ namespace ml
 		vec4f		m_color;
 	};
 }
-#endif // !_TEXT_HPP_
+#endif // !_ML_TEXT_HPP_

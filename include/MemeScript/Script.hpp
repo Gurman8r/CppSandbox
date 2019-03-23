@@ -1,5 +1,5 @@
-#ifndef _SCRIPT_HPP_
-#define _SCRIPT_HPP_
+#ifndef _ML_SCRIPT_HPP_
+#define _ML_SCRIPT_HPP_
 
 #include <MemeScript/AST_Expr.hpp>
 #include <MemeCore/File.hpp>
@@ -40,4 +40,4 @@ namespace ml
 	};
 }
 
-#endif // !_SCRIPT_HPP_
+#endif // !_ML_SCRIPT_HPP_

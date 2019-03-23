@@ -1,5 +1,5 @@
-#ifndef _RECT_TRANSFORM_HPP_
-#define _RECT_TRANSFORM_HPP_
+#ifndef _ML_RECT_TRANSFORM_HPP_
+#define _ML_RECT_TRANSFORM_HPP_
 
 #include <MemeGraphics/Transform.hpp>
 #include <MemeCore/Rect.hpp>
@@ -25,4 +25,4 @@ namespace ml
 	};
 }
 
-#endif // !_RECT_TRANSFORM_HPP_
+#endif // !_ML_RECT_TRANSFORM_HPP_

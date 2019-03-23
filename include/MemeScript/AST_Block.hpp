@@ -1,5 +1,5 @@
-#ifndef _AST_BLOCK_HPP_
-#define _AST_BLOCK_HPP_
+#ifndef _ML_AST_BLOCK_HPP_
+#define _ML_AST_BLOCK_HPP_
 
 #include <MemeScript/AST_Node.hpp>
 #include <MemeScript/Var.hpp>
@@ -52,4 +52,4 @@ namespace ml
 	};
 }
 
-#endif // !_AST_BLOCK_HPP_
+#endif // !_ML_AST_BLOCK_HPP_

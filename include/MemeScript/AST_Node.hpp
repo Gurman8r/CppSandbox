@@ -1,5 +1,5 @@
-#ifndef _AST_NODE_HPP_
-#define _AST_NODE_HPP_
+#ifndef _ML_AST_NODE_HPP_
+#define _ML_AST_NODE_HPP_
 
 #include <MemeScript/Export.hpp>
 #include <MemeCore/List.hpp>
@@ -181,4 +181,4 @@ namespace ml
 	};
 }
 
-#endif // !_AST_NODE_HPP_
+#endif // !_ML_AST_NODE_HPP_

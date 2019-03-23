@@ -1,5 +1,5 @@
-#ifndef _GRAPHICS_EVENTS_HPP_
-#define _GRAPHICS_EVENTS_HPP_
+#ifndef _ML_GRAPHICS_EVENTS_HPP_
+#define _ML_GRAPHICS_EVENTS_HPP_
 
 #include <MemeCore/IEvent.hpp>
 #include <MemeGraphics/Export.hpp>
@@ -25,4 +25,4 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 }
 
-#endif // !_GRAPHICS_EVENTS_HPP_
+#endif // !_ML_GRAPHICS_EVENTS_HPP_

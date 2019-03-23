@@ -1,5 +1,5 @@
-#ifndef _CAMERA_HPP_
-#define _CAMERA_HPP_
+#ifndef _ML_CAMERA_HPP_
+#define _ML_CAMERA_HPP_
 
 #include <MemeGraphics/Transform.hpp>
 
@@ -19,4 +19,4 @@ namespace ml
 	};
 }
 
-#endif // !_CAMERA_HPP_
+#endif // !_ML_CAMERA_HPP_

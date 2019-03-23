@@ -1,5 +1,5 @@
-#ifndef _VERTEX_ARRAY_HPP_
-#define _VERTEX_ARRAY_HPP_
+#ifndef _ML_VERTEX_ARRAY_HPP_
+#define _ML_VERTEX_ARRAY_HPP_
 
 #include <MemeGraphics/GL.hpp>
 #include <MemeGraphics/Lists.hpp>
@@ -32,4 +32,4 @@ namespace ml
 
 }
 
-#endif // !_VERTEX_ARRAY_HPP_
+#endif // !_ML_VERTEX_ARRAY_HPP_

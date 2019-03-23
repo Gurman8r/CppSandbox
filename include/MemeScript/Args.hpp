@@ -1,5 +1,5 @@
-#ifndef _ARGS_HPP_
-#define _ARGS_HPP_
+#ifndef _ML_ARGS_HPP_
+#define _ML_ARGS_HPP_
 
 #include <MemeCore/List.hpp>
 #include <MemeScript/Export.hpp>
@@ -129,4 +129,4 @@ namespace ml
 	};
 }
 
-#endif // !_ARGS_HPP_
+#endif // !_ML_ARGS_HPP_

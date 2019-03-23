@@ -1,5 +1,5 @@
-#ifndef _PARSER_HPP_
-#define _PARSER_HPP_
+#ifndef _ML_PARSER_HPP_
+#define _ML_PARSER_HPP_
 
 #include <MemeScript/Rule.hpp>
 
@@ -88,4 +88,4 @@ namespace ml
 	};
 }
 
-#endif // !_PARSER_HPP_
+#endif // !_ML_PARSER_HPP_

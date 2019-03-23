@@ -1,5 +1,5 @@
-#ifndef _CANVAS_HPP_
-#define _CANVAS_HPP_
+#ifndef _ML_CANVAS_HPP_
+#define _ML_CANVAS_HPP_
 
 #include <MemeGraphics/VertexArray.hpp>
 #include <MemeGraphics/VertexBuffer.hpp>
@@ -36,4 +36,4 @@ namespace ml
 	};
 }
 
-#endif // !_CANVAS_HPP_
+#endif // !_ML_CANVAS_HPP_

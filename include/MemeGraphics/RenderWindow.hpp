@@ -1,5 +1,5 @@
-#ifndef _RENDER_WINDOW_HPP_
-#define _RENDER_WINDOW_HPP_
+#ifndef _ML_RENDER_WINDOW_HPP_
+#define _ML_RENDER_WINDOW_HPP_
 
 #include <MemeWindow/Window.hpp>
 #include <MemeGraphics/RenderTarget.hpp>
@@ -24,4 +24,4 @@ namespace ml
 	};
 }
 
-#endif // !_RENDER_WINDOW_HPP_
+#endif // !_ML_RENDER_WINDOW_HPP_

@@ -1,5 +1,5 @@
-#ifndef _EFFECT_HPP_
-#define _EFFECT_HPP_
+#ifndef _ML_EFFECT_HPP_
+#define _ML_EFFECT_HPP_
 
 #include <MemeGraphics/FrameBuffer.hpp>
 #include <MemeGraphics/RenderBuffer.hpp>
@@ -49,4 +49,4 @@ namespace ml
 	};
 }
 
-#endif // !_EFFECT_HPP_
+#endif // !_ML_EFFECT_HPP_

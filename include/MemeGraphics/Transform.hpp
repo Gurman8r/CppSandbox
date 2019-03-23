@@ -1,15 +1,11 @@
-#ifndef _TRANSFORM_HPP_
-#define _TRANSFORM_HPP_
+#ifndef _ML_TRANSFORM_HPP_
+#define _ML_TRANSFORM_HPP_
 
 #include <MemeGraphics/Export.hpp>
 #include <MemeCore/Quaternion.hpp>
 #include <MemeCore/Vector3.hpp>
 #include <MemeCore/Vector2.hpp>
 #include <MemeCore/Rect.hpp>
-
-
-
-
 
 namespace ml
 {
@@ -60,4 +56,4 @@ namespace ml
 	};
 }
 
-#endif // !_TRANSFORM_HPP_
+#endif // !_ML_TRANSFORM_HPP_

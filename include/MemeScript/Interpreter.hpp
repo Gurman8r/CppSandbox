@@ -1,5 +1,5 @@
-#ifndef _INTERPRETER_HPP_
-#define _INTERPRETER_HPP_
+#ifndef _ML_INTERPRETER_HPP_
+#define _ML_INTERPRETER_HPP_
 
 #include <MemeCore/ISingleton.hpp>
 #include <MemeScript/StringUtility.hpp>
@@ -57,4 +57,4 @@ namespace ml
 	};
 }
 
-#endif // !_INTERPRETER_HPP_
+#endif // !_ML_INTERPRETER_HPP_

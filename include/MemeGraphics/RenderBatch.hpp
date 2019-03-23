@@ -1,5 +1,5 @@
-#ifndef _RENDER_BATCH_HPP_
-#define _RENDER_BATCH_HPP_
+#ifndef _ML_RENDER_BATCH_HPP_
+#define _ML_RENDER_BATCH_HPP_
 
 #include <MemeGraphics/VertexArray.hpp>
 #include <MemeGraphics/VertexBuffer.hpp>
@@ -54,4 +54,4 @@ namespace ml
 	};
 }
 
-#endif // !_RENDER_BATCH_HPP_
+#endif // !_ML_RENDER_BATCH_HPP_

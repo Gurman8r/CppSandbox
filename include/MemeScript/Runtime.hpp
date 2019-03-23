@@ -1,5 +1,5 @@
-#ifndef _RUNTIME_HPP_
-#define _RUNTIME_HPP_
+#ifndef _ML_RUNTIME_HPP_
+#define _ML_RUNTIME_HPP_
 
 #include <MemeScript/Operator.hpp>
 #include <MemeScript/Var.hpp>
@@ -39,4 +39,4 @@ namespace ml
 	};
 }
 
-#endif // !_RUNTIME_HPP_
+#endif // !_ML_RUNTIME_HPP_

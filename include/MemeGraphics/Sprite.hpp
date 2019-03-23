@@ -1,5 +1,5 @@
-#ifndef _SPRITE_HPP_
-#define _SPRITE_HPP_
+#ifndef _ML_SPRITE_HPP_
+#define _ML_SPRITE_HPP_
 
 #include <MemeGraphics/IDrawable.hpp>
 #include <MemeGraphics/Texture.hpp>
@@ -50,4 +50,4 @@ namespace ml
 	};
 }
 
-#endif // !_SPRITE_HPP_
+#endif // !_ML_SPRITE_HPP_

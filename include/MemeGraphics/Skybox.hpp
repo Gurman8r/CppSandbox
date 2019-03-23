@@ -1,5 +1,5 @@
-#ifndef _SKYBOX_HPP_
-#define _SKYBOX_HPP_
+#ifndef _ML_SKYBOX_HPP_
+#define _ML_SKYBOX_HPP_
 
 #include <MemeGraphics/Texture.hpp>
 #include <MemeGraphics/IDrawable.hpp>
@@ -42,4 +42,4 @@ namespace ml
 	};
 }
 
-#endif // !_SKYBOX_HPP_
+#endif // !_ML_SKYBOX_HPP_

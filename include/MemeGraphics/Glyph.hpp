@@ -1,5 +1,5 @@
-#ifndef _GLYPH_HPP_
-#define _GLYPH_HPP_
+#ifndef _ML_GLYPH_HPP_
+#define _ML_GLYPH_HPP_
 
 #include <MemeGraphics/Shapes.hpp>
 
@@ -30,4 +30,4 @@ namespace ml
 	};
 }
 
-#endif // !_GLYPH_HPP_
+#endif // !_ML_GLYPH_HPP_

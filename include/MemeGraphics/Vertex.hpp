@@ -1,5 +1,5 @@
-#ifndef _VERTEX_HPP_
-#define _VERTEX_HPP_
+#ifndef _ML_VERTEX_HPP_
+#define _ML_VERTEX_HPP_
 
 #include <MemeGraphics/Color.hpp>
 #include <MemeCore/Vector2.hpp>
@@ -100,4 +100,4 @@ namespace ml
 	};
 }
 
-#endif // !_VERTEX_HPP_
+#endif // !_ML_VERTEX_HPP_

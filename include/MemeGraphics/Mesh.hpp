@@ -1,5 +1,5 @@
-#ifndef _MESH_HPP_
-#define _MESH_HPP_
+#ifndef _ML_MESH_HPP_
+#define _ML_MESH_HPP_
 
 #include <MemeCore/IReadable.hpp>
 #include <MemeGraphics/Vertex.hpp>
@@ -40,4 +40,4 @@ namespace ml
 	};
 }
 
-#endif // !_MESH_HPP_
+#endif // !_ML_MESH_HPP_

@@ -1,5 +1,5 @@
-#ifndef _RIGIDBODY_HPP_
-#define _RIGIDBODY_HPP_
+#ifndef _ML_RIGIDBODY_HPP_
+#define _ML_RIGIDBODY_HPP_
 
 #include <MemePhysics/Export.hpp>
 #include <MemeCore/ITrackable.hpp>
@@ -18,4 +18,4 @@ namespace ml
 	};
 }
 
-#endif // !_RIGIDBODY_HPP_
+#endif // !_ML_RIGIDBODY_HPP_

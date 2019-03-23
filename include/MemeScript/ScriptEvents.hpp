@@ -1,5 +1,5 @@
-#ifndef _SCRIPT_EVENTS_HPP_
-#define _SCRIPT_EVENTS_HPP_
+#ifndef _ML_SCRIPT_EVENTS_HPP_
+#define _ML_SCRIPT_EVENTS_HPP_
 
 #include <MemeCore/IEvent.hpp>
 #include <MemeScript/Export.hpp>
@@ -25,4 +25,4 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 }
 
-#endif // !_SCRIPT_EVENTS_HPP_
+#endif // !_ML_SCRIPT_EVENTS_HPP_

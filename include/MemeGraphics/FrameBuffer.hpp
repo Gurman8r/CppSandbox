@@ -1,5 +1,5 @@
-#ifndef _FRAMEBUFFER_HPP_
-#define _FRAMEBUFFER_HPP_
+#ifndef _ML_FRAMEBUFFER_HPP_
+#define _ML_FRAMEBUFFER_HPP_
 
 #include <MemeGraphics/GL.hpp>
 #include <MemeGraphics/Lists.hpp>
@@ -31,4 +31,4 @@ namespace ml
 	using FBO = FrameBuffer;
 }
 
-#endif // !_FRAMEBUFFER_HPP_
+#endif // !_ML_FRAMEBUFFER_HPP_

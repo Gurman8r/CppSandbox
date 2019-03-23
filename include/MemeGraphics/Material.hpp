@@ -1,5 +1,5 @@
-#ifndef _MATERIAL_HPP_
-#define _MATERIAL_HPP_
+#ifndef _ML_MATERIAL_HPP_
+#define _ML_MATERIAL_HPP_
 
 #include <MemeGraphics/Shader.hpp>
 
@@ -29,4 +29,4 @@ namespace ml
 	};
 }
 
-#endif // !_MATERIAL_HPP_
+#endif // !_ML_MATERIAL_HPP_

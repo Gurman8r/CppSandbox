@@ -1,5 +1,5 @@
-#ifndef _UNIFORM_HPP_
-#define	_UNIFORM_HPP_
+#ifndef _ML_UNIFORM_HPP_
+#define	_ML_UNIFORM_HPP_
 
 #include <MemeGraphics/Export.hpp>
 #include <MemeCore/ITrackable.hpp>
@@ -70,4 +70,4 @@ namespace ml
 	};
 }
 
-#endif // !_UNIFORM_HPP_
+#endif // !_ML_UNIFORM_HPP_

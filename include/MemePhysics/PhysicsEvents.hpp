@@ -1,5 +1,5 @@
-#ifndef _PHYSICS_EVENTS_HPP_
-#define _PHYSICS_EVENTS_HPP_
+#ifndef _ML_PHYSICS_EVENTS_HPP_
+#define _ML_PHYSICS_EVENTS_HPP_
 
 #include <MemeCore/IEvent.hpp>
 #include <MemePhysics/Export.hpp>
@@ -25,4 +25,4 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 }
 
-#endif // !_PHYSICS_EVENTS_HPP_
+#endif // !_ML_PHYSICS_EVENTS_HPP_

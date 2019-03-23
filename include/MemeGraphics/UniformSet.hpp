@@ -1,5 +1,5 @@
-#ifndef _UNIFORM_SET_HPP_
-#define _UNIFORM_SET_HPP_
+#ifndef _ML_UNIFORM_SET_HPP_
+#define _ML_UNIFORM_SET_HPP_
 
 #include <MemeCore/List.hpp>
 #include <MemeGraphics/Uniform.hpp>
@@ -45,4 +45,4 @@ namespace ml
 		map_type m_map;
 	};
 }
-#endif // !_UNIFORM_SET_HPP_
+#endif // !_ML_UNIFORM_SET_HPP_

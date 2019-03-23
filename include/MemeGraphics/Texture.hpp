@@ -1,5 +1,5 @@
-#ifndef _TEXTURE_HPP_
-#define _TEXTURE_HPP_
+#ifndef _ML_TEXTURE_HPP_
+#define _ML_TEXTURE_HPP_
 
 #include <MemeCore/Rect.hpp>
 #include <MemeGraphics/GL.hpp>
@@ -90,4 +90,4 @@ namespace ml
 	};
 }
 
-#endif // !_TEXTURE_HPP_
+#endif // !_ML_TEXTURE_HPP_

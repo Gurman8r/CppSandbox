@@ -1,5 +1,5 @@
-#ifndef _RENDER_BUFFER_HPP_
-#define _RENDER_BUFFER_HPP_
+#ifndef _ML_RENDER_BUFFER_HPP_
+#define _ML_RENDER_BUFFER_HPP_
 
 #include <MemeGraphics/GL.hpp>
 #include <MemeGraphics/Lists.hpp>
@@ -38,4 +38,4 @@ namespace ml
 	using RBO = RenderBuffer;
 }
 
-#endif // !_RENDER_BUFFER_HPP_
+#endif // !_ML_RENDER_BUFFER_HPP_

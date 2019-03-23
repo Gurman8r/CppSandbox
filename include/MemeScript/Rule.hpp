@@ -1,5 +1,5 @@
-#ifndef _RULE_HPP_
-#define _RULE_HPP_
+#ifndef _ML_RULE_HPP_
+#define _ML_RULE_HPP_
 
 #include <MemeScript/TokenList.hpp>
 #include <MemeScript/AST_Expr.hpp>
@@ -83,4 +83,4 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 }
 
-#endif // !_RULE_HPP_
+#endif // !_ML_RULE_HPP_

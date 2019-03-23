@@ -1,5 +1,5 @@
-#ifndef _AST_EXPR_HPP_
-#define _AST_EXPR_HPP_
+#ifndef _ML_AST_EXPR_HPP_
+#define _ML_AST_EXPR_HPP_
 
 #include <MemeScript/AST_Stmt.hpp>
 #include <MemeScript/Operator.hpp>
@@ -351,4 +351,4 @@ namespace ml
 	};
 }
 
-#endif // !_AST_EXPR_HPP_
+#endif // !_ML_AST_EXPR_HPP_

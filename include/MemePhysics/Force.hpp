@@ -1,5 +1,5 @@
-#ifndef _FORCE_HPP_
-#define _FORCE_HPP_
+#ifndef _ML_FORCE_HPP_
+#define _ML_FORCE_HPP_
 
 #include <MemePhysics/Physics.hpp>
 
@@ -19,4 +19,4 @@ namespace ml
 	};
 }
 
-#endif // !_FORCE_HPP_
+#endif // !_ML_FORCE_HPP_

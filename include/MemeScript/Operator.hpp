@@ -1,5 +1,5 @@
-#ifndef _OPERATOR_HPP_
-#define _OPERATOR_HPP_
+#ifndef _ML_OPERATOR_HPP_
+#define _ML_OPERATOR_HPP_
 
 #include <MemeScript/Export.hpp>
 #include <MemeCore/ITrackable.hpp>
@@ -66,4 +66,4 @@ namespace ml
 	};
 }
 
-#endif // !_OPERATOR_HPP_
+#endif // !_ML_OPERATOR_HPP_

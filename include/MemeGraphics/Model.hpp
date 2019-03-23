@@ -1,5 +1,5 @@
-#ifndef _MODEL_HPP_
-#define _MODEL_HPP_
+#ifndef _ML_MODEL_HPP_
+#define _ML_MODEL_HPP_
 
 #include <MemeGraphics/IDrawable.hpp>
 #include <MemeGraphics/ITransformable.hpp>
@@ -42,4 +42,4 @@ namespace ml
 	};
 }
 
-#endif // !_MODEL_HPP_
+#endif // !_ML_MODEL_HPP_

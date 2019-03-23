@@ -1,5 +1,5 @@
-#ifndef _NETWORK_EVENTS_HPP_
-#define _NETWORK_EVENTS_HPP_
+#ifndef _ML_NETWORK_EVENTS_HPP_
+#define _ML_NETWORK_EVENTS_HPP_
 
 #include <MemeNet/Export.hpp>
 #include <MemeCore/IEvent.hpp>
@@ -68,4 +68,4 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 }
 
-#endif // !_NETWORK_EVENTS_HPP_
+#endif // !_ML_NETWORK_EVENTS_HPP_

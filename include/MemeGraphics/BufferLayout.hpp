@@ -1,5 +1,5 @@
-#ifndef _BUFFER_LAYOUT_HPP_
-#define _BUFFER_LAYOUT_HPP_
+#ifndef _ML_BUFFER_LAYOUT_HPP_
+#define _ML_BUFFER_LAYOUT_HPP_
 
 #include <MemeGraphics/GL.hpp>
 #include <MemeCore/ITrackable.hpp>
@@ -49,4 +49,4 @@ namespace ml
 	};
 }
 
-#endif // !_BUFFER_LAYOUT_HPP_
+#endif // !_ML_BUFFER_LAYOUT_HPP_

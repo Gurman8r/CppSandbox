@@ -1,5 +1,5 @@
-#ifndef _PHYSICS_HPP_
-#define _PHYSICS_HPP_
+#ifndef _ML_PHYSICS_HPP_
+#define _ML_PHYSICS_HPP_
 
 #include <MemePhysics/Export.hpp>
 #include <MemeCore/Vector3.hpp>
@@ -16,4 +16,4 @@ namespace ml
 	};
 }
 
-#endif // !_PHYSICS_HPP_
+#endif // !_ML_PHYSICS_HPP_

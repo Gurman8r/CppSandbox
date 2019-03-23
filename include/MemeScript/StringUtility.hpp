@@ -1,5 +1,5 @@
-#ifndef _STRING_UTILITY_HPP_
-#define _STRING_UTILITY_HPP_
+#ifndef _ML_STRING_UTILITY_HPP_
+#define _ML_STRING_UTILITY_HPP_
 
 #include <MemeScript/Export.hpp>
 #include <MemeCore/List.hpp>
@@ -45,4 +45,4 @@ namespace ml
 	};
 }
 
-#endif // !_STRING_UTILITY_HPP_
+#endif // !_ML_STRING_UTILITY_HPP_
