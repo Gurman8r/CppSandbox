@@ -59,10 +59,10 @@ namespace DEMO
 		void	onExit(const ExitEvent & ev);
 
 	private:
-		void draw_MainMenuBar();
-		void draw_Dockspace(ml::CString title, bool * p_open);
-		void draw_Inspector(ml::CString title, bool * p_open);
-		void draw_Scene(ml::CString title, bool * p_open);
+		bool draw_MainMenuBar();
+		bool draw_Dockspace(ml::CString title, bool * p_open);
+		bool draw_Inspector(ml::CString title, bool * p_open);
+		bool draw_Scene(ml::CString title, bool * p_open);
 
 	private:
 		/* * * * * * * * * * * * * * * * * * * * */

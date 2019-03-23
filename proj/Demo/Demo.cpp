@@ -902,11 +902,10 @@ namespace DEMO
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void Demo::draw_MainMenuBar()
+	bool Demo::draw_MainMenuBar()
 	{
-		/* * * * * * * * * * * * * * * * * * * * */
-
-		if (ImGui::BeginMainMenuBar())
+		bool good;
+		if (good = ImGui::BeginMainMenuBar())
 		{
 			// File
 			/* * * * * * * * * * * * * * * * * * * * */
@@ -955,7 +954,7 @@ namespace DEMO
 			{
 				if (ImGui::MenuItem("Project Page"))
 				{
-					ML_OS.execute("open", "https://www.github.com/Gurman8r/Cppsandbox");
+					ML_OS.execute("open", SETTINGS.projectURL);
 				}
 				ImGui::Separator();
 				ImGui::MenuItem("ImGui Demo", "Ctrl+H", &show_imgui_demo);
@@ -966,13 +965,12 @@ namespace DEMO
 			}
 		}
 		ImGui::EndMainMenuBar();
-
-		/* * * * * * * * * * * * * * * * * * * * */
+		return good;
 	}
 
-	void Demo::draw_Dockspace(ml::CString title, bool * p_open)
+	bool Demo::draw_Dockspace(ml::CString title, bool * p_open)
 	{
-		if (ML_Dock.beginDraw(title, p_open, ImGuiDockNodeFlags_PassthruDockspace))
+		if (ML_Dockspace.beginDraw(title, p_open, ImGuiDockNodeFlags_PassthruDockspace))
 		{
 			auto setup_dockspace = [](uint32_t root)
 			{
@@ -981,38 +979,38 @@ namespace DEMO
 					ImGui::DockBuilderRemoveNode(root);
 					ImGui::DockBuilderAddNode(root, ImGuiDockNodeFlags_None);
 
-					uint32_t left = ML_Dock.split(root, ImGuiDir_Left, 0.29f, &root);
-					uint32_t center = ML_Dock.split(root, ImGuiDir_Right, 0.5f, &root);
-					uint32_t right = ML_Dock.split(center, ImGuiDir_Right, 0.21f, &center);
+					uint32_t left = ML_Dockspace.split(root, ImGuiDir_Left, 0.29f, &root);
+					uint32_t center = ML_Dockspace.split(root, ImGuiDir_Right, 0.5f, &root);
+					uint32_t right = ML_Dockspace.split(center, ImGuiDir_Right, 0.21f, &center);
 
-					const uint32_t left_U = ML_Dock.split(left, ImGuiDir_Up, 0.65f, &left);
-					const uint32_t left_D = ML_Dock.split(left, ImGuiDir_Down, 0.35f, &left);
-					const uint32_t center_U = ML_Dock.split(center, ImGuiDir_Up, 0.65f, &center);
-					const uint32_t center_D = ML_Dock.split(center, ImGuiDir_Down, 0.35f, &center);
-					//const uint32_t right_U = ML_Dock.split(right, ImGuiDir_Up, 0.5f, &right);
-					//const uint32_t right_D = ML_Dock.split(right, ImGuiDir_Down, 0.5f, &right);
+					const uint32_t left_U = ML_Dockspace.split(left, ImGuiDir_Up, 0.65f, &left);
+					const uint32_t left_D = ML_Dockspace.split(left, ImGuiDir_Down, 0.35f, &left);
+					const uint32_t center_U = ML_Dockspace.split(center, ImGuiDir_Up, 0.65f, &center);
+					const uint32_t center_D = ML_Dockspace.split(center, ImGuiDir_Down, 0.35f, &center);
+					//const uint32_t right_U = ML_Dockspace.split(right, ImGuiDir_Up, 0.5f, &right);
+					//const uint32_t right_D = ML_Dockspace.split(right, ImGuiDir_Down, 0.5f, &right);
 
-					ML_Dock.dock_window("Browser", left_U);
-					ML_Dock.dock_window("Hierarchy", left_U);
-					ML_Dock.dock_window("Terminal", left_D);
-					ML_Dock.dock_window("Scene", center_U);
-					ML_Dock.dock_window("Builder", center_D);
-					ML_Dock.dock_window("Text Editor", center_D);
-					ML_Dock.dock_window("Inspector", right);
+					ML_Dockspace.dock_window("Browser", left_U);
+					ML_Dockspace.dock_window("Hierarchy", left_U);
+					ML_Dockspace.dock_window("Terminal", left_D);
+					ML_Dockspace.dock_window("Scene", center_U);
+					ML_Dockspace.dock_window("Builder", center_D);
+					ML_Dockspace.dock_window("Text Editor", center_D);
+					ML_Dockspace.dock_window("Inspector", right);
 
 					ImGui::DockBuilderFinish(root);
 				}
 			};
 
-			setup_dockspace(ML_Dock.getID());
-
-			ML_Dock.endDraw();
+			setup_dockspace(ML_Dockspace.getID());
 		}
+		return ML_Dockspace.endDraw();
 	}
 
-	void Demo::draw_Inspector(ml::CString title, bool * p_open)
+	bool Demo::draw_Inspector(ml::CString title, bool * p_open)
 	{
-		if (ImGui::Begin(title, p_open, ImGuiWindowFlags_AlwaysAutoResize))
+		bool good;
+		if (good = ImGui::Begin(title, p_open, ImGuiWindowFlags_AlwaysAutoResize))
 		{
 			ImGui::Separator();
 
@@ -1067,11 +1065,13 @@ namespace DEMO
 			ImGui::Separator();
 		}
 		ImGui::End();
+		return good;
 	}
 
-	void Demo::draw_Scene(ml::CString title, bool * p_open)
+	bool Demo::draw_Scene(ml::CString title, bool * p_open)
 	{
-		if (ImGui::Begin(title, p_open))
+		bool good;
+		if (good = ImGui::Begin(title, p_open))
 		{
 			ImGui::BeginChild("Viewport", { -1, -1 }, false);
 			{
@@ -1105,6 +1105,7 @@ namespace DEMO
 			ImGui::EndChild();
 		}
 		ImGui::End();
+		return good;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

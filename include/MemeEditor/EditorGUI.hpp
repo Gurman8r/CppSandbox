@@ -1,7 +1,7 @@
 #ifndef _ML_EDITOR_GUI_HPP_
 #define _ML_EDITOR_GUI_HPP_
 
-#include <MemeEditor/EditorWindow.hpp>
+#include <MemeEditor/Export.hpp>
 #include <MemeGraphics/Transform.hpp>
 
 namespace ml

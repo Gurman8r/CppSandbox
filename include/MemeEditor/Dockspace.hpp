@@ -4,7 +4,7 @@
 #include <MemeEditor/EditorWindow.hpp>
 #include <MemeCore/Vector2.hpp>
 
-#define ML_Dock ml::Dockspace::getInstance()
+#define ML_Dockspace ml::Dockspace::getInstance()
 
 namespace ml
 {
