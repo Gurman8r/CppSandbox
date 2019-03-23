@@ -1038,7 +1038,7 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 
 			ImGui::Text("Light");
-			ml::EditorGUI::InputVec3f("Position##Light", m_lightPos);
+			ml::EditorGUI::EditVec3f("Position##Light", m_lightPos);
 			ImGui::ColorEdit4("Color##Light", &m_lightCol[0]);
 			ImGui::DragFloat("Ambient##Light", &m_ambient, 0.01f, 0.f, 1.f);
 			ImGui::DragFloat("Specular##Light", &m_specular, 0.01f, 0.1f, 10.f);

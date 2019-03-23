@@ -92,5 +92,49 @@ namespace ml
 		ImGui::PopID();
 	}
 
+	void EditorGUI::DrawLabel(CString label)
+	{
+		CString label_end;
+		if ((label_end = ImGui::FindRenderedTextEnd(label)) != label)
+		{
+			ImGui::SameLine(0, GImGui->Style.ItemInnerSpacing.x);
+			ImGui::TextEx(label, label_end);
+		}
+	}
+
+	bool EditorGUI::EditVec3f(CString label, vec3f & value, float speed, float min, float max)
+	{
+		if (!ImGui::GetCurrentWindow()->SkipItems)
+		{
+			bool changed = false;
+			ImGui::BeginGroup();
+			ImGui::PushID(label);
+			{
+				ImGui::PushItemWidth(64);
+				if (ImGui::DragFloat("##X", &value[0], speed, min, max, "X:%.3f")) 
+				{
+					changed = true;
+				}
+				ImGui::SameLine();
+				if (ImGui::DragFloat("##Y", &value[1], speed, min, max, "Y:%.3f")) 
+				{
+					changed = true;
+				}
+				ImGui::SameLine();
+				if (ImGui::DragFloat("##Z", &value[2], speed, min, max, "Z:%.3f")) 
+				{
+					changed = true;
+				}
+				ImGui::PopItemWidth();
+
+				DrawLabel(label);
+			}
+			ImGui::PopID();
+			ImGui::EndGroup();
+			return changed;
+		}
+		return false;
+	}
+
 	/* * * * * * * * * * * * * * * * * * * * */
 }

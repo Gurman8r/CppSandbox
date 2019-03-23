@@ -20,7 +20,7 @@ int32_t main(int32_t argc, char ** argv)
 		return ml::Debug::logError("Failed Loading Settings")
 			|| ml::Debug::pause(EXIT_FAILURE);
 	}
-
+	
 	// Load Program
 	if (auto * program = static_cast<ml::RenderWindow *>(new DEMO::Demo()))
 	{
