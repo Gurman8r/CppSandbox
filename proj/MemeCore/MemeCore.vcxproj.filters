@@ -231,6 +231,9 @@
     <ClInclude Include="..\..\include\MemeCore\Usings.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Assert.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeCore\EventSystem.cpp">
@@ -283,6 +286,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\Plugin.cpp">
       <Filter>Source Files\Plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeCore\Assert.cpp">
+      <Filter>Source Files\Utility</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

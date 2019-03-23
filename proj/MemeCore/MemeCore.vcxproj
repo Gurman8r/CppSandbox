@@ -155,6 +155,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeCore\Array.hpp" />
+    <ClInclude Include="..\..\include\MemeCore\Assert.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Bytes.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Check.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Chunk.hpp" />
@@ -212,6 +213,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\include\MemeCore\IEnumerable.hpp" />
+    <ClCompile Include="..\..\src\MemeCore\Assert.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Console.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Debug.cpp" />
     <ClCompile Include="..\..\src\MemeCore\EventSystem.cpp" />

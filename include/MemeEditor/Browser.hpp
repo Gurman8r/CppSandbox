@@ -13,7 +13,6 @@ namespace ml
 	// File Browser
 	class ML_EDITOR_API Browser
 		: public Editor
-		, public IEventListener
 		, public ISingleton<Browser>
 	{
 		friend class ISingleton<Browser>;
