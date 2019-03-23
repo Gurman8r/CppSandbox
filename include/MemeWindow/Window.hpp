@@ -156,7 +156,7 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-	protected:
+	private:
 		void *			m_window;
 		void *			m_monitor;
 		void *			m_share;

@@ -17,4 +17,4 @@ namespace ml
 	};
 }
 
-#endif // !_COMPONENT_HPP_
+#endif // !_ML_I_COMPONENT_HPP_
