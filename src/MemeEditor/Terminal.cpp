@@ -16,6 +16,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Terminal::Terminal()
+		: EditorWindow()
 	{
 		clear();
 		memset(m_inputBuf, 0, sizeof(m_inputBuf));
@@ -42,49 +43,14 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void Terminal::clear()
+	void Terminal::onEvent(const IEvent * value)
 	{
-		m_lines.clear();
-		m_scrollToBottom = true;
-	}
-
-	void Terminal::print(const String & str)
-	{
-		printf("%s", str.c_str());
-	}
-
-	void Terminal::printf(CString fmt, ...)
-	{
-		// FIXME-OPT
-		char buf[1024];
-		va_list args;
-		va_start(args, fmt);
-		vsnprintf(buf, IM_ARRAYSIZE(buf), fmt, args);
-		buf[IM_ARRAYSIZE(buf) - 1] = 0;
-		va_end(args);
-		m_lines.push_back(Strdup(buf));
-		m_scrollToBottom = true;
-	}
-
-	void Terminal::printHistory()
-	{
-		for (auto h : m_history) { this->printf(h); }
 	}
 
 	bool Terminal::draw(CString title, bool * p_open)
 	{
-		ImGui::SetNextWindowSize(ImVec2(550, 600), ImGuiCond_FirstUseEver);
-		if (beginWindow(title, p_open))
+		if (beginDraw(title, p_open))
 		{
-			if (ImGui::BeginPopupContextItem())
-			{
-				if (ImGui::MenuItem("Close Console"))
-				{
-					*p_open = false;
-				}
-				ImGui::EndPopup();
-			}
-
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
 			static ImGuiTextFilter filter;
 			filter.Draw("Filter (\"incl,-excl\") (\"error\")", 180);
@@ -93,15 +59,7 @@ namespace ml
 
 			const float footer_height_to_reserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing(); // 1 separator, 1 input text
 			ImGui::BeginChild("ScrollingRegion", ImVec2(0, -footer_height_to_reserve), false, ImGuiWindowFlags_HorizontalScrollbar); // Leave room for 1 separator + 1 InputText
-			if (ImGui::BeginPopupContextWindow())
-			{
-				if (ImGui::Selectable("Clear"))
-				{
-					clear();
-				}
-				ImGui::EndPopup();
-			}
-
+			
 			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1)); // Tighten spacing
 
 			ImVec4 col_default_text = ImGui::GetStyleColorVec4(ImGuiCol_Text);
@@ -161,7 +119,38 @@ namespace ml
 				ImGui::SetKeyboardFocusHere(-1); // Auto focus previous widget
 			}
 		}
-		return endWindow();
+		return endDraw();
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	void Terminal::clear()
+	{
+		m_lines.clear();
+		m_scrollToBottom = true;
+	}
+
+	void Terminal::print(const String & str)
+	{
+		printf("%s", str.c_str());
+	}
+
+	void Terminal::printf(CString fmt, ...)
+	{
+		// FIXME-OPT
+		char buf[1024];
+		va_list args;
+		va_start(args, fmt);
+		vsnprintf(buf, IM_ARRAYSIZE(buf), fmt, args);
+		buf[IM_ARRAYSIZE(buf) - 1] = 0;
+		va_end(args);
+		m_lines.push_back(Strdup(buf));
+		m_scrollToBottom = true;
+	}
+
+	void Terminal::printHistory()
+	{
+		for (auto h : m_history) { this->printf(h); }
 	}
 
 	void Terminal::execCommand(CString value)

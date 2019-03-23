@@ -3,6 +3,7 @@
 #include <MemeCore/EventSystem.hpp>
 #include <MemeCore/OS.hpp>
 #include <MemeWindow/WindowEvents.hpp>
+#include <MemeEditor/ImGui.hpp>
 #include <MemeEditor/ResourceManager.hpp>
 #include <MemeEditor/EditorGUI.hpp>
 #include <MemeEditor/Terminal.hpp>
@@ -12,7 +13,6 @@
 #include <MemeEditor/Dockspace.hpp>
 #include <MemeEditor/TextEditor.hpp>
 #include <MemeEditor/Hierarchy.hpp>
-#include <MemeEditor/ImGui.hpp>
 
 namespace DEMO
 {
@@ -871,7 +871,7 @@ namespace DEMO
 		draw_MainMenuBar();
 
 		// Dockspace
-		if (show_ml_dockspace)	{ draw_Dockspace(&show_ml_dockspace); }
+		if (show_ml_dockspace)	{ draw_Dockspace("Dockspace", &show_ml_dockspace); }
 
 		// ImGui
 		if (show_imgui_demo)	{ ml::ImGuiBuiltin::showDemoWindow(show_imgui_demo); }
@@ -884,14 +884,9 @@ namespace DEMO
 		if (show_ml_hierarchy)	{ ML_Hierarchy.draw("Hierarchy", &show_ml_hierarchy); }
 		if (show_ml_terminal)	{ ML_Terminal.draw("Terminal", &show_ml_terminal); }
 		if (show_ml_builder)	{ ML_Builder.draw("Builder", &show_ml_builder); }
-		if (show_ml_scene)		{ draw_Scene(&show_ml_scene); }
-		if (show_ml_inspector)	{ draw_Inspector(&show_ml_inspector); }
-
-		static ml::TextEditor textEditor("Sample Text");
-		if (show_ml_text_editor)
-		{
-			textEditor.draw("Text Editor", &show_ml_text_editor);
-		}
+		if (show_ml_texteditor) { ML_TextEditor.draw("Text Editor", &show_ml_texteditor); }
+		if (show_ml_scene)		{ draw_Scene("Scene", &show_ml_scene); }
+		if (show_ml_inspector)	{ draw_Inspector("Inspector", &show_ml_inspector); }
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	}
@@ -950,7 +945,7 @@ namespace DEMO
 				ImGui::MenuItem("Builder", "Ctrl+Alt+B", &show_ml_builder);
 				ImGui::MenuItem("Scene", "Ctrl+Alt+S", &show_ml_scene);
 				ImGui::MenuItem("Inspector", "Ctrl+Alt+I", &show_ml_inspector);
-				ImGui::MenuItem("Text Editor", NULL, &show_ml_text_editor);
+				ImGui::MenuItem("Text Editor", NULL, &show_ml_texteditor);
 				ImGui::MenuItem("Hierarchy", NULL, &show_ml_hierarchy);
 				ImGui::EndMenu();
 			}
@@ -975,63 +970,49 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 	}
 
-	void Demo::draw_Dockspace(bool * p_open)
+	void Demo::draw_Dockspace(ml::CString title, bool * p_open)
 	{
-		/* * * * * * * * * * * * * * * * * * * * */
-		
-		static ml::Dockspace d("EditorDockspace", ImGuiDockNodeFlags_PassthruDockspace);
-
-		/* * * * * * * * * * * * * * * * * * * * */
-		
-		auto setup_dockspace = [](uint32_t root)
+		if (ML_Dock.beginDraw(title, p_open, ImGuiDockNodeFlags_PassthruDockspace))
 		{
-			if (!ImGui::DockBuilderGetNode(root)) 
+			auto setup_dockspace = [](uint32_t root)
 			{
-				ImGui::DockBuilderRemoveNode(root);
-				ImGui::DockBuilderAddNode(root, ImGuiDockNodeFlags_None);
+				if (!ImGui::DockBuilderGetNode(root))
+				{
+					ImGui::DockBuilderRemoveNode(root);
+					ImGui::DockBuilderAddNode(root, ImGuiDockNodeFlags_None);
 
-				uint32_t left = d.split(root, ImGuiDir_Left, 0.29f, &root);
-				uint32_t center = d.split(root, ImGuiDir_Right, 0.5f, &root);
-				uint32_t right = d.split(center, ImGuiDir_Right, 0.21f, &center);
+					uint32_t left = ML_Dock.split(root, ImGuiDir_Left, 0.29f, &root);
+					uint32_t center = ML_Dock.split(root, ImGuiDir_Right, 0.5f, &root);
+					uint32_t right = ML_Dock.split(center, ImGuiDir_Right, 0.21f, &center);
 
-				const uint32_t left_U = d.split(left, ImGuiDir_Up, 0.65f, &left);
-				const uint32_t left_D = d.split(left, ImGuiDir_Down, 0.35f, &left);
-				const uint32_t center_U = d.split(center, ImGuiDir_Up, 0.65f, &center);
-				const uint32_t center_D = d.split(center, ImGuiDir_Down, 0.35f, &center);
-				//const uint32_t right_U = d.split(right, ImGuiDir_Up, 0.5f, &right);
-				//const uint32_t right_D = d.split(right, ImGuiDir_Down, 0.5f, &right);
+					const uint32_t left_U = ML_Dock.split(left, ImGuiDir_Up, 0.65f, &left);
+					const uint32_t left_D = ML_Dock.split(left, ImGuiDir_Down, 0.35f, &left);
+					const uint32_t center_U = ML_Dock.split(center, ImGuiDir_Up, 0.65f, &center);
+					const uint32_t center_D = ML_Dock.split(center, ImGuiDir_Down, 0.35f, &center);
+					//const uint32_t right_U = ML_Dock.split(right, ImGuiDir_Up, 0.5f, &right);
+					//const uint32_t right_D = ML_Dock.split(right, ImGuiDir_Down, 0.5f, &right);
 
-				d.dock_window("Browser", left_U);
-				d.dock_window("Hierarchy", left_U);
-				d.dock_window("Terminal", left_D);
-				d.dock_window("Scene", center_U);
-				d.dock_window("Builder", center_D);
-				d.dock_window("Text Editor", center_D);
-				d.dock_window("Inspector", right);
+					ML_Dock.dock_window("Browser", left_U);
+					ML_Dock.dock_window("Hierarchy", left_U);
+					ML_Dock.dock_window("Terminal", left_D);
+					ML_Dock.dock_window("Scene", center_U);
+					ML_Dock.dock_window("Builder", center_D);
+					ML_Dock.dock_window("Text Editor", center_D);
+					ML_Dock.dock_window("Inspector", right);
 
-				ImGui::DockBuilderFinish(root);
-			}
-		};
-		
-		/* * * * * * * * * * * * * * * * * * * * */
+					ImGui::DockBuilderFinish(root);
+				}
+			};
 
-		if (d.begin_dock("Dockspace", p_open))
-		{
-			setup_dockspace(d.getID());
+			setup_dockspace(ML_Dock.getID());
 
-			d.end_dock();
+			ML_Dock.endDraw();
 		}
-
-		/* * * * * * * * * * * * * * * * * * * * */
 	}
 
-	void Demo::draw_Inspector(bool * p_open)
+	void Demo::draw_Inspector(ml::CString title, bool * p_open)
 	{
-		if (!ImGui::Begin("Inspector", p_open, ImGuiWindowFlags_AlwaysAutoResize))
-		{
-			return ImGui::End();
-		}
-		else
+		if (ImGui::Begin(title, p_open, ImGuiWindowFlags_AlwaysAutoResize))
 		{
 			ImGui::Separator();
 
@@ -1084,26 +1065,15 @@ namespace DEMO
 			
 			ml::EditorGUI::InputMat4f("Matrix", temp.matrix());
 			ImGui::Separator();
-
-			return ImGui::End();
 		}
+		ImGui::End();
 	}
 
-	void Demo::draw_Scene(bool * p_open)
+	void Demo::draw_Scene(ml::CString title, bool * p_open)
 	{
-		static bool preserve_aspect = true;
-
-		if (ImGui::Begin("Scene", p_open, ImGuiWindowFlags_MenuBar))
+		if (ImGui::Begin(title, p_open))
 		{
-			/* * * * * * * * * * * * * * * * * * * * */
-
-			if (ImGui::BeginMenuBar())
-			{
-				ImGui::Checkbox("Preserve Aspect", &preserve_aspect);
-				ImGui::EndMenuBar();
-			}
-
-			ImGui::BeginChild("Scene View", { -1, -1 }, false);
+			ImGui::BeginChild("Viewport", { -1, -1 }, false);
 			{
 				if (auto tex = std::remove_cv_t<ml::Texture *>(m_effects["fbo_post"].texture()))
 				{
@@ -1124,22 +1094,17 @@ namespace DEMO
 						return (src * (((hs) < (vs)) ? (hs) : (vs)));
 					};
 
-					const ml::vec2f scl = (preserve_aspect
-						? scaleToFit(src, dst)
-						: (dst * 0.975f));
-
+					const ml::vec2f scl = scaleToFit(src, dst);
 					const ml::vec2f pos = ((dst - scl) * 0.5f);
 
 					ImGui::SetCursorPos({ pos[0], pos[1] });
 
-					ImGui::Image(tex->get_raw(), { scl[0], scl[1] }, { 0, 1 }, { 1, 0 });
+					ImGui::Image(tex->get_address(), { scl[0], scl[1] }, { 0, 1 }, { 1, 0 });
 				}
 			}
 			ImGui::EndChild();
-
-			/* * * * * * * * * * * * * * * * * * * * */
 		}
-		return ImGui::End();
+		ImGui::End();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

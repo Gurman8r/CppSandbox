@@ -60,9 +60,9 @@ namespace DEMO
 
 	private:
 		void draw_MainMenuBar();
-		void draw_Dockspace(bool * p_open);
-		void draw_Inspector(bool * p_open);
-		void draw_Scene(bool * p_open);
+		void draw_Dockspace(ml::CString title, bool * p_open);
+		void draw_Inspector(ml::CString title, bool * p_open);
+		void draw_Scene(ml::CString title, bool * p_open);
 
 	private:
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -114,7 +114,7 @@ namespace DEMO
 		bool show_ml_builder	= true;
 		bool show_ml_inspector	= true;
 		bool show_ml_scene		= true;
-		bool show_ml_text_editor= true;
+		bool show_ml_texteditor= true;
 		bool show_ml_hierarchy	= true;
 
 		bool show_imgui_demo	= false;

@@ -19,7 +19,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Builder::Builder()
-		: m_open(NULL)
+		: EditorWindow()
 		, m_selected(0)
 	{
 		copy_range(m_s["Vertex"], 0, 
@@ -42,10 +42,14 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
+	void Builder::onEvent(const IEvent * value)
+	{
+	}
+
 	bool Builder::draw(CString title, bool * p_open)
 	{
 		ImGui::SetNextWindowSize(ImVec2(640, 480), ImGuiCond_FirstUseEver);
-		if (beginWindow(title, (m_open = p_open)))
+		if (beginDraw(title, (m_open = p_open)))
 		{
 			ImGui::BeginGroup();
 			{
@@ -66,7 +70,7 @@ namespace ml
 			}
 			ImGui::EndGroup();
 		}
-		return endWindow();
+		return endDraw();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

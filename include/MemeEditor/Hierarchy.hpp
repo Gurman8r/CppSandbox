@@ -1,14 +1,14 @@
 #ifndef _ML_HIERARCHY_HPP_
 #define _ML_HIERARCHY_HPP_
 
-#include <MemeEditor/Editor.hpp>
+#include <MemeEditor/EditorWindow.hpp>
 
 #define ML_Hierarchy ml::Hierarchy::getInstance()
 
 namespace ml
 {
-	class ML_EDITOR_API Hierarchy
-		: public Editor
+	class ML_EDITOR_API Hierarchy final
+		: public EditorWindow
 		, public ISingleton<Hierarchy>
 	{
 		friend ISingleton<Hierarchy>;
@@ -18,6 +18,7 @@ namespace ml
 		~Hierarchy();
 
 	public:
+		void onEvent(const IEvent * value) override;
 		bool draw(CString title, bool * p_open) override;
 
 	private:

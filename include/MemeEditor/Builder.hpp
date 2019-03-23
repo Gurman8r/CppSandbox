@@ -1,7 +1,7 @@
 #ifndef _ML_BUILDER_HPP_
 #define _ML_BUILDER_HPP_
 
-#include <MemeEditor/Editor.hpp>
+#include <MemeEditor/EditorWindow.hpp>
 #include <MemeEditor/Document.hpp>
 #include <MemeGraphics/Shader.hpp>
 
@@ -11,8 +11,8 @@
 namespace ml
 {
 	// Shader Builder/Editor
-	class ML_EDITOR_API Builder
-		: public Editor
+	class ML_EDITOR_API Builder final
+		: public EditorWindow
 		, public ISingleton<Builder>
 	{
 		friend class ISingleton<Builder>;
@@ -25,6 +25,7 @@ namespace ml
 		~Builder();
 
 	public:
+		void onEvent(const IEvent * value) override;
 		bool draw(CString title, bool * p_open) override;
 
 	private:
@@ -55,7 +56,6 @@ namespace ml
 		}
 
 	private:
-		bool *	m_open;
 		size_t	m_selected;
 		char	m_inputBuf[64];
 

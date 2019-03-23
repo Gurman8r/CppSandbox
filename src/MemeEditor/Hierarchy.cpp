@@ -4,6 +4,7 @@
 namespace ml
 {
 	Hierarchy::Hierarchy()
+		: EditorWindow()
 	{
 	}
 
@@ -11,9 +12,13 @@ namespace ml
 	{
 	}
 
+	void Hierarchy::onEvent(const IEvent * value)
+	{
+	}
+
 	bool Hierarchy::draw(CString title, bool * p_open)
 	{
-		if (beginWindow(title, p_open))
+		if (beginDraw(title, p_open))
 		{
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
 			ImGui::Columns(2);
@@ -70,6 +75,6 @@ namespace ml
 			ImGui::Separator();
 			ImGui::PopStyleVar();
 		}
-		return endWindow();
+		return endDraw();
 	}
 }

@@ -1,9 +1,8 @@
 #ifndef _ML_BROWSER_HPP_
 #define _ML_BROWSER_HPP_
 
-#include <MemeEditor/Editor.hpp>
+#include <MemeEditor/EditorWindow.hpp>
 #include <MemeCore/File.hpp>
-#include <MemeCore/IEventListener.hpp>
 #include <MemeCore/Bytes.hpp>
 
 #define ML_Browser ml::Browser::getInstance()
@@ -11,8 +10,8 @@
 namespace ml
 {
 	// File Browser
-	class ML_EDITOR_API Browser
-		: public Editor
+	class ML_EDITOR_API Browser final
+		: public EditorWindow
 		, public ISingleton<Browser>
 	{
 		friend class ISingleton<Browser>;
@@ -36,7 +35,6 @@ namespace ml
 
 	public:
 		void onEvent(const IEvent * value) override;
-
 		bool draw(CString title, bool * p_open) override;
 
 	private:
@@ -57,7 +55,10 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		inline String pathTo(const String & value) const { return (m_path + "\\" + value); }
+		inline String pathTo(const String & value) const 
+		{ 
+			return (m_path + "\\" + value);
+		}
 
 		inline const List<String> * get_list() const
 		{
@@ -80,7 +81,6 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 
 	private:
-		bool *		m_open;		// Is Open?
 		String		m_path;		// Working Directory
 		Directory	m_dir;		// Directory Contents
 		char		m_type;		// Selected List

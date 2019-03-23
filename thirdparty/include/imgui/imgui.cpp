@@ -108,7 +108,7 @@ CODE
  END-USER GUIDE
  ==============
 
- - Double-click on title bar to collapse window.
+ - Double-click on m_title bar to collapse window.
  - Click upper right corner to close a window, available when 'bool* p_open' is passed to ImGui::Begin().
  - Click and drag on lower right corner to resize window (double-click to auto fit window to its contents).
  - Click and drag on any empty space to move window.
@@ -472,16 +472,16 @@ CODE
  - 2016/10/15 (1.50) - avoid 'void* user_data' parameter to io.SetClipboardTextFn/io.GetClipboardTextFn pointers. We pass io.ClipboardUserData to it.
  - 2016/09/25 (1.50) - style.WindowTitleAlign is now a ImVec2 (ImGuiAlign enum was removed). set to (0.5f,0.5f) for horizontal+vertical centering, (0.0f,0.0f) for upper-left, etc.
  - 2016/07/30 (1.50) - SameLine(x) with x>0.0f is now relative to left of column/group if any, and not always to left of window. This was sort of always the intent and hopefully breakage should be minimal.
- - 2016/05/12 (1.49) - title bar (using ImGuiCol_TitleBg/ImGuiCol_TitleBgActive colors) isn't rendered over a window background (ImGuiCol_WindowBg color) anymore.
+ - 2016/05/12 (1.49) - m_title bar (using ImGuiCol_TitleBg/ImGuiCol_TitleBgActive colors) isn't rendered over a window background (ImGuiCol_WindowBg color) anymore.
                        If your TitleBg/TitleBgActive alpha was 1.0f or you are using the default theme it will not affect you.
-                       If your TitleBg/TitleBgActive alpha was <1.0f you need to tweak your custom theme to readjust for the fact that we don't draw a WindowBg background behind the title bar.
+                       If your TitleBg/TitleBgActive alpha was <1.0f you need to tweak your custom theme to readjust for the fact that we don't draw a WindowBg background behind the m_title bar.
                        This helper function will convert an old TitleBg/TitleBgActive color into a new one with the same visual output, given the OLD color and the OLD WindowBg color.
                            ImVec4 ConvertTitleBgCol(const ImVec4& win_bg_col, const ImVec4& title_bg_col)
                            {
                                float new_a = 1.0f - ((1.0f - win_bg_col.w) * (1.0f - title_bg_col.w)), k = title_bg_col.w / new_a;
                                return ImVec4((win_bg_col.x * win_bg_col.w + title_bg_col.x) * k, (win_bg_col.y * win_bg_col.w + title_bg_col.y) * k, (win_bg_col.z * win_bg_col.w + title_bg_col.z) * k, new_a);
                            }
-                       If this is confusing, pick the RGB value from title bar from an old screenshot and apply this as TitleBg/TitleBgActive. Or you may just create TitleBgActive from a tweaked TitleBg color.
+                       If this is confusing, pick the RGB value from m_title bar from an old screenshot and apply this as TitleBg/TitleBgActive. Or you may just create TitleBgActive from a tweaked TitleBg color.
  - 2016/05/07 (1.49) - removed confusing set of GetInternalState(), GetInternalStateSize(), SetInternalState() functions. Now using CreateContext(), DestroyContext(), GetCurrentContext(), SetCurrentContext().
  - 2016/05/02 (1.49) - renamed SetNextTreeNodeOpened() to SetNextTreeNodeOpen(), no redirection.
  - 2016/05/01 (1.49) - obsoleted old signature of CollapsingHeader(const char* label, const char* str_id = NULL, bool display_frame = true, bool default_open = false) as extra parameters were badly designed and rarely used. You can replace the "default_open = true" flag in new API with CollapsingHeader(label, ImGuiTreeNodeFlags_DefaultOpen).
@@ -714,14 +714,14 @@ CODE
        Checkbox("##On", &b);  // Label = "",       ID = hash of (..., "##On")   // No visible label, just a checkbox!
 
    - Occasionally/rarely you might want change a label while preserving a constant ID. This allows
-     you to animate labels. For example you may want to include varying information in a window title bar,
+     you to animate labels. For example you may want to include varying information in a window m_title bar,
      but windows are uniquely identified by their ID. Use "###" to pass a label that isn't part of ID:
 
        Button("Hello###ID");  // Label = "Hello",  ID = hash of (..., "###ID")
        Button("World###ID");  // Label = "World",  ID = hash of (..., "###ID")  // Same as above, even though the label looks different
 
        sprintf(buf, "My game (%f FPS)###MyGame", fps);
-       Begin(buf);            // Variable title,   ID = hash of "MyGame"
+       Begin(buf);            // Variable m_title,   ID = hash of "MyGame"
 
    - Solving ID conflict in a more general manner:
      Use PushID() / PopID() to create scopes and manipulate the ID stack, as to avoid ID conflicts
@@ -1113,7 +1113,7 @@ ImGuiStyle::ImGuiStyle()
     WindowRounding          = 7.0f;             // Radius of window corners rounding. Set to 0.0f to have rectangular windows
     WindowBorderSize        = 1.0f;             // Thickness of border around windows. Generally set to 0.0f or 1.0f. Other values not well tested.
     WindowMinSize           = ImVec2(32,32);    // Minimum window size
-    WindowTitleAlign        = ImVec2(0.0f,0.5f);// Alignment for title bar text
+    WindowTitleAlign        = ImVec2(0.0f,0.5f);// Alignment for m_title bar text
     ChildRounding           = 0.0f;             // Radius of child window corners rounding. Set to 0.0f to have rectangular child windows
     ChildBorderSize         = 1.0f;             // Thickness of border around child windows. Generally set to 0.0f or 1.0f. Other values not well tested.
     PopupRounding           = 0.0f;             // Radius of popup window corners rounding. Set to 0.0f to have rectangular child windows
@@ -2911,7 +2911,7 @@ bool ImGui::IsItemHovered(ImGuiHoveredFlags flags)
     if ((window->DC.ItemFlags & ImGuiItemFlags_Disabled) && !(flags & ImGuiHoveredFlags_AllowWhenDisabled))
         return false;
 
-    // Special handling for the dummy item after Begin() which represent the title bar or tab. 
+    // Special handling for the dummy item after Begin() which represent the m_title bar or tab. 
     // When the window is collapsed (SkipItems==true) that last item will never be overwritten so we need to detect the case.
     if ((window->DC.LastItemId == window->ID || window->DC.LastItemId == window->MoveId) && window->WriteAccessed)
         return false;
@@ -4604,7 +4604,7 @@ bool ImGui::IsItemFocused()
     if (g.NavId == 0 || g.NavDisableHighlight || g.NavId != window->DC.LastItemId)
         return false;
 
-    // Special handling for the dummy item after Begin() which represent the title bar or tab. 
+    // Special handling for the dummy item after Begin() which represent the m_title bar or tab. 
     // When the window is collapsed (SkipItems==true) that last item will never be overwritten so we need to detect the case.
     if (window->DC.LastItemId == window->ID && window->WriteAccessed)
         return false;
@@ -5411,7 +5411,7 @@ bool ImGui::Begin(const char* name, bool* p_open, ImGuiWindowFlags flags)
         window->IDStack.resize(1);
 
         // Update stored window name when it changes (which can _only_ happen with the "###" operator, so the ID would stay unchanged).
-        // The title bar always display the 'name' parameter, so we only update the string storage if it needs to be visible to the end-user elsewhere.
+        // The m_title bar always display the 'name' parameter, so we only update the string storage if it needs to be visible to the end-user elsewhere.
         bool window_title_visible_elsewhere = false;
         if ((window->Viewport && window->Viewport->Window == window) || (window->DockIsActive))
             window_title_visible_elsewhere = true;
@@ -5473,11 +5473,11 @@ bool ImGui::Begin(const char* name, bool* p_open, ImGuiWindowFlags flags)
         window->DC.MenuBarOffset.x = ImMax(ImMax(window->WindowPadding.x, style.ItemSpacing.x), g.NextWindowData.MenuBarOffsetMinVal.x);
         window->DC.MenuBarOffset.y = g.NextWindowData.MenuBarOffsetMinVal.y;
 
-        // Collapse window by double-clicking on title bar
-        // At this point we don't have a clipping rectangle setup yet, so we can use the title bar area for hit detection and drawing
+        // Collapse window by double-clicking on m_title bar
+        // At this point we don't have a clipping rectangle setup yet, so we can use the m_title bar area for hit detection and drawing
         if (!(flags & ImGuiWindowFlags_NoTitleBar) && !(flags & ImGuiWindowFlags_NoCollapse) && !window->DockIsActive)
         {
-            // We don't use a regular button+id to test for double-click on title bar (mostly due to legacy reason, could be fixed), so verify that we don't have items over the title bar.
+            // We don't use a regular button+id to test for double-click on m_title bar (mostly due to legacy reason, could be fixed), so verify that we don't have items over the m_title bar.
             ImRect title_bar_rect = window->TitleBarRect();
             if (g.HoveredWindow == window && g.HoveredId == 0 && g.HoveredIdPreviousFrame == 0 && IsMouseHoveringRect(title_bar_rect.Min, title_bar_rect.Max) && g.IO.MouseDoubleClicked[0])
                 window->WantCollapseToggle = true;
@@ -5620,7 +5620,7 @@ bool ImGui::Begin(const char* name, bool* p_open, ImGuiWindowFlags flags)
                 viewport_flags |= ImGuiViewportFlags_NoDecoration;
 
             // For popups and menus that may be protruding out of their parent viewport, we enable _NoFocusOnClick so that clicking on them
-            // won't steal the OS focus away from their parent window (which may be reflected in OS the title bar decoration).
+            // won't steal the OS focus away from their parent window (which may be reflected in OS the m_title bar decoration).
             // Setting _NoFocusOnClick would technically prevent us from bringing back to front in case they are being covered by an OS window from a different app, 
             // but it shouldn't be much of a problem considering those are already popups that are closed when clicking elsewhere.
             if (is_short_lived_floating_window)
@@ -5746,7 +5746,7 @@ bool ImGui::Begin(const char* name, bool* p_open, ImGuiWindowFlags flags)
         }
 
         // Draw window + handle manual resize
-        // As we highlight the title bar when want_focus is set, multiple reappearing windows will have have their title bar highlighted on their reappearing frame.
+        // As we highlight the m_title bar when want_focus is set, multiple reappearing windows will have have their m_title bar highlighted on their reappearing frame.
         const float window_rounding = window->WindowRounding;
         const float window_border_size = window->WindowBorderSize;
         const ImGuiWindow* window_to_highlight = g.NavWindowingTarget ? g.NavWindowingTarget : g.NavWindow;
@@ -5795,7 +5795,7 @@ bool ImGui::Begin(const char* name, bool* p_open, ImGuiWindowFlags flags)
             g.NextWindowData.BgAlphaCond = 0;
 
             // Title bar
-            // (when docked, DockNode are drawing their own title bar. Individual windows however do NOT set the _NoTitleBar flag, 
+            // (when docked, DockNode are drawing their own m_title bar. Individual windows however do NOT set the _NoTitleBar flag, 
             // in order for their pos/size to be matching their undocking state.)
             if (!(flags & ImGuiWindowFlags_NoTitleBar) && !window->DockIsActive)
             {
@@ -6026,7 +6026,7 @@ bool ImGui::Begin(const char* name, bool* p_open, ImGuiWindowFlags flags)
         }
 
         // We fill last item data based on Title Bar or Tab, in order for IsItemHovered() and IsItemActive() to be usable after Begin().
-        // This is useful to allow creating context menus on title bar only, etc.
+        // This is useful to allow creating context menus on m_title bar only, etc.
         if (window->DockIsActive)
         {
             window->DC.LastItemId = window->ID;
@@ -6063,7 +6063,7 @@ bool ImGui::Begin(const char* name, bool* p_open, ImGuiWindowFlags flags)
     if (flags & ImGuiWindowFlags_ChildWindow)
     {
         // Child window can be out of sight and have "negative" clip windows.
-        // Mark them as collapsed so commands are skipped earlier (we can't manually collapse them because they have no title bar).
+        // Mark them as collapsed so commands are skipped earlier (we can't manually collapse them because they have no m_title bar).
         IM_ASSERT((flags & ImGuiWindowFlags_NoTitleBar) != 0 || (window->DockIsActive));
         if (!(flags & ImGuiWindowFlags_AlwaysAutoResize) && window->AutoFitFramesX <= 0 && window->AutoFitFramesY <= 0)
             if (window->OuterRectClipped.Min.x >= window->OuterRectClipped.Max.x || window->OuterRectClipped.Min.y >= window->OuterRectClipped.Max.y)
@@ -6850,7 +6850,7 @@ void ImGui::SetNextWindowSizeConstraints(const ImVec2& size_min, const ImVec2& s
 void ImGui::SetNextWindowContentSize(const ImVec2& size)
 {
     ImGuiContext& g = *GImGui;
-    g.NextWindowData.ContentSizeVal = size;  // In Begin() we will add the size of window decorations (title bar, menu etc.) to that to form a SizeContents value.
+    g.NextWindowData.ContentSizeVal = size;  // In Begin() we will add the size of window decorations (m_title bar, menu etc.) to that to form a SizeContents value.
     g.NextWindowData.ContentSizeCond = ImGuiCond_Always;
 }
 
@@ -7092,7 +7092,7 @@ void ImGui::SetScrollX(float scroll_x)
 void ImGui::SetScrollY(float scroll_y)
 {
     ImGuiWindow* window = GetCurrentWindow();
-    window->ScrollTarget.y = scroll_y + window->TitleBarHeight() + window->MenuBarHeight(); // title bar height canceled out when using ScrollTargetRelY
+    window->ScrollTarget.y = scroll_y + window->TitleBarHeight() + window->MenuBarHeight(); // m_title bar height canceled out when using ScrollTargetRelY
     window->ScrollTargetCenterRatio.y = 0.0f;
 }
 
@@ -10430,7 +10430,7 @@ static void ImGui::UpdateSelectWindowViewport(ImGuiWindow* window)
     window->ViewportOwned = (window == window->Viewport->Window);
     window->ViewportId = window->Viewport->ID;
 
-    // If the OS window has a title bar, hide our imgui title bar
+    // If the OS window has a m_title bar, hide our imgui m_title bar
     //if (window->ViewportOwned && !(window->Viewport->Flags & ImGuiViewportFlags_NoDecoration))
     //    window->Flags |= ImGuiWindowFlags_NoTitleBar;
 }
@@ -10491,7 +10491,7 @@ void ImGui::UpdatePlatformWindows()
         viewport->LastPlatformPos = viewport->Pos;
         viewport->LastPlatformSize = viewport->LastRendererSize = viewport->Size;
 
-        // Update title bar (if it changed)
+        // Update m_title bar (if it changed)
         if (ImGuiWindow* window_for_title = GetWindowForTitleDisplay(viewport->Window))
         {
             const char* title_begin = window_for_title->Name;
@@ -11429,7 +11429,7 @@ static void ImGui::DockNodeAddWindow(ImGuiDockNode* node, ImGuiWindow* window, b
 
     DockNodeUpdateVisibleFlag(node);
 
-    // Update this without waiting for the next time we Begin() in the window, so our host window will have the proper title bar color on its first frame.
+    // Update this without waiting for the next time we Begin() in the window, so our host window will have the proper m_title bar color on its first frame.
     if (node->HostWindow)
         UpdateWindowParentAndRootLinks(window, window->Flags | ImGuiWindowFlags_ChildWindow, node->HostWindow);
 }
@@ -11703,7 +11703,7 @@ static void ImGui::DockNodeUpdate(ImGuiDockNode* node)
 
         // FIXME-DOCK: Merge this scan into the one above.
         // - Setup central node pointers
-        // - Find if there's only a single visible window in the hierarchy (in which case we need to display a regular title bar -> FIXME-DOCK: that last part is not done yet!)
+        // - Find if there's only a single visible window in the hierarchy (in which case we need to display a regular m_title bar -> FIXME-DOCK: that last part is not done yet!)
         ImGuiDockNodeUpdateScanResults results;
         DockNodeUpdateScanRec(node, &results);
         node->CentralNode = results.CentralNode;
@@ -11851,7 +11851,7 @@ static void ImGui::DockNodeUpdate(ImGuiDockNode* node)
             DockNodeStartMouseMovingWindow(node, node->HostWindow);
     }
 
-    // Update focused node (the one whose title bar is highlight) within a node tree
+    // Update focused node (the one whose m_title bar is highlight) within a node tree
     if (node->IsSplitNode())
         IM_ASSERT(node->TabBar == NULL);
     if (node->IsRootNode())
@@ -12002,7 +12002,7 @@ static void ImGui::DockNodeUpdateTabBar(ImGuiDockNode* node, ImGuiWindow* host_w
     node->WantCloseAll = false;
     node->WantCloseTabID = 0;
 
-    // Decide if we should use a focused title bar color
+    // Decide if we should use a focused m_title bar color
     bool is_focused = false;
     ImGuiDockNode* root_node = DockNodeGetRootNode(node);
     if (g.NavWindowingTarget)
@@ -12019,7 +12019,7 @@ static void ImGui::DockNodeUpdateTabBar(ImGuiDockNode* node, ImGuiWindow* host_w
             node->LastFrameFocused = g.FrameCount;
         if (node->VisibleWindow)
         {
-            // Notify root of visible window (used to display title in OS task bar)
+            // Notify root of visible window (used to display m_title in OS task bar)
             if (is_focused || root_node->VisibleWindow == NULL)
                 root_node->VisibleWindow = node->VisibleWindow;
             if (node->TabBar)
@@ -12028,7 +12028,7 @@ static void ImGui::DockNodeUpdateTabBar(ImGuiDockNode* node, ImGuiWindow* host_w
         return;
     }
 
-    // Move ourselves to the Menu layer (so we can be accessed by tapping Alt) + undo SkipItems flag in order to draw over the title bar even if the window is collapsed
+    // Move ourselves to the Menu layer (so we can be accessed by tapping Alt) + undo SkipItems flag in order to draw over the m_title bar even if the window is collapsed
     bool backup_skip_item = host_window->SkipItems;
     if (!node->IsDockSpace())
     {
@@ -12136,7 +12136,7 @@ static void ImGui::DockNodeUpdateTabBar(ImGuiDockNode* node, ImGuiWindow* host_w
         }
     }
 
-    // Notify root of visible window (used to display title in OS task bar)
+    // Notify root of visible window (used to display m_title in OS task bar)
     if (node->VisibleWindow)
         if (is_focused || root_node->VisibleWindow == NULL)
             root_node->VisibleWindow = node->VisibleWindow;
@@ -12166,7 +12166,7 @@ static void ImGui::DockNodeUpdateTabBar(ImGuiDockNode* node, ImGuiWindow* host_w
         }
     }
 
-    // When clicking on the title bar outside of tabs, we still focus the selected tab for that node
+    // When clicking on the m_title bar outside of tabs, we still focus the selected tab for that node
     if (g.HoveredWindow == host_window && g.HoveredId == 0 && IsMouseHoveringRect(title_bar_rect.Min, title_bar_rect.Max))
     {
         if (IsMouseClicked(0))
@@ -12247,7 +12247,7 @@ static ImRect ImGui::DockNodeCalcTabBarRect(const ImGuiDockNode* node)
     ImGuiContext& g = *GImGui;
     ImRect r = ImRect(node->Pos.x, node->Pos.y, node->Pos.x + node->Size.x, node->Pos.y + (g.FontSize + g.Style.FramePadding.y * 2.0f));
     if (node->HasCollapseButton)
-        r.Min.x += g.Style.FramePadding.x + g.FontSize; // + g.Style.ItemInnerSpacing.x; // <-- Adding ItemInnerSpacing makes the title text moves slightly when in a tab bar. Instead we adjusted RenderArrowDockMenu()
+        r.Min.x += g.Style.FramePadding.x + g.FontSize; // + g.Style.ItemInnerSpacing.x; // <-- Adding ItemInnerSpacing makes the m_title text moves slightly when in a tab bar. Instead we adjusted RenderArrowDockMenu()
     // In DockNodeUpdateTabBar() we currently display a disabled close button even if there is none.
     r.Max.x -= g.Style.FramePadding.x + g.FontSize + 1.0f;
     return r;
@@ -12388,7 +12388,7 @@ static bool ImGui::DockNodePreviewDockCalc(ImGuiWindow* host_window, ImGuiDockNo
             }
         }
 
-    // When docking without holding Shift, we only allow and preview docking when hovering over a drop rect or over the title bar
+    // When docking without holding Shift, we only allow and preview docking when hovering over a drop rect or over the m_title bar
     data->IsDropAllowed = (data->SplitDir != ImGuiDir_None) || (data->IsCenterAvailable);
     if (!is_explicit_target && !data->IsSplitDirExplicit && !g.IO.ConfigDockingWithShift)
         data->IsDropAllowed = false;
@@ -12462,7 +12462,7 @@ static void ImGui::DockNodePreviewDockRender(ImGuiWindow* host_window, ImGuiDock
         }
         else if (!(host_window->Flags & ImGuiWindowFlags_DockNodeHost))
         {
-            tab_pos.x += g.Style.ItemInnerSpacing.x + TabItemCalcSize(host_window->Name, host_window->HasCloseButton).x; // Account for slight offset which will be added when changing from title bar to tab bar
+            tab_pos.x += g.Style.ItemInnerSpacing.x + TabItemCalcSize(host_window->Name, host_window->HasCloseButton).x; // Account for slight offset which will be added when changing from m_title bar to tab bar
         }
 
         // Draw tab shape/label preview (payload may be a loose window or a host window carrying multiple tabbed windows)
@@ -13489,7 +13489,7 @@ void ImGui::BeginDocked(ImGuiWindow* window, bool* p_open)
     if (node->IsHiddenTabBar)
         window->Flags |= ImGuiWindowFlags_NoTitleBar;
     else
-        window->Flags &= ~ImGuiWindowFlags_NoTitleBar;      // Clear the NoTitleBar flag in case the user set it: confusingly enough we need a title bar height so we are correctly offset, but it won't be displayed!
+        window->Flags &= ~ImGuiWindowFlags_NoTitleBar;      // Clear the NoTitleBar flag in case the user set it: confusingly enough we need a m_title bar height so we are correctly offset, but it won't be displayed!
 
     // Save new dock order only if the tab bar is active
     if (node->TabBar)
@@ -13874,7 +13874,7 @@ static void RenderViewportThumbnail(ImDrawList* draw_list, ImGuiViewportP* viewp
         ImRect thumb_r = thumb_window->Rect();
         ImRect title_r = thumb_window->TitleBarRect();
         ImRect thumb_r_scaled = ImRect(ImFloor(off + thumb_r.Min * scale), ImFloor(off +  thumb_r.Max * scale));
-        ImRect title_r_scaled = ImRect(ImFloor(off + title_r.Min * scale), ImFloor(off +  ImVec2(title_r.Max.x, title_r.Min.y) * scale) + ImVec2(0,5)); // Exaggerate title bar height
+        ImRect title_r_scaled = ImRect(ImFloor(off + title_r.Min * scale), ImFloor(off +  ImVec2(title_r.Max.x, title_r.Min.y) * scale) + ImVec2(0,5)); // Exaggerate m_title bar height
         thumb_r_scaled.ClipWithFull(bb);
         title_r_scaled.ClipWithFull(bb);
         const bool window_is_focused = (g.NavWindow && thumb_window->RootWindowForTitleBarHighlight == g.NavWindow->RootWindowForTitleBarHighlight);

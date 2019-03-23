@@ -14,7 +14,8 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Browser::Browser()
-		: m_path()
+		: EditorWindow()
+		, m_path()
 		, m_dir()
 		, m_type(T_Dir)
 		, m_index(0)
@@ -51,8 +52,7 @@ namespace ml
 
 	bool Browser::draw(CString title, bool * p_open)
 	{
-		//ImGui::SetNextWindowSize(ImVec2(640, 480), ImGuiCond_FirstUseEver);
-		if (beginWindow(title, (m_open = p_open)))
+		if (beginDraw(title, (m_open = p_open)))
 		{
 			ImGui::Text("%s", m_path.c_str());
 
@@ -72,7 +72,7 @@ namespace ml
 				}
 			}
 		}
-		return endWindow();
+		return endDraw();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

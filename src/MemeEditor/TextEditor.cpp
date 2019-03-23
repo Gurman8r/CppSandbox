@@ -7,19 +7,9 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	TextEditor::TextEditor()
-		: TextEditor("Test")
+		: EditorWindow()
+		, m_selected(-1)
 	{
-	}
-
-	TextEditor::TextEditor(const String & text)
-		: TextEditor(text.data(), text.size())
-	{
-	}
-
-	TextEditor::TextEditor(CString text, size_t size)
-		: m_selected(-1)
-	{
-		m_files.push_back(Document("Test", text, size));
 	}
 
 	TextEditor::~TextEditor()
@@ -28,9 +18,13 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
+	void TextEditor::onEvent(const IEvent * value)
+	{
+	}
+
 	bool TextEditor::draw(CString label, bool * p_open)
 	{
-		if (beginWindow(label, p_open,
+		if (beginDraw(label, p_open,
 			ImGuiWindowFlags_MenuBar |
 			ImGuiWindowFlags_AlwaysHorizontalScrollbar |
 			ImGuiWindowFlags_AlwaysVerticalScrollbar))
@@ -38,7 +32,7 @@ namespace ml
 			draw_menu();
 			draw_tabs();
 		}
-		return endWindow();
+		return endDraw();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

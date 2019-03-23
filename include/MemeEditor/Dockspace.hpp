@@ -1,29 +1,29 @@
 #ifndef _ML_DOCKSPACE_HPP_
 #define _ML_DOCKSPACE_HPP_
 
-#include <MemeEditor/Export.hpp>
+#include <MemeEditor/EditorWindow.hpp>
 #include <MemeCore/Vector2.hpp>
+
+#define ML_Dock ml::Dockspace::getInstance()
 
 namespace ml
 {
 	// Docking/snapping area for windows
 	class ML_EDITOR_API Dockspace final 
-		: public ITrackable
+		: public EditorBase
+		, public ISingleton<Dockspace>
 	{
-	public:
+		friend class ISingleton<Dockspace>;
+
+	private:
 		Dockspace();
-		Dockspace(const String & title);
-		Dockspace(const String & title, int32_t dock_flags);
-		Dockspace(const Dockspace & copy);
 		~Dockspace();
 
 	public:
-		bool begin_dock(CString title, bool * p_open);
-		void end_dock();
+		bool beginDraw(CString title, bool * p_open, int32_t flags = 0) override;
+		bool endDraw() override;
 
-		uint32_t getID() const;
-		CString getTitle() const;
-
+	public:
 		uint32_t split(uint32_t dir, float ratio, uint32_t * out, uint32_t * other);
 		uint32_t split(uint32_t id, int32_t dir, float ratio, uint32_t * other);
 		uint32_t split(uint32_t id, int32_t dir, float ratio, uint32_t * out, uint32_t * other);
@@ -37,12 +37,7 @@ namespace ml
 		vec2f	padding;
 		float	rounding;
 		vec2f	size;
-		String	title;
-		int32_t win_flags;
 		float	bgAlpha;
-
-	private:
-		bool m_good = false;
 	};
 }
 

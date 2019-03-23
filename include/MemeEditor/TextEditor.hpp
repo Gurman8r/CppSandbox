@@ -1,20 +1,25 @@
 #ifndef _ML_TEXT_EDITOR_HPP_
 #define _ML_TEXT_EDITOR_HPP_
 
-#include <MemeEditor/Editor.hpp>
+#include <MemeEditor/EditorWindow.hpp>
 #include <MemeEditor/Document.hpp>
+
+#define ML_TextEditor ml::TextEditor::getInstance()
 
 namespace ml
 {
 	class ML_EDITOR_API TextEditor final
-		: public Editor
+		: public EditorWindow
+		, public ISingleton<TextEditor>
 	{
-	public:
+		friend class ISingleton<TextEditor>;
+
+	private:
 		TextEditor();
-		TextEditor(const String & text);
-		TextEditor(CString text, size_t size);
 		~TextEditor();
 
+	public:
+		void onEvent(const IEvent * value) override;
 		bool draw(CString title, bool * p_open) override;
 
 	private:
@@ -24,7 +29,7 @@ namespace ml
 		bool edit_document_name(char * buf, Document * doc);
 		bool edit_document_data(Document * doc);
 
-	private:
+	public:
 		inline Document * get_document(const size_t index)
 		{
 			return ((!m_files.empty())
