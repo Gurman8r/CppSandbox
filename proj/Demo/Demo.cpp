@@ -959,7 +959,7 @@ namespace DEMO
 				ImGui::Separator();
 				ImGui::MenuItem("ImGui Demo", "Ctrl+H", &show_imgui_demo);
 				ImGui::MenuItem("ImGui Metrics", NULL, &show_imgui_metrics);
-				ImGui::MenuItem("Style Editor", NULL, &show_imgui_style);
+				ImGui::MenuItem("ImGui Style Editor", NULL, &show_imgui_style);
 				ImGui::MenuItem("About Dear ImGui", NULL, &show_imgui_about);
 				ImGui::EndMenu();
 			}
@@ -1085,54 +1085,7 @@ namespace DEMO
 	{
 		return ml::GUI::DrawWindow("Test Window", p_open, ImGuiWindowFlags_MenuBar, [&]()
 		{
-			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
-			ImGui::Columns(2);
-			ImGui::Separator();
-
-			struct funcs
-			{
-				static void ShowDummyObject(const char* prefix, int32_t uid)
-				{
-					ImGui::PushID(uid);
-					ImGui::AlignTextToFramePadding();
-					bool node_open = ImGui::TreeNode("Object", "%s_%u", prefix, uid);
-					ImGui::NextColumn();
-					ImGui::AlignTextToFramePadding();
-					ImGui::Text("my sailor is rich");
-					ImGui::NextColumn();
-					if (node_open)
-					{
-						static float dummy_members[8] = { 0.0f, 0.0f, 1.0f, 3.1416f, 100.0f, 999.0f };
-						for (int32_t i = 0; i < 8; i++)
-						{
-							ImGui::PushID(i);
-							{
-								ImGui::AlignTextToFramePadding();
-								ImGui::TreeNodeEx("Field", ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_Bullet, "Field_%d", i);
-								ImGui::NextColumn();
-								ImGui::PushItemWidth(-1);
-								{
-									ImGui::DragFloat("##value", &dummy_members[i], 0.01f);
-								}
-								ImGui::PopItemWidth();
-								ImGui::NextColumn();
-							}
-							ImGui::PopID();
-						}
-						ImGui::TreePop();
-					}
-					ImGui::PopID();
-				}
-			};
-
-			for (int32_t obj_i = 0; obj_i < 3; obj_i++)
-			{
-				funcs::ShowDummyObject("Object", obj_i);
-			}
-
-			ImGui::Columns(1);
-			ImGui::Separator();
-			ImGui::PopStyleVar();
+			
 		});
 	}
 

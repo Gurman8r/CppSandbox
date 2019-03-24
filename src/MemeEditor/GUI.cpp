@@ -2,47 +2,6 @@
 #include <MemeEditor/ImGui.hpp>
 #include <MemeEditor/ResourceManager.hpp>
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-namespace ml
-{
-	template <typename T, size_t C, size_t R>
-	inline static bool EditMatrix(CString label, Matrix<T, C, R> & value, float speed)
-	{
-		if (!ImGui::GetCurrentWindow()->SkipItems)
-		{
-			bool changed = false;
-			ImGui::BeginGroup();
-			ImGui::PushID(label);
-			{
-				ImGui::PushItemWidth(64);
-				for (size_t y = 0; y < value.Rows; y++)
-				{
-					for (size_t x = 0; x < value.Cols; x++)
-					{
-						const size_t i = (y * value.Cols + x);
-						const String l = String("##{0}").format(i);
-
-						if (ImGui::DragFloat(l.c_str(), &value[i], speed))
-						{
-							changed = true;
-						}
-						ImGui::SameLine();
-					}
-					ImGui::NewLine();
-				}
-				ImGui::PopItemWidth();
-			}
-			ImGui::PopID();
-			ImGui::EndGroup();
-			return changed;
-		}
-		return false;
-	}
-}
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -60,6 +19,41 @@ namespace ml
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
+
+	template <typename T, size_t C, size_t R>
+	inline static bool EditMatrix(CString label, Matrix<T, C, R> & value, float speed)
+	{
+		if (!ImGui::GetCurrentWindow()->SkipItems)
+		{
+			bool changed = false;
+			ImGui::PushID(label);
+			{
+				ImGui::BeginGroup();
+				ImGui::PushItemWidth(64);
+				for (size_t y = 0; y < value.Rows; y++)
+				{
+					for (size_t x = 0; x < value.Cols; x++)
+					{
+						const size_t i = (y * value.Cols + x);
+						const String l = String("##{0}").format(i);
+
+						if (ImGui::DragFloat(l.c_str(), &value[i], speed))
+						{
+							changed = true;
+						}
+						ImGui::SameLine();
+					}
+					ImGui::NewLine();
+				}
+				ImGui::PopItemWidth();
+				ImGui::EndGroup();
+			}
+			ImGui::PopID();
+			return changed;
+		}
+		return false;
+	}
+
 
 	bool GUI::EditVec2f(CString label, vec2f & value, float speed)
 	{

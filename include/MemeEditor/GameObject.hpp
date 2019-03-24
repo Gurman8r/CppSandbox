@@ -10,12 +10,18 @@ namespace ml
 		: public ITrackable
 	{
 	public:
+		using Name = typename char[64];
+
+	public:
 		GameObject();
+		GameObject(CString name);
+		GameObject(const GameObject & copy);
 		~GameObject();
 
 	public:
+		char name[64];
 		Transform transform;
-
+		vec4f color;
 	};
 }
 

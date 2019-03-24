@@ -23,6 +23,8 @@ namespace ml
 		bool draw(bool * p_open) override;
 
 	private:
+		struct Funcs;
+
 		std::vector<GameObject> m_objects;
 	};
 }
