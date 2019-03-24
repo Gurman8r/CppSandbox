@@ -7,6 +7,7 @@ namespace ml
 
 	Hierarchy::Hierarchy()
 		: base_type("Hierarchy")
+		, m_objects({ GameObject() })
 	{
 	}
 
@@ -22,48 +23,90 @@ namespace ml
 
 	bool Hierarchy::draw(bool * p_open)
 	{
-		if (beginDraw(p_open))
+		if (beginDraw(p_open, ImGuiWindowFlags_MenuBar))
 		{
+			if (ImGui::BeginMenuBar())
+			{
+				if (ImGui::BeginMenu("Create"))
+				{
+					if (ImGui::MenuItem("Game Object")) { }
+					ImGui::EndMenu();
+				}
+				ImGui::EndMenuBar();
+			}
+
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
 			ImGui::Columns(2);
 			ImGui::Separator();
 
 			struct funcs
 			{
-				static void ShowDummyObject(const char* prefix, int uid)
+				static void ShowGameObject(GameObject * value, int32_t uid)
 				{
-					ImGui::PushID(uid); // Use object uid as identifier. Most commonly you could also use the object pointer as a base ID.
-					ImGui::AlignTextToFramePadding();  // Text and Tree nodes are less high than regular widgets, here we add vertical spacing to make the tree lines equal high.
-					bool node_open = ImGui::TreeNode("Object", "%s_%u", prefix, uid);
+					ImGui::PushID(uid);
+					ImGui::AlignTextToFramePadding();
+					bool node_open = ImGui::TreeNode("Object", "%s_%u", "GameObject", uid);
 					ImGui::NextColumn();
 					ImGui::AlignTextToFramePadding();
-					ImGui::Text("my sailor is rich");
+					ImGui::Text("Game Object Name");
 					ImGui::NextColumn();
 					if (node_open)
 					{
-						static float dummy_members[8] = { 0.0f,0.0f,1.0f,3.1416f,100.0f,999.0f };
-						for (int i = 0; i < 8; i++)
+						auto propertyField = [](CString label, auto fun)
 						{
-							ImGui::PushID(i); // Use field index as identifier.
-							if (i < 2)
+							ImGui::AlignTextToFramePadding();
+							ImGui::TreeNodeEx(
+								  "Field",
+								  ImGuiTreeNodeFlags_Leaf |
+								  ImGuiTreeNodeFlags_NoTreePushOnOpen |
+								  ImGuiTreeNodeFlags_Bullet,
+								  "%s",
+								  label);
+							ImGui::NextColumn();
+							ImGui::PushItemWidth(-1);
+							fun((String("##") + label).c_str());
+							ImGui::PopItemWidth();
+							ImGui::NextColumn();
+						};
+
+						vec3f scale;
+						quat  orient;
+						vec3f trans;
+						vec3f skew;
+						vec4f persp;
+
+						if (value->transform.decompose(scale, orient, trans, skew, persp))
+						{
+							propertyField("Position", [&](CString label)
 							{
-								ShowDummyObject("Child", 424242);
-							}
-							else
+								vec3f temp = value->transform.getPosition();
+								GUI::EditVec3f(label, temp);
+							});
+
+							propertyField("Scale", [&](CString label)
 							{
-								// Here we use a TreeNode to highlight on hover (we could use e.g. Selectable as well)
-								ImGui::AlignTextToFramePadding();
-								ImGui::TreeNodeEx("Field", ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_Bullet, "Field_%d", i);
-								ImGui::NextColumn();
-								ImGui::PushItemWidth(-1);
-								if (i >= 5)
-									ImGui::InputFloat("##value", &dummy_members[i], 1.0f);
-								else
-									ImGui::DragFloat("##value", &dummy_members[i], 0.01f);
-								ImGui::PopItemWidth();
-								ImGui::NextColumn();
-							}
-							ImGui::PopID();
+								GUI::EditVec3f(label, scale);
+							});
+
+							propertyField("Orient", [&](CString label)
+							{
+								GUI::EditVec4f(label, orient);
+							});
+
+							propertyField("Trans", [&](CString label)
+							{
+								GUI::EditVec3f(label, trans);
+							});
+
+							propertyField("Skew", [&](CString label)
+							{
+								GUI::EditVec3f(label, skew);
+							});
+
+							propertyField("Persp", [&](CString label)
+							{
+								GUI::EditVec4f(label, persp);
+							});
 						}
 						ImGui::TreePop();
 					}
@@ -72,8 +115,10 @@ namespace ml
 			};
 
 			// Iterate dummy objects with dummy members (all the same data)
-			for (int obj_i = 0; obj_i < 3; obj_i++)
-				funcs::ShowDummyObject("Object", obj_i);
+			for (size_t i = 0; i < m_objects.size(); i++)
+			{
+				funcs::ShowGameObject(&m_objects[i], (int32_t)i);
+			}
 
 			ImGui::Columns(1);
 			ImGui::Separator();

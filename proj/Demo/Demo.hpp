@@ -126,8 +126,8 @@ namespace DEMO
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		ml::Thread *	m_thread;
-		ml::Plugin		m_plugin;
+		ml::Thread * m_thread;
+		ml::Plugin	 m_plugin;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 

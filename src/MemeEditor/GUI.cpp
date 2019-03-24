@@ -2,6 +2,8 @@
 #include <MemeEditor/ImGui.hpp>
 #include <MemeEditor/ResourceManager.hpp>
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 namespace ml
 {
 	template <typename T, size_t C, size_t R>
@@ -145,11 +147,11 @@ namespace ml
 				{
 					changed = true;
 				}
+				ImGui::SameLine();
 				if (ImGui::DragFloat("##W", &value[3], speed, 0.f, 0.f, "W:%.3f"))
 				{
 					changed = true;
 				}
-				ImGui::SameLine();
 				ImGui::PopItemWidth();
 
 				DrawLabel(label);

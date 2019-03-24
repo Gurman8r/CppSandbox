@@ -2,6 +2,7 @@
 #define _ML_HIERARCHY_HPP_
 
 #include <MemeEditor/GUI_Window.hpp>
+#include <MemeEditor/GameObject.hpp>
 
 #define ML_Hierarchy ml::Hierarchy::getInstance()
 
@@ -22,7 +23,7 @@ namespace ml
 		bool draw(bool * p_open) override;
 
 	private:
-
+		std::vector<GameObject> m_objects;
 	};
 }
 

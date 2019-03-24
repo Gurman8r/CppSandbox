@@ -876,8 +876,8 @@ namespace DEMO
 		if (show_imgui_about)	{ ml::ImGui_Builtin::showAbout(&show_imgui_about); }
 
 		// Editor
-		if (show_ml_hierarchy)	{ ML_Hierarchy.draw(&show_ml_hierarchy); }
 		if (show_ml_browser)	{ ML_Browser.draw(&show_ml_browser); }
+		if (show_ml_hierarchy)	{ ML_Hierarchy.draw(&show_ml_hierarchy); }
 		if (show_ml_terminal)	{ ML_Terminal.draw(&show_ml_terminal); }
 		if (show_ml_builder)	{ ML_Builder.draw(&show_ml_builder); }
 		if (show_ml_texteditor) { ML_TextEditor.draw(&show_ml_texteditor); }
@@ -1106,21 +1106,11 @@ namespace DEMO
 						for (int32_t i = 0; i < 8; i++)
 						{
 							ImGui::PushID(i);
-							if (i < 2)
-							{
-								ShowDummyObject("Child", 424242);
-							}
-							else
 							{
 								ImGui::AlignTextToFramePadding();
 								ImGui::TreeNodeEx("Field", ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_Bullet, "Field_%d", i);
 								ImGui::NextColumn();
 								ImGui::PushItemWidth(-1);
-								if (i >= 5)
-								{
-									ImGui::InputFloat("##value", &dummy_members[i], 1.0f);
-								}
-								else
 								{
 									ImGui::DragFloat("##value", &dummy_members[i], 0.01f);
 								}
