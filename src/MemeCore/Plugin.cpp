@@ -6,7 +6,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Plugin::Plugin()
-		: m_name(String())
+		: m_file()
 		, m_inst(NULL)
 	{
 	}
@@ -20,37 +20,22 @@ namespace ml
 
 	bool Plugin::cleanup()
 	{
-		if (ML_Lib.freeLibrary(m_inst))
-		{
-			m_inst = NULL;
-		}
-		return !(m_inst);
+		return ML_Lib.freeLibrary(m_inst) || !(m_inst = NULL);
 	}
 
 	bool Plugin::loadFromFile(const String & filename)
 	{
-		return cleanup() && (m_inst = ML_Lib.loadLibrary(m_name = filename));
+		return cleanup() && (m_inst = ML_Lib.loadLibrary(m_file = filename));
 	}
 
 	bool Plugin::call(const String & name, void * data)
 	{
-		if (m_inst)
+		PluginFun func;
+		if (func = (PluginFun)ML_Lib.loadFunction(m_inst, name))
 		{
-			if (PluginFun func = (PluginFun)ML_Lib.loadFunction(m_inst, name))
-			{
-				func(data);
-
-				return true;
-			}
+			func(data);
 		}
-		return false;
-	}
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	bool Plugin::call_main(void * data)
-	{
-		return call(ML_LITERAL(ML_PluginMain), data);
+		return (bool)(func);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

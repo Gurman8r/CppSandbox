@@ -30,7 +30,9 @@ namespace ml
 	void * LibLoader::loadFunction(void * instance, const String & func)
 	{
 #ifdef ML_SYSTEM_WINDOWS
-		return GetProcAddress((HINSTANCE)(instance), func.c_str());
+		return ((instance)
+			? GetProcAddress((HINSTANCE)(instance), func.c_str())
+			: NULL);
 #else
 		return NULL;
 #endif

@@ -25,9 +25,6 @@
     <Filter Include="Source Files\Editor">
       <UniqueIdentifier>{d2cd5d20-75c4-4b9b-ad66-6aec7911ae8c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Editor\GUI">
-      <UniqueIdentifier>{6a1b1fee-b91a-4e69-8e9d-a868bfbb21a0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Editor\Windows">
       <UniqueIdentifier>{274f61a3-bfab-43ed-acdf-49cde1322a63}</UniqueIdentifier>
     </Filter>
@@ -51,6 +48,9 @@
     </Filter>
     <Filter Include="Header Files\Editor\GUI">
       <UniqueIdentifier>{ef85d174-aeaf-4401-89ee-3ec0d06662e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Editor\GUI">
+      <UniqueIdentifier>{6a1b1fee-b91a-4e69-8e9d-a868bfbb21a0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

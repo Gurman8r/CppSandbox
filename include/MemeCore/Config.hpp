@@ -1,10 +1,6 @@
 #ifndef _ML_CONFIG_HPP_
 #define _ML_CONFIG_HPP_
 
-//	Stringify Macro
-/* * * * * * * * * * * * * * * * * * * */
-#define ML_LITERAL(expr) #expr
-
 //	Configuration Macro
 /* * * * * * * * * * * * * * * * * * * */
 # if defined(_DEBUG)

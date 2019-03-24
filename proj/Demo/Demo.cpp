@@ -344,10 +344,9 @@ namespace DEMO
 				(ml::Debug::config()),
 				(ml::Debug::platform()))))
 			{
-				if (m_plugin.call_main((void *)"Plugin Received Data"))
-				{
-
-				}
+				if (m_plugin.init("Plugin Initialized")) {}
+				if (m_plugin.enable("Plugin Enabled")) {}
+				if (m_plugin.enable("Plugin Disabled")) {}
 			}
 
 			// CD

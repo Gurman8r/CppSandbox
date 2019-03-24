@@ -27,11 +27,40 @@ namespace ml
 		bool call(const String & name, void * data);
 
 	public:
-		bool call_main(void * data);
+		template <
+			typename T
+		> inline bool call(const String & name, T data)
+		{
+			return call(name, (void *)(data));
+		}
+
+		template <
+			typename T
+		> inline bool init(T data) 
+		{ 
+			return call<T>(ML_STRINGIFY(ML_PluginInit), data);
+		}
+
+		template <
+			typename T
+		> inline bool enable(T data)
+		{
+			return call<T>(ML_STRINGIFY(ML_PluginEnable), data);
+		}
+
+		template <
+			typename T
+		> inline bool disable(T data)
+		{
+			return call<T>(ML_STRINGIFY(ML_PluginDisable), data);
+		}
+
+	public:
+		inline const String & file() const { return m_file; }
 
 	private:
-		String		m_name; // File Name
-		void *		m_inst; // Instance Handle
+		void * m_inst; // Instance
+		String m_file; // File Name
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

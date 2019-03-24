@@ -5,11 +5,17 @@
 
 #define ML_PLUGIN_API ML_API_EXPORT
 
-#define ML_PluginMain ML_PluginMain
+#define ML_STRINGIFY(expr) #expr
+
+#define ML_PluginInit		ML_PluginInit
+#define ML_PluginEnable		ML_PluginEnable
+#define ML_PluginDisable	ML_PluginDisable
 
 extern "C"
 {
-	ML_PLUGIN_API void ML_PluginMain(void * data);
+	ML_PLUGIN_API void ML_PluginInit(void * data);
+	ML_PLUGIN_API void ML_PluginEnable(void * data);
+	ML_PLUGIN_API void ML_PluginDisable(void * data);
 }
 
 #endif // !_ML_PLUGIN_API_HPP_
