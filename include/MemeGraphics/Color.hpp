@@ -6,7 +6,7 @@
 
 namespace ml
 {
-	class ML_GRAPHICS_API Color
+	class ML_GRAPHICS_API Color final
 		: public ITrackable
 	{
 	public:

@@ -169,22 +169,17 @@ namespace DEMO
 
 	bool Demo::loadResources()
 	{
-		ml::ResourceManifest manifest;
-		if (manifest.loadFromFile(ML_FileSystem.pathTo(SETTINGS.pathTo(SETTINGS.manifest))))
-		{
-			return ml::Debug::log("Loading Resources...")
-				&& ML_Res.meshes.load("default_quad")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
-				&& ML_Res.meshes.load("default_cube")->loadFromMemory(ml::Shapes::Cube::Vertices, ml::Shapes::Cube::Indices)
-				&& ML_Res.models.load("borg")->loadFromMemory(*ML_Res.meshes.get("default_cube"))
-				&& ML_Res.models.load("sanic")->loadFromMemory(*ML_Res.meshes.get("default_quad"))
-				&& ML_Res.models.load("sprite")->loadFromMemory(*ML_Res.meshes.get("default_quad"))
-				&& ML_Res.models.load("framebuffer")->loadFromMemory(*ML_Res.meshes.get("default_quad"))
-				&& ML_Res.textures.load("fbo_main")->create(this->getFramebufferSize())
-				&& ML_Res.textures.load("fbo_post")->create(this->getFramebufferSize())
-				&& ML_Res.loadManifest(manifest)
-				&& loadBuffers();
-		}
-		return ml::Debug::logError("Failed loading manifest");
+		return ml::Debug::log("Loading Resources...")
+			&& ML_Res.meshes.load("default_quad")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
+			&& ML_Res.meshes.load("default_cube")->loadFromMemory(ml::Shapes::Cube::Vertices, ml::Shapes::Cube::Indices)
+			&& ML_Res.models.load("borg")->loadFromMemory(*ML_Res.meshes.get("default_cube"))
+			&& ML_Res.models.load("sanic")->loadFromMemory(*ML_Res.meshes.get("default_quad"))
+			&& ML_Res.models.load("sprite")->loadFromMemory(*ML_Res.meshes.get("default_quad"))
+			&& ML_Res.models.load("framebuffer")->loadFromMemory(*ML_Res.meshes.get("default_quad"))
+			&& ML_Res.textures.load("fbo_main")->create(this->getFramebufferSize())
+			&& ML_Res.textures.load("fbo_post")->create(this->getFramebufferSize())
+			&& ML_Res.loadFromFile("../../../assets/manifest.txt")
+			&& loadBuffers();
 	}
 
 	bool Demo::loadBuffers()
@@ -810,16 +805,31 @@ namespace DEMO
 			{
 				static ml::RenderBatch batch(&m_vao, &m_vbo, shader, &batch_uniforms);
 
-				static ml::Sprite sprite;
-				sprite
-					.setTexture(ML_Res.textures.get("neutrino"))
-					.setPosition((ml::vec2f{ 0.95f, 0.075f } * this->getSize()))
-					.setScale(0.5f)
-					.setRotation(0.0f)
-					.setOrigin(0.5f)
-					.setColor(ml::Color::White);
+				if (ml::Sprite * sprite = ML_Res.sprites.get("neutrino"))
+				{
+					(*sprite)
+						.setTexture(ML_Res.textures.get("neutrino"))
+						.setPosition((ml::vec2f { 0.95f, 0.075f } *this->getSize()))
+						.setScale(0.5f)
+						.setRotation(0.0f)
+						.setOrigin(0.5f)
+						.setColor(ml::Color::White);
+				}
 
-				this->draw(sprite, batch);
+				if (ml::Sprite * sprite = ML_Res.sprites.get("My Sprite"))
+				{
+					(*sprite)
+						.setPosition((ml::vec2f { 0.5f, 0.5f } *this->getSize()))
+						.setScale(0.5f)
+						.setRotation(0.0f)
+						.setOrigin(0.5f)
+						.setColor(ml::Color::White);
+				}
+
+				for (auto pair : ML_Res.sprites)
+				{
+					this->draw((*pair.second), batch);
+				}
 			}
 
 			// Text

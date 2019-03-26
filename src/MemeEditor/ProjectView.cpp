@@ -119,7 +119,7 @@ namespace ml
 					});
 					Funcs::Group("Images", [&]()
 					{
-						for (auto pair : ML_Res.fonts)
+						for (auto pair : ML_Res.images)
 						{
 							Funcs::Field(pair.first.c_str(), [&](CString label)
 							{

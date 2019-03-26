@@ -1,0 +1,34 @@
+# Models
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+
+<item>
+	type: model
+	name: cube
+	file: ../../../assets/meshes/cube.mesh
+</item>
+
+<item>
+	type: model
+	name: ground
+	file: ../../../assets/meshes/cube.mesh
+</item>
+
+<item>
+	type: model
+	name: light
+	file: ../../../assets/meshes/sphere8x6.mesh
+</item>
+
+<item>
+	type: model
+	name: earth
+	file: ../../../assets/meshes/sphere32x24.mesh
+</item>
+
+<item>
+	type: model
+	name: moon
+	file: ../../../assets/meshes/sphere32x24.mesh
+</item>
+
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #

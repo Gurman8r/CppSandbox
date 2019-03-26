@@ -245,6 +245,15 @@
     <ClInclude Include="DemoSettings.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="..\..\assets\data\fonts.txt" />
+    <Text Include="..\..\assets\data\images.txt" />
+    <Text Include="..\..\assets\data\meshes.txt" />
+    <Text Include="..\..\assets\data\models.txt" />
+    <Text Include="..\..\assets\data\scripts.txt" />
+    <Text Include="..\..\assets\data\shaders.txt" />
+    <Text Include="..\..\assets\data\skyboxes.txt" />
+    <Text Include="..\..\assets\data\sprites.txt" />
+    <Text Include="..\..\assets\data\textures.txt" />
     <Text Include="..\..\assets\manifest.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

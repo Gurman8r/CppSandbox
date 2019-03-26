@@ -2,7 +2,6 @@
 #define _ML_RESOURCE_MANAGER_H_
 
 #include <MemeEditor/ResourceTable.hpp>
-#include <MemeEditor/ResourceManifest.hpp>
 #include <MemeCore/List.hpp>
 #include <MemeAudio/Sound.hpp>
 #include <MemeGraphics/Font.hpp>
@@ -19,11 +18,14 @@ namespace ml
 
 	class ML_EDITOR_API ResourceManager
 		: public ITrackable
+		, public IReadable
 		, public ISingleton<ResourceManager>
 	{
 		friend class ISingleton<ResourceManager>;
 
 	public:
+		using StringTable = HashMap<String, String>;
+
 		using FontMap		= ResourceTable<Font>;
 		using ImageMap		= ResourceTable<Image>;
 		using MaterialMap	= ResourceTable<Material>;
@@ -36,26 +38,23 @@ namespace ml
 		using SpriteMap		= ResourceTable<Sprite>;
 		using TextureMap	= ResourceTable<Texture>;
 
-		using file_map		= typename ResourceManifest::file_map;
-		using type_pair		= typename ResourceManifest::type_pair;
-
 	private:
 		ResourceManager();
 		~ResourceManager();
 
 	public:
+		bool cleanup() override;
+		bool loadFromFile(const String & filename) override;
+		void serialize(std::ostream & out) const override;
+
+	private:
+		bool parseFile(SStream & file);
+		bool parseItem(SStream & file, String & line);
+		bool parseTable(const StringTable & data);
+
+	public:
 		size_t cleanAll();
 		size_t reloadAll();
-
-		bool loadManifest(const ResourceManifest & value);
-
-		bool loadManifestData(const String & type, const String & path, const file_map & files);
-
-		template <class T>
-		inline size_t loadData(ResourceTable<T> & data, const String & path, const file_map & files)
-		{
-			return data.load(files, path);
-		}
 
 	public:
 		FontMap		fonts;
@@ -69,6 +68,9 @@ namespace ml
 		SoundMap	sounds;
 		SpriteMap	sprites;
 		TextureMap	textures;
+
+	private:
+		mutable std::vector<StringTable> m_manifest;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

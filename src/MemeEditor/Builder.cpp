@@ -90,7 +90,7 @@ namespace ml
 					ImGui::SameLine();
 
 					if (ImGui::BeginChild(
-						("Content##" + label + "##Tabs").c_str(),
+						("ResourceLoader##" + label + "##Tabs").c_str(),
 						(ImVec2(-1.0f, -1.0f)),
 						(true),
 						(ImGuiWindowFlags_AlwaysHorizontalScrollbar)))

@@ -1,0 +1,10 @@
+# Meshes
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+
+<item>
+	type: mesh
+	name: cube
+	file: ../../../assets/meshes/cube.mesh
+</item>
+
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #

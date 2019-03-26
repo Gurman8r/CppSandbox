@@ -18,6 +18,7 @@ namespace ml
 
 		bool cleanup() override;
 		bool loadFromFile(const String & filename) override;
+		bool loadFromMemory(const Texture * value);
 
 		Sprite & setTexture(const Texture * value);
 		Sprite & setPosition(const vec2f & value);

@@ -1,94 +1,79 @@
-# Root Path
-#***********************************************************************#
-path: ../../../assets/
+# Fonts
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+<item>
+	type: manifest
+	name: ../../../assets/data/fonts.txt
+</item>
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+
 
 # Images
-#***********************************************************************#
-image:		icon		/images/dean.png
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+<item>
+	type: manifest
+	name: ../../../assets/data/images.txt
+</item>
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-# Fonts
-#***********************************************************************#
-font:		clacon		/fonts/clacon.ttf
-font:		consolas	/fonts/consolas.ttf
-font:		lconsole	/fonts/lucida_console.ttf
-font:		minecraft	/fonts/minecraft.ttf
-
-# Materials
-#***********************************************************************#
-mat:		example		/materials/example.mat
-
-# Meshes
-#***********************************************************************#
-#mesh:		cube		/meshes/cube.mesh
-#mesh:		sphere8x6	/meshes/sphere8x6.mesh
-#mesh:		sphere32x6	/meshes/sphere32x24.mesh
-#mesh:		cow			/meshes/cow.mesh
-#mesh:		pumpkin		/meshes/pumpkin.mesh
-#mesh:		teapot		/meshes/teapot.mesh
-#mesh:		teddy		/meshes/teddy.mesh
-
-# Models
-#***********************************************************************#
-model:		cube		/meshes/cube.mesh
-model:		ground		/meshes/cube.mesh
-model:		light		/meshes/sphere8x6.mesh
-model:		earth		/meshes/sphere32x24.mesh
-model:		moon		/meshes/sphere32x24.mesh
 
 # Scripts
-#***********************************************************************#
-script:		core		/scripts/core.meme
-script:		hello		/scripts/hello.meme
-script:		fib			/scripts/fib.meme
-script:		files		/scripts/files.meme
-script:		test		/scripts/test.meme
-script:		stub		/scripts/stub.meme
-script:		tool		/scripts/tool.meme
-script:		fizzbuzz	/scripts/fizzbuzz.meme
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+<item>
+	type: manifest
+	name: ../../../assets/data/scripts.txt
+</item>
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+
 
 # Shaders
-#***********************************************************************#
-shader:		basic		/shaders/basic.shader
-shader:		sprites		/shaders/sprites.shader
-shader:		normal3D	/shaders/normal3D.shader
-shader:		text		/shaders/text.shader
-shader:		geometry	/shaders/geometry.shader
-shader:		framebuffer	/shaders/framebuffer.shader
-shader:		lighting	/shaders/lighting.shader
-shader:		solid		/shaders/solid.shader
-shader:		skybox		/shaders/skybox.shader
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+<item>
+	type: manifest
+	name: ../../../assets/data/shaders.txt
+</item>
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-# Skyboxes
-#***********************************************************************#
-#skybox:	sunset		/skyboxes/sunset.skybox
 
 # Textures
-#***********************************************************************#
-texture:	dean		/images/dean.png
-texture:	neutrino	/images/neutrino.png
-texture:	sanic		/images/sanic.png
-texture:	borg		/images/borg.png
-texture:	grass		/images/grass.png
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+<item>
+	type: manifest
+	name: ../../../assets/data/textures.txt
+</item>
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-texture:	earth_cm	/textures/earth/earth_cm.png
-texture:	earth_dm 	/textures/earth/earth_dm.png
-texture:	earth_hm 	/textures/earth/earth_hm.png
-texture:	earth_lm 	/textures/earth/earth_lm.png
-texture:	earth_nm 	/textures/earth/earth_nm.png
-texture:	earth_sm 	/textures/earth/earth_sm.png
 
-texture:	stone_dm	/textures/stone/stone_dm.png
-texture:	stone_hm	/textures/stone/stone_hm.png
-texture:	stone_nm	/textures/stone/stone_nm.png
+# Skyboxes
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+<item>
+	type: manifest
+	name: ../../../assets/data/skyboxes.txt
+</item>
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-texture:	mars_dm		/textures/mars/mars_dm.png
-texture:	mars_nm		/textures/mars/mars_nm.png
 
-texture:	moon_dm		/textures/moon/moon_dm.png
-texture:	moon_nm		/textures/moon/moon_nm.png
+# Meshes
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+<item>
+	type: manifest
+	name: ../../../assets/data/meshes.txt
+</item>
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-#texture:	bg_clouds	/textures/bg/bg_clouds.png
-#texture:	sky_clouds	/textures/bg/sky_clouds.png
-#texture:	sky_water	/textures/bg/sky_water.png
 
-#***********************************************************************#
+# Models
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+<item>
+	type: manifest
+	name: ../../../assets/data/models.txt
+</item>
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+
+
+# Sprites
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+<item>
+	type: manifest
+	name: ../../../assets/data/sprites.txt
+</item>
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #

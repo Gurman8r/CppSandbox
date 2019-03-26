@@ -5,19 +5,12 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="Resource Files\imgui">
       <UniqueIdentifier>{2e3eeef7-cc0e-4b97-b53c-8882c024ca79}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Resources">
-      <UniqueIdentifier>{47727414-7a96-4495-9c72-cf076a12f71c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Resources">
       <UniqueIdentifier>{e3f08586-19a5-4a55-bf15-c7b02a7cb83e}</UniqueIdentifier>
@@ -34,6 +27,16 @@
     <Filter Include="Source Files\Editor\DS">
       <UniqueIdentifier>{4e9592a2-09b6-4845-8ee9-7bd04c1b754e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Editor\Internal">
+      <UniqueIdentifier>{6a1b1fee-b91a-4e69-8e9d-a868bfbb21a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Resources">
+      <UniqueIdentifier>{47727414-7a96-4495-9c72-cf076a12f71c}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Header Files\Editor">
       <UniqueIdentifier>{c085c6e6-146c-4fd9-a8b2-5ad3e21c5d75}</UniqueIdentifier>
     </Filter>
@@ -48,9 +51,6 @@
     </Filter>
     <Filter Include="Header Files\Editor\Internal">
       <UniqueIdentifier>{ef85d174-aeaf-4401-89ee-3ec0d06662e8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Editor\Internal">
-      <UniqueIdentifier>{6a1b1fee-b91a-4e69-8e9d-a868bfbb21a0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -88,9 +88,6 @@
       <Filter>Header Files\Editor\Internal</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\ResourceManager.hpp">
-      <Filter>Header Files\Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeEditor\ResourceManifest.hpp">
       <Filter>Header Files\Resources</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\ResourceTable.hpp">
@@ -170,12 +167,6 @@
     <ClCompile Include="..\..\src\MemeEditor\GUI_Base.cpp">
       <Filter>Source Files\Editor\Internal</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemeEditor\ResourceManifest.cpp">
-      <Filter>Source Files\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeEditor\ResourceManager.cpp">
-      <Filter>Source Files\Resources</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\Browser.cpp">
       <Filter>Source Files\Editor\Windows</Filter>
     </ClCompile>
@@ -223,6 +214,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\NetworkHUD.cpp">
       <Filter>Source Files\Editor\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeEditor\ResourceManager.cpp">
+      <Filter>Source Files\Resources</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

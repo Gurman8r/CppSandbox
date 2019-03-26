@@ -203,13 +203,18 @@ namespace ml
 
 #ifdef ML_STRING_CUSTOM
 	public: // Custom
-		inline operator bool() const { return !(this->empty()); }
+		inline operator bool() const 
+		{ 
+			return !(this->empty()); 
+		}
 
 		inline self_type & pop_back()
 		{
 			this->base_type::pop_back();
 			return (*this);
 		}
+
+		/* * * * * * * * * * * * * * * * * * * * */
 
 		template <class T, typename ... A>
 		inline static self_type Format(self_type value, const T & arg0, const A & ...args)
@@ -250,6 +255,8 @@ namespace ml
 			return self_type(*this).format(arg0, (args)...);
 		}
 
+		/* * * * * * * * * * * * * * * * * * * * */
+
 		inline static self_type ReplaceAll(self_type s, const self_type & f, const self_type & r)
 		{
 			if (!s.empty() && !f.empty())
@@ -271,6 +278,31 @@ namespace ml
 		inline const self_type replaceAll(const self_type & f, const self_type & r) const
 		{
 			return self_type(*this).replace_all(f, r);
+		}
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		inline static self_type & Trim(self_type & value)
+		{
+			while (value && ((value.front()) == ' ' || (value.front()) == '\t'))
+			{
+				value.erase(value.begin());
+			}
+			while (value && ((value.back()) == ' ' || (value.back()) == '\t'))
+			{
+				value.erase(value.end() - 1);
+			}
+			return value;
+		}
+
+		inline self_type & trim()
+		{
+			return Trim(*this);
+		}
+
+		inline const self_type trim() const
+		{
+			return self_type(*this).trim();
 		}
 
 #endif // ML_STRING_CUSTOM

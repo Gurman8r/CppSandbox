@@ -23,6 +23,16 @@ namespace ml
 		return true;
 	}
 
+	bool Sprite::loadFromMemory(const Texture * value)
+	{
+		if (value)
+		{
+			setTexture(value);
+			return true;
+		}
+		return false;
+	}
+
 
 	Sprite & Sprite::setTexture(const Texture * value)
 	{
