@@ -9,21 +9,17 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		template <typename Fun>
-		static void Field(CString label, Fun fun)
+		static void Tree(Fun fun)
 		{
-			ImGui::AlignTextToFramePadding();
-			ImGui::TreeNodeEx(
-				"Field",
-				ImGuiTreeNodeFlags_Leaf |
-				ImGuiTreeNodeFlags_NoTreePushOnOpen |
-				ImGuiTreeNodeFlags_Bullet,
-				"%s",
-				label);
-			ImGui::NextColumn();
-			ImGui::PushItemWidth(-1);
-			fun(label);
-			ImGui::PopItemWidth();
-			ImGui::NextColumn();
+			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { 2, 2 });
+			ImGui::Columns(2);
+			ImGui::Separator();
+			{
+				fun();
+			}
+			ImGui::Columns(1);
+			ImGui::Separator();
+			ImGui::PopStyleVar();
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -53,6 +49,28 @@ namespace ml
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
+
+		template <typename Fun>
+		static void Field(CString label, Fun fun)
+		{
+			ImGui::AlignTextToFramePadding();
+			ImGui::TreeNodeEx(
+				"Field",
+				ImGuiTreeNodeFlags_Leaf |
+				ImGuiTreeNodeFlags_NoTreePushOnOpen |
+				ImGuiTreeNodeFlags_Bullet,
+				"%s",
+				label);
+			ImGui::NextColumn();
+			ImGui::PushItemWidth(-1);
+			{
+				fun(label);
+			}
+			ImGui::PopItemWidth();
+			ImGui::NextColumn();
+		}
+
+		/* * * * * * * * * * * * * * * * * * * * */
 	};
 }
 
@@ -77,28 +95,28 @@ namespace ml
 	{
 		if (beginDraw(p_open, ImGuiWindowFlags_MenuBar))
 		{
+			/* * * * * * * * * * * * * * * * * * * * */
+
 			if (ImGui::BeginMenuBar())
 			{
 				ImGui::EndMenuBar();
 			}
 
-			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
-			ImGui::Columns(2);
-			ImGui::Separator();
+			/* * * * * * * * * * * * * * * * * * * * */
+			Funcs::Tree([&]()
 			{
-				Funcs::Group("Resources", [&]() 
+				Funcs::Group("Resources", [&]()
 				{
 					Funcs::Group("Fonts", [&]()
 					{
 						for (auto pair : ML_Res.fonts)
 						{
-							Funcs::Field(pair.first.c_str(), [&](CString label) 
+							Funcs::Field(pair.first.c_str(), [&](CString label)
 							{
 								ImGui::Text(label);
 							});
 						}
 					});
-
 					Funcs::Group("Images", [&]()
 					{
 						for (auto pair : ML_Res.fonts)
@@ -109,7 +127,6 @@ namespace ml
 							});
 						}
 					});
-
 					Funcs::Group("Materials", [&]()
 					{
 						for (auto pair : ML_Res.mats)
@@ -120,7 +137,6 @@ namespace ml
 							});
 						}
 					});
-
 					Funcs::Group("Meshes", [&]()
 					{
 						for (auto pair : ML_Res.meshes)
@@ -131,7 +147,6 @@ namespace ml
 							});
 						}
 					});
-
 					Funcs::Group("Models", [&]()
 					{
 						for (auto pair : ML_Res.models)
@@ -142,7 +157,6 @@ namespace ml
 							});
 						}
 					});
-
 					Funcs::Group("Scripts", [&]()
 					{
 						for (auto pair : ML_Res.scripts)
@@ -153,7 +167,6 @@ namespace ml
 							});
 						}
 					});
-
 					Funcs::Group("Shaders", [&]()
 					{
 						for (auto pair : ML_Res.shaders)
@@ -164,7 +177,6 @@ namespace ml
 							});
 						}
 					});
-
 					Funcs::Group("Skyboxes", [&]()
 					{
 						for (auto pair : ML_Res.skyboxes)
@@ -175,7 +187,6 @@ namespace ml
 							});
 						}
 					});
-
 					Funcs::Group("Sounds", [&]()
 					{
 						for (auto pair : ML_Res.sounds)
@@ -186,7 +197,6 @@ namespace ml
 							});
 						}
 					});
-
 					Funcs::Group("Sprites", [&]()
 					{
 						for (auto pair : ML_Res.sprites)
@@ -197,7 +207,6 @@ namespace ml
 							});
 						}
 					});
-
 					Funcs::Group("Textures", [&]()
 					{
 						for (auto pair : ML_Res.textures)
@@ -209,10 +218,10 @@ namespace ml
 						}
 					});
 				});
-			}
-			ImGui::Columns(1);
-			ImGui::Separator();
-			ImGui::PopStyleVar();
+			});
+
+
+			/* * * * * * * * * * * * * * * * * * * * */
 		}
 		return endDraw();
 	}
