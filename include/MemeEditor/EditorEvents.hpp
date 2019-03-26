@@ -15,6 +15,8 @@ namespace ml
 			MIN_EDITOR_EVENT = IEvent::EV_EDITOR + 1,
 
 			EV_MainMenuBar,
+			EV_DockBuilder,
+			EV_Inspector,
 
 			MAX_EDITOR_EVENT
 		};
@@ -31,6 +33,39 @@ namespace ml
 	{
 		MainMenuBarEvent()
 			: EditorEvent(EV_MainMenuBar)
+		{
+		}
+
+		void serialize(std::ostream & out) const override
+		{
+			out << get_type().name();
+		}
+	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	struct ML_EDITOR_API DockBuilderEvent : public EditorEvent
+	{
+		int32_t root;
+
+		DockBuilderEvent(int32_t root)
+			: EditorEvent(EV_DockBuilder)
+			, root(root)
+		{
+		}
+
+		void serialize(std::ostream & out) const override
+		{
+			out << get_type().name() << ' ' << root;
+		}
+	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	struct ML_EDITOR_API InspectorEvent : public EditorEvent
+	{
+		InspectorEvent()
+			: EditorEvent(EV_Inspector)
 		{
 		}
 

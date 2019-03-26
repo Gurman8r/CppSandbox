@@ -17,7 +17,8 @@
 #include <MemeEditor/Hierarchy.hpp>
 #include <MemeEditor/SceneView.hpp>
 #include <MemeEditor/Inspector.hpp>
-#include <MemeEditor/GameObject.hpp>
+#include <MemeEditor/ProjectView.hpp>
+#include <MemeEditor/NetworkHUD.hpp>
 
 namespace DEMO
 {
@@ -344,9 +345,9 @@ namespace DEMO
 				(ml::Debug::config()),
 				(ml::Debug::platform()))))
 			{
-				if (m_plugin.init("Plugin Initialized")) {}
-				if (m_plugin.enable("Plugin Enabled")) {}
-				if (m_plugin.enable("Plugin Disabled")) {}
+				m_plugin.init("Call Plugin Init");
+				m_plugin.enable("Call Plugin Enable");
+				m_plugin.disable("Call Plugin Disable");
 			}
 
 			// CD
@@ -876,12 +877,14 @@ namespace DEMO
 		if (show_imgui_about)	{ ml::ImGui_Builtin::showAbout(&show_imgui_about); }
 
 		// Editor
+		if (show_ml_network)	{ ML_NetworkHUD.draw(&show_ml_network); }
 		if (show_ml_browser)	{ ML_Browser.draw(&show_ml_browser); }
 		if (show_ml_hierarchy)	{ ML_Hierarchy.draw(&show_ml_hierarchy); }
 		if (show_ml_terminal)	{ ML_Terminal.draw(&show_ml_terminal); }
 		if (show_ml_builder)	{ ML_Builder.draw(&show_ml_builder); }
 		if (show_ml_texteditor) { ML_TextEditor.draw(&show_ml_texteditor); }
 		if (show_ml_scene)		{ ML_SceneView_draw(&show_ml_scene); }
+		if (show_ml_project)	{ ML_ProjectView.draw(&show_ml_project); }
 		if (show_ml_inspector)	{ ML_Inspector_draw(&show_ml_inspector); }
 		if (show_ml_tester)		{ ML_TestWindow_draw(&show_ml_tester); }
 	}
@@ -945,6 +948,8 @@ namespace DEMO
 				ImGui::MenuItem(ML_Inspector.title(), "Ctrl+Alt+I", &show_ml_inspector);
 				ImGui::MenuItem(ML_TextEditor.title(), NULL, &show_ml_texteditor);
 				ImGui::MenuItem(ML_Hierarchy.title(), NULL, &show_ml_hierarchy);
+				ImGui::MenuItem(ML_ProjectView.title(), NULL, &show_ml_project);
+				ImGui::MenuItem(ML_NetworkHUD.title(), NULL, &show_ml_network);
 				ImGui::MenuItem("Test Window",	NULL, &show_ml_tester);
 				ImGui::EndMenu();
 			}
@@ -975,26 +980,29 @@ namespace DEMO
 		{
 			if (uint32_t root = ML_Dockspace.beginBuilder(ImGuiDockNodeFlags_None))
 			{
-				uint32_t left = ML_Dockspace.splitNode(root, ImGuiDir_Left, 0.29f, &root);
+				uint32_t left	= ML_Dockspace.splitNode(root, ImGuiDir_Left, 0.29f, &root);
 				uint32_t center = ML_Dockspace.splitNode(root, ImGuiDir_Right, 0.5f, &root);
-				uint32_t right = ML_Dockspace.splitNode(center, ImGuiDir_Right, 0.21f, &center);
+				uint32_t right	= ML_Dockspace.splitNode(center, ImGuiDir_Right, 0.21f, &center);
 
-				const uint32_t left_U = ML_Dockspace.splitNode(left, ImGuiDir_Up, 0.65f, &left);
-				const uint32_t left_D = ML_Dockspace.splitNode(left, ImGuiDir_Down, 0.35f, &left);
+				const uint32_t left_U	= ML_Dockspace.splitNode(left, ImGuiDir_Up, 0.65f, &left);
+				const uint32_t left_D	= ML_Dockspace.splitNode(left, ImGuiDir_Down, 0.35f, &left);
 				const uint32_t center_U = ML_Dockspace.splitNode(center, ImGuiDir_Up, 0.65f, &center);
 				const uint32_t center_D = ML_Dockspace.splitNode(center, ImGuiDir_Down, 0.35f, &center);
-				const uint32_t right_U = ML_Dockspace.splitNode(right, ImGuiDir_Up, 0.5f, &right);
-				const uint32_t right_D = ML_Dockspace.splitNode(right, ImGuiDir_Down, 0.5f, &right);
+				const uint32_t right_U	= ML_Dockspace.splitNode(right, ImGuiDir_Up, 0.5f, &right);
+				const uint32_t right_D	= ML_Dockspace.splitNode(right, ImGuiDir_Down, 0.5f, &right);
 
-				ML_Dockspace.dockWindow(ML_Browser.title(), left_U);
-				ML_Dockspace.dockWindow(ML_Hierarchy.title(), left_U);
-				ML_Dockspace.dockWindow(ML_Terminal.title(), left_D);
-				ML_Dockspace.dockWindow(ML_SceneView.title(), center_U);
-				ML_Dockspace.dockWindow(ML_Builder.title(), center_D);
-				ML_Dockspace.dockWindow(ML_TextEditor.title(), center_D);
-				ML_Dockspace.dockWindow(ML_Inspector.title(), right);
-				ML_Dockspace.dockWindow("Test Window", center_D);
+				ML_Dockspace.dockWindow(ML_Browser.title(),		left_U);
+				ML_Dockspace.dockWindow(ML_Hierarchy.title(),	left_U);
+				ML_Dockspace.dockWindow(ML_Terminal.title(),	left_D);
+				ML_Dockspace.dockWindow(ML_SceneView.title(),	center_U);
+				ML_Dockspace.dockWindow(ML_Builder.title(),		center_D);
+				ML_Dockspace.dockWindow(ML_TextEditor.title(),	center_D);
+				ML_Dockspace.dockWindow(ML_ProjectView.title(), center_D);
+				ML_Dockspace.dockWindow(ML_NetworkHUD.title(),	left_U);
+				ML_Dockspace.dockWindow(ML_Inspector.title(),	right);
+				ML_Dockspace.dockWindow("Test Window",			right);
 
+				ML_EventSystem.fireEvent(ml::DockBuilderEvent(root));
 				ML_Dockspace.endBuilder(root);
 			};
 		});
@@ -1003,6 +1011,33 @@ namespace DEMO
 	bool Demo::ML_Inspector_draw(bool * p_open)
 	{
 		return ML_Inspector.drawFun(p_open, [&]()
+		{
+			/* * * * * * * * * * * * * * * * * * * * */
+
+			// ...
+
+			/* * * * * * * * * * * * * * * * * * * * */
+
+			ML_EventSystem.fireEvent(ml::InspectorEvent());
+
+			/* * * * * * * * * * * * * * * * * * * * */
+		});
+	}
+
+	bool Demo::ML_SceneView_draw(bool * p_open)
+	{
+		return ML_SceneView.drawFun(p_open, [&]() 
+		{
+			if (!ML_SceneView.updateScene(m_effects["fbo_post"].texture()))
+			{
+				ImGui::Text("Failed Rendering Scene");
+			}
+		});
+	}
+
+	bool Demo::ML_TestWindow_draw(bool * p_open)
+	{
+		return ml::GUI::DrawWindow("Test Window", p_open, ImGuiWindowFlags_MenuBar, [&]()
 		{
 			/* * * * * * * * * * * * * * * * * * * * */
 
@@ -1067,25 +1102,6 @@ namespace DEMO
 			ImGui::Separator();
 
 			/* * * * * * * * * * * * * * * * * * * * */
-		});
-	}
-
-	bool Demo::ML_SceneView_draw(bool * p_open)
-	{
-		return ML_SceneView.drawFun(p_open, [&]() 
-		{
-			if (!ML_SceneView.updateScene(m_effects["fbo_post"].texture()))
-			{
-				ImGui::Text("Failed Rendering Scene");
-			}
-		});
-	}
-
-	bool Demo::ML_TestWindow_draw(bool * p_open)
-	{
-		return ml::GUI::DrawWindow("Test Window", p_open, ImGuiWindowFlags_MenuBar, [&]()
-		{
-			
 		});
 	}
 

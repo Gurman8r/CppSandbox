@@ -28,14 +28,13 @@ namespace ml
 		return cleanup() && (m_inst = ML_Lib.loadLibrary(m_file = filename));
 	}
 
-	bool Plugin::call(const String & name, void * data)
+	void * Plugin::call(const String & name, void * data)
 	{
-		PluginFun func;
-		if (func = (PluginFun)ML_Lib.loadFunction(m_inst, name))
+		if (PluginFun func = (PluginFun)ML_Lib.loadFunction(m_inst, name))
 		{
-			func(data);
+			return func(data);
 		}
-		return (bool)(func);
+		return NULL;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

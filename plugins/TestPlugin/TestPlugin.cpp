@@ -5,19 +5,19 @@
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-ML_PLUGIN_API void ML_PluginInit(void * data)
+ML_PLUGIN_API void * ML_PluginInit(void * data)
 {
-	TestPlugin::getInstance().onInit(data);
+	return TestPlugin::getInstance().onInit(data);
 }
 
-ML_PLUGIN_API void ML_PluginEnable(void * data)
+ML_PLUGIN_API void * ML_PluginEnable(void * data)
 {
-	TestPlugin::getInstance().onEnable(data);
+	return TestPlugin::getInstance().onEnable(data);
 }
 
-ML_PLUGIN_API void ML_PluginDisable(void * data)
+ML_PLUGIN_API void * ML_PluginDisable(void * data)
 {
-	TestPlugin::getInstance().onDisable(data);
+	return TestPlugin::getInstance().onDisable(data);
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -36,20 +36,22 @@ namespace
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void TestPlugin::onInit(void * data)
+	void * TestPlugin::onInit(void * data)
 	{
-		ml::Debug::log("Hello From Plugin!");
 		ml::cout << ((ml::CString)data) << ml::endl;
+		return (void *)(NULL);
 	}
 	
-	void TestPlugin::onEnable(void * data)
+	void * TestPlugin::onEnable(void * data)
 	{
 		ml::cout << ((ml::CString)data) << ml::endl;
+		return (void *)(NULL);
 	}
 	
-	void TestPlugin::onDisable(void * data)
+	void * TestPlugin::onDisable(void * data)
 	{
 		ml::cout << ((ml::CString)data) << ml::endl;
+		return (void *)(NULL);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

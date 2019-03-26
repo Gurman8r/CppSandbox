@@ -15,42 +15,40 @@ namespace ml
 		, public INonCopyable
 	{
 	public:
-		using PluginFun = void(*)(void *);
-
-	public:
 		Plugin();
 		~Plugin();
 
 	public:
-		bool cleanup() override;
-		bool loadFromFile(const String & filename) override;
-		bool call(const String & name, void * data);
+		bool	cleanup() override;
+		bool	loadFromFile(const String & filename) override;
+		void *	call(const String & name, void * data);
 
 	public:
 		template <
-			typename T
-		> inline bool call(const String & name, T data)
+			typename T,
+			typename R = void *
+		> inline R call(const String & name, T data)
 		{
 			return call(name, (void *)(data));
 		}
 
 		template <
 			typename T
-		> inline bool init(T data) 
+		> inline void * init(T data)
 		{ 
 			return call<T>(ML_STRINGIFY(ML_PluginInit), data);
 		}
 
 		template <
 			typename T
-		> inline bool enable(T data)
+		> inline void * enable(T data)
 		{
 			return call<T>(ML_STRINGIFY(ML_PluginEnable), data);
 		}
 
 		template <
 			typename T
-		> inline bool disable(T data)
+		> inline void * disable(T data)
 		{
 			return call<T>(ML_STRINGIFY(ML_PluginDisable), data);
 		}

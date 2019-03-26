@@ -4,15 +4,15 @@
 /* * * * * * * * * * * * * * * * * * * * */
 
 #include <MemeCore/PluginAPI.hpp>
-#include <MemeCore/ISingleton.hpp>
+#include <MemeCore/ITrackable.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * */
 
 extern "C"
 {
-	ML_PLUGIN_API void ML_PluginInit(void * data);
-	ML_PLUGIN_API void ML_PluginEnable(void * data);
-	ML_PLUGIN_API void ML_PluginDisable(void * data);
+	ML_PLUGIN_API void * ML_PluginInit(void * data);
+	ML_PLUGIN_API void * ML_PluginEnable(void * data);
+	ML_PLUGIN_API void * ML_PluginDisable(void * data);
 }
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -29,9 +29,9 @@ namespace
 		~TestPlugin();
 
 	public:
-		void onInit(void * data);
-		void onEnable(void * data);
-		void onDisable(void * data);
+		void * onInit(void * data);
+		void * onEnable(void * data);
+		void * onDisable(void * data);
 	};
 }
 
