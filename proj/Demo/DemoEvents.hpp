@@ -23,6 +23,7 @@ namespace DEMO
 			EV_Update,
 			EV_Draw,
 			EV_Gui,
+			EV_Unload,
 			EV_Exit,
 
 			MAX_DEMO_EVENT
@@ -121,6 +122,16 @@ namespace DEMO
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
+	struct UnloadEvent final : public DemoEvent
+	{
+		UnloadEvent()
+			: DemoEvent(EV_Unload)
+		{
+		}
+	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	struct ExitEvent final : public DemoEvent
 	{
 		ExitEvent()
@@ -128,6 +139,8 @@ namespace DEMO
 		{
 		}
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_DEMO_EVENTS_HPP_

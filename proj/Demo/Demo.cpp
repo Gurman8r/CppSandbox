@@ -58,6 +58,7 @@ namespace DEMO
 		ML_EventSystem.addListener(DemoEvent::EV_Update, this);
 		ML_EventSystem.addListener(DemoEvent::EV_Draw, this);
 		ML_EventSystem.addListener(DemoEvent::EV_Gui, this);
+		ML_EventSystem.addListener(DemoEvent::EV_Unload, this);
 		ML_EventSystem.addListener(DemoEvent::EV_Exit, this);
 
 		ML_EventSystem.addListener(ml::CoreEvent::EV_RequestExit, this);
@@ -80,6 +81,7 @@ namespace DEMO
 		case DemoEvent::EV_Update:		return onUpdate(*value->as<UpdateEvent>());
 		case DemoEvent::EV_Draw:		return onDraw(*value->as<DrawEvent>());
 		case DemoEvent::EV_Gui:			return onGui(*value->as<GuiEvent>());
+		case DemoEvent::EV_Unload:		return onUnload(*value->as<UnloadEvent>());
 		case DemoEvent::EV_Exit:		return onExit(*value->as<ExitEvent>());
 
 		case ml::CoreEvent::EV_RequestExit:
@@ -180,91 +182,6 @@ namespace DEMO
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool DemoProgram::loadResources()
-	{
-		// Batch
-		/* * * * * * * * * * * * * * * * * * * * */
-		m_batchVAO.create(ml::GL::Triangles).bind();
-		m_batchVBO.create(ml::GL::DynamicDraw).bind();
-		m_batchVBO.bufferData(NULL, ml::RectQuad::Size);
-		ml::BufferLayout::Default.bind();
-		m_batchVBO.unbind();
-		m_batchVAO.unbind();
-
-		return ml::Debug::log("Loading Resources...")
-
-			// Default Meshes
-			/* * * * * * * * * * * * * * * * * * * * */
-			&& ML_Res.meshes.load("default_triangle")->loadFromMemory(
-				ml::Shapes::Triangle::Vertices,
-				ml::Shapes::Triangle::Indices
-			)
-			&& ML_Res.meshes.load("default_quad")->loadFromMemory(
-				ml::Shapes::Quad::Vertices,
-				ml::Shapes::Quad::Indices
-			)
-			&& ML_Res.meshes.load("default_cube")->loadFromMemory(
-				ml::Shapes::Cube::Vertices,
-				ml::Shapes::Cube::Indices
-			)
-			&& ML_Res.meshes.load("default_skybox")->loadFromMemory(
-				ml::Shapes::Sky::Vertices
-			)
-			
-			// Default Models
-			/* * * * * * * * * * * * * * * * * * * * */
-			&& ML_Res.models.load("default_triangle")->loadFromMemory(
-				*ML_Res.meshes.get("default_triangle")
-			)
-			&& ML_Res.models.load("default_quad")->loadFromMemory(
-				*ML_Res.meshes.get("default_quad")
-			)
-			&& ML_Res.models.load("default_cube")->loadFromMemory(
-				*ML_Res.meshes.get("default_cube")
-			)
-			&& ML_Res.models.load("default_skybox")->loadFromMemory(
-				*ML_Res.meshes.get("default_skybox")
-			)
-
-			// Load Manifest
-			/* * * * * * * * * * * * * * * * * * * * */
-			&& ML_Res.loadFromFile(ML_FileSystem.pathTo(SETTINGS.manifest))
-			;
-	}
-
-	bool DemoProgram::loadNetwork()
-	{
-		if ((SETTINGS.isServer || SETTINGS.isClient) &&
-			ml::Debug::log("Loading Network..."))
-		{
-			if (SETTINGS.isServer)
-			{
-				// Server Setup
-				if (ML_Server.setup())
-				{
-					if (ML_Server.start({ ML_LOCALHOST, ML_PORT }, ML_MAX_CLIENTS))
-					{
-						return ml::Debug::log("Server Started: {0}", ML_Server.getMyAddress());
-					}
-				}
-			}
-			else if (SETTINGS.isClient)
-			{
-				// Client Setup
-				if (ML_Client.setup())
-				{
-					if (ML_Client.connect({ ML_LOCALHOST, ML_PORT }))
-					{
-						return ml::Debug::log("Client Connected: ");
-					}
-				}
-			}
-		}
-		return true;
-	}
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
 	void DemoProgram::onEnter(const EnterEvent & ev)
 	{
 		// Seed Random
@@ -273,55 +190,35 @@ namespace DEMO
 		// Start Master Timer
 		ML_Time.start();
 
-		// Set Parser Flags
-		ML_Parser.showToks(SETTINGS.flagShowToks); // Show Tokens
-		ML_Parser.showTree(SETTINGS.flagShowTree); // Show Tree
-		ML_Parser.showItoP(SETTINGS.flagShowItoP); // Show Infix to Postfix
+		// GL Error Pause
+		ml::OpenGL::errorPause(SETTINGS.glErrorPause);
 
-		// Load Commands
-		install_commands();
-
-		// Run Script
-		if (!SETTINGS.bootScript.empty())
+		// Setup Interpreter
+		/* * * * * * * * * * * * * * * * * * * * */
 		{
+			// Set Parser Flags
+			ML_Parser.showToks(SETTINGS.flagShowToks);
+			ML_Parser.showTree(SETTINGS.flagShowTree);
+			ML_Parser.showItoP(SETTINGS.flagShowItoP);
+			
+			// Load Commands
+			install_commands();
+			
+			// Run Boot Script
 			ml::Script scr;
-			if (scr.loadFromFile(SETTINGS.bootScript))
+			if (scr.loadFromFile(ML_FileSystem.pathTo(SETTINGS.bootScript)))
 			{
 				if (scr.build(ev.args))
 				{
-					if (scr.run())
-					{
-						if (scr.retv().isErrorType())
-						{
-							ml::Debug::setError(ml::Debug::logError("Script returned an error"));
-						}
-					}
-					else
-					{
-						ml::Debug::setError(ml::Debug::logError("Failed running script"));
-					}
-				}
-				else
-				{
-					ml::Debug::setError(ml::Debug::logError("Failed building script"));
+					if (scr.run()) {}
 				}
 			}
-			else
-			{
-				ml::Debug::setError(ml::Debug::logError("Failed loading script"));
-			}
 		}
-		else
-		{
-			ml::Debug::setError(ml::Debug::logWarning("No Script"));
-		}
-	}
 
-	void DemoProgram::onLoad(const LoadEvent & ev)
-	{
-		ml::OpenGL::errorPause(SETTINGS.glErrorPause);
-
-		if (this->create(SETTINGS.title, SETTINGS.video(), SETTINGS.style, SETTINGS.context()) && 
+		// Create Window
+		/* * * * * * * * * * * * * * * * * * * * */
+		if (this->create(SETTINGS.title, SETTINGS.video(), SETTINGS.style, SETTINGS.context())
+			&&
 			this->setup(SETTINGS.glExperimental))
 		{
 			this->setInputMode(ml::Cursor::Normal);
@@ -330,6 +227,7 @@ namespace DEMO
 			this->maximize();
 
 			// Load ImGui
+			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::Debug::log("Dear ImGui..."))
 			{
 				IMGUI_CHECKVERSION();
@@ -343,30 +241,36 @@ namespace DEMO
 			}
 
 			// Load OpenAL
+			/* * * * * * * * * * * * * * * * * * * * */
 			if (!ml::OpenAL::init())
 			{
 				return ml::Debug::setError(ml::Debug::logError("Failed Loading OpenAL"));
 			}
 
-			// Load Resources
-			if (!loadResources())
-			{
-				return ml::Debug::setError(ml::Debug::logError("Failed Loading Resources"));
-			}
-
 			// Load Network
-			if (!loadNetwork())
+			/* * * * * * * * * * * * * * * * * * * * */
+			if (SETTINGS.isServer)
 			{
-				return ml::Debug::setError(ml::Debug::logError("Failed Loading Network"));
+				// Server Setup
+				if (ML_Server.setup())
+				{
+					if (ML_Server.start({ ML_LOCALHOST, ML_PORT }, ML_MAX_CLIENTS))
+					{
+						ml::Debug::log("Server Started: {0}", ML_Server.getMyAddress());
+					}
+				}
 			}
-
-			// CD
-			ML_FileSystem.setWorkingDir(ML_FileSystem.pathTo("../../../"));
-
-			// Force Update Framebuffers
-			ML_EventSystem.fireEvent(ml::FramebufferSizeEvent(
-				this->frameWidth(), 
-				this->frameHeight()));
+			else if (SETTINGS.isClient)
+			{
+				// Client Setup
+				if (ML_Client.setup())
+				{
+					if (ML_Client.connect({ ML_LOCALHOST, ML_PORT }))
+					{
+						ml::Debug::log("Client Connected: {0}", ML_Client.getMyAddress());
+					}
+				}
+			}
 		}
 		else
 		{
@@ -378,40 +282,82 @@ namespace DEMO
 		}
 	}
 
+	void DemoProgram::onLoad(const LoadEvent & ev)
+	{
+		ml::Debug::log("Loading...");
+
+		// Batch
+		/* * * * * * * * * * * * * * * * * * * * */
+		m_batchVAO.create(ml::GL::Triangles).bind();
+		m_batchVBO.create(ml::GL::DynamicDraw).bind();
+		m_batchVBO.bufferData(NULL, ml::RectQuad::Size);
+		ml::BufferLayout::Default.bind();
+		m_batchVBO.unbind();
+		m_batchVAO.unbind();
+
+		// Default Meshes
+		/* * * * * * * * * * * * * * * * * * * * */
+		ML_Res.meshes.load("default_triangle")->loadFromMemory(
+			ml::Shapes::Triangle::Vertices,
+			ml::Shapes::Triangle::Indices
+		);
+		ML_Res.meshes.load("default_quad")->loadFromMemory(
+			ml::Shapes::Quad::Vertices,
+			ml::Shapes::Quad::Indices
+		);
+		ML_Res.meshes.load("default_cube")->loadFromMemory(
+			ml::Shapes::Cube::Vertices,
+			ml::Shapes::Cube::Indices
+		);
+		ML_Res.meshes.load("default_skybox")->loadFromMemory(
+			ml::Shapes::Sky::Vertices
+		);
+
+		// Default Models
+		/* * * * * * * * * * * * * * * * * * * * */
+		ML_Res.models.load("default_triangle")->loadFromMemory(
+			*ML_Res.meshes.get("default_triangle")
+		);
+		ML_Res.models.load("default_quad")->loadFromMemory
+		(
+			*ML_Res.meshes.get("default_quad")
+		);
+		ML_Res.models.load("default_cube")->loadFromMemory(
+			*ML_Res.meshes.get("default_cube")
+		);
+		ML_Res.models.load("default_skybox")->loadFromMemory(
+			*ML_Res.meshes.get("default_skybox")
+		);
+
+		// Load Manifest
+		/* * * * * * * * * * * * * * * * * * * * */
+		if (!ML_Res.loadFromFile(ML_FileSystem.pathTo(SETTINGS.manifest)))
+		{
+			return ml::Debug::setError(ml::Debug::logError("Failed Loading Manifest"));
+		}
+	}
+
 	void DemoProgram::onStart(const StartEvent & ev)
 	{
 		ml::Debug::log("Starting...");
 
-		// Set Window Icon
+		// Window Icon
 		if (ml::Image * icon = ML_Res.images.get("icon"))
 		{
 			this->setIcons({ (*icon).flipVertically() });
 		}
 
-		// Setup Projections
-		{
-			// Orthographic
-			uni.ortho.orthographic(
-				{ ml::vec2f::Zero, (ml::vec2f)this->getSize() },
-				{ SETTINGS.orthoNear, SETTINGS.orthoFar }
-			);
-
-			// Perspective
-			uni.persp.perspective(
-				SETTINGS.fieldOfView, this->aspect(),
-				SETTINGS.perspNear, SETTINGS.perspFar
-			);
-		}
-
-		// Setup Camera
+		// Camera
+		/* * * * * * * * * * * * * * * * * * * * */
 		{
 			uni.camera.lookAt(uni.camPos, uni.camPos + ml::vec3f::Back, ml::vec3f::Up);
 		}
 
-		// Setup Models
+		// Models
+		/* * * * * * * * * * * * * * * * * * * * */
 		{
 			if (ml::Model * m = ML_Res.models.get("borg"))
-			m->transform()
+				m->transform()
 				.translate({ +5.0f, 0.0f, 0.0f })
 				.scale(1.0f);
 
@@ -442,11 +388,11 @@ namespace DEMO
 		}
 
 		// Sprites
+		/* * * * * * * * * * * * * * * * * * * * */
 		{
-			if (ml::Sprite * sprite = ML_Res.sprites.get("neutrino"))
+			if (ml::Sprite * s = ML_Res.sprites.get("neutrino"))
 			{
-				(*sprite)
-					.setPosition((ml::vec2f(0.95f, 0.075f) * this->getSize()))
+				(*s).setPosition((ml::vec2f(0.95f, 0.075f) * this->getSize()))
 					.setScale(0.5f)
 					.setRotation(0.0f)
 					.setOrigin(0.5f)
@@ -455,11 +401,14 @@ namespace DEMO
 		}
 
 		// Plugins
-		if (ml::Plugin * p = ML_Res.plugins.get("TestPlugin"))
+		/* * * * * * * * * * * * * * * * * * * * */
 		{
-			p->init("TestPlugin Init");
-			p->enable("TestPlugin Enable");
-			p->disable("TestPlugin Disable");
+			if (ml::Plugin * p = ML_Res.plugins.get("TestPlugin"))
+			{
+				p->init("TestPlugin Init");
+				p->enable("TestPlugin Enable");
+				p->disable("TestPlugin Disable");
+			}
 		}
 	}
 
@@ -912,10 +861,10 @@ namespace DEMO
 	void DemoProgram::onGui(const GuiEvent & ev)
 	{
 		// Main Menu Bar
-		if (ML_MainMenuBar_draw()) {}
+		if (ML_MainMenuBar_draw())	{ /* Main Menu Bar */ }
 
 		// Dockspace
-		if (gui.show_dockspace)	{ ML_Dockspace_draw(&gui.show_dockspace); }
+		if (gui.show_dockspace)		{ ML_Dockspace_draw(&gui.show_dockspace); }
 
 		// ImGui
 		if (gui.show_imgui_demo)	{ ml::ImGui_Builtin::showDemo(&gui.show_imgui_demo); }
@@ -937,10 +886,13 @@ namespace DEMO
 		if (gui.show_demowindow)	{ ML_DemoWindow_draw(&gui.show_demowindow); }
 	}
 
+	void DemoProgram::onUnload(const UnloadEvent & ev)
+	{
+		ML_Res.cleanupAll();
+	}
+
 	void DemoProgram::onExit(const ExitEvent & ev)
 	{
-		ML_Res.cleanAll();
-
 		ImGui_ML_Shutdown();
 	}
 

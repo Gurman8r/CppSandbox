@@ -11,12 +11,12 @@ namespace ml
 
 	ResourceManager::~ResourceManager()
 	{
-		cleanAll();
+		cleanupAll();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	size_t ResourceManager::cleanAll()
+	size_t ResourceManager::cleanupAll()
 	{
 		return
 			sounds.clean() +
@@ -56,7 +56,7 @@ namespace ml
 
 	bool ResourceManager::cleanup()
 	{
-		return cleanAll();
+		return cleanupAll();
 	}
 
 	bool ResourceManager::loadFromFile(const String & filename)

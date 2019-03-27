@@ -24,10 +24,6 @@ namespace DEMO
 		void onEvent(const ml::IEvent * value) override;
 
 	private:
-		bool	loadResources();
-		bool	loadNetwork();
-
-	private:
 		void	onEnter(const EnterEvent & ev);
 		void	onLoad(const LoadEvent & ev);
 		void	onStart(const StartEvent & ev);
@@ -35,6 +31,7 @@ namespace DEMO
 		void	onUpdate(const UpdateEvent & ev);
 		void	onDraw(const DrawEvent & ev);
 		void	onGui(const GuiEvent & ev);
+		void	onUnload(const UnloadEvent & ev);
 		void	onExit(const ExitEvent & ev);
 
 	private:

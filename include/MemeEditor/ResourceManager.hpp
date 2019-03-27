@@ -45,7 +45,7 @@ namespace ml
 		~ResourceManager();
 
 	public:
-		size_t cleanAll();
+		size_t cleanupAll();
 		size_t reloadAll();
 
 	public:

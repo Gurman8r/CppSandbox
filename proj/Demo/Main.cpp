@@ -2,7 +2,7 @@
 
 #include "Demo.hpp"
 #include <MemeCore/Debug.hpp>
-#include <MemeCore/Timer.hpp>
+#include <MemeCore/Time.hpp>
 #include <MemeCore/EventSystem.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -77,11 +77,15 @@ int32_t main(int32_t argc, char ** argv)
 
 		} while (program->isOpen());
 
+		// Unload
+		ML_EventSystem.fireEvent(DEMO::UnloadEvent());
+
 		// Exit
 		ML_EventSystem.fireEvent(DEMO::ExitEvent());
 
 		// Delete Program
 		delete program;
+
 		return EXIT_SUCCESS;
 	}
 }
