@@ -15,6 +15,7 @@ cd C:\Program Files\7-Zip
 7z a 	%OutFile% %WorkingDir%../README.md
 7z a -r %OutFile% %WorkingDir%../assets
 7z a -r %OutFile% %WorkingDir%../include
+7z a -r %OutFile% %WorkingDir%../plugins
 7z a -r %OutFile% %WorkingDir%../proj
 7z a -r %OutFile% %WorkingDir%../src
 7z a -r %OutFile% %WorkingDir%../thirdparty
