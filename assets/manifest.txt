@@ -62,19 +62,19 @@
 </item>
 
 
-# Effects
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
-<item>
-	type: manifest
-	name: ../../../assets/data/effects.txt
-</item>
-
-
 # Sprites
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 <item>
 	type: manifest
 	name: ../../../assets/data/sprites.txt
+</item>
+
+
+# Effects
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+<item>
+	type: manifest
+	name: ../../../assets/data/effects.txt
 </item>
 
 

@@ -148,22 +148,28 @@ namespace DEMO
 				/* * * * * * * * * * * * * * * * * * * * */
 				
 				// Terminal (Ctrl+Alt+T)
-				if (ev->getKeyDown(ml::KeyCode::T) && (mod_ctrl && mod_alt)) { gui.show_terminal = true; }
+				if (ev->getKeyDown(ml::KeyCode::T) && (mod_ctrl && mod_alt))
+					gui.show_terminal = true;
 				
 				// Browser (Ctrl+Alt+E)
-				if (ev->getKeyDown(ml::KeyCode::E) && (mod_ctrl)) { gui.show_browser = true; }
+				if (ev->getKeyDown(ml::KeyCode::E) && (mod_ctrl))
+					gui.show_browser = true;
 				
 				// Builder (Ctrl+Alt+B)
-				if (ev->getKeyDown(ml::KeyCode::B) && (mod_ctrl && mod_alt)) { gui.show_builder = true; }
+				if (ev->getKeyDown(ml::KeyCode::B) && (mod_ctrl && mod_alt))
+					gui.show_builder = true;
 
 				// Scene (Ctrl+Alt+S)
-				if (ev->getKeyDown(ml::KeyCode::S) && (mod_ctrl && mod_alt)) { gui.show_scene = true; }
+				if (ev->getKeyDown(ml::KeyCode::S) && (mod_ctrl && mod_alt))
+					gui.show_scene = true;
 
 				// Inspector (Ctrl+Alt+I)
-				if (ev->getKeyDown(ml::KeyCode::I) && (mod_ctrl && mod_alt)) { gui.show_inspector = true; }
+				if (ev->getKeyDown(ml::KeyCode::I) && (mod_ctrl && mod_alt))
+					gui.show_inspector = true;
 				
 				// ImGui Demo (Ctrl+H)
-				if (ev->getKeyDown(ml::KeyCode::H) && (mod_ctrl)) { gui.show_imgui_demo = true; }
+				if (ev->getKeyDown(ml::KeyCode::H) && (mod_ctrl))
+					gui.show_imgui_demo = true;
 
 				/* * * * * * * * * * * * * * * * * * * * */
 			}
@@ -663,7 +669,7 @@ namespace DEMO
 		static ml::UniformSet batch_uniforms = {
 			ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&uni.ortho.matrix()),
 			ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4),
-			ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2),
+			ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D),
 		};
 
 		static ml::UniformSet light_uniforms = {
@@ -717,7 +723,7 @@ namespace DEMO
 					static ml::UniformSet uniforms = {
 						ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&model->transform().matrix()),
 						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
-						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2,	ML_Res.textures.get("borg")),
+						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("borg")),
 					};
 					shader->applyUniforms(uniforms);
 					shader->bind();
@@ -732,8 +738,8 @@ namespace DEMO
 				{
 					static ml::UniformSet uniforms = {
 						ml::Uniform("Vert.model",		ml::Uniform::Mat4,	&model->transform().matrix()),
-						ml::Uniform("Frag.tex_dm",		ml::Uniform::Tex2,	ML_Res.textures.get("earth_dm")),
-						ml::Uniform("Frag.tex_sm",		ml::Uniform::Tex2,	ML_Res.textures.get("earth_sm")),
+						ml::Uniform("Frag.tex_dm",		ml::Uniform::Tex2D,	ML_Res.textures.get("earth_dm")),
+						ml::Uniform("Frag.tex_sm",		ml::Uniform::Tex2D,	ML_Res.textures.get("earth_sm")),
 					};
 					shader->applyUniforms(camera_uniforms);
 					shader->applyUniforms(light_uniforms);
@@ -750,8 +756,8 @@ namespace DEMO
 				{
 					static ml::UniformSet uniforms = {
 						ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&model->transform().matrix()),
-						ml::Uniform("Frag.tex_dm",	ml::Uniform::Tex2,	ML_Res.textures.get("moon_dm")),
-						ml::Uniform("Frag.tex_sm",	ml::Uniform::Tex2,	ML_Res.textures.get("moon_nm")),
+						ml::Uniform("Frag.tex_dm",	ml::Uniform::Tex2D,	ML_Res.textures.get("moon_dm")),
+						ml::Uniform("Frag.tex_sm",	ml::Uniform::Tex2D,	ML_Res.textures.get("moon_nm")),
 					};
 					shader->applyUniforms(camera_uniforms);
 					shader->applyUniforms(light_uniforms);
@@ -769,7 +775,7 @@ namespace DEMO
 					static ml::UniformSet uniforms = {
 						ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&model->transform().matrix()),
 						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
-						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2,	ML_Res.textures.get("stone_dm")),
+						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm")),
 					};
 					shader->applyUniforms(camera_uniforms);
 					shader->applyUniforms(uniforms);
@@ -786,7 +792,7 @@ namespace DEMO
 					static ml::UniformSet uniforms = {
 						ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&model->transform().matrix()),
 						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
-						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2,	ML_Res.textures.get("stone_dm")),
+						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm")),
 					};
 					shader->applyUniforms(camera_uniforms);
 					shader->applyUniforms(uniforms);
@@ -805,7 +811,7 @@ namespace DEMO
 					static ml::UniformSet uniforms = {
 						ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&model->transform().matrix()),
 						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
-						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2,	ML_Res.textures.get("sanic")),
+						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("sanic")),
 					};
 					shader->applyUniforms(camera_uniforms);
 					shader->applyUniforms(uniforms);

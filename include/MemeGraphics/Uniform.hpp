@@ -22,7 +22,7 @@ namespace ml
 			Vec4,
 			Mat3,
 			Mat4,
-			Tex2,
+			Tex2D,
 			MAX_TYPE
 		};
 
@@ -47,14 +47,10 @@ namespace ml
 		}
 
 		template <class T>
-		inline const T & get_value() const
+		inline const T & get_value(const T & dv = T()) const
 		{
-			if (const T * p = get_pointer<T>())
-			{
-				return (*get_pointer<T>());
-			}
-			static const T temp = T();
-			return temp;
+			const T * p;
+			return ((p = get_pointer<T>()) ? (*p) : dv);
 		}
 
 	public:
