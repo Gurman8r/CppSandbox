@@ -185,7 +185,7 @@ namespace ml
 				"Vec4",
 				"Mat3",
 				"Mat4",
-				"Tex",
+				"Tex2",
 			};
 
 			ImGui::PushID(value->name.c_str());
@@ -240,7 +240,7 @@ namespace ml
 					EditMat4f("Value", temp);
 				}
 				break;
-				case Uniform::Tex:
+				case Uniform::Tex2:
 				{
 					auto vector_getter = [](void* vec, int idx, const char** out_text)
 					{

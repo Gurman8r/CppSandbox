@@ -11,7 +11,8 @@ static_assert(std::is_base_of<ml::IEvent, T>::value, "Type must derive ml::IEven
 
 namespace ml
 {
-	class ML_CORE_API IEvent : public ITrackable
+	class ML_CORE_API IEvent
+		: public ITrackable
 	{
 	public:
 		enum : int32_t

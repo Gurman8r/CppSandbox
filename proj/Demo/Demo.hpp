@@ -123,11 +123,6 @@ namespace DEMO
 		};
 		DemoPhysics phys;
 
-		// Threads
-		/* * * * * * * * * * * * * * * * * * * * */
-
-		ml::Thread * m_thread;
-
 		/* * * * * * * * * * * * * * * * * * * * */
 	};
 }

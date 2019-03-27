@@ -154,16 +154,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\include\MemeCore\IRequest.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Array.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Assert.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Bytes.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Check.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Chunk.hpp" />
     <ClInclude Include="..\..\include\MemeCore\CoreEvents.hpp" />
+    <ClInclude Include="..\..\include\MemeCore\Dispatcher.hpp" />
     <ClInclude Include="..\..\include\MemeCore\File.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Function.hpp" />
     <ClInclude Include="..\..\include\MemeCore\IHandle.hpp" />
     <ClInclude Include="..\..\include\MemeCore\PluginAPI.hpp" />
+    <ClInclude Include="..\..\include\MemeCore\TestRequest.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Usings.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Plugin.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Ratio.hpp" />
@@ -211,12 +214,14 @@
     <ClInclude Include="..\..\include\MemeCore\Vector2.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Vector3.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Vector4.hpp" />
+    <ClInclude Include="..\..\include\MemeCore\Worker.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\include\MemeCore\IEnumerable.hpp" />
     <ClCompile Include="..\..\src\MemeCore\Assert.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Console.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Debug.cpp" />
+    <ClCompile Include="..\..\src\MemeCore\Dispatcher.cpp" />
     <ClCompile Include="..\..\src\MemeCore\EventSystem.cpp" />
     <ClCompile Include="..\..\src\MemeCore\File.cpp" />
     <ClCompile Include="..\..\src\MemeCore\FileSystem.cpp" />
@@ -227,10 +232,12 @@
     <ClCompile Include="..\..\src\MemeCore\OS.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Plugin.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Random.cpp" />
+    <ClCompile Include="..\..\src\MemeCore\TestRequest.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Thread.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Time.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Duration.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Timer.cpp" />
+    <ClCompile Include="..\..\src\MemeCore\Worker.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

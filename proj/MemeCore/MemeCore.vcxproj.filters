@@ -231,6 +231,18 @@
     <ClInclude Include="..\..\include\MemeCore\CoreEvents.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\IRequest.hpp">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Dispatcher.hpp">
+      <Filter>Header Files\Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\TestRequest.hpp">
+      <Filter>Header Files\Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Worker.hpp">
+      <Filter>Header Files\Threading</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeCore\Timer.cpp">
@@ -286,6 +298,15 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\EventSystem.cpp">
       <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeCore\Dispatcher.cpp">
+      <Filter>Source Files\Threading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeCore\TestRequest.cpp">
+      <Filter>Source Files\Threading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeCore\Worker.cpp">
+      <Filter>Source Files\Threading</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

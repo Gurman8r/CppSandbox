@@ -225,7 +225,7 @@ namespace ml
 			case Uniform::Vec4:	return setUniform(u.name, u.get_value<vec4f>());
 			case Uniform::Mat3:	return setUniform(u.name, u.get_value<mat3f>());
 			case Uniform::Mat4:	return setUniform(u.name, u.get_value<mat4f>());
-			case Uniform::Tex:	return setUniform(u.name, u.get_value<Texture>());
+			case Uniform::Tex2:	return setUniform(u.name, u.get_value<Texture>());
 			}
 		}
 		return Debug::logError("Invalid Uniform | {0}", u);

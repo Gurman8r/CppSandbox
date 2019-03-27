@@ -22,7 +22,7 @@ namespace ml
 			Vec4,
 			Mat3,
 			Mat4,
-			Tex,
+			Tex2,
 			MAX_TYPE
 		};
 

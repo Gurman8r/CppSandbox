@@ -6,6 +6,7 @@
 #include <cassert>
 #include <cctype>
 #include <chrono>
+#include <csignal>
 #include <cstddef>
 #include <ctime>
 #include <fstream>
@@ -18,6 +19,7 @@
 #include <locale>
 #include <map>
 #include <mutex>
+#include <queue>
 #include <random>
 #include <regex>
 #include <stack>

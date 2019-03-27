@@ -2,6 +2,7 @@
 #include "DemoCommands.hpp"
 #include <MemeAudio/Audio.hpp>
 #include <MemeCore/Debug.hpp>
+#include <MemeCore/Dispatcher.hpp>
 #include <MemeCore/Time.hpp>
 #include <MemeCore/FileSystem.hpp> 
 #include <MemeCore/Random.hpp>
@@ -329,7 +330,7 @@ namespace DEMO
 				ImGui::CreateContext();
 				ImGui::StyleColorsDark();
 				ImGui::GetStyle().FrameBorderSize = 1;
-				if (!ImGui_ML_Init("#version 410", this, true, SETTINGS.imguiIni.c_str()))
+				if (!ImGui_ML_Init("#version 410", this, true, SETTINGS.imguiINI.c_str()))
 				{
 					return ml::Debug::setError(ml::Debug::logError("Failed Loading ImGui"));
 				}
@@ -354,7 +355,7 @@ namespace DEMO
 			}
 
 			// CD
-			ML_FileSystem.setWorkingDir("../../../");
+			ML_FileSystem.setWorkingDir(ML_FileSystem.pathTo("../../../"));
 
 			// Force Update Framebuffers
 			ML_EventSystem.fireEvent(ml::FramebufferSizeEvent(
@@ -405,15 +406,18 @@ namespace DEMO
 		{
 			if (ml::Model * m = ML_Res.models.get("borg"))
 			m->transform()
-				.translate({ +5.0f, 0.0f, 0.0f });
+				.translate({ +5.0f, 0.0f, 0.0f })
+				.scale(1.0f);
 
 			if (ml::Model * m = ML_Res.models.get("sanic"))
 				m->transform()
-				.translate({ -5.0f, 0.0f, 0.0f });
+				.translate({ -5.0f, 0.0f, 0.0f })
+				.scale(1.0f);
 
 			if (ml::Model * m = ML_Res.models.get("earth"))
 				m->transform()
-				.translate({ 0.0f, 0.0f, 0.0f });
+				.translate({ 0.0f, 0.0f, 0.0f })
+				.scale(1.0f);
 
 			if (ml::Model * m = ML_Res.models.get("cube"))
 				m->transform()
@@ -444,20 +448,6 @@ namespace DEMO
 			}
 		}
 
-		// Threads
-		m_thread = new ml::Thread([&]()
-		{
-			ml::Debug::log("Entering Dummy Thread");
-			do
-			{
-				ml::cout << "*";
-				ML_Time.sleep(1000);
-			} while (this->isOpen());
-			ml::cout << ml::endl;
-			ml::Debug::log("Exiting Dummy Thread");
-		});
-		if (SETTINGS.enableThreads) { m_thread->launch(); }
-
 		// Plugins
 		if (ml::Plugin * p = ML_Res.plugins.get("TestPlugin"))
 		{
@@ -478,15 +468,12 @@ namespace DEMO
 		this->pollEvents();
 
 		// Update Title
-		this->setTitle(ml::String::Format("{0} | {1} | {2}",
+		this->setTitle(ml::String::Format("{0} | {1} | {2} | {3} ms/frame ({4} fps)",
 			SETTINGS.title,
-			ml::String("{0} | {1}").format(
-				ml::Debug::configuration(),
-				ml::Debug::platformTarget()
-			),
-			ml::String("{0} ms/frame ({1} fps)").format(
-				ev.elapsed.delta(),
-				ML_Time.calculateFPS(ev.elapsed.delta())
+			ml::Debug::configuration(),
+			ml::Debug::platformTarget(),
+			ev.elapsed.delta(),
+			ML_Time.calculateFPS(ev.elapsed.delta()
 			)
 		));
 
@@ -676,7 +663,7 @@ namespace DEMO
 		static ml::UniformSet batch_uniforms = {
 			ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&uni.ortho.matrix()),
 			ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4),
-			ml::Uniform("Frag.mainTex",	ml::Uniform::Tex),
+			ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2),
 		};
 
 		static ml::UniformSet light_uniforms = {
@@ -730,7 +717,7 @@ namespace DEMO
 					static ml::UniformSet uniforms = {
 						ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&model->transform().matrix()),
 						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
-						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex,	ML_Res.textures.get("borg")),
+						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2,	ML_Res.textures.get("borg")),
 					};
 					shader->applyUniforms(uniforms);
 					shader->bind();
@@ -745,8 +732,8 @@ namespace DEMO
 				{
 					static ml::UniformSet uniforms = {
 						ml::Uniform("Vert.model",		ml::Uniform::Mat4,	&model->transform().matrix()),
-						ml::Uniform("Frag.tex_dm",		ml::Uniform::Tex,	ML_Res.textures.get("earth_dm")),
-						ml::Uniform("Frag.tex_sm",		ml::Uniform::Tex,	ML_Res.textures.get("earth_sm")),
+						ml::Uniform("Frag.tex_dm",		ml::Uniform::Tex2,	ML_Res.textures.get("earth_dm")),
+						ml::Uniform("Frag.tex_sm",		ml::Uniform::Tex2,	ML_Res.textures.get("earth_sm")),
 					};
 					shader->applyUniforms(camera_uniforms);
 					shader->applyUniforms(light_uniforms);
@@ -763,8 +750,8 @@ namespace DEMO
 				{
 					static ml::UniformSet uniforms = {
 						ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&model->transform().matrix()),
-						ml::Uniform("Frag.tex_dm",	ml::Uniform::Tex,	ML_Res.textures.get("moon_dm")),
-						ml::Uniform("Frag.tex_sm",	ml::Uniform::Tex,	ML_Res.textures.get("moon_nm")),
+						ml::Uniform("Frag.tex_dm",	ml::Uniform::Tex2,	ML_Res.textures.get("moon_dm")),
+						ml::Uniform("Frag.tex_sm",	ml::Uniform::Tex2,	ML_Res.textures.get("moon_nm")),
 					};
 					shader->applyUniforms(camera_uniforms);
 					shader->applyUniforms(light_uniforms);
@@ -782,7 +769,7 @@ namespace DEMO
 					static ml::UniformSet uniforms = {
 						ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&model->transform().matrix()),
 						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
-						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex,	ML_Res.textures.get("stone_dm")),
+						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2,	ML_Res.textures.get("stone_dm")),
 					};
 					shader->applyUniforms(camera_uniforms);
 					shader->applyUniforms(uniforms);
@@ -799,7 +786,7 @@ namespace DEMO
 					static ml::UniformSet uniforms = {
 						ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&model->transform().matrix()),
 						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
-						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex,	ML_Res.textures.get("stone_dm")),
+						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2,	ML_Res.textures.get("stone_dm")),
 					};
 					shader->applyUniforms(camera_uniforms);
 					shader->applyUniforms(uniforms);
@@ -818,7 +805,7 @@ namespace DEMO
 					static ml::UniformSet uniforms = {
 						ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&model->transform().matrix()),
 						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
-						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex,	ML_Res.textures.get("sanic")),
+						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2,	ML_Res.textures.get("sanic")),
 					};
 					shader->applyUniforms(camera_uniforms);
 					shader->applyUniforms(uniforms);
@@ -890,8 +877,9 @@ namespace DEMO
 				if (const ml::Shader * shader = scene->shader())
 				{
 					shader->applyUniforms(effect_uniforms);
+
+					this->draw(*scene);
 				}
-				this->draw(*scene);
 			}
 
 			post->unbind();
@@ -945,8 +933,6 @@ namespace DEMO
 
 	void DemoProgram::onExit(const ExitEvent & ev)
 	{
-		delete m_thread;
-
 		ML_Res.cleanAll();
 
 		ImGui_ML_Shutdown();

@@ -30,7 +30,7 @@ namespace DEMO
 		bool		escapeIsExit;	// Escape key is Exit?
 		bool		enableThreads;	// Enable threads?
 		ml::String	manifest;		// Name of manifest file
-		ml::String	imguiIni;		// Name of imgui INI
+		ml::String	imguiINI;		// Name of imgui INI
 
 		// [Script]
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -91,7 +91,7 @@ namespace DEMO
 			escapeIsExit	= ini.GetBoolean("General", "escapeIsExit", true);
 			enableThreads	= ini.GetBoolean("General", "enableThreads", false);
 			manifest		= ini.Get("General", "manifest", "manifest.txt");
-			imguiIni		= ini.Get("General", "imguiIni", "");
+			imguiINI		= ini.Get("General", "imguiINI", "");
 
 			// [Script]
 			/* * * * * * * * * * * * * * * * * * * * */
