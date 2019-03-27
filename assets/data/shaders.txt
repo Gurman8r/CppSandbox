@@ -10,7 +10,7 @@
 <item>
 	type: shader
 	name: sprites
-	file: ../../../assets/shaders/basic.shader
+	file: ../../../assets/shaders/sprites.shader
 </item>
 
 <item>

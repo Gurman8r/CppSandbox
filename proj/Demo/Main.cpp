@@ -25,6 +25,7 @@ int32_t main(int32_t argc, char ** argv)
 	ml::RenderWindow * program;
 	if (!(program = static_cast<ml::RenderWindow *>(new DEMO::DemoProgram())))
 	{
+		delete program;
 		return ml::Debug::logError("Failed Creating Program")
 			|| ml::Debug::pause(EXIT_FAILURE);
 	}
@@ -80,7 +81,6 @@ int32_t main(int32_t argc, char ** argv)
 
 		// Delete Program
 		delete program;
-
 		return EXIT_SUCCESS;
 	}
 }

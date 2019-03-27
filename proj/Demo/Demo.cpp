@@ -403,6 +403,19 @@ namespace DEMO
 				.scale({ 12.5, 0.25f, 12.5 });
 		}
 
+		// Sprites
+		{
+			if (ml::Sprite * sprite = ML_Res.sprites.get("neutrino"))
+			{
+				(*sprite)
+					.setPosition((ml::vec2f { 0.95f, 0.075f } *this->getSize()))
+					.setScale(0.5f)
+					.setRotation(0.0f)
+					.setOrigin(0.5f)
+					.setColor(ml::Color::White);
+			}
+		}
+
 		// Threads
 		m_thread = new ml::Thread([&]()
 		{
@@ -803,27 +816,6 @@ namespace DEMO
 			if (const ml::Shader * shader = ML_Res.shaders.get("sprites"))
 			{
 				static ml::RenderBatch batch(&m_batch_vao, &m_batch_vbo, shader, &batch_uniforms);
-
-				if (ml::Sprite * sprite = ML_Res.sprites.get("neutrino"))
-				{
-					(*sprite)
-						.setTexture(ML_Res.textures.get("neutrino"))
-						.setPosition((ml::vec2f { 0.95f, 0.075f } *this->getSize()))
-						.setScale(0.5f)
-						.setRotation(0.0f)
-						.setOrigin(0.5f)
-						.setColor(ml::Color::White);
-				}
-
-				if (ml::Sprite * sprite = ML_Res.sprites.get("My Sprite"))
-				{
-					(*sprite)
-						.setPosition((ml::vec2f { 0.5f, 0.5f } *this->getSize()))
-						.setScale(0.5f)
-						.setRotation(0.0f)
-						.setOrigin(0.5f)
-						.setColor(ml::Color::White);
-				}
 
 				for (auto pair : ML_Res.sprites)
 				{

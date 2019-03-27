@@ -3,12 +3,6 @@
 
 <item>
 	type: sprite
-	name: My Sprite
-	texture: neutrino
-</item>
-
-<item>
-	type: sprite
 	name: neutrino
 	texture: neutrino
 </item>

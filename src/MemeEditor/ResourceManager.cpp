@@ -283,7 +283,10 @@ namespace ml
 					{
 						return
 							shaders.load(name) &&
-							shaders.get(name)->loadFromFile(vert, geom, frag);
+							shaders.get(name)->loadFromFile(
+								vert, 
+								geom, 
+								frag);
 					}
 					else
 					{
