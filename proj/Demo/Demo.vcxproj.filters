@@ -288,35 +288,38 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\assets\manifest.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="..\..\assets\data\images.txt">
-      <Filter>Resource Files\data</Filter>
-    </Text>
-    <Text Include="..\..\assets\data\shaders.txt">
-      <Filter>Resource Files\data</Filter>
-    </Text>
-    <Text Include="..\..\assets\data\textures.txt">
-      <Filter>Resource Files\data</Filter>
-    </Text>
     <Text Include="..\..\assets\data\fonts.txt">
       <Filter>Resource Files\data</Filter>
     </Text>
-    <Text Include="..\..\assets\data\scripts.txt">
-      <Filter>Resource Files\data</Filter>
-    </Text>
-    <Text Include="..\..\assets\data\sprites.txt">
-      <Filter>Resource Files\data</Filter>
-    </Text>
-    <Text Include="..\..\assets\data\models.txt">
+    <Text Include="..\..\assets\data\images.txt">
       <Filter>Resource Files\data</Filter>
     </Text>
     <Text Include="..\..\assets\data\meshes.txt">
       <Filter>Resource Files\data</Filter>
     </Text>
+    <Text Include="..\..\assets\data\models.txt">
+      <Filter>Resource Files\data</Filter>
+    </Text>
+    <Text Include="..\..\assets\data\scripts.txt">
+      <Filter>Resource Files\data</Filter>
+    </Text>
+    <Text Include="..\..\assets\data\plugins.txt">
+      <Filter>Resource Files\data</Filter>
+    </Text>
+    <Text Include="..\..\assets\data\shaders.txt">
+      <Filter>Resource Files\data</Filter>
+    </Text>
     <Text Include="..\..\assets\data\skyboxes.txt">
       <Filter>Resource Files\data</Filter>
+    </Text>
+    <Text Include="..\..\assets\data\sprites.txt">
+      <Filter>Resource Files\data</Filter>
+    </Text>
+    <Text Include="..\..\assets\data\textures.txt">
+      <Filter>Resource Files\data</Filter>
+    </Text>
+    <Text Include="..\..\assets\manifest.txt">
+      <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>
 </Project>

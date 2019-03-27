@@ -21,8 +21,6 @@
 #include <MemeGraphics/OpenGL.hpp>
 #include <MemeGraphics/Model.hpp>
 #include <MemeGraphics/Camera.hpp>
-#include <MemeNet/Client.hpp>
-#include <MemeNet/Server.hpp>
 #include <MemeScript/Interpreter.hpp>
 #include <MemePhysics/Rigidbody.hpp>
 #include <MemePhysics/Particle.hpp>
@@ -66,75 +64,88 @@ namespace DEMO
 		bool ML_DemoWindow_draw(bool * p_open);
 
 	private:
+		// Sprites/2D
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		ml::Transform	m_persp;
-		ml::Transform	m_ortho;
-		ml::Transform	m_camera;
+		ml::VAO m_batch_vao;
+		ml::VBO m_batch_vbo;
 
-		/* * * * * * * * * * * * * * * * * * * * */
-
-		ml::VAO m_vao;
-		ml::VBO m_vbo;
-
-		using TextMap = ml::HashMap<ml::String, ml::Text>;
-		TextMap m_text;
-
+		using TextMap	= ml::HashMap<ml::String, ml::Text>;
 		using EffectMap = ml::HashMap<ml::String, ml::Effect>;
-		EffectMap m_effects;
 
+		TextMap		m_txtMap;
+		EffectMap	m_fboMap;
+
+		// Uniforms
 		/* * * * * * * * * * * * * * * * * * * * */
+		struct DemoUniforms
+		{
+			// Matrices
+			ml::Transform	persp;
+			ml::Transform	ortho;
+			ml::Transform	camera;
 
-		ml::Material m_mat;
-
-		bool		m_camAnimate	= true;
-		ml::vec3f	m_camPos		= { 0, 1, 10 };
-		float		m_camSpd		= 1.f;
+			bool			camAnimate	= true;
+			ml::vec3f		camPos		= { 0, 1, 10 };
+			float			camSpd		= 1.f;
 		
-		ml::vec3f	m_lightPos		= { 0, 1, 30 };
-		ml::vec4f	m_lightCol		= ml::Color::LightYellow;
-		float		m_ambient		= 0.01f;
-		float		m_specular		= 0.5f;
-		int32_t		m_shininess		= 8;
+			ml::vec3f		lightPos		= { 0, 1, 30 };
+			ml::vec4f		lightCol		= ml::Color::LightYellow;
+			float			ambient		= 0.01f;
+			float			specular		= 0.5f;
+			int32_t			shininess		= 8;
 
-		ml::vec4f	m_clearColor	= ml::Color::Gray;
-		int32_t		m_effectMode		= 0;
+			ml::vec4f		clearColor	= ml::Color::Gray;
+			int32_t			effectMode		= 0;
 
-		int32_t		m_lineMode		= 1;
-		ml::vec4f	m_lineColor		= ml::Color::Red;
-		float		m_lineDelta		= 1.f;
-		float		m_lineSize		= 0.5f;
-		int32_t		m_lineSamples	= 16;
-		bool		m_animate		= true;
+			int32_t			lineMode		= 1;
+			ml::vec4f		lineColor		= ml::Color::Red;
+			float			lineDelta		= 1.f;
+			float			lineSize		= 0.5f;
+			int32_t			lineSamples	= 16;
+			bool			animate		= true;
+		};
+		DemoUniforms uni;
 
+		// GUI
+		/* * * * * * * * * * * * * * * * * * * * */
+		struct DemoGUI
+		{
+			/* * * * * * * * * * * * * * * * * * * * */
+			bool show_imgui_demo	= false;
+			bool show_imgui_metrics	= false;
+			bool show_imgui_style	= false;
+			bool show_imgui_about	= false;
+			/* * * * * * * * * * * * * * * * * * * * */
+			bool show_dockspace		= true;
+			bool show_terminal		= true;
+			bool show_browser		= true;
+			bool show_builder		= true;
+			bool show_inspector		= true;
+			bool show_scene			= true;
+			bool show_texteditor	= true;
+			bool show_hierarchy		= true;
+			bool show_resources		= true;
+			bool show_network		= true;
+			bool show_demowindow	= true;
+			/* * * * * * * * * * * * * * * * * * * * */
+		};
+		DemoGUI gui;
+
+		// Physics
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		bool show_imgui_demo	= false;
-		bool show_imgui_metrics	= false;
-		bool show_imgui_style	= false;
-		bool show_imgui_about	= false;
+		struct DemoPhysics
+		{
+			ml::Rigidbody	rigidbody;
+			ml::Particle	particle;
+		};
+		DemoPhysics phys;
 
-		bool show_ml_dockspace	= true;
-		bool show_ml_terminal	= true;
-		bool show_ml_browser	= true;
-		bool show_ml_builder	= true;
-		bool show_ml_inspector	= true;
-		bool show_ml_scene		= true;
-		bool show_ml_texteditor	= true;
-		bool show_ml_hierarchy	= true;
-		bool show_ml_resources	= true;
-		bool show_ml_network	= true;
-		bool show_ml_demowindow	= true;
-
+		// Testing
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		ml::Thread * m_thread;
-		ml::Plugin	 m_plugin;
-
-		/* * * * * * * * * * * * * * * * * * * * */
-
-		ml::Rigidbody	m_rigidbody;
-		ml::Particle	m_particle;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	};

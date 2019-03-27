@@ -1,10 +1,10 @@
-# Skyboxes
+# Plugins
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-#<item>
-#	type: skybox
-#	name: sunset
-#	file: ../../../assets/skyboxes/sunset.skybox
-#</item>
+<item>
+	type: plugin
+	name: TestPlugin
+	file: ./TestPlugin_%Configuration%_%Platform%.dll
+</item>
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #

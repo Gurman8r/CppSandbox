@@ -53,9 +53,17 @@ namespace ml
 
 	bool Browser::draw(bool * p_open)
 	{
-		if (beginDraw(p_open))
+		if (beginDraw(p_open, ImGuiWindowFlags_MenuBar))
 		{
-			ImGui::Text("%s", m_path.c_str());
+			/* * * * * * * * * * * * * * * * * * * * */
+
+			if (ImGui::BeginMenuBar())
+			{
+				ImGui::Text("%s", m_path.c_str());
+				ImGui::EndMenuBar();
+			}
+
+			/* * * * * * * * * * * * * * * * * * * * */
 
 			draw_directory();
 
@@ -64,12 +72,13 @@ namespace ml
 			draw_file();
 
 			// Handle Double Clicks
-			if (m_isDouble)
+			if (m_isDouble || (m_isDouble = false))
 			{
-				m_isDouble = false;
 				switch (m_type)
 				{
-				case T_Dir: ML_FileSystem.setWorkingDir(get_selected_name()); break;
+				case T_Dir: 
+					ML_FileSystem.setWorkingDir(get_selected_name()); 
+					break;
 				}
 			}
 		}

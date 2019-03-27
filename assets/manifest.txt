@@ -68,3 +68,11 @@
 	type: manifest
 	name: ../../../assets/data/sprites.txt
 </item>
+
+
+# Plugins
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+<item>
+	type: manifest
+	name: ../../../assets/data/plugins.txt
+</item>

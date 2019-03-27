@@ -9,7 +9,7 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		template <typename Fun>
-		static void Tree(Fun fun)
+		static void Columns(Fun fun)
 		{
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { 2, 2 });
 			ImGui::Columns(2);
@@ -31,7 +31,7 @@ namespace ml
 			ImGui::AlignTextToFramePadding();
 			bool node_open;
 			{
-				node_open = ImGui::TreeNode("Object", "%s", label);
+				node_open = ImGui::TreeNode("Hierarchy_Group", "%s", label);
 			}
 			ImGui::NextColumn();
 			ImGui::AlignTextToFramePadding();
@@ -55,7 +55,7 @@ namespace ml
 		{
 			ImGui::AlignTextToFramePadding();
 			ImGui::TreeNodeEx(
-				"Field",
+				"Hierarchy_Field",
 				ImGuiTreeNodeFlags_Leaf |
 				ImGuiTreeNodeFlags_NoTreePushOnOpen |
 				ImGuiTreeNodeFlags_Bullet,
@@ -114,7 +114,7 @@ namespace ml
 
 			/* * * * * * * * * * * * * * * * * * * * */
 
-			Funcs::Tree([&]() 
+			Funcs::Columns([&]() 
 			{
 				for (size_t i = 0; i < m_objects.size(); i++)
 				{

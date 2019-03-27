@@ -39,19 +39,19 @@ namespace
 	void * TestPlugin::onInit(void * data)
 	{
 		ml::cout << ((ml::CString)data) << ml::endl;
-		return (void *)(NULL);
+		return (void *)("OK");
 	}
 	
 	void * TestPlugin::onEnable(void * data)
 	{
 		ml::cout << ((ml::CString)data) << ml::endl;
-		return (void *)(NULL);
+		return (void *)("OK");
 	}
 	
 	void * TestPlugin::onDisable(void * data)
 	{
 		ml::cout << ((ml::CString)data) << ml::endl;
-		return (void *)(NULL);
+		return (void *)("OK");
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

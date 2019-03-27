@@ -30,11 +30,10 @@ namespace ml
 
 	void * Plugin::call(const String & name, void * data)
 	{
-		if (PluginFun func = (PluginFun)ML_Lib.loadFunction(m_inst, name))
-		{
-			return func(data);
-		}
-		return NULL;
+		PluginFun func;
+		return ((func = (PluginFun)ML_Lib.loadFunction(m_inst, name))
+			? (func(data))
+			: (NULL));
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

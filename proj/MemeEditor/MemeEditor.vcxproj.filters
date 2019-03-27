@@ -25,9 +25,6 @@
     <Filter Include="Header Files\DS">
       <UniqueIdentifier>{a740db58-683d-46df-9dfa-8d3a195dbcd2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Internal">
-      <UniqueIdentifier>{ef85d174-aeaf-4401-89ee-3ec0d06662e8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Tools">
       <UniqueIdentifier>{170c2bac-0d65-404a-9d6c-f1631acd3794}</UniqueIdentifier>
     </Filter>
@@ -45,6 +42,9 @@
     </Filter>
     <Filter Include="Source Files\Windows">
       <UniqueIdentifier>{274f61a3-bfab-43ed-acdf-49cde1322a63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Internal">
+      <UniqueIdentifier>{ef85d174-aeaf-4401-89ee-3ec0d06662e8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

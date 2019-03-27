@@ -1,5 +1,7 @@
 #include <MemeEditor/NetworkHUD.hpp>
 #include <MemeEditor/ImGui.hpp>
+#include <MemeNet/Client.hpp>
+#include <MemeNet/Server.hpp>
 
 namespace ml
 {
@@ -22,10 +24,18 @@ namespace ml
 	{
 		if (beginDraw(p_open, ImGuiWindowFlags_MenuBar))
 		{
+			/* * * * * * * * * * * * * * * * * * * * */
+
 			if (ImGui::BeginMenuBar())
 			{
 				ImGui::EndMenuBar();
 			}
+
+			/* * * * * * * * * * * * * * * * * * * * */
+
+			// ...
+
+			/* * * * * * * * * * * * * * * * * * * * */
 		}
 		return endDraw();
 	}

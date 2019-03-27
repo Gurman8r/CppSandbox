@@ -3,6 +3,7 @@
 
 #include <MemeEditor/ResourceTable.hpp>
 #include <MemeCore/List.hpp>
+#include <MemeCore/Plugin.hpp>
 #include <MemeAudio/Sound.hpp>
 #include <MemeGraphics/Font.hpp>
 #include <MemeGraphics/Model.hpp>
@@ -31,6 +32,7 @@ namespace ml
 		using MaterialMap	= ResourceTable<Material>;
 		using MeshMap		= ResourceTable<Mesh>;
 		using ModelMap		= ResourceTable<Model>;
+		using PluginMap		= ResourceTable<Plugin>;
 		using ScriptMap		= ResourceTable<Script>;
 		using ShaderMap		= ResourceTable<Shader>;
 		using SkyboxMap		= ResourceTable<Skybox>;
@@ -62,6 +64,7 @@ namespace ml
 		MaterialMap mats;
 		MeshMap		meshes;
 		ModelMap	models;
+		PluginMap	plugins;
 		ScriptMap	scripts;
 		ShaderMap	shaders;
 		SkyboxMap	skyboxes;

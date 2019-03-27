@@ -9,7 +9,7 @@ namespace ml
 	{
 	}
 
-	ResourceManager::~ResourceManager() 
+	ResourceManager::~ResourceManager()
 	{
 		cleanAll();
 	}
@@ -29,7 +29,8 @@ namespace ml
 			textures.clean() +
 			images.clean() +
 			fonts.clean() +
-			scripts.clean();
+			scripts.clean() +
+			plugins.clean();
 	}
 
 	size_t ResourceManager::reloadAll()
@@ -45,7 +46,8 @@ namespace ml
 			skyboxes.reload() +
 			sounds.reload() +
 			sprites.reload() +
-			textures.reload();
+			textures.reload() +
+			plugins.reload();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -123,6 +125,9 @@ namespace ml
 
 			while (std::getline(file, line))
 			{
+				line.replaceAll("%Configuration%", Debug::config());
+				line.replaceAll("%Platform%", Debug::platform());
+
 				if (line.find("</item>") != String::npos)
 				{
 					return true;
@@ -130,15 +135,16 @@ namespace ml
 				else
 				{
 					SStream ss;
-					if (parseLine(line,		 "type:",	ss)) { m_manifest.back()["type"]	= ss.str(); }
-					else if (parseLine(line, "name:",	ss)) { m_manifest.back()["name"]	= ss.str(); }
-					else if (parseLine(line, "file:",	ss)) { m_manifest.back()["file"]	= ss.str(); }
-					else if (parseLine(line, "font:",	ss)) { m_manifest.back()["font"]	= ss.str(); }
-					else if (parseLine(line, "image:",	ss)) { m_manifest.back()["image"]	= ss.str(); }
-					else if (parseLine(line, "mesh:",	ss)) { m_manifest.back()["mesh"]	= ss.str(); }
-					else if (parseLine(line, "model:",	ss)) { m_manifest.back()["model"]	= ss.str(); }
-					else if (parseLine(line, "shader:",	ss)) { m_manifest.back()["shader"]	= ss.str(); }
-					else if (parseLine(line, "texture:",ss)) { m_manifest.back()["texture"]	= ss.str(); }
+					if (parseLine(line, "type:", ss)) { m_manifest.back()["type"] = ss.str(); }
+					else if (parseLine(line, "name:", ss)) { m_manifest.back()["name"] = ss.str(); }
+					else if (parseLine(line, "file:", ss)) { m_manifest.back()["file"] = ss.str(); }
+					else if (parseLine(line, "font:", ss)) { m_manifest.back()["font"] = ss.str(); }
+					else if (parseLine(line, "image:", ss)) { m_manifest.back()["image"] = ss.str(); }
+					else if (parseLine(line, "mesh:", ss)) { m_manifest.back()["mesh"] = ss.str(); }
+					else if (parseLine(line, "model:", ss)) { m_manifest.back()["model"] = ss.str(); }
+					else if (parseLine(line, "plugin:", ss)) { m_manifest.back()["plugin"] = ss.str(); }
+					else if (parseLine(line, "shader:", ss)) { m_manifest.back()["shader"] = ss.str(); }
+					else if (parseLine(line, "texture:", ss)) { m_manifest.back()["texture"] = ss.str(); }
 				}
 			}
 		}
@@ -176,6 +182,10 @@ namespace ml
 					{
 						return fonts.load(name, file);
 					}
+					else
+					{
+						return fonts.load(name);
+					}
 				}
 				// Image
 				else if (type == "image")
@@ -183,6 +193,10 @@ namespace ml
 					if (const String file = getValue(data, "file"))
 					{
 						return images.load(name, file);
+					}
+					else
+					{
+						return images.load(name);
 					}
 				}
 				// Material
@@ -192,6 +206,10 @@ namespace ml
 					{
 						return mats.load(name, file);
 					}
+					else
+					{
+						return mats.load(name);
+					}
 				}
 				// Mesh
 				else if (type == "mesh")
@@ -199,6 +217,10 @@ namespace ml
 					if (const String file = getValue(data, "file"))
 					{
 						return meshes.load(name, file);
+					}
+					else
+					{
+						return meshes.load(name);
 					}
 				}
 				// Model
@@ -214,6 +236,22 @@ namespace ml
 							models.load(name) &&
 							models.get(name)->loadFromMemory(*meshes.get(file));
 					}
+					else
+					{
+						return models.load(name);
+					}
+				}
+				// Plugin
+				else if (type == "plugin")
+				{
+					if (const String file = getValue(data, "file"))
+					{
+						return plugins.load(name, file);
+					}
+					else
+					{
+						return plugins.load(name);
+					}
 				}
 				// Script
 				else if (type == "script")
@@ -221,6 +259,10 @@ namespace ml
 					if (const String file = getValue(data, "file"))
 					{
 						return scripts.load(name, file);
+					}
+					else
+					{
+						return scripts.load(name);
 					}
 				}
 				// Shader
@@ -239,10 +281,11 @@ namespace ml
 						{
 							return
 								shaders.load(name) &&
-								shaders.get(name)->loadFromMemory(
-									vert, 
-									geom, 
-									frag);
+								shaders.get(name)->loadFromMemory(vert, geom, frag);
+						}
+						else
+						{
+							return shaders.load(name);
 						}
 					}
 				}
@@ -253,6 +296,10 @@ namespace ml
 					{
 						return skyboxes.load(name, file);
 					}
+					else
+					{
+						return skyboxes.load(name);
+					}
 				}
 				// Sound
 				else if (type == "sound")
@@ -261,31 +308,46 @@ namespace ml
 					{
 						return sounds.load(name, file);
 					}
+					else
+					{
+						return sounds.load(name);
+					}
 				}
 				// Sprite
 				else if (type == "sprite")
 				{
-					if (Sprite * temp = sprites.load(name))
+					if (const String file = getValue(data, "texture"))
 					{
-						if (const String file = getValue(data, "texture"))
-						{
-							return temp->loadFromMemory(textures.get(file));
-						}
+						const Texture * tex;
+						return
+							(sprites.load(name)) &&
+							(tex = textures.get(file)) &&
+							(sprites.get(name)->loadFromMemory(tex));
+					}
+					else
+					{
+						return sprites.load(name);
 					}
 				}
 				// Texture
 				else if (type == "texture")
 				{
-				if (const String file = getValue(data, "file"))
-				{
-					return textures.load(name, file);
-				}
-				else if (const String file = getValue(data, "image"))
-				{
-					return
-						textures.load(name) &&
-						textures.get(name)->loadFromImage(*images.get(file));
-				}
+					if (const String file = getValue(data, "file"))
+					{
+						return textures.load(name, file);
+					}
+					else if (const String file = getValue(data, "image"))
+					{
+						const Image * img;
+						return
+							(textures.load(name)) &&
+							(img = images.get(file)) &&
+							(textures.get(name)->loadFromImage(*img));
+					}
+					else
+					{
+						return textures.load(name);
+					}
 				}
 			}
 		}

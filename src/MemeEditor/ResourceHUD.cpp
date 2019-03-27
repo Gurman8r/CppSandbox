@@ -12,7 +12,7 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		template <typename Fun, typename ... Args>
-		inline static void Tree(Fun fun, Args ... args)
+		inline static void Columns(Fun fun, Args ... args)
 		{
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { 2, 2 });
 			ImGui::Columns(2);
@@ -34,7 +34,7 @@ namespace ml
 			ImGui::AlignTextToFramePadding();
 			bool node_open;
 			{
-				node_open = ImGui::TreeNode("Object", "%s", label);
+				node_open = ImGui::TreeNode("ResourceHUD_Group", "%s", label);
 			}
 			ImGui::NextColumn();
 			ImGui::AlignTextToFramePadding();
@@ -58,7 +58,7 @@ namespace ml
 		{
 			ImGui::AlignTextToFramePadding();
 			ImGui::TreeNodeEx(
-				"Field",
+				"ResourceHUD_Field",
 				ImGuiTreeNodeFlags_Leaf |
 				ImGuiTreeNodeFlags_NoTreePushOnOpen |
 				ImGuiTreeNodeFlags_Bullet,
@@ -75,24 +75,19 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		inline static void FileInfoField(const String & fFile)
+		inline static void FileInfoField(const String & file)
 		{
-			const String fPath = ML_FileSystem.getFilePath(fFile);
-			const String fName = ML_FileSystem.getFileName(fFile);
-			const String oPath = ML_FileSystem.pathTo(fPath);
-			if (ImGui::Selectable(fPath.c_str()))
+			const String path = ML_FileSystem.getFilePath(file);
+			const String name = ML_FileSystem.getFileName(file);
+
+			if (ImGui::Selectable(path.c_str()))
 			{
-				if (!ML_OS.execute("open", oPath))
-				{
-					ML_Terminal.printf("[ ERR ] Failed Opening \'%s\'", oPath.c_str());
-				}
+				ML_OS.execute("open", ML_FileSystem.pathTo(path));
 			}
-			if (ImGui::Selectable(fName.c_str()))
+
+			if (ImGui::Selectable(name.c_str()))
 			{
-				if (!ML_OS.execute("open", oPath))
-				{
-					ML_Terminal.printf("[ ERR ] Failed Opening \'%s\'", oPath.c_str());
-				}
+				ML_OS.execute("open", ML_FileSystem.pathTo(file));
 			}
 		}
 
@@ -140,7 +135,7 @@ namespace ml
 
 			/* * * * * * * * * * * * * * * * * * * * */
 
-			Funcs::Tree([&]()
+			Funcs::Columns([&]()
 			{
 				Funcs::Group("Resources", [&]()
 				{
