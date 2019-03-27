@@ -62,11 +62,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MemePhysics", "proj\MemePhy
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{AA6AF900-060F-41BB-B6E4-0A4B9080BF0C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestPlugin", "plugins\TestPlugin\TestPlugin.vcxproj", "{460A52CB-AFC0-451A-8223-943538090422}"
-	ProjectSection(ProjectDependencies) = postProject
-		{2E2EE9AD-06FF-4A73-B09D-EC42CB1A9923} = {2E2EE9AD-06FF-4A73-B09D-EC42CB1A9923}
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{47761FD6-8EC5-46D5-B2A9-134E48CBF7E4}"
 	ProjectSection(SolutionItems) = preProject
 		LICENSE.txt = LICENSE.txt
@@ -89,6 +84,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{5BD27D32
 		tools\Build_Release_x86.bat = tools\Build_Release_x86.bat
 		tools\Clean.bat = tools\Clean.bat
 		tools\Clean_ImGui.bat = tools\Clean_ImGui.bat
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestPlugin", "proj\TestPlugin\TestPlugin.vcxproj", "{460A52CB-AFC0-451A-8223-943538090422}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2E2EE9AD-06FF-4A73-B09D-EC42CB1A9923} = {2E2EE9AD-06FF-4A73-B09D-EC42CB1A9923}
 	EndProjectSection
 EndProject
 Global

@@ -5,6 +5,7 @@
 #include <MemeCore/List.hpp>
 #include <MemeCore/Plugin.hpp>
 #include <MemeAudio/Sound.hpp>
+#include <MemeGraphics/Effect.hpp>
 #include <MemeGraphics/Font.hpp>
 #include <MemeGraphics/Model.hpp>
 #include <MemeGraphics/Skybox.hpp>
@@ -25,6 +26,7 @@ namespace ml
 		friend class ISingleton<ResourceManager>;
 
 	public:
+		using EffectMap		= ResourceTable<Effect>;
 		using FontMap		= ResourceTable<Font>;
 		using ImageMap		= ResourceTable<Image>;
 		using MaterialMap	= ResourceTable<Material>;
@@ -43,20 +45,21 @@ namespace ml
 		~ResourceManager();
 
 	public:
-		bool cleanup() override;
-		bool loadFromFile(const String & filename) override;
-		void serialize(std::ostream & out) const override;
-
-	private:
-		bool parseFile(SStream & file);
-		bool parseItems(SStream & file, String & line);
-		bool parseValue(const HashMap<String, String> & data);
-
-	public:
 		size_t cleanAll();
 		size_t reloadAll();
 
 	public:
+		bool cleanup() override;
+		bool loadFromFile(const String & filename) override;
+		void serialize(std::ostream & out) const override;
+		void deserialize(std::istream & in) override;
+
+	private:
+		bool parseFile(SStream & file);
+		bool parseItem(const HashMap<String, String> & data);
+
+	public:
+		EffectMap	effects;
 		FontMap		fonts;
 		ImageMap	images;
 		MaterialMap mats;

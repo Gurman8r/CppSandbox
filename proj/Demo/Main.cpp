@@ -2,6 +2,7 @@
 
 #include "Demo.hpp"
 #include <MemeCore/Debug.hpp>
+#include <MemeCore/Timer.hpp>
 #include <MemeCore/EventSystem.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

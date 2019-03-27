@@ -74,24 +74,6 @@ namespace ml
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
-
-		inline static void FileInfoField(const String & file)
-		{
-			const String path = ML_FileSystem.getFilePath(file);
-			const String name = ML_FileSystem.getFileName(file);
-
-			if (ImGui::Selectable(path.c_str()))
-			{
-				ML_OS.execute("open", ML_FileSystem.pathTo(path));
-			}
-
-			if (ImGui::Selectable(name.c_str()))
-			{
-				ML_OS.execute("open", ML_FileSystem.pathTo(file));
-			}
-		}
-
-		/* * * * * * * * * * * * * * * * * * * * */
 	};
 }
 
@@ -137,227 +119,397 @@ namespace ml
 
 			Funcs::Columns([&]()
 			{
-				Funcs::Group("Resources", [&]()
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+				Funcs::Group("Fonts", [&]()
 				{
-					/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-					Funcs::Group("Fonts", [&]()
+					for (auto pair : ML_Res.fonts)
 					{
-						for (auto pair : ML_Res.fonts)
+						Funcs::Group(pair.first.c_str(), [&](CString name, const Font * e)
 						{
-							Funcs::Group(pair.first.c_str(), [&](CString name, const Font * e)
+							Funcs::Field("Name", [&](CString label)
 							{
-								Funcs::Field("Name", [&](CString label)
-								{
-									ImGui::Text("%s", name);
-								});
-								Funcs::Field("Family", [&](CString label)
-								{
-									ImGui::Text("%s", e->getInfo().family.c_str());
-								});
+								ImGui::Selectable(name);
+							});
+							Funcs::Field("Family", [&](CString label)
+							{
+								ImGui::Selectable(e->getInfo().family.c_str());
+							});
+							if (const String file = ML_Res.fonts.getFile(name))
+							{
 								Funcs::Field("File", [&](CString label)
 								{
-									Funcs::FileInfoField(ML_Res.fonts.getFile(name));
+									const String fName = ML_FileSystem.getFileName(file);
+									if (ImGui::Selectable(fName.c_str()))
+									{
+										ML_OS.execute("open", ML_FileSystem.pathTo(file));
+									}
 								});
+								Funcs::Field("Path", [&](CString label)
+								{
+									const String fPath = ML_FileSystem.getFilePath(file);
+									if (ImGui::Selectable(fPath.c_str()))
+									{
+										ML_OS.execute("open", ML_FileSystem.pathTo(fPath));
+									}
+								});
+							}
 
-							}, pair.first.c_str(), pair.second);
-						}
-					});
-					/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-					Funcs::Group("Images", [&]()
-					{
-						for (auto pair : ML_Res.images)
-						{
-							Funcs::Group(pair.first.c_str(), [&](CString name, const Image * e)
-							{
-								Funcs::Field("Name", [&](CString label)
-								{
-									ImGui::Text("%s", name);
-								});
-								Funcs::Field("Size", [&](CString label)
-								{
-									ImGui::Text("%u x %u", e->width(), e->height());
-								});
-								Funcs::Field("File", [&](CString label)
-								{
-									Funcs::FileInfoField(ML_Res.images.getFile(name));
-								});
-
-							}, pair.first.c_str(), pair.second);
-						}
-					});
-					/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-					Funcs::Group("Materials", [&]()
-					{
-						for (auto pair : ML_Res.mats)
-						{
-							Funcs::Group(pair.first.c_str(), [&](CString name, const Material * e)
-							{
-								Funcs::Field("Name", [&](CString label)
-								{
-									ImGui::Text("%s", name);
-								});
-								Funcs::Field("File", [&](CString label)
-								{
-									Funcs::FileInfoField(ML_Res.mats.getFile(name));
-								});
-
-							}, pair.first.c_str(), pair.second);
-						}
-					});
-					/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-					Funcs::Group("Meshes", [&]()
-					{
-						for (auto pair : ML_Res.meshes)
-						{
-							Funcs::Group(pair.first.c_str(), [&](CString name, const Mesh * e)
-							{
-								Funcs::Field("Name", [&](CString label)
-								{
-									ImGui::Text("%s", name);
-								});
-								Funcs::Field("File", [&](CString label)
-								{
-									Funcs::FileInfoField(ML_Res.meshes.getFile(name));
-								});
-
-							}, pair.first.c_str(), pair.second);
-						}
-					});
-					/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-					Funcs::Group("Models", [&]()
-					{
-						for (auto pair : ML_Res.models)
-						{
-							Funcs::Group(pair.first.c_str(), [&](CString name, const Model * e)
-							{
-								Funcs::Field("Name", [&](CString label)
-								{
-									ImGui::Text("%s", name);
-								});
-
-							}, pair.first.c_str(), pair.second);
-						}
-					});
-					/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-					Funcs::Group("Scripts", [&]()
-					{
-						for (auto pair : ML_Res.scripts)
-						{
-							Funcs::Group(pair.first.c_str(), [&](CString name, const Script * e)
-							{
-								Funcs::Field("Name", [&](CString label)
-								{
-									ImGui::Text("%s", name);
-								});
-								Funcs::Field("File", [&](CString label)
-								{
-									Funcs::FileInfoField(ML_Res.scripts.getFile(name));
-								});
-
-							}, pair.first.c_str(), pair.second);
-						}
-					});
-					/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-					Funcs::Group("Shaders", [&]()
-					{
-						for (auto pair : ML_Res.shaders)
-						{
-							Funcs::Group(pair.first.c_str(), [&](CString name, const Shader * e)
-							{
-								Funcs::Field("Name", [&](CString label)
-								{
-									ImGui::Text("%s", name);
-								});
-								Funcs::Field("File", [&](CString label)
-								{
-									Funcs::FileInfoField(ML_Res.shaders.getFile(name));
-								});
-
-							}, pair.first.c_str(), pair.second);
-						}
-					});
-					/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-					Funcs::Group("Skyboxes", [&]()
-					{
-						for (auto pair : ML_Res.skyboxes)
-						{
-							Funcs::Group(pair.first.c_str(), [&](CString name, const Skybox * e)
-							{
-								Funcs::Field("Name", [&](CString label)
-								{
-									ImGui::Text("%s", name);
-								});
-								Funcs::Field("File", [&](CString label)
-								{
-									Funcs::FileInfoField(ML_Res.skyboxes.getFile(name));
-								});
-
-							}, pair.first.c_str(), pair.second);
-						}
-					});
-					/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-					Funcs::Group("Sounds", [&]()
-					{
-						for (auto pair : ML_Res.sounds)
-						{
-							Funcs::Group(pair.first.c_str(), [&](CString name, const Sound * e)
-							{
-								Funcs::Field("Name", [&](CString label)
-								{
-									ImGui::Text("%s", name);
-								});
-								Funcs::Field("File", [&](CString label)
-								{
-									Funcs::FileInfoField(ML_Res.sounds.getFile(name));
-								});
-
-							}, pair.first.c_str(), pair.second);
-						}
-					});
-					/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-					Funcs::Group("Sprites", [&]()
-					{
-						for (auto pair : ML_Res.sprites)
-						{
-							Funcs::Group(pair.first.c_str(), [&](CString name, const Sprite * e)
-							{
-								Funcs::Field("Name", [&](CString label)
-								{
-									ImGui::Text("%s", name);
-								});
-
-							}, pair.first.c_str(), pair.second);
-						}
-					});
-					/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-					Funcs::Group("Textures", [&]()
-					{
-						for (auto pair : ML_Res.textures)
-						{
-							Funcs::Group(pair.first.c_str(), [&](CString name, const Texture * e)
-							{
-								Funcs::Field("Name", [&](CString label)
-								{
-									ImGui::Text("%s", name);
-								});
-								Funcs::Field("Size", [&](CString label)
-								{
-									ImGui::Text("%u x %u", e->width(), e->height());
-								});
-								Funcs::Field("Real Size", [&](CString label)
-								{
-									ImGui::Text("%u x %u", e->realWidth(), e->realHeight());
-								});
-								Funcs::Field("File", [&](CString label)
-								{
-									Funcs::FileInfoField(ML_Res.textures.getFile(name));
-								});
-
-							}, pair.first.c_str(), pair.second);
-						}
-					});
-					/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+						}, pair.first.c_str(), pair.second);
+					}
 				});
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+				Funcs::Group("Images", [&]()
+				{
+					for (auto pair : ML_Res.images)
+					{
+						Funcs::Group(pair.first.c_str(), [&](CString name, const Image * e)
+						{
+							Funcs::Field("Name", [&](CString label)
+							{
+								ImGui::Text("%s", name);
+							});
+							Funcs::Field("Size", [&](CString label)
+							{
+								ImGui::Text("%u x %u", e->width(), e->height());
+							});
+							if (const String file = ML_Res.images.getFile(name))
+							{
+								Funcs::Field("File", [&](CString label)
+								{
+									const String fName = ML_FileSystem.getFileName(file);
+									if (ImGui::Selectable(fName.c_str()))
+									{
+										ML_OS.execute("open", ML_FileSystem.pathTo(file));
+									}
+								});
+								Funcs::Field("Path", [&](CString label)
+								{
+									const String fPath = ML_FileSystem.getFilePath(file);
+									if (ImGui::Selectable(fPath.c_str()))
+									{
+										ML_OS.execute("open", ML_FileSystem.pathTo(fPath));
+									}
+								});
+							}
+
+						}, pair.first.c_str(), pair.second);
+					}
+				});
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+				Funcs::Group("Materials", [&]()
+				{
+					for (auto pair : ML_Res.mats)
+					{
+						Funcs::Group(pair.first.c_str(), [&](CString name, const Material * e)
+						{
+							Funcs::Field("Name", [&](CString label)
+							{
+								ImGui::Text("%s", name);
+							});
+							if (const String file = ML_Res.mats.getFile(name))
+							{
+								Funcs::Field("File", [&](CString label)
+								{
+									const String fName = ML_FileSystem.getFileName(file);
+									if (ImGui::Selectable(fName.c_str()))
+									{
+										ML_OS.execute("open", ML_FileSystem.pathTo(file));
+									}
+								});
+								Funcs::Field("Path", [&](CString label)
+								{
+									const String fPath = ML_FileSystem.getFilePath(file);
+									if (ImGui::Selectable(fPath.c_str()))
+									{
+										ML_OS.execute("open", ML_FileSystem.pathTo(fPath));
+									}
+								});
+							}
+
+						}, pair.first.c_str(), pair.second);
+					}
+				});
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+				Funcs::Group("Meshes", [&]()
+				{
+					for (auto pair : ML_Res.meshes)
+					{
+						Funcs::Group(pair.first.c_str(), [&](CString name, const Mesh * e)
+						{
+							Funcs::Field("Name", [&](CString label)
+							{
+								ImGui::Text("%s", name);
+							});
+							if (const String file = ML_Res.meshes.getFile(name))
+							{
+								Funcs::Field("File", [&](CString label)
+								{
+									const String fName = ML_FileSystem.getFileName(file);
+									if (ImGui::Selectable(fName.c_str()))
+									{
+										ML_OS.execute("open", ML_FileSystem.pathTo(file));
+									}
+								});
+								Funcs::Field("Path", [&](CString label)
+								{
+									const String fPath = ML_FileSystem.getFilePath(file);
+									if (ImGui::Selectable(fPath.c_str()))
+									{
+										ML_OS.execute("open", ML_FileSystem.pathTo(fPath));
+									}
+								});
+							}
+
+						}, pair.first.c_str(), pair.second);
+					}
+				});
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+				Funcs::Group("Models", [&]()
+				{
+					for (auto pair : ML_Res.models)
+					{
+						Funcs::Group(pair.first.c_str(), [&](CString name, const Model * e)
+						{
+							Funcs::Field("Name", [&](CString label)
+							{
+								ImGui::Text("%s", name);
+							});
+							if (const String file = ML_Res.models.getFile(name))
+							{
+								Funcs::Field("File", [&](CString label)
+								{
+									const String fName = ML_FileSystem.getFileName(file);
+									if (ImGui::Selectable(fName.c_str()))
+									{
+										ML_OS.execute("open", ML_FileSystem.pathTo(file));
+									}
+								});
+								Funcs::Field("Path", [&](CString label)
+								{
+									const String fPath = ML_FileSystem.getFilePath(file);
+									if (ImGui::Selectable(fPath.c_str()))
+									{
+										ML_OS.execute("open", ML_FileSystem.pathTo(fPath));
+									}
+								});
+							}
+
+						}, pair.first.c_str(), pair.second);
+					}
+				});
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+				Funcs::Group("Scripts", [&]()
+				{
+					for (auto pair : ML_Res.scripts)
+					{
+						Funcs::Group(pair.first.c_str(), [&](CString name, const Script * e)
+						{
+							Funcs::Field("Name", [&](CString label)
+							{
+								ImGui::Text("%s", name);
+							});
+							if (const String file = ML_Res.scripts.getFile(name))
+							{
+								Funcs::Field("File", [&](CString label)
+								{
+									const String fName = ML_FileSystem.getFileName(file);
+									if (ImGui::Selectable(fName.c_str()))
+									{
+										ML_OS.execute("open", ML_FileSystem.pathTo(file));
+									}
+								});
+								Funcs::Field("Path", [&](CString label)
+								{
+									const String fPath = ML_FileSystem.getFilePath(file);
+									if (ImGui::Selectable(fPath.c_str()))
+									{
+										ML_OS.execute("open", ML_FileSystem.pathTo(fPath));
+									}
+								});
+							}
+
+						}, pair.first.c_str(), pair.second);
+					}
+				});
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+				Funcs::Group("Shaders", [&]()
+				{
+					for (auto pair : ML_Res.shaders)
+					{
+						Funcs::Group(pair.first.c_str(), [&](CString name, const Shader * e)
+						{
+							Funcs::Field("Name", [&](CString label)
+							{
+								ImGui::Text("%s", name);
+							});
+							if (const String file = ML_Res.shaders.getFile(name))
+							{
+								Funcs::Field("File", [&](CString label)
+								{
+									const String fName = ML_FileSystem.getFileName(file);
+									if (ImGui::Selectable(fName.c_str()))
+									{
+										ML_OS.execute("open", ML_FileSystem.pathTo(file));
+									}
+								});
+								Funcs::Field("Path", [&](CString label)
+								{
+									const String fPath = ML_FileSystem.getFilePath(file);
+									if (ImGui::Selectable(fPath.c_str()))
+									{
+										ML_OS.execute("open", ML_FileSystem.pathTo(fPath));
+									}
+								});
+							}
+
+						}, pair.first.c_str(), pair.second);
+					}
+				});
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+				Funcs::Group("Skyboxes", [&]()
+				{
+					for (auto pair : ML_Res.skyboxes)
+					{
+						Funcs::Group(pair.first.c_str(), [&](CString name, const Skybox * e)
+						{
+							Funcs::Field("Name", [&](CString label)
+							{
+								ImGui::Text("%s", name);
+							});
+							if (const String file = ML_Res.skyboxes.getFile(name))
+							{
+								Funcs::Field("File", [&](CString label)
+								{
+									const String fName = ML_FileSystem.getFileName(file);
+									if (ImGui::Selectable(fName.c_str()))
+									{
+										ML_OS.execute("open", ML_FileSystem.pathTo(file));
+									}
+								});
+								Funcs::Field("Path", [&](CString label)
+								{
+									const String fPath = ML_FileSystem.getFilePath(file);
+									if (ImGui::Selectable(fPath.c_str()))
+									{
+										ML_OS.execute("open", ML_FileSystem.pathTo(fPath));
+									}
+								});
+							}
+
+						}, pair.first.c_str(), pair.second);
+					}
+				});
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+				Funcs::Group("Sounds", [&]()
+				{
+					for (auto pair : ML_Res.sounds)
+					{
+						Funcs::Group(pair.first.c_str(), [&](CString name, const Sound * e)
+						{
+							Funcs::Field("Name", [&](CString label)
+							{
+								ImGui::Text("%s", name);
+							});
+							if (const String file = ML_Res.sounds.getFile(name))
+							{
+								Funcs::Field("File", [&](CString label)
+								{
+									const String fName = ML_FileSystem.getFileName(file);
+									if (ImGui::Selectable(fName.c_str()))
+									{
+										ML_OS.execute("open", ML_FileSystem.pathTo(file));
+									}
+								});
+								Funcs::Field("Path", [&](CString label)
+								{
+									const String fPath = ML_FileSystem.getFilePath(file);
+									if (ImGui::Selectable(fPath.c_str()))
+									{
+										ML_OS.execute("open", ML_FileSystem.pathTo(fPath));
+									}
+								});
+							}
+
+						}, pair.first.c_str(), pair.second);
+					}
+				});
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+				Funcs::Group("Sprites", [&]()
+				{
+					for (auto pair : ML_Res.sprites)
+					{
+						Funcs::Group(pair.first.c_str(), [&](CString name, const Sprite * e)
+						{
+							Funcs::Field("Name", [&](CString label)
+							{
+								ImGui::Text("%s", name);
+							});
+							if (const String file = ML_Res.sprites.getFile(name))
+							{
+								Funcs::Field("File", [&](CString label)
+								{
+									const String fName = ML_FileSystem.getFileName(file);
+									if (ImGui::Selectable(fName.c_str()))
+									{
+										ML_OS.execute("open", ML_FileSystem.pathTo(file));
+									}
+								});
+								Funcs::Field("Path", [&](CString label)
+								{
+									const String fPath = ML_FileSystem.getFilePath(file);
+									if (ImGui::Selectable(fPath.c_str()))
+									{
+										ML_OS.execute("open", ML_FileSystem.pathTo(fPath));
+									}
+								});
+							}
+
+						}, pair.first.c_str(), pair.second);
+					}
+				});
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+				Funcs::Group("Textures", [&]()
+				{
+					for (auto pair : ML_Res.textures)
+					{
+						Funcs::Group(pair.first.c_str(), [&](CString name, const Texture * e)
+						{
+							Funcs::Field("Name", [&](CString label)
+							{
+								ImGui::Text("%s", name);
+							});
+							Funcs::Field("Size", [&](CString label)
+							{
+								ImGui::Text("%u x %u", e->width(), e->height());
+							});
+							Funcs::Field("Real Size", [&](CString label)
+							{
+								ImGui::Text("%u x %u", e->realWidth(), e->realHeight());
+							});
+							if (const String file = ML_Res.textures.getFile(name))
+							{
+								Funcs::Field("File", [&](CString label)
+								{
+									const String fName = ML_FileSystem.getFileName(file);
+									if (ImGui::Selectable(fName.c_str()))
+									{
+										ML_OS.execute("open", ML_FileSystem.pathTo(file));
+									}
+								});
+								Funcs::Field("Path", [&](CString label)
+								{
+									const String fPath = ML_FileSystem.getFilePath(file);
+									if (ImGui::Selectable(fPath.c_str()))
+									{
+										ML_OS.execute("open", ML_FileSystem.pathTo(fPath));
+									}
+								});
+							}
+
+						}, pair.first.c_str(), pair.second);
+					}
+				});
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 			});
 
 			/* * * * * * * * * * * * * * * * * * * * */

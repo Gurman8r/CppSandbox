@@ -29,8 +29,8 @@ namespace ml
 		static void		terminate();
 
 	public:
-		static const String & platform();
-		static const String & config();
+		static const String & platformTarget();
+		static const String & configuration();
 
 	public:
 		static int32_t logWarning(const String & message); // - 1 true

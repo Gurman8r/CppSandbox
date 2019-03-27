@@ -82,7 +82,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	const String & Debug::platform()
+	const String & Debug::platformTarget()
 	{
 #if defined(ML_x64)
 		static String temp = "x64";
@@ -92,7 +92,7 @@ namespace ml
 		return temp;
 	}
 
-	const String & Debug::config()
+	const String & Debug::configuration()
 	{
 #if defined(ML_DEBUG)
 		static String temp = "Debug";

@@ -12,14 +12,18 @@ namespace ml
 	class ML_GRAPHICS_API Effect
 		: public ITrackable
 		, public IDrawable
+		, public IReadable
 	{
 	public:
 		Effect();
 		~Effect();
 
-		bool cleanup();
+		bool cleanup() override;
+		bool loadFromFile(const String & filename) override;
+
 		bool create(const vec2i & size, GL::Attachment attachment);
 		bool reload(const vec2i & size);
+		bool resize(const vec2i & size);
 
 		void bind() const;
 		void unbind() const;
@@ -41,7 +45,6 @@ namespace ml
 		const Texture *	m_texture;
 
 		vec2i m_size;
-
 		GL::Attachment m_attachment;
 
 		mutable FBO m_fbo;

@@ -1,8 +1,21 @@
 #include "Demo.hpp"
 #include "DemoCommands.hpp"
+
+#include <MemeAudio/Audio.hpp>
+#include <MemeCore/Debug.hpp>
+#include <MemeCore/Time.hpp>
+#include <MemeCore/FileSystem.hpp> 
+#include <MemeCore/Random.hpp>
 #include <MemeCore/EventSystem.hpp>
 #include <MemeCore/OS.hpp>
-#include <MemeWindow/WindowEvents.hpp>
+#include <MemeGraphics/Shapes.hpp>
+#include <MemeGraphics/VertexBuffer.hpp>
+#include <MemeGraphics/IndexBuffer.hpp>
+#include <MemeGraphics/FrameBuffer.hpp>
+#include <MemeGraphics/RenderBuffer.hpp>
+#include <MemeGraphics/BufferLayout.hpp>
+#include <MemeGraphics/OpenGL.hpp>
+#include <MemeGraphics/Camera.hpp>
 #include <MemeEditor/ResourceManager.hpp>
 #include <MemeEditor/ImGui.hpp>
 #include <MemeEditor/EditorEvents.hpp>
@@ -21,6 +34,8 @@
 #include <MemeEditor/NetworkHUD.hpp>
 #include <MemeNet/Client.hpp>
 #include <MemeNet/Server.hpp>
+#include <MemeScript/Interpreter.hpp>
+#include <MemeWindow/WindowEvents.hpp>
 
 namespace DEMO
 {
@@ -81,22 +96,10 @@ namespace DEMO
 					SETTINGS.perspNear, SETTINGS.perspFar
 				);
 
-				// Framebuffers
-				if (ev->size() != ml::vec2i::Zero)
+				// Effects
+				for (auto pair : ML_Res.effects)
 				{
-					if (ml::Texture * tex = ML_Res.textures.get("fbo_main"))
-					{
-						tex->cleanup();
-						tex->create(ev->size());
-						m_effects["fbo_scene"].reload(ev->size());
-					}
-
-					if (ml::Texture * tex = ML_Res.textures.get("fbo_post"))
-					{
-						tex->cleanup();
-						tex->create(ev->size());
-						m_effects["fbo_post"].reload(ev->size());
-					}
+					pair.second->resize(ev->size());
 				}
 			}
 			break;
@@ -178,8 +181,8 @@ namespace DEMO
 				ml::Shapes::Cube::Vertices,
 				ml::Shapes::Cube::Indices
 			)
-			&& ML_Res.textures.load("fbo_main")->create(this->getFramebufferSize())
-			&& ML_Res.textures.load("fbo_post")->create(this->getFramebufferSize())
+			&& ML_Res.textures.load("fbo_main")->create(this->getSize())
+			&& ML_Res.textures.load("fbo_post")->create(this->getSize())
 			&& ML_Res.loadFromFile(ML_FileSystem.pathTo(SETTINGS.pathTo(SETTINGS.manifest)))
 			&& loadBuffers();
 	}
@@ -195,15 +198,21 @@ namespace DEMO
 		m_batch_vao.unbind();
 
 		// Effects
-		m_effects["fbo_scene"].create(this->getSize(), ml::GL::ColorAttachment0);
-		m_effects["fbo_scene"].setModel(ML_Res.models.get("framebuffer"));
-		m_effects["fbo_scene"].setShader(ML_Res.shaders.get("framebuffer"));
-		m_effects["fbo_scene"].setTexture(ML_Res.textures.get("fbo_main"));
+		if (ml::Effect * e = ML_Res.effects.get("fbo_main"))
+		{
+			e->create(this->getSize(), ml::GL::ColorAttachment0);
+			e->setModel(ML_Res.models.get("framebuffer"));
+			e->setShader(ML_Res.shaders.get("framebuffer"));
+			e->setTexture(ML_Res.textures.get("fbo_main"));
+		}
 
-		m_effects["fbo_post"].create(this->getSize(), ml::GL::ColorAttachment0);
-		m_effects["fbo_post"].setModel(ML_Res.models.get("framebuffer"));
-		m_effects["fbo_post"].setShader(ML_Res.shaders.get("framebuffer"));
-		m_effects["fbo_post"].setTexture(ML_Res.textures.get("fbo_post"));
+		if (ml::Effect * e = ML_Res.effects.get("fbo_post"))
+		{
+			e->create(this->getSize(), ml::GL::ColorAttachment0);
+			e->setModel(ML_Res.models.get("framebuffer"));
+			e->setShader(ML_Res.shaders.get("framebuffer"));
+			e->setTexture(ML_Res.textures.get("fbo_post"));
+		}
 
 		return true;
 	}
@@ -408,7 +417,7 @@ namespace DEMO
 			if (ml::Sprite * sprite = ML_Res.sprites.get("neutrino"))
 			{
 				(*sprite)
-					.setPosition((ml::vec2f { 0.95f, 0.075f } *this->getSize()))
+					.setPosition((ml::vec2f(0.95f, 0.075f) * this->getSize()))
 					.setScale(0.5f)
 					.setRotation(0.0f)
 					.setOrigin(0.5f)
@@ -453,8 +462,8 @@ namespace DEMO
 		this->setTitle(ml::String::Format("{0} | {1} | {2}",
 			SETTINGS.title,
 			ml::String("{0} | {1}").format(
-				ml::Debug::config(),
-				ml::Debug::platform()
+				ml::Debug::configuration(),
+				ml::Debug::platformTarget()
 			),
 			ml::String("{0} ms/frame ({1} fps)").format(
 				ev.elapsed.delta(),
@@ -664,9 +673,10 @@ namespace DEMO
 			ml::Uniform("Effect.mode", ml::Uniform::Int, &uni.effectMode),
 		};
 
+
 		// Draw Scene
 		/* * * * * * * * * * * * * * * * * * * * */
-		m_effects["fbo_scene"].bind();
+		ML_Res.effects.get("fbo_main")->bind();
 		{
 			// Clear
 			this->clear(uni.clearColor);
@@ -815,7 +825,11 @@ namespace DEMO
 			// Sprites
 			if (const ml::Shader * shader = ML_Res.shaders.get("sprites"))
 			{
-				static ml::RenderBatch batch(&m_batch_vao, &m_batch_vbo, shader, &batch_uniforms);
+				static ml::RenderBatch batch(
+					&m_batch_vao, 
+					&m_batch_vbo, 
+					shader, 
+					&batch_uniforms);
 
 				for (auto pair : ML_Res.sprites)
 				{
@@ -826,25 +840,31 @@ namespace DEMO
 			// Text
 			if (const ml::Shader * shader = ML_Res.shaders.get("text"))
 			{
-				static ml::RenderBatch batch(&m_batch_vao, &m_batch_vbo, shader, &batch_uniforms);
+				static ml::RenderBatch batch(
+					&m_batch_vao,
+					&m_batch_vbo, 
+					shader,
+					&batch_uniforms);
 
-				TextMap::const_iterator it;
-				for (it = m_text.begin(); it != m_text.end(); it++)
+				for (auto pair : m_text)
 				{
-					this->draw(it->second, batch);
+					this->draw(pair.second, batch);
 				}
 			}
 		}
-		m_effects["fbo_scene"].unbind();
+		ML_Res.effects.get("fbo_main")->unbind();
+
 
 		// Draw Effects
 		/* * * * * * * * * * * * * * * * * * * * */
-		m_effects["fbo_post"].bind();
+		ML_Res.effects.get("fbo_post")->bind();
 		{
-			m_effects["fbo_scene"].shader()->applyUniforms(effect_uniforms);
-			this->draw(m_effects["fbo_scene"]);
+			ML_Res.effects.get("fbo_main")->shader()->applyUniforms(effect_uniforms);
+
+			this->draw(*ML_Res.effects.get("fbo_main"));
 		}
-		m_effects["fbo_post"].unbind();
+		ML_Res.effects.get("fbo_post")->unbind();
+
 
 		// Draw GUI
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -984,9 +1004,10 @@ namespace DEMO
 				const uint32_t left_D	= ML_Dockspace.splitNode(left, ImGuiDir_Down, 0.35f, &left);
 				const uint32_t center_U = ML_Dockspace.splitNode(center, ImGuiDir_Up, 0.65f, &center);
 				const uint32_t center_D = ML_Dockspace.splitNode(center, ImGuiDir_Down, 0.35f, &center);
-				const uint32_t right_U	= ML_Dockspace.splitNode(right, ImGuiDir_Up, 0.5f, &right);
-				const uint32_t right_D	= ML_Dockspace.splitNode(right, ImGuiDir_Down, 0.5f, &right);
+				const uint32_t right_U	= ML_Dockspace.splitNode(right, ImGuiDir_Up, 0.65f, &right);
+				const uint32_t right_D	= ML_Dockspace.splitNode(right, ImGuiDir_Down, 0.35f, &right);
 
+				ML_Dockspace.dockWindow(ML_NetworkHUD.title(),	left_U);
 				ML_Dockspace.dockWindow(ML_Browser.title(),		left_U);
 				ML_Dockspace.dockWindow(ML_Hierarchy.title(),	left_U);
 				ML_Dockspace.dockWindow(ML_ResourceHUD.title(), left_U);
@@ -994,13 +1015,23 @@ namespace DEMO
 				ML_Dockspace.dockWindow(ML_SceneView.title(),	center_U);
 				ML_Dockspace.dockWindow(ML_Builder.title(),		center_D);
 				ML_Dockspace.dockWindow(ML_TextEditor.title(),	center_D);
-				ML_Dockspace.dockWindow(ML_NetworkHUD.title(),	left_U);
-				ML_Dockspace.dockWindow(ML_Inspector.title(),	right);
-				ML_Dockspace.dockWindow("Demo Window",			right);
+				ML_Dockspace.dockWindow("Demo Window",			right_U);
+				ML_Dockspace.dockWindow(ML_Inspector.title(),	right_D);
 
 				ML_EventSystem.fireEvent(ml::DockBuilderEvent(root));
 				ML_Dockspace.endBuilder(root);
 			};
+		});
+	}
+
+	bool DemoProgram::ML_SceneView_draw(bool * p_open)
+	{
+		return ML_SceneView.drawFun(p_open, [&]() 
+		{
+			if (!ML_SceneView.updateScene(ML_Res.effects.get("fbo_post")->texture()))
+			{
+				ImGui::Text("Failed Rendering Scene");
+			}
 		});
 	}
 
@@ -1010,24 +1041,11 @@ namespace DEMO
 		{
 			/* * * * * * * * * * * * * * * * * * * * */
 
-			// ...
-
-			/* * * * * * * * * * * * * * * * * * * * */
+			ImGui::Text("%s", ML_Inspector.title());
 
 			ML_EventSystem.fireEvent(ml::InspectorEvent());
 
 			/* * * * * * * * * * * * * * * * * * * * */
-		});
-	}
-
-	bool DemoProgram::ML_SceneView_draw(bool * p_open)
-	{
-		return ML_SceneView.drawFun(p_open, [&]() 
-		{
-			if (!ML_SceneView.updateScene(m_effects["fbo_post"].texture()))
-			{
-				ImGui::Text("Failed Rendering Scene");
-			}
 		});
 	}
 

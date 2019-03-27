@@ -1,32 +1,13 @@
 #ifndef _DEMO_HPP_
 #define _DEMO_HPP_
 
-#include <MemeAudio/Audio.hpp>
-#include <MemeCore/Debug.hpp>
-#include <MemeCore/Time.hpp>
-#include <MemeCore/FileSystem.hpp> 
-#include <MemeCore/Random.hpp>
-#include <MemeCore/Thread.hpp>
-#include <MemeCore/Plugin.hpp>
-#include <MemeGraphics/Text.hpp>
-#include <MemeGraphics/Canvas.hpp>
-#include <MemeGraphics/Effect.hpp>
-#include <MemeGraphics/RenderWindow.hpp>
-#include <MemeGraphics/Shapes.hpp>
-#include <MemeGraphics/VertexBuffer.hpp>
-#include <MemeGraphics/IndexBuffer.hpp>
-#include <MemeGraphics/FrameBuffer.hpp>
-#include <MemeGraphics/RenderBuffer.hpp>
-#include <MemeGraphics/BufferLayout.hpp>
-#include <MemeGraphics/OpenGL.hpp>
-#include <MemeGraphics/Model.hpp>
-#include <MemeGraphics/Camera.hpp>
-#include <MemeScript/Interpreter.hpp>
-#include <MemePhysics/Rigidbody.hpp>
-#include <MemePhysics/Particle.hpp>
-
 #include "DemoEvents.hpp"
 #include "DemoSettings.hpp"
+#include <MemeCore/Thread.hpp>
+#include <MemeGraphics/RenderWindow.hpp>
+#include <MemeGraphics/Text.hpp>
+#include <MemePhysics/Rigidbody.hpp>
+#include <MemePhysics/Particle.hpp>
 
 // Demo
 /* * * * * * * * * * * * * * * * * * * * */
@@ -60,8 +41,8 @@ namespace DEMO
 	private:
 		bool ML_MainMenuBar_draw();
 		bool ML_Dockspace_draw(bool * p_open);
-		bool ML_Inspector_draw(bool * p_open);
 		bool ML_SceneView_draw(bool * p_open);
+		bool ML_Inspector_draw(bool * p_open);
 		bool ML_DemoWindow_draw(bool * p_open);
 
 	private:
@@ -71,11 +52,7 @@ namespace DEMO
 		ml::VAO m_batch_vao;
 		ml::VBO m_batch_vbo;
 
-		using TextMap	= ml::HashMap<ml::String, ml::Text>;
-		using EffectMap = ml::HashMap<ml::String, ml::Effect>;
-
-		TextMap		m_text;
-		EffectMap	m_effects;
+		ml::HashMap<ml::String, ml::Text> m_text;
 
 		// Uniform Values
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -84,6 +61,9 @@ namespace DEMO
 			// Projections
 			ml::Transform	persp;
 			ml::Transform	ortho;
+
+			// Scene
+			ml::vec4f		clearColor = ml::Color::Gray;
 			
 			// Camera
 			ml::Transform	camera;
@@ -97,9 +77,6 @@ namespace DEMO
 			float			ambient		= 0.01f;
 			float			specular	= 0.5f;
 			int32_t			shininess	= 8;
-			
-			// Scene
-			ml::vec4f		clearColor	= ml::Color::Gray;
 			
 			// Framebuffers
 			int32_t			effectMode	= 0;

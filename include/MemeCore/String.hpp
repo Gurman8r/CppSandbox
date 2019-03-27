@@ -289,13 +289,13 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-		inline static self_type & Trim(self_type & value)
+		inline static self_type Trim(self_type value)
 		{
-			while (value && ((value.front()) == ' ' || (value.front()) == '\t'))
+			while (value && value.front() == ' ' || value.front() == '\t')
 			{
 				value.erase(value.begin());
 			}
-			while (value && ((value.back()) == ' ' || (value.back()) == '\t'))
+			while (value && value.back() == ' ' || value.back() == '\t')
 			{
 				value.pop_back();
 			}
@@ -304,7 +304,7 @@ namespace ml
 
 		inline self_type & trim()
 		{
-			return Trim(*this);
+			return ((*this) = Trim(*this));
 		}
 
 		inline const self_type trim() const

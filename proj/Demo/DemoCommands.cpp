@@ -363,11 +363,11 @@ namespace DEMO
 			}
 			else if (opt == "config")
 			{
-				return ml::Var().stringValue(ml::Debug::config());
+				return ml::Var().stringValue(ml::Debug::configuration());
 			}
 			else if (opt == "platform")
 			{
-				return ml::Var().stringValue(ml::Debug::platform());
+				return ml::Var().stringValue(ml::Debug::platformTarget());
 			}
 		}
 		return ml::Var().boolValue(true);

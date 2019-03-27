@@ -1,0 +1,20 @@
+# Effects
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+
+<item>
+	type: effect
+	name: fbo_main
+	model: framebuffer
+	shader: framebuffer
+	texture: fbo_main
+</item>
+
+<item>
+	type: effect
+	name: fbo_post
+	model: framebuffer
+	shader: framebuffer
+	texture: fbo_post
+</item>
+
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #

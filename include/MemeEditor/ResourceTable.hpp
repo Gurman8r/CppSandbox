@@ -192,7 +192,6 @@ namespace ml
 			{
 				const String & name = it->first;
 				const String & file = it->second;
-
 				if (name && file)
 				{
 					if (const String path = ML_FileSystem.pathTo(file))

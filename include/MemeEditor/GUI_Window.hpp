@@ -3,7 +3,6 @@
 
 #include <MemeEditor/GUI_Base.hpp>
 #include <MemeCore/IEventListener.hpp>
-#include <MemeCore/Function.hpp>
 
 namespace ml
 {

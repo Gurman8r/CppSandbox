@@ -5,6 +5,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	Effect::Effect()
 		: m_fbo		()
 		, m_rbo		()
@@ -18,6 +20,7 @@ namespace ml
 	{
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool Effect::cleanup()
 	{
@@ -29,6 +32,13 @@ namespace ml
 		}
 		return false;
 	}
+
+	bool Effect::loadFromFile(const String & filename)
+	{
+		return true;
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool Effect::create(const vec2i & size, GL::Attachment attachment)
 	{
@@ -74,6 +84,21 @@ namespace ml
 		return false;
 	}
 
+	bool Effect::resize(const vec2i & size)
+	{
+		if (size != vec2i::Zero)
+		{
+			if (Texture * t = std::remove_cv_t<Texture *>(texture()))
+			{
+				t->cleanup();
+				t->create(size);
+			}
+			return reload(size);
+		}
+		return false;
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	void Effect::bind() const
 	{
@@ -85,6 +110,7 @@ namespace ml
 		m_fbo.unbind();
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool Effect::setModel(const Model * value)
 	{
@@ -115,6 +141,7 @@ namespace ml
 		return false;
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	void Effect::draw(RenderTarget & target, RenderBatch batch) const
 	{
@@ -127,4 +154,6 @@ namespace ml
 			target.draw((*m_model));
 		}
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

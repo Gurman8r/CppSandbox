@@ -241,6 +241,7 @@
     <ClInclude Include="DemoSettings.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="..\..\assets\data\effects.txt" />
     <Text Include="..\..\assets\data\fonts.txt" />
     <Text Include="..\..\assets\data\images.txt" />
     <Text Include="..\..\assets\data\meshes.txt" />

@@ -27,12 +27,9 @@ namespace ml
 		this->printf("# Using this feature may result in crashes or system instability.");
 		this->printf("# Type \'help\' for a list of commands.");
 
-		using CommandMap = typename Interpreter::CommandMap;
-		using const_iterator = typename CommandMap::const_iterator;
-
-		const CommandMap & commands = ML_Interpreter.commands();
-
-		for (const_iterator it = commands.begin(); it != commands.end(); it++)
+		for (auto it = ML_Interpreter.commands().begin(); 
+			it != ML_Interpreter.commands().end(); 
+			it++)
 		{
 			m_auto.push_back(it->first.c_str());
 		}
