@@ -326,22 +326,22 @@ namespace ml
 
 		enum DrawBuffers
 		{
-			DrawBuffer0 = 0x8CE0,		// GL_DRAW_BUFFER0
-			DrawBuffer1,				// GL_DRAW_BUFFER1
-			DrawBuffer2,				// GL_DRAW_BUFFER2
-			DrawBuffer3,				// GL_DRAW_BUFFER3
-			DrawBuffer4,				// GL_DRAW_BUFFER4
-			DrawBuffer5,				// GL_DRAW_BUFFER5
-			DrawBuffer6,				// GL_DRAW_BUFFER6
-			DrawBuffer7,				// GL_DRAW_BUFFER7
-			DrawBuffer8,				// GL_DRAW_BUFFER8
-			DrawBuffer9,				// GL_DRAW_BUFFER9
-			DrawBuffer10,				// GL_DRAW_BUFFER10
-			DrawBuffer11,				// GL_DRAW_BUFFER11
-			DrawBuffer12,				// GL_DRAW_BUFFER12
-			DrawBuffer13,				// GL_DRAW_BUFFER13
-			DrawBuffer14,				// GL_DRAW_BUFFER14
-			DrawBuffer15,				// GL_DRAW_BUFFER15
+			DrawBuffer0 = 0x8CE0,			// GL_DRAW_BUFFER0
+			DrawBuffer1,					// GL_DRAW_BUFFER1
+			DrawBuffer2,					// GL_DRAW_BUFFER2
+			DrawBuffer3,					// GL_DRAW_BUFFER3
+			DrawBuffer4,					// GL_DRAW_BUFFER4
+			DrawBuffer5,					// GL_DRAW_BUFFER5
+			DrawBuffer6,					// GL_DRAW_BUFFER6
+			DrawBuffer7,					// GL_DRAW_BUFFER7
+			DrawBuffer8,					// GL_DRAW_BUFFER8
+			DrawBuffer9,					// GL_DRAW_BUFFER9
+			DrawBuffer10,					// GL_DRAW_BUFFER10
+			DrawBuffer11,					// GL_DRAW_BUFFER11
+			DrawBuffer12,					// GL_DRAW_BUFFER12
+			DrawBuffer13,					// GL_DRAW_BUFFER13
+			DrawBuffer14,					// GL_DRAW_BUFFER14
+			DrawBuffer15,					// GL_DRAW_BUFFER15
 		};
 
 		enum Mask : Enum
