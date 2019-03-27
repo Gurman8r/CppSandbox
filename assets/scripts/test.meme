@@ -4,7 +4,6 @@
 @"config b flag_itop 0"
 @"config b flag_toks 0"
 @"config b flag_tree 0"
-@"config i runTests 0"
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 

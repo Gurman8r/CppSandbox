@@ -2,19 +2,17 @@
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
 <item>
-	type: effect
-	name: fbo_main
-	model: framebuffer
+	type:	effect
+	name:	fbo_main
+	model:	default_quad
 	shader: framebuffer
-	texture: fbo_main
 </item>
 
 <item>
-	type: effect
-	name: fbo_post
-	model: framebuffer
+	type:	effect
+	name:	fbo_post
+	model:	default_quad
 	shader: framebuffer
-	texture: fbo_post
 </item>
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #

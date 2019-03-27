@@ -50,7 +50,7 @@ namespace ml
 	}
 
 
-	void FrameBuffer::setTexture(GL::Attachment attchment, uint32_t value, GL::Target target, int32_t level) const
+	void FrameBuffer::setTexture(uint32_t attchment, uint32_t value, GL::Target target, int32_t level) const
 	{
 		OpenGL::framebufferTexture2D(ml::GL::Framebuffer, attchment, target, value, level);
 	}

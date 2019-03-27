@@ -9,6 +9,9 @@
 #include <MemePhysics/Rigidbody.hpp>
 #include <MemePhysics/Particle.hpp>
 
+#define ML_FBO_MAIN "fbo_main"
+#define ML_FBO_POST "fbo_post"
+
 // Demo
 /* * * * * * * * * * * * * * * * * * * * */
 namespace DEMO
@@ -25,7 +28,6 @@ namespace DEMO
 
 	private:
 		bool	loadResources();
-		bool	loadBuffers();
 		bool	loadNetwork();
 
 	private:
@@ -46,11 +48,10 @@ namespace DEMO
 		bool ML_DemoWindow_draw(bool * p_open);
 
 	private:
-		// Sprites/2D
+		// Batch
 		/* * * * * * * * * * * * * * * * * * * * */
-
-		ml::VAO m_batch_vao;
-		ml::VBO m_batch_vbo;
+		ml::VAO m_batchVAO;
+		ml::VBO m_batchVBO;
 
 		ml::HashMap<ml::String, ml::Text> m_text;
 

@@ -20,25 +20,24 @@ namespace DEMO
 		friend class ml::ISingleton<DemoSettings>;
 
 	public:
-		ml::String	configIni; // path to ML_Config.ini
+		ml::String	configINI;		// path to config INI
 
 	public:
 		// [General]
 		/* * * * * * * * * * * * * * * * * * * * */
 		ml::String	assetPath;		// Solution Dir
 		ml::String	projectURL;		// Project Github URL
-		uint32_t	runTests;		// Run test functions
 		bool		escapeIsExit;	// Escape key is Exit?
 		bool		enableThreads;	// Enable threads?
 		ml::String	manifest;		// Name of manifest file
-		ml::String	imguiIni;		// Name of imgui.ini
+		ml::String	imguiIni;		// Name of imgui INI
 
 		// [Script]
 		/* * * * * * * * * * * * * * * * * * * * */
-		ml::String	scrFile;		// Script to run on start
-		bool		scrShowToks;	// Show Script Tokens
-		bool		scrShowTree;	// Show Script Syntax Tree
-		bool		scrShowItoP;	// Show Script Infix to Postfix
+		ml::String	bootScript;		// Script to run on start
+		bool		flagShowToks;	// Show Script Tokens
+		bool		flagShowTree;	// Show Script Syntax Tree
+		bool		flagShowItoP;	// Show Script Infix to Postfix
 
 		// [Window]
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -75,78 +74,72 @@ namespace DEMO
 		bool		isServer;		// Is Server?
 		bool		isClient;		// Is Client?
 
+
 	public:
+		inline bool loadFromFile(const ml::String & value) override
+		{
+			INIReader ini(configINI = value);
+			if (ini.ParseError() != EXIT_SUCCESS)
+			{
+				return false;
+			}
+
+			// [General]
+			/* * * * * * * * * * * * * * * * * * * * */
+			assetPath		= ini.Get("General", "assetPath", "../../../");
+			projectURL		= ini.Get("General", "projectURL", "");
+			escapeIsExit	= ini.GetBoolean("General", "escapeIsExit", true);
+			enableThreads	= ini.GetBoolean("General", "enableThreads", false);
+			manifest		= ini.Get("General", "manifest", "manifest.txt");
+			imguiIni		= ini.Get("General", "imguiIni", "");
+
+			// [Script]
+			/* * * * * * * * * * * * * * * * * * * * */
+			bootScript		= ini.Get("Script", "bootScript", "/scripts/hello.meme");
+			flagShowToks	= ini.GetBoolean("Script", "flagShowToks", false);
+			flagShowTree	= ini.GetBoolean("Script", "flagShowTree", false);
+			flagShowItoP	= ini.GetBoolean("Script", "flagShowItoP", false);
+
+			// [Window]
+			/* * * * * * * * * * * * * * * * * * * * */
+			title			= ini.Get("Window", "title", "MemeLib");
+			width			= ini.GetInteger("Window", "width", 640);
+			height			= ini.GetInteger("Window", "height", 480);
+			bitsPerPixel	= ini.GetInteger("Window", "bitsPerPixel", 32);
+			style			= ini.GetInteger("Window", "style", ml::Window::Default);
+			majorVersion	= ini.GetInteger("Window", "majorVersion", 3);
+			minorVersion	= ini.GetInteger("Window", "minorVersion", 3);
+			depthBits		= ini.GetInteger("Window", "depthBits", 24);
+			stencilBits		= ini.GetInteger("Window", "stencilBits", 8);
+			profile			= ini.GetInteger("Window", "profile", ml::Context::Compat);
+			multisample		= ini.GetBoolean("Window", "multisample", false);
+			srgbCapable		= ini.GetBoolean("Window", "srgbCapable", false);
+
+			// [Graphics]	
+			/* * * * * * * * * * * * * * * * * * * * */
+			glErrorPause	= ini.GetBoolean("Graphics", "glErrorPause", false);
+			glExperimental	= ini.GetBoolean("Graphics", "glExperimental", true);
+			fieldOfView		= (float)ini.GetReal("Graphics", "fieldOfView", 90.0);
+			perspNear		= (float)ini.GetReal("Graphics", "perspNear", 0.1);
+			perspFar		= (float)ini.GetReal("Graphics", "perspFar", 1000.0);
+			orthoNear		= (float)ini.GetReal("Graphics", "orthoNear", -1.0);
+			orthoFar		= (float)ini.GetReal("Graphics", "orthoFar", +1.0);
+
+			// [Audio]
+			/* * * * * * * * * * * * * * * * * * * * */
+			isMuted			= ini.GetBoolean("Audio", "isMuted", false);
+
+			// [Network]
+			/* * * * * * * * * * * * * * * * * * * * */
+			isServer		= ini.GetBoolean("Network", "isServer", false);
+			isClient		= ini.GetBoolean("Network", "isClient", false);
+
+			return true;
+		}
+
 		inline bool cleanup() override { return true; }
 
-		inline bool loadFromFile(const ml::String & filename) override
-		{
-			INIReader ini((configIni = filename).c_str());
-			if (ini.ParseError() == EXIT_SUCCESS)
-			{
-				// [General]
-				/* * * * * * * * * * * * * * * * * * * * */
-				assetPath		= ini.Get("General", "assetPath", "../../../");
-				projectURL		= ini.Get("General", "projectURL", "");
-				runTests		= ini.GetInteger("General", "runTests", false);
-				escapeIsExit	= ini.GetBoolean("General", "escapeIsExit", true);
-				enableThreads	= ini.GetBoolean("General", "enableThreads", false);
-				manifest		= ini.Get("General", "manifest", "manifest.txt");
-				imguiIni		= ini.Get("General", "imguiIni", "");
-
-				// [Script]
-				/* * * * * * * * * * * * * * * * * * * * */
-				scrFile			= ini.Get("Script", "scrFile", "/scripts/hello.meme");
-				scrShowToks		= ini.GetBoolean("Script", "scrShowToks", false);
-				scrShowTree		= ini.GetBoolean("Script", "scrShowTree", false);
-				scrShowItoP		= ini.GetBoolean("Script", "scrShowItoP", false);
-
-				// [Window]
-				/* * * * * * * * * * * * * * * * * * * * */
-				title			= ini.Get("Window", "title", "MemeLib");
-				width			= ini.GetInteger("Window", "width", 640);
-				height			= ini.GetInteger("Window", "height", 480);
-				bitsPerPixel	= ini.GetInteger("Window", "bitsPerPixel", 32);
-				style			= ini.GetInteger("Window", "style", ml::Window::Default);
-				majorVersion	= ini.GetInteger("Window", "majorVersion", 3);
-				minorVersion	= ini.GetInteger("Window", "minorVersion", 3);
-				depthBits		= ini.GetInteger("Window", "depthBits", 24);
-				stencilBits		= ini.GetInteger("Window", "stencilBits", 8);
-				profile			= ini.GetInteger("Window", "profile", ml::Context::Compat);
-				multisample		= ini.GetBoolean("Window", "multisample", false);
-				srgbCapable		= ini.GetBoolean("Window", "srgbCapable", false);
-
-				// [Graphics]	
-				/* * * * * * * * * * * * * * * * * * * * */
-				glErrorPause	= ini.GetBoolean("Graphics", "glErrorPause", false);
-				glExperimental	= ini.GetBoolean("Graphics", "glExperimental", true);
-				fieldOfView		= (float)ini.GetReal("Graphics", "fieldOfView", 90.0);
-				perspNear		= (float)ini.GetReal("Graphics", "perspNear", 0.1);
-				perspFar		= (float)ini.GetReal("Graphics", "perspFar", 1000.0);
-				orthoNear		= (float)ini.GetReal("Graphics", "orthoNear", -1.0);
-				orthoFar		= (float)ini.GetReal("Graphics", "orthoFar", +1.0);
-
-				// [Audio]
-				/* * * * * * * * * * * * * * * * * * * * */
-				isMuted			= ini.GetBoolean("Audio", "isMuted", false);
-
-				// [Network]
-				/* * * * * * * * * * * * * * * * * * * * */
-				isServer		= ini.GetBoolean("Network", "isServer", false);
-				isClient		= ini.GetBoolean("Network", "isClient", false);
-
-				/* * * * * * * * * * * * * * * * * * * * */
-				return true;
-			}
-			return false;
-		}
-
-
 	public:
-		inline ml::String pathTo(const ml::String & filename) const
-		{
-			return (assetPath + filename);
-		}
-		
 		inline ml::vec2u	 winSize()	const { return { width, height }; }
 		inline ml::VideoMode video()	const { return { winSize(), bitsPerPixel }; }
 		inline ml::Context	 context()	const

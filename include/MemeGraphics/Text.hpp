@@ -9,12 +9,6 @@
 #include <MemeGraphics/VertexBuffer.hpp>
 #include <MemeGraphics/Shapes.hpp>
 
-// TODO: 
-/*
-	Maybe draw 2D stuff to a Canvas?
-	Each canvas could have it's own VAO/VBO so we dont need to store them in Demo.
-*/
-
 namespace ml
 {
 	class ML_GRAPHICS_API Text

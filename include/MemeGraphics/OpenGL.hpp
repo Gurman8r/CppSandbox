@@ -17,29 +17,34 @@
 
 namespace ml
 {
-	// Wrapper for every OpenGL call used in project
+	// ML OpenGL Wrapper
 	class ML_GRAPHICS_API OpenGL final
 	{
-	private: // Members
-		static bool m_good;
-		static bool m_errorPause;
+	private: // Private Members
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		static bool		m_good;
+		static bool		m_errorPause;
 
 	public: // Errors
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		static GL::Err	getError();
 		static void		errorPause(bool value);
 		static void		checkError(CString file, uint32_t line, CString expression);
 
-	public: // General
+	public: // Initialization
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		static bool		init(bool experimental);
 		static bool		good();
 		static void		validate(uint32_t & major, uint32_t & minor);
 
 	public: // Flags
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		static bool		isEnabled(uint32_t value);
 		static bool		enable(uint32_t value);
 		static bool		disable(uint32_t value);
 		
 	public: // Get
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		static CString	getString(uint32_t name);
 		static CString	getString(uint32_t name, uint32_t index);
 		static bool		getBool(uint32_t name);
@@ -49,6 +54,7 @@ namespace ml
 		static int32_t*	getIntv(uint32_t name, int32_t * params);
 
 	public: // Functions
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		static void		activeTexture(uint32_t textureID);
 		static void		alphaFunc(GL::Comparison comp, float value);
 		static void		blendFunc(GL::Factor src, GL::Factor dst);
@@ -62,6 +68,7 @@ namespace ml
 		static void		polygonMode(uint32_t face, uint32_t mode);
 
 	public: // Drawing
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		static void		clear(GL::Mask mask);
 		static void		clearColor(float r, float g, float b, float a);
 		static void		drawElements(GL::Mode mode, int32_t count, GL::Type type, const void * indices);
@@ -79,6 +86,7 @@ namespace ml
 		static void		color4f(float r, float g, float b, float a);
 
 	public: // Buffers
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		static uint32_t genBuffers(uint32_t count);
 		static uint32_t genVertexArrays(uint32_t count);
 		static void		bindBuffer(uint32_t type, uint32_t buffer);
@@ -92,6 +100,7 @@ namespace ml
 		static void		enableVertexAttribArray(uint32_t index);
 
 	public: // Textures
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		static int32_t	getMaxTextureUnits();
 		static uint32_t	getMaxTextureSize();
 		static uint32_t getValidTextureSize(uint32_t value);
@@ -112,15 +121,17 @@ namespace ml
 		static void		bindSampler(uint32_t unit, int32_t sampler);
 
 	public: // Framebuffers
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		static bool		framebuffersAvailable();
 		static uint32_t genFramebuffers(uint32_t count);
 		static uint32_t	checkFramebufferStatus(uint32_t target);
 		static void		bindFramebuffer(uint32_t target, uint32_t framebuffer);
 		static void		deleteFramebuffers(uint32_t count, const uint32_t * framebuffers);
 		static void		blitFramebuffer(int32_t srcX0, int32_t srcY0, int32_t srcX1, int32_t srcY1, int32_t dstX0, int32_t dstY0, int32_t dstX1, int32_t dstY1, GL::Mask mask, uint32_t filter);
-		static void		framebufferTexture2D(uint32_t target, GL::Attachment attachment, uint32_t textarget, uint32_t texture, int32_t level);
+		static void		framebufferTexture2D(uint32_t target, uint32_t attachment, uint32_t textarget, uint32_t texture, int32_t level);
 
 	public: // Renderbuffers
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		static uint32_t genRenderbuffers(uint32_t count);
 		static void		deleteRenderbuffers(uint32_t count, const uint32_t * renderbuffers);
 		static void		bindRenderbuffer(uint32_t target, uint32_t renderbuffer);
@@ -128,6 +139,7 @@ namespace ml
 		static void		framebufferRenderbuffer(uint32_t target, uint32_t attachment, uint32_t renderbuffertarget, uint32_t renderbuffer);
 
 	public: // Shaders
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		static bool		shadersAvailable();
 		static bool		geometryShadersAvailable();
 
@@ -145,9 +157,9 @@ namespace ml
 		static void		detachShader(uint32_t containerObj, uint32_t obj);
 		static void		attachShader(uint32_t containerObj, uint32_t obj);
 		static void		shaderSource(uint32_t obj, int32_t count, CString const * src, const int32_t * length);
-		static bool		compileShader(uint32_t obj);
+		static int32_t	compileShader(uint32_t obj);
 		static int32_t	compileShader(uint32_t & out, GL::ShaderType type, CString source);
-		static bool		linkShader(uint32_t obj);
+		static int32_t	linkShader(uint32_t obj);
 
 		static void		uniform1f(int32_t location, float value);
 		static void		uniform1i(int32_t location, int32_t value);
@@ -164,6 +176,8 @@ namespace ml
 		static void		uniformMatrix2fv(int32_t location, uint32_t count, bool transpose, const float * value);
 		static void		uniformMatrix3fv(int32_t location, uint32_t count, bool transpose, const float * value);
 		static void		uniformMatrix4fv(int32_t location, uint32_t count, bool transpose, const float * value);
+
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 	};
 
 }

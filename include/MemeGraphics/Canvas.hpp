@@ -6,6 +6,8 @@
 #include <MemeGraphics/Shader.hpp>
 #include <MemeGraphics/IDrawable.hpp>
 
+// Meant to take over for 2D rendering
+
 namespace ml
 {
 	class ML_GRAPHICS_API Canvas

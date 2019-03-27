@@ -158,7 +158,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="..\..\assets\materials\example.mat" />
     <None Include="..\..\assets\meshes\cow.mesh" />
     <None Include="..\..\assets\meshes\cube.mesh" />
     <None Include="..\..\assets\meshes\pumpkin.mesh" />

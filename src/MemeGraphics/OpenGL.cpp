@@ -1,10 +1,7 @@
 #include <MemeGraphics/OpenGL.hpp>
 #include <MemeCore/Debug.hpp>
 
-#ifndef GLEW_STATIC
 #define GLEW_STATIC
-#endif // !GLEW_STATIC
-
 #include <GL/glew.h>
 #pragma comment (lib, "glew32s.lib")
 
@@ -12,12 +9,15 @@
 
 namespace ml
 {
-	// Members
+	// Private Members
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 	bool OpenGL::m_good = false;
 	bool OpenGL::m_errorPause = false;
 
 
 	// Errors
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	GL::Err OpenGL::getError()
 	{
@@ -100,7 +100,8 @@ namespace ml
 	}
 
 
-	// General
+	// Initialization
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	bool OpenGL::init(bool experimental)
 	{
@@ -125,8 +126,7 @@ namespace ml
 	{
 		if (good())
 		{
-			Debug::log("OpenGL version supported by this platform: {0}",
-				getString(GL::Version));
+			Debug::log("OpenGL version supported by this platform: {0}", getString(GL::Version));
 
 			majorVersion = (uint32_t)getInt(GL::MajorVersion);
 			minorVersion = (uint32_t)getInt(GL::MinorVersion);
@@ -184,6 +184,7 @@ namespace ml
 
 	
 	// Flags
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	bool OpenGL::isEnabled(uint32_t value)
 	{
@@ -206,6 +207,7 @@ namespace ml
 
 
 	// Get
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	CString OpenGL::getString(uint32_t name)
 	{
@@ -258,6 +260,7 @@ namespace ml
 
 
 	// Functions
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	void OpenGL::activeTexture(uint32_t target)
 	{
@@ -316,6 +319,7 @@ namespace ml
 
 
 	// Drawing
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	void OpenGL::clear(GL::Mask mask)
 	{
@@ -386,6 +390,7 @@ namespace ml
 
 
 	// Buffers
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	uint32_t OpenGL::genBuffers(uint32_t count)
 	{
@@ -465,6 +470,7 @@ namespace ml
 
 
 	// Textures
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	bool OpenGL::edgeClampAvailable()
 	{
@@ -598,6 +604,7 @@ namespace ml
 
 
 	// Framebuffers
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	bool OpenGL::framebuffersAvailable()
 	{
@@ -644,13 +651,14 @@ namespace ml
 			filter));
 	}
 
-	void OpenGL::framebufferTexture2D(uint32_t target, GL::Attachment attachment, uint32_t textarget, uint32_t texture, int32_t level)
+	void OpenGL::framebufferTexture2D(uint32_t target, uint32_t attachment, uint32_t textarget, uint32_t texture, int32_t level)
 	{
 		glCheck(glFramebufferTexture2D(target, attachment, textarget, texture, level));
 	}
 
 
 	// Renderbuffers
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	uint32_t OpenGL::genRenderbuffers(uint32_t count)
 	{
@@ -682,6 +690,7 @@ namespace ml
 
 
 	// Shaders
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	bool OpenGL::shadersAvailable()
 	{
@@ -712,6 +721,7 @@ namespace ml
 		return available;
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	CString OpenGL::getProgramInfoLog(uint32_t obj)
 	{
@@ -769,6 +779,7 @@ namespace ml
 		return temp;
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	void OpenGL::useShader(uint32_t obj)
 	{
@@ -795,7 +806,7 @@ namespace ml
 		glCheck(glShaderSource(obj, count, src, length));
 	}
 
-	bool OpenGL::compileShader(uint32_t obj)
+	int32_t OpenGL::compileShader(uint32_t obj)
 	{
 		glCheck(glCompileShaderARB(obj));
 
@@ -804,7 +815,7 @@ namespace ml
 
 	int32_t OpenGL::compileShader(uint32_t & out, GL::ShaderType type, CString source)
 	{
-		static String name;
+		String name;
 		switch (type)
 		{
 		case GL::FragmentShader: name = "Fragment"; break;
@@ -817,24 +828,26 @@ namespace ml
 
 			shaderSource(out, 1, &source, NULL);
 
-			if (!compileShader(out))
+			int32_t status;
+			if (!(status = compileShader(out)))
 			{
 				CString log = getProgramInfoLog(out);
 				deleteShader(out);
 				return Debug::logError("Failed compiling {0} source: {1}", name, log);
 			}
-			return ML_SUCCESS;
+			return status;
 		}
 		return ML_WARNING;
 	}
 
-	bool OpenGL::linkShader(uint32_t obj)
+	int32_t OpenGL::linkShader(uint32_t obj)
 	{
 		glCheck(glLinkProgramARB(obj));
 
 		return getProgramParameter(obj, GL::ObjectLinkStatus);
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	void OpenGL::uniform1f(int32_t location, float value)
 	{
@@ -911,4 +924,5 @@ namespace ml
 		glCheck(glUniformMatrix4fvARB(location, count, transpose, value));
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 }

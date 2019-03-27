@@ -87,12 +87,9 @@ namespace ml
 
 	void Text::update() const
 	{
-		if (!m_font)
-			return;
-
-		if (m_requiresUpdate)
-		{	m_requiresUpdate = false;
-			
+		if (m_font && m_requiresUpdate)
+		{	
+			m_requiresUpdate = false;
 			m_vertices.resize(m_string.size());
 			m_textures.resize(m_string.size());
 			
@@ -125,20 +122,20 @@ namespace ml
 	
 	void Text::draw(RenderTarget & target, RenderBatch batch) const
 	{
-		if (!m_font)
-			return;
-
-		update();
-		
-		if (Uniform * u = batch.uniforms->find("Frag.mainCol"))
-			u->data = &m_color;
-
-		for (size_t i = 0, imax = m_string.size(); i < imax; i++)
+		if (m_font)
 		{
-			if (Uniform * u = batch.uniforms->find("Frag.mainTex"))
-				u->data = m_textures[i];
+			update();
 
-			target.draw(m_vertices[i].data(), RectQuad::Size, batch);
+			if (Uniform * u = batch.uniforms->find("Frag.mainCol"))
+				u->data = &m_color;
+
+			for (size_t i = 0, imax = m_string.size(); i < imax; i++)
+			{
+				if (Uniform * u = batch.uniforms->find("Frag.mainTex"))
+					u->data = m_textures[i];
+
+				target.draw(m_vertices[i].data(), RectQuad::Size, batch);
+			}
 		}
 	}
 }

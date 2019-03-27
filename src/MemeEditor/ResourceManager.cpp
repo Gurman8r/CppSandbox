@@ -136,7 +136,7 @@ namespace ml
 	{
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		auto find_in = [](const HashMap<String, String> & data, const String & find)
+		auto getVal = [](const HashMap<String, String> & data, const String & find)
 		{
 			HashMap<String, String>::const_iterator it;
 			return (((it = data.find(find)) != data.end()) ? it->second : String());
@@ -144,8 +144,8 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		const String type = find_in(item, "type");
-		const String name = find_in(item, "name");
+		const String type = getVal(item, "type");
+		const String name = getVal(item, "name");
 		if (type && name)
 		{
 			// Manifests
@@ -156,18 +156,16 @@ namespace ml
 			// Effects
 			else if (type == "effect")
 			{
-				const String m = find_in(item, "model");
-				const String s = find_in(item, "shader");
-				const String t = find_in(item, "texture");
-				if (0 && m && s && t)
+				const String m = getVal(item, "model");
+				const String s = getVal(item, "shader");
+				if (m && s)
 				{
 					Effect * e;
 					return
 						(e = effects.load(name)) &&
-						(e->create({ 0, 0 }, GL::ColorAttachment0)) &&
+						(e->create({ 1920, 1080 }, GL::ColorAttachment0)) &&
 						(e->setModel(models.get(m))) &&
-						(e->setShader(shaders.get(s))) &&
-						(e->setTexture(textures.get(t)));
+						(e->setShader(shaders.get(s)));
 				}
 				else
 				{
@@ -177,7 +175,7 @@ namespace ml
 			// Fonts
 			else if (type == "font")
 			{
-				if (const String file = find_in(item, "file"))
+				if (const String file = getVal(item, "file"))
 				{
 					return fonts.load(name, file);
 				}
@@ -189,7 +187,7 @@ namespace ml
 			// Images
 			else if (type == "image")
 			{
-				if (const String file = find_in(item, "file"))
+				if (const String file = getVal(item, "file"))
 				{
 					return images.load(name, file);
 				}
@@ -201,7 +199,7 @@ namespace ml
 			// Materials
 			else if (type == "material")
 			{
-				if (const String file = find_in(item, "file"))
+				if (const String file = getVal(item, "file"))
 				{
 					return mats.load(name, file);
 				}
@@ -213,7 +211,7 @@ namespace ml
 			// Meshes
 			else if (type == "mesh")
 			{
-				if (const String file = find_in(item, "file"))
+				if (const String file = getVal(item, "file"))
 				{
 					return meshes.load(name, file);
 				}
@@ -225,11 +223,11 @@ namespace ml
 			// Models
 			else if (type == "model")
 			{
-				if (const String file = find_in(item, "file"))
+				if (const String file = getVal(item, "file"))
 				{
 					return models.load(name, file);
 				}
-				else if (const String file = find_in(item, "mesh"))
+				else if (const String file = getVal(item, "mesh"))
 				{
 					const Mesh * temp;
 					return
@@ -245,7 +243,7 @@ namespace ml
 			// Plugins
 			else if (type == "plugin")
 			{
-				if (const String file = find_in(item, "file"))
+				if (const String file = getVal(item, "file"))
 				{
 					return plugins.load(name, file);
 				}
@@ -257,7 +255,7 @@ namespace ml
 			// Scripts
 			else if (type == "script")
 			{
-				if (const String file = find_in(item, "file"))
+				if (const String file = getVal(item, "file"))
 				{
 					return scripts.load(name, file);
 				}
@@ -269,15 +267,15 @@ namespace ml
 			// Shaders
 			else if (type == "shader")
 			{
-				if (const String file = find_in(item, "file"))
+				if (const String file = getVal(item, "file"))
 				{
 					return shaders.load(name, file);
 				}
 				else
 				{
-					const String vert = find_in(item, "vert");
-					const String geom = find_in(item, "geom");
-					const String frag = find_in(item, "frag");
+					const String vert = getVal(item, "vert");
+					const String geom = getVal(item, "geom");
+					const String frag = getVal(item, "frag");
 					if (vert || geom || frag)
 					{
 						return
@@ -293,7 +291,7 @@ namespace ml
 			// Skyboxes
 			else if (type == "skybox")
 			{
-				if (const String file = find_in(item, "file"))
+				if (const String file = getVal(item, "file"))
 				{
 					return skyboxes.load(name, file);
 				}
@@ -305,7 +303,7 @@ namespace ml
 			// Sounds
 			else if (type == "sound")
 			{
-				if (const String file = find_in(item, "file"))
+				if (const String file = getVal(item, "file"))
 				{
 					return sounds.load(name, file);
 				}
@@ -317,7 +315,7 @@ namespace ml
 			// Sprites
 			else if (type == "sprite")
 			{
-				if (const String file = find_in(item, "texture"))
+				if (const String file = getVal(item, "texture"))
 				{
 					const Texture * temp;
 					return
@@ -333,11 +331,11 @@ namespace ml
 			// Textures
 			else if (type == "texture")
 			{
-				if (const String file = find_in(item, "file"))
+				if (const String file = getVal(item, "file"))
 				{
 					return textures.load(name, file);
 				}
-				else if (const String file = find_in(item, "image"))
+				else if (const String file = getVal(item, "image"))
 				{
 					const Image * temp;
 					return

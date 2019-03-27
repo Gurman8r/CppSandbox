@@ -8,16 +8,25 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Effect::Effect()
-		: m_fbo		()
-		, m_rbo		()
-		, m_model	(NULL)
-		, m_shader	(NULL)
-		, m_texture	(NULL)
+		: m_fbo()
+		, m_rbo()
+		, m_model(NULL)
+		, m_shader(NULL)
+		, m_texture(NULL)
+		, m_size(0)
+		, m_attachment(GL::ColorAttachment0)
 	{
 	}
 
 	Effect::~Effect()
 	{
+		cleanup();
+
+		if (m_texture)
+		{
+			delete m_texture;
+			m_texture = NULL;
+		}
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -28,9 +37,8 @@ namespace ml
 		{
 			m_fbo.clean();
 			m_rbo.clean();
-			return (!m_fbo && !m_rbo);
 		}
-		return false;
+		return (!m_fbo && !m_rbo);
 	}
 
 	bool Effect::loadFromFile(const String & filename)
@@ -40,62 +48,56 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Effect::create(const vec2i & size, GL::Attachment attachment)
+	bool Effect::create(const vec2i & size, uint32_t attachment)
 	{
 		if (!m_fbo && !m_rbo)
 		{
-			m_size = size;
-			m_attachment = attachment;
-
-			// Create FBO
-			m_fbo.create();
-			m_fbo.bind();
-
-			// Create RBO
-			m_rbo.create(m_size[0], m_size[1]);
-			m_rbo.bind();
-			m_rbo.bufferStorage(ml::GL::Depth24_Stencil8);
-			m_rbo.setFramebuffer(ml::GL::DepthStencilAttachment);
-			m_rbo.unbind();
-			
-			// Check Framebuffer Status
-			if (!ml::OpenGL::checkFramebufferStatus(ml::GL::Framebuffer))
+			if (((m_size = size) != vec2i::Zero) && (m_attachment = attachment))
 			{
-				return ml::Debug::logError("Framebuffer is not complete");
+				// Setup Framebuffer
+				m_fbo.create();
+				m_fbo.bind();
+				{
+					// Setup Renderbuffer
+					m_rbo.create(m_size[0], m_size[1]);
+					m_rbo.bind();
+					m_rbo.bufferStorage(ml::GL::Depth24_Stencil8);
+					m_rbo.setFramebuffer(ml::GL::DepthStencilAttachment);
+					m_rbo.unbind();
+
+					// Check Framebuffer Status
+					if (!ml::OpenGL::checkFramebufferStatus(ml::GL::Framebuffer))
+					{
+						return ml::Debug::logError("Framebuffer is not complete");
+					}
+
+					// Setup Texture
+					m_texture = m_texture ? m_texture : new Texture();
+					m_texture->cleanup();
+					m_texture->create(size);
+					m_fbo.setTexture(
+						(m_attachment),
+						(*m_texture),
+						(m_texture->target()),
+						(m_texture->level())
+					);
+
+				}
+				m_fbo.unbind();
+
+				return (m_fbo && m_rbo);
 			}
-
-			m_fbo.unbind();
-
-			return (m_fbo && m_rbo);
-		}
-		return false;
-	}
-
-	bool Effect::reload(const vec2i & size)
-	{
-		if (cleanup())
-		{
-			create(size, m_attachment);
-			setModel(m_model);
-			setShader(m_shader);
-			setTexture(m_texture);
-			return true;
 		}
 		return false;
 	}
 
 	bool Effect::resize(const vec2i & size)
 	{
-		if (size != vec2i::Zero)
-		{
-			if (Texture * t = texture_ref())
-			{
-				t->cleanup();
-				t->create(size);
-			}
-			return reload(size);
-		}
-		return false;
+		return 
+			(size != vec2i::Zero) &&
+			(m_size != size) &&
+			(cleanup()) &&
+			(create(size, m_attachment));
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -122,25 +124,6 @@ namespace ml
 		return (m_shader = value);
 	}
 
-	bool Effect::setTexture(const Texture * value)
-	{
-		if (m_fbo && (m_texture = value))
-		{
-			m_fbo.bind();
-
-			m_fbo.setTexture(
-				m_attachment,
-				(*m_texture),
-				m_texture->target(),
-				m_texture->level());
-
-			m_fbo.unbind();
-
-			return true;
-		}
-		return false;
-	}
-
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	void Effect::draw(RenderTarget & target, RenderBatch batch) const
@@ -151,7 +134,7 @@ namespace ml
 
 			m_shader->bind();
 
-			target.draw((*m_model));
+			target.draw(*m_model);
 		}
 	}
 

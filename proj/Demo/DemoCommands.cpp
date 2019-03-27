@@ -70,7 +70,7 @@ namespace DEMO
 		else if (path == "~")
 		{
 			return ml::Var().boolValue(ML_FileSystem.setWorkingDir(
-				ML_FileSystem.pathTo(SETTINGS.pathTo(""))));
+				ML_FileSystem.pathTo(SETTINGS.assetPath)));
 		}
 		else
 		{
@@ -134,22 +134,6 @@ namespace DEMO
 							}
 						}
 						break;
-						case 'i': 
-						{
-							int32_t value;
-							if (ml::StringUtility::MakeInt(args.front(), value))
-							{
-								if (name == "runTests")
-								{
-									return ml::Var().intValue(SETTINGS.runTests = value);
-								}
-								else
-								{
-									return ml::Var().errorValue("Unknown Int {0}", name);
-								}
-							}
-						}
-						break;
 						case 's': 
 						{
 							ml::String value;
@@ -158,10 +142,6 @@ namespace DEMO
 								if (name == "title")
 								{
 									return ml::Var().stringValue(SETTINGS.title = value);
-								}
-								else if (name == "scrFile")
-								{
-									return ml::Var().stringValue(SETTINGS.scrFile = value);
 								}
 								else
 								{

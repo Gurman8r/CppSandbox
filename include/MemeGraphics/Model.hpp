@@ -12,6 +12,7 @@
 
 namespace ml
 {
+	// Model is a Drawable Mesh
 	class ML_GRAPHICS_API Model
 		: public ITrackable
 		, public IDrawable

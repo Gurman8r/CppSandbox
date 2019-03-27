@@ -21,14 +21,6 @@
 
 <item>
 	type: model
-	name: framebuffer
-	mesh: default_quad
-</item>
-
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
-
-<item>
-	type: model
 	name: cube
 	mesh: cube
 </item>

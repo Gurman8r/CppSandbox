@@ -54,6 +54,18 @@ namespace ml
 		return false;
 	}
 
+	bool Mesh::loadFromMemory(const FloatList & vertices)
+	{
+		if (!vertices.empty())
+		{
+			m_indices.clear();
+			m_vertices.clear();
+			m_contiguous = vertices;
+			return true;
+		}
+		return false;
+	}
+
 	bool Mesh::loadFromMemory(const VertexList & vertices)
 	{
 		if (!vertices.empty())

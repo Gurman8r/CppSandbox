@@ -53,9 +53,6 @@
     <Filter Include="Resource Files\skyboxes">
       <UniqueIdentifier>{03731043-07d2-4623-8321-3729ce9db5ea}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\materials">
-      <UniqueIdentifier>{915c2446-9cc8-41a6-b386-a55e4bcd2581}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\data">
       <UniqueIdentifier>{76ca6f33-6dae-44fc-9147-d75352f6a8b0}</UniqueIdentifier>
     </Filter>
@@ -114,9 +111,6 @@
     </None>
     <None Include="..\..\assets\skyboxes\sunset.skybox">
       <Filter>Resource Files\skyboxes</Filter>
-    </None>
-    <None Include="..\..\assets\materials\example.mat">
-      <Filter>Resource Files\materials</Filter>
     </None>
     <None Include="..\..\assets\shaders\sprites.shader">
       <Filter>Resource Files\shaders</Filter>

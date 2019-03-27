@@ -97,7 +97,7 @@ namespace DEMO
 					SETTINGS.perspNear, SETTINGS.perspFar
 				);
 
-				// Effects
+				// Resize Effects
 				for (auto pair : ML_Res.effects)
 				{
 					pair.second->resize(ev->size());
@@ -169,55 +169,53 @@ namespace DEMO
 
 	bool DemoProgram::loadResources()
 	{
+		// Batch
+		/* * * * * * * * * * * * * * * * * * * * */
+		m_batchVAO.create(ml::GL::Triangles).bind();
+		m_batchVBO.create(ml::GL::DynamicDraw).bind();
+		m_batchVBO.bufferData(NULL, ml::RectQuad::Size);
+		ml::BufferLayout::Default.bind();
+		m_batchVBO.unbind();
+		m_batchVAO.unbind();
+
 		return ml::Debug::log("Loading Resources...")
-			&& ML_Res.meshes.load("default_tri")->loadFromMemory(
+
+			// Default Meshes
+			/* * * * * * * * * * * * * * * * * * * * */
+			&& ML_Res.meshes.load("default_triangle")->loadFromMemory(
 				ml::Shapes::Triangle::Vertices,
 				ml::Shapes::Triangle::Indices
 			)
 			&& ML_Res.meshes.load("default_quad")->loadFromMemory(
-				ml::Shapes::Quad::Vertices, 
+				ml::Shapes::Quad::Vertices,
 				ml::Shapes::Quad::Indices
 			)
 			&& ML_Res.meshes.load("default_cube")->loadFromMemory(
 				ml::Shapes::Cube::Vertices,
 				ml::Shapes::Cube::Indices
 			)
-			&& ML_Res.textures.load("fbo_main")->create(this->getSize())
-			&& ML_Res.textures.load("fbo_post")->create(this->getSize())
-			&& ML_Res.loadFromFile(ML_FileSystem.pathTo(SETTINGS.pathTo(SETTINGS.manifest)))
-			&& loadBuffers();
-	}
+			&& ML_Res.meshes.load("default_skybox")->loadFromMemory(
+				ml::Shapes::Sky::Vertices
+			)
+			
+			// Default Models
+			/* * * * * * * * * * * * * * * * * * * * */
+			&& ML_Res.models.load("default_triangle")->loadFromMemory(
+				*ML_Res.meshes.get("default_triangle")
+			)
+			&& ML_Res.models.load("default_quad")->loadFromMemory(
+				*ML_Res.meshes.get("default_quad")
+			)
+			&& ML_Res.models.load("default_cube")->loadFromMemory(
+				*ML_Res.meshes.get("default_cube")
+			)
+			&& ML_Res.models.load("default_skybox")->loadFromMemory(
+				*ML_Res.meshes.get("default_skybox")
+			)
 
-	bool DemoProgram::loadBuffers()
-	{
-		// Sprites/2D
-		{
-			m_batch_vao.create(ml::GL::Triangles).bind();
-			m_batch_vbo.create(ml::GL::DynamicDraw).bind();
-			m_batch_vbo.bufferData(NULL, ml::RectQuad::Size);
-			ml::BufferLayout::Default.bind();
-			m_batch_vbo.unbind();
-			m_batch_vao.unbind();
-		}
-
-		// Effects
-		if (ml::Effect * e = ML_Res.effects.get("fbo_main"))
-		{
-			e->create(this->getSize(), ml::GL::ColorAttachment0);
-			e->setModel(ML_Res.models.get("framebuffer"));
-			e->setShader(ML_Res.shaders.get("framebuffer"));
-			e->setTexture(ML_Res.textures.get("fbo_main"));
-		}
-
-		if (ml::Effect * e = ML_Res.effects.get("fbo_post"))
-		{
-			e->create(this->getSize(), ml::GL::ColorAttachment0);
-			e->setModel(ML_Res.models.get("framebuffer"));
-			e->setShader(ML_Res.shaders.get("framebuffer"));
-			e->setTexture(ML_Res.textures.get("fbo_post"));
-		}
-
-		return true;
+			// Load Manifest
+			/* * * * * * * * * * * * * * * * * * * * */
+			&& ML_Res.loadFromFile(ML_FileSystem.pathTo(SETTINGS.manifest));
 	}
 
 	bool DemoProgram::loadNetwork()
@@ -262,18 +260,18 @@ namespace DEMO
 		ML_Time.start();
 
 		// Set Parser Flags
-		ML_Parser.showToks(SETTINGS.scrShowToks); // Show Tokens
-		ML_Parser.showTree(SETTINGS.scrShowTree); // Show Tree
-		ML_Parser.showItoP(SETTINGS.scrShowItoP); // Show Infix to Postfix
+		ML_Parser.showToks(SETTINGS.flagShowToks); // Show Tokens
+		ML_Parser.showTree(SETTINGS.flagShowTree); // Show Tree
+		ML_Parser.showItoP(SETTINGS.flagShowItoP); // Show Infix to Postfix
 
 		// Load Commands
 		install_commands();
 
 		// Run Script
-		if (!SETTINGS.scrFile.empty())
+		if (!SETTINGS.bootScript.empty())
 		{
 			ml::Script scr;
-			if (scr.loadFromFile(SETTINGS.pathTo(SETTINGS.scrFile)))
+			if (scr.loadFromFile(SETTINGS.bootScript))
 			{
 				if (scr.build(ev.args))
 				{
@@ -349,7 +347,12 @@ namespace DEMO
 			}
 
 			// CD
-			ML_FileSystem.setWorkingDir("../../../");
+			ML_FileSystem.setWorkingDir(ML_FileSystem.pathTo(SETTINGS.assetPath));
+
+			// Force Update Framebuffers
+			ML_EventSystem.fireEvent(ml::FramebufferSizeEvent(
+				this->frameWidth(), 
+				this->frameHeight()));
 		}
 		else
 		{
@@ -357,7 +360,7 @@ namespace DEMO
 				"Failed Loading Window\n"
 				"Try checking your settings:\n"
 				"\"{0}\"\n",
-				SETTINGS.configIni));
+				SETTINGS.configINI));
 		}
 	}
 
@@ -679,9 +682,12 @@ namespace DEMO
 
 		// Draw Scene
 		/* * * * * * * * * * * * * * * * * * * * */
-		ML_Res.effects.get("fbo_main")->bind();
+		if (ml::Effect * scene = ML_Res.effects.get(ML_FBO_MAIN))
 		{
-			// Clear
+			// Bind
+			scene->bind();
+
+			// Clear Screen
 			this->clear(uni.clearColor);
 
 			ml::OpenGL::enable(ml::GL::CullFace);
@@ -690,103 +696,103 @@ namespace DEMO
 			// Light
 			if (const ml::Model * model = ML_Res.models.get("light"))
 			{
-				static ml::UniformSet uniforms = {
-					ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&model->transform().matrix()),
-					ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&uni.lightCol),
-				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("solid"))
 				{
+					static ml::UniformSet uniforms = {
+						ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&model->transform().matrix()),
+						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&uni.lightCol),
+					};
 					shader->applyUniforms(camera_uniforms);
 					shader->applyUniforms(uniforms);
 					shader->bind();
+					this->draw(*model);
 				}
-				this->draw(*model);
 			}
 
 			// Borg
 			if (const ml::Model * model = ML_Res.models.get("borg"))
 			{
-				static ml::UniformSet uniforms = {
-					ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&model->transform().matrix()),
-					ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
-					ml::Uniform("Frag.mainTex",	ml::Uniform::Tex,	ML_Res.textures.get("borg")),
-				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("basic"))
 				{
+					static ml::UniformSet uniforms = {
+						ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&model->transform().matrix()),
+						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
+						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex,	ML_Res.textures.get("borg")),
+					};
 					shader->applyUniforms(uniforms);
 					shader->bind();
+					this->draw(*model);
 				}
-				this->draw(*model);
 			}
 
 			// Earth
 			if (const ml::Model * model = ML_Res.models.get("earth"))
 			{
-				static ml::UniformSet uniforms = {
-					ml::Uniform("Vert.model",		ml::Uniform::Mat4,	&model->transform().matrix()),
-					ml::Uniform("Frag.tex_dm",		ml::Uniform::Tex,	ML_Res.textures.get("earth_dm")),
-					ml::Uniform("Frag.tex_sm",		ml::Uniform::Tex,	ML_Res.textures.get("earth_sm")),
-				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("lighting"))
 				{
+					static ml::UniformSet uniforms = {
+						ml::Uniform("Vert.model",		ml::Uniform::Mat4,	&model->transform().matrix()),
+						ml::Uniform("Frag.tex_dm",		ml::Uniform::Tex,	ML_Res.textures.get("earth_dm")),
+						ml::Uniform("Frag.tex_sm",		ml::Uniform::Tex,	ML_Res.textures.get("earth_sm")),
+					};
 					shader->applyUniforms(camera_uniforms);
 					shader->applyUniforms(light_uniforms);
 					shader->applyUniforms(uniforms);
 					shader->bind();
+					this->draw(*model);
 				}
-				this->draw(*model);
 			}
 
 			// Moon
 			if (const ml::Model * model = ML_Res.models.get("moon"))
 			{
-				static ml::UniformSet uniforms = {
-					ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&model->transform().matrix()),
-					ml::Uniform("Frag.tex_dm",	ml::Uniform::Tex,	ML_Res.textures.get("moon_dm")),
-					ml::Uniform("Frag.tex_sm",	ml::Uniform::Tex,	ML_Res.textures.get("moon_nm")),
-				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("lighting"))
 				{
+					static ml::UniformSet uniforms = {
+						ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&model->transform().matrix()),
+						ml::Uniform("Frag.tex_dm",	ml::Uniform::Tex,	ML_Res.textures.get("moon_dm")),
+						ml::Uniform("Frag.tex_sm",	ml::Uniform::Tex,	ML_Res.textures.get("moon_nm")),
+					};
 					shader->applyUniforms(camera_uniforms);
 					shader->applyUniforms(light_uniforms);
 					shader->applyUniforms(uniforms);
 					shader->bind();
+					this->draw(*model);
 				}
-				this->draw(*model);
 			}
 
 			// Cube
 			if (const ml::Model * model = ML_Res.models.get("cube"))
 			{
-				static ml::UniformSet uniforms = {
-					ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&model->transform().matrix()),
-					ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
-					ml::Uniform("Frag.mainTex",	ml::Uniform::Tex,	ML_Res.textures.get("stone_dm")),
-				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("normal3D"))
 				{
+					static ml::UniformSet uniforms = {
+						ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&model->transform().matrix()),
+						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
+						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex,	ML_Res.textures.get("stone_dm")),
+					};
 					shader->applyUniforms(camera_uniforms);
 					shader->applyUniforms(uniforms);
 					shader->bind();
+					this->draw(*model);
 				}
-				this->draw(*model);
 			}
 
 			// Ground
 			if (const ml::Model * model = ML_Res.models.get("ground"))
 			{
-				static ml::UniformSet uniforms = {
-					ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&model->transform().matrix()),
-					ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
-					ml::Uniform("Frag.mainTex",	ml::Uniform::Tex,	ML_Res.textures.get("stone_dm")),
-				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("normal3D"))
 				{
+					static ml::UniformSet uniforms = {
+						ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&model->transform().matrix()),
+						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
+						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex,	ML_Res.textures.get("stone_dm")),
+					};
 					shader->applyUniforms(camera_uniforms);
 					shader->applyUniforms(uniforms);
 					shader->bind();
+					this->draw(*model);
 				}
-				this->draw(*model);
 			}
 
 			ml::OpenGL::disable(ml::GL::CullFace);
@@ -794,18 +800,18 @@ namespace DEMO
 			// Sanic
 			if (const ml::Model * model = ML_Res.models.get("sanic"))
 			{
-				static ml::UniformSet uniforms = {
-					ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&model->transform().matrix()),
-					ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
-					ml::Uniform("Frag.mainTex",	ml::Uniform::Tex,	ML_Res.textures.get("sanic")),
-				};
 				if (const ml::Shader * shader = ML_Res.shaders.get("basic"))
 				{
+					static ml::UniformSet uniforms = {
+						ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&model->transform().matrix()),
+						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
+						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex,	ML_Res.textures.get("sanic")),
+					};
 					shader->applyUniforms(camera_uniforms);
 					shader->applyUniforms(uniforms);
 					shader->bind();
+					this->draw(*model);
 				}
-				this->draw(*model);
 			}
 
 			ml::OpenGL::disable(ml::GL::DepthTest);
@@ -829,8 +835,8 @@ namespace DEMO
 			if (const ml::Shader * shader = ML_Res.shaders.get("sprites"))
 			{
 				static ml::RenderBatch batch(
-					&m_batch_vao, 
-					&m_batch_vbo, 
+					&m_batchVAO, 
+					&m_batchVBO, 
 					shader, 
 					&batch_uniforms);
 
@@ -844,8 +850,8 @@ namespace DEMO
 			if (const ml::Shader * shader = ML_Res.shaders.get("text"))
 			{
 				static ml::RenderBatch batch(
-					&m_batch_vao,
-					&m_batch_vbo, 
+					&m_batchVAO,
+					&m_batchVBO, 
 					shader,
 					&batch_uniforms);
 
@@ -854,19 +860,29 @@ namespace DEMO
 					this->draw(it->second, batch);
 				}
 			}
+
+			// Unbind
+			scene->unbind();
 		}
-		ML_Res.effects.get("fbo_main")->unbind();
 
 
 		// Draw Effects
 		/* * * * * * * * * * * * * * * * * * * * */
-		ML_Res.effects.get("fbo_post")->bind();
+		if (ml::Effect * post = ML_Res.effects.get(ML_FBO_POST))
 		{
-			ML_Res.effects.get("fbo_main")->shader()->applyUniforms(effect_uniforms);
+			post->bind();
+			
+			if (ml::Effect * scene = ML_Res.effects.get(ML_FBO_MAIN))
+			{
+				if (const ml::Shader * shader = scene->shader())
+				{
+					shader->applyUniforms(effect_uniforms);
+				}
+				this->draw(*scene);
+			}
 
-			this->draw(*ML_Res.effects.get("fbo_main"));
+			post->unbind();
 		}
-		ML_Res.effects.get("fbo_post")->unbind();
 
 
 		// Draw GUI
@@ -1035,9 +1051,9 @@ namespace DEMO
 		{
 			/* * * * * * * * * * * * * * * * * * * * */
 
-			if (ml::Effect * e = ML_Res.effects.get("fbo_post"))
+			if (ml::Effect * e = ML_Res.effects.get(ML_FBO_POST))
 			{
-				ML_SceneView.updateTexture(e->texture_ref());
+				ML_SceneView.updateTexture(e->texture());
 			}
 
 			/* * * * * * * * * * * * * * * * * * * * */

@@ -40,13 +40,10 @@ namespace ml
 
 	RenderTarget & RenderTarget::draw(const RenderBatch & batch)
 	{
-		if (batch.vertices)
-		{
-			return draw((*batch.vertices), batch);
-		}
-		return (*this);
+		return (batch.vertices ? draw((*batch.vertices), batch) : (*this));
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	RenderTarget & RenderTarget::draw(const VertexList & vertices, const RenderBatch & batch)
 	{
@@ -78,6 +75,7 @@ namespace ml
 		return (*this);
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	RenderTarget & RenderTarget::draw(const VAO & vao, const VBO & vbo, const IBO & ibo)
 	{
