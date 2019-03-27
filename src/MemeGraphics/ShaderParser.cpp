@@ -76,7 +76,8 @@ namespace ml
 					String file;
 					if (ML_FileSystem.getFileContents(path, file))
 					{
-						out << parseIncludes(file.pop_back());
+						file.pop_back();
+						out << parseIncludes(file);
 					}
 				}
 			}

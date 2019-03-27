@@ -11,7 +11,7 @@ namespace ml
 	public:
 		inline virtual void serialize(std::ostream & out) const
 		{
-			out << get_type().name();
+			out << GetTypeInfo().name();
 		}
 		
 		inline virtual void deserialize(std::istream & in) 
@@ -19,22 +19,22 @@ namespace ml
 		}
 
 	public:
-		inline const std::type_info & get_type() const
+		inline const std::type_info & GetTypeInfo() const
 		{
 			return typeid(*this);
 		}
 
-		inline CString to_cstr() const
+		inline CString ToCString() const
 		{
-			return to_str().c_str();
+			return ToString().c_str();
 		}
 
-		inline String to_str() const
+		inline String ToString() const
 		{
-			return to_stream().str();
+			return ToSStream().str();
 		}
 
-		inline SStream to_stream() const
+		inline SStream ToSStream() const
 		{ 
 			SStream ss;
 			ss << (*this);

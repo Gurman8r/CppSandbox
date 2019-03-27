@@ -122,7 +122,7 @@ namespace DEMO
 		bool show_ml_scene		= true;
 		bool show_ml_texteditor	= true;
 		bool show_ml_hierarchy	= true;
-		bool show_ml_project	= true;
+		bool show_ml_resources	= true;
 		bool show_ml_network	= true;
 		bool show_ml_tester		= true;
 

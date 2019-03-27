@@ -4,7 +4,6 @@
 	type: manifest
 	name: ../../../assets/data/fonts.txt
 </item>
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
 
 # Images
@@ -13,7 +12,6 @@
 	type: manifest
 	name: ../../../assets/data/images.txt
 </item>
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
 
 # Scripts
@@ -22,7 +20,6 @@
 	type: manifest
 	name: ../../../assets/data/scripts.txt
 </item>
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
 
 # Shaders
@@ -31,7 +28,6 @@
 	type: manifest
 	name: ../../../assets/data/shaders.txt
 </item>
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
 
 # Textures
@@ -40,7 +36,6 @@
 	type: manifest
 	name: ../../../assets/data/textures.txt
 </item>
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
 
 # Skyboxes
@@ -49,7 +44,6 @@
 	type: manifest
 	name: ../../../assets/data/skyboxes.txt
 </item>
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
 
 # Meshes
@@ -58,7 +52,6 @@
 	type: manifest
 	name: ../../../assets/data/meshes.txt
 </item>
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
 
 # Models
@@ -67,7 +60,6 @@
 	type: manifest
 	name: ../../../assets/data/models.txt
 </item>
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
 
 # Sprites
@@ -76,4 +68,3 @@
 	type: manifest
 	name: ../../../assets/data/sprites.txt
 </item>
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #

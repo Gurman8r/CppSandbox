@@ -21,6 +21,8 @@ namespace ml
 			std::is_base_of<ml::IReadable, _Elem>::value, 
 			"Type must derive ml::IReadable");
 
+		friend class ResourceManager;
+
 	public:
 		using value_type	= _Elem;
 		using pointer		= typename value_type * ;
@@ -37,11 +39,9 @@ namespace ml
 		ResourceTable() {}
 		~ResourceTable() {}
 
+	private:
 		PointerMap	m_data;
-		String		m_path;
 		FileMap		m_files;
-
-		friend class ResourceManager;
 
 	public:
 		inline void serialize(std::ostream & out) const override
@@ -138,40 +138,27 @@ namespace ml
 			return load(files, String());
 		}
 
-		inline size_t load(const FileMap & files, const String & path)
-		{
-			m_files = files;
-			m_path = path;
-
-			size_t count = 0;
-			for (FileMap::const_iterator it = files.cbegin(); it != files.end(); it++)
-			{
-				if (const_pointer temp = load(it->first, it->second))
-				{
-					count++;
-				}
-			}
-			return count;
-		}
-
-
 		inline pointer load(const String & name, const String & file)
 		{
-			if (!name.empty() && !get(name))
+			if (name && !get(name))
 			{
-				if (!file.empty())
+				if (m_files[name] = file)
 				{
-					pointer temp = new value_type();
-
-					if (temp->loadFromFile(pathTo(file)))
+					if (const String path = ML_FileSystem.pathTo(file))
 					{
-						return set(name, temp);
+						if (pointer temp = new value_type())
+						{
+							if (temp->loadFromFile(path))
+							{
+								return set(name, temp);
+							}
+							else
+							{
+								delete temp;
+								Debug::logError("Failed loading {0}: \'{1}\'", name, path);
+							}
+						}
 					}
-					
-					delete temp;
-
-					Debug::logError("Failed loading {0}: \'{1}\'", name, pathTo(file));
-
 				}
 				else
 				{
@@ -183,16 +170,17 @@ namespace ml
 
 		inline pointer load(const String & name)
 		{
-			return (get(name)
-				? NULL
-				: set(name, new value_type()));
+			return ((get(name)) ? (NULL) : (set(name, new value_type())));
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		inline const String pathTo(const String & file) const 
-		{ 
-			return ML_FileSystem.pathTo(m_path + file); 
+		inline const String getFile(const String & value) const
+		{
+			FileMap::const_iterator it;
+			return ((it = m_files.find(value)) != m_files.end())
+				? it->second
+				: String();
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -205,17 +193,16 @@ namespace ml
 				const String & name = it->first;
 				const String & file = it->second;
 
-				if (!name.empty() && !file.empty())
+				if (name && file)
 				{
-					if (pointer temp = get(name))
+					if (const String path = ML_FileSystem.pathTo(file))
 					{
-						if (temp->loadFromFile(pathTo(file)))
+						if (pointer temp = get(name))
 						{
-							count++;
-						}
-						else
-						{
-							Debug::logError("Failed reloading {0}: \'{1}\'", name, pathTo(file));
+							count += ((temp->loadFromFile(path))
+								? (1U)
+								: (Debug::logError("Failed reloading {0}: \'{1}\'", name, path))
+							);
 						}
 					}
 				}

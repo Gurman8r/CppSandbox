@@ -34,7 +34,7 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			out << get_type().name() << ' ' << width << ' ' << height << ' ';
+			out << GetTypeInfo().name() << ' ' << width << ' ' << height << ' ';
 		}
 	};
 }

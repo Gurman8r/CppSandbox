@@ -418,7 +418,7 @@ namespace ml
 
 	void Texture::serialize(std::ostream & out) const
 	{
-		out << get_type().name();
+		out << GetTypeInfo().name();
 	}
 
 	void Texture::deserialize(std::istream & in)

@@ -60,19 +60,21 @@ namespace ml
 		void deserialize(std::istream & in) override;
 
 	public:
-		inline const GL::Target	target()	const { return m_target;	}
-		inline const int32_t	level()		const { return m_level;		}
-		inline const vec2u &	size()		const { return m_size;		}
-		inline const vec2u &	realSize()	const { return m_realSize;	}
-		inline const int32_t	border()	const { return m_border;	}
-		inline const GL::Format intFormat()	const { return m_intFormat;	}
-		inline const GL::Format colFormat()	const { return m_colFormat; }
-		inline const GL::Type	type()		const { return m_type;		}
-		inline const bool		smooth()	const { return m_smooth;	}
-		inline const bool		repeated()	const { return m_repeated;	}
-		inline const bool		mipmapped()	const { return m_mipmapped; }
-		inline const uint32_t	width()		const { return size()[0];	}
-		inline const uint32_t	height()	const { return size()[1];	}
+		inline const GL::Target	target()	const { return m_target;		}
+		inline const int32_t	level()		const { return m_level;			}
+		inline const vec2u &	size()		const { return m_size;			}
+		inline const vec2u &	realSize()	const { return m_realSize;		}
+		inline const int32_t	border()	const { return m_border;		}
+		inline const GL::Format intFormat()	const { return m_intFormat;		}
+		inline const GL::Format colFormat()	const { return m_colFormat;		}
+		inline const GL::Type	type()		const { return m_type;			}
+		inline const bool		smooth()	const { return m_smooth;		}
+		inline const bool		repeated()	const { return m_repeated;		}
+		inline const bool		mipmapped()	const { return m_mipmapped;		}
+		inline const uint32_t	width()		const { return size()[0];		}
+		inline const uint32_t	height()	const { return size()[1];		}
+		inline const uint32_t	realWidth()	const { return realSize()[0];	}
+		inline const uint32_t	realHeight()const { return realSize()[1];	}
 
 	private:
 		GL::Target	m_target;

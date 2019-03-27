@@ -153,7 +153,7 @@ namespace DEMO
 						case 's': 
 						{
 							ml::String value;
-							if (!(value = args.to_str()).empty())
+							if (!(value = args.ToString()).empty())
 							{
 								if (name == "title")
 								{
@@ -256,15 +256,15 @@ namespace DEMO
 		}
 		else if (name == "msg")
 		{
-			return ml::Var().intValue(ml::Debug::log(args.pop_front().to_str()));
+			return ml::Var().intValue(ml::Debug::log(args.pop_front().ToString()));
 		}
 		else if (name == "wrn")
 		{
-			return ml::Var().intValue(ml::Debug::logWarning(args.pop_front().to_str()));
+			return ml::Var().intValue(ml::Debug::logWarning(args.pop_front().ToString()));
 		}
 		else if (name == "err")
 		{
-			return ml::Var().intValue(ml::Debug::logError(args.pop_front().to_str()));
+			return ml::Var().intValue(ml::Debug::logError(args.pop_front().ToString()));
 		}
 		else
 		{
@@ -274,7 +274,7 @@ namespace DEMO
 	
 	ml::Var cmd_ls(ml::Args & args)
 	{
-		const ml::String name = args.pop_front().empty() ? "." : args.to_str();
+		const ml::String name = args.pop_front().empty() ? "." : args.ToString();
 		ml::SStream ss;
 		if (ML_FileSystem.getDirContents(name, ss))
 		{
@@ -349,7 +349,7 @@ namespace DEMO
 	
 	ml::Var cmd_system(ml::Args & args)
 	{
-		return ml::Var().intValue(ml::Debug::system(args.pop_front().to_str().c_str()));
+		return ml::Var().intValue(ml::Debug::system(args.pop_front().ToString().c_str()));
 	}
 	
 	ml::Var cmd_target(ml::Args & args)

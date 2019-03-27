@@ -3,32 +3,58 @@
 
 <item>
 	type: model
+	name: borg
+	mesh: default_cube
+</item>
+
+<item>
+	type: model
+	name: sanic
+	mesh: default_quad
+</item>
+
+<item>
+	type: model
+	name: sprite
+	mesh: default_quad
+</item>
+
+<item>
+	type: model
+	name: framebuffer
+	mesh: default_quad
+</item>
+
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+
+<item>
+	type: model
 	name: cube
-	file: ../../../assets/meshes/cube.mesh
+	mesh: cube
 </item>
 
 <item>
 	type: model
 	name: ground
-	file: ../../../assets/meshes/cube.mesh
+	mesh: cube
 </item>
 
 <item>
 	type: model
 	name: light
-	file: ../../../assets/meshes/sphere8x6.mesh
+	mesh: sphere8x6
 </item>
 
 <item>
 	type: model
 	name: earth
-	file: ../../../assets/meshes/sphere32x24.mesh
+	mesh: sphere32x24
 </item>
 
 <item>
 	type: model
 	name: moon
-	file: ../../../assets/meshes/sphere32x24.mesh
+	mesh: sphere32x24
 </item>
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #

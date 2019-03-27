@@ -1,12 +1,18 @@
 #ifndef _ML_STRING_HPP_
 #define _ML_STRING_HPP_
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 #include <MemeCore/IComparable.hpp>
 #include <MemeCore/IO.hpp>
 
-#define ML_STRING_CUSTOM
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/* * * * * * * * * * * * * * * * * * * * */
+#ifndef ML_STRING_CUSTOM
+#define ML_STRING_CUSTOM
+#endif // !ML_STRING_CUSTOM
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 namespace ml
 {
@@ -19,7 +25,7 @@ namespace ml
 		: public std::basic_string<_Elem, _Traits, _Alloc>
 		, public IComparable<std::basic_string<_Elem, _Traits, _Alloc>>
 	{
-	public:
+	public: // Types
 		using value_type			= _Elem;
 		using traits_type			= _Traits;
 		using allocator_type		= _Alloc;
@@ -38,6 +44,8 @@ namespace ml
 		using const_reverse_iterator= typename base_type::const_reverse_iterator;
 		using _Alty					= typename base_type::_Alty;
 		using _Alty_traits			= typename base_type::_Alty_traits;
+
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	public: // Constructors
 		BasicString()
@@ -135,8 +143,9 @@ namespace ml
 		
 		virtual ~BasicString() noexcept {}
 
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-	public: // Assignment Operators
+	public: // Assignment
 		inline self_type & operator=(const self_type & other)
 		{
 			using namespace std;
@@ -174,9 +183,10 @@ namespace ml
 			}
 			return (*this);
 		}
-	
+		
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-	public: // Cast Operators
+	public: // Cast
 		inline operator base_type() const
 		{
 			return static_cast<base_type>(*this);
@@ -187,34 +197,31 @@ namespace ml
 			return static_cast<const base_type &>(*this);
 		}
 
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-	public: // base_type Comparison
+	public: // Comparison
 		inline bool equals(const base_type & value) const override
 		{
-			return value == (const base_type &)(*this);
+			return (value == (const base_type &)(*this));
 		}
 		
 		inline bool lessThan(const base_type & value) const override
 		{
-			return value < (const base_type &)(*this);
+			return (value < (const base_type &)(*this));
 		}
 
-
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #ifdef ML_STRING_CUSTOM
-	public: // Custom
+	public:
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 		inline operator bool() const 
 		{ 
 			return !(this->empty()); 
 		}
 
-		inline self_type & pop_back()
-		{
-			this->base_type::pop_back();
-			return (*this);
-		}
-
-		/* * * * * * * * * * * * * * * * * * * * */
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 		template <class T, typename ... A>
 		inline static self_type Format(self_type value, const T & arg0, const A & ...args)
@@ -255,7 +262,7 @@ namespace ml
 			return self_type(*this).format(arg0, (args)...);
 		}
 
-		/* * * * * * * * * * * * * * * * * * * * */
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 		inline static self_type ReplaceAll(self_type s, const self_type & f, const self_type & r)
 		{
@@ -280,7 +287,7 @@ namespace ml
 			return self_type(*this).replace_all(f, r);
 		}
 
-		/* * * * * * * * * * * * * * * * * * * * */
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 		inline static self_type & Trim(self_type & value)
 		{
@@ -290,7 +297,7 @@ namespace ml
 			}
 			while (value && ((value.back()) == ' ' || (value.back()) == '\t'))
 			{
-				value.erase(value.end() - 1);
+				value.pop_back();
 			}
 			return value;
 		}
@@ -305,11 +312,13 @@ namespace ml
 			return self_type(*this).trim();
 		}
 
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 #endif // ML_STRING_CUSTOM
 	};
 }
 
-/* * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 namespace std
 {
@@ -330,19 +339,26 @@ namespace std
 	};
 }
 
-/* * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 namespace ml
 {
-	using String	= BasicString<char>;
-	using Wstring	= BasicString<wchar_t>;
-	using U16string = BasicString<char16_t>;
-	using U32string	= BasicString<char32_t>;
+	using String		= BasicString<char>;
+	using WString		= BasicString<wchar_t>;
+	using U16String		= BasicString<char16_t>;
+	using U32String		= BasicString<char32_t>;
+	
+	using SStream		= typename String::Stream;
+	using WStream		= typename WString::Stream;
+	using U16Stream		= typename U16String::Stream;
+	using U32Stream		= typename U32String::Stream;
 
-	using SStream	= String::Stream;
-	using CString	= typename const char *;
+	using CString		= typename const char *;
+	using WCString		= typename const wchar_t *;
+	using U16CString	= typename const char16_t *;
+	using U32CString	= typename const char32_t *;
 }
 
-/* * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #endif // !_ML_STRING_HPP_

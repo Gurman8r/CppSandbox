@@ -17,7 +17,7 @@
 #include <MemeEditor/Hierarchy.hpp>
 #include <MemeEditor/SceneView.hpp>
 #include <MemeEditor/Inspector.hpp>
-#include <MemeEditor/ProjectView.hpp>
+#include <MemeEditor/ResourceHUD.hpp>
 #include <MemeEditor/NetworkHUD.hpp>
 
 namespace DEMO
@@ -170,12 +170,18 @@ namespace DEMO
 	bool Demo::loadResources()
 	{
 		return ml::Debug::log("Loading Resources...")
-			&& ML_Res.meshes.load("default_quad")->loadFromMemory(ml::Shapes::Quad::Vertices, ml::Shapes::Quad::Indices)
-			&& ML_Res.meshes.load("default_cube")->loadFromMemory(ml::Shapes::Cube::Vertices, ml::Shapes::Cube::Indices)
-			&& ML_Res.models.load("borg")->loadFromMemory(*ML_Res.meshes.get("default_cube"))
-			&& ML_Res.models.load("sanic")->loadFromMemory(*ML_Res.meshes.get("default_quad"))
-			&& ML_Res.models.load("sprite")->loadFromMemory(*ML_Res.meshes.get("default_quad"))
-			&& ML_Res.models.load("framebuffer")->loadFromMemory(*ML_Res.meshes.get("default_quad"))
+			&& ML_Res.meshes.load("default_tri")->loadFromMemory(
+				ml::Shapes::Triangle::Vertices,
+				ml::Shapes::Triangle::Indices
+			)
+			&& ML_Res.meshes.load("default_quad")->loadFromMemory(
+				ml::Shapes::Quad::Vertices, 
+				ml::Shapes::Quad::Indices
+			)
+			&& ML_Res.meshes.load("default_cube")->loadFromMemory(
+				ml::Shapes::Cube::Vertices,
+				ml::Shapes::Cube::Indices
+			)
 			&& ML_Res.textures.load("fbo_main")->create(this->getFramebufferSize())
 			&& ML_Res.textures.load("fbo_post")->create(this->getFramebufferSize())
 			&& ML_Res.loadFromFile("../../../assets/manifest.txt")
@@ -894,7 +900,7 @@ namespace DEMO
 		if (show_ml_builder)	{ ML_Builder.draw(&show_ml_builder); }
 		if (show_ml_texteditor) { ML_TextEditor.draw(&show_ml_texteditor); }
 		if (show_ml_scene)		{ ML_SceneView_draw(&show_ml_scene); }
-		if (show_ml_project)	{ ML_ProjectView.draw(&show_ml_project); }
+		if (show_ml_resources)	{ ML_ResourceHUD.draw(&show_ml_resources); }
 		if (show_ml_inspector)	{ ML_Inspector_draw(&show_ml_inspector); }
 		if (show_ml_tester)		{ ML_TestWindow_draw(&show_ml_tester); }
 	}
@@ -958,7 +964,7 @@ namespace DEMO
 				ImGui::MenuItem(ML_Inspector.title(), "Ctrl+Alt+I", &show_ml_inspector);
 				ImGui::MenuItem(ML_TextEditor.title(), NULL, &show_ml_texteditor);
 				ImGui::MenuItem(ML_Hierarchy.title(), NULL, &show_ml_hierarchy);
-				ImGui::MenuItem(ML_ProjectView.title(), NULL, &show_ml_project);
+				ImGui::MenuItem(ML_ResourceHUD.title(), NULL, &show_ml_resources);
 				ImGui::MenuItem(ML_NetworkHUD.title(), NULL, &show_ml_network);
 				ImGui::MenuItem("Test Window",	NULL, &show_ml_tester);
 				ImGui::EndMenu();
@@ -1003,11 +1009,11 @@ namespace DEMO
 
 				ML_Dockspace.dockWindow(ML_Browser.title(),		left_U);
 				ML_Dockspace.dockWindow(ML_Hierarchy.title(),	left_U);
+				ML_Dockspace.dockWindow(ML_ResourceHUD.title(), left_U);
 				ML_Dockspace.dockWindow(ML_Terminal.title(),	left_D);
 				ML_Dockspace.dockWindow(ML_SceneView.title(),	center_U);
 				ML_Dockspace.dockWindow(ML_Builder.title(),		center_D);
 				ML_Dockspace.dockWindow(ML_TextEditor.title(),	center_D);
-				ML_Dockspace.dockWindow(ML_ProjectView.title(), center_D);
 				ML_Dockspace.dockWindow(ML_NetworkHUD.title(),	left_U);
 				ML_Dockspace.dockWindow(ML_Inspector.title(),	right);
 				ML_Dockspace.dockWindow("Test Window",			right);

@@ -49,8 +49,8 @@ namespace ml
 
 	private:
 		bool parseFile(SStream & file);
-		bool parseItem(SStream & file, String & line);
-		bool parseTable(const StringTable & data);
+		bool parseItems(SStream & file, String & line);
+		bool parseValue(const StringTable & data);
 
 	public:
 		size_t cleanAll();

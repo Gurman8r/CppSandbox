@@ -52,7 +52,7 @@ namespace ml
 
 		inline operator bool		() const { return !m_data.empty(); }
 		inline operator List<char>	() const { return data(); }
-		inline operator String		() const { return to_str(); }
+		inline operator String		() const { return ToString(); }
 		inline operator CString		() const { return &at(0); }
 
 		inline File & operator=(const String & value)

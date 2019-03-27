@@ -52,7 +52,7 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			out << get_type().name() << " " << (char)value;
+			out << GetTypeInfo().name() << " " << (char)value;
 		}
 	};
 
@@ -70,7 +70,7 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			out << get_type().name() << " " << entered;
+			out << GetTypeInfo().name() << " " << entered;
 		}
 	};
 
@@ -90,7 +90,7 @@ namespace ml
 		
 		void serialize(std::ostream & out) const override
 		{
-			out << get_type().name() << " " << x << " " << y;
+			out << GetTypeInfo().name() << " " << x << " " << y;
 		}
 
 		inline vec2d position() const { return { x, y }; }
@@ -113,7 +113,7 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			out << get_type().name() << " "
+			out << GetTypeInfo().name() << " "
 				<< button << " " << scan << " " << action << " " << mods;
 		}
 
@@ -144,7 +144,7 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			out << get_type().name() << " " 
+			out << GetTypeInfo().name() << " " 
 				<< button << " " << action << " " << mods;
 		}
 	};
@@ -165,7 +165,7 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			out << get_type().name() << " " << x << " " << y;
+			out << GetTypeInfo().name() << " " << x << " " << y;
 		}
 
 		inline vec2d position() const { return { x, y }; }
@@ -187,7 +187,7 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			out << get_type().name() << " " << width << " " << height;
+			out << GetTypeInfo().name() << " " << width << " " << height;
 		}
 
 		inline vec2i size() const { return { width, height }; }
@@ -211,7 +211,7 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			out << get_type().name() << " ";
+			out << GetTypeInfo().name() << " ";
 		}
 	};
 
@@ -229,7 +229,7 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			out << get_type().name() << " " << focused;
+			out << GetTypeInfo().name() << " " << focused;
 		}
 	};
 
@@ -249,7 +249,7 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			out << get_type().name() << " " << x << " " << y;
+			out << GetTypeInfo().name() << " " << x << " " << y;
 		}
 
 		inline vec2i position() const { return { x, y }; }
@@ -271,7 +271,7 @@ namespace ml
 
 		inline void serialize(std::ostream & out) const override
 		{
-			out << get_type().name() << " " << width << " " << height;
+			out << GetTypeInfo().name() << " " << width << " " << height;
 		}
 
 		inline vec2i size() const { return { width, height }; }

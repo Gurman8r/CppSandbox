@@ -540,7 +540,7 @@ namespace ml
 				? Var().boolValue(StringUtility::ToBool(tok.data))
 				: Var().pointerValue(Var::Ptr(0, tok.data));
 		default:
-			return Var().errorValue(tok.to_str());
+			return Var().errorValue(tok.ToString());
 		}
 	}
 

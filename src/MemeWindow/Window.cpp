@@ -14,7 +14,7 @@ namespace ml
 		: m_window		(NULL)
 		, m_monitor		(NULL)
 		, m_share		(NULL)
-		, m_title		(get_type().name())
+		, m_title		(GetTypeInfo().name())
 		, m_context		()
 		, m_videoMode	()
 		, m_style		(Window::Default)

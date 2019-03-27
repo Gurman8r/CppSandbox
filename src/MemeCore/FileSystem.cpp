@@ -133,7 +133,7 @@ namespace ml
 		static File file;
 		if (file.loadFromFile(filename))
 		{
-			value = file.to_str();
+			value = file.ToString();
 			return true;
 		}
 		value.clear();
@@ -166,10 +166,7 @@ namespace ml
 		{
 			return true;
 		}
-		else
-		{
-			return false;
-		}
+		return false;
 	}
 
 	bool FileSystem::fileExists(const String & filename) const
@@ -198,9 +195,21 @@ namespace ml
 	String FileSystem::getFileName(const String & filename) const
 	{
 		size_t i;
-		if ((i = filename.find_last_of('/')) != String::npos)
+		if (((i = filename.find_last_of('/')) != String::npos) ||
+			((i = filename.find_last_of('\\')) != String::npos))
 		{
-			return filename.substr(i, filename.size() - i);
+			return filename.substr(i + 1, filename.size() - i - 1);
+		}
+		return filename;
+	}
+
+	String FileSystem::getFilePath(const String & filename) const
+	{
+		size_t i;
+		if (((i = filename.find_last_of('/')) != String::npos) ||
+			((i = filename.find_last_of('\\')) != String::npos))
+		{
+			return  filename.substr(0, i);
 		}
 		return filename;
 	}
@@ -208,11 +217,9 @@ namespace ml
 	size_t FileSystem::getFileSize(const String & filename) const
 	{
 		std::ifstream in(filename, std::ifstream::ate | std::ifstream::binary);
-		if (in)
-		{
-			return (size_t)in.tellg();
-		}
-		return 0;
+		return ((in)
+			? (size_t)in.tellg()
+			: 0);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

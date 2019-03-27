@@ -43,7 +43,7 @@ namespace ml
 		out.push_back('[');
 		if (!value.empty())
 		{
-			TokenList temp = genTokenList(value.to_str());
+			TokenList temp = genTokenList(value.ToString());
 
 			for (size_t i = 0, imax = temp.size(); i < imax; i++)
 			{
