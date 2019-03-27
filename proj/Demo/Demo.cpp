@@ -221,7 +221,8 @@ namespace DEMO
 
 			// Load Manifest
 			/* * * * * * * * * * * * * * * * * * * * */
-			&& ML_Res.loadFromFile(ML_FileSystem.pathTo(SETTINGS.manifest));
+			&& ML_Res.loadFromFile(ML_FileSystem.pathTo(SETTINGS.manifest))
+			;
 	}
 
 	bool DemoProgram::loadNetwork()
@@ -402,24 +403,30 @@ namespace DEMO
 
 		// Setup Models
 		{
-			ML_Res.models.get("borg")->transform()
+			if (ml::Model * m = ML_Res.models.get("borg"))
+			m->transform()
 				.translate({ +5.0f, 0.0f, 0.0f });
 
-			ML_Res.models.get("sanic")->transform()
+			if (ml::Model * m = ML_Res.models.get("sanic"))
+				m->transform()
 				.translate({ -5.0f, 0.0f, 0.0f });
 
-			ML_Res.models.get("earth")->transform()
+			if (ml::Model * m = ML_Res.models.get("earth"))
+				m->transform()
 				.translate({ 0.0f, 0.0f, 0.0f });
 
-			ML_Res.models.get("cube")->transform()
+			if (ml::Model * m = ML_Res.models.get("cube"))
+				m->transform()
 				.translate({ 0.0f, 0.0f, -5.0f })
 				.scale(0.5f);
 
-			ML_Res.models.get("moon")->transform()
+			if (ml::Model * m = ML_Res.models.get("moon"))
+				m->transform()
 				.translate({ 0.0f, 0.0f, 5.0f })
 				.scale(0.5f);
 
-			ML_Res.models.get("ground")->transform()
+			if (ml::Model * m = ML_Res.models.get("ground"))
+				m->transform()
 				.translate({ 0.0f, -2.5f, 0.0f })
 				.scale({ 12.5, 0.25f, 12.5 });
 		}
