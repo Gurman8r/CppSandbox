@@ -6,7 +6,7 @@
 namespace ml
 {
 	NetworkHUD::NetworkHUD()
-		: base_type("Network HUD")
+		: GUI_Window("Network")
 	{
 	}
 

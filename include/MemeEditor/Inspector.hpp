@@ -7,7 +7,7 @@
 
 namespace ml
 {
-	class ML_EDITOR_API Inspector
+	class ML_EDITOR_API Inspector final
 		: public GUI_Window
 		, public ISingleton<Inspector>
 	{

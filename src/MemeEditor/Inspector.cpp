@@ -8,7 +8,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Inspector::Inspector()
-		: base_type("Inspector")
+		: GUI_Window("Inspector")
 	{
 		ML_EventSystem.addListener(EditorEvent::EV_MainMenuBar, this);
 	}

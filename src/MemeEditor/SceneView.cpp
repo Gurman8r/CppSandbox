@@ -6,7 +6,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	SceneView::SceneView()
-		: base_type("Scene View")
+		: GUI_Window("Scene View")
 	{
 	}
 
@@ -29,7 +29,7 @@ namespace ml
 
 	bool SceneView::beginDraw(bool * p_open, int32_t flags)
 	{
-		if (base_type::beginDraw(p_open, flags))
+		if (GUI_Window::beginDraw(p_open, flags))
 		{
 			ImGui::BeginChild("Viewport", { -1, -1 });
 		}
@@ -42,7 +42,7 @@ namespace ml
 		{
 			ImGui::EndChild();
 		}
-		return base_type::endDraw();
+		return GUI_Window::endDraw();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

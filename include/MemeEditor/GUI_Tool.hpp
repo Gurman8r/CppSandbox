@@ -10,9 +10,6 @@ namespace ml
 		: public GUI_Base
 	{
 	public:
-		using base_type = typename GUI_Tool;
-
-	public:
 		GUI_Tool();
 		virtual ~GUI_Tool();
 

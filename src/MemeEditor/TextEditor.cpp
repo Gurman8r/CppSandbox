@@ -7,7 +7,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	TextEditor::TextEditor()
-		: base_type("Text Editor")
+		: GUI_Window("Text Editor")
 		, m_selected(-1)
 	{
 	}

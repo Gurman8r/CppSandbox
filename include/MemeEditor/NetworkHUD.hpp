@@ -9,7 +9,7 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	class ML_EDITOR_API NetworkHUD
+	class ML_EDITOR_API NetworkHUD final
 		: public GUI_Window
 		, public ISingleton<NetworkHUD>
 	{

@@ -7,7 +7,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Dockspace::Dockspace()
-		: base_type	("Dockspace")
+		: GUI_Window	("Dockspace")
 		, border	(0.0f)
 		, padding	(vec2f::Zero)
 		, rounding	(0.0f)
@@ -57,7 +57,7 @@ namespace ml
 			ImGui::SetNextWindowBgAlpha(bgAlpha);
 
 			// Begi
-			if (base_type::beginDraw(p_open, flags))
+			if (GUI_Window::beginDraw(p_open, flags))
 			{
 				ImGui::PopStyleVar(3);
 			}
@@ -75,7 +75,7 @@ namespace ml
 				ImGuiDockNodeFlags_PassthruDockspace
 			);
 		}
-		return base_type::endDraw();
+		return GUI_Window::endDraw();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

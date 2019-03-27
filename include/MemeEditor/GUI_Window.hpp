@@ -13,9 +13,6 @@ namespace ml
 		, public IEventListener
 	{
 	public:
-		using base_type = typename GUI_Window;
-
-	public:
 		GUI_Window(CString title);
 		virtual ~GUI_Window();
 

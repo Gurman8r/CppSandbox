@@ -106,12 +106,12 @@ namespace ml
 	{
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		auto parseLine = [](const String & line, const String & find, SStream & ss)
+		auto parseLine = [](const String & l, const String & d, SStream & ss)
 		{
 			size_t i;
-			if ((i = line.find(find)) != String::npos)
+			if ((i = l.find(d)) != String::npos)
 			{
-				ss.str(String(line.substr((i + find.size()), (line.size() - find.size() - 2))).trim());
+				ss.str(String(l.substr((i + d.size()), (l.size() - d.size() - 2))).trim());
 				return true;
 			}
 			return false;
@@ -121,12 +121,12 @@ namespace ml
 
 		if (line.find("<item>") != String::npos)
 		{
-			m_manifest.push_back(StringTable());
+			m_manifest.push_back(HashMap<String, String>());
 
 			while (std::getline(file, line))
 			{
 				line.replaceAll("%Configuration%", Debug::config());
-				line.replaceAll("%Platform%", Debug::platform());
+				line.replaceAll("%PlatformTarget%", Debug::platform());
 
 				if (line.find("</item>") != String::npos)
 				{
@@ -154,206 +154,205 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 	}
 
-	bool ResourceManager::parseValue(const StringTable & data)
+	bool ResourceManager::parseValue(const HashMap<String, String> & data)
 	{
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		auto getValue = [](const StringTable & data, const String & find)
+		auto getValue = [](const HashMap<String, String> & data, const String & find)
 		{
-			auto it = data.find(find);
-			return ((it != data.end()) ? (it->second) : (String()));
+			HashMap<String, String>::const_iterator it;
+			return (((it = data.find(find)) != data.end()) 
+				? (it->second) 
+				: (String()));
 		};
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		if (const String type = getValue(data, "type"))
+		const String type = getValue(data, "type");
+		const String name = getValue(data, "name");
+		if (type && name)
 		{
-			if (const String name = getValue(data, "name"))
+			// Manifest
+			if (type == "manifest")
 			{
-				// Manifest
-				if (type == "manifest")
+				return loadFromFile(name);
+			}
+			// Font
+			else if (type == "font")
+			{
+				if (const String file = getValue(data, "file"))
 				{
-					return loadFromFile(name);
+					return fonts.load(name, file);
 				}
-				// Font
-				else if (type == "font")
+				else
 				{
-					if (const String file = getValue(data, "file"))
-					{
-						return fonts.load(name, file);
-					}
-					else
-					{
-						return fonts.load(name);
-					}
+					return fonts.load(name);
 				}
-				// Image
-				else if (type == "image")
+			}
+			// Image
+			else if (type == "image")
+			{
+				if (const String file = getValue(data, "file"))
 				{
-					if (const String file = getValue(data, "file"))
-					{
-						return images.load(name, file);
-					}
-					else
-					{
-						return images.load(name);
-					}
+					return images.load(name, file);
 				}
-				// Material
-				else if (type == "material")
+				else
 				{
-					if (const String file = getValue(data, "file"))
-					{
-						return mats.load(name, file);
-					}
-					else
-					{
-						return mats.load(name);
-					}
+					return images.load(name);
 				}
-				// Mesh
-				else if (type == "mesh")
+			}
+			// Material
+			else if (type == "material")
+			{
+				if (const String file = getValue(data, "file"))
 				{
-					if (const String file = getValue(data, "file"))
-					{
-						return meshes.load(name, file);
-					}
-					else
-					{
-						return meshes.load(name);
-					}
+					return mats.load(name, file);
 				}
-				// Model
-				else if (type == "model")
+				else
 				{
-					if (const String file = getValue(data, "file"))
-					{
-						return models.load(name, file);
-					}
-					else if (const String file = getValue(data, "mesh"))
+					return mats.load(name);
+				}
+			}
+			// Mesh
+			else if (type == "mesh")
+			{
+				if (const String file = getValue(data, "file"))
+				{
+					return meshes.load(name, file);
+				}
+				else
+				{
+					return meshes.load(name);
+				}
+			}
+			// Model
+			else if (type == "model")
+			{
+				if (const String file = getValue(data, "file"))
+				{
+					return models.load(name, file);
+				}
+				else if (const String file = getValue(data, "mesh"))
+				{
+					return
+						models.load(name) &&
+						models.get(name)->loadFromMemory(*meshes.get(file));
+				}
+				else
+				{
+					return models.load(name);
+				}
+			}
+			// Plugin
+			else if (type == "plugin")
+			{
+				if (const String file = getValue(data, "file"))
+				{
+					return plugins.load(name, file);
+				}
+				else
+				{
+					return plugins.load(name);
+				}
+			}
+			// Script
+			else if (type == "script")
+			{
+				if (const String file = getValue(data, "file"))
+				{
+					return scripts.load(name, file);
+				}
+				else
+				{
+					return scripts.load(name);
+				}
+			}
+			// Shader
+			else if (type == "shader")
+			{
+				if (const String file = getValue(data, "file"))
+				{
+					return shaders.load(name, file);
+				}
+				else
+				{
+					const String vert = getValue(data, "vert");
+					const String geom = getValue(data, "geom");
+					const String frag = getValue(data, "frag");
+					if (vert || geom || frag)
 					{
 						return
-							models.load(name) &&
-							models.get(name)->loadFromMemory(*meshes.get(file));
+							shaders.load(name) &&
+							shaders.get(name)->loadFromFile(vert, geom, frag);
 					}
 					else
 					{
-						return models.load(name);
+						return shaders.load(name);
 					}
 				}
-				// Plugin
-				else if (type == "plugin")
+			}
+			// Skybox
+			else if (type == "skybox")
+			{
+				if (const String file = getValue(data, "file"))
 				{
-					if (const String file = getValue(data, "file"))
-					{
-						return plugins.load(name, file);
-					}
-					else
-					{
-						return plugins.load(name);
-					}
+					return skyboxes.load(name, file);
 				}
-				// Script
-				else if (type == "script")
+				else
 				{
-					if (const String file = getValue(data, "file"))
-					{
-						return scripts.load(name, file);
-					}
-					else
-					{
-						return scripts.load(name);
-					}
+					return skyboxes.load(name);
 				}
-				// Shader
-				else if (type == "shader")
+			}
+			// Sound
+			else if (type == "sound")
+			{
+				if (const String file = getValue(data, "file"))
 				{
-					if (const String file = getValue(data, "file"))
-					{
-						return shaders.load(name, file);
-					}
-					else
-					{
-						const String vert = getValue(data, "vert");
-						const String geom = getValue(data, "geom");
-						const String frag = getValue(data, "frag");
-						if (vert || geom || frag)
-						{
-							return
-								shaders.load(name) &&
-								shaders.get(name)->loadFromMemory(vert, geom, frag);
-						}
-						else
-						{
-							return shaders.load(name);
-						}
-					}
+					return sounds.load(name, file);
 				}
-				// Skybox
-				else if (type == "skybox")
+				else
 				{
-					if (const String file = getValue(data, "file"))
-					{
-						return skyboxes.load(name, file);
-					}
-					else
-					{
-						return skyboxes.load(name);
-					}
+					return sounds.load(name);
 				}
-				// Sound
-				else if (type == "sound")
+			}
+			// Sprite
+			else if (type == "sprite")
+			{
+				if (const String file = getValue(data, "texture"))
 				{
-					if (const String file = getValue(data, "file"))
-					{
-						return sounds.load(name, file);
-					}
-					else
-					{
-						return sounds.load(name);
-					}
+					const Texture * tex;
+					return
+						(sprites.load(name)) &&
+						(tex = textures.get(file)) &&
+						(sprites.get(name)->loadFromMemory(tex));
 				}
-				// Sprite
-				else if (type == "sprite")
+				else
 				{
-					if (const String file = getValue(data, "texture"))
-					{
-						const Texture * tex;
-						return
-							(sprites.load(name)) &&
-							(tex = textures.get(file)) &&
-							(sprites.get(name)->loadFromMemory(tex));
-					}
-					else
-					{
-						return sprites.load(name);
-					}
+					return sprites.load(name);
 				}
-				// Texture
-				else if (type == "texture")
+			}
+			// Texture
+			else if (type == "texture")
+			{
+				if (const String file = getValue(data, "file"))
 				{
-					if (const String file = getValue(data, "file"))
-					{
-						return textures.load(name, file);
-					}
-					else if (const String file = getValue(data, "image"))
-					{
-						const Image * img;
-						return
-							(textures.load(name)) &&
-							(img = images.get(file)) &&
-							(textures.get(name)->loadFromImage(*img));
-					}
-					else
-					{
-						return textures.load(name);
-					}
+					return textures.load(name, file);
+				}
+				else if (const String file = getValue(data, "image"))
+				{
+					const Image * img;
+					return
+						(textures.load(name)) &&
+						(img = images.get(file)) &&
+						(textures.get(name)->loadFromImage(*img));
+				}
+				else
+				{
+					return textures.load(name);
 				}
 			}
 		}
 		return false;
-
-		/* * * * * * * * * * * * * * * * * * * * */
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

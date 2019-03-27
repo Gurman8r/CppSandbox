@@ -76,28 +76,39 @@ namespace DEMO
 		TextMap		m_txtMap;
 		EffectMap	m_fboMap;
 
-		// Uniforms
+		// Uniform Values
 		/* * * * * * * * * * * * * * * * * * * * */
 		struct DemoUniforms
 		{
-			// Matrices
+			// Projections
 			ml::Transform	persp;
 			ml::Transform	ortho;
+			
+			// Camera
+			/* * * * * * * * * * * * * * * * * * * * */
 			ml::Transform	camera;
-
 			bool			camAnimate	= true;
 			ml::vec3f		camPos		= { 0, 1, 10 };
 			float			camSpd		= 1.f;
-		
+			
+			// Light
+			/* * * * * * * * * * * * * * * * * * * * */
 			ml::vec3f		lightPos		= { 0, 1, 30 };
 			ml::vec4f		lightCol		= ml::Color::LightYellow;
 			float			ambient		= 0.01f;
 			float			specular		= 0.5f;
 			int32_t			shininess		= 8;
-
+			
+			// Scene
+			/* * * * * * * * * * * * * * * * * * * * */
 			ml::vec4f		clearColor	= ml::Color::Gray;
+			
+			// Framebuffers
+			/* * * * * * * * * * * * * * * * * * * * */
 			int32_t			effectMode		= 0;
-
+			
+			// Geometry
+			/* * * * * * * * * * * * * * * * * * * * */
 			int32_t			lineMode		= 1;
 			ml::vec4f		lineColor		= ml::Color::Red;
 			float			lineDelta		= 1.f;
@@ -107,7 +118,7 @@ namespace DEMO
 		};
 		DemoUniforms uni;
 
-		// GUI
+		// GUI State
 		/* * * * * * * * * * * * * * * * * * * * */
 		struct DemoGUI
 		{
@@ -134,7 +145,6 @@ namespace DEMO
 
 		// Physics
 		/* * * * * * * * * * * * * * * * * * * * */
-
 		struct DemoPhysics
 		{
 			ml::Rigidbody	rigidbody;
@@ -142,7 +152,7 @@ namespace DEMO
 		};
 		DemoPhysics phys;
 
-		// Testing
+		// Threads
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		ml::Thread * m_thread;

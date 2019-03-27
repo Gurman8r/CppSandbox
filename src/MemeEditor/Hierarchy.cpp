@@ -79,7 +79,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Hierarchy::Hierarchy()
-		: base_type("Hierarchy")
+		: GUI_Window("Hierarchy")
 		, m_objects({ GameObject("Object A"), GameObject("Object B"), GameObject("Object C") })
 	{
 	}

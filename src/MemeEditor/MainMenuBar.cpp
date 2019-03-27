@@ -6,7 +6,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	MainMenuBar::MainMenuBar()
-		: base_type()
+		: GUI_Tool()
 	{
 	}
 

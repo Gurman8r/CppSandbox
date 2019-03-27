@@ -100,7 +100,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	ResourceHUD::ResourceHUD()
-		: base_type("Resources")
+		: GUI_Window("Resources")
 	{
 	}
 

@@ -25,8 +25,6 @@ namespace ml
 		friend class ISingleton<ResourceManager>;
 
 	public:
-		using StringTable = HashMap<String, String>;
-
 		using FontMap		= ResourceTable<Font>;
 		using ImageMap		= ResourceTable<Image>;
 		using MaterialMap	= ResourceTable<Material>;
@@ -52,7 +50,7 @@ namespace ml
 	private:
 		bool parseFile(SStream & file);
 		bool parseItems(SStream & file, String & line);
-		bool parseValue(const StringTable & data);
+		bool parseValue(const HashMap<String, String> & data);
 
 	public:
 		size_t cleanAll();
@@ -73,7 +71,7 @@ namespace ml
 		TextureMap	textures;
 
 	private:
-		mutable std::vector<StringTable> m_manifest;
+		std::vector<HashMap<String, String>> m_manifest;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

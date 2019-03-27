@@ -10,7 +10,7 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	class ML_EDITOR_API SceneView
+	class ML_EDITOR_API SceneView final
 		: public GUI_Window
 		, public ISingleton<SceneView>
 	{
