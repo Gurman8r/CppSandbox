@@ -846,9 +846,9 @@ namespace DEMO
 					shader,
 					&batch_uniforms);
 
-				for (auto pair : m_text)
+				for (auto it = m_text.begin(); it != m_text.end(); it++)
 				{
-					this->draw(pair.second, batch);
+					this->draw(it->second, batch);
 				}
 			}
 		}
