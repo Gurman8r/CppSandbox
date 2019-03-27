@@ -184,11 +184,11 @@ namespace DEMO
 
 	void DemoProgram::onEnter(const EnterEvent & ev)
 	{
-		// Seed Random
-		ml::Random::seed();
-
 		// Start Master Timer
 		ML_Time.start();
+
+		// Seed Random
+		ml::Random::seed();
 
 		// GL Error Pause
 		ml::OpenGL::errorPause(SETTINGS.glErrorPause);
@@ -640,15 +640,22 @@ namespace DEMO
 		if (ml::Effect * scene = ML_Res.effects.get(ML_FBO_MAIN))
 		{
 			// Bind
+			/* * * * * * * * * * * * * * * * * * * * */
 			scene->bind();
 
 			// Clear Screen
+			/* * * * * * * * * * * * * * * * * * * * */
 			this->clear(uni.clearColor);
+
+			/* * * * * * * * * * * * * * * * * * * * */
 
 			ml::OpenGL::enable(ml::GL::CullFace);
 			ml::OpenGL::enable(ml::GL::DepthTest);
 
+			/* * * * * * * * * * * * * * * * * * * * */
+
 			// Light
+			/* * * * * * * * * * * * * * * * * * * * */
 			if (const ml::Model * model = ML_Res.models.get("light"))
 			{
 				if (const ml::Shader * shader = ML_Res.shaders.get("solid"))
@@ -665,6 +672,7 @@ namespace DEMO
 			}
 
 			// Borg
+			/* * * * * * * * * * * * * * * * * * * * */
 			if (const ml::Model * model = ML_Res.models.get("borg"))
 			{
 				if (const ml::Shader * shader = ML_Res.shaders.get("basic"))
@@ -681,6 +689,7 @@ namespace DEMO
 			}
 
 			// Earth
+			/* * * * * * * * * * * * * * * * * * * * */
 			if (const ml::Model * model = ML_Res.models.get("earth"))
 			{
 				if (const ml::Shader * shader = ML_Res.shaders.get("lighting"))
@@ -699,6 +708,7 @@ namespace DEMO
 			}
 
 			// Moon
+			/* * * * * * * * * * * * * * * * * * * * */
 			if (const ml::Model * model = ML_Res.models.get("moon"))
 			{
 				if (const ml::Shader * shader = ML_Res.shaders.get("lighting"))
@@ -717,6 +727,7 @@ namespace DEMO
 			}
 
 			// Cube
+			/* * * * * * * * * * * * * * * * * * * * */
 			if (const ml::Model * model = ML_Res.models.get("cube"))
 			{
 				if (const ml::Shader * shader = ML_Res.shaders.get("normal3D"))
@@ -734,6 +745,7 @@ namespace DEMO
 			}
 
 			// Ground
+			/* * * * * * * * * * * * * * * * * * * * */
 			if (const ml::Model * model = ML_Res.models.get("ground"))
 			{
 				if (const ml::Shader * shader = ML_Res.shaders.get("normal3D"))
@@ -750,9 +762,14 @@ namespace DEMO
 				}
 			}
 
+			/* * * * * * * * * * * * * * * * * * * * */
+
 			ml::OpenGL::disable(ml::GL::CullFace);
 
+			/* * * * * * * * * * * * * * * * * * * * */
+
 			// Sanic
+			/* * * * * * * * * * * * * * * * * * * * */
 			if (const ml::Model * model = ML_Res.models.get("sanic"))
 			{
 				if (const ml::Shader * shader = ML_Res.shaders.get("basic"))
@@ -769,9 +786,14 @@ namespace DEMO
 				}
 			}
 
+			/* * * * * * * * * * * * * * * * * * * * */
+
 			ml::OpenGL::disable(ml::GL::DepthTest);
 
+			/* * * * * * * * * * * * * * * * * * * * */
+
 			// Geometry
+			/* * * * * * * * * * * * * * * * * * * * */
 			if (const ml::Shader * shader = ML_Res.shaders.get("geometry"))
 			{
 				static ml::UniformSet uniforms = {
@@ -787,6 +809,7 @@ namespace DEMO
 			}
 
 			// Sprites
+			/* * * * * * * * * * * * * * * * * * * * */
 			if (const ml::Shader * shader = ML_Res.shaders.get("sprites"))
 			{
 				static ml::RenderBatch batch(
@@ -802,6 +825,7 @@ namespace DEMO
 			}
 
 			// Text
+			/* * * * * * * * * * * * * * * * * * * * */
 			if (const ml::Shader * shader = ML_Res.shaders.get("text"))
 			{
 				static ml::RenderBatch batch(
@@ -817,6 +841,7 @@ namespace DEMO
 			}
 
 			// Unbind
+			/* * * * * * * * * * * * * * * * * * * * */
 			scene->unbind();
 		}
 
