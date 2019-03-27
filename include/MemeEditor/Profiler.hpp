@@ -2,6 +2,7 @@
 #define _ML_PROFILER_HPP_
 
 #include <MemeEditor/GUI_Window.hpp>
+#include <MemeCore/Vector2.hpp>
 
 #define ML_Profiler ml::Profiler::getInstance()
 
@@ -22,6 +23,24 @@ namespace ml
 	public:
 		void onEvent(const IEvent * value) override;
 		bool draw(bool * p_open) override;
+
+		struct GraphLines
+		{
+			enum { Size = 90U };
+
+			bool	animate		= true;
+			float	values[Size]= { 0 };
+			int32_t	offset		= 0;
+			float	refresh		= 0.0f;
+			float	min			= 1.f;
+			float	max			= 128.f;
+			vec2f	size		= { 0, 80 };
+
+			void update(CString label, const float sample, const String & fmt = "{0}");
+		};
+
+	private:
+		GraphLines graph;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

@@ -88,7 +88,6 @@ namespace ml
 		bool		m_smooth;
 		bool		m_repeated;
 		bool		m_mipmapped;
-
 	};
 }
 

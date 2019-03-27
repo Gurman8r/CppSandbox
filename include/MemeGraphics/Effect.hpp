@@ -42,11 +42,9 @@ namespace ml
 	private:
 		const Model *	m_model;
 		const Shader *	m_shader;
-		
 		Texture *		m_texture;
 		vec2i			m_size;
 		uint32_t		m_attachment;
-
 		mutable FBO		m_fbo;
 		mutable RBO		m_rbo;
 	};

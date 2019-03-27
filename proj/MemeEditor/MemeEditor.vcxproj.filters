@@ -132,14 +132,14 @@
     <ClInclude Include="..\..\include\MemeEditor\ResourceTable.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeEditor\EditorEvents.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\ResourceHUD.hpp">
       <Filter>Header Files\Windows</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\Profiler.hpp">
       <Filter>Header Files\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeEditor\EditorEvents.hpp">
+      <Filter>Header Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

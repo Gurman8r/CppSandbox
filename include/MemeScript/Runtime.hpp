@@ -6,8 +6,6 @@
 
 namespace ml
 {
-	class AST_Node;
-
 	class ML_SCRIPT_API Runtime final
 		: public ITrackable
 	{

@@ -33,10 +33,15 @@ namespace ml
 
 	bool Inspector::draw(bool * p_open)
 	{
-		return beginDraw(p_open, 
-			ImGuiWindowFlags_MenuBar |
-			ImGuiWindowFlags_AlwaysAutoResize
-		);
+		if (beginDraw(p_open, ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_AlwaysAutoResize))
+		{
+			if (ImGui::BeginMenuBar())
+			{
+				ImGui::Text("%s (WIP)", ML_Inspector.title());
+				ImGui::EndMenuBar();
+			}
+		}
+		return endDraw();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

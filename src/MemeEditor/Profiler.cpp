@@ -35,41 +35,42 @@ namespace ml
 
 			/* * * * * * * * * * * * * * * * * * * * */
 
-			static bool animate = true;
-			ImGui::Checkbox("Animate", &animate);
-
-			static float	values[90] = { 0 };
-			static int32_t	offset = 0;
-			static float	refresh = 0.0f;
-			static uint64_t	total = 0;
-
-			if (!animate || refresh == 0.0f)
-			{
-				refresh = (float)ImGui::GetTime();
-			}
-			
-			while (refresh < ImGui::GetTime())
-			{
-				const uint64_t fps = ML_Time.calculateFPS((float)ImGui::GetIO().DeltaTime);
-				total += fps;
-				values[offset] = (float)fps;
-				offset = (offset + 1) % IM_ARRAYSIZE(values);
-				refresh += 1.0f / 60.0f;
-			}
-
-			ImGui::PlotLines(
-				"Framerate", 
-				values, 
-				IM_ARRAYSIZE(values), 
-				offset, 
-				String("avg {0}").format((float)total / ImGui::GetFrameCount()).c_str(),
-				1.f, 
-				128.f,
-				{ 0, 80 });
+			graph.update(
+				"##Framerate",
+				(float)ML_Time.calculateFPS((float)ImGui::GetIO().DeltaTime),
+				"fps {0}"
+			);
 
 			/* * * * * * * * * * * * * * * * * * * * */
 		}
 		return endDraw();
+	}
+
+	void Profiler::GraphLines::update(CString label, const float sample, const String & fmt)
+	{
+		ImGui::Checkbox("Animate", &animate);
+
+		if (!animate || refresh == 0.0f)
+		{
+			refresh = (float)ImGui::GetTime();
+		}
+
+		while (refresh < ImGui::GetTime())
+		{
+			values[offset] = sample;
+			offset = (offset + 1) % IM_ARRAYSIZE(values);
+			refresh += (1.0f / 60.0f);
+		}
+
+		ImGui::PlotLines(
+			label,
+			values,
+			IM_ARRAYSIZE(values),
+			offset,
+			fmt.format(sample).c_str(),
+			min,
+			max,
+			{ size[0], size[1] });
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

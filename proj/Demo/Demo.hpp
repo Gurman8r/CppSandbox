@@ -9,9 +9,6 @@
 #include <MemePhysics/Rigidbody.hpp>
 #include <MemePhysics/Particle.hpp>
 
-#define ML_FBO_MAIN "fbo_main"
-#define ML_FBO_POST "fbo_post"
-
 // Demo
 /* * * * * * * * * * * * * * * * * * * * */
 namespace DEMO
@@ -44,7 +41,6 @@ namespace DEMO
 		bool ML_MainMenuBar_draw();
 		bool ML_Dockspace_draw(bool * p_open);
 		bool ML_SceneView_draw(bool * p_open);
-		bool ML_Inspector_draw(bool * p_open);
 		bool ML_DemoWindow_draw(bool * p_open);
 
 	private:

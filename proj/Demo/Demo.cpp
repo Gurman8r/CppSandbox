@@ -1,6 +1,5 @@
 #include "Demo.hpp"
 #include "DemoCommands.hpp"
-
 #include <MemeAudio/Audio.hpp>
 #include <MemeCore/Debug.hpp>
 #include <MemeCore/Time.hpp>
@@ -37,6 +36,13 @@
 #include <MemeNet/Server.hpp>
 #include <MemeScript/Interpreter.hpp>
 #include <MemeWindow/WindowEvents.hpp>
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+#define ML_FBO_MAIN "fbo_main"
+#define ML_FBO_POST "fbo_post"
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 namespace DEMO
 {
@@ -347,7 +353,7 @@ namespace DEMO
 			}
 
 			// CD
-			ML_FileSystem.setWorkingDir(ML_FileSystem.pathTo(SETTINGS.assetPath));
+			ML_FileSystem.setWorkingDir("../../../");
 
 			// Force Update Framebuffers
 			ML_EventSystem.fireEvent(ml::FramebufferSizeEvent(
@@ -925,8 +931,8 @@ namespace DEMO
 		if (gui.show_terminal)		{ ML_Terminal.draw(&gui.show_terminal); }
 		if (gui.show_builder)		{ ML_Builder.draw(&gui.show_builder); }
 		if (gui.show_texteditor)	{ ML_TextEditor.draw(&gui.show_texteditor); }
+		if (gui.show_inspector)		{ ML_Inspector.draw(&gui.show_inspector); }
 		if (gui.show_scene)			{ ML_SceneView_draw(&gui.show_scene); }
-		if (gui.show_inspector)		{ ML_Inspector_draw(&gui.show_inspector); }
 		if (gui.show_demowindow)	{ ML_DemoWindow_draw(&gui.show_demowindow); }
 	}
 
@@ -1049,30 +1055,10 @@ namespace DEMO
 	{
 		return ML_SceneView.drawFun(p_open, [&]() 
 		{
-			/* * * * * * * * * * * * * * * * * * * * */
-
 			if (ml::Effect * e = ML_Res.effects.get(ML_FBO_POST))
 			{
 				ML_SceneView.updateTexture(e->texture());
 			}
-
-			/* * * * * * * * * * * * * * * * * * * * */
-		});
-	}
-
-	bool DemoProgram::ML_Inspector_draw(bool * p_open)
-	{
-		return ML_Inspector.drawFun(p_open, [&]()
-		{
-			/* * * * * * * * * * * * * * * * * * * * */
-
-			if (ImGui::BeginMenuBar())
-			{
-				ImGui::Text("%s (WIP)", ML_Inspector.title());
-				ImGui::EndMenuBar();
-			}
-
-			/* * * * * * * * * * * * * * * * * * * * */
 		});
 	}
 
@@ -1151,3 +1137,5 @@ namespace DEMO
 
 	/* * * * * * * * * * * * * * * * * * * * */
 }
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
