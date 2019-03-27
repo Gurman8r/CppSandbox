@@ -78,7 +78,24 @@ namespace ml
 
 	bool Dispatcher::addWorker(Worker * value)
 	{
-		return false;
+		bool wait = true;
+		m_mutex_req.lock();
+		if (!m_requests.empty())
+		{
+			IRequest * r = m_requests.front();
+			value->setRequest(r);
+			m_requests.pop();
+			wait = false;
+			m_mutex_req.unlock();
+		}
+		else
+		{
+			m_mutex_req.unlock();
+			m_mutex_work.lock();
+			m_workers.push(value);
+			m_mutex_work.unlock();
+		}
+		return wait;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

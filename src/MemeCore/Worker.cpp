@@ -48,6 +48,7 @@ namespace ml
 	
 	void Worker::stop()
 	{
+		m_running = false;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
