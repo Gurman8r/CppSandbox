@@ -35,7 +35,6 @@ namespace DEMO
 
 		// [Script]
 		/* * * * * * * * * * * * * * * * * * * * */
-		ml::String	scrPath;		// Location of scripts
 		ml::String	scrFile;		// Script to run on start
 		bool		scrShowToks;	// Show Script Tokens
 		bool		scrShowTree;	// Show Script Syntax Tree
@@ -60,6 +59,7 @@ namespace DEMO
 		// [Graphics]
 		/* * * * * * * * * * * * * * * * * * * * */
 		bool		glErrorPause;	// OpenGL Error Pause?
+		bool		glExperimental;	// GLEW Experimental?
 		float		fieldOfView;	// Field of View
 		float		perspNear;		// Persp Near Clipping Range 
 		float		perspFar;		// Persp Far  Clipping Range 
@@ -95,8 +95,7 @@ namespace DEMO
 
 				// [Script]
 				/* * * * * * * * * * * * * * * * * * * * */
-				scrPath			= ini.Get("Script", "scrPath", "scripts/");
-				scrFile			= ini.Get("Script", "scrFile", "hello.meme");
+				scrFile			= ini.Get("Script", "scrFile", "/scripts/hello.meme");
 				scrShowToks		= ini.GetBoolean("Script", "scrShowToks", false);
 				scrShowTree		= ini.GetBoolean("Script", "scrShowTree", false);
 				scrShowItoP		= ini.GetBoolean("Script", "scrShowItoP", false);
@@ -119,6 +118,7 @@ namespace DEMO
 				// [Graphics]	
 				/* * * * * * * * * * * * * * * * * * * * */
 				glErrorPause	= ini.GetBoolean("Graphics", "glErrorPause", false);
+				glExperimental	= ini.GetBoolean("Graphics", "glExperimental", true);
 				fieldOfView		= (float)ini.GetReal("Graphics", "fieldOfView", 90.0);
 				perspNear		= (float)ini.GetReal("Graphics", "perspNear", 0.1);
 				perspFar		= (float)ini.GetReal("Graphics", "perspFar", 1000.0);
@@ -140,12 +140,13 @@ namespace DEMO
 			return false;
 		}
 
-		inline const ml::String pathTo(const ml::String & filename) const
+
+	public:
+		inline ml::String pathTo(const ml::String & filename) const
 		{
 			return (assetPath + filename);
 		}
-
-	public:
+		
 		inline ml::vec2u	 winSize()	const { return { width, height }; }
 		inline ml::VideoMode video()	const { return { winSize(), bitsPerPixel }; }
 		inline ml::Context	 context()	const

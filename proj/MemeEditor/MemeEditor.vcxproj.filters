@@ -138,6 +138,9 @@
     <ClInclude Include="..\..\include\MemeEditor\ResourceHUD.hpp">
       <Filter>Header Files\Windows</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeEditor\Profiler.hpp">
+      <Filter>Header Files\Windows</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeEditor\Document.cpp">
@@ -210,6 +213,9 @@
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\ResourceHUD.cpp">
+      <Filter>Source Files\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeEditor\Profiler.cpp">
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
   </ItemGroup>

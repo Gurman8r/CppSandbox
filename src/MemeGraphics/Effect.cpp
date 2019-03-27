@@ -88,7 +88,7 @@ namespace ml
 	{
 		if (size != vec2i::Zero)
 		{
-			if (Texture * t = std::remove_cv_t<Texture *>(texture()))
+			if (Texture * t = texture_ref())
 			{
 				t->cleanup();
 				t->create(size);

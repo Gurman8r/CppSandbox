@@ -40,7 +40,7 @@ namespace ml
 		inline operator const_reference	() const	{ return get_const_ref(); }
 	
 	private:
-		value_type m_ID;
+		mutable value_type m_ID;
 	};
 }
 

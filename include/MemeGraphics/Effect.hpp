@@ -39,6 +39,11 @@ namespace ml
 		inline const Shader * shader() const { return m_shader; }
 		inline const Texture * texture() const { return m_texture; }
 
+		inline Texture * texture_ref()
+		{
+			return std::remove_cv_t<Texture *>(m_texture);
+		}
+
 	private:
 		const Model *	m_model;
 		const Shader *	m_shader;

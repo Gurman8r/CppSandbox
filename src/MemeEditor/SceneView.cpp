@@ -6,7 +6,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	SceneView::SceneView()
-		: GUI_Window("Scene View")
+		: GUI_Window("Scene")
 	{
 	}
 
@@ -47,12 +47,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool SceneView::updateScene(const Texture * texture)
-	{
-		return updateScene(std::remove_cv_t<Texture *>(texture));
-	}
-
-	bool SceneView::updateScene(Texture * texture)
+	bool SceneView::updateTexture(Texture * texture)
 	{
 		if (good() && (texture && (*texture)))
 		{

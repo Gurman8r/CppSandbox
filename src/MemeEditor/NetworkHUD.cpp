@@ -28,12 +28,9 @@ namespace ml
 
 			if (ImGui::BeginMenuBar())
 			{
+				ImGui::Text("%s (WIP)", title());
 				ImGui::EndMenuBar();
 			}
-
-			/* * * * * * * * * * * * * * * * * * * * */
-
-			// ...
 
 			/* * * * * * * * * * * * * * * * * * * * */
 		}

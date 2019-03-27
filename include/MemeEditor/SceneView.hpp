@@ -29,8 +29,7 @@ namespace ml
 		bool endDraw() override;
 
 	public:
-		bool updateScene(const Texture * texture);
-		bool updateScene(Texture * texture);
+		bool updateTexture(Texture * texture);
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

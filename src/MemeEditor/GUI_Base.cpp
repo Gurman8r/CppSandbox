@@ -7,7 +7,6 @@ namespace ml
 
 	GUI_Base::GUI_Base()
 		: m_good(false)
-		, m_init(true)
 	{
 	}
 

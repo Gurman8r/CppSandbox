@@ -32,6 +32,7 @@
 #include <MemeEditor/Inspector.hpp>
 #include <MemeEditor/ResourceHUD.hpp>
 #include <MemeEditor/NetworkHUD.hpp>
+#include <MemeEditor/Profiler.hpp>
 #include <MemeNet/Client.hpp>
 #include <MemeNet/Server.hpp>
 #include <MemeScript/Interpreter.hpp>
@@ -189,13 +190,15 @@ namespace DEMO
 
 	bool DemoProgram::loadBuffers()
 	{
-		// Batch
-		m_batch_vao.create(ml::GL::Triangles).bind();
-		m_batch_vbo.create(ml::GL::DynamicDraw).bind();
-		m_batch_vbo.bufferData(NULL, ml::RectQuad::Size);
-		ml::BufferLayout::Default.bind();
-		m_batch_vbo.unbind();
-		m_batch_vao.unbind();
+		// Sprites/2D
+		{
+			m_batch_vao.create(ml::GL::Triangles).bind();
+			m_batch_vbo.create(ml::GL::DynamicDraw).bind();
+			m_batch_vbo.bufferData(NULL, ml::RectQuad::Size);
+			ml::BufferLayout::Default.bind();
+			m_batch_vbo.unbind();
+			m_batch_vao.unbind();
+		}
 
 		// Effects
 		if (ml::Effect * e = ML_Res.effects.get("fbo_main"))
@@ -270,7 +273,7 @@ namespace DEMO
 		if (!SETTINGS.scrFile.empty())
 		{
 			ml::Script scr;
-			if (scr.loadFromFile(SETTINGS.pathTo(SETTINGS.scrPath + SETTINGS.scrFile)))
+			if (scr.loadFromFile(SETTINGS.pathTo(SETTINGS.scrFile)))
 			{
 				if (scr.build(ev.args))
 				{
@@ -307,7 +310,7 @@ namespace DEMO
 		ml::OpenGL::errorPause(SETTINGS.glErrorPause);
 
 		if (this->create(SETTINGS.title, SETTINGS.video(), SETTINGS.style, SETTINGS.context()) && 
-			this->setup())
+			this->setup(SETTINGS.glExperimental))
 		{
 			this->setInputMode(ml::Cursor::Normal);
 			this->setPosition((ml::VideoMode::desktop().size - this->getSize()) / 2);
@@ -899,13 +902,14 @@ namespace DEMO
 
 		// Editor
 		if (gui.show_network)		{ ML_NetworkHUD.draw(&gui.show_network); }
-		if (gui.show_browser)		{ ML_Browser.draw(&gui.show_browser); }
+		if (gui.show_profiler)		{ ML_Profiler.draw(&gui.show_profiler); }
 		if (gui.show_hierarchy)		{ ML_Hierarchy.draw(&gui.show_hierarchy); }
+		if (gui.show_resources)		{ ML_ResourceHUD.draw(&gui.show_resources); }
+		if (gui.show_browser)		{ ML_Browser.draw(&gui.show_browser); }
 		if (gui.show_terminal)		{ ML_Terminal.draw(&gui.show_terminal); }
 		if (gui.show_builder)		{ ML_Builder.draw(&gui.show_builder); }
 		if (gui.show_texteditor)	{ ML_TextEditor.draw(&gui.show_texteditor); }
 		if (gui.show_scene)			{ ML_SceneView_draw(&gui.show_scene); }
-		if (gui.show_resources)		{ ML_ResourceHUD.draw(&gui.show_resources); }
 		if (gui.show_inspector)		{ ML_Inspector_draw(&gui.show_inspector); }
 		if (gui.show_demowindow)	{ ML_DemoWindow_draw(&gui.show_demowindow); }
 	}
@@ -966,7 +970,7 @@ namespace DEMO
 				ImGui::MenuItem(ML_Hierarchy.title(), NULL, &gui.show_hierarchy);
 				ImGui::MenuItem(ML_ResourceHUD.title(), NULL, &gui.show_resources);
 				ImGui::MenuItem(ML_NetworkHUD.title(), NULL, &gui.show_network);
-				ImGui::MenuItem("Test Window",	NULL, &gui.show_demowindow);
+				ImGui::MenuItem("Demo Window",	NULL, &gui.show_demowindow);
 				ImGui::EndMenu();
 			}
 			// Help
@@ -1007,6 +1011,7 @@ namespace DEMO
 				const uint32_t right_U	= ML_Dockspace.splitNode(right, ImGuiDir_Up, 0.65f, &right);
 				const uint32_t right_D	= ML_Dockspace.splitNode(right, ImGuiDir_Down, 0.35f, &right);
 
+				ML_Dockspace.dockWindow(ML_Profiler.title(),	left_U);
 				ML_Dockspace.dockWindow(ML_NetworkHUD.title(),	left_U);
 				ML_Dockspace.dockWindow(ML_Browser.title(),		left_U);
 				ML_Dockspace.dockWindow(ML_Hierarchy.title(),	left_U);
@@ -1015,8 +1020,8 @@ namespace DEMO
 				ML_Dockspace.dockWindow(ML_SceneView.title(),	center_U);
 				ML_Dockspace.dockWindow(ML_Builder.title(),		center_D);
 				ML_Dockspace.dockWindow(ML_TextEditor.title(),	center_D);
-				ML_Dockspace.dockWindow("Demo Window",			right_U);
 				ML_Dockspace.dockWindow(ML_Inspector.title(),	right_D);
+				ML_Dockspace.dockWindow("Demo Window",			right_U);
 
 				ML_EventSystem.fireEvent(ml::DockBuilderEvent(root));
 				ML_Dockspace.endBuilder(root);
@@ -1028,9 +1033,9 @@ namespace DEMO
 	{
 		return ML_SceneView.drawFun(p_open, [&]() 
 		{
-			if (!ML_SceneView.updateScene(ML_Res.effects.get("fbo_post")->texture()))
+			if (ml::Effect * e = ML_Res.effects.get("fbo_post"))
 			{
-				ImGui::Text("Failed Rendering Scene");
+				ML_SceneView.updateTexture(e->texture_ref());
 			}
 		});
 	}
@@ -1041,9 +1046,11 @@ namespace DEMO
 		{
 			/* * * * * * * * * * * * * * * * * * * * */
 
-			ImGui::Text("%s", ML_Inspector.title());
-
-			ML_EventSystem.fireEvent(ml::InspectorEvent());
+			if (ImGui::BeginMenuBar())
+			{
+				ImGui::Text("%s (WIP)", ML_Inspector.title());
+				ImGui::EndMenuBar();
+			}
 
 			/* * * * * * * * * * * * * * * * * * * * */
 		});

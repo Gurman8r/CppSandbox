@@ -4,6 +4,8 @@
 #include <common/Vert.shader>
 #shader vertex
 
+/* * * * * * * * * * * * * * * * * * * * */
+
 struct Vert_Uniforms
 {
 	mat4 proj;

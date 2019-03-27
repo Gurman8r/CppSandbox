@@ -54,7 +54,7 @@ namespace ml
 
 		bool	dirExists(const String & dirName) const;
 		bool	fileExists(const String & filename) const;
-		String	getFileExt(const String & filename) const;
+		String	getFileType(const String & filename) const;
 		String  getFileName(const String & filename) const;
 		String	getFilePath(const String & filename) const;
 		size_t	getFileSize(const String & filename) const;

@@ -174,7 +174,7 @@ namespace ml
 		return (bool)(std::ifstream(filename));
 	}
 	
-	String FileSystem::getFileExt(const String & filename) const
+	String FileSystem::getFileType(const String & filename) const
 	{
 		auto find_in = [](const String & value, const char c)
 		{

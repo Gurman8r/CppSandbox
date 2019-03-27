@@ -174,6 +174,7 @@
     <ClInclude Include="..\..\include\MemeEditor\Inspector.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\MainMenuBar.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\NetworkHUD.hpp" />
+    <ClInclude Include="..\..\include\MemeEditor\Profiler.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\ResourceHUD.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\SceneView.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Terminal.hpp" />
@@ -203,6 +204,7 @@
     <ClCompile Include="..\..\src\MemeEditor\Inspector.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\MainMenuBar.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\NetworkHUD.cpp" />
+    <ClCompile Include="..\..\src\MemeEditor\Profiler.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\ResourceHUD.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\SceneView.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\Terminal.cpp" />

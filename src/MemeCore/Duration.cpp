@@ -12,11 +12,6 @@ namespace ml
 	{
 	}
 
-	Duration::Duration(float value, uint64_t ratio)
-		: m_ms((uint64_t)(value) * ratio)
-	{
-	}
-
 	Duration::Duration(const Duration & copy)
 		: m_ms(copy.m_ms)
 	{

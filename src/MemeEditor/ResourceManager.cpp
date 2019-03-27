@@ -156,7 +156,23 @@ namespace ml
 			// Effects
 			else if (type == "effect")
 			{
-				return effects.load(name);
+				const String m = find_in(item, "model");
+				const String s = find_in(item, "shader");
+				const String t = find_in(item, "texture");
+				if (0 && m && s && t)
+				{
+					Effect * e;
+					return
+						(e = effects.load(name)) &&
+						(e->create({ 0, 0 }, GL::ColorAttachment0)) &&
+						(e->setModel(models.get(m))) &&
+						(e->setShader(shaders.get(s))) &&
+						(e->setTexture(textures.get(t)));
+				}
+				else
+				{
+					return effects.load(name);
+				}
 			}
 			// Fonts
 			else if (type == "font")

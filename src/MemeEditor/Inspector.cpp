@@ -33,7 +33,10 @@ namespace ml
 
 	bool Inspector::draw(bool * p_open)
 	{
-		return beginDraw(p_open, ImGuiWindowFlags_AlwaysAutoResize);
+		return beginDraw(p_open, 
+			ImGuiWindowFlags_MenuBar |
+			ImGuiWindowFlags_AlwaysAutoResize
+		);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

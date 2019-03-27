@@ -4,9 +4,6 @@
 #include <MemeEditor/Export.hpp>
 #include <MemeCore/File.hpp>
 
-#define ML_DOC_NAME_MAX 64
-#define ML_DOC_DATA_MAX 1024
-
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -18,8 +15,8 @@ namespace ml
 
 		enum : size_t 
 		{ 
-			NameSize = ML_DOC_NAME_MAX,
-			DataSize = ML_DOC_DATA_MAX,
+			NameSize = 64,
+			DataSize = 1024,
 		};
 
 		/* * * * * * * * * * * * * * * * * * * * */

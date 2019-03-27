@@ -257,11 +257,8 @@ namespace ml
 
 	String Browser::get_selected_name() const
 	{
-		if (const String * file = get_selected())
-		{
-			return file->c_str();
-		}
-		return String();
+		const String * file;
+		return ((file = get_selected()) ? (*file) : String());
 	}
 
 	String Browser::get_selected_path() const
@@ -273,7 +270,7 @@ namespace ml
 	{
 		switch (m_type)
 		{
-		case T_Reg	: return ML_FileSystem.getFileExt(get_selected_path());
+		case T_Reg	: return ML_FileSystem.getFileType(get_selected_path());
 		case T_Dir	: return String("Directory");
 		case T_Lnk	: return String("Link");
 		default		: return String("?");

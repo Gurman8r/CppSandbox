@@ -19,11 +19,6 @@ namespace ml
 			return (m_good);
 		}
 
-		inline bool init()
-		{
-			return m_init ? !(m_init = false) : m_init;
-		}
-
 	protected:
 		inline bool goodCheck(const bool value)
 		{ 
@@ -32,7 +27,6 @@ namespace ml
 
 	private:
 		bool m_good;
-		bool m_init;
 	};
 }
 

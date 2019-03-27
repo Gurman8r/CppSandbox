@@ -8,12 +8,15 @@ namespace ml
 
 	bool GUI::DrawLabel(CString label)
 	{
-		CString label_end;
-		if ((label_end = ImGui::FindRenderedTextEnd(label)) != label)
+		if (label)
 		{
-			ImGui::SameLine(0, GImGui->Style.ItemInnerSpacing.x);
-			ImGui::TextEx(label, label_end);
-			return true;
+			CString label_end;
+			if ((label_end = ImGui::FindRenderedTextEnd(label)) != label)
+			{
+				ImGui::SameLine(0, GImGui->Style.ItemInnerSpacing.x);
+				ImGui::TextEx(label, label_end);
+				return true;
+			}
 		}
 		return false;
 	}

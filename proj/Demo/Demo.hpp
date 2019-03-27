@@ -110,6 +110,7 @@ namespace DEMO
 			bool show_texteditor	= true;
 			bool show_hierarchy		= true;
 			bool show_resources		= true;
+			bool show_profiler		= true;
 			bool show_network		= false;
 			bool show_demowindow	= true;
 			/* * * * * * * * * * * * * * * * * * * * */

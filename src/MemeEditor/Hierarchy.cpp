@@ -8,14 +8,14 @@ namespace ml
 	{
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		template <typename Fun>
-		static void Columns(Fun fun)
+		template <typename Fun, typename ... Args>
+		inline static void Columns(Fun fun, Args ... args)
 		{
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { 2, 2 });
 			ImGui::Columns(2);
 			ImGui::Separator();
 			{
-				fun();
+				fun((args)...);
 			}
 			ImGui::Columns(1);
 			ImGui::Separator();
@@ -25,7 +25,7 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		template <typename Fun, typename ... Args>
-		static void Group(CString label, Fun fun, Args ... args)
+		inline static void Group(CString label, Fun fun, Args ... args)
 		{
 			ImGui::PushID(label);
 			ImGui::AlignTextToFramePadding();
@@ -50,8 +50,8 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		template <typename Fun>
-		static void Field(CString label, Fun fun)
+		template <typename Fun, typename ... Args>
+		inline static void Field(CString label, Fun fun, Args ... args)
 		{
 			ImGui::AlignTextToFramePadding();
 			ImGui::TreeNodeEx(
@@ -64,7 +64,7 @@ namespace ml
 			ImGui::NextColumn();
 			ImGui::PushItemWidth(-1);
 			{
-				fun(label);
+				fun(label, (args)...);
 			}
 			ImGui::PopItemWidth();
 			ImGui::NextColumn();
@@ -221,9 +221,8 @@ namespace ml
 									return true;
 								};
 
-								const ResourceManager::TextureMap & textures = ML_Res.textures;
 								List<String> names;
-								for (auto pair : textures)
+								for (auto pair : ML_Res.textures)
 								{
 									names.push_back(pair.first);
 								}
