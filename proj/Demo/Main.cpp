@@ -21,13 +21,19 @@ int32_t main(int32_t argc, char ** argv)
 			|| ml::Debug::pause(EXIT_FAILURE);
 	}
 	
-	// Load Program
-	if (auto * program = static_cast<ml::RenderWindow *>(new DEMO::Demo()))
+	// Create Program
+	ml::RenderWindow * program;
+	if (!(program = static_cast<ml::RenderWindow *>(new DEMO::DemoProgram())))
+	{
+		return ml::Debug::logError("Failed Creating Program")
+			|| ml::Debug::pause(EXIT_FAILURE);
+	}
+	else
 	{
 		// Enter
 		ML_EventSystem.fireEvent(DEMO::EnterEvent(ml::Args(argc, argv)));
 		if (ml::Debug::checkError(ML_FAILURE))
-		{	
+		{
 			delete program;
 			return ml::Debug::pause(EXIT_FAILURE);
 		}
@@ -35,7 +41,7 @@ int32_t main(int32_t argc, char ** argv)
 		// Load
 		ML_EventSystem.fireEvent(DEMO::LoadEvent());
 		if (ml::Debug::checkError(ML_FAILURE))
-		{	
+		{
 			delete program;
 			return ml::Debug::pause(EXIT_FAILURE);
 		}
@@ -43,7 +49,7 @@ int32_t main(int32_t argc, char ** argv)
 		// Start
 		ML_EventSystem.fireEvent(DEMO::StartEvent());
 		if (ml::Debug::checkError(ML_FAILURE))
-		{	
+		{
 			delete program;
 			return ml::Debug::pause(EXIT_FAILURE);
 		}
@@ -57,8 +63,10 @@ int32_t main(int32_t argc, char ** argv)
 			{
 				// "Fixed" Update
 				ML_EventSystem.fireEvent(DEMO::FixedUpdateEvent(elapsed));
+				
 				// Update
 				ML_EventSystem.fireEvent(DEMO::UpdateEvent(elapsed));
+				
 				// Draw
 				ML_EventSystem.fireEvent(DEMO::DrawEvent(elapsed));
 			}
@@ -69,16 +77,11 @@ int32_t main(int32_t argc, char ** argv)
 
 		// Exit
 		ML_EventSystem.fireEvent(DEMO::ExitEvent());
-		
-		// Free Program
+
+		// Delete Program
 		delete program;
 
 		return EXIT_SUCCESS;
-	}
-	else
-	{
-		return ml::Debug::logError("Failed Creating Program")
-			|| ml::Debug::pause(EXIT_FAILURE);
 	}
 }
 

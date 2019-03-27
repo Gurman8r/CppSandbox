@@ -26,7 +26,7 @@ namespace DEMO
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	Demo::Demo()
+	DemoProgram::DemoProgram()
 	{
 		ML_EventSystem.addListener(DemoEvent::EV_Enter, this);
 		ML_EventSystem.addListener(DemoEvent::EV_Load, this);
@@ -40,11 +40,11 @@ namespace DEMO
 		ML_EventSystem.addListener(ml::CoreEvent::EV_RequestExit, this);
 	}
 
-	Demo::~Demo() {}
+	DemoProgram::~DemoProgram() {}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void Demo::onEvent(const ml::IEvent * value)
+	void DemoProgram::onEvent(const ml::IEvent * value)
 	{
 		ml::RenderWindow::onEvent(value);
 
@@ -88,14 +88,14 @@ namespace DEMO
 					{
 						tex->cleanup();
 						tex->create(ev->size());
-						m_fboMap["fbo_scene"].reload(ev->size());
+						m_effects["fbo_scene"].reload(ev->size());
 					}
 
 					if (ml::Texture * tex = ML_Res.textures.get("fbo_post"))
 					{
 						tex->cleanup();
 						tex->create(ev->size());
-						m_fboMap["fbo_post"].reload(ev->size());
+						m_effects["fbo_post"].reload(ev->size());
 					}
 				}
 			}
@@ -163,7 +163,7 @@ namespace DEMO
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Demo::loadResources()
+	bool DemoProgram::loadResources()
 	{
 		return ml::Debug::log("Loading Resources...")
 			&& ML_Res.meshes.load("default_tri")->loadFromMemory(
@@ -180,11 +180,11 @@ namespace DEMO
 			)
 			&& ML_Res.textures.load("fbo_main")->create(this->getFramebufferSize())
 			&& ML_Res.textures.load("fbo_post")->create(this->getFramebufferSize())
-			&& ML_Res.loadFromFile("../../../assets/manifest.txt")
+			&& ML_Res.loadFromFile(ML_FileSystem.pathTo(SETTINGS.pathTo(SETTINGS.manifest)))
 			&& loadBuffers();
 	}
 
-	bool Demo::loadBuffers()
+	bool DemoProgram::loadBuffers()
 	{
 		// Batch
 		m_batch_vao.create(ml::GL::Triangles).bind();
@@ -195,20 +195,20 @@ namespace DEMO
 		m_batch_vao.unbind();
 
 		// Effects
-		m_fboMap["fbo_scene"].create(this->getSize(), ml::GL::ColorAttachment0);
-		m_fboMap["fbo_scene"].setModel(ML_Res.models.get("framebuffer"));
-		m_fboMap["fbo_scene"].setShader(ML_Res.shaders.get("framebuffer"));
-		m_fboMap["fbo_scene"].setTexture(ML_Res.textures.get("fbo_main"));
+		m_effects["fbo_scene"].create(this->getSize(), ml::GL::ColorAttachment0);
+		m_effects["fbo_scene"].setModel(ML_Res.models.get("framebuffer"));
+		m_effects["fbo_scene"].setShader(ML_Res.shaders.get("framebuffer"));
+		m_effects["fbo_scene"].setTexture(ML_Res.textures.get("fbo_main"));
 
-		m_fboMap["fbo_post"].create(this->getSize(), ml::GL::ColorAttachment0);
-		m_fboMap["fbo_post"].setModel(ML_Res.models.get("framebuffer"));
-		m_fboMap["fbo_post"].setShader(ML_Res.shaders.get("framebuffer"));
-		m_fboMap["fbo_post"].setTexture(ML_Res.textures.get("fbo_post"));
+		m_effects["fbo_post"].create(this->getSize(), ml::GL::ColorAttachment0);
+		m_effects["fbo_post"].setModel(ML_Res.models.get("framebuffer"));
+		m_effects["fbo_post"].setShader(ML_Res.shaders.get("framebuffer"));
+		m_effects["fbo_post"].setTexture(ML_Res.textures.get("fbo_post"));
 
 		return true;
 	}
 
-	bool Demo::loadNetwork()
+	bool DemoProgram::loadNetwork()
 	{
 		if ((SETTINGS.isServer || SETTINGS.isClient) &&
 			ml::Debug::log("Loading Network..."))
@@ -241,7 +241,7 @@ namespace DEMO
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void Demo::onEnter(const EnterEvent & ev)
+	void DemoProgram::onEnter(const EnterEvent & ev)
 	{
 		// Seed Random
 		ml::Random::seed();
@@ -293,7 +293,7 @@ namespace DEMO
 		}
 	}
 
-	void Demo::onLoad(const LoadEvent & ev)
+	void DemoProgram::onLoad(const LoadEvent & ev)
 	{
 		ml::OpenGL::errorPause(SETTINGS.glErrorPause);
 
@@ -349,7 +349,7 @@ namespace DEMO
 		}
 	}
 
-	void Demo::onStart(const StartEvent & ev)
+	void DemoProgram::onStart(const StartEvent & ev)
 	{
 		ml::Debug::log("Starting...");
 
@@ -426,12 +426,12 @@ namespace DEMO
 		}
 	}
 
-	void Demo::onFixedUpdate(const FixedUpdateEvent & ev)
+	void DemoProgram::onFixedUpdate(const FixedUpdateEvent & ev)
 	{
 		phys.particle.applyForce(ml::Force::gravity(ml::vec3f::Up, phys.particle.mass));
 	}
 
-	void Demo::onUpdate(const UpdateEvent & ev)
+	void DemoProgram::onUpdate(const UpdateEvent & ev)
 	{
 		// Poll Events
 		this->pollEvents();
@@ -519,7 +519,7 @@ namespace DEMO
 
 		// Update Text
 		{
-			m_txtMap["message"]
+			m_text["message"]
 				.setFont(ML_Res.fonts.get("minecraft"))
 				.setFontSize(72)
 				.setPosition({ 32, 128 })
@@ -535,7 +535,7 @@ namespace DEMO
 			size_t			lineNum		= 0;
 			auto			nextLine	= [&]() { return linePos = (origin + (offset * (float)(lineNum++))); };
 
-			m_txtMap["gl_version"]
+			m_text["gl_version"]
 				.setFont(font)
 				.setFontSize(fontSize)
 				.setPosition(nextLine())
@@ -543,7 +543,7 @@ namespace DEMO
 					ml::OpenGL::getString(ml::GL::Version)));
 
 
-			m_txtMap["gl_vendor"]
+			m_text["gl_vendor"]
 				.setFont(font)
 				.setFontSize(fontSize)
 				.setPosition(nextLine())
@@ -552,7 +552,7 @@ namespace DEMO
 
 			nextLine();
 
-			m_txtMap["fps_str"]
+			m_text["fps_str"]
 				.setFont(font)
 				.setFontSize(fontSize)
 				.setPosition(nextLine())
@@ -560,7 +560,7 @@ namespace DEMO
 					ev.elapsed.delta(),
 					ML_Time.calculateFPS(ev.elapsed.delta())));
 
-			m_txtMap["time"]
+			m_text["time"]
 				.setFont(font)
 				.setFontSize(fontSize)
 				.setPosition(nextLine())
@@ -569,14 +569,14 @@ namespace DEMO
 
 			nextLine();
 
-			m_txtMap["sin"]
+			m_text["sin"]
 				.setFont(font)
 				.setFontSize(fontSize)
 				.setPosition(nextLine())
 				.setString(ml::String("sin: {0}").format(
 					ML_Time.sin()));
 
-			m_txtMap["cos"]
+			m_text["cos"]
 				.setFont(font)
 				.setFontSize(fontSize)
 				.setPosition(nextLine())
@@ -585,21 +585,21 @@ namespace DEMO
 
 			nextLine();
 
-			m_txtMap["cursor_pos"]
+			m_text["cursor_pos"]
 				.setFont(font)
 				.setFontSize(fontSize)
 				.setPosition(nextLine())
 				.setString(ml::String("cx/cy: {0}").format(
 					this->getCursorPos()));
 
-			m_txtMap["window_pos"]
+			m_text["window_pos"]
 				.setFont(font)
 				.setFontSize(fontSize)
 				.setPosition(nextLine())
 				.setString(ml::String("wx/wy: {0}").format(
 					this->getPosition()));
 
-			m_txtMap["window_size"]
+			m_text["window_size"]
 				.setFont(font)
 				.setFontSize(fontSize)
 				.setPosition(nextLine())
@@ -607,7 +607,7 @@ namespace DEMO
 					this->getSize()));
 
 			// Update All
-			for (auto pair : m_txtMap) { pair.second.update(); }
+			for (auto pair : m_text) { pair.second.update(); }
 		}
 
 		// Update Network
@@ -623,7 +623,7 @@ namespace DEMO
 		}
 	}
 
-	void Demo::onDraw(const DrawEvent & ev)
+	void DemoProgram::onDraw(const DrawEvent & ev)
 	{
 		// Uniforms
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -653,7 +653,7 @@ namespace DEMO
 
 		// Draw Scene
 		/* * * * * * * * * * * * * * * * * * * * */
-		m_fboMap["fbo_scene"].bind();
+		m_effects["fbo_scene"].bind();
 		{
 			// Clear
 			this->clear(uni.clearColor);
@@ -837,22 +837,22 @@ namespace DEMO
 				static ml::RenderBatch batch(&m_batch_vao, &m_batch_vbo, shader, &batch_uniforms);
 
 				TextMap::const_iterator it;
-				for (it = m_txtMap.begin(); it != m_txtMap.end(); it++)
+				for (it = m_text.begin(); it != m_text.end(); it++)
 				{
 					this->draw(it->second, batch);
 				}
 			}
 		}
-		m_fboMap["fbo_scene"].unbind();
+		m_effects["fbo_scene"].unbind();
 
 		// Draw Effects
 		/* * * * * * * * * * * * * * * * * * * * */
-		m_fboMap["fbo_post"].bind();
+		m_effects["fbo_post"].bind();
 		{
-			m_fboMap["fbo_scene"].shader()->applyUniforms(effect_uniforms);
-			this->draw(m_fboMap["fbo_scene"]);
+			m_effects["fbo_scene"].shader()->applyUniforms(effect_uniforms);
+			this->draw(m_effects["fbo_scene"]);
 		}
-		m_fboMap["fbo_post"].unbind();
+		m_effects["fbo_post"].unbind();
 
 		// Draw GUI
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -871,7 +871,7 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 	}
 
-	void Demo::onGui(const GuiEvent & ev)
+	void DemoProgram::onGui(const GuiEvent & ev)
 	{
 		// Main Menu Bar
 		if (ML_MainMenuBar_draw()) {}
@@ -898,7 +898,7 @@ namespace DEMO
 		if (gui.show_demowindow)	{ ML_DemoWindow_draw(&gui.show_demowindow); }
 	}
 
-	void Demo::onExit(const ExitEvent & ev)
+	void DemoProgram::onExit(const ExitEvent & ev)
 	{
 		delete m_thread;
 
@@ -909,7 +909,7 @@ namespace DEMO
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Demo::ML_MainMenuBar_draw()
+	bool DemoProgram::ML_MainMenuBar_draw()
 	{
 		return ML_MainMenuBar.drawFun([&]()
 		{
@@ -978,7 +978,7 @@ namespace DEMO
 		});
 	}
 
-	bool Demo::ML_Dockspace_draw(bool * p_open)
+	bool DemoProgram::ML_Dockspace_draw(bool * p_open)
 	{
 		return ML_Dockspace.drawFun(p_open, [&]() 
 		{
@@ -1012,7 +1012,7 @@ namespace DEMO
 		});
 	}
 
-	bool Demo::ML_Inspector_draw(bool * p_open)
+	bool DemoProgram::ML_Inspector_draw(bool * p_open)
 	{
 		return ML_Inspector.drawFun(p_open, [&]()
 		{
@@ -1028,18 +1028,18 @@ namespace DEMO
 		});
 	}
 
-	bool Demo::ML_SceneView_draw(bool * p_open)
+	bool DemoProgram::ML_SceneView_draw(bool * p_open)
 	{
 		return ML_SceneView.drawFun(p_open, [&]() 
 		{
-			if (!ML_SceneView.updateScene(m_fboMap["fbo_post"].texture()))
+			if (!ML_SceneView.updateScene(m_effects["fbo_post"].texture()))
 			{
 				ImGui::Text("Failed Rendering Scene");
 			}
 		});
 	}
 
-	bool Demo::ML_DemoWindow_draw(bool * p_open)
+	bool DemoProgram::ML_DemoWindow_draw(bool * p_open)
 	{
 		return ml::GUI::DrawWindow("Demo Window", p_open, ImGuiWindowFlags_None, [&]()
 		{

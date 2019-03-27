@@ -288,12 +288,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\assets\data\fonts.txt">
-      <Filter>Resource Files\data</Filter>
-    </Text>
-    <Text Include="..\..\assets\data\images.txt">
-      <Filter>Resource Files\data</Filter>
-    </Text>
     <Text Include="..\..\assets\data\meshes.txt">
       <Filter>Resource Files\data</Filter>
     </Text>
@@ -316,6 +310,12 @@
       <Filter>Resource Files\data</Filter>
     </Text>
     <Text Include="..\..\assets\data\textures.txt">
+      <Filter>Resource Files\data</Filter>
+    </Text>
+    <Text Include="..\..\assets\data\images.txt">
+      <Filter>Resource Files\data</Filter>
+    </Text>
+    <Text Include="..\..\assets\data\fonts.txt">
       <Filter>Resource Files\data</Filter>
     </Text>
     <Text Include="..\..\assets\manifest.txt">

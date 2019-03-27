@@ -25,7 +25,7 @@ namespace DEMO
 	public:
 		// [General]
 		/* * * * * * * * * * * * * * * * * * * * */
-		ml::String	rootPath;		// Solution Dir
+		ml::String	assetPath;		// Solution Dir
 		ml::String	projectURL;		// Project Github URL
 		uint32_t	runTests;		// Run test functions
 		bool		escapeIsExit;	// Escape key is Exit?
@@ -85,7 +85,7 @@ namespace DEMO
 			{
 				// [General]
 				/* * * * * * * * * * * * * * * * * * * * */
-				rootPath		= ini.Get("General", "rootPath", "../../../");
+				assetPath		= ini.Get("General", "assetPath", "../../../");
 				projectURL		= ini.Get("General", "projectURL", "");
 				runTests		= ini.GetInteger("General", "runTests", false);
 				escapeIsExit	= ini.GetBoolean("General", "escapeIsExit", true);
@@ -142,7 +142,7 @@ namespace DEMO
 
 		inline const ml::String pathTo(const ml::String & filename) const
 		{
-			return (rootPath + filename);
+			return (assetPath + filename);
 		}
 
 	public:

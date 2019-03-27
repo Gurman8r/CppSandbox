@@ -32,11 +32,12 @@
 /* * * * * * * * * * * * * * * * * * * * */
 namespace DEMO
 {
-	class Demo final : public ml::RenderWindow
+	class DemoProgram final
+		: public ml::RenderWindow
 	{
 	public:
-		Demo();
-		~Demo();
+		DemoProgram();
+		~DemoProgram();
 
 	public:
 		void onEvent(const ml::IEvent * value) override;
@@ -73,8 +74,8 @@ namespace DEMO
 		using TextMap	= ml::HashMap<ml::String, ml::Text>;
 		using EffectMap = ml::HashMap<ml::String, ml::Effect>;
 
-		TextMap		m_txtMap;
-		EffectMap	m_fboMap;
+		TextMap		m_text;
+		EffectMap	m_effects;
 
 		// Uniform Values
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -85,34 +86,29 @@ namespace DEMO
 			ml::Transform	ortho;
 			
 			// Camera
-			/* * * * * * * * * * * * * * * * * * * * */
 			ml::Transform	camera;
 			bool			camAnimate	= true;
 			ml::vec3f		camPos		= { 0, 1, 10 };
 			float			camSpd		= 1.f;
 			
 			// Light
-			/* * * * * * * * * * * * * * * * * * * * */
-			ml::vec3f		lightPos		= { 0, 1, 30 };
-			ml::vec4f		lightCol		= ml::Color::LightYellow;
+			ml::vec3f		lightPos	= { 0, 1, 30 };
+			ml::vec4f		lightCol	= ml::Color::LightYellow;
 			float			ambient		= 0.01f;
-			float			specular		= 0.5f;
-			int32_t			shininess		= 8;
+			float			specular	= 0.5f;
+			int32_t			shininess	= 8;
 			
 			// Scene
-			/* * * * * * * * * * * * * * * * * * * * */
 			ml::vec4f		clearColor	= ml::Color::Gray;
 			
 			// Framebuffers
-			/* * * * * * * * * * * * * * * * * * * * */
-			int32_t			effectMode		= 0;
+			int32_t			effectMode	= 0;
 			
 			// Geometry
-			/* * * * * * * * * * * * * * * * * * * * */
-			int32_t			lineMode		= 1;
-			ml::vec4f		lineColor		= ml::Color::Red;
-			float			lineDelta		= 1.f;
-			float			lineSize		= 0.5f;
+			int32_t			lineMode	= 1;
+			ml::vec4f		lineColor	= ml::Color::Red;
+			float			lineDelta	= 1.f;
+			float			lineSize	= 0.5f;
 			int32_t			lineSamples	= 16;
 			bool			animate		= true;
 		};
@@ -137,7 +133,7 @@ namespace DEMO
 			bool show_texteditor	= true;
 			bool show_hierarchy		= true;
 			bool show_resources		= true;
-			bool show_network		= true;
+			bool show_network		= false;
 			bool show_demowindow	= true;
 			/* * * * * * * * * * * * * * * * * * * * */
 		};
