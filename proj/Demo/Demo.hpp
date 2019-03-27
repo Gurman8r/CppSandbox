@@ -63,7 +63,7 @@ namespace DEMO
 		bool ML_Dockspace_draw(bool * p_open);
 		bool ML_Inspector_draw(bool * p_open);
 		bool ML_SceneView_draw(bool * p_open);
-		bool ML_TestWindow_draw(bool * p_open);
+		bool ML_DemoWindow_draw(bool * p_open);
 
 	private:
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -124,7 +124,7 @@ namespace DEMO
 		bool show_ml_hierarchy	= true;
 		bool show_ml_resources	= true;
 		bool show_ml_network	= true;
-		bool show_ml_tester		= true;
+		bool show_ml_demowindow	= true;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 

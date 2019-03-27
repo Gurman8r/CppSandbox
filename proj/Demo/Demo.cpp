@@ -82,12 +82,6 @@ namespace DEMO
 				// Framebuffers
 				if (ev->size() != ml::vec2i::Zero)
 				{
-					auto resizeFBO = [](ml::Texture * tex, auto size) 
-					{
-						tex->cleanup(); 
-						tex->create(size);
-					};
-
 					if (ml::Texture * tex = ML_Res.textures.get("fbo_main"))
 					{
 						tex->cleanup();
@@ -902,7 +896,7 @@ namespace DEMO
 		if (show_ml_scene)		{ ML_SceneView_draw(&show_ml_scene); }
 		if (show_ml_resources)	{ ML_ResourceHUD.draw(&show_ml_resources); }
 		if (show_ml_inspector)	{ ML_Inspector_draw(&show_ml_inspector); }
-		if (show_ml_tester)		{ ML_TestWindow_draw(&show_ml_tester); }
+		if (show_ml_demowindow)	{ ML_DemoWindow_draw(&show_ml_demowindow); }
 	}
 
 	void Demo::onExit(const ExitEvent & ev)
@@ -966,7 +960,7 @@ namespace DEMO
 				ImGui::MenuItem(ML_Hierarchy.title(), NULL, &show_ml_hierarchy);
 				ImGui::MenuItem(ML_ResourceHUD.title(), NULL, &show_ml_resources);
 				ImGui::MenuItem(ML_NetworkHUD.title(), NULL, &show_ml_network);
-				ImGui::MenuItem("Test Window",	NULL, &show_ml_tester);
+				ImGui::MenuItem("Test Window",	NULL, &show_ml_demowindow);
 				ImGui::EndMenu();
 			}
 			// Help
@@ -1016,7 +1010,7 @@ namespace DEMO
 				ML_Dockspace.dockWindow(ML_TextEditor.title(),	center_D);
 				ML_Dockspace.dockWindow(ML_NetworkHUD.title(),	left_U);
 				ML_Dockspace.dockWindow(ML_Inspector.title(),	right);
-				ML_Dockspace.dockWindow("Test Window",			right);
+				ML_Dockspace.dockWindow("Demo Window",			right);
 
 				ML_EventSystem.fireEvent(ml::DockBuilderEvent(root));
 				ML_Dockspace.endBuilder(root);
@@ -1051,9 +1045,9 @@ namespace DEMO
 		});
 	}
 
-	bool Demo::ML_TestWindow_draw(bool * p_open)
+	bool Demo::ML_DemoWindow_draw(bool * p_open)
 	{
-		return ml::GUI::DrawWindow("Test Window", p_open, ImGuiWindowFlags_MenuBar, [&]()
+		return ml::GUI::DrawWindow("Demo Window", p_open, ImGuiWindowFlags_None, [&]()
 		{
 			/* * * * * * * * * * * * * * * * * * * * */
 
