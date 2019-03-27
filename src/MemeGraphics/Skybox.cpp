@@ -42,12 +42,12 @@ namespace ml
 
 	void Skybox::serialize(std::ostream & out) const
 	{
-		out << "U: " << (m_faces[Up]	? (m_faces[Up]->ToString())	: "Nothing" )<< endl
-			<< "D: " << (m_faces[Down]	? (m_faces[Down]->ToString())	: "Nothing" )<< endl
-			<< "L: " << (m_faces[Left]	? (m_faces[Left]->ToString())	: "Nothing" )<< endl
-			<< "R: " << (m_faces[Right]	? (m_faces[Right]->ToString()): "Nothing" )<< endl
-			<< "F: " << (m_faces[Front]	? (m_faces[Front]->ToString()): "Nothing" )<< endl
-			<< "B: " << (m_faces[Back]	? (m_faces[Back]->ToString())	: "Nothing" )<< endl;
+		out << "U: " << (m_faces[Up]	? (m_faces[Up]->ToString())		: "Nothing") << endl
+			<< "D: " << (m_faces[Down]	? (m_faces[Down]->ToString())	: "Nothing") << endl
+			<< "L: " << (m_faces[Left]	? (m_faces[Left]->ToString())	: "Nothing") << endl
+			<< "R: " << (m_faces[Right]	? (m_faces[Right]->ToString())	: "Nothing") << endl
+			<< "F: " << (m_faces[Front]	? (m_faces[Front]->ToString())	: "Nothing") << endl
+			<< "B: " << (m_faces[Back]	? (m_faces[Back]->ToString())	: "Nothing") << endl;
 	}
 	
 	void Skybox::deserialize(std::istream & in)

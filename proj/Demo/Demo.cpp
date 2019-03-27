@@ -1033,10 +1033,14 @@ namespace DEMO
 	{
 		return ML_SceneView.drawFun(p_open, [&]() 
 		{
+			/* * * * * * * * * * * * * * * * * * * * */
+
 			if (ml::Effect * e = ML_Res.effects.get("fbo_post"))
 			{
 				ML_SceneView.updateTexture(e->texture_ref());
 			}
+
+			/* * * * * * * * * * * * * * * * * * * * */
 		});
 	}
 
@@ -1117,10 +1121,13 @@ namespace DEMO
 
 			/* * * * * * * * * * * * * * * * * * * * */
 
-			ImGui::Text("Transform");
-			ImGui::Checkbox("Animate##Transform", &uni.animate);
-			ml::GUI::EditMat4f("Matrix", ML_Res.models.get("earth")->transform().matrix());
-			ImGui::Separator();
+			if (ml::Model * m = ML_Res.models.get("earth"))
+			{
+				ImGui::Text("Transform");
+				ImGui::Checkbox("Animate##Transform", &uni.animate);
+				ml::GUI::EditMat4f("Matrix", m->transform().matrix());
+				ImGui::Separator();
+			}
 
 			/* * * * * * * * * * * * * * * * * * * * */
 		});
