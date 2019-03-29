@@ -298,6 +298,40 @@ namespace ml
 					}
 				});
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+				Funcs::Group("Plugins", [&]()
+				{
+					for (auto pair : ML_Res.plugins)
+					{
+						Funcs::Group(pair.first.c_str(), [&](CString name, const Plugin * e)
+						{
+							Funcs::Field("Name", [&](CString label)
+							{
+								ImGui::Text("%s", name);
+							});
+							if (const String file = ML_Res.plugins.getFile(name))
+							{
+								Funcs::Field("File", [&](CString label)
+								{
+									const String fName = ML_FileSystem.getFileName(file);
+									if (ImGui::Selectable(fName.c_str()))
+									{
+										ML_OS.execute("open", ML_FileSystem.pathTo(file));
+									}
+								});
+								Funcs::Field("Path", [&](CString label)
+								{
+									const String fPath = ML_FileSystem.getFilePath(file);
+									if (ImGui::Selectable(fPath.c_str()))
+									{
+										ML_OS.execute("open", ML_FileSystem.pathTo(fPath));
+									}
+								});
+							}
+
+						}, pair.first.c_str(), pair.second);
+					}
+				});
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 				Funcs::Group("Scripts", [&]()
 				{
 					for (auto pair : ML_Res.scripts)

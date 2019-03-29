@@ -13,12 +13,12 @@
 /* * * * * * * * * * * * * * * * * * * * */
 namespace DEMO
 {
-	class DemoProgram final
+	class Demo final
 		: public ml::RenderWindow
 	{
 	public:
-		DemoProgram();
-		~DemoProgram();
+		Demo();
+		~Demo();
 
 	public:
 		void onEvent(const ml::IEvent * value) override;

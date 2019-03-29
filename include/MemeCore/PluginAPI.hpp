@@ -24,6 +24,8 @@ namespace ml
 #define ML_PluginEnable		ML_PluginEnable
 #define ML_PluginDisable	ML_PluginDisable
 
+#define ML_FUNC_DECL
+
 extern "C"
 {
 	ML_PLUGIN_API void * ML_PluginInit(void * data);

@@ -8,12 +8,6 @@
 #include <MemeCore/Random.hpp>
 #include <MemeCore/EventSystem.hpp>
 #include <MemeCore/OS.hpp>
-#include <MemeGraphics/Shapes.hpp>
-#include <MemeGraphics/VertexBuffer.hpp>
-#include <MemeGraphics/IndexBuffer.hpp>
-#include <MemeGraphics/FrameBuffer.hpp>
-#include <MemeGraphics/RenderBuffer.hpp>
-#include <MemeGraphics/BufferLayout.hpp>
 #include <MemeGraphics/OpenGL.hpp>
 #include <MemeGraphics/Camera.hpp>
 #include <MemeEditor/ResourceManager.hpp>
@@ -49,7 +43,7 @@ namespace DEMO
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	DemoProgram::DemoProgram()
+	Demo::Demo()
 	{
 		ML_EventSystem.addListener(DemoEvent::EV_Enter, this);
 		ML_EventSystem.addListener(DemoEvent::EV_Load, this);
@@ -64,11 +58,11 @@ namespace DEMO
 		ML_EventSystem.addListener(ml::CoreEvent::EV_RequestExit, this);
 	}
 
-	DemoProgram::~DemoProgram() {}
+	Demo::~Demo() {}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void DemoProgram::onEvent(const ml::IEvent * value)
+	void Demo::onEvent(const ml::IEvent * value)
 	{
 		ml::RenderWindow::onEvent(value);
 
@@ -182,7 +176,7 @@ namespace DEMO
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void DemoProgram::onEnter(const EnterEvent & ev)
+	void Demo::onEnter(const EnterEvent & ev)
 	{
 		// Start Master Timer
 		ML_Time.start();
@@ -282,7 +276,7 @@ namespace DEMO
 		}
 	}
 
-	void DemoProgram::onLoad(const LoadEvent & ev)
+	void Demo::onLoad(const LoadEvent & ev)
 	{
 		ml::Debug::log("Loading...");
 
@@ -318,8 +312,7 @@ namespace DEMO
 		ML_Res.models.load("default_triangle")->loadFromMemory(
 			*ML_Res.meshes.get("default_triangle")
 		);
-		ML_Res.models.load("default_quad")->loadFromMemory
-		(
+		ML_Res.models.load("default_quad")->loadFromMemory(
 			*ML_Res.meshes.get("default_quad")
 		);
 		ML_Res.models.load("default_cube")->loadFromMemory(
@@ -333,11 +326,11 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (!ML_Res.loadFromFile(ML_FileSystem.pathTo(SETTINGS.manifest)))
 		{
-			return ml::Debug::setError(ml::Debug::logError("Failed Loading Manifest"));
+			ml::Debug::logError("Failed Loading Manifest");
 		}
 	}
 
-	void DemoProgram::onStart(const StartEvent & ev)
+	void Demo::onStart(const StartEvent & ev)
 	{
 		ml::Debug::log("Starting...");
 
@@ -412,12 +405,12 @@ namespace DEMO
 		}
 	}
 
-	void DemoProgram::onFixedUpdate(const FixedUpdateEvent & ev)
+	void Demo::onFixedUpdate(const FixedUpdateEvent & ev)
 	{
 		phys.particle.applyForce(ml::Force::gravity(ml::vec3f::Up, phys.particle.mass));
 	}
 
-	void DemoProgram::onUpdate(const UpdateEvent & ev)
+	void Demo::onUpdate(const UpdateEvent & ev)
 	{
 		// Poll Events
 		this->pollEvents();
@@ -606,7 +599,7 @@ namespace DEMO
 		}
 	}
 
-	void DemoProgram::onDraw(const DrawEvent & ev)
+	void Demo::onDraw(const DrawEvent & ev)
 	{
 		// Uniforms
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -695,9 +688,9 @@ namespace DEMO
 				if (const ml::Shader * shader = ML_Res.shaders.get("lighting"))
 				{
 					static ml::UniformSet uniforms = {
-						ml::Uniform("Vert.model",		ml::Uniform::Mat4,	&model->transform().matrix()),
-						ml::Uniform("Frag.tex_dm",		ml::Uniform::Tex2D,	ML_Res.textures.get("earth_dm")),
-						ml::Uniform("Frag.tex_sm",		ml::Uniform::Tex2D,	ML_Res.textures.get("earth_sm")),
+						ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&model->transform().matrix()),
+						ml::Uniform("Frag.tex_dm",	ml::Uniform::Tex2D,	ML_Res.textures.get("earth_dm")),
+						ml::Uniform("Frag.tex_sm",	ml::Uniform::Tex2D,	ML_Res.textures.get("earth_sm")),
 					};
 					shader->applyUniforms(camera_uniforms);
 					shader->applyUniforms(light_uniforms);
@@ -883,7 +876,7 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 	}
 
-	void DemoProgram::onGui(const GuiEvent & ev)
+	void Demo::onGui(const GuiEvent & ev)
 	{
 		// Main Menu Bar
 		if (ML_MainMenuBar_draw())	{ /* Main Menu Bar */ }
@@ -911,19 +904,19 @@ namespace DEMO
 		if (gui.show_demowindow)	{ ML_DemoWindow_draw(&gui.show_demowindow); }
 	}
 
-	void DemoProgram::onUnload(const UnloadEvent & ev)
+	void Demo::onUnload(const UnloadEvent & ev)
 	{
 		ML_Res.cleanupAll();
 	}
 
-	void DemoProgram::onExit(const ExitEvent & ev)
+	void Demo::onExit(const ExitEvent & ev)
 	{
 		ImGui_ML_Shutdown();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool DemoProgram::ML_MainMenuBar_draw()
+	bool Demo::ML_MainMenuBar_draw()
 	{
 		return ML_MainMenuBar.drawFun([&]()
 		{
@@ -992,7 +985,7 @@ namespace DEMO
 		});
 	}
 
-	bool DemoProgram::ML_Dockspace_draw(bool * p_open)
+	bool Demo::ML_Dockspace_draw(bool * p_open)
 	{
 		return ML_Dockspace.drawFun(p_open, [&]() 
 		{
@@ -1027,7 +1020,7 @@ namespace DEMO
 		});
 	}
 
-	bool DemoProgram::ML_SceneView_draw(bool * p_open)
+	bool Demo::ML_SceneView_draw(bool * p_open)
 	{
 		return ML_SceneView.drawFun(p_open, [&]() 
 		{
@@ -1038,7 +1031,7 @@ namespace DEMO
 		});
 	}
 
-	bool DemoProgram::ML_DemoWindow_draw(bool * p_open)
+	bool Demo::ML_DemoWindow_draw(bool * p_open)
 	{
 		return ml::GUI::DrawWindow("Demo Window", p_open, ImGuiWindowFlags_None, [&]()
 		{
