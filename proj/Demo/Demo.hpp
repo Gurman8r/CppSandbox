@@ -1,6 +1,8 @@
 #ifndef _DEMO_HPP_
 #define _DEMO_HPP_
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 #include "DemoEvents.hpp"
 #include "DemoSettings.hpp"
 #include <MemeCore/Thread.hpp>
@@ -124,13 +126,14 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 		struct DemoPhysics
 		{
-			ml::Rigidbody	rigidbody;
-			ml::Particle	particle;
+			std::vector<ml::Particle> particles;
 		};
 		DemoPhysics phys;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	};
 }
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #endif // !_DEMO_HPP_

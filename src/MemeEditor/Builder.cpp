@@ -47,7 +47,7 @@ namespace ml
 	Builder::Builder()
 		: GUI_Window("Builder")
 		, m_selected(0)
-		, m_shader(ML_Res.shaders.get(ML_TEST_SHADER))
+		, m_shader(ML_Res.shaders.load(ML_TEST_SHADER))
 	{
 		set_data(BuilderData("Vertex",
 			"#include <common/Vert.MVP.shader>\n"
@@ -488,7 +488,7 @@ namespace ml
 					{
 						IO::capture_cout([&](SStream & ss)
 						{
-							if (m_shader->loadFromMemory(src.str()))
+							if (m_shader && m_shader->loadFromMemory(src.str()))
 							{
 								Debug::log("Compiled Shader");
 							}

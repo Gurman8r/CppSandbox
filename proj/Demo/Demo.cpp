@@ -1,3 +1,5 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 #include "Demo.hpp"
 #include "DemoCommands.hpp"
 #include <MemeAudio/Audio.hpp>
@@ -33,12 +35,12 @@
 #include <MemeScript/Interpreter.hpp>
 #include <MemeWindow/WindowEvents.hpp>
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * */
 
 #define ML_FBO_MAIN "fbo_main"
 #define ML_FBO_POST "fbo_post"
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * */
 
 namespace DEMO
 {
@@ -156,11 +158,13 @@ namespace DEMO
 
 		case ml::EditorEvent::EV_Inspector:
 			if (const auto * ev = value->as<ml::InspectorEvent>())
+			{
 				if (ImGui::BeginMenuBar())
 				{
 					ImGui::Text("%s (WIP)", ML_Inspector.title());
 					ImGui::EndMenuBar();
 				}
+			}
 			break;
 		}
 	}
@@ -410,7 +414,10 @@ namespace DEMO
 		// Update Physics
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
-			phys.particle.applyForce(ml::Force::gravity(ml::vec3f::Up, phys.particle.mass));
+			for (ml::Particle & p : phys.particles)
+			{
+				p.applyForce(ml::Force::gravity(ml::vec3f::Up, p.mass));
+			}
 		}
 	}
 
@@ -1052,10 +1059,9 @@ namespace DEMO
 	{
 		return ML_SceneView.drawFun(p_open, [&]()
 		{
+			// Update Scene Resolution
 			/* * * * * * * * * * * * * * * * * * * * */
-
 			const ml::vec2i resolution = this->getFramebufferSize();
-
 			if (resolution != ml::vec2i::Zero)
 			{
 				// Resize Effects
@@ -1083,14 +1089,12 @@ namespace DEMO
 				}
 			}
 
+			// Draw Scene
 			/* * * * * * * * * * * * * * * * * * * * */
-
 			if (ml::Effect * e = ML_Res.effects.get(ML_FBO_POST))
 			{
 				ML_SceneView.updateTexture(e->texture());
 			}
-
-			/* * * * * * * * * * * * * * * * * * * * */
 		});
 	}
 
@@ -1169,6 +1173,5 @@ namespace DEMO
 
 	/* * * * * * * * * * * * * * * * * * * * */
 }
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
