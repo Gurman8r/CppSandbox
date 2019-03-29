@@ -24,15 +24,15 @@ namespace DEMO
 		void onEvent(const ml::IEvent * value) override;
 
 	private:
-		void	onEnter(const EnterEvent & ev);
-		void	onLoad(const LoadEvent & ev);
-		void	onStart(const StartEvent & ev);
-		void	onFixedUpdate(const FixedUpdateEvent & ev);
-		void	onUpdate(const UpdateEvent & ev);
-		void	onDraw(const DrawEvent & ev);
-		void	onGui(const GuiEvent & ev);
-		void	onUnload(const UnloadEvent & ev);
-		void	onExit(const ExitEvent & ev);
+		void onEnter(const EnterEvent & ev);
+		void onLoad(const LoadEvent & ev);
+		void onStart(const StartEvent & ev);
+		void onFixedUpdate(const FixedUpdateEvent & ev);
+		void onUpdate(const UpdateEvent & ev);
+		void onDraw(const DrawEvent & ev);
+		void onGui(const GuiEvent & ev);
+		void onUnload(const UnloadEvent & ev);
+		void onExit(const ExitEvent & ev);
 
 	private:
 		bool ML_MainMenuBar_draw();
@@ -95,6 +95,8 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 		struct DemoGUI
 		{
+			/* * * * * * * * * * * * * * * * * * * * */
+			bool show_main_menu_bar = true;
 			/* * * * * * * * * * * * * * * * * * * * */
 			bool show_imgui_demo	= false;
 			bool show_imgui_metrics	= false;

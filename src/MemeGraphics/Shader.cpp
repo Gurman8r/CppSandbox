@@ -483,7 +483,7 @@ namespace ml
 			
 			OpenGL::deleteShader(*this);
 			
-			return Debug::logError("Failed to link source: {0}", log);
+			return Debug::logError("Failed linking source: {0}", log);
 		}
 
 		OpenGL::flush();

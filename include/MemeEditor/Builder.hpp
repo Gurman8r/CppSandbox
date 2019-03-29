@@ -6,7 +6,7 @@
 #include <MemeGraphics/Shader.hpp>
 
 #define ML_Builder ml::Builder::getInstance()
-#define ML_MAX_SRC 1024
+#define ML_TEST_SHADER "built_shader"
 
 namespace ml
 {
@@ -18,7 +18,26 @@ namespace ml
 		friend class ISingleton<Builder>;
 
 	public:
-		using SourceBuf = char[2048];
+		using SourceBuffer	= typename char[2048];
+		using UniformList	= List<Uniform>;
+
+		struct BuilderData : public ITrackable
+		{
+			String			name;	// Name
+			SourceBuffer	src;	// Source Text
+			UniformList		uni;	// Uniforms
+
+			BuilderData();
+			BuilderData(const String & name);
+			BuilderData(const String & name, const String & src);
+			BuilderData(const String & name, const String & src, const UniformList & uni);
+			BuilderData(const BuilderData & copy);
+
+			inline operator bool() const { return (bool)(name); }
+		};
+
+		using BuilderDataMap = HashMap<String, BuilderData>;
+
 
 	private:
 		Builder();
@@ -29,38 +48,69 @@ namespace ml
 		bool draw(bool * p_open) override;
 
 	private:
-		void draw_shader_tab(const String & label, SourceBuf & source);
-		void draw_uniform_list(const String & value);
-		void draw_uniform_data(Uniform * u);
-		void draw_uniform_buttons(List<Uniform> & value);
-		void draw_shader_source(CString label, SourceBuf & source);
+		void draw_shader_tab(const String & value);
+		void draw_uniform_list(UniformList * value);
+		void draw_uniform_data(Uniform * value);
+		void draw_shader_text(char * value);
+
+		void draw_tools();
+
 
 	private:
-		inline Uniform * get_uniform(List<Uniform> & u, const size_t i)
+		inline BuilderData * set_data(const BuilderData & data)
 		{
-			return (!u.empty()
-				? (i < u.size())
-					? (&u.at(i))
-					: (NULL)
+			return ((data)
+				? (&(m_data[data.name] = data))
 				: (NULL));
 		}
 
-		inline Uniform * get_uniform(const String & label, const size_t i)
+		inline BuilderData * get_data(const String & value)
 		{
-			return get_uniform(m_uni[label], i);
+			static BuilderDataMap::iterator it;
+			return (((it = m_data.find(value)) != m_data.end())
+				? (&it->second)
+				: (NULL));
 		}
 
-		inline Uniform * get_selected(const String & label)
+		inline char * get_source(const String & label)
+		{
+			static BuilderData * temp;
+			return ((temp = get_data(label))
+				? (temp->src)
+				: (NULL));
+		}
+
+		inline UniformList * get_list(const String & label)
+		{
+			static BuilderData * temp;
+			return ((temp = get_data(label))
+				? (&temp->uni)
+				: (NULL));
+		}
+
+		inline Uniform * get_uniform(const String & value, const size_t index)
+		{
+			UniformList * list;
+			return ((list = get_list(value))
+				? (((list) && (!list->empty()))
+					? (index < list->size())
+						? (&list->at(index))
+						: (NULL)
+					: (NULL))
+				: (NULL));
+		}
+
+		inline Uniform * get_selected_uniform(const String & label)
 		{
 			return get_uniform(label, m_selected);
 		}
 
 	private:
-		size_t m_selected; // Selected Uniform
+		size_t m_selected;
 
-		HashMap<String, List<Uniform>>	m_uni; // Uniforms
-		HashMap<String, SourceBuf>		m_src; // Sources
+		BuilderDataMap m_data;
 
+		Shader * m_shader;
 	};
 }
 

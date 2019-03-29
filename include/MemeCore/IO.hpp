@@ -8,19 +8,41 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	class ML_CORE_API IO final
-	{
-	public:
-		inline static std::ostream & out() { return std::cout; }
-		inline static std::ostream & err() { return std::cerr; }
-		inline static std::istream & in()  { return std::cin;  }
-	};
+	using StreamBuf = typename std::streambuf;
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	static std::ostream & cout	= IO::out();
-	static std::ostream & cerr	= IO::err();
-	static std::istream & cin	= IO::in();
+	static std::ostream & cout = std::cout;
+	static std::ostream & cerr = std::cerr;
+	static std::istream & cin = std::cin;
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	struct ML_CORE_API IO final
+	{
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		template <typename Fun, typename ... Args>
+		inline static StreamBuf * capture(std::ostream & src, Fun fun, Args ... args)
+		{
+			std::stringstream dst;
+			if (StreamBuf * buf = src.rdbuf(dst.rdbuf()))
+			{
+				fun(dst, (args)...);
+
+				return src.rdbuf(buf);
+			}
+			return NULL;
+		}
+
+		template <typename Fun, typename ... Args>
+		inline static StreamBuf * capture_cout(Fun fun, Args ... args)
+		{
+			return capture(cout, fun, (args)...);
+		}
+
+		/* * * * * * * * * * * * * * * * * * * * */
+	};
 
 	/* * * * * * * * * * * * * * * * * * * * */
 

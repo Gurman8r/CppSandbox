@@ -79,6 +79,10 @@ namespace ml
 						file.pop_back();
 						out << parseIncludes(file);
 					}
+					else
+					{
+						Debug::logError("Failed Including Shader: {0} {1}", name, path);
+					}
 				}
 			}
 			else

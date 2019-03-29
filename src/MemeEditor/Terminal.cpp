@@ -3,6 +3,7 @@
 #include <MemeScript/Interpreter.hpp>
 #include <MemeCore/FileSystem.hpp>
 #include <MemeCore/EventSystem.hpp>
+#include <MemeCore/Debug.hpp>
 
 namespace ml
 {
@@ -138,33 +139,37 @@ namespace ml
 		m_scrollToBottom = true;
 	}
 
-	void Terminal::print(const String & str)
+	void Terminal::print(SStream & value)
 	{
-		printf("%s", str.c_str());
+		String line;
+		while (std::getline(value, line))
+		{
+			print(line);
+		}
 	}
 
-	void Terminal::printf(CString fmt, ...)
+	void Terminal::print(const String & value)
+	{
+		printf("%s", value.c_str());
+	}
+
+	void Terminal::printf(CString value, ...)
 	{
 		char buf[1024];
 		va_list args;
-		va_start(args, fmt);
-		vsnprintf(buf, IM_ARRAYSIZE(buf), fmt, args);
+		va_start(args, value);
+		vsnprintf(buf, IM_ARRAYSIZE(buf), value, args);
 		buf[IM_ARRAYSIZE(buf) - 1] = 0;
 		va_end(args);
 		m_lines.push_back(Strdup(buf));
 		m_scrollToBottom = true;
 	}
 
-	void Terminal::printHistory()
-	{
-		for (auto h : m_history) { this->printf(h); }
-	}
-
 	void Terminal::execCommand(CString value)
 	{
 		this->printf("# %s\n", value);
 
-		// Insert into history. First find match and delete it so it can be pushed to the back. This isn't trying to be smart or optimal.
+		// Insert into history.
 		m_historyPos = -1;
 		for (int32_t i = (int32_t)m_history.size() - 1; i >= 0; i--)
 		{
@@ -177,25 +182,15 @@ namespace ml
 		}
 		m_history.push_back(Strdup(value));
 
-		
-		SStream m_ss;
-		std::streambuf * m_old;
-		if (m_old = cout.rdbuf(m_ss.rdbuf()))
+		// Run Command
+		IO::capture_cout([&](SStream & ss) 
 		{
-			if (!(ML_Interpreter.execCommand(value)).isErrorType())
+			if (ML_Interpreter.execCommand(value).isErrorType())
 			{
-				String str;
-				while (std::getline(m_ss, str))
-				{
-					this->printf(str.c_str());
-				}
+				Debug::logError("{0}", value);
 			}
-			else
-			{
-				this->printf("[ ERR ] %s\n", value);
-			}
-			cout.rdbuf(m_old);
-		}
+			this->print(ss);
+		});
 	}
 
 	int32_t Terminal::textEditCallback(void * value)

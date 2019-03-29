@@ -22,7 +22,7 @@ namespace ml
 
 	bool SceneView::draw(bool * p_open)
 	{
-		return beginDraw(p_open, ImGuiWindowFlags_None);
+		return beginDraw(p_open, ImGuiWindowFlags_MenuBar);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

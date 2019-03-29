@@ -25,11 +25,14 @@ namespace ml
 
 	public:
 		void    clear();
-		void	print(const String & str);
-		void    printf(CString fmt, ...);
-		void	printHistory();
-		void    execCommand(CString command_line);
+		void	print(SStream & value);
+		void	print(const String & value);
+		void    printf(CString value, ...);
+		void    execCommand(CString value);
 		int32_t textEditCallback(void * value);
+
+	public:
+		inline const List<char *> & history() const { return m_history; }
 
 	private:
 		char			m_inputBuf[256];

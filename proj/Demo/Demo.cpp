@@ -57,6 +57,8 @@ namespace DEMO
 		ML_EventSystem.addListener(DemoEvent::EV_Exit, this);
 
 		ML_EventSystem.addListener(ml::CoreEvent::EV_RequestExit, this);
+
+		ML_EventSystem.addListener(ml::EditorEvent::EV_Inspector, this);
 	}
 
 	Demo::~Demo() {}
@@ -86,27 +88,7 @@ namespace DEMO
 
 		case ml::WindowEvent::EV_FramebufferSize:
 			if (const auto * ev = value->as<ml::FramebufferSizeEvent>())
-			{
 				this->setViewport(ml::vec2i::Zero, ev->size());
-
-				// Orthographic
-				uni.ortho.orthographic(
-					{ ml::vec2f::Zero, (ml::vec2f)ev->size() },
-					{ SETTINGS.orthoNear, SETTINGS.orthoFar }
-				);
-
-				// Perspective
-				uni.persp.perspective(
-					SETTINGS.fieldOfView, ev->aspect(),
-					SETTINGS.perspNear, SETTINGS.perspFar
-				);
-
-				// Resize Effects
-				for (auto pair : ML_Res.effects)
-				{
-					pair.second->resize(ev->size());
-				}
-			}
 			break;
 
 		case ml::WindowEvent::EV_Key:
@@ -115,8 +97,8 @@ namespace DEMO
 				/* * * * * * * * * * * * * * * * * * * * */
 
 				// Mods
-				const bool mod_ctrl  = (ev->mods & ML_MOD_CTRL);
-				const bool mod_alt	 = (ev->mods & ML_MOD_ALT);
+				const bool mod_ctrl = (ev->mods & ML_MOD_CTRL);
+				const bool mod_alt = (ev->mods & ML_MOD_ALT);
 				const bool mod_shift = (ev->mods & ML_MOD_SHIFT);
 
 				/* * * * * * * * * * * * * * * * * * * * */
@@ -130,28 +112,28 @@ namespace DEMO
 				// Toggle Smooth Textures (Num2)
 				if (ev->getKeyDown(ml::KeyCode::Num2))
 				{
-					for (auto pair : ML_Res.textures.getAll()) 
-					{ 
+					for (auto pair : ML_Res.textures.getAll())
+					{
 						pair.second->setSmooth(!pair.second->smooth());
 					}
 				}
 
 				// Close (Escape)
-				if (ev->getKeyDown(ml::KeyCode::Escape)) 
-				{ 
-					if (SETTINGS.escapeIsExit) { this->close(); } 
+				if (ev->getKeyDown(ml::KeyCode::Escape))
+				{
+					if (SETTINGS.escapeIsExit) { this->close(); }
 				}
 
 				/* * * * * * * * * * * * * * * * * * * * */
-				
+
 				// Terminal (Ctrl+Alt+T)
 				if (ev->getKeyDown(ml::KeyCode::T) && (mod_ctrl && mod_alt))
 					gui.show_terminal = true;
-				
+
 				// Browser (Ctrl+Alt+E)
 				if (ev->getKeyDown(ml::KeyCode::E) && (mod_ctrl))
 					gui.show_browser = true;
-				
+
 				// Builder (Ctrl+Alt+B)
 				if (ev->getKeyDown(ml::KeyCode::B) && (mod_ctrl && mod_alt))
 					gui.show_builder = true;
@@ -163,7 +145,7 @@ namespace DEMO
 				// Inspector (Ctrl+Alt+I)
 				if (ev->getKeyDown(ml::KeyCode::I) && (mod_ctrl && mod_alt))
 					gui.show_inspector = true;
-				
+
 				// ImGui Demo (Ctrl+H)
 				if (ev->getKeyDown(ml::KeyCode::H) && (mod_ctrl))
 					gui.show_imgui_demo = true;
@@ -171,8 +153,16 @@ namespace DEMO
 				/* * * * * * * * * * * * * * * * * * * * */
 			}
 			break;
-		}
 
+		case ml::EditorEvent::EV_Inspector:
+			if (const auto * ev = value->as<ml::InspectorEvent>())
+				if (ImGui::BeginMenuBar())
+				{
+					ImGui::Text("%s (WIP)", ML_Inspector.title());
+					ImGui::EndMenuBar();
+				}
+			break;
+		}
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -417,15 +407,21 @@ namespace DEMO
 
 	void Demo::onFixedUpdate(const FixedUpdateEvent & ev)
 	{
-		phys.particle.applyForce(ml::Force::gravity(ml::vec3f::Up, phys.particle.mass));
+		// Update Physics
+		/* * * * * * * * * * * * * * * * * * * * */
+		{
+			phys.particle.applyForce(ml::Force::gravity(ml::vec3f::Up, phys.particle.mass));
+		}
 	}
 
 	void Demo::onUpdate(const UpdateEvent & ev)
 	{
 		// Poll Events
+		/* * * * * * * * * * * * * * * * * * * * */
 		this->pollEvents();
 
 		// Update Title
+		/* * * * * * * * * * * * * * * * * * * * */
 		this->setTitle(ml::String::Format("{0} | {1} | {2} | {3} ms/frame ({4} fps)",
 			SETTINGS.title,
 			ml::Debug::configuration(),
@@ -436,6 +432,7 @@ namespace DEMO
 		));
 
 		// Update Models
+		/* * * * * * * * * * * * * * * * * * * * */
 		{
 			if (ml::Model * m = ML_Res.models.get("borg"))
 			{
@@ -488,6 +485,7 @@ namespace DEMO
 		}
 
 		// Update Camera
+		/* * * * * * * * * * * * * * * * * * * * */
 		if (const ml::Model * target = ML_Res.models.get("earth"))
 		{
 			// Look
@@ -504,6 +502,7 @@ namespace DEMO
 		}
 
 		// Update Text
+		/* * * * * * * * * * * * * * * * * * * * */
 		{
 			m_text["message"]
 				.setFont(ML_Res.fonts.get("minecraft"))
@@ -592,11 +591,15 @@ namespace DEMO
 				.setString(ml::String("ww/wh: {0}").format(
 					this->getSize()));
 
-			// Update All
-			for (auto pair : m_text) { pair.second.update(); }
+			// Update All Text
+			for (auto pair : m_text) 
+			{
+				pair.second.update(); 
+			}
 		}
 
 		// Update Network
+		/* * * * * * * * * * * * * * * * * * * * */
 		{
 			if (SETTINGS.isServer)
 			{
@@ -609,6 +612,7 @@ namespace DEMO
 		}
 
 		// Update Uniforms
+		/* * * * * * * * * * * * * * * * * * * * */
 		{
 			uni.deltaTime = ev.elapsed.delta();
 			uni.totalTime = (float)ML_Time.elapsed().millis();
@@ -1006,9 +1010,6 @@ namespace DEMO
 				ImGui::MenuItem("About Dear ImGui", NULL, &gui.show_imgui_about);
 				ImGui::EndMenu();
 			}
-			// Events
-			/* * * * * * * * * * * * * * * * * * * * */
-			ML_EventSystem.fireEvent(ml::MainMenuBarEvent());
 		});
 	}
 
@@ -1042,7 +1043,6 @@ namespace DEMO
 				ML_Dockspace.dockWindow(ML_Inspector.title(),	right_D);
 				ML_Dockspace.dockWindow("Demo Window",			right_U);
 
-				ML_EventSystem.fireEvent(ml::DockBuilderEvent(root));
 				ML_Dockspace.endBuilder(root);
 			};
 		});
@@ -1052,10 +1052,45 @@ namespace DEMO
 	{
 		return ML_SceneView.drawFun(p_open, [&]()
 		{
+			/* * * * * * * * * * * * * * * * * * * * */
+
+			const ml::vec2i resolution = this->getFramebufferSize();
+
+			if (resolution != ml::vec2i::Zero)
+			{
+				// Resize Effects
+				bool changed = false;
+				for (auto pair : ML_Res.effects)
+				{
+					if (pair.second->resize(resolution))
+					{
+						changed = true;
+					}
+				}
+				if (changed)
+				{
+					// Orthographic
+					uni.ortho.orthographic(
+						{ ml::vec2f::Zero, (ml::vec2f)resolution },
+						{ SETTINGS.orthoNear, SETTINGS.orthoFar }
+					);
+
+					// Perspective
+					uni.persp.perspective(
+						SETTINGS.fieldOfView, ((float)resolution[0] / (float)resolution[1]),
+						SETTINGS.perspNear, SETTINGS.perspFar
+					);
+				}
+			}
+
+			/* * * * * * * * * * * * * * * * * * * * */
+
 			if (ml::Effect * e = ML_Res.effects.get(ML_FBO_POST))
 			{
 				ML_SceneView.updateTexture(e->texture());
 			}
+
+			/* * * * * * * * * * * * * * * * * * * * */
 		});
 	}
 
@@ -1134,5 +1169,6 @@ namespace DEMO
 
 	/* * * * * * * * * * * * * * * * * * * * */
 }
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

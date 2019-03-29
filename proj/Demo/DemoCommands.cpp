@@ -370,7 +370,10 @@ namespace DEMO
 	ml::Var cmd_history(ml::Args & args)
 	{
 #ifdef ML_Terminal
-		ML_Terminal.printHistory();
+		for (auto h : ML_Terminal.history())
+		{
+			ML_Terminal.print(h);
+		}
 #endif
 		return ml::Var().boolValue(true);
 	}
