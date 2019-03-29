@@ -30,9 +30,9 @@ namespace ml
 
 	private:
 		void draw_shader_tab(const String & label, SourceBuf & source);
-		void draw_uniform_data(Uniform * u);
-		void draw_uniform_list(const String & value);
-		void draw_uniform_list_buttons(List<Uniform> & value);
+		void edit_uniform_data(Uniform * u);
+		void edit_uniform_list(const String & value);
+		void draw_uniform_buttons(List<Uniform> & value);
 		void draw_source_tab(CString label, SourceBuf & source);
 
 	private:
@@ -47,7 +47,7 @@ namespace ml
 
 		inline Uniform * get_uniform(const String & label, const size_t i)
 		{
-			return get_uniform(m_u[label], i);
+			return get_uniform(m_uni[label], i);
 		}
 
 		inline Uniform * get_selected(const String & label)
@@ -56,11 +56,10 @@ namespace ml
 		}
 
 	private:
-		size_t	m_selected;
-		char	m_inputBuf[64];
+		size_t m_selected;
 
-		HashMap<String, SourceBuf>		m_s; // Sources
-		HashMap<String, List<Uniform>>	m_u; // Uniforms
+		HashMap<String, SourceBuf>		m_src; // Sources
+		HashMap<String, List<Uniform>>	m_uni; // Uniforms
 
 	};
 }

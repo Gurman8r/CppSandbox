@@ -48,10 +48,16 @@ namespace DEMO
 
 		ml::HashMap<ml::String, ml::Text> m_text;
 
+		uint32_t m_skybox;
+
 		// Uniform Values
 		/* * * * * * * * * * * * * * * * * * * * */
 		struct DemoUniforms
 		{
+			// Time
+			float deltaTime;
+			float totalTime;
+
 			// Projections
 			ml::Transform	persp;
 			ml::Transform	ortho;
@@ -105,6 +111,7 @@ namespace DEMO
 			bool show_hierarchy		= true;
 			bool show_resources		= true;
 			bool show_profiler		= true;
+			bool show_shaderTool	= true;
 			bool show_network		= false;
 			bool show_demowindow	= true;
 			/* * * * * * * * * * * * * * * * * * * * */

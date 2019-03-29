@@ -20,8 +20,8 @@ void main()
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-#shader geometry
 #include <common/Geom.Curve.shader>
+#shader geometry
 
 #define SAMPLES_PER_SEGMENT 16
 #define SAMPLES_MAX 128

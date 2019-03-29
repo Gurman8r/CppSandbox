@@ -23,6 +23,8 @@
 	type: texture
 	name: borg
 	image: borg
+	smooth: 0
+	repeat: 1
 </item>
 
 <item>

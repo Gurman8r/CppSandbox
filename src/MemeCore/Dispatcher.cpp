@@ -55,7 +55,7 @@ namespace ml
 
 	void Dispatcher::addRequest(IRequest * value)
 	{
-		m_mutex_work.lock();
+		m_workersMutex.lock();
 
 		if (!m_workers.empty())
 		{
@@ -65,35 +65,37 @@ namespace ml
 			w->getCondition(cv);
 			cv->notify_one();
 			m_workers.pop();
-			m_mutex_work.unlock();
+			m_workersMutex.unlock();
 		}
 		else
 		{
-			m_mutex_work.unlock();
-			m_mutex_req.lock();
+			m_workersMutex.unlock();
+			m_requestMutex.lock();
 			m_requests.push(value);
-			m_mutex_req.unlock();
+			m_requestMutex.unlock();
 		}
 	}
 
 	bool Dispatcher::addWorker(Worker * value)
 	{
 		bool wait = true;
-		m_mutex_req.lock();
+		
+		m_requestMutex.lock();
+		
 		if (!m_requests.empty())
 		{
 			IRequest * r = m_requests.front();
 			value->setRequest(r);
 			m_requests.pop();
 			wait = false;
-			m_mutex_req.unlock();
+			m_requestMutex.unlock();
 		}
 		else
 		{
-			m_mutex_req.unlock();
-			m_mutex_work.lock();
+			m_requestMutex.unlock();
+			m_workersMutex.lock();
 			m_workers.push(value);
-			m_mutex_work.unlock();
+			m_workersMutex.unlock();
 		}
 		return wait;
 	}

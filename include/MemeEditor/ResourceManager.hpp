@@ -2,6 +2,7 @@
 #define _ML_RESOURCE_MANAGER_H_
 
 #include <MemeEditor/ResourceTable.hpp>
+#include <MemeEditor/ResourceItem.hpp>
 #include <MemeCore/List.hpp>
 #include <MemeCore/Plugin.hpp>
 #include <MemeAudio/Sound.hpp>
@@ -56,7 +57,7 @@ namespace ml
 
 	private:
 		bool parseFile(SStream & file);
-		bool parseItem(const HashMap<String, String> & data);
+		bool parseItem(const ResourceItem & data);
 
 	public:
 		EffectMap	effects;
@@ -74,7 +75,7 @@ namespace ml
 		TextureMap	textures;
 
 	private:
-		std::vector<HashMap<String, String>> m_manifest;
+		std::vector<ResourceItem> m_manifest;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

@@ -2411,7 +2411,7 @@ static void ShowDemoWindowColumns()
     // Basic columns
     if (ImGui::TreeNode("Basic"))
     {
-        ImGui::Text("Without border:");
+        ImGui::Text("Without m_border:");
         ImGui::Columns(3, "mycolumns3", false);  // 3-ways, no border
         ImGui::Separator();
         for (int n = 0; n < 14; n++)
@@ -2425,7 +2425,7 @@ static void ShowDemoWindowColumns()
         ImGui::Columns(1);
         ImGui::Separator();
 
-        ImGui::Text("With border:");
+        ImGui::Text("With m_border:");
         ImGui::Columns(4, "mycolumns"); // 4-ways, with border
         ImGui::Separator();
         ImGui::Text("ID"); ImGui::NextColumn();

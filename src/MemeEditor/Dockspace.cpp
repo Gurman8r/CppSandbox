@@ -7,12 +7,12 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Dockspace::Dockspace()
-		: GUI_Window	("Dockspace")
-		, border	(0.0f)
-		, padding	(vec2f::Zero)
-		, rounding	(0.0f)
-		, size		(vec2f::Zero)
-		, bgAlpha	(1.0f)
+		: GUI_Window("Dockspace")
+		, m_border	(0.0f)
+		, m_padding	(vec2f::Zero)
+		, m_rounding(0.0f)
+		, m_size	(vec2f::Zero)
+		, m_bgAlpha	(1.0f)
 	{
 	}
 
@@ -51,10 +51,10 @@ namespace ml
 			ImGui::SetNextWindowViewport(viewport->ID);
 
 			// Style
-			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, rounding);
-			ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, border);
-			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { padding[0], padding[1] });
-			ImGui::SetNextWindowBgAlpha(bgAlpha);
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, m_rounding);
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, m_border);
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { m_padding[0], m_padding[1] });
+			ImGui::SetNextWindowBgAlpha(m_bgAlpha);
 
 			// Begi
 			if (GUI_Window::beginDraw(p_open, flags))
@@ -71,7 +71,7 @@ namespace ml
 		{
 			ImGui::DockSpace(
 				getID(),
-				{ size[0], size[1] }, 
+				{ m_size[0], m_size[1] }, 
 				ImGuiDockNodeFlags_PassthruDockspace
 			);
 		}

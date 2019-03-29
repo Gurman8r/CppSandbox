@@ -9,12 +9,23 @@ namespace ml
 		: public IRequest
 	{
 	public:
+		using LogFunc = void(*)(const ml::String &);
+
+	public:
 		TestRequest();
 		~TestRequest();
 
 	public:
+		void setValue(int32_t value);
+		void setFunc(LogFunc value);
+
+	public:
 		void process() override;
 		void finish() override;
+
+	private:
+		int32_t m_value;
+		LogFunc m_func;
 	};
 }
 

@@ -28,6 +28,7 @@ namespace ml
 		bool insert(const Uniform & value);
 		Uniform * find(const String & name);
 		const Uniform * find(const String & name) const;
+		size_t size() const;
 
 	public:
 		inline const Uniform & operator[](const String & name) const { return m_map.at(name); }

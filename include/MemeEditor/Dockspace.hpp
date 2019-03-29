@@ -34,12 +34,12 @@ namespace ml
 		uint32_t splitNode(uint32_t id, int32_t dir, float ratio, uint32_t * other);
 		uint32_t splitNode(uint32_t id, int32_t dir, float ratio, uint32_t * out, uint32_t * other);
 
-	public:
-		float	border;
-		vec2f	padding;
-		float	rounding;
-		vec2f	size;
-		float	bgAlpha;
+	private:
+		float	m_border;
+		vec2f	m_padding;
+		float	m_rounding;
+		vec2f	m_size;
+		float	m_bgAlpha;
 	};
 }
 

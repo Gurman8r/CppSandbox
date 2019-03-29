@@ -22,17 +22,32 @@ namespace ml
 		: GUI_Window("Builder")
 		, m_selected(0)
 	{
-		copy_range(m_s["Vertex"], 0, 
+		strcpy(m_src["Vertex"],
+			"#include <common/Vert.MVP.shader>\n"
 			"#shader vertex\n"
-			"#version 410 core\n"
+			"\n"
+			"void main()\n"
+			"{\n"
+			"\tgl_Position = ml_MVP_Position();\n"
+			"}\n"
 		);
-		copy_range(m_s["Geometry"], 0, 
+		strcpy(m_src["Geometry"],
+			"#include <common/Geom.Curve.shader>\n"
 			"#shader geometry\n"
-			"#version 410 core\n"
+			"\n"
+			"void main()\n"
+			"{\n"
+			"\n"
+			"}\n"
 		);
-		copy_range(m_s["Fragement"], 0, 
+		strcpy(m_src["Fragement"],
+			"#include <common/Frag.draw.shader>\n"
 			"#shader fragment\n"
-			"#version 410 core\n"
+			"\n"
+			"void main()\n"
+			"{\n"
+			"\tgl_Color = Frag.mainCol * texture(Frag.mainTex, In.Texcoord);\n"
+			"}\n"
 		);
 	}
 
@@ -59,9 +74,9 @@ namespace ml
 					// Tabs
 					if (ImGui::BeginTabBar("##Tabs"))
 					{
-						draw_shader_tab("Vertex", m_s["Vertex"]);
-						draw_shader_tab("Geometry", m_s["Geometry"]);
-						draw_shader_tab("Fragement", m_s["Fragement"]);
+						draw_shader_tab("Vertex", m_src["Vertex"]);
+						draw_shader_tab("Geometry", m_src["Geometry"]);
+						draw_shader_tab("Fragement", m_src["Fragement"]);
 
 						ImGui::EndTabBar();
 					}
@@ -85,17 +100,17 @@ namespace ml
 			{
 				if (ImGui::BeginTabItem(("Uniforms##" + label).c_str()))
 				{
-					draw_uniform_list(label);
+					edit_uniform_list(label);
 
 					ImGui::SameLine();
 
 					if (ImGui::BeginChild(
-						("ResourceLoader##" + label + "##Tabs").c_str(),
+						("Builder##" + label + "##Tabs").c_str(),
 						(ImVec2(-1.0f, -1.0f)),
 						(true),
 						(ImGuiWindowFlags_AlwaysHorizontalScrollbar)))
 					{
-						draw_uniform_data(get_selected(label));
+						edit_uniform_data(get_selected(label));
 
 						ImGui::EndChild();
 					}
@@ -111,63 +126,50 @@ namespace ml
 		}
 	}
 
-	void Builder::draw_uniform_data(Uniform * value)
+	void Builder::edit_uniform_data(Uniform * value)
 	{
-		if (!value)
+		if (!value) 
 		{
-			ImGui::Text("Nothing Selected");
-			return;
+			return ImGui::Text("Nothing Selected"); 
 		}
-
-		static CString u_types[] = {
-			"None",
-			"Int",
-			"Float",
-			"Vec2",
-			"Vec3",
-			"Vec4",
-			"Mat3",
-			"Mat4",
-			"Tex2D",
-		};
 
 		ImGui::PushID(value->name.c_str());
 		{
 			// Name
 			/* * * * * * * * * * * * * * * * * * * * */
-			static const ImGuiInputTextFlags flags = 
-				ImGuiInputTextFlags_EnterReturnsTrue |
-				ImGuiInputTextFlags_CallbackCompletion |
-				ImGuiInputTextFlags_CallbackHistory;
-			auto textEditCallback = [](ImGuiInputTextCallbackData * data)
-			{
-				if (Builder * b = static_cast<Builder *>(data->UserData))
-				{
-					return 1;
-				}
-				return 0;
-			};
-			bool reclaim_focus = false;
+			char name[64];
+			strcpy(name, value->name.data());
 			if (ImGui::InputText(
-				"Name",
-				m_inputBuf,
-				IM_ARRAYSIZE(m_inputBuf),
-				flags,
-				textEditCallback,
-				(void *)(this)
-				))
+				("Name"),
+				(name),
+				(Document::NameSize),
+				(ImGuiInputTextFlags_EnterReturnsTrue),
+				(NULL),
+				(NULL)))
 			{
-				reclaim_focus = true;
-			}
-			ImGui::SetItemDefaultFocus();
-			if (reclaim_focus)
-			{
-				ImGui::SetKeyboardFocusHere(-1); // Auto focus previous widget
+				value->name = String(name);
 			}
 
 			// Type
 			/* * * * * * * * * * * * * * * * * * * * */
-			ImGui::Combo("Type", &value->type, u_types, IM_ARRAYSIZE(u_types));
+			static CString uni_types[] = {
+				"None",
+				"Int",
+				"Float",
+				"Vec2",
+				"Vec3",
+				"Vec4",
+				"Mat3",
+				"Mat4",
+				"Tex2D",
+			};
+			if (ImGui::Combo(
+				("Type"),
+				(&value->type),
+				(uni_types),
+				(IM_ARRAYSIZE(uni_types))))
+			{
+			}
 
 			// Data
 			/* * * * * * * * * * * * * * * * * * * * */
@@ -175,89 +177,101 @@ namespace ml
 			{
 			case Uniform::Int:
 			{
-				static int32_t temp;
+				static int32_t temp = 0;
+				temp = value->get_value<int32_t>(0);
 				ImGui::DragInt("Value", &temp);
 			}
 			break;
 			case Uniform::Float:
 			{
-				static float temp;
+				static float temp = 0.f;
+				temp = value->get_value<float>(0.f);
 				ImGui::DragFloat("Value", &temp, 0.1f);
 			}
 			break;
 			case Uniform::Vec2:
 			{
-				static vec2f temp;
+				static vec2f temp = 0.f;
+				temp = value->get_value<vec2f>(0.f);
 				GUI::EditVec2f("Value", temp);
 			}
 			break;
 			case Uniform::Vec3:
 			{
-				static vec3f temp;
+				static vec3f temp = 0.f;
+				temp = value->get_value<vec3f>(0.f);
 				GUI::EditVec3f("Value", temp);
 			}
 			break;
 			case Uniform::Vec4:
 			{
-				static vec4f temp;
+				static vec4f temp = 0.f;
+				temp = value->get_value<vec4f>(0.f);
 				GUI::EditVec4f("Value", temp);
 			}
 			break;
 			case Uniform::Mat3:
 			{
-				static mat3f temp;
+				static mat3f temp = 0.f;
+				temp = value->get_value<mat3f>(0.f);
 				GUI::EditMat3f("Value", temp);
 			}
 			break;
 			case Uniform::Mat4:
 			{
-				static mat4f temp;
+				static mat4f temp = 0.f;
+				temp = value->get_value<mat4f>(0.f);
 				GUI::EditMat4f("Value", temp);
 			}
 			break;
 			case Uniform::Tex2D:
 			{
-				auto vector_getter = [](void* vec, int idx, const char** out_text)
+				auto vector_getter = [](void * vec, int idx, CString * out)
 				{
-					auto& vector = *static_cast<List<String>*>(vec);
-					if (idx < 0 || idx >= static_cast<int32_t>(vector.size())) 
-					{ 
-						return false; 
+					auto & vector = (*static_cast<List<String>*>(vec));
+					if (idx >= 0 && idx < static_cast<int32_t>(vector.size()))
+					{
+						(*out) = vector.at(idx).c_str();
+						return true;
 					}
-					*out_text = vector.at(idx).c_str();
-					return true;
+					return false;
 				};
 
-				const ResourceManager::TextureMap & textures = ML_Res.textures;
 				List<String> names;
-				for (auto pair : textures)
+				for (auto pair : ML_Res.textures)
 				{
 					names.push_back(pair.first);
 				}
 
 				static int32_t index = 0;
 
-				ImGui::Combo(
-					"Texture", 
+				if (ImGui::Combo(
+					"Texture",
 					&index,
-					vector_getter, 
-					static_cast<void *>(&names), 
-					(int32_t)names.size());
+					vector_getter,
+					static_cast<void *>(&names),
+					(int32_t)names.size()))
+				{
+
+				}
 			}
 			break;
 			}
+
+			/* * * * * * * * * * * * * * * * * * * * */
 		}
 		ImGui::PopID();
+
+		/* * * * * * * * * * * * * * * * * * * * */
 	}
 
-	void Builder::draw_uniform_list(const String & value)
+	void Builder::edit_uniform_list(const String & value)
 	{
-		ImVec4 color = ImGui::GetStyleColorVec4(ImGuiCol_Text);
-
-		ImGui::BeginChild("List View", { 224, 0 }, true);
+		ImGui::BeginChild("Uniform List", { 224, 0 }, true);
 		{
-			ImGui::PushStyleColor(ImGuiCol_Text, color);
-			for (size_t i = 0, imax = m_u[value].size(); i < imax; i++)
+			// Uniform List
+			/* * * * * * * * * * * * * * * * * * * * */
+			for (size_t i = 0, imax = m_uni[value].size(); i < imax; i++)
 			{
 				if (Uniform * u = get_uniform(value, i))
 				{
@@ -270,16 +284,18 @@ namespace ml
 					}
 				}
 			}
-			ImGui::PopStyleColor();
 			ImGui::Separator();
 
-			// Buttons
-			draw_uniform_list_buttons(m_u[value]);
+			// Uniform List Buttons
+			/* * * * * * * * * * * * * * * * * * * * */
+			draw_uniform_buttons(m_uni[value]);
+
+			/* * * * * * * * * * * * * * * * * * * * */
 		}
 		ImGui::EndChild();
 	}
 
-	void Builder::draw_uniform_list_buttons(List<Uniform> & value)
+	void Builder::draw_uniform_buttons(List<Uniform> & value)
 	{
 		ImGui::BeginGroup();
 		{
@@ -303,7 +319,7 @@ namespace ml
 			ImGui::SameLine();
 			if (ImGui::Button("New"))
 			{
-				value.push_back(Uniform("new_uniform"));
+				value.push_back(Uniform("New.Uniform"));
 				m_selected = value.size() - 1;
 			}
 			ImGui::SameLine();
@@ -311,7 +327,7 @@ namespace ml
 			{
 				if (value.size() > 0)
 				{
-					value.insert(value.begin() + m_selected, Uniform("new_uniform"));
+					value.insert(value.begin() + m_selected, Uniform("New.Uniform"));
 				}
 			}
 			ImGui::SameLine();
@@ -338,29 +354,31 @@ namespace ml
 
 	void Builder::draw_source_tab(CString label, SourceBuf & source)
 	{
-			// Vertex
-			if (ImGui::BeginTabItem(label))
+		if (ImGui::BeginTabItem(label))
+		{
+			ImGui::BeginChild(
+				("Content"),
+				(ImVec2(-1.0f, -1.0f)),
+				(true),
+				(ImGuiWindowFlags_AlwaysHorizontalScrollbar));
 			{
-				ImGui::BeginChild(
-					("Content"),
-					(ImVec2(-1.0f, -1.0f)),
-					(true),
-					(ImGuiWindowFlags_AlwaysHorizontalScrollbar));
+				if (ImGui::InputTextMultiline(
+					("Source"),
+					(source),
+					(IM_ARRAYSIZE(source)),
+					(ImVec2(-1.0f, ImGui::GetTextLineHeight() * 16)),
+					(ImGuiInputTextFlags_AllowTabInput),
+					(NULL),
+					(NULL)))
 				{
-					ImGui::InputTextMultiline(
-						"Source", 
-						source, 
-						IM_ARRAYSIZE(source),
-						ImVec2(-1.0f, ImGui::GetTextLineHeight() * 16),
-						ImGuiInputTextFlags_AllowTabInput,
-						NULL, 
-						NULL);
 
-					if (ImGui::Button("Compile")) {}
 				}
-				ImGui::EndChild();
-				ImGui::EndTabItem();
+
+				if (ImGui::Button("Compile")) {}
 			}
+			ImGui::EndChild();
+			ImGui::EndTabItem();
+		}
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

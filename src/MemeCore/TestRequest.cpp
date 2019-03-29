@@ -15,14 +15,24 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
+	void TestRequest::setValue(int32_t value)
+	{
+		m_value = value;
+	}
+
+	void TestRequest::setFunc(LogFunc value)
+	{
+		m_func = value;
+	}
+
 	void TestRequest::process()
 	{
-		Debug::log("Processing");
+		m_func(String("Processing Request: {0}").format(m_value));
 	}
 
 	void TestRequest::finish()
 	{
-		Debug::log("Finishing");
+		m_func(String("Finishing Request: {0}").format(m_value));
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

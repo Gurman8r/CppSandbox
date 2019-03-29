@@ -46,7 +46,7 @@ namespace ml
 				if (ImGui::MenuItem("New", NULL, false, true))
 				{
 					m_files.push_back(Document(
-						String("New_File ({0})").format(m_files.size()).c_str()
+						String("New File ({0})").format(m_files.size()).c_str()
 					));
 				}
 
@@ -113,7 +113,7 @@ namespace ml
 
 				// Info
 				/* * * * * * * * * * * * * * * * * * * * */
-				ImGui::Text("%u/%u", doc->sizeUsed(), doc->sizeMax());
+				ImGui::Text("%u/%u", doc->sizeUsed(), doc->DataSize);
 				ImGui::Text("Data:\n\"%s\"", String(doc->data).c_str());
 
 				ImGui::EndTabItem();
@@ -125,7 +125,6 @@ namespace ml
 			{
 				return false; // Indicates file removed
 			}
-
 		}
 		return true;
 	}

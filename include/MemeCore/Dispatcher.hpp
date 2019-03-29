@@ -28,8 +28,8 @@ namespace ml
 	private:
 		std::queue<IRequest *>		m_requests;
 		std::queue<Worker *>		m_workers;
-		std::mutex					m_mutex_req;
-		std::mutex					m_mutex_work;
+		std::mutex					m_requestMutex;
+		std::mutex					m_workersMutex;
 		std::vector<Worker *>		m_allWorkers;
 		std::vector<std::thread *>	m_threads;
 	};

@@ -67,9 +67,9 @@ namespace ml
 
 	void ResourceManager::serialize(std::ostream & out) const
 	{
-		for (auto data : m_manifest)
+		for (auto item : m_manifest)
 		{
-			for (auto pair : data)
+			for (auto pair : item)
 			{
 				out << "[" << pair.first << "] \'" << pair.second << "\'"
 					<< endl;
@@ -91,14 +91,12 @@ namespace ml
 		String line;
 		while (std::getline(file, line))
 		{
-			line.trim();
-
-			if (line.front() == '#')
+			if (line.trim().front() == '#')
 				continue;
 
 			if (line.find("<item>") != String::npos)
 			{
-				m_manifest.push_back(HashMap<String, String>());
+				m_manifest.push_back(ResourceItem());
 
 				while (std::getline(file, line))
 				{
@@ -119,7 +117,8 @@ namespace ml
 						{
 							if (const String key = String(line.substr(0, i)).trim())
 							{
-								if (const String val = String(line.substr((i + 1), (line.size() - i - 2))).trim())
+								if (const String val = String(
+									line.substr((i + 1), (line.size() - i - 2))).trim())
 								{
 									m_manifest.back()[key] = val;
 								}
@@ -132,11 +131,11 @@ namespace ml
 		return (bool)(count);
 	}
 
-	bool ResourceManager::parseItem(const HashMap<String, String> & item)
+	bool ResourceManager::parseItem(const ResourceItem & item)
 	{
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		auto getVal = [](const HashMap<String, String> & data, const String & find)
+		auto getStr = [](const HashMap<String, String> & data, const String & find)
 		{
 			HashMap<String, String>::const_iterator it;
 			return (((it = data.find(find)) != data.end()) ? it->second : String());
@@ -144,26 +143,30 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		const String type = getVal(item, "type");
-		const String name = getVal(item, "name");
+		const String type = item.getStr("type");
+		const String name = item.getStr("name");
 		if (type && name)
 		{
 			// Manifests
+			/* * * * * * * * * * * * * * * * * * * * */
 			if (type == "manifest")
 			{
 				return loadFromFile(name);
 			}
 			// Effects
+			/* * * * * * * * * * * * * * * * * * * * */
 			else if (type == "effect")
 			{
-				const String m = getVal(item, "model");
-				const String s = getVal(item, "shader");
+				const String m = item.getStr("model");
+				const String s = item.getStr("shader");
+				const int32_t w = item.getInt("width", 1920);
+				const int32_t h = item.getInt("height", 1080);
 				if (m && s)
 				{
 					Effect * e;
 					return
 						(e = effects.load(name)) &&
-						(e->create({ 1920, 1080 }, GL::ColorAttachment0)) &&
+						(e->create({ w, h }, GL::ColorAttachment0)) &&
 						(e->setModel(models.get(m))) &&
 						(e->setShader(shaders.get(s)));
 				}
@@ -173,9 +176,10 @@ namespace ml
 				}
 			}
 			// Fonts
+			/* * * * * * * * * * * * * * * * * * * * */
 			else if (type == "font")
 			{
-				if (const String file = getVal(item, "file"))
+				if (const String file = item.getStr("file"))
 				{
 					return fonts.load(name, file);
 				}
@@ -185,9 +189,10 @@ namespace ml
 				}
 			}
 			// Images
+			/* * * * * * * * * * * * * * * * * * * * */
 			else if (type == "image")
 			{
-				if (const String file = getVal(item, "file"))
+				if (const String file = item.getStr("file"))
 				{
 					return images.load(name, file);
 				}
@@ -197,9 +202,10 @@ namespace ml
 				}
 			}
 			// Materials
+			/* * * * * * * * * * * * * * * * * * * * */
 			else if (type == "material")
 			{
-				if (const String file = getVal(item, "file"))
+				if (const String file = item.getStr("file"))
 				{
 					return mats.load(name, file);
 				}
@@ -209,9 +215,10 @@ namespace ml
 				}
 			}
 			// Meshes
+			/* * * * * * * * * * * * * * * * * * * * */
 			else if (type == "mesh")
 			{
-				if (const String file = getVal(item, "file"))
+				if (const String file = item.getStr("file"))
 				{
 					return meshes.load(name, file);
 				}
@@ -221,13 +228,14 @@ namespace ml
 				}
 			}
 			// Models
+			/* * * * * * * * * * * * * * * * * * * * */
 			else if (type == "model")
 			{
-				if (const String file = getVal(item, "file"))
+				if (const String file = item.getStr("file"))
 				{
 					return models.load(name, file);
 				}
-				else if (const String file = getVal(item, "mesh"))
+				else if (const String file = item.getStr("mesh"))
 				{
 					const Mesh * temp;
 					return
@@ -241,9 +249,10 @@ namespace ml
 				}
 			}
 			// Plugins
+			/* * * * * * * * * * * * * * * * * * * * */
 			else if (type == "plugin")
 			{
-				if (const String file = getVal(item, "file"))
+				if (const String file = item.getStr("file"))
 				{
 					return plugins.load(name, file);
 				}
@@ -253,9 +262,10 @@ namespace ml
 				}
 			}
 			// Scripts
+			/* * * * * * * * * * * * * * * * * * * * */
 			else if (type == "script")
 			{
-				if (const String file = getVal(item, "file"))
+				if (const String file = item.getStr("file"))
 				{
 					return scripts.load(name, file);
 				}
@@ -265,17 +275,18 @@ namespace ml
 				}
 			}
 			// Shaders
+			/* * * * * * * * * * * * * * * * * * * * */
 			else if (type == "shader")
 			{
-				if (const String file = getVal(item, "file"))
+				if (const String file = item.getStr("file"))
 				{
 					return shaders.load(name, file);
 				}
 				else
 				{
-					const String vert = getVal(item, "vert");
-					const String geom = getVal(item, "geom");
-					const String frag = getVal(item, "frag");
+					const String vert = item.getStr("vert");
+					const String geom = item.getStr("geom");
+					const String frag = item.getStr("frag");
 					if (vert || geom || frag)
 					{
 						return
@@ -289,9 +300,10 @@ namespace ml
 				}
 			}
 			// Skyboxes
+			/* * * * * * * * * * * * * * * * * * * * */
 			else if (type == "skybox")
 			{
-				if (const String file = getVal(item, "file"))
+				if (const String file = item.getStr("file"))
 				{
 					return skyboxes.load(name, file);
 				}
@@ -301,9 +313,10 @@ namespace ml
 				}
 			}
 			// Sounds
+			/* * * * * * * * * * * * * * * * * * * * */
 			else if (type == "sound")
 			{
-				if (const String file = getVal(item, "file"))
+				if (const String file = item.getStr("file"))
 				{
 					return sounds.load(name, file);
 				}
@@ -313,9 +326,10 @@ namespace ml
 				}
 			}
 			// Sprites
+			/* * * * * * * * * * * * * * * * * * * * */
 			else if (type == "sprite")
 			{
-				if (const String file = getVal(item, "texture"))
+				if (const String file = item.getStr("texture"))
 				{
 					const Texture * temp;
 					return
@@ -329,13 +343,14 @@ namespace ml
 				}
 			}
 			// Textures
+			/* * * * * * * * * * * * * * * * * * * * */
 			else if (type == "texture")
 			{
-				if (const String file = getVal(item, "file"))
+				if (const String file = item.getStr("file"))
 				{
 					return textures.load(name, file);
 				}
-				else if (const String file = getVal(item, "image"))
+				else if (const String file = item.getStr("image"))
 				{
 					const Image * temp;
 					return

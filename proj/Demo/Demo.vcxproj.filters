@@ -152,6 +152,9 @@
       <Filter>Resource Files\shaders\common</Filter>
     </None>
     <None Include="..\..\ML_Config.ini" />
+    <None Include="..\..\assets\shaders\common\Time.shader">
+      <Filter>Resource Files\shaders\common</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="..\..\assets\fonts\clacon.ttf">
@@ -264,6 +267,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DemoSettings.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Testing.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

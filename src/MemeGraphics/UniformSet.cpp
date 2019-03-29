@@ -80,4 +80,9 @@ namespace ml
 		}
 		return NULL;
 	}
+
+	size_t UniformSet::size() const
+	{
+		return m_map.size();
+	}
 }

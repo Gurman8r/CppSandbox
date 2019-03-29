@@ -177,6 +177,7 @@
     <None Include="..\..\assets\shaders\common\Frag.shader" />
     <None Include="..\..\assets\shaders\common\Frag.Draw.shader" />
     <None Include="..\..\assets\shaders\common\Frag.Light.shader" />
+    <None Include="..\..\assets\shaders\common\Time.shader" />
     <None Include="..\..\assets\shaders\common\Vert.MVP.shader" />
     <None Include="..\..\assets\shaders\common\Vert.shader" />
     <None Include="..\..\assets\shaders\framebuffer.shader" />
@@ -238,6 +239,7 @@
     <ClInclude Include="DemoEvents.hpp" />
     <ClInclude Include="Demo.hpp" />
     <ClInclude Include="DemoSettings.hpp" />
+    <ClInclude Include="Testing.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\assets\data\effects.txt" />

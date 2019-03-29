@@ -133,9 +133,20 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		inline bool load(const FileMap & files)
+		inline bool load(const String & name, pointer value)
 		{
-			return load(files, String());
+			if (!value)
+			{
+				return load(name);
+			}
+			else if (value && (name && !get(name)))
+			{
+				return set(name, value);
+			}
+			else
+			{
+				return NULL;
+			}
 		}
 
 		inline pointer load(const String & name, const String & file)
@@ -146,17 +157,16 @@ namespace ml
 				{
 					if (const String path = ML_FileSystem.pathTo(file))
 					{
-						if (pointer temp = new value_type())
+						pointer temp = new value_type();
+
+						if (temp->loadFromFile(path))
 						{
-							if (temp->loadFromFile(path))
-							{
-								return set(name, temp);
-							}
-							else
-							{
-								delete temp;
-								Debug::logError("Failed loading {0}: \'{1}\'", name, path);
-							}
+							return set(name, temp);
+						}
+						else
+						{
+							delete temp;
+							Debug::logError("Failed loading {0}: \'{1}\'", name, path);
 						}
 					}
 				}

@@ -27,6 +27,7 @@
 #include <MemeEditor/ResourceHUD.hpp>
 #include <MemeEditor/NetworkHUD.hpp>
 #include <MemeEditor/Profiler.hpp>
+#include <MemeEditor/ShaderTool.hpp>
 #include <MemeNet/Client.hpp>
 #include <MemeNet/Server.hpp>
 #include <MemeScript/Interpreter.hpp>
@@ -178,6 +179,8 @@ namespace DEMO
 
 	void Demo::onEnter(const EnterEvent & ev)
 	{
+		ml::Debug::log("Entering...");
+
 		// Start Master Timer
 		ML_Time.start();
 
@@ -246,6 +249,7 @@ namespace DEMO
 			if (SETTINGS.isServer)
 			{
 				// Server Setup
+				ml::Debug::log("Starting Server...");
 				if (ML_Server.setup())
 				{
 					if (ML_Server.start({ ML_LOCALHOST, ML_PORT }, ML_MAX_CLIENTS))
@@ -257,6 +261,7 @@ namespace DEMO
 			else if (SETTINGS.isClient)
 			{
 				// Client Setup
+				ml::Debug::log("Starting Client...");
 				if (ML_Client.setup())
 				{
 					if (ML_Client.connect({ ML_LOCALHOST, ML_PORT }))
@@ -378,6 +383,11 @@ namespace DEMO
 				m->transform()
 				.translate({ 0.0f, -2.5f, 0.0f })
 				.scale({ 12.5, 0.25f, 12.5 });
+
+			if (ml::Model * m = ML_Res.models.get("default_skybox"))
+				m->transform()
+				.translate({ 0.0f, 0.0f, 0.0f })
+				.scale(10.f);
 		}
 
 		// Sprites
@@ -597,12 +607,23 @@ namespace DEMO
 				ML_Client.poll();
 			}
 		}
+
+		// Update Uniforms
+		{
+			uni.deltaTime = ev.elapsed.delta();
+			uni.totalTime = (float)ML_Time.elapsed().millis();
+		}
 	}
 
 	void Demo::onDraw(const DrawEvent & ev)
 	{
 		// Uniforms
 		/* * * * * * * * * * * * * * * * * * * * */
+		static ml::UniformSet time_uniforms = {
+			ml::Uniform("Time.deltaTime", ml::Uniform::Float, &uni.deltaTime),
+			ml::Uniform("Time.totalTime", ml::Uniform::Float, &uni.totalTime),
+		};
+
 		static ml::UniformSet camera_uniforms = {
 			ml::Uniform("Vert.view",	ml::Uniform::Mat4,	&uni.camera.matrix()),
 			ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&uni.persp.matrix()),
@@ -897,8 +918,9 @@ namespace DEMO
 		if (gui.show_resources)		{ ML_ResourceHUD.draw(&gui.show_resources); }
 		if (gui.show_browser)		{ ML_Browser.draw(&gui.show_browser); }
 		if (gui.show_terminal)		{ ML_Terminal.draw(&gui.show_terminal); }
-		if (gui.show_builder)		{ ML_Builder.draw(&gui.show_builder); }
 		if (gui.show_texteditor)	{ ML_TextEditor.draw(&gui.show_texteditor); }
+		if (gui.show_shaderTool)	{ ML_ShaderTool.draw(&gui.show_shaderTool); }
+		if (gui.show_builder)		{ ML_Builder.draw(&gui.show_builder); }
 		if (gui.show_inspector)		{ ML_Inspector.draw(&gui.show_inspector); }
 		if (gui.show_scene)			{ ML_SceneView_draw(&gui.show_scene); }
 		if (gui.show_demowindow)	{ ML_DemoWindow_draw(&gui.show_demowindow); }
@@ -906,11 +928,15 @@ namespace DEMO
 
 	void Demo::onUnload(const UnloadEvent & ev)
 	{
+		ml::Debug::log("Unloading...");
+
 		ML_Res.cleanupAll();
 	}
 
 	void Demo::onExit(const ExitEvent & ev)
 	{
+		ml::Debug::log("Exiting...");
+
 		ImGui_ML_Shutdown();
 	}
 
@@ -961,6 +987,7 @@ namespace DEMO
 				ImGui::MenuItem(ML_Hierarchy.title(), NULL, &gui.show_hierarchy);
 				ImGui::MenuItem(ML_ResourceHUD.title(), NULL, &gui.show_resources);
 				ImGui::MenuItem(ML_NetworkHUD.title(), NULL, &gui.show_network);
+				ImGui::MenuItem(ML_ShaderTool.title(), NULL, &gui.show_shaderTool);
 				ImGui::MenuItem("Demo Window",	NULL, &gui.show_demowindow);
 				ImGui::EndMenu();
 			}
@@ -1011,6 +1038,7 @@ namespace DEMO
 				ML_Dockspace.dockWindow(ML_SceneView.title(),	center_U);
 				ML_Dockspace.dockWindow(ML_Builder.title(),		center_D);
 				ML_Dockspace.dockWindow(ML_TextEditor.title(),	center_D);
+				ML_Dockspace.dockWindow(ML_ShaderTool.title(),	center_D);
 				ML_Dockspace.dockWindow(ML_Inspector.title(),	right_D);
 				ML_Dockspace.dockWindow("Demo Window",			right_U);
 
@@ -1022,7 +1050,7 @@ namespace DEMO
 
 	bool Demo::ML_SceneView_draw(bool * p_open)
 	{
-		return ML_SceneView.drawFun(p_open, [&]() 
+		return ML_SceneView.drawFun(p_open, [&]()
 		{
 			if (ml::Effect * e = ML_Res.effects.get(ML_FBO_POST))
 			{
