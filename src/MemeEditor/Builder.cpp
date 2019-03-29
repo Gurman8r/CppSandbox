@@ -2,17 +2,7 @@
 #include <MemeEditor/ResourceManager.hpp>
 #include <MemeEditor/GUI.hpp>
 #include <MemeEditor/ImGui.hpp>
-
-namespace ml
-{
-	inline static void copy_range(Builder::SourceBuf & buf, size_t index, const String & str)
-	{
-		for (size_t i = 0; i < str.size(); i++)
-		{
-			buf[index + i] = str[i];
-		}
-	}
-}
+#include <MemeEditor/Terminal.hpp>
 
 namespace ml
 {
@@ -37,7 +27,7 @@ namespace ml
 			"\n"
 			"void main()\n"
 			"{\n"
-			"\n"
+			"\t//...\n"
 			"}\n"
 		);
 		strcpy(m_src["Fragement"],
@@ -63,20 +53,33 @@ namespace ml
 
 	bool Builder::draw(bool * p_open)
 	{
-		ImGui::SetNextWindowSize(ImVec2(640, 480), ImGuiCond_FirstUseEver);
-		if (beginDraw(p_open))
+		if (beginDraw(p_open, ImGuiWindowFlags_AlwaysAutoResize))
 		{
 			ImGui::BeginGroup();
 			{
-				// Information
 				ImGui::BeginChild("Tabs");
 				{
-					// Tabs
-					if (ImGui::BeginTabBar("##Tabs"))
+					if (ImGui::BeginTabBar("Tab Bar"))
 					{
+						/* * * * * * * * * * * * * * * * * * * * */
+
 						draw_shader_tab("Vertex", m_src["Vertex"]);
 						draw_shader_tab("Geometry", m_src["Geometry"]);
 						draw_shader_tab("Fragement", m_src["Fragement"]);
+
+						/* * * * * * * * * * * * * * * * * * * * */
+
+						if (ImGui::BeginTabItem("Tools"))
+						{
+							if (ImGui::Button("Compile"))
+							{
+								ML_Terminal.printf("[ LOG ] Compile Pressed");
+							}
+
+							ImGui::EndTabItem();
+						}
+
+						/* * * * * * * * * * * * * * * * * * * * */
 
 						ImGui::EndTabBar();
 					}
@@ -96,45 +99,67 @@ namespace ml
 		{
 			ImGui::Text(label.c_str());
 
-			if (ImGui::BeginTabBar((label + "##Tabs").c_str()))
-			{
-				if (ImGui::BeginTabItem(("Uniforms##" + label).c_str()))
-				{
-					edit_uniform_list(label);
+			draw_uniform_list(label);
 
-					ImGui::SameLine();
+			ImGui::SameLine();
 
-					if (ImGui::BeginChild(
-						("Builder##" + label + "##Tabs").c_str(),
-						(ImVec2(-1.0f, -1.0f)),
-						(true),
-						(ImGuiWindowFlags_AlwaysHorizontalScrollbar)))
-					{
-						edit_uniform_data(get_selected(label));
+			draw_uniform_data(get_selected(label));
 
-						ImGui::EndChild();
-					}
+			ImGui::SameLine();
 
-					ImGui::EndTabItem();
-				}
+			draw_shader_source(("Source##" + label).c_str(), source);
 
-				draw_source_tab(("Source##" + label).c_str(), source);
-
-				ImGui::EndTabBar();
-			}
 			ImGui::EndTabItem();
 		}
 	}
 
-	void Builder::edit_uniform_data(Uniform * value)
+	void Builder::draw_uniform_list(const String & value)
 	{
-		if (!value) 
+		if (ImGui::BeginChild("Uniform List", { 224, 0 }, true))
 		{
-			return ImGui::Text("Nothing Selected"); 
-		}
+			// Uniform List
+			/* * * * * * * * * * * * * * * * * * * * */
+			for (size_t i = 0, imax = m_uni[value].size(); i < imax; i++)
+			{
+				if (Uniform * u = get_uniform(value, i))
+				{
+					if (ImGui::Selectable(
+						(u->name.c_str()),
+						(m_selected == i),
+						(ImGuiSelectableFlags_AllowDoubleClick)))
+					{
+						m_selected = i;
+					}
+				}
+			}
+			ImGui::Separator();
 
-		ImGui::PushID(value->name.c_str());
+			// Uniform List Buttons
+			/* * * * * * * * * * * * * * * * * * * * */
+			draw_uniform_buttons(m_uni[value]);
+
+			/* * * * * * * * * * * * * * * * * * * * */
+			
+			ImGui::EndChild();
+		}
+	}
+
+	void Builder::draw_uniform_data(Uniform * value)
+	{
+		if (ImGui::BeginChild(
+			("Uniform Data"),
+			{ 300, 0 },
+			(true),
+			(ImGuiWindowFlags_None)))
 		{
+			if (!value)
+			{
+				ImGui::Text("Nothing Selected");
+				return ImGui::EndChild();
+			}
+
+			ImGui::PushID(value->name.c_str());
+
 			// Name
 			/* * * * * * * * * * * * * * * * * * * * */
 			char name[64];
@@ -259,40 +284,13 @@ namespace ml
 			}
 
 			/* * * * * * * * * * * * * * * * * * * * */
+		
+			ImGui::PopID(); 
+			
+			ImGui::EndChild();
 		}
-		ImGui::PopID();
 
 		/* * * * * * * * * * * * * * * * * * * * */
-	}
-
-	void Builder::edit_uniform_list(const String & value)
-	{
-		ImGui::BeginChild("Uniform List", { 224, 0 }, true);
-		{
-			// Uniform List
-			/* * * * * * * * * * * * * * * * * * * * */
-			for (size_t i = 0, imax = m_uni[value].size(); i < imax; i++)
-			{
-				if (Uniform * u = get_uniform(value, i))
-				{
-					if (ImGui::Selectable(
-						(u->name.c_str()),
-						(m_selected == i),
-						(ImGuiSelectableFlags_AllowDoubleClick)))
-					{
-						m_selected = i;
-					}
-				}
-			}
-			ImGui::Separator();
-
-			// Uniform List Buttons
-			/* * * * * * * * * * * * * * * * * * * * */
-			draw_uniform_buttons(m_uni[value]);
-
-			/* * * * * * * * * * * * * * * * * * * * */
-		}
-		ImGui::EndChild();
 	}
 
 	void Builder::draw_uniform_buttons(List<Uniform> & value)
@@ -352,32 +350,26 @@ namespace ml
 		ImGui::EndGroup();
 	}
 
-	void Builder::draw_source_tab(CString label, SourceBuf & source)
+	void Builder::draw_shader_source(CString label, SourceBuf & source)
 	{
-		if (ImGui::BeginTabItem(label))
+		if (ImGui::BeginChild(
+			("Shader Source"),
+			{ 0, 0 },
+			(true),
+			(ImGuiWindowFlags_AlwaysHorizontalScrollbar)))
 		{
-			ImGui::BeginChild(
-				("Content"),
-				(ImVec2(-1.0f, -1.0f)),
-				(true),
-				(ImGuiWindowFlags_AlwaysHorizontalScrollbar));
+			if (ImGui::InputTextMultiline(
+				("Source Input"),
+				(source),
+				(IM_ARRAYSIZE(source)),
+				{ -1.f, -1.f },
+				(ImGuiInputTextFlags_AllowTabInput),
+				(NULL),
+				(NULL)))
 			{
-				if (ImGui::InputTextMultiline(
-					("Source"),
-					(source),
-					(IM_ARRAYSIZE(source)),
-					(ImVec2(-1.0f, ImGui::GetTextLineHeight() * 16)),
-					(ImGuiInputTextFlags_AllowTabInput),
-					(NULL),
-					(NULL)))
-				{
-
-				}
-
-				if (ImGui::Button("Compile")) {}
 			}
+			
 			ImGui::EndChild();
-			ImGui::EndTabItem();
 		}
 	}
 
