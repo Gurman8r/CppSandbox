@@ -335,9 +335,9 @@ namespace DEMO
 		ml::Debug::log("Starting...");
 
 		// Window Icon
-		if (const ml::Image * icon = ML_Res.images.get("icon"))
+		if (ml::Image * icon = ML_Res.images.get("icon"))
 		{
-			this->setIcons({ ml::Image(*icon).flipVertically() });
+			this->setIcons({ (*icon).flipVertically() });
 		}
 
 		// Setup Plugins

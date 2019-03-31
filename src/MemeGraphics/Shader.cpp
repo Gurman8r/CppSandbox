@@ -31,6 +31,7 @@ namespace ml
 				location = shader->getUniformLocation(name);
 			}
 		}
+
 		~UniformBinder()
 		{
 			if (program && (program != cached))
@@ -39,10 +40,7 @@ namespace ml
 			}
 		}
 
-		inline operator bool() const
-		{
-			return (location != -1);
-		}
+		inline operator bool() const { return (location != -1); }
 	};
 }
 
@@ -156,14 +154,9 @@ namespace ml
 
 	bool Shader::loadFromMemory(const String & vs, const String & gs, const String & fs)
 	{
-		if (gs.empty())
-		{
-			return loadFromMemory(vs, fs);
-		}
-		else
-		{
-			return compile(vs.c_str(), gs.c_str(), fs.c_str());
-		}
+		return ((gs)
+			? (compile(vs.c_str(), gs.c_str(), fs.c_str()))
+			: (loadFromMemory(vs, fs)));
 	}
 
 	bool Shader::loadFromMemory(const String & vs, const String & fs)

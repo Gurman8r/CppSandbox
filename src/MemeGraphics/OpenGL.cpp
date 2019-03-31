@@ -247,14 +247,13 @@ namespace ml
 	int32_t OpenGL::getInt(uint32_t name)
 	{
 		static int32_t temp;
-		getIntv(name, &temp);
+		glCheck(getIntv(name, &temp));
 		return temp;
 	}
 
 	int32_t * OpenGL::getIntv(uint32_t name, int32_t * params)
 	{
 		glCheck(glGetIntegerv(name, params));
-
 		return params;
 	}
 
@@ -815,15 +814,16 @@ namespace ml
 
 	int32_t OpenGL::compileShader(uint32_t & out, GL::ShaderType type, CString source)
 	{
-		String name;
-		switch (type)
-		{
-		case GL::FragmentShader: name = "Fragment"; break;
-		case GL::VertexShader:	 name = "Vertex";	break;
-		case GL::GeometryShader: name = "Geometry"; break;
-		}
 		if (source)
 		{
+			String name;
+			switch (type)
+			{
+			case GL::FragmentShader: name = "Fragment"; break;
+			case GL::VertexShader:	 name = "Vertex";	break;
+			case GL::GeometryShader: name = "Geometry"; break;
+			}
+
 			out = createShaderObject(type);
 
 			shaderSource(out, 1, &source, NULL);

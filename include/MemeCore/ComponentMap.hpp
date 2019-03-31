@@ -12,9 +12,9 @@ namespace ml
 		: public ITrackable
 	{
 	public:
-		using key_type		= const std::type_info *;
+		using key_type		= typename const std::type_info *;
 		using value_type	= typename IComponent *;
-		using map_type		= HashMap<key_type, value_type>;
+		using map_type		= typename HashMap<key_type, value_type>;
 		using iterator		= typename map_type::iterator;
 		using const_iterator= typename map_type::const_iterator;
 

@@ -77,5 +77,4 @@ namespace ImGui
 }
 */
 
-
 #endif // !_IMCONFIG_H_
