@@ -9,13 +9,6 @@
 
 namespace ml
 {
-	// Private Members
-	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-	bool OpenGL::m_good = false;
-	bool OpenGL::m_errorPause = false;
-
-
 	// Errors
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
@@ -26,7 +19,7 @@ namespace ml
 
 	void OpenGL::errorPause(bool value)
 	{
-		m_errorPause = value;
+		ML_GL.m_errorPause = value;
 	}
 
 	void OpenGL::checkError(CString file, uint32_t line, CString expression)
@@ -92,7 +85,7 @@ namespace ml
 				<< ml::endl
 				<< ml::endl;
 
-			if (m_errorPause)
+			if (ML_GL.m_errorPause)
 			{
 				Debug::pause(EXIT_FAILURE);
 			}
@@ -112,14 +105,14 @@ namespace ml
 
 			glewExperimental = experimental;
 
-			m_good = (glewInit() == GLEW_OK);
+			ML_GL.m_good = (glewInit() == GLEW_OK);
 		}
 		return good();
 	}
 
 	bool OpenGL::good()
 	{
-		return m_good;
+		return ML_GL.m_good;
 	}
 
 	void OpenGL::validate(uint32_t & majorVersion, uint32_t & minorVersion)

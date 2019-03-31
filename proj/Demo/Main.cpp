@@ -28,13 +28,7 @@ int32_t main(int32_t argc, char ** argv)
 	if (auto program = static_cast<ml::Window *>(new DEMO::Demo()))
 	{
 		// Enter
-		ML_EventSystem.fireEvent(ml::EnterEvent(argc, argv));
-		if (ml::Debug::checkError(ML_FAILURE))
-		{
-			delete program;
-			return ml::Debug::logError("Failed Entering Program")
-				|| ml::Debug::pause(EXIT_FAILURE);
-		}
+		mlCheck(ML_EventSystem.fireEvent(ml::EnterEvent(argc, argv)));
 
 		// Load
 		ML_EventSystem.fireEvent(ml::LoadEvent());

@@ -130,7 +130,7 @@ namespace ml
 		FT_Set_Pixel_Sizes(face, 0, size);
 
 		// Disable byte-alignment restriction
-		OpenGL::pixelStore(GL::UnpackAlignment, 1);
+		ML_GL.pixelStore(GL::UnpackAlignment, 1);
 
 		// Load character glyph 
 		if (FT_Load_Char(face, value, FT_LOAD_RENDER) != EXIT_SUCCESS)

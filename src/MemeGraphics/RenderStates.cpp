@@ -21,12 +21,12 @@ namespace ml
 
 	bool RenderStates::enable(const uint32_t value) const
 	{
-		return OpenGL::enable(value);
+		return ML_GL.enable(value);
 	}
 
 	bool RenderStates::disable(const uint32_t value) const
 	{
-		return OpenGL::disable(value);
+		return ML_GL.disable(value);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

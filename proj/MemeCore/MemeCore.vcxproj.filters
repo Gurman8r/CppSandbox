@@ -192,9 +192,6 @@
     <ClInclude Include="..\..\include\MemeCore\OS.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Ratio.hpp">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Bytes.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
@@ -223,6 +220,9 @@
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Detection.hpp">
+      <Filter>Header Files\STD</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Ratio.hpp">
       <Filter>Header Files\STD</Filter>
     </ClInclude>
   </ItemGroup>

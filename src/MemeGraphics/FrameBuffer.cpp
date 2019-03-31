@@ -23,7 +23,7 @@ namespace ml
 	{
 		if ((*this))
 		{
-			OpenGL::deleteFramebuffers(1, (*this));
+			ML_GL.deleteFramebuffers(1, (*this));
 			get_ref() = NULL;
 		}
 		return (*this);
@@ -31,7 +31,7 @@ namespace ml
 
 	FrameBuffer & FrameBuffer::create()
 	{
-		if (!(*this) && (get_ref() = OpenGL::genFramebuffers(1)))
+		if (!(*this) && (get_ref() = ML_GL.genFramebuffers(1)))
 		{
 			// good
 		}
@@ -41,17 +41,17 @@ namespace ml
 	
 	void FrameBuffer::bind() const
 	{
-		OpenGL::bindFramebuffer(GL::Framebuffer, (*this));
+		ML_GL.bindFramebuffer(GL::Framebuffer, (*this));
 	}
 
 	void FrameBuffer::unbind() const
 	{
-		OpenGL::bindFramebuffer(GL::Framebuffer, NULL);
+		ML_GL.bindFramebuffer(GL::Framebuffer, NULL);
 	}
 
 
 	void FrameBuffer::setTexture(uint32_t attchment, uint32_t value, GL::Target target, int32_t level) const
 	{
-		OpenGL::framebufferTexture2D(ml::GL::Framebuffer, attchment, target, value, level);
+		ML_GL.framebufferTexture2D(ml::GL::Framebuffer, attchment, target, value, level);
 	}
 }

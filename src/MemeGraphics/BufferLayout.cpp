@@ -37,7 +37,7 @@ namespace ml
 
 	void BufferLayout::Element::use() const
 	{
-		OpenGL::vertexAttribPointer(
+		ML_GL.vertexAttribPointer(
 			index,
 			size,
 			type,
@@ -45,7 +45,7 @@ namespace ml
 			stride,
 			offset,
 			width);
-		OpenGL::enableVertexAttribArray(index);
+		ML_GL.enableVertexAttribArray(index);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

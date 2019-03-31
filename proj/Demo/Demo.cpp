@@ -39,6 +39,7 @@ namespace DEMO
 	Demo::Demo()
 		: EditorApplication()
 	{
+
 	}
 
 	Demo::~Demo() {}
@@ -149,7 +150,7 @@ namespace DEMO
 		ml::Random::seed();
 
 		// GL Error Pause
-		ml::OpenGL::errorPause(SETTINGS.glErrorPause);
+		ML_GL.errorPause(SETTINGS.glErrorPause);
 
 		// Setup Interpreter
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -176,7 +177,7 @@ namespace DEMO
 
 		// Create Window
 		/* * * * * * * * * * * * * * * * * * * * */
-		if (this->create(SETTINGS.title, SETTINGS.video(), SETTINGS.style, SETTINGS.context())
+		if (0 && this->create(SETTINGS.title, SETTINGS.video(), SETTINGS.style, SETTINGS.context())
 			&&
 			this->setup(SETTINGS.glExperimental))
 		{
@@ -195,7 +196,10 @@ namespace DEMO
 				ImGui::GetStyle().FrameBorderSize = 1;
 				if (!ImGui_ML_Init("#version 410", this, true, SETTINGS.imguiINI.c_str()))
 				{
-					return ml::Debug::setError(ml::Debug::logError("Failed Loading ImGui"));
+					return ml::Debug::setError(
+						ML_FAILURE, 
+						"System Failure", 
+						"Failed Loading ImGui");
 				}
 			}
 
@@ -203,7 +207,10 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (!ml::OpenAL::init())
 			{
-				return ml::Debug::setError(ml::Debug::logError("Failed Loading OpenAL"));
+				return ml::Debug::setError(
+					ML_FAILURE, 
+					"System Failure", 
+					"Failed Loading OpenAL");
 			}
 
 			// Load Network
@@ -235,11 +242,10 @@ namespace DEMO
 		}
 		else
 		{
-			return ml::Debug::setError(ml::Debug::logError(
-				"Failed Loading Window\n"
-				"Try checking your settings:\n"
-				"\"{0}\"\n",
-				SETTINGS.configINI));
+			return ml::Debug::setError(
+				ML_FAILURE, 
+				"System Failure", 
+				"Failed Loading Window.");
 		}
 	}
 
@@ -596,7 +602,7 @@ namespace DEMO
 				.setFontSize(fontSize)
 				.setPosition(nextLine())
 				.setString(ml::String("GL Version: {0}").format(
-					ml::OpenGL::getString(ml::GL::Version)));
+					ML_GL.getString(ml::GL::Version)));
 
 
 			m_text["gl_vendor"]
@@ -604,7 +610,7 @@ namespace DEMO
 				.setFontSize(fontSize)
 				.setPosition(nextLine())
 				.setString(ml::String("GL Vendor: {0}").format(
-					ml::OpenGL::getString(ml::GL::Vendor)));
+					ML_GL.getString(ml::GL::Vendor)));
 
 			nextLine();
 
@@ -706,8 +712,8 @@ namespace DEMO
 
 			/* * * * * * * * * * * * * * * * * * * * */
 
-			ml::OpenGL::enable(ml::GL::CullFace);
-			ml::OpenGL::enable(ml::GL::DepthTest);
+			ML_GL.enable(ml::GL::CullFace);
+			ML_GL.enable(ml::GL::DepthTest);
 
 			/* * * * * * * * * * * * * * * * * * * * */
 
@@ -785,7 +791,7 @@ namespace DEMO
 
 			/* * * * * * * * * * * * * * * * * * * * */
 
-			ml::OpenGL::disable(ml::GL::CullFace);
+			ML_GL.disable(ml::GL::CullFace);
 
 			/* * * * * * * * * * * * * * * * * * * * */
 
@@ -803,7 +809,7 @@ namespace DEMO
 
 			/* * * * * * * * * * * * * * * * * * * * */
 
-			ml::OpenGL::disable(ml::GL::DepthTest);
+			ML_GL.disable(ml::GL::DepthTest);
 
 			/* * * * * * * * * * * * * * * * * * * * */
 
@@ -820,7 +826,7 @@ namespace DEMO
 				};
 				shader->applyUniforms(uniforms);
 				shader->bind();
-				ml::OpenGL::drawArrays(ml::GL::Points, 0, 4);
+				ML_GL.drawArrays(ml::GL::Points, 0, 4);
 			}
 
 			// Sprites

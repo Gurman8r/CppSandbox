@@ -23,7 +23,7 @@ namespace ml
 	{
 		if ((*this))
 		{
-			OpenGL::deleteRenderbuffers(1, (*this));
+			ML_GL.deleteRenderbuffers(1, (*this));
 			get_ref() = NULL;
 		}
 		return (*this);
@@ -31,7 +31,7 @@ namespace ml
 	
 	RenderBuffer & RenderBuffer::create(int32_t width, int32_t height)
 	{
-		if (!(*this) && (get_ref() = OpenGL::genRenderbuffers(1)))
+		if (!(*this) && (get_ref() = ML_GL.genRenderbuffers(1)))
 		{
 			m_width = width;
 			m_height = height;
@@ -42,23 +42,23 @@ namespace ml
 	
 	void RenderBuffer::bind() const
 	{
-		OpenGL::bindRenderbuffer(GL::Renderbuffer, (*this));
+		ML_GL.bindRenderbuffer(GL::Renderbuffer, (*this));
 	}
 	
 	void RenderBuffer::unbind() const
 	{
-		OpenGL::bindRenderbuffer(GL::Renderbuffer, NULL);
+		ML_GL.bindRenderbuffer(GL::Renderbuffer, NULL);
 	}
 
 
 	void RenderBuffer::bufferStorage(GL::Format format) const
 	{
-		OpenGL::renderbufferStorage(GL::Renderbuffer, format, m_width, m_height);
+		ML_GL.renderbufferStorage(GL::Renderbuffer, format, m_width, m_height);
 	}
 
 	void RenderBuffer::setFramebuffer(GL::FBO_Attachment attachment) const
 	{
-		OpenGL::framebufferRenderbuffer(
+		ML_GL.framebufferRenderbuffer(
 			GL::Framebuffer, 
 			attachment, 
 			GL::Renderbuffer,

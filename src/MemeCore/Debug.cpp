@@ -1,33 +1,47 @@
 #include <MemeCore/Debug.hpp>
-#include <MemeCore/Thread.hpp>
+#include <MemeCore/Console.hpp>
 
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	int32_t Debug::m_error = ML_SUCCESS;
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
 	void Debug::checkError(CString file, uint32_t line, CString expression)
 	{
+		if (getInstance().m_errorCode == ML_FAILURE)
+		{
+			String fileName(file);
+			fileName = fileName.substr(fileName.find_last_of("\\/") + 1);
+
+			cerr
+				<< FMT()
+				<< ml::endl
+				<< FG::Red
+				<< "An internal MemeLib call failed in " << fileName << "(" << line << ")"
+				<< FG::Yellow << ml::endl << "Code: "
+				<< FG::White << ml::endl << "\t" << getInstance().m_errorCode
+				<< FG::Yellow << ml::endl << "Expression: "
+				<< FG::White << ml::endl << "\t" << expression
+				<< FG::Yellow << ml::endl << "Description:"
+				<< FG::White << ml::endl << "\t" << getInstance().m_errorName
+				<< FG::White << ml::endl << "\t" << getInstance().m_errorDesc
+				<< FMT()
+				<< ml::endl
+				<< ml::endl;
+
+			pause(EXIT_FAILURE);
+			exit(EXIT_FAILURE);
+		}
+		else
+		{
+			setError(ML_SUCCESS, String(), String());
+		}
 	}
 
-	bool Debug::checkError(const int32_t value)
+	void Debug::setError(const int32_t code, const String & name, const String & desc)
 	{
-		return (getError() == value);
-	}
-
-	void Debug::setError(const int32_t value)
-	{
-		m_error = value;
-	}
-
-	int32_t Debug::getError()
-	{
-		int32_t temp = ML_SUCCESS;
-		std::swap(m_error, temp);
-		return temp;
+		getInstance().m_errorCode = code;
+		getInstance().m_errorName = name;
+		getInstance().m_errorDesc = desc;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

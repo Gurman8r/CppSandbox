@@ -3,27 +3,30 @@
 
 #include <MemeGraphics/GL.hpp>
 #include <MemeCore/String.hpp>
+#include <MemeCore/ISingleton.hpp>
 
-// Macro to quickly check every OpenGL API call
-#ifdef ML_DEBUG
+#define ML_GL ml::OpenGL::getInstance()
+
+# ifdef ML_DEBUG
 	// In debug configuration, perform a test on every OpenGL call
 	// The do-while loop is needed so that glCheck can be 
 	// used as a single statement in if/else branches
-	#define glCheck(expr) do { expr; ml::OpenGL::checkError(__FILE__, __LINE__, #expr); } while (false)
-#else
+#	define glCheck(expr) do { expr; ML_GL.checkError(__FILE__, __LINE__, #expr); } while (false)
+# else
 	// Else, we don't add any overhead
-	#define glCheck(expr) (expr)
-#endif
+#	define glCheck(expr) (expr)
+# endif
 
 namespace ml
 {
 	// ML OpenGL Wrapper
 	class ML_GRAPHICS_API OpenGL final
+		: public ISingleton<OpenGL>
 	{
-	private: // Private Members
-		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-		static bool		m_good;
-		static bool		m_errorPause;
+		friend class ISingleton<OpenGL>;
+
+		bool m_good;
+		bool m_errorPause;
 
 	public: // Errors
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

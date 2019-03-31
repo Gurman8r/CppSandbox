@@ -66,7 +66,7 @@ namespace ml
 					m_rbo.unbind();
 
 					// Check Framebuffer Status
-					if (!ml::OpenGL::checkFramebufferStatus(ml::GL::Framebuffer))
+					if (!ML_GL.checkFramebufferStatus(ml::GL::Framebuffer))
 					{
 						return ml::Debug::logError("Framebuffer is not complete");
 					}

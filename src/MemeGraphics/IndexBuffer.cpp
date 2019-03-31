@@ -31,14 +31,14 @@ namespace ml
 	{
 		if ((*this))
 		{
-			OpenGL::deleteBuffers(1, (*this));
+			ML_GL.deleteBuffers(1, (*this));
 		}
 		return (*this);
 	}
 
 	IndexBuffer & IndexBuffer::create(GL::Usage usage, GL::Type type)
 	{
-		if (!(*this) && (get_ref() = OpenGL::genBuffers(1)))
+		if (!(*this) && (get_ref() = ML_GL.genBuffers(1)))
 		{
 			m_usage = usage;
 			m_type = type;
@@ -49,12 +49,12 @@ namespace ml
 
 	void IndexBuffer::bind() const
 	{
-		OpenGL::bindBuffer(GL::ElementArrayBuffer, (*this));
+		ML_GL.bindBuffer(GL::ElementArrayBuffer, (*this));
 	}
 
 	void IndexBuffer::unbind() const
 	{
-		OpenGL::bindBuffer(GL::ElementArrayBuffer, NULL);
+		ML_GL.bindBuffer(GL::ElementArrayBuffer, NULL);
 	}
 
 
@@ -68,7 +68,7 @@ namespace ml
 		m_data = data;
 		m_count = count;
 
-		OpenGL::bufferData(
+		ML_GL.bufferData(
 			GL::ElementArrayBuffer,
 			(m_count * sizeof(uint32_t)),
 			m_data,

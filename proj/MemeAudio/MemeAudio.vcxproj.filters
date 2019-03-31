@@ -19,25 +19,25 @@
     <Filter Include="Header Files\Buffers">
       <UniqueIdentifier>{d8b1bc38-acbb-4e83-b7b1-954000c6f7dc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Wrapper">
-      <UniqueIdentifier>{b891ca2e-b5bd-479a-b30a-9e04e215cb13}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Wrapper">
-      <UniqueIdentifier>{c0b656a8-1013-4cc1-b90c-7a59b2747737}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility">
       <UniqueIdentifier>{4ceab270-368d-4630-a19c-cee3ad95225f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Utility">
       <UniqueIdentifier>{3490293c-b5b1-4fee-9396-9c4124e10ffb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Internal">
+      <UniqueIdentifier>{b891ca2e-b5bd-479a-b30a-9e04e215cb13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Internal">
+      <UniqueIdentifier>{c0b656a8-1013-4cc1-b90c-7a59b2747737}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeAudio\AL.hpp">
-      <Filter>Header Files\Wrapper</Filter>
+      <Filter>Header Files\Internal</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeAudio\OpenAL.hpp">
-      <Filter>Header Files\Wrapper</Filter>
+      <Filter>Header Files\Internal</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeAudio\AudioBuffer.hpp">
       <Filter>Header Files\Buffers</Filter>
@@ -66,7 +66,7 @@
       <Filter>Source Files\Buffers</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeAudio\OpenAL.cpp">
-      <Filter>Source Files\Wrapper</Filter>
+      <Filter>Source Files\Internal</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeAudio\Sound.cpp">
       <Filter>Source Files\Utility</Filter>

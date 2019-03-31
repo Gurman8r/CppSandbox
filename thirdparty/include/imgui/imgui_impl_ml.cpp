@@ -38,7 +38,7 @@ static uint32_t		g_VboHandle = 0, g_ElementsHandle = 0;
 inline static void ImGui_ML_HandleInput()
 {
 	// Update buttons
-	ImGuiIO& io = ImGui::GetIO();
+	ImGuiIO & io = ImGui::GetIO();
 	for (int32_t i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++)
 	{
 		// If a mouse press event came, always pass it as "mouse held this frame", so we don't miss click-release events that are shorter than 1 frame.
@@ -84,51 +84,51 @@ inline static void ImGui_ML_HandleInput()
 
 inline static bool ImGui_ML_CompileShader(uint32_t & program, ml::CString const * vs, ml::CString const * fs)
 {
-	if (!ml::OpenGL::shadersAvailable())
+	if (!ML_GL.shadersAvailable())
 	{
 		ml::cerr << ("Shaders are not available on your system.") << ml::endl;
 		return false;
 	}
 
-	if (!program && !(program = ml::OpenGL::createProgramObject()))
+	if (!program && !(program = ML_GL.createProgramObject()))
 	{
 		ml::cerr << ("Failed creating shader object") << ml::endl;
 		return false;
 	}
 
 	// Vertex
-	switch (ml::OpenGL::compileShader(g_VertHandle, ml::GL::VertexShader, ml::File(2, vs)))
+	switch (ML_GL.compileShader(g_VertHandle, ml::GL::VertexShader, ml::File(2, vs)))
 	{
 	case ML_SUCCESS:
-		ml::OpenGL::attachShader(program, g_VertHandle);
+		ML_GL.attachShader(program, g_VertHandle);
 		break;
 	case ML_FAILURE:
-		ml::OpenGL::deleteShader(program);
+		ML_GL.deleteShader(program);
 		return false;
 	}
 
 	// Fragment
-	switch (ml::OpenGL::compileShader(g_FragHandle, ml::GL::FragmentShader, ml::File(2, fs)))
+	switch (ML_GL.compileShader(g_FragHandle, ml::GL::FragmentShader, ml::File(2, fs)))
 	{
 	case ML_SUCCESS:
-		ml::OpenGL::attachShader(program, g_FragHandle);
+		ML_GL.attachShader(program, g_FragHandle);
 		break;
 	case ML_FAILURE:
-		ml::OpenGL::deleteShader(program);
+		ML_GL.deleteShader(program);
 		return false;
 	}
 
 	// Link the program
-	if (!ml::OpenGL::linkShader(program))
+	if (!ML_GL.linkShader(program))
 	{
-		ml::CString log = ml::OpenGL::getProgramInfoLog(program);
+		ml::CString log = ML_GL.getProgramInfoLog(program);
 
-		ml::OpenGL::deleteShader(program);
+		ML_GL.deleteShader(program);
 
 		return ml::Debug::logError("Failed to link source: {0}", log);
 	}
 
-	ml::OpenGL::flush();
+	ML_GL.flush();
 
 	return true;
 }
@@ -303,56 +303,56 @@ void ImGui_ML_Render(void * value)
 	draw_data->ScaleClipRects(io.DisplayFramebufferScale);
 
 	// Backup GL state
-	uint32_t last_active_texture = ml::OpenGL::getInt(ml::GL::ActiveTexture);
-	ml::OpenGL::activeTexture(ml::GL::Texture0);
-	int32_t last_program = ml::OpenGL::getInt(ml::GL::CurrentProgram);
-	int32_t last_texture = ml::OpenGL::getInt(ml::GL::TextureBinding2D);
-	int32_t last_sampler = ml::OpenGL::getInt(ml::GL::SamplerBinding);
-	int32_t last_array_buffer = ml::OpenGL::getInt(ml::GL::ArrayBufferBinding);
-	int32_t last_vertex_array = ml::OpenGL::getInt(ml::GL::VertexArrayBinding);
+	uint32_t last_active_texture = ML_GL.getInt(ml::GL::ActiveTexture);
+	ML_GL.activeTexture(ml::GL::Texture0);
+	int32_t last_program = ML_GL.getInt(ml::GL::CurrentProgram);
+	int32_t last_texture = ML_GL.getInt(ml::GL::TextureBinding2D);
+	int32_t last_sampler = ML_GL.getInt(ml::GL::SamplerBinding);
+	int32_t last_array_buffer = ML_GL.getInt(ml::GL::ArrayBufferBinding);
+	int32_t last_vertex_array = ML_GL.getInt(ml::GL::VertexArrayBinding);
 
 	int32_t last_polygon_mode[2]; 
-	ml::OpenGL::getIntv(ml::GL::PolygonMode, last_polygon_mode);
+	ML_GL.getIntv(ml::GL::PolygonMode, last_polygon_mode);
 
 	int32_t last_viewport[4]; 
-	ml::OpenGL::getIntv(ml::GL::Viewport, last_viewport);
+	ML_GL.getIntv(ml::GL::Viewport, last_viewport);
 
 	int32_t last_scissor_box[4]; 
-	ml::OpenGL::getIntv(ml::GL::ScissorBox, last_scissor_box);
+	ML_GL.getIntv(ml::GL::ScissorBox, last_scissor_box);
 
-	uint32_t last_blend_src_rgb = ml::OpenGL::getInt(ml::GL::BlendSourceRGB);
-	uint32_t last_blend_dst_rgb = ml::OpenGL::getInt(ml::GL::BlendDestRGB);
-	uint32_t last_blend_src_alpha = ml::OpenGL::getInt(ml::GL::BlendSourceAlpha);
-	uint32_t last_blend_dst_alpha = ml::OpenGL::getInt(ml::GL::BlendDestAlpha);
-	uint32_t last_blend_equation_rgb = ml::OpenGL::getInt(ml::GL::BlendEquationRGB);
-	uint32_t last_blend_equation_alpha = ml::OpenGL::getInt(ml::GL::BlendEquationAlpha);
+	uint32_t last_blend_src_rgb = ML_GL.getInt(ml::GL::BlendSourceRGB);
+	uint32_t last_blend_dst_rgb = ML_GL.getInt(ml::GL::BlendDestRGB);
+	uint32_t last_blend_src_alpha = ML_GL.getInt(ml::GL::BlendSourceAlpha);
+	uint32_t last_blend_dst_alpha = ML_GL.getInt(ml::GL::BlendDestAlpha);
+	uint32_t last_blend_equation_rgb = ML_GL.getInt(ml::GL::BlendEquationRGB);
+	uint32_t last_blend_equation_alpha = ML_GL.getInt(ml::GL::BlendEquationAlpha);
 
-	bool last_enable_blend = ml::OpenGL::isEnabled(ml::GL::Blend);
-	bool last_enable_cull_face = ml::OpenGL::isEnabled(ml::GL::CullFace);
-	bool last_enable_depth_test = ml::OpenGL::isEnabled(ml::GL::DepthTest);
-	bool last_enable_scissor_test = ml::OpenGL::isEnabled(ml::GL::ScissorTest);
+	bool last_enable_blend = ML_GL.isEnabled(ml::GL::Blend);
+	bool last_enable_cull_face = ML_GL.isEnabled(ml::GL::CullFace);
+	bool last_enable_depth_test = ML_GL.isEnabled(ml::GL::DepthTest);
+	bool last_enable_scissor_test = ML_GL.isEnabled(ml::GL::ScissorTest);
 	bool clip_origin_lower_left = true;
 
-	uint32_t last_clip_origin = ml::OpenGL::getInt(ml::GL::ClipOrigin); // Support for GL 4.5's glClipControl(ml::GL::UpperLeft)
+	uint32_t last_clip_origin = ML_GL.getInt(ml::GL::ClipOrigin); // Support for GL 4.5's glClipControl(ml::GL::UpperLeft)
 	if (last_clip_origin == ml::GL::UpperLeft)
 	{
 		clip_origin_lower_left = false;
 	}
 
 	// Setup render state: alpha-blending enabled, no face culling, no depth testing, scissor enabled, polygon fill
-	ml::OpenGL::enable(ml::GL::Blend);
-	ml::OpenGL::blendEquation(ml::GL::FuncAdd);
-	ml::OpenGL::blendFunc(ml::GL::SourceAlpha, ml::GL::OneMinusSourceAlpha);
-	ml::OpenGL::disable(ml::GL::CullFace);
-	ml::OpenGL::disable(ml::GL::DepthTest);
-	ml::OpenGL::enable(ml::GL::ScissorTest);
-	ml::OpenGL::polygonMode(ml::GL::FrontAndBack, ml::GL::Fill);
+	ML_GL.enable(ml::GL::Blend);
+	ML_GL.blendEquation(ml::GL::FuncAdd);
+	ML_GL.blendFunc(ml::GL::SourceAlpha, ml::GL::OneMinusSourceAlpha);
+	ML_GL.disable(ml::GL::CullFace);
+	ML_GL.disable(ml::GL::DepthTest);
+	ML_GL.enable(ml::GL::ScissorTest);
+	ML_GL.polygonMode(ml::GL::FrontAndBack, ml::GL::Fill);
 
 	// Setup viewport, orthographic projection matrix
 	// Our visible imgui space lies from draw_data->DisplayPos (top left) 
 	// to draw_data->DisplayPos+data_data->DisplaySize (bottom right). 
 	// DisplayMin is typically (0,0) for single viewport apps.
-	ml::OpenGL::viewport(0, 0, (int32_t)fb_width, (int32_t)fb_height);
+	ML_GL.viewport(0, 0, (int32_t)fb_width, (int32_t)fb_height);
 	float L = draw_data->DisplayPos.x;
 	float R = draw_data->DisplayPos.x + draw_data->DisplaySize.x;
 	float T = draw_data->DisplayPos.y;
@@ -369,22 +369,22 @@ void ImGui_ML_Render(void * value)
 		{	0.0f,	0.0f,	-1.0f,	0.0f },
 		{	m12,	m13,	0.0f,   1.0f },
 	};
-	ml::OpenGL::useShader(g_ShaderHandle);
-	ml::OpenGL::uniform1i(g_AttribLocationTex, 0);
-	ml::OpenGL::uniformMatrix4fv(g_AttribLocationProjMtx, 1, false, &ortho_projection[0][0]);
-	ml::OpenGL::bindSampler(0, 0); // We use combined texture/sampler state. Applications using GL 3.3 may set that otherwise.
+	ML_GL.useShader(g_ShaderHandle);
+	ML_GL.uniform1i(g_AttribLocationTex, 0);
+	ML_GL.uniformMatrix4fv(g_AttribLocationProjMtx, 1, false, &ortho_projection[0][0]);
+	ML_GL.bindSampler(0, 0); // We use combined texture/sampler state. Applications using GL 3.3 may set that otherwise.
 	// Recreate the VAO every time
 	// (This is to easily allow multiple GL contexts. VAO are not shared among GL contexts, and we don't track creation/deletion of windows so we don't have an obvious key to use to cache them.)
 	
-	uint32_t vao_handle = ml::OpenGL::genVertexArrays(1);
-	ml::OpenGL::bindVertexArray(vao_handle);
-	ml::OpenGL::bindBuffer(ml::GL::ArrayBuffer, g_VboHandle);
-	ml::OpenGL::enableVertexAttribArray(g_AttribLocationPosition);
-	ml::OpenGL::enableVertexAttribArray(g_AttribLocationUV);
-	ml::OpenGL::enableVertexAttribArray(g_AttribLocationColor);
-	ml::OpenGL::vertexAttribPointer(g_AttribLocationPosition, 2, ml::GL::Float, false, sizeof(ImDrawVert), (void *)IM_OFFSETOF(ImDrawVert, pos));
-	ml::OpenGL::vertexAttribPointer(g_AttribLocationUV, 2, ml::GL::Float, false, sizeof(ImDrawVert), (void *)IM_OFFSETOF(ImDrawVert, uv));
-	ml::OpenGL::vertexAttribPointer(g_AttribLocationColor, 4, ml::GL::UnsignedByte, true, sizeof(ImDrawVert), (void *)IM_OFFSETOF(ImDrawVert, col));
+	uint32_t vao_handle = ML_GL.genVertexArrays(1);
+	ML_GL.bindVertexArray(vao_handle);
+	ML_GL.bindBuffer(ml::GL::ArrayBuffer, g_VboHandle);
+	ML_GL.enableVertexAttribArray(g_AttribLocationPosition);
+	ML_GL.enableVertexAttribArray(g_AttribLocationUV);
+	ML_GL.enableVertexAttribArray(g_AttribLocationColor);
+	ML_GL.vertexAttribPointer(g_AttribLocationPosition, 2, ml::GL::Float, false, sizeof(ImDrawVert), (void *)IM_OFFSETOF(ImDrawVert, pos));
+	ML_GL.vertexAttribPointer(g_AttribLocationUV, 2, ml::GL::Float, false, sizeof(ImDrawVert), (void *)IM_OFFSETOF(ImDrawVert, uv));
+	ML_GL.vertexAttribPointer(g_AttribLocationColor, 4, ml::GL::UnsignedByte, true, sizeof(ImDrawVert), (void *)IM_OFFSETOF(ImDrawVert, col));
 
 	// Draw
 	ImVec2 pos = draw_data->DisplayPos;
@@ -393,15 +393,15 @@ void ImGui_ML_Render(void * value)
 		const ImDrawList * cmd_list = draw_data->CmdLists[n];
 		const ImDrawIdx * idx_buffer_offset = 0;
 
-		ml::OpenGL::bindBuffer(ml::GL::ArrayBuffer, g_VboHandle);
-		ml::OpenGL::bufferData(
+		ML_GL.bindBuffer(ml::GL::ArrayBuffer, g_VboHandle);
+		ML_GL.bufferData(
 			ml::GL::ArrayBuffer, 
 			(int32_t)cmd_list->VtxBuffer.Size * sizeof(ImDrawVert), 
 			(const void *)cmd_list->VtxBuffer.Data, 
 			ml::GL::StreamDraw);
 
-		ml::OpenGL::bindBuffer(ml::GL::ElementArrayBuffer, g_ElementsHandle);
-		ml::OpenGL::bufferData(
+		ML_GL.bindBuffer(ml::GL::ElementArrayBuffer, g_ElementsHandle);
+		ML_GL.bufferData(
 			ml::GL::ElementArrayBuffer,
 			(int32_t)cmd_list->IdxBuffer.Size * sizeof(ImDrawIdx), 
 			(const void *)cmd_list->IdxBuffer.Data,
@@ -423,7 +423,7 @@ void ImGui_ML_Render(void * value)
 					// Apply scissor/clipping rectangle
 					if (clip_origin_lower_left)
 					{
-						ml::OpenGL::scissor(
+						ML_GL.scissor(
 							(int32_t)clip_rect.x,
 							(int32_t)(fb_height - clip_rect.w),
 							(int32_t)(clip_rect.z - clip_rect.x),
@@ -432,7 +432,7 @@ void ImGui_ML_Render(void * value)
 					else
 					{
 						// Support for GL 4.5's glClipControl(ml::GL::UpperLeft)
-						ml::OpenGL::scissor(
+						ML_GL.scissor(
 							(int32_t)clip_rect.x, 
 							(int32_t)clip_rect.y,
 							(int32_t)clip_rect.z,
@@ -440,8 +440,8 @@ void ImGui_ML_Render(void * value)
 					}
 
 					// Bind texture, Draw
-					ml::OpenGL::bindTexture(ml::GL::Texture2D, (uint32_t)(intptr_t)pcmd->TextureId);
-					ml::OpenGL::drawElements(
+					ML_GL.bindTexture(ml::GL::Texture2D, (uint32_t)(intptr_t)pcmd->TextureId);
+					ML_GL.drawElements(
 						ml::GL::Triangles,
 						(int32_t)pcmd->ElemCount,
 						sizeof(ImDrawIdx) == 2 ? ml::GL::UnsignedShort : ml::GL::UnsignedInt,
@@ -451,26 +451,26 @@ void ImGui_ML_Render(void * value)
 			idx_buffer_offset += pcmd->ElemCount;
 		}
 	}
-	ml::OpenGL::deleteVertexArrays(1, &vao_handle);
+	ML_GL.deleteVertexArrays(1, &vao_handle);
 
 	// Restore modified GL state
-	ml::OpenGL::useShader(last_program);
-	ml::OpenGL::bindTexture(ml::GL::Texture2D, last_texture);
-	ml::OpenGL::bindSampler(0, last_sampler);
-	ml::OpenGL::activeTexture(last_active_texture);
-	ml::OpenGL::bindVertexArray(last_vertex_array);
-	ml::OpenGL::bindBuffer(ml::GL::ArrayBuffer, last_array_buffer);
-	ml::OpenGL::blendEquationSeparate(last_blend_equation_rgb, last_blend_equation_alpha);
-	ml::OpenGL::blendFuncSeparate(last_blend_src_rgb, last_blend_dst_rgb, last_blend_src_alpha, last_blend_dst_alpha);
+	ML_GL.useShader(last_program);
+	ML_GL.bindTexture(ml::GL::Texture2D, last_texture);
+	ML_GL.bindSampler(0, last_sampler);
+	ML_GL.activeTexture(last_active_texture);
+	ML_GL.bindVertexArray(last_vertex_array);
+	ML_GL.bindBuffer(ml::GL::ArrayBuffer, last_array_buffer);
+	ML_GL.blendEquationSeparate(last_blend_equation_rgb, last_blend_equation_alpha);
+	ML_GL.blendFuncSeparate(last_blend_src_rgb, last_blend_dst_rgb, last_blend_src_alpha, last_blend_dst_alpha);
 	
-	if (last_enable_blend) ml::OpenGL::enable(ml::GL::Blend); else ml::OpenGL::disable(ml::GL::Blend);
-	if (last_enable_cull_face) ml::OpenGL::enable(ml::GL::CullFace); else ml::OpenGL::disable(ml::GL::CullFace);
-	if (last_enable_depth_test) ml::OpenGL::enable(ml::GL::DepthTest); else ml::OpenGL::disable(ml::GL::DepthTest);
-	if (last_enable_scissor_test) ml::OpenGL::enable(ml::GL::ScissorTest); else ml::OpenGL::disable(ml::GL::ScissorTest);
+	if (last_enable_blend) ML_GL.enable(ml::GL::Blend); else ML_GL.disable(ml::GL::Blend);
+	if (last_enable_cull_face) ML_GL.enable(ml::GL::CullFace); else ML_GL.disable(ml::GL::CullFace);
+	if (last_enable_depth_test) ML_GL.enable(ml::GL::DepthTest); else ML_GL.disable(ml::GL::DepthTest);
+	if (last_enable_scissor_test) ML_GL.enable(ml::GL::ScissorTest); else ML_GL.disable(ml::GL::ScissorTest);
 	
-	ml::OpenGL::polygonMode(ml::GL::FrontAndBack, (uint32_t)last_polygon_mode[0]);
-	ml::OpenGL::viewport(last_viewport[0], last_viewport[1], (int32_t)last_viewport[2], (int32_t)last_viewport[3]);
-	ml::OpenGL::scissor(last_scissor_box[0], last_scissor_box[1], (int32_t)last_scissor_box[2], (int32_t)last_scissor_box[3]);
+	ML_GL.polygonMode(ml::GL::FrontAndBack, (uint32_t)last_polygon_mode[0]);
+	ML_GL.viewport(last_viewport[0], last_viewport[1], (int32_t)last_viewport[2], (int32_t)last_viewport[3]);
+	ML_GL.scissor(last_scissor_box[0], last_scissor_box[1], (int32_t)last_scissor_box[2], (int32_t)last_scissor_box[3]);
 }
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -484,19 +484,19 @@ bool ImGui_ML_CreateFontsTexture()
 	io.Fonts->GetTexDataAsRGBA32(&pixels, &width, &height);   // Load as RGBA 32-bits (75% of the memory is wasted, but default font is so small) because it is more likely to be compatible with user's existing shaders. If your ImTextureId represent a higher-level concept than just a GL texture id, consider calling GetTexDataAsAlpha8() instead to save on GPU memory.
 
 	// Upload texture to graphics system
-	int32_t last_texture = ml::OpenGL::getInt(ml::GL::TextureBinding2D);
-	g_FontTexture = ml::OpenGL::genTextures(1);
-	ml::OpenGL::bindTexture(ml::GL::Texture2D, g_FontTexture);
-	ml::OpenGL::texParameter(ml::GL::Texture2D, ml::GL::TexMinFilter, ml::GL::Linear);
-	ml::OpenGL::texParameter(ml::GL::Texture2D, ml::GL::TexMagFilter, ml::GL::Linear);
-	ml::OpenGL::pixelStore(ml::GL::UnpackRowLength, 0);
-	ml::OpenGL::texImage2D(ml::GL::Texture2D, 0, ml::GL::RGBA, width, height, 0, ml::GL::RGBA, ml::GL::UnsignedByte, pixels);
+	int32_t last_texture = ML_GL.getInt(ml::GL::TextureBinding2D);
+	g_FontTexture = ML_GL.genTextures(1);
+	ML_GL.bindTexture(ml::GL::Texture2D, g_FontTexture);
+	ML_GL.texParameter(ml::GL::Texture2D, ml::GL::TexMinFilter, ml::GL::Linear);
+	ML_GL.texParameter(ml::GL::Texture2D, ml::GL::TexMagFilter, ml::GL::Linear);
+	ML_GL.pixelStore(ml::GL::UnpackRowLength, 0);
+	ML_GL.texImage2D(ml::GL::Texture2D, 0, ml::GL::RGBA, width, height, 0, ml::GL::RGBA, ml::GL::UnsignedByte, pixels);
 
 	// Store our identifier
 	io.Fonts->TexID = (ImTextureID)(intptr_t)g_FontTexture;
 
 	// Restore state
-	ml::OpenGL::bindTexture(ml::GL::Texture2D, last_texture);
+	ML_GL.bindTexture(ml::GL::Texture2D, last_texture);
 
 	return true;
 }
@@ -506,7 +506,7 @@ void ImGui_ML_DestroyFontsTexture()
 	if (g_FontTexture)
 	{
 		ImGuiIO& io = ImGui::GetIO();
-		ml::OpenGL::deleteTextures(1, &g_FontTexture);
+		ML_GL.deleteTextures(1, &g_FontTexture);
 		io.Fonts->TexID = 0;
 		g_FontTexture = 0;
 	}
@@ -515,9 +515,9 @@ void ImGui_ML_DestroyFontsTexture()
 bool ImGui_ML_CreateDeviceObjects()
 {
 	// Backup GL state
-	int32_t last_texture = ml::OpenGL::getInt(ml::GL::TextureBinding2D);
-	int32_t last_array_buffer = ml::OpenGL::getInt(ml::GL::ArrayBufferBinding);
-	int32_t last_vertex_array = ml::OpenGL::getInt(ml::GL::VertexArrayBinding);
+	int32_t last_texture = ML_GL.getInt(ml::GL::TextureBinding2D);
+	int32_t last_array_buffer = ML_GL.getInt(ml::GL::ArrayBufferBinding);
+	int32_t last_vertex_array = ML_GL.getInt(ml::GL::VertexArrayBinding);
 
 	// Parse GLSL version string
 	int32_t glsl_version = 130;
@@ -653,43 +653,43 @@ bool ImGui_ML_CreateDeviceObjects()
 
 	ImGui_ML_CompileShader(g_ShaderHandle, vertex_shader_with_version, fragment_shader_with_version);
 
-	g_AttribLocationTex		= ml::OpenGL::getUniformLocation(g_ShaderHandle, "Texture");
-	g_AttribLocationProjMtx = ml::OpenGL::getUniformLocation(g_ShaderHandle, "ProjMtx");
-	g_AttribLocationPosition= ml::OpenGL::getAttribLocation(g_ShaderHandle, "Position");
-	g_AttribLocationUV		= ml::OpenGL::getAttribLocation(g_ShaderHandle, "UV");
-	g_AttribLocationColor	= ml::OpenGL::getAttribLocation(g_ShaderHandle, "Color");
+	g_AttribLocationTex		= ML_GL.getUniformLocation(g_ShaderHandle, "Texture");
+	g_AttribLocationProjMtx = ML_GL.getUniformLocation(g_ShaderHandle, "ProjMtx");
+	g_AttribLocationPosition= ML_GL.getAttribLocation(g_ShaderHandle, "Position");
+	g_AttribLocationUV		= ML_GL.getAttribLocation(g_ShaderHandle, "UV");
+	g_AttribLocationColor	= ML_GL.getAttribLocation(g_ShaderHandle, "Color");
 
 	// Create buffers
-	g_VboHandle = ml::OpenGL::genBuffers(1);
-	g_ElementsHandle = ml::OpenGL::genBuffers(1);
+	g_VboHandle = ML_GL.genBuffers(1);
+	g_ElementsHandle = ML_GL.genBuffers(1);
 
 	ImGui_ML_CreateFontsTexture();
 
 	// Restore modified GL state
-	ml::OpenGL::bindTexture(ml::GL::Texture2D, last_texture);
-	ml::OpenGL::bindBuffer(ml::GL::ArrayBuffer, last_array_buffer);
-	ml::OpenGL::bindVertexArray(last_vertex_array);
+	ML_GL.bindTexture(ml::GL::Texture2D, last_texture);
+	ML_GL.bindBuffer(ml::GL::ArrayBuffer, last_array_buffer);
+	ML_GL.bindVertexArray(last_vertex_array);
 
 	return true;
 }
 
 void ImGui_ML_DestroyDeviceObjects()
 {
-	if (g_VboHandle) ml::OpenGL::deleteBuffers(1, &g_VboHandle);
-	if (g_ElementsHandle) ml::OpenGL::deleteBuffers(1, &g_ElementsHandle);
+	if (g_VboHandle) ML_GL.deleteBuffers(1, &g_VboHandle);
+	if (g_ElementsHandle) ML_GL.deleteBuffers(1, &g_ElementsHandle);
 	g_VboHandle = g_ElementsHandle = 0;
 
-	if (g_ShaderHandle && g_VertHandle) ml::OpenGL::detachShader(g_ShaderHandle, g_VertHandle);
-	if (g_VertHandle) ml::OpenGL::deleteShader(g_VertHandle);
+	if (g_ShaderHandle && g_VertHandle) ML_GL.detachShader(g_ShaderHandle, g_VertHandle);
+	if (g_VertHandle) ML_GL.deleteShader(g_VertHandle);
 	g_VertHandle = 0;
 
 	if (g_ShaderHandle && g_FragHandle) 
-		ml::OpenGL::detachShader(g_ShaderHandle, g_FragHandle);
+		ML_GL.detachShader(g_ShaderHandle, g_FragHandle);
 
-	if (g_FragHandle) ml::OpenGL::deleteShader(g_FragHandle);
+	if (g_FragHandle) ML_GL.deleteShader(g_FragHandle);
 	g_FragHandle = 0;
 
-	if (g_ShaderHandle) ml::OpenGL::deleteShader(g_ShaderHandle);
+	if (g_ShaderHandle) ML_GL.deleteShader(g_ShaderHandle);
 	g_ShaderHandle = 0;
 
 	ImGui_ML_DestroyFontsTexture();

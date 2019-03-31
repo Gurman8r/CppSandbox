@@ -22,33 +22,33 @@ namespace ml
 
 	bool RenderWindow::setup(bool experimental)
 	{
-		if (Window::setup() && OpenGL::init(experimental))
+		if (Window::setup() && ML_GL.init(experimental))
 		{
 			// Validate GL Version
-			OpenGL::validate(m_context.majorVersion, m_context.minorVersion);
+			ML_GL.validate(m_context.majorVersion, m_context.minorVersion);
 
 			// Setup GL
-			OpenGL::enable(GL::CullFace);
-			OpenGL::enable(GL::DepthTest);
-			OpenGL::enable(GL::Blend);
-			OpenGL::enable(GL::AlphaTest);
-			OpenGL::enable(GL::Texture2D);
+			ML_GL.enable(GL::CullFace);
+			ML_GL.enable(GL::DepthTest);
+			ML_GL.enable(GL::Blend);
+			ML_GL.enable(GL::AlphaTest);
+			ML_GL.enable(GL::Texture2D);
 
-			OpenGL::cullFace(GL::Back);
-			OpenGL::depthFunc(GL::Less);
-			OpenGL::blendFunc(GL::SourceAlpha, GL::OneMinusSourceAlpha);
-			OpenGL::alphaFunc(GL::Greater, 0.01f);
+			ML_GL.cullFace(GL::Back);
+			ML_GL.depthFunc(GL::Less);
+			ML_GL.blendFunc(GL::SourceAlpha, GL::OneMinusSourceAlpha);
+			ML_GL.alphaFunc(GL::Greater, 0.01f);
 
-			OpenGL::activeTexture(GL::Texture0);
+			ML_GL.activeTexture(GL::Texture0);
 
 			if (m_context.multisample)
 			{
-				OpenGL::enable(GL::Multisample);
+				ML_GL.enable(GL::Multisample);
 			}
 
 			if (m_context.srgbCapable)
 			{
-				if (!OpenGL::enable(GL::FramebufferSRGB))
+				if (!ML_GL.enable(GL::FramebufferSRGB))
 				{
 					ml::Debug::logWarning("Failed to enable Framebuffer SRGB");
 					m_context.srgbCapable = false;

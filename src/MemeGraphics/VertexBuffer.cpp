@@ -29,14 +29,14 @@ namespace ml
 	{
 		if ((*this))
 		{
-			OpenGL::deleteBuffers(1, (*this));
+			ML_GL.deleteBuffers(1, (*this));
 		}
 		return (*this);
 	}
 
 	VertexBuffer & VertexBuffer::create(GL::Usage usage)
 	{
-		if (!(*this) && (get_ref() = OpenGL::genBuffers(1)))
+		if (!(*this) && (get_ref() = ML_GL.genBuffers(1)))
 		{
 			m_usage = usage;
 		}
@@ -46,12 +46,12 @@ namespace ml
 
 	void VertexBuffer::bind() const
 	{
-		OpenGL::bindBuffer(GL::ArrayBuffer, (*this));
+		ML_GL.bindBuffer(GL::ArrayBuffer, (*this));
 	}
 	
 	void VertexBuffer::unbind() const
 	{
-		OpenGL::bindBuffer(GL::ArrayBuffer, NULL);
+		ML_GL.bindBuffer(GL::ArrayBuffer, NULL);
 	}
 	
 	
@@ -60,7 +60,7 @@ namespace ml
 		m_data = data;
 		m_size = size;
 		m_count = size / Vertex::Size;
-		OpenGL::bufferData(GL::ArrayBuffer, (sizeof(float) * m_size), m_data, m_usage);
+		ML_GL.bufferData(GL::ArrayBuffer, (sizeof(float) * m_size), m_data, m_usage);
 	}
 	
 	void VertexBuffer::bufferData(const FloatList & data) const
@@ -73,7 +73,7 @@ namespace ml
 		m_data = data;
 		m_size = size;
 		m_count = size / Vertex::Size;
-		OpenGL::bufferSubData(GL::ArrayBuffer, offset, (sizeof(float) * m_size), m_data);
+		ML_GL.bufferSubData(GL::ArrayBuffer, offset, (sizeof(float) * m_size), m_data);
 	}
 	
 	void VertexBuffer::bufferSubData(const FloatList & data, uint32_t offset) const

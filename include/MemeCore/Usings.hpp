@@ -8,15 +8,12 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-namespace ml
-{
-}
+//#define ML_INT_TYPES
 
 /* * * * * * * * * * * * * * * * * * * * */
 
 namespace ml
 {
-//#define ML_INT_TYPES
 # ifdef ML_INT_TYPES
 	using int8_t   = signed char;
 	using int16_t  = short;

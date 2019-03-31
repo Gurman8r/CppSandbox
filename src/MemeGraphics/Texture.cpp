@@ -80,7 +80,7 @@ namespace ml
 		bind(NULL);
 		if ((*this))
 		{
-			OpenGL::deleteTextures(1, (*this));
+			ML_GL.deleteTextures(1, (*this));
 			get_ref() = NULL;
 			return true;
 		}
@@ -131,7 +131,7 @@ namespace ml
 		{
 			bind(this);
 
-			OpenGL::texSubImage2D(
+			ML_GL.texSubImage2D(
 				m_target,
 				m_level,
 				pos [0],
@@ -144,7 +144,7 @@ namespace ml
 
 			bind(NULL);
 
-			OpenGL::flush();
+			ML_GL.flush();
 
 			setRepeated(m_repeated);
 
@@ -185,15 +185,15 @@ namespace ml
 			return Debug::logError("Failed creating texture, invalid getSize {0}", size);
 		}
 
-		if (!(*this) && (get_ref() = OpenGL::genTextures(1)))
+		if (!(*this) && (get_ref() = ML_GL.genTextures(1)))
 		{
 			m_size = size;
 
 			m_realSize = vec2u(
-				OpenGL::getValidTextureSize(m_size[0]),
-				OpenGL::getValidTextureSize(m_size[1]));
+				ML_GL.getValidTextureSize(m_size[0]),
+				ML_GL.getValidTextureSize(m_size[1]));
 
-			static const uint32_t maxSize = OpenGL::getMaxTextureSize();
+			static const uint32_t maxSize = ML_GL.getMaxTextureSize();
 			if ((m_realSize[0] > maxSize) || (m_realSize[1] > maxSize))
 			{
 				return Debug::logError(
@@ -206,7 +206,7 @@ namespace ml
 
 			bind(this);
 
-			OpenGL::texImage2D(
+			ML_GL.texImage2D(
 				m_target,
 				m_level,
 				m_intFormat,
@@ -219,7 +219,7 @@ namespace ml
 
 			bind(NULL);
 
-			OpenGL::flush();
+			ML_GL.flush();
 
 			setRepeated(m_repeated);
 
@@ -236,7 +236,7 @@ namespace ml
 	{
 		if ((*this))
 		{
-			if ((m_mipmapped = value) && !OpenGL::framebuffersAvailable())
+			if ((m_mipmapped = value) && !ML_GL.framebuffersAvailable())
 			{
 				static bool warned = false;
 				if (!warned)
@@ -254,16 +254,16 @@ namespace ml
 
 			bind(this);
 
-			OpenGL::generateMipmap(m_target);
+			ML_GL.generateMipmap(m_target);
 
-			OpenGL::texParameter(
+			ML_GL.texParameter(
 				m_target,
 				GL::TexMinFilter,
 				((m_smooth
 					? GL::LinearMipmapLinear
 					: GL::NearestMipmapNearest)));
 
-			OpenGL::texParameter(
+			ML_GL.texParameter(
 				m_target,
 				GL::TexMagFilter,
 				((m_smooth
@@ -272,7 +272,7 @@ namespace ml
 
 			bind(NULL);
 
-			OpenGL::flush();
+			ML_GL.flush();
 		}
 		return (*this);
 	}
@@ -281,7 +281,7 @@ namespace ml
 	{
 		if ((*this))
 		{
-			if ((m_repeated = value) && !OpenGL::edgeClampAvailable())
+			if ((m_repeated = value) && !ML_GL.edgeClampAvailable())
 			{
 				static bool warned = false;
 				if (!warned)
@@ -295,27 +295,27 @@ namespace ml
 
 			bind(this);
 
-			OpenGL::texParameter(
+			ML_GL.texParameter(
 				m_target,
 				GL::TexWrapS,
 				(m_repeated
 					? GL::Repeat
-					: (OpenGL::edgeClampAvailable()
+					: (ML_GL.edgeClampAvailable()
 						? GL::ClampToEdge
 						: GL::Clamp)));
 
-			OpenGL::texParameter(
+			ML_GL.texParameter(
 				m_target,
 				GL::TexWrapT,
 				(m_repeated
 					? GL::Repeat
-					: (OpenGL::edgeClampAvailable()
+					: (ML_GL.edgeClampAvailable()
 						? GL::ClampToEdge
 						: GL::Clamp)));
 
 			bind(NULL);
 
-			OpenGL::flush();
+			ML_GL.flush();
 		}
 		return (*this);
 	}
@@ -328,14 +328,14 @@ namespace ml
 
 			bind(this);
 
-			OpenGL::texParameter(
+			ML_GL.texParameter(
 				m_target,
 				GL::TexMinFilter,
 				(m_smooth
 					? GL::Linear
 					: GL::Nearest));
 
-			OpenGL::texParameter(
+			ML_GL.texParameter(
 				m_target,
 				GL::TexMagFilter,
 				(m_smooth
@@ -344,7 +344,7 @@ namespace ml
 
 			bind(NULL);
 
-			OpenGL::flush();
+			ML_GL.flush();
 		}
 		return (*this);
 	}
@@ -387,7 +387,7 @@ namespace ml
 			{
 				bind(this);
 
-				OpenGL::getTexImage(
+				ML_GL.getTexImage(
 					m_target,
 					0,
 					m_intFormat,
@@ -406,11 +406,11 @@ namespace ml
 	{
 		if (value)
 		{
-			OpenGL::bindTexture(value->target(), (uint32_t)(*value));
+			ML_GL.bindTexture(value->target(), (uint32_t)(*value));
 		}
 		else
 		{
-			OpenGL::bindTexture(GL::Texture2D, NULL);
+			ML_GL.bindTexture(GL::Texture2D, NULL);
 		}
 	}
 	

@@ -21,11 +21,11 @@ namespace ml
 		{
 			if (program)
 			{
-				cached = OpenGL::getProgramHandle(GL::ProgramObject);
+				cached = ML_GL.getProgramHandle(GL::ProgramObject);
 
 				if (program != cached)
 				{
-					OpenGL::useShader(program);
+					ML_GL.useShader(program);
 				}
 
 				location = shader->getUniformLocation(name);
@@ -36,7 +36,7 @@ namespace ml
 		{
 			if (program && (program != cached))
 			{
-				OpenGL::useShader(cached);
+				ML_GL.useShader(cached);
 			}
 		}
 
@@ -74,10 +74,10 @@ namespace ml
 		m_textures.clear();
 		m_uniforms.clear();
 
-		OpenGL::useShader(NULL);
+		ML_GL.useShader(NULL);
 		if ((*this))
 		{
-			OpenGL::deleteShader((*this));
+			ML_GL.deleteShader((*this));
 			get_ref() = NULL;
 			return true;
 		}
@@ -170,14 +170,14 @@ namespace ml
 	{
 		if (*this)
 		{
-			OpenGL::useShader(*this);
+			ML_GL.useShader(*this);
 
 			if (bindTextures)
 			{
 				GL::TextureID texID = GL::Texture0;
 				for (const TexturePair & pair : m_textures)
 				{
-					OpenGL::activeTexture(texID++);
+					ML_GL.activeTexture(texID++);
 
 					Texture::bind(pair.second);
 				}
@@ -186,7 +186,7 @@ namespace ml
 		}
 		else
 		{
-			OpenGL::useShader(NULL);
+			ML_GL.useShader(NULL);
 			return false;
 		}
 	}
@@ -231,7 +231,7 @@ namespace ml
 		UniformBinder u(this, name);
 		if (u)
 		{
-			OpenGL::uniform1f(u.location, value);
+			ML_GL.uniform1f(u.location, value);
 		}
 		return u;
 	}
@@ -241,7 +241,7 @@ namespace ml
 		UniformBinder u(this, name);
 		if (u)
 		{
-			OpenGL::uniform1i(u.location, value);
+			ML_GL.uniform1i(u.location, value);
 		}
 		return u;
 	}
@@ -251,7 +251,7 @@ namespace ml
 		UniformBinder u(this, name);
 		if (u)
 		{
-			OpenGL::uniform2f(u.location, value[0], value[1]);
+			ML_GL.uniform2f(u.location, value[0], value[1]);
 		}
 		return u;
 	}
@@ -261,7 +261,7 @@ namespace ml
 		UniformBinder u(this, name);
 		if (u)
 		{
-			OpenGL::uniform3f(u.location, value[0], value[1], value[2]);
+			ML_GL.uniform3f(u.location, value[0], value[1], value[2]);
 		}
 		return u;
 	}
@@ -271,7 +271,7 @@ namespace ml
 		UniformBinder u(this, name);
 		if (u)
 		{
-			OpenGL::uniform4f(u.location, value[0], value[1], value[2], value[3]);
+			ML_GL.uniform4f(u.location, value[0], value[1], value[2], value[3]);
 		}
 		return u;
 	}
@@ -281,7 +281,7 @@ namespace ml
 		UniformBinder u(this, name);
 		if (u)
 		{
-			OpenGL::uniform2i(u.location, value[0], value[1]);
+			ML_GL.uniform2i(u.location, value[0], value[1]);
 		}
 		return u;
 	}
@@ -291,7 +291,7 @@ namespace ml
 		UniformBinder u(this, name);
 		if (u)
 		{
-			OpenGL::uniform3i(u.location, value[0], value[1], value[2]);
+			ML_GL.uniform3i(u.location, value[0], value[1], value[2]);
 		}
 		return u;
 	}
@@ -301,7 +301,7 @@ namespace ml
 		UniformBinder u(this, name);
 		if (u)
 		{
-			OpenGL::uniform4i(u.location, value[0], value[1], value[2], value[3]);
+			ML_GL.uniform4i(u.location, value[0], value[1], value[2], value[3]);
 		}
 		return u;
 	}
@@ -311,7 +311,7 @@ namespace ml
 		UniformBinder u(this, name);
 		if (u)
 		{
-			OpenGL::uniformMatrix3fv(u.location, 1, false, value.data());
+			ML_GL.uniformMatrix3fv(u.location, 1, false, value.data());
 		}
 		return u;
 	}
@@ -321,7 +321,7 @@ namespace ml
 		UniformBinder u(this, name);
 		if (u)
 		{
-			OpenGL::uniformMatrix4fv(u.location, 1, false, value.data());
+			ML_GL.uniformMatrix4fv(u.location, 1, false, value.data());
 		}
 		return u;
 	}
@@ -334,7 +334,7 @@ namespace ml
 			TextureTable::iterator it;
 			if ((it = m_textures.find(u.location)) == m_textures.end())
 			{
-				static size_t maxUnits = static_cast<size_t>(OpenGL::getMaxTextureUnits());
+				static size_t maxUnits = static_cast<size_t>(ML_GL.getMaxTextureUnits());
 
 				if ((m_textures.size() + 1) >= maxUnits)
 				{
@@ -354,7 +354,7 @@ namespace ml
 		UniformBinder u(this, name);
 		if (u)
 		{
-			OpenGL::uniform1fv(u.location, count, value);
+			ML_GL.uniform1fv(u.location, count, value);
 		}
 		return u;
 	}
@@ -364,7 +364,7 @@ namespace ml
 		UniformBinder u(this, name);
 		if (u)
 		{
-			OpenGL::uniform2fv(u.location, count, &vec2f::contiguous(value, count)[0]);
+			ML_GL.uniform2fv(u.location, count, &vec2f::contiguous(value, count)[0]);
 		}
 		return u;
 	}
@@ -374,7 +374,7 @@ namespace ml
 		UniformBinder u(this, name);
 		if (u)
 		{
-			OpenGL::uniform3fv(u.location, count, &vec3f::contiguous(value, count)[0]);
+			ML_GL.uniform3fv(u.location, count, &vec3f::contiguous(value, count)[0]);
 		}
 		return u;
 	}
@@ -384,7 +384,7 @@ namespace ml
 		UniformBinder u(this, name);
 		if (u)
 		{
-			OpenGL::uniform4fv(u.location, count, &vec4f::contiguous(value, count)[0]);
+			ML_GL.uniform4fv(u.location, count, &vec4f::contiguous(value, count)[0]);
 		}
 		return u;
 	}
@@ -394,7 +394,7 @@ namespace ml
 		UniformBinder u(this, name);
 		if (u)
 		{
-			OpenGL::uniformMatrix3fv(u.location, count, false, &mat3f::contiguous(value, count)[0]);
+			ML_GL.uniformMatrix3fv(u.location, count, false, &mat3f::contiguous(value, count)[0]);
 		}
 		return u;
 	}
@@ -404,7 +404,7 @@ namespace ml
 		UniformBinder u(this, name);
 		if (u)
 		{
-			OpenGL::uniformMatrix4fv(u.location, count, false, &mat4f::contiguous(value, count)[0]);
+			ML_GL.uniformMatrix4fv(u.location, count, false, &mat4f::contiguous(value, count)[0]);
 		}
 		return u;
 	}
@@ -413,73 +413,73 @@ namespace ml
 
 	bool Shader::compile(CString vs, CString gs, CString fs)
 	{
-		if (!OpenGL::shadersAvailable())
+		if (!ML_GL.shadersAvailable())
 		{
 			return ml::Debug::logError("Shaders are not available on your system.");
 		}
 
-		if (gs && !OpenGL::geometryShadersAvailable())
+		if (gs && !ML_GL.geometryShadersAvailable())
 		{
 			return ml::Debug::logError("Geometry shaders are not available on your system.");
 		}
 
 		cleanup();
 
-		if (!(*this) && !(get_ref() = OpenGL::createProgramObject()))
+		if (!(*this) && !(get_ref() = ML_GL.createProgramObject()))
 		{
 			return Debug::logError("Failed creating shader object");
 		}
 
 		// Vertex
 		uint32_t v = NULL;
-		switch (OpenGL::compileShader(v, GL::VertexShader, vs))
+		switch (ML_GL.compileShader(v, GL::VertexShader, vs))
 		{
 		case ML_SUCCESS:
-			OpenGL::attachShader((*this), v);
-			OpenGL::deleteShader(v);
+			ML_GL.attachShader((*this), v);
+			ML_GL.deleteShader(v);
 			break;
 		case ML_FAILURE:
-			OpenGL::deleteShader((*this));
+			ML_GL.deleteShader((*this));
 			return false;
 		}
 
 		// Geometry
 		uint32_t g = NULL;
-		switch (OpenGL::compileShader(g, GL::GeometryShader, gs))
+		switch (ML_GL.compileShader(g, GL::GeometryShader, gs))
 		{
 		case ML_SUCCESS:
-			OpenGL::attachShader((*this), g);
-			OpenGL::deleteShader(g);
+			ML_GL.attachShader((*this), g);
+			ML_GL.deleteShader(g);
 			break;
 		case ML_FAILURE:
-			OpenGL::deleteShader((*this));
+			ML_GL.deleteShader((*this));
 			return false;
 		}
 
 		// Fragment
 		uint32_t f = NULL;
-		switch (OpenGL::compileShader(f, GL::FragmentShader, fs))
+		switch (ML_GL.compileShader(f, GL::FragmentShader, fs))
 		{
 		case ML_SUCCESS:
-			OpenGL::attachShader((*this), f);
-			OpenGL::deleteShader(f);
+			ML_GL.attachShader((*this), f);
+			ML_GL.deleteShader(f);
 			break;
 		case ML_FAILURE:
-			OpenGL::deleteShader((*this));
+			ML_GL.deleteShader((*this));
 			return false;
 		}
 
 		// Link the program
-		if (!OpenGL::linkShader(*this))
+		if (!ML_GL.linkShader(*this))
 		{
-			CString log = OpenGL::getProgramInfoLog(*this);
+			CString log = ML_GL.getProgramInfoLog(*this);
 			
-			OpenGL::deleteShader(*this);
+			ML_GL.deleteShader(*this);
 			
 			return Debug::logError("Failed linking source: {0}", log);
 		}
 
-		OpenGL::flush();
+		ML_GL.flush();
 
 		return true;
 	}
@@ -495,7 +495,7 @@ namespace ml
 		else
 		{
 			// Not in cache, request the location from OpenGL
-			int32_t location = OpenGL::getUniformLocation((*this), value.c_str());
+			int32_t location = ML_GL.getUniformLocation((*this), value.c_str());
 			
 			m_uniforms.insert({ value, location });
 			
@@ -510,7 +510,7 @@ namespace ml
 	
 	int32_t Shader::getAttribLocation(const String & value) const
 	{
-		return OpenGL::getAttribLocation(*this, value.c_str());
+		return ML_GL.getAttribLocation(*this, value.c_str());
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

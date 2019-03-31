@@ -22,12 +22,6 @@
     <Filter Include="Header Files\Interfaces">
       <UniqueIdentifier>{0bee5786-4dbe-41db-81dd-9cad85974a90}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Wrapper">
-      <UniqueIdentifier>{e6925aeb-bae2-4cf0-bfbb-70aba96f9b5e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Wrapper">
-      <UniqueIdentifier>{18eb3d43-0a77-4af5-9975-896e67ff95dc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Drawable">
       <UniqueIdentifier>{d15342cc-d15c-402e-accc-c3a2c45796a3}</UniqueIdentifier>
     </Filter>
@@ -58,6 +52,12 @@
     <Filter Include="Source Files\Utility">
       <UniqueIdentifier>{70520228-82c3-4544-8907-42e3e4ecce42}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Internal">
+      <UniqueIdentifier>{e6925aeb-bae2-4cf0-bfbb-70aba96f9b5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Internal">
+      <UniqueIdentifier>{18eb3d43-0a77-4af5-9975-896e67ff95dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeGraphics\Export.hpp">
@@ -85,10 +85,10 @@
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\GL.hpp">
-      <Filter>Header Files\Wrapper</Filter>
+      <Filter>Header Files\Internal</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\OpenGL.hpp">
-      <Filter>Header Files\Wrapper</Filter>
+      <Filter>Header Files\Internal</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Text.hpp">
       <Filter>Header Files\Drawable</Filter>
@@ -178,7 +178,7 @@
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\GLM.hpp">
-      <Filter>Header Files\Wrapper</Filter>
+      <Filter>Header Files\Internal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -198,7 +198,7 @@
       <Filter>Source Files\DS</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\OpenGL.cpp">
-      <Filter>Source Files\Wrapper</Filter>
+      <Filter>Source Files\Internal</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Uniform.cpp">
       <Filter>Source Files\DS</Filter>
@@ -281,7 +281,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\include\MemeGraphics\GL.inl">
-      <Filter>Header Files\Wrapper</Filter>
+      <Filter>Header Files\Internal</Filter>
     </None>
   </ItemGroup>
 </Project>

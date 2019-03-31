@@ -123,16 +123,16 @@ namespace ml
 
 	uint32_t Skybox::loadCubemap(const List<String>& faces)
 	{
-		if (uint32_t textureID = OpenGL::genTextures(1))
+		if (uint32_t textureID = ML_GL.genTextures(1))
 		{
-			OpenGL::bindTexture(GL::TextureCubeMap, textureID);
+			ML_GL.bindTexture(GL::TextureCubeMap, textureID);
 
 			for (uint32_t i = 0; i < faces.size(); i++)
 			{
 				Image image;
 				if (image.loadFromFile(faces[i]))
 				{
-					OpenGL::texImage2D(
+					ML_GL.texImage2D(
 						GL::CubeMap_Positive_X + i,
 						0,
 						GL::RGB,
@@ -150,13 +150,13 @@ namespace ml
 				}
 			}
 
-			OpenGL::texParameter(GL::TextureCubeMap, GL::TexMinFilter, GL::Linear);
-			OpenGL::texParameter(GL::TextureCubeMap, GL::TexMagFilter, GL::Linear);
-			OpenGL::texParameter(GL::TextureCubeMap, GL::TexWrapS, GL::ClampToEdge);
-			OpenGL::texParameter(GL::TextureCubeMap, GL::TexWrapT, GL::ClampToEdge);
-			OpenGL::texParameter(GL::TextureCubeMap, GL::TexWrapR, GL::ClampToEdge);
+			ML_GL.texParameter(GL::TextureCubeMap, GL::TexMinFilter, GL::Linear);
+			ML_GL.texParameter(GL::TextureCubeMap, GL::TexMagFilter, GL::Linear);
+			ML_GL.texParameter(GL::TextureCubeMap, GL::TexWrapS, GL::ClampToEdge);
+			ML_GL.texParameter(GL::TextureCubeMap, GL::TexWrapT, GL::ClampToEdge);
+			ML_GL.texParameter(GL::TextureCubeMap, GL::TexWrapR, GL::ClampToEdge);
 			
-			OpenGL::bindTexture(GL::TextureCubeMap, NULL);
+			ML_GL.bindTexture(GL::TextureCubeMap, NULL);
 
 			return textureID;
 		}
