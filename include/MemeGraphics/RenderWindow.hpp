@@ -11,11 +11,14 @@ namespace ml
 		, public RenderTarget
 	{
 	public:
-		RenderWindow() {}
+		RenderWindow() 
+			: Window()
+		{
+		}
 		virtual ~RenderWindow() {}
 
 		bool setup() override;
-		virtual bool setup(bool experimental);
+		bool setup(bool experimental);
 
 		void onEvent(const IEvent * ev) override;
 

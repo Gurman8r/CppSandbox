@@ -3,12 +3,9 @@
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#include "DemoEvents.hpp"
-#include "DemoSettings.hpp"
-#include <MemeCore/Thread.hpp>
+#include <MemeEngine/Application.hpp>
 #include <MemeGraphics/RenderWindow.hpp>
 #include <MemeGraphics/Text.hpp>
-#include <MemePhysics/Rigidbody.hpp>
 #include <MemePhysics/Particle.hpp>
 
 // Demo
@@ -16,7 +13,7 @@
 namespace DEMO
 {
 	class Demo final
-		: public ml::RenderWindow
+		: public ml::Application
 	{
 	public:
 		Demo();
@@ -26,15 +23,15 @@ namespace DEMO
 		void onEvent(const ml::IEvent * value) override;
 
 	private:
-		void onEnter(const EnterEvent & ev);
-		void onLoad(const LoadEvent & ev);
-		void onStart(const StartEvent & ev);
-		void onFixedUpdate(const FixedUpdateEvent & ev);
-		void onUpdate(const UpdateEvent & ev);
-		void onDraw(const DrawEvent & ev);
-		void onGui(const GuiEvent & ev);
-		void onUnload(const UnloadEvent & ev);
-		void onExit(const ExitEvent & ev);
+		void onEnter		(const ml::EnterEvent		* ev) override;
+		void onLoad			(const ml::LoadEvent		* ev) override;
+		void onStart		(const ml::StartEvent		* ev) override;
+		void onFixedUpdate	(const ml::FixedUpdateEvent * ev) override;
+		void onUpdate		(const ml::UpdateEvent		* ev) override;
+		void onDraw			(const ml::DrawEvent		* ev) override;
+		void onGui			(const ml::GuiEvent			* ev) override;
+		void onUnload		(const ml::UnloadEvent		* ev) override;
+		void onExit			(const ml::ExitEvent		* ev) override;
 
 	private:
 		bool ML_MainMenuBar_draw();
@@ -49,8 +46,6 @@ namespace DEMO
 		ml::VBO m_batchVBO;
 
 		ml::HashMap<ml::String, ml::Text> m_text;
-
-		uint32_t m_skybox;
 
 		// Uniform Values
 		/* * * * * * * * * * * * * * * * * * * * */

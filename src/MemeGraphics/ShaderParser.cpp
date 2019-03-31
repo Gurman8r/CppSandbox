@@ -63,7 +63,7 @@ namespace ml
 				}
 				else if (parseWrapped(line, '<', '>', name))
 				{
-					path = ML_FileSystem.pathTo(ML_SHADER_PATH + name);
+					path = ML_FileSystem.pathTo(ML_INCLUDE_SHADER_PATH + name);
 				}
 				else
 				{

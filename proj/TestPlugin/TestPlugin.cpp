@@ -5,17 +5,12 @@
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-ML_PLUGIN_API void * ML_PluginInit(void * data)
-{
-	return TestPlugin::getInstance().onInit(data);
-}
-
-ML_PLUGIN_API void * ML_PluginEnable(void * data)
+ML_PLUGIN_API void * ML_Plugin_Enable(void * data)
 {
 	return TestPlugin::getInstance().onEnable(data);
 }
 
-ML_PLUGIN_API void * ML_PluginDisable(void * data)
+ML_PLUGIN_API void * ML_Plugin_Disable(void * data)
 {
 	return TestPlugin::getInstance().onDisable(data);
 }
@@ -36,22 +31,16 @@ namespace
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void * TestPlugin::onInit(void * data)
-	{
-		ml::cout << ((ml::CString)data) << ml::endl;
-		return (void *)("OK");
-	}
-	
 	void * TestPlugin::onEnable(void * data)
 	{
 		ml::cout << ((ml::CString)data) << ml::endl;
-		return (void *)("OK");
+		return 0;
 	}
 	
 	void * TestPlugin::onDisable(void * data)
 	{
 		ml::cout << ((ml::CString)data) << ml::endl;
-		return (void *)("OK");
+		return 0;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

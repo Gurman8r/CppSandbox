@@ -1,6 +1,7 @@
 #ifndef _ML_LIB_LOADER_HPP_
 #define _ML_LIB_LOADER_HPP_
 
+#include <MemeEngine/Export.hpp>
 #include <MemeCore/ITrackable.hpp>
 
 #define ML_Lib ml::LibLoader::getInstance()
@@ -9,7 +10,7 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	class ML_CORE_API LibLoader
+	class ML_ENGINE_API LibLoader final
 		: public ITrackable
 		, public ISingleton<LibLoader>
 	{

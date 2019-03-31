@@ -3,7 +3,7 @@
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#include <MemeCore/Export.hpp>
+#include <MemeEngine/Export.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
@@ -20,17 +20,15 @@ namespace ml
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#define ML_PluginInit		ML_PluginInit
-#define ML_PluginEnable		ML_PluginEnable
-#define ML_PluginDisable	ML_PluginDisable
+#define ML_Plugin_Enable	ML_Plugin_Enable
+#define ML_Plugin_Disable	ML_Plugin_Disable
 
-#define ML_FUNC_DECL
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 extern "C"
 {
-	ML_PLUGIN_API void * ML_PluginInit(void * data);
-	ML_PLUGIN_API void * ML_PluginEnable(void * data);
-	ML_PLUGIN_API void * ML_PluginDisable(void * data);
+	ML_PLUGIN_API void * ML_Plugin_Enable(void * data);
+	ML_PLUGIN_API void * ML_Plugin_Disable(void * data);
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

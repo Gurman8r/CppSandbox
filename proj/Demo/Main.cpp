@@ -1,7 +1,11 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #include "Demo.hpp"
+#include "DemoSettings.hpp"
 #include "Testing.hpp"
+
+#include <MemeEngine/Engine.hpp>
+#include <MemeEditor/ImGui.hpp>
 #include <MemeCore/Debug.hpp>
 #include <MemeCore/Time.hpp>
 #include <MemeCore/EventSystem.hpp>
@@ -27,7 +31,7 @@ int32_t main(int32_t argc, char ** argv)
 	ml::Window * program = static_cast<ml::Window *>(new DEMO::Demo());
 	
 	// Enter
-	ML_EventSystem.fireEvent(DEMO::EnterEvent(ml::Args(argc, argv)));
+	ML_EventSystem.fireEvent(ml::EnterEvent(argc, argv));
 	if (ml::Debug::checkError(ML_FAILURE))
 	{
 		delete program;
@@ -36,10 +40,10 @@ int32_t main(int32_t argc, char ** argv)
 	}
 
 	// Load
-	ML_EventSystem.fireEvent(DEMO::LoadEvent());
+	ML_EventSystem.fireEvent(ml::LoadEvent());
 
 	// Start
-	ML_EventSystem.fireEvent(DEMO::StartEvent());
+	ML_EventSystem.fireEvent(ml::StartEvent());
 
 	// Loop
 	ml::Timer	 timer;
@@ -47,26 +51,38 @@ int32_t main(int32_t argc, char ** argv)
 	do
 	{	// Begin Step
 		timer.start();
+		program->pollEvents();
 		{
 			// "Fixed" Update
-			ML_EventSystem.fireEvent(DEMO::FixedUpdateEvent(elapsed));
+			ML_EventSystem.fireEvent(ml::FixedUpdateEvent(elapsed));
 
 			// Update
-			ML_EventSystem.fireEvent(DEMO::UpdateEvent(elapsed));
+			ML_EventSystem.fireEvent(ml::UpdateEvent(elapsed));
 
 			// Draw
-			ML_EventSystem.fireEvent(DEMO::DrawEvent(elapsed));
+			ML_EventSystem.fireEvent(ml::DrawEvent(elapsed));
+
+			// Gui
+			ImGui_ML_NewFrame();
+			ImGui::NewFrame();
+			{
+				ML_EventSystem.fireEvent(ml::GuiEvent(elapsed));
+			}
+			ImGui::Render();
+			ImGui_ML_Render(ImGui::GetDrawData());
+
 		}
 		// End Step
+		program->swapBuffers();
 		elapsed = timer.stop().elapsed();
 
 	} while (program->isOpen());
 
 	// Unload
-	ML_EventSystem.fireEvent(DEMO::UnloadEvent());
+	ML_EventSystem.fireEvent(ml::UnloadEvent());
 
 	// Exit
-	ML_EventSystem.fireEvent(DEMO::ExitEvent());
+	ML_EventSystem.fireEvent(ml::ExitEvent());
 
 	// Delete Program
 	delete program;

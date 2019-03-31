@@ -1,22 +1,22 @@
-#include <MemeEditor/ResourceManager.hpp>
+#include <MemeEngine/Resources.hpp>
 #include <MemeCore/Debug.hpp>
 
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	ResourceManager::ResourceManager()
+	Resources::Resources()
 	{
 	}
 
-	ResourceManager::~ResourceManager()
+	Resources::~Resources()
 	{
 		cleanupAll();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	size_t ResourceManager::cleanupAll()
+	size_t Resources::cleanupAll()
 	{
 		return
 			sounds.clean() +
@@ -34,7 +34,7 @@ namespace ml
 			plugins.clean();
 	}
 
-	size_t ResourceManager::reloadAll()
+	size_t Resources::reloadAll()
 	{
 		return
 			scripts.reload() +
@@ -54,18 +54,18 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool ResourceManager::cleanup()
+	bool Resources::cleanup()
 	{
 		return cleanupAll();
 	}
 
-	bool ResourceManager::loadFromFile(const String & filename)
+	bool Resources::loadFromFile(const String & filename)
 	{
 		SStream file;
 		return ML_FileSystem.getFileContents(filename, file) && parseFile(file);
 	}
 
-	void ResourceManager::serialize(std::ostream & out) const
+	void Resources::serialize(std::ostream & out) const
 	{
 		for (auto item : m_manifest)
 		{
@@ -78,14 +78,14 @@ namespace ml
 		}
 	}
 
-	void ResourceManager::deserialize(std::istream & in)
+	void Resources::deserialize(std::istream & in)
 	{
 		parseFile((SStream &)in);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool ResourceManager::parseFile(SStream & file)
+	bool Resources::parseFile(SStream & file)
 	{
 		size_t count = 0;
 		String line;
@@ -131,7 +131,7 @@ namespace ml
 		return (bool)(count);
 	}
 
-	bool ResourceManager::parseItem(const ManifestItem & item)
+	bool Resources::parseItem(const ManifestItem & item)
 	{
 		/* * * * * * * * * * * * * * * * * * * * */
 

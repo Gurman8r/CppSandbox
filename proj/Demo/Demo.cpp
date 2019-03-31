@@ -1,7 +1,8 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #include "Demo.hpp"
-#include "DemoCommands.hpp"
+#include "DemoSettings.hpp"
+
 #include <MemeAudio/Audio.hpp>
 #include <MemeCore/Debug.hpp>
 #include <MemeCore/Dispatcher.hpp>
@@ -13,7 +14,8 @@
 #include <MemeGraphics/OpenGL.hpp>
 #include <MemeGraphics/Camera.hpp>
 #include <MemeGraphics/RenderStates.hpp>
-#include <MemeEditor/ResourceManager.hpp>
+#include <MemeEditor/EditorCommands.hpp>
+#include <MemeEngine/Resources.hpp>
 #include <MemeEditor/ImGui.hpp>
 #include <MemeEditor/EditorEvents.hpp>
 #include <MemeEditor/MainMenuBar.hpp>
@@ -31,6 +33,7 @@
 #include <MemeEditor/NetworkHUD.hpp>
 #include <MemeEditor/Profiler.hpp>
 #include <MemeEditor/ShaderTool.hpp>
+#include <MemeEngine/EngineCommands.hpp>
 #include <MemeNet/Client.hpp>
 #include <MemeNet/Server.hpp>
 #include <MemeScript/Interpreter.hpp>
@@ -48,20 +51,10 @@ namespace DEMO
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Demo::Demo()
+		: Application()
 	{
-		ML_EventSystem.addListener(DemoEvent::EV_Enter, this);
-		ML_EventSystem.addListener(DemoEvent::EV_Load, this);
-		ML_EventSystem.addListener(DemoEvent::EV_Start, this);
-		ML_EventSystem.addListener(DemoEvent::EV_FixedUpdate, this);
-		ML_EventSystem.addListener(DemoEvent::EV_Update, this);
-		ML_EventSystem.addListener(DemoEvent::EV_Draw, this);
-		ML_EventSystem.addListener(DemoEvent::EV_Gui, this);
-		ML_EventSystem.addListener(DemoEvent::EV_Unload, this);
-		ML_EventSystem.addListener(DemoEvent::EV_Exit, this);
-
-		ML_EventSystem.addListener(ml::CoreEvent::EV_RequestExit, this);
-
-		ML_EventSystem.addListener(ml::EditorEvent::EV_Inspector, this);
+		ML_EventSystem.addListener(ml::CoreEvent::EV_RequestExit,	this);
+		ML_EventSystem.addListener(ml::EditorEvent::EV_Inspector,	this);
 	}
 
 	Demo::~Demo() {}
@@ -70,20 +63,10 @@ namespace DEMO
 
 	void Demo::onEvent(const ml::IEvent * value)
 	{
-		ml::RenderWindow::onEvent(value);
+		ml::Application::onEvent(value);
 
 		switch (value->eventID())
 		{
-		case DemoEvent::EV_Enter:		return onEnter		(*value->as<EnterEvent>());
-		case DemoEvent::EV_Load:		return onLoad		(*value->as<LoadEvent>());
-		case DemoEvent::EV_Start:		return onStart		(*value->as<StartEvent>());
-		case DemoEvent::EV_FixedUpdate:	return onFixedUpdate(*value->as<FixedUpdateEvent>());
-		case DemoEvent::EV_Update:		return onUpdate		(*value->as<UpdateEvent>());
-		case DemoEvent::EV_Draw:		return onDraw		(*value->as<DrawEvent>());
-		case DemoEvent::EV_Gui:			return onGui		(*value->as<GuiEvent>());
-		case DemoEvent::EV_Unload:		return onUnload		(*value->as<UnloadEvent>());
-		case DemoEvent::EV_Exit:		return onExit		(*value->as<ExitEvent>());
-
 		case ml::CoreEvent::EV_RequestExit:
 			if (const auto * ev = value->as<ml::RequestExitEvent>())
 				this->close();
@@ -172,7 +155,7 @@ namespace DEMO
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void Demo::onEnter(const EnterEvent & ev)
+	void Demo::onEnter(const ml::EnterEvent * ev)
 	{
 		ml::Debug::log("Entering...");
 
@@ -193,14 +176,15 @@ namespace DEMO
 			ML_Parser.showTree(SETTINGS.flagShowTree);
 			ML_Parser.showItoP(SETTINGS.flagShowItoP);
 			
-			// Load Commands
-			install_commands();
+			// Install Commands
+			ml::EngineCommands::install();
+			ml::EditorCommands::install();
 			
 			// Run Boot Script
 			ml::Script scr;
 			if (scr.loadFromFile(ML_FileSystem.pathTo(SETTINGS.bootScript)))
 			{
-				if (!(scr.build(ev.args) && scr.run()))
+				if (!(scr.build(ml::Args(ev->argc, ev->argv)) && scr.run()))
 				{
 					ml::Debug::logError("Failed Running Boot Script");
 				}
@@ -276,7 +260,7 @@ namespace DEMO
 		}
 	}
 
-	void Demo::onLoad(const LoadEvent & ev)
+	void Demo::onLoad(const ml::LoadEvent * ev)
 	{
 		ml::Debug::log("Loading...");
 
@@ -330,7 +314,7 @@ namespace DEMO
 		}
 	}
 
-	void Demo::onStart(const StartEvent & ev)
+	void Demo::onStart(const ml::StartEvent * ev)
 	{
 		ml::Debug::log("Starting...");
 
@@ -345,7 +329,6 @@ namespace DEMO
 		{
 			if (ml::Plugin * p = ML_Res.plugins.get("TestPlugin"))
 			{
-				p->init("TestPlugin Init");
 				p->enable("TestPlugin Enable");
 				p->disable("TestPlugin Disable");
 			}
@@ -515,7 +498,7 @@ namespace DEMO
 		}
 	}
 
-	void Demo::onFixedUpdate(const FixedUpdateEvent & ev)
+	void Demo::onFixedUpdate(const ml::FixedUpdateEvent * ev)
 	{
 		// Update Physics
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -527,20 +510,16 @@ namespace DEMO
 		}
 	}
 
-	void Demo::onUpdate(const UpdateEvent & ev)
+	void Demo::onUpdate(const ml::UpdateEvent * ev)
 	{
-		// Poll Events
-		/* * * * * * * * * * * * * * * * * * * * */
-		this->pollEvents();
-
 		// Update Title
 		/* * * * * * * * * * * * * * * * * * * * */
 		this->setTitle(ml::String::Format("{0} | {1} | {2} | {3} ms/frame ({4} fps)",
 			SETTINGS.title,
 			ml::Debug::configuration(),
 			ml::Debug::platformTarget(),
-			ev.elapsed.delta(),
-			ML_Time.calculateFPS(ev.elapsed.delta())
+			ev->elapsed.delta(),
+			ML_Time.calculateFPS(ev->elapsed.delta())
 		));
 
 		// Update Models
@@ -552,7 +531,7 @@ namespace DEMO
 				pos[1] = +ML_Time.cos();
 				m->transform()
 					.setPosition(pos)
-					.rotate(+ev.elapsed.delta(), ml::vec3f::One);
+					.rotate(+ev->elapsed.delta(), ml::vec3f::One);
 			}
 
 			if (ml::GameObject * m = ML_Hierarchy.getObject("cube"))
@@ -561,13 +540,13 @@ namespace DEMO
 				pos[1] = -ML_Time.sin();
 				m->transform()
 					.setPosition(pos)
-					.rotate(-ev.elapsed.delta(), ml::vec3f::One);
+					.rotate(-ev->elapsed.delta(), ml::vec3f::One);
 			}
 
 			if (ml::GameObject * m = ML_Hierarchy.getObject("earth"))
 			{
 				m->transform()
-					.rotate((uni.animate ? ev.elapsed.delta() : 0.f), ml::vec3f::Up);
+					.rotate((uni.animate ? ev->elapsed.delta() : 0.f), ml::vec3f::Up);
 			}
 
 			if (ml::GameObject * m = ML_Hierarchy.getObject("moon"))
@@ -576,7 +555,7 @@ namespace DEMO
 				pos[1] = +ML_Time.sin();
 				m->transform()
 					.setPosition(pos)
-					.rotate(-ev.elapsed.delta(), ml::vec3f::Up);
+					.rotate(-ev->elapsed.delta(), ml::vec3f::Up);
 			}
 
 			if (ml::GameObject * m = ML_Hierarchy.getObject("sanic"))
@@ -585,14 +564,14 @@ namespace DEMO
 				pos[1] = -ML_Time.cos();
 				m->transform()
 					.setPosition(pos)
-					.rotate(-ev.elapsed.delta(), ml::vec3f::Forward);
+					.rotate(-ev->elapsed.delta(), ml::vec3f::Forward);
 			}
 
 			if (ml::GameObject * m = ML_Hierarchy.getObject("light"))
 			{
 				m->transform()
 					.setPosition(uni.lightPos)
-					.rotate(-ev.elapsed.delta(), ml::vec3f::Forward);
+					.rotate(-ev->elapsed.delta(), ml::vec3f::Forward);
 			}
 		}
 
@@ -607,7 +586,7 @@ namespace DEMO
 			uni.camera.lookAt(uni.camPos, look, ml::vec3f::Up);
 
 			// Orbit
-			float speed = (uni.camAnimate ? uni.camSpd * ev.elapsed.delta() : 0.0f);
+			float speed = (uni.camAnimate ? uni.camSpd * ev->elapsed.delta() : 0.0f);
 			ml::vec3f fwd = (look - uni.camPos);
 			ml::vec3f right = (fwd.cross(ml::vec3f::Up) * ml::vec3f(1, 0, 1)).normalized();
 			uni.camPos += right * speed;
@@ -654,8 +633,8 @@ namespace DEMO
 				.setFontSize(fontSize)
 				.setPosition(nextLine())
 				.setString(ml::String("{0} ms/frame ({1} fps)").format(
-					ev.elapsed.delta(),
-					ML_Time.calculateFPS(ev.elapsed.delta())));
+					ev->elapsed.delta(),
+					ML_Time.calculateFPS(ev->elapsed.delta())));
 
 			m_text["time"]
 				.setFont(font)
@@ -726,12 +705,12 @@ namespace DEMO
 		// Update Uniforms
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
-			uni.deltaTime = ev.elapsed.delta();
+			uni.deltaTime = ev->elapsed.delta();
 			uni.totalTime = (float)ML_Time.elapsed().millis();
 		}
 	}
 
-	void Demo::onDraw(const DrawEvent & ev)
+	void Demo::onDraw(const ml::DrawEvent * ev)
 	{
 		// Uniforms
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -936,25 +915,10 @@ namespace DEMO
 			post->unbind();
 		}
 
-
-		// Draw GUI
-		/* * * * * * * * * * * * * * * * * * * * */
-		ImGui_ML_NewFrame();
-		ImGui::NewFrame();
-		{
-			ML_EventSystem.fireEvent(GuiEvent(ev.elapsed));
-		}
-		ImGui::Render();
-		ImGui_ML_Render(ImGui::GetDrawData());
-
-		/* * * * * * * * * * * * * * * * * * * * */
-
-		this->swapBuffers();
-
 		/* * * * * * * * * * * * * * * * * * * * */
 	}
 
-	void Demo::onGui(const GuiEvent & ev)
+	void Demo::onGui(const ml::GuiEvent * ev)
 	{
 		// Main Menu Bar
 		if (gui.show_main_menu_bar) { ML_MainMenuBar_draw(); }
@@ -983,14 +947,14 @@ namespace DEMO
 		if (gui.show_demowindow)	{ ML_DemoWindow_draw(&gui.show_demowindow); }
 	}
 
-	void Demo::onUnload(const UnloadEvent & ev)
+	void Demo::onUnload(const ml::UnloadEvent * ev)
 	{
 		ml::Debug::log("Unloading...");
 
 		ML_Res.cleanupAll();
 	}
 
-	void Demo::onExit(const ExitEvent & ev)
+	void Demo::onExit(const ml::ExitEvent * ev)
 	{
 		ml::Debug::log("Exiting...");
 

@@ -1,11 +1,11 @@
-#ifndef _ML_RESOURCE_MANAGER_H_
-#define _ML_RESOURCE_MANAGER_H_
+#ifndef _ML_RESOURCES_HPP_
+#define _ML_RESOURCES_HPP_
 
-#include <MemeEditor/ResourceTable.hpp>
-#include <MemeEditor/ManifestItem.hpp>
+#include <MemeEngine/Registry.hpp>
+#include <MemeEngine/ManifestItem.hpp>
 #include <MemeCore/List.hpp>
-#include <MemeCore/Plugin.hpp>
 #include <MemeAudio/Sound.hpp>
+#include <MemeEngine/Plugin.hpp>
 #include <MemeGraphics/Effect.hpp>
 #include <MemeGraphics/Font.hpp>
 #include <MemeGraphics/Model.hpp>
@@ -13,37 +13,37 @@
 #include <MemeGraphics/Sprite.hpp>
 #include <MemeScript/Script.hpp>
 
-#define ML_Res ml::ResourceManager::getInstance()
+#define ML_Res ml::Resources::getInstance()
 
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	class ML_EDITOR_API ResourceManager
+	class ML_ENGINE_API Resources
 		: public ITrackable
 		, public IReadable
-		, public ISingleton<ResourceManager>
+		, public ISingleton<Resources>
 	{
-		friend class ISingleton<ResourceManager>;
+		friend class ISingleton<Resources>;
 
 	public:
-		using EffectMap		= ResourceTable<Effect>;
-		using FontMap		= ResourceTable<Font>;
-		using ImageMap		= ResourceTable<Image>;
-		using MaterialMap	= ResourceTable<Material>;
-		using MeshMap		= ResourceTable<Mesh>;
-		using ModelMap		= ResourceTable<Model>;
-		using PluginMap		= ResourceTable<Plugin>;
-		using ScriptMap		= ResourceTable<Script>;
-		using ShaderMap		= ResourceTable<Shader>;
-		using SkyboxMap		= ResourceTable<Skybox>;
-		using SoundMap		= ResourceTable<Sound>;
-		using SpriteMap		= ResourceTable<Sprite>;
-		using TextureMap	= ResourceTable<Texture>;
+		using EffectMap		= Registry<Effect>;
+		using FontMap		= Registry<Font>;
+		using ImageMap		= Registry<Image>;
+		using MaterialMap	= Registry<Material>;
+		using MeshMap		= Registry<Mesh>;
+		using ModelMap		= Registry<Model>;
+		using PluginMap		= Registry<Plugin>;
+		using ScriptMap		= Registry<Script>;
+		using ShaderMap		= Registry<Shader>;
+		using SkyboxMap		= Registry<Skybox>;
+		using SoundMap		= Registry<Sound>;
+		using SpriteMap		= Registry<Sprite>;
+		using TextureMap	= Registry<Texture>;
 
 	private:
-		ResourceManager();
-		~ResourceManager();
+		Resources();
+		~Resources();
 
 	public:
 		size_t cleanupAll();
@@ -81,4 +81,5 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 }
-#endif // !_ML_RESOURCE_MANAGER_H_
+
+#endif // !_ML_RESOURCES_HPP_

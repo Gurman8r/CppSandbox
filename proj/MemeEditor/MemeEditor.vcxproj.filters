@@ -81,9 +81,6 @@
     <ClInclude Include="..\..\include\MemeEditor\GUI_Window.hpp">
       <Filter>Header Files\Internal</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeEditor\ResourceManager.hpp">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\TextEditor.hpp">
       <Filter>Header Files\Windows</Filter>
     </ClInclude>
@@ -129,9 +126,6 @@
     <ClInclude Include="..\..\include\MemeEditor\NetworkHUD.hpp">
       <Filter>Header Files\Windows</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeEditor\ResourceTable.hpp">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\ResourceHUD.hpp">
       <Filter>Header Files\Windows</Filter>
     </ClInclude>
@@ -144,7 +138,7 @@
     <ClInclude Include="..\..\include\MemeEditor\ShaderTool.hpp">
       <Filter>Header Files\Windows</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeEditor\ManifestItem.hpp">
+    <ClInclude Include="..\..\include\MemeEditor\EditorCommands.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
@@ -215,9 +209,6 @@
     <ClCompile Include="..\..\src\MemeEditor\NetworkHUD.cpp">
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemeEditor\ResourceManager.cpp">
-      <Filter>Source Files\Utility</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\ResourceHUD.cpp">
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
@@ -226,6 +217,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\ShaderTool.cpp">
       <Filter>Source Files\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeEditor\EditorCommands.cpp">
+      <Filter>Source Files\Utility</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

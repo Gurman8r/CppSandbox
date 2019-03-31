@@ -1,15 +1,15 @@
 #ifndef _ML_PLUGIN_HPP_
 #define _ML_PLUGIN_HPP_
 
-#include <MemeCore/LibLoader.hpp>
 #include <MemeCore/IReadable.hpp>
-#include <MemeCore/PluginAPI.hpp>
+#include <MemeEngine/LibLoader.hpp>
+#include <MemeEngine/PluginAPI.hpp>
 
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	class ML_CORE_API Plugin
+	class ML_ENGINE_API Plugin final
 		: public ITrackable
 		, public IReadable
 		, public INonCopyable
@@ -34,23 +34,16 @@ namespace ml
 
 		template <
 			typename T
-		> inline void * init(T data)
-		{ 
-			return call<T>(ML_STRINGIFY(ML_PluginInit), data);
-		}
-
-		template <
-			typename T
 		> inline void * enable(T data)
 		{
-			return call<T>(ML_STRINGIFY(ML_PluginEnable), data);
+			return call<T>(ML_STRINGIFY(ML_Plugin_Enable), data);
 		}
 
 		template <
 			typename T
 		> inline void * disable(T data)
 		{
-			return call<T>(ML_STRINGIFY(ML_PluginDisable), data);
+			return call<T>(ML_STRINGIFY(ML_Plugin_Disable), data);
 		}
 
 	public:

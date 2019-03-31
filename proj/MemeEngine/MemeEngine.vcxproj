@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{BCF9C343-33E2-4BDE-BAFA-1C570DFF525F}</ProjectGuid>
-    <RootNamespace>MemeCore</RootNamespace>
+    <ProjectGuid>{AED09F50-CA3E-40A9-B6D9-656925E3EF55}</ProjectGuid>
+    <RootNamespace>MemeEngine</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -89,30 +89,32 @@
     <IntDir>$(SolutionDir)tmp\$(ProjectName)\$(Configuration)\$(PlatformTarget)\</IntDir>
     <TargetName>$(ProjectName)_$(Configuration)_$(PlatformTarget)</TargetName>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)thirdparty\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>ML_CORE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </ClCompile>
-    <Link>
-      <OutputFile>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\$(TargetName)$(TargetExt)</OutputFile>
-      <AdditionalLibraryDirectories>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\;$(SolutionDir)thirdparty\lib\$(Configuration)\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-    </Link>
-  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>ML_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)thirdparty\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>ML_CORE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
+      <AdditionalDependencies>MemeAudio_$(Configuration)_$(PlatformTarget).lib;MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;MemeNet_$(Configuration)_$(PlatformTarget).lib;MemeScript_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\$(TargetName)$(TargetExt)</OutputFile>
+      <AdditionalLibraryDirectories>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\;$(SolutionDir)thirdparty\lib\$(Configuration)\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>ML_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)thirdparty\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>MemeAudio_$(Configuration)_$(PlatformTarget).lib;MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;MemeNet_$(Configuration)_$(PlatformTarget).lib;MemeScript_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\;$(SolutionDir)thirdparty\lib\$(Configuration)\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
@@ -125,12 +127,13 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>ML_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)thirdparty\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>ML_CORE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>MemeAudio_$(Configuration)_$(PlatformTarget).lib;MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;MemeNet_$(Configuration)_$(PlatformTarget).lib;MemeScript_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\;$(SolutionDir)thirdparty\lib\$(Configuration)\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
@@ -143,96 +146,39 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>ML_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)thirdparty\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>ML_CORE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>MemeAudio_$(Configuration)_$(PlatformTarget).lib;MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;MemeNet_$(Configuration)_$(PlatformTarget).lib;MemeScript_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\;$(SolutionDir)thirdparty\lib\$(Configuration)\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\MemeCore\IRequest.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\Array.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\Assert.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\Bytes.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\Check.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\Chunk.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\CoreEvents.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\Dispatcher.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\File.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\Function.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\IHandle.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\TestRequest.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\Usings.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\Ratio.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\IO.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\IStream.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\IWritable.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\Map.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\MemoryManager.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\List.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\BitHelper.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\IComponent.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\ComponentMap.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\Config.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\Console.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\Debug.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\IEntity.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\IEvent.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\IEventListener.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\EventSystem.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\Export.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\Iterator.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\FileSystem.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\IComparable.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\INonCopyable.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\IReadable.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\ISerializable.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\ISingleton.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\ITrackable.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\Maths.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\Matrix.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\MemoryTracker.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\OS.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\OStream.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\Quaternion.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\Random.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\Rect.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\STD.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\String.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\Thread.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\Time.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\Duration.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\Timer.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\Vector.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\Vector2.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\Vector3.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\Vector4.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\Worker.hpp" />
+    <ClInclude Include="..\..\include\MemeEngine\Application.hpp" />
+    <ClInclude Include="..\..\include\MemeEngine\Engine.hpp" />
+    <ClInclude Include="..\..\include\MemeEngine\EngineCommands.hpp" />
+    <ClInclude Include="..\..\include\MemeEngine\EngineEvents.hpp" />
+    <ClInclude Include="..\..\include\MemeEngine\EngineSettings.hpp" />
+    <ClInclude Include="..\..\include\MemeEngine\Export.hpp" />
+    <ClInclude Include="..\..\include\MemeEngine\LibLoader.hpp" />
+    <ClInclude Include="..\..\include\MemeEngine\ManifestItem.hpp" />
+    <ClInclude Include="..\..\include\MemeEngine\Plugin.hpp" />
+    <ClInclude Include="..\..\include\MemeEngine\PluginAPI.hpp" />
+    <ClInclude Include="..\..\include\MemeEngine\Registry.hpp" />
+    <ClInclude Include="..\..\include\MemeEngine\Resources.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\include\MemeCore\IEnumerable.hpp" />
-    <ClCompile Include="..\..\src\MemeCore\Assert.cpp" />
-    <ClCompile Include="..\..\src\MemeCore\Console.cpp" />
-    <ClCompile Include="..\..\src\MemeCore\Debug.cpp" />
-    <ClCompile Include="..\..\src\MemeCore\Dispatcher.cpp" />
-    <ClCompile Include="..\..\src\MemeCore\EventSystem.cpp" />
-    <ClCompile Include="..\..\src\MemeCore\File.cpp" />
-    <ClCompile Include="..\..\src\MemeCore\FileSystem.cpp" />
-    <ClCompile Include="..\..\src\MemeCore\MemoryManager.cpp" />
-    <ClCompile Include="..\..\src\MemeCore\MemoryTracker.cpp" />
-    <ClCompile Include="..\..\src\MemeCore\Maths.cpp" />
-    <ClCompile Include="..\..\src\MemeCore\OS.cpp" />
-    <ClCompile Include="..\..\src\MemeCore\Random.cpp" />
-    <ClCompile Include="..\..\src\MemeCore\TestRequest.cpp" />
-    <ClCompile Include="..\..\src\MemeCore\Thread.cpp" />
-    <ClCompile Include="..\..\src\MemeCore\Time.cpp" />
-    <ClCompile Include="..\..\src\MemeCore\Duration.cpp" />
-    <ClCompile Include="..\..\src\MemeCore\Timer.cpp" />
-    <ClCompile Include="..\..\src\MemeCore\Worker.cpp" />
+    <ClCompile Include="..\..\src\MemeEngine\Application.cpp" />
+    <ClCompile Include="..\..\src\MemeEngine\Engine.cpp" />
+    <ClCompile Include="..\..\src\MemeEngine\EngineCommands.cpp" />
+    <ClCompile Include="..\..\src\MemeEngine\EngineSettings.cpp" />
+    <ClCompile Include="..\..\src\MemeEngine\LibLoader.cpp" />
+    <ClCompile Include="..\..\src\MemeEngine\Plugin.cpp" />
+    <ClCompile Include="..\..\src\MemeEngine\Resources.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

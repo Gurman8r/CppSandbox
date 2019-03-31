@@ -1,5 +1,5 @@
 #include <MemeEditor/Builder.hpp>
-#include <MemeEditor/ResourceManager.hpp>
+#include <MemeEngine/Resources.hpp>
 #include <MemeEditor/GUI.hpp>
 #include <MemeEditor/ImGui.hpp>
 #include <MemeEditor/Terminal.hpp>

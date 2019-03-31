@@ -99,7 +99,7 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;ML_EDITOR_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>MemeAudio_$(Configuration)_$(PlatformTarget).lib;MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;MemeNet_$(Configuration)_$(PlatformTarget).lib;MemeScript_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>MemeAudio_$(Configuration)_$(PlatformTarget).lib;MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeEngine_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;MemeNet_$(Configuration)_$(PlatformTarget).lib;MemeScript_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\;$(SolutionDir)thirdparty\lib\$(Configuration)\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
@@ -114,7 +114,7 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;ML_EDITOR_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>MemeAudio_$(Configuration)_$(PlatformTarget).lib;MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;MemeNet_$(Configuration)_$(PlatformTarget).lib;MemeScript_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>MemeAudio_$(Configuration)_$(PlatformTarget).lib;MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeEngine_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;MemeNet_$(Configuration)_$(PlatformTarget).lib;MemeScript_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\;$(SolutionDir)thirdparty\lib\$(Configuration)\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
@@ -133,7 +133,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>MemeAudio_$(Configuration)_$(PlatformTarget).lib;MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;MemeNet_$(Configuration)_$(PlatformTarget).lib;MemeScript_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>MemeAudio_$(Configuration)_$(PlatformTarget).lib;MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeEngine_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;MemeNet_$(Configuration)_$(PlatformTarget).lib;MemeScript_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\;$(SolutionDir)thirdparty\lib\$(Configuration)\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
@@ -152,7 +152,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>MemeAudio_$(Configuration)_$(PlatformTarget).lib;MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;MemeNet_$(Configuration)_$(PlatformTarget).lib;MemeScript_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>MemeAudio_$(Configuration)_$(PlatformTarget).lib;MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeEngine_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;MemeNet_$(Configuration)_$(PlatformTarget).lib;MemeScript_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\;$(SolutionDir)thirdparty\lib\$(Configuration)\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
@@ -160,6 +160,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeEditor\Browser.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Dockspace.hpp" />
+    <ClInclude Include="..\..\include\MemeEditor\EditorCommands.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\GameObject.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\GUI_Base.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\GUI.hpp" />
@@ -176,12 +177,9 @@
     <ClInclude Include="..\..\include\MemeEditor\NetworkHUD.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Profiler.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\ResourceHUD.hpp" />
-    <ClInclude Include="..\..\include\MemeEditor\ManifestItem.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\SceneView.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\ShaderTool.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Terminal.hpp" />
-    <ClInclude Include="..\..\include\MemeEditor\ResourceTable.hpp" />
-    <ClInclude Include="..\..\include\MemeEditor\ResourceManager.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Builder.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\TextEditor.hpp" />
     <ClInclude Include="..\..\thirdparty\include\imgui\imconfig.h" />
@@ -195,6 +193,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeEditor\Browser.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\Dockspace.cpp" />
+    <ClCompile Include="..\..\src\MemeEditor\EditorCommands.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\GameObject.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\GUI_Base.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\GUI.cpp" />
@@ -211,7 +210,6 @@
     <ClCompile Include="..\..\src\MemeEditor\SceneView.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\ShaderTool.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\Terminal.cpp" />
-    <ClCompile Include="..\..\src\MemeEditor\ResourceManager.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\Builder.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\TextEditor.cpp" />
     <ClCompile Include="..\..\thirdparty\include\imgui\imgui.cpp" />

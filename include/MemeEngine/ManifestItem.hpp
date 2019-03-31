@@ -1,13 +1,14 @@
-#ifndef _ML_RESOURCE_ITEM_HPP_
-#define _ML_RESOURCE_ITEM_HPP_
+#ifndef _ML_MANIFEST_ITEM_HPP_
+#define _ML_MANIFEST_ITEM_HPP_
 
-#include <MemeEditor/Export.hpp>
+#include <MemeEngine/Export.hpp>
 #include <MemeCore/ITrackable.hpp>
 #include <MemeScript/StringUtility.hpp>
 
 namespace ml
 {
-	struct ManifestItem final : public ITrackable
+	struct ML_ENGINE_API ManifestItem final 
+		: public ITrackable
 	{
 		/* * * * * * * * * * * * * * * * * * * * */
 
@@ -27,9 +28,15 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		inline const String & operator[](const String & key) const { return data.at(key); }
+		inline const String & operator[](const String & key) const 
+		{
+			return data.at(key); 
+		}
 
-		inline String & operator[](const String & key) { return data[key]; }
+		inline String & operator[](const String & key) 
+		{
+			return data[key]; 
+		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
@@ -65,4 +72,4 @@ namespace ml
 	};
 }
 
-#endif // !_ML_RESOURCE_ITEM_HPP_
+#endif // !_ML_MANIFEST_ITEM_HPP_

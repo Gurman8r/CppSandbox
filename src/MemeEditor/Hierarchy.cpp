@@ -1,6 +1,6 @@
 #include <MemeEditor/Hierarchy.hpp>
 #include <MemeEditor/ImGui.hpp>
-#include <MemeEditor/ResourceManager.hpp>
+#include <MemeEngine/Resources.hpp>
 
 namespace ml
 {

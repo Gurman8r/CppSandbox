@@ -1,19 +1,19 @@
-#ifndef _ML_RESOURCE_TABLE_HPP_
-#define _ML_RESOURCE_TABLE_HPP_
+#ifndef _ML_REGISTRY_HPP_
+#define _ML_REGISTRY_HPP_
 
-#include <MemeEditor/Export.hpp>
+#include <MemeEngine/Export.hpp>
 #include <MemeCore/FileSystem.hpp>
 
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	class ResourceManager;
+	class Resources;
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	template <class _Elem>
-	class ResourceTable final
+	class Registry final
 		: public ITrackable
 		, public INonCopyable
 	{
@@ -21,7 +21,7 @@ namespace ml
 			std::is_base_of<ml::IReadable, _Elem>::value, 
 			"Type must derive ml::IReadable");
 
-		friend class ResourceManager;
+		friend class Resources;
 
 	public:
 		using value_type	= _Elem;
@@ -37,8 +37,8 @@ namespace ml
 		using const_iterator= typename PointerMap::const_iterator;
 
 	private:
-		ResourceTable() {}
-		~ResourceTable() {}
+		Registry() {}
+		~Registry() {}
 
 	private:
 		PointerMap	m_data;
@@ -262,4 +262,4 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 }
 
-#endif // !_ML_RESOURCE_TABLE_HPP_
+#endif // !_ML_REGISTRY_HPP_

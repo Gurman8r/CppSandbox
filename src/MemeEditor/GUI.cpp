@@ -1,6 +1,6 @@
 #include <MemeEditor/GUI.hpp>
 #include <MemeEditor/ImGui.hpp>
-#include <MemeEditor/ResourceManager.hpp>
+#include <MemeEngine/Resources.hpp>
 
 namespace ml
 {
@@ -253,7 +253,7 @@ namespace ml
 						return true;
 					};
 
-					const ResourceManager::TextureMap & textures = ML_Res.textures;
+					const Resources::TextureMap & textures = ML_Res.textures;
 					List<String> names;
 					for (auto pair : textures)
 					{

@@ -52,12 +52,6 @@
     <Filter Include="Header Files\Time">
       <UniqueIdentifier>{fd5b1dcc-ce58-48cc-ac44-0685e0b911dc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Plugins">
-      <UniqueIdentifier>{097f1749-ba88-4613-8bd2-4a25ed29b604}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Plugins">
-      <UniqueIdentifier>{452b8498-2b39-42c9-9c66-e875c55b9a1c}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeCore\IComparable.hpp">
@@ -210,20 +204,11 @@
     <ClInclude Include="..\..\include\MemeCore\Bytes.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\LibLoader.hpp">
-      <Filter>Header Files\Plugins</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Plugin.hpp">
-      <Filter>Header Files\Plugins</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Usings.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Assert.hpp">
       <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\PluginAPI.hpp">
-      <Filter>Header Files\Plugins</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\EventSystem.hpp">
       <Filter>Header Files\Utility</Filter>
@@ -286,12 +271,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\OS.cpp">
       <Filter>Source Files\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeCore\LibLoader.cpp">
-      <Filter>Source Files\Plugins</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeCore\Plugin.cpp">
-      <Filter>Source Files\Plugins</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\Assert.cpp">
       <Filter>Source Files\Utility</Filter>

@@ -1,6 +1,6 @@
 #include <MemeEditor/ResourceHUD.hpp>
 #include <MemeEditor/ImGui.hpp>
-#include <MemeEditor/ResourceManager.hpp>
+#include <MemeEngine/Resources.hpp>
 #include <MemeEditor/Terminal.hpp>
 #include <MemeCore/Debug.hpp>
 #include <MemeCore/OS.hpp>
