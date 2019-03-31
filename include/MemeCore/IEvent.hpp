@@ -13,11 +13,12 @@ namespace ml
 {
 	class ML_CORE_API IEvent
 		: public ITrackable
+		, public INonCopyable
 	{
 	public:
 		enum : int32_t
 		{
-			MIN_EVENT_ID	= -1,
+			MIN_EVENT_ID = -1,
 
 			// System
 			/* * * * * * * * * * * * * * */

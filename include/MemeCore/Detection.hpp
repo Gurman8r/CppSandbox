@@ -3,7 +3,6 @@
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#include <MemeCore/Export.hpp>
 #include <MemeCore/STD.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -76,7 +75,6 @@ template <typename T> \
 using has_##FUN = std::is_detected<FUN##_detector, T>; \
 template <typename T> \
 constexpr bool has_##FUN##_v = has_##FUN<T>::value;
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
