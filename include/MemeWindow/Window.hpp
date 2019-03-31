@@ -43,7 +43,6 @@ namespace ml
 	public:
 		bool create(const String & title, const VideoMode & mode, uint32_t style, const Context	& context);
 
-		virtual void clean();
 		virtual bool setup();
 		virtual void onEvent(const IEvent * ev) override;
 

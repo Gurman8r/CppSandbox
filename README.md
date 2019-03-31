@@ -36,8 +36,6 @@ __________
 	- Try updating your graphics drivers.
 
 
-Docs
+Documentation
 __________
-https://github.com/Gurman8r/CppSandbox/tree/master/docs
-https://docs.google.com/document/d/1AGI_7HTSVHGOlaVBpLVQISlTbUbD0dpTw3lY-CR2HMA/edit?usp=sharing	
-https://i.imgur.com/gpnXgHE.jpg
+https://docs.google.com/document/d/1AGI_7HTSVHGOlaVBpLVQISlTbUbD0dpTw3lY-CR2HMA/edit?usp=sharing

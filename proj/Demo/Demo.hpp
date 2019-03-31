@@ -7,7 +7,7 @@
 
 namespace DEMO
 {
-	class Demo final
+	class Demo final 
 		: public ml::EditorApplication
 	{
 	public:
@@ -40,6 +40,8 @@ namespace DEMO
 		ml::VAO m_batchVAO;
 		ml::VBO m_batchVBO;
 
+		// Text
+		/* * * * * * * * * * * * * * * * * * * * */
 		ml::HashMap<ml::String, ml::Text> m_text;
 
 		// Uniform Values

@@ -28,7 +28,6 @@ namespace ml
 		using pointer		= typename value_type * ;
 		using const_pointer = typename const pointer ;
 
-		using KeyList		= List<String>;
 		using PointerMap	= HashMap<String, pointer>;
 		using FileMap		= HashMap<String, String>;
 		using Pair			= Pair<String, pointer>;

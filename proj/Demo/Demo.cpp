@@ -2,25 +2,24 @@
 
 #include "Demo.hpp"
 #include "DemoSettings.hpp"
-
 #include <MemeAudio/Audio.hpp>
 #include <MemeCore/Debug.hpp>
 #include <MemeCore/Dispatcher.hpp>
-#include <MemeCore/Time.hpp>
+#include <MemeCore/EventSystem.hpp>
 #include <MemeCore/FileSystem.hpp> 
 #include <MemeCore/Random.hpp>
-#include <MemeCore/EventSystem.hpp>
 #include <MemeCore/OS.hpp>
-#include <MemeGraphics/OpenGL.hpp>
+#include <MemeCore/Time.hpp>
 #include <MemeGraphics/Camera.hpp>
+#include <MemeGraphics/OpenGL.hpp>
 #include <MemeGraphics/RenderStates.hpp>
-#include <MemeEditor/EditorCommands.hpp>
-#include <MemeEngine/Resources.hpp>
-#include <MemeEditor/ImGui.hpp>
 #include <MemeEditor/Editor.hpp>
+#include <MemeEditor/EditorCommands.hpp>
 #include <MemeEditor/EditorEvents.hpp>
 #include <MemeEditor/GUI.hpp>
+#include <MemeEditor/ImGui.hpp>
 #include <MemeEngine/EngineCommands.hpp>
+#include <MemeEngine/Resources.hpp>
 #include <MemeNet/Client.hpp>
 #include <MemeNet/Server.hpp>
 #include <MemeScript/Interpreter.hpp>
@@ -69,7 +68,7 @@ namespace DEMO
 		case ml::EditorEvent::EV_File_Open:
 			if (const auto * ev = value->as<ml::File_Open_Event>())
 			{
-				if (ML_Browser.get_selected() && ML_Editor.show_browser)
+				if (ML_Editor.show_browser)
 				{
 					ML_OS.execute("open", ML_Browser.get_selected_path());
 				}
@@ -313,8 +312,8 @@ namespace DEMO
 		{
 			if (ml::Plugin * p = ML_Res.plugins.get("TestPlugin"))
 			{
-				p->enable("Test Plugin Enable");
-				p->disable("Test Plugin Disable");
+				p->enable("Test Plugin Enabled");
+				p->disable("Test Plugin Disabled");
 			}
 		}
 

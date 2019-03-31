@@ -25,14 +25,14 @@
     <Filter Include="Source Files\Wrapper">
       <UniqueIdentifier>{c0b656a8-1013-4cc1-b90c-7a59b2747737}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Utility">
+      <UniqueIdentifier>{4ceab270-368d-4630-a19c-cee3ad95225f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utility">
+      <UniqueIdentifier>{3490293c-b5b1-4fee-9396-9c4124e10ffb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\MemeAudio\Sound.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeAudio\Audio.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeAudio\AL.hpp">
       <Filter>Header Files\Wrapper</Filter>
     </ClInclude>
@@ -48,17 +48,17 @@
     <ClInclude Include="..\..\include\MemeAudio\Export.hpp">
       <Filter>Resource Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeAudio\Sound.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeAudio\Audio.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\include\MemeAudio\AudioEvents.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\MemeAudio\Sound.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeAudio\Audio.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemeAudio\AudioSource.cpp">
       <Filter>Source Files\Buffers</Filter>
     </ClCompile>
@@ -67,6 +67,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeAudio\OpenAL.cpp">
       <Filter>Source Files\Wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeAudio\Sound.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeAudio\Audio.cpp">
+      <Filter>Source Files\Utility</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

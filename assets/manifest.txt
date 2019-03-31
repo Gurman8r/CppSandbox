@@ -14,14 +14,6 @@
 </item>
 
 
-# Scripts
-# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
-<item>
-	type: manifest
-	name: ../../../assets/data/scripts.txt
-</item>
-
-
 # Shaders
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 <item>
@@ -75,6 +67,14 @@
 <item>
 	type: manifest
 	name: ../../../assets/data/effects.txt
+</item>
+
+
+# Scripts
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+<item>
+	type: manifest
+	name: ../../../assets/data/scripts.txt
 </item>
 
 

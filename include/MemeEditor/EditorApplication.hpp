@@ -1,9 +1,8 @@
 #ifndef _ML_EDITOR_APPLICATION_HPP_
 #define _ML_EDITOR_APPLICATION_HPP_
 
-#include <MemeEditor/Export.hpp>
-#include <MemeEngine/Application.hpp>
 #include <MemeEditor/EditorEvents.hpp>
+#include <MemeEngine/Application.hpp>
 
 namespace ml
 {

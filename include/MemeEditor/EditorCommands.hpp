@@ -9,7 +9,7 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_EDITOR_API EditorCommands
+	struct ML_EDITOR_API EditorCommands final
 	{
 		static void install();
 
