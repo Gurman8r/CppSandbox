@@ -56,15 +56,11 @@ namespace ml
 
 	bool Resources::cleanup()
 	{
-		m_manifest.clear();
-
 		return cleanupAll();
 	}
 
 	bool Resources::loadFromFile(const String & filename)
 	{
-		m_manifest.clear();
-
 		SStream file;
 		return ML_FileSystem.getFileContents(filename, file) && parseFile(file);
 	}
