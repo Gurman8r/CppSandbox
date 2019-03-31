@@ -9,7 +9,7 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_API_EXPORT EngineEvent : public IEvent
+	struct ML_ENGINE_API EngineEvent : public IEvent
 	{
 		enum : int32_t
 		{
@@ -35,7 +35,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_API_EXPORT EnterEvent final : public EngineEvent
+	struct ML_ENGINE_API EnterEvent final : public EngineEvent
 	{
 		int32_t argc;
 		char ** argv;
@@ -50,7 +50,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_API_EXPORT LoadEvent final : public EngineEvent
+	struct ML_ENGINE_API LoadEvent final : public EngineEvent
 	{
 		LoadEvent()
 			: EngineEvent(EV_Load)
@@ -60,7 +60,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_API_EXPORT StartEvent final : public EngineEvent
+	struct ML_ENGINE_API StartEvent final : public EngineEvent
 	{
 		StartEvent()
 			: EngineEvent(EV_Start)
@@ -70,7 +70,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_API_EXPORT FixedUpdateEvent final : public EngineEvent
+	struct ML_ENGINE_API FixedUpdateEvent final : public EngineEvent
 	{
 		const Duration & elapsed;
 
@@ -83,7 +83,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_API_EXPORT UpdateEvent final : public EngineEvent
+	struct ML_ENGINE_API UpdateEvent final : public EngineEvent
 	{
 		const Duration & elapsed;
 
@@ -96,7 +96,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_API_EXPORT DrawEvent final : public EngineEvent
+	struct ML_ENGINE_API DrawEvent final : public EngineEvent
 	{
 		const Duration & elapsed;
 
@@ -109,7 +109,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_API_EXPORT UnloadEvent final : public EngineEvent
+	struct ML_ENGINE_API UnloadEvent final : public EngineEvent
 	{
 		UnloadEvent()
 			: EngineEvent(EV_Unload)
@@ -119,7 +119,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_API_EXPORT ExitEvent final : public EngineEvent
+	struct ML_ENGINE_API ExitEvent final : public EngineEvent
 	{
 		ExitEvent()
 			: EngineEvent(EV_Exit)
