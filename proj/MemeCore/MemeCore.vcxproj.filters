@@ -144,9 +144,6 @@
     <ClInclude Include="..\..\include\MemeCore\FileSystem.hpp">
       <Filter>Header Files\FS</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Check.hpp">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Maths.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
@@ -177,9 +174,6 @@
     <ClInclude Include="..\..\include\MemeCore\IStream.hpp">
       <Filter>Header Files\STD</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\ComponentMap.hpp">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\IEntity.hpp">
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
@@ -207,9 +201,6 @@
     <ClInclude Include="..\..\include\MemeCore\Usings.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Assert.hpp">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\EventSystem.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
@@ -227,6 +218,12 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Worker.hpp">
       <Filter>Header Files\Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\ComponentMap.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Detection.hpp">
+      <Filter>Header Files\STD</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -270,9 +267,6 @@
       <Filter>Source Files\FS</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\OS.cpp">
-      <Filter>Source Files\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeCore\Assert.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\EventSystem.cpp">

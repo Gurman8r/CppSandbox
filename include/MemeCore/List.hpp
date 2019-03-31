@@ -2,7 +2,6 @@
 #define _ML_LIST_HPP_
 
 #include <MemeCore/ITrackable.hpp>
-#include <MemeCore/Check.hpp>
 
 namespace ml
 {
@@ -17,10 +16,6 @@ namespace ml
 		, public IComparable<std::vector<_Elem, _Alloc>>
 		, public IComparable<List<_Elem, _Alloc>>
 	{
-		//static_assert(
-		//	check::has_leftshift_operator<_Elem>::value,
-		//	"ml::List | Element requires \"<<\" operator");
-
 	public:
 		using value_type			= _Elem;
 		using allocator_type		= _Alloc;

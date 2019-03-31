@@ -47,7 +47,7 @@ namespace ml
 				errorDesc = "An unacceptable value has been specified for an enumerated argument.";
 				break;
 			case GL::InvalidValue:
-				errorName = "Invalid value_type";
+				errorName = "Invalid Value";
 				errorDesc = "A numeric argument is out of range.";
 				break;
 			case GL::InvalidOperation:

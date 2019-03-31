@@ -8,6 +8,12 @@
 #define ML_FAILURE	0 // |  0  | false |
 #define ML_SUCCESS	1 // | +1  | true  |
 
+# ifdef ML_DEBUG
+#	define mlCheck(expr) do { expr; ml::Debug::checkError(__FILE__, __LINE__, #expr); } while (false)
+# else
+#	define mlCheck(expr) (expr)
+# endif
+
 namespace ml
 {
 	class ML_CORE_API Debug final
@@ -16,6 +22,7 @@ namespace ml
 		static int32_t m_error;
 
 	public:
+		static void		checkError(CString file, uint32_t line, CString expression);
 		static bool		checkError(const int32_t value);
 		static void		setError(const int32_t value);
 		static int32_t	getError();

@@ -9,6 +9,10 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
+	void Debug::checkError(CString file, uint32_t line, CString expression)
+	{
+	}
+
 	bool Debug::checkError(const int32_t value)
 	{
 		return (getError() == value);
