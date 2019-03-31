@@ -13,6 +13,7 @@ namespace ml
 		enum : int32_t
 		{
 			MIN_PHYSICS_EVENT = IEvent::EV_PHYSICS + 1,
+
 			MAX_PHYSICS_EVENT
 		};
 

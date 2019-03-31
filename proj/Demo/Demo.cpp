@@ -329,8 +329,8 @@ namespace DEMO
 		{
 			if (ml::Plugin * p = ML_Res.plugins.get("TestPlugin"))
 			{
-				p->enable("TestPlugin Enable");
-				p->disable("TestPlugin Disable");
+				p->enable("Test Plugin Enable");
+				p->disable("Test Plugin Disable");
 			}
 		}
 

@@ -25,6 +25,12 @@
     <Filter Include="Source Files\Utility">
       <UniqueIdentifier>{b06a1bdc-5e0f-4805-b674-281bf4077ed0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Resources">
+      <UniqueIdentifier>{49b1a5d6-5d7f-41d0-aefb-c217d71988c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Resources">
+      <UniqueIdentifier>{7e3f719d-bdf6-414e-954f-105f344be74c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeEngine\Export.hpp">
@@ -55,13 +61,13 @@
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEngine\Resources.hpp">
-      <Filter>Header Files\Utility</Filter>
+      <Filter>Header Files\Resources</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEngine\ManifestItem.hpp">
-      <Filter>Header Files\Utility</Filter>
+      <Filter>Header Files\Resources</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEngine\Registry.hpp">
-      <Filter>Header Files\Utility</Filter>
+      <Filter>Header Files\Resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -84,7 +90,7 @@
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEngine\Resources.cpp">
-      <Filter>Source Files\Utility</Filter>
+      <Filter>Source Files\Resources</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

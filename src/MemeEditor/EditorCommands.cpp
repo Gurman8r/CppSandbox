@@ -25,22 +25,16 @@ namespace ml
 
 	Var EditorCommands::cmd_clear(Args & args)
 	{
-#ifdef ML_Terminal
 		ML_Terminal.clear();
 		return Var().voidValue();
-#else
-		return Var().intValue(Debug::clear());
-#endif
 	}
 
 	Var EditorCommands::cmd_history(Args & args)
 	{
-#ifdef ML_Terminal
 		for (auto h : ML_Terminal.history())
 		{
 			ML_Terminal.print(h);
 		}
-#endif
 		return Var().boolValue(true);
 	}
 

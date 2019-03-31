@@ -22,9 +22,18 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		ManifestItem() : data() {}
-		ManifestItem(const Data & data) : data(data) {}
-		ManifestItem(const ManifestItem & copy) : data(copy.data) {}
+		ManifestItem() 
+			: data()
+		{
+		}
+		ManifestItem(const Data & data) 
+			: data(data)
+		{
+		}
+		ManifestItem(const ManifestItem & copy)
+			: data(copy.data)
+		{
+		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
 

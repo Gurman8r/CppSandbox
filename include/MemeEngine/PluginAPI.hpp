@@ -15,7 +15,7 @@
 
 namespace ml
 {
-	using PluginFun	= void *(*)(void *);
+	using PluginFun	= void * (*)(void *);
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

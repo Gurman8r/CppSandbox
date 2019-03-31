@@ -26,21 +26,6 @@ namespace ml
 	{
 		friend class ISingleton<Resources>;
 
-	public:
-		using EffectMap		= Registry<Effect>;
-		using FontMap		= Registry<Font>;
-		using ImageMap		= Registry<Image>;
-		using MaterialMap	= Registry<Material>;
-		using MeshMap		= Registry<Mesh>;
-		using ModelMap		= Registry<Model>;
-		using PluginMap		= Registry<Plugin>;
-		using ScriptMap		= Registry<Script>;
-		using ShaderMap		= Registry<Shader>;
-		using SkyboxMap		= Registry<Skybox>;
-		using SoundMap		= Registry<Sound>;
-		using SpriteMap		= Registry<Sprite>;
-		using TextureMap	= Registry<Texture>;
-
 	private:
 		Resources();
 		~Resources();
@@ -61,19 +46,19 @@ namespace ml
 		bool parseItem(const ManifestItem & data);
 
 	public:
-		EffectMap	effects;
-		FontMap		fonts;
-		ImageMap	images;
-		MaterialMap mats;
-		MeshMap		meshes;
-		ModelMap	models;
-		PluginMap	plugins;
-		ScriptMap	scripts;
-		ShaderMap	shaders;
-		SkyboxMap	skyboxes;
-		SoundMap	sounds;
-		SpriteMap	sprites;
-		TextureMap	textures;
+		Registry<Effect>	effects;
+		Registry<Font>		fonts;
+		Registry<Image>		images;
+		Registry<Material>	mats;
+		Registry<Mesh>		meshes;
+		Registry<Model>		models;
+		Registry<Plugin>	plugins;
+		Registry<Script>	scripts;
+		Registry<Shader>	shaders;
+		Registry<Skybox>	skyboxes;
+		Registry<Sound> 	sounds;
+		Registry<Sprite>	sprites;
+		Registry<Texture>	textures;
 
 	private:
 		std::vector<ManifestItem> m_manifest;

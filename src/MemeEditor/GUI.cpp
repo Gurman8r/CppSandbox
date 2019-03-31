@@ -253,9 +253,8 @@ namespace ml
 						return true;
 					};
 
-					const Resources::TextureMap & textures = ML_Res.textures;
 					List<String> names;
-					for (auto pair : textures)
+					for (auto pair : ML_Res.textures)
 					{
 						names.push_back(pair.first);
 					}

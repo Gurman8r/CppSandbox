@@ -87,6 +87,8 @@ namespace ml
 
 	bool Resources::parseFile(SStream & file)
 	{
+		m_manifest.clear();
+
 		size_t count = 0;
 		String line;
 		while (std::getline(file, line))
