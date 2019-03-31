@@ -132,8 +132,8 @@ namespace ml
 			if (Uniform * u = batch.uniforms->find("Frag.mainCol")) 
 				u->data = &m_color;
 
-			const ml::vec2f size = m_scale * m_texture->size();
-			const ml::vec2f dest = m_position - size * m_origin;
+			const ml::vec2f size = (m_scale * m_texture->size());
+			const ml::vec2f dest = (m_position - (size * m_origin));
 
 			target.draw(
 				ml::Shapes::genSpriteQuad({ dest, size }).data(),

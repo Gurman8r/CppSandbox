@@ -4,7 +4,7 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	RectQuad Shapes::genSpriteQuad(const FloatRect & r)
+	inline RectQuad Shapes::genSpriteQuad(const FloatRect & r)
 	{
 		return RectQuad {
 			r.left(),  r.bot(), 0.f,	1, 1, 1, 1,		0, 1,
@@ -16,7 +16,7 @@ namespace ml
 		};
 	}
 
-	RectQuad Shapes::genGlyphQuad(const FloatRect & r)
+	inline RectQuad Shapes::genGlyphQuad(const FloatRect & r)
 	{
 		return RectQuad {
 			r.left(),  r.bot(), 0.f,	1, 1, 1, 1,		0, 0,

@@ -25,6 +25,7 @@
     <ClInclude Include="..\..\include\MemeGraphics\Effect.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\FrameBuffer.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\GL.hpp" />
+    <ClInclude Include="..\..\include\MemeGraphics\GLM.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\GraphicsEvents.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\IDrawable.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Export.hpp" />
@@ -41,6 +42,7 @@
     <ClInclude Include="..\..\include\MemeGraphics\RectTransform.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\RenderBatch.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\RenderBuffer.hpp" />
+    <ClInclude Include="..\..\include\MemeGraphics\RenderStates.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\RenderTarget.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\RenderWindow.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Shader.hpp" />
@@ -75,6 +77,7 @@
     <ClCompile Include="..\..\src\MemeGraphics\Mesh.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\RectTransform.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\RenderBuffer.cpp" />
+    <ClCompile Include="..\..\src\MemeGraphics\RenderStates.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\RenderTarget.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\RenderWindow.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Shader.cpp" />

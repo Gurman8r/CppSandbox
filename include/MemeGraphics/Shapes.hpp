@@ -17,8 +17,8 @@ namespace ml
 
 		using RectQuad = Array<float, RectSize>;
 
-		static RectQuad genSpriteQuad(const FloatRect & r);
-		static RectQuad genGlyphQuad(const FloatRect & r);
+		inline static RectQuad genSpriteQuad(const FloatRect & r);
+		inline static RectQuad genGlyphQuad(const FloatRect & r);
 
 	public:
 		struct ML_GRAPHICS_API Triangle final

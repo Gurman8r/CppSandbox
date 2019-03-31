@@ -174,6 +174,12 @@
     <ClInclude Include="..\..\include\MemeGraphics\GraphicsEvents.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\RenderStates.hpp">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\GLM.hpp">
+      <Filter>Header Files\Wrapper</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeGraphics\Color.cpp">
@@ -268,6 +274,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\ShaderParser.cpp">
       <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\RenderStates.cpp">
+      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -6,20 +6,21 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	GameObject::GameObject()
-		: GameObject("New Game Object")
-	{
-	}
-
 	GameObject::GameObject(CString name)
-		: color(Color::White)
+		: dirty(false)
+		, color(Color::White)
+		, model(NULL)
+		, shader(NULL)
+		, texture(NULL)
 	{
 		strcpy(this->name, name);
 	}
 
 	GameObject::GameObject(const GameObject & copy)
-		: GameObject(copy.name)
+		: dirty(copy.dirty)
+		, color(copy.color)
 	{
+		strcpy(this->name, copy.name);
 	}
 
 	GameObject::~GameObject()

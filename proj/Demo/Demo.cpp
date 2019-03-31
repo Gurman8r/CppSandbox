@@ -12,6 +12,7 @@
 #include <MemeCore/OS.hpp>
 #include <MemeGraphics/OpenGL.hpp>
 #include <MemeGraphics/Camera.hpp>
+#include <MemeGraphics/RenderStates.hpp>
 #include <MemeEditor/ResourceManager.hpp>
 #include <MemeEditor/ImGui.hpp>
 #include <MemeEditor/EditorEvents.hpp>
@@ -73,15 +74,15 @@ namespace DEMO
 
 		switch (value->eventID())
 		{
-		case DemoEvent::EV_Enter:		return onEnter(*value->as<EnterEvent>());
-		case DemoEvent::EV_Load:		return onLoad(*value->as<LoadEvent>());
-		case DemoEvent::EV_Start:		return onStart(*value->as<StartEvent>());
+		case DemoEvent::EV_Enter:		return onEnter		(*value->as<EnterEvent>());
+		case DemoEvent::EV_Load:		return onLoad		(*value->as<LoadEvent>());
+		case DemoEvent::EV_Start:		return onStart		(*value->as<StartEvent>());
 		case DemoEvent::EV_FixedUpdate:	return onFixedUpdate(*value->as<FixedUpdateEvent>());
-		case DemoEvent::EV_Update:		return onUpdate(*value->as<UpdateEvent>());
-		case DemoEvent::EV_Draw:		return onDraw(*value->as<DrawEvent>());
-		case DemoEvent::EV_Gui:			return onGui(*value->as<GuiEvent>());
-		case DemoEvent::EV_Unload:		return onUnload(*value->as<UnloadEvent>());
-		case DemoEvent::EV_Exit:		return onExit(*value->as<ExitEvent>());
+		case DemoEvent::EV_Update:		return onUpdate		(*value->as<UpdateEvent>());
+		case DemoEvent::EV_Draw:		return onDraw		(*value->as<DrawEvent>());
+		case DemoEvent::EV_Gui:			return onGui		(*value->as<GuiEvent>());
+		case DemoEvent::EV_Unload:		return onUnload		(*value->as<UnloadEvent>());
+		case DemoEvent::EV_Exit:		return onExit		(*value->as<ExitEvent>());
 
 		case ml::CoreEvent::EV_RequestExit:
 			if (const auto * ev = value->as<ml::RequestExitEvent>())
@@ -199,9 +200,9 @@ namespace DEMO
 			ml::Script scr;
 			if (scr.loadFromFile(ML_FileSystem.pathTo(SETTINGS.bootScript)))
 			{
-				if (scr.build(ev.args))
+				if (!(scr.build(ev.args) && scr.run()))
 				{
-					if (scr.run()) {}
+					ml::Debug::logError("Failed Running Boot Script");
 				}
 			}
 		}
@@ -334,57 +335,75 @@ namespace DEMO
 		ml::Debug::log("Starting...");
 
 		// Window Icon
-		if (ml::Image * icon = ML_Res.images.get("icon"))
+		if (const ml::Image * icon = ML_Res.images.get("icon"))
 		{
-			this->setIcons({ (*icon).flipVertically() });
+			this->setIcons({ ml::Image(*icon).flipVertically() });
 		}
 
-		// Camera
+		// Setup Plugins
+		/* * * * * * * * * * * * * * * * * * * * */
+		{
+			if (ml::Plugin * p = ML_Res.plugins.get("TestPlugin"))
+			{
+				p->init("TestPlugin Init");
+				p->enable("TestPlugin Enable");
+				p->disable("TestPlugin Disable");
+			}
+		}
+
+		// Setup Camera
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
 			uni.camera.lookAt(uni.camPos, uni.camPos + ml::vec3f::Back, ml::vec3f::Up);
 		}
 
-		// Models
+		// Setup Models
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
 			if (ml::Model * m = ML_Res.models.get("borg"))
+			{
 				m->transform()
-				.translate({ +5.0f, 0.0f, 0.0f })
-				.scale(1.0f);
+					.translate({ +5.0f, 0.0f, 0.0f })
+					.scale(1.0f);
+			}
 
 			if (ml::Model * m = ML_Res.models.get("sanic"))
+			{
 				m->transform()
-				.translate({ -5.0f, 0.0f, 0.0f })
-				.scale(1.0f);
+					.translate({ -5.0f, 0.0f, 0.0f })
+					.scale(1.0f);
+			}
 
 			if (ml::Model * m = ML_Res.models.get("earth"))
+			{
 				m->transform()
-				.translate({ 0.0f, 0.0f, 0.0f })
-				.scale(1.0f);
+					.translate({ 0.0f, 0.0f, 0.0f })
+					.scale(1.0f);
+			}
 
 			if (ml::Model * m = ML_Res.models.get("cube"))
+			{
 				m->transform()
-				.translate({ 0.0f, 0.0f, -5.0f })
-				.scale(0.5f);
+					.translate({ 0.0f, 0.0f, -5.0f })
+					.scale(0.5f);
+			}
 
 			if (ml::Model * m = ML_Res.models.get("moon"))
+			{
 				m->transform()
-				.translate({ 0.0f, 0.0f, 5.0f })
-				.scale(0.5f);
+					.translate({ 0.0f, 0.0f, 5.0f })
+					.scale(0.5f);
+			}
 
 			if (ml::Model * m = ML_Res.models.get("ground"))
+			{
 				m->transform()
-				.translate({ 0.0f, -2.5f, 0.0f })
-				.scale({ 12.5, 0.25f, 12.5 });
-
-			if (ml::Model * m = ML_Res.models.get("default_skybox"))
-				m->transform()
-				.translate({ 0.0f, 0.0f, 0.0f })
-				.scale(10.f);
+					.translate({ 0.0f, -2.5f, 0.0f })
+					.scale({ 12.5, 0.25f, 12.5 });
+			}
 		}
 
-		// Sprites
+		// Setup Sprites
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
 			if (ml::Sprite * s = ML_Res.sprites.get("neutrino"))
@@ -397,14 +416,11 @@ namespace DEMO
 			}
 		}
 
-		// Plugins
+		// Setup Game Objects
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
-			if (ml::Plugin * p = ML_Res.plugins.get("TestPlugin"))
+			if (ml::GameObject * obj = ML_Hierarchy.newObject("Test Game Object"))
 			{
-				p->init("TestPlugin Init");
-				p->enable("TestPlugin Enable");
-				p->disable("TestPlugin Disable");
 			}
 		}
 	}
@@ -434,8 +450,7 @@ namespace DEMO
 			ml::Debug::configuration(),
 			ml::Debug::platformTarget(),
 			ev.elapsed.delta(),
-			ML_Time.calculateFPS(ev.elapsed.delta()
-			)
+			ML_Time.calculateFPS(ev.elapsed.delta())
 		));
 
 		// Update Models
@@ -659,7 +674,7 @@ namespace DEMO
 			ml::Uniform("Effect.mode", ml::Uniform::Int, &uni.effectMode),
 		};
 
-
+		
 		// Draw Scene
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (ml::Effect * scene = ML_Res.effects.get(ML_FBO_MAIN))
@@ -876,17 +891,17 @@ namespace DEMO
 		if (ml::Effect * post = ML_Res.effects.get(ML_FBO_POST))
 		{
 			post->bind();
-			
-			if (ml::Effect * scene = ML_Res.effects.get(ML_FBO_MAIN))
 			{
-				if (const ml::Shader * shader = scene->shader())
+				if (ml::Effect * scene = ML_Res.effects.get(ML_FBO_MAIN))
 				{
-					shader->applyUniforms(effect_uniforms);
+					if (const ml::Shader * shader = scene->shader())
+					{
+						shader->applyUniforms(effect_uniforms);
 
-					this->draw(*scene);
+						this->draw(*scene);
+					}
 				}
 			}
-
 			post->unbind();
 		}
 
@@ -911,7 +926,7 @@ namespace DEMO
 	void Demo::onGui(const GuiEvent & ev)
 	{
 		// Main Menu Bar
-		if (ML_MainMenuBar_draw())	{ /* Main Menu Bar */ }
+		if (gui.show_main_menu_bar) { ML_MainMenuBar_draw(); }
 
 		// Dockspace
 		if (gui.show_dockspace)		{ ML_Dockspace_draw(&gui.show_dockspace); }

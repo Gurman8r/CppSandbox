@@ -7,7 +7,7 @@
 
 namespace ml
 {
-	struct ResourceItem
+	struct ManifestItem final : public ITrackable
 	{
 		/* * * * * * * * * * * * * * * * * * * * */
 
@@ -21,9 +21,9 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		ResourceItem() : data() {}
-		ResourceItem(const Data & data) : data(data) {}
-		ResourceItem(const ResourceItem & copy) : data(copy.data) {}
+		ManifestItem() : data() {}
+		ManifestItem(const Data & data) : data(data) {}
+		ManifestItem(const ManifestItem & copy) : data(copy.data) {}
 
 		/* * * * * * * * * * * * * * * * * * * * */
 

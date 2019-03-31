@@ -96,7 +96,7 @@ namespace ml
 
 			if (line.find("<item>") != String::npos)
 			{
-				m_manifest.push_back(ResourceItem());
+				m_manifest.push_back(ManifestItem());
 
 				while (std::getline(file, line))
 				{
@@ -131,7 +131,7 @@ namespace ml
 		return (bool)(count);
 	}
 
-	bool ResourceManager::parseItem(const ResourceItem & item)
+	bool ResourceManager::parseItem(const ManifestItem & item)
 	{
 		/* * * * * * * * * * * * * * * * * * * * */
 

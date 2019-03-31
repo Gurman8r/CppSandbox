@@ -3,11 +3,11 @@
 namespace ml
 {
 	UniformSet::UniformSet()
-		: UniformSet(map_type())
+		: UniformSet(UniformMap())
 	{
 	}
 
-	UniformSet::UniformSet(const map_type & value)
+	UniformSet::UniformSet(const UniformMap & value)
 		: m_map(value)
 	{
 	}
@@ -61,6 +61,7 @@ namespace ml
 		return false;
 	}
 
+
 	Uniform * UniformSet::find(const String & name)
 	{
 		iterator it;
@@ -81,8 +82,21 @@ namespace ml
 		return NULL;
 	}
 
+
 	size_t UniformSet::size() const
 	{
 		return m_map.size();
+	}
+
+
+	inline List<String> UniformSet::getKeys() const
+	{
+		List<String> keys;
+		keys.reserve(size());
+		for (auto pair : m_map)
+		{
+			keys.push_back(pair.first);
+		}
+		return keys;
 	}
 }

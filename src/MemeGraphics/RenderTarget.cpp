@@ -38,11 +38,6 @@ namespace ml
 		return (*this);
 	}
 
-	RenderTarget & RenderTarget::draw(const RenderBatch & batch)
-	{
-		return (batch.vertices ? draw((*batch.vertices), batch) : (*this));
-	}
-
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	RenderTarget & RenderTarget::draw(const VertexList & vertices, const RenderBatch & batch)

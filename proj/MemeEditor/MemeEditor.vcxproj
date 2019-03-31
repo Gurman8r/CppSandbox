@@ -176,7 +176,7 @@
     <ClInclude Include="..\..\include\MemeEditor\NetworkHUD.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Profiler.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\ResourceHUD.hpp" />
-    <ClInclude Include="..\..\include\MemeEditor\ResourceItem.hpp" />
+    <ClInclude Include="..\..\include\MemeEditor\ManifestItem.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\SceneView.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\ShaderTool.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Terminal.hpp" />

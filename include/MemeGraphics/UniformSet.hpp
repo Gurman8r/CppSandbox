@@ -6,17 +6,17 @@
 
 namespace ml
 {
-	class ML_GRAPHICS_API UniformSet
+	class ML_GRAPHICS_API UniformSet final
 		: public ITrackable
 	{
 	public:
-		using map_type			= HashMap<String, Uniform>;
-		using iterator			= typename map_type::iterator;
-		using const_iterator	= typename map_type::const_iterator;
+		using UniformMap		= HashMap<String, Uniform>;
+		using iterator			= typename UniformMap::iterator;
+		using const_iterator	= typename UniformMap::const_iterator;
 
 	public:
 		UniformSet();
-		UniformSet(const map_type & value);
+		UniformSet(const UniformMap & value);
 		UniformSet(const List<Uniform> & value);
 		UniformSet(const std::initializer_list<Uniform> & value);
 		UniformSet(const UniformSet & copy);
@@ -26,9 +26,13 @@ namespace ml
 		void clear();
 		bool empty() const;
 		bool insert(const Uniform & value);
+		
 		Uniform * find(const String & name);
 		const Uniform * find(const String & name) const;
+		
 		size_t size() const;
+
+		inline List<String> getKeys() const;
 
 	public:
 		inline const Uniform & operator[](const String & name) const { return m_map.at(name); }
@@ -43,7 +47,7 @@ namespace ml
 		inline const_iterator	cend()	const	{ return m_map.cend(); }
 
 	private:
-		map_type m_map;
+		UniformMap m_map;
 	};
 }
 #endif // !_ML_UNIFORM_SET_HPP_

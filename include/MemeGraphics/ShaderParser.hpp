@@ -4,6 +4,8 @@
 #include <MemeGraphics/Export.hpp>
 #include <MemeCore/File.hpp>
 
+#define ML_SHADER_PATH "../../../assets/shaders/" // FIXME: shouldn't be hardcoded
+
 namespace ml
 {
 	class ML_GRAPHICS_API ShaderParser final

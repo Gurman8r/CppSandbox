@@ -14,6 +14,11 @@ namespace ml
 	{
 		friend ISingleton<Hierarchy>;
 
+	public:
+		using ObjectMap			= HashMap<String, GameObject *>;
+		using iterator			= typename ObjectMap::iterator;
+		using const_iterator	= typename ObjectMap::const_iterator;
+
 	private:
 		Hierarchy();
 		~Hierarchy();
@@ -22,10 +27,25 @@ namespace ml
 		void onEvent(const IEvent * value) override;
 		bool draw(bool * p_open) override;
 
+
+	public:
+		GameObject * getObject(const String & name);
+		GameObject * newObject(const GameObject & value);
+
+
+	private:
+		bool edit_object_name(char * buf, GameObject * value);
+
+
+	public:
+		inline const ObjectMap & objects() const { return m_objects; }
+		inline ObjectMap & objects() { return m_objects; }
+
+
 	private:
 		struct Funcs;
 
-		std::vector<GameObject> m_objects;
+		ObjectMap m_objects;
 	};
 }
 

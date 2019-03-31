@@ -8,9 +8,7 @@ namespace ml
 {
 	struct ML_GRAPHICS_API GL final
 	{
-		using Enum	= typename uint32_t;
-
-		enum Flag : Enum
+		enum Flag : uint32_t
 		{
 			CullFace		= 0x0B44,		// GL_CULL_FACE
 			DepthTest		= 0x0B71,		// GL_DEPTH_TEST
@@ -21,7 +19,7 @@ namespace ml
 			ScissorTest		= 0x0C11,		// GL_SCISSOR_TEST
 		};
 
-		enum Target : Enum
+		enum Target : uint32_t
 		{
 			Texture2D		= 0x0DE1,		// GL_TEXTURE_2D
 			Texture3D		= 0x806F,		// GL_TEXTURE_3D
@@ -43,14 +41,14 @@ namespace ml
 			ActiveTexture = 0x84E0,			// GL_ACTIVE_TEXTURE
 		};
 
-		enum Usage : Enum
+		enum Usage : uint32_t
 		{
 			StreamDraw		= 0x88E0,		// GL_STREAM_DRAW
 			StaticDraw		= 0x88E4,		// GL_STATIC_DRAW
 			DynamicDraw		= 0x88E8,		// GL_DYNAMIC_DRAW
 		};
 
-		enum Err : Enum
+		enum Err : uint32_t
 		{
 			NoError		= 0,				// GL_NO_ERROR
 			InvalidEnum = 0x0500,			// GL_INVALID_ENUM
@@ -62,7 +60,7 @@ namespace ml
 			InvalidFramebufferOperation,	// GL_INVALID_FRAMEBUFFER_OPERATION
 		};
 
-		enum StringID : Enum
+		enum StringID : uint32_t
 		{
 			Vendor = 0x1F00,				// GL_VENDOR
 			Renderer,						// GL_RENDERER
@@ -71,7 +69,7 @@ namespace ml
 			ShadingLanguageVersion = 0x8B8C,// GL_SHADING_LANGUAGE_VERSION			
 		};
 
-		enum IntID : Enum
+		enum IntID : uint32_t
 		{
 			MajorVersion = 0x821B,			// GL_MAJOR_VERSION
 			MinorVersion,					// GL_MINOR_VERSION
@@ -93,7 +91,7 @@ namespace ml
 			ClipOrigin = 0x935C,			// GL_CLIP_ORIGIN
 		};
 
-		enum Status : Enum
+		enum Status : uint32_t
 		{
 			ObjectDeleteStatus = 0x8B80,	// GL_OBJECT_DELETE_STATUS_ARB
 			ObjectCompileStatus,			// GL_OBJECT_COMPILE_STATUS_ARB
@@ -101,14 +99,14 @@ namespace ml
 			FramebufferComplete = 0x8CD5,	// GL_FRAMEBUFFER_COMPLETE
 		};
 
-		enum ShaderType : Enum
+		enum ShaderType : uint32_t
 		{
 			FragmentShader = 0x8B30,		// GL_FRAGMENT_SHADER
 			VertexShader,					// GL_VERTEX_SHADER
 			GeometryShader = 0x8DD9,		// GL_GEOMETRY_SHADER
 		};
 
-		enum Mode : Enum
+		enum Mode : uint32_t
 		{
 			Points = 0x000,					// GL_POINTS
 			Lines,							// GL_LINES
@@ -120,7 +118,7 @@ namespace ml
 			Fill = 0x1B02,					// GL_FILL
 		};
 
-		enum Equation : Enum
+		enum Equation : uint32_t
 		{
 			Multiply	= 0x0103,			// GL_MULT
 			Add			= 0x0104,			// GL_ADD
@@ -128,7 +126,7 @@ namespace ml
 			FuncAdd		= 0x8006,			// GL_FUNC_ADD
 		};
 
-		enum BlendEquation : Enum
+		enum BlendEquation : uint32_t
 		{
 			BlendEquationRGB = 0x8009,		// GL_BLEND_EQUATION_RGB
 			BlendEquationAlpha = 0x883D,	// GL_BLEND_EQUATION_ALPHA
@@ -138,7 +136,7 @@ namespace ml
 			BlendSourceAlpha,				// GL_BLEND_SRC_ALPHA
 		};
 
-		enum Comparison : Enum
+		enum Comparison : uint32_t
 		{
 			Never = 0x200,					// GL_NEVER
 			Less,							// GL_LESS
@@ -150,7 +148,7 @@ namespace ml
 			Always,							// GL_ALWAYS
 		};
 
-		enum Factor : Enum
+		enum Factor : uint32_t
 		{
 			SourceColor = 0x0300,			// GL_SRC_COLOR
 			OneMinusSourceColor,			// GL_ONE_MINUS_SRC_COLOR
@@ -163,7 +161,7 @@ namespace ml
 			SourceAlphaSaturate,			// GL_SRC_ALPHA_SATURATE
 		};
 
-		enum Face : Enum
+		enum Face : uint32_t
 		{
 			FrontLeft = 0x0400,				// GL_FRONT_LEFT
 			FrontRight,						// GL_FRONT_RIGHT
@@ -176,7 +174,7 @@ namespace ml
 			FrontAndBack,					// GL_FRONT_AND_BACK
 		};
 
-		enum Type : Enum
+		enum Type : uint32_t
 		{
 			Byte = 0x1400,					// GL_BYTE
 			UnsignedByte,					// GL_UNSIGNED_BYTE
@@ -187,7 +185,7 @@ namespace ml
 			Float,							// GL_FLOAT
 		};
 
-		enum Format : Enum
+		enum Format : uint32_t
 		{
 			Red = 0x1903,					// GL_RED
 			Green,							// GL_GREEN
@@ -210,7 +208,7 @@ namespace ml
 			Depth24_Stencil8 = 0x88F0,		// GL_DEPTH24_STENCIL8
 		};
 
-		enum FBO_Attachment : Enum
+		enum FBO_Attachment : uint32_t
 		{
 			AttachmentColorEncoding= 0x8210,// GL_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING
 			AttachmentComponentType,		// GL_FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE
@@ -225,7 +223,7 @@ namespace ml
 			DepthStencilAttachment,			// GL_DEPTH_STENCIL_ATTACHMENT
 		};
 
-		enum TexParam : Enum
+		enum TexParam : uint32_t
 		{
 			Nearest = 0x2600,				// GL_NEAREST
 			Linear,							// GL_LINEAR
@@ -250,7 +248,7 @@ namespace ml
 			CubeMap_Negative_Z,				// GL_TEXTURE_CUBE_MAP_NEGATIVE_Z
 		};
 
-		enum Pack : Enum
+		enum Pack : uint32_t
 		{
 			UnpackSwapBytes = 0x0CF0,		// GL_UNPACK_SWAP_BYTES
 			UnpackLsbFirst,					// GL_UNPACK_LSB_FIRST
@@ -267,7 +265,7 @@ namespace ml
 			PackAlignment,					// GL_PACK_ALIGNMENT
 		};
 
-		enum Attachment : Enum
+		enum Attachment : uint32_t
 		{
 			ColorAttachment0 = 0x8CE0,		// GL_COLOR_ATTACHMENT0
 			ColorAttachment1,				// GL_COLOR_ATTACHMENT1
@@ -287,7 +285,7 @@ namespace ml
 			ColorAttachment15,				// GL_COLOR_ATTACHMENT15
 		};
 
-		enum TextureID : Enum
+		enum TextureID : uint32_t
 		{
 			Texture0 = 0x84C0,				// GL_TEXTURE0
 			Texture1,						// GL_TEXTURE1
@@ -344,7 +342,7 @@ namespace ml
 			DrawBuffer15,					// GL_DRAW_BUFFER15
 		};
 
-		enum Mask : Enum
+		enum Mask : uint32_t
 		{
 			ContextCoreProfileBit	= 0x1,	// GL_CONTEXT_CORE_PROFILE_BIT
 			ContextCompatProfileBit = 0x2,	// GL_CONTEXT_COMPATIBILITY_PROFILE_BIT

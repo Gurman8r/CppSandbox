@@ -74,6 +74,7 @@ namespace ml
 	{
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 	
 	void BufferLayout::bind() const
 	{

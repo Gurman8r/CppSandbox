@@ -28,12 +28,7 @@ namespace ml
 		Transform &	scale(const vec3f & value);
 		Transform &	translate(const vec3f & value);
 
-		bool decompose(
-			vec3f & scale,
-			quat  & orient,
-			vec3f & trans,
-			vec3f & skew, 
-			vec4f & persp);
+		bool decompose(vec3f & scale, quat  & orient, vec3f & trans, vec3f & skew, vec4f & persp);
 
 	public:
 		inline operator	const mat4f & () const { return matrix(); }

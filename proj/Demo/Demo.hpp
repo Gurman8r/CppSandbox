@@ -93,19 +93,19 @@ namespace DEMO
 		};
 		DemoUniforms uni;
 
-		// GUI State
+		// GUI
 		/* * * * * * * * * * * * * * * * * * * * */
 		struct DemoGUI
 		{
 			/* * * * * * * * * * * * * * * * * * * * */
 			bool show_main_menu_bar = true;
+			bool show_dockspace		= true;
 			/* * * * * * * * * * * * * * * * * * * * */
 			bool show_imgui_demo	= false;
 			bool show_imgui_metrics	= false;
 			bool show_imgui_style	= false;
 			bool show_imgui_about	= false;
 			/* * * * * * * * * * * * * * * * * * * * */
-			bool show_dockspace		= true;
 			bool show_terminal		= true;
 			bool show_browser		= true;
 			bool show_builder		= true;

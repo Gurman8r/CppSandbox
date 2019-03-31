@@ -28,6 +28,7 @@ namespace ml
 		using pointer		= typename value_type * ;
 		using const_pointer = typename const pointer ;
 
+		using KeyList		= List<String>;
 		using PointerMap	= HashMap<String, pointer>;
 		using FileMap		= HashMap<String, String>;
 		using Pair			= Pair<String, pointer>;
@@ -129,6 +130,19 @@ namespace ml
 		inline PointerMap & getAll()
 		{
 			return m_data;
+		}
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		inline const List<String> & getKeys() const
+		{
+			static List<String> keys;
+			keys.reserve(this->size());
+			for (auto pair : (*this))
+			{
+				keys.push_back(pair.first);
+			}
+			return keys;
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * */

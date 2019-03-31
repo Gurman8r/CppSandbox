@@ -2,14 +2,14 @@
 
 namespace ml
 {
-	// Attachment Operators
+	// GL::Attachment Operators
 	/* * * * * * * * * * * * * * * * * * * * */
 	template <typename T>
 	inline GL::Attachment operator+(const GL::Attachment lhs, const T rhs)
 	{
 		return ML_TYPE_CLAMP(
 			GL::Attachment,
-			static_cast<GL::Enum>(lhs) + static_cast<GL::Enum>(rhs),
+			static_cast<uint32_t>(lhs) + static_cast<uint32_t>(rhs),
 			GL::ColorAttachment0,
 			GL::ColorAttachment15);
 	}
@@ -57,17 +57,18 @@ namespace ml
 	}
 
 
-	// TextureID Operators
+	// GL::TextureID Operators
 	/* * * * * * * * * * * * * * * * * * * * */
 	template <typename T>
 	inline GL::TextureID operator+(const GL::TextureID lhs, const T rhs)
 	{
 		return ML_TYPE_CLAMP(
 			GL::TextureID,
-			static_cast<GL::Enum>(lhs) + static_cast<GL::Enum>(rhs),
+			static_cast<uint32_t>(lhs) + static_cast<uint32_t>(rhs),
 			GL::Texture0,
 			GL::Texture31);
 	}
+	
 	template <typename T>
 	inline GL::TextureID operator-(const GL::TextureID lhs, const T rhs)
 	{
@@ -79,6 +80,7 @@ namespace ml
 	{
 		return (lhs = (lhs + rhs));
 	}
+	
 	template <typename T>
 	inline GL::TextureID & operator-=(GL::TextureID & lhs, const T rhs)
 	{
@@ -89,16 +91,19 @@ namespace ml
 	{
 		return (lhs += 1);
 	}
+	
 	inline GL::TextureID operator++(GL::TextureID & lhs, int32_t)
 	{
 		GL::TextureID temp = lhs;
 		lhs += 1;
 		return temp;
 	}
+	
 	inline GL::TextureID operator--(GL::TextureID & lhs)
 	{
 		return (lhs += 1);
 	}
+	
 	inline GL::TextureID operator--(GL::TextureID & lhs, int32_t)
 	{
 		GL::TextureID temp = lhs;
@@ -107,20 +112,23 @@ namespace ml
 	}
 
 
-	// Mask Operators
+	// GL::Mask Operators
 	/* * * * * * * * * * * * * * * * * * * * */
 	inline GL::Mask operator&(const GL::Mask lhs, const GL::Mask rhs)
 	{
-		return static_cast<GL::Mask>(static_cast<GL::Enum>(lhs) & static_cast<GL::Enum>(rhs));
+		return static_cast<GL::Mask>(static_cast<uint32_t>(lhs) & static_cast<uint32_t>(rhs));
 	}
+	
 	inline GL::Mask operator|(const GL::Mask lhs, const GL::Mask rhs)
 	{
-		return static_cast<GL::Mask>(static_cast<GL::Enum>(lhs) | static_cast<GL::Enum>(rhs));
+		return static_cast<GL::Mask>(static_cast<uint32_t>(lhs) | static_cast<uint32_t>(rhs));
 	}
+	
 	inline GL::Mask & operator&=(GL::Mask & lhs, const GL::Mask rhs)
 	{
 		return (lhs = (lhs & rhs));
 	}
+	
 	inline GL::Mask & operator|=(GL::Mask & lhs, const GL::Mask rhs)
 	{
 		return (lhs = (lhs | rhs));

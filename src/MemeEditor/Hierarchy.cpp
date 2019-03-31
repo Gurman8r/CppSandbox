@@ -80,12 +80,18 @@ namespace ml
 
 	Hierarchy::Hierarchy()
 		: GUI_Window("Hierarchy")
-		, m_objects({ GameObject("Object A"), GameObject("Object B"), GameObject("Object C") })
+		, m_objects()
 	{
 	}
 
 	Hierarchy::~Hierarchy()
 	{
+		for (auto pair : m_objects)
+		{
+			delete pair.second;
+			pair.second = NULL;
+		}
+		m_objects.clear();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -100,37 +106,48 @@ namespace ml
 	{
 		if (beginDraw(p_open, ImGuiWindowFlags_MenuBar))
 		{
+			// Menu Bar
 			/* * * * * * * * * * * * * * * * * * * * */
-
 			if (ImGui::BeginMenuBar())
 			{
 				if (ImGui::BeginMenu("New"))
 				{
-					if (ImGui::MenuItem("Game Object")) { }
+					if (ImGui::MenuItem("Game Object")) 
+					{
+						if (GameObject * obj = newObject(GameObject(
+							String("New Game Object ({0})").format(
+								m_objects.size()
+							).c_str()
+						)))
+						{
+
+						}
+					}
 					ImGui::EndMenu();
 				}
 				ImGui::EndMenuBar();
 			}
 
+			// Hierarchy
 			/* * * * * * * * * * * * * * * * * * * * */
-
 			Funcs::Columns([&]() 
 			{
-				for (size_t i = 0; i < m_objects.size(); i++)
+				for (auto pair : m_objects)
 				{
-					Funcs::Group(m_objects[i].name, [](GameObject * value)
+					Funcs::Group(pair.second->name, [&](GameObject * value)
 					{
 						/* * * * * * * * * * * * * * * * * * * * */
 
-						Funcs::Field("Name", [&](CString label)
+						Funcs::Group("Properties", [&]() 
 						{
-							ImGui::InputText(
-								label,
-								value->name,
-								IM_ARRAYSIZE(value->name),
-								ImGuiInputTextFlags_AllowTabInput,
-								NULL,
-								NULL);
+							Funcs::Field("Name", [&](CString label)
+							{
+								GameObject::Name buf;
+								if (edit_object_name(buf, value))
+								{
+									strcpy(value->name, buf);
+								}
+							});
 						});
 
 						/* * * * * * * * * * * * * * * * * * * * */
@@ -147,32 +164,30 @@ namespace ml
 							{
 								Funcs::Field("Scale", [&](CString label)
 								{
-									GUI::EditVec3f(label, scale);
+									GUI::EditVec3f("##Scale", scale);
 								});
 
 								Funcs::Field("Orientation", [&](CString label)
 								{
-									GUI::EditVec4f(label, orient);
+									GUI::EditVec4f("##Orientation", orient);
 								});
 
 								Funcs::Field("Translation", [&](CString label)
 								{
-									GUI::EditVec3f(label, trans);
+									GUI::EditVec3f("##Translation", trans);
 								});
 
 								Funcs::Field("Skew", [&](CString label)
 								{
-									GUI::EditVec3f(label, skew);
+									GUI::EditVec3f("##Skew", skew);
 								});
 
 								Funcs::Field("Perspective", [&](CString label)
 								{
-									GUI::EditVec4f(label, persp);
+									GUI::EditVec4f("##Perspective", persp);
 								});
 							}
 						});
-
-						/* * * * * * * * * * * * * * * * * * * * */
 
 						Funcs::Group("Vertex", [&]()
 						{
@@ -204,8 +219,12 @@ namespace ml
 						{
 							Funcs::Field("Frag.mainCol", [&](CString label)
 							{
-								vec4f color = value->color;
-								ImGui::ColorEdit4(label, &color[0]);
+								if (ImGui::ColorEdit4(
+									(("##" + String(label)).c_str()),
+									(&value->color[0])))
+								{
+									// changed
+								}
 							});
 
 							Funcs::Field("Frag.mainTex", [&](CString label)
@@ -221,33 +240,60 @@ namespace ml
 									return true;
 								};
 
-								List<String> names;
-								for (auto pair : ML_Res.textures)
-								{
-									names.push_back(pair.first);
-								}
+								const List<String> & keys = ML_Res.textures.getKeys();
 
 								static int32_t index = 0;
+
 								if (ImGui::Combo(
-									label,
+									(("##" + String(label)).c_str()),
 									&index,
 									vector_getter,
-									(void *)(&names),
-									(int32_t)names.size()))
+									(void *)(&keys),
+									(int32_t)keys.size()))
 								{
-									// changed
 								}
 							});
 						});
 
 						/* * * * * * * * * * * * * * * * * * * * */
-					}, &m_objects[i]);
+					}, pair.second);
 				}
 			});
 
 			/* * * * * * * * * * * * * * * * * * * * */
 		}
 		return endDraw();
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	GameObject * Hierarchy::getObject(const String & name)
+	{
+		iterator it;
+		return (((it = m_objects.find(name)) != m_objects.end())
+			? (it->second)
+			: (NULL));
+	}
+
+	GameObject * Hierarchy::newObject(const GameObject & value)
+	{
+		return ((m_objects.find(value.name) == m_objects.end())
+			? (m_objects[value.name] = new GameObject(value))
+			: (NULL));
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	bool Hierarchy::edit_object_name(char * buf, GameObject * value)
+	{
+		strcpy(buf, value->name);
+		return ImGui::InputText(
+			("##Name"),
+			(buf),
+			(GameObject::NameSize),
+			(ImGuiInputTextFlags_EnterReturnsTrue),
+			(NULL),
+			(NULL));
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
