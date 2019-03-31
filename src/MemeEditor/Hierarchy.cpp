@@ -160,7 +160,7 @@ namespace ml
 							vec3f skew;
 							vec4f persp;
 
-							if (value->transform.decompose(scale, orient, trans, skew, persp))
+							if (value->transform().decompose(scale, orient, trans, skew, persp))
 							{
 								Funcs::Field("Scale", [&](CString label)
 								{

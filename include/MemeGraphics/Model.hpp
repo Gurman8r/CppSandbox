@@ -17,7 +17,7 @@ namespace ml
 		: public ITrackable
 		, public IDrawable
 		, public IReadable
-		, public ITransformable
+		//, public ITransformable
 	{
 	public:
 		Model();

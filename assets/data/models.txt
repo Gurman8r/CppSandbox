@@ -15,12 +15,6 @@
 
 <item>
 	type: model
-	name: sprite
-	mesh: default_quad
-</item>
-
-<item>
-	type: model
 	name: cube
 	mesh: cube
 </item>

@@ -8,13 +8,10 @@
 
 namespace ml
 {
-	class Hierarchy;
-
 	class ML_EDITOR_API GameObject
 		: public ITrackable
+		, public ITransformable
 	{
-		friend class Hierarchy;
-
 	public:
 		enum : uint32_t { NameSize = 64U };
 
@@ -28,13 +25,11 @@ namespace ml
 	public:
 		bool		dirty;
 		Name		name;
-		Transform	transform;
 		vec4f		color;
 		UniformSet	uniforms;
 
 		const Model *	model;
 		const Shader *	shader;
-		const Texture * texture;
 	};
 }
 

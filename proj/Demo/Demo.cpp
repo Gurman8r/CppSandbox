@@ -357,52 +357,6 @@ namespace DEMO
 			uni.camera.lookAt(uni.camPos, uni.camPos + ml::vec3f::Back, ml::vec3f::Up);
 		}
 
-		// Setup Models
-		/* * * * * * * * * * * * * * * * * * * * */
-		{
-			if (ml::Model * m = ML_Res.models.get("borg"))
-			{
-				m->transform()
-					.translate({ +5.0f, 0.0f, 0.0f })
-					.scale(1.0f);
-			}
-
-			if (ml::Model * m = ML_Res.models.get("sanic"))
-			{
-				m->transform()
-					.translate({ -5.0f, 0.0f, 0.0f })
-					.scale(1.0f);
-			}
-
-			if (ml::Model * m = ML_Res.models.get("earth"))
-			{
-				m->transform()
-					.translate({ 0.0f, 0.0f, 0.0f })
-					.scale(1.0f);
-			}
-
-			if (ml::Model * m = ML_Res.models.get("cube"))
-			{
-				m->transform()
-					.translate({ 0.0f, 0.0f, -5.0f })
-					.scale(0.5f);
-			}
-
-			if (ml::Model * m = ML_Res.models.get("moon"))
-			{
-				m->transform()
-					.translate({ 0.0f, 0.0f, 5.0f })
-					.scale(0.5f);
-			}
-
-			if (ml::Model * m = ML_Res.models.get("ground"))
-			{
-				m->transform()
-					.translate({ 0.0f, -2.5f, 0.0f })
-					.scale({ 12.5, 0.25f, 12.5 });
-			}
-		}
-
 		// Setup Sprites
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
@@ -419,8 +373,115 @@ namespace DEMO
 		// Setup Game Objects
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
-			if (ml::GameObject * obj = ML_Hierarchy.newObject("Test Game Object"))
+			// Light
+			/* * * * * * * * * * * * * * * * * * * * */
+			if (ml::GameObject * obj = ML_Hierarchy.newObject("light"))
 			{
+				obj->model = ML_Res.models.get("light");
+				obj->shader = ML_Res.shaders.get("solid");
+				obj->uniforms = {
+					ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&obj->transform().matrix()),
+					ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&uni.lightCol),
+				};
+				obj->transform()
+					.setPosition(uni.lightPos)
+					.rotate(0.0f, ml::vec3f::Forward);
+			}
+
+			// Borg
+			/* * * * * * * * * * * * * * * * * * * * */
+			if (ml::GameObject * obj = ML_Hierarchy.newObject("borg"))
+			{
+				obj->model = ML_Res.models.get("borg");
+				obj->shader = ML_Res.shaders.get("basic");
+				obj->uniforms = {
+					ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&obj->transform().matrix()),
+					ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
+					ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("borg")),
+				};
+				obj->transform()
+					.translate({ +5.0f, 0.0f, 0.0f })
+					.scale(1.0f);
+			}
+
+			// Sanic
+			/* * * * * * * * * * * * * * * * * * * * */
+			if (ml::GameObject * obj = ML_Hierarchy.newObject("sanic"))
+			{
+				obj->model = ML_Res.models.get("sanic");
+				obj->shader = ML_Res.shaders.get("basic");
+				obj->uniforms = {
+					ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&obj->transform().matrix()),
+					ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
+					ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("sanic")),
+				};
+				obj->transform()
+					.translate({ -5.0f, 0.0f, 0.0f })
+					.scale(1.0f);
+			}
+
+			// Cube
+			/* * * * * * * * * * * * * * * * * * * * */
+			if (ml::GameObject * obj = ML_Hierarchy.newObject("cube"))
+			{
+				obj->model = ML_Res.models.get("cube");
+				obj->shader = ML_Res.shaders.get("normal3D");
+				obj->uniforms = {
+					ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&obj->transform().matrix()),
+					ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
+					ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm")),
+				};
+				obj->transform()
+					.translate({ 0.0f, 0.0f, -5.0f })
+					.scale(0.5f);
+			}
+			
+			// Earth
+			/* * * * * * * * * * * * * * * * * * * * */
+			if (ml::GameObject * obj = ML_Hierarchy.newObject("earth"))
+			{
+				obj->model = ML_Res.models.get("earth");
+				obj->shader = ML_Res.shaders.get("lighting");
+				obj->uniforms = {
+					ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&obj->transform().matrix()),
+					ml::Uniform("Frag.tex_dm",	ml::Uniform::Tex2D,	ML_Res.textures.get("earth_dm")),
+					ml::Uniform("Frag.tex_sm",	ml::Uniform::Tex2D,	ML_Res.textures.get("earth_sm")),
+				};
+				obj->transform()
+					.translate({ 0.0f, 0.0f, 0.0f })
+					.scale(1.0f);
+			}
+			
+			// Moon
+			/* * * * * * * * * * * * * * * * * * * * */
+			if (ml::GameObject * obj = ML_Hierarchy.newObject("moon"))
+			{
+				obj->model = ML_Res.models.get("moon");
+				obj->shader = ML_Res.shaders.get("lighting");
+				obj->uniforms = {
+					ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&obj->transform().matrix()),
+					ml::Uniform("Frag.tex_dm",	ml::Uniform::Tex2D,	ML_Res.textures.get("moon_dm")),
+					ml::Uniform("Frag.tex_sm",	ml::Uniform::Tex2D,	ML_Res.textures.get("moon_nm")),
+				};
+				obj->transform()
+					.translate({ 0.0f, 0.0f, 5.0f })
+					.scale(0.5f);
+			}
+
+			// Ground
+			/* * * * * * * * * * * * * * * * * * * * */
+			if (ml::GameObject * obj = ML_Hierarchy.newObject("ground"))
+			{
+				obj->model = ML_Res.models.get("ground");
+				obj->shader = ML_Res.shaders.get("normal3D");
+				obj->uniforms = {
+					ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&obj->transform().matrix()),
+					ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
+					ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm")),
+				};
+				obj->transform()
+					.translate({ 0.0f, -2.5f, 0.0f })
+					.scale({ 12.5, 0.25f, 12.5 });
 			}
 		}
 	}
@@ -456,7 +517,7 @@ namespace DEMO
 		// Update Models
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
-			if (ml::Model * m = ML_Res.models.get("borg"))
+			if (ml::GameObject * m = ML_Hierarchy.getObject("borg"))
 			{
 				ml::vec3f pos = m->transform().getPosition();
 				pos[1] = +ML_Time.cos();
@@ -465,7 +526,7 @@ namespace DEMO
 					.rotate(+ev.elapsed.delta(), ml::vec3f::One);
 			}
 
-			if (ml::Model * m = ML_Res.models.get("cube"))
+			if (ml::GameObject * m = ML_Hierarchy.getObject("cube"))
 			{
 				ml::vec3f pos = m->transform().getPosition();
 				pos[1] = -ML_Time.sin();
@@ -474,13 +535,13 @@ namespace DEMO
 					.rotate(-ev.elapsed.delta(), ml::vec3f::One);
 			}
 
-			if (ml::Model * m = ML_Res.models.get("earth"))
+			if (ml::GameObject * m = ML_Hierarchy.getObject("earth"))
 			{
 				m->transform()
 					.rotate((uni.animate ? ev.elapsed.delta() : 0.f), ml::vec3f::Up);
 			}
 
-			if (ml::Model * m = ML_Res.models.get("moon"))
+			if (ml::GameObject * m = ML_Hierarchy.getObject("moon"))
 			{
 				ml::vec3f pos = m->transform().getPosition();
 				pos[1] = +ML_Time.sin();
@@ -489,7 +550,7 @@ namespace DEMO
 					.rotate(-ev.elapsed.delta(), ml::vec3f::Up);
 			}
 
-			if (ml::Model * m = ML_Res.models.get("sanic"))
+			if (ml::GameObject * m = ML_Hierarchy.getObject("sanic"))
 			{
 				ml::vec3f pos = m->transform().getPosition();
 				pos[1] = -ML_Time.cos();
@@ -498,7 +559,7 @@ namespace DEMO
 					.rotate(-ev.elapsed.delta(), ml::vec3f::Forward);
 			}
 
-			if (ml::Model * m = ML_Res.models.get("light"))
+			if (ml::GameObject * m = ML_Hierarchy.getObject("light"))
 			{
 				m->transform()
 					.setPosition(uni.lightPos)
@@ -508,7 +569,7 @@ namespace DEMO
 
 		// Update Camera
 		/* * * * * * * * * * * * * * * * * * * * */
-		if (const ml::Model * target = ML_Res.models.get("earth"))
+		if (const ml::GameObject * target = ML_Hierarchy.getObject("earth"))
 		{
 			// Look
 			ml::vec3f pos = target->transform().getPosition();
@@ -696,109 +757,81 @@ namespace DEMO
 
 			// Light
 			/* * * * * * * * * * * * * * * * * * * * */
-			if (const ml::Model * model = ML_Res.models.get("light"))
+			if (const ml::GameObject * obj = ML_Hierarchy.getObject("light"))
 			{
-				if (const ml::Shader * shader = ML_Res.shaders.get("solid"))
+				if (obj->model && obj->shader)
 				{
-					static ml::UniformSet uniforms = {
-						ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&model->transform().matrix()),
-						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&uni.lightCol),
-					};
-					shader->applyUniforms(camera_uniforms);
-					shader->applyUniforms(uniforms);
-					shader->bind();
-					this->draw(*model);
+					obj->shader->applyUniforms(camera_uniforms);
+					obj->shader->applyUniforms(obj->uniforms);
+					obj->shader->bind();
+					this->draw(*obj->model);
 				}
 			}
 
 			// Borg
 			/* * * * * * * * * * * * * * * * * * * * */
-			if (const ml::Model * model = ML_Res.models.get("borg"))
+			if (const ml::GameObject * obj = ML_Hierarchy.getObject("borg"))
 			{
-				if (const ml::Shader * shader = ML_Res.shaders.get("basic"))
+				if (obj->model && obj->shader)
 				{
-					static ml::UniformSet uniforms = {
-						ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&model->transform().matrix()),
-						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
-						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("borg")),
-					};
-					shader->applyUniforms(uniforms);
-					shader->bind();
-					this->draw(*model);
+					obj->shader->applyUniforms(camera_uniforms);
+					obj->shader->applyUniforms(obj->uniforms);
+					obj->shader->bind();
+					this->draw(*obj->model);
 				}
 			}
 
 			// Earth
 			/* * * * * * * * * * * * * * * * * * * * */
-			if (const ml::Model * model = ML_Res.models.get("earth"))
+			if (const ml::GameObject * obj = ML_Hierarchy.getObject("earth"))
 			{
-				if (const ml::Shader * shader = ML_Res.shaders.get("lighting"))
+				if (obj->model && obj->shader)
 				{
-					static ml::UniformSet uniforms = {
-						ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&model->transform().matrix()),
-						ml::Uniform("Frag.tex_dm",	ml::Uniform::Tex2D,	ML_Res.textures.get("earth_dm")),
-						ml::Uniform("Frag.tex_sm",	ml::Uniform::Tex2D,	ML_Res.textures.get("earth_sm")),
-					};
-					shader->applyUniforms(camera_uniforms);
-					shader->applyUniforms(light_uniforms);
-					shader->applyUniforms(uniforms);
-					shader->bind();
-					this->draw(*model);
+					obj->shader->applyUniforms(light_uniforms);
+					obj->shader->applyUniforms(camera_uniforms);
+					obj->shader->applyUniforms(obj->uniforms);
+					obj->shader->bind();
+					this->draw(*obj->model);
 				}
 			}
 
 			// Moon
 			/* * * * * * * * * * * * * * * * * * * * */
-			if (const ml::Model * model = ML_Res.models.get("moon"))
+			if (const ml::GameObject * obj = ML_Hierarchy.getObject("moon"))
 			{
-				if (const ml::Shader * shader = ML_Res.shaders.get("lighting"))
+				if (obj->model && obj->shader)
 				{
-					static ml::UniformSet uniforms = {
-						ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&model->transform().matrix()),
-						ml::Uniform("Frag.tex_dm",	ml::Uniform::Tex2D,	ML_Res.textures.get("moon_dm")),
-						ml::Uniform("Frag.tex_sm",	ml::Uniform::Tex2D,	ML_Res.textures.get("moon_nm")),
-					};
-					shader->applyUniforms(camera_uniforms);
-					shader->applyUniforms(light_uniforms);
-					shader->applyUniforms(uniforms);
-					shader->bind();
-					this->draw(*model);
+					obj->shader->applyUniforms(light_uniforms);
+					obj->shader->applyUniforms(camera_uniforms);
+					obj->shader->applyUniforms(obj->uniforms);
+					obj->shader->bind();
+					this->draw(*obj->model);
 				}
 			}
 
 			// Cube
 			/* * * * * * * * * * * * * * * * * * * * */
-			if (const ml::Model * model = ML_Res.models.get("cube"))
+			if (const ml::GameObject * obj = ML_Hierarchy.getObject("cube"))
 			{
-				if (const ml::Shader * shader = ML_Res.shaders.get("normal3D"))
+				if (obj->model && obj->shader)
 				{
-					static ml::UniformSet uniforms = {
-						ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&model->transform().matrix()),
-						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
-						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm")),
-					};
-					shader->applyUniforms(camera_uniforms);
-					shader->applyUniforms(uniforms);
-					shader->bind();
-					this->draw(*model);
+					obj->shader->applyUniforms(camera_uniforms);
+					obj->shader->applyUniforms(obj->uniforms);
+					obj->shader->bind();
+					this->draw(*obj->model);
 				}
 			}
 
 			// Ground
 			/* * * * * * * * * * * * * * * * * * * * */
-			if (const ml::Model * model = ML_Res.models.get("ground"))
+			if (const ml::GameObject * obj = ML_Hierarchy.getObject("ground"))
 			{
-				if (const ml::Shader * shader = ML_Res.shaders.get("normal3D"))
+				if (obj->model && obj->shader)
 				{
-					static ml::UniformSet uniforms = {
-						ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&model->transform().matrix()),
-						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
-						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm")),
-					};
-					shader->applyUniforms(camera_uniforms);
-					shader->applyUniforms(uniforms);
-					shader->bind();
-					this->draw(*model);
+					obj->shader->applyUniforms(camera_uniforms);
+					obj->shader->applyUniforms(obj->uniforms);
+					obj->shader->bind();
+					this->draw(*obj->model);
 				}
 			}
 
@@ -810,19 +843,14 @@ namespace DEMO
 
 			// Sanic
 			/* * * * * * * * * * * * * * * * * * * * */
-			if (const ml::Model * model = ML_Res.models.get("sanic"))
+			if (const ml::GameObject * obj = ML_Hierarchy.getObject("sanic"))
 			{
-				if (const ml::Shader * shader = ML_Res.shaders.get("basic"))
+				if (obj->model && obj->shader)
 				{
-					static ml::UniformSet uniforms = {
-						ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&model->transform().matrix()),
-						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
-						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("sanic")),
-					};
-					shader->applyUniforms(camera_uniforms);
-					shader->applyUniforms(uniforms);
-					shader->bind();
-					this->draw(*model);
+					obj->shader->applyUniforms(camera_uniforms);
+					obj->shader->applyUniforms(obj->uniforms);
+					obj->shader->bind();
+					this->draw(*obj->model);
 				}
 			}
 
@@ -1174,7 +1202,7 @@ namespace DEMO
 
 			/* * * * * * * * * * * * * * * * * * * * */
 
-			if (ml::Model * m = ML_Res.models.get("earth"))
+			if (ml::GameObject * m = ML_Hierarchy.getObject("earth"))
 			{
 				ImGui::Text("Transform");
 				ImGui::Checkbox("Animate##Transform", &uni.animate);

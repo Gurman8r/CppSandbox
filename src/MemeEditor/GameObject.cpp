@@ -11,7 +11,6 @@ namespace ml
 		, color(Color::White)
 		, model(NULL)
 		, shader(NULL)
-		, texture(NULL)
 	{
 		strcpy(this->name, name);
 	}
