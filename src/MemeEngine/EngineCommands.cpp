@@ -180,7 +180,7 @@ namespace ml
 
 	Var EngineCommands::cmd_exit(Args & args)
 	{
-		ML_EventSystem.fireEvent(RequestExitEvent());
+		//ML_EventSystem.fireEvent(RequestExitEvent());
 		return Var().voidValue();
 	}
 

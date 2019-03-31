@@ -56,9 +56,6 @@ namespace ml
 		Registry<Sound> 	sounds;
 		Registry<Sprite>	sprites;
 		Registry<Texture>	textures;
-
-	private:
-		std::vector<ManifestItem> m_manifest;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

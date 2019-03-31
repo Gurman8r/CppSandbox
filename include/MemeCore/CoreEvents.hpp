@@ -12,29 +12,15 @@ namespace ml
 		enum : int32_t
 		{
 			MIN_CORE_EVENT = IEvent::EV_CORE + 1,
-			EV_RequestExit,
+			
 			EV_FileSystem,
+			
 			MAX_CORE_EVENT
 		};
 
 		CoreEvent(int32_t id)
 			: IEvent(id)
 		{
-		}
-	};
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	struct ML_CORE_API RequestExitEvent : public CoreEvent
-	{
-		RequestExitEvent()
-			: CoreEvent(EV_RequestExit)
-		{
-		}
-
-		inline void serialize(std::ostream & out) const override
-		{
-			out << GetTypeInfo().name() << " ";
 		}
 	};
 

@@ -10,6 +10,15 @@ namespace ml
 		: Application()
 	{
 		ML_EventSystem.addListener(EditorEvent::EV_Gui, this);
+		ML_EventSystem.addListener(EditorEvent::EV_File_New, this);
+		ML_EventSystem.addListener(EditorEvent::EV_File_Open, this);
+		ML_EventSystem.addListener(EditorEvent::EV_File_Save, this);
+		ML_EventSystem.addListener(EditorEvent::EV_File_Close, this);
+		ML_EventSystem.addListener(EditorEvent::EV_Edit_Undo, this);
+		ML_EventSystem.addListener(EditorEvent::EV_Edit_Redo, this);
+		ML_EventSystem.addListener(EditorEvent::EV_Edit_Cut, this);
+		ML_EventSystem.addListener(EditorEvent::EV_Edit_Copy, this);
+		ML_EventSystem.addListener(EditorEvent::EV_Edit_Paste, this);
 	}
 
 	EditorApplication::~EditorApplication() { }

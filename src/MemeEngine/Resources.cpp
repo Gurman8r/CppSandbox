@@ -74,11 +74,12 @@ namespace ml
 		while (std::getline(file, line))
 		{
 			if (line.trim().front() == '#')
-				continue;
-
-			if (line.find("<item>") != String::npos)
 			{
-				m_manifest.push_back(ManifestItem());
+				continue;
+			}
+			else if (line.find("<item>") != String::npos)
+			{
+				ManifestItem item;
 
 				while (std::getline(file, line))
 				{
@@ -87,10 +88,7 @@ namespace ml
 
 					if (line.find("</item>") != String::npos)
 					{
-						if (parseItem(m_manifest.back()))
-						{
-							count++;
-						}
+						count += parseItem(item);
 					}
 					else
 					{
@@ -102,7 +100,7 @@ namespace ml
 								if (const String val = String(
 									line.substr((i + 1), (line.size() - i - 2))).trim())
 								{
-									m_manifest.back()[key] = val;
+									item[key] = val;
 								}
 							}
 						}

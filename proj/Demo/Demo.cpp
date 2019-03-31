@@ -17,21 +17,9 @@
 #include <MemeEditor/EditorCommands.hpp>
 #include <MemeEngine/Resources.hpp>
 #include <MemeEditor/ImGui.hpp>
+#include <MemeEditor/Editor.hpp>
 #include <MemeEditor/EditorEvents.hpp>
-#include <MemeEditor/MainMenuBar.hpp>
 #include <MemeEditor/GUI.hpp>
-#include <MemeEditor/Terminal.hpp>
-#include <MemeEditor/Builder.hpp>
-#include <MemeEditor/Browser.hpp>
-#include <MemeEditor/ImGui_Builtin.hpp>
-#include <MemeEditor/Dockspace.hpp>
-#include <MemeEditor/TextEditor.hpp>
-#include <MemeEditor/Hierarchy.hpp>
-#include <MemeEditor/SceneView.hpp>
-#include <MemeEditor/Inspector.hpp>
-#include <MemeEditor/ResourceHUD.hpp>
-#include <MemeEditor/NetworkHUD.hpp>
-#include <MemeEditor/Profiler.hpp>
 #include <MemeEngine/EngineCommands.hpp>
 #include <MemeNet/Client.hpp>
 #include <MemeNet/Server.hpp>
@@ -50,10 +38,8 @@ namespace DEMO
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Demo::Demo()
-		: ml::EditorApplication()
+		: EditorApplication()
 	{
-		ML_EventSystem.addListener(ml::CoreEvent::EV_RequestExit, this);
-		ML_EventSystem.addListener(ml::EditorEvent::EV_Inspector, this);
 	}
 
 	Demo::~Demo() {}
@@ -66,21 +52,33 @@ namespace DEMO
 
 		switch (value->eventID())
 		{
-		case ml::CoreEvent::EV_RequestExit:
-			if (const auto * ev = value->as<ml::RequestExitEvent>())
-				this->close();
-			break;
-
 		case ml::WindowEvent::EV_FramebufferSize:
 			if (const auto * ev = value->as<ml::FramebufferSizeEvent>())
+			{
 				this->setViewport(ml::vec2i::Zero, ev->size());
+			}
+			break;
+
+		case ml::EditorEvent::EV_File_Close:
+			if (const auto * ev = value->as<ml::File_Close_Event>())
+			{
+				this->close();
+			}
+			break;
+
+		case ml::EditorEvent::EV_File_Open:
+			if (const auto * ev = value->as<ml::File_Open_Event>())
+			{
+				if (ML_Browser.get_selected() && ML_Editor.show_browser)
+				{
+					ML_OS.execute("open", ML_Browser.get_selected_path());
+				}
+			}
 			break;
 
 		case ml::WindowEvent::EV_Key:
 			if (const auto * ev = value->as<ml::KeyEvent>())
 			{
-				/* * * * * * * * * * * * * * * * * * * * */
-
 				// Mods
 				const bool mod_ctrl = (ev->mods & ML_MOD_CTRL);
 				const bool mod_alt = (ev->mods & ML_MOD_ALT);
@@ -97,7 +95,7 @@ namespace DEMO
 				// Toggle Smooth Textures (Num2)
 				if (ev->getKeyDown(ml::KeyCode::Num2))
 				{
-					for (auto pair : ML_Res.textures.getAll())
+					for (auto pair : ML_Res.textures)
 					{
 						pair.second->setSmooth(!pair.second->smooth());
 					}
@@ -113,40 +111,27 @@ namespace DEMO
 
 				// Terminal (Ctrl+Alt+T)
 				if (ev->getKeyDown(ml::KeyCode::T) && (mod_ctrl && mod_alt))
-					gui.show_terminal = true;
+					ML_Editor.show_terminal = true;
 
 				// Browser (Ctrl+Alt+E)
 				if (ev->getKeyDown(ml::KeyCode::E) && (mod_ctrl))
-					gui.show_browser = true;
+					ML_Editor.show_browser = true;
 
 				// Builder (Ctrl+Alt+B)
 				if (ev->getKeyDown(ml::KeyCode::B) && (mod_ctrl && mod_alt))
-					gui.show_builder = true;
+					ML_Editor.show_builder = true;
 
 				// Scene (Ctrl+Alt+S)
 				if (ev->getKeyDown(ml::KeyCode::S) && (mod_ctrl && mod_alt))
-					gui.show_scene = true;
+					ML_Editor.show_sceneView = true;
 
 				// Inspector (Ctrl+Alt+I)
 				if (ev->getKeyDown(ml::KeyCode::I) && (mod_ctrl && mod_alt))
-					gui.show_inspector = true;
+					ML_Editor.show_inspector = true;
 
 				// ImGui Demo (Ctrl+H)
 				if (ev->getKeyDown(ml::KeyCode::H) && (mod_ctrl))
-					gui.show_imgui_demo = true;
-
-				/* * * * * * * * * * * * * * * * * * * * */
-			}
-			break;
-
-		case ml::EditorEvent::EV_Inspector:
-			if (const auto * ev = value->as<ml::InspectorEvent>())
-			{
-				if (ImGui::BeginMenuBar())
-				{
-					ImGui::Text("%s (WIP)", ML_Inspector.title());
-					ImGui::EndMenuBar();
-				}
+					ML_Editor.show_imgui_demo = true;
 			}
 			break;
 		}
@@ -500,12 +485,9 @@ namespace DEMO
 	void Demo::onFixedUpdate(const ml::FixedUpdateEvent * ev)
 	{
 		// Update Physics
-		/* * * * * * * * * * * * * * * * * * * * */
+		for (ml::Particle & p : phys.particles)
 		{
-			for (ml::Particle & p : phys.particles)
-			{
-				p.applyForce(ml::Force::gravity(ml::vec3f::Up, p.mass));
-			}
+			p.applyForce(ml::Force::gravity(ml::vec3f::Up, p.mass));
 		}
 	}
 
@@ -711,20 +693,6 @@ namespace DEMO
 
 	void Demo::onDraw(const ml::DrawEvent * ev)
 	{
-		// Uniforms
-		/* * * * * * * * * * * * * * * * * * * * */
-		static ml::UniformSet batch_uniforms = 
-		{
-			ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&uni.ortho.matrix()),
-			ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4),
-			ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D),
-		};
-
-		static ml::UniformSet effect_uniforms = 
-		{
-			ml::Uniform("Effect.mode",	ml::Uniform::Int, &uni.effectMode),
-		};
-
 		// Draw Scene
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (ml::Effect * scene = ML_Res.effects.get(ML_FBO_MAIN))
@@ -860,11 +828,18 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (const ml::Shader * shader = ML_Res.shaders.get("sprites"))
 			{
+				static ml::UniformSet uniforms =
+				{
+					ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&uni.ortho.matrix()),
+					ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4),
+					ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D),
+				};
+
 				static ml::RenderBatch batch(
 					&m_batchVAO, 
 					&m_batchVBO, 
 					shader, 
-					&batch_uniforms);
+					&uniforms);
 
 				for (auto pair : ML_Res.sprites)
 				{
@@ -876,11 +851,18 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (const ml::Shader * shader = ML_Res.shaders.get("text"))
 			{
+				static ml::UniformSet uniforms =
+				{
+					ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&uni.ortho.matrix()),
+					ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4),
+					ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D),
+				};
+
 				static ml::RenderBatch batch(
 					&m_batchVAO,
 					&m_batchVBO, 
 					shader,
-					&batch_uniforms);
+					&uniforms);
 
 				for (auto it = m_text.begin(); it != m_text.end(); it++)
 				{
@@ -903,7 +885,9 @@ namespace DEMO
 				{
 					if (const ml::Shader * shader = scene->shader())
 					{
-						shader->applyUniforms(effect_uniforms);
+						shader->applyUniforms({
+							ml::Uniform("Effect.mode", ml::Uniform::Int, &uni.effectMode)
+						});
 
 						this->draw(*scene);
 					}
@@ -916,29 +900,25 @@ namespace DEMO
 	void Demo::onGui(const ml::GuiEvent * ev)
 	{
 		// Main Menu Bar
-		if (gui.show_main_menu_bar) { ML_MainMenuBar_draw(); }
-
+		if (ML_Editor.show_mainMenuBar)		{ ML_MainMenuBar_draw(); }
 		// Dockspace
-		if (gui.show_dockspace)		{ ML_Dockspace_draw(&gui.show_dockspace); }
-
-		// ImGui
-		if (gui.show_imgui_demo)	{ ml::ImGui_Builtin::showDemo(&gui.show_imgui_demo); }
-		if (gui.show_imgui_metrics) { ml::ImGui_Builtin::showMetrics(&gui.show_imgui_metrics); }
-		if (gui.show_imgui_style)	{ ml::ImGui_Builtin::showStyle(&gui.show_imgui_style); }
-		if (gui.show_imgui_about)	{ ml::ImGui_Builtin::showAbout(&gui.show_imgui_about); }
-
-		// Editor
-		if (gui.show_network)		{ ML_NetworkHUD.draw(&gui.show_network); }
-		if (gui.show_profiler)		{ ML_Profiler.draw(&gui.show_profiler); }
-		if (gui.show_hierarchy)		{ ML_Hierarchy.draw(&gui.show_hierarchy); }
-		if (gui.show_resources)		{ ML_ResourceHUD.draw(&gui.show_resources); }
-		if (gui.show_browser)		{ ML_Browser.draw(&gui.show_browser); }
-		if (gui.show_terminal)		{ ML_Terminal.draw(&gui.show_terminal); }
-		if (gui.show_texteditor)	{ ML_TextEditor.draw(&gui.show_texteditor); }
-		if (gui.show_builder)		{ ML_Builder.draw(&gui.show_builder); }
-		if (gui.show_inspector)		{ ML_Inspector.draw(&gui.show_inspector); }
-		if (gui.show_scene)			{ ML_SceneView_draw(&gui.show_scene); }
-		if (gui.show_demowindow)	{ ML_DemoWindow_draw(&gui.show_demowindow); }
+		if (ML_Editor.show_dockspace)		{ ML_Dockspace_draw(&ML_Editor.show_dockspace); }
+		// ImGui Builtin
+		if (ML_Editor.show_imgui_demo)		{ ml::ImGui_Builtin::showDemo(&ML_Editor.show_imgui_demo); }
+		if (ML_Editor.show_imgui_metrics)	{ ml::ImGui_Builtin::showMetrics(&ML_Editor.show_imgui_metrics); }
+		if (ML_Editor.show_imgui_style)		{ ml::ImGui_Builtin::showStyle(&ML_Editor.show_imgui_style); }
+		if (ML_Editor.show_imgui_about)		{ ml::ImGui_Builtin::showAbout(&ML_Editor.show_imgui_about); }
+		// Editors
+		if (ML_Editor.show_network)			{ ML_NetworkHUD.draw(&ML_Editor.show_network); }
+		if (ML_Editor.show_profiler)		{ ML_Profiler.draw(&ML_Editor.show_profiler); }
+		if (ML_Editor.show_hierarchy)		{ ML_Hierarchy.draw(&ML_Editor.show_hierarchy); }
+		if (ML_Editor.show_resources)		{ ML_ResourceHUD.draw(&ML_Editor.show_resources); }
+		if (ML_Editor.show_browser)			{ ML_Browser.draw(&ML_Editor.show_browser); }
+		if (ML_Editor.show_terminal)		{ ML_Terminal.draw(&ML_Editor.show_terminal); }
+		if (ML_Editor.show_textEditor)		{ ML_TextEditor.draw(&ML_Editor.show_textEditor); }
+		if (ML_Editor.show_builder)			{ ML_Builder.draw(&ML_Editor.show_builder); }
+		if (ML_Editor.show_sceneView)		{ ML_SceneView_draw(&ML_Editor.show_sceneView); }
+		if (ML_Editor.show_inspector)		{ ML_Inspector_draw(&ML_Editor.show_inspector); }
 	}
 
 	void Demo::onUnload(const ml::UnloadEvent * ev)
@@ -965,44 +945,70 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ImGui::BeginMenu("File"))
 			{
-				if (ImGui::MenuItem("New", "Ctrl+N", false, false)) {}
-				if (ImGui::MenuItem("Open", "Ctrl+O", false, (ML_Browser.get_selected() && gui.show_browser)))
+				if (ImGui::MenuItem("New", "Ctrl+N", false))
 				{
-					ML_OS.execute("open", ML_Browser.get_selected_path());
+					ML_EventSystem.fireEvent(ml::File_New_Event());
+				}
+				if (ImGui::MenuItem("Open", "Ctrl+O", false))
+				{
+					ML_EventSystem.fireEvent(ml::File_Open_Event());
 				}
 				ImGui::Separator();
-				if (ImGui::MenuItem("Save", "Ctrl+S", false, false)) {}
-				if (ImGui::MenuItem("Save All", "Ctrl+Shift+S", false, false)) {}
+				if (ImGui::MenuItem("Save", "Ctrl+S", false))
+				{
+					ML_EventSystem.fireEvent(ml::File_Save_Event(false));
+				}
+				if (ImGui::MenuItem("Save All", "Ctrl+Shift+S", false))
+				{
+					ML_EventSystem.fireEvent(ml::File_Save_Event(true));
+				}
 				ImGui::Separator();
-				if (ImGui::MenuItem("Quit", "Alt+F4")) { this->close(); }
+				if (ImGui::MenuItem("Quit", "Alt+F4", false))
+				{
+					ML_EventSystem.fireEvent(ml::File_Close_Event());
+				}
 				ImGui::EndMenu();
 			}
 			// Edit
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ImGui::BeginMenu("Edit"))
 			{
-				if (ImGui::MenuItem("Undo", "Ctrl+Z", false, false)) {}
-				if (ImGui::MenuItem("Redo", "Ctrl+Y", false, false)) {}
+				if (ImGui::MenuItem("Undo", "Ctrl+Z", false))
+				{
+					ML_EventSystem.fireEvent(ml::Edit_Undo_Event());
+				}
+				if (ImGui::MenuItem("Redo", "Ctrl+Y", false))
+				{
+					ML_EventSystem.fireEvent(ml::Edit_Redo_Event());
+				}
 				ImGui::Separator();
-				if (ImGui::MenuItem("Cut", "Ctrl+X", false, false)) {}
-				if (ImGui::MenuItem("Copy", "Ctrl+C", false, false)) {}
-				if (ImGui::MenuItem("Paste", "Ctrl+V", false, false)) {}
+				if (ImGui::MenuItem("Cut", "Ctrl+X", false))
+				{
+					ML_EventSystem.fireEvent(ml::Edit_Cut_Event());
+				}
+				if (ImGui::MenuItem("Copy", "Ctrl+C", false))
+				{
+					ML_EventSystem.fireEvent(ml::Edit_Copy_Event());
+				}
+				if (ImGui::MenuItem("Paste", "Ctrl+V", false))
+				{
+					ML_EventSystem.fireEvent(ml::Edit_Paste_Event());
+				}
 				ImGui::EndMenu();
 			}
 			// Window
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ImGui::BeginMenu("Window"))
 			{
-				ImGui::MenuItem(ML_Terminal.title(), "Ctrl+Alt+T", &gui.show_terminal);
-				ImGui::MenuItem(ML_Browser.title(), "Ctrl+Alt+E", &gui.show_browser);
-				ImGui::MenuItem(ML_Builder.title(), "Ctrl+Alt+B", &gui.show_builder);
-				ImGui::MenuItem(ML_SceneView.title(), "Ctrl+Alt+S", &gui.show_scene);
-				ImGui::MenuItem(ML_Inspector.title(), "Ctrl+Alt+I", &gui.show_inspector);
-				ImGui::MenuItem(ML_TextEditor.title(), NULL, &gui.show_texteditor);
-				ImGui::MenuItem(ML_Hierarchy.title(), NULL, &gui.show_hierarchy);
-				ImGui::MenuItem(ML_ResourceHUD.title(), NULL, &gui.show_resources);
-				ImGui::MenuItem(ML_NetworkHUD.title(), NULL, &gui.show_network);
-				ImGui::MenuItem("Demo Window",	NULL, &gui.show_demowindow);
+				ImGui::MenuItem(ML_Terminal.title(), "Ctrl+Alt+T", &ML_Editor.show_terminal);
+				ImGui::MenuItem(ML_Browser.title(), "Ctrl+Alt+E", &ML_Editor.show_browser);
+				ImGui::MenuItem(ML_Builder.title(), "Ctrl+Alt+B", &ML_Editor.show_builder);
+				ImGui::MenuItem(ML_SceneView.title(), "Ctrl+Alt+S", &ML_Editor.show_sceneView);
+				ImGui::MenuItem(ML_Inspector.title(), "Ctrl+Alt+I", &ML_Editor.show_inspector);
+				ImGui::MenuItem(ML_TextEditor.title(), NULL, &ML_Editor.show_textEditor);
+				ImGui::MenuItem(ML_Hierarchy.title(), NULL, &ML_Editor.show_hierarchy);
+				ImGui::MenuItem(ML_ResourceHUD.title(), NULL, &ML_Editor.show_resources);
+				ImGui::MenuItem(ML_NetworkHUD.title(), NULL, &ML_Editor.show_network);
 				ImGui::EndMenu();
 			}
 			// Help
@@ -1014,10 +1020,10 @@ namespace DEMO
 					ML_OS.execute("open", SETTINGS.projectURL);
 				}
 				ImGui::Separator();
-				ImGui::MenuItem("ImGui Demo", "Ctrl+H", &gui.show_imgui_demo);
-				ImGui::MenuItem("ImGui Metrics", NULL, &gui.show_imgui_metrics);
-				ImGui::MenuItem("ImGui Style Editor", NULL, &gui.show_imgui_style);
-				ImGui::MenuItem("About Dear ImGui", NULL, &gui.show_imgui_about);
+				ImGui::MenuItem("ImGui Demo", "Ctrl+H", &ML_Editor.show_imgui_demo);
+				ImGui::MenuItem("ImGui Metrics", NULL, &ML_Editor.show_imgui_metrics);
+				ImGui::MenuItem("ImGui Style Editor", NULL, &ML_Editor.show_imgui_style);
+				ImGui::MenuItem("About Dear ImGui", NULL, &ML_Editor.show_imgui_about);
 				ImGui::EndMenu();
 			}
 		});
@@ -1049,8 +1055,7 @@ namespace DEMO
 				ML_Dockspace.dockWindow(ML_SceneView.title(),	center_U);
 				ML_Dockspace.dockWindow(ML_Builder.title(),		center_D);
 				ML_Dockspace.dockWindow(ML_TextEditor.title(),	center_D);
-				ML_Dockspace.dockWindow(ML_Inspector.title(),	right_D);
-				ML_Dockspace.dockWindow("Demo Window",			right_U);
+				ML_Dockspace.dockWindow(ML_Inspector.title(),	right_U);
 
 				ML_Dockspace.endBuilder(root);
 			};
@@ -1061,7 +1066,7 @@ namespace DEMO
 	{
 		return ML_SceneView.drawFun(p_open, [&]()
 		{
-			// Update Scene Resolution
+			// Update Resolution
 			/* * * * * * * * * * * * * * * * * * * * */
 			const ml::vec2i resolution = this->getFramebufferSize();
 			if (resolution != ml::vec2i::Zero)
@@ -1100,10 +1105,18 @@ namespace DEMO
 		});
 	}
 
-	bool Demo::ML_DemoWindow_draw(bool * p_open)
+	bool Demo::ML_Inspector_draw(bool * p_open)
 	{
-		return ml::GUI::DrawWindow("Demo Window", p_open, ImGuiWindowFlags_None, [&]()
+		return ML_Inspector.drawFun(p_open, [&]()
 		{
+			/* * * * * * * * * * * * * * * * * * * * */
+
+			if (ImGui::BeginMenuBar())
+			{
+				ImGui::Text("%s (WIP)", ML_Inspector.title());
+				ImGui::EndMenuBar();
+			}
+
 			/* * * * * * * * * * * * * * * * * * * * */
 
 			if (ImGui::Button("Reload Shaders"))

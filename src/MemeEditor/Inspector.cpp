@@ -24,11 +24,7 @@ namespace ml
 
 	bool Inspector::draw(bool * p_open)
 	{
-		if (beginDraw(p_open, ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_AlwaysAutoResize))
-		{
-			ML_EventSystem.fireEvent(InspectorEvent());
-		}
-		return endDraw();
+		return beginDraw(p_open, ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_AlwaysAutoResize);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

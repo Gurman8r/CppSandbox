@@ -122,18 +122,6 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		inline const PointerMap & getAll() const
-		{
-			return m_data;
-		}
-
-		inline PointerMap & getAll()
-		{
-			return m_data;
-		}
-
-		/* * * * * * * * * * * * * * * * * * * * */
-
 		inline const List<String> & getKeys() const
 		{
 			static List<String> keys;

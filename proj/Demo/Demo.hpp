@@ -32,7 +32,7 @@ namespace DEMO
 		bool ML_MainMenuBar_draw();
 		bool ML_Dockspace_draw(bool * p_open);
 		bool ML_SceneView_draw(bool * p_open);
-		bool ML_DemoWindow_draw(bool * p_open);
+		bool ML_Inspector_draw(bool * p_open);
 
 	private:
 		// Batch
@@ -82,34 +82,6 @@ namespace DEMO
 			bool			animate		= true;
 		};
 		DemoUniforms uni;
-
-		// GUI
-		/* * * * * * * * * * * * * * * * * * * * */
-		struct DemoGUI
-		{
-			/* * * * * * * * * * * * * * * * * * * * */
-			bool show_main_menu_bar = true;
-			bool show_dockspace		= true;
-			/* * * * * * * * * * * * * * * * * * * * */
-			bool show_imgui_demo	= false;
-			bool show_imgui_metrics	= false;
-			bool show_imgui_style	= false;
-			bool show_imgui_about	= false;
-			/* * * * * * * * * * * * * * * * * * * * */
-			bool show_terminal		= true;
-			bool show_browser		= true;
-			bool show_builder		= true;
-			bool show_inspector		= true;
-			bool show_scene			= true;
-			bool show_texteditor	= true;
-			bool show_hierarchy		= true;
-			bool show_resources		= true;
-			bool show_profiler		= true;
-			bool show_network		= false;
-			bool show_demowindow	= true;
-			/* * * * * * * * * * * * * * * * * * * * */
-		};
-		DemoGUI gui;
 
 		// Physics
 		/* * * * * * * * * * * * * * * * * * * * */
