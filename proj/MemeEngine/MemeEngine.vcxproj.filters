@@ -13,66 +13,78 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Plugins">
+      <UniqueIdentifier>{975261f6-8085-458f-a9fa-ed9bdb2c5025}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Plugins">
+      <UniqueIdentifier>{a521c995-7906-448c-bfe3-71a8b7bf8061}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utility">
+      <UniqueIdentifier>{081ae849-bf6f-4584-b22f-7fe7d70f0c04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility">
+      <UniqueIdentifier>{b06a1bdc-5e0f-4805-b674-281bf4077ed0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeEngine\Export.hpp">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeEngine\EngineEvents.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeEngine\Engine.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeEngine\EngineCommands.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\include\MemeEngine\PluginAPI.hpp">
+      <Filter>Header Files\Plugins</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEngine\Plugin.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeEngine\PluginAPI.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Plugins</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEngine\LibLoader.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeEngine\EngineSettings.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeEngine\Resources.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeEngine\Registry.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeEngine\ManifestItem.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Plugins</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEngine\Application.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeEngine\EngineSettings.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeEngine\EngineEvents.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeEngine\EngineCommands.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeEngine\Engine.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeEngine\Resources.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeEngine\ManifestItem.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeEngine\Registry.hpp">
+      <Filter>Header Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\MemeEngine\Engine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeEngine\EngineCommands.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\src\MemeEngine\Plugin.cpp">
+      <Filter>Source Files\Plugins</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEngine\LibLoader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeEngine\Plugin.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Plugins</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEngine\EngineSettings.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemeEngine\Resources.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\src\MemeEngine\EngineCommands.cpp">
+      <Filter>Source Files\Utility</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEngine\Application.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeEngine\Engine.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeEngine\Resources.cpp">
+      <Filter>Source Files\Utility</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
