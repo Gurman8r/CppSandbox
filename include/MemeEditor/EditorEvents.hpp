@@ -3,6 +3,7 @@
 
 #include <MemeCore/IEvent.hpp>
 #include <MemeEditor/Export.hpp>
+#include <MemeCore/Time.hpp>
 
 namespace ml
 {
@@ -14,6 +15,7 @@ namespace ml
 		{
 			MIN_EDITOR_EVENT = IEvent::EV_EDITOR + 1,
 
+			EV_Gui,
 			EV_Inspector,
 
 			MAX_EDITOR_EVENT
@@ -21,6 +23,19 @@ namespace ml
 
 		EditorEvent(int32_t id)
 			: IEvent(id)
+		{
+		}
+	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	struct ML_EDITOR_API GuiEvent final : public EditorEvent
+	{
+		const Duration & elapsed;
+
+		GuiEvent(const Duration & elapsed)
+			: EditorEvent(EV_Gui)
+			, elapsed(elapsed)
 		{
 		}
 	};

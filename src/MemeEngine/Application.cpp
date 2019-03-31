@@ -8,20 +8,17 @@ namespace ml
 	Application::Application()
 		: RenderWindow()
 	{
-		ML_EventSystem.addListener(ml::EngineEvent::EV_Enter,		this);
-		ML_EventSystem.addListener(ml::EngineEvent::EV_Load,		this);
-		ML_EventSystem.addListener(ml::EngineEvent::EV_Start,		this);
-		ML_EventSystem.addListener(ml::EngineEvent::EV_FixedUpdate, this);
-		ML_EventSystem.addListener(ml::EngineEvent::EV_Update,		this);
-		ML_EventSystem.addListener(ml::EngineEvent::EV_Draw,		this);
-		ML_EventSystem.addListener(ml::EngineEvent::EV_Gui,			this);
-		ML_EventSystem.addListener(ml::EngineEvent::EV_Unload,		this);
-		ML_EventSystem.addListener(ml::EngineEvent::EV_Exit,		this);
+		ML_EventSystem.addListener(EngineEvent::EV_Enter,		this);
+		ML_EventSystem.addListener(EngineEvent::EV_Load,		this);
+		ML_EventSystem.addListener(EngineEvent::EV_Start,		this);
+		ML_EventSystem.addListener(EngineEvent::EV_FixedUpdate, this);
+		ML_EventSystem.addListener(EngineEvent::EV_Update,		this);
+		ML_EventSystem.addListener(EngineEvent::EV_Draw,		this);
+		ML_EventSystem.addListener(EngineEvent::EV_Unload,		this);
+		ML_EventSystem.addListener(EngineEvent::EV_Exit,		this);
 	}
 
-	Application::~Application()
-	{
-	}
+	Application::~Application() { }
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
@@ -37,7 +34,6 @@ namespace ml
 		case EngineEvent::EV_FixedUpdate:	return onFixedUpdate(value->as<FixedUpdateEvent>());
 		case EngineEvent::EV_Update:		return onUpdate		(value->as<UpdateEvent>());
 		case EngineEvent::EV_Draw:			return onDraw		(value->as<DrawEvent>());
-		case EngineEvent::EV_Gui:			return onGui		(value->as<GuiEvent>());
 		case EngineEvent::EV_Unload:		return onUnload		(value->as<UnloadEvent>());
 		case EngineEvent::EV_Exit:			return onExit		(value->as<ExitEvent>());
 		}

@@ -51,10 +51,10 @@ namespace DEMO
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Demo::Demo()
-		: Application()
+		: EditorApplication()
 	{
-		ML_EventSystem.addListener(ml::CoreEvent::EV_RequestExit,	this);
-		ML_EventSystem.addListener(ml::EditorEvent::EV_Inspector,	this);
+		ML_EventSystem.addListener(ml::CoreEvent::EV_RequestExit, this);
+		ML_EventSystem.addListener(ml::EditorEvent::EV_Inspector, this);
 	}
 
 	Demo::~Demo() {}
@@ -63,7 +63,7 @@ namespace DEMO
 
 	void Demo::onEvent(const ml::IEvent * value)
 	{
-		ml::Application::onEvent(value);
+		ml::EditorApplication::onEvent(value);
 
 		switch (value->eventID())
 		{
@@ -726,7 +726,6 @@ namespace DEMO
 			ml::Uniform("Effect.mode",	ml::Uniform::Int, &uni.effectMode),
 		};
 
-		
 		// Draw Scene
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (ml::Effect * scene = ML_Res.effects.get(ML_FBO_MAIN))
@@ -895,7 +894,6 @@ namespace DEMO
 			scene->unbind();
 		}
 
-
 		// Draw Effects
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (ml::Effect * post = ML_Res.effects.get(ML_FBO_POST))
@@ -914,8 +912,6 @@ namespace DEMO
 			}
 			post->unbind();
 		}
-
-		/* * * * * * * * * * * * * * * * * * * * */
 	}
 
 	void Demo::onGui(const ml::GuiEvent * ev)

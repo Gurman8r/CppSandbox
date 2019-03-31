@@ -21,7 +21,6 @@ namespace ml
 			EV_FixedUpdate,
 			EV_Update,
 			EV_Draw,
-			EV_Gui,
 			EV_Unload,
 			EV_Exit,
 
@@ -103,19 +102,6 @@ namespace ml
 
 		DrawEvent(const Duration & elapsed)
 			: EngineEvent(EV_Draw)
-			, elapsed(elapsed)
-		{
-		}
-	};
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	struct ML_API_EXPORT GuiEvent final : public EngineEvent
-	{
-		const Duration & elapsed;
-
-		GuiEvent(const Duration & elapsed)
-			: EngineEvent(EV_Gui)
 			, elapsed(elapsed)
 		{
 		}

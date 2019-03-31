@@ -3,8 +3,7 @@
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#include <MemeEngine/Application.hpp>
-#include <MemeGraphics/RenderWindow.hpp>
+#include <MemeEditor/EditorApplication.hpp>
 #include <MemeGraphics/Text.hpp>
 #include <MemePhysics/Particle.hpp>
 
@@ -13,7 +12,7 @@
 namespace DEMO
 {
 	class Demo final
-		: public ml::Application
+		: public ml::EditorApplication
 	{
 	public:
 		Demo();

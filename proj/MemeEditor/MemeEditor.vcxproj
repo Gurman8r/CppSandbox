@@ -160,6 +160,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeEditor\Browser.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Dockspace.hpp" />
+    <ClInclude Include="..\..\include\MemeEditor\EditorApplication.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\EditorCommands.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\GameObject.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\GUI_Base.hpp" />
@@ -193,6 +194,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeEditor\Browser.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\Dockspace.cpp" />
+    <ClCompile Include="..\..\src\MemeEditor\EditorApplication.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\EditorCommands.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\GameObject.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\GUI_Base.cpp" />

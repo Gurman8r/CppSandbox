@@ -4,10 +4,7 @@
 #include "DemoSettings.hpp"
 #include "Testing.hpp"
 
-#include <MemeEngine/Engine.hpp>
-#include <MemeEditor/ImGui.hpp>
 #include <MemeCore/Debug.hpp>
-#include <MemeCore/Time.hpp>
 #include <MemeCore/EventSystem.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -63,14 +60,7 @@ int32_t main(int32_t argc, char ** argv)
 			ML_EventSystem.fireEvent(ml::DrawEvent(elapsed));
 
 			// Gui
-			ImGui_ML_NewFrame();
-			ImGui::NewFrame();
-			{
-				ML_EventSystem.fireEvent(ml::GuiEvent(elapsed));
-			}
-			ImGui::Render();
-			ImGui_ML_Render(ImGui::GetDrawData());
-
+			ML_EventSystem.fireEvent(ml::GuiEvent(elapsed));
 		}
 		// End Step
 		program->swapBuffers();
