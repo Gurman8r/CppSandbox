@@ -28,7 +28,6 @@ namespace DEMO
 		ml::String	assetPath;		// Solution Dir
 		ml::String	projectURL;		// Project Github URL
 		bool		escapeIsExit;	// Escape key is Exit?
-		bool		enableThreads;	// Enable threads?
 		ml::String	manifest;		// Name of manifest file
 		ml::String	imguiINI;		// Name of imgui INI
 
@@ -89,7 +88,6 @@ namespace DEMO
 			assetPath		= ini.Get("General", "assetPath", "../../../");
 			projectURL		= ini.Get("General", "projectURL", "");
 			escapeIsExit	= ini.GetBoolean("General", "escapeIsExit", true);
-			enableThreads	= ini.GetBoolean("General", "enableThreads", false);
 			manifest		= ini.Get("General", "manifest", "manifest.txt");
 			imguiINI		= ini.Get("General", "imguiINI", "");
 

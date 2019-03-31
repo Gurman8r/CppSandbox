@@ -7,17 +7,17 @@
 
 ML_PLUGIN_API void * ML_Plugin_Enable(void * data)
 {
-	return TestPlugin::getInstance().onEnable(data);
+	return DEMO::TestPlugin::getInstance().onEnable(data);
 }
 
 ML_PLUGIN_API void * ML_Plugin_Disable(void * data)
 {
-	return TestPlugin::getInstance().onDisable(data);
+	return DEMO::TestPlugin::getInstance().onDisable(data);
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-namespace
+namespace DEMO
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 

@@ -3,8 +3,7 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-#include <MemeEngine/PluginAPI.hpp>
-#include <MemeCore/ITrackable.hpp>
+#include <MemeEngine/Plugin.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -16,7 +15,7 @@ extern "C"
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-namespace
+namespace DEMO
 {
 	class ML_PLUGIN_API TestPlugin final
 		: public ml::ISingleton<TestPlugin>
