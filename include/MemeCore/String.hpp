@@ -354,9 +354,9 @@ namespace ml
 	using U32Stream		= typename U32String::Stream;
 
 	using CString		= typename const char *;
-	using WCString		= typename const wchar_t *;
-	using U16CString	= typename const char16_t *;
-	using U32CString	= typename const char32_t *;
+	using CWString		= typename const wchar_t *;
+	using CU16String	= typename const char16_t *;
+	using CU32String	= typename const char32_t *;
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

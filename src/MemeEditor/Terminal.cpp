@@ -223,7 +223,7 @@ namespace ml
 
 			// Build a list of candidates
 			ImVector<CString> candidates;
-			for (int32_t i = 0; i < m_auto.size(); i++)
+			for (int32_t i = 0; i < (int32_t)m_auto.size(); i++)
 			{
 				if (Strnicmp(m_auto[i], word_start, (int32_t)(word_end - word_start)) == 0)
 				{
@@ -306,7 +306,7 @@ namespace ml
 			{
 				if (m_historyPos != -1)
 				{
-					if (++m_historyPos >= m_history.size())
+					if (++m_historyPos >= (int32_t)m_history.size())
 					{
 						m_historyPos = -1;
 					}

@@ -337,7 +337,7 @@ namespace ml
 				ImGui::SameLine();
 				if (ImGui::Button("Dn"))
 				{
-					if (m_curUniform + 1 < value->size())
+					if (m_curUniform + 1 < (int32_t)value->size())
 					{
 						//std::swap(value[m_curUniform], value[m_curUniform + 1]);
 						//m_curUniform++;
@@ -402,7 +402,7 @@ namespace ml
 			ImGui::SameLine();
 			if (ImGui::Button("Dn"))
 			{
-				if (m_curUniform + 1 < value->size())
+				if (m_curUniform + 1 < (int32_t)value->size())
 				{
 					//std::swap(value[m_curUniform], value[m_curUniform + 1]);
 					//m_curUniform++;
