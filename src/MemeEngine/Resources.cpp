@@ -56,39 +56,23 @@ namespace ml
 
 	bool Resources::cleanup()
 	{
+		m_manifest.clear();
+
 		return cleanupAll();
 	}
 
 	bool Resources::loadFromFile(const String & filename)
 	{
+		m_manifest.clear();
+
 		SStream file;
 		return ML_FileSystem.getFileContents(filename, file) && parseFile(file);
-	}
-
-	void Resources::serialize(std::ostream & out) const
-	{
-		for (auto item : m_manifest)
-		{
-			for (auto pair : item)
-			{
-				out << "[" << pair.first << "] \'" << pair.second << "\'"
-					<< endl;
-			}
-			out << endl;
-		}
-	}
-
-	void Resources::deserialize(std::istream & in)
-	{
-		parseFile((SStream &)in);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool Resources::parseFile(SStream & file)
 	{
-		m_manifest.clear();
-
 		size_t count = 0;
 		String line;
 		while (std::getline(file, line))

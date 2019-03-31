@@ -25,7 +25,7 @@ int32_t main(int32_t argc, char ** argv)
 	}
 
 	// Create Program
-	if (ml::Window * program = (ml::Window *)(new DEMO::Demo()))
+	if (ml::Window * program = static_cast<ml::Window *>(new DEMO::Demo()))
 	{
 		// Enter
 		ML_EventSystem.fireEvent(ml::EnterEvent(argc, argv));

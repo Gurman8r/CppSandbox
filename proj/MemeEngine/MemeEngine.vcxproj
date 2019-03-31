@@ -177,6 +177,7 @@
     <ClCompile Include="..\..\src\MemeEngine\EngineCommands.cpp" />
     <ClCompile Include="..\..\src\MemeEngine\EngineSettings.cpp" />
     <ClCompile Include="..\..\src\MemeEngine\LibLoader.cpp" />
+    <ClCompile Include="..\..\src\MemeEngine\ManifestItem.cpp" />
     <ClCompile Include="..\..\src\MemeEngine\Plugin.cpp" />
     <ClCompile Include="..\..\src\MemeEngine\Resources.cpp" />
   </ItemGroup>

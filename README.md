@@ -13,7 +13,9 @@ __________
 	- MemeEditor
 			- GUI/Editor Library
 			- ML ImGui Implementation
-			- 
+	- MemeEngine
+			- Application/Plugin Library
+			- Resource Management
   	- MemeGraphics
     		- Graphics library (glew)
 			- Requires MemeWindow

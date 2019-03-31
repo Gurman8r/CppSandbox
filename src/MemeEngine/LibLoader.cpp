@@ -3,8 +3,6 @@
 
 #ifdef ML_SYSTEM_WINDOWS
 #include <Windows.h>
-#else
-#
 #endif
 
 namespace ml
@@ -31,8 +29,8 @@ namespace ml
 	{
 #ifdef ML_SYSTEM_WINDOWS
 		return ((instance)
-			? GetProcAddress((HINSTANCE)(instance), func.c_str())
-			: NULL);
+			? (GetProcAddress((HINSTANCE)(instance), func.c_str()))
+			: (NULL));
 #else
 		return NULL;
 #endif

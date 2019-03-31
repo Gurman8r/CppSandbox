@@ -38,9 +38,6 @@ namespace ml
 		bool cleanup() override;
 		bool loadFromFile(const String & filename) override;
 
-		void serialize(std::ostream & out) const override;
-		void deserialize(std::istream & in) override;
-
 	private:
 		bool parseFile(SStream & file);
 		bool parseItem(const ManifestItem & data);

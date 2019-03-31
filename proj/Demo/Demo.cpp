@@ -51,7 +51,7 @@ namespace DEMO
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Demo::Demo()
-		: EditorApplication()
+		: ml::EditorApplication()
 	{
 		ML_EventSystem.addListener(ml::CoreEvent::EV_RequestExit, this);
 		ML_EventSystem.addListener(ml::EditorEvent::EV_Inspector, this);

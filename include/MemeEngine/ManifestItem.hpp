@@ -3,7 +3,6 @@
 
 #include <MemeEngine/Export.hpp>
 #include <MemeCore/ITrackable.hpp>
-#include <MemeScript/StringUtility.hpp>
 
 namespace ml
 {
@@ -22,18 +21,9 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		ManifestItem() 
-			: data()
-		{
-		}
-		ManifestItem(const Data & data) 
-			: data(data)
-		{
-		}
-		ManifestItem(const ManifestItem & copy)
-			: data(copy.data)
-		{
-		}
+		ManifestItem();
+		ManifestItem(const Data & data);
+		ManifestItem(const ManifestItem & copy);
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
@@ -49,24 +39,9 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		inline const String getStr(const String & value, const String & dv = String()) const
-		{
-			HashMap<String, String>::const_iterator it;
-			return (((it = data.find(value)) != data.end()) ? it->second : dv);
-		}
+		const String getStr(const String & value, const String & dv = String()) const;
 
-		inline const int32_t getInt(const String & value, const int32_t dv = 0) const
-		{
-			if (const String str = getStr(value))
-			{
-				int32_t temp;
-				if (StringUtility::MakeInt(str, temp))
-				{
-					return temp;
-				}
-			}
-			return dv;
-		}
+		const int32_t getInt(const String & value, const int32_t dv = 0) const;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 

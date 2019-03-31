@@ -85,21 +85,21 @@ namespace ml
 	const String & Debug::platformTarget()
 	{
 #if defined(ML_x64)
-		static String temp = "x64";
+		return "x64";
 #elif defined(ML_x86)
-		static String temp = "x86";
+		return "x86";
+#else
+		return String();
 #endif
-		return temp;
 	}
 
 	const String & Debug::configuration()
 	{
 #if defined(ML_DEBUG)
-		static String temp = "Debug";
+		return "Debug";
 #else
-		static String temp = "Release";
+		return "Release";
 #endif
-		return temp;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
