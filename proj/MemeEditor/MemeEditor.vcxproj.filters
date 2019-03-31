@@ -135,9 +135,6 @@
     <ClInclude Include="..\..\include\MemeEditor\EditorEvents.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeEditor\ShaderTool.hpp">
-      <Filter>Header Files\Windows</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\EditorCommands.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
@@ -216,9 +213,6 @@
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\Profiler.cpp">
-      <Filter>Source Files\Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeEditor\ShaderTool.cpp">
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\EditorCommands.cpp">

@@ -1,14 +1,10 @@
 #ifndef _DEMO_HPP_
 #define _DEMO_HPP_
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 #include <MemeEditor/EditorApplication.hpp>
 #include <MemeGraphics/Text.hpp>
 #include <MemePhysics/Particle.hpp>
 
-// Demo
-/* * * * * * * * * * * * * * * * * * * * */
 namespace DEMO
 {
 	class Demo final
@@ -109,7 +105,6 @@ namespace DEMO
 			bool show_hierarchy		= true;
 			bool show_resources		= true;
 			bool show_profiler		= true;
-			bool show_shaderTool	= false;
 			bool show_network		= false;
 			bool show_demowindow	= true;
 			/* * * * * * * * * * * * * * * * * * * * */
@@ -127,7 +122,5 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 	};
 }
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #endif // !_DEMO_HPP_

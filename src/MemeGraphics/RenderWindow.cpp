@@ -5,6 +5,16 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	RenderWindow::RenderWindow()
+		: Window()
+	{
+	}
+	RenderWindow::~RenderWindow() {}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	bool RenderWindow::setup()
 	{
 		return setup(true);
@@ -69,4 +79,6 @@ namespace ml
 			break;
 		}
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

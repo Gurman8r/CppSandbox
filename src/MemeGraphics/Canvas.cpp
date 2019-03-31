@@ -2,7 +2,7 @@
 #include <MemeGraphics/BufferLayout.hpp>
 #include <MemeGraphics/OpenGL.hpp>
 #include <MemeGraphics/RenderTarget.hpp>
-#include <MemeGraphics/Text.hpp>
+#include <MemeGraphics/Shapes.hpp>
 #include <MemeCore/Debug.hpp>
 
 namespace ml
@@ -22,14 +22,10 @@ namespace ml
 	{
 		if (!m_vao && !m_vbo)
 		{
-			m_vao.create(ml::GL::Triangles).bind();
-			
-			m_vbo.create(ml::GL::DynamicDraw).bind();
-
-			m_vbo.bufferData(NULL, (ml::Glyph::VertexCount * ml::Vertex::Size));
-			
-			ml::BufferLayout::Default.bind();
-			
+			m_vao.create(GL::Triangles).bind();
+			m_vbo.create(GL::DynamicDraw).bind();
+			m_vbo.bufferData(NULL, RectQuad::Size);
+			BufferLayout::Default.bind();
 			m_vbo.unbind();
 			m_vao.unbind();
 		}
