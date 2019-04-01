@@ -1,15 +1,20 @@
 #ifndef _ML_I_ENTITY_HPP_
 #define _ML_I_ENTITY_HPP_
 
-#include <MemeEngine/ComponentMap.hpp>
+#include <MemeEngine/IComponent.hpp>
 
 namespace ml
 {
 	class ML_ENGINE_API IEntity
 	{
 	public:
+		using ComponentMap	= typename HashMap<const std::type_info *, IComponent *>;
+		using iterator		= typename ComponentMap::iterator;
+		using const_iterator= typename ComponentMap::const_iterator;
+
+	public:
 		IEntity() 
-			: m_components() 
+			: m_map()
 		{
 		}
 		virtual ~IEntity() {}
@@ -18,35 +23,46 @@ namespace ml
 		template <class T> 
 		inline T * addComponent()
 		{
-			return components().add<T>();
+			if (!getComponent<T>())
+			{
+				m_map.insert({ &typeid(T), new T() });
+				return get(&typeid(T));
+			}
+			return NULL;
 		}
 		
 		template <class T> 
 		inline T * getComponent()
 		{
-			return components().get<T>();
+			iterator it;
+			if ((it = m_map.find(&typeid(T))) != end())
+			{
+				return static_cast<T *>(it->second);
+			}
+			return NULL;
 		}
 		
 		template <class T> 
 		inline const T * getComponent() const
 		{
-			return components().get<T>();
+			const_iterator it;
+			if ((it = m_map.find(&typeid(T))) != end())
+			{
+				return static_cast<T *>(it->second);
+			}
+			return NULL;
 		}
 		
-		template <class T>
-		inline bool hasComponent() const
-		{
-			return components().contains<T>();
-		}
-		
-		template <class T> 
-		inline T * setComponent(const T & value)
-		{
-			return components().set<T>(value);
-		}
+	public:
+		inline iterator			begin()			{ return m_map.begin(); }
+		inline const_iterator	begin()	const	{ return m_map.begin(); }
+		inline const_iterator	cbegin()const	{ return m_map.cbegin();}
+		inline iterator			end()			{ return m_map.end();	}
+		inline const_iterator	end()	const	{ return m_map.end();	}
+		inline const_iterator	cend()	const	{ return m_map.cend();	}
 
 	private:
-		ComponentMap m_components;
+		ComponentMap m_map;
 	};
 }
 
