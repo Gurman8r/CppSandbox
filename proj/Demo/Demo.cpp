@@ -39,7 +39,6 @@ namespace DEMO
 	Demo::Demo()
 		: EditorApplication()
 	{
-
 	}
 
 	Demo::~Demo() {}
