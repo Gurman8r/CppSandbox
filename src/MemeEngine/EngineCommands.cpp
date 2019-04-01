@@ -56,7 +56,6 @@ namespace ml
 		}
 		else if (path == "~")
 		{
-			return Var().boolValue(false);
 			return Var().boolValue(ML_FileSystem.setWorkingDir(
 				ML_FileSystem.pathTo(ML_Res.getPath())));
 		}
