@@ -2,7 +2,10 @@
 #define _ML_CONFIG_HPP_
 
 // Disable safety.
+/* * * * * * * * * * * * * * * * * * * */
+#ifndef _CRT_SECURE_NO_WARNINGS
 #define _CRT_SECURE_NO_WARNINGS
+#endif
 
 
 //	Configuration Macro
