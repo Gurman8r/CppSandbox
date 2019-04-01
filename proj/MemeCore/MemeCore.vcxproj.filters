@@ -174,12 +174,6 @@
     <ClInclude Include="..\..\include\MemeCore\IStream.hpp">
       <Filter>Header Files\STD</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\IEntity.hpp">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\IComponent.hpp">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Quaternion.hpp">
       <Filter>Header Files\Matrices</Filter>
     </ClInclude>
@@ -215,9 +209,6 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Worker.hpp">
       <Filter>Header Files\Threading</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\ComponentMap.hpp">
-      <Filter>Header Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Detection.hpp">
       <Filter>Header Files\STD</Filter>

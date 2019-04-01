@@ -37,6 +37,9 @@
     <Filter Include="Source Files\Engine">
       <UniqueIdentifier>{89a7c166-7115-499f-8ca5-c8b821da55d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ECS">
+      <UniqueIdentifier>{41cfde1c-d754-45c3-b258-b33cf7b25f48}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeEngine\Export.hpp">
@@ -74,6 +77,15 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEngine\Preferences.hpp">
       <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeEngine\IEntity.hpp">
+      <Filter>Header Files\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeEngine\IComponent.hpp">
+      <Filter>Header Files\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeEngine\ComponentMap.hpp">
+      <Filter>Header Files\ECS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

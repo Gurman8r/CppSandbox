@@ -7,6 +7,7 @@
 #include <MemeGraphics/IndexBuffer.hpp>
 #include <MemeGraphics/FrameBuffer.hpp>
 #include <MemeGraphics/RenderBuffer.hpp>
+#include <MemeGraphics/RenderStates.hpp>
 
 namespace ml
 {
@@ -32,6 +33,12 @@ namespace ml
 		RenderTarget & draw(const VAO & vao, const VBO & vbo, const IBO & ibo);
 		RenderTarget & draw(const VAO & vao, const VBO & vbo);
 
+
+	public:
+		RenderStates & states() { return m_states; }
+
+	private:
+		RenderStates m_states;
 	};
 
 	

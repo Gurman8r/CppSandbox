@@ -1,14 +1,14 @@
 #ifndef _ML_COMPONENT_MAP_HPP_
 #define _ML_COMPONENT_MAP_HPP_
 
-#include <MemeCore/IComponent.hpp>
+#include <MemeEngine/IComponent.hpp>
 
 #define assert_typeof_component(T) \
 static_assert(std::is_base_of<ml::IComponent, T>::value, "Type must derive ml::IComponent")
 
 namespace ml
 {
-	class ML_CORE_API ComponentMap
+	class ML_ENGINE_API ComponentMap
 		: public ITrackable
 	{
 	public:

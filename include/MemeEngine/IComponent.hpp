@@ -1,11 +1,12 @@
 #ifndef _ML_I_COMPONENT_HPP_
 #define _ML_I_COMPONENT_HPP_
 
+#include <MemeEngine/Export.hpp>
 #include <MemeCore/ITrackable.hpp>
 
 namespace ml
 {
-	class ML_CORE_API IComponent 
+	class ML_ENGINE_API IComponent
 		: public ITrackable
 	{
 	public:

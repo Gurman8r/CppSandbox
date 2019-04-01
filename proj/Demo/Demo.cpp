@@ -692,6 +692,8 @@ namespace DEMO
 
 	void Demo::onDraw(const ml::DrawEvent * ev)
 	{
+		//states().backup();
+
 		// Draw Scene
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (ml::Effect * scene = ML_Res.effects.get(ML_FBO_MAIN))
@@ -873,6 +875,8 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 			scene->unbind();
 		}
+
+		//states().restore();
 
 		// Draw Effects
 		/* * * * * * * * * * * * * * * * * * * * */

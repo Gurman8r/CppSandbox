@@ -1,11 +1,11 @@
 #ifndef _ML_I_ENTITY_HPP_
 #define _ML_I_ENTITY_HPP_
 
-#include <MemeCore/ComponentMap.hpp>
+#include <MemeEngine/ComponentMap.hpp>
 
 namespace ml
 {
-	class ML_CORE_API IEntity
+	class ML_ENGINE_API IEntity
 	{
 	public:
 		IEntity() 
@@ -13,17 +13,6 @@ namespace ml
 		{
 		}
 		virtual ~IEntity() {}
-
-	protected:
-		inline const ComponentMap & components() const
-		{
-			return m_components;
-		}
-
-		inline ComponentMap & components()
-		{
-			return m_components;
-		}
 
 	public:
 		template <class T> 

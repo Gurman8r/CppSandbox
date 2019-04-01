@@ -174,12 +174,9 @@
     <ClInclude Include="..\..\include\MemeCore\MemoryManager.hpp" />
     <ClInclude Include="..\..\include\MemeCore\List.hpp" />
     <ClInclude Include="..\..\include\MemeCore\BitHelper.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\IComponent.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\ComponentMap.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Config.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Console.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Debug.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\IEntity.hpp" />
     <ClInclude Include="..\..\include\MemeCore\IEvent.hpp" />
     <ClInclude Include="..\..\include\MemeCore\IEventListener.hpp" />
     <ClInclude Include="..\..\include\MemeCore\EventSystem.hpp" />
