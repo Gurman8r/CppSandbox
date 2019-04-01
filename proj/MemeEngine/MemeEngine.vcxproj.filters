@@ -51,9 +51,6 @@
     <ClInclude Include="..\..\include\MemeEngine\LibLoader.hpp">
       <Filter>Header Files\Plugins</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeEngine\EngineSettings.hpp">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeEngine\EngineCommands.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
@@ -75,6 +72,9 @@
     <ClInclude Include="..\..\include\MemeEngine\Application.hpp">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeEngine\Preferences.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeEngine\Plugin.cpp">
@@ -82,9 +82,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEngine\LibLoader.cpp">
       <Filter>Source Files\Plugins</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeEngine\EngineSettings.cpp">
-      <Filter>Source Files\Utility</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEngine\EngineCommands.cpp">
       <Filter>Source Files\Utility</Filter>
@@ -100,6 +97,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEngine\Engine.cpp">
       <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeEngine\Preferences.cpp">
+      <Filter>Source Files\Utility</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

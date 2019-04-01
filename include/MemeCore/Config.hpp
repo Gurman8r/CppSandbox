@@ -1,17 +1,23 @@
 #ifndef _ML_CONFIG_HPP_
 #define _ML_CONFIG_HPP_
 
+// Disable safety.
+#define _CRT_SECURE_NO_WARNINGS
+
+
 //	Configuration Macro
 /* * * * * * * * * * * * * * * * * * * */
 # if defined(_DEBUG)
 #	define ML_DEBUG
 # endif
 
+
 //	C/C++ Macro
 /* * * * * * * * * * * * * * * * * * * */
 # if defined(__cplusplus)
 #	define ML_CPP
 # endif
+
 
 //	Operating System Macro
 /* * * * * * * * * * * * * * * * * * * */
@@ -43,6 +49,7 @@
 #	error This operating system does not support memes.
 # endif
 
+
 //	MsBuild / GCC Macro
 /* * * * * * * * * * * * * * * * * * * */
 # ifdef ML_SYSTEM_WINDOWS
@@ -54,6 +61,7 @@
 #		define ML_GCC __GNUC__
 # 	endif
 # endif
+
 
 //	Platform Macro
 /* * * * * * * * * * * * * * * * * * * */
@@ -72,6 +80,7 @@
 # else
 #	error The target platform does not support memes.
 # endif
+
 
 //	Export / Import Macro
 /* * * * * * * * * * * * * * * * * * * */
@@ -97,5 +106,6 @@
 #	define ML_API_EXPORT
 #	define ML_API_IMPORT
 # endif
+
 
 #endif // !_ML_CONFIG_HPP_

@@ -7,8 +7,7 @@
 
 namespace DEMO
 {
-	class Demo final 
-		: public ml::EditorApplication
+	class Demo final : public ml::EditorApplication
 	{
 	public:
 		Demo();

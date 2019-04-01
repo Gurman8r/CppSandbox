@@ -1,3 +1,7 @@
+// Modified - Melody Gurman - 2019
+//	-- just some formatting
+
+
 // Read an INI file into easy-to-access name/value pairs.
 
 // inih and INIReader are released under the New BSD license (see LICENSE.txt).
@@ -21,8 +25,7 @@ extern "C" {
 #include <stdio.h>
 
 	/* Typedef for prototype of handler function. */
-	typedef int(*ini_handler)(void* user, const char* section,
-		const char* name, const char* value);
+	typedef int(*ini_handler)(void* user, const char* section, const char* name, const char* value);
 
 	/* Typedef for prototype of fgets-style reader function. */
 	typedef char* (*ini_reader)(char* str, int num, void* stream);
@@ -46,8 +49,7 @@ extern "C" {
 
 	/* Same as ini_parse(), but takes an ini_reader function pointer instead of
 	filename. Used for implementing custom or string-based I/O. */
-	int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
-		void* user);
+	int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler, void* user);
 
 	/* Nonzero to allow multi-line value parsing, in the style of Python's
 	configparser. If allowed, ini_parse() will call the handler with the same
@@ -160,8 +162,7 @@ inline static char* strncpy0(char* dest, const char* src, size_t size)
 }
 
 /* See documentation in header file. */
-inline int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
-	void* user)
+inline int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler, void* user)
 {
 	/* Uses a fair bit of stack (use heap instead if you need to) */
 #if INI_USE_STACK
@@ -332,8 +333,7 @@ public:
 	std::set<std::string> Sections();
 
 	// Get a string value from INI file, returning default_value if not found.
-	std::string Get(std::string section, std::string name,
-		std::string default_value);
+	std::string Get(std::string section, std::string name, std::string default_value);
 
 	// Get an integer (long) value from INI file, returning default_value if
 	// not found or not a valid integer (decimal "1234", "-1234", or hex "0x4d2").
@@ -354,8 +354,7 @@ private:
 	std::map<std::string, std::string> _values;
 	std::set<std::string> _sections;
 	static std::string MakeKey(std::string section, std::string name);
-	static int ValueHandler(void* user, const char* section, const char* name,
-		const char* value);
+	static int ValueHandler(void* user, const char* section, const char* name, const char* value);
 };
 
 #endif  // __INIREADER_H__
