@@ -4,7 +4,6 @@
 #include "DemoSettings.hpp"
 #include "Testing.hpp"
 
-#include <MemeEngine/Lua.hpp>
 #include <MemeCore/Debug.hpp>
 #include <MemeCore/EventSystem.hpp>
 
