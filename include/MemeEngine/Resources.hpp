@@ -56,6 +56,12 @@ namespace ml
 		Registry<Sound> 	sounds;
 		Registry<Sprite>	sprites;
 		Registry<Texture>	textures;
+
+		inline bool setPath(const String & value) { return (m_path = value); }
+		inline const String & getPath() const { return m_path; }
+
+	private:
+		String m_path;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

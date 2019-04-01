@@ -3,7 +3,6 @@
 
 #include <MemeEditor/EditorApplication.hpp>
 #include <MemeGraphics/Text.hpp>
-#include <MemePhysics/Particle.hpp>
 
 namespace DEMO
 {
@@ -83,14 +82,6 @@ namespace DEMO
 			bool			animate		= true;
 		};
 		DemoUniforms uni;
-
-		// Physics
-		/* * * * * * * * * * * * * * * * * * * * */
-		struct DemoPhysics
-		{
-			std::vector<ml::Particle> particles;
-		};
-		DemoPhysics phys;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	};

@@ -87,6 +87,11 @@ namespace ml
 		return false;
 	}
 
+	bool Script::buildAndRun(const Args & args)
+	{
+		return build(args) && run();
+	}
+
 	bool Script::rebuild(const Args & args)
 	{
 		return loadFromFile(m_path) && build(args);

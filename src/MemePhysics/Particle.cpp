@@ -1,4 +1,5 @@
 #include <MemePhysics/Particle.hpp>
+#include <MemePhysics/Physics.hpp>
 
 namespace ml
 {

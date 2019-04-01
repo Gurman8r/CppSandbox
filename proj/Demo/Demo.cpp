@@ -21,8 +21,10 @@
 #include <MemeEngine/ECS.hpp>
 #include <MemeEngine/EngineCommands.hpp>
 #include <MemeEngine/Resources.hpp>
+#include <MemeEngine/Preferences.hpp>
 #include <MemeNet/Client.hpp>
 #include <MemeNet/Server.hpp>
+#include <MemePhysics/Physics.hpp>
 #include <MemeScript/Interpreter.hpp>
 #include <MemeWindow/WindowEvents.hpp>
 
@@ -97,9 +99,9 @@ namespace DEMO
 				}
 
 				// Close (Escape)
-				if (ev->getKeyDown(ml::KeyCode::Escape))
+				if (ev->getKeyDown(ml::KeyCode::Escape) && SETTINGS.escapeIsExit)
 				{
-					if (SETTINGS.escapeIsExit) { this->close(); }
+					this->close();
 				}
 
 				/* * * * * * * * * * * * * * * * * * * * */
@@ -138,14 +140,27 @@ namespace DEMO
 	{
 		ml::Debug::log("Entering...");
 
-		// Start Master Timer
-		ML_Time.start();
+		// Setup Miscellaneous
+		/* * * * * * * * * * * * * * * * * * * * */
+		{
+			// Start Master Timer
+			ML_Time.start();
 
-		// Seed Random
-		ml::Random::seed();
+			// Set Asset Path
+			if (!ML_Res.setPath(SETTINGS.assetPath))
+			{
+				return ml::Debug::setError(
+					ML_FAILURE,
+					"Invalid Path",
+					"Path to Resources Cannot Be Empty");
+			}
 
-		// GL Error Pause
-		ML_GL.errorPause(SETTINGS.glErrorPause);
+			// Seed Random
+			ml::Random::seed();
+
+			// GL Error Pause
+			ML_GL.errorPause(SETTINGS.glErrorPause);
+		}
 
 		// Setup Interpreter
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -163,9 +178,9 @@ namespace DEMO
 			ml::Script scr;
 			if (scr.loadFromFile(ML_FileSystem.pathTo(SETTINGS.bootScript)))
 			{
-				if (!(scr.build(ml::Args(ev->argc, ev->argv)) && scr.run()))
+				if (!(scr.buildAndRun(ml::Args(ev->argc, ev->argv))))
 				{
-					ml::Debug::logError("Failed Running Boot Script");
+					ml::Debug::logError("Failed Running \'{0}\'", SETTINGS.bootScript);
 				}
 			}
 		}
@@ -534,7 +549,7 @@ namespace DEMO
 	void Demo::onFixedUpdate(const ml::FixedUpdateEvent * ev)
 	{
 		// Update Physics
-		for (ml::Particle & p : phys.particles)
+		for (ml::Particle & p : ML_Physics.particles)
 		{
 			p.applyForce(ml::Force::gravity(ml::vec3f::Up, p.mass));
 		}

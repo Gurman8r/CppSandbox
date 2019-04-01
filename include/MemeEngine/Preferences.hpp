@@ -9,6 +9,8 @@
 
 namespace ml
 {
+	// Meant to replace DemoSettings (SETTINGS)
+	// WIP
 	class ML_ENGINE_API Preferences final
 		: public ITrackable
 		, public IReadable

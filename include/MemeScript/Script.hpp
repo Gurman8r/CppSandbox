@@ -21,6 +21,7 @@ namespace ml
 
 	public:
 		bool	build(const Args & args);
+		bool	buildAndRun(const Args & args);
 		bool	rebuild(const Args & args);
 		bool	run();
 

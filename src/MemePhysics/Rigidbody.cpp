@@ -1,4 +1,5 @@
 #include <MemePhysics/Rigidbody.hpp>
+#include <MemePhysics/Physics.hpp>
 
 namespace ml
 {

@@ -1,4 +1,5 @@
 #include <MemeEngine/EngineCommands.hpp>
+#include <MemeEngine/Resources.hpp>
 #include <MemeScript/Interpreter.hpp>
 #include <MemeCore/Debug.hpp>
 #include <MemeCore/EventSystem.hpp>
@@ -56,8 +57,8 @@ namespace ml
 		else if (path == "~")
 		{
 			return Var().boolValue(false);
-			//return Var().boolValue(ML_FileSystem.setWorkingDir(
-			//	ML_FileSystem.pathTo(SETTINGS.assetPath)));
+			return Var().boolValue(ML_FileSystem.setWorkingDir(
+				ML_FileSystem.pathTo(ML_Res.getPath())));
 		}
 		else
 		{

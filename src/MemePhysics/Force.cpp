@@ -1,4 +1,5 @@
 #include <MemePhysics/Force.hpp>
+#include <MemePhysics/Physics.hpp>
 
 namespace ml
 {
