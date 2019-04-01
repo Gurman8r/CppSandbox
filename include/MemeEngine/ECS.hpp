@@ -5,50 +5,56 @@
 
 #include <MemeEngine/Entity.hpp>
 #include <MemeGraphics/Transform.hpp>
-
-/* * * * * * * * * * * * * * * * * * * * */
+#include <MemeCore/Detection.hpp>
 
 #define ML_ECS ml::ECS::getInstance()
-
-/* * * * * * * * * * * * * * * * * * * * */
 
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct C_Transform final : public Component
+	// Transform Component (example)
+	struct Cmp_Transform
 	{
 		vec3f	position;
 		vec3f	scale;
 		quat	rotation;
 	};
 
+	// Rigidbody Component (example)
+	struct Cmp_Rigidbody
+	{
+		vec3f	velocity;
+		vec3f	acceleration;
+		float	mass;
+		float	massInv;
+	};
+
+	// Movement System (example)
+	struct Sys_Movement
+	{
+		void Update(float dt, Cmp_Transform * tf, Cmp_Rigidbody * rb)
+		{
+			tf->position += rb->velocity * dt;
+			rb->velocity += rb->acceleration * dt;
+		}
+	};
+
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	// WIP
+	// Entity Component System (WIP)
 	class ML_ENGINE_API ECS final
 		: public ITrackable
 		, public ISingleton<ECS>
 	{
 		friend class ISingleton<ECS>;
 
-	public:
-		enum { MaxEntity = 10 };
-
 	private:
 		ECS();
 		~ECS();
 
 	public:
-		using TypeInfo = typename const std::type_info *;
-
-		template <typename T>
-		using ComponentArray = typename std::array<T, MaxEntity>;
-
-		using ComponentMap = typename HashMap<TypeInfo, std::array<void *, MaxEntity>>;
-
-	private:
-		ComponentMap m_map;
+		Sys_Movement movement;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

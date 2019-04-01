@@ -7,7 +7,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Entity::Entity()
-		: m_map()
+		: m_cmp()
 	{
 	}
 
@@ -20,12 +20,19 @@ namespace ml
 
 	bool Entity::cleanup()
 	{
-		for (auto pair : m_map)
+		for (auto pair : m_cmp)
 		{
-			delete pair.second;
+			if (ITrackable * tr = static_cast<ITrackable *>(pair.second))
+			{
+				delete (ITrackable *)pair.second;
+			}
+			else
+			{
+				delete (void *)pair.second;
+			}
 			pair.second = NULL;
 		}
-		m_map.clear();
+		m_cmp.clear();
 		return true;
 	}
 

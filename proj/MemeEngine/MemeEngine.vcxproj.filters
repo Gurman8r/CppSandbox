@@ -87,9 +87,6 @@
     <ClInclude Include="..\..\include\MemeEngine\ECS.hpp">
       <Filter>Header Files\ECS</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeEngine\Component.hpp">
-      <Filter>Header Files\ECS</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeEngine\Entity.hpp">
       <Filter>Header Files\ECS</Filter>
     </ClInclude>

@@ -2,7 +2,8 @@
 #define _ML_I_ENTITY_HPP_
 
 #include <MemeCore/IReadable.hpp>
-#include <MemeEngine/Component.hpp>
+#include <MemeEngine/Export.hpp>
+#include <MemeCore/ITrackable.hpp>
 
 namespace ml
 {
@@ -12,7 +13,7 @@ namespace ml
 	{
 	public:
 		using TypeInfo		= typename const std::type_info *;
-		using ComponentMap	= typename HashMap<TypeInfo, Component *>;
+		using ComponentMap	= typename HashMap<TypeInfo, void *>;
 		using iterator		= typename ComponentMap::iterator;
 		using const_iterator= typename ComponentMap::const_iterator;
 
@@ -28,8 +29,8 @@ namespace ml
 		template <typename T> 
 		inline T * addComponent()
 		{
-			return (m_map.find(&typeid(T)) == m_map.end())
-				? ((T *)(m_map[&typeid(T)] = new T()))
+			return (m_cmp.find(&typeid(T)) == m_cmp.end())
+				? ((T *)(m_cmp[&typeid(T)] = new T()))
 				: (NULL);
 		}
 
@@ -37,7 +38,7 @@ namespace ml
 		inline T * getComponent()
 		{
 			iterator it;
-			return ((it = m_map.find(&typeid(T))) != end())
+			return ((it = m_cmp.find(&typeid(T))) != end())
 				? ((T *)(it->second))
 				: (NULL);
 		}
@@ -46,21 +47,21 @@ namespace ml
 		inline const T * getComponent() const
 		{
 			const_iterator it;
-			return ((it = m_map.find(&typeid(T))) != end())
+			return ((it = m_cmp.find(&typeid(T))) != end())
 				? ((const T *)(it->second))
 				: (NULL);
 		}
 		
 	public:
-		inline iterator			begin()			{ return m_map.begin(); }
-		inline const_iterator	begin()	const	{ return m_map.begin(); }
-		inline const_iterator	cbegin()const	{ return m_map.cbegin();}
-		inline iterator			end()			{ return m_map.end();	}
-		inline const_iterator	end()	const	{ return m_map.end();	}
-		inline const_iterator	cend()	const	{ return m_map.cend();	}
+		inline iterator			begin()			{ return m_cmp.begin(); }
+		inline const_iterator	begin()	const	{ return m_cmp.begin(); }
+		inline const_iterator	cbegin()const	{ return m_cmp.cbegin();}
+		inline iterator			end()			{ return m_cmp.end();	}
+		inline const_iterator	end()	const	{ return m_cmp.end();	}
+		inline const_iterator	cend()	const	{ return m_cmp.cend();	}
 
 	private:
-		ComponentMap m_map;
+		ComponentMap m_cmp;
 	};
 }
 

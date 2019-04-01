@@ -163,7 +163,6 @@
     <ClInclude Include="..\..\include\MemeEngine\Engine.hpp" />
     <ClInclude Include="..\..\include\MemeEngine\EngineCommands.hpp" />
     <ClInclude Include="..\..\include\MemeEngine\EngineEvents.hpp" />
-    <ClInclude Include="..\..\include\MemeEngine\Component.hpp" />
     <ClInclude Include="..\..\include\MemeEngine\Entity.hpp" />
     <ClInclude Include="..\..\include\MemeEngine\Lua.hpp" />
     <ClInclude Include="..\..\include\MemeEngine\Preferences.hpp" />

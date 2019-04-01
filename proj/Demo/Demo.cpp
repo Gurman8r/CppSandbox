@@ -302,20 +302,56 @@ namespace DEMO
 	{
 		ml::Debug::log("Starting...");
 
+		// ECS Testing
+		/* * * * * * * * * * * * * * * * * * * * */
 		ml::Entity ent;
-		ent.loadFromFile("");
-		ent.addComponent<ml::C_Transform>();
-		if (ml::C_Transform * t = ent.getComponent<ml::C_Transform>())
+		if (ent.loadFromFile(""))
 		{
-			t->position = { 1.f, 2.f, 3.f };
+			// Transform
+			if (ml::Cmp_Transform * tf = ent.addComponent<ml::Cmp_Transform>())
+			{
+				tf->position = { 1.f, 2.f, 3.f };
+				tf->rotation = { 0.f, 0.f, 0.f, 1.f };
+				tf->scale = { 1.f, 1.f, 1.f };
+			}
+			if (const ml::Cmp_Transform * tf = ent.getComponent<ml::Cmp_Transform>())
+			{
+				ml::cout << std::left
+					<< ml::endl
+					<< std::setw(10) << "Position: " << tf->position
+					<< std::setw(10) << "Rotation: " << tf->rotation
+					<< std::setw(10) << "Scale: " << tf->scale
+					<< ml::endl;
+			}
 
-			ml::cout 
-				<< ml::endl 
-				<< "Position: " << t->position 
-				<< ml::endl;
+			// Rigidbody
+			if (ml::Cmp_Rigidbody * rb = ent.addComponent<ml::Cmp_Rigidbody>())
+			{
+				rb->velocity = 0.f;
+				rb->acceleration = 0.f;
+				rb->mass = 1.0f;
+				rb->massInv = 1.0f / rb->mass;
+			}
+			if (const ml::Cmp_Rigidbody * rb = ent.getComponent<ml::Cmp_Rigidbody>())
+			{
+				ml::cout << std::left
+					<< ml::endl
+					<< std::setw(10) //<< "Position: " << tf->position
+					<< std::setw(10) //<< "Rotation: " << tf->rotation
+					<< std::setw(10) //<< "Scale: " << tf->scale
+					<< ml::endl;
+			}
+			
+			// Movement System
+			ML_ECS.movement.Update(
+				0.0f,
+				ent.getComponent<ml::Cmp_Transform>(),
+				ent.getComponent<ml::Cmp_Rigidbody>()
+			);
 		}
 
 		// Window Icon
+		/* * * * * * * * * * * * * * * * * * * * */
 		if (ml::Image * icon = ML_Res.images.get("icon"))
 		{
 			this->setIcons({ (*icon).flipVertically() });
