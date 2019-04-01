@@ -22,6 +22,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MemeWindow", "proj\MemeWind
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MemeGraphics", "proj\MemeGraphics\MemeGraphics.vcxproj", "{2EF5E776-2FC0-479F-93A8-8D22D47AF3F6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BCF9C343-33E2-4BDE-BAFA-1C570DFF525F} = {BCF9C343-33E2-4BDE-BAFA-1C570DFF525F}
+		{FD118371-D8EF-48E4-8AA7-93E48984EB34} = {FD118371-D8EF-48E4-8AA7-93E48984EB34}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MemeCore", "proj\MemeCore\MemeCore.vcxproj", "{BCF9C343-33E2-4BDE-BAFA-1C570DFF525F}"
 EndProject

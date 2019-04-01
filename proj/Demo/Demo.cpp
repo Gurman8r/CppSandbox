@@ -79,11 +79,6 @@ namespace DEMO
 		case ml::WindowEvent::EV_Key:
 			if (const auto * ev = value->as<ml::KeyEvent>())
 			{
-				// Mods
-				const bool mod_ctrl = (ev->mods & ML_MOD_CTRL);
-				const bool mod_alt = (ev->mods & ML_MOD_ALT);
-				const bool mod_shift = (ev->mods & ML_MOD_SHIFT);
-
 				/* * * * * * * * * * * * * * * * * * * * */
 
 				// Reload Shaders (Num1)
@@ -110,27 +105,27 @@ namespace DEMO
 				/* * * * * * * * * * * * * * * * * * * * */
 
 				// Terminal (Ctrl+Alt+T)
-				if (ev->getKeyDown(ml::KeyCode::T) && (mod_ctrl && mod_alt))
+				if (ev->getKeyDown(ml::KeyCode::T) && (ev->mod_ctrl && ev->mod_alt))
 					ML_Editor.show_terminal = true;
 
 				// Browser (Ctrl+Alt+E)
-				if (ev->getKeyDown(ml::KeyCode::E) && (mod_ctrl))
+				if (ev->getKeyDown(ml::KeyCode::E) && (ev->mod_ctrl))
 					ML_Editor.show_browser = true;
 
 				// Builder (Ctrl+Alt+B)
-				if (ev->getKeyDown(ml::KeyCode::B) && (mod_ctrl && mod_alt))
+				if (ev->getKeyDown(ml::KeyCode::B) && (ev->mod_ctrl && ev->mod_alt))
 					ML_Editor.show_builder = true;
 
 				// Scene (Ctrl+Alt+S)
-				if (ev->getKeyDown(ml::KeyCode::S) && (mod_ctrl && mod_alt))
+				if (ev->getKeyDown(ml::KeyCode::S) && (ev->mod_ctrl && ev->mod_alt))
 					ML_Editor.show_sceneView = true;
 
 				// Inspector (Ctrl+Alt+I)
-				if (ev->getKeyDown(ml::KeyCode::I) && (mod_ctrl && mod_alt))
+				if (ev->getKeyDown(ml::KeyCode::I) && (ev->mod_ctrl && ev->mod_alt))
 					ML_Editor.show_inspector = true;
 
 				// ImGui Demo (Ctrl+H)
-				if (ev->getKeyDown(ml::KeyCode::H) && (mod_ctrl))
+				if (ev->getKeyDown(ml::KeyCode::H) && (ev->mod_ctrl))
 					ML_Editor.show_imgui_demo = true;
 			}
 			break;
@@ -177,7 +172,7 @@ namespace DEMO
 
 		// Create Window
 		/* * * * * * * * * * * * * * * * * * * * */
-		if (0 && this->create(SETTINGS.title, SETTINGS.video(), SETTINGS.style, SETTINGS.context())
+		if (this->create(SETTINGS.title, SETTINGS.video(), SETTINGS.style, SETTINGS.context())
 			&&
 			this->setup(SETTINGS.glExperimental))
 		{

@@ -8,10 +8,7 @@ namespace ml
 {
 	struct ML_AUDIO_API AL final
 	{
-		using Enum = int32_t;
-		using Size = int32_t;
-
-		enum Err
+		enum Err : int32_t
 		{
 			NoError,
 			InvalidName,

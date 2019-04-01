@@ -100,31 +100,47 @@ namespace ml
 
 	struct KeyEvent : public WindowEvent
 	{
-		int32_t button, scan, action, mods;
+		using Mods = typename std::array<bool, 4>;
 
-		KeyEvent(int32_t button, int32_t scan, int32_t action, int32_t mods)
+		int32_t button, scan, action;
+
+		bool 
+			mod_shift,
+			mod_ctrl,
+			mod_alt,
+			mod_super;
+
+		KeyEvent(int32_t button, int32_t scan, int32_t action, 
+			bool mod_shift,
+			bool mod_ctrl,
+			bool mod_alt,
+			bool mod_super)
 			: WindowEvent(EV_Key)
-			, button(button)
-			, scan(scan)
-			, action(action)
-			, mods(mods)
+			, button	(button)
+			, scan		(scan)
+			, action	(action)
+			, mod_shift	(mod_shift)
+			, mod_ctrl	(mod_ctrl)
+			, mod_alt	(mod_alt)
+			, mod_super	(mod_super)
 		{
 		}
 
 		inline void serialize(std::ostream & out) const override
 		{
 			out << GetTypeInfo().name() << " "
-				<< button << " " << scan << " " << action << " " << mods;
+				<< button << " " << scan << " " << action << " "
+				<< mod_shift << " " << mod_ctrl << " " << mod_alt << " " << mod_super;
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		inline bool getAction(int32_t a)	const { return (action == a); }
 		inline bool getKey(int32_t b)		const { return (button == b); }
+
 		inline bool getKeyDown(int32_t b)	const { return getKey(b) && getAction(ML_PRESS); }
 		inline bool getKeyRepeat(int32_t b) const { return getKey(b) && getAction(ML_REPEAT); }
 		inline bool getKeyUp(int32_t b)		const { return getKey(b) && getAction(ML_RELEASE); }
-
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

@@ -8,12 +8,6 @@
 
 namespace ml
 {
-	/* Members */
-
-	void * OpenAL::m_device = NULL;
-	void * OpenAL::m_context = NULL;
-
-
 	/* Initialization */
 
 	bool OpenAL::init()
@@ -31,7 +25,7 @@ namespace ml
 	
 	bool OpenAL::good()
 	{
-		return (m_device && m_context);
+		return (ML_AL.m_device && ML_AL.m_context);
 	}
 	
 
@@ -104,9 +98,9 @@ namespace ml
 	bool OpenAL::openDevice()
 	{
 		static bool check = false;
-		if (!check && !m_device)
+		if (!check && !ML_AL.m_device)
 		{
-			alCheck(check = (m_device = DEVICE(alcOpenDevice(NULL))));
+			alCheck(check = (ML_AL.m_device = DEVICE(alcOpenDevice(NULL))));
 		}
 		return check;
 	}
@@ -114,9 +108,9 @@ namespace ml
 	bool OpenAL::closeDevice()
 	{
 		static bool check = false;
-		if (!check && m_device)
+		if (!check && ML_AL.m_device)
 		{
-			alCheck(check = alcCloseDevice(DEVICE(m_device)));
+			alCheck(check = alcCloseDevice(DEVICE(ML_AL.m_device)));
 		}
 		return check;
 	}
@@ -127,9 +121,9 @@ namespace ml
 	bool OpenAL::createContext()
 	{
 		static bool check = false;
-		if (!check && m_device && !m_context)
+		if (!check && ML_AL.m_device && !ML_AL.m_context)
 		{
-			alCheck(check = (m_context = CONTEXT(alcCreateContext(DEVICE(m_device), NULL))));
+			alCheck(check = (ML_AL.m_context = CONTEXT(alcCreateContext(DEVICE(ML_AL.m_device), NULL))));
 		}
 		return check;
 	}
@@ -137,9 +131,9 @@ namespace ml
 	bool OpenAL::makeContextCurrent()
 	{
 		static bool check = false;
-		if (!check && m_context)
+		if (!check && ML_AL.m_context)
 		{
-			alCheck(check = alcMakeContextCurrent(CONTEXT(m_context)));
+			alCheck(check = alcMakeContextCurrent(CONTEXT(ML_AL.m_context)));
 		}
 		return check;
 	}
@@ -147,14 +141,14 @@ namespace ml
 
 	/* Buffers */
 
-	uint32_t OpenAL::genBuffers(AL::Size count)
+	uint32_t OpenAL::genBuffers(int32_t count)
 	{
 		static uint32_t temp;
 		alCheck(alGenBuffers(count, &temp));
 		return temp;
 	}
 
-	void OpenAL::deleteBuffers(AL::Size count, const uint32_t * buffers)
+	void OpenAL::deleteBuffers(int32_t count, const uint32_t * buffers)
 	{
 		alCheck(alDeleteBuffers(count, buffers));
 	}
@@ -166,7 +160,7 @@ namespace ml
 		return temp;
 	}
 
-	void OpenAL::bufferData(uint32_t id,AL::Enum format, const void * data, AL::Size size, int32_t freq)
+	void OpenAL::bufferData(uint32_t id, int32_t format, const void * data, int32_t size, int32_t freq)
 	{
 		alCheck(alBufferData(id, format, data, size, freq));
 	}
@@ -174,32 +168,32 @@ namespace ml
 
 	/* Set Buffer Parameters */
 
-	void OpenAL::bufferf(uint32_t id,AL::Enum param, float value)
+	void OpenAL::bufferf(uint32_t id, int32_t param, float value)
 	{
 		alCheck(alBufferf(id, param, value));
 	}
 
-	void OpenAL::buffer3f(uint32_t id,AL::Enum param, float x, float y, float z)
+	void OpenAL::buffer3f(uint32_t id, int32_t param, float x, float y, float z)
 	{
 		alCheck(alBuffer3f(id, param, x, y, z));
 	}
 
-	void OpenAL::bufferfv(uint32_t id,AL::Enum param, const float * values)
+	void OpenAL::bufferfv(uint32_t id, int32_t param, const float * values)
 	{
 		alCheck(alBufferfv(id, param, values));
 	}
 
-	void OpenAL::bufferi(uint32_t id,AL::Enum param, int32_t value)
+	void OpenAL::bufferi(uint32_t id, int32_t param, int32_t value)
 	{
 		alCheck(alBufferi(id, param, value));
 	}
 
-	void OpenAL::buffer3i(uint32_t id,AL::Enum param, int32_t x, int32_t y, int32_t z)
+	void OpenAL::buffer3i(uint32_t id, int32_t param, int32_t x, int32_t y, int32_t z)
 	{
 		alCheck(alBuffer3i(id, param, x, y, z));
 	}
 
-	void OpenAL::bufferiv(uint32_t id,AL::Enum param, const int32_t * values)
+	void OpenAL::bufferiv(uint32_t id, int32_t param, const int32_t * values)
 	{
 		alCheck(alBufferiv(id, param, values));
 	}
@@ -207,42 +201,42 @@ namespace ml
 
 	/* Get Buffer Parameters */
 
-	float		OpenAL::getBufferf(uint32_t id,AL::Enum param)
+	float		OpenAL::getBufferf(uint32_t id, int32_t param)
 	{
 		static float temp;
 		alCheck(alGetBufferf(id, param, &temp));
 		return temp;
 	}
 
-	float *		OpenAL::getBuffer3f(uint32_t id,AL::Enum param)
+	float *		OpenAL::getBuffer3f(uint32_t id, int32_t param)
 	{
 		static float temp[3];
 		alCheck(alGetBuffer3f(id, param, &temp[0], &temp[1], &temp[2]));
 		return temp;
 	}
 
-	float *		OpenAL::getBufferfv(uint32_t id,AL::Enum param)
+	float *		OpenAL::getBufferfv(uint32_t id, int32_t param)
 	{
 		static float * temp;
 		alCheck(alGetBufferfv(id, param, temp));
 		return temp;
 	}
 
-	int32_t		OpenAL::getBufferi(uint32_t id,AL::Enum param)
+	int32_t		OpenAL::getBufferi(uint32_t id, int32_t param)
 	{
 		static int32_t temp;
 		alCheck(alGetBufferi(id, param, &temp));
 		return temp;
 	}
 
-	int32_t *	OpenAL::getBuffer3i(uint32_t id,AL::Enum param)
+	int32_t *	OpenAL::getBuffer3i(uint32_t id, int32_t param)
 	{
 		static int32_t temp[3];
 		alCheck(alGetBuffer3i(id, param, &temp[0], &temp[1], &temp[2]));
 		return temp;
 	}
 
-	int32_t *	OpenAL::getBufferiv(uint32_t id,AL::Enum param)
+	int32_t *	OpenAL::getBufferiv(uint32_t id, int32_t param)
 	{
 		static int32_t * temp;
 		alCheck(alGetBufferiv(id, param, temp));
@@ -267,7 +261,7 @@ namespace ml
 		alCheck(alSpeedOfSound(value));
 	}
 
-	void OpenAL::distanceModel(AL::Enum value)
+	void OpenAL::distanceModel(int32_t value)
 	{
 		alCheck(alDistanceModel(value));
 	}
@@ -275,14 +269,14 @@ namespace ml
 
 	/* Sources */
 
-	uint32_t OpenAL::genSources(AL::Size count)
+	uint32_t OpenAL::genSources(int32_t count)
 	{
 		static uint32_t temp;
 		alCheck(alGenSources(count, &temp));
 		return temp;
 	}
 
-	void OpenAL::deleteSources(AL::Size count, const uint32_t * sources)
+	void OpenAL::deleteSources(int32_t count, const uint32_t * sources)
 	{
 		alCheck(alDeleteSources(count, sources));
 	}
@@ -297,32 +291,32 @@ namespace ml
 
 	/* Set Source Parameters */
 
-	void OpenAL::sourcef(uint32_t id,AL::Enum param, float value)
+	void OpenAL::sourcef(uint32_t id, int32_t param, float value)
 	{
 		alCheck(alSourcef(id, param, value));
 	}
 
-	void OpenAL::source3f(uint32_t id,AL::Enum param, float x, float y, float z)
+	void OpenAL::source3f(uint32_t id, int32_t param, float x, float y, float z)
 	{
 		alCheck(alSource3f(id, param, x, y, z));
 	}
 
-	void OpenAL::sourcefv(uint32_t id,AL::Enum param, const float * values)
+	void OpenAL::sourcefv(uint32_t id, int32_t param, const float * values)
 	{
 		alCheck(alSourcefv(id, param, values));
 	}
 
-	void OpenAL::sourcei(uint32_t id,AL::Enum param, int32_t value)
+	void OpenAL::sourcei(uint32_t id, int32_t param, int32_t value)
 	{
 		alCheck(alSourcei(id, param, value));
 	}
 
-	void OpenAL::source3i(uint32_t id,AL::Enum param, int32_t x, int32_t y, int32_t z)
+	void OpenAL::source3i(uint32_t id, int32_t param, int32_t x, int32_t y, int32_t z)
 	{
 		alCheck(alSource3i(id, param, x, y, z));
 	}
 
-	void OpenAL::sourceiv(uint32_t id,AL::Enum param, const int32_t * values)
+	void OpenAL::sourceiv(uint32_t id, int32_t param, const int32_t * values)
 	{
 		alCheck(alSourceiv(id, param, values));
 	}
@@ -330,42 +324,42 @@ namespace ml
 
 	/* Get Source Parameters */
 
-	float		OpenAL::getSourcef(uint32_t id,AL::Enum param)
+	float		OpenAL::getSourcef(uint32_t id, int32_t param)
 	{
 		static float temp;
 		alCheck(alGetSourcef(id, param, &temp));
 		return temp;
 	}
 
-	float *		OpenAL::getSource3f(uint32_t id,AL::Enum param)
+	float *		OpenAL::getSource3f(uint32_t id, int32_t param)
 	{
 		static float temp[3];
 		alCheck(alGetSource3f(id, param, &temp[0], &temp[1], &temp[2]));
 		return temp;
 	}
 
-	float *		OpenAL::getSourcefv(uint32_t id,AL::Enum param)
+	float *		OpenAL::getSourcefv(uint32_t id, int32_t param)
 	{
 		static float * temp;
 		alCheck(alGetSourcefv(id, param, temp));
 		return temp;
 	}
 
-	int32_t		OpenAL::getSourcei(uint32_t id,AL::Enum param)
+	int32_t		OpenAL::getSourcei(uint32_t id, int32_t param)
 	{
 		static int32_t temp;
 		alCheck(alGetSourcei(id, param, &temp));
 		return temp;
 	}
 
-	int32_t *	OpenAL::getSource3i(uint32_t id,AL::Enum param)
+	int32_t *	OpenAL::getSource3i(uint32_t id, int32_t param)
 	{
 		static int32_t temp[3];
 		alCheck(alGetSource3i(id, param, &temp[0], &temp[1], &temp[2]));
 		return temp;
 	}
 
-	int32_t *	OpenAL::getSourceiv(uint32_t id,AL::Enum param)
+	int32_t *	OpenAL::getSourceiv(uint32_t id, int32_t param)
 	{
 		static int32_t * temp;
 		alCheck(alGetSourceiv(id, param, temp));
@@ -398,22 +392,22 @@ namespace ml
 
 	/* Source vector based playback calls */
 
-	void OpenAL::sourcePlay(AL::Size count, const uint32_t * ids)
+	void OpenAL::sourcePlay(int32_t count, const uint32_t * ids)
 	{
 		alCheck(alSourcePlayv(count, ids));
 	}
 
-	void OpenAL::sourceStop(AL::Size count, const uint32_t * ids)
+	void OpenAL::sourceStop(int32_t count, const uint32_t * ids)
 	{
 		alCheck(alSourceStopv(count, ids));
 	}
 
-	void OpenAL::sourceRewind(AL::Size count, const uint32_t * ids)
+	void OpenAL::sourceRewind(int32_t count, const uint32_t * ids)
 	{
 		alCheck(alSourceRewindv(count, ids));
 	}
 
-	void OpenAL::sourcePause(AL::Size count, const uint32_t * ids)
+	void OpenAL::sourcePause(int32_t count, const uint32_t * ids)
 	{
 		alCheck(alSourcePausev(count, ids));
 	}
@@ -421,32 +415,32 @@ namespace ml
 
 	/* Set Listener Parameters */
 
-	void OpenAL::listenerf(AL::Enum param, float value)
+	void OpenAL::listenerf(int32_t param, float value)
 	{
 		alCheck(alListenerf(param, value));
 	}
 
-	void OpenAL::listener3f(AL::Enum param, float x, float y, float z)
+	void OpenAL::listener3f(int32_t param, float x, float y, float z)
 	{
 		alCheck(alListener3f(param, x, y, z));
 	}
 
-	void OpenAL::listenerfv(AL::Enum param, const float * values)
+	void OpenAL::listenerfv(int32_t param, const float * values)
 	{
 		alCheck(alListenerfv(param, values));
 	}
 
-	void OpenAL::listeneri(AL::Enum param, int32_t value)
+	void OpenAL::listeneri(int32_t param, int32_t value)
 	{
 		alCheck(alListeneri(param, value));
 	}
 
-	void OpenAL::listener3i(AL::Enum param, int32_t x, int32_t y, int32_t z)
+	void OpenAL::listener3i(int32_t param, int32_t x, int32_t y, int32_t z)
 	{
 		alCheck(alListener3i(param, x, y, z));
 	}
 
-	void OpenAL::listeneriv(AL::Enum param, const int32_t * values)
+	void OpenAL::listeneriv(int32_t param, const int32_t * values)
 	{
 		alCheck(alListeneriv(param, values));
 	}
@@ -454,42 +448,42 @@ namespace ml
 
 	/* Get Listener Parameters */
 
-	float		OpenAL::getListenerf(AL::Enum param)
+	float		OpenAL::getListenerf(int32_t param)
 	{
 		static float temp;
 		alCheck(alGetListenerf(param, &temp));
 		return temp;
 	}
 
-	float *		OpenAL::getListener3f(AL::Enum param)
+	float *		OpenAL::getListener3f(int32_t param)
 	{
 		static float temp[3];
 		alCheck(alGetListener3f(param, &temp[0], &temp[1], &temp[2]));
 		return temp;
 	}
 
-	float *		OpenAL::getListenerfv(AL::Enum param)
+	float *		OpenAL::getListenerfv(int32_t param)
 	{
 		static float * temp;
 		alCheck(alGetListenerfv(param, temp));
 		return temp;
 	}
 
-	int32_t		OpenAL::getListeneri(AL::Enum param)
+	int32_t		OpenAL::getListeneri(int32_t param)
 	{
 		static int32_t temp;
 		alCheck(alGetListeneri(param, &temp));
 		return temp;
 	}
 
-	int32_t *	OpenAL::getListener3i(AL::Enum param)
+	int32_t *	OpenAL::getListener3i(int32_t param)
 	{
 		static int32_t temp[3];
 		alCheck(alGetListener3i(param, &temp[0], &temp[1], &temp[2]));
 		return temp;
 	}
 
-	int32_t *	OpenAL::getListeneriv(AL::Enum param)
+	int32_t *	OpenAL::getListeneriv(int32_t param)
 	{
 		static int32_t * temp;
 		alCheck(alGetListeneriv(param, temp));

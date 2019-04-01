@@ -1,11 +1,17 @@
 #ifndef _ML_OPENGL_HPP_
 #define _ML_OPENGL_HPP_
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 #include <MemeGraphics/GL.hpp>
 #include <MemeCore/String.hpp>
 #include <MemeCore/ISingleton.hpp>
 
+/* * * * * * * * * * * * * * * * * * * * */
+
 #define ML_GL ml::OpenGL::getInstance()
+
+/* * * * * * * * * * * * * * * * * * * * */
 
 # ifdef ML_DEBUG
 	// In debug configuration, perform a test on every OpenGL call
@@ -17,9 +23,11 @@
 #	define glCheck(expr) (expr)
 # endif
 
+/* * * * * * * * * * * * * * * * * * * * */
+
 namespace ml
 {
-	// ML OpenGL Wrapper
+	// OpenGL Wrapper
 	class ML_GRAPHICS_API OpenGL final
 		: public ISingleton<OpenGL>
 	{
@@ -184,5 +192,7 @@ namespace ml
 	};
 
 }
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #endif // !_ML_OPENGL_HPP_

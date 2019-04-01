@@ -1,5 +1,5 @@
-#ifndef _ML_AUDIO_MANAGER_HPP_
-#define _ML_AUDIO_MANAGER_HPP_
+#ifndef _ML_AUDIO_HPP_
+#define _ML_AUDIO_HPP_
 
 #include <MemeCore/ISingleton.hpp>
 #include <MemeAudio/OpenAL.hpp>
@@ -17,14 +17,12 @@ namespace ml
 	{
 		friend class ISingleton<Audio>;
 
-	public:
-
 	private:
 		Audio();
 		~Audio();
+
+	public:
 	};
 }
 
-/* * * * * * * * * * * * * * * * * * * * */
-
-#endif // !_ML_AUDIO_MANAGER_HPP_
+#endif // !_ML_AUDIO_HPP_

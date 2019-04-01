@@ -2,6 +2,7 @@
 #define _ML_MATRIX_HPP_
 
 #include <MemeCore/IEnumerable.hpp>
+#include <MemeCore/Array.hpp>
 #include <MemeCore/List.hpp>
 #include <MemeCore/Maths.hpp>
 
