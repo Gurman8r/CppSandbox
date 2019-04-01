@@ -3,7 +3,10 @@
 
 #define GLEW_STATIC
 #include <GL/glew.h>
-#pragma comment (lib, "glew32s.lib")
+
+#ifdef ML_SYSTEM_WINDOWS
+#pragma comment(lib, "glew32s.lib")
+#endif
 
 #define ML_BUFFER_SIZE 1024
 
