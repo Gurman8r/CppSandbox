@@ -45,8 +45,8 @@ namespace ml
 		Texture *		m_texture;
 		vec2i			m_size;
 		uint32_t		m_attachment;
-		mutable FBO		m_fbo;
-		mutable RBO		m_rbo;
+		FBO				m_fbo;
+		RBO				m_rbo;
 	};
 }
 

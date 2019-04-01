@@ -37,9 +37,9 @@ namespace ml
 		void draw(RenderTarget & target, RenderBatch batch) const override;
 
 	private:
-		mutable VAO	m_vao;
-		mutable VBO	m_vbo;
-		mutable IBO	m_ibo;
+		VAO	m_vao;
+		VBO	m_vbo;
+		IBO	m_ibo;
 	};
 }
 

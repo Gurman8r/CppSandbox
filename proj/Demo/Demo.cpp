@@ -199,7 +199,7 @@ namespace DEMO
 
 			// Load OpenAL
 			/* * * * * * * * * * * * * * * * * * * * */
-			if (!ml::OpenAL::init())
+			if (!(ML_AL.init()))
 			{
 				return ml::Debug::setError(
 					ML_FAILURE, 

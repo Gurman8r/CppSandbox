@@ -41,17 +41,16 @@ namespace ml
 		void draw(RenderTarget & target, RenderBatch batch) const override;
 
 	private:
-		mutable bool m_requiresUpdate;
-
-		mutable TextureList		 m_textures;
-		mutable List<RectQuad>	 m_vertices;
-
 		const Font *m_font;
 		uint32_t	m_fontSize;
 		vec2f		m_position;
 		vec2f		m_scale;
 		String		m_string;
 		vec4f		m_color;
+
+		mutable bool			m_requiresUpdate;
+		mutable TextureList		m_textures;
+		mutable List<RectQuad>	m_vertices;
 	};
 }
 #endif // !_ML_TEXT_HPP_
