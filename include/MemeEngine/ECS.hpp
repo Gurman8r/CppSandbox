@@ -3,7 +3,7 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-#include <MemeEngine/IEntity.hpp>
+#include <MemeEngine/Entity.hpp>
 #include <MemeGraphics/Transform.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -16,18 +16,16 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct Position final
+	struct C_Transform final : public Component
 	{
-		vec3f value;
+		vec3f	position;
+		vec3f	scale;
+		quat	rotation;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	template <typename TComponent>
-	struct ECS_Settings
-	{
-	};
-
+	// WIP
 	class ML_ENGINE_API ECS final
 		: public ITrackable
 		, public ISingleton<ECS>

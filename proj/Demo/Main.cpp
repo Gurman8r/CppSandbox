@@ -4,21 +4,9 @@
 #include "DemoSettings.hpp"
 #include "Testing.hpp"
 
+#include <MemeEngine/Lua.hpp>
 #include <MemeCore/Debug.hpp>
 #include <MemeCore/EventSystem.hpp>
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-extern "C"
-{
-#include <lua/lua.h>
-#include <lua/lauxlib.h>
-#include <lua/lualib.h>
-}
-
-#ifdef ML_SYSTEM_WINDOWS
-#pragma comment(lib, "lua.lib")
-#endif
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
@@ -30,11 +18,6 @@ extern "C"
 
 int32_t main(int32_t argc, char ** argv)
 {
-	if (lua_State * lua = luaL_newstate())
-	{
-		lua_close(lua);
-	}
-
 	// Load Settings
 	if (!SETTINGS.loadFromFile(ML_CONFIG_INI))
 	{

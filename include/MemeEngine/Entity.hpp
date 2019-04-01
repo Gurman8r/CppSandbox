@@ -1,56 +1,54 @@
 #ifndef _ML_I_ENTITY_HPP_
 #define _ML_I_ENTITY_HPP_
 
-#include <MemeEngine/IComponent.hpp>
+#include <MemeCore/IReadable.hpp>
+#include <MemeEngine/Component.hpp>
 
 namespace ml
 {
-	class ML_ENGINE_API IEntity
+	class ML_ENGINE_API Entity
+		: public ITrackable
+		, public IReadable
 	{
 	public:
-		using ComponentMap	= typename HashMap<const std::type_info *, IComponent *>;
+		using TypeInfo		= typename const std::type_info *;
+		using ComponentMap	= typename HashMap<TypeInfo, Component *>;
 		using iterator		= typename ComponentMap::iterator;
 		using const_iterator= typename ComponentMap::const_iterator;
 
 	public:
-		IEntity() 
-			: m_map()
-		{
-		}
-		virtual ~IEntity() {}
+		Entity();
+		virtual ~Entity();
 
 	public:
-		template <class T> 
+		bool cleanup() override;
+		bool loadFromFile(const String & filename) override;
+
+	public:
+		template <typename T> 
 		inline T * addComponent()
 		{
-			if (!getComponent<T>())
-			{
-				m_map.insert({ &typeid(T), new T() });
-				return get(&typeid(T));
-			}
-			return NULL;
+			return (m_map.find(&typeid(T)) == m_map.end())
+				? ((T *)(m_map[&typeid(T)] = new T()))
+				: (NULL);
 		}
-		
-		template <class T> 
+
+		template <typename T>
 		inline T * getComponent()
 		{
 			iterator it;
-			if ((it = m_map.find(&typeid(T))) != end())
-			{
-				return static_cast<T *>(it->second);
-			}
-			return NULL;
+			return ((it = m_map.find(&typeid(T))) != end())
+				? ((T *)(it->second))
+				: (NULL);
 		}
-		
-		template <class T> 
+
+		template <typename T>
 		inline const T * getComponent() const
 		{
 			const_iterator it;
-			if ((it = m_map.find(&typeid(T))) != end())
-			{
-				return static_cast<T *>(it->second);
-			}
-			return NULL;
+			return ((it = m_map.find(&typeid(T))) != end())
+				? ((const T *)(it->second))
+				: (NULL);
 		}
 		
 	public:

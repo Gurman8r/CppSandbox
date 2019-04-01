@@ -302,6 +302,19 @@ namespace DEMO
 	{
 		ml::Debug::log("Starting...");
 
+		ml::Entity ent;
+		ent.loadFromFile("");
+		ent.addComponent<ml::C_Transform>();
+		if (ml::C_Transform * t = ent.getComponent<ml::C_Transform>())
+		{
+			t->position = { 1.f, 2.f, 3.f };
+
+			ml::cout 
+				<< ml::endl 
+				<< "Position: " << t->position 
+				<< ml::endl;
+		}
+
 		// Window Icon
 		if (ml::Image * icon = ML_Res.images.get("icon"))
 		{

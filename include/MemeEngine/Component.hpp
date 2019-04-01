@@ -6,14 +6,15 @@
 
 namespace ml
 {
-	class ML_ENGINE_API IComponent
+	class ML_ENGINE_API Component
 		: public ITrackable
 	{
 	public:
-		IComponent() {}
-		virtual ~IComponent() {}
+		Component()
+		{
+		}
 
-	private:
+		virtual ~Component() {}
 
 	};
 }
