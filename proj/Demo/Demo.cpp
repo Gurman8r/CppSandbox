@@ -344,16 +344,13 @@ namespace DEMO
 			{
 				rb->velocity = 0.f;
 				rb->acceleration = 0.f;
-				rb->mass = 1.0f;
-				rb->massInv = 1.0f / rb->mass;
 			}
 			if (const ml::Cmp_Rigidbody * rb = ent.getComponent<ml::Cmp_Rigidbody>())
 			{
 				ml::cout << std::left
 					<< ml::endl
-					<< std::setw(10) //<< "Position: " << tf->position
-					<< std::setw(10) //<< "Rotation: " << tf->rotation
-					<< std::setw(10) //<< "Scale: " << tf->scale
+					<< std::setw(10)<< "Velocity: " << rb->velocity
+					<< std::setw(10)<< "Acceleration: " << rb->acceleration
 					<< ml::endl;
 			}
 			

@@ -26,8 +26,6 @@ namespace ml
 	{
 		vec3f	velocity;
 		vec3f	acceleration;
-		float	mass;
-		float	massInv;
 	};
 
 	// Movement System (example)
