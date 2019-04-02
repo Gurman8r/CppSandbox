@@ -28,6 +28,9 @@ namespace ml
 		Application * launchApp(Application * app);
 		int32_t freeApp();
 
+	public:
+		inline Application * app() { return m_app; }
+
 	private:
 		Application * m_app;
 	};

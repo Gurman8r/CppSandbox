@@ -41,12 +41,18 @@ namespace ml
 
 	bool RenderFlags::applyFlag(uint32_t key, int32_t value) const
 	{
-		switch (value)
+		switch (key)
 		{
-		case 0:
-			return ML_GL.disable(key);
-		case 1:
-			return ML_GL.enable(key);
+		case GL::CullFace:
+		case GL::DepthTest:
+			if (value)
+			{
+				return ML_GL.enable(key);
+			}
+			else
+			{
+				return ML_GL.disable(key);
+			}
 		default:
 			return false;
 		}
