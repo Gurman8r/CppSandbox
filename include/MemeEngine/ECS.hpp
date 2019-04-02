@@ -13,33 +13,6 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	// Transform Component (example)
-	struct Cmp_Transform
-	{
-		vec3f	position;
-		vec3f	scale;
-		quat	rotation;
-	};
-
-	// Rigidbody Component (example)
-	struct Cmp_Rigidbody
-	{
-		vec3f	velocity;
-		vec3f	acceleration;
-	};
-
-	// Movement System (example)
-	struct Sys_Movement
-	{
-		void Update(float dt, Cmp_Transform * tf, Cmp_Rigidbody * rb)
-		{
-			tf->position += rb->velocity * dt;
-			rb->velocity += rb->acceleration * dt;
-		}
-	};
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
 	// Entity Component System (WIP)
 	class ML_ENGINE_API ECS final
 		: public ITrackable
@@ -51,8 +24,6 @@ namespace ml
 		ECS();
 		~ECS();
 
-	public:
-		Sys_Movement movement;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

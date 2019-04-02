@@ -316,49 +316,6 @@ namespace DEMO
 	{
 		ml::Debug::log("Starting...");
 
-		// ECS Testing
-		/* * * * * * * * * * * * * * * * * * * * */
-		ml::Entity ent;
-		if (ent.loadFromFile(""))
-		{
-			// Transform
-			if (ml::Cmp_Transform * tf = ent.addComponent<ml::Cmp_Transform>())
-			{
-				tf->position = { 1.f, 2.f, 3.f };
-				tf->rotation = { 0.f, 0.f, 0.f, 1.f };
-				tf->scale = { 1.f, 1.f, 1.f };
-			}
-			if (const ml::Cmp_Transform * tf = ent.getComponent<ml::Cmp_Transform>())
-			{
-				ml::cout << std::left
-					<< std::setw(10) << "Position: " << tf->position
-					<< std::setw(10) << "Rotation: " << tf->rotation
-					<< std::setw(10) << "Scale: " << tf->scale
-					<< ml::endl;
-			}
-
-			// Rigidbody
-			if (ml::Cmp_Rigidbody * rb = ent.addComponent<ml::Cmp_Rigidbody>())
-			{
-				rb->velocity = 0.f;
-				rb->acceleration = 0.f;
-			}
-			if (const ml::Cmp_Rigidbody * rb = ent.getComponent<ml::Cmp_Rigidbody>())
-			{
-				ml::cout << std::left
-					<< std::setw(10) << "Velocity: " << rb->velocity
-					<< std::setw(10) << "Acceleration: " << rb->acceleration
-					<< ml::endl;
-			}
-
-			// Movement System
-			ML_ECS.movement.Update(
-				0.0f,
-				ent.getComponent<ml::Cmp_Transform>(),
-				ent.getComponent<ml::Cmp_Rigidbody>()
-			);
-		}
-
 		// Set Window Icon
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (ml::Image * icon = ML_Res.images.get("icon"))
@@ -398,7 +355,7 @@ namespace DEMO
 			}
 		}
 
-		// Setup Game Objects
+		// Setup Objects
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
 			// Setup Light
@@ -564,6 +521,17 @@ namespace DEMO
 				obj->transform()
 					.translate({ 0.0f, -2.5f, 0.0f })
 					.scale({ 12.5, 0.25f, 12.5 });
+			}
+		}
+
+		// ECS Testing
+		/* * * * * * * * * * * * * * * * * * * * */
+		ml::Entity ent;
+		if (ent.loadFromFile(""))
+		{
+			if (ml::UniformSet * u = ent.add<ml::UniformSet>())
+			{
+
 			}
 		}
 	}
@@ -994,7 +962,7 @@ namespace DEMO
 	{
 		ml::Debug::log("Unloading...");
 
-		// Finalize Resources
+		// Unload Resources
 		ML_Res.cleanup();
 	}
 

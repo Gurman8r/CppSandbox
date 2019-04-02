@@ -8,6 +8,12 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	class Application;
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_ENGINE_API Engine final
 		: public ITrackable
 		, public ISingleton<Engine>
@@ -19,8 +25,14 @@ namespace ml
 		~Engine();
 
 	public:
+		Application * launchApp(Application * app);
+		int32_t freeApp();
 
+	private:
+		Application * m_app;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_ENGINE_HPP_

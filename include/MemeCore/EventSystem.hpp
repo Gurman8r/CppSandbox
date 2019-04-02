@@ -15,8 +15,8 @@ namespace ml
 		friend class ISingleton<EventSystem>;
 
 	public:
-		using multimap_type	= MultiMap<int32_t, IEventListener *>;
-		using iterator		= typename multimap_type::iterator;
+		using ListenerMap	= MultiMap<int32_t, IEventListener *>;
+		using iterator		= typename ListenerMap::iterator;
 
 	public:
 		void addListener(const int32_t & type, IEventListener * listener);
@@ -30,7 +30,7 @@ namespace ml
 
 		void dispatchAllEvents(const IEvent * ev);
 
-		multimap_type m_listeners;
+		ListenerMap m_listeners;
 	};
 }
 

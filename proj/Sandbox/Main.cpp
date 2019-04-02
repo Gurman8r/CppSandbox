@@ -5,6 +5,7 @@
 
 #include <MemeCore/Debug.hpp>
 #include <MemeCore/EventSystem.hpp>
+#include <MemeEngine/Engine.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
@@ -24,7 +25,7 @@ int32_t main(int32_t argc, char ** argv)
 	}
 
 	// Create Program
-	if (auto program = new DEMO::Sandbox())
+	if (ml::Application * app = ML_Engine.launchApp(new DEMO::Sandbox()))
 	{
 		// Enter
 		mlCheck(ML_EventSystem.fireEvent(ml::EnterEvent(argc, argv)));
@@ -35,13 +36,13 @@ int32_t main(int32_t argc, char ** argv)
 		// Start
 		ML_EventSystem.fireEvent(ml::StartEvent());
 
-		// Loop
+		// Main Loop
 		ml::Timer	 timer;
 		ml::Duration elapsed;
 		do
 		{	// Begin Frame
 			timer.start();
-			program->pollEvents();
+			app->pollEvents();
 			{
 				// "Fixed" Update
 				ML_EventSystem.fireEvent(ml::FixedUpdateEvent(elapsed));
@@ -56,10 +57,10 @@ int32_t main(int32_t argc, char ** argv)
 				ML_EventSystem.fireEvent(ml::GuiEvent(elapsed));
 			}
 			// End Frame
-			program->swapBuffers();
+			app->swapBuffers();
 			elapsed = timer.stop().elapsed();
 
-		} while (program->isOpen());
+		} while (app->isOpen());
 
 		// Unload
 		ML_EventSystem.fireEvent(ml::UnloadEvent());
@@ -68,10 +69,7 @@ int32_t main(int32_t argc, char ** argv)
 		ML_EventSystem.fireEvent(ml::ExitEvent());
 
 		// Delete Program
-		delete program;
-
-		// Goodbye!
-		return EXIT_SUCCESS;
+		return ML_Engine.freeApp();
 	}
 	else
 	{

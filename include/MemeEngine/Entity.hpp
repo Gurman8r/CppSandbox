@@ -22,12 +22,12 @@ namespace ml
 		virtual ~Entity();
 
 	public:
-		bool cleanup() override;
-		bool loadFromFile(const String & filename) override;
+		virtual bool cleanup() override;
+		virtual bool loadFromFile(const String & filename) override;
 
 	public:
 		template <typename T> 
-		inline T * addComponent()
+		inline T * add()
 		{
 			return (m_cmp.find(&typeid(T)) == m_cmp.end())
 				? ((T *)(m_cmp[&typeid(T)] = new T()))
@@ -35,7 +35,7 @@ namespace ml
 		}
 
 		template <typename T>
-		inline T * getComponent()
+		inline T * get()
 		{
 			iterator it;
 			return ((it = m_cmp.find(&typeid(T))) != end())
@@ -44,7 +44,7 @@ namespace ml
 		}
 
 		template <typename T>
-		inline const T * getComponent() const
+		inline const T * get() const
 		{
 			const_iterator it;
 			return ((it = m_cmp.find(&typeid(T))) != end())
