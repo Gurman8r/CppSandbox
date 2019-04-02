@@ -1,3 +1,3 @@
 @echo off
-call Build.bat ..\CppSandbox.sln Release x86
+call Build.bat ..\ML.sln Release x86
 exit %ERRORLEVEL%
