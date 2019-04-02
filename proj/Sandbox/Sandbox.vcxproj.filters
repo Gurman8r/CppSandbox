@@ -307,8 +307,6 @@
     <None Include="..\..\assets\skyboxes\sunset.skybox">
       <Filter>Resource Files\skyboxes</Filter>
     </None>
-    <None Include="..\..\ML_Config.ini">
-      <Filter>Resource Files</Filter>
-    </None>
+    <None Include="..\..\ML_Config.ini" />
   </ItemGroup>
 </Project>
