@@ -1,3 +1,4 @@
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #include "Sandbox.hpp"
@@ -37,16 +38,29 @@ int32_t main(int32_t argc, char ** argv)
 		ML_EventSystem.fireEvent(ml::StartEvent());
 
 		// Main Loop
-		ml::Timer	 timer;
+		ml::Timer timer;
 		ml::Duration elapsed;
+		
+		// Setup Physics
+		ml::PhysicsThread thr;
+		if (!thr.launch([&]()
+		{
+			while (app->isOpen())
+			{
+				ML_EventSystem.fireEvent(ml::FixedUpdateEvent(elapsed, thr));
+				std::this_thread::sleep_for(ml::Seconds(1));
+			}
+		}))
+		{
+			return ml::Debug::logError("Failed Launching Physics Thread")
+				|| ml::Debug::pause(EXIT_FAILURE);
+		}
+
 		do
 		{	// Begin Frame
 			timer.start();
 			app->pollEvents();
 			{
-				// Update Physics
-				ML_EventSystem.fireEvent(ml::FixedUpdateEvent(elapsed));
-
 				// Update Logic
 				ML_EventSystem.fireEvent(ml::UpdateEvent(elapsed));
 
@@ -61,6 +75,9 @@ int32_t main(int32_t argc, char ** argv)
 			elapsed = timer.stop().elapsed();
 
 		} while (app->isOpen());
+
+		// Cleanup Physics
+		thr.cleanup();
 
 		// Unload Resources
 		ML_EventSystem.fireEvent(ml::UnloadEvent());

@@ -561,6 +561,8 @@ namespace DEMO
 
 	void Sandbox::onFixedUpdate(const ml::FixedUpdateEvent * ev)
 	{
+		ml::Debug::log("Fixed Update");
+
 		// Update Physics
 		for (ml::Particle & p : ML_Physics.particles)
 		{

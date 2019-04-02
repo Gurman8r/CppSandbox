@@ -216,6 +216,12 @@
     <ClInclude Include="..\..\include\MemeCore\Ratio.hpp">
       <Filter>Header Files\STD</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Lock.hpp">
+      <Filter>Header Files\Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\IDisposable.hpp">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeCore\Timer.cpp">

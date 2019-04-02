@@ -99,7 +99,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)thirdparty\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>MemeAudio_$(Configuration)_$(PlatformTarget).lib;MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;MemeNet_$(Configuration)_$(PlatformTarget).lib;MemeScript_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>MemeAudio_$(Configuration)_$(PlatformTarget).lib;MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;MemeNet_$(Configuration)_$(PlatformTarget).lib;MemePhysics_$(Configuration)_$(PlatformTarget).lib;MemeScript_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\;$(SolutionDir)thirdparty\lib\$(Configuration)\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
@@ -114,7 +114,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)thirdparty\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>MemeAudio_$(Configuration)_$(PlatformTarget).lib;MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;MemeNet_$(Configuration)_$(PlatformTarget).lib;MemeScript_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>MemeAudio_$(Configuration)_$(PlatformTarget).lib;MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;MemeNet_$(Configuration)_$(PlatformTarget).lib;MemePhysics_$(Configuration)_$(PlatformTarget).lib;MemeScript_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\;$(SolutionDir)thirdparty\lib\$(Configuration)\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
@@ -133,7 +133,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>MemeAudio_$(Configuration)_$(PlatformTarget).lib;MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;MemeNet_$(Configuration)_$(PlatformTarget).lib;MemeScript_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>MemeAudio_$(Configuration)_$(PlatformTarget).lib;MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;MemeNet_$(Configuration)_$(PlatformTarget).lib;MemePhysics_$(Configuration)_$(PlatformTarget).lib;MemeScript_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\;$(SolutionDir)thirdparty\lib\$(Configuration)\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
@@ -152,7 +152,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>MemeAudio_$(Configuration)_$(PlatformTarget).lib;MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;MemeNet_$(Configuration)_$(PlatformTarget).lib;MemeScript_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>MemeAudio_$(Configuration)_$(PlatformTarget).lib;MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;MemeNet_$(Configuration)_$(PlatformTarget).lib;MemePhysics_$(Configuration)_$(PlatformTarget).lib;MemeScript_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\;$(SolutionDir)thirdparty\lib\$(Configuration)\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>

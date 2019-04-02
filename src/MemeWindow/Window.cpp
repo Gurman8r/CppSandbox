@@ -112,10 +112,10 @@ namespace ml
 		setKeyCallback([](void * window, int32_t button, int32_t scan, int32_t action, int32_t mods)
 		{
 			ML_EventSystem.fireEvent(KeyEvent(button, scan, action,
-					(bool)(mods & ML_MOD_SHIFT),
-					(bool)(mods & ML_MOD_CTRL),
-					(bool)(mods & ML_MOD_ALT),
-					(bool)(mods & ML_MOD_SUPER)
+				(bool)(mods & ML_MOD_SHIFT),
+				(bool)(mods & ML_MOD_CTRL),
+				(bool)(mods & ML_MOD_ALT),
+				(bool)(mods & ML_MOD_SUPER)
 			));
 		});
 

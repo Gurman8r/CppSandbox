@@ -6,6 +6,14 @@
 
 namespace DEMO
 {
+	// ITrackable
+	// INonCopyable
+	// IEventListener
+	//		Window
+	//			RenderWindow
+	//				Application
+	//					EditorApplication
+	//						Sandbox
 	class Sandbox final
 		: public ml::EditorApplication
 	{
