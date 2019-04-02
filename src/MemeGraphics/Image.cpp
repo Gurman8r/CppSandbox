@@ -44,12 +44,11 @@ namespace ml
 	{
 		stbi_set_flip_vertically_on_load(true);
 		
-		int32_t w, h, channels;
-		if (uint8_t * data = stbi_load(filename.c_str(), &w, &h, &channels, 0))
+		int32_t w, h;
+		if (uint8_t * data = stbi_load(filename.c_str(), &w, &h, &m_channels, 0))
 		{
 			m_size = { (uint32_t)w, (uint32_t)h };
-			m_channels = channels;
-			m_pixels.resize(w * h * channels);
+			m_pixels.resize(w * h * m_channels);
 			memcpy(&m_pixels[0], data, m_pixels.size());
 			stbi_image_free(data);
 			return true;
@@ -58,7 +57,6 @@ namespace ml
 		{
 			m_size = vec2u::Zero;
 			m_pixels.clear();
-			m_channels = 0;
 			stbi_image_free(data);
 			return false;
 		}

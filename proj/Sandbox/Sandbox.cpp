@@ -320,7 +320,7 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (ml::Image * icon = ML_Res.images.get("icon"))
 		{
-			this->setIcons({ (*icon).flipVertically() });
+			this->setIcons({ icon->flipVertically() });
 		}
 
 		// Setup Plugins

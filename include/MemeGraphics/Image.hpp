@@ -27,6 +27,7 @@ namespace ml
 		Image & create(uint32_t width, uint32_t height, const vec4b & color);
 		Image & create(uint32_t width, uint32_t height, const uint8_t * pixels);
 		Image & createMaskFromColor(const vec4b & color, uint8_t alpha = 0);
+		
 		Image & flipHorizontally();
 		Image & flipVertically();
 
