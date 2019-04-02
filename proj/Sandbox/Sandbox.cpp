@@ -529,10 +529,24 @@ namespace DEMO
 		ml::Entity ent;
 		if (ent.loadFromFile(""))
 		{
-			if (ml::UniformSet * u = ent.add<ml::UniformSet>())
-			{
+			ml::Transform * transform = ent.add<ml::Transform>();
+			transform->translate({ 0.0f, -2.5f, 0.0f });
+			transform->scale({ 12.5, 0.25f, 12.5 });
 
-			}
+			ml::UniformSet * uniforms = ent.add<ml::UniformSet>();
+			(*uniforms) = {
+					ml::Uniform("Vert.proj",		ml::Uniform::Mat4,	&uni.persp.matrix()),
+					ml::Uniform("Vert.view",		ml::Uniform::Mat4,	&uni.camera.matrix()),
+					ml::Uniform("Vert.model",		ml::Uniform::Mat4,	&transform->matrix()),
+					ml::Uniform("Frag.mainCol",		ml::Uniform::Vec4,	&ml::Color::White),
+					ml::Uniform("Frag.mainTex",		ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm")),
+			};
+
+			ml::RenderFlags * flags = ent.add<ml::RenderFlags>();
+			(*flags) = ml::RenderFlags({
+				{ ml::GL::CullFace, true },
+				{ ml::GL::DepthTest, true },
+			});
 		}
 	}
 
@@ -562,7 +576,7 @@ namespace DEMO
 
 		// Set Window Title
 		/* * * * * * * * * * * * * * * * * * * * */
-		this->setTitle(ml::String::Format("{0} | {1} | {2} | {3} ms/frame ({4} fps)",
+		this->setTitle(ml::String("{0} | {1} | {2} | {3} ms/frame ({4} fps)").format(
 			SETTINGS.title,
 			ml::Debug::configuration(),
 			ml::Debug::platformTarget(),
@@ -573,51 +587,51 @@ namespace DEMO
 		// Update Models
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
-			if (ml::GameObject * m = ML_Hierarchy.getObject("borg"))
+			if (ml::GameObject * obj = ML_Hierarchy.getObject("borg"))
 			{
-				ml::vec3f pos = m->transform().getPosition();
+				ml::vec3f pos = obj->transform().getPosition();
 				pos[1] = +ML_Time.cos();
-				m->transform()
+				obj->transform()
 					.setPosition(pos)
 					.rotate(+ev->elapsed.delta(), ml::vec3f::One);
 			}
 
-			if (ml::GameObject * m = ML_Hierarchy.getObject("cube"))
+			if (ml::GameObject * obj = ML_Hierarchy.getObject("cube"))
 			{
-				ml::vec3f pos = m->transform().getPosition();
+				ml::vec3f pos = obj->transform().getPosition();
 				pos[1] = -ML_Time.sin();
-				m->transform()
+				obj->transform()
 					.setPosition(pos)
 					.rotate(-ev->elapsed.delta(), ml::vec3f::One);
 			}
 
-			if (ml::GameObject * m = ML_Hierarchy.getObject("earth"))
+			if (ml::GameObject * obj = ML_Hierarchy.getObject("earth"))
 			{
-				m->transform()
+				obj->transform()
 					.rotate((uni.animate ? ev->elapsed.delta() : 0.f), ml::vec3f::Up);
 			}
 
-			if (ml::GameObject * m = ML_Hierarchy.getObject("moon"))
+			if (ml::GameObject * obj = ML_Hierarchy.getObject("moon"))
 			{
-				ml::vec3f pos = m->transform().getPosition();
+				ml::vec3f pos = obj->transform().getPosition();
 				pos[1] = +ML_Time.sin();
-				m->transform()
+				obj->transform()
 					.setPosition(pos)
 					.rotate(-ev->elapsed.delta(), ml::vec3f::Up);
 			}
 
-			if (ml::GameObject * m = ML_Hierarchy.getObject("sanic"))
+			if (ml::GameObject * obj = ML_Hierarchy.getObject("sanic"))
 			{
-				ml::vec3f pos = m->transform().getPosition();
+				ml::vec3f pos = obj->transform().getPosition();
 				pos[1] = -ML_Time.cos();
-				m->transform()
+				obj->transform()
 					.setPosition(pos)
 					.rotate(-ev->elapsed.delta(), ml::vec3f::Forward);
 			}
 
-			if (ml::GameObject * m = ML_Hierarchy.getObject("light"))
+			if (ml::GameObject * obj = ML_Hierarchy.getObject("light"))
 			{
-				m->transform()
+				obj->transform()
 					.setPosition(uni.lightPos)
 					.rotate(-ev->elapsed.delta(), ml::vec3f::Forward);
 			}

@@ -234,17 +234,10 @@ namespace ml
 
 			for (size_type a = 0; ss.good(); a++)
 			{
-				const self_type fmt = ("{" + std::to_string(a) + "}");
-
 				self_type arg;
 				if (std::getline(ss, arg))
 				{
-					for (size_type i = 0;
-						(i = value.find(fmt, i)) != self_type::npos;
-						(i += arg.size()))
-					{
-						value.replace(i, fmt.size(), arg);
-					}
+					value.replaceAll(("{" + std::to_string(a) + "}"), arg);
 				}
 			}
 			return value;
@@ -284,7 +277,7 @@ namespace ml
 
 		inline const self_type replaceAll(const self_type & f, const self_type & r) const
 		{
-			return self_type(*this).replace_all(f, r);
+			return self_type(*this).replaceAll(f, r);
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

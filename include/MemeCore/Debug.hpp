@@ -36,8 +36,8 @@ namespace ml
 		static int32_t	clear();
 		static void		exit(int32_t exitCode);
 		static int32_t	pause(int32_t exitCode);
-		static int32_t	system(const char * cmd);
-		static int32_t	system(const char * cmd, std::ostream & out);
+		static int32_t	system(CString cmd);
+		static int32_t	system(CString cmd, std::ostream & out);
 		static void		terminate();
 
 	public:

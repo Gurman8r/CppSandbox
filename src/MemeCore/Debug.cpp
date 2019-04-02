@@ -70,12 +70,12 @@ namespace ml
 		return exitCode;
 	}
 
-	int32_t	Debug::system(const char * cmd)
+	int32_t	Debug::system(CString cmd)
 	{
 		return system(cmd, ml::cout);
 	}
 
-	int32_t Debug::system(const char * cmd, std::ostream & out)
+	int32_t Debug::system(CString cmd, std::ostream & out)
 	{
 		std::array<char, 128> buffer;
 		std::shared_ptr<FILE> file(_popen(cmd, "r"), _pclose);

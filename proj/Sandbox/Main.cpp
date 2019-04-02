@@ -24,7 +24,7 @@ int32_t main(int32_t argc, char ** argv)
 			|| ml::Debug::pause(EXIT_FAILURE);
 	}
 
-	// Create Program
+	// Launch Program
 	if (ml::Application * app = ML_Engine.launchApp(new DEMO::Sandbox()))
 	{
 		// Enter
@@ -68,7 +68,7 @@ int32_t main(int32_t argc, char ** argv)
 		// Exit
 		ML_EventSystem.fireEvent(ml::ExitEvent());
 
-		// Delete Program
+		// Free Program
 		return ML_Engine.freeApp();
 	}
 	else
