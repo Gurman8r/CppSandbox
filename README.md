@@ -2,8 +2,6 @@
 
 Projects
 __________
-	- Demo
-    		- Executable with demos for each library
 	- MemeAudio
 			- Audio library (OpenAL)
   	- MemeCore
@@ -16,6 +14,7 @@ __________
 	- MemeEngine
 			- Application/Plugin Library
 			- Resource Management
+			- ECS
   	- MemeGraphics
     		- Graphics library (glew)
 			- Requires MemeWindow
