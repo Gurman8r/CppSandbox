@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #include "Sandbox.hpp"
-#include "DemoSettings.hpp"
+#include "Settings.hpp"
 
 #include <MemeCore/Debug.hpp>
 #include <MemeCore/EventSystem.hpp>
@@ -39,7 +39,7 @@ int32_t main(int32_t argc, char ** argv)
 		ml::Timer	 timer;
 		ml::Duration elapsed;
 		do
-		{	// Begin Step
+		{	// Begin Frame
 			timer.start();
 			program->pollEvents();
 			{
@@ -55,7 +55,7 @@ int32_t main(int32_t argc, char ** argv)
 				// Gui
 				ML_EventSystem.fireEvent(ml::GuiEvent(elapsed));
 			}
-			// End Step
+			// End Frame
 			program->swapBuffers();
 			elapsed = timer.stop().elapsed();
 

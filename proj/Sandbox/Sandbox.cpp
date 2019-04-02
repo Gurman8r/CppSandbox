@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #include "Sandbox.hpp"
-#include "DemoSettings.hpp"
+#include "Settings.hpp"
 
 #include <MemeAudio/Audio.hpp>
 #include <MemeCore/Debug.hpp>
