@@ -22,7 +22,7 @@ namespace ml
 	{
 		for (auto pair : m_cmp)
 		{
-			if (ITrackable * tr = static_cast<ITrackable *>(pair.second))
+			if (static_cast<ITrackable *>(pair.second))
 			{
 				delete (ITrackable *)pair.second;
 			}

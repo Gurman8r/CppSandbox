@@ -9,8 +9,11 @@ namespace DEMO
 	class Sandbox final : public ml::EditorApplication
 	{
 	public:
-		Sandbox();
-		~Sandbox();
+		Sandbox()
+			: EditorApplication()
+		{
+		};
+		~Sandbox() {};
 
 	public:
 		void onEvent(const ml::IEvent * value) override;

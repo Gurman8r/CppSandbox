@@ -40,15 +40,6 @@ namespace DEMO
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	Sandbox::Sandbox()
-		: EditorApplication()
-	{
-	}
-
-	Sandbox::~Sandbox() {}
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
 	void Sandbox::onEvent(const ml::IEvent * value)
 	{
 		ml::EditorApplication::onEvent(value);
@@ -333,7 +324,6 @@ namespace DEMO
 			if (const ml::Cmp_Transform * tf = ent.getComponent<ml::Cmp_Transform>())
 			{
 				ml::cout << std::left
-					<< ml::endl
 					<< std::setw(10) << "Position: " << tf->position
 					<< std::setw(10) << "Rotation: " << tf->rotation
 					<< std::setw(10) << "Scale: " << tf->scale
@@ -349,7 +339,6 @@ namespace DEMO
 			if (const ml::Cmp_Rigidbody * rb = ent.getComponent<ml::Cmp_Rigidbody>())
 			{
 				ml::cout << std::left
-					<< ml::endl
 					<< std::setw(10) << "Velocity: " << rb->velocity
 					<< std::setw(10) << "Acceleration: " << rb->acceleration
 					<< ml::endl;
@@ -801,6 +790,7 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (false)
 			{
+				// FIXME: doesn't work somehow
 				const ml::Hierarchy::ObjectMap & objects = ML_Hierarchy.objects();
 				for (auto it = objects.begin(); 
 					(it != objects.end()); 

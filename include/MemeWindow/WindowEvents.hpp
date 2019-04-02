@@ -137,7 +137,6 @@ namespace ml
 
 		inline bool getAction(int32_t a)	const { return (action == a); }
 		inline bool getKey(int32_t b)		const { return (button == b); }
-
 		inline bool getKeyDown(int32_t b)	const { return getKey(b) && getAction(ML_PRESS); }
 		inline bool getKeyRepeat(int32_t b) const { return getKey(b) && getAction(ML_REPEAT); }
 		inline bool getKeyUp(int32_t b)		const { return getKey(b) && getAction(ML_RELEASE); }
