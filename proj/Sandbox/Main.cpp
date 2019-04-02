@@ -70,6 +70,7 @@ int32_t main(int32_t argc, char ** argv)
 		// Delete Program
 		delete program;
 
+		// Goodbye!
 		return EXIT_SUCCESS;
 	}
 	else
@@ -78,5 +79,15 @@ int32_t main(int32_t argc, char ** argv)
 			|| ml::Debug::pause(EXIT_FAILURE);
 	}
 }
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+// WinMain
+# if defined(ML_SYSTEM_WINDOWS)
+int32_t __stdcall WinMain(void*, void*, char**, void*)
+{
+	return main(__argc, __argv);
+}
+# endif // ML_SYSTEM_WINDOWS
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

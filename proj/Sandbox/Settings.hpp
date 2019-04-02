@@ -6,18 +6,18 @@
 #include <MemeWindow/Window.hpp>
 
 // Singleton to store program properties/settings for Sandbox (INIReader)
-#define SETTINGS DEMO::DemoSettings::getInstance()
+#define SETTINGS DEMO::Settings::getInstance()
 
 namespace DEMO
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	class DemoSettings final
+	class Settings final
 		: public ml::ITrackable
 		, public ml::IReadable
-		, public ml::ISingleton<DemoSettings>
+		, public ml::ISingleton<Settings>
 	{	
-		friend class ml::ISingleton<DemoSettings>;
+		friend class ml::ISingleton<Settings>;
 
 	public:
 		ml::String	configINI;		// path to config INI
