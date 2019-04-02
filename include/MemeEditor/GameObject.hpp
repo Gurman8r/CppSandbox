@@ -5,12 +5,14 @@
 #include <MemeCore/File.hpp>
 #include <MemeGraphics/Shader.hpp>
 #include <MemeGraphics/Model.hpp>
+#include <MemeGraphics/RenderFlags.hpp>
 
 namespace ml
 {
 	class ML_EDITOR_API GameObject
 		: public ITrackable
 		, public ITransformable
+		, public IDrawable
 	{
 	public:
 		enum : uint32_t { NameSize = 64U };
@@ -23,10 +25,14 @@ namespace ml
 		~GameObject();
 
 	public:
+		void draw(RenderTarget & target, RenderBatch batch) const override;
+
+	public:
 		bool		dirty;
 		Name		name;
 		vec4f		color;
 		UniformSet	uniforms;
+		RenderFlags	renderFlags;
 
 		const Model *	model;
 		const Shader *	shader;

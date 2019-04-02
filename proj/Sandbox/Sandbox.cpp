@@ -363,7 +363,7 @@ namespace DEMO
 			);
 		}
 
-		// Window Icon
+		// Set Window Icon
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (ml::Image * icon = ML_Res.images.get("icon"))
 		{
@@ -405,7 +405,7 @@ namespace DEMO
 		// Setup Game Objects
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
-			// Light
+			// Setup Light
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::GameObject * obj = ML_Hierarchy.newObject("light"))
 			{
@@ -417,12 +417,16 @@ namespace DEMO
 					ml::Uniform("Vert.model",		ml::Uniform::Mat4,	&obj->transform().matrix()),
 					ml::Uniform("Frag.mainCol",		ml::Uniform::Vec4,	&uni.lightCol),
 				};
+				obj->renderFlags = ml::RenderFlags({
+					{ ml::GL::CullFace, true },
+					{ ml::GL::DepthTest, true },
+				});
 				obj->transform()
 					.setPosition(uni.lightPos)
 					.rotate(0.0f, ml::vec3f::Forward);
 			}
 
-			// Borg
+			// Setup Borg
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::GameObject * obj = ML_Hierarchy.newObject("borg"))
 			{
@@ -435,12 +439,16 @@ namespace DEMO
 					ml::Uniform("Frag.mainCol",		ml::Uniform::Vec4,	&ml::Color::White),
 					ml::Uniform("Frag.mainTex",		ml::Uniform::Tex2D,	ML_Res.textures.get("borg")),
 				};
+				obj->renderFlags = ml::RenderFlags({
+					{ ml::GL::CullFace, true },
+					{ ml::GL::DepthTest, true },
+				});
 				obj->transform()
 					.translate({ +5.0f, 0.0f, 0.0f })
 					.scale(1.0f);
 			}
 
-			// Sanic
+			// Setup Sanic
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::GameObject * obj = ML_Hierarchy.newObject("sanic"))
 			{
@@ -453,12 +461,16 @@ namespace DEMO
 					ml::Uniform("Frag.mainCol",		ml::Uniform::Vec4,	&ml::Color::White),
 					ml::Uniform("Frag.mainTex",		ml::Uniform::Tex2D,	ML_Res.textures.get("sanic")),
 				};
+				obj->renderFlags = ml::RenderFlags({
+					{ ml::GL::CullFace, false },
+					{ ml::GL::DepthTest, true },
+				});
 				obj->transform()
 					.translate({ -5.0f, 0.0f, 0.0f })
 					.scale(1.0f);
 			}
 
-			// Cube
+			// Setup Cube
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::GameObject * obj = ML_Hierarchy.newObject("cube"))
 			{
@@ -471,12 +483,16 @@ namespace DEMO
 					ml::Uniform("Frag.mainCol",		ml::Uniform::Vec4,	&ml::Color::White),
 					ml::Uniform("Frag.mainTex",		ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm")),
 				};
+				obj->renderFlags = ml::RenderFlags({
+					{ ml::GL::CullFace, true },
+					{ ml::GL::DepthTest, true },
+				});
 				obj->transform()
 					.translate({ 0.0f, 0.0f, -5.0f })
 					.scale(0.5f);
 			}
 
-			// Earth
+			// Setup Earth
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::GameObject * obj = ML_Hierarchy.newObject("earth"))
 			{
@@ -495,12 +511,16 @@ namespace DEMO
 					ml::Uniform("Frag.specular",	ml::Uniform::Float, &uni.specular),
 					ml::Uniform("Frag.shininess",	ml::Uniform::Int,	&uni.shininess),
 				};
+				obj->renderFlags = ml::RenderFlags({
+					{ ml::GL::CullFace, true },
+					{ ml::GL::DepthTest, true },
+				});
 				obj->transform()
 					.translate({ 0.0f, 0.0f, 0.0f })
 					.scale(1.0f);
 			}
 
-			// Moon
+			// Setup Moon
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::GameObject * obj = ML_Hierarchy.newObject("moon"))
 			{
@@ -519,12 +539,16 @@ namespace DEMO
 					ml::Uniform("Frag.specular",	ml::Uniform::Float, &uni.specular),
 					ml::Uniform("Frag.shininess",	ml::Uniform::Int,	&uni.shininess),
 				};
+				obj->renderFlags = ml::RenderFlags({
+					{ ml::GL::CullFace, true },
+					{ ml::GL::DepthTest, true },
+				});
 				obj->transform()
 					.translate({ 0.0f, 0.0f, 5.0f })
 					.scale(0.5f);
 			}
 
-			// Ground
+			// Setup Ground
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::GameObject * obj = ML_Hierarchy.newObject("ground"))
 			{
@@ -537,6 +561,10 @@ namespace DEMO
 					ml::Uniform("Frag.mainCol",		ml::Uniform::Vec4,	&ml::Color::White),
 					ml::Uniform("Frag.mainTex",		ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm")),
 				};
+				obj->renderFlags = ml::RenderFlags({
+					{ ml::GL::CullFace, true },
+					{ ml::GL::DepthTest, true },
+				});
 				obj->transform()
 					.translate({ 0.0f, -2.5f, 0.0f })
 					.scale({ 12.5, 0.25f, 12.5 });
@@ -769,100 +797,67 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 			this->clear(uni.clearColor);
 
+			// Draw Objects
 			/* * * * * * * * * * * * * * * * * * * * */
-
-			ML_GL.enable(ml::GL::CullFace);
-			ML_GL.enable(ml::GL::DepthTest);
-
-			/* * * * * * * * * * * * * * * * * * * * */
-
-			// Light
-			/* * * * * * * * * * * * * * * * * * * * */
-			if (const ml::GameObject * obj = ML_Hierarchy.getObject("light"))
+			if (false)
 			{
-				if (obj->model && obj->shader)
+				const ml::Hierarchy::ObjectMap & objects = ML_Hierarchy.objects();
+				for (auto it = objects.begin(); 
+					(it != objects.end()); 
+					(it++))
 				{
-					obj->shader->applyUniforms(obj->uniforms);
-					obj->shader->bind();
-					this->draw(*obj->model);
+					this->draw(*it->second);
 				}
 			}
-
-			// Borg
-			/* * * * * * * * * * * * * * * * * * * * */
-			if (const ml::GameObject * obj = ML_Hierarchy.getObject("borg"))
+			else
 			{
-				if (obj->model && obj->shader)
+				// Draw Light
+				/* * * * * * * * * * * * * * * * * * * * */
+				if (const ml::GameObject * obj = ML_Hierarchy.getObject("light"))
 				{
-					obj->shader->applyUniforms(obj->uniforms);
-					obj->shader->bind();
-					this->draw(*obj->model);
+					this->draw(*obj);
 				}
-			}
 
-			// Earth
-			/* * * * * * * * * * * * * * * * * * * * */
-			if (const ml::GameObject * obj = ML_Hierarchy.getObject("earth"))
-			{
-				if (obj->model && obj->shader)
+				// Draw Borg
+				/* * * * * * * * * * * * * * * * * * * * */
+				if (const ml::GameObject * obj = ML_Hierarchy.getObject("borg"))
 				{
-					obj->shader->applyUniforms(obj->uniforms);
-					obj->shader->bind();
-					this->draw(*obj->model);
+					this->draw(*obj);
 				}
-			}
 
-			// Moon
-			/* * * * * * * * * * * * * * * * * * * * */
-			if (const ml::GameObject * obj = ML_Hierarchy.getObject("moon"))
-			{
-				if (obj->model && obj->shader)
+				// Draw Earth
+				/* * * * * * * * * * * * * * * * * * * * */
+				if (const ml::GameObject * obj = ML_Hierarchy.getObject("earth"))
 				{
-					obj->shader->applyUniforms(obj->uniforms);
-					obj->shader->bind();
-					this->draw(*obj->model);
+					this->draw(*obj);
 				}
-			}
 
-			// Cube
-			/* * * * * * * * * * * * * * * * * * * * */
-			if (const ml::GameObject * obj = ML_Hierarchy.getObject("cube"))
-			{
-				if (obj->model && obj->shader)
+				// Draw Moon
+				/* * * * * * * * * * * * * * * * * * * * */
+				if (const ml::GameObject * obj = ML_Hierarchy.getObject("moon"))
 				{
-					obj->shader->applyUniforms(obj->uniforms);
-					obj->shader->bind();
-					this->draw(*obj->model);
+					this->draw(*obj);
 				}
-			}
 
-			// Ground
-			/* * * * * * * * * * * * * * * * * * * * */
-			if (const ml::GameObject * obj = ML_Hierarchy.getObject("ground"))
-			{
-				if (obj->model && obj->shader)
+				// Draw Cube
+				/* * * * * * * * * * * * * * * * * * * * */
+				if (const ml::GameObject * obj = ML_Hierarchy.getObject("cube"))
 				{
-					obj->shader->applyUniforms(obj->uniforms);
-					obj->shader->bind();
-					this->draw(*obj->model);
+					this->draw(*obj);
 				}
-			}
 
-			/* * * * * * * * * * * * * * * * * * * * */
-
-			ML_GL.disable(ml::GL::CullFace);
-
-			/* * * * * * * * * * * * * * * * * * * * */
-
-			// Sanic
-			/* * * * * * * * * * * * * * * * * * * * */
-			if (const ml::GameObject * obj = ML_Hierarchy.getObject("sanic"))
-			{
-				if (obj->model && obj->shader)
+				// Draw Ground
+				/* * * * * * * * * * * * * * * * * * * * */
+				if (const ml::GameObject * obj = ML_Hierarchy.getObject("ground"))
 				{
-					obj->shader->applyUniforms(obj->uniforms);
-					obj->shader->bind();
-					this->draw(*obj->model);
+					this->draw(*obj);
+				}
+
+				// Draw Sanic
+				/* * * * * * * * * * * * * * * * * * * * */
+				if (const ml::GameObject * obj = ML_Hierarchy.getObject("sanic"))
+				{
+					this->draw(*obj);
 				}
 			}
 
@@ -872,7 +867,7 @@ namespace DEMO
 
 			/* * * * * * * * * * * * * * * * * * * * */
 
-			// Geometry
+			// Draw Geometry
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (const ml::Shader * shader = ML_Res.shaders.get("geometry"))
 			{
@@ -888,7 +883,7 @@ namespace DEMO
 				ML_GL.drawArrays(ml::GL::Points, 0, 4);
 			}
 
-			// Sprites
+			// Draw Sprites
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (const ml::Shader * shader = ML_Res.shaders.get("sprites"))
 			{
@@ -911,7 +906,7 @@ namespace DEMO
 				}
 			}
 
-			// Text
+			// Draw Text
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (const ml::Shader * shader = ML_Res.shaders.get("text"))
 			{

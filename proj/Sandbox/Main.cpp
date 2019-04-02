@@ -84,7 +84,7 @@ int32_t main(int32_t argc, char ** argv)
 
 // WinMain
 # if defined(ML_SYSTEM_WINDOWS)
-int32_t __stdcall WinMain(void*, void*, char**, void*)
+int32_t __stdcall WinMain(void*, void*, char**, int32_t)
 {
 	return main(__argc, __argv);
 }

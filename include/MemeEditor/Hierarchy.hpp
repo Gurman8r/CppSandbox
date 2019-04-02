@@ -41,7 +41,6 @@ namespace ml
 		inline const ObjectMap & objects() const { return m_objects; }
 		inline ObjectMap & objects() { return m_objects; }
 
-
 	private:
 		struct Funcs;
 

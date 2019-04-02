@@ -1,6 +1,6 @@
 #include <MemeEditor/GameObject.hpp>
 #include <MemeEditor/ImGui.hpp>
-#include <MemeGraphics/Color.hpp>
+#include <MemeGraphics/RenderTarget.hpp>
 
 namespace ml
 {
@@ -27,4 +27,15 @@ namespace ml
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
+
+	void GameObject::draw(RenderTarget & target, RenderBatch batch) const
+	{
+		if (model && shader)
+		{
+			renderFlags.apply();
+			shader->applyUniforms(uniforms);
+			shader->bind();
+			target.draw(*model);
+		}
+	}
 }
