@@ -31,9 +31,6 @@
     <Filter Include="Header Files\STD">
       <UniqueIdentifier>{485dbe29-b211-4cd5-b452-6ce26ff91e9e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\FS">
-      <UniqueIdentifier>{19c6709d-12eb-4198-abd3-e13c31d5dbcd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\FS">
       <UniqueIdentifier>{12815f7e-eacb-44de-84de-fa49c5edeb6d}</UniqueIdentifier>
     </Filter>
@@ -51,6 +48,9 @@
     </Filter>
     <Filter Include="Header Files\Time">
       <UniqueIdentifier>{fd5b1dcc-ce58-48cc-ac44-0685e0b911dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\FS">
+      <UniqueIdentifier>{19c6709d-12eb-4198-abd3-e13c31d5dbcd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

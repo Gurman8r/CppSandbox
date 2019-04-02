@@ -16,11 +16,10 @@ namespace ml
 	{
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		const VAO * vao;
-		const VBO * vbo;
-		
-		const Shader * shader;
-		UniformSet * uniforms;
+		const VAO		* vao;
+		const VBO		* vbo;
+		const Shader	* shader;
+		UniformSet		* uniforms;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 

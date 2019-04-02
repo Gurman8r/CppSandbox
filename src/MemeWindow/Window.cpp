@@ -154,7 +154,7 @@ namespace ml
 
 	void Window::onEvent(const IEvent * value)
 	{
-		switch (value->eventID())
+		switch (*value)
 		{
 		case WindowEvent::EV_Char:
 			if (auto ev = value->as<CharEvent>())

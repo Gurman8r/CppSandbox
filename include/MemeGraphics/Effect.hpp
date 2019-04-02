@@ -35,14 +35,13 @@ namespace ml
 	public:
 		inline const Model	 * model()	 const { return m_model;   }
 		inline const Shader  * shader()  const { return m_shader;  }
-		inline const Texture * texture() const { return m_texture; }
-		
-		inline Texture * texture() { return m_texture; }
+		inline const Texture & texture() const { return m_texture; }
+		inline		 Texture & texture()	   { return m_texture; }
 
 	private:
 		const Model *	m_model;
 		const Shader *	m_shader;
-		Texture *		m_texture;
+		Texture			m_texture;
 		vec2i			m_size;
 		uint32_t		m_attachment;
 		FBO				m_fbo;

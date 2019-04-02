@@ -29,7 +29,7 @@ namespace ml
 	{
 		Application::onEvent(value);
 
-		switch (value->eventID())
+		switch (*value)
 		{
 		case EditorEvent::EV_Gui: 
 			ImGui_ML_NewFrame();

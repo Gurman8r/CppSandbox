@@ -16,7 +16,7 @@ namespace ml
 				<< FMT()
 				<< ml::endl
 				<< FG::Red
-				<< "An internal MemeLib call failed in " << fileName << "(" << line << ")"
+				<< "A fatal internal call failed in " << fileName << "(" << line << ")"
 				<< FG::Yellow << ml::endl << "Code: "
 				<< FG::White << ml::endl << "\t" << getInstance().m_errorCode
 				<< FG::Yellow << ml::endl << "Expression: "

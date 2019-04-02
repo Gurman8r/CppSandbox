@@ -30,7 +30,7 @@ int32_t main(int32_t argc, char ** argv)
 		// Enter
 		mlCheck(ML_EventSystem.fireEvent(ml::EnterEvent(argc, argv)));
 
-		// Load
+		// Load Resources
 		ML_EventSystem.fireEvent(ml::LoadEvent());
 
 		// Start
@@ -44,16 +44,16 @@ int32_t main(int32_t argc, char ** argv)
 			timer.start();
 			app->pollEvents();
 			{
-				// "Fixed" Update
+				// Update Physics
 				ML_EventSystem.fireEvent(ml::FixedUpdateEvent(elapsed));
 
-				// Update
+				// Update Logic
 				ML_EventSystem.fireEvent(ml::UpdateEvent(elapsed));
 
-				// Draw
+				// Draw Scene
 				ML_EventSystem.fireEvent(ml::DrawEvent(elapsed));
 
-				// Gui
+				// Draw Gui
 				ML_EventSystem.fireEvent(ml::GuiEvent(elapsed));
 			}
 			// End Frame
@@ -62,7 +62,7 @@ int32_t main(int32_t argc, char ** argv)
 
 		} while (app->isOpen());
 
-		// Unload
+		// Unload Resources
 		ML_EventSystem.fireEvent(ml::UnloadEvent());
 
 		// Exit

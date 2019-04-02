@@ -39,13 +39,13 @@
 namespace DEMO
 {
 	/* * * * * * * * * * * * * * * * * * * * */
-
+	
 	void Sandbox::onEvent(const ml::IEvent * value)
 	{
 		// Handle base events
 		ml::EditorApplication::onEvent(value);
 
-		switch (value->eventID())
+		switch (*value)
 		{
 			// Window Size Changed
 			/* * * * * * * * * * * * * * * * * * * * */
@@ -262,15 +262,6 @@ namespace DEMO
 	{
 		ml::Debug::log("Loading...");
 
-		// Setup Batches
-		/* * * * * * * * * * * * * * * * * * * * */
-		m_batchVAO.create(ml::GL::Triangles).bind();
-		m_batchVBO.create(ml::GL::DynamicDraw).bind();
-		m_batchVBO.bufferData(NULL, ml::RectQuad::Size);
-		ml::BufferLayout::Default.bind();
-		m_batchVBO.unbind();
-		m_batchVAO.unbind();
-
 		// Load Default Meshes
 		/* * * * * * * * * * * * * * * * * * * * */
 		ML_Res.meshes.load("default_triangle")->loadFromMemory(
@@ -310,6 +301,15 @@ namespace DEMO
 		{
 			ml::Debug::logError("Failed Loading Manifest");
 		}
+
+		// Setup Batches
+		/* * * * * * * * * * * * * * * * * * * * */
+		m_batchVAO.create(ml::GL::Triangles).bind();
+		m_batchVBO.create(ml::GL::DynamicDraw).bind();
+		m_batchVBO.bufferData(NULL, ml::RectQuad::Size);
+		ml::BufferLayout::Default.bind();
+		m_batchVBO.unbind();
+		m_batchVAO.unbind();
 	}
 
 	void Sandbox::onStart(const ml::StartEvent * ev)
@@ -747,17 +747,45 @@ namespace DEMO
 
 	void Sandbox::onDraw(const ml::DrawEvent * ev)
 	{
+		// Update Resolutions
 		/* * * * * * * * * * * * * * * * * * * * */
+		ml::vec2i resolution;
+		if ((resolution = this->getFramebufferSize()) != ml::vec2i::Zero)
+		{
+			// Resize Effects
+			bool changed = false;
+			for (auto pair : ML_Res.effects)
+			{
+				if (pair.second->resize(resolution))
+				{
+					changed = true;
+				}
+			}
+			if (changed)
+			{
+				// Orthographic
+				uni.ortho.orthographic(
+					{ ml::vec2f::Zero, (ml::vec2f)resolution },
+					{ SETTINGS.orthoNear, SETTINGS.orthoFar }
+				);
 
+				// Perspective
+				uni.persp.perspective(
+					SETTINGS.fieldOfView, ((float)resolution[0] / (float)resolution[1]),
+					SETTINGS.perspNear, SETTINGS.perspFar
+				);
+			}
+		}
+
+		// Backup States
+		/* * * * * * * * * * * * * * * * * * * * */
 		//this->states().backup();
-
-		/* * * * * * * * * * * * * * * * * * * * */
 
 		// Draw Scene
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (ml::Effect * scene = ML_Res.effects.get(ML_FBO_MAIN))
 		{
-			// Bind FBO
+			// Bind Scene
 			/* * * * * * * * * * * * * * * * * * * * */
 			scene->bind();
 
@@ -862,13 +890,11 @@ namespace DEMO
 						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4),
 						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D),
 					};
-
 					static ml::RenderBatch batch(
 						&m_batchVAO,
 						&m_batchVBO,
 						shader,
 						&uniforms);
-
 					for (auto pair : ML_Res.sprites)
 					{
 						this->draw((*pair.second), batch);
@@ -885,13 +911,11 @@ namespace DEMO
 						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4),
 						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D),
 					};
-
 					static ml::RenderBatch batch(
 						&m_batchVAO,
 						&m_batchVBO,
 						shader,
 						&uniforms);
-
 					for (auto it = m_text.begin(); it != m_text.end(); it++)
 					{
 						this->draw(it->second, batch);
@@ -899,39 +923,32 @@ namespace DEMO
 				}
 			}
 
-			// Unbind FBO
+			// Unbind Scene
 			/* * * * * * * * * * * * * * * * * * * * */
 			scene->unbind();
 		}
 
-		// Draw Effects
+		// Draw Post Processing
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (ml::Effect * post = ML_Res.effects.get(ML_FBO_POST))
 		{
-			post->bind();
-			
 			if (ml::Effect * scene = ML_Res.effects.get(ML_FBO_MAIN))
 			{
 				if (const ml::Shader * shader = scene->shader())
 				{
-					static ml::UniformSet uniforms = {
-						ml::Uniform("Effect.mode", ml::Uniform::Int, &uni.effectMode)
-					};
-
-					shader->applyUniforms(uniforms);
-
+					post->bind();
+					shader->applyUniforms({
+						ml::Uniform("Effect.mode", ml::Uniform::Int, &uni.effectMode),
+					});
 					this->draw(*scene);
+					post->unbind();
 				}
 			}
-
-			post->unbind();
 		}
 
+		// Restore States
 		/* * * * * * * * * * * * * * * * * * * * */
-
 		//this->states().restore();
-
-		/* * * * * * * * * * * * * * * * * * * * */
 	}
 
 	void Sandbox::onGui(const ml::GuiEvent * ev)
@@ -1071,9 +1088,10 @@ namespace DEMO
 
 	bool Sandbox::ML_Dockspace_draw(bool * p_open)
 	{
-		// Draw/Setup Dockspace
+		// Draw Dockspace
 		return ML_Dockspace.drawFun(p_open, [&]()
 		{
+			// Dockspace Builder
 			if (uint32_t root = ML_Dockspace.beginBuilder(ImGuiDockNodeFlags_None))
 			{
 				uint32_t left = ML_Dockspace.splitNode(root, ImGuiDir_Left, 0.29f, &root);
@@ -1105,44 +1123,12 @@ namespace DEMO
 
 	bool Sandbox::ML_SceneView_draw(bool * p_open)
 	{
-		// Update/Draw Scene View
+		// Draw Scene View
 		return ML_SceneView.drawFun(p_open, [&]()
 		{
-			// Update Resolution
-			/* * * * * * * * * * * * * * * * * * * * */
-			const ml::vec2i resolution = this->getFramebufferSize();
-			if (resolution != ml::vec2i::Zero)
+			if (ml::Effect * post = ML_Res.effects.get(ML_FBO_POST))
 			{
-				// Resize Effects
-				bool changed = false;
-				for (auto pair : ML_Res.effects)
-				{
-					if (pair.second->resize(resolution))
-					{
-						changed = true;
-					}
-				}
-				if (changed)
-				{
-					// Orthographic
-					uni.ortho.orthographic(
-						{ ml::vec2f::Zero, (ml::vec2f)resolution },
-						{ SETTINGS.orthoNear, SETTINGS.orthoFar }
-					);
-
-					// Perspective
-					uni.persp.perspective(
-						SETTINGS.fieldOfView, ((float)resolution[0] / (float)resolution[1]),
-						SETTINGS.perspNear, SETTINGS.perspFar
-					);
-				}
-			}
-
-			// Draw Scene
-			/* * * * * * * * * * * * * * * * * * * * */
-			if (ml::Effect * e = ML_Res.effects.get(ML_FBO_POST))
-			{
-				ML_SceneView.updateTexture(e->texture());
+				ML_SceneView.updateTexture(&post->texture());
 			}
 		});
 	}

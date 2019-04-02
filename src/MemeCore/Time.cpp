@@ -7,14 +7,14 @@ namespace ml
 		m_mainTimer.start();
 	}
 
-	const Timer & Time::mainTimer() const
+	const Timer & Time::timer() const
 	{
 		return m_mainTimer;
 	}
 
 	const Duration & Time::elapsed() const
 	{
-		return mainTimer().elapsed();
+		return timer().elapsed();
 	}
 
 	float Time::sin() const

@@ -12,7 +12,7 @@ namespace ml
 		, m_rbo()
 		, m_model(NULL)
 		, m_shader(NULL)
-		, m_texture(NULL)
+		, m_texture()
 		, m_size(0)
 		, m_attachment(GL::ColorAttachment0)
 	{
@@ -21,12 +21,6 @@ namespace ml
 	Effect::~Effect()
 	{
 		cleanup();
-
-		if (m_texture)
-		{
-			delete m_texture;
-			m_texture = NULL;
-		}
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -72,14 +66,13 @@ namespace ml
 					}
 
 					// Setup Texture
-					m_texture = m_texture ? m_texture : new Texture();
-					m_texture->cleanup();
-					m_texture->create(size);
+					m_texture.cleanup();
+					m_texture.create(size);
 					m_fbo.setTexture(
 						(m_attachment),
 						(*m_texture),
-						(m_texture->target()),
-						(m_texture->level())
+						(m_texture.target()),
+						(m_texture.level())
 					);
 
 				}
@@ -130,7 +123,7 @@ namespace ml
 	{
 		if (m_model && m_shader && m_texture)
 		{
-			m_shader->setUniform("Frag.mainTex", (*m_texture));
+			m_shader->setUniform("Frag.mainTex", m_texture);
 
 			m_shader->bind();
 

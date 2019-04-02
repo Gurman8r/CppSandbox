@@ -25,7 +25,7 @@ namespace ml
 	
 	void Client::onEvent(const IEvent * value)
 	{
-		switch (value->eventID())
+		switch (*value)
 		{
 		case NetworkEvent::EV_ClientRecievePacket:
 			if (auto ev = value->as<ClientRecievePacketEvent>())

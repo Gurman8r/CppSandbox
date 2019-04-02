@@ -36,7 +36,7 @@ namespace ml
 
 	void Browser::onEvent(const IEvent * value)
 	{
-		switch (value->eventID())
+		switch (*value)
 		{
 		case CoreEvent::EV_FileSystem:
 			if (const auto * ev = value->as<FileSystemEvent>())

@@ -6,19 +6,23 @@
 
 namespace DEMO
 {
-	class Sandbox final : public ml::EditorApplication
+	class Sandbox final
+		: public ml::EditorApplication
 	{
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		Sandbox()
 			: EditorApplication()
 		{
 		};
 		~Sandbox() {};
 
-	public:
+	public: // Events
+		/* * * * * * * * * * * * * * * * * * * * */
 		void onEvent(const ml::IEvent * value) override;
 
-	private:
+	private: // Callbacks
+		/* * * * * * * * * * * * * * * * * * * * */
 		void onEnter		(const ml::EnterEvent		* ev) override;
 		void onLoad			(const ml::LoadEvent		* ev) override;
 		void onStart		(const ml::StartEvent		* ev) override;
@@ -29,24 +33,24 @@ namespace DEMO
 		void onUnload		(const ml::UnloadEvent		* ev) override;
 		void onExit			(const ml::ExitEvent		* ev) override;
 
-	private:
+	private: // Editor GUI
+		/* * * * * * * * * * * * * * * * * * * * */
 		bool ML_MainMenuBar_draw();
 		bool ML_Dockspace_draw(bool * p_open);
 		bool ML_SceneView_draw(bool * p_open);
 		bool ML_Inspector_draw(bool * p_open);
 
-	private:
-		// Batches
+	private: // Sandbox
 		/* * * * * * * * * * * * * * * * * * * * */
+
+		// Batches
 		ml::VAO m_batchVAO;
 		ml::VBO m_batchVBO;
 
 		// Text
-		/* * * * * * * * * * * * * * * * * * * * */
 		ml::HashMap<ml::String, ml::Text> m_text;
 
 		// Uniform Values
-		/* * * * * * * * * * * * * * * * * * * * */
 		struct DemoUniforms
 		{
 			// Time

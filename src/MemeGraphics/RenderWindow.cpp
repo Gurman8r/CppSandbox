@@ -64,7 +64,7 @@ namespace ml
 	{
 		Window::onEvent(value);
 
-		switch (value->eventID())
+		switch (*value)
 		{
 		case WindowEvent::EV_WindowSize:
 			if(auto ev = value->as<WindowSizeEvent>())

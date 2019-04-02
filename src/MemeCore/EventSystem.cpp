@@ -51,7 +51,7 @@ namespace ml
 
 	void EventSystem::dispatchAllEvents(const IEvent * ev)
 	{
-		Pair<iterator, iterator> found = m_listeners.equal_range(ev->eventID());
+		Pair<iterator, iterator> found = m_listeners.equal_range((int32_t)(*ev));
 
 		for (iterator it = found.first; it != found.second; ++it)
 		{

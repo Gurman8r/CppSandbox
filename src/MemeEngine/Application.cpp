@@ -26,7 +26,7 @@ namespace ml
 	{
 		RenderWindow::onEvent(value);
 
-		switch (value->eventID())
+		switch (*value)
 		{
 		case EngineEvent::EV_Enter:			return onEnter		(value->as<EnterEvent>());
 		case EngineEvent::EV_Load:			return onLoad		(value->as<LoadEvent>());

@@ -68,7 +68,7 @@ namespace ml
 		}
 		virtual ~IEvent() {}
 
-		inline const int32_t & eventID() const { return m_eventID; }
+		inline operator int32_t() const { return m_eventID; }
 
 	public:
 		template <class T>
