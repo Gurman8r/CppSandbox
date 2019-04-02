@@ -5,7 +5,7 @@
 #include <MemeCore/FileSystem.hpp>
 #include <MemeWindow/Window.hpp>
 
-// Singleton to store program properties/settings for Demo (INIReader)
+// Singleton to store program properties/settings for Sandbox (INIReader)
 #define SETTINGS DEMO::DemoSettings::getInstance()
 
 namespace DEMO

@@ -20,9 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{2E2EE9AD-06FF-4A73-B09D-EC42CB1A9923}</ProjectGuid>
-    <RootNamespace>Demo</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <ProjectGuid>{6317A619-AA33-4F50-B4CF-D45A12FECB3A}</ProjectGuid>
+    <RootNamespace>Sandbox</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -89,21 +89,6 @@
     <IntDir>$(SolutionDir)tmp\$(ProjectName)\$(Configuration)\$(PlatformTarget)\</IntDir>
     <TargetName>$(ProjectName)_$(Configuration)_$(PlatformTarget)</TargetName>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)thirdparty\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </ClCompile>
-    <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\;$(SolutionDir)thirdparty\lib\$(Configuration)\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>MemeAudio_$(Configuration)_$(PlatformTarget).lib;MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeEditor_$(Configuration)_$(PlatformTarget).lib;MemeEngine_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;MemeNet_$(Configuration)_$(PlatformTarget).lib;MemePhysics_$(Configuration)_$(PlatformTarget).lib;MemeScript_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <SubSystem>NotSet</SubSystem>
-    </Link>
-  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -116,7 +101,20 @@
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\;$(SolutionDir)thirdparty\lib\$(Configuration)\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>MemeAudio_$(Configuration)_$(PlatformTarget).lib;MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeEditor_$(Configuration)_$(PlatformTarget).lib;MemeEngine_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;MemeNet_$(Configuration)_$(PlatformTarget).lib;MemePhysics_$(Configuration)_$(PlatformTarget).lib;MemeScript_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <SubSystem>NotSet</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)thirdparty\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\;$(SolutionDir)thirdparty\lib\$(Configuration)\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>MemeAudio_$(Configuration)_$(PlatformTarget).lib;MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeEditor_$(Configuration)_$(PlatformTarget).lib;MemeEngine_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;MemeNet_$(Configuration)_$(PlatformTarget).lib;MemePhysics_$(Configuration)_$(PlatformTarget).lib;MemeScript_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -135,7 +133,6 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\;$(SolutionDir)thirdparty\lib\$(Configuration)\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>MemeAudio_$(Configuration)_$(PlatformTarget).lib;MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeEditor_$(Configuration)_$(PlatformTarget).lib;MemeEngine_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;MemeNet_$(Configuration)_$(PlatformTarget).lib;MemePhysics_$(Configuration)_$(PlatformTarget).lib;MemeScript_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <SubSystem>NotSet</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -154,42 +151,29 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\;$(SolutionDir)thirdparty\lib\$(Configuration)\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>MemeAudio_$(Configuration)_$(PlatformTarget).lib;MemeCore_$(Configuration)_$(PlatformTarget).lib;MemeEditor_$(Configuration)_$(PlatformTarget).lib;MemeEngine_$(Configuration)_$(PlatformTarget).lib;MemeGraphics_$(Configuration)_$(PlatformTarget).lib;MemeNet_$(Configuration)_$(PlatformTarget).lib;MemePhysics_$(Configuration)_$(PlatformTarget).lib;MemeScript_$(Configuration)_$(PlatformTarget).lib;MemeWindow_$(Configuration)_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <SubSystem>NotSet</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="..\..\assets\meshes\cow.mesh" />
-    <None Include="..\..\assets\meshes\cube.mesh" />
-    <None Include="..\..\assets\meshes\pumpkin.mesh" />
-    <None Include="..\..\assets\meshes\sphere32x24.mesh" />
-    <None Include="..\..\assets\meshes\sphere8x6.mesh" />
-    <None Include="..\..\assets\meshes\teapot.mesh" />
-    <None Include="..\..\assets\meshes\teddy.mesh" />
-    <None Include="..\..\assets\scripts\fib.meme" />
-    <None Include="..\..\assets\scripts\files.meme" />
-    <None Include="..\..\assets\scripts\fizzbuzz.meme" />
-    <None Include="..\..\assets\scripts\hello.meme" />
-    <None Include="..\..\assets\scripts\core.meme" />
-    <None Include="..\..\assets\scripts\stub.meme" />
-    <None Include="..\..\assets\scripts\test.meme" />
-    <None Include="..\..\assets\scripts\tool.meme" />
-    <None Include="..\..\assets\shaders\common\Geom.Curve.shader" />
-    <None Include="..\..\assets\shaders\common\Frag.shader" />
-    <None Include="..\..\assets\shaders\common\Frag.Draw.shader" />
-    <None Include="..\..\assets\shaders\common\Time.shader" />
-    <None Include="..\..\assets\shaders\common\Vert.MVP.shader" />
-    <None Include="..\..\assets\shaders\common\Vert.shader" />
-    <None Include="..\..\assets\shaders\framebuffer.shader" />
-    <None Include="..\..\assets\shaders\geometry.shader" />
-    <None Include="..\..\assets\shaders\basic.shader" />
-    <None Include="..\..\assets\shaders\lighting.shader" />
-    <None Include="..\..\assets\shaders\normal3D.shader" />
-    <None Include="..\..\assets\shaders\skybox.shader" />
-    <None Include="..\..\assets\shaders\solid.shader" />
-    <None Include="..\..\assets\shaders\sprites.shader" />
-    <None Include="..\..\assets\shaders\text.shader" />
-    <None Include="..\..\assets\skyboxes\sunset.skybox" />
-    <None Include="..\..\ML_Config.ini" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Sandbox.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DemoSettings.hpp" />
+    <ClInclude Include="Sandbox.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\assets\data\effects.txt" />
+    <Text Include="..\..\assets\data\fonts.txt" />
+    <Text Include="..\..\assets\data\images.txt" />
+    <Text Include="..\..\assets\data\meshes.txt" />
+    <Text Include="..\..\assets\data\models.txt" />
+    <Text Include="..\..\assets\data\plugins.txt" />
+    <Text Include="..\..\assets\data\scripts.txt" />
+    <Text Include="..\..\assets\data\shaders.txt" />
+    <Text Include="..\..\assets\data\skyboxes.txt" />
+    <Text Include="..\..\assets\data\sprites.txt" />
+    <Text Include="..\..\assets\data\textures.txt" />
+    <Text Include="..\..\assets\manifest.txt" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="..\..\assets\fonts\clacon.ttf" />
@@ -228,28 +212,38 @@
     <Image Include="..\..\assets\textures\stone\stone_nm.png" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Demo.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="WinMain.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Demo.hpp" />
-    <ClInclude Include="DemoSettings.hpp" />
-    <ClInclude Include="Testing.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\..\assets\data\effects.txt" />
-    <Text Include="..\..\assets\data\fonts.txt" />
-    <Text Include="..\..\assets\data\images.txt" />
-    <Text Include="..\..\assets\data\meshes.txt" />
-    <Text Include="..\..\assets\data\models.txt" />
-    <Text Include="..\..\assets\data\plugins.txt" />
-    <Text Include="..\..\assets\data\scripts.txt" />
-    <Text Include="..\..\assets\data\shaders.txt" />
-    <Text Include="..\..\assets\data\skyboxes.txt" />
-    <Text Include="..\..\assets\data\sprites.txt" />
-    <Text Include="..\..\assets\data\textures.txt" />
-    <Text Include="..\..\assets\manifest.txt" />
+    <None Include="..\..\assets\meshes\cow.mesh" />
+    <None Include="..\..\assets\meshes\cube.mesh" />
+    <None Include="..\..\assets\meshes\pumpkin.mesh" />
+    <None Include="..\..\assets\meshes\sphere32x24.mesh" />
+    <None Include="..\..\assets\meshes\sphere8x6.mesh" />
+    <None Include="..\..\assets\meshes\teapot.mesh" />
+    <None Include="..\..\assets\meshes\teddy.mesh" />
+    <None Include="..\..\assets\scripts\core.meme" />
+    <None Include="..\..\assets\scripts\fib.meme" />
+    <None Include="..\..\assets\scripts\files.meme" />
+    <None Include="..\..\assets\scripts\fizzbuzz.meme" />
+    <None Include="..\..\assets\scripts\hello.meme" />
+    <None Include="..\..\assets\scripts\stub.meme" />
+    <None Include="..\..\assets\scripts\test.meme" />
+    <None Include="..\..\assets\scripts\tool.meme" />
+    <None Include="..\..\assets\shaders\basic.shader" />
+    <None Include="..\..\assets\shaders\common\Frag.Draw.shader" />
+    <None Include="..\..\assets\shaders\common\Frag.shader" />
+    <None Include="..\..\assets\shaders\common\Geom.Curve.shader" />
+    <None Include="..\..\assets\shaders\common\Time.shader" />
+    <None Include="..\..\assets\shaders\common\Vert.MVP.shader" />
+    <None Include="..\..\assets\shaders\common\Vert.shader" />
+    <None Include="..\..\assets\shaders\framebuffer.shader" />
+    <None Include="..\..\assets\shaders\geometry.shader" />
+    <None Include="..\..\assets\shaders\lighting.shader" />
+    <None Include="..\..\assets\shaders\normal3D.shader" />
+    <None Include="..\..\assets\shaders\skybox.shader" />
+    <None Include="..\..\assets\shaders\solid.shader" />
+    <None Include="..\..\assets\shaders\sprites.shader" />
+    <None Include="..\..\assets\shaders\text.shader" />
+    <None Include="..\..\assets\skyboxes\sunset.skybox" />
+    <None Include="..\..\ML_Config.ini" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

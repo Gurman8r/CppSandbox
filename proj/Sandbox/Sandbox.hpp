@@ -1,16 +1,16 @@
-#ifndef _DEMO_HPP_
-#define _DEMO_HPP_
+#ifndef _SANDBOX_HPP_
+#define _SANDBOX_HPP_
 
 #include <MemeEditor/EditorApplication.hpp>
 #include <MemeGraphics/Text.hpp>
 
 namespace DEMO
 {
-	class Demo final : public ml::EditorApplication
+	class Sandbox final : public ml::EditorApplication
 	{
 	public:
-		Demo();
-		~Demo();
+		Sandbox();
+		~Sandbox();
 
 	public:
 		void onEvent(const ml::IEvent * value) override;
@@ -87,4 +87,4 @@ namespace DEMO
 	};
 }
 
-#endif // !_DEMO_HPP_
+#endif // !_SANDBOX_HPP_

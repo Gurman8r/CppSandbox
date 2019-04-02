@@ -1,6 +1,6 @@
 @echo off
 
-set TargetName=Demo
+set TargetName=Sandbox
 set Configuration=Debug
 set PlatformTarget=x86
 

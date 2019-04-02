@@ -1,7 +1,8 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#include "Demo.hpp"
+#include "Sandbox.hpp"
 #include "DemoSettings.hpp"
+
 #include <MemeAudio/Audio.hpp>
 #include <MemeCore/Debug.hpp>
 #include <MemeCore/Dispatcher.hpp>
@@ -39,16 +40,16 @@ namespace DEMO
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	Demo::Demo()
+	Sandbox::Sandbox()
 		: EditorApplication()
 	{
 	}
 
-	Demo::~Demo() {}
+	Sandbox::~Sandbox() {}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void Demo::onEvent(const ml::IEvent * value)
+	void Sandbox::onEvent(const ml::IEvent * value)
 	{
 		ml::EditorApplication::onEvent(value);
 
@@ -126,7 +127,7 @@ namespace DEMO
 				if (ev->getKeyDown(ml::KeyCode::I) && (ev->mod_ctrl && ev->mod_alt))
 					ML_Editor.show_inspector = true;
 
-				// ImGui Demo (Ctrl+H)
+				// ImGui Sandbox (Ctrl+H)
 				if (ev->getKeyDown(ml::KeyCode::H) && (ev->mod_ctrl))
 					ML_Editor.show_imgui_demo = true;
 			}
@@ -136,7 +137,7 @@ namespace DEMO
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void Demo::onEnter(const ml::EnterEvent * ev)
+	void Sandbox::onEnter(const ml::EnterEvent * ev)
 	{
 		ml::Debug::log("Entering...");
 
@@ -169,11 +170,11 @@ namespace DEMO
 			ML_Parser.showToks(SETTINGS.flagShowToks);
 			ML_Parser.showTree(SETTINGS.flagShowTree);
 			ML_Parser.showItoP(SETTINGS.flagShowItoP);
-			
+
 			// Install Commands
 			ml::EngineCommands::install();
 			ml::EditorCommands::install();
-			
+
 			// Run Boot Script
 			ml::Script scr;
 			if (scr.loadFromFile(ML_FileSystem.pathTo(SETTINGS.bootScript)))
@@ -207,8 +208,8 @@ namespace DEMO
 				if (!ImGui_ML_Init("#version 410", this, true, SETTINGS.imguiINI.c_str()))
 				{
 					return ml::Debug::setError(
-						ML_FAILURE, 
-						"System Failure", 
+						ML_FAILURE,
+						"System Failure",
 						"Failed Loading ImGui");
 				}
 			}
@@ -218,8 +219,8 @@ namespace DEMO
 			if (!(ML_AL.init()))
 			{
 				return ml::Debug::setError(
-					ML_FAILURE, 
-					"System Failure", 
+					ML_FAILURE,
+					"System Failure",
 					"Failed Loading OpenAL");
 			}
 
@@ -253,13 +254,13 @@ namespace DEMO
 		else
 		{
 			return ml::Debug::setError(
-				ML_FAILURE, 
-				"System Failure", 
+				ML_FAILURE,
+				"System Failure",
 				"Failed Loading Window.");
 		}
 	}
 
-	void Demo::onLoad(const ml::LoadEvent * ev)
+	void Sandbox::onLoad(const ml::LoadEvent * ev)
 	{
 		ml::Debug::log("Loading...");
 
@@ -313,7 +314,7 @@ namespace DEMO
 		}
 	}
 
-	void Demo::onStart(const ml::StartEvent * ev)
+	void Sandbox::onStart(const ml::StartEvent * ev)
 	{
 		ml::Debug::log("Starting...");
 
@@ -349,11 +350,11 @@ namespace DEMO
 			{
 				ml::cout << std::left
 					<< ml::endl
-					<< std::setw(10)<< "Velocity: " << rb->velocity
-					<< std::setw(10)<< "Acceleration: " << rb->acceleration
+					<< std::setw(10) << "Velocity: " << rb->velocity
+					<< std::setw(10) << "Acceleration: " << rb->acceleration
 					<< ml::endl;
 			}
-			
+
 			// Movement System
 			ML_ECS.movement.Update(
 				0.0f,
@@ -474,7 +475,7 @@ namespace DEMO
 					.translate({ 0.0f, 0.0f, -5.0f })
 					.scale(0.5f);
 			}
-			
+
 			// Earth
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::GameObject * obj = ML_Hierarchy.newObject("earth"))
@@ -498,7 +499,7 @@ namespace DEMO
 					.translate({ 0.0f, 0.0f, 0.0f })
 					.scale(1.0f);
 			}
-			
+
 			// Moon
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::GameObject * obj = ML_Hierarchy.newObject("moon"))
@@ -543,7 +544,7 @@ namespace DEMO
 		}
 	}
 
-	void Demo::onFixedUpdate(const ml::FixedUpdateEvent * ev)
+	void Sandbox::onFixedUpdate(const ml::FixedUpdateEvent * ev)
 	{
 		// Update Physics
 		for (ml::Particle & p : ML_Physics.particles)
@@ -552,7 +553,7 @@ namespace DEMO
 		}
 	}
 
-	void Demo::onUpdate(const ml::UpdateEvent * ev)
+	void Sandbox::onUpdate(const ml::UpdateEvent * ev)
 	{
 		// Update Title
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -643,15 +644,15 @@ namespace DEMO
 				.setPosition({ 32, 128 })
 				.setString("there is no need\nto be upset");
 
-			const ml::Font *font		= ML_Res.fonts.get("consolas");
-			uint32_t		fontSize	= 18;
-			float			hOff		= 0.0f;
-			float			vOff		= 4.0f;
-			ml::vec2f		offset		= { hOff, -(vOff + (float)fontSize) };
-			ml::vec2f		origin		= { (float)fontSize, (float)this->height() - 48 };
-			ml::vec2f		linePos		= 0;
-			size_t			lineNum		= 0;
-			auto			nextLine	= [&]() { return linePos = (origin + (offset * (float)(lineNum++))); };
+			const ml::Font *font = ML_Res.fonts.get("consolas");
+			uint32_t		fontSize = 18;
+			float			hOff = 0.0f;
+			float			vOff = 4.0f;
+			ml::vec2f		offset = { hOff, -(vOff + (float)fontSize) };
+			ml::vec2f		origin = { (float)fontSize, (float)this->height() - 48 };
+			ml::vec2f		linePos = 0;
+			size_t			lineNum = 0;
+			auto			nextLine = [&]() { return linePos = (origin + (offset * (float)(lineNum++))); };
 
 			m_text["gl_version"]
 				.setFont(font)
@@ -725,9 +726,9 @@ namespace DEMO
 					this->getSize()));
 
 			// Update All Text
-			for (auto pair : m_text) 
+			for (auto pair : m_text)
 			{
-				pair.second.update(); 
+				pair.second.update();
 			}
 		}
 
@@ -752,7 +753,7 @@ namespace DEMO
 		}
 	}
 
-	void Demo::onDraw(const ml::DrawEvent * ev)
+	void Sandbox::onDraw(const ml::DrawEvent * ev)
 	{
 		//states().backup();
 
@@ -899,9 +900,9 @@ namespace DEMO
 				};
 
 				static ml::RenderBatch batch(
-					&m_batchVAO, 
-					&m_batchVBO, 
-					shader, 
+					&m_batchVAO,
+					&m_batchVBO,
+					shader,
 					&uniforms);
 
 				for (auto pair : ML_Res.sprites)
@@ -923,7 +924,7 @@ namespace DEMO
 
 				static ml::RenderBatch batch(
 					&m_batchVAO,
-					&m_batchVBO, 
+					&m_batchVBO,
 					shader,
 					&uniforms);
 
@@ -962,38 +963,38 @@ namespace DEMO
 		}
 	}
 
-	void Demo::onGui(const ml::GuiEvent * ev)
+	void Sandbox::onGui(const ml::GuiEvent * ev)
 	{
 		// Main Menu Bar
-		if (ML_Editor.show_mainMenuBar)		{ ML_MainMenuBar_draw(); }
+		if (ML_Editor.show_mainMenuBar) { ML_MainMenuBar_draw(); }
 		// Dockspace
-		if (ML_Editor.show_dockspace)		{ ML_Dockspace_draw(&ML_Editor.show_dockspace); }
+		if (ML_Editor.show_dockspace) { ML_Dockspace_draw(&ML_Editor.show_dockspace); }
 		// ImGui Builtin
-		if (ML_Editor.show_imgui_demo)		{ ml::ImGui_Builtin::showDemo(&ML_Editor.show_imgui_demo); }
-		if (ML_Editor.show_imgui_metrics)	{ ml::ImGui_Builtin::showMetrics(&ML_Editor.show_imgui_metrics); }
-		if (ML_Editor.show_imgui_style)		{ ml::ImGui_Builtin::showStyle(&ML_Editor.show_imgui_style); }
-		if (ML_Editor.show_imgui_about)		{ ml::ImGui_Builtin::showAbout(&ML_Editor.show_imgui_about); }
+		if (ML_Editor.show_imgui_demo) { ml::ImGui_Builtin::showDemo(&ML_Editor.show_imgui_demo); }
+		if (ML_Editor.show_imgui_metrics) { ml::ImGui_Builtin::showMetrics(&ML_Editor.show_imgui_metrics); }
+		if (ML_Editor.show_imgui_style) { ml::ImGui_Builtin::showStyle(&ML_Editor.show_imgui_style); }
+		if (ML_Editor.show_imgui_about) { ml::ImGui_Builtin::showAbout(&ML_Editor.show_imgui_about); }
 		// Editors
-		if (ML_Editor.show_network)			{ ML_NetworkHUD.draw(&ML_Editor.show_network); }
-		if (ML_Editor.show_profiler)		{ ML_Profiler.draw(&ML_Editor.show_profiler); }
-		if (ML_Editor.show_hierarchy)		{ ML_Hierarchy.draw(&ML_Editor.show_hierarchy); }
-		if (ML_Editor.show_resources)		{ ML_ResourceHUD.draw(&ML_Editor.show_resources); }
-		if (ML_Editor.show_browser)			{ ML_Browser.draw(&ML_Editor.show_browser); }
-		if (ML_Editor.show_terminal)		{ ML_Terminal.draw(&ML_Editor.show_terminal); }
-		if (ML_Editor.show_textEditor)		{ ML_TextEditor.draw(&ML_Editor.show_textEditor); }
-		if (ML_Editor.show_builder)			{ ML_Builder.draw(&ML_Editor.show_builder); }
-		if (ML_Editor.show_sceneView)		{ ML_SceneView_draw(&ML_Editor.show_sceneView); }
-		if (ML_Editor.show_inspector)		{ ML_Inspector_draw(&ML_Editor.show_inspector); }
+		if (ML_Editor.show_network) { ML_NetworkHUD.draw(&ML_Editor.show_network); }
+		if (ML_Editor.show_profiler) { ML_Profiler.draw(&ML_Editor.show_profiler); }
+		if (ML_Editor.show_hierarchy) { ML_Hierarchy.draw(&ML_Editor.show_hierarchy); }
+		if (ML_Editor.show_resources) { ML_ResourceHUD.draw(&ML_Editor.show_resources); }
+		if (ML_Editor.show_browser) { ML_Browser.draw(&ML_Editor.show_browser); }
+		if (ML_Editor.show_terminal) { ML_Terminal.draw(&ML_Editor.show_terminal); }
+		if (ML_Editor.show_textEditor) { ML_TextEditor.draw(&ML_Editor.show_textEditor); }
+		if (ML_Editor.show_builder) { ML_Builder.draw(&ML_Editor.show_builder); }
+		if (ML_Editor.show_sceneView) { ML_SceneView_draw(&ML_Editor.show_sceneView); }
+		if (ML_Editor.show_inspector) { ML_Inspector_draw(&ML_Editor.show_inspector); }
 	}
 
-	void Demo::onUnload(const ml::UnloadEvent * ev)
+	void Sandbox::onUnload(const ml::UnloadEvent * ev)
 	{
 		ml::Debug::log("Unloading...");
 
 		ML_Res.cleanupAll();
 	}
 
-	void Demo::onExit(const ml::ExitEvent * ev)
+	void Sandbox::onExit(const ml::ExitEvent * ev)
 	{
 		ml::Debug::log("Exiting...");
 
@@ -1002,7 +1003,7 @@ namespace DEMO
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Demo::ML_MainMenuBar_draw()
+	bool Sandbox::ML_MainMenuBar_draw()
 	{
 		return ML_MainMenuBar.drawFun([&]()
 		{
@@ -1010,16 +1011,16 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ImGui::BeginMenu("File"))
 			{
-				if (ImGui::MenuItem("New", "Ctrl+N", false))
+				if (ImGui::MenuItem("New", "Ctrl+N"))
 				{
 					ML_EventSystem.fireEvent(ml::File_New_Event());
 				}
-				if (ImGui::MenuItem("Open", "Ctrl+O", false))
+				if (ImGui::MenuItem("Open", "Ctrl+O"))
 				{
 					ML_EventSystem.fireEvent(ml::File_Open_Event());
 				}
 				ImGui::Separator();
-				if (ImGui::MenuItem("Save", "Ctrl+S", false))
+				if (ImGui::MenuItem("Save", "Ctrl+S"))
 				{
 					ML_EventSystem.fireEvent(ml::File_Save_Event(false));
 				}
@@ -1028,7 +1029,7 @@ namespace DEMO
 					ML_EventSystem.fireEvent(ml::File_Save_Event(true));
 				}
 				ImGui::Separator();
-				if (ImGui::MenuItem("Quit", "Alt+F4", false))
+				if (ImGui::MenuItem("Quit", "Alt+F4"))
 				{
 					ML_EventSystem.fireEvent(ml::File_Close_Event());
 				}
@@ -1038,24 +1039,24 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ImGui::BeginMenu("Edit"))
 			{
-				if (ImGui::MenuItem("Undo", "Ctrl+Z", false))
+				if (ImGui::MenuItem("Undo", "Ctrl+Z"))
 				{
 					ML_EventSystem.fireEvent(ml::Edit_Undo_Event());
 				}
-				if (ImGui::MenuItem("Redo", "Ctrl+Y", false))
+				if (ImGui::MenuItem("Redo", "Ctrl+Y"))
 				{
 					ML_EventSystem.fireEvent(ml::Edit_Redo_Event());
 				}
 				ImGui::Separator();
-				if (ImGui::MenuItem("Cut", "Ctrl+X", false))
+				if (ImGui::MenuItem("Cut", "Ctrl+X"))
 				{
 					ML_EventSystem.fireEvent(ml::Edit_Cut_Event());
 				}
-				if (ImGui::MenuItem("Copy", "Ctrl+C", false))
+				if (ImGui::MenuItem("Copy", "Ctrl+C"))
 				{
 					ML_EventSystem.fireEvent(ml::Edit_Copy_Event());
 				}
-				if (ImGui::MenuItem("Paste", "Ctrl+V", false))
+				if (ImGui::MenuItem("Paste", "Ctrl+V"))
 				{
 					ML_EventSystem.fireEvent(ml::Edit_Paste_Event());
 				}
@@ -1085,7 +1086,7 @@ namespace DEMO
 					ML_OS.execute("open", SETTINGS.projectURL);
 				}
 				ImGui::Separator();
-				ImGui::MenuItem("ImGui Demo", "Ctrl+H", &ML_Editor.show_imgui_demo);
+				ImGui::MenuItem("ImGui Sandbox", "Ctrl+H", &ML_Editor.show_imgui_demo);
 				ImGui::MenuItem("ImGui Metrics", NULL, &ML_Editor.show_imgui_metrics);
 				ImGui::MenuItem("ImGui Style Editor", NULL, &ML_Editor.show_imgui_style);
 				ImGui::MenuItem("About Dear ImGui", NULL, &ML_Editor.show_imgui_about);
@@ -1094,40 +1095,40 @@ namespace DEMO
 		});
 	}
 
-	bool Demo::ML_Dockspace_draw(bool * p_open)
+	bool Sandbox::ML_Dockspace_draw(bool * p_open)
 	{
-		return ML_Dockspace.drawFun(p_open, [&]() 
+		return ML_Dockspace.drawFun(p_open, [&]()
 		{
 			if (uint32_t root = ML_Dockspace.beginBuilder(ImGuiDockNodeFlags_None))
 			{
-				uint32_t left	= ML_Dockspace.splitNode(root, ImGuiDir_Left, 0.29f, &root);
+				uint32_t left = ML_Dockspace.splitNode(root, ImGuiDir_Left, 0.29f, &root);
 				uint32_t center = ML_Dockspace.splitNode(root, ImGuiDir_Right, 0.5f, &root);
-				uint32_t right	= ML_Dockspace.splitNode(center, ImGuiDir_Right, 0.21f, &center);
+				uint32_t right = ML_Dockspace.splitNode(center, ImGuiDir_Right, 0.21f, &center);
 
-				const uint32_t left_U	= ML_Dockspace.splitNode(left, ImGuiDir_Up, 0.65f, &left);
-				const uint32_t left_D	= ML_Dockspace.splitNode(left, ImGuiDir_Down, 0.35f, &left);
+				const uint32_t left_U = ML_Dockspace.splitNode(left, ImGuiDir_Up, 0.65f, &left);
+				const uint32_t left_D = ML_Dockspace.splitNode(left, ImGuiDir_Down, 0.35f, &left);
 				const uint32_t center_U = ML_Dockspace.splitNode(center, ImGuiDir_Up, 0.65f, &center);
 				const uint32_t center_D = ML_Dockspace.splitNode(center, ImGuiDir_Down, 0.35f, &center);
-				const uint32_t right_U	= ML_Dockspace.splitNode(right, ImGuiDir_Up, 0.65f, &right);
-				const uint32_t right_D	= ML_Dockspace.splitNode(right, ImGuiDir_Down, 0.35f, &right);
+				const uint32_t right_U = ML_Dockspace.splitNode(right, ImGuiDir_Up, 0.65f, &right);
+				const uint32_t right_D = ML_Dockspace.splitNode(right, ImGuiDir_Down, 0.35f, &right);
 
-				ML_Dockspace.dockWindow(ML_Profiler.title(),	left_U);
-				ML_Dockspace.dockWindow(ML_NetworkHUD.title(),	left_U);
-				ML_Dockspace.dockWindow(ML_Browser.title(),		left_U);
-				ML_Dockspace.dockWindow(ML_Hierarchy.title(),	left_U);
+				ML_Dockspace.dockWindow(ML_Profiler.title(), left_U);
+				ML_Dockspace.dockWindow(ML_NetworkHUD.title(), left_U);
+				ML_Dockspace.dockWindow(ML_Browser.title(), left_U);
+				ML_Dockspace.dockWindow(ML_Hierarchy.title(), left_U);
 				ML_Dockspace.dockWindow(ML_ResourceHUD.title(), left_U);
-				ML_Dockspace.dockWindow(ML_Terminal.title(),	left_D);
-				ML_Dockspace.dockWindow(ML_SceneView.title(),	center_U);
-				ML_Dockspace.dockWindow(ML_Builder.title(),		center_D);
-				ML_Dockspace.dockWindow(ML_TextEditor.title(),	center_D);
-				ML_Dockspace.dockWindow(ML_Inspector.title(),	right_U);
+				ML_Dockspace.dockWindow(ML_Terminal.title(), left_D);
+				ML_Dockspace.dockWindow(ML_SceneView.title(), center_U);
+				ML_Dockspace.dockWindow(ML_Builder.title(), center_D);
+				ML_Dockspace.dockWindow(ML_TextEditor.title(), center_D);
+				ML_Dockspace.dockWindow(ML_Inspector.title(), right_U);
 
 				ML_Dockspace.endBuilder(root);
 			};
 		});
 	}
 
-	bool Demo::ML_SceneView_draw(bool * p_open)
+	bool Sandbox::ML_SceneView_draw(bool * p_open)
 	{
 		return ML_SceneView.drawFun(p_open, [&]()
 		{
@@ -1170,7 +1171,7 @@ namespace DEMO
 		});
 	}
 
-	bool Demo::ML_Inspector_draw(bool * p_open)
+	bool Sandbox::ML_Inspector_draw(bool * p_open)
 	{
 		return ML_Inspector.drawFun(p_open, [&]()
 		{

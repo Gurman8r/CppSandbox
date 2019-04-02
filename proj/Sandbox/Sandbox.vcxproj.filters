@@ -1,0 +1,314 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Resource Files\data">
+      <UniqueIdentifier>{f43e9dcd-b422-4951-86fc-3ad8d755ed79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\fonts">
+      <UniqueIdentifier>{0c7fb572-5aef-4635-a857-c5d7ff3f2b9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\images">
+      <UniqueIdentifier>{fa00fa6d-272e-49a6-9eee-2085df83e4ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\meshes">
+      <UniqueIdentifier>{33a02c4c-8d00-43ac-a340-0eb92331c146}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\scripts">
+      <UniqueIdentifier>{5e6cef00-0b23-48e3-ac63-c024bf4c28fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\shaders">
+      <UniqueIdentifier>{061fcf36-8ee0-4f01-b83a-44f5139307a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\shaders\common">
+      <UniqueIdentifier>{d75af556-1b75-4d86-8a86-cf0b21a5c289}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\skyboxes">
+      <UniqueIdentifier>{e3c0b6c3-7d3d-45d6-b049-c40f85eeca1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\textures">
+      <UniqueIdentifier>{cf9f9303-4731-4c8c-977b-89f7747deec2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\textures\bg">
+      <UniqueIdentifier>{74b2d7ae-d9cc-49e8-8aef-5bae0f3aaef3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\textures\bg\sunset">
+      <UniqueIdentifier>{b3bf599e-506d-4b11-b2e2-d6dab9ed1ade}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\textures\mars">
+      <UniqueIdentifier>{db17ef2b-3ea6-4b3d-b46e-8da028ea4b2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\textures\moon">
+      <UniqueIdentifier>{8ee04fca-8060-4dbe-b7eb-c685c5330704}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\textures\stone">
+      <UniqueIdentifier>{16474758-0390-4d67-962a-7d3521330194}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\textures\earth">
+      <UniqueIdentifier>{3fe6c404-f6f0-4fc5-8bdc-2ce7efe8944d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sandbox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Sandbox.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DemoSettings.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\assets\data\effects.txt">
+      <Filter>Resource Files\data</Filter>
+    </Text>
+    <Text Include="..\..\assets\data\fonts.txt">
+      <Filter>Resource Files\data</Filter>
+    </Text>
+    <Text Include="..\..\assets\data\images.txt">
+      <Filter>Resource Files\data</Filter>
+    </Text>
+    <Text Include="..\..\assets\data\meshes.txt">
+      <Filter>Resource Files\data</Filter>
+    </Text>
+    <Text Include="..\..\assets\data\models.txt">
+      <Filter>Resource Files\data</Filter>
+    </Text>
+    <Text Include="..\..\assets\data\plugins.txt">
+      <Filter>Resource Files\data</Filter>
+    </Text>
+    <Text Include="..\..\assets\data\scripts.txt">
+      <Filter>Resource Files\data</Filter>
+    </Text>
+    <Text Include="..\..\assets\data\shaders.txt">
+      <Filter>Resource Files\data</Filter>
+    </Text>
+    <Text Include="..\..\assets\data\skyboxes.txt">
+      <Filter>Resource Files\data</Filter>
+    </Text>
+    <Text Include="..\..\assets\data\sprites.txt">
+      <Filter>Resource Files\data</Filter>
+    </Text>
+    <Text Include="..\..\assets\data\textures.txt">
+      <Filter>Resource Files\data</Filter>
+    </Text>
+    <Text Include="..\..\assets\manifest.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="..\..\assets\fonts\clacon.ttf">
+      <Filter>Resource Files\fonts</Filter>
+    </Font>
+    <Font Include="..\..\assets\fonts\consolas.ttf">
+      <Filter>Resource Files\fonts</Filter>
+    </Font>
+    <Font Include="..\..\assets\fonts\lucida_console.ttf">
+      <Filter>Resource Files\fonts</Filter>
+    </Font>
+    <Font Include="..\..\assets\fonts\minecraft.ttf">
+      <Filter>Resource Files\fonts</Filter>
+    </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\assets\images\borg.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="..\..\assets\images\dean.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="..\..\assets\images\grass.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="..\..\assets\images\neutrino.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="..\..\assets\images\Sanic.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="..\..\assets\images\test_sky.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\bg\bg_clouds.png">
+      <Filter>Resource Files\textures\bg</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\bg\sky_clouds.png">
+      <Filter>Resource Files\textures\bg</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\bg\sky_water.png">
+      <Filter>Resource Files\textures\bg</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\bg\sunset\sunset_back.png">
+      <Filter>Resource Files\textures\bg\sunset</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\bg\sunset\sunset_down.png">
+      <Filter>Resource Files\textures\bg\sunset</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\bg\sunset\sunset_front.png">
+      <Filter>Resource Files\textures\bg\sunset</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\bg\sunset\sunset_left.png">
+      <Filter>Resource Files\textures\bg\sunset</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\bg\sunset\sunset_right.png">
+      <Filter>Resource Files\textures\bg\sunset</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\bg\sunset\sunset_up.png">
+      <Filter>Resource Files\textures\bg\sunset</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\mars\mars_dm_2k.png">
+      <Filter>Resource Files\textures\mars</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\mars\mars_nm_2k.png">
+      <Filter>Resource Files\textures\mars</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\moon\moon_dm_2k.png">
+      <Filter>Resource Files\textures\moon</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\moon\moon_nm_2k.png">
+      <Filter>Resource Files\textures\moon</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\stone\stone_dm.png">
+      <Filter>Resource Files\textures\stone</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\stone\stone_hm.png">
+      <Filter>Resource Files\textures\stone</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\stone\stone_nm.png">
+      <Filter>Resource Files\textures\stone</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\earth\earth_cm.png">
+      <Filter>Resource Files\textures\earth</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\earth\earth_dm.png">
+      <Filter>Resource Files\textures\earth</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\earth\earth_hm.png">
+      <Filter>Resource Files\textures\earth</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\earth\earth_lm.png">
+      <Filter>Resource Files\textures\earth</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\earth\earth_nm.png">
+      <Filter>Resource Files\textures\earth</Filter>
+    </Image>
+    <Image Include="..\..\assets\textures\earth\earth_sm.png">
+      <Filter>Resource Files\textures\earth</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\assets\meshes\cow.mesh">
+      <Filter>Resource Files\meshes</Filter>
+    </None>
+    <None Include="..\..\assets\meshes\cube.mesh">
+      <Filter>Resource Files\meshes</Filter>
+    </None>
+    <None Include="..\..\assets\meshes\pumpkin.mesh">
+      <Filter>Resource Files\meshes</Filter>
+    </None>
+    <None Include="..\..\assets\meshes\sphere32x24.mesh">
+      <Filter>Resource Files\meshes</Filter>
+    </None>
+    <None Include="..\..\assets\meshes\sphere8x6.mesh">
+      <Filter>Resource Files\meshes</Filter>
+    </None>
+    <None Include="..\..\assets\meshes\teapot.mesh">
+      <Filter>Resource Files\meshes</Filter>
+    </None>
+    <None Include="..\..\assets\meshes\teddy.mesh">
+      <Filter>Resource Files\meshes</Filter>
+    </None>
+    <None Include="..\..\assets\scripts\fib.meme">
+      <Filter>Resource Files\scripts</Filter>
+    </None>
+    <None Include="..\..\assets\scripts\files.meme">
+      <Filter>Resource Files\scripts</Filter>
+    </None>
+    <None Include="..\..\assets\scripts\fizzbuzz.meme">
+      <Filter>Resource Files\scripts</Filter>
+    </None>
+    <None Include="..\..\assets\scripts\hello.meme">
+      <Filter>Resource Files\scripts</Filter>
+    </None>
+    <None Include="..\..\assets\scripts\core.meme">
+      <Filter>Resource Files\scripts</Filter>
+    </None>
+    <None Include="..\..\assets\scripts\stub.meme">
+      <Filter>Resource Files\scripts</Filter>
+    </None>
+    <None Include="..\..\assets\scripts\test.meme">
+      <Filter>Resource Files\scripts</Filter>
+    </None>
+    <None Include="..\..\assets\scripts\tool.meme">
+      <Filter>Resource Files\scripts</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\framebuffer.shader">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\geometry.shader">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\basic.shader">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\lighting.shader">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\normal3D.shader">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\skybox.shader">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\solid.shader">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\sprites.shader">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\text.shader">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\common\Geom.Curve.shader">
+      <Filter>Resource Files\shaders\common</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\common\Frag.shader">
+      <Filter>Resource Files\shaders\common</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\common\Frag.Draw.shader">
+      <Filter>Resource Files\shaders\common</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\common\Time.shader">
+      <Filter>Resource Files\shaders\common</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\common\Vert.MVP.shader">
+      <Filter>Resource Files\shaders\common</Filter>
+    </None>
+    <None Include="..\..\assets\shaders\common\Vert.shader">
+      <Filter>Resource Files\shaders\common</Filter>
+    </None>
+    <None Include="..\..\assets\skyboxes\sunset.skybox">
+      <Filter>Resource Files\skyboxes</Filter>
+    </None>
+    <None Include="..\..\ML_Config.ini">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>

@@ -1,8 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#include "Demo.hpp"
+#include "Sandbox.hpp"
 #include "DemoSettings.hpp"
-#include "Testing.hpp"
 
 #include <MemeCore/Debug.hpp>
 #include <MemeCore/EventSystem.hpp>
@@ -25,7 +24,7 @@ int32_t main(int32_t argc, char ** argv)
 	}
 
 	// Create Program
-	if (auto program = static_cast<ml::Window *>(new DEMO::Demo()))
+	if (auto program = new DEMO::Sandbox())
 	{
 		// Enter
 		mlCheck(ML_EventSystem.fireEvent(ml::EnterEvent(argc, argv)));

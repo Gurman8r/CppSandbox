@@ -1,6 +1,6 @@
 @echo off
 
-set TargetName=Demo
+set TargetName=Sandbox
 set Configuration=Release
 set PlatformTarget=x86
 
