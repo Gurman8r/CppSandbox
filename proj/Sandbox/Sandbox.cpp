@@ -42,10 +42,13 @@ namespace DEMO
 
 	void Sandbox::onEvent(const ml::IEvent * value)
 	{
+		// Handle base events
 		ml::EditorApplication::onEvent(value);
 
 		switch (value->eventID())
 		{
+			// Window Size Changed
+			/* * * * * * * * * * * * * * * * * * * * */
 		case ml::WindowEvent::EV_FramebufferSize:
 			if (const auto * ev = value->as<ml::FramebufferSizeEvent>())
 			{
@@ -53,6 +56,8 @@ namespace DEMO
 			}
 			break;
 
+			// File -> Close ...
+			/* * * * * * * * * * * * * * * * * * * * */
 		case ml::EditorEvent::EV_File_Close:
 			if (const auto * ev = value->as<ml::File_Close_Event>())
 			{
@@ -60,6 +65,8 @@ namespace DEMO
 			}
 			break;
 
+			// File -> Open ...
+			/* * * * * * * * * * * * * * * * * * * * */
 		case ml::EditorEvent::EV_File_Open:
 			if (const auto * ev = value->as<ml::File_Open_Event>())
 			{
@@ -69,12 +76,12 @@ namespace DEMO
 				}
 			}
 			break;
-
+			
+			// Keyboard
+			/* * * * * * * * * * * * * * * * * * * * */
 		case ml::WindowEvent::EV_Key:
 			if (const auto * ev = value->as<ml::KeyEvent>())
 			{
-				/* * * * * * * * * * * * * * * * * * * * */
-
 				// Reload Shaders (Num1)
 				if (ev->getKeyDown(ml::KeyCode::Num1))
 				{
@@ -255,7 +262,7 @@ namespace DEMO
 	{
 		ml::Debug::log("Loading...");
 
-		// Batch
+		// Setup Batches
 		/* * * * * * * * * * * * * * * * * * * * */
 		m_batchVAO.create(ml::GL::Triangles).bind();
 		m_batchVBO.create(ml::GL::DynamicDraw).bind();
@@ -264,7 +271,7 @@ namespace DEMO
 		m_batchVBO.unbind();
 		m_batchVAO.unbind();
 
-		// Default Meshes
+		// Load Default Meshes
 		/* * * * * * * * * * * * * * * * * * * * */
 		ML_Res.meshes.load("default_triangle")->loadFromMemory(
 			ml::Shapes::Triangle::Vertices,
@@ -282,7 +289,7 @@ namespace DEMO
 			ml::Shapes::Sky::Vertices
 		);
 
-		// Default Models
+		// Load Default Models
 		/* * * * * * * * * * * * * * * * * * * * */
 		ML_Res.models.load("default_triangle")->loadFromMemory(
 			*ML_Res.meshes.get("default_triangle")
@@ -572,7 +579,20 @@ namespace DEMO
 
 	void Sandbox::onUpdate(const ml::UpdateEvent * ev)
 	{
-		// Update Title
+		// Poll Network
+		/* * * * * * * * * * * * * * * * * * * * */
+		{
+			if (SETTINGS.isServer)
+			{
+				ML_Server.poll();
+			}
+			else if (SETTINGS.isClient)
+			{
+				ML_Client.poll();
+			}
+		}
+
+		// Set Window Title
 		/* * * * * * * * * * * * * * * * * * * * */
 		this->setTitle(ml::String::Format("{0} | {1} | {2} | {3} ms/frame ({4} fps)",
 			SETTINGS.title,
@@ -742,27 +762,14 @@ namespace DEMO
 				.setString(ml::String("ww/wh: {0}").format(
 					this->getSize()));
 
-			// Update All Text
+			// Force Update All Text
 			for (auto pair : m_text)
 			{
 				pair.second.update();
 			}
 		}
 
-		// Update Network
-		/* * * * * * * * * * * * * * * * * * * * */
-		{
-			if (SETTINGS.isServer)
-			{
-				ML_Server.poll();
-			}
-			else if (SETTINGS.isClient)
-			{
-				ML_Client.poll();
-			}
-		}
-
-		// Update Uniforms
+		// Update Other Things
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
 			uni.deltaTime = ev->elapsed.delta();
@@ -772,13 +779,17 @@ namespace DEMO
 
 	void Sandbox::onDraw(const ml::DrawEvent * ev)
 	{
-		//states().backup();
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		//this->states().backup();
+
+		/* * * * * * * * * * * * * * * * * * * * */
 
 		// Draw Scene
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (ml::Effect * scene = ML_Res.effects.get(ML_FBO_MAIN))
 		{
-			// Bind
+			// Bind FBO
 			/* * * * * * * * * * * * * * * * * * * * */
 			scene->bind();
 
@@ -851,138 +862,147 @@ namespace DEMO
 				}
 			}
 
+			// Draw 2D
 			/* * * * * * * * * * * * * * * * * * * * */
-
-			ML_GL.disable(ml::GL::DepthTest);
-
-			/* * * * * * * * * * * * * * * * * * * * */
-
-			// Draw Geometry
-			/* * * * * * * * * * * * * * * * * * * * */
-			if (const ml::Shader * shader = ML_Res.shaders.get("geometry"))
 			{
-				static ml::UniformSet uniforms = {
-					ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&uni.lineColor),
-					ml::Uniform("Curve.mode",	ml::Uniform::Int,	&uni.lineMode),
-					ml::Uniform("Curve.delta",	ml::Uniform::Float, &uni.lineDelta),
-					ml::Uniform("Curve.size",	ml::Uniform::Float, &uni.lineSize),
-					ml::Uniform("Curve.samples",ml::Uniform::Int,	&uni.lineSamples),
-				};
-				shader->applyUniforms(uniforms);
-				shader->bind();
-				ML_GL.drawArrays(ml::GL::Points, 0, 4);
-			}
+				ML_GL.disable(ml::GL::CullFace);
+				ML_GL.disable(ml::GL::DepthTest);
 
-			// Draw Sprites
-			/* * * * * * * * * * * * * * * * * * * * */
-			if (const ml::Shader * shader = ML_Res.shaders.get("sprites"))
-			{
-				static ml::UniformSet uniforms =
+				// Draw Geometry
+				/* * * * * * * * * * * * * * * * * * * * */
+				if (const ml::Shader * shader = ML_Res.shaders.get("geometry"))
 				{
-					ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&uni.ortho.matrix()),
-					ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4),
-					ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D),
-				};
+					static ml::UniformSet uniforms = {
+						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&uni.lineColor),
+						ml::Uniform("Curve.mode",	ml::Uniform::Int,	&uni.lineMode),
+						ml::Uniform("Curve.delta",	ml::Uniform::Float, &uni.lineDelta),
+						ml::Uniform("Curve.size",	ml::Uniform::Float, &uni.lineSize),
+						ml::Uniform("Curve.samples",ml::Uniform::Int,	&uni.lineSamples),
+					};
+					shader->applyUniforms(uniforms);
+					shader->bind();
+					ML_GL.drawArrays(ml::GL::Points, 0, 4);
+				}
 
-				static ml::RenderBatch batch(
-					&m_batchVAO,
-					&m_batchVBO,
-					shader,
-					&uniforms);
-
-				for (auto pair : ML_Res.sprites)
+				// Draw Sprites
+				/* * * * * * * * * * * * * * * * * * * * */
+				if (const ml::Shader * shader = ML_Res.shaders.get("sprites"))
 				{
-					this->draw((*pair.second), batch);
+					static ml::UniformSet uniforms =
+					{
+						ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&uni.ortho.matrix()),
+						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4),
+						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D),
+					};
+
+					static ml::RenderBatch batch(
+						&m_batchVAO,
+						&m_batchVBO,
+						shader,
+						&uniforms);
+
+					for (auto pair : ML_Res.sprites)
+					{
+						this->draw((*pair.second), batch);
+					}
+				}
+
+				// Draw Text
+				/* * * * * * * * * * * * * * * * * * * * */
+				if (const ml::Shader * shader = ML_Res.shaders.get("text"))
+				{
+					static ml::UniformSet uniforms =
+					{
+						ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&uni.ortho.matrix()),
+						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4),
+						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D),
+					};
+
+					static ml::RenderBatch batch(
+						&m_batchVAO,
+						&m_batchVBO,
+						shader,
+						&uniforms);
+
+					for (auto it = m_text.begin(); it != m_text.end(); it++)
+					{
+						this->draw(it->second, batch);
+					}
 				}
 			}
 
-			// Draw Text
-			/* * * * * * * * * * * * * * * * * * * * */
-			if (const ml::Shader * shader = ML_Res.shaders.get("text"))
-			{
-				static ml::UniformSet uniforms =
-				{
-					ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&uni.ortho.matrix()),
-					ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4),
-					ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D),
-				};
-
-				static ml::RenderBatch batch(
-					&m_batchVAO,
-					&m_batchVBO,
-					shader,
-					&uniforms);
-
-				for (auto it = m_text.begin(); it != m_text.end(); it++)
-				{
-					this->draw(it->second, batch);
-				}
-			}
-
-			// Unbind
+			// Unbind FBO
 			/* * * * * * * * * * * * * * * * * * * * */
 			scene->unbind();
 		}
-
-		//states().restore();
 
 		// Draw Effects
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (ml::Effect * post = ML_Res.effects.get(ML_FBO_POST))
 		{
 			post->bind();
+			
+			if (ml::Effect * scene = ML_Res.effects.get(ML_FBO_MAIN))
 			{
-				if (ml::Effect * scene = ML_Res.effects.get(ML_FBO_MAIN))
+				if (const ml::Shader * shader = scene->shader())
 				{
-					if (const ml::Shader * shader = scene->shader())
-					{
-						shader->applyUniforms({
-							ml::Uniform("Effect.mode", ml::Uniform::Int, &uni.effectMode)
-						});
+					static ml::UniformSet uniforms = {
+						ml::Uniform("Effect.mode", ml::Uniform::Int, &uni.effectMode)
+					};
 
-						this->draw(*scene);
-					}
+					shader->applyUniforms(uniforms);
+
+					this->draw(*scene);
 				}
 			}
+
 			post->unbind();
 		}
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		//this->states().restore();
+
+		/* * * * * * * * * * * * * * * * * * * * */
 	}
 
 	void Sandbox::onGui(const ml::GuiEvent * ev)
 	{
 		// Main Menu Bar
-		if (ML_Editor.show_mainMenuBar) { ML_MainMenuBar_draw(); }
+		if (ML_Editor.show_mainMenuBar)		{ ML_MainMenuBar_draw(); }
 		// Dockspace
-		if (ML_Editor.show_dockspace) { ML_Dockspace_draw(&ML_Editor.show_dockspace); }
+		if (ML_Editor.show_dockspace)		{ ML_Dockspace_draw(&ML_Editor.show_dockspace); }
 		// ImGui Builtin
-		if (ML_Editor.show_imgui_demo) { ml::ImGui_Builtin::showDemo(&ML_Editor.show_imgui_demo); }
-		if (ML_Editor.show_imgui_metrics) { ml::ImGui_Builtin::showMetrics(&ML_Editor.show_imgui_metrics); }
-		if (ML_Editor.show_imgui_style) { ml::ImGui_Builtin::showStyle(&ML_Editor.show_imgui_style); }
-		if (ML_Editor.show_imgui_about) { ml::ImGui_Builtin::showAbout(&ML_Editor.show_imgui_about); }
+		if (ML_Editor.show_imgui_demo)		{ ml::ImGui_Builtin::showDemo(&ML_Editor.show_imgui_demo); }
+		if (ML_Editor.show_imgui_metrics)	{ ml::ImGui_Builtin::showMetrics(&ML_Editor.show_imgui_metrics); }
+		if (ML_Editor.show_imgui_style)		{ ml::ImGui_Builtin::showStyle(&ML_Editor.show_imgui_style); }
+		if (ML_Editor.show_imgui_about)		{ ml::ImGui_Builtin::showAbout(&ML_Editor.show_imgui_about); }
 		// Editors
-		if (ML_Editor.show_network) { ML_NetworkHUD.draw(&ML_Editor.show_network); }
-		if (ML_Editor.show_profiler) { ML_Profiler.draw(&ML_Editor.show_profiler); }
-		if (ML_Editor.show_hierarchy) { ML_Hierarchy.draw(&ML_Editor.show_hierarchy); }
-		if (ML_Editor.show_resources) { ML_ResourceHUD.draw(&ML_Editor.show_resources); }
-		if (ML_Editor.show_browser) { ML_Browser.draw(&ML_Editor.show_browser); }
-		if (ML_Editor.show_terminal) { ML_Terminal.draw(&ML_Editor.show_terminal); }
-		if (ML_Editor.show_textEditor) { ML_TextEditor.draw(&ML_Editor.show_textEditor); }
-		if (ML_Editor.show_builder) { ML_Builder.draw(&ML_Editor.show_builder); }
-		if (ML_Editor.show_sceneView) { ML_SceneView_draw(&ML_Editor.show_sceneView); }
-		if (ML_Editor.show_inspector) { ML_Inspector_draw(&ML_Editor.show_inspector); }
+		if (ML_Editor.show_network)			{ ML_NetworkHUD.draw(&ML_Editor.show_network); }
+		if (ML_Editor.show_profiler)		{ ML_Profiler.draw(&ML_Editor.show_profiler); }
+		if (ML_Editor.show_hierarchy)		{ ML_Hierarchy.draw(&ML_Editor.show_hierarchy); }
+		if (ML_Editor.show_resources)		{ ML_ResourceHUD.draw(&ML_Editor.show_resources); }
+		if (ML_Editor.show_browser)			{ ML_Browser.draw(&ML_Editor.show_browser); }
+		if (ML_Editor.show_terminal)		{ ML_Terminal.draw(&ML_Editor.show_terminal); }
+		if (ML_Editor.show_textEditor)		{ ML_TextEditor.draw(&ML_Editor.show_textEditor); }
+		if (ML_Editor.show_builder)			{ ML_Builder.draw(&ML_Editor.show_builder); }
+		if (ML_Editor.show_sceneView)		{ ML_SceneView_draw(&ML_Editor.show_sceneView); }
+		if (ML_Editor.show_inspector)		{ ML_Inspector_draw(&ML_Editor.show_inspector); }
 	}
 
 	void Sandbox::onUnload(const ml::UnloadEvent * ev)
 	{
 		ml::Debug::log("Unloading...");
 
-		ML_Res.cleanupAll();
+		// Finalize Resources
+		ML_Res.cleanup();
 	}
 
 	void Sandbox::onExit(const ml::ExitEvent * ev)
 	{
 		ml::Debug::log("Exiting...");
 
+		// Shutdown ImGui
 		ImGui_ML_Shutdown();
 	}
 
@@ -990,9 +1010,10 @@ namespace DEMO
 
 	bool Sandbox::ML_MainMenuBar_draw()
 	{
+		// Draw Main Menu Bar
 		return ML_MainMenuBar.drawFun([&]()
 		{
-			// File
+			// File Menu
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ImGui::BeginMenu("File"))
 			{
@@ -1020,7 +1041,7 @@ namespace DEMO
 				}
 				ImGui::EndMenu();
 			}
-			// Edit
+			// Edit Menu
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ImGui::BeginMenu("Edit"))
 			{
@@ -1047,7 +1068,7 @@ namespace DEMO
 				}
 				ImGui::EndMenu();
 			}
-			// Window
+			// Window Menu
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ImGui::BeginMenu("Window"))
 			{
@@ -1062,7 +1083,7 @@ namespace DEMO
 				ImGui::MenuItem(ML_NetworkHUD.title(), NULL, &ML_Editor.show_network);
 				ImGui::EndMenu();
 			}
-			// Help
+			// Help Menu
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ImGui::BeginMenu("Help"))
 			{
@@ -1082,6 +1103,7 @@ namespace DEMO
 
 	bool Sandbox::ML_Dockspace_draw(bool * p_open)
 	{
+		// Draw/Setup Dockspace
 		return ML_Dockspace.drawFun(p_open, [&]()
 		{
 			if (uint32_t root = ML_Dockspace.beginBuilder(ImGuiDockNodeFlags_None))
@@ -1115,6 +1137,7 @@ namespace DEMO
 
 	bool Sandbox::ML_SceneView_draw(bool * p_open)
 	{
+		// Update/Draw Scene View
 		return ML_SceneView.drawFun(p_open, [&]()
 		{
 			// Update Resolution
@@ -1158,6 +1181,7 @@ namespace DEMO
 
 	bool Sandbox::ML_Inspector_draw(bool * p_open)
 	{
+		// Draw Inspector
 		return ML_Inspector.drawFun(p_open, [&]()
 		{
 			/* * * * * * * * * * * * * * * * * * * * */

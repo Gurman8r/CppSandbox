@@ -36,7 +36,7 @@ namespace DEMO
 		bool ML_Inspector_draw(bool * p_open);
 
 	private:
-		// Batch
+		// Batches
 		/* * * * * * * * * * * * * * * * * * * * */
 		ml::VAO m_batchVAO;
 		ml::VBO m_batchVBO;

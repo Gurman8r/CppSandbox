@@ -98,7 +98,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct KeyEvent : public WindowEvent
+	struct ML_WINDOW_API KeyEvent final : public WindowEvent
 	{
 		using Mods = typename std::array<bool, 4>;
 
@@ -144,7 +144,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct MouseButtonEvent : public WindowEvent
+	struct ML_WINDOW_API MouseButtonEvent final : public WindowEvent
 	{
 		int32_t button, action, mods;
 
