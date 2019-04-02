@@ -39,6 +39,15 @@
 namespace DEMO
 {
 	/* * * * * * * * * * * * * * * * * * * * */
+
+	Sandbox::Sandbox()
+		: EditorApplication()
+	{
+	}
+
+	Sandbox::~Sandbox() {}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 	
 	void Sandbox::onEvent(const ml::IEvent * value)
 	{

@@ -10,12 +10,8 @@ namespace DEMO
 		: public ml::EditorApplication
 	{
 	public:
-		/* * * * * * * * * * * * * * * * * * * * */
-		Sandbox()
-			: EditorApplication()
-		{
-		};
-		~Sandbox() {};
+		Sandbox();
+		~Sandbox();
 
 	public: // Events
 		/* * * * * * * * * * * * * * * * * * * * */
