@@ -45,7 +45,7 @@ int32_t main(int32_t argc, char ** argv)
 
 		// Physics Loop
 		/* * * * * * * * * * * * * * * * * * * * */
-		if (!ML_Physics.thread().launch([&]()
+		if (!ML_Physics.thread().launch([&](ml::PhysicsWorld && world)
 		{
 			while (app && app->isOpen())
 			{
@@ -53,7 +53,8 @@ int32_t main(int32_t argc, char ** argv)
 
 				ML_Physics.thread().sleep(ml::Seconds(1));
 			}
-		}))
+
+		}, ML_Physics.world()))
 		{
 			return ml::Debug::logError("Failed Launching Physics Thread")
 				|| ml::Debug::pause(EXIT_FAILURE);
