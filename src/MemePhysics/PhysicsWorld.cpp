@@ -6,7 +6,7 @@ namespace ml
 	PhysicsWorld::PhysicsWorld()
 		: state()
 		, timer()
-		, thread(NULL)
+		, thread()
 		, lock(false)
 		, init(false)
 	{

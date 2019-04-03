@@ -1,8 +1,7 @@
 #ifndef _ML_PARTICLE_HPP_
 #define _ML_PARTICLE_HPP_
 
-#include <MemePhysics/Export.hpp>
-#include <MemeCore/Vector3.hpp>
+#include <MemePhysics/Force.hpp>
 
 namespace ml
 {

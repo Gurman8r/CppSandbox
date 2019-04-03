@@ -3,6 +3,7 @@
 
 #include <MemePhysics/PhysicsState.hpp>
 #include <MemeCore/Timer.hpp>
+#include <MemeCore/Thread.hpp>
 
 namespace ml 
 {
@@ -18,7 +19,7 @@ namespace ml
 	public:
 		PhysicsState	state;
 		Timer			timer;
-		std::thread *	thread;
+		Thread			thread;
 		bool			lock;
 		bool			init;
 	};

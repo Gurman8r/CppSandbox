@@ -1,6 +1,14 @@
 #include <MemeCore/Transform.hpp>
 #include <MemeCore/GLM.hpp>
 
+#define ML_MAT4(value) glm::mat4( \
+value[0x0], value[0x1], value[0x2], value[0x3], \
+value[0x4], value[0x5], value[0x6], value[0x7], \
+value[0x8], value[0x9], value[0xA], value[0xB], \
+value[0xC], value[0xD], value[0xE], value[0xF])
+
+#define ML_VEC3(value) glm::vec3(value[0], value[1], value[2])
+
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -48,9 +56,10 @@ namespace ml
 	Transform & Transform::lookAt(const vec3f & eye, const vec3f & pos, const vec3f & up)
 	{
 		return (*this) = mat4f(glm::value_ptr(glm::lookAt(
-			glm::vec3(eye[0], eye[1], eye[2]),
-			glm::vec3(pos[0], pos[1], pos[2]),
-			glm::vec3( up[0],  up[1],  up[2]))));
+			ML_VEC3(eye), 
+			ML_VEC3(pos), 
+			ML_VEC3(up)))
+		);
 	}
 
 	Transform & Transform::orthographic(const FloatRect & rect)
@@ -88,40 +97,25 @@ namespace ml
 	Transform & Transform::rotate(float angle, const vec3f & axis)
 	{
 		return (*this) = mat4f(glm::value_ptr(glm::rotate(
-			glm::mat4(
-				matrix()[0x0], matrix()[0x1], matrix()[0x2], matrix()[0x3],
-				matrix()[0x4], matrix()[0x5], matrix()[0x6], matrix()[0x7],
-				matrix()[0x8], matrix()[0x9], matrix()[0xA], matrix()[0xB],
-				matrix()[0xC], matrix()[0xD], matrix()[0xE], matrix()[0xF]
-			),
-			angle,
-			glm::vec3(axis[0], axis[1], axis[2])))
+			ML_MAT4(m_matrix), 
+			angle, 
+			ML_VEC3(axis)))
 		);
 	}
 
 	Transform & Transform::scale(const vec3f & value)
 	{
 		return (*this) = mat4f(glm::value_ptr(glm::scale(
-			glm::mat4(
-				matrix()[0x0], matrix()[0x1], matrix()[0x2], matrix()[0x3],
-				matrix()[0x4], matrix()[0x5], matrix()[0x6], matrix()[0x7],
-				matrix()[0x8], matrix()[0x9], matrix()[0xA], matrix()[0xB],
-				matrix()[0xC], matrix()[0xD], matrix()[0xE], matrix()[0xF]
-			),
-			glm::vec3(value[0], value[1], value[2])))
+			ML_MAT4(m_matrix), 
+			ML_VEC3(value)))
 		);
 	}
 
 	Transform & Transform::translate(const vec3f & value)
 	{
 		return (*this) = mat4f(glm::value_ptr(glm::translate(
-			glm::mat4(
-				matrix()[0x0], matrix()[0x1], matrix()[0x2], matrix()[0x3],
-				matrix()[0x4], matrix()[0x5], matrix()[0x6], matrix()[0x7],
-				matrix()[0x8], matrix()[0x9], matrix()[0xA], matrix()[0xB],
-				matrix()[0xC], matrix()[0xD], matrix()[0xE], matrix()[0xF]
-			),
-			glm::vec3(value[0], value[1], value[2])))
+			ML_MAT4(m_matrix), 
+			ML_VEC3(value)))
 		);
 	}
 

@@ -13,8 +13,9 @@ namespace ml
 		: public ITrackable
 	{
 		List<vec3f> position;
-		List<quat> rotation;
-		List<mat4f> transform, transformInv;
+		List<quat>	rotation;
+		List<mat4f> transform;
+		List<mat4f> transformInv;
 
 		PhysicsState();
 		PhysicsState(const PhysicsState &copy);
