@@ -30,7 +30,6 @@ namespace DEMO
 		void onEnter		(const ml::EnterEvent		* ev) override;
 		void onLoad			(const ml::LoadEvent		* ev) override;
 		void onStart		(const ml::StartEvent		* ev) override;
-		void onFixedUpdate	(const ml::FixedUpdateEvent * ev) override;
 		void onUpdate		(const ml::UpdateEvent		* ev) override;
 		void onDraw			(const ml::DrawEvent		* ev) override;
 		void onGui			(const ml::GuiEvent			* ev) override;

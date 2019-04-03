@@ -41,5 +41,10 @@ namespace ml
 		return good;
 	}
 
+	void PhysicsThread::sleep(const ml::Duration & value) const
+	{
+		std::this_thread::sleep_for((Millis)value);
+	}
+
 	/* * * * * * * * * * * * * * * * * * * * */
 }

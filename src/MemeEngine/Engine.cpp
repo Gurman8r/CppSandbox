@@ -1,5 +1,6 @@
 #include <MemeEngine/Engine.hpp>
 #include <MemeEngine/Application.hpp>
+#include <MemeCore/Time.hpp>
 
 namespace ml
 {
@@ -33,6 +34,24 @@ namespace ml
 		{
 			return EXIT_FAILURE;
 		}
+	}
+
+	void Engine::beginFrame()
+	{
+		m_timer.start();
+		if (m_app)
+		{
+			m_app->pollEvents();
+		}
+	}
+
+	void Engine::endFrame()
+	{
+		if (m_app)
+		{
+			m_app->swapBuffers();
+		}
+		m_elapsed = m_timer.stop().elapsed();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

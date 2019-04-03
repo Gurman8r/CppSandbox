@@ -28,11 +28,18 @@ namespace ml
 		Application * launchApp(Application * app);
 		int32_t freeApp();
 
+		void beginFrame();
+		void endFrame();
+
 	public:
-		inline Application * app() { return m_app; }
+		inline const Application *	app()		{ return m_app; }
+		inline const Timer &		timer()		{ return m_timer; }
+		inline const Duration &		elapsed()	{ return m_elapsed; }
 
 	private:
-		Application * m_app;
+		Application *	m_app;
+		Timer			m_timer;
+		Duration		m_elapsed;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

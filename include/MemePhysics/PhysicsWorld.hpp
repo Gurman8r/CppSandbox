@@ -8,6 +8,8 @@
 
 namespace ml 
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_PHYSICS_API PhysicsWorld
 		: public ITrackable
 	{
@@ -22,20 +24,19 @@ namespace ml
 			PhysicsState(const PhysicsState &copy);
 			~PhysicsState();
 		};
+
 	public:
 		PhysicsWorld();
 		~PhysicsWorld();
 
 	public:
-		PhysicsState state;
-
-		Timer timer; //ms
-
-		std::thread *thread;
-
-		bool lock, init;
+		PhysicsState	state;
+		Timer			timer;
+		std::thread *	thread;
+		bool			lock;
+		bool			init;
 	};
 
-	
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 #endif // !_ML_PHYSICS_WORLD_HPP_

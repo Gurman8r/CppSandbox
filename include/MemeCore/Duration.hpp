@@ -47,7 +47,7 @@ namespace ml
 
 		template <class Rep, class Per>
 		Duration(const std::chrono::duration<Rep, Per> & value)
-			: Duration(ml_duration_cast(ml::Millis, value))
+			: Duration(ml_duration_cast(Millis, value))
 		{
 		}
 

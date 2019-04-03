@@ -4,6 +4,7 @@
 #include <MemeCore/Lock.hpp>
 #include <MemePhysics/Export.hpp>
 #include <MemeCore/IDisposable.hpp>
+#include <MemeCore/Duration.hpp>
 
 namespace ml
 {
@@ -24,6 +25,8 @@ namespace ml
 		
 		bool wait();
 
+		void sleep(const Duration & value) const;
+
 	public:
 		template <
 			class Fun,
@@ -41,8 +44,8 @@ namespace ml
 		inline void unlock() { return m_lock.unlock(); }
 
 	private:
-		std::thread * m_thread;
-		MutexLock m_lock;
+		std::thread *	m_thread;
+		MutexLock		m_lock;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

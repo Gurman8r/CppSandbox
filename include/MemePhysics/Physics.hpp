@@ -3,6 +3,7 @@
 
 #include <MemePhysics/Force.hpp>
 #include <MemePhysics/Particle.hpp>
+#include <MemePhysics/PhysicsThread.hpp>
 
 #define ML_Physics ml::Physics::getInstance()
 

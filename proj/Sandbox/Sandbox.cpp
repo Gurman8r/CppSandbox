@@ -559,17 +559,6 @@ namespace DEMO
 		}
 	}
 
-	void Sandbox::onFixedUpdate(const ml::FixedUpdateEvent * ev)
-	{
-		ml::Debug::log("Fixed Update");
-
-		// Update Physics
-		for (ml::Particle & p : ML_Physics.particles)
-		{
-			p.applyForce(ml::Force::gravity(ml::vec3f::Up, p.mass));
-		}
-	}
-
 	void Sandbox::onUpdate(const ml::UpdateEvent * ev)
 	{
 		// Poll Network

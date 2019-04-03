@@ -4,7 +4,6 @@
 #include <MemeEngine/Export.hpp>
 #include <MemeCore/IEvent.hpp>
 #include <MemeCore/Time.hpp>
-#include <MemePhysics/PhysicsThread.hpp>
 
 namespace ml
 {
@@ -19,7 +18,6 @@ namespace ml
 			EV_Enter,
 			EV_Load,
 			EV_Start,
-			EV_FixedUpdate,
 			EV_Update,
 			EV_Draw,
 			EV_Unload,
@@ -65,21 +63,6 @@ namespace ml
 	{
 		StartEvent()
 			: EngineEvent(EV_Start)
-		{
-		}
-	};
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	struct ML_ENGINE_API FixedUpdateEvent final : public EngineEvent
-	{
-		const Duration & elapsed;
-		const PhysicsThread & thread;
-
-		FixedUpdateEvent(const Duration & elapsed, const PhysicsThread & thread)
-			: EngineEvent(EV_FixedUpdate)
-			, elapsed(elapsed)
-			, thread(thread)
 		{
 		}
 	};

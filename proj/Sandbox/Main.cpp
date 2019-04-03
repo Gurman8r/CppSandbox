@@ -7,6 +7,7 @@
 #include <MemeCore/Debug.hpp>
 #include <MemeCore/EventSystem.hpp>
 #include <MemeEngine/Engine.hpp>
+#include <MemePhysics/Physics.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
@@ -37,18 +38,15 @@ int32_t main(int32_t argc, char ** argv)
 		// Start
 		ML_EventSystem.fireEvent(ml::StartEvent());
 
-		// Main Loop
-		ml::Timer timer;
-		ml::Duration elapsed;
-		
-		// Setup Physics
+		// Setup Physics Thread
 		ml::PhysicsThread thr;
 		if (!thr.launch([&]()
 		{
-			while (app->isOpen())
+			while (app && app->isOpen())
 			{
-				ML_EventSystem.fireEvent(ml::FixedUpdateEvent(elapsed, thr));
-				std::this_thread::sleep_for(ml::Seconds(1));
+				ml::Debug::log("Physics Update");
+
+				thr.sleep(ml::Seconds(1));
 			}
 		}))
 		{
@@ -56,27 +54,32 @@ int32_t main(int32_t argc, char ** argv)
 				|| ml::Debug::pause(EXIT_FAILURE);
 		}
 
+		// Main Loop
 		do
 		{	// Begin Frame
-			timer.start();
-			app->pollEvents();
+			ML_Engine.beginFrame();
 			{
 				// Update Logic
-				ML_EventSystem.fireEvent(ml::UpdateEvent(elapsed));
+				ML_EventSystem.fireEvent(ml::UpdateEvent(
+					ML_Engine.elapsed()
+				));
 
 				// Draw Scene
-				ML_EventSystem.fireEvent(ml::DrawEvent(elapsed));
+				ML_EventSystem.fireEvent(ml::DrawEvent(
+					ML_Engine.elapsed()
+				));
 
 				// Draw Gui
-				ML_EventSystem.fireEvent(ml::GuiEvent(elapsed));
+				ML_EventSystem.fireEvent(ml::GuiEvent(
+					ML_Engine.elapsed()
+				));
 			}
 			// End Frame
-			app->swapBuffers();
-			elapsed = timer.stop().elapsed();
+			ML_Engine.endFrame();
 
 		} while (app->isOpen());
 
-		// Cleanup Physics
+		// Cleanup Physics Thread
 		thr.cleanup();
 
 		// Unload Resources

@@ -12,18 +12,21 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	template <
-		class M
-	> using UniqueLock = typename std::unique_lock<M>;
+		class Mtx
+	> using UniqueLock = typename std::unique_lock<Mtx>;
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	template <class M> 
-	struct Lock
+	template <
+		class Mtx
+	> struct Lock
+		: public ITrackable
+		, public INonCopyable
 	{
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		using mutex_type = typename M;
-		using lock_type = typename UniqueLock<M>;
+		using mutex_type = typename Mtx;
+		using lock_type  = typename UniqueLock<Mtx>;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
