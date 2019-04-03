@@ -16,9 +16,6 @@ namespace ml
 		, public INonCopyable
 	{
 	public:
-		using ID = typename std::thread::id;
-
-	public:
 		Thread();
 		~Thread();
 
