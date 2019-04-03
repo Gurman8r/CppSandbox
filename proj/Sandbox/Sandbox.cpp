@@ -193,6 +193,43 @@ namespace DEMO
 			}
 		}
 
+		// Load OpenAL
+		/* * * * * * * * * * * * * * * * * * * * */
+		if (!(ML_AL.init()))
+		{
+			return ml::Debug::setError(
+				ML_FAILURE,
+				"System Failure",
+				"Failed Loading OpenAL");
+		}
+
+		// Load Network
+		/* * * * * * * * * * * * * * * * * * * * */
+		if (SETTINGS.isServer)
+		{
+			// Server Setup
+			ml::Debug::log("Starting Server...");
+			if (ML_NetServer.setup())
+			{
+				if (ML_NetServer.start({ ML_LOCALHOST, ML_PORT }, ML_MAX_CLIENTS))
+				{
+					ml::Debug::log("Server Started: {0}", ML_NetServer.getMyAddress());
+				}
+			}
+		}
+		else if (SETTINGS.isClient)
+		{
+			// Client Setup
+			ml::Debug::log("Starting Client...");
+			if (ML_NetClient.setup())
+			{
+				if (ML_NetClient.connect({ ML_LOCALHOST, ML_PORT }))
+				{
+					ml::Debug::log("Client Connected: {0}", ML_NetClient.getMyAddress());
+				}
+			}
+		}
+
 		// Create Window
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (this->create(SETTINGS.title, SETTINGS.video(), SETTINGS.style, SETTINGS.context())
@@ -203,111 +240,6 @@ namespace DEMO
 			this->setPosition((ml::VideoMode::desktop().size - this->getSize()) / 2);
 			this->setViewport(ml::vec2i::Zero, this->getFramebufferSize());
 			this->maximize();
-
-			// Load ImGui
-			/* * * * * * * * * * * * * * * * * * * * */
-			if (ml::Debug::log("Dear ImGui..."))
-			{
-				IMGUI_CHECKVERSION();
-				ImGui::CreateContext();
-				ImGui::StyleColorsDark();
-				ImGui::GetStyle().FrameBorderSize = 1;
-				if (!ImGui_ML_Init("#version 410", this, true, SETTINGS.imguiINI.c_str()))
-				{
-					return ml::Debug::setError(
-						ML_FAILURE,
-						"System Failure",
-						"Failed Loading ImGui");
-				}
-			}
-
-			// Load OpenAL
-			/* * * * * * * * * * * * * * * * * * * * */
-			if (!(ML_AL.init()))
-			{
-				return ml::Debug::setError(
-					ML_FAILURE,
-					"System Failure",
-					"Failed Loading OpenAL");
-			}
-
-			// Load Network
-			/* * * * * * * * * * * * * * * * * * * * */
-			if (SETTINGS.isServer)
-			{
-				// Server Setup
-				ml::Debug::log("Starting Server...");
-				if (ML_NetServer.setup())
-				{
-					if (ML_NetServer.start({ ML_LOCALHOST, ML_PORT }, ML_MAX_CLIENTS))
-					{
-						ml::Debug::log("Server Started: {0}", ML_NetServer.getMyAddress());
-					}
-				}
-			}
-			else if (SETTINGS.isClient)
-			{
-				// Client Setup
-				ml::Debug::log("Starting Client...");
-				if (ML_NetClient.setup())
-				{
-					if (ML_NetClient.connect({ ML_LOCALHOST, ML_PORT }))
-					{
-						ml::Debug::log("Client Connected: {0}", ML_NetClient.getMyAddress());
-					}
-				}
-			}
-
-			// Load Physics
-			/* * * * * * * * * * * * * * * * * * * * */
-			if (!ML_Physics.thread().launch([&]()
-			{
-				ml::Debug::log("Loading Physics...");
-				ML_Physics.world().state().resize(5); // Setup State
-				do
-				{
-					ml::PhysicsState stateCopy(ML_Physics.world().state());
-					ML_Physics.mutex().lock();
-					{
-						for (size_t i = 0, imax = stateCopy.size(); i < imax; i++)
-						{
-							ml::vec3f	pos; // Position
-							ml::quat	rot; // Rotation
-							ml::mat4f	mat; // Transform
-							ml::mat4f	inv; // Inverse Transform
-							if (stateCopy.getData(i, pos, rot, mat, inv))
-							{
-								// example
-
-								rot = { 0, 0, 0, 1 };
-								mat = ml::mat4f::identity();
-								inv = ml::mat4f::identity();
-
-								switch (i)
-								{
-								case 0: { pos[1] = +ML_Time.cos(); } break;
-								case 1: {} break;
-								case 2: {} break;
-								case 3: {} break;
-								case 4: {} break;
-								}
-
-								stateCopy.setData(i, pos, rot, mat, inv);
-							}
-						}
-					}
-					ML_Physics.mutex().unlock();
-					ML_Physics.world().state() = stateCopy;
-					ML_Physics.thread().sleep(ml::Seconds(1));
-
-				} while (this->isOpen());
-			}))
-			{
-				return ml::Debug::setError(
-					ML_FAILURE,
-					"System Failure",
-					"Failed Loading Physics");
-			}
 		}
 		else
 		{
@@ -315,6 +247,73 @@ namespace DEMO
 				ML_FAILURE,
 				"System Failure",
 				"Failed Loading Window.");
+		}
+
+		// Load ImGui
+		/* * * * * * * * * * * * * * * * * * * * */
+		if (ml::Debug::log("Dear ImGui..."))
+		{
+			IMGUI_CHECKVERSION();
+			ImGui::CreateContext();
+			ImGui::StyleColorsDark();
+			ImGui::GetStyle().FrameBorderSize = 1;
+			if (!ImGui_ML_Init("#version 410", this, true, SETTINGS.imguiINI.c_str()))
+			{
+				return ml::Debug::setError(
+					ML_FAILURE,
+					"System Failure",
+					"Failed Loading ImGui");
+			}
+		}
+
+		// Load Physics
+		/* * * * * * * * * * * * * * * * * * * * */
+		if (ml::Debug::log("Launching Physics Thread...") && !ML_Physics.thread().launch([&]()
+		{
+			ML_Physics.world().state().resize(5); // Setup State
+			do
+			{
+				ml::PhysicsState stateCopy(ML_Physics.world().state());
+				ML_Physics.mutex().lock();
+				{
+					for (size_t i = 0, imax = stateCopy.size(); i < imax; i++)
+					{
+						ml::vec3f	pos; // Position
+						ml::quat	rot; // Rotation
+						ml::mat4f	mat; // Transform
+						ml::mat4f	inv; // Inverse Transform
+						if (stateCopy.getData(i, pos, rot, mat, inv))
+						{
+							// example
+
+							rot = { 0, 0, 0, 1 };
+							mat = ml::mat4f::identity();
+							inv = ml::mat4f::identity();
+
+							switch (i)
+							{
+							case 0: { pos[1] = +ML_Time.cos(); } break;
+							case 1: {} break;
+							case 2: {} break;
+							case 3: {} break;
+							case 4: {} break;
+							}
+
+							stateCopy.setData(i, pos, rot, mat, inv);
+						}
+					}
+				}
+				ML_Physics.mutex().unlock();
+				ML_Physics.world().state() = stateCopy;
+				ML_Physics.thread().sleep(ml::Millis(30));
+
+			} while (this->isOpen());
+		}))
+		{
+			return ml::Debug::setError(
+				ML_FAILURE,
+				"System Failure",
+				"Failed Loading Physics");
 		}
 	}
 
