@@ -193,43 +193,6 @@ namespace DEMO
 			}
 		}
 
-		// Load OpenAL
-		/* * * * * * * * * * * * * * * * * * * * */
-		if (!(ML_AL.init()))
-		{
-			return ml::Debug::setError(
-				ML_FAILURE,
-				"System Failure",
-				"Failed Loading OpenAL");
-		}
-
-		// Load Network
-		/* * * * * * * * * * * * * * * * * * * * */
-		if (SETTINGS.isServer)
-		{
-			// Server Setup
-			ml::Debug::log("Starting Server...");
-			if (ML_NetServer.setup())
-			{
-				if (ML_NetServer.start({ ML_LOCALHOST, ML_PORT }, ML_MAX_CLIENTS))
-				{
-					ml::Debug::log("Server Started: {0}", ML_NetServer.getMyAddress());
-				}
-			}
-		}
-		else if (SETTINGS.isClient)
-		{
-			// Client Setup
-			ml::Debug::log("Starting Client...");
-			if (ML_NetClient.setup())
-			{
-				if (ML_NetClient.connect({ ML_LOCALHOST, ML_PORT }))
-				{
-					ml::Debug::log("Client Connected: {0}", ML_NetClient.getMyAddress());
-				}
-			}
-		}
-
 		// Create Window
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (this->create(SETTINGS.title, SETTINGS.video(), SETTINGS.style, SETTINGS.context())
@@ -272,17 +235,19 @@ namespace DEMO
 		{
 			ML_Physics.world().state().resize(5); // Setup State
 			do
-			{
-				ml::PhysicsState stateCopy(ML_Physics.world().state());
+			{	/* * * * * * * * * * * * * * * * * * * * */
+				ml::PhysicsState copy(ML_Physics.world().state());
 				ML_Physics.mutex().lock();
 				{
-					for (size_t i = 0, imax = stateCopy.size(); i < imax; i++)
+					for (size_t i = 0, imax = copy.size(); i < imax; i++)
 					{
+						/* * * * * * * * * * * * * * * * * * * * */
+
 						ml::vec3f	pos; // Position
 						ml::quat	rot; // Rotation
 						ml::mat4f	mat; // Transform
 						ml::mat4f	inv; // Inverse Transform
-						if (stateCopy.getData(i, pos, rot, mat, inv))
+						if (copy.getData(i, pos, rot, mat, inv))
 						{
 							// example
 
@@ -299,14 +264,17 @@ namespace DEMO
 							case 4: {} break;
 							}
 
-							stateCopy.setData(i, pos, rot, mat, inv);
+							copy.setData(i, pos, rot, mat, inv);
 						}
+
+						/* * * * * * * * * * * * * * * * * * * * */
 					}
 				}
 				ML_Physics.mutex().unlock();
-				ML_Physics.world().state() = stateCopy;
+				ML_Physics.world().state() = copy;
 				ML_Physics.thread().sleep(ml::Millis(30));
 
+				/* * * * * * * * * * * * * * * * * * * * */
 			} while (this->isOpen());
 		}))
 		{
@@ -314,6 +282,43 @@ namespace DEMO
 				ML_FAILURE,
 				"System Failure",
 				"Failed Loading Physics");
+		}
+
+		// Load Audio
+		/* * * * * * * * * * * * * * * * * * * * */
+		if (!(ML_AL.init()))
+		{
+			return ml::Debug::setError(
+				ML_FAILURE,
+				"System Failure",
+				"Failed Loading OpenAL");
+		}
+
+		// Load Network
+		/* * * * * * * * * * * * * * * * * * * * */
+		if (SETTINGS.isServer)
+		{
+			// Server Setup
+			ml::Debug::log("Starting Server...");
+			if (ML_NetServer.setup())
+			{
+				if (ML_NetServer.start({ ML_LOCALHOST, ML_PORT }, ML_MAX_CLIENTS))
+				{
+					ml::Debug::log("Server Started: {0}", ML_NetServer.getMyAddress());
+				}
+			}
+		}
+		else if (SETTINGS.isClient)
+		{
+			// Client Setup
+			ml::Debug::log("Starting Client...");
+			if (ML_NetClient.setup())
+			{
+				if (ML_NetClient.connect({ ML_LOCALHOST, ML_PORT }))
+				{
+					ml::Debug::log("Client Connected: {0}", ML_NetClient.getMyAddress());
+				}
+			}
 		}
 	}
 

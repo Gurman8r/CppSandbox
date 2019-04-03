@@ -11,6 +11,7 @@ namespace ml
 
 	class ML_PHYSICS_API PhysicsWorld
 		: public ITrackable
+		, public INonCopyable
 	{
 	public:
 		PhysicsWorld();
@@ -18,14 +19,9 @@ namespace ml
 
 	public:
 		inline PhysicsState & state() { return m_state; }
-		inline Timer		& timer() { return m_timer; }
 
 	private:
-		PhysicsState	m_state;
-		Timer			m_timer;
-		Thread			m_thread;
-		bool			m_lock;
-		bool			m_init;
+		PhysicsState m_state;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */
