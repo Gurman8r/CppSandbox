@@ -3,6 +3,7 @@
 
 #include <MemeEngine/Export.hpp>
 #include <MemeCore/ITrackable.hpp>
+#include <MemeCore/Timer.hpp>
 
 #define ML_Engine ml::Engine::getInstance()
 

@@ -1,7 +1,6 @@
 #ifndef _ML_TRANSFORM_HPP_
 #define _ML_TRANSFORM_HPP_
 
-#include <MemeGraphics/Export.hpp>
 #include <MemeCore/Quaternion.hpp>
 #include <MemeCore/Vector3.hpp>
 #include <MemeCore/Vector2.hpp>
@@ -9,7 +8,7 @@
 
 namespace ml
 {
-	class ML_GRAPHICS_API Transform
+	class ML_CORE_API Transform
 		: public ITrackable
 	{
 	public:

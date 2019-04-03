@@ -3,7 +3,7 @@
 
 #include <MemeGraphics/UniformSet.hpp>
 #include <MemeGraphics/Texture.hpp>
-#include <MemeGraphics/Transform.hpp>
+#include <MemeCore/Transform.hpp>
 #include <MemeGraphics/Color.hpp>
 
 namespace ml

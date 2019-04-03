@@ -1,7 +1,7 @@
 #ifndef _ML_ITRANSFORMABLE_HPP_
 #define _ML_ITRANSFORMABLE_HPP_
 
-#include <MemeGraphics/Transform.hpp>
+#include <MemeCore/Transform.hpp>
 
 namespace ml
 {

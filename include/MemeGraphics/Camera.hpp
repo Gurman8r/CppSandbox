@@ -1,7 +1,8 @@
 #ifndef _ML_CAMERA_HPP_
 #define _ML_CAMERA_HPP_
 
-#include <MemeGraphics/Transform.hpp>
+#include <MemeGraphics/Export.hpp>
+#include <MemeCore/Transform.hpp>
 
 namespace ml
 {

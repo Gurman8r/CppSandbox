@@ -1,8 +1,9 @@
 #ifndef _ML_RECT_TRANSFORM_HPP_
 #define _ML_RECT_TRANSFORM_HPP_
 
-#include <MemeGraphics/Transform.hpp>
+#include <MemeCore/Transform.hpp>
 #include <MemeCore/Rect.hpp>
+#include <MemeGraphics/Export.hpp>
 
 namespace ml
 {

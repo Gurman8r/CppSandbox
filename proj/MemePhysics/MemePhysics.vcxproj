@@ -163,6 +163,7 @@
     <ClInclude Include="..\..\include\MemePhysics\Physics.hpp" />
     <ClInclude Include="..\..\include\MemePhysics\Particle.hpp" />
     <ClInclude Include="..\..\include\MemePhysics\PhysicsEvents.hpp" />
+    <ClInclude Include="..\..\include\MemePhysics\PhysicsState.hpp" />
     <ClInclude Include="..\..\include\MemePhysics\PhysicsThread.hpp" />
     <ClInclude Include="..\..\include\MemePhysics\PhysicsWorld.hpp" />
     <ClInclude Include="..\..\include\MemePhysics\Rigidbody.hpp" />
@@ -171,6 +172,7 @@
     <ClCompile Include="..\..\src\MemePhysics\Force.cpp" />
     <ClCompile Include="..\..\src\MemePhysics\Physics.cpp" />
     <ClCompile Include="..\..\src\MemePhysics\Particle.cpp" />
+    <ClCompile Include="..\..\src\MemePhysics\PhysicsState.cpp" />
     <ClCompile Include="..\..\src\MemePhysics\PhysicsThread.cpp" />
     <ClCompile Include="..\..\src\MemePhysics\PhysicsWorld.cpp" />
     <ClCompile Include="..\..\src\MemePhysics\Rigidbody.cpp" />

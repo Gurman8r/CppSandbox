@@ -3,7 +3,7 @@
 
 #include <MemeGraphics/IDrawable.hpp>
 #include <MemeGraphics/Texture.hpp>
-#include <MemeGraphics/Transform.hpp>
+#include <MemeCore/Transform.hpp>
 
 namespace ml
 {

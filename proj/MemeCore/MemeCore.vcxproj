@@ -155,6 +155,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeCore\Detection.hpp" />
+    <ClInclude Include="..\..\include\MemeCore\GLM.hpp" />
     <ClInclude Include="..\..\include\MemeCore\IDisposable.hpp" />
     <ClInclude Include="..\..\include\MemeCore\IRequest.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Array.hpp" />
@@ -167,6 +168,7 @@
     <ClInclude Include="..\..\include\MemeCore\IHandle.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Lock.hpp" />
     <ClInclude Include="..\..\include\MemeCore\TestRequest.hpp" />
+    <ClInclude Include="..\..\include\MemeCore\Transform.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Usings.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Ratio.hpp" />
     <ClInclude Include="..\..\include\MemeCore\IO.hpp" />
@@ -229,6 +231,7 @@
     <ClCompile Include="..\..\src\MemeCore\Time.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Duration.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Timer.cpp" />
+    <ClCompile Include="..\..\src\MemeCore\Transform.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Worker.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,5 +1,5 @@
-#include <MemeGraphics/Transform.hpp>
-#include <MemeGraphics/GLM.hpp>
+#include <MemeCore/Transform.hpp>
+#include <MemeCore/GLM.hpp>
 
 namespace ml
 {

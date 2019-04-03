@@ -37,9 +37,6 @@
     <Filter Include="Header Files\Utility">
       <UniqueIdentifier>{aa9cd324-f987-4bac-9b0c-1520e7a689c5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Matrices">
-      <UniqueIdentifier>{31b96231-5819-483e-b653-76572a31bbb8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Threading">
       <UniqueIdentifier>{c04760b5-ba7d-4cfb-bde9-91f5bce95b72}</UniqueIdentifier>
     </Filter>
@@ -51,6 +48,12 @@
     </Filter>
     <Filter Include="Header Files\FS">
       <UniqueIdentifier>{19c6709d-12eb-4198-abd3-e13c31d5dbcd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Maths">
+      <UniqueIdentifier>{31b96231-5819-483e-b653-76572a31bbb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Maths">
+      <UniqueIdentifier>{a48dca0d-732a-464d-a13e-ca7b39e35d35}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -73,22 +76,22 @@
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Matrix.hpp">
-      <Filter>Header Files\Matrices</Filter>
+      <Filter>Header Files\Maths</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Rect.hpp">
-      <Filter>Header Files\Matrices</Filter>
+      <Filter>Header Files\Maths</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Vector.hpp">
-      <Filter>Header Files\Matrices</Filter>
+      <Filter>Header Files\Maths</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Vector2.hpp">
-      <Filter>Header Files\Matrices</Filter>
+      <Filter>Header Files\Maths</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Vector3.hpp">
-      <Filter>Header Files\Matrices</Filter>
+      <Filter>Header Files\Maths</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Vector4.hpp">
-      <Filter>Header Files\Matrices</Filter>
+      <Filter>Header Files\Maths</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Chunk.hpp">
       <Filter>Header Files\Memory</Filter>
@@ -144,9 +147,6 @@
     <ClInclude Include="..\..\include\MemeCore\FileSystem.hpp">
       <Filter>Header Files\FS</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Maths.hpp">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\IEventListener.hpp">
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
@@ -175,7 +175,7 @@
       <Filter>Header Files\STD</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Quaternion.hpp">
-      <Filter>Header Files\Matrices</Filter>
+      <Filter>Header Files\Maths</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Array.hpp">
       <Filter>Header Files\STD</Filter>
@@ -222,6 +222,15 @@
     <ClInclude Include="..\..\include\MemeCore\IDisposable.hpp">
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\GLM.hpp">
+      <Filter>Header Files\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Transform.hpp">
+      <Filter>Header Files\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Maths.hpp">
+      <Filter>Header Files\Maths</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeCore\Timer.cpp">
@@ -251,9 +260,6 @@
     <ClCompile Include="..\..\src\MemeCore\FileSystem.cpp">
       <Filter>Source Files\FS</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemeCore\Maths.cpp">
-      <Filter>Source Files\Utility</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\Thread.cpp">
       <Filter>Source Files\Threading</Filter>
     </ClCompile>
@@ -277,6 +283,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\Worker.cpp">
       <Filter>Source Files\Threading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeCore\Maths.cpp">
+      <Filter>Source Files\Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeCore\Transform.cpp">
+      <Filter>Source Files\Maths</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

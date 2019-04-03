@@ -28,12 +28,6 @@
     <Filter Include="Source Files\Drawable">
       <UniqueIdentifier>{22518504-c8c3-4139-b999-60b4911a73bd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Transforms">
-      <UniqueIdentifier>{0389a432-cba6-4e80-9723-3017f234a55e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Transforms">
-      <UniqueIdentifier>{94ba435b-7fa3-46a5-b588-af824460c9ec}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Rendering">
       <UniqueIdentifier>{0948861a-0cdf-4c56-afbb-b4a431bb642a}</UniqueIdentifier>
     </Filter>
@@ -111,12 +105,6 @@
     <ClInclude Include="..\..\include\MemeGraphics\IDrawable.hpp">
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Transform.hpp">
-      <Filter>Header Files\Transforms</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Camera.hpp">
-      <Filter>Header Files\Transforms</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\UniformSet.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
@@ -162,9 +150,6 @@
     <ClInclude Include="..\..\include\MemeGraphics\Effect.hpp">
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\RectTransform.hpp">
-      <Filter>Header Files\Transforms</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Color.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
@@ -182,6 +167,12 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\RenderFlags.hpp">
       <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\Camera.hpp">
+      <Filter>Header Files\DS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\RectTransform.hpp">
+      <Filter>Header Files\DS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -220,12 +211,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\RenderTarget.cpp">
       <Filter>Source Files\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeGraphics\Transform.cpp">
-      <Filter>Source Files\Transforms</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeGraphics\Camera.cpp">
-      <Filter>Source Files\Transforms</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\UniformSet.cpp">
       <Filter>Source Files\DS</Filter>
@@ -272,9 +257,6 @@
     <ClCompile Include="..\..\src\MemeGraphics\Effect.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemeGraphics\RectTransform.cpp">
-      <Filter>Source Files\Transforms</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\ShaderParser.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
@@ -283,6 +265,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\RenderFlags.cpp">
       <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\Camera.cpp">
+      <Filter>Source Files\DS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\RectTransform.cpp">
+      <Filter>Source Files\DS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

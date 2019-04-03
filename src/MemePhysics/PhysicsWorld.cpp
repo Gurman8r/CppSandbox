@@ -1,6 +1,8 @@
 #include <MemePhysics/PhysicsWorld.hpp>
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	PhysicsWorld::PhysicsWorld()
 		: state()
 		, timer()
@@ -13,21 +15,6 @@ namespace ml
 	PhysicsWorld::~PhysicsWorld()
 	{
 	}
-	PhysicsWorld::PhysicsState::PhysicsState()
-		: position()
-		, rotation()
-		, transform()
-		, transformInv()
-	{
-	}
-	PhysicsWorld::PhysicsState::PhysicsState(const PhysicsState & copy)
-		: position(copy.position)
-		, rotation(copy.rotation)
-		, transform(copy.transform)
-		, transformInv(copy.transformInv)
-	{
-	}
-	PhysicsWorld::PhysicsState::~PhysicsState()
-	{
-	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

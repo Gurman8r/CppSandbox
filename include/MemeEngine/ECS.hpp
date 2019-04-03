@@ -4,7 +4,7 @@
 /* * * * * * * * * * * * * * * * * * * * */
 
 #include <MemeEngine/Entity.hpp>
-#include <MemeGraphics/Transform.hpp>
+#include <MemeCore/Transform.hpp>
 #include <MemeCore/Detection.hpp>
 
 #define ML_ECS ml::ECS::getInstance()

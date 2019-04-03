@@ -13,6 +13,7 @@ namespace ml
 	class ML_PHYSICS_API PhysicsThread final
 		: public ITrackable
 		, public IDisposable
+		, public INonCopyable
 	{
 	public:
 		PhysicsThread();

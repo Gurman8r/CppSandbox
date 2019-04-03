@@ -2,7 +2,7 @@
 #define _ML_GUI_HPP_
 
 #include <MemeEditor/Export.hpp>
-#include <MemeGraphics/Transform.hpp>
+#include <MemeCore/Transform.hpp>
 #include <MemeGraphics/Shader.hpp>
 
 namespace ml
