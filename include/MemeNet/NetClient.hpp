@@ -2,15 +2,15 @@
 #define _ML_CLIENT_HPP_
 
 #include <MemeCore/ISingleton.hpp>
-#include <MemeNet/NetworkInterface.hpp>
+#include <MemeNet/NetInterface.hpp>
 
-#define ML_Client ml::Client::getInstance()
+#define ML_NetClient ml::Client::getInstance()
 
 namespace ml
 {
 	class ML_NETWORK_API Client final
 		: public ITrackable
-		, public NetworkInterface
+		, public NetInterface
 		, public ISingleton<Client>
 	{
 		friend class ISingleton<Client>;

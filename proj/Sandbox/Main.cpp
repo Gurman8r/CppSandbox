@@ -39,14 +39,13 @@ int32_t main(int32_t argc, char ** argv)
 		ML_EventSystem.fireEvent(ml::StartEvent());
 
 		// Setup Physics Thread
-		ml::PhysicsThread thr;
-		if (!thr.launch([&]()
+		if (!ML_Physics.thread().launch([&]()
 		{
 			while (app && app->isOpen())
 			{
 				ml::Debug::log("Physics Update");
 
-				thr.sleep(ml::Seconds(1));
+				ML_Physics.thread().sleep(ml::Seconds(1));
 			}
 		}))
 		{
@@ -80,7 +79,7 @@ int32_t main(int32_t argc, char ** argv)
 		} while (app->isOpen());
 
 		// Cleanup Physics Thread
-		thr.cleanup();
+		ML_Physics.thread().cleanup();
 
 		// Unload Resources
 		ML_EventSystem.fireEvent(ml::UnloadEvent());

@@ -23,8 +23,8 @@
 #include <MemeEngine/EngineCommands.hpp>
 #include <MemeEngine/Resources.hpp>
 #include <MemeEngine/Preferences.hpp>
-#include <MemeNet/Client.hpp>
-#include <MemeNet/Server.hpp>
+#include <MemeNet/NetClient.hpp>
+#include <MemeNet/NetServer.hpp>
 #include <MemePhysics/Physics.hpp>
 #include <MemeScript/Interpreter.hpp>
 #include <MemeWindow/WindowEvents.hpp>
@@ -237,11 +237,11 @@ namespace DEMO
 			{
 				// Server Setup
 				ml::Debug::log("Starting Server...");
-				if (ML_Server.setup())
+				if (ML_NetServer.setup())
 				{
-					if (ML_Server.start({ ML_LOCALHOST, ML_PORT }, ML_MAX_CLIENTS))
+					if (ML_NetServer.start({ ML_LOCALHOST, ML_PORT }, ML_MAX_CLIENTS))
 					{
-						ml::Debug::log("Server Started: {0}", ML_Server.getMyAddress());
+						ml::Debug::log("Server Started: {0}", ML_NetServer.getMyAddress());
 					}
 				}
 			}
@@ -249,11 +249,11 @@ namespace DEMO
 			{
 				// Client Setup
 				ml::Debug::log("Starting Client...");
-				if (ML_Client.setup())
+				if (ML_NetClient.setup())
 				{
-					if (ML_Client.connect({ ML_LOCALHOST, ML_PORT }))
+					if (ML_NetClient.connect({ ML_LOCALHOST, ML_PORT }))
 					{
-						ml::Debug::log("Client Connected: {0}", ML_Client.getMyAddress());
+						ml::Debug::log("Client Connected: {0}", ML_NetClient.getMyAddress());
 					}
 				}
 			}
@@ -566,11 +566,11 @@ namespace DEMO
 		{
 			if (SETTINGS.isServer)
 			{
-				ML_Server.poll();
+				ML_NetServer.poll();
 			}
 			else if (SETTINGS.isClient)
 			{
-				ML_Client.poll();
+				ML_NetClient.poll();
 			}
 		}
 
@@ -749,13 +749,6 @@ namespace DEMO
 			{
 				pair.second.update();
 			}
-		}
-
-		// Update Other Things
-		/* * * * * * * * * * * * * * * * * * * * */
-		{
-			uni.deltaTime = ev->elapsed.delta();
-			uni.totalTime = (float)ML_Time.elapsed().millis();
 		}
 	}
 

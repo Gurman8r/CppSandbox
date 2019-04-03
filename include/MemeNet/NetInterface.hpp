@@ -15,12 +15,12 @@
 
 namespace ml
 {
-	class ML_NETWORK_API NetworkInterface
+	class ML_NETWORK_API NetInterface
 		: public IEventListener
 	{
 	public:
-		NetworkInterface();
-		virtual ~NetworkInterface();
+		NetInterface();
+		virtual ~NetInterface();
 
 		bool setup();
 		void clean();

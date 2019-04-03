@@ -1,9 +1,10 @@
 #ifndef _ML_PHYSICS_HPP_
 #define _ML_PHYSICS_HPP_
 
+#include <MemeCore/Thread.hpp>
 #include <MemePhysics/Force.hpp>
 #include <MemePhysics/Particle.hpp>
-#include <MemePhysics/PhysicsThread.hpp>
+#include <MemePhysics/PhysicsWorld.hpp>
 
 #define ML_Physics ml::Physics::getInstance()
 
@@ -18,7 +19,13 @@ namespace ml
 		static const vec3f Gravity;
 
 	public:
-		std::vector<Particle> particles;
+		inline Thread & thread() { return m_thread; }
+
+		inline PhysicsWorld & world() { return m_world; }
+
+	private:
+		Thread m_thread;
+		PhysicsWorld m_world;
 	};
 }
 

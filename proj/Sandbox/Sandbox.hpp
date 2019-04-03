@@ -56,10 +56,6 @@ namespace DEMO
 		// Uniform Values
 		struct DemoUniforms
 		{
-			// Time
-			float deltaTime;
-			float totalTime;
-
 			// Projections
 			ml::Transform	persp;
 			ml::Transform	ortho;

@@ -2,16 +2,16 @@
 #define _ML_SERVER_HPP_
 
 #include <MemeCore/ISingleton.hpp>
-#include <MemeNet/NetworkInterface.hpp>
+#include <MemeNet/NetInterface.hpp>
 #include <MemeNet/NetworkTypes.hpp>
 
-#define ML_Server ml::Server::getInstance()
+#define ML_NetServer ml::Server::getInstance()
 
 namespace ml
 {
 	class ML_NETWORK_API Server final
 		: public ITrackable
-		, public NetworkInterface
+		, public NetInterface
 		, public ISingleton<Server>
 	{
 		friend class ISingleton<Server>;

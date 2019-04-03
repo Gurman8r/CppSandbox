@@ -5,95 +5,48 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Thread::Thread()
-		: m_fun(NULL)
-		, m_thr(NULL)
+		: m_thr(NULL)
+		, m_lock()
 	{
 	}
 
 	Thread::~Thread()
 	{
-		clean();
-		assert(!m_thr);
+		cleanup();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	Thread & Thread::clean()
+	inline bool Thread::alive() const
 	{
-		join();
-
-		return update(NULL);
+		return (bool)(m_thr);
 	}
 
-	Thread & Thread::detatch()
+	inline bool Thread::joinable() const
 	{
-		if (alive())
-		{
-			m_thr->detach();
-		}
-		return (*this);
+		return alive() && m_thr->joinable();
 	}
 
-	Thread & Thread::join()
+	inline bool Thread::cleanup()
 	{
 		if (joinable())
 		{
 			m_thr->join();
+		}
+		if (alive())
+		{
 			delete m_thr;
 			m_thr = NULL;
 		}
-		return (*this);
+		return !(m_thr);
 	}
 
-	Thread & Thread::launch()
+	inline void Thread::sleep(const ml::Duration & value)
 	{
-		if (!alive())
+		if (joinable())
 		{
-			m_thr = new std::thread(&Thread::run, this);
+			std::this_thread::sleep_for((Millis)value);
 		}
-		return (*this);
-	}
-
-	Thread & Thread::update(Function * fun)
-	{
-		if (m_fun != fun)
-		{
-			if (m_fun)
-			{ 
-				delete m_fun;
-			}
-			m_fun = fun;
-		}
-		return (*this);
-	}
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	bool Thread::alive() const
-	{
-		return m_thr;
-	}
-
-	void * Thread::handle()
-	{
-		return (alive() ? m_thr->native_handle() : NULL);
-	}
-
-	Thread::ID Thread::id() const
-	{
-		return (alive() ? m_thr->get_id() : ID());
-	}
-
-	bool Thread::joinable() const
-	{
-		return (alive() && m_thr->joinable());
-	}
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	void Thread::run()
-	{
-		return (m_fun ? (*m_fun)() : void());
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

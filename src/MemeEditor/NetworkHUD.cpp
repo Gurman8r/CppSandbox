@@ -1,7 +1,7 @@
 #include <MemeEditor/NetworkHUD.hpp>
 #include <MemeEditor/ImGui.hpp>
-#include <MemeNet/Client.hpp>
-#include <MemeNet/Server.hpp>
+#include <MemeNet/NetClient.hpp>
+#include <MemeNet/NetServer.hpp>
 
 namespace ml
 {

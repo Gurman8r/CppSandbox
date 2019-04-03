@@ -25,6 +25,12 @@
     <Filter Include="Source Files\Utility">
       <UniqueIdentifier>{34654218-3134-4dfa-ba5a-84ea7f57e269}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Colliders">
+      <UniqueIdentifier>{4871f099-8305-40b5-9ced-0ce6e823083e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Colliders">
+      <UniqueIdentifier>{78734b14-60ba-4c7c-8032-c8cafe6f2a08}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemePhysics\Export.hpp">
@@ -39,9 +45,6 @@
     <ClInclude Include="..\..\include\MemePhysics\Rigidbody.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemePhysics\PhysicsThread.hpp">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemePhysics\Physics.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
@@ -53,6 +56,15 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemePhysics\PhysicsState.hpp">
       <Filter>Header Files\DS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemePhysics\Collider.hpp">
+      <Filter>Header Files\Colliders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemePhysics\BoxCollider.hpp">
+      <Filter>Header Files\Colliders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemePhysics\SphereCollider.hpp">
+      <Filter>Header Files\Colliders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -68,14 +80,20 @@
     <ClCompile Include="..\..\src\MemePhysics\Physics.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemePhysics\PhysicsThread.cpp">
-      <Filter>Source Files\Utility</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemePhysics\PhysicsWorld.cpp">
       <Filter>Source Files\DS</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemePhysics\PhysicsState.cpp">
       <Filter>Source Files\DS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemePhysics\Collider.cpp">
+      <Filter>Source Files\Colliders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemePhysics\BoxCollider.cpp">
+      <Filter>Source Files\Colliders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemePhysics\SphereCollider.cpp">
+      <Filter>Source Files\Colliders</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

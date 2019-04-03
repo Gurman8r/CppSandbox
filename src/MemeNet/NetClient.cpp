@@ -1,4 +1,4 @@
-#include <MemeNet/Client.hpp>
+#include <MemeNet/NetClient.hpp>
 #include <MemeNet/NetworkEvents.hpp>
 #include <MemeCore/Debug.hpp>
 #include <MemeCore/EventSystem.hpp>
@@ -12,7 +12,7 @@
 namespace ml
 {
 	Client::Client()
-		: NetworkInterface()
+		: NetInterface()
 		, m_connected(false)
 	{
 		ML_EventSystem.addListener(NetworkEvent::EV_ClientRecievePacket, this);

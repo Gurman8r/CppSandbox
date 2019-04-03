@@ -1,4 +1,4 @@
-#include <MemeNet/NetworkInterface.hpp>
+#include <MemeNet/NetInterface.hpp>
 #include <MemeNet/NetworkEvents.hpp>
 #include <MemeCore/Debug.hpp>
 #include <MemeCore/EventSystem.hpp>
@@ -12,23 +12,23 @@
 
 namespace ml
 {
-	NetworkInterface::NetworkInterface()
+	NetInterface::NetInterface()
 		: m_peer(NULL)
 	{
 	}
 	
-	NetworkInterface::~NetworkInterface()
+	NetInterface::~NetInterface()
 	{
 		clean();
 	}
 
 
-	bool NetworkInterface::setup()
+	bool NetInterface::setup()
 	{
 		return (!m_peer && (m_peer = ML_PEER(RakNet::RakPeerInterface::GetInstance())));
 	}
 
-	void NetworkInterface::clean()
+	void NetInterface::clean()
 	{
 		if (m_peer)
 		{
@@ -36,7 +36,7 @@ namespace ml
 		}
 	}
 
-	void NetworkInterface::poll()
+	void NetInterface::poll()
 	{
 		for (void * packet = ML_PEER(m_peer)->Receive();
 			(packet != NULL);
@@ -55,7 +55,7 @@ namespace ml
 	}
 
 
-	uint32_t NetworkInterface::send(const GUID & guid, const String & data, const SendSettings & settings)
+	uint32_t NetInterface::send(const GUID & guid, const String & data, const SendSettings & settings)
 	{
 		RakNet::BitStream bitStream;
 		bitStream.Write(data.c_str());
@@ -69,7 +69,7 @@ namespace ml
 			settings.receiptNumber);
 	}
 
-	uint32_t NetworkInterface::send(const Address & addr, const String & data, const SendSettings & settings)
+	uint32_t NetInterface::send(const Address & addr, const String & data, const SendSettings & settings)
 	{
 		RakNet::BitStream bitStream;
 		bitStream.Write(data.c_str());
@@ -84,24 +84,24 @@ namespace ml
 	}
 
 
-	Address NetworkInterface::getMyAddress() const
+	Address NetInterface::getMyAddress() const
 	{
 		return getAddressFromGUID(getMyGUID());
 	}
 
-	GUID NetworkInterface::getMyGUID() const
+	GUID NetInterface::getMyGUID() const
 	{
 		return GUID(ML_PEER(m_peer)->GetMyGUID().g);
 	}
 
-	Address NetworkInterface::getAddressFromGUID(const GUID & value) const
+	Address NetInterface::getAddressFromGUID(const GUID & value) const
 	{
 		const auto guid = RakNet::RakNetGUID(value);
 		const auto addr = ML_PEER(m_peer)->GetSystemAddressFromGuid(guid);
 		return Address(addr.ToString(), addr.GetPort());
 	}
 
-	GUID NetworkInterface::getGUIDFromAddress(const Address & value) const
+	GUID NetInterface::getGUIDFromAddress(const Address & value) const
 	{
 		const auto addr = RakNet::SystemAddress(value.ToCString(), value.port);
 		const auto guid = ML_PEER(m_peer)->GetGuidFromSystemAddress(addr);

@@ -1,13 +1,18 @@
 #ifndef _ML_THREAD_HPP_
 #define _ML_THREAD_HPP_
 
-#include <MemeCore/Function.hpp>
-#include <MemeCore/INonCopyable.hpp>
+#include <MemeCore/Duration.hpp>
+#include <MemeCore/IDisposable.hpp>
+#include <MemeCore/Lock.hpp>
+
+#define ML_THREAD_CONDITIONS(Fun) \
+std::enable_if_t<!std::is_same_v<std::remove_cv_t<std::remove_reference_t<Fun>>, std::thread>>
 
 namespace ml
 {
-	class ML_CORE_API Thread
+	class ML_CORE_API Thread final
 		: public ITrackable
+		, public IDisposable
 		, public INonCopyable
 	{
 	public:
@@ -17,52 +22,28 @@ namespace ml
 		Thread();
 		~Thread();
 
-		template <typename F>
-		Thread(F fun)
-			: Thread()
-		{
-			update(new VoidFun<F>(fun));
-		}
-
-		template <typename F, typename A>
-		Thread(F fun, A arg)
-			: Thread()
-		{
-			update(new ArgFun<F, A>(fun, arg));
-		}
-
-		template <typename T, typename F = void(T::*)()>
-		Thread(F fun, T * obj)
-			: Thread()
-		{
-			update(new MemberFun<T, F>(fun, obj));
-		}
-
-		template <typename T, typename A, typename F = void(T::*)(A)>
-		Thread(F fun, T * obj, A arg)
-			: Thread()
-		{
-			update(new MemberArgFun<T, A, F>(fun, obj, arg));
-		}
-
 	public:
-		Thread & clean();
-		Thread & detatch();
-		Thread & join();
-		Thread & launch();
-		Thread & update(Function * fun);
+		template <
+			class Fun, 
+			class ... Args, 
+			class = ML_THREAD_CONDITIONS(Fun)
+		> inline std::thread * launch(Fun && fun, Args && ... args)
+		{
+			return alive() ? (NULL) : (m_thr = new std::thread(fun, (args)...));
+		}
 
-	public:
-		bool	alive() const;
-		void *	handle();
-		ID		id() const;
-		bool	joinable() const;
+		bool alive() const;
+		bool joinable() const;
+		bool cleanup() override;
+		void sleep(const Duration & value);
+
+	public: // Lock/Unlock
+		inline void lock()	 { return m_lock.lock(); }
+		inline void unlock() { return m_lock.unlock(); }
 
 	private:
-		void run();
-
 		std::thread * m_thr;
-		Function *	  m_fun;
+		MutexLock m_lock;
 	};
 }
 

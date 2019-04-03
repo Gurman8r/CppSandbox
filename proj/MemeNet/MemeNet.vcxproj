@@ -169,17 +169,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\MemeNet\Client.hpp" />
+    <ClInclude Include="..\..\include\MemeNet\NetClient.hpp" />
     <ClInclude Include="..\..\include\MemeNet\Export.hpp" />
     <ClInclude Include="..\..\include\MemeNet\NetworkEvents.hpp" />
-    <ClInclude Include="..\..\include\MemeNet\NetworkInterface.hpp" />
+    <ClInclude Include="..\..\include\MemeNet\NetInterface.hpp" />
     <ClInclude Include="..\..\include\MemeNet\NetworkTypes.hpp" />
-    <ClInclude Include="..\..\include\MemeNet\Server.hpp" />
+    <ClInclude Include="..\..\include\MemeNet\NetServer.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\MemeNet\Client.cpp" />
-    <ClCompile Include="..\..\src\MemeNet\NetworkInterface.cpp" />
-    <ClCompile Include="..\..\src\MemeNet\Server.cpp" />
+    <ClCompile Include="..\..\src\MemeNet\NetClient.cpp" />
+    <ClCompile Include="..\..\src\MemeNet\NetInterface.cpp" />
+    <ClCompile Include="..\..\src\MemeNet\NetServer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
