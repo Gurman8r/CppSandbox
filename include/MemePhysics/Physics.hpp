@@ -17,10 +17,12 @@ namespace ml
 		static const vec3f Gravity;
 
 	public:
+		inline Mutex		& mutex()	{ return m_mutex;	}
 		inline Thread		& thread()	{ return m_thread;	}
 		inline PhysicsWorld & world()	{ return m_world;	}
 
 	private:
+		Mutex m_mutex;
 		Thread m_thread;
 		PhysicsWorld m_world;
 	};

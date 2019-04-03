@@ -32,79 +32,46 @@ int32_t main(int32_t argc, char ** argv)
 	if (ml::Application * app = ML_Engine.launchApp(new DEMO::Sandbox()))
 	{
 		// Enter
-		/* * * * * * * * * * * * * * * * * * * * */
 		mlCheck(ML_EventSystem.fireEvent(ml::EnterEvent(argc, argv)));
 
 		// Load Resources
-		/* * * * * * * * * * * * * * * * * * * * */
 		ML_EventSystem.fireEvent(ml::LoadEvent());
 
 		// Start
-		/* * * * * * * * * * * * * * * * * * * * */
 		ML_EventSystem.fireEvent(ml::StartEvent());
 
-		// Physics Loop
-		/* * * * * * * * * * * * * * * * * * * * */
-		if (!ML_Physics.thread().launch([&](ml::PhysicsWorld && world)
-		{
-			while (app && app->isOpen())
-			{
-				ml::Debug::log("Physics Update");
-
-				ML_Physics.thread().sleep(ml::Seconds(1));
-			}
-
-		}, ML_Physics.world()))
-		{
-			return ml::Debug::logError("Failed Launching Physics Thread")
-				|| ml::Debug::pause(EXIT_FAILURE);
-		}
-
 		// Main Loop
-		/* * * * * * * * * * * * * * * * * * * * */
 		do
 		{	// Begin Frame
-			/* * * * * * * * * * * * * * * * * * * * */
 			ML_Engine.beginFrame();
 			{
 				// Update Logic
-				/* * * * * * * * * * * * * * * * * * * * */
 				ML_EventSystem.fireEvent(ml::UpdateEvent(
 					ML_Engine.elapsed()
 				));
 
 				// Draw Scene
-				/* * * * * * * * * * * * * * * * * * * * */
 				ML_EventSystem.fireEvent(ml::DrawEvent(
 					ML_Engine.elapsed()
 				));
 
 				// Draw Gui
-				/* * * * * * * * * * * * * * * * * * * * */
 				ML_EventSystem.fireEvent(ml::GuiEvent(
 					ML_Engine.elapsed()
 				));
 			}
 			// End Frame
-			/* * * * * * * * * * * * * * * * * * * * */
 			ML_Engine.endFrame();
 
 		} while (app->isOpen());
 
-		// Cleanup Physics Thread
-		/* * * * * * * * * * * * * * * * * * * * */
-		ML_Physics.thread().cleanup();
-
 		// Unload Resources
-		/* * * * * * * * * * * * * * * * * * * * */
 		ML_EventSystem.fireEvent(ml::UnloadEvent());
 
 		// Exit
-		/* * * * * * * * * * * * * * * * * * * * */
 		ML_EventSystem.fireEvent(ml::ExitEvent());
 
 		// Free Program
-		/* * * * * * * * * * * * * * * * * * * * */
 		return ML_Engine.freeApp();
 	}
 	else

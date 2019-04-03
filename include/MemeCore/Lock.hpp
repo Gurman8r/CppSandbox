@@ -50,14 +50,18 @@ namespace ml
 
 	struct MutexLock final : public Lock<Mutex>
 	{
+		MutexLock() : Lock() {}
+
+		~MutexLock() {}
+
 		inline void lock() override
 		{
-			this->mtx.lock();
+			this->lck.lock();
 		}
 
 		inline void unlock() override
 		{
-			this->mtx.unlock();
+			this->lck.unlock();
 		}
 	};
 

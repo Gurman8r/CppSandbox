@@ -257,6 +257,57 @@ namespace DEMO
 					}
 				}
 			}
+
+			// Load Physics
+			/* * * * * * * * * * * * * * * * * * * * */
+			if (!ML_Physics.thread().launch([&]()
+			{
+				ml::Debug::log("Loading Physics...");
+				ML_Physics.world().state().resize(5); // Setup State
+				do
+				{
+					ml::PhysicsState stateCopy(ML_Physics.world().state());
+					ML_Physics.mutex().lock();
+					{
+						for (size_t i = 0, imax = stateCopy.size(); i < imax; i++)
+						{
+							ml::vec3f	pos; // Position
+							ml::quat	rot; // Rotation
+							ml::mat4f	mat; // Transform
+							ml::mat4f	inv; // Inverse Transform
+							if (stateCopy.getData(i, pos, rot, mat, inv))
+							{
+								// example
+
+								rot = { 0, 0, 0, 1 };
+								mat = ml::mat4f::identity();
+								inv = ml::mat4f::identity();
+
+								switch (i)
+								{
+								case 0: { pos[1] = +ML_Time.cos(); } break;
+								case 1: {} break;
+								case 2: {} break;
+								case 3: {} break;
+								case 4: {} break;
+								}
+
+								stateCopy.setData(i, pos, rot, mat, inv);
+							}
+						}
+					}
+					ML_Physics.mutex().unlock();
+					ML_Physics.world().state() = stateCopy;
+					ML_Physics.thread().sleep(ml::Seconds(1));
+
+				} while (this->isOpen());
+			}))
+			{
+				return ml::Debug::setError(
+					ML_FAILURE,
+					"System Failure",
+					"Failed Loading Physics");
+			}
 		}
 		else
 		{
@@ -589,8 +640,16 @@ namespace DEMO
 		{
 			if (ml::GameObject * obj = ML_Hierarchy.getObject("borg"))
 			{
-				ml::vec3f pos = obj->transform().getPosition();
-				pos[1] = +ML_Time.cos();
+				static bool once; 
+				if (!once)
+				{
+					once = true;
+					ML_Physics.world().state().setPosition(0, obj->transform().getPosition());
+				}
+
+				ml::vec3f pos;
+				if (ML_Physics.world().state().getPosition(0, pos)) {}
+
 				obj->transform()
 					.setPosition(pos)
 					.rotate(+ev->elapsed.delta(), ml::vec3f::One);
@@ -988,6 +1047,9 @@ namespace DEMO
 
 		// Unload Resources
 		ML_Res.cleanup();
+
+		// Cleanup Physics Thread
+		ML_Physics.thread().cleanup();
 	}
 
 	void Sandbox::onExit(const ml::ExitEvent * ev)

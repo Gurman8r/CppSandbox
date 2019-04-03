@@ -37,13 +37,8 @@ namespace ml
 		bool cleanup() override;
 		void sleep(const Duration & value);
 
-	public: // Lock/Unlock
-		inline void lock()	 { return m_lock.lock(); }
-		inline void unlock() { return m_lock.unlock(); }
-
 	private:
 		std::thread * m_thr;
-		MutexLock m_lock;
 	};
 }
 

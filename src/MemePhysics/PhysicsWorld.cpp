@@ -4,11 +4,11 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	PhysicsWorld::PhysicsWorld()
-		: state()
-		, timer()
-		, thread()
-		, lock(false)
-		, init(false)
+		: m_state()
+		, m_timer()
+		, m_thread()
+		, m_lock(false)
+		, m_init(false)
 	{
 	}
 

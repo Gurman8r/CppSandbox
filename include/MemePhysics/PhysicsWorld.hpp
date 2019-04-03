@@ -17,11 +17,15 @@ namespace ml
 		~PhysicsWorld();
 
 	public:
-		PhysicsState	state;
-		Timer			timer;
-		Thread			thread;
-		bool			lock;
-		bool			init;
+		inline PhysicsState & state() { return m_state; }
+		inline Timer		& timer() { return m_timer; }
+
+	private:
+		PhysicsState	m_state;
+		Timer			m_timer;
+		Thread			m_thread;
+		bool			m_lock;
+		bool			m_init;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

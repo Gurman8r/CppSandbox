@@ -6,7 +6,6 @@ namespace ml
 
 	Thread::Thread()
 		: m_thr(NULL)
-		, m_lock()
 	{
 	}
 
