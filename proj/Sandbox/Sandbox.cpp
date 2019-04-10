@@ -723,8 +723,8 @@ namespace DEMO
 			m_text["message"]
 				.setFont(ML_Res.fonts.get("minecraft"))
 				.setFontSize(72)
-				.setPosition({ 32, 128 })
-				.setString("there is no need\nto be upset");
+				.setPosition({ 48 })
+				.setString("github.com/gurman8r/cppsandbox");
 
 			const ml::Font *font = ML_Res.fonts.get("consolas");
 			uint32_t		fontSize = 18;
