@@ -6,49 +6,66 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class Quaternion final
 		: public Vector4<float>
 	{
 	public:
-		using base_type		= Vector4<float>;
-		using complex_type	= Vector<float, 3>;
+		/* * * * * * * * * * * * * * * * * * * * */
+		using value_type	= typename float;
+		using base_type		= typename Vector4<value_type>;
+		using complex_type	= typename Vector<value_type, 3>;
 
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		Quaternion()
-			: Quaternion(0.0f, 0.0f, 0.0f)
+			: Quaternion(1.0f)
 		{
 		}
-		Quaternion(float xyzw)
-			: Quaternion(xyzw, xyzw, xyzw)
+		
+		Quaternion(const float xyz)
+			: Quaternion(xyz, xyz, xyz)
 		{
 		}
-		Quaternion(float x, float y, float z)
-			: Quaternion(x, y, z, 1.0f)
+		
+		Quaternion(const float x, const float y, const float z)
+			: Quaternion(x, y, z, 0.0f)
 		{
 		}
-		Quaternion(float x, float y, float z, float w)
+		
+		Quaternion(const float x, const float y, const float z, const float w)
 			: base_type(x, y, z, w)
 		{
 		}
+		
 		Quaternion(const Vector<float, 4> & copy)
 			: base_type(copy)
 		{
 		}
+		
+		Quaternion(const complex_type & xyz, const float w)
+			: base_type(xyz[0], xyz[1], xyz[2], w)
+		{
+		}
+		
 		Quaternion(const Quaternion & copy)
 			: base_type((base_type)copy)
 		{
 		}
+		
 		~Quaternion() {}
 
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		inline complex_type complex() const
 		{
-			return complex_type(*this);
+			return (complex_type)(base_type)(*this);
 		}
 
 		inline float real() const
 		{
-			return (*cend());
+			return this->back();
 		}
 
 		inline mat3f matrix() const
@@ -71,6 +88,7 @@ namespace ml
 		}
 
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		inline static Quaternion slerp(const Quaternion & lhs, const Quaternion & rhs, float t)
 		{
 			Quaternion a = lhs.normalized();
@@ -90,7 +108,8 @@ namespace ml
 			return (b - a * d).normalized();
 		}
 
-	public:
+	public: // Operators
+		/* * * * * * * * * * * * * * * * * * * * */
 		inline friend Quaternion operator*(const Quaternion & lhs, const Quaternion & rhs)
 		{
 			return Quaternion(
@@ -117,7 +136,11 @@ namespace ml
 		}
 	};
 
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	using quat = Quaternion;
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_QUATERNION_HPP_

@@ -18,8 +18,7 @@ extern "C"
 namespace DEMO
 {
 	class ML_PLUGIN_API TestPlugin final
-		: public ml::IPlugin
-		, public ml::ISingleton<TestPlugin>
+		: public ml::ISingleton<TestPlugin>
 	{
 		friend class ml::ISingleton<TestPlugin>;
 
@@ -28,8 +27,8 @@ namespace DEMO
 		~TestPlugin();
 
 	public:
-		int32_t enable(void * data) override;
-		int32_t disable(void * data) override;
+		int32_t enable(void * data);
+		int32_t disable(void * data);
 	};
 }
 

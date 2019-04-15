@@ -7,20 +7,19 @@ namespace ml
 {
 	// Supports simple iteration of a fixed array
 	template <
-		class _Elem,
-		size_t _Size
-	>
-	class IEnumerable
+		class T,
+		size_t N
+	> class IEnumerable
 	{
 	public:
-		using value_type			= _Elem;
+		using value_type			= typename T;
 		using pointer				= typename value_type *;
 		using const_pointer			= typename const value_type *;
 		using reference				= typename value_type &;
 		using const_reference		= typename const value_type &;
 
-		using iterator				= typename std::_Array_iterator<_Elem, _Size>;
-		using const_iterator		= typename std::_Array_const_iterator<_Elem, _Size>;
+		using iterator				= typename std::_Array_iterator<T, N>;
+		using const_iterator		= typename std::_Array_const_iterator<T, N>;
 		using reverse_iterator		= typename std::reverse_iterator<iterator>;
 		using const_reverse_iterator= typename std::reverse_iterator<const_iterator>;
 
@@ -28,14 +27,15 @@ namespace ml
 		IEnumerable(pointer data)
 			: m_data(data)
 		{
-		}		
+		}
+
 		virtual ~IEnumerable() {}
 
 	public:
 		inline iterator					begin()				{ return iterator(m_data, 0); }
-		inline iterator					end()				{ return iterator(m_data, _Size); }
+		inline iterator					end()				{ return iterator(m_data, N); }
 		inline const_iterator			begin()		const	{ return const_iterator(m_data, 0); }
-		inline const_iterator			end()		const	{ return const_iterator(m_data, _Size); }
+		inline const_iterator			end()		const	{ return const_iterator(m_data, N); }
 		inline const_iterator			cbegin()	const	{ return begin(); }
 		inline const_iterator			cend()		const	{ return end(); }
 		inline reverse_iterator			rbegin()			{ return reverse_iterator(end()); }

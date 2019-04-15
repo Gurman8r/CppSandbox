@@ -5,18 +5,25 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	// One Dimensional Matrix
-	template <class _Elem, size_t N>
-	class Vector
-		: public Matrix<_Elem, N, 1>
-		, public IComparable<Vector<_Elem, N>>
+	template <
+		class T, 
+		size_t N
+	> class Vector
+		: public Matrix<T, N, 1>
+		, public IComparable<Vector<T, N>>
 	{
 	public:
-		using value_type	= _Elem;
-		using self_type		= Vector<_Elem, N>;
-		using base_type		= Matrix<_Elem, N, 1>;
+		/* * * * * * * * * * * * * * * * * * * * */
+		using value_type	= typename T;
+		using self_type		= typename Vector<value_type, N>;
+		using base_type		= typename Matrix<value_type, N, 1>;
+		using initializer	= typename base_type::initializer;
 
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		Vector()
 			: base_type()
 		{
@@ -27,12 +34,12 @@ namespace ml
 		{
 		}
 		
-		Vector(const _Elem * value)
+		Vector(const value_type * value)
 			: base_type(value)
 		{
 		}
 		
-		Vector(const std::initializer_list<_Elem> & value)
+		Vector(const initializer & value)
 			: base_type(value)
 		{
 		}
@@ -42,20 +49,24 @@ namespace ml
 		{
 		}
 
-		template <size_t N>
-		Vector(const Vector<_Elem, N> & copy)
+		template <
+			size_t N
+		> Vector(const Vector<T, N> & copy)
 			: base_type(copy)
 		{
 		}
 
-		template <class U>
-		Vector(const Vector<U, N>& copy)
+		template <
+			class U
+		> Vector(const Vector<U, N>& copy)
 			: base_type(copy)
 		{
 		}
 
-		template <class U, size_t N>
-		Vector(const Vector<U, N> & copy, const value_type dv = (value_type)(0))
+		template <
+			class U, 
+			size_t N
+		> Vector(const Vector<U, N> & copy, const value_type dv = (value_type)(0))
 			: base_type(copy, dv)
 		{
 		}
@@ -63,6 +74,7 @@ namespace ml
 		virtual ~Vector() {}
 
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		inline virtual bool equals(const self_type & value) const override
 		{
 			for (size_t i = 0; i < (*this).Size; i++)
@@ -87,8 +99,9 @@ namespace ml
 			return true;
 		}
 
-
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
+
 		inline float distanceTo(const self_type & value) const
 		{
 			return self_type::distance((*this), value);
@@ -114,6 +127,7 @@ namespace ml
 			return value;
 		};
 		
+		/* * * * * * * * * * * * * * * * * * * * */
 
 		inline self_type & normalize()
 		{
@@ -125,7 +139,8 @@ namespace ml
 			return self_type(*this).normalize();
 		};
 
-		
+		/* * * * * * * * * * * * * * * * * * * * */
+
 		inline static float distance(const self_type & a, const self_type & b)
 		{
 			return self_type(a - b).magnitude();
@@ -141,6 +156,7 @@ namespace ml
 			return value;
 		};
 
+		/* * * * * * * * * * * * * * * * * * * * */
 
 		inline static self_type direction(const self_type & from, const self_type & to)
 		{
@@ -154,50 +170,55 @@ namespace ml
 
 		inline static self_type reflect(const self_type & direction, const self_type & normal)
 		{
-			return (normal - direction) * ((_Elem)2 * dot(direction, normal));
+			return (normal - direction) * ((T)2 * dot(direction, normal));
 		};
 
-	public:
-		template <class U>
-		inline friend self_type operator+(const self_type & lhs, const Vector<U, N> & rhs)
+	public: // Operators
+		/* * * * * * * * * * * * * * * * * * * * */
+		template <
+			class U
+		> inline friend self_type operator+(const self_type & lhs, const Vector<U, N> & rhs)
 		{
 			self_type tmp;
 			for (size_t i = 0; i < tmp.Size; i++)
 			{
-				tmp[i] = lhs[i] + static_cast<_Elem>(rhs[i]);
+				tmp[i] = lhs[i] + static_cast<T>(rhs[i]);
 			}
 			return tmp;
 		};
 		
-		template <class U>
-		inline friend self_type operator-(const self_type & lhs, const Vector<U, N> & rhs)
+		template <
+			class U
+		> inline friend self_type operator-(const self_type & lhs, const Vector<U, N> & rhs)
 		{
 			self_type tmp;
 			for (size_t i = 0; i < tmp.Size; i++)
 			{
-				tmp[i] = lhs[i] - static_cast<_Elem>(rhs[i]);
+				tmp[i] = lhs[i] - static_cast<T>(rhs[i]);
 			}
 			return tmp;
 		};
 		
-		template <class U>
-		inline friend self_type operator*(const self_type & lhs, const Vector<U, N> & rhs)
+		template <
+			class U
+		> inline friend self_type operator*(const self_type & lhs, const Vector<U, N> & rhs)
 		{
 			self_type tmp;
 			for (size_t i = 0; i < tmp.Size; i++)
 			{
-				tmp[i] = lhs[i] * static_cast<_Elem>(rhs[i]);
+				tmp[i] = lhs[i] * static_cast<T>(rhs[i]);
 			}
 			return tmp;
 		};
 		
-		template <class U>
-		inline friend self_type operator/(const self_type & lhs, const Vector<U, N> & rhs)
+		template <
+			class U
+		> inline friend self_type operator/(const self_type & lhs, const Vector<U, N> & rhs)
 		{
 			self_type tmp;
 			for (size_t i = 0; i < tmp.Size; i++)
 			{
-				tmp[i] = lhs[i] / static_cast<_Elem>(rhs[i]);
+				tmp[i] = lhs[i] / static_cast<T>(rhs[i]);
 			}
 			return tmp;
 		};
@@ -221,28 +242,33 @@ namespace ml
 			}
 			return tmp;
 		};
-		
 
-		template <class U>
-		inline friend self_type & operator+=(self_type & lhs, const Vector<U, N> & rhs)
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		template <
+			class U
+		> inline friend self_type & operator+=(self_type & lhs, const Vector<U, N> & rhs)
 		{
 			return (lhs = (lhs + rhs));
 		};
 		
-		template <class U>
-		inline friend self_type & operator-=(self_type & lhs, const Vector<U, N> & rhs)
+		template <
+			class U
+		> inline friend self_type & operator-=(self_type & lhs, const Vector<U, N> & rhs)
 		{
 			return (lhs = (lhs - rhs));
 		};
 		
-		template <class U>
-		inline friend self_type & operator*=(self_type & lhs, const Vector<U, N> & rhs)
+		template <
+			class U
+		> inline friend self_type & operator*=(self_type & lhs, const Vector<U, N> & rhs)
 		{
 			return (lhs = (lhs * rhs));
 		};
 		
-		template <class U>
-		inline friend self_type & operator/=(self_type & lhs, const Vector<U, N> & rhs)
+		template <
+			class U
+		> inline friend self_type & operator/=(self_type & lhs, const Vector<U, N> & rhs)
 		{
 			return (lhs = (lhs / rhs));
 		};
@@ -257,12 +283,17 @@ namespace ml
 			return (lhs = (lhs / rhs));
 		};
 		
+		/* * * * * * * * * * * * * * * * * * * * */
 
 		inline friend self_type operator-(const self_type & rhs)
 		{
-			return rhs * static_cast<_Elem>(-1);
+			return rhs * static_cast<T>(-1);
 		}
+
+		/* * * * * * * * * * * * * * * * * * * * */
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_VECTOR_HPP_

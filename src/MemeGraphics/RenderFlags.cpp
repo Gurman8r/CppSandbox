@@ -10,6 +10,15 @@ namespace ml
 	{
 	}
 
+	RenderFlags::RenderFlags(const Initializer & data)
+		: m_data()
+	{
+		for (auto it = data.begin(); it != data.end(); it++)
+		{
+			m_data.insert(*it);
+		}
+	}
+
 	RenderFlags::RenderFlags(const HashMap<uint32_t, int32_t>& data)
 		: m_data(data)
 	{

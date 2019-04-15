@@ -5,16 +5,20 @@
 
 namespace ml
 {
-	template <class _Elem>
-	class Vector2
-		: public Vector<_Elem, 2>
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	template <
+		class T
+	> class Vector2
+		: public Vector<T, 2>
 	{
 	public:
-		using base_type = Vector<_Elem, 2>;
-		using self_type = Vector2<_Elem>;
-		using value_type = _Elem;
+		using value_type	= typename T;
+		using base_type		= typename Vector<value_type, 2>;
+		using self_type		= typename Vector2<value_type>;
 
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		Vector2()
 			: base_type()
 		{
@@ -30,20 +34,24 @@ namespace ml
 		{
 		}
 		
-		template <size_t N>
-		Vector2(const Vector<_Elem, N> & copy)
+		template <
+			size_t N
+		> Vector2(const Vector<T, N> & copy)
 			: base_type(copy)
 		{
 		}
 
-		template <class U>
-		Vector2(const Vector2<U>& copy)
+		template <
+			class U
+		> Vector2(const Vector2<U>& copy)
 			: base_type(copy)
 		{
 		}
 
-		template <class U, size_t N>
-		Vector2(const Vector<U, N> & copy, const value_type dv = (value_type)(0))
+		template <
+			class U, 
+			size_t N
+		> Vector2(const Vector<U, N> & copy, const value_type dv = (value_type)(0))
 			: base_type(copy, dv)
 		{
 		}
@@ -51,6 +59,7 @@ namespace ml
 		virtual ~Vector2() {}
 		
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		inline static float angle(const self_type & from, const self_type & to)
 		{
 			return angle(to - from);
@@ -73,27 +82,35 @@ namespace ml
 			return self_type(cos(value), sin(value));
 		};
 
-	public:
+	public: // Constants
+		/* * * * * * * * * * * * * * * * * * * * */
+
 		static const self_type Zero;
 		static const self_type One;
 		static const self_type Up;
 		static const self_type Down;
 		static const self_type Left;
 		static const self_type Right;
+
+		/* * * * * * * * * * * * * * * * * * * * */
 	};
 
-	template <class _Elem> const Vector2<_Elem> Vector2<_Elem>::Zero	= Vector2<_Elem>( 0,  0);
-	template <class _Elem> const Vector2<_Elem> Vector2<_Elem>::One		= Vector2<_Elem>( 1,  1);
-	template <class _Elem> const Vector2<_Elem> Vector2<_Elem>::Up		= Vector2<_Elem>( 0,  1);
-	template <class _Elem> const Vector2<_Elem> Vector2<_Elem>::Down	= Vector2<_Elem>( 0, -1);
-	template <class _Elem> const Vector2<_Elem> Vector2<_Elem>::Left	= Vector2<_Elem>(-1,  0);
-	template <class _Elem> const Vector2<_Elem> Vector2<_Elem>::Right	= Vector2<_Elem>( 1,  0);
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	template <class T> const Vector2<T> Vector2<T>::Zero	= Vector2<T>( 0,  0);
+	template <class T> const Vector2<T> Vector2<T>::One		= Vector2<T>( 1,  1);
+	template <class T> const Vector2<T> Vector2<T>::Up		= Vector2<T>( 0,  1);
+	template <class T> const Vector2<T> Vector2<T>::Down	= Vector2<T>( 0, -1);
+	template <class T> const Vector2<T> Vector2<T>::Left	= Vector2<T>(-1,  0);
+	template <class T> const Vector2<T> Vector2<T>::Right	= Vector2<T>( 1,  0);
 
 	using vec2f = Vector2<float>;
 	using vec2i = Vector2<int32_t>;
 	using vec2d = Vector2<double>;
 	using vec2b = Vector2<uint8_t>;
 	using vec2u = Vector2<uint32_t>;
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_VECTOR_2_HPP_

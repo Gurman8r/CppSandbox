@@ -168,6 +168,7 @@
     <ClInclude Include="..\..\include\MemeCore\Function.hpp" />
     <ClInclude Include="..\..\include\MemeCore\IHandle.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Lock.hpp" />
+    <ClInclude Include="..\..\include\MemeCore\Preprocessor.hpp" />
     <ClInclude Include="..\..\include\MemeCore\TestRequest.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Transform.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Usings.hpp" />

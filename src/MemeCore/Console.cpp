@@ -5,9 +5,10 @@
 #include <Windows.h>
 #endif // ML_SYSTEM_WINDOWS
 
-
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	void Console::setConsoleTextAttribute(const uint16_t & value)
 	{
 #ifdef ML_SYSTEM_WINDOWS
@@ -16,6 +17,8 @@ namespace ml
 
 #endif
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	const FG::Color FG::Values[FG::MAX_COLOR] = {
 		Black,
@@ -36,6 +39,8 @@ namespace ml
 		White,
 	};
 
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	const BG::Color BG::Values[BG::MAX_COLOR] = {
 		Black,
 		DarkBlue,
@@ -54,4 +59,6 @@ namespace ml
 		Yellow,
 		White,
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

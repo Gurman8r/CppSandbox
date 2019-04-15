@@ -10,12 +10,14 @@ namespace ml
 		: public ITrackable
 	{
 	public:
-		using FlagMap = typename HashMap<uint32_t, int32_t>;
-		using iterator = typename FlagMap::iterator;
-		using const_iterator = typename FlagMap::const_iterator;
+		using Initializer		= typename std::initializer_list<Pair<uint32_t, int32_t>>;
+		using FlagMap			= typename HashMap<uint32_t, int32_t>;
+		using iterator			= typename FlagMap::iterator;
+		using const_iterator	= typename FlagMap::const_iterator;
 
 	public:
 		RenderFlags();
+		RenderFlags(const Initializer & data);
 		RenderFlags(const HashMap<uint32_t, int32_t> & data);
 		RenderFlags(const RenderFlags & copy);
 		~RenderFlags();

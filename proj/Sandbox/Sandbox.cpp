@@ -39,15 +39,6 @@
 namespace DEMO
 {
 	/* * * * * * * * * * * * * * * * * * * * */
-
-	Sandbox::Sandbox()
-		: EditorApplication()
-	{
-	}
-
-	Sandbox::~Sandbox() {}
-
-	/* * * * * * * * * * * * * * * * * * * * */
 	
 	void Sandbox::onEvent(const ml::IEvent * value)
 	{
@@ -233,49 +224,39 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (ml::Debug::log("Launching Physics Thread...") && !ML_Physics.thread().launch([&]()
 		{
+			/* * * * * * * * * * * * * * * * * * * * */
+
 			ML_Physics.world().state().resize(5); // Setup State
 			do
 			{	/* * * * * * * * * * * * * * * * * * * * */
-				ml::PhysicsState copy(ML_Physics.world().state());
-				ML_Physics.mutex().lock();
+				
+				ml::PhysicsState state;
+				if (ML_Physics.beginUpdate(state))
 				{
-					for (size_t i = 0, imax = copy.size(); i < imax; i++)
+					for (size_t i = 0, imax = state.size(); i < imax; i++)
 					{
-						/* * * * * * * * * * * * * * * * * * * * */
-
 						ml::vec3f	pos; // Position
 						ml::quat	rot; // Rotation
 						ml::mat4f	mat; // Transform
 						ml::mat4f	inv; // Inverse Transform
-						if (copy.getData(i, pos, rot, mat, inv))
+						if (state.getData(i, pos, rot, mat, inv))
 						{
-							// example
-
-							rot = { 0, 0, 0, 1 };
-							mat = ml::mat4f::identity();
-							inv = ml::mat4f::identity();
-
 							switch (i)
 							{
 							case 0: { pos[1] = +ML_Time.cos(); } break;
-							case 1: {} break;
-							case 2: {} break;
-							case 3: {} break;
-							case 4: {} break;
 							}
 
-							copy.setData(i, pos, rot, mat, inv);
+							state.setData(i, pos, rot, mat, inv);
 						}
-
-						/* * * * * * * * * * * * * * * * * * * * */
 					}
+					
+					ML_Physics.endUpdate(state);
+					
+					/* * * * * * * * * * * * * * * * * * * * */
 				}
-				ML_Physics.mutex().unlock();
-				ML_Physics.world().state() = copy;
-				ML_Physics.thread().sleep(ml::Millis(30));
-
-				/* * * * * * * * * * * * * * * * * * * * */
 			} while (this->isOpen());
+
+			/* * * * * * * * * * * * * * * * * * * * */
 		}))
 		{
 			return ml::Debug::setError(
@@ -392,8 +373,8 @@ namespace DEMO
 		{
 			if (ml::Plugin * p = ML_Res.plugins.get("TestPlugin"))
 			{
-				p->enable("Test Plugin Enabled");
-				p->disable("Test Plugin Disabled");
+				p->call("ML_Plugin_Enable", "Hello!");
+				p->call("ML_Plugin_Disable", "Goodbye!");
 			}
 		}
 
@@ -593,21 +574,21 @@ namespace DEMO
 		ml::Entity ent;
 		if (ent.loadFromFile(""))
 		{
-			ml::Transform * transform = ent.add<ml::Transform>();
-			transform->translate({ 0.0f, -2.5f, 0.0f });
-			transform->scale({ 12.5, 0.25f, 12.5 });
+			ml::Transform * transform = ent.add<ml::Transform>({
+				{ 0.0f, -2.5f, 0.0f },
+				{ 12.5f, 0.25f, 12.5f },
+				{ ml::vec3f::One, 0.0f }
+			});
 
-			ml::UniformSet * uniforms = ent.add<ml::UniformSet>();
-			(*uniforms) = {
-					ml::Uniform("Vert.proj",		ml::Uniform::Mat4,	&uni.persp.matrix()),
-					ml::Uniform("Vert.view",		ml::Uniform::Mat4,	&uni.camera.matrix()),
-					ml::Uniform("Vert.model",		ml::Uniform::Mat4,	&transform->matrix()),
-					ml::Uniform("Frag.mainCol",		ml::Uniform::Vec4,	&ml::Color::White),
-					ml::Uniform("Frag.mainTex",		ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm")),
-			};
+			ml::UniformSet * uniforms = ent.add<ml::UniformSet>({
+				ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&uni.persp.matrix()),
+				ml::Uniform("Vert.view",	ml::Uniform::Mat4,	&uni.camera.matrix()),
+				ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&transform->matrix()),
+				ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
+				ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm")),
+			});
 
-			ml::RenderFlags * flags = ent.add<ml::RenderFlags>();
-			(*flags) = ml::RenderFlags({
+			ml::RenderFlags * flags = ent.add<ml::RenderFlags>({
 				{ ml::GL::CullFace, true },
 				{ ml::GL::DepthTest, true },
 			});
@@ -644,15 +625,15 @@ namespace DEMO
 		{
 			if (ml::GameObject * obj = ML_Hierarchy.getObject("borg"))
 			{
-				static bool once; 
-				if (!once)
+				// FIXME: this is a hack, needs to update PhysicsState a bit
+				static bool once;
+				if (!once && (once = true))
 				{
-					once = true;
 					ML_Physics.world().state().setPosition(0, obj->transform().getPosition());
 				}
 
-				ml::vec3f pos;
-				if (ML_Physics.world().state().getPosition(0, pos)) {}
+				ml::vec3f pos; 
+				ML_Physics.world().state().getPosition(0, pos);
 
 				obj->transform()
 					.setPosition(pos)

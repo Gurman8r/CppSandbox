@@ -32,20 +32,6 @@ namespace ml
 			return call(name, (void *)(data));
 		}
 
-		template <
-			typename T
-		> inline void * enable(T data)
-		{
-			return call<T>(ML_STRINGIFY(ML_Plugin_Enable), data);
-		}
-
-		template <
-			typename T
-		> inline void * disable(T data)
-		{
-			return call<T>(ML_STRINGIFY(ML_Plugin_Disable), data);
-		}
-
 	public:
 		inline const String & file() const { return m_file; }
 

@@ -7,7 +7,6 @@
 namespace ml
 {
 	struct ML_ENGINE_API PluginDetails final
-		: public ITrackable
 	{
 		int32_t apiVersion;
 		CString fileName;

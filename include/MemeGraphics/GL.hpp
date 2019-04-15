@@ -1,9 +1,13 @@
 #ifndef _ML_GL_HPP_
 #define _ML_GL_HPP_
 
+/* * * * * * * * * * * * * * * * * * * * */
+
 #include <MemeGraphics/Export.hpp>
 #include <MemeCore/Maths.hpp>
 
+// Types
+/* * * * * * * * * * * * * * * * * * * * */
 namespace ml
 {
 	struct ML_GRAPHICS_API GL final
@@ -319,7 +323,6 @@ namespace ml
 			Texture29,						// GL_TEXTURE29
 			Texture30,						// GL_TEXTURE30
 			Texture31,						// GL_TEXTURE31
-			
 		};
 
 		enum DrawBuffers
@@ -353,9 +356,28 @@ namespace ml
 			ColorBufferBit	 = 0x4000,		// GL_COLOR_BUFFER_BIT
 		};
 	};
-
 }
 
-#include <MemeGraphics/GL.inl>
+// Operators
+/* * * * * * * * * * * * * * * * * * * * */
+namespace ml
+{
+	// GL::Mask
+	ML_GENERATE_MASK_OPERATORS(
+		GL::Mask, uint32_t
+	)
+
+	// GL::Attachment
+	ML_GENERATE_ITERABLE_OPERATORS(
+		GL::Attachment, uint32_t, int32_t, GL::ColorAttachment0, GL::ColorAttachment9
+	)
+
+	// GL::TextureID
+	ML_GENERATE_ITERABLE_OPERATORS(
+		GL::TextureID, uint32_t, int32_t, GL::Texture0, GL::Texture31
+	)
+}
+
+/* * * * * * * * * * * * * * * * * * * * */
 
 #endif // !_ML_GL_HPP_

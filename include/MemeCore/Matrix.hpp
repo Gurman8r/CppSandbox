@@ -9,32 +9,38 @@
 namespace ml
 {
 	// Template Fixed 2D Array
-	template <class _Elem, size_t _Cols, size_t _Rows>
-	class Matrix
+	template <
+		class T, 
+		size_t C, 
+		size_t R
+	> class Matrix
 		: public ITrackable
-		, public IComparable<Matrix<_Elem, _Cols, _Rows>>
-		, public IEnumerable<_Elem, _Cols * _Rows>
+		, public IComparable<Matrix<T, C, R>>
+		, public IEnumerable<T, C * R>
 	{
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		enum : size_t
 		{
-			Cols = _Cols,
-			Rows = _Rows,
+			Cols = C,
+			Rows = R,
 			Size = Cols * Rows
 		};
 		
-		using value_type			= _Elem;
-		using self_type				= Matrix<value_type, Cols, Rows>;
-		using enumerable_type		= IEnumerable<value_type, Size>;
-
-		using initializer_type		= typename std::initializer_list<value_type>;
-		using array_type			= typename std::array<value_type, Size>;
-		using contiguous_type		= typename std::vector<value_type>;
-
+	public:
+		/* * * * * * * * * * * * * * * * * * * * */
+		using value_type			= typename T;
+		using array_type			= typename value_type[Size];
 		using pointer				= typename value_type *;
-		using const_pointer			= typename const value_type *;
 		using reference				= typename value_type &;
+		using const_pointer			= typename const value_type *;
 		using const_reference		= typename const value_type &;
+
+		using self_type				= typename Matrix<value_type, Cols, Rows>;
+		using enumerable_type		= typename IEnumerable<value_type, Size>;
+
+		using initializer			= typename std::initializer_list<value_type>;
+		using contiguous_type		= typename std::vector<value_type>;
 
 		using iterator				= typename enumerable_type::iterator;
 		using const_iterator		= typename enumerable_type::const_iterator;
@@ -42,9 +48,11 @@ namespace ml
 		using const_reverse_iterator= typename enumerable_type::const_reverse_iterator;
 
 	private:
-		value_type m_data[Size];
+		/* * * * * * * * * * * * * * * * * * * * */
+		array_type m_data;
 
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		Matrix()
 			: enumerable_type(m_data)
 		{
@@ -65,7 +73,7 @@ namespace ml
 			}
 		}
 
-		Matrix(const initializer_type & value)
+		Matrix(const initializer & value)
 			: self_type()
 		{
 			if (value.size() == Size)
@@ -88,15 +96,19 @@ namespace ml
 		{
 		}
 
-		template <class U, size_t C, size_t R>
-		Matrix(const Matrix<U, C, R> & value, const_reference dv = (value_type)(0))
+		template <
+			class U, 
+			size_t C, 
+			size_t R
+		> Matrix(const Matrix<U, C, R> & value, const_reference default_val = (value_type)(0))
 			: self_type()
 		{
 			for (size_t i = 0; i < Size; i++)
 			{
 				(*this)[i] = ((i < value.Size)
-					? static_cast<value_type>(value[i])
-					: dv);
+					? (static_cast<value_type>(value[i]))
+					: (default_val)
+				);
 			}
 		}
 
@@ -104,6 +116,7 @@ namespace ml
 
 
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		inline void fill(const_reference value)
 		{
 			std::fill(this->begin(), this->end(), value);
@@ -113,73 +126,71 @@ namespace ml
 		{
 			std::swap(m_data, other.m_data);
 		}
-
-	public:
-		inline self_type & operator=(const_reference value)
-		{
-			return ((*this) = self_type(value));
-		}
-		
-		inline const_reference operator[](size_t index) const
-		{
-			assert((index < Size) && "Matrix subscript out of range!");
-			return m_data[index];
-		}
-		
-		inline reference operator[](size_t index)
-		{
-			assert((index < Size) && "Matrix subscript out of range!");
-			return m_data[index];
-		}
 		
 	public:
-		inline pointer		data()
-		{
-			return m_data;
-		}
-		inline reference	at(size_t i)
+		/* * * * * * * * * * * * * * * * * * * * */
+		inline reference at(size_t i)
 		{
 			return (*this)[i];
 		}
-		inline reference	at(size_t x, size_t y)
+		
+		inline reference at(size_t x, size_t y)
 		{
 			return at(y * Cols + x);
 		}
-		inline reference	front()
+		
+		inline reference back()
+		{
+			return at(size() - 1);
+		}
+		
+		inline pointer data()
+		{
+			return m_data;
+		}
+		
+		inline reference front()
 		{
 			return at(0);
 		}
-		inline reference	back()
+
+	public:
+		/* * * * * * * * * * * * * * * * * * * * */
+		inline const_reference at(size_t i) const
+		{
+			return (*this)[i];
+		}
+		
+		inline const_reference at(size_t x, size_t y) const
+		{
+			return at(y * Cols + x);
+		}
+		
+		inline const_pointer data() const
+		{
+			return m_data;
+		}
+		
+		inline const_reference back() const
 		{
 			return at(size() - 1);
 		}
 
-		inline const_pointer	data() const
-		{
-			return m_data;
-		}
-		inline const_reference	at(size_t i) const
-		{
-			return (*this)[i];
-		}
-		inline const_reference	at(size_t x, size_t y) const
-		{
-			return at(y * Cols + x);
-		}
-		inline const_reference	front() const
+		inline const_reference front() const
 		{
 			return at(0);
 		}
-		inline const_reference	back() const
-		{
-			return at(size() - 1);
-		}
-
+		
+	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		inline size_t cols() const { return Cols; }
+		
 		inline size_t rows() const { return Rows; }
+		
 		inline size_t size() const { return Size; }
 
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		inline virtual void serialize(std::ostream & out) const override
 		{
 			for (size_t y = 0; y < Rows; y++)
@@ -209,6 +220,7 @@ namespace ml
 		}
 
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		inline virtual bool equals(const self_type & value) const override
 		{
 			for (size_t i = 0; i < Size; i++)
@@ -234,6 +246,7 @@ namespace ml
 		}
 
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		inline static self_type & identity()
 		{
 			static self_type temp;
@@ -272,19 +285,39 @@ namespace ml
 			}
 			return out;
 		}
+
+	public: // Operators
+		/* * * * * * * * * * * * * * * * * * * * */
+		inline self_type & operator=(const_reference value)
+		{
+			return ((*this) = self_type(value));
+		}
+
+		inline const_reference operator[](size_t index) const
+		{
+			assert((index < Size) && "Matrix subscript out of range!");
+			return m_data[index];
+		}
+
+		inline reference operator[](size_t index)
+		{
+			assert((index < Size) && "Matrix subscript out of range!");
+			return m_data[index];
+		}
+
+		/* * * * * * * * * * * * * * * * * * * * */
 	};
 
-	template <class _Elem, size_t N> 
-	using MatrixN = Matrix<_Elem, N, N>;
-	
-	template <class _Elem> 
-	using Matrix3 = MatrixN<_Elem, 3>;
-	
-	template <class _Elem> 
-	using Matrix4 = MatrixN<_Elem, 4>;
+	/* * * * * * * * * * * * * * * * * * * * */
 
-	using mat3f = Matrix3<float>;
-	using mat4f = Matrix4<float>;
+	template <class T, size_t N> using MatrixNxN = Matrix<T, N, N>;
+	template <class T>			 using Matrix3x3 = MatrixNxN<T, 3>;
+	template <class T>			 using Matrix4x4 = MatrixNxN<T, 4>;
+
+	using mat3f = Matrix3x3<float>;
+	using mat4f = Matrix4x4<float>;
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_MATRIX_HPP_

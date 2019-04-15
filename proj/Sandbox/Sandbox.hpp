@@ -18,14 +18,18 @@ namespace DEMO
 		: public ml::EditorApplication
 	{
 	public:
-		Sandbox();
-		~Sandbox();
+		/* * * * * * * * * * * * * * * * * * * * */
+		Sandbox()
+			: EditorApplication()
+		{
+		}
+		~Sandbox() {}
 
-	public: // Events
+	public:
 		/* * * * * * * * * * * * * * * * * * * * */
 		void onEvent(const ml::IEvent * value) override;
 
-	private: // Callbacks
+	private:
 		/* * * * * * * * * * * * * * * * * * * * */
 		void onEnter		(const ml::EnterEvent		* ev) override;
 		void onLoad			(const ml::LoadEvent		* ev) override;
@@ -36,14 +40,14 @@ namespace DEMO
 		void onUnload		(const ml::UnloadEvent		* ev) override;
 		void onExit			(const ml::ExitEvent		* ev) override;
 
-	private: // Editor GUI
+	private:
 		/* * * * * * * * * * * * * * * * * * * * */
 		bool ML_MainMenuBar_draw();
 		bool ML_Dockspace_draw(bool * p_open);
 		bool ML_SceneView_draw(bool * p_open);
 		bool ML_Inspector_draw(bool * p_open);
 
-	private: // Sandbox
+	private:
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		// Batches

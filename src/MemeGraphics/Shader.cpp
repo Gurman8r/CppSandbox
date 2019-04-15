@@ -174,10 +174,11 @@ namespace ml
 
 			if (bindTextures)
 			{
-				GL::TextureID texID = GL::Texture0;
+				GL::TextureID tex = GL::Texture0;
+
 				for (const TexturePair & pair : m_textures)
 				{
-					ML_GL.activeTexture(texID++);
+					ML_GL.activeTexture(tex++);
 
 					Texture::bind(pair.second);
 				}
@@ -218,7 +219,7 @@ namespace ml
 			case Uniform::Vec4:	return setUniform(u.name, u.get_value<vec4f>());
 			case Uniform::Mat3:	return setUniform(u.name, u.get_value<mat3f>());
 			case Uniform::Mat4:	return setUniform(u.name, u.get_value<mat4f>());
-			case Uniform::Tex2D:	return setUniform(u.name, u.get_value<Texture>());
+			case Uniform::Tex2D:return setUniform(u.name, u.get_value<Texture>());
 			}
 		}
 		return Debug::logError("Invalid Uniform | {0}", u);

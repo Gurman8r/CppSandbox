@@ -5,16 +5,21 @@
 
 namespace ml
 {
-	template <class _Elem>
-	class Vector4
-		: public Vector<_Elem, 4>
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	template <
+		class T
+	> class Vector4
+		: public Vector<T, 4>
 	{
 	public:
-		using base_type		= Vector<_Elem, 4>;
-		using self_type		= Vector4<_Elem>;
-		using value_type	= _Elem;
+		/* * * * * * * * * * * * * * * * * * * * */
+		using value_type	= typename T;
+		using base_type		= Vector<value_type, 4>;
+		using self_type		= Vector4<value_type>;
 
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		Vector4()
 			: base_type()
 		{
@@ -30,38 +35,50 @@ namespace ml
 		{
 		}
 
-		template <size_t N>
-		Vector4(const Vector<_Elem, N> & copy)
+		template <
+			size_t N
+		> Vector4(const Vector<T, N> & copy)
 			: base_type(copy)
 		{
 		}
 
-		template <class U>
-		Vector4(const Vector4<U> & copy)
+		template <
+			class U
+		> Vector4(const Vector4<U> & copy)
 			: base_type(copy)
 		{
 		}
 
-		template <class U, size_t N>
-		Vector4(const Vector<U, N> & copy, const value_type dv = (value_type)(0))
+		template <
+			class U, 
+			size_t N
+		> Vector4(const Vector<U, N> & copy, const value_type dv = (value_type)(0))
 			: base_type(copy, dv)
 		{
 		}
 
 		virtual ~Vector4() {}
 
-	public:
+	public: // Constants
+		/* * * * * * * * * * * * * * * * * * * * */
+
 		static const self_type Zero;
 		static const self_type One;
+
+		/* * * * * * * * * * * * * * * * * * * * */
 	};
 
-	template <class _Elem> const Vector4<_Elem> Vector4<_Elem>::Zero = Vector4<_Elem>(0);
-	template <class _Elem> const Vector4<_Elem> Vector4<_Elem>::One  = Vector4<_Elem>(1);
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	template <class T> const Vector4<T> Vector4<T>::Zero = Vector4<T>(0);
+	template <class T> const Vector4<T> Vector4<T>::One  = Vector4<T>(1);
 
 	using vec4f = Vector4<float>;
 	using vec4i = Vector4<int32_t>;
 	using vec4d = Vector4<double>;
 	using vec4b = Vector4<uint8_t>;
 	using vec4u = Vector4<uint32_t>;
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 #endif // !_ML_VECTOR_4_HPP_

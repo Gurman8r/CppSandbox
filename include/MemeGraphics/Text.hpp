@@ -11,6 +11,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_GRAPHICS_API Text
 		: public ITrackable
 		, public IDrawable
@@ -33,7 +35,7 @@ namespace ml
 		inline const uint32_t	getFontSize()	const { return m_fontSize;	}
 		inline const vec2f &	getPosition()	const { return m_position;	}
 		inline const vec2f &	getScale()		const { return m_scale;		}
-		inline const String &	getString()		const { return m_string;		}
+		inline const String &	getString()		const { return m_string;	}
 		inline const vec4f &	getColor()		const { return m_color;		}
 
 	public:
@@ -52,5 +54,7 @@ namespace ml
 		mutable TextureList		m_textures;
 		mutable List<RectQuad>	m_vertices;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 #endif // !_ML_TEXT_HPP_

@@ -273,9 +273,4 @@
       <Filter>Source Files\DS</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\include\MemeGraphics\GL.inl">
-      <Filter>Header Files\Internal</Filter>
-    </None>
-  </ItemGroup>
 </Project>

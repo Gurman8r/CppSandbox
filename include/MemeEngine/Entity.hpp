@@ -26,11 +26,19 @@ namespace ml
 		virtual bool loadFromFile(const String & filename) override;
 
 	public:
-		template <typename T> 
+		template <typename T>
 		inline T * add()
 		{
 			return (m_cmp.find(&typeid(T)) == m_cmp.end())
 				? ((T *)(m_cmp[&typeid(T)] = new T()))
+				: (NULL);
+		}
+
+		template <typename T>
+		inline T * add(const T & value)
+		{
+			return (m_cmp.find(&typeid(T)) == m_cmp.end())
+				? ((T *)(m_cmp[&typeid(T)] = new T(value)))
 				: (NULL);
 		}
 

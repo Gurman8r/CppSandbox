@@ -31,6 +31,8 @@ int32_t main(int32_t argc, char ** argv)
 	/* * * * * * * * * * * * * * * * * * * * */
 	if (ml::Application * app = ML_Engine.launchApp(new DEMO::Sandbox()))
 	{
+		/* * * * * * * * * * * * * * * * * * * * */
+
 		// Enter
 		mlCheck(ML_EventSystem.fireEvent(ml::EnterEvent(argc, argv)));
 
@@ -40,7 +42,7 @@ int32_t main(int32_t argc, char ** argv)
 		// Start
 		ML_EventSystem.fireEvent(ml::StartEvent());
 
-		// Main Loop
+		/* * * * * * * * * * * * * * * * * * * * */
 		do
 		{	// Begin Frame
 			ML_Engine.beginFrame();
@@ -65,6 +67,8 @@ int32_t main(int32_t argc, char ** argv)
 
 		} while (app->isOpen());
 
+		/* * * * * * * * * * * * * * * * * * * * */
+
 		// Unload Resources
 		ML_EventSystem.fireEvent(ml::UnloadEvent());
 
@@ -73,6 +77,8 @@ int32_t main(int32_t argc, char ** argv)
 
 		// Free Program
 		return ML_Engine.freeApp();
+
+		/* * * * * * * * * * * * * * * * * * * * */
 	}
 	else
 	{
