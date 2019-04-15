@@ -2,7 +2,7 @@
 #define _ML_VAR_HPP_
 
 #include <MemeScript/TokenList.hpp>
-#include <MemeScript/StringUtility.hpp>
+#include <MemeCore/StringUtility.hpp>
 
 namespace ml
 {

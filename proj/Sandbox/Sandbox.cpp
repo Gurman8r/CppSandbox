@@ -27,6 +27,7 @@
 #include <MemeNet/NetServer.hpp>
 #include <MemePhysics/Physics.hpp>
 #include <MemeScript/Interpreter.hpp>
+#include <MemeScript/ScriptEvents.hpp>
 #include <MemeWindow/WindowEvents.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -38,6 +39,15 @@
 
 namespace DEMO
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	Sandbox::Sandbox()
+		: EditorApplication()
+	{
+	}
+
+	Sandbox::~Sandbox() {}
+
 	/* * * * * * * * * * * * * * * * * * * * */
 	
 	void Sandbox::onEvent(const ml::IEvent * value)

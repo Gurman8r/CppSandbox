@@ -1,6 +1,6 @@
 #include <MemeScript/Var.hpp>
 #include <MemeCore/Debug.hpp>
-#include <MemeScript/StringUtility.hpp>
+#include <MemeCore/StringUtility.hpp>
 #include <MemeScript/Operator.hpp>
 #include <MemeScript/Interpreter.hpp>
 #include <MemeCore/BitHelper.hpp>

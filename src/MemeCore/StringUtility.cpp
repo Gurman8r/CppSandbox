@@ -1,4 +1,4 @@
-#include <MemeScript/StringUtility.hpp>
+#include <MemeCore/StringUtility.hpp>
 
 
 #define BUFFER_SIZE 512

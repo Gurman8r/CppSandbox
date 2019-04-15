@@ -3,15 +3,26 @@
 
 #include <MemeScript/Rule.hpp>
 
+/* * * * * * * * * * * * * * * * * * * * */
+
+#define ML_Parser ml::Parser::getInstance()
+
+/* * * * * * * * * * * * * * * * * * * * */
+
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_SCRIPT_API Parser final
 		: public ITrackable
+		, public ISingleton<Parser>
 	{
+		friend class ISingleton<Parser>;
+
 	public:
 		using RuleMap = HashMap<const std::type_info *, Rule *>;
 
-	public:
+	private:
 		Parser();
 		~Parser();
 
@@ -86,6 +97,8 @@ namespace ml
 
 		RuleMap m_rules;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_PARSER_HPP_

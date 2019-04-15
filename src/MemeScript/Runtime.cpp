@@ -5,6 +5,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	Runtime::Runtime()
 		: m_values(new ScopeMap())
 	{
@@ -16,6 +18,7 @@ namespace ml
 		clean();
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	std::ostream & Runtime::display(std::ostream & out) const
 	{
@@ -175,4 +178,6 @@ namespace ml
 		}
 		return false;
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

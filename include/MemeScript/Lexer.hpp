@@ -4,17 +4,26 @@
 #include <MemeScript/TokenList.hpp>
 #include <MemeScript/Args.hpp>
 
+/* * * * * * * * * * * * * * * * * * * * */
+
+#define ML_Lexer ml::Lexer::getInstance()
+
+/* * * * * * * * * * * * * * * * * * * * */
+
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	class ML_SCRIPT_API Lexer final
 		: public ITrackable
+		, public ISingleton<Lexer>
 	{
+		friend class ISingleton<Lexer>;
+
 	public:
 		using const_iterator = typename List<char>::const_iterator;
 
-	public:
+	private:
 		Lexer();
 		~Lexer();
 

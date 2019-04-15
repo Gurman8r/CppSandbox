@@ -4,16 +4,27 @@
 #include <MemeScript/Operator.hpp>
 #include <MemeScript/Var.hpp>
 
+/* * * * * * * * * * * * * * * * * * * * */
+
+#define ML_Runtime ml::Runtime::getInstance()
+
+/* * * * * * * * * * * * * * * * * * * * */
+
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_SCRIPT_API Runtime final
 		: public ITrackable
+		, public ISingleton<Runtime>
 	{
+		friend class ISingleton<Runtime>;
+
 	public:
 		using VarMap	= Map<String, Var *>;
 		using ScopeMap	= HashMap<int32_t, VarMap*>;
 
-	public:
+	private:
 		Runtime();
 		~Runtime();
 
@@ -35,6 +46,8 @@ namespace ml
 	private:
 		ScopeMap * m_values;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_RUNTIME_HPP_

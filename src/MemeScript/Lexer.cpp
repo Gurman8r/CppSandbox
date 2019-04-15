@@ -1,5 +1,5 @@
 #include <MemeScript/Lexer.hpp>
-#include <MemeScript/StringUtility.hpp>
+#include <MemeCore/StringUtility.hpp>
 #include <MemeScript/Interpreter.hpp>
 #include <MemeCore/Debug.hpp>
 

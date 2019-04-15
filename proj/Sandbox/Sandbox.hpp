@@ -20,11 +20,8 @@ namespace DEMO
 	{
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
-		Sandbox()
-			: EditorApplication()
-		{
-		}
-		~Sandbox() {}
+		Sandbox();
+		~Sandbox();
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */

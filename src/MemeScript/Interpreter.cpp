@@ -6,6 +6,16 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
+	Interpreter::Interpreter()
+	{
+	}
+
+	Interpreter::~Interpreter()
+	{
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	Command * Interpreter::install(const Command & value)
 	{
 		if (!value.name().empty())
@@ -60,7 +70,7 @@ namespace ml
 			File file;
 			if (file.loadFromFile(value))
 			{
-				return execTokens(lexer.genTokenList(file.data()));
+				return execTokens(ML_Lexer.genTokenList(file.data()));
 			}
 			return Var().errorValue("File not found {0}", value);
 		}
@@ -71,7 +81,7 @@ namespace ml
 	{
 		if (!value.empty())
 		{
-			return execTokens(lexer.genTokenList(value));
+			return execTokens(ML_Lexer.genTokenList(value));
 		}
 		return Var().errorValue("Buffer cannot be empty");
 	}
@@ -80,7 +90,7 @@ namespace ml
 	{
 		if (!value.empty())
 		{
-			return execTree(lexer.genTokenTree(value));
+			return execTree(ML_Lexer.genTokenTree(value));
 		}
 		return Var().errorValue("TokenList cannot be empty");
 	}
@@ -89,7 +99,7 @@ namespace ml
 	{
 		if (!value.empty())
 		{
-			return execBlock(parser.genFromTree(value));
+			return execBlock(ML_Parser.genFromTree(value));
 		}
 		return Var().errorValue("Statements cannot be empty");
 	}
@@ -104,7 +114,7 @@ namespace ml
 
 				delete value;
 
-				return runtime.setVar(0, ML_NAME_RETV, v)
+				return ML_Runtime.setVar(0, ML_NAME_RETV, v)
 					? v
 					: Var().errorValue("Interpreter : Failed setting return");
 			}

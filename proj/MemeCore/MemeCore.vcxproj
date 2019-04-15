@@ -169,6 +169,7 @@
     <ClInclude Include="..\..\include\MemeCore\IHandle.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Lock.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Preprocessor.hpp" />
+    <ClInclude Include="..\..\include\MemeCore\StringUtility.hpp" />
     <ClInclude Include="..\..\include\MemeCore\TestRequest.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Transform.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Usings.hpp" />
@@ -228,6 +229,7 @@
     <ClCompile Include="..\..\src\MemeCore\Maths.cpp" />
     <ClCompile Include="..\..\src\MemeCore\OS.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Random.cpp" />
+    <ClCompile Include="..\..\src\MemeCore\StringUtility.cpp" />
     <ClCompile Include="..\..\src\MemeCore\TestRequest.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Thread.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Time.cpp" />

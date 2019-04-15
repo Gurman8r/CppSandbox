@@ -34,9 +34,6 @@
     <Filter Include="Header Files\Utility">
       <UniqueIdentifier>{0d6b3d68-041d-4145-8c94-7216dcc3fff6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility">
-      <UniqueIdentifier>{2eeccaec-a97f-4c8f-8cdb-75785cf1680a}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeScript\Args.cpp">
@@ -80,9 +77,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeScript\Command.cpp">
       <Filter>Source Files\DS</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeScript\StringUtility.cpp">
-      <Filter>Source Files\Utility</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeScript\Script.cpp">
       <Filter>Source Files\Interpreter</Filter>
@@ -139,9 +133,6 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeScript\Script.hpp">
       <Filter>Header Files\Interpreter</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeScript\StringUtility.hpp">
-      <Filter>Header Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeScript\ScriptMacros.hpp">
       <Filter>Header Files\Utility</Filter>

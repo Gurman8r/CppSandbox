@@ -13,11 +13,24 @@ namespace ml
 		enum : int32_t
 		{
 			MIN_SCRIPT_EVENT = IEvent::EV_SCRIPT + 1,
+
+			EV_Command,
+
 			MAX_SCRIPT_EVENT
 		};
 
 		ScriptEvent(int32_t id)
 			: IEvent(id)
+		{
+		}
+	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	struct ML_SCRIPT_API CommandEvent : public ScriptEvent
+	{
+		CommandEvent()
+			: ScriptEvent(EV_Command)
 		{
 		}
 	};

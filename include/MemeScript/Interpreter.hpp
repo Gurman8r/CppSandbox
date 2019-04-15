@@ -2,16 +2,13 @@
 #define _ML_INTERPRETER_HPP_
 
 #include <MemeCore/ISingleton.hpp>
-#include <MemeScript/StringUtility.hpp>
+#include <MemeCore/StringUtility.hpp>
 #include <MemeScript/Lexer.hpp>
 #include <MemeScript/Parser.hpp>
 #include <MemeScript/Runtime.hpp>
 #include <MemeScript/Command.hpp>
 
-#define ML_Interpreter	ml::Interpreter::getInstance()
-#define ML_Lexer		ML_Interpreter.lexer
-#define ML_Parser		ML_Interpreter.parser
-#define ML_Runtime		ML_Interpreter.runtime
+#define ML_Interpreter ml::Interpreter::getInstance()
 
 namespace ml
 {
@@ -24,6 +21,10 @@ namespace ml
 	public:
 		using CommandMap  = HashMap<String, Command>;
 		using CommandPair = Pair<String, Command>;
+
+	private:
+		Interpreter();
+		~Interpreter();
 
 	public:
 		Command * install(const Command & value);
@@ -44,15 +45,7 @@ namespace ml
 
 		inline const CommandMap & commands() const { return m_commands; }
 
-	public:
-		Lexer   lexer;
-		Runtime runtime;
-		Parser  parser;
-
 	private:
-		Interpreter() {}
-		~Interpreter() {}
-
 		CommandMap m_commands;
 	};
 }

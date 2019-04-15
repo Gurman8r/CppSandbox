@@ -1,5 +1,5 @@
 #include <MemeScript/Args.hpp>
-#include <MemeScript/StringUtility.hpp>
+#include <MemeCore/StringUtility.hpp>
 
 namespace ml
 {

@@ -42,6 +42,7 @@ int32_t main(int32_t argc, char ** argv)
 		ML_EventSystem.fireEvent(ml::StartEvent());
 
 		/* * * * * * * * * * * * * * * * * * * * */
+
 		do
 		{	// Begin Frame
 			ML_Engine.beginFrame();

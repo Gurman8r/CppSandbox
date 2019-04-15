@@ -29,6 +29,7 @@ namespace ml
 		Application * launchApp(Application * app);
 		int32_t freeApp();
 
+	public:
 		void beginFrame();
 		void endFrame();
 

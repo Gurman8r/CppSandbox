@@ -1,12 +1,11 @@
 #ifndef _ML_STRING_UTILITY_HPP_
 #define _ML_STRING_UTILITY_HPP_
 
-#include <MemeScript/Export.hpp>
 #include <MemeCore/List.hpp>
 
 namespace ml
 {
-	class ML_SCRIPT_API StringUtility final
+	class ML_CORE_API StringUtility final
 	{
 	public:
 		static String	Replace(const String & src, const String & find, const String & replace);
