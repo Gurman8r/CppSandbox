@@ -7,7 +7,6 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	// One Dimensional Matrix
 	template <
 		class T, 
 		size_t N
@@ -15,26 +14,27 @@ namespace ml
 		: public Matrix<T, N, 1>
 		, public IComparable<Vector<T, N>>
 	{
-	public:
+	public: // Usings
 		/* * * * * * * * * * * * * * * * * * * * */
 		using value_type	= typename T;
+		using const_value	= typename const value_type;
 		using self_type		= typename Vector<value_type, N>;
 		using base_type		= typename Matrix<value_type, N, 1>;
 		using initializer	= typename base_type::initializer;
 
-	public:
+	public: // Constructors
 		/* * * * * * * * * * * * * * * * * * * * */
 		Vector()
 			: base_type()
 		{
 		}
 		
-		Vector(const value_type value)
+		Vector(const_value value)
 			: base_type(value)
 		{
 		}
 		
-		Vector(const value_type * value)
+		Vector(const_value * value)
 			: base_type(value)
 		{
 		}
@@ -50,30 +50,30 @@ namespace ml
 		}
 
 		template <
-			size_t N
-		> Vector(const Vector<T, N> & copy)
+			size_t S
+		> Vector(const Vector<T, S> & copy)
 			: base_type(copy)
 		{
 		}
 
 		template <
 			class U
-		> Vector(const Vector<U, N>& copy)
+		> Vector(const Vector<U, N> & copy)
 			: base_type(copy)
 		{
 		}
 
 		template <
 			class U, 
-			size_t N
-		> Vector(const Vector<U, N> & copy, const value_type dv = (value_type)(0))
+			size_t S
+		> Vector(const Vector<U, S> & copy, const_value dv = (value_type)(0))
 			: base_type(copy, dv)
 		{
 		}
 
 		virtual ~Vector() {}
 
-	public:
+	public: // Overrides
 		/* * * * * * * * * * * * * * * * * * * * */
 		inline virtual bool equals(const self_type & value) const override
 		{
@@ -99,9 +99,8 @@ namespace ml
 			return true;
 		}
 
-	public:
+	public: // Functions
 		/* * * * * * * * * * * * * * * * * * * * */
-
 		inline float distanceTo(const self_type & value) const
 		{
 			return self_type::distance((*this), value);
@@ -223,7 +222,7 @@ namespace ml
 			return tmp;
 		};
 		
-		inline friend self_type operator*(const self_type & lhs, const value_type rhs)
+		inline friend self_type operator*(const self_type & lhs, const_value rhs)
 		{
 			self_type tmp;
 			for (size_t i = 0; i < tmp.Size; i++)
@@ -233,7 +232,7 @@ namespace ml
 			return tmp;
 		};
 		
-		inline friend self_type operator/(const self_type & lhs, const value_type rhs)
+		inline friend self_type operator/(const self_type & lhs, const_value rhs)
 		{
 			self_type tmp;
 			for (size_t i = 0; i < tmp.Size; i++)
@@ -273,12 +272,12 @@ namespace ml
 			return (lhs = (lhs / rhs));
 		};
 		
-		inline friend self_type & operator*=(self_type & lhs, const value_type rhs)
+		inline friend self_type & operator*=(self_type & lhs, const_value rhs)
 		{
 			return (lhs = (lhs * rhs));
 		};
 		
-		inline friend self_type & operator/=(self_type & lhs, const value_type rhs)
+		inline friend self_type & operator/=(self_type & lhs, const_value rhs)
 		{
 			return (lhs = (lhs / rhs));
 		};

@@ -2,7 +2,6 @@
 #define _ML_QUATERNION_HPP_
 
 #include <MemeCore/Vector4.hpp>
-#include <MemeCore/Maths.hpp>
 
 namespace ml
 {
@@ -11,40 +10,41 @@ namespace ml
 	class Quaternion final
 		: public Vector4<float>
 	{
-	public:
+	public: // Usings
 		/* * * * * * * * * * * * * * * * * * * * */
 		using value_type	= typename float;
+		using const_value	= typename const value_type;
 		using base_type		= typename Vector4<value_type>;
 		using complex_type	= typename Vector<value_type, 3>;
 
-	public:
+	public: // Constructors
 		/* * * * * * * * * * * * * * * * * * * * */
 		Quaternion()
 			: Quaternion(1.0f)
 		{
 		}
 		
-		Quaternion(const float xyz)
+		Quaternion(const_value xyz)
 			: Quaternion(xyz, xyz, xyz)
 		{
 		}
 		
-		Quaternion(const float x, const float y, const float z)
+		Quaternion(const_value x, const_value y, const_value z)
 			: Quaternion(x, y, z, 0.0f)
 		{
 		}
 		
-		Quaternion(const float x, const float y, const float z, const float w)
+		Quaternion(const_value x, const_value y, const_value z, const_value w)
 			: base_type(x, y, z, w)
 		{
 		}
 		
-		Quaternion(const Vector<float, 4> & copy)
+		Quaternion(const Vector<value_type, 4> & copy)
 			: base_type(copy)
 		{
 		}
 		
-		Quaternion(const complex_type & xyz, const float w)
+		Quaternion(const complex_type & xyz, const_value w)
 			: base_type(xyz[0], xyz[1], xyz[2], w)
 		{
 		}
@@ -63,22 +63,22 @@ namespace ml
 			return (complex_type)(base_type)(*this);
 		}
 
-		inline float real() const
+		inline value_type real() const
 		{
 			return this->back();
 		}
 
 		inline mat3f matrix() const
 		{
-			float xx = ((*this)[0] * (*this)[0]);
-			float xy = ((*this)[0] * (*this)[1]);
-			float xz = ((*this)[0] * (*this)[2]);
-			float xw = ((*this)[0] * (*this)[3]);
-			float yy = ((*this)[1] * (*this)[1]);
-			float yz = ((*this)[1] * (*this)[2]);
-			float yw = ((*this)[1] * (*this)[3]);
-			float zz = ((*this)[2] * (*this)[2]);
-			float zw = ((*this)[2] * (*this)[3]);
+			value_type xx = ((*this)[0] * (*this)[0]);
+			value_type xy = ((*this)[0] * (*this)[1]);
+			value_type xz = ((*this)[0] * (*this)[2]);
+			value_type xw = ((*this)[0] * (*this)[3]);
+			value_type yy = ((*this)[1] * (*this)[1]);
+			value_type yz = ((*this)[1] * (*this)[2]);
+			value_type yw = ((*this)[1] * (*this)[3]);
+			value_type zz = ((*this)[2] * (*this)[2]);
+			value_type zw = ((*this)[2] * (*this)[3]);
 
 			return mat3f({
 				(1.f - 2.f * yy - 2.f * zz), (2.f * xy - 2.f * zw), (2.f * xz + 2.f * yw),
@@ -87,13 +87,16 @@ namespace ml
 			});
 		}
 
-	public:
-		/* * * * * * * * * * * * * * * * * * * * */
-		inline static Quaternion slerp(const Quaternion & lhs, const Quaternion & rhs, float t)
+		inline Quaternion & slerp(const Quaternion & other, const_value t)
+		{
+			return ((*this) = Quaternion::slerp((*this), other, t));
+		}
+
+		inline static Quaternion slerp(const Quaternion & lhs, const Quaternion & rhs, const_value t)
 		{
 			Quaternion a = lhs.normalized();
 			Quaternion b = rhs.normalized();
-			float d = a.dot(b);
+			value_type d = a.dot(b);
 			if (d > 0.9995f)
 			{
 				return (a + ((b - a) * t));
@@ -104,9 +107,10 @@ namespace ml
 				d = -d;
 			}
 			d = Maths::clamp(d, -1.0f, 1.0f);
-			float dt = (acosf(d) * t);
+			value_type dt = (acosf(d) * t);
 			return (b - a * d).normalized();
 		}
+
 
 	public: // Operators
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -120,12 +124,12 @@ namespace ml
 			);
 		}
 		
-		inline friend Quaternion operator*(const Quaternion & lhs, float rhs)
+		inline friend Quaternion operator*(const Quaternion & lhs, value_type rhs)
 		{
 			return (base_type)(lhs) * rhs;
 		}
 		
-		inline friend Quaternion operator/(const Quaternion & lhs, float rhs)
+		inline friend Quaternion operator/(const Quaternion & lhs, value_type rhs)
 		{
 			return (base_type)(lhs) / rhs;
 		}
@@ -134,10 +138,6 @@ namespace ml
 		{
 			return base_type((*this)[0], (*this)[1], (*this)[2], (*this)[3]);
 		}
-
-	public: // Constants
-		/* * * * * * * * * * * * * * * * * * * * */
-		static const Quaternion Identity;
 	};
 }
 
@@ -145,11 +145,7 @@ namespace ml
 
 namespace ml
 {
-	// Constants
-	/* * * * * * * * * * * * * * * * * * * * */
-	const Quaternion Quaternion::Identity;
-
-	// Usings
+	// Types
 	/* * * * * * * * * * * * * * * * * * * * */
 	using quat = Quaternion;
 }

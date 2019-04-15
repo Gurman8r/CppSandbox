@@ -66,15 +66,18 @@ namespace ml
 
 	void MemoryTracker::freeAllocation(void * value)
 	{
-		if (ITrackable * ptr = static_cast<ITrackable *>(value))
+		if (value)
 		{
-			RecordMap::iterator it;
-			if ((it = m_records.find(ptr)) != m_records.end())
+			if (ITrackable * ptr = static_cast<ITrackable *>(value))
 			{
-				m_records.erase(it);
+				RecordMap::iterator it;
+				if ((it = m_records.find(ptr)) != m_records.end())
+				{
+					m_records.erase(it);
+				}
 			}
-			free(ptr);
-			ptr = NULL;
+			free(value);
+			value = NULL;
 		}
 	}
 

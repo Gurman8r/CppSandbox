@@ -14,53 +14,55 @@ namespace ml
 	> class Vector2
 		: public Vector<T, 2>
 	{
-	public:
+	public: // Usings
+		/* * * * * * * * * * * * * * * * * * * * */
 		using value_type	= typename T;
+		using const_value	= typename const value_type;
 		using base_type		= typename Vector<value_type, 2>;
 		using self_type		= typename Vector2<value_type>;
 
-	public:
+	public: // Constructors
 		/* * * * * * * * * * * * * * * * * * * * */
 		Vector2()
 			: base_type()
 		{
 		}
 
-		Vector2(const value_type xy)
+		Vector2(const_value xy)
 			: base_type(xy)
 		{
 		}
 
-		Vector2(const value_type x, const value_type y)
+		Vector2(const_value x, const_value y)
 			: base_type({ x, y })
 		{
 		}
 		
 		template <
-			size_t N
-		> Vector2(const Vector<T, N> & copy)
+			size_t S
+		> Vector2(const Vector<T, S> & copy)
 			: base_type(copy)
 		{
 		}
 
 		template <
 			class U
-		> Vector2(const Vector2<U>& copy)
+		> Vector2(const Vector2<U> & copy)
 			: base_type(copy)
 		{
 		}
 
 		template <
 			class U, 
-			size_t N
-		> Vector2(const Vector<U, N> & copy, const value_type dv = (value_type)(0))
+			size_t S
+		> Vector2(const Vector<U, S> & copy, const_value dv = (value_type)(0))
 			: base_type(copy, dv)
 		{
 		}
 
 		virtual ~Vector2() {}
 		
-	public:
+	public: // Functions
 		/* * * * * * * * * * * * * * * * * * * * */
 		inline static float angle(const self_type & from, const self_type & to)
 		{
@@ -108,7 +110,7 @@ namespace ml
 	template <class T> const Vector2<T> Vector2<T>::Left = Vector2<T>(-1, 0);
 	template <class T> const Vector2<T> Vector2<T>::Right = Vector2<T>(1, 0);
 
-	// Usings
+	// Types
 	/* * * * * * * * * * * * * * * * * * * * */
 	using vec2f = Vector2<float>;
 	using vec2i = Vector2<int32_t>;

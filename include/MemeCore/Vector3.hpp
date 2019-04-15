@@ -14,32 +14,33 @@ namespace ml
 	> class Vector3
 		: public Vector<T, 3>
 	{
-	public:
+	public: // Usings
 		/* * * * * * * * * * * * * * * * * * * * */
 		using value_type	= typename T;
+		using const_value	= typename const value_type;
 		using base_type		= typename Vector<value_type, 3>;
 		using self_type		= typename Vector3<value_type>;
 
-	public:
+	public: // Constructors
 		/* * * * * * * * * * * * * * * * * * * * */
 		Vector3()
 			: base_type()
 		{
 		}
 
-		Vector3(const value_type xyz)
+		Vector3(const_value xyz)
 			: base_type(xyz)
 		{
 		}
 
-		Vector3(const value_type x, const value_type y, const value_type z)
+		Vector3(const_value x, const_value y, const_value z)
 			: base_type({ x, y, z })
 		{
 		}
 
 		template <
-			size_t N
-		> Vector3(const Vector<T, N> & copy)
+			size_t S
+		> Vector3(const Vector<T, S> & copy)
 			: base_type(copy)
 		{
 		}
@@ -53,15 +54,15 @@ namespace ml
 		
 		template <
 			class U, 
-			size_t N
-		> Vector3(const Vector<U, N> & copy, const value_type dv = (value_type)(0))
+			size_t S
+		> Vector3(const Vector<U, S> & copy, const_value dv = (value_type)(0))
 			: base_type(copy, dv)
 		{
 		}
 
 		virtual ~Vector3() {}
 
-	public:
+	public: // Functions
 		/* * * * * * * * * * * * * * * * * * * * */
 		inline self_type & cross(const self_type & other)
 		{
@@ -119,7 +120,7 @@ namespace ml
 	template <class T> const Vector3<T> Vector3<T>::Forward = Vector3<T>(0, 0, 1);
 	template <class T> const Vector3<T> Vector3<T>::Back = Vector3<T>(0, 0, -1);
 
-	// Usings
+	// Types
 	/* * * * * * * * * * * * * * * * * * * * */
 	using vec3f = Vector3<float>;
 	using vec3i = Vector3<int32_t>;

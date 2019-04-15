@@ -6,19 +6,21 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	template <
 		class T
 	> class Rect final
 		: public Vector4<T>
 	{
-	public:
+	public: // Usings
 		/* * * * * * * * * * * * * * * * * * * * */
 		using value_type	= T;
 		using base_type		= Vector4<T>;
 		using self_type		= Rect<value_type>;
 		using coord_type	= Vector2<value_type>;
 
-	public:
+	public: // Constructors
 		/* * * * * * * * * * * * * * * * * * * * */
 		Rect()
 			: base_type()
@@ -52,7 +54,7 @@ namespace ml
 		
 		~Rect() {}
 
-	public:
+	public: // Getters
 		/* * * * * * * * * * * * * * * * * * * * */
 		inline const value_type left() const
 		{
@@ -99,7 +101,7 @@ namespace ml
 			return position() + (size() / value_type(2));
 		}
 
-	public:
+	public: // Setters
 		/* * * * * * * * * * * * * * * * * * * * */
 		inline self_type & left(value_type value)
 		{
@@ -152,28 +154,20 @@ namespace ml
 		{
 			return base_type((*this)[0], (*this)[1], (*this)[2], (*this)[3]);
 		}
-
-	public: // Constants
-		/* * * * * * * * * * * * * * * * * * * * */
-		const static self_type Empty;
-		const static self_type One;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 /* * * * * * * * * * * * * * * * * * * * */
 
 namespace ml
 {
-	// Constants
-	/* * * * * * * * * * * * * * * * * * * * */
-	template <class T> const Rect<T> Rect<T>::Empty = Rect<T>(0, 0, 0, 0);
-	template <class T> const Rect<T> Rect<T>::One = Rect<T>(1, 1, 1, 1);
-
-	// Usings
+	// Types
 	/* * * * * * * * * * * * * * * * * * * * */
 	using FloatRect = Rect<float>;
-	using IntRect = Rect<int32_t>;
-	using UintRect = Rect<uint32_t>;
+	using IntRect	= Rect<int32_t>;
+	using UintRect	= Rect<uint32_t>;
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

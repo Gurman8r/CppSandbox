@@ -19,16 +19,16 @@ namespace ml
 		, public IComparable<Iterator<_Category, _Value, _Unqualified, _Difference>>
 	{
 	public:
-		using iterator_category = _Category;
-		using value_type		= _Value;
-		using unqualified_type	= _Unqualified;
-		using difference_type	= _Difference;
-		using pointer			= value_type * ;
-		using reference			= value_type & ;
-		using const_pointer		= const value_type * ;
-		using const_reference	= const value_type & ;
-		using self_type			= Iterator<iterator_category, value_type, unqualified_type, difference_type>;
-		using const_self_type	= Iterator<iterator_category, const value_type, unqualified_type, difference_type>;
+		using iterator_category = typename _Category;
+		using value_type		= typename _Value;
+		using unqualified_type	= typename _Unqualified;
+		using difference_type	= typename _Difference;
+		using pointer			= typename value_type * ;
+		using reference			= typename value_type & ;
+		using const_pointer		= typename const value_type * ;
+		using const_reference	= typename const value_type & ;
+		using self_type			= typename Iterator<iterator_category, value_type, unqualified_type, difference_type>;
+		using const_self_type	= typename Iterator<iterator_category, const value_type, unqualified_type, difference_type>;
 
 	public:
 		Iterator()
@@ -41,7 +41,7 @@ namespace ml
 		{
 		}
 		
-		explicit Iterator(unqualified_type* ptr)
+		explicit Iterator(unqualified_type * ptr)
 			: m_handle(ptr)
 		{
 		}

@@ -5,7 +5,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Camera::Camera()
-		: Camera(vec3f::Zero, quat::Identity)
+		: Camera(vec3f::Zero, quat())
 	{
 	}
 

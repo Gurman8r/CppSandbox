@@ -16,54 +16,49 @@
 
 namespace ml
 {
-	class ML_CORE_API Maths
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	class ML_CORE_API Maths final
 	{
-	public:
+	public: // Constants
+		/* * * * * * * * * * * * * * * * * * * * */
 		static const float Pi;
 		static const float Deg2Rad;
 		static const float Rad2Deg;
 
-	public:
+	public: // Functions
+		/* * * * * * * * * * * * * * * * * * * * */
 		template <
-			typename T
+			class T
 		> inline static const T clamp(T value, T min, T max)
 		{
-			return static_cast<T>(
-				((value) > (max))
-					? (((value) < (min))
-						? (min)
-						: (value))
-					: (max)
-				);
+			return static_cast<T>(ML_CLAMP(value, min, max));
 		}
 
 		template <
-			typename T
+			class T
 		> inline static const T lerp(T a, T b, float t)
 		{
-			return static_cast<T>(a * t + b * (((T)1) - t));
+			return static_cast<T>(ML_LERP(a, b, t));
 		}
 
 		template <
-			typename T
+			class T
 		> inline static T mapRange(T value, T min1, T max1, T min2, T max2)
 		{
-			return static_cast<T>(min2 + (value - min1) * (max2 - min2) / (max1 - min1));
+			return static_cast<T>(ML_MAP_RANGE(value, min1, max1, min2, max2));
 		}
 
 		template <
-			typename T
+			class T
 		> inline static const T sign(const T & value)
 		{
-			return static_cast<T>(
-				(((value) == (0))
-					? (0)
-					: (((value) > (0))
-						? (+1)
-						: (-1))));
+			return static_cast<T>(ML_SIGN(value));
 		}
 
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_MATHS_HPP_

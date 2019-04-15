@@ -5,17 +5,28 @@
 #include <MemeCore/ISingleton.hpp>
 #include <MemeCore/ISerializable.hpp>
 
-// Singleton to keep track of dynamically allocated ITrackables
-// Handles memory allocation ( malloc / free )
+/* * * * * * * * * * * * * * * * * * * * */
+
 #define ML_MemoryTracker ml::MemoryTracker::getInstance()
+
+/* * * * * * * * * * * * * * * * * * * * */
+
+#define ML_new(size) ML_MemoryTracker.newAllocation(size)
+#define ML_free(ptr) ML_MemoryTracker.freeAllocation(ptr)
+
+/* * * * * * * * * * * * * * * * * * * * */
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ITrackable;
 
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_CORE_API MemoryTracker final
-		: public ISingleton<MemoryTracker>
-		, public ISerializable
+		: public ISerializable
+		, public ISingleton<MemoryTracker>
 	{	
 		friend ISingleton<MemoryTracker>;
 
@@ -37,6 +48,8 @@ namespace ml
 		RecordMap	m_records;
 		size_t		m_guid;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_MEMORY_TRACKER_HPP_

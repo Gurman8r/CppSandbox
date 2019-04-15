@@ -14,32 +14,33 @@ namespace ml
 	> class Vector4
 		: public Vector<T, 4>
 	{
-	public:
+	public: // Usings
 		/* * * * * * * * * * * * * * * * * * * * */
 		using value_type	= typename T;
+		using const_value	= typename const value_type;
 		using base_type		= Vector<value_type, 4>;
 		using self_type		= Vector4<value_type>;
 
-	public:
+	public: // Constructors
 		/* * * * * * * * * * * * * * * * * * * * */
 		Vector4()
 			: base_type()
 		{
 		}
 
-		Vector4(const value_type xyzw)
+		Vector4(const_value xyzw)
 			: base_type(xyzw)
 		{
 		}
 
-		Vector4(const value_type x, const value_type y, const value_type z, const value_type w)
+		Vector4(const_value x, const_value y, const_value z, const_value w)
 			: base_type({ x, y, z, w })
 		{
 		}
 
 		template <
-			size_t N
-		> Vector4(const Vector<T, N> & copy)
+			size_t S
+		> Vector4(const Vector<T, S> & copy)
 			: base_type(copy)
 		{
 		}
@@ -53,8 +54,8 @@ namespace ml
 
 		template <
 			class U, 
-			size_t N
-		> Vector4(const Vector<U, N> & copy, const value_type dv = (value_type)(0))
+			size_t S
+		> Vector4(const Vector<U, S> & copy, const_value dv = (value_type)(0))
 			: base_type(copy, dv)
 		{
 		}
@@ -77,7 +78,7 @@ namespace ml
 	template <class T> const Vector4<T> Vector4<T>::Zero = Vector4<T>(0);
 	template <class T> const Vector4<T> Vector4<T>::One = Vector4<T>(1);
 
-	// Usings
+	// Types
 	/* * * * * * * * * * * * * * * * * * * * */
 	using vec4f = Vector4<float>;
 	using vec4i = Vector4<int32_t>;

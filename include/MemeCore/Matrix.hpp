@@ -21,7 +21,7 @@ namespace ml
 		, public IComparable<Matrix<T, C, R>>
 		, public IEnumerable<T, C * R>
 	{
-	public:
+	public: // Enums
 		/* * * * * * * * * * * * * * * * * * * * */
 		enum : size_t
 		{
@@ -30,7 +30,7 @@ namespace ml
 			Size = Cols * Rows
 		};
 		
-	public:
+	public: // Usings
 		/* * * * * * * * * * * * * * * * * * * * */
 		using value_type			= typename T;
 		using array_type			= typename value_type[Size];
@@ -40,21 +40,20 @@ namespace ml
 		using const_reference		= typename const value_type &;
 
 		using self_type				= typename Matrix<value_type, Cols, Rows>;
-		using enumerable_type		= typename IEnumerable<value_type, Size>;
-
 		using initializer			= typename std::initializer_list<value_type>;
 		using contiguous_type		= typename std::vector<value_type>;
 
+		using enumerable_type		= typename IEnumerable<value_type, Size>;
 		using iterator				= typename enumerable_type::iterator;
 		using const_iterator		= typename enumerable_type::const_iterator;
 		using reverse_iterator		= typename enumerable_type::reverse_iterator;
 		using const_reverse_iterator= typename enumerable_type::const_reverse_iterator;
 
-	private:
+	private: // Data
 		/* * * * * * * * * * * * * * * * * * * * */
 		array_type m_data;
 
-	public:
+	public: // Constructors
 		/* * * * * * * * * * * * * * * * * * * * */
 		Matrix()
 			: enumerable_type(m_data)
@@ -101,16 +100,16 @@ namespace ml
 
 		template <
 			class U, 
-			size_t C, 
-			size_t R
-		> Matrix(const Matrix<U, C, R> & value, const_reference default_val = (value_type)(0))
+			size_t X, 
+			size_t Y
+		> Matrix(const Matrix<U, X, Y> & value, const_reference dv = (value_type)(0))
 			: self_type()
 		{
 			for (size_t i = 0; i < Size; i++)
 			{
 				(*this)[i] = ((i < value.Size)
 					? (static_cast<value_type>(value[i]))
-					: (default_val)
+					: (dv)
 				);
 			}
 		}
@@ -118,7 +117,7 @@ namespace ml
 		virtual ~Matrix() {}
 
 
-	public:
+	public: // Functions
 		/* * * * * * * * * * * * * * * * * * * * */
 		inline void fill(const_reference value)
 		{
@@ -130,8 +129,8 @@ namespace ml
 			std::swap(m_data, other.m_data);
 		}
 		
-	public:
 		/* * * * * * * * * * * * * * * * * * * * */
+
 		inline reference at(size_t i)
 		{
 			return (*this)[i];
@@ -157,8 +156,8 @@ namespace ml
 			return at(0);
 		}
 
-	public:
 		/* * * * * * * * * * * * * * * * * * * * */
+
 		inline const_reference at(size_t i) const
 		{
 			return (*this)[i];
@@ -184,15 +183,57 @@ namespace ml
 			return at(0);
 		}
 		
-	public:
 		/* * * * * * * * * * * * * * * * * * * * */
+
 		inline size_t cols() const { return Cols; }
 		
 		inline size_t rows() const { return Rows; }
 		
 		inline size_t size() const { return Size; }
 
-	public:
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		inline static self_type & identity()
+		{
+			static self_type temp;
+			static bool checked = false;
+			if (!checked)
+			{
+				checked = true;
+				for (size_t y = 0; y < Rows; y++)
+				{
+					for (size_t x = 0; x < Cols; x++)
+					{
+						temp.at(x, y) = (x == y) ? (value_type)1 : (value_type)0;
+					}
+				}
+			}
+			return temp;
+		}
+
+		inline static const contiguous_type & contiguous(const self_type * value, size_t length)
+		{
+			static contiguous_type out;
+			if (const size_t imax = (length * Size))
+			{
+				if (out.size() != imax)
+				{
+					out.resize(imax);
+				}
+				for (size_t i = 0; i < imax; i++)
+				{
+					out[i] = value[i / Size][i % Size];
+				}
+			}
+			else if (!out.empty())
+			{
+				out.clear();
+			}
+			return out;
+		}
+
+
+	public: // Overrides
 		/* * * * * * * * * * * * * * * * * * * * */
 		inline virtual void serialize(std::ostream & out) const override
 		{
@@ -222,8 +263,8 @@ namespace ml
 			}
 		}
 
-	public:
 		/* * * * * * * * * * * * * * * * * * * * */
+
 		inline virtual bool equals(const self_type & value) const override
 		{
 			for (size_t i = 0; i < Size; i++)
@@ -248,46 +289,6 @@ namespace ml
 			return true;
 		}
 
-	public:
-		/* * * * * * * * * * * * * * * * * * * * */
-		inline static self_type & identity()
-		{
-			static self_type temp;
-			static bool checked = false;
-			if (!checked)
-			{	
-				checked = true;
-				for (size_t y = 0; y < Rows; y++)
-				{
-					for (size_t x = 0; x < Cols; x++)
-					{
-						temp.at(x, y) = (x == y) ? (value_type)1 : (value_type)0;
-					}
-				}
-			}
-			return temp;
-		}
-
-		inline static const contiguous_type & contiguous(const self_type * value, size_t length)
-		{
-			static contiguous_type out;
-			if (const size_t imax = (length * Size))
-			{
-				if (out.size() != imax)
-				{
-					out.resize(imax);
-				}
-				for (size_t i = 0; i < imax; i++)
-				{
-					out[i] = value[i / Size][i % Size];
-				}
-			}
-			else if(!out.empty())
-			{
-				out.clear();
-			}
-			return out;
-		}
 
 	public: // Operators
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -322,7 +323,7 @@ namespace ml
 	template <class T>			 using Matrix3x3 = MatrixNxN<T, 3>;
 	template <class T>			 using Matrix4x4 = MatrixNxN<T, 4>;
 
-	// Usings
+	// Types
 	/* * * * * * * * * * * * * * * * * * * * */
 	using mat3f = Matrix3x3<float>;
 	using mat4f = Matrix4x4<float>;
