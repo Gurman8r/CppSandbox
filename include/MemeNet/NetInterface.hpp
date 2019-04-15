@@ -1,9 +1,11 @@
 #ifndef _ML_NETWORK_INTERFACE_HPP_
 #define _ML_NETWORK_INTERFACE_HPP_
 
-#include <MemeNet/Export.hpp>
 #include <MemeCore/IEventListener.hpp>
-#include <MemeNet/NetworkTypes.hpp>
+#include <MemeNet/GUID.hpp>
+#include <MemeNet/IpAddress.hpp>
+#include <MemeNet/Packet.hpp>
+#include <MemeNet/SendSettings.hpp>
 
 #define ML_LOCALHOST "127.0.0.1"
 #define ML_PORT 60000
@@ -22,24 +24,27 @@ namespace ml
 		NetInterface();
 		virtual ~NetInterface();
 
+	public:
 		bool setup();
 		void clean();
 		void poll();
 
+	public:
 		uint32_t send(const GUID & guid, const String & data, const SendSettings & settings);
-		uint32_t send(const Address & address, const String & data, const SendSettings & settings);
+		uint32_t send(const IpAddress & address, const String & data, const SendSettings & settings);
 
+	public:
 		virtual void onEvent(const IEvent * ev) override = 0;
 		virtual void onPacket(const Packet & value) = 0;
 
-		Address getMyAddress() const;
+	public:
+		IpAddress getMyAddress() const;
 		GUID	getMyGUID() const;
-		Address getAddressFromGUID(const GUID & value) const;
-		GUID	getGUIDFromAddress(const Address & value) const;
-
+		IpAddress getAddressFromGUID(const GUID & value) const;
+		GUID	getGUIDFromAddress(const IpAddress & value) const;
 
 	protected:
-		void *	m_peer;
+		void * m_peer;
 	};
 }
 

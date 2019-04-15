@@ -79,7 +79,7 @@ namespace ml
 		}
 	}
 	
-	bool Server::start(const Address & addr, uint32_t maxClients)
+	bool Server::start(const IpAddress & addr, uint32_t maxClients)
 	{
 		if (m_peer && (m_maxClients = maxClients))
 		{

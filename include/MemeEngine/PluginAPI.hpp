@@ -7,14 +7,20 @@
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#define ML_PLUGIN_API ML_API_EXPORT
-
 #define ML_STRINGIFY(expr) #expr
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+#define ML_PLUGIN_API ML_API_EXPORT
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 namespace ml
 {
+	class IPlugin;
+
+	using PluginLoadFun = IPlugin * (*)(void);
+
 	using PluginFun	= void * (*)(void *);
 }
 

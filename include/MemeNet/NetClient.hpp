@@ -24,7 +24,7 @@ namespace ml
 		
 		void onPacket(const Packet & value) override;
 
-		bool connect(const Address & addr, const String & pass = String());
+		bool connect(const IpAddress & addr, const String & pass = String());
 
 	public:
 		inline bool connected() const { return m_connected; }

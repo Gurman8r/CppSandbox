@@ -68,7 +68,7 @@ namespace ml
 		}
 	}
 
-	bool Client::connect(const Address & addr, const String & pass)
+	bool Client::connect(const IpAddress & addr, const String & pass)
 	{
 		if (m_peer)
 		{

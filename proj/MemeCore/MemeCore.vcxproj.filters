@@ -231,6 +231,9 @@
     <ClInclude Include="..\..\include\MemeCore\Maths.hpp">
       <Filter>Header Files\Maths</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\FileDetails.hpp">
+      <Filter>Header Files\FS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeCore\Timer.cpp">

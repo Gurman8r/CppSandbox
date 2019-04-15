@@ -87,6 +87,9 @@
     <ClInclude Include="..\..\include\MemeEngine\Preferences.hpp">
       <Filter>Header Files\Resources</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeEngine\IPlugin.hpp">
+      <Filter>Header Files\Plugins</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeEngine\Plugin.cpp">

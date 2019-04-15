@@ -3,7 +3,6 @@
 
 #include <MemeCore/ISingleton.hpp>
 #include <MemeNet/NetInterface.hpp>
-#include <MemeNet/NetworkTypes.hpp>
 
 #define ML_NetServer ml::Server::getInstance()
 
@@ -25,7 +24,7 @@ namespace ml
 
 		void onPacket(const Packet & value) override;
 
-		bool start(const Address & addr, uint32_t maxClients);
+		bool start(const IpAddress & addr, uint32_t maxClients);
 
 	public:
 		inline bool		running()		const { return m_running; }
