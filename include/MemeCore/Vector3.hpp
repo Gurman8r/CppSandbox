@@ -3,6 +3,8 @@
 
 #include <MemeCore/Vector.hpp>
 
+/* * * * * * * * * * * * * * * * * * * * */
+
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -89,7 +91,6 @@ namespace ml
 
 	public: // Constants
 		/* * * * * * * * * * * * * * * * * * * * */
-
 		static const self_type Zero;
 		static const self_type One;
 		static const self_type Up;
@@ -98,30 +99,35 @@ namespace ml
 		static const self_type Right;
 		static const self_type Forward;
 		static const self_type Back;
-
-		/* * * * * * * * * * * * * * * * * * * * */
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */
+}
 
-	template <class T> const Vector3<T> Vector3<T>::Zero	= Vector3<T>( 0,  0,  0);
-	template <class T> const Vector3<T> Vector3<T>::One		= Vector3<T>( 1,  1,  1);
-	template <class T> const Vector3<T> Vector3<T>::Up		= Vector3<T>( 0,  1,  0);
-	template <class T> const Vector3<T> Vector3<T>::Down	= Vector3<T>( 0, -1,  0);
-	template <class T> const Vector3<T> Vector3<T>::Left	= Vector3<T>(-1,  0,  0);
-	template <class T> const Vector3<T> Vector3<T>::Right	= Vector3<T>( 1,  0,  0);
-	template <class T> const Vector3<T> Vector3<T>::Forward	= Vector3<T>( 0,  0,  1);
-	template <class T> const Vector3<T> Vector3<T>::Back	= Vector3<T>( 0,  0, -1);
+/* * * * * * * * * * * * * * * * * * * * */
 
+namespace ml
+{
+	// Constants
 	/* * * * * * * * * * * * * * * * * * * * */
+	template <class T> const Vector3<T> Vector3<T>::Zero = Vector3<T>(0, 0, 0);
+	template <class T> const Vector3<T> Vector3<T>::One = Vector3<T>(1, 1, 1);
+	template <class T> const Vector3<T> Vector3<T>::Up = Vector3<T>(0, 1, 0);
+	template <class T> const Vector3<T> Vector3<T>::Down = Vector3<T>(0, -1, 0);
+	template <class T> const Vector3<T> Vector3<T>::Left = Vector3<T>(-1, 0, 0);
+	template <class T> const Vector3<T> Vector3<T>::Right = Vector3<T>(1, 0, 0);
+	template <class T> const Vector3<T> Vector3<T>::Forward = Vector3<T>(0, 0, 1);
+	template <class T> const Vector3<T> Vector3<T>::Back = Vector3<T>(0, 0, -1);
 
+	// Usings
+	/* * * * * * * * * * * * * * * * * * * * */
 	using vec3f = Vector3<float>;
 	using vec3i = Vector3<int32_t>;
 	using vec3d = Vector3<double>;
 	using vec3b = Vector3<uint8_t>;
 	using vec3u = Vector3<uint32_t>;
-
-	/* * * * * * * * * * * * * * * * * * * * */
 }
+
+/* * * * * * * * * * * * * * * * * * * * */
 
 #endif // !_ML_VECTOR_3_HPP_

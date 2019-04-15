@@ -6,9 +6,13 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	struct ML_WINDOW_API Context final
 		: public ITrackable
 	{
+		/* * * * * * * * * * * * * * * * * * * * */
+
 		enum Profile : uint32_t
 		{
 			Any		= 0,
@@ -17,6 +21,8 @@ namespace ml
 			Compat	= 0x32002, // Compat | 204802
 		};
 
+		/* * * * * * * * * * * * * * * * * * * * */
+		
 		uint32_t	majorVersion;
 		uint32_t	profile;
 		uint32_t	minorVersion;
@@ -24,6 +30,8 @@ namespace ml
 		uint32_t	stencilBits;
 		bool		multisample;
 		bool		srgbCapable;
+
+		/* * * * * * * * * * * * * * * * * * * * */
 
 		Context(
 			uint32_t		majorVersion	= 1,
@@ -51,7 +59,11 @@ namespace ml
 			, multisample(	copy.multisample)
 			, srgbCapable(	copy.srgbCapable)
 		{};
+
+		/* * * * * * * * * * * * * * * * * * * * */
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_CONTEXT_HPP_

@@ -2,6 +2,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	const vec4f Color::Clear		= { 0.0f, 0.0f, 0.0f, 0.0f };
 	const vec4f Color::White		= { 1.0f, 1.0f, 1.0f, 1.0f };
 	const vec4f Color::Black		= { 0.0f, 0.0f, 0.0f, 1.0f };
@@ -24,4 +26,6 @@ namespace ml
 
 	const vec4f Color::Aqua			= { 0.0f, 1.0f, 0.5f, 1.0f };
 	const vec4f Color::Azure		= { 0.0f, 0.5f, 1.0f, 1.0f };
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

@@ -3,6 +3,7 @@
 
 #include <MemeEditor/EditorApplication.hpp>
 #include <MemeGraphics/Text.hpp>
+#include <MemeGraphics/Camera.hpp>
 
 namespace DEMO
 {
@@ -68,7 +69,7 @@ namespace DEMO
 			ml::vec4f		clearColor = ml::Color::Gray;
 			
 			// Camera
-			ml::Transform	camera;
+			ml::Camera		camera;
 			bool			camAnimate	= true;
 			ml::vec3f		camPos		= { 0, 1, 10 };
 			float			camSpd		= 1.f;

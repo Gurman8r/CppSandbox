@@ -155,19 +155,27 @@ namespace ml
 
 	public: // Constants
 		/* * * * * * * * * * * * * * * * * * * * */
-
 		const static self_type Empty;
 		const static self_type One;
-
-		/* * * * * * * * * * * * * * * * * * * * */
 	};
-
-	template <class T> const Rect<T> Rect<T>::Empty	= Rect<T>(0, 0, 0, 0);
-	template <class T> const Rect<T> Rect<T>::One	= Rect<T>(1, 1, 1, 1);
-
-	using FloatRect = Rect<float>;
-	using IntRect	= Rect<int32_t>;
-	using UintRect	= Rect<uint32_t>;
 }
 
-#endif // !_RECT_HPP_
+/* * * * * * * * * * * * * * * * * * * * */
+
+namespace ml
+{
+	// Constants
+	/* * * * * * * * * * * * * * * * * * * * */
+	template <class T> const Rect<T> Rect<T>::Empty = Rect<T>(0, 0, 0, 0);
+	template <class T> const Rect<T> Rect<T>::One = Rect<T>(1, 1, 1, 1);
+
+	// Usings
+	/* * * * * * * * * * * * * * * * * * * * */
+	using FloatRect = Rect<float>;
+	using IntRect = Rect<int32_t>;
+	using UintRect = Rect<uint32_t>;
+}
+
+/* * * * * * * * * * * * * * * * * * * * */
+
+#endif // !_ML_RECT_HPP_

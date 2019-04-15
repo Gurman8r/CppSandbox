@@ -3,6 +3,8 @@
 
 #include <MemeCore/Vector.hpp>
 
+/* * * * * * * * * * * * * * * * * * * * */
+
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -84,33 +86,37 @@ namespace ml
 
 	public: // Constants
 		/* * * * * * * * * * * * * * * * * * * * */
-
 		static const self_type Zero;
 		static const self_type One;
 		static const self_type Up;
 		static const self_type Down;
 		static const self_type Left;
 		static const self_type Right;
-
-		/* * * * * * * * * * * * * * * * * * * * */
 	};
+}
 
+/* * * * * * * * * * * * * * * * * * * * */
+
+namespace ml
+{
+	// Constants
 	/* * * * * * * * * * * * * * * * * * * * */
+	template <class T> const Vector2<T> Vector2<T>::Zero = Vector2<T>(0, 0);
+	template <class T> const Vector2<T> Vector2<T>::One = Vector2<T>(1, 1);
+	template <class T> const Vector2<T> Vector2<T>::Up = Vector2<T>(0, 1);
+	template <class T> const Vector2<T> Vector2<T>::Down = Vector2<T>(0, -1);
+	template <class T> const Vector2<T> Vector2<T>::Left = Vector2<T>(-1, 0);
+	template <class T> const Vector2<T> Vector2<T>::Right = Vector2<T>(1, 0);
 
-	template <class T> const Vector2<T> Vector2<T>::Zero	= Vector2<T>( 0,  0);
-	template <class T> const Vector2<T> Vector2<T>::One		= Vector2<T>( 1,  1);
-	template <class T> const Vector2<T> Vector2<T>::Up		= Vector2<T>( 0,  1);
-	template <class T> const Vector2<T> Vector2<T>::Down	= Vector2<T>( 0, -1);
-	template <class T> const Vector2<T> Vector2<T>::Left	= Vector2<T>(-1,  0);
-	template <class T> const Vector2<T> Vector2<T>::Right	= Vector2<T>( 1,  0);
-
+	// Usings
+	/* * * * * * * * * * * * * * * * * * * * */
 	using vec2f = Vector2<float>;
 	using vec2i = Vector2<int32_t>;
 	using vec2d = Vector2<double>;
 	using vec2b = Vector2<uint8_t>;
 	using vec2u = Vector2<uint32_t>;
-
-	/* * * * * * * * * * * * * * * * * * * * */
 }
+
+/* * * * * * * * * * * * * * * * * * * * */
 
 #endif // !_ML_VECTOR_2_HPP_

@@ -134,13 +134,26 @@ namespace ml
 		{
 			return base_type((*this)[0], (*this)[1], (*this)[2], (*this)[3]);
 		}
+
+	public: // Constants
+		/* * * * * * * * * * * * * * * * * * * * */
+		static const Quaternion Identity;
 	};
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	using quat = Quaternion;
-
-	/* * * * * * * * * * * * * * * * * * * * */
 }
+
+/* * * * * * * * * * * * * * * * * * * * */
+
+namespace ml
+{
+	// Constants
+	/* * * * * * * * * * * * * * * * * * * * */
+	const Quaternion Quaternion::Identity;
+
+	// Usings
+	/* * * * * * * * * * * * * * * * * * * * */
+	using quat = Quaternion;
+}
+
+/* * * * * * * * * * * * * * * * * * * * */
 
 #endif // !_ML_QUATERNION_HPP_

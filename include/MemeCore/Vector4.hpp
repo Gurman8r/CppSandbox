@@ -3,6 +3,8 @@
 
 #include <MemeCore/Vector.hpp>
 
+/* * * * * * * * * * * * * * * * * * * * */
+
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -61,24 +63,29 @@ namespace ml
 
 	public: // Constants
 		/* * * * * * * * * * * * * * * * * * * * */
-
 		static const self_type Zero;
 		static const self_type One;
-
-		/* * * * * * * * * * * * * * * * * * * * */
 	};
+}
 
+/* * * * * * * * * * * * * * * * * * * * */
+
+namespace ml
+{
+	// Constants
 	/* * * * * * * * * * * * * * * * * * * * */
-
 	template <class T> const Vector4<T> Vector4<T>::Zero = Vector4<T>(0);
-	template <class T> const Vector4<T> Vector4<T>::One  = Vector4<T>(1);
+	template <class T> const Vector4<T> Vector4<T>::One = Vector4<T>(1);
 
+	// Usings
+	/* * * * * * * * * * * * * * * * * * * * */
 	using vec4f = Vector4<float>;
 	using vec4i = Vector4<int32_t>;
 	using vec4d = Vector4<double>;
 	using vec4b = Vector4<uint8_t>;
 	using vec4u = Vector4<uint32_t>;
-
-	/* * * * * * * * * * * * * * * * * * * * */
 }
+
+/* * * * * * * * * * * * * * * * * * * * */
+
 #endif // !_ML_VECTOR_4_HPP_

@@ -5,6 +5,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	struct ML_WINDOW_API Cursor
 	{
 		enum Mode
@@ -24,6 +26,8 @@ namespace ml
 			VResize,
 		};
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_CURSOR_HPP_

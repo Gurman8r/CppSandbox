@@ -6,10 +6,11 @@
 #include <MemeGraphics/Shader.hpp>
 #include <MemeGraphics/IDrawable.hpp>
 
-// Meant to take over for 2D rendering
-
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	// WIP, Meant to take over for 2D rendering
 	class ML_GRAPHICS_API Canvas
 		: public ITrackable
 		, public INonCopyable
@@ -36,6 +37,8 @@ namespace ml
 		mutable VAO m_vao;
 		mutable VBO m_vbo;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_CANVAS_HPP_

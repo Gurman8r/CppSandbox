@@ -6,6 +6,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	VideoMode::VideoMode()
 		: VideoMode(vec2u::Zero, 0)
 	{
@@ -31,20 +33,7 @@ namespace ml
 	{
 	}
 
-
-	void VideoMode::serialize(std::ostream & out) const
-	{
-		out << "(" << size << ", " << bitsPerPixel << ")";
-	}
-	bool VideoMode::equals(const VideoMode & value) const
-	{
-		return (size == value.size) && (bitsPerPixel == value.bitsPerPixel);
-	}
-	bool VideoMode::lessThan(const VideoMode & value) const
-	{
-		return (size < value.size);
-	}
-
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	const VideoMode & VideoMode::desktop()
 	{
@@ -97,10 +86,22 @@ namespace ml
 		return temp;
 	}
 
-	bool VideoMode::isValidFullscreenMode() const
-	{
-		static const std::vector<VideoMode> & modes = resolutions();
+	/* * * * * * * * * * * * * * * * * * * * */
 
-		return std::find(modes.begin(), modes.end(), *this) != modes.end();
+	void VideoMode::serialize(std::ostream & out) const
+	{
+		out << "(" << size << ", " << bitsPerPixel << ")";
 	}
+
+	bool VideoMode::equals(const VideoMode & value) const
+	{
+		return (size == value.size) && (bitsPerPixel == value.bitsPerPixel);
+	}
+
+	bool VideoMode::lessThan(const VideoMode & value) const
+	{
+		return (size < value.size);
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

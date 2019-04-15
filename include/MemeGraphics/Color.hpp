@@ -6,10 +6,11 @@
 
 namespace ml
 {
-	class ML_GRAPHICS_API Color final
+	/* * * * * * * * * * * * * * * * * * * * */
+	
+	struct ML_GRAPHICS_API Color final
 		: public ITrackable
 	{
-	public:
 		const static vec4f Clear;
 		const static vec4f White;
 		const static vec4f Black;
@@ -33,6 +34,8 @@ namespace ml
 		const static vec4f Aqua;
 		const static vec4f Azure;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_COLOR_HPP_

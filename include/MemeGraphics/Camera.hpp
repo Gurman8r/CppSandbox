@@ -6,18 +6,23 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_GRAPHICS_API Camera
 		: public Transform
 	{
 	public:
 		Camera();
-		Camera(const vec3f & position, const vec3f & scale, const quat & rotation);
-		Camera(const mat4f & value);
+		Camera(const vec3f & position, const quat & rotation);
 		Camera(const Camera & copy);
 		~Camera();
 
-
+	private:
+		vec3f m_position;
+		quat m_rotation;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_CAMERA_HPP_

@@ -2,27 +2,30 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	Camera::Camera()
-		: Transform()
+		: Camera(vec3f::Zero, quat::Identity)
 	{
 	}
 
-	Camera::Camera(const vec3f & position, const vec3f & scale, const quat & rotation)
-		: Transform(position, scale, rotation)
-	{
-	}
-
-	Camera::Camera(const mat4f & value)
-		: Transform(value)
+	Camera::Camera(const vec3f & position, const quat & rotation)
+		: Transform(position, vec2f::One, rotation)
+		, m_position(position)
+		, m_rotation(rotation)
 	{
 	}
 
 	Camera::Camera(const Camera & copy)
 		: Transform(copy)
+		, m_position(copy.m_position)
+		, m_rotation(copy.m_rotation)
 	{
 	}
 
 	Camera::~Camera()
 	{
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

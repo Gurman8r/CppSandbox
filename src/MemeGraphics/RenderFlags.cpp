@@ -54,14 +54,9 @@ namespace ml
 		{
 		case GL::CullFace:
 		case GL::DepthTest:
-			if (value)
-			{
-				return ML_GL.enable(key);
-			}
-			else
-			{
-				return ML_GL.disable(key);
-			}
+			return ((value)
+				? (ML_GL.enable(key))
+				: (ML_GL.disable(key)));
 		default:
 			return false;
 		}

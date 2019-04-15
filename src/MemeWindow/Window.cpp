@@ -411,9 +411,9 @@ namespace ml
 		return glfwGetMouseButton(ML_WINDOW(m_window), value);
 	}
 
-	float	Window::getTime() const
+	double	Window::getTime() const
 	{
-		return static_cast<float>(glfwGetTime());
+		return glfwGetTime();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -486,28 +486,28 @@ namespace ml
 			: NULL;
 	}
 	
-	Window::WindowCloseFun Window::setWindowCloseCallback(WindowCloseFun callback)
+	Window::CloseFun Window::setWindowCloseCallback(CloseFun callback)
 	{
 		return glfwSetWindowCloseCallback(ML_WINDOW(m_window), reinterpret_cast<GLFWwindowclosefun>(callback))
 			? callback
 			: NULL;
 	}
 	
-	Window::WindowFocusFun Window::setWindowFocusCallback(WindowFocusFun callback)
+	Window::FocusFun Window::setWindowFocusCallback(FocusFun callback)
 	{
 		return glfwSetWindowFocusCallback(ML_WINDOW(m_window), reinterpret_cast<GLFWwindowfocusfun>(callback))
 			? callback
 			: NULL;
 	}
 	
-	Window::WindowPosFun Window::setWindowPosCallback(WindowPosFun callback)
+	Window::PositionFun Window::setWindowPosCallback(PositionFun callback)
 	{
 		return glfwSetWindowPosCallback(ML_WINDOW(m_window), reinterpret_cast<GLFWwindowposfun>(callback))
 			? callback
 			: NULL;
 	}
 	
-	Window::WindowSizeFun Window::setWindowSizeCallback(WindowSizeFun callback)
+	Window::SizeFun Window::setWindowSizeCallback(SizeFun callback)
 	{
 		return glfwSetWindowSizeCallback(ML_WINDOW(m_window), reinterpret_cast<GLFWwindowposfun>(callback))
 			? callback

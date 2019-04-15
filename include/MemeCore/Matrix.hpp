@@ -6,9 +6,12 @@
 #include <MemeCore/List.hpp>
 #include <MemeCore/Maths.hpp>
 
+/* * * * * * * * * * * * * * * * * * * * */
+
 namespace ml
 {
-	// Template Fixed 2D Array
+	/* * * * * * * * * * * * * * * * * * * * */
+	
 	template <
 		class T, 
 		size_t C, 
@@ -307,17 +310,24 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	};
+}
 
+/* * * * * * * * * * * * * * * * * * * * */
+
+namespace ml
+{
+	// Constants
 	/* * * * * * * * * * * * * * * * * * * * */
-
 	template <class T, size_t N> using MatrixNxN = Matrix<T, N, N>;
 	template <class T>			 using Matrix3x3 = MatrixNxN<T, 3>;
 	template <class T>			 using Matrix4x4 = MatrixNxN<T, 4>;
 
+	// Usings
+	/* * * * * * * * * * * * * * * * * * * * */
 	using mat3f = Matrix3x3<float>;
 	using mat4f = Matrix4x4<float>;
-
-	/* * * * * * * * * * * * * * * * * * * * */
 }
+
+/* * * * * * * * * * * * * * * * * * * * */
 
 #endif // !_ML_MATRIX_HPP_
