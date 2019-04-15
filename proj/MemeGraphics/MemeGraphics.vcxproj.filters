@@ -162,9 +162,6 @@
     <ClInclude Include="..\..\include\MemeGraphics\RenderStates.hpp">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\GLM.hpp">
-      <Filter>Header Files\Internal</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\RenderFlags.hpp">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
