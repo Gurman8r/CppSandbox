@@ -7,7 +7,9 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-#define ML_MAKE_KVP_TYPE(NAME, TYPE) template <typename K, typename V> using NAME = typename TYPE<K, V>
+#define ML_MAKE_KV_TYPE(NAME, TYPE) \
+template <class K, class V> \
+using NAME = typename TYPE<K, V>;
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -15,10 +17,10 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	ML_MAKE_KVP_TYPE(Map,		std::map);
-	ML_MAKE_KVP_TYPE(MultiMap,	std::multimap);
-	ML_MAKE_KVP_TYPE(HashMap,	std::unordered_map);
-	ML_MAKE_KVP_TYPE(Pair,		std::pair);
+	ML_MAKE_KV_TYPE(Map,		std::map)
+	ML_MAKE_KV_TYPE(MultiMap,	std::multimap)
+	ML_MAKE_KV_TYPE(HashMap,	std::unordered_map)
+	ML_MAKE_KV_TYPE(Pair,		std::pair)
 
 	/* * * * * * * * * * * * * * * * * * * * */
 }

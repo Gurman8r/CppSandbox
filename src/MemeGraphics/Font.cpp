@@ -29,12 +29,12 @@ namespace ml
 
 	Font::~Font()
 	{
-		cleanup();
+		dispose();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Font::cleanup()
+	bool Font::dispose()
 	{
 		m_pages.clear();
 

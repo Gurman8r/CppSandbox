@@ -13,12 +13,12 @@ namespace ml
 
 	Entity::~Entity()
 	{
-		cleanup();
+		dispose();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Entity::cleanup()
+	bool Entity::dispose()
 	{
 		for (auto pair : m_cmp)
 		{

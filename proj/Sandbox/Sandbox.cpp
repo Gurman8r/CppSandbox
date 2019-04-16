@@ -531,6 +531,31 @@ namespace DEMO
 			}
 		}
 
+		// Setup ECS (WIP)
+		/* * * * * * * * * * * * * * * * * * * * */
+		ml::Entity ent;
+		if (ent.loadFromFile(""))
+		{
+			ml::Transform * transform = ent.add<ml::Transform>({
+				{ 0.0f, -2.5f, 0.0f },
+				{ 12.5f, 0.25f, 12.5f },
+				{ ml::vec3f::One, 0.0f }
+			});
+
+			ml::UniformSet * uniforms = ent.add<ml::UniformSet>({
+				ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&uni.persp.matrix()),
+				ml::Uniform("Vert.view",	ml::Uniform::Mat4,	&uni.camera.matrix()),
+				ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&transform->matrix()),
+				ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
+				ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm")),
+			});
+
+			ml::RenderFlags * flags = ent.add<ml::RenderFlags>({
+				{ ml::GL::CullFace, true },
+				{ ml::GL::DepthTest, true },
+			});
+		}
+
 		// Setup Physics
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (ml::Debug::log("Launching Physics...") && !ML_Physics.thread().launch([&]()
@@ -574,31 +599,6 @@ namespace DEMO
 				ML_FAILURE,
 				"System Failure",
 				"Failed Loading Physics");
-		}
-
-		// ECS Testing
-		/* * * * * * * * * * * * * * * * * * * * */
-		ml::Entity ent;
-		if (ent.loadFromFile(""))
-		{
-			ml::Transform * transform = ent.add<ml::Transform>({
-				{ 0.0f, -2.5f, 0.0f },
-				{ 12.5f, 0.25f, 12.5f },
-				{ ml::vec3f::One, 0.0f }
-			});
-
-			ml::UniformSet * uniforms = ent.add<ml::UniformSet>({
-				ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&uni.persp.matrix()),
-				ml::Uniform("Vert.view",	ml::Uniform::Mat4,	&uni.camera.matrix()),
-				ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&transform->matrix()),
-				ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
-				ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm")),
-			});
-
-			ml::RenderFlags * flags = ent.add<ml::RenderFlags>({
-				{ ml::GL::CullFace, true },
-				{ ml::GL::DepthTest, true },
-			});
 		}
 	}
 
@@ -708,11 +708,11 @@ namespace DEMO
 		// Update Text
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
-			m_text["message"]
+			m_text["project_url"]
 				.setFont(ML_Res.fonts.get("minecraft"))
-				.setFontSize(72)
+				.setFontSize(56)
 				.setPosition({ 48 })
-				.setString("github.com/gurman8r/cppsandbox");
+				.setString(SETTINGS.projectURL);
 
 			const ml::Font *font = ML_Res.fonts.get("consolas");
 			uint32_t		fontSize = 18;
@@ -1019,10 +1019,10 @@ namespace DEMO
 		ml::Debug::log("Unloading...");
 
 		// Unload Resources
-		ML_Res.cleanup();
+		ML_Res.dispose();
 
 		// Cleanup Physics Thread
-		ML_Physics.thread().cleanup();
+		ML_Physics.thread().dispose();
 	}
 
 	void Sandbox::onExit(const ml::ExitEvent * ev)

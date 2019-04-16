@@ -13,19 +13,19 @@ namespace ml
 
 	Plugin::~Plugin()
 	{
-		cleanup();
+		dispose();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Plugin::cleanup()
+	bool Plugin::dispose()
 	{
 		return ML_Lib.freeLibrary(m_inst) || !(m_inst = NULL);
 	}
 
 	bool Plugin::loadFromFile(const String & filename)
 	{
-		return cleanup() && (m_inst = ML_Lib.loadLibrary(m_file = filename));
+		return dispose() && (m_inst = ML_Lib.loadLibrary(m_file = filename));
 	}
 
 	void * Plugin::call(const String & name, void * data)

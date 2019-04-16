@@ -2,6 +2,7 @@
 #define _ML_FILE_HPP_
 
 #include <MemeCore/ITrackable.hpp>
+#include <MemeCore/IDisposable.hpp>
 #include <MemeCore/IReadable.hpp>
 #include <MemeCore/IWritable.hpp>
 #include <MemeCore/IStream.hpp>
@@ -11,6 +12,7 @@ namespace ml
 {
 	class ML_CORE_API File final
 		: public ITrackable
+		, public IDisposable
 		, public IReadable
 		, public IWritable
 	{
@@ -30,7 +32,7 @@ namespace ml
 		File(const File & copy);
 		~File();
 
-		bool cleanup() override;
+		bool dispose() override;
 		bool loadFromFile(const String & filename) override;
 		bool loadFromFile();
 		bool saveToFile(const String & filename) const override;

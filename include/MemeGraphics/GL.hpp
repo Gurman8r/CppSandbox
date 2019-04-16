@@ -12,6 +12,8 @@ namespace ml
 {
 	struct ML_GRAPHICS_API GL final
 	{
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 		enum Flag : uint32_t
 		{
 			CullFace		= 0x0B44,		// GL_CULL_FACE
@@ -22,6 +24,8 @@ namespace ml
 			FramebufferSRGB	= 0x8DB9,		// GL_FRAMEBUFFER_SRGB
 			ScissorTest		= 0x0C11,		// GL_SCISSOR_TEST
 		};
+
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 		enum Target : uint32_t
 		{
@@ -45,12 +49,16 @@ namespace ml
 			ActiveTexture = 0x84E0,			// GL_ACTIVE_TEXTURE
 		};
 
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 		enum Usage : uint32_t
 		{
 			StreamDraw		= 0x88E0,		// GL_STREAM_DRAW
 			StaticDraw		= 0x88E4,		// GL_STATIC_DRAW
 			DynamicDraw		= 0x88E8,		// GL_DYNAMIC_DRAW
 		};
+
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 		enum Err : uint32_t
 		{
@@ -64,6 +72,8 @@ namespace ml
 			InvalidFramebufferOperation,	// GL_INVALID_FRAMEBUFFER_OPERATION
 		};
 
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 		enum StringID : uint32_t
 		{
 			Vendor = 0x1F00,				// GL_VENDOR
@@ -73,6 +83,8 @@ namespace ml
 			ShadingLanguageVersion = 0x8B8C,// GL_SHADING_LANGUAGE_VERSION			
 		};
 
+
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		enum IntID : uint32_t
 		{
 			MajorVersion = 0x821B,			// GL_MAJOR_VERSION
@@ -88,12 +100,16 @@ namespace ml
 			ScissorBox = 0x0C10,			// GL_SCISSOR_BOX
 		};
 
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 		enum ClipControl
 		{
 			LowerLeft = 0x8CA1,				// GL_LOWER_LEFT
 			UpperLeft,						// GL_UPPER_LEFT
 			ClipOrigin = 0x935C,			// GL_CLIP_ORIGIN
 		};
+
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 		enum Status : uint32_t
 		{
@@ -103,12 +119,16 @@ namespace ml
 			FramebufferComplete = 0x8CD5,	// GL_FRAMEBUFFER_COMPLETE
 		};
 
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 		enum ShaderType : uint32_t
 		{
 			FragmentShader = 0x8B30,		// GL_FRAGMENT_SHADER
 			VertexShader,					// GL_VERTEX_SHADER
 			GeometryShader = 0x8DD9,		// GL_GEOMETRY_SHADER
 		};
+
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 		enum Mode : uint32_t
 		{
@@ -122,6 +142,8 @@ namespace ml
 			Fill = 0x1B02,					// GL_FILL
 		};
 
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 		enum Equation : uint32_t
 		{
 			Multiply	= 0x0103,			// GL_MULT
@@ -129,6 +151,8 @@ namespace ml
 			Subtract	= 0x84E7,			// GL_SUBTRACT
 			FuncAdd		= 0x8006,			// GL_FUNC_ADD
 		};
+
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 		enum BlendEquation : uint32_t
 		{
@@ -139,6 +163,8 @@ namespace ml
 			BlendDestAlpha = 0x80CA,		// GL_BLEND_DST_ALPHA
 			BlendSourceAlpha,				// GL_BLEND_SRC_ALPHA
 		};
+
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 		enum Comparison : uint32_t
 		{
@@ -151,6 +177,8 @@ namespace ml
 			GEqual,							// GL_GEQUAL
 			Always,							// GL_ALWAYS
 		};
+
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 		enum Factor : uint32_t
 		{
@@ -165,6 +193,8 @@ namespace ml
 			SourceAlphaSaturate,			// GL_SRC_ALPHA_SATURATE
 		};
 
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 		enum Face : uint32_t
 		{
 			FrontLeft = 0x0400,				// GL_FRONT_LEFT
@@ -178,6 +208,8 @@ namespace ml
 			FrontAndBack,					// GL_FRONT_AND_BACK
 		};
 
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 		enum Type : uint32_t
 		{
 			Byte = 0x1400,					// GL_BYTE
@@ -188,6 +220,8 @@ namespace ml
 			UnsignedInt,					// GL_UNSIGNED_INT
 			Float,							// GL_FLOAT
 		};
+
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 		enum Format : uint32_t
 		{
@@ -212,6 +246,8 @@ namespace ml
 			Depth24_Stencil8 = 0x88F0,		// GL_DEPTH24_STENCIL8
 		};
 
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 		enum FBO_Attachment : uint32_t
 		{
 			AttachmentColorEncoding= 0x8210,// GL_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING
@@ -226,6 +262,8 @@ namespace ml
 			FramebufferUndefined,			// GL_FRAMEBUFFER_UNDEFINED
 			DepthStencilAttachment,			// GL_DEPTH_STENCIL_ATTACHMENT
 		};
+
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 		enum TexParam : uint32_t
 		{
@@ -252,6 +290,8 @@ namespace ml
 			CubeMap_Negative_Z,				// GL_TEXTURE_CUBE_MAP_NEGATIVE_Z
 		};
 
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 		enum Pack : uint32_t
 		{
 			UnpackSwapBytes = 0x0CF0,		// GL_UNPACK_SWAP_BYTES
@@ -268,6 +308,8 @@ namespace ml
 			PackSkipPixels,					// GL_PACK_SKIP_PIXELS
 			PackAlignment,					// GL_PACK_ALIGNMENT
 		};
+
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 		enum Attachment : uint32_t
 		{
@@ -288,6 +330,8 @@ namespace ml
 			ColorAttachment14,				// GL_COLOR_ATTACHMENT14
 			ColorAttachment15,				// GL_COLOR_ATTACHMENT15
 		};
+
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 		enum TextureID : uint32_t
 		{
@@ -325,6 +369,8 @@ namespace ml
 			Texture31,						// GL_TEXTURE31
 		};
 
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 		enum DrawBuffers
 		{
 			DrawBuffer0 = 0x8CE0,			// GL_DRAW_BUFFER0
@@ -345,6 +391,8 @@ namespace ml
 			DrawBuffer15,					// GL_DRAW_BUFFER15
 		};
 
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 		enum Mask : uint32_t
 		{
 			ContextCoreProfileBit	= 0x1,	// GL_CONTEXT_CORE_PROFILE_BIT
@@ -355,6 +403,8 @@ namespace ml
 			StencilBufferBit = 0x400,		// GL_STENCIL_BUFFER_BIT
 			ColorBufferBit	 = 0x4000,		// GL_COLOR_BUFFER_BIT
 		};
+
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 	};
 }
 
@@ -368,12 +418,12 @@ namespace ml
 	)
 
 	// GL::Attachment
-	ML_GENERATE_ITERABLE_OPERATORS(
+	ML_GENERATE_ITER_OPERATORS(
 		GL::Attachment, uint32_t, int32_t, GL::ColorAttachment0, GL::ColorAttachment9
 	)
 
 	// GL::TextureID
-	ML_GENERATE_ITERABLE_OPERATORS(
+	ML_GENERATE_ITER_OPERATORS(
 		GL::TextureID, uint32_t, int32_t, GL::Texture0, GL::Texture31
 	)
 }

@@ -17,9 +17,9 @@ namespace ml
 	// Model is a Drawable Mesh
 	class ML_GRAPHICS_API Model
 		: public ITrackable
+		, public IDisposable
 		, public IDrawable
 		, public IReadable
-		//, public ITransformable
 	{
 	public:
 		Model();
@@ -27,7 +27,7 @@ namespace ml
 		~Model();
 
 	public:
-		bool cleanup() override;
+		bool dispose() override;
 		bool loadFromFile(const String & filename) override;
 		bool loadFromMemory(const Mesh & mesh);
 		bool loadFromMemory(const FloatList & vertices);

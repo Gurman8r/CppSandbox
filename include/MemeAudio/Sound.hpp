@@ -4,6 +4,7 @@
 #include <MemeAudio/Export.hpp>
 #include <MemeCore/ITrackable.hpp>
 #include <MemeCore/IReadable.hpp>
+#include <MemeCore/IDisposable.hpp>
 
 namespace ml
 {
@@ -11,6 +12,7 @@ namespace ml
 
 	class ML_AUDIO_API Sound
 		: public ITrackable
+		, public IDisposable
 		, public IReadable
 	{
 	public:
@@ -18,7 +20,7 @@ namespace ml
 		~Sound();
 
 	public:
-		bool cleanup() override;
+		bool dispose() override;
 		bool loadFromFile(const String & filename) override;
 
 	private:

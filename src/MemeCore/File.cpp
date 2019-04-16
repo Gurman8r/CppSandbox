@@ -45,15 +45,15 @@ namespace ml
 
 	File::~File()
 	{
-		cleanup();
+		dispose();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool File::cleanup()
+	bool File::dispose()
 	{
 		m_data.clear();
-		return true;
+		return m_data.empty();
 	}
 
 	bool File::loadFromFile(const String & path)

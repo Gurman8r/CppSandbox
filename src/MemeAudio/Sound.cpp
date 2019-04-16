@@ -12,12 +12,12 @@ namespace ml
 
 	Sound::~Sound()
 	{
-		cleanup();
+		dispose();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Sound::cleanup()
+	bool Sound::dispose()
 	{
 		return false;
 	}

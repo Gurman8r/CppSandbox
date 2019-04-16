@@ -54,7 +54,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Resources::cleanup()
+	bool Resources::dispose()
 	{
 		return cleanupAll();
 	}

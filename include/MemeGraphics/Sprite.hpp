@@ -11,6 +11,7 @@ namespace ml
 
 	class ML_GRAPHICS_API Sprite
 		: public ITrackable
+		, public IDisposable
 		, public IDrawable
 		, public IReadable
 	{
@@ -18,7 +19,7 @@ namespace ml
 		Sprite();
 		~Sprite();
 
-		bool cleanup() override;
+		bool dispose() override;
 		bool loadFromFile(const String & filename) override;
 		bool loadFromMemory(const Texture * value);
 

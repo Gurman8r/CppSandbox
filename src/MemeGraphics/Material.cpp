@@ -31,7 +31,7 @@ namespace ml
 	{
 	}
 
-	bool Material::cleanup()
+	bool Material::dispose()
 	{
 		return true;
 	}

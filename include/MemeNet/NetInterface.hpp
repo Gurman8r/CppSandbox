@@ -36,7 +36,7 @@ namespace ml
 
 	public:
 		bool setup();
-		bool cleanup() override;
+		bool dispose() override;
 		void poll();
 
 	public:

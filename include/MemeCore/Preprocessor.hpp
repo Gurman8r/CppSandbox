@@ -1,59 +1,64 @@
 #ifndef _ML_PREPROCESSOR_HPP_
 #define _ML_PREPROCESSOR_HPP_
 
-// Clamp Macro
+// Clamp
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 #define ML_CLAMP(value, min, max) \
 (((value) > (max)) \
 	? (((value) < (min)) \
 		? (min) \
 		: (value)) \
-	: (max)) \
+	: (max))
 
 
-// Lerp Macro
+// Lerp
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-#define ML_LERP(a, b, t) (a * t + b * ((1) - t))
+#define ML_LERP(a, b, c) (a * c + b * ((1) - c))
 
 
-// Sign Macro
+// Map Range
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+#define ML_MAP_RANGE(value, min1, max1, min2, max2) \
+(min2 + (value - min1) * (max2 - min2) / (max1 - min1))
+
+
+// Sign
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 #define ML_SIGN(value) \
 (((value) == (0)) \
 	? (0) \
 	: (((value) > (0)) \
 		? (+1) \
-		: (-1))) \
+		: (-1)))
 
 
-// Map Range Macro
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-#define ML_MAP_RANGE(value, min1, max1, min2, max2) \
-(min2 + (value - min1) * (max2 - min2) / (max1 - min1))
-
-
-// Generate Mask Operators Macro
+// Generate Mask Operators
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 #define ML_GENERATE_MASK_OPERATORS(NAME, TYPE) \
-inline NAME operator&(const NAME l, const NAME r) { return (NAME)((TYPE)l & (TYPE)r); } \
-inline NAME operator|(const NAME l, const NAME r) { return (NAME)((TYPE)l | (TYPE)r); } \
-inline NAME & operator &=(NAME & l, const NAME r) { return (l = (l & r)); } \
-inline NAME & operator |=(NAME & l, const NAME r) { return (l = (l | r)); } \
+inline NAME operator&(const NAME a, const NAME b) { return (NAME)((TYPE)a & (TYPE)b); } \
+inline NAME operator|(const NAME a, const NAME b) { return (NAME)((TYPE)a | (TYPE)b); } \
+inline NAME & operator &=(NAME & a, const NAME b) { return (a = (a & b)); } \
+inline NAME & operator |=(NAME & a, const NAME b) { return (a = (a | b)); }
 
 
-// Generate Iterable Operators Macro
+// Generate Iter Operators
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-#define ML_GENERATE_ITERABLE_OPERATORS(NAME, TYPE, ITER, MIN, MAX) \
-template <class T> inline NAME operator+(const NAME l, const T r) \
+#define ML_GENERATE_ITER_OPERATORS_T(T, NAME, TYPE, ITER, MIN, MAX) \
+template <class T> inline NAME operator+(const NAME a, const T b) \
 { \
-	return (NAME)(ML_CLAMP(((TYPE)l + (TYPE)r), MIN, MAX)); \
+	return (NAME)(ML_CLAMP(((TYPE)a + (TYPE)b), MIN, MAX)); \
 } \
-template <class T> inline NAME operator-(const NAME l, const T r) { return (l + (-r)); } \
-template <class T> inline NAME & operator+=(NAME & l, const T r) { return (l = (l + r)); } \
-template <class T> inline NAME & operator-=(NAME & l, const T r) { return (l = (l - r)); } \
-inline NAME operator++(NAME & l) { return (l += 1); } \
-inline NAME operator++(NAME & l, ITER) { NAME temp = l;	l += 1;	return temp; } \
-inline NAME operator--(NAME & l) { return (l -= 1); } \
-inline NAME operator--(NAME & l, ITER) { NAME temp = l;	l -= 1;	return temp; } \
+template <class T> inline NAME operator-(const NAME a, const T b) { return (a + (-b)); } \
+template <class T> inline NAME & operator+=(NAME & a, const T b) { return (a = (a + b)); } \
+template <class T> inline NAME & operator-=(NAME & a, const T b) { return (a = (a - b)); } \
+inline NAME operator++(NAME & a)		{ return (a += 1); } \
+inline NAME operator--(NAME & a)		{ return (a -= 1); } \
+inline NAME operator++(NAME & a, ITER)	{ NAME c = a; a += 1; return c; } \
+inline NAME operator--(NAME & a, ITER)	{ NAME c = a; a -= 1; return c; }
+
+#define ML_GENERATE_ITER_OPERATORS(NAME, TYPE, ITER, MIN, MAX) \
+ML_GENERATE_ITER_OPERATORS_T(T, NAME, TYPE, ITER, MIN, MAX)
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #endif // !_ML_PREPROCESSOR_HPP_

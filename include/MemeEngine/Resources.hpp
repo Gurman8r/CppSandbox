@@ -21,6 +21,7 @@ namespace ml
 
 	class ML_ENGINE_API Resources
 		: public ITrackable
+		, public IDisposable
 		, public IReadable
 		, public ISingleton<Resources>
 	{
@@ -35,7 +36,7 @@ namespace ml
 		size_t reloadAll();
 
 	public:
-		bool cleanup() override;
+		bool dispose() override;
 		bool loadFromFile(const String & filename) override;
 
 	private:

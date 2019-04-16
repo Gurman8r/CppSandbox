@@ -64,12 +64,12 @@ namespace ml
 
 	Shader::~Shader()
 	{
-		cleanup();
+		dispose();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Shader::cleanup()
+	bool Shader::dispose()
 	{
 		m_textures.clear();
 		m_uniforms.clear();
@@ -424,7 +424,7 @@ namespace ml
 			return ml::Debug::logError("Geometry shaders are not available on your system.");
 		}
 
-		cleanup();
+		dispose();
 
 		if (!(*this) && !(get_ref() = ML_GL.createProgramObject()))
 		{

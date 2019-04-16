@@ -70,12 +70,12 @@ namespace ml
 
 	Texture::~Texture()
 	{
-		cleanup();
+		dispose();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Texture::cleanup()
+	bool Texture::dispose()
 	{
 		bind(NULL);
 		if ((*this))

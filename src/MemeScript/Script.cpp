@@ -18,12 +18,12 @@ namespace ml
 
 	Script::~Script()
 	{
-		cleanup();
+		dispose();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Script::cleanup()
+	bool Script::dispose()
 	{
 		if (m_root) 
 		{ 
@@ -105,7 +105,7 @@ namespace ml
 			{
 				m_retv = m_root->getRet();
 
-				return cleanup();
+				return dispose();
 			}
 		}
 		return false;

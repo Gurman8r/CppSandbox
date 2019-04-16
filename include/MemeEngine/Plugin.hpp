@@ -2,6 +2,7 @@
 #define _ML_PLUGIN_HPP_
 
 #include <MemeCore/IReadable.hpp>
+#include <MemeCore/IDisposable.hpp>
 #include <MemeEngine/LibLoader.hpp>
 #include <MemeEngine/PluginAPI.hpp>
 
@@ -11,6 +12,7 @@ namespace ml
 
 	class ML_ENGINE_API Plugin final
 		: public ITrackable
+		, public IDisposable
 		, public IReadable
 		, public INonCopyable
 	{
@@ -19,7 +21,7 @@ namespace ml
 		~Plugin();
 
 	public:
-		bool	cleanup() override;
+		bool	dispose() override;
 		bool	loadFromFile(const String & filename) override;
 		void *	call(const String & name, void * data);
 

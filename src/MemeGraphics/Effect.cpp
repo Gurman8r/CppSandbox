@@ -20,12 +20,12 @@ namespace ml
 
 	Effect::~Effect()
 	{
-		cleanup();
+		dispose();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Effect::cleanup()
+	bool Effect::dispose()
 	{
 		if (m_fbo && m_rbo)
 		{
@@ -66,7 +66,7 @@ namespace ml
 					}
 
 					// Setup Texture
-					m_texture.cleanup();
+					m_texture.dispose();
 					m_texture.create(size);
 					m_fbo.setTexture(
 						(m_attachment),
@@ -89,7 +89,7 @@ namespace ml
 		return 
 			(size != vec2i::Zero) &&
 			(m_size != size) &&
-			(cleanup()) &&
+			(dispose()) &&
 			(create(size, m_attachment));
 	}
 

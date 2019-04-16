@@ -11,6 +11,7 @@ namespace ml
 	// WIP
 	class ML_GRAPHICS_API Skybox final
 		: public ITrackable
+		, public IDisposable
 		, public IReadable
 	{
 	public:
@@ -25,7 +26,7 @@ namespace ml
 		~Skybox();
 
 	public:
-		bool cleanup() override;
+		bool dispose() override;
 		bool loadFromFile(const String & filename) override;
 
 		void serialize(std::ostream & out) const override;

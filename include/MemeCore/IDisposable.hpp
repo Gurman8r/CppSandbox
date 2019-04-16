@@ -8,7 +8,7 @@ namespace ml
 	class IDisposable
 	{
 	public:
-		virtual bool cleanup() = 0;
+		virtual bool dispose() = 0;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

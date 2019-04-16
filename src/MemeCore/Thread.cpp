@@ -11,22 +11,22 @@ namespace ml
 
 	Thread::~Thread()
 	{
-		cleanup();
+		dispose();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	inline bool Thread::alive() const
+	bool Thread::alive() const
 	{
 		return (bool)(m_thr);
 	}
 
-	inline bool Thread::joinable() const
+	bool Thread::joinable() const
 	{
 		return alive() && m_thr->joinable();
 	}
 
-	inline bool Thread::cleanup()
+	bool Thread::dispose()
 	{
 		if (joinable())
 		{
@@ -40,7 +40,7 @@ namespace ml
 		return !(m_thr);
 	}
 
-	inline void Thread::sleep(const ml::Duration & value)
+	void Thread::sleep(const ml::Duration & value)
 	{
 		if (joinable())
 		{

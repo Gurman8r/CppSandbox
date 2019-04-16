@@ -36,12 +36,12 @@ namespace ml
 
 	Mesh::~Mesh()
 	{
-		cleanup();
+		dispose();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 	
-	bool Mesh::cleanup()
+	bool Mesh::dispose()
 	{
 		return true;
 	}

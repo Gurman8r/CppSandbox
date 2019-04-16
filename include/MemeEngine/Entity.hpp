@@ -1,9 +1,10 @@
 #ifndef _ML_I_ENTITY_HPP_
 #define _ML_I_ENTITY_HPP_
 
-#include <MemeCore/IReadable.hpp>
 #include <MemeEngine/Export.hpp>
 #include <MemeCore/ITrackable.hpp>
+#include <MemeCore/IDisposable.hpp>
+#include <MemeCore/IReadable.hpp>
 
 namespace ml
 {
@@ -11,11 +12,13 @@ namespace ml
 
 	class ML_ENGINE_API Entity
 		: public ITrackable
+		, public IDisposable
 		, public IReadable
 	{
 	public:
 		using TypeInfo		= typename const std::type_info *;
 		using ComponentMap	= typename HashMap<TypeInfo, void *>;
+
 		using iterator		= typename ComponentMap::iterator;
 		using const_iterator= typename ComponentMap::const_iterator;
 
@@ -24,28 +27,31 @@ namespace ml
 		virtual ~Entity();
 
 	public:
-		virtual bool cleanup() override;
+		virtual bool dispose() override;
 		virtual bool loadFromFile(const String & filename) override;
 
 	public:
-		template <typename T>
-		inline T * add()
+		template <
+			class T
+		> inline T * add()
 		{
-			return (m_cmp.find(&typeid(T)) == m_cmp.end())
+			return ((m_cmp.find(&typeid(T)) == m_cmp.end())
 				? ((T *)(m_cmp[&typeid(T)] = new T()))
-				: (NULL);
+				: (NULL));
 		}
 
-		template <typename T>
-		inline T * add(const T & value)
+		template <
+			class T
+		> inline T * add(const T & value)
 		{
-			return (m_cmp.find(&typeid(T)) == m_cmp.end())
+			return ((m_cmp.find(&typeid(T)) == m_cmp.end())
 				? ((T *)(m_cmp[&typeid(T)] = new T(value)))
-				: (NULL);
+				: (NULL));
 		}
 
-		template <typename T>
-		inline T * get()
+		template <
+			class T
+		> inline T * get()
 		{
 			iterator it;
 			return ((it = m_cmp.find(&typeid(T))) != end())
@@ -53,13 +59,14 @@ namespace ml
 				: (NULL);
 		}
 
-		template <typename T>
-		inline const T * get() const
+		template <
+			class T
+		> inline const T * get() const
 		{
 			const_iterator it;
-			return ((it = m_cmp.find(&typeid(T))) != end())
+			return (((it = m_cmp.find(&typeid(T))) != end())
 				? ((const T *)(it->second))
-				: (NULL);
+				: (NULL));
 		}
 		
 	public:

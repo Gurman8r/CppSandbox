@@ -29,7 +29,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Model::cleanup()
+	bool Model::dispose()
 	{
 		return false;
 	}

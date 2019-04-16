@@ -133,8 +133,6 @@ namespace DEMO
 			return true;
 		}
 
-		inline bool cleanup() override { return true; }
-
 	public:
 		inline ml::vec2u	 winSize()	const { return { width, height }; }
 		inline ml::VideoMode video()	const { return { winSize(), bitsPerPixel }; }

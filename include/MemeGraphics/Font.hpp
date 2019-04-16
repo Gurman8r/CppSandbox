@@ -10,6 +10,7 @@ namespace ml
 
 	class ML_GRAPHICS_API Font final
 		: public ITrackable
+		, public IDisposable
 		, public IReadable
 	{
 	public:
@@ -31,7 +32,7 @@ namespace ml
 		Font(const Font & copy);
 		~Font();
 
-		bool cleanup() override;
+		bool dispose() override;
 		bool loadFromFile(const String & filename) override;
 
 		const Glyph & getGlyph(uint32_t value, uint32_t size) const;

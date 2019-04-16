@@ -21,7 +21,7 @@ namespace ml
 	
 	NetInterface::~NetInterface()
 	{
-		cleanup();
+		dispose();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -31,7 +31,7 @@ namespace ml
 		return ((!m_peer) && (m_peer = ML_PEER(RakNet::RakPeerInterface::GetInstance())));
 	}
 
-	bool NetInterface::cleanup()
+	bool NetInterface::dispose()
 	{
 		if (m_peer)
 		{

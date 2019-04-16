@@ -14,12 +14,12 @@ namespace ml
 
 	Preferences::~Preferences()
 	{
-		cleanup();
+		dispose();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Preferences::cleanup()
+	bool Preferences::dispose()
 	{
 		if (m_ini)
 		{

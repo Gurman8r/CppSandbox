@@ -2,8 +2,8 @@
 #define _ML_MESH_HPP_
 
 #include <MemeCore/IReadable.hpp>
+#include <MemeCore/IDisposable.hpp>
 #include <MemeGraphics/Vertex.hpp>
-#include <MemeGraphics/Texture.hpp>
 #include <MemeGraphics/Lists.hpp>
 
 namespace ml
@@ -12,6 +12,7 @@ namespace ml
 
 	class ML_GRAPHICS_API Mesh final
 		: public ITrackable
+		, public IDisposable
 		, public IReadable
 	{
 	public:
@@ -22,7 +23,7 @@ namespace ml
 		~Mesh();
 
 	public:
-		bool cleanup() override;
+		bool dispose() override;
 		bool loadFromFile(const String & filename) override;
 		bool loadFromMemory(const FloatList & vertices);
 		bool loadFromMemory(const VertexList & vertices);

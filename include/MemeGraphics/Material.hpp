@@ -7,6 +7,7 @@ namespace ml
 {
 	class ML_GRAPHICS_API Material final
 		: public ITrackable
+		, public IDisposable
 		, public IReadable
 	{
 	public:
@@ -16,7 +17,7 @@ namespace ml
 		Material(const Material & copy);
 		~Material();
 
-		bool cleanup() override;
+		bool dispose() override;
 		bool loadFromFile(const String & filename) override;
 
 		void serialize(std::ostream & out) const override;

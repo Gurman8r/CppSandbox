@@ -13,6 +13,7 @@ namespace ml
 	// Effect is Framebuffer + Renderbuffer
 	class ML_GRAPHICS_API Effect
 		: public ITrackable
+		, public IDisposable
 		, public IDrawable
 		, public IReadable
 	{
@@ -20,7 +21,7 @@ namespace ml
 		Effect();
 		~Effect();
 
-		bool cleanup() override;
+		bool dispose() override;
 		bool loadFromFile(const String & filename) override;
 
 		bool create(const vec2i & size, uint32_t attachment);

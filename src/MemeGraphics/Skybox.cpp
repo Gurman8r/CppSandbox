@@ -13,12 +13,12 @@ namespace ml
 
 	Skybox::~Skybox()
 	{
-		cleanup();
+		dispose();
 	}
 	
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Skybox::cleanup()
+	bool Skybox::dispose()
 	{
 		for (Texture * t : m_faces)
 		{

@@ -10,6 +10,7 @@ namespace ml
 
 	class ML_SCRIPT_API Script
 		: public ITrackable
+		, public IDisposable
 		, public IReadable
 	{
 	public:
@@ -17,7 +18,7 @@ namespace ml
 		~Script();
 
 	public:
-		bool cleanup() override;
+		bool dispose() override;
 		bool loadFromFile(const String & filename) override;
 		bool loadFromMemory(const File & file);
 

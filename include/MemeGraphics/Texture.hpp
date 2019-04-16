@@ -12,6 +12,7 @@ namespace ml
 
 	class ML_GRAPHICS_API Texture final
 		: public ITrackable
+		, public IDisposable
 		, public IReadable
 		, public IHandle<uint32_t>
 	{
@@ -29,7 +30,7 @@ namespace ml
 		~Texture();
 
 	public:
-		bool cleanup() override;
+		bool dispose() override;
 		bool loadFromFile(const String & filename) override;
 		bool loadFromFile(const String & filename, uint32_t target);
 		bool loadFromImage(const Image & value);

@@ -3,6 +3,7 @@
 
 #include <MemeEngine/Export.hpp>
 #include <MemeCore/ITrackable.hpp>
+#include <MemeCore/IDisposable.hpp>
 #include <MemeCore/IReadable.hpp>
 
 #define ML_Prefs ml::Preferences::getInstance()
@@ -15,6 +16,7 @@ namespace ml
 	// WIP
 	class ML_ENGINE_API Preferences final
 		: public ITrackable
+		, public IDisposable
 		, public IReadable
 		, public ISingleton<Preferences>
 	{
@@ -25,7 +27,7 @@ namespace ml
 		~Preferences();
 
 	public:
-		bool cleanup() override;
+		bool dispose() override;
 		bool loadFromFile(const String & filename) override;
 
 	public:

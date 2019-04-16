@@ -33,7 +33,7 @@ namespace ml
 
 		bool alive() const;
 		bool joinable() const;
-		bool cleanup() override;
+		bool dispose() override;
 		void sleep(const Duration & value);
 
 	private:

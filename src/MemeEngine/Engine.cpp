@@ -34,7 +34,7 @@ namespace ml
 
 	bool Engine::isRunning() const
 	{
-		return (m_app && m_app->isOpen());
+		return ((m_app) && (m_app->isOpen()));
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

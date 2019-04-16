@@ -16,7 +16,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Sprite::cleanup()
+	bool Sprite::dispose()
 	{
 		return true;
 	}

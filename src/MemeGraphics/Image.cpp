@@ -37,7 +37,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Image::cleanup()
+	bool Image::dispose()
 	{
 		m_pixels.clear();
 		return true;

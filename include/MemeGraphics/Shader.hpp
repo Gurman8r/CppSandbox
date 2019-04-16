@@ -12,6 +12,7 @@ namespace ml
 
 	class ML_GRAPHICS_API Shader final
 		: public ITrackable
+		, public IDisposable
 		, public IReadable
 		, public IHandle<uint32_t>
 	{
@@ -21,7 +22,7 @@ namespace ml
 		~Shader();
 
 	public:
-		bool cleanup() override;
+		bool dispose() override;
 		bool loadFromFile(const String & filename) override;
 		bool loadFromFile(const String & vs, const String & fs);
 		bool loadFromFile(const String & vs, const String & gs, const String & fs);
