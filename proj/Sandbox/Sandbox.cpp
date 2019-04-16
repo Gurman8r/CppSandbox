@@ -335,8 +335,8 @@ namespace DEMO
 		{
 			if (ml::Plugin * p = ML_Res.plugins.get("TestPlugin"))
 			{
-				p->call("ML_Plugin_Enable", "Hello!");
-				p->call("ML_Plugin_Disable", "Goodbye!");
+				p->call(ML_STRINGIFY(ML_Plugin_Enable), "Enabled TestPlugin");
+				p->call(ML_STRINGIFY(ML_Plugin_Disable), "Disabled TestPlugin");
 			}
 		}
 
