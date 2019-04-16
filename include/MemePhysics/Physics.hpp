@@ -8,7 +8,11 @@
 
 #define ML_Physics ml::Physics::getInstance()
 
-#define ML_PHYSICS_TIMESTEP ml::Millis(30)
+/* * * * * * * * * * * * * * * * * * * * */
+
+# ifndef ML_PHYSICS_TIMESTEP
+#	define ML_PHYSICS_TIMESTEP 30
+# endif
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -31,12 +35,14 @@ namespace ml
 	public:
 		inline Mutex		& mutex()	{ return m_mutex;	}
 		inline Thread		& thread()	{ return m_thread;	}
+		inline Timer		& timer()	{ return m_timer;	}
 		inline PhysicsWorld & world()	{ return m_world;	}
 
 	private:
-		Mutex m_mutex;
-		Thread m_thread;
-		PhysicsWorld m_world;
+		Mutex			m_mutex;
+		Thread			m_thread;
+		Timer			m_timer;
+		PhysicsWorld	m_world;
 
 		mutable bool m_updating = false;
 	};

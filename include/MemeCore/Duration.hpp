@@ -3,12 +3,6 @@
 
 #include <MemeCore/Ratio.hpp>
 
-/* * * * * * * * * * * * * * * * * * * * */
-
-#define ml_duration_cast(T, value) (std::chrono::duration_cast<T>(value).count())
-
-/* * * * * * * * * * * * * * * * * * * * */
-
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -47,7 +41,7 @@ namespace ml
 
 		template <class Rep, class Per>
 		Duration(const std::chrono::duration<Rep, Per> & value)
-			: Duration(ml_duration_cast(Millis, value))
+			: Duration(std::chrono::duration_cast<Millis>(value).count())
 		{
 		}
 

@@ -13,9 +13,13 @@ namespace ml
 		if (!m_updating)
 		{
 			m_updating = true;
+
+			timer().start();
 			
 			mutex().lock();
+
 			value = world().state();
+			
 			return true;
 		}
 		value = PhysicsState();
@@ -29,8 +33,15 @@ namespace ml
 			m_updating = false;
 			
 			mutex().unlock();
+
 			world().state() = value;
-			thread().sleep(ML_PHYSICS_TIMESTEP);
+
+			const Duration & elapsed = timer().stop().elapsed();
+
+			if (elapsed.millis() < ML_PHYSICS_TIMESTEP)
+			{
+				thread().sleep(ML_PHYSICS_TIMESTEP - elapsed.millis());
+			}
 			
 			return true;
 		}

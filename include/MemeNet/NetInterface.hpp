@@ -2,6 +2,7 @@
 #define _ML_NETWORK_INTERFACE_HPP_
 
 #include <MemeCore/IEventListener.hpp>
+#include <MemeCore/IDisposable.hpp>
 #include <MemeNet/GUID.hpp>
 #include <MemeNet/IpAddress.hpp>
 #include <MemeNet/Packet.hpp>
@@ -27,6 +28,7 @@ namespace ml
 
 	class ML_NETWORK_API NetInterface
 		: public IEventListener
+		, public IDisposable
 	{
 	public:
 		NetInterface();
@@ -34,7 +36,7 @@ namespace ml
 
 	public:
 		bool setup();
-		void clean();
+		bool cleanup() override;
 		void poll();
 
 	public:
@@ -46,10 +48,10 @@ namespace ml
 		virtual void onPacket(const Packet & value) = 0;
 
 	public:
-		IpAddress getMyAddress() const;
-		GUID	getMyGUID() const;
-		IpAddress getAddressFromGUID(const GUID & value) const;
-		GUID	getGUIDFromAddress(const IpAddress & value) const;
+		GUID		getMyGUID() const;
+		GUID		getGUIDFromAddress(const IpAddress & value) const;
+		IpAddress	getMyAddress() const;
+		IpAddress	getAddressFromGUID(const GUID & value) const;
 
 	protected:
 		void * m_peer;

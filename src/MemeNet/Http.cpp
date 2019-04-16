@@ -39,8 +39,6 @@ namespace ml
 		}
 		else
 		{
-			Debug::logError("Undefined protocol - using HTTP");
-
 			m_host.addr = value.addr;
 			m_host.port = (value.port != 0 ? value.port : ML_HTTP_PORT);
 		}

@@ -77,11 +77,9 @@ namespace DEMO
 	public:
 		inline bool loadFromFile(const ml::String & value) override
 		{
+			// Read INI
 			INIReader ini(configINI = value);
-			if (ini.ParseError() != EXIT_SUCCESS)
-			{
-				return false;
-			}
+			if (ini.ParseError() != EXIT_SUCCESS) { return false; }
 
 			// [General]
 			/* * * * * * * * * * * * * * * * * * * * */

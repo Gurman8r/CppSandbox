@@ -236,9 +236,11 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 
 			ML_Physics.world().state().resize(5); // Setup State
+
+			/* * * * * * * * * * * * * * * * * * * * */
+
 			do
-			{	/* * * * * * * * * * * * * * * * * * * * */
-				
+			{
 				ml::PhysicsState state;
 				if (ML_Physics.beginUpdate(state))
 				{
@@ -250,9 +252,9 @@ namespace DEMO
 						ml::mat4f	inv; // Inverse Transform
 						if (state.getData(i, pos, rot, mat, inv))
 						{
-							switch (i)
+							if (i == 0) 
 							{
-							case 0: { pos[1] = +ML_Time.cos(); } break;
+								pos[1] = +ML_Time.cos(); // just updating one object for testing purposes
 							}
 
 							state.setData(i, pos, rot, mat, inv);
@@ -260,9 +262,8 @@ namespace DEMO
 					}
 					
 					ML_Physics.endUpdate(state);
-					
-					/* * * * * * * * * * * * * * * * * * * * */
 				}
+
 			} while (this->isOpen());
 
 			/* * * * * * * * * * * * * * * * * * * * */
@@ -606,7 +607,17 @@ namespace DEMO
 
 	void Sandbox::onUpdate(const ml::UpdateEvent * ev)
 	{
-		// Poll Network
+		// Update Window Title
+		/* * * * * * * * * * * * * * * * * * * * */
+		this->setTitle(ml::String("{0} | {1} | {2} | {3} ms/frame ({4} fps)").format(
+			SETTINGS.title,
+			ml::Debug::configuration(),
+			ml::Debug::platformTarget(),
+			ev->elapsed.delta(),
+			ML_Time.calculateFPS(ev->elapsed.delta())
+		));
+
+		// Update Network
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
 			if (SETTINGS.isServer)
@@ -618,16 +629,6 @@ namespace DEMO
 				ML_NetClient.poll();
 			}
 		}
-
-		// Set Window Title
-		/* * * * * * * * * * * * * * * * * * * * */
-		this->setTitle(ml::String("{0} | {1} | {2} | {3} ms/frame ({4} fps)").format(
-			SETTINGS.title,
-			ml::Debug::configuration(),
-			ml::Debug::platformTarget(),
-			ev->elapsed.delta(),
-			ML_Time.calculateFPS(ev->elapsed.delta())
-		));
 
 		// Update Models
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -849,11 +850,11 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 			this->clear(uni.clearColor);
 
-			// Draw Objects
+			// Draw 3D
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (false)
 			{
-				// FIXME: doesn't work somehow
+				// FIXME: doesn't work because black magic
 				const ml::Hierarchy::ObjectMap & objects = ML_Hierarchy.objects();
 				for (auto it = objects.begin(); 
 					(it != objects.end()); 

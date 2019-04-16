@@ -21,22 +21,23 @@ namespace ml
 	
 	NetInterface::~NetInterface()
 	{
-		clean();
+		cleanup();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool NetInterface::setup()
 	{
-		return (!m_peer && (m_peer = ML_PEER(RakNet::RakPeerInterface::GetInstance())));
+		return ((!m_peer) && (m_peer = ML_PEER(RakNet::RakPeerInterface::GetInstance())));
 	}
 
-	void NetInterface::clean()
+	bool NetInterface::cleanup()
 	{
 		if (m_peer)
 		{
 			RakNet::RakPeerInterface::DestroyInstance(ML_PEER(m_peer));
 		}
+		return (!m_peer);
 	}
 
 	void NetInterface::poll()
@@ -89,21 +90,9 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	IpAddress NetInterface::getMyAddress() const
-	{
-		return getAddressFromGUID(getMyGUID());
-	}
-
 	GUID NetInterface::getMyGUID() const
 	{
 		return GUID(ML_PEER(m_peer)->GetMyGUID().g);
-	}
-
-	IpAddress NetInterface::getAddressFromGUID(const GUID & value) const
-	{
-		const auto guid = RakNet::RakNetGUID(value);
-		const auto addr = ML_PEER(m_peer)->GetSystemAddressFromGuid(guid);
-		return IpAddress(addr.ToString(), addr.GetPort());
 	}
 
 	GUID NetInterface::getGUIDFromAddress(const IpAddress & value) const
@@ -111,6 +100,18 @@ namespace ml
 		const auto addr = RakNet::SystemAddress(value.ToCString(), value.port);
 		const auto guid = ML_PEER(m_peer)->GetGuidFromSystemAddress(addr);
 		return GUID(guid.g);
+	}
+
+	IpAddress NetInterface::getMyAddress() const
+	{
+		return getAddressFromGUID(getMyGUID());
+	}
+
+	IpAddress NetInterface::getAddressFromGUID(const GUID & value) const
+	{
+		const auto guid = RakNet::RakNetGUID(value);
+		const auto addr = ML_PEER(m_peer)->GetSystemAddressFromGuid(guid);
+		return IpAddress(addr.ToString(), addr.GetPort());
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
