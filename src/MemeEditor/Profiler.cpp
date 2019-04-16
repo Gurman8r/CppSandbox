@@ -48,9 +48,7 @@ namespace ml
 
 	void Profiler::GraphLines::update(CString label, const float sample, const String & fmt)
 	{
-		ImGui::Checkbox("Animate", &animate);
-
-		if (!animate || refresh == 0.0f)
+		if (refresh == 0.0f)
 		{
 			refresh = (float)ImGui::GetTime();
 		}

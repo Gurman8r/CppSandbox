@@ -28,7 +28,6 @@ namespace ml
 		{
 			enum { Size = 90U };
 
-			bool	animate		= true;
 			float	values[Size]= { 0 };
 			int32_t	offset		= 0;
 			float	refresh		= 0.0f;

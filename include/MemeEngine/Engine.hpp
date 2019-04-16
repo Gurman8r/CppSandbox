@@ -28,10 +28,28 @@ namespace ml
 	public:
 		Application * launchApp(Application * app);
 		int32_t freeApp();
+		bool isRunning() const;
 
 	public:
 		void beginFrame();
 		void endFrame();
+
+	public:
+		template <
+			typename Fun,
+			typename ... Args
+		> inline void loop(Fun && fun, Args && ... args)
+		{
+			do
+			{
+				this->beginFrame();
+
+				fun((args)...);
+
+				this->endFrame();
+
+			} while (this->isRunning());
+		}
 
 	public:
 		inline const Application *	app()		{ return m_app; }

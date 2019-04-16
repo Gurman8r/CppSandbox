@@ -26,12 +26,10 @@ int32_t main(int32_t argc, char ** argv)
 			|| ml::Debug::pause(EXIT_FAILURE);
 	}
 
-	// Launch Program
+	// Launch Application
 	/* * * * * * * * * * * * * * * * * * * * */
-	if (ml::Application * app = ML_Engine.launchApp(new DEMO::Sandbox()))
+	if (ML_Engine.launchApp(new DEMO::Sandbox()))
 	{
-		/* * * * * * * * * * * * * * * * * * * * */
-
 		// Enter
 		mlCheck(ML_EventSystem.fireEvent(ml::EnterEvent(argc, argv)));
 
@@ -44,29 +42,23 @@ int32_t main(int32_t argc, char ** argv)
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		// Main Loop
-		do
-		{	// Begin Frame
-			ML_Engine.beginFrame();
-			{
-				// Update Logic
-				ML_EventSystem.fireEvent(ml::UpdateEvent(
-					ML_Engine.elapsed()
-				));
+		ML_Engine.loop([&]() 
+		{
+			// Update Logic
+			ML_EventSystem.fireEvent(ml::UpdateEvent(
+				ML_Engine.elapsed()
+			));
 
-				// Draw Scene
-				ML_EventSystem.fireEvent(ml::DrawEvent(
-					ML_Engine.elapsed()
-				));
+			// Draw Scene
+			ML_EventSystem.fireEvent(ml::DrawEvent(
+				ML_Engine.elapsed()
+			));
 
-				// Draw Gui
-				ML_EventSystem.fireEvent(ml::GuiEvent(
-					ML_Engine.elapsed()
-				));
-			}
-			// End Frame
-			ML_Engine.endFrame();
-
-		} while (app->isOpen());
+			// Draw Gui
+			ML_EventSystem.fireEvent(ml::GuiEvent(
+				ML_Engine.elapsed()
+			));
+		});
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
@@ -76,10 +68,8 @@ int32_t main(int32_t argc, char ** argv)
 		// Exit
 		ML_EventSystem.fireEvent(ml::ExitEvent());
 
-		// Free Program
+		// Free Application
 		return ML_Engine.freeApp();
-
-		/* * * * * * * * * * * * * * * * * * * * */
 	}
 	else
 	{

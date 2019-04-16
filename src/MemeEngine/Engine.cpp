@@ -27,7 +27,9 @@ namespace ml
 		if (m_app)
 		{
 			delete m_app;
+			
 			m_app = NULL;
+			
 			return EXIT_SUCCESS;
 		}
 		else
@@ -35,6 +37,13 @@ namespace ml
 			return EXIT_FAILURE;
 		}
 	}
+
+	bool Engine::isRunning() const
+	{
+		return (m_app && m_app->isOpen());
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	void Engine::beginFrame()
 	{
