@@ -228,9 +228,6 @@
     <ClInclude Include="..\..\include\MemeCore\Maths.hpp">
       <Filter>Header Files\Maths</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\FileDetails.hpp">
-      <Filter>Header Files\FS</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Preprocessor.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>

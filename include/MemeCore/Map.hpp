@@ -1,11 +1,13 @@
 #ifndef _ML_MAP_HPP_
 #define _ML_MAP_HPP_
 
+/* * * * * * * * * * * * * * * * * * * * */
+
 #include <MemeCore/STD.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-#define ML_KEY_VAL template <typename Key, typename Val>
+#define ML_MAKE_KVP_TYPE(NAME, TYPE) template <typename K, typename V> using NAME = typename TYPE<K, V>
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -13,10 +15,10 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	ML_KEY_VAL using Map		= std::map			<Key, Val>;
-	ML_KEY_VAL using MultiMap	= std::multimap		<Key, Val>;
-	ML_KEY_VAL using HashMap	= std::unordered_map<Key, Val>;
-	ML_KEY_VAL using Pair		= std::pair			<Key, Val>;
+	ML_MAKE_KVP_TYPE(Map,		std::map);
+	ML_MAKE_KVP_TYPE(MultiMap,	std::multimap);
+	ML_MAKE_KVP_TYPE(HashMap,	std::unordered_map);
+	ML_MAKE_KVP_TYPE(Pair,		std::pair);
 
 	/* * * * * * * * * * * * * * * * * * * * */
 }
