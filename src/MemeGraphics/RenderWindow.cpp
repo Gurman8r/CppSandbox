@@ -59,10 +59,10 @@ namespace ml
 
 		switch (*value)
 		{
-		case WindowEvent::EV_FramebufferSize:
-			if (const auto * ev = value->as<FramebufferSizeEvent>())
+		case WindowEvent::EV_FrameSize:
+			if (const auto * ev = value->as<FrameSizeEvent>())
 			{
-				setViewport(vec2f::Zero, ev->size());
+				this->setViewport(vec2f::Zero, ev->size());
 			}
 			break;
 		}

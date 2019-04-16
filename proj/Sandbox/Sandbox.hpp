@@ -7,14 +7,8 @@
 
 namespace DEMO
 {
-	// ITrackable
-	// INonCopyable
-	// IEventListener
-	//		Window
-	//			RenderWindow
-	//				Application
-	//					EditorApplication
-	//						Sandbox
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 	class Sandbox final
 		: public ml::EditorApplication
 	{
@@ -29,14 +23,14 @@ namespace DEMO
 
 	private:
 		/* * * * * * * * * * * * * * * * * * * * */
-		void onEnter		(const ml::EnterEvent		* ev) override;
-		void onLoad			(const ml::LoadEvent		* ev) override;
-		void onStart		(const ml::StartEvent		* ev) override;
-		void onUpdate		(const ml::UpdateEvent		* ev) override;
-		void onDraw			(const ml::DrawEvent		* ev) override;
-		void onGui			(const ml::GuiEvent			* ev) override;
-		void onUnload		(const ml::UnloadEvent		* ev) override;
-		void onExit			(const ml::ExitEvent		* ev) override;
+		void onEnter	(const ml::EnterEvent		* ev) override;
+		void onLoad		(const ml::LoadEvent		* ev) override;
+		void onStart	(const ml::StartEvent		* ev) override;
+		void onUpdate	(const ml::UpdateEvent		* ev) override;
+		void onDraw		(const ml::DrawEvent		* ev) override;
+		void onGui		(const ml::GuiEvent			* ev) override;
+		void onUnload	(const ml::UnloadEvent		* ev) override;
+		void onExit		(const ml::ExitEvent		* ev) override;
 
 	private:
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -93,6 +87,8 @@ namespace DEMO
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_SANDBOX_HPP_

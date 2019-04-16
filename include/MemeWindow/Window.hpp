@@ -37,21 +37,6 @@ namespace ml
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
-		using ErrorFun			= void(*)(int32_t, CString);
-		using CharFun			= void(*)(void *, uint32_t);
-		using CursorEnterFun	= void(*)(void *, int32_t);
-		using CursorPosFun		= void(*)(void *, double, double);
-		using FramebufferSizeFun= void(*)(void *, int32_t, int32_t);
-		using KeyFun			= void(*)(void *, int32_t, int32_t, int32_t, int32_t);
-		using MouseButtonFun	= void(*)(void *, int32_t, int32_t, int32_t);
-		using ScrollFun			= void(*)(void *, double, double);
-		using CloseFun	= void(*)(void *);
-		using FocusFun	= void(*)(void *, int32_t);
-		using PositionFun		= void(*)(void *, int32_t, int32_t);
-		using SizeFun		= void(*)(void *, int32_t, int32_t);
-
-	public:
-		/* * * * * * * * * * * * * * * * * * * * */
 		Window();
 		virtual ~Window();
 
@@ -102,6 +87,11 @@ namespace ml
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
+		void *	createCursor(uint32_t value) const;
+		void	destroyCursor(void * value) const;
+
+	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		inline const Context &		getContext()	const { return m_context; }
 		inline const uint32_t &		getStyle()		const { return m_style; }
 		inline const vec2i &		getPosition()	const { return m_position; }
@@ -114,7 +104,7 @@ namespace ml
 
 		inline const float aspect() const 
 		{
-			return ((width() && height()) 
+			return ((width() && height())
 				? ((float)width() / (float)height())
 				: (0.0f));
 		};
@@ -128,23 +118,33 @@ namespace ml
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
-		void *	createCursor(uint32_t value) const;
-		void	destroyCursor(void * value) const;
+		using CharFun			= void(*)(void *, uint32_t);
+		using CursorEnterFun	= void(*)(void *, int32_t);
+		using CursorPosFun		= void(*)(void *, double, double);
+		using ErrorFun			= void(*)(int32_t, CString);
+		using FrameSizeFun		= void(*)(void *, int32_t, int32_t);
+		using KeyFun			= void(*)(void *, int32_t, int32_t, int32_t, int32_t);
+		using MouseFun	= void(*)(void *, int32_t, int32_t, int32_t);
+		using ScrollFun			= void(*)(void *, double, double);
+		using CloseFun			= void(*)(void *);
+		using FocusFun			= void(*)(void *, int32_t);
+		using PositionFun		= void(*)(void *, int32_t, int32_t);
+		using SizeFun			= void(*)(void *, int32_t, int32_t);
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
-		ErrorFun			setErrorCallback(ErrorFun callback);
-		CharFun				setCharCallback(CharFun callback);
-		CursorEnterFun		setCursorEnterCallback(CursorEnterFun callback);
-		CursorPosFun		setCursorPosCallback(CursorPosFun callback);
-		FramebufferSizeFun	setFramebufferSizeCallback(FramebufferSizeFun callback);
-		KeyFun				setKeyCallback(KeyFun callback);
-		MouseButtonFun		setMouseButtonCallback(MouseButtonFun callback);
-		ScrollFun			setScrollCallback(ScrollFun callback);
-		CloseFun			setWindowCloseCallback(CloseFun callback);
-		FocusFun			setWindowFocusCallback(FocusFun callback);
-		PositionFun			setWindowPosCallback(PositionFun callback);
-		SizeFun				setWindowSizeCallback(SizeFun callback);
+		CharFun			setCharCallback(CharFun callback);
+		CursorEnterFun	setCursorEnterCallback(CursorEnterFun callback);
+		CursorPosFun	setCursorPosCallback(CursorPosFun callback);
+		ErrorFun		setErrorCallback(ErrorFun callback);
+		FrameSizeFun	setFrameSizeCallback(FrameSizeFun callback);
+		KeyFun			setKeyCallback(KeyFun callback);
+		MouseFun		setMouseButtonCallback(MouseFun callback);
+		ScrollFun		setScrollCallback(ScrollFun callback);
+		CloseFun		setWindowCloseCallback(CloseFun callback);
+		FocusFun		setWindowFocusCallback(FocusFun callback);
+		PositionFun		setWindowPosCallback(PositionFun callback);
+		SizeFun			setWindowSizeCallback(SizeFun callback);
 
 	protected:
 		/* * * * * * * * * * * * * * * * * * * * */

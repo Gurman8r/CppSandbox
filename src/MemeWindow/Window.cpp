@@ -23,7 +23,7 @@ namespace ml
 		ML_EventSystem.addListener(WindowEvent::EV_Char,			this);
 		ML_EventSystem.addListener(WindowEvent::EV_CursorEnter,		this);
 		ML_EventSystem.addListener(WindowEvent::EV_CursorPos,		this);
-		ML_EventSystem.addListener(WindowEvent::EV_FramebufferSize,	this);
+		ML_EventSystem.addListener(WindowEvent::EV_FrameSize,	this);
 		ML_EventSystem.addListener(WindowEvent::EV_Key,				this);
 		ML_EventSystem.addListener(WindowEvent::EV_MouseButton,		this);
 		ML_EventSystem.addListener(WindowEvent::EV_Scroll,			this);
@@ -85,11 +85,6 @@ namespace ml
 
 	bool Window::setup()
 	{
-		setErrorCallback([](int32_t code, CString desc) 
-		{
-			ML_EventSystem.fireEvent(WindowErrorEvent(code, desc));
-		});
-
 		setCharCallback([](void * window, uint32_t c)
 		{
 			ML_EventSystem.fireEvent(CharEvent(c));
@@ -105,9 +100,14 @@ namespace ml
 			ML_EventSystem.fireEvent(CursorPosEvent(x, y));
 		});
 
-		setFramebufferSizeCallback([](void * window, int32_t w, int32_t h)
+		setErrorCallback([](int32_t code, CString desc)
 		{
-			ML_EventSystem.fireEvent(FramebufferSizeEvent(w, h));
+			ML_EventSystem.fireEvent(WindowErrorEvent(code, desc));
+		});
+
+		setFrameSizeCallback([](void * window, int32_t w, int32_t h)
+		{
+			ML_EventSystem.fireEvent(FrameSizeEvent(w, h));
 		});
 
 		setKeyCallback([](void * window, int32_t button, int32_t scan, int32_t action, int32_t mods)
@@ -173,8 +173,8 @@ namespace ml
 			{
 			}
 			break;
-		case WindowEvent::EV_FramebufferSize:
-			if (const auto * ev = value->as<FramebufferSizeEvent>())
+		case WindowEvent::EV_FrameSize:
+			if (const auto * ev = value->as<FrameSizeEvent>())
 			{
 			}
 			break;
@@ -437,13 +437,6 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	Window::ErrorFun Window::setErrorCallback(ErrorFun callback)
-	{
-		return glfwSetErrorCallback(reinterpret_cast<GLFWerrorfun>(callback))
-			? callback
-			: NULL;
-	}
-	
 	Window::CharFun Window::setCharCallback(CharFun callback)
 	{
 		return glfwSetCharCallback(ML_WINDOW(m_window), reinterpret_cast<GLFWcharfun>(callback))
@@ -465,7 +458,14 @@ namespace ml
 			: NULL;
 	}
 	
-	Window::FramebufferSizeFun Window::setFramebufferSizeCallback(FramebufferSizeFun callback)
+	Window::ErrorFun Window::setErrorCallback(ErrorFun callback)
+	{
+		return glfwSetErrorCallback(reinterpret_cast<GLFWerrorfun>(callback))
+			? callback
+			: NULL;
+	}
+
+	Window::FrameSizeFun Window::setFrameSizeCallback(FrameSizeFun callback)
 	{
 		return glfwSetFramebufferSizeCallback(ML_WINDOW(m_window), reinterpret_cast<GLFWframebuffersizefun>(callback))
 			? callback
@@ -479,7 +479,7 @@ namespace ml
 			: NULL;
 	}
 	
-	Window::MouseButtonFun Window::setMouseButtonCallback(MouseButtonFun callback)
+	Window::MouseFun Window::setMouseButtonCallback(MouseFun callback)
 	{
 		return glfwSetMouseButtonCallback(ML_WINDOW(m_window), reinterpret_cast<GLFWmousebuttonfun>(callback))
 			? callback

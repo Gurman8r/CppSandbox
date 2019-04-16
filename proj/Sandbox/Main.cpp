@@ -43,6 +43,7 @@ int32_t main(int32_t argc, char ** argv)
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
+		// Main Loop
 		do
 		{	// Begin Frame
 			ML_Engine.beginFrame();

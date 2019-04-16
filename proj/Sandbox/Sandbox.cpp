@@ -1,4 +1,4 @@
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * */
 
 #include "Sandbox.hpp"
 #include "Settings.hpp"
@@ -38,16 +38,18 @@
 
 namespace DEMO
 {
-	/* * * * * * * * * * * * * * * * * * * * */
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-	Sandbox::Sandbox()
-		: EditorApplication()
+	Sandbox::Sandbox() 
+		: EditorApplication() 
 	{
 	}
 
-	Sandbox::~Sandbox() {}
+	Sandbox::~Sandbox() 
+	{
+	}
 
-	/* * * * * * * * * * * * * * * * * * * * */
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 	
 	void Sandbox::onEvent(const ml::IEvent * value)
 	{
@@ -139,7 +141,7 @@ namespace DEMO
 		}
 	}
 
-	/* * * * * * * * * * * * * * * * * * * * */
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	void Sandbox::onEnter(const ml::EnterEvent * ev)
 	{
@@ -1032,7 +1034,7 @@ namespace DEMO
 		ImGui_ML_Shutdown();
 	}
 
-	/* * * * * * * * * * * * * * * * * * * * */
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	bool Sandbox::ML_MainMenuBar_draw()
 	{
@@ -1256,7 +1258,5 @@ namespace DEMO
 		});
 	}
 
-	/* * * * * * * * * * * * * * * * * * * * */
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 }
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

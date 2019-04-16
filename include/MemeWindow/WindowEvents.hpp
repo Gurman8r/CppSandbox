@@ -20,7 +20,7 @@ namespace ml
 			EV_Char,
 			EV_CursorEnter,
 			EV_CursorPos,
-			EV_FramebufferSize,
+			EV_FrameSize,
 			EV_Key,
 			EV_MouseButton,
 			EV_Scroll,
@@ -188,13 +188,13 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_WINDOW_API FramebufferSizeEvent final : public WindowEvent
+	struct ML_WINDOW_API FrameSizeEvent final : public WindowEvent
 	{
 		int32_t width;
 		int32_t height;
 
-		FramebufferSizeEvent(int32_t width, int32_t height)
-			: WindowEvent(EV_FramebufferSize)
+		FrameSizeEvent(int32_t width, int32_t height)
+			: WindowEvent(EV_FrameSize)
 			, width(width)
 			, height(height)
 		{
@@ -207,7 +207,7 @@ namespace ml
 
 		inline vec2i size() const { return { width, height }; }
 
-		inline float aspect() const { return (width && height) ? (float)(width) / (float)(height) : FLT_MIN; }
+		inline float aspect() const { return ((width && height) ? (float)(width) / (float)(height) : FLT_MIN); }
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

@@ -10,8 +10,8 @@
 #define ML_SUCCESS	1 // | +1  | true  |
 
 # ifdef ML_DEBUG
-	// The do-while loop is needed so that mlCheck can be 
-	// used as a single statement in if/else branches
+	// Debug macro to check ML errors
+	// The do-while loop is needed so that mlCheck can be used as a single statement in if/else branches
 #	define mlCheck(expr) do { expr; ml::Debug::checkError(__FILE__, __LINE__, #expr); } while (false)
 # else
 #	define mlCheck(expr) (expr)
