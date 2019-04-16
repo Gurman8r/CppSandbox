@@ -48,7 +48,7 @@ int32_t main(int32_t argc, char ** argv)
 			__argc, __argv
 		)));
 		return states.run(State::Load, data);
-	}},
+	} },
 	{ State::Load, [](void * data)
 	{
 		// Load
