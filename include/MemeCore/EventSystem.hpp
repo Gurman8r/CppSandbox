@@ -30,8 +30,6 @@ namespace ml
 		EventSystem() {}
 		~EventSystem() {}
 
-		void dispatchAllEvents(const IEvent * ev);
-
 		ListenerMap m_listeners;
 	};
 

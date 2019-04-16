@@ -11,7 +11,12 @@ namespace ml
 	
 	void EventSystem::fireEvent(const IEvent & ev)
 	{
-		dispatchAllEvents(&ev);
+		Pair<iterator, iterator> found = m_listeners.equal_range((int32_t)(ev));
+
+		for (iterator it = found.first; it != found.second; ++it)
+		{
+			it->second->onEvent(&ev);
+		}
 	}
 	
 	void EventSystem::removeListener(const int32_t & type, IEventListener * listener)
@@ -48,18 +53,6 @@ namespace ml
 					break; // to prevent using invalidated iterator
 				}
 			}
-		}
-	}
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	void EventSystem::dispatchAllEvents(const IEvent * ev)
-	{
-		Pair<iterator, iterator> found = m_listeners.equal_range((int32_t)(*ev));
-
-		for (iterator it = found.first; it != found.second; ++it)
-		{
-			it->second->onEvent(ev);
 		}
 	}
 
