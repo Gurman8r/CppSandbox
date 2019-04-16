@@ -17,25 +17,19 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	Application * Engine::launchApp(Application * app)
+	Application * Engine::launchApp(Application * value)
 	{
-		return ((!m_app) ? (m_app = app) : (NULL));
+		return ((!m_app) ? (m_app = value) : (NULL));
 	}
 
-	int32_t Engine::freeApp()
+	int32_t Engine::freeApp(Application * value)
 	{
-		if (m_app)
+		if (m_app && (m_app == value))
 		{
 			delete m_app;
-			
 			m_app = NULL;
-			
-			return EXIT_SUCCESS;
 		}
-		else
-		{
-			return EXIT_FAILURE;
-		}
+		return ((m_app) ? (EXIT_FAILURE) : (EXIT_SUCCESS));
 	}
 
 	bool Engine::isRunning() const

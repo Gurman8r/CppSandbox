@@ -27,11 +27,13 @@ namespace ml
 
 	public:
 		Application * launchApp(Application * app);
-		int32_t freeApp();
+		
+		int32_t freeApp(Application * value);
+		
 		bool isRunning() const;
 
-	public:
 		void beginFrame();
+
 		void endFrame();
 
 	public:

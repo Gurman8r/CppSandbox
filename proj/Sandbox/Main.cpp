@@ -27,7 +27,7 @@ int32_t main(int32_t argc, char ** argv)
 
 	// Launch Application
 	/* * * * * * * * * * * * * * * * * * * * */
-	if (ML_Engine.launchApp(new DEMO::Sandbox()))
+	if (auto * app = ML_Engine.launchApp(new DEMO::Sandbox()))
 	{
 		// Enter
 		mlCheck(ML_EventSystem.fireEvent(ml::EnterEvent(argc, argv)));
@@ -68,7 +68,7 @@ int32_t main(int32_t argc, char ** argv)
 		ML_EventSystem.fireEvent(ml::ExitEvent());
 
 		// Free Application
-		return ML_Engine.freeApp();
+		return ML_Engine.freeApp(app);
 	}
 	else
 	{
