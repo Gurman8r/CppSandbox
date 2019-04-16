@@ -3,33 +3,13 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-#include <MemeEngine/IPlugin.hpp>
+#include <MemeEngine/Plugin.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * */
 
 extern "C"
 {
-	ML_PLUGIN_API void * ML_Plugin_Enable(void * data);
-	ML_PLUGIN_API void * ML_Plugin_Disable(void * data);
-}
-
-/* * * * * * * * * * * * * * * * * * * * */
-
-namespace DEMO
-{
-	class ML_PLUGIN_API TestPlugin final
-		: public ml::ISingleton<TestPlugin>
-	{
-		friend class ml::ISingleton<TestPlugin>;
-
-	private:
-		TestPlugin();
-		~TestPlugin();
-
-	public:
-		void * enable(void * data);
-		void * disable(void * data);
-	};
+	ML_PLUGIN_API void * ML_Plugin_Test(void * data);
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

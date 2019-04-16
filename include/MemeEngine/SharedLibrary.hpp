@@ -1,10 +1,10 @@
 #ifndef _ML_SHARED_LIBRARY_HPP_
 #define _ML_SHARED_LIBRARY_HPP_
 
+#include <MemeEngine/Export.hpp>
+#include <MemeCore/ITrackable.hpp>
 #include <MemeCore/IReadable.hpp>
 #include <MemeCore/IDisposable.hpp>
-#include <MemeEngine/LibLoader.hpp>
-#include <MemeEngine/PluginAPI.hpp>
 
 namespace ml
 {
@@ -32,14 +32,19 @@ namespace ml
 		> inline Res callFunction(const String & name, Args && ... args)
 		{
 			using Fun = Res(*)(Args...);
-			static Fun fun = NULL;
+			static Fun fun;
 			return ((fun = (Fun)(loadFunction(name)))
 				? ((Res)(fun((args)...)))
 				: (Res()));
 		}
 
+	public:
+		inline const String &	filename() const { return m_filename; }
+		inline const void *		instance() const { return m_instance; }
+
 	private:
-		void * m_instance; // Instance
+		String m_filename;
+		void * m_instance;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

@@ -1,9 +1,7 @@
 #ifndef _ML_PLUGIN_HPP_
 #define _ML_PLUGIN_HPP_
 
-#include <MemeCore/IReadable.hpp>
-#include <MemeCore/IDisposable.hpp>
-#include <MemeEngine/LibLoader.hpp>
+#include <MemeEngine/SharedLibrary.hpp>
 #include <MemeEngine/PluginAPI.hpp>
 
 namespace ml
@@ -21,25 +19,15 @@ namespace ml
 		~Plugin();
 
 	public:
-		bool	dispose() override;
-		bool	loadFromFile(const String & filename) override;
-		void *	call(const String & name, void * data);
+		bool dispose() override;
+		bool loadFromFile(const String & filename) override;
 
 	public:
-		template <
-			typename T,
-			typename R = void *
-		> inline R call(const String & name, T data)
-		{
-			return call(name, (void *)(data));
-		}
-
-	public:
-		inline const String & file() const { return m_file; }
+		inline const SharedLibrary & lib() const { return m_lib; }
+		inline SharedLibrary &		 lib()		 { return m_lib; }
 
 	private:
-		void * m_inst; // Instance
-		String m_file; // File Name
+		SharedLibrary m_lib;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

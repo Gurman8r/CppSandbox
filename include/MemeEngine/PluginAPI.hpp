@@ -7,34 +7,25 @@
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+#define ML_PLUGIN_API ML_API_EXPORT
+
 #define ML_STRINGIFY(expr) #expr
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+#define ML_Plugin_Test ML_Plugin_Test
 
-#define ML_PLUGIN_API ML_API_EXPORT
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 namespace ml
 {
-	class IPlugin;
-
-	using PluginLoadFun = IPlugin * (*)(void);
-
 	using PluginFun	= void * (*)(void *);
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#define ML_Plugin_Enable	ML_Plugin_Enable
-#define ML_Plugin_Disable	ML_Plugin_Disable
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 extern "C"
 {
-	ML_PLUGIN_API void * ML_Plugin_Enable(void * data);
-	ML_PLUGIN_API void * ML_Plugin_Disable(void * data);
+	ML_PLUGIN_API void * ML_Plugin_Test(void * data);
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

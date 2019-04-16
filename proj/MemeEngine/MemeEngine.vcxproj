@@ -165,11 +165,8 @@
     <ClInclude Include="..\..\include\MemeEngine\EngineEvents.hpp" />
     <ClInclude Include="..\..\include\MemeEngine\Entity.hpp" />
     <ClInclude Include="..\..\include\MemeEngine\Lua.hpp" />
-    <ClInclude Include="..\..\include\MemeEngine\IPlugin.hpp" />
-    <ClInclude Include="..\..\include\MemeEngine\PluginDetails.hpp" />
     <ClInclude Include="..\..\include\MemeEngine\Preferences.hpp" />
     <ClInclude Include="..\..\include\MemeEngine\Export.hpp" />
-    <ClInclude Include="..\..\include\MemeEngine\LibLoader.hpp" />
     <ClInclude Include="..\..\include\MemeEngine\ManifestItem.hpp" />
     <ClInclude Include="..\..\include\MemeEngine\Plugin.hpp" />
     <ClInclude Include="..\..\include\MemeEngine\PluginAPI.hpp" />
@@ -185,7 +182,6 @@
     <ClCompile Include="..\..\src\MemeEngine\EngineCommands.cpp" />
     <ClCompile Include="..\..\src\MemeEngine\Entity.cpp" />
     <ClCompile Include="..\..\src\MemeEngine\Preferences.cpp" />
-    <ClCompile Include="..\..\src\MemeEngine\LibLoader.cpp" />
     <ClCompile Include="..\..\src\MemeEngine\ManifestItem.cpp" />
     <ClCompile Include="..\..\src\MemeEngine\Plugin.cpp" />
     <ClCompile Include="..\..\src\MemeEngine\Resources.cpp" />
