@@ -13,20 +13,20 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	Server::Server()
+	NetServer::NetServer()
 		: NetInterface()
 		, m_running(false)
 	{
 		ML_EventSystem.addListener(NetworkEvent::EV_ServerRecievePacket, this);
 	}
 
-	Server::~Server()
+	NetServer::~NetServer()
 	{
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void Server::onEvent(const IEvent * value)
+	void NetServer::onEvent(const IEvent * value)
 	{
 		switch (*value)
 		{
@@ -39,7 +39,7 @@ namespace ml
 		}
 	}
 
-	void Server::onPacket(const Packet & value)
+	void NetServer::onPacket(const Packet & value)
 	{
 		switch (value.data[0])
 		{
@@ -82,7 +82,7 @@ namespace ml
 		}
 	}
 	
-	bool Server::start(const IpAddress & addr, uint32_t maxClients)
+	bool NetServer::start(const IpAddress & addr, uint32_t maxClients)
 	{
 		if (m_peer && (m_maxClients = maxClients))
 		{

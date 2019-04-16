@@ -13,20 +13,20 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	Client::Client()
+	NetClient::NetClient()
 		: NetInterface()
 		, m_connected(false)
 	{
 		ML_EventSystem.addListener(NetworkEvent::EV_ClientRecievePacket, this);
 	}
 
-	Client::~Client()
+	NetClient::~NetClient()
 	{
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 	
-	void Client::onEvent(const IEvent * value)
+	void NetClient::onEvent(const IEvent * value)
 	{
 		switch (*value)
 		{
@@ -39,7 +39,7 @@ namespace ml
 		}
 	}
 
-	void Client::onPacket(const Packet & value)
+	void NetClient::onPacket(const Packet & value)
 	{
 		switch (value.data[0])
 		{
@@ -71,7 +71,7 @@ namespace ml
 		}
 	}
 
-	bool Client::connect(const IpAddress & addr, const String & pass)
+	bool NetClient::connect(const IpAddress & addr, const String & pass)
 	{
 		if (m_peer)
 		{

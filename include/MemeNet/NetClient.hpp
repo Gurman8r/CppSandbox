@@ -4,22 +4,22 @@
 #include <MemeCore/ISingleton.hpp>
 #include <MemeNet/NetInterface.hpp>
 
-#define ML_NetClient ml::Client::getInstance()
+#define ML_NetClient ml::NetClient::getInstance()
 
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	class ML_NETWORK_API Client final
+	class ML_NETWORK_API NetClient final
 		: public ITrackable
 		, public NetInterface
-		, public ISingleton<Client>
+		, public ISingleton<NetClient>
 	{
-		friend class ISingleton<Client>;
+		friend class ISingleton<NetClient>;
 
 	private:
-		Client();
-		~Client();
+		NetClient();
+		~NetClient();
 
 	public:
 		void onEvent(const IEvent * value) override;
