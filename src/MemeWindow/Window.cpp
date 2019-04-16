@@ -479,7 +479,7 @@ namespace ml
 			: NULL;
 	}
 	
-	Window::MouseFun Window::setMouseButtonCallback(MouseFun callback)
+	Window::MouseButtonFun Window::setMouseButtonCallback(MouseButtonFun callback)
 	{
 		return glfwSetMouseButtonCallback(ML_WINDOW(m_window), reinterpret_cast<GLFWmousebuttonfun>(callback))
 			? callback

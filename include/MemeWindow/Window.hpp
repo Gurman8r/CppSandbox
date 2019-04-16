@@ -124,7 +124,7 @@ namespace ml
 		using ErrorFun			= void(*)(int32_t, CString);
 		using FrameSizeFun		= void(*)(void *, int32_t, int32_t);
 		using KeyFun			= void(*)(void *, int32_t, int32_t, int32_t, int32_t);
-		using MouseFun	= void(*)(void *, int32_t, int32_t, int32_t);
+		using MouseButtonFun	= void(*)(void *, int32_t, int32_t, int32_t);
 		using ScrollFun			= void(*)(void *, double, double);
 		using CloseFun			= void(*)(void *);
 		using FocusFun			= void(*)(void *, int32_t);
@@ -139,7 +139,7 @@ namespace ml
 		ErrorFun		setErrorCallback(ErrorFun callback);
 		FrameSizeFun	setFrameSizeCallback(FrameSizeFun callback);
 		KeyFun			setKeyCallback(KeyFun callback);
-		MouseFun		setMouseButtonCallback(MouseFun callback);
+		MouseButtonFun	setMouseButtonCallback(MouseButtonFun callback);
 		ScrollFun		setScrollCallback(ScrollFun callback);
 		CloseFun		setWindowCloseCallback(CloseFun callback);
 		FocusFun		setWindowFocusCallback(FocusFun callback);
