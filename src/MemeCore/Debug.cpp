@@ -28,8 +28,12 @@ namespace ml
 				<< ml::endl
 				<< ml::endl;
 
+# ifdef ML_DEBUG
 			pause(EXIT_FAILURE);
+			terminate();
+# else
 			exit(EXIT_FAILURE);
+# endif // ML_DEBUG
 		}
 		else
 		{
