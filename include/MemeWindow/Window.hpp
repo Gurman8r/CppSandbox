@@ -20,7 +20,7 @@ namespace ml
 	{
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
-		enum : uint32_t
+		enum Style : uint32_t
 		{
 			None		= (0 << 0),
 			Resizable	= (1 << 0),

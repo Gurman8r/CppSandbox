@@ -1,4 +1,4 @@
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * */
 
 #include "Sandbox.hpp"
 #include "Settings.hpp"
@@ -6,96 +6,109 @@
 #include <MemeCore/Debug.hpp>
 #include <MemeCore/EventSystem.hpp>
 #include <MemeEngine/Engine.hpp>
+#include <MemeEngine/StateMachine.hpp>
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * */
 
 # ifndef ML_CONFIG_INI
 # define ML_CONFIG_INI "../../../ML_Config.ini"
 # endif
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * */
 
 int32_t main(int32_t argc, char ** argv)
 {
-	/* * * * * * * * * * * * * * * * * * * * */
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	// Load Settings
 	if (!SETTINGS.loadFromFile(ML_CONFIG_INI))
 	{
-		return ml::Debug::logError("Failed Loading Settings")
+		return ml::Debug::logError("Failed Loading Settings: \'{0}\'", ML_CONFIG_INI)
 			|| ml::Debug::pause(EXIT_FAILURE);
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+	// Setup State Machine
+
+	enum State : int32_t
+	{
+		None = ML_STATE_INVALID,
+		Enter, Load, Start, Loop, Unload, Exit,
+		MAX_STATE
+	};
+
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	// Launch Application
-	if (auto * app = ML_Engine.launchApp(new DEMO::Sandbox()))
+	static ml::StateMachine sm =
 	{
-		/* * * * * * * * * * * * * * * * * * * * */
-
-		// Enter
+	{ State::Enter, [](void * data)
+	{
 		mlCheck(ML_EventSystem.fireEvent(ml::EnterEvent(
-			argc, argv
+			__argc, __argv
 		)));
-
-		// Load Resources
+		return sm.run(State::Load, data);
+	}},
+	{ State::Load, [](void * data)
+	{
 		ML_EventSystem.fireEvent(ml::LoadEvent());
-
-		// Start
+		return sm.run(State::Start, data);
+	} },
+	{ State::Start, [](void * data)
+	{
 		ML_EventSystem.fireEvent(ml::StartEvent());
-
-		/* * * * * * * * * * * * * * * * * * * * */
-
-		// Main Loop
-		ML_Engine.loop([&]() 
+		return sm.run(State::Loop, data);
+	} },
+	{ State::Loop, [](void * data)
+	{
+		ML_Engine.loop([]()
 		{
-			// Update Logic
+			// Update
 			ML_EventSystem.fireEvent(ml::UpdateEvent(
 				ML_Engine.elapsed()
 			));
 
-			// Draw Scene
+			// Draw
 			ML_EventSystem.fireEvent(ml::DrawEvent(
 				ML_Engine.elapsed()
 			));
 
-			// Draw Gui
+			// Gui
 			ML_EventSystem.fireEvent(ml::GuiEvent(
 				ML_Engine.elapsed()
 			));
 		});
-
-		/* * * * * * * * * * * * * * * * * * * * */
-
-		// Unload Resources
+		return sm.run(State::Unload, data);
+	} },
+	{ State::Unload, [](void * data)
+	{
 		ML_EventSystem.fireEvent(ml::UnloadEvent());
-
-		// Exit
+		return sm.run(State::Exit, data);
+	} },
+	{ State::Exit, [](void * data)
+	{
 		ML_EventSystem.fireEvent(ml::ExitEvent());
+		return sm.run(State::None, data);
+	} },
+	};
+
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+	// Launch Application
+	if (auto * app = ML_Engine.launchApp(new DEMO::Sandbox()))
+	{
+		// Run State Machine
+		sm.run(State::Enter, 0);
 
 		// Free Application
 		return ML_Engine.freeApp(app);
-
-		/* * * * * * * * * * * * * * * * * * * * */
 	}
 	else
 	{
-		/* * * * * * * * * * * * * * * * * * * * */
-
+		// Something went wrong...
 		return ml::Debug::logError("Failed Launching Application")
 			|| ml::Debug::pause(EXIT_FAILURE);
-
-		/* * * * * * * * * * * * * * * * * * * * */
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 }
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-# if defined(ML_SYSTEM_WINDOWS)
-int32_t __stdcall WinMain(void *, void *, char **, int32_t)
-{
-	return main(__argc, __argv);
-}
-# endif // ML_SYSTEM_WINDOWS
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

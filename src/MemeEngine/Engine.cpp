@@ -37,8 +37,6 @@ namespace ml
 		return ((m_app) && (m_app->isOpen()));
 	}
 
-	/* * * * * * * * * * * * * * * * * * * * */
-
 	void Engine::beginFrame()
 	{
 		m_timer.start();

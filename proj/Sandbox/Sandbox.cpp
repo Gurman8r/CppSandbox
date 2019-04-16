@@ -1119,7 +1119,7 @@ namespace DEMO
 					ML_OS.execute("open", SETTINGS.projectURL);
 				}
 				ImGui::Separator();
-				ImGui::MenuItem("ImGui Sandbox", "Ctrl+H", &ML_Editor.show_imgui_demo);
+				ImGui::MenuItem("ImGui Demo", "Ctrl+H", &ML_Editor.show_imgui_demo);
 				ImGui::MenuItem("ImGui Metrics", NULL, &ML_Editor.show_imgui_metrics);
 				ImGui::MenuItem("ImGui Style Editor", NULL, &ML_Editor.show_imgui_style);
 				ImGui::MenuItem("About Dear ImGui", NULL, &ML_Editor.show_imgui_about);
