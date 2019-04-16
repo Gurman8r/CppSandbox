@@ -15,7 +15,7 @@ namespace ml
 	{
 		for (auto it = states.begin(); it != states.end(); it++)
 		{
-			if (it->first > ML_STATE_INVALID)
+			if ((it->first > ML_STATE_INVALID) && it->second)
 			{
 				m_states[it->first] = it->second;
 			}
