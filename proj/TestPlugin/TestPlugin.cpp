@@ -7,14 +7,12 @@
 
 ML_PLUGIN_API void * ML_Plugin_Enable(void * data)
 {
-	DEMO::TestPlugin::getInstance().enable(data);
-	return NULL;
+	return DEMO::TestPlugin::getInstance().enable(data);
 }
 
 ML_PLUGIN_API void * ML_Plugin_Disable(void * data)
 {
-	DEMO::TestPlugin::getInstance().disable(data);
-	return NULL;
+	return DEMO::TestPlugin::getInstance().disable(data);
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -33,16 +31,16 @@ namespace DEMO
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	int32_t TestPlugin::enable(void * data)
+	void * TestPlugin::enable(void * data)
 	{
 		ml::cout << ((ml::CString)data) << ml::endl;
-		return 0;
+		return NULL;
 	}
 	
-	int32_t TestPlugin::disable(void * data)
+	void * TestPlugin::disable(void * data)
 	{
 		ml::cout << ((ml::CString)data) << ml::endl;
-		return 0;
+		return NULL;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

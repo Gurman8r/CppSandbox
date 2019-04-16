@@ -96,6 +96,9 @@
     <ClInclude Include="..\..\include\MemeEngine\StateMachine.hpp">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeEngine\SharedLibrary.hpp">
+      <Filter>Header Files\Plugins</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeEngine\Plugin.cpp">
@@ -130,6 +133,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEngine\StateMachine.cpp">
       <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeEngine\SharedLibrary.cpp">
+      <Filter>Source Files\Plugins</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

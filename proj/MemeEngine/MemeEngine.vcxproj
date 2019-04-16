@@ -175,6 +175,7 @@
     <ClInclude Include="..\..\include\MemeEngine\PluginAPI.hpp" />
     <ClInclude Include="..\..\include\MemeEngine\Registry.hpp" />
     <ClInclude Include="..\..\include\MemeEngine\Resources.hpp" />
+    <ClInclude Include="..\..\include\MemeEngine\SharedLibrary.hpp" />
     <ClInclude Include="..\..\include\MemeEngine\StateMachine.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -188,6 +189,7 @@
     <ClCompile Include="..\..\src\MemeEngine\ManifestItem.cpp" />
     <ClCompile Include="..\..\src\MemeEngine\Plugin.cpp" />
     <ClCompile Include="..\..\src\MemeEngine\Resources.cpp" />
+    <ClCompile Include="..\..\src\MemeEngine\SharedLibrary.cpp" />
     <ClCompile Include="..\..\src\MemeEngine\StateMachine.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

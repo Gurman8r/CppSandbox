@@ -27,8 +27,8 @@ namespace DEMO
 		~TestPlugin();
 
 	public:
-		int32_t enable(void * data);
-		int32_t disable(void * data);
+		void * enable(void * data);
+		void * disable(void * data);
 	};
 }
 
