@@ -7,6 +7,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	bool LibLoader::freeLibrary(void * instance)
 	{
 #ifdef ML_SYSTEM_WINDOWS
@@ -35,4 +37,6 @@ namespace ml
 		return NULL;
 #endif
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

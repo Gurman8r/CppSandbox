@@ -9,7 +9,9 @@
 
 namespace ml
 {
-	// Meant to replace DemoSettings (SETTINGS)
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	// Meant to replace Demo Settings
 	// WIP
 	class ML_ENGINE_API Preferences final
 		: public ITrackable

@@ -9,10 +9,12 @@ namespace ml
 		: data()
 	{
 	}
+
 	ManifestItem::ManifestItem(const Data & data)
 		: data(data)
 	{
 	}
+
 	ManifestItem::ManifestItem(const ManifestItem & copy)
 		: data(copy.data)
 	{

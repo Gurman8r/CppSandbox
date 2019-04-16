@@ -7,6 +7,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_ENGINE_API Entity
 		: public ITrackable
 		, public IReadable
@@ -71,6 +73,8 @@ namespace ml
 	private:
 		ComponentMap m_cmp;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_I_ENTITY_HPP_

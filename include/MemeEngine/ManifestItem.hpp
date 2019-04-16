@@ -6,6 +6,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	struct ML_ENGINE_API ManifestItem final 
 		: public ITrackable
 	{
@@ -54,6 +56,8 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_MANIFEST_ITEM_HPP_

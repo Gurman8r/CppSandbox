@@ -6,6 +6,9 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	// WIP
 	struct ML_ENGINE_API PluginDetails final
 	{
 		int32_t apiVersion;
@@ -14,6 +17,8 @@ namespace ml
 		CString pluginName;
 		CString pluginVersion;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_PLUGIN_DETAILS_HPP_

@@ -6,6 +6,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_ENGINE_API Application 
 		: public RenderWindow
 	{
@@ -25,6 +27,8 @@ namespace ml
 		virtual void onUnload		(const UnloadEvent		* ev) = 0;
 		virtual void onExit			(const ExitEvent		* ev) = 0;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_APPLICATION_HPP_

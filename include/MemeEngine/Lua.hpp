@@ -3,6 +3,8 @@
 
 #include <MemeEngine/Export.hpp>
 
+/* * * * * * * * * * * * * * * * * * * * */
+
 extern "C"
 {
 #include <lua/lua.h>
@@ -13,5 +15,7 @@ extern "C"
 # ifdef ML_SYSTEM_WINDOWS
 #	pragma comment(lib, "lua.lib")
 # endif
+
+/* * * * * * * * * * * * * * * * * * * * */
 
 #endif // !_ML_LUA_HPP_

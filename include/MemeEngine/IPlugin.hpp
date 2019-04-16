@@ -6,6 +6,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_ENGINE_API IPlugin
 	{
 	public:
@@ -14,6 +16,8 @@ namespace ml
 		virtual int32_t enable(void *) = 0;
 		virtual int32_t disable(void *) = 0;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_I_PLUGIN_HPP_
