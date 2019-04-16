@@ -30,7 +30,7 @@ namespace ml
 
 	StateMachine::StateFun StateMachine::get(const StateKey key) const
 	{
-		const_iterator it;
+		StateMap::const_iterator it;
 		return ((key > ML_STATE_INVALID)
 			? ((((it = m_states.find(key)) != m_states.end())
 				? (it->second)
@@ -40,7 +40,7 @@ namespace ml
 
 	StateMachine::StateFun StateMachine::set(const StateKey key, StateFun && fun)
 	{
-		iterator it;
+		StateMap::iterator it;
 		return ((key > ML_STATE_INVALID)
 			? (((it = m_states.find(key)) == m_states.end()
 				? (it->second = fun)

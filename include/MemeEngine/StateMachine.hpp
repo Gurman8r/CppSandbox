@@ -15,16 +15,13 @@ namespace ml
 		, public INonCopyable
 	{
 	public:
-		using StateKey		= typename int32_t;
-		using StateRet		= typename int32_t;
-		using StateArg		= typename void *;
-		using StateFun		= typename StateRet(*)(StateArg);
-		using StateMap		= typename HashMap<StateKey, StateFun>;
-		using StatePair		= typename Pair<StateKey, StateFun>;
-		using StateInit		= typename std::initializer_list<StatePair>;
-
-		using iterator		= typename StateMap::iterator;
-		using const_iterator= typename StateMap::const_iterator;
+		using StateKey	= typename int32_t;
+		using StateRet	= typename int32_t;
+		using StateArg	= typename void *;
+		using StateFun	= typename StateRet(*)(StateArg);
+		using StateMap	= typename HashMap<StateKey, StateFun>;
+		using StatePair	= typename Pair<StateKey, StateFun>;
+		using StateInit	= typename std::initializer_list<StatePair>;
 
 	public:
 		StateMachine();
