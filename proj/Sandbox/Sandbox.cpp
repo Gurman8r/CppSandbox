@@ -131,7 +131,7 @@ namespace DEMO
 				if (ev->getKeyDown(ml::KeyCode::I) && (ev->mod_ctrl && ev->mod_alt))
 					ML_Editor.show_inspector = true;
 
-				// Show ImGui Sandbox (Ctrl+H)
+				// Show ImGui Demo (Ctrl+H)
 				if (ev->getKeyDown(ml::KeyCode::H) && (ev->mod_ctrl))
 					ML_Editor.show_imgui_demo = true;
 
