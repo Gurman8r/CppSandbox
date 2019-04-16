@@ -15,9 +15,9 @@ namespace ml
 		, public INonCopyable
 	{
 	public:
-		using StateRetv		= typename int32_t;
-		using StateArgs		= typename void *;
-		using StateFun		= typename StateRetv(*)(StateArgs);
+		using StateRet		= typename int32_t;
+		using StateArg		= typename void *;
+		using StateFun		= typename StateRet(*)(StateArg);
 		using StateMap		= typename HashMap<int32_t, StateFun>;
 		using StatePair		= typename Pair<int32_t, StateFun>;
 		using StateInit		= typename std::initializer_list<StatePair>;
@@ -31,9 +31,9 @@ namespace ml
 		~StateMachine();
 
 	public:
-		StateFun	get(const int32_t id) const;
-		StateFun	set(const int32_t id, StateFun && fun);
-		StateRetv	run(const int32_t id, StateArgs data);
+		StateFun get(const int32_t id) const;
+		StateFun set(const int32_t id, StateFun && fun);
+		StateRet run(const int32_t id, StateArg data);
 
 	private:
 		StateMap m_states;

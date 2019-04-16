@@ -1,3 +1,5 @@
+/* * * * * * * * * * * * * * * * * * * * */
+
 #include <MemeCore/Config.hpp>
 #include <MemeCore/STD.hpp>
 

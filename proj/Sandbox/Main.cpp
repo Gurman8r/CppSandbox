@@ -40,27 +40,33 @@ int32_t main(int32_t argc, char ** argv)
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	static ml::StateMachine sm =
+	static ml::StateMachine states =
 	{
 	{ State::Enter, [](void * data)
 	{
+		// Enter
 		mlCheck(ML_EventSystem.fireEvent(ml::EnterEvent(
 			__argc, __argv
 		)));
-		return sm.run(State::Load, data);
+		return states.run(State::Load, data);
 	}},
 	{ State::Load, [](void * data)
 	{
-		ML_EventSystem.fireEvent(ml::LoadEvent());
-		return sm.run(State::Start, data);
+		// Load
+		ML_EventSystem.fireEvent(ml::LoadEvent(
+		));
+		return states.run(State::Start, data);
 	} },
 	{ State::Start, [](void * data)
 	{
-		ML_EventSystem.fireEvent(ml::StartEvent());
-		return sm.run(State::Loop, data);
+		// Start
+		ML_EventSystem.fireEvent(ml::StartEvent(
+		));
+		return states.run(State::Loop, data);
 	} },
 	{ State::Loop, [](void * data)
 	{
+		// Loop
 		ML_Engine.loop([]()
 		{
 			// Update
@@ -78,17 +84,21 @@ int32_t main(int32_t argc, char ** argv)
 				ML_Engine.elapsed()
 			));
 		});
-		return sm.run(State::Unload, data);
+		return states.run(State::Unload, data);
 	} },
 	{ State::Unload, [](void * data)
 	{
-		ML_EventSystem.fireEvent(ml::UnloadEvent());
-		return sm.run(State::Exit, data);
+		// Unload
+		ML_EventSystem.fireEvent(ml::UnloadEvent(
+		));
+		return states.run(State::Exit, data);
 	} },
 	{ State::Exit, [](void * data)
 	{
-		ML_EventSystem.fireEvent(ml::ExitEvent());
-		return sm.run(State::None, data);
+		// Exit
+		ML_EventSystem.fireEvent(ml::ExitEvent(
+		));
+		return states.run(State::None, data);
 	} },
 	};
 
@@ -98,7 +108,7 @@ int32_t main(int32_t argc, char ** argv)
 	if (auto * app = ML_Engine.launchApp(new DEMO::Sandbox()))
 	{
 		// Run State Machine
-		sm.run(State::Enter, 0);
+		states.run(State::Enter, 0);
 
 		// Free Application
 		return ML_Engine.freeApp(app);

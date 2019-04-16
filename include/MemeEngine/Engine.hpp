@@ -38,8 +38,8 @@ namespace ml
 
 	public:
 		template <
-			typename Fun,
-			typename ... Args
+			class Fun,
+			class ... Args
 		> inline void loop(Fun && fun, Args && ... args)
 		{
 			while (this->isRunning())
