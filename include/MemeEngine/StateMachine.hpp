@@ -4,7 +4,7 @@
 #include <MemeEngine/Export.hpp>
 #include <MemeCore/ITrackable.hpp>
 
-#define ML_STATE_INVALID -1
+#define ML_STATE_INVALID (-1)
 
 namespace ml
 {
@@ -15,11 +15,12 @@ namespace ml
 		, public INonCopyable
 	{
 	public:
+		using StateKey		= typename int32_t;
 		using StateRet		= typename int32_t;
 		using StateArg		= typename void *;
 		using StateFun		= typename StateRet(*)(StateArg);
-		using StateMap		= typename HashMap<int32_t, StateFun>;
-		using StatePair		= typename Pair<int32_t, StateFun>;
+		using StateMap		= typename HashMap<StateKey, StateFun>;
+		using StatePair		= typename Pair<StateKey, StateFun>;
 		using StateInit		= typename std::initializer_list<StatePair>;
 
 		using iterator		= typename StateMap::iterator;
@@ -31,9 +32,9 @@ namespace ml
 		~StateMachine();
 
 	public:
-		StateFun get(const int32_t id) const;
-		StateFun set(const int32_t id, StateFun && fun);
-		StateRet run(const int32_t id, StateArg data);
+		StateFun get(const StateKey key) const;
+		StateFun set(const StateKey key, StateFun && fun);
+		StateRet run(const StateKey key, StateArg data);
 
 	private:
 		StateMap m_states;

@@ -18,18 +18,17 @@
 
 int32_t main(int32_t argc, char ** argv)
 {
+	// Load Settings
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-	// Load Settings
 	if (!SETTINGS.loadFromFile(ML_CONFIG_INI))
 	{
 		return ml::Debug::logError("Failed Loading Settings: \'{0}\'", ML_CONFIG_INI)
 			|| ml::Debug::pause(EXIT_FAILURE);
 	}
 
+	// Setup States
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-	// Setup State Machine
 
 	enum State : int32_t
 	{
@@ -102,20 +101,17 @@ int32_t main(int32_t argc, char ** argv)
 	} },
 	};
 
+	// Launch Application
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-	// Launch Application
 	if (auto * app = ML_Engine.launchApp(new DEMO::Sandbox()))
 	{
-		// Run State Machine
-		states.run(State::Enter, 0);
+		states.run(State::Enter, NULL);
 
-		// Free Application
 		return ML_Engine.freeApp(app);
 	}
 	else
 	{
-		// Something went wrong...
 		return ml::Debug::logError("Failed Launching Application")
 			|| ml::Debug::pause(EXIT_FAILURE);
 	}

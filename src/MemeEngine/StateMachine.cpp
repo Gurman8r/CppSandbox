@@ -25,31 +25,31 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	StateMachine::StateFun StateMachine::get(const int32_t id) const
+	StateMachine::StateFun StateMachine::get(const StateKey key) const
 	{
 		const_iterator it;
-		return ((id > ML_STATE_INVALID)
-			? ((((it = m_states.find(id)) != m_states.end())
+		return ((key > ML_STATE_INVALID)
+			? ((((it = m_states.find(key)) != m_states.end())
 				? (it->second)
 				: (NULL)))
 			: (NULL));
 	}
 
-	StateMachine::StateFun StateMachine::set(const int32_t id, StateFun && fun)
+	StateMachine::StateFun StateMachine::set(const StateKey key, StateFun && fun)
 	{
 		iterator it;
-		return ((id > ML_STATE_INVALID)
-			? (((it = m_states.find(id)) == m_states.end()
+		return ((key > ML_STATE_INVALID)
+			? (((it = m_states.find(key)) == m_states.end()
 				? (it->second = fun)
 				: (NULL)))
 			: (NULL));
 	}
 
-	StateMachine::StateRet StateMachine::run(const int32_t id, StateArg data)
+	StateMachine::StateRet StateMachine::run(const StateKey key, StateArg data)
 	{
 		StateFun fun;
-		return ((id > ML_STATE_INVALID)
-			? (((fun = get(id))
+		return ((key > ML_STATE_INVALID)
+			? (((fun = get(key))
 				? (fun(data))
 				: (ML_STATE_INVALID)))
 			: (ML_STATE_INVALID));
