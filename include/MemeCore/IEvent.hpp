@@ -6,9 +6,6 @@
 #define ML_MAX_SYSTEM_EVENTS 32
 #define ML_MAX_CUSTOM_EVENTS 256
 
-#define assert_typeof_event(T) \
-static_assert(std::is_base_of<ml::IEvent, T>::value, "Type must derive ml::IEvent") \
-
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -17,7 +14,7 @@ namespace ml
 		: public ITrackable
 		, public INonCopyable
 	{
-	public:
+	public: // Enums
 		/* * * * * * * * * * * * * * * * * * * * */
 		enum : int32_t
 		{
@@ -70,27 +67,30 @@ namespace ml
 			: m_eventID(id)
 		{
 		}
+
 		virtual ~IEvent() {}
 
-		inline operator int32_t() const { return m_eventID; }
-
-	public:
+	public: // Casting
 		/* * * * * * * * * * * * * * * * * * * * */
-		template <class T>
-		inline const T * as() const
+		template <
+			class T
+		> inline const T * as() const
 		{
-			assert_typeof_event(T);
 			return dynamic_cast<const T *>(this);
 		}
 
-		template <class T>
-		inline T * as()
+		template <
+			class T
+		> inline T * as()
 		{
-			assert_typeof_event(T);
 			return dynamic_cast<T *>(this);
 		}
 
-	private:
+	public: // Operators
+		/* * * * * * * * * * * * * * * * * * * * */
+		inline operator int32_t() const { return m_eventID; }
+
+	private: // Data
 		/* * * * * * * * * * * * * * * * * * * * */
 		int32_t m_eventID;
 	};

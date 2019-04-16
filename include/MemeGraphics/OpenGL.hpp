@@ -46,13 +46,13 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		static bool		init(bool experimental);
 		static bool		good();
-		static void		validate(uint32_t & major, uint32_t & minor);
+		static void		validateVersion(uint32_t & major, uint32_t & minor);
 
 	public: // Flags
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		static bool		isEnabled(uint32_t value);
-		static bool		enable(uint32_t value);
-		static bool		disable(uint32_t value);
+		static bool		enable(uint32_t value, bool cond = true);
+		static bool		disable(uint32_t value, bool cond = true);
 		
 	public: // Get
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

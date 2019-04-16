@@ -24,10 +24,11 @@ namespace ml
 			EV_Key,
 			EV_MouseButton,
 			EV_Scroll,
-			EV_WindowSize,
-			Ev_WindowPos,
+			EV_WindowError,
 			EV_WindowClose,
 			EV_WindowFocus,
+			EV_WindowSize,
+			Ev_WindowPos,
 
 			MAX_WINDOW_EVENT
 		};
@@ -221,6 +222,26 @@ namespace ml
 		inline void serialize(std::ostream & out) const override
 		{
 			out << GetTypeInfo().name() << " ";
+		}
+	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	struct ML_WINDOW_API WindowErrorEvent final : public WindowEvent
+	{
+		int32_t code;
+		CString desc;
+
+		WindowErrorEvent(int32_t code, CString desc)
+			: WindowEvent(EV_WindowError)
+			, code(code)
+			, desc(desc)
+		{
+		}
+
+		inline void serialize(std::ostream & out) const override
+		{
+			out << GetTypeInfo().name() << " " << code << " " << desc;
 		}
 	};
 

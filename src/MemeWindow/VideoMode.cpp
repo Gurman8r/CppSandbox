@@ -90,7 +90,7 @@ namespace ml
 
 	void VideoMode::serialize(std::ostream & out) const
 	{
-		out << size << ' ' << bitsPerPixel;
+		out << size << " " << bitsPerPixel;
 	}
 
 	void VideoMode::deserialize(std::istream & in)

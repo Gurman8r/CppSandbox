@@ -81,7 +81,7 @@ namespace ml
 		{
 			for (size_type i = 0; i < Size; i++)
 			{
-				out << (*this)[i] << ' ';
+				out << (*this)[i] << " ";
 			}
 		}
 

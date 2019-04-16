@@ -11,6 +11,7 @@ namespace ml
 		: Window()
 	{
 	}
+
 	RenderWindow::~RenderWindow() {}
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -24,36 +25,28 @@ namespace ml
 	{
 		if (Window::setup() && ML_GL.init(experimental))
 		{
-			// Validate GL Version
-			ML_GL.validate(m_context.majorVersion, m_context.minorVersion);
+			// Validate OpenGL Version
+			ML_GL.validateVersion(m_context.majorVersion, m_context.minorVersion);
 
-			// Setup GL
+			// Setup OpenGL
 			ML_GL.enable(GL::CullFace);
 			ML_GL.enable(GL::DepthTest);
 			ML_GL.enable(GL::Blend);
 			ML_GL.enable(GL::AlphaTest);
 			ML_GL.enable(GL::Texture2D);
+			ML_GL.enable(GL::Multisample, m_context.multisample);
 
+			if (!ML_GL.enable(GL::FramebufferSRGB, m_context.srgbCapable))
+			{
+				ml::Debug::logWarning("Failed to enable Framebuffer SRGB");
+				m_context.srgbCapable = false;
+			}
+			
 			ML_GL.cullFace(GL::Back);
 			ML_GL.depthFunc(GL::Less);
 			ML_GL.blendFunc(GL::SourceAlpha, GL::OneMinusSourceAlpha);
 			ML_GL.alphaFunc(GL::Greater, 0.01f);
-
 			ML_GL.activeTexture(GL::Texture0);
-
-			if (m_context.multisample)
-			{
-				ML_GL.enable(GL::Multisample);
-			}
-
-			if (m_context.srgbCapable)
-			{
-				if (!ML_GL.enable(GL::FramebufferSRGB))
-				{
-					ml::Debug::logWarning("Failed to enable Framebuffer SRGB");
-					m_context.srgbCapable = false;
-				}
-			}
 
 			return true;
 		}
@@ -66,15 +59,10 @@ namespace ml
 
 		switch (*value)
 		{
-		case WindowEvent::EV_WindowSize:
-			if(auto ev = value->as<WindowSizeEvent>())
-			{
-			}
-		break;
 		case WindowEvent::EV_FramebufferSize:
-			if (auto ev = value->as<FramebufferSizeEvent>())
+			if (const auto * ev = value->as<FramebufferSizeEvent>())
 			{
-				setViewport({ 0, 0 }, getFramebufferSize());
+				setViewport(vec2f::Zero, ev->size());
 			}
 			break;
 		}

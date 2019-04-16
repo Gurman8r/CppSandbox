@@ -20,17 +20,18 @@ namespace ml
 		, m_style		(Window::Default)
 		, m_position	(vec2i::Zero)
 	{
+		ML_EventSystem.addListener(WindowEvent::EV_Char,			this);
+		ML_EventSystem.addListener(WindowEvent::EV_CursorEnter,		this);
+		ML_EventSystem.addListener(WindowEvent::EV_CursorPos,		this);
+		ML_EventSystem.addListener(WindowEvent::EV_FramebufferSize,	this);
+		ML_EventSystem.addListener(WindowEvent::EV_Key,				this);
+		ML_EventSystem.addListener(WindowEvent::EV_MouseButton,		this);
+		ML_EventSystem.addListener(WindowEvent::EV_Scroll,			this);
+		ML_EventSystem.addListener(WindowEvent::EV_WindowClose,		this);
+		ML_EventSystem.addListener(WindowEvent::EV_WindowError,		this);
+		ML_EventSystem.addListener(WindowEvent::EV_WindowFocus,		this);
 		ML_EventSystem.addListener(WindowEvent::EV_WindowSize,		this);
 		ML_EventSystem.addListener(WindowEvent::Ev_WindowPos,		this);
-		ML_EventSystem.addListener(WindowEvent::EV_WindowClose,		this);
-		ML_EventSystem.addListener(WindowEvent::EV_WindowFocus,		this);
-		ML_EventSystem.addListener(WindowEvent::EV_Char,			this);
-		ML_EventSystem.addListener(WindowEvent::EV_Scroll,			this);
-		ML_EventSystem.addListener(WindowEvent::EV_CursorPos,		this);
-		ML_EventSystem.addListener(WindowEvent::EV_CursorEnter,		this);
-		ML_EventSystem.addListener(WindowEvent::EV_MouseButton,		this);
-		ML_EventSystem.addListener(WindowEvent::EV_Key,				this);
-		ML_EventSystem.addListener(WindowEvent::EV_FramebufferSize,	this);
 	}
 	
 	Window::~Window() 
@@ -86,7 +87,7 @@ namespace ml
 	{
 		setErrorCallback([](int32_t code, CString desc) 
 		{
-			Debug::logError("Window Error {0}: {1}", code, desc);
+			ML_EventSystem.fireEvent(WindowErrorEvent(code, desc));
 		});
 
 		setCharCallback([](void * window, uint32_t c)
@@ -157,59 +158,65 @@ namespace ml
 		switch (*value)
 		{
 		case WindowEvent::EV_Char:
-			if (auto ev = value->as<CharEvent>())
+			if (const auto * ev = value->as<CharEvent>())
 			{
 				m_char = (char)ev->value;
 			}
 			break;
 		case WindowEvent::EV_CursorEnter:
-			if (auto ev = value->as<CursorEnterEvent>())
+			if (const auto * ev = value->as<CursorEnterEvent>())
 			{
 			}
 			break;
 		case WindowEvent::EV_CursorPos:
-			if (auto ev = value->as<CursorPosEvent>())
+			if (const auto * ev = value->as<CursorPosEvent>())
 			{
 			}
 			break;
 		case WindowEvent::EV_FramebufferSize:
-			if (auto ev = value->as<FramebufferSizeEvent>())
+			if (const auto * ev = value->as<FramebufferSizeEvent>())
 			{
 			}
 			break;
 		case WindowEvent::EV_Key:
-			if (auto ev = value->as<KeyEvent>())
+			if (const auto * ev = value->as<KeyEvent>())
 			{
 			}
 			break;
 		case WindowEvent::EV_MouseButton:
-			if (auto ev = value->as<MouseButtonEvent>())
+			if (const auto * ev = value->as<MouseButtonEvent>())
 			{
 			}
 			break;
 		case WindowEvent::EV_Scroll:
-			if (auto ev = value->as<ScrollEvent>())
+			if (const auto * ev = value->as<ScrollEvent>())
 			{
 			}
 			break;
 		case WindowEvent::EV_WindowClose:
-			if (auto ev = value->as<WindowCloseEvent>())
+			if (const auto * ev = value->as<WindowCloseEvent>())
 			{
 			}
 			break;
+		case WindowEvent::EV_WindowError:
+			if (const auto * ev = value->as<WindowErrorEvent>())
+			{
+				Debug::logError("{0}", (*ev));
+			}
+			break;
 		case WindowEvent::EV_WindowFocus:
-			if (auto ev = value->as<WindowFocusEvent>())
+			if (const auto * ev = value->as<WindowFocusEvent>())
 			{
 			}
 			break;
 		case WindowEvent::Ev_WindowPos:
-			if (auto ev = value->as<WindowPosEvent>())
+			if (const auto * ev = value->as<WindowPosEvent>())
 			{
 				m_position = ev->position();
 			}
 			break;
 		case WindowEvent::EV_WindowSize:
-			if (auto ev = value->as<WindowSizeEvent>())
+			if (const auto * ev = value->as<WindowSizeEvent>())
 			{
 				m_videoMode.size = (vec2u)ev->size();
 			}

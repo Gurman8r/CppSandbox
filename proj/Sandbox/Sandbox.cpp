@@ -56,15 +56,6 @@ namespace DEMO
 
 		switch (*value)
 		{
-			// Window Size Changed
-			/* * * * * * * * * * * * * * * * * * * * */
-		case ml::WindowEvent::EV_FramebufferSize:
-			if (const auto * ev = value->as<ml::FramebufferSizeEvent>())
-			{
-				this->setViewport(ml::vec2i::Zero, ev->size());
-			}
-			break;
-
 			// File -> Close ...
 			/* * * * * * * * * * * * * * * * * * * * */
 		case ml::EditorEvent::EV_File_Close:
@@ -91,6 +82,16 @@ namespace DEMO
 		case ml::WindowEvent::EV_Key:
 			if (const auto * ev = value->as<ml::KeyEvent>())
 			{
+				/* * * * * * * * * * * * * * * * * * * * */
+
+				// Close (Escape)
+				if (ev->getKeyDown(ml::KeyCode::Escape) && SETTINGS.escapeIsExit)
+				{
+					this->close();
+				}
+
+				/* * * * * * * * * * * * * * * * * * * * */
+
 				// Reload Shaders (Num1)
 				if (ev->getKeyDown(ml::KeyCode::Num1))
 				{
@@ -106,37 +107,33 @@ namespace DEMO
 					}
 				}
 
-				// Close (Escape)
-				if (ev->getKeyDown(ml::KeyCode::Escape) && SETTINGS.escapeIsExit)
-				{
-					this->close();
-				}
-
 				/* * * * * * * * * * * * * * * * * * * * */
 
-				// Terminal (Ctrl+Alt+T)
+				// Show Terminal (Ctrl+Alt+T)
 				if (ev->getKeyDown(ml::KeyCode::T) && (ev->mod_ctrl && ev->mod_alt))
 					ML_Editor.show_terminal = true;
 
-				// Browser (Ctrl+Alt+E)
+				// Show Browser (Ctrl+Alt+E)
 				if (ev->getKeyDown(ml::KeyCode::E) && (ev->mod_ctrl))
 					ML_Editor.show_browser = true;
 
-				// Builder (Ctrl+Alt+B)
+				// Show Builder (Ctrl+Alt+B)
 				if (ev->getKeyDown(ml::KeyCode::B) && (ev->mod_ctrl && ev->mod_alt))
 					ML_Editor.show_builder = true;
 
-				// Scene (Ctrl+Alt+S)
+				// Show Scene (Ctrl+Alt+S)
 				if (ev->getKeyDown(ml::KeyCode::S) && (ev->mod_ctrl && ev->mod_alt))
 					ML_Editor.show_sceneView = true;
 
-				// Inspector (Ctrl+Alt+I)
+				// Show Inspector (Ctrl+Alt+I)
 				if (ev->getKeyDown(ml::KeyCode::I) && (ev->mod_ctrl && ev->mod_alt))
 					ML_Editor.show_inspector = true;
 
-				// ImGui Sandbox (Ctrl+H)
+				// Show ImGui Sandbox (Ctrl+H)
 				if (ev->getKeyDown(ml::KeyCode::H) && (ev->mod_ctrl))
 					ML_Editor.show_imgui_demo = true;
+
+				/* * * * * * * * * * * * * * * * * * * * */
 			}
 			break;
 		}
@@ -195,8 +192,7 @@ namespace DEMO
 
 		// Create Window
 		/* * * * * * * * * * * * * * * * * * * * */
-		if (this->create(SETTINGS.title, SETTINGS.video(), SETTINGS.style, SETTINGS.context())
-			&&
+		if (this->create(SETTINGS.title, SETTINGS.video(), SETTINGS.style, SETTINGS.context()) &&
 			this->setup(SETTINGS.glExperimental))
 		{
 			this->setInputMode(ml::Cursor::Normal);
@@ -855,10 +851,9 @@ namespace DEMO
 			if (false)
 			{
 				// FIXME: doesn't work because black magic
-				const ml::Hierarchy::ObjectMap & objects = ML_Hierarchy.objects();
-				for (auto it = objects.begin(); 
-					(it != objects.end()); 
-					(it++))
+				const ml::Hierarchy::ObjectMap & o = ML_Hierarchy.objects();
+
+				for (auto it = o.begin(); it != o.end(); it++)
 				{
 					this->draw(*it->second);
 				}

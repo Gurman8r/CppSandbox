@@ -241,7 +241,7 @@ namespace ml
 			{
 				for (size_t x = 0; x < Cols; x++)
 				{
-					out << (*this)[y * Cols + x] << ' ';
+					out << (*this)[y * Cols + x] << " ";
 				}
 				out << ml::endl;
 			}

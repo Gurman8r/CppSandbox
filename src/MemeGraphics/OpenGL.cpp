@@ -118,7 +118,7 @@ namespace ml
 		return ML_GL.m_good;
 	}
 
-	void OpenGL::validate(uint32_t & majorVersion, uint32_t & minorVersion)
+	void OpenGL::validateVersion(uint32_t & majorVersion, uint32_t & minorVersion)
 	{
 		if (good())
 		{
@@ -189,16 +189,24 @@ namespace ml
 		return temp;
 	}
 
-	bool OpenGL::enable(uint32_t value)
+	bool OpenGL::enable(uint32_t value, bool cond)
 	{
-		glCheck(glEnable(value));
-		return isEnabled(value);
+		if (cond)
+		{
+			glCheck(glEnable(value));
+			return isEnabled(value);
+		}
+		return true;
 	}
 
-	bool OpenGL::disable(uint32_t value)
+	bool OpenGL::disable(uint32_t value, bool cond)
 	{
-		glCheck(glDisable(value));
-		return !isEnabled(value);
+		if (cond)
+		{
+			glCheck(glDisable(value));
+			return !isEnabled(value);
+		}
+		return true;
 	}
 
 
