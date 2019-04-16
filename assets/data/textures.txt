@@ -1,4 +1,4 @@
-# Textures
+# Images
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
 <item>
@@ -127,7 +127,7 @@
 	file: ../../../assets/textures/moon/moon_nm.png
 </item>
 
-# BG
+# Background
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
 #<item>
