@@ -4,6 +4,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	struct MemoryTracker::Record final
 		: public ISerializable
 	{
@@ -26,10 +28,14 @@ namespace ml
 				<< " }";
 		}
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	MemoryTracker::MemoryTracker()
 		: m_records()
 		, m_guid(0)
@@ -38,8 +44,7 @@ namespace ml
 
 	MemoryTracker::~MemoryTracker() 
 	{
-		Debug::log("Deleting Memory Tracker...");
-		if (!m_records.empty())
+		if (Debug::log("Deleting Memory Tracker...") && (!m_records.empty()))
 		{
 			Debug::logError("Final allocations follow:");
 			
@@ -49,6 +54,7 @@ namespace ml
 		}
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	ITrackable * MemoryTracker::newAllocation(size_t size)
 	{
@@ -57,8 +63,9 @@ namespace ml
 			RecordMap::iterator it;
 			if ((it = m_records.find(ptr)) == m_records.end())
 			{
-				m_records.insert({ ptr, Record(ptr, m_guid++, size) });
+				m_records.insert({ ptr, Record(ptr, (m_guid++), size) });
 			}
+
 			return ptr;
 		}
 		return NULL;
@@ -75,11 +82,14 @@ namespace ml
 				{
 					m_records.erase(it);
 				}
+				
+				free(ptr);
+				ptr = NULL;
 			}
-			free(value);
-			value = NULL;
 		}
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	void MemoryTracker::serialize(std::ostream & out) const
 	{
@@ -91,4 +101,5 @@ namespace ml
 		out << ml::endl;
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 }

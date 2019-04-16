@@ -9,28 +9,34 @@
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#ifndef ML_CONFIG_INI
-#define ML_CONFIG_INI "../../../ML_Config.ini"
-#endif
+# ifndef ML_CONFIG_INI
+# define ML_CONFIG_INI "../../../ML_Config.ini"
+# endif
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 int32_t main(int32_t argc, char ** argv)
 {
-	// Load Settings
 	/* * * * * * * * * * * * * * * * * * * * */
+
+	// Load Settings
 	if (!SETTINGS.loadFromFile(ML_CONFIG_INI))
 	{
 		return ml::Debug::logError("Failed Loading Settings")
 			|| ml::Debug::pause(EXIT_FAILURE);
 	}
 
-	// Launch Application
 	/* * * * * * * * * * * * * * * * * * * * */
+
+	// Launch Application
 	if (auto * app = ML_Engine.launchApp(new DEMO::Sandbox()))
 	{
+		/* * * * * * * * * * * * * * * * * * * * */
+
 		// Enter
-		mlCheck(ML_EventSystem.fireEvent(ml::EnterEvent(argc, argv)));
+		mlCheck(ML_EventSystem.fireEvent(ml::EnterEvent(
+			argc, argv
+		)));
 
 		// Load Resources
 		ML_EventSystem.fireEvent(ml::LoadEvent());
@@ -69,11 +75,17 @@ int32_t main(int32_t argc, char ** argv)
 
 		// Free Application
 		return ML_Engine.freeApp(app);
+
+		/* * * * * * * * * * * * * * * * * * * * */
 	}
 	else
 	{
-		return ml::Debug::logError("Failed Creating Program")
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		return ml::Debug::logError("Failed Launching Application")
 			|| ml::Debug::pause(EXIT_FAILURE);
+
+		/* * * * * * * * * * * * * * * * * * * * */
 	}
 }
 

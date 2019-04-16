@@ -42,15 +42,14 @@ namespace ml
 			typename ... Args
 		> inline void loop(Fun && fun, Args && ... args)
 		{
-			do
+			while (this->isRunning())
 			{
 				this->beginFrame();
 
 				fun((args)...);
 
 				this->endFrame();
-
-			} while (this->isRunning());
+			}
 		}
 
 	public:

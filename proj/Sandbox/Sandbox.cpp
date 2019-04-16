@@ -227,52 +227,6 @@ namespace DEMO
 			}
 		}
 
-		// Load Physics
-		/* * * * * * * * * * * * * * * * * * * * */
-		if (ml::Debug::log("Launching Physics Thread...") && !ML_Physics.thread().launch([&]()
-		{
-			/* * * * * * * * * * * * * * * * * * * * */
-
-			ML_Physics.world().state().resize(5); // Setup State
-
-			/* * * * * * * * * * * * * * * * * * * * */
-
-			do
-			{
-				ml::PhysicsState state;
-				if (ML_Physics.beginUpdate(state))
-				{
-					for (size_t i = 0, imax = state.size(); i < imax; i++)
-					{
-						ml::vec3f	pos; // Position
-						ml::quat	rot; // Rotation
-						ml::mat4f	mat; // Transform
-						ml::mat4f	inv; // Inverse Transform
-						if (state.getData(i, pos, rot, mat, inv))
-						{
-							if (i == 0) 
-							{
-								pos[1] = +ML_Time.cos(); // just updating one object for testing purposes
-							}
-
-							state.setData(i, pos, rot, mat, inv);
-						}
-					}
-					
-					ML_Physics.endUpdate(state);
-				}
-
-			} while (this->isOpen());
-
-			/* * * * * * * * * * * * * * * * * * * * */
-		}))
-		{
-			return ml::Debug::setError(
-				ML_FAILURE,
-				"System Failure",
-				"Failed Loading Physics");
-		}
-
 		// Load Audio
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (!(ML_AL.init()))
@@ -575,6 +529,51 @@ namespace DEMO
 					.translate({ 0.0f, -2.5f, 0.0f })
 					.scale({ 12.5, 0.25f, 12.5 });
 			}
+		}
+
+		// Setup Physics
+		/* * * * * * * * * * * * * * * * * * * * */
+		if (ml::Debug::log("Launching Physics...") && !ML_Physics.thread().launch([&]()
+		{
+			/* * * * * * * * * * * * * * * * * * * * */
+
+			ML_Physics.world().state().resize(5); // Setup State
+
+			/* * * * * * * * * * * * * * * * * * * * */
+
+			while (this->isOpen())
+			{
+				ml::PhysicsState state;
+				if (ML_Physics.beginUpdate(state))
+				{
+					for (size_t i = 0, imax = state.size(); i < imax; i++)
+					{
+						ml::vec3f	pos; // Position
+						ml::quat	rot; // Rotation
+						ml::mat4f	mat; // Transform
+						ml::mat4f	inv; // Inverse Transform
+						if (state.getData(i, pos, rot, mat, inv))
+						{
+							if (i == 0)
+							{
+								pos[1] = +ML_Time.cos(); // just updating one object for testing purposes
+							}
+
+							state.setData(i, pos, rot, mat, inv);
+						}
+					}
+
+					ML_Physics.endUpdate(state);
+				}
+			}
+
+			/* * * * * * * * * * * * * * * * * * * * */
+		}))
+		{
+			return ml::Debug::setError(
+				ML_FAILURE,
+				"System Failure",
+				"Failed Loading Physics");
 		}
 
 		// ECS Testing

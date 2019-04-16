@@ -24,11 +24,11 @@ namespace ml
 		{
 			if (static_cast<ITrackable *>(pair.second))
 			{
-				delete (ITrackable *)pair.second;
+				delete static_cast<ITrackable *>(pair.second);
 			}
 			else
 			{
-				delete (void *)pair.second;
+				delete pair.second;
 			}
 			pair.second = NULL;
 		}
