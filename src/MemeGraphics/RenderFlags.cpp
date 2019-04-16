@@ -39,10 +39,7 @@ namespace ml
 	{
 		for (auto pair : (*this))
 		{
-			if (!applyFlag(pair.first, pair.second))
-			{
-				// Something went wrong...
-			}
+			applyFlag(pair.first, pair.second);
 		}
 	}
 

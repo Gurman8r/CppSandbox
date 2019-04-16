@@ -31,15 +31,8 @@ namespace ml
 		bool applyFlag(uint32_t key, int32_t value) const;
 
 	public:
-		inline int32_t operator[](uint32_t key) const
-		{
-			return m_data.at(key);
-		}
-
-		inline int32_t & operator[](uint32_t key)
-		{
-			return m_data[key];
-		}
+		inline int32_t	 operator[](uint32_t key) const { return m_data.at(key); }
+		inline int32_t & operator[](uint32_t key)		{ return m_data[key];	 }
 		
 	public:
 		inline iterator			begin()			{ return m_data.begin();  }
