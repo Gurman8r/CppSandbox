@@ -104,7 +104,7 @@ int32_t main(int32_t argc, char ** argv)
 	// Launch Application
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-	if (auto * app = ML_Engine.launchApp(new DEMO::Sandbox()))
+	if (ml::Application * app = ML_Engine.launchApp(new DEMO::Sandbox()))
 	{
 		states.run(State::Enter, NULL);
 
