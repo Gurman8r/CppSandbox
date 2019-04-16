@@ -365,7 +365,7 @@ namespace DEMO
 		// Setup Objects
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
-			// Setup Light
+			// Light
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::GameObject * obj = ML_Hierarchy.newObject("light"))
 			{
@@ -386,7 +386,7 @@ namespace DEMO
 					.rotate(0.0f, ml::vec3f::Forward);
 			}
 
-			// Setup Borg
+			// Borg
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::GameObject * obj = ML_Hierarchy.newObject("borg"))
 			{
@@ -408,7 +408,7 @@ namespace DEMO
 					.scale(1.0f);
 			}
 
-			// Setup Sanic
+			// Sanic
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::GameObject * obj = ML_Hierarchy.newObject("sanic"))
 			{
@@ -430,7 +430,7 @@ namespace DEMO
 					.scale(1.0f);
 			}
 
-			// Setup Cube
+			// Cube
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::GameObject * obj = ML_Hierarchy.newObject("cube"))
 			{
@@ -452,7 +452,7 @@ namespace DEMO
 					.scale(0.5f);
 			}
 
-			// Setup Earth
+			// Earth
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::GameObject * obj = ML_Hierarchy.newObject("earth"))
 			{
@@ -480,7 +480,7 @@ namespace DEMO
 					.scale(1.0f);
 			}
 
-			// Setup Moon
+			// Moon
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::GameObject * obj = ML_Hierarchy.newObject("moon"))
 			{
@@ -508,7 +508,7 @@ namespace DEMO
 					.scale(0.5f);
 			}
 
-			// Setup Ground
+			// Ground
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::GameObject * obj = ML_Hierarchy.newObject("ground"))
 			{
@@ -630,6 +630,8 @@ namespace DEMO
 		// Update Models
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
+			// Borg
+			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::GameObject * obj = ML_Hierarchy.getObject("borg"))
 			{
 				// FIXME: this is a hack, needs to update PhysicsState a bit
@@ -647,6 +649,8 @@ namespace DEMO
 					.rotate(+ev->elapsed.delta(), ml::vec3f::One);
 			}
 
+			// Cube
+			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::GameObject * obj = ML_Hierarchy.getObject("cube"))
 			{
 				ml::vec3f pos = obj->transform().getPosition();
@@ -656,12 +660,16 @@ namespace DEMO
 					.rotate(-ev->elapsed.delta(), ml::vec3f::One);
 			}
 
+			// Earth
+			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::GameObject * obj = ML_Hierarchy.getObject("earth"))
 			{
 				obj->transform()
 					.rotate((uni.animate ? ev->elapsed.delta() : 0.f), ml::vec3f::Up);
 			}
 
+			// Moon
+			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::GameObject * obj = ML_Hierarchy.getObject("moon"))
 			{
 				ml::vec3f pos = obj->transform().getPosition();
@@ -671,6 +679,8 @@ namespace DEMO
 					.rotate(-ev->elapsed.delta(), ml::vec3f::Up);
 			}
 
+			// Sanic
+			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::GameObject * obj = ML_Hierarchy.getObject("sanic"))
 			{
 				ml::vec3f pos = obj->transform().getPosition();
@@ -680,6 +690,8 @@ namespace DEMO
 					.rotate(-ev->elapsed.delta(), ml::vec3f::Forward);
 			}
 
+			// Light
+			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::GameObject * obj = ML_Hierarchy.getObject("light"))
 			{
 				obj->transform()
@@ -861,49 +873,49 @@ namespace DEMO
 			}
 			else
 			{
-				// Draw Light
+				// Light
 				/* * * * * * * * * * * * * * * * * * * * */
 				if (const ml::GameObject * obj = ML_Hierarchy.getObject("light"))
 				{
 					this->draw(*obj);
 				}
 
-				// Draw Borg
+				// Borg
 				/* * * * * * * * * * * * * * * * * * * * */
 				if (const ml::GameObject * obj = ML_Hierarchy.getObject("borg"))
 				{
 					this->draw(*obj);
 				}
 
-				// Draw Earth
+				// Earth
 				/* * * * * * * * * * * * * * * * * * * * */
 				if (const ml::GameObject * obj = ML_Hierarchy.getObject("earth"))
 				{
 					this->draw(*obj);
 				}
 
-				// Draw Moon
+				// Moon
 				/* * * * * * * * * * * * * * * * * * * * */
 				if (const ml::GameObject * obj = ML_Hierarchy.getObject("moon"))
 				{
 					this->draw(*obj);
 				}
 
-				// Draw Cube
+				// Cube
 				/* * * * * * * * * * * * * * * * * * * * */
 				if (const ml::GameObject * obj = ML_Hierarchy.getObject("cube"))
 				{
 					this->draw(*obj);
 				}
 
-				// Draw Ground
+				// Ground
 				/* * * * * * * * * * * * * * * * * * * * */
 				if (const ml::GameObject * obj = ML_Hierarchy.getObject("ground"))
 				{
 					this->draw(*obj);
 				}
 
-				// Draw Sanic
+				// Sanic
 				/* * * * * * * * * * * * * * * * * * * * */
 				if (const ml::GameObject * obj = ML_Hierarchy.getObject("sanic"))
 				{
@@ -917,7 +929,7 @@ namespace DEMO
 				ML_GL.disable(ml::GL::CullFace);
 				ML_GL.disable(ml::GL::DepthTest);
 
-				// Draw Geometry
+				// Geometry
 				/* * * * * * * * * * * * * * * * * * * * */
 				if (const ml::Shader * shader = ML_Res.shaders.get("geometry"))
 				{
@@ -933,7 +945,7 @@ namespace DEMO
 					ML_GL.drawArrays(ml::GL::Points, 0, 4);
 				}
 
-				// Draw Sprites
+				// Sprites
 				/* * * * * * * * * * * * * * * * * * * * */
 				if (const ml::Shader * shader = ML_Res.shaders.get("sprites"))
 				{
@@ -949,7 +961,7 @@ namespace DEMO
 					}
 				}
 
-				// Draw Text
+				// Text
 				/* * * * * * * * * * * * * * * * * * * * */
 				if (const ml::Shader * shader = ML_Res.shaders.get("text"))
 				{
