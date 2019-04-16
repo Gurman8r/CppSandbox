@@ -214,8 +214,10 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-		template <class T, typename ... A>
-		inline static self_type Format(self_type value, const T & arg0, const A & ...args)
+		template <
+			class T,
+			class ... Args
+		> inline static self_type Format(self_type value, const T & arg0, Args && ... args)
 		{
 			self_type::Stream ss;
 			ss << arg0 << ml::endl;
@@ -234,14 +236,18 @@ namespace ml
 			return value;
 		}
 
-		template <class T, typename ... A>
-		inline self_type & format(const T & arg0, const A & ...args)
+		template <
+			class T,
+			class ... Args
+		> inline self_type & format(const T & arg0, Args && ... args)
 		{
 			return ((*this) = Format((*this), arg0, (args)...));
 		}
 
-		template <class T, typename ... A>
-		inline const self_type format(const T & arg0, const A & ...args) const
+		template <
+			class T,
+			class ... Args
+		> inline const self_type format(const T & arg0, Args && ... args) const
 		{
 			return self_type(*this).format(arg0, (args)...);
 		}

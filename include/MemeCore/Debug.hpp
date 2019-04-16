@@ -50,20 +50,26 @@ namespace ml
 		static int32_t log(const String & message);		   // + 1 true
 
 	public:
-		template <class T, typename ... A>
-		inline static int32_t logWarning(const String & fmt, const T & arg0, const A &... args)
+		template <
+			class T,
+			class ... Args
+		> inline static int32_t logWarning(const String & fmt, const T & arg0, Args && ... args)
 		{
 			return Debug::logWarning(fmt.format(arg0, (args)...));
 		}
 
-		template <class T, typename ... A>
-		inline static int32_t logError(const String & fmt, const T & arg0, const A &... args)
+		template <
+			class T,
+			class ... Args
+		> inline static int32_t logError(const String & fmt, const T & arg0, Args && ... args)
 		{
 			return Debug::logError(fmt.format(arg0, (args)...));
 		}
 
-		template <class T, typename ... A>
-		inline static int32_t log(const String & fmt, const T & arg0, const A &... args)
+		template <
+			class T, 
+			class ... Args
+		> inline static int32_t log(const String & fmt, const T & arg0, Args && ... args)
 		{
 			return Debug::log(fmt.format(arg0, (args)...));
 		}
