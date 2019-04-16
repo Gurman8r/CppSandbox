@@ -6,7 +6,6 @@
 #include <MemeCore/Debug.hpp>
 #include <MemeCore/EventSystem.hpp>
 #include <MemeEngine/Engine.hpp>
-#include <MemePhysics/Physics.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
