@@ -7,6 +7,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_GRAPHICS_API Sprite
 		: public ITrackable
 		, public IDrawable
@@ -49,6 +51,8 @@ namespace ml
 		vec2f			m_origin;
 		vec4f			m_color;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_SPRITE_HPP_

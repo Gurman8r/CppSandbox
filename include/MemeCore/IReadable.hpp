@@ -6,6 +6,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class IReadable
 		: public IDisposable
 	{
@@ -13,6 +15,8 @@ namespace ml
 		virtual bool cleanup() = 0;
 		virtual bool loadFromFile(const String & filename) = 0;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_I_READABLE_HPP_

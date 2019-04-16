@@ -2,6 +2,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	SphereCollider::SphereCollider()
 	{
 	}
@@ -9,4 +11,6 @@ namespace ml
 	SphereCollider::~SphereCollider()
 	{
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

@@ -2,6 +2,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	Uniform::Uniform()
 		: name(String())
 		, type(None)
@@ -41,6 +43,8 @@ namespace ml
 	{
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	bool Uniform::good() const
 	{
 		return !name.empty() && data && type;
@@ -65,4 +69,6 @@ namespace ml
 	{
 		return (name < other.name) && (type < other.type);
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

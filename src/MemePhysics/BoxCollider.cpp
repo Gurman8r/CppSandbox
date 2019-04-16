@@ -2,6 +2,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	BoxCollider::BoxCollider()
 	{
 	}
@@ -9,4 +11,6 @@ namespace ml
 	BoxCollider::~BoxCollider()
 	{
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

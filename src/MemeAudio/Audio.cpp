@@ -3,6 +3,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	Audio::Audio()
 	{
 	}
@@ -12,4 +14,5 @@ namespace ml
 		OpenAL::closeDevice();
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 }

@@ -6,8 +6,8 @@
 
 namespace ml
 {
-
 	/* * * * * * * * * * * * * * * * * * * * */
+
 	Script::Script()
 		: m_file	()
 		, m_toks	()

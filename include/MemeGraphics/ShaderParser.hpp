@@ -8,6 +8,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_GRAPHICS_API ShaderParser final
 	{
 	public:
@@ -17,6 +19,8 @@ namespace ml
 
 		static bool parseWrapped(const String & src, const char lhs, const char rhs, String & out);
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_SHADER_PARSER_HPP_

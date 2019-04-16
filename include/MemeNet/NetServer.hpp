@@ -8,6 +8,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_NETWORK_API Server final
 		: public ITrackable
 		, public NetInterface
@@ -34,6 +36,8 @@ namespace ml
 		bool		m_running;
 		uint32_t	m_maxClients;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_SERVER_HPP_

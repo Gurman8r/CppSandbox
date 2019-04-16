@@ -4,6 +4,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	VertexArray::VertexArray()
 		: IHandle(NULL)
 	{
@@ -19,6 +21,7 @@ namespace ml
 		clean();
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	VertexArray & VertexArray::clean()
 	{
@@ -38,6 +41,7 @@ namespace ml
 		return (*this);
 	}
 	
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	void VertexArray::bind() const
 	{
@@ -48,5 +52,7 @@ namespace ml
 	{
 		ML_GL.bindVertexArray(NULL);
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 }

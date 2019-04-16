@@ -12,6 +12,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	// Model is a Drawable Mesh
 	class ML_GRAPHICS_API Model
 		: public ITrackable
@@ -41,6 +43,8 @@ namespace ml
 		VBO	m_vbo;
 		IBO	m_ibo;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_MODEL_HPP_

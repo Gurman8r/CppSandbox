@@ -6,6 +6,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_GRAPHICS_API RenderFlags final
 		: public ITrackable
 	{
@@ -50,6 +52,8 @@ namespace ml
 	private:
 		HashMap<uint32_t, int32_t> m_data;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_RENDER_FLAGS_HPP_

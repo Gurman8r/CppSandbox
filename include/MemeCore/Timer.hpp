@@ -5,6 +5,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_CORE_API Timer final
 		: public ITrackable
 	{
@@ -33,6 +35,8 @@ namespace ml
 		TimePoint	m_prev;
 		TimePoint	m_next;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_TIMER_HPP_

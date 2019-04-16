@@ -7,6 +7,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_GRAPHICS_API FrameBuffer final
 		: public ITrackable
 		, public IHandle<uint32_t>
@@ -28,7 +30,11 @@ namespace ml
 
 	};
 
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	using FBO = FrameBuffer;
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_FRAMEBUFFER_HPP_

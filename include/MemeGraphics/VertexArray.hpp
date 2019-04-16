@@ -7,6 +7,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_GRAPHICS_API VertexArray final
 		: public ITrackable
 		, public IHandle<uint32_t>
@@ -28,8 +30,11 @@ namespace ml
 		mutable GL::Mode m_mode;
 	};
 
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	using VAO = VertexArray;
 
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_VERTEX_ARRAY_HPP_

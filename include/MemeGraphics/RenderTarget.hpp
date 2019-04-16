@@ -11,37 +11,42 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_GRAPHICS_API RenderTarget
 	{
-	public:
+	public: // Destructor
+		/* * * * * * * * * * * * * * * * * * * * */
 		virtual ~RenderTarget() {}
 
-	public:
+
+	public: // Utility
+		/* * * * * * * * * * * * * * * * * * * * */
 		RenderTarget & clear();
 		RenderTarget & clear(const vec4f & color);
+		RenderTarget & setViewport(const vec2i & pos, const vec2i & size);
 
-		void setViewport(const vec2i & pos, const vec2i & size) const;
 
-	public:
+	public: // Drawing
+		/* * * * * * * * * * * * * * * * * * * * */
 		RenderTarget & draw(const IDrawable & value);
 		RenderTarget & draw(const IDrawable & value, const RenderBatch & batch);
 		
+		/* * * * * * * * * * * * * * * * * * * * */
+
 		RenderTarget & draw(const VertexList & vertices, const RenderBatch & batch);
 		RenderTarget & draw(const FloatList & vertices, const RenderBatch & batch);
 		RenderTarget & draw(const float * vertices, size_t vertexCount, const RenderBatch & batch);
 		
+		/* * * * * * * * * * * * * * * * * * * * */
+
 		RenderTarget & draw(const VAO & vao, const VBO & vbo, const IBO & ibo);
 		RenderTarget & draw(const VAO & vao, const VBO & vbo);
 
-
-	public:
-		RenderStates & states() { return m_states; }
-
-	private:
-		RenderStates m_states;
+		/* * * * * * * * * * * * * * * * * * * * */
 	};
 
-	
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_RENDER_TARGET_HPP_

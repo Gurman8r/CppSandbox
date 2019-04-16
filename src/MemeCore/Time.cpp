@@ -2,6 +2,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	void Time::start()
 	{
 		m_mainTimer.start();
@@ -45,4 +47,6 @@ namespace ml
 		t.reset();
 		while (t.elapsed() < value);
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

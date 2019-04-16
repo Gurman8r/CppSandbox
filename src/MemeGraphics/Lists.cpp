@@ -2,6 +2,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	VertexList::VertexList()
 		: base_type()
 	{
@@ -34,6 +36,7 @@ namespace ml
 
 	VertexList::~VertexList() {}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	const FloatList & VertexList::contiguous() const
 	{
@@ -52,4 +55,6 @@ namespace ml
 		}
 		return m_contiguous;
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

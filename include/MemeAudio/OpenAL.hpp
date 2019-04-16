@@ -23,6 +23,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_AUDIO_API OpenAL final
 		: public ISingleton<OpenAL>
 	{
@@ -132,6 +134,8 @@ namespace ml
 		static int32_t *getListeneriv(int32_t param);
 		
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

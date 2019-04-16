@@ -7,6 +7,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_GRAPHICS_API IndexBuffer final
 		: public ITrackable
 		, public IHandle<uint32_t>
@@ -37,7 +39,11 @@ namespace ml
 		mutable GL::Type		m_type;
 	};
 
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	using IBO = IndexBuffer;
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_INDEX_BUFFER_HPP_

@@ -8,6 +8,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_GRAPHICS_API Vertex final
 		: public ITrackable
 		, public IComparable<Vertex>
@@ -98,6 +100,8 @@ namespace ml
 	private:
 		float m_data[Size];
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_VERTEX_HPP_

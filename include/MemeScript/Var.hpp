@@ -6,6 +6,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_SCRIPT_API Var final
 		: public ITrackable
 		, public IComparable<Var>
@@ -219,6 +221,8 @@ namespace ml
 
 		mutable bool m_changed = true;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_VAR_HPP_

@@ -8,6 +8,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	// Effect is Framebuffer + Renderbuffer
 	class ML_GRAPHICS_API Effect
 		: public ITrackable
@@ -47,6 +49,8 @@ namespace ml
 		FBO				m_fbo;
 		RBO				m_rbo;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_EFFECT_HPP_

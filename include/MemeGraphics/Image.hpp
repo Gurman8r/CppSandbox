@@ -8,6 +8,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_GRAPHICS_API Image final
 		: public ITrackable
 		, public IReadable
@@ -21,6 +23,7 @@ namespace ml
 		Image(const Image & copy);
 		~Image();
 
+	public:
 		bool cleanup() override;
 		bool loadFromFile(const String & filename) override;		
 
@@ -41,6 +44,7 @@ namespace ml
 		inline const uint8_t *	ptr()		const { return &pixels()[0]; }
 		inline const int32_t	channels()	const { return m_channels; }
 
+	public:
 		inline const uint8_t &	operator[](uint32_t index) const { return m_pixels[index]; }
 		inline uint8_t &		operator[](uint32_t index) { return m_pixels[index]; }
 
@@ -52,6 +56,8 @@ namespace ml
 		Pixels	m_pixels;
 		int32_t	m_channels;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_IMAGE_HPP_

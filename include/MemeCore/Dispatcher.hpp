@@ -7,6 +7,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_CORE_API Dispatcher
 		: public ITrackable
 		, public ISingleton<Dispatcher>
@@ -33,6 +35,8 @@ namespace ml
 		std::vector<Worker *>		m_allWorkers;
 		std::vector<std::thread *>	m_threads;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_DISPATCHER_HPP_

@@ -5,7 +5,11 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	using byte = uint8_t;
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	struct ML_CORE_API Chunk final
 	{
@@ -23,6 +27,8 @@ namespace ml
 		{
 		};
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_CHUNK_HPP_

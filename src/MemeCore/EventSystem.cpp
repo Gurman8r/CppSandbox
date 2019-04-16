@@ -2,6 +2,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	void EventSystem::addListener(const int32_t & type, IEventListener * listener)
 	{
 		m_listeners.insert({ type, listener });
@@ -49,6 +51,8 @@ namespace ml
 		}
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	void EventSystem::dispatchAllEvents(const IEvent * ev)
 	{
 		Pair<iterator, iterator> found = m_listeners.equal_range((int32_t)(*ev));
@@ -58,4 +62,6 @@ namespace ml
 			it->second->onEvent(ev);
 		}
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

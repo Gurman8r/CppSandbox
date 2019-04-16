@@ -8,6 +8,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_GRAPHICS_API Texture final
 		: public ITrackable
 		, public IReadable
@@ -89,6 +91,8 @@ namespace ml
 		bool		m_repeated;
 		bool		m_mipmapped;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_TEXTURE_HPP_

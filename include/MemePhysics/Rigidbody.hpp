@@ -6,6 +6,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_PHYSICS_API Rigidbody
 		: public ITrackable
 	{
@@ -16,6 +18,8 @@ namespace ml
 	private:
 
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_RIGIDBODY_HPP_

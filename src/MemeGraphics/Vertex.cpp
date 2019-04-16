@@ -2,6 +2,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	Vertex::Vertex()
 	{
 		this->position(vec3f::Zero);
@@ -48,6 +50,7 @@ namespace ml
 	{
 	}
 	
+	/* * * * * * * * * * * * * * * * * * * * */
 	
 	const vec3f & Vertex::position() const
 	{
@@ -76,6 +79,7 @@ namespace ml
 		return temp;
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	Vertex & Vertex::position(const vec3f & value)
 	{
@@ -101,6 +105,7 @@ namespace ml
 			value[1]);
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	Vertex & Vertex::position(float x, float y, float z)
 	{
@@ -125,4 +130,6 @@ namespace ml
 		(*this)[8] = y;
 		return (*this);
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

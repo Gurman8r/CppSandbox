@@ -7,6 +7,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_GRAPHICS_API RenderBuffer final
 		: public ITrackable
 		, public IHandle<uint32_t>
@@ -35,7 +37,11 @@ namespace ml
 		mutable int32_t m_height;
 	};
 
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	using RBO = RenderBuffer;
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_RENDER_BUFFER_HPP_

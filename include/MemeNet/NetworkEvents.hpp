@@ -6,7 +6,6 @@
 
 namespace ml
 {
-	// base_type
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	struct ML_NETWORK_API NetworkEvent : public IEvent
@@ -27,8 +26,6 @@ namespace ml
 		}
 	};
 
-
-	// Server
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	struct ML_NETWORK_API ServerRecievePacketEvent final : public NetworkEvent
@@ -46,8 +43,6 @@ namespace ml
 		}
 	};
 
-
-	// Client
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	struct ML_NETWORK_API ClientRecievePacketEvent final : public NetworkEvent

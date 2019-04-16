@@ -11,6 +11,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_CORE_API MemoryManager final
 		: public ITrackable
 		, public ISingleton<MemoryManager>
@@ -67,6 +69,7 @@ namespace ml
 		Chunk *	m_tail; // Last chunk in list
 	};
 
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_MEMORY_MANAGER_HPP_

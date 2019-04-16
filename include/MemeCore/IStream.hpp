@@ -5,6 +5,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_CORE_API BasicIStream
 		: public std::istream
 		, public std::streambuf
@@ -52,6 +54,8 @@ namespace ml
 			return (*this);
 		}
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_ISTREAM_HPP_

@@ -2,6 +2,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	IpAddress::IpAddress()
 		: IpAddress(String(), 0)
 	{
@@ -22,6 +24,8 @@ namespace ml
 		: IpAddress(copy.addr, copy.port)
 	{
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	inline IpAddress::operator bool() const
 	{
@@ -46,4 +50,6 @@ namespace ml
 			addr < copy.addr &&
 			port < copy.port;
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

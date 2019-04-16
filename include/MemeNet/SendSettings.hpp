@@ -6,8 +6,8 @@
 
 namespace ml
 {
-	// Priority
 	/* * * * * * * * * * * * * * * * * * * * */
+
 	enum Priority : uint8_t
 	{
 		Immediate,
@@ -18,8 +18,8 @@ namespace ml
 		MAX_PRIORITY
 	};
 
-	// Reliability
 	/* * * * * * * * * * * * * * * * * * * * */
+
 	enum Reliability : uint8_t
 	{
 		Unreliable,
@@ -34,8 +34,8 @@ namespace ml
 		MAX_RELIABILITY
 	};
 
-	// SendSettings
 	/* * * * * * * * * * * * * * * * * * * * */
+
 	struct ML_NETWORK_API SendSettings final
 		: public ITrackable
 	{
@@ -63,6 +63,8 @@ namespace ml
 		{
 		}
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_SEND_SETTINGS_HPP_

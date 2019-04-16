@@ -6,6 +6,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_GRAPHICS_API RenderWindow
 		: public Window
 		, public RenderTarget
@@ -19,6 +21,8 @@ namespace ml
 		bool setup(bool experimental);
 		void onEvent(const IEvent * ev) override;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_RENDER_WINDOW_HPP_

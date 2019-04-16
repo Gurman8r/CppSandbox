@@ -18,9 +18,6 @@
     <ClInclude Include="..\..\include\MemeNet\NetworkEvents.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeNet\NetworkTypes.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeNet\Export.hpp">
       <Filter>Resource Files</Filter>
     </ClInclude>

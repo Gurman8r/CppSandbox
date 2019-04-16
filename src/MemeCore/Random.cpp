@@ -2,6 +2,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	void Random::seed()
 	{
 		return seed((uint32_t)time(NULL));
@@ -11,4 +13,6 @@ namespace ml
 	{
 		return srand(value);
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

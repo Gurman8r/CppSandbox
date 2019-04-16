@@ -6,6 +6,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_CORE_API ISerializable
 	{
 	public:
@@ -54,6 +56,8 @@ namespace ml
 			return in;
 		}
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_I_SERIALIZABLE_HPP_

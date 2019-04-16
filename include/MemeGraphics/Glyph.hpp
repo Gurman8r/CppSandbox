@@ -5,6 +5,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	struct ML_GRAPHICS_API Glyph final
 		: public ITrackable
 	{
@@ -28,6 +30,8 @@ namespace ml
 		inline const vec2f offset()		const { return vec2f(x(), -(height() - y())); }
 		inline const float step()		const { return (float)(advance >> VertexCount); }
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_GLYPH_HPP_

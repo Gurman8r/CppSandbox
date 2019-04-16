@@ -7,6 +7,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_GRAPHICS_API Uniform final
 		: public ITrackable
 		, public IComparable<Uniform>
@@ -64,6 +66,8 @@ namespace ml
 		bool equals(const Uniform & other) const override;
 		bool lessThan(const Uniform & other) const override;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_UNIFORM_HPP_

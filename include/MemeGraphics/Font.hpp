@@ -6,6 +6,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_GRAPHICS_API Font final
 		: public ITrackable
 		, public IReadable
@@ -50,6 +52,8 @@ namespace ml
 
 		Glyph loadGlyph(uint32_t value, uint32_t size) const;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_FONT_HPP_

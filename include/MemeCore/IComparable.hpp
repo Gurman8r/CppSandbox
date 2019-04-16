@@ -3,18 +3,23 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	template <class T>
 	class IComparable
 	{
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		using comp_type = T;
 		using self_type = IComparable<comp_type>;
 
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		virtual bool equals(const comp_type & value) const = 0;
 		virtual bool lessThan(const comp_type & value) const = 0;
 
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		inline bool notEquals(const comp_type & value) const
 		{
 			return !equals(value);
@@ -26,6 +31,7 @@ namespace ml
 		}
 
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		inline friend bool operator==(const self_type & lhs, const comp_type & rhs)
 		{
 			return lhs.equals(rhs);
@@ -57,6 +63,7 @@ namespace ml
 		}
 	};
 
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_I_COMPARABLE_HPP_

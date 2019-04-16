@@ -27,7 +27,6 @@
 #include <MemeNet/NetServer.hpp>
 #include <MemePhysics/Physics.hpp>
 #include <MemeScript/Interpreter.hpp>
-#include <MemeScript/ScriptEvents.hpp>
 #include <MemeWindow/WindowEvents.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -87,7 +86,7 @@ namespace DEMO
 			}
 			break;
 			
-			// Keyboard
+			// Key Event
 			/* * * * * * * * * * * * * * * * * * * * */
 		case ml::WindowEvent::EV_Key:
 			if (const auto * ev = value->as<ml::KeyEvent>())
@@ -838,10 +837,6 @@ namespace DEMO
 			}
 		}
 
-		// Backup States
-		/* * * * * * * * * * * * * * * * * * * * */
-		//this->states().backup();
-
 		// Draw Scene
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (ml::Effect * scene = ML_Res.effects.get(ML_FBO_MAIN))
@@ -945,17 +940,12 @@ namespace DEMO
 				/* * * * * * * * * * * * * * * * * * * * */
 				if (const ml::Shader * shader = ML_Res.shaders.get("sprites"))
 				{
-					static ml::UniformSet uniforms =
-					{
+					static ml::RenderBatch batch(&m_batchVAO, &m_batchVBO, shader, {
 						ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&uni.ortho.matrix()),
 						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4),
 						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D),
-					};
-					static ml::RenderBatch batch(
-						&m_batchVAO,
-						&m_batchVBO,
-						shader,
-						&uniforms);
+					});
+
 					for (auto pair : ML_Res.sprites)
 					{
 						this->draw((*pair.second), batch);
@@ -966,17 +956,12 @@ namespace DEMO
 				/* * * * * * * * * * * * * * * * * * * * */
 				if (const ml::Shader * shader = ML_Res.shaders.get("text"))
 				{
-					static ml::UniformSet uniforms =
-					{
+					static ml::RenderBatch batch(&m_batchVAO, &m_batchVBO, shader, {
 						ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&uni.ortho.matrix()),
 						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4),
 						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D),
-					};
-					static ml::RenderBatch batch(
-						&m_batchVAO,
-						&m_batchVBO,
-						shader,
-						&uniforms);
+					});
+
 					for (auto it = m_text.begin(); it != m_text.end(); it++)
 					{
 						this->draw(it->second, batch);
@@ -1006,10 +991,6 @@ namespace DEMO
 				}
 			}
 		}
-
-		// Restore States
-		/* * * * * * * * * * * * * * * * * * * * */
-		//this->states().restore();
 	}
 
 	void Sandbox::onGui(const ml::GuiEvent * ev)

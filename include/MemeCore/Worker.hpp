@@ -5,6 +5,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_CORE_API Worker
 		: public ITrackable
 	{
@@ -32,6 +34,8 @@ namespace ml
 		UniqueLock	m_lock;
 		Condition	m_cv;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_WORKER_HPP_

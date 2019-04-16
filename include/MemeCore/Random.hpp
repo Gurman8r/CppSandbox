@@ -6,6 +6,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_CORE_API Random final
 	{
 	public:
@@ -31,6 +33,8 @@ namespace ml
 			return min + (roll<T>(max) * (max - min)); 
 		}
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_RANDOM_HPP_

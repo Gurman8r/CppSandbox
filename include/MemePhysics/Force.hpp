@@ -6,6 +6,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_PHYSICS_API Force
 	{
 	public:
@@ -18,6 +20,8 @@ namespace ml
 		static const vec3f spring(const vec3f & pos, const vec3f & anchor, const float rest, const float coeff);
 		static const vec3f dampingLinear(const vec3f & vel, const float coeff);
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_FORCE_HPP_

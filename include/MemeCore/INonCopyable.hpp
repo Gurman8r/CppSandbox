@@ -5,6 +5,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_CORE_API INonCopyable
 	{
 	protected:
@@ -15,6 +17,8 @@ namespace ml
 		INonCopyable(const INonCopyable &) = delete;
 		INonCopyable & operator=(const INonCopyable &) = delete;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_I_NON_COPYABLE_HPP_

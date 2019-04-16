@@ -7,6 +7,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	Image::Image()
 		: m_size(vec2u::Zero)
 		, m_pixels(Pixels())
@@ -33,6 +35,7 @@ namespace ml
 	{
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool Image::cleanup()
 	{
@@ -62,6 +65,7 @@ namespace ml
 		}
 	}
 	
+	/* * * * * * * * * * * * * * * * * * * * */
 	
 	Image & Image::create(uint32_t width, uint32_t height, const vec4b & color)
 	{
@@ -191,6 +195,7 @@ namespace ml
 		return (*this);
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	vec4b	Image::getPixel(uint32_t x, uint32_t y) const
 	{
@@ -210,4 +215,6 @@ namespace ml
 
 		return (*this);
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

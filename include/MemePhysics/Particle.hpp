@@ -5,6 +5,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	struct ML_PHYSICS_API Particle
 		: public ITrackable
 	{
@@ -42,6 +44,8 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_PARTICLE_HPP_

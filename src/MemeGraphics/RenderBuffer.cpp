@@ -3,6 +3,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	RenderBuffer::RenderBuffer()
 		: IHandle(NULL)
 	{
@@ -18,6 +20,7 @@ namespace ml
 		clean();
 	}
 	
+	/* * * * * * * * * * * * * * * * * * * * */
 	
 	RenderBuffer & RenderBuffer::clean()
 	{
@@ -39,6 +42,7 @@ namespace ml
 		return (*this);
 	}
 	
+	/* * * * * * * * * * * * * * * * * * * * */
 	
 	void RenderBuffer::bind() const
 	{
@@ -50,6 +54,7 @@ namespace ml
 		ML_GL.bindRenderbuffer(GL::Renderbuffer, NULL);
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	void RenderBuffer::bufferStorage(GL::Format format) const
 	{
@@ -64,4 +69,6 @@ namespace ml
 			GL::Renderbuffer,
 			(*this));
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

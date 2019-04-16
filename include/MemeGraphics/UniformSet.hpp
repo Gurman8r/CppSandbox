@@ -6,6 +6,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_GRAPHICS_API UniformSet final
 		: public ITrackable
 	{
@@ -23,16 +25,25 @@ namespace ml
 		~UniformSet();
 
 	public:
-		void clear();
-		bool empty() const;
-		bool insert(const Uniform & value);
+		void	clear();
+		bool	empty() const;
+		bool	insert(const Uniform & value);
+		size_t	size() const;
 		
-		Uniform * find(const String & name);
+		Uniform *		find(const String & name);
 		const Uniform * find(const String & name) const;
-		
-		size_t size() const;
 
-		inline List<String> getKeys() const;
+	public:
+		inline List<String> getKeys() const
+		{
+			List<String> keys;
+			keys.reserve(size());
+			for (auto pair : m_map)
+			{
+				keys.push_back(pair.first);
+			}
+			return keys;
+		}
 
 	public:
 		inline const Uniform & operator[](const String & name) const { return m_map.at(name); }
@@ -49,5 +60,8 @@ namespace ml
 	private:
 		UniformMap m_map;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
+
 #endif // !_ML_UNIFORM_SET_HPP_

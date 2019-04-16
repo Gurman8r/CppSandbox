@@ -3,20 +3,26 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	AudioSource::AudioSource()
 		: IHandle(NULL)
 		, m_count(0)
 	{
 	}
+
 	AudioSource::AudioSource(const AudioSource & copy)
 		: IHandle(copy)
 		, m_count(copy.m_count)
 	{
 	}
+
 	AudioSource::~AudioSource()
 	{
 		clean();
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	AudioSource & AudioSource::clean()
 	{
@@ -35,4 +41,6 @@ namespace ml
 		}
 		return (*this);
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

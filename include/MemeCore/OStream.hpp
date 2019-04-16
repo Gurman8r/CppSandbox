@@ -5,6 +5,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_CORE_API BasicOStream
 		: public std::ostream
 		, public std::streambuf
@@ -27,6 +29,8 @@ namespace ml
 	private:
 
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_OSTREAM_HPP_

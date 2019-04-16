@@ -6,8 +6,8 @@
 
 namespace ml
 {
-	// GUID
 	/* * * * * * * * * * * * * * * * * * * * */
+
 	struct ML_NETWORK_API GUID final
 		: public ITrackable
 		, public IComparable<uint64_t>
@@ -33,6 +33,8 @@ namespace ml
 
 		bool lessThan(const GUID & value) const override;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_GUID_HPP_

@@ -7,6 +7,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_GRAPHICS_API Shapes
 	{
 	public:
@@ -45,7 +47,11 @@ namespace ml
 		};
 	};
 
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	using RectQuad = typename Shapes::RectQuad;
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_SHAPES_HPP_

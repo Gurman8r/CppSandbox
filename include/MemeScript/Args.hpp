@@ -6,6 +6,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_SCRIPT_API Args final
 		: public ITrackable
 		, public IComparable<Args>
@@ -32,7 +34,6 @@ namespace ml
 		String	at(size_t index) const;
 		String	back() const;
 		String	front() const;
-		SStream	sstream() const;
 
 		size_t	count(const String & value) const;
 		size_t	count(const_iterator first, const_iterator last, const String & value) const;
@@ -127,6 +128,8 @@ namespace ml
 	private:
 		List<String> m_values;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_ARGS_HPP_

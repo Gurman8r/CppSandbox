@@ -201,42 +201,42 @@ namespace ml
 
 	/* Get Buffer Parameters */
 
-	float		OpenAL::getBufferf(uint32_t id, int32_t param)
+	float OpenAL::getBufferf(uint32_t id, int32_t param)
 	{
 		static float temp;
 		alCheck(alGetBufferf(id, param, &temp));
 		return temp;
 	}
 
-	float *		OpenAL::getBuffer3f(uint32_t id, int32_t param)
+	float * OpenAL::getBuffer3f(uint32_t id, int32_t param)
 	{
 		static float temp[3];
 		alCheck(alGetBuffer3f(id, param, &temp[0], &temp[1], &temp[2]));
 		return temp;
 	}
 
-	float *		OpenAL::getBufferfv(uint32_t id, int32_t param)
+	float * OpenAL::getBufferfv(uint32_t id, int32_t param)
 	{
 		static float * temp;
 		alCheck(alGetBufferfv(id, param, temp));
 		return temp;
 	}
 
-	int32_t		OpenAL::getBufferi(uint32_t id, int32_t param)
+	int32_t OpenAL::getBufferi(uint32_t id, int32_t param)
 	{
 		static int32_t temp;
 		alCheck(alGetBufferi(id, param, &temp));
 		return temp;
 	}
 
-	int32_t *	OpenAL::getBuffer3i(uint32_t id, int32_t param)
+	int32_t * OpenAL::getBuffer3i(uint32_t id, int32_t param)
 	{
 		static int32_t temp[3];
 		alCheck(alGetBuffer3i(id, param, &temp[0], &temp[1], &temp[2]));
 		return temp;
 	}
 
-	int32_t *	OpenAL::getBufferiv(uint32_t id, int32_t param)
+	int32_t * OpenAL::getBufferiv(uint32_t id, int32_t param)
 	{
 		static int32_t * temp;
 		alCheck(alGetBufferiv(id, param, temp));
@@ -324,42 +324,42 @@ namespace ml
 
 	/* Get Source Parameters */
 
-	float		OpenAL::getSourcef(uint32_t id, int32_t param)
+	float OpenAL::getSourcef(uint32_t id, int32_t param)
 	{
 		static float temp;
 		alCheck(alGetSourcef(id, param, &temp));
 		return temp;
 	}
 
-	float *		OpenAL::getSource3f(uint32_t id, int32_t param)
+	float * OpenAL::getSource3f(uint32_t id, int32_t param)
 	{
 		static float temp[3];
 		alCheck(alGetSource3f(id, param, &temp[0], &temp[1], &temp[2]));
 		return temp;
 	}
 
-	float *		OpenAL::getSourcefv(uint32_t id, int32_t param)
+	float * OpenAL::getSourcefv(uint32_t id, int32_t param)
 	{
 		static float * temp;
 		alCheck(alGetSourcefv(id, param, temp));
 		return temp;
 	}
 
-	int32_t		OpenAL::getSourcei(uint32_t id, int32_t param)
+	int32_t OpenAL::getSourcei(uint32_t id, int32_t param)
 	{
 		static int32_t temp;
 		alCheck(alGetSourcei(id, param, &temp));
 		return temp;
 	}
 
-	int32_t *	OpenAL::getSource3i(uint32_t id, int32_t param)
+	int32_t * OpenAL::getSource3i(uint32_t id, int32_t param)
 	{
 		static int32_t temp[3];
 		alCheck(alGetSource3i(id, param, &temp[0], &temp[1], &temp[2]));
 		return temp;
 	}
 
-	int32_t *	OpenAL::getSourceiv(uint32_t id, int32_t param)
+	int32_t * OpenAL::getSourceiv(uint32_t id, int32_t param)
 	{
 		static int32_t * temp;
 		alCheck(alGetSourceiv(id, param, temp));
@@ -448,42 +448,42 @@ namespace ml
 
 	/* Get Listener Parameters */
 
-	float		OpenAL::getListenerf(int32_t param)
+	float OpenAL::getListenerf(int32_t param)
 	{
 		static float temp;
 		alCheck(alGetListenerf(param, &temp));
 		return temp;
 	}
 
-	float *		OpenAL::getListener3f(int32_t param)
+	float * OpenAL::getListener3f(int32_t param)
 	{
 		static float temp[3];
 		alCheck(alGetListener3f(param, &temp[0], &temp[1], &temp[2]));
 		return temp;
 	}
 
-	float *		OpenAL::getListenerfv(int32_t param)
+	float * OpenAL::getListenerfv(int32_t param)
 	{
 		static float * temp;
 		alCheck(alGetListenerfv(param, temp));
 		return temp;
 	}
 
-	int32_t		OpenAL::getListeneri(int32_t param)
+	int32_t OpenAL::getListeneri(int32_t param)
 	{
 		static int32_t temp;
 		alCheck(alGetListeneri(param, &temp));
 		return temp;
 	}
 
-	int32_t *	OpenAL::getListener3i(int32_t param)
+	int32_t * OpenAL::getListener3i(int32_t param)
 	{
 		static int32_t temp[3];
 		alCheck(alGetListener3i(param, &temp[0], &temp[1], &temp[2]));
 		return temp;
 	}
 
-	int32_t *	OpenAL::getListeneriv(int32_t param)
+	int32_t * OpenAL::getListeneriv(int32_t param)
 	{
 		static int32_t * temp;
 		alCheck(alGetListeneriv(param, temp));

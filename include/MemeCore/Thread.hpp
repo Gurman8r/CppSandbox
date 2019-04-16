@@ -10,6 +10,8 @@ std::enable_if_t<!std::is_same_v<std::remove_cv_t<std::remove_reference_t<Fun>>,
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_CORE_API Thread final
 		: public ITrackable
 		, public IDisposable
@@ -37,6 +39,8 @@ namespace ml
 	private:
 		std::thread * m_thr;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_THREAD_HPP_

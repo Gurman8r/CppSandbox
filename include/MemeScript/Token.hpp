@@ -5,7 +5,11 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class Var;
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	class ML_SCRIPT_API Token final
 		: public ITrackable
@@ -91,6 +95,8 @@ namespace ml
 		void serialize(std::ostream & out) const override;
 		void deserialize(std::istream & in) override;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_TOKEN_HPP_

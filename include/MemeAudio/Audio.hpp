@@ -11,6 +11,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_AUDIO_API Audio
 		: public ITrackable
 		, public ISingleton<Audio>
@@ -22,7 +24,10 @@ namespace ml
 		~Audio();
 
 	public:
+
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_AUDIO_HPP_

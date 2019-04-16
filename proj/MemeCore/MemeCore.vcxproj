@@ -172,7 +172,6 @@
     <ClInclude Include="..\..\include\MemeCore\StringUtility.hpp" />
     <ClInclude Include="..\..\include\MemeCore\TestRequest.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Transform.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\Usings.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Ratio.hpp" />
     <ClInclude Include="..\..\include\MemeCore\IO.hpp" />
     <ClInclude Include="..\..\include\MemeCore\IStream.hpp" />

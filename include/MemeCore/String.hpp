@@ -8,12 +8,6 @@
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#ifndef ML_STRING_CUSTOM
-#define ML_STRING_CUSTOM
-#endif // !ML_STRING_CUSTOM
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 namespace ml
 {
 	template <
@@ -210,9 +204,6 @@ namespace ml
 			return (value < (const base_type &)(*this));
 		}
 
-		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-#ifdef ML_STRING_CUSTOM
 	public:
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
@@ -306,8 +297,6 @@ namespace ml
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-#endif // ML_STRING_CUSTOM
 	};
 }
 

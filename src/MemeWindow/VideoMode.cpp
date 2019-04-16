@@ -90,8 +90,15 @@ namespace ml
 
 	void VideoMode::serialize(std::ostream & out) const
 	{
-		out << "(" << size << ", " << bitsPerPixel << ")";
+		out << size << ' ' << bitsPerPixel;
 	}
+
+	void VideoMode::deserialize(std::istream & in)
+	{
+		in >> size >> bitsPerPixel;
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool VideoMode::equals(const VideoMode & value) const
 	{
@@ -100,7 +107,7 @@ namespace ml
 
 	bool VideoMode::lessThan(const VideoMode & value) const
 	{
-		return (size < value.size);
+		return (size < value.size) && (bitsPerPixel < value.bitsPerPixel);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

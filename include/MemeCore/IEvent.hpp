@@ -11,11 +11,14 @@ static_assert(std::is_base_of<ml::IEvent, T>::value, "Type must derive ml::IEven
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_CORE_API IEvent
 		: public ITrackable
 		, public INonCopyable
 	{
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		enum : int32_t
 		{
 			MIN_EVENT_ID = -1,
@@ -62,6 +65,7 @@ namespace ml
 		};
 
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		IEvent(int32_t id)
 			: m_eventID(id)
 		{
@@ -71,6 +75,7 @@ namespace ml
 		inline operator int32_t() const { return m_eventID; }
 
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		template <class T>
 		inline const T * as() const
 		{
@@ -86,8 +91,11 @@ namespace ml
 		}
 
 	private:
+		/* * * * * * * * * * * * * * * * * * * * */
 		int32_t m_eventID;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_I_EVENT_HPP_

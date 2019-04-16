@@ -3,6 +3,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	IndexBuffer::IndexBuffer()
 		: IHandle	(NULL)
 		, m_data	(NULL)
@@ -26,6 +28,7 @@ namespace ml
 		clean();
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	IndexBuffer & IndexBuffer::clean()
 	{
@@ -46,6 +49,7 @@ namespace ml
 		return (*this);
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	void IndexBuffer::bind() const
 	{
@@ -57,6 +61,7 @@ namespace ml
 		ML_GL.bindBuffer(GL::ElementArrayBuffer, NULL);
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	void IndexBuffer::bufferData(const IndexList & data) const
 	{
@@ -74,4 +79,6 @@ namespace ml
 			m_data,
 			m_usage);
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

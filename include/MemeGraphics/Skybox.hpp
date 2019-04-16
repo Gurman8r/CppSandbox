@@ -6,6 +6,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	// WIP
 	class ML_GRAPHICS_API Skybox final
 		: public ITrackable
@@ -22,6 +24,7 @@ namespace ml
 		Skybox();
 		~Skybox();
 
+	public:
 		bool cleanup() override;
 		bool loadFromFile(const String & filename) override;
 
@@ -41,6 +44,8 @@ namespace ml
 	private:
 		Texture * m_faces[MAX_FACE] { 0, 0, 0, 0, 0, 0 };
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_SKYBOX_HPP_

@@ -6,6 +6,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_GRAPHICS_API BufferLayout final
 		: public ITrackable
 	{
@@ -47,6 +49,8 @@ namespace ml
 	private:
 		std::vector<Element> m_elements;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_BUFFER_LAYOUT_HPP_

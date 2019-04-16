@@ -2,6 +2,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	Text::Text()
 		: m_font	(NULL)
 		, m_fontSize(0)
@@ -27,7 +29,8 @@ namespace ml
 	{
 	}
 
-	
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	Text & Text::setPosition(const vec2f & value)
 	{
 		if (m_position != value)
@@ -84,6 +87,7 @@ namespace ml
 		return (*this);
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	void Text::update() const
 	{
@@ -126,16 +130,18 @@ namespace ml
 		{
 			update();
 
-			if (Uniform * u = batch.uniforms->find("Frag.mainCol"))
+			if (Uniform * u = batch.uniforms.find("Frag.mainCol"))
 				u->data = &m_color;
 
 			for (size_t i = 0, imax = m_string.size(); i < imax; i++)
 			{
-				if (Uniform * u = batch.uniforms->find("Frag.mainTex"))
+				if (Uniform * u = batch.uniforms.find("Frag.mainTex"))
 					u->data = m_textures[i];
 
 				target.draw(m_vertices[i].data(), RectQuad::Size, batch);
 			}
 		}
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

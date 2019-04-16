@@ -2,8 +2,8 @@
 
 namespace ml
 {
+	// Rect Quad
 	/* * * * * * * * * * * * * * * * * * * * */
-
 	RectQuad Shapes::genSpriteQuad(const FloatRect & r)
 	{
 		return RectQuad {
@@ -28,7 +28,6 @@ namespace ml
 		};
 	}
 
-	/* * * * * * * * * * * * * * * * * * * * */
 
 	// Triangle
 	/* * * * * * * * * * * * * * * * * * * * */

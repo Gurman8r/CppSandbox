@@ -6,6 +6,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_SCRIPT_API Script
 		: public ITrackable
 		, public IReadable
@@ -39,6 +41,8 @@ namespace ml
 		AST_Block *	m_root;
 		TokenList	m_toks;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_SCRIPT_HPP_

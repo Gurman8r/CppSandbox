@@ -7,6 +7,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_AUDIO_API Sound
 		: public ITrackable
 		, public IReadable
@@ -15,12 +17,15 @@ namespace ml
 		Sound();
 		~Sound();
 
+	public:
 		bool cleanup() override;
 		bool loadFromFile(const String & filename) override;
 
 	private:
 		void * m_device;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_SOUND_HPP_

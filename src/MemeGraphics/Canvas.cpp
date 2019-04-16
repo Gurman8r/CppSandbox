@@ -7,6 +7,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	Canvas::Canvas()
 		: m_vao		()
 		, m_vbo		()
@@ -18,6 +20,9 @@ namespace ml
 	Canvas::~Canvas()
 	{
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	bool Canvas::create()
 	{
 		if (!m_vao && !m_vbo)
@@ -41,4 +46,6 @@ namespace ml
 	{
 		return (m_uniforms = value);
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

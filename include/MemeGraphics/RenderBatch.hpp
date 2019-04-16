@@ -11,42 +11,42 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	struct ML_GRAPHICS_API RenderBatch final
 		: public ITrackable
 	{
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		const VAO		* vao;
-		const VBO		* vbo;
-		const Shader	* shader;
-		UniformSet		* uniforms;
+		const VAO *		vao;
+		const VBO *		vbo;
+		const Shader *	shader;
+		UniformSet		uniforms;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		RenderBatch(const VAO * vao, const VBO * vbo, const Shader * shader, UniformSet * uniforms)
+		RenderBatch(const VAO * vao, const VBO * vbo, const Shader * shader, const UniformSet & uniforms)
 			: vao		(vao)
 			, vbo		(vbo)
 			, shader	(shader)
 			, uniforms	(uniforms)
 		{
 		}
+
 		RenderBatch()
-			: vao		(NULL)
-			, vbo		(NULL)
-			, shader	(NULL)
-			, uniforms	(NULL)
+			: RenderBatch(NULL, NULL, NULL, UniformSet())
 		{
 		}
+
 		RenderBatch(const RenderBatch & copy)
-			: vao		(copy.vao)
-			, vbo		(copy.vbo)
-			, shader	(copy.shader)
-			, uniforms	(copy.uniforms)
+			: RenderBatch(copy.vao, copy.vbo, copy.shader, copy.uniforms)
 		{
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_RENDER_BATCH_HPP_

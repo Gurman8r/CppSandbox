@@ -7,6 +7,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_AUDIO_API AudioBuffer
 		: public ITrackable
 		, public IHandle<uint32_t>
@@ -16,12 +18,15 @@ namespace ml
 		AudioBuffer(const AudioBuffer & copy);
 		~AudioBuffer();
 
+	public:
 		AudioBuffer & clean();
 		AudioBuffer & create(uint32_t count);
 
 	private:
 		uint32_t m_count;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_AUDIO_BUFFER_HPP_

@@ -5,6 +5,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	// std::vector with serialization
 	template <
 		class _Elem,
@@ -115,8 +117,9 @@ namespace ml
 		{
 			return lessThan((const base_type &)(value));
 		}
-
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_LIST_HPP_

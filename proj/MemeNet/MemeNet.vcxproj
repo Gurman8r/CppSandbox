@@ -177,7 +177,6 @@
     <ClInclude Include="..\..\include\MemeNet\Export.hpp" />
     <ClInclude Include="..\..\include\MemeNet\NetworkEvents.hpp" />
     <ClInclude Include="..\..\include\MemeNet\NetInterface.hpp" />
-    <ClInclude Include="..\..\include\MemeNet\NetworkTypes.hpp" />
     <ClInclude Include="..\..\include\MemeNet\NetServer.hpp" />
     <ClInclude Include="..\..\include\MemeNet\Packet.hpp" />
     <ClInclude Include="..\..\include\MemeNet\SendSettings.hpp" />

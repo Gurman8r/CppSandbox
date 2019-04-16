@@ -5,6 +5,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	template <class T>
 	class ISingleton
 		: public INonCopyable
@@ -16,6 +18,8 @@ namespace ml
 			return instance;
 		}
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_I_SINGLETON_HPP_

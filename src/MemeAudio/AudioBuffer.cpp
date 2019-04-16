@@ -3,6 +3,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	AudioBuffer::AudioBuffer()
 		: IHandle(NULL)
 		, m_count(0)
@@ -18,6 +20,8 @@ namespace ml
 	{
 		clean();
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	AudioBuffer & AudioBuffer::clean()
 	{
@@ -36,4 +40,6 @@ namespace ml
 		}
 		return (*this);
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

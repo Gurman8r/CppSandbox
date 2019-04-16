@@ -6,6 +6,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	struct ML_AUDIO_API AL final
 	{
 		enum Err : int32_t
@@ -20,6 +22,8 @@ namespace ml
 			MAX_ERROR
 		};
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_AL_HPP_

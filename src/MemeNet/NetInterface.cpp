@@ -12,6 +12,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	NetInterface::NetInterface()
 		: m_peer(NULL)
 	{
@@ -22,6 +24,7 @@ namespace ml
 		clean();
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool NetInterface::setup()
 	{
@@ -54,6 +57,7 @@ namespace ml
 		}
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	uint32_t NetInterface::send(const GUID & guid, const String & data, const SendSettings & settings)
 	{
@@ -83,6 +87,7 @@ namespace ml
 			settings.receiptNumber);
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	IpAddress NetInterface::getMyAddress() const
 	{
@@ -107,4 +112,6 @@ namespace ml
 		const auto guid = ML_PEER(m_peer)->GetGuidFromSystemAddress(addr);
 		return GUID(guid.g);
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

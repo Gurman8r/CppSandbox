@@ -8,6 +8,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_GRAPHICS_API Shader final
 		: public ITrackable
 		, public IReadable
@@ -70,6 +72,8 @@ namespace ml
 		mutable TextureTable m_textures;
 		mutable UniformTable m_uniforms;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_SHADER_HPP_

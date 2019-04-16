@@ -6,6 +6,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	// WIP
 	class ML_GRAPHICS_API RenderStates final
 		: public ITrackable
@@ -43,6 +45,8 @@ namespace ml
 		bool		last_enable_depth_test;
 		bool		last_enable_scissor_test;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_RENDER_STATES_HPP_

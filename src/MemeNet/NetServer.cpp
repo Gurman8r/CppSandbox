@@ -11,6 +11,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	Server::Server()
 		: NetInterface()
 		, m_running(false)
@@ -22,6 +24,7 @@ namespace ml
 	{
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	void Server::onEvent(const IEvent * value)
 	{
@@ -128,4 +131,5 @@ namespace ml
 		return false;
 	}
 	
+	/* * * * * * * * * * * * * * * * * * * * */
 }

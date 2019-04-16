@@ -2,6 +2,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	Packet::Packet()
 		: Packet(IpAddress(), GUID(), 0, NULL)
 	{
@@ -20,6 +22,8 @@ namespace ml
 	{
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	inline void Packet::serialize(std::ostream & out) const
 	{
 		out << addr << " "
@@ -27,4 +31,6 @@ namespace ml
 			<< size << " "
 			<< data << " ";
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

@@ -2,6 +2,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	Collider::Collider()
 	{
 	}
@@ -9,4 +11,6 @@ namespace ml
 	Collider::~Collider()
 	{
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

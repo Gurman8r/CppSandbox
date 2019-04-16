@@ -189,9 +189,6 @@
     <ClInclude Include="..\..\include\MemeCore\Bytes.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Usings.hpp">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\EventSystem.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>

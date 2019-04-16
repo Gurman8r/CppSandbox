@@ -5,6 +5,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_CORE_API StringUtility final
 	{
 	public:
@@ -42,6 +44,8 @@ namespace ml
 		static bool		MakeDouble(const String & src, double& value);
 		static bool		MakeFloat(const String & src, float& value);
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_STRING_UTILITY_HPP_

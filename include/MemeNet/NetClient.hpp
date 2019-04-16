@@ -8,6 +8,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_NETWORK_API Client final
 		: public ITrackable
 		, public NetInterface
@@ -32,6 +34,8 @@ namespace ml
 	private:
 		bool m_connected;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_CLIENT_HPP_

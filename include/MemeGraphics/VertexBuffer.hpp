@@ -7,6 +7,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_GRAPHICS_API VertexBuffer final
 		: public ITrackable
 		, public IHandle<uint32_t>
@@ -34,11 +36,15 @@ namespace ml
 	private:
 		mutable const void *m_data;
 		mutable GL::Usage	m_usage;
-		mutable uint32_t	m_size;		// total length of data
-		mutable int32_t		m_count;	// vertex count
+		mutable uint32_t	m_size;		// total length of contiguous data
+		mutable int32_t		m_count;	// number of vertices
 	};
 
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	using VBO = VertexBuffer;
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_VERTEX_BUFFER_HPP_

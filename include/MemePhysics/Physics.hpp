@@ -4,12 +4,18 @@
 #include <MemePhysics/Particle.hpp>
 #include <MemePhysics/PhysicsWorld.hpp>
 
+/* * * * * * * * * * * * * * * * * * * * */
+
 #define ML_Physics ml::Physics::getInstance()
 
 #define ML_PHYSICS_TIMESTEP ml::Millis(30)
 
+/* * * * * * * * * * * * * * * * * * * * */
+
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_PHYSICS_API Physics final
 		: public ISingleton<Physics>
 	{
@@ -34,6 +40,8 @@ namespace ml
 
 		mutable bool m_updating = false;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_PHYSICS_HPP_

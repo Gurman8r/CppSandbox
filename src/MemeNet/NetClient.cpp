@@ -11,6 +11,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	Client::Client()
 		: NetInterface()
 		, m_connected(false)
@@ -22,6 +24,7 @@ namespace ml
 	{
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 	
 	void Client::onEvent(const IEvent * value)
 	{
@@ -100,4 +103,5 @@ namespace ml
 		return false;
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 }

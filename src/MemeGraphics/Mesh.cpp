@@ -4,6 +4,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	Mesh::Mesh()
 		: m_vertices	()
 		, m_indices		()
@@ -37,6 +39,7 @@ namespace ml
 		cleanup();
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 	
 	bool Mesh::cleanup()
 	{
@@ -90,6 +93,7 @@ namespace ml
 		return false;
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	void Mesh::serialize(std::ostream & out) const
 	{
@@ -209,4 +213,5 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 }

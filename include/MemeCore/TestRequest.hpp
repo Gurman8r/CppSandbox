@@ -5,6 +5,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_CORE_API TestRequest
 		: public IRequest
 	{
@@ -27,6 +29,8 @@ namespace ml
 		int32_t m_value;
 		LogFunc m_func;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_REQUEST_HPP_

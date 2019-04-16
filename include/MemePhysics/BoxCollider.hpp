@@ -5,6 +5,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_PHYSICS_API BoxCollider
 		: public Collider
 	{
@@ -15,6 +17,8 @@ namespace ml
 	private:
 
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_BOX_COLLIDER_HPP_

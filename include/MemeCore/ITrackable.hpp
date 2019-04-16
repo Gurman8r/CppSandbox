@@ -5,6 +5,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_CORE_API ITrackable
 		: public ISerializable
 	{
@@ -17,6 +19,8 @@ namespace ml
 		inline void	  operator	delete	 (void * ptr)  { return ML_free(ptr); }
 		inline void	  operator	delete[] (void * ptr)  { return ML_free(ptr); }
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_I_TRACKABLE_HPP_

@@ -5,6 +5,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	VertexBuffer::VertexBuffer()
 		: IHandle(NULL)
 	{
@@ -24,6 +26,7 @@ namespace ml
 		clean();
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	VertexBuffer & VertexBuffer::clean()
 	{
@@ -43,6 +46,7 @@ namespace ml
 		return (*this);
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	void VertexBuffer::bind() const
 	{
@@ -54,6 +58,7 @@ namespace ml
 		ML_GL.bindBuffer(GL::ArrayBuffer, NULL);
 	}
 	
+	/* * * * * * * * * * * * * * * * * * * * */
 	
 	void VertexBuffer::bufferData(const void * data, uint32_t size) const
 	{
@@ -81,4 +86,5 @@ namespace ml
 		return bufferSubData(&data[0], (uint32_t)data.size(), offset);
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 }

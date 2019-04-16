@@ -6,6 +6,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_PHYSICS_API Collider
 		: public ITrackable
 	{
@@ -16,6 +18,8 @@ namespace ml
 	private:
 
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_COLLIDER_HPP_

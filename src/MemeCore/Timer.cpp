@@ -2,6 +2,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	Timer::Timer()
 		: m_paused(true)
 		, m_elapsed(0)
@@ -24,6 +26,7 @@ namespace ml
 	{
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	Timer& Timer::pause(bool pause)
 	{
@@ -72,4 +75,6 @@ namespace ml
 	{
 		return m_paused;
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

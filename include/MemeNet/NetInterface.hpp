@@ -7,16 +7,24 @@
 #include <MemeNet/Packet.hpp>
 #include <MemeNet/SendSettings.hpp>
 
+/* * * * * * * * * * * * * * * * * * * * */
+
 #define ML_LOCALHOST "127.0.0.1"
 #define ML_PORT 60000
 #define ML_MAX_CLIENTS 10
+
+/* * * * * * * * * * * * * * * * * * * * */
 
 #define ML_USER_PACKET 134 // ID_USER_PACKET_ENUM
 #define ML_SERVER_RECIEVE (ML_USER_PACKET + 1)
 #define ML_CLIENT_RECIEVE (ML_USER_PACKET + 2)
 
+/* * * * * * * * * * * * * * * * * * * * */
+
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_NETWORK_API NetInterface
 		: public IEventListener
 	{
@@ -46,6 +54,8 @@ namespace ml
 	protected:
 		void * m_peer;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_NETWORK_INTERFACE_HPP_

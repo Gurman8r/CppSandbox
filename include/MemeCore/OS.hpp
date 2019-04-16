@@ -8,6 +8,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_CORE_API OS
 		: public ITrackable
 		, public IEventListener
@@ -29,7 +31,7 @@ namespace ml
 		void * execute(const String & cmd, const String & file, const String & args, const String & path);
 	};
 
-	
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_OS_HPP_

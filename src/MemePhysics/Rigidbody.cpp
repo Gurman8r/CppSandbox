@@ -3,6 +3,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	Rigidbody::Rigidbody()
 	{
 	}
@@ -10,4 +12,6 @@ namespace ml
 	Rigidbody::~Rigidbody()
 	{
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

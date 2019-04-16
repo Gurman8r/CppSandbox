@@ -5,11 +5,15 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class IWritable
 	{
 	public:
 		virtual bool saveToFile(const String & filename) const = 0;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_I_WRITABLE_HPP_

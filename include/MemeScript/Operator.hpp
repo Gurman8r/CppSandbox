@@ -6,6 +6,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_SCRIPT_API Operator final
 		: public ITrackable
 		, public IComparable<Operator>
@@ -64,6 +66,8 @@ namespace ml
 		void serialize(std::ostream & out) const override;
 		void deserialize(std::istream & in) override;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_OPERATOR_HPP_

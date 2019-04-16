@@ -5,6 +5,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	// WIP
 	class ML_NETWORK_API Http final
 		: public ITrackable
@@ -31,6 +33,8 @@ namespace ml
 	private:
 		IpAddress m_host;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_HTTP_HPP_

@@ -5,6 +5,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	// Supports simple iteration of a fixed array
 	template <
 		class T,
@@ -48,6 +50,8 @@ namespace ml
 	private:
 		pointer m_data;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_I_ENUMERABLE_HPP_

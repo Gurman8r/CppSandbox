@@ -11,6 +11,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	Font::Font()
 		: m_pages	()
 		, m_library	(NULL)
@@ -30,6 +32,7 @@ namespace ml
 		cleanup();
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool Font::cleanup()
 	{
@@ -95,6 +98,7 @@ namespace ml
 		return true;
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	const Glyph & Font::getGlyph(uint32_t value, uint32_t size) const
 	{
@@ -159,4 +163,6 @@ namespace ml
 
 		return glyph;
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

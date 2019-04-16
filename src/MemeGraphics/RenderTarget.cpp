@@ -19,9 +19,10 @@ namespace ml
 		return (*this);
 	}
 
-	void RenderTarget::setViewport(const vec2i & pos, const vec2i & size) const
+	RenderTarget & RenderTarget::setViewport(const vec2i & pos, const vec2i & size)
 	{
 		ML_GL.viewport(pos[0], pos[1], size[0], size[1]);
+		return (*this);
 	}
 	
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -52,9 +53,9 @@ namespace ml
 
 	RenderTarget & RenderTarget::draw(const float * vertices, size_t vertexCount, const RenderBatch & batch)
 	{
-		if (batch.shader && batch.uniforms)
+		if (batch.shader)
 		{
-			batch.shader->applyUniforms(*batch.uniforms);
+			batch.shader->applyUniforms(batch.uniforms);
 			batch.shader->bind();
 		}
 

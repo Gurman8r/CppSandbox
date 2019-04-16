@@ -2,6 +2,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	RectTransform::RectTransform()
 	{
 	}
@@ -17,6 +19,9 @@ namespace ml
 	RectTransform::~RectTransform()
 	{
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	void RectTransform::update()
 	{
 		float angle		= m_rotation * Maths::Deg2Rad;
@@ -40,4 +45,6 @@ namespace ml
 			m10, m11, 0.f, m12,
 		};
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

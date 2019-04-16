@@ -7,6 +7,9 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	// WIP
 	class ML_GRAPHICS_API RectTransform
 		: public Transform
 	{
@@ -24,6 +27,8 @@ namespace ml
 		float m_rotation;
 		vec2f m_scale;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_RECT_TRANSFORM_HPP_

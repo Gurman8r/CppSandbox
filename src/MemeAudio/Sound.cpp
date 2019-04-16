@@ -3,6 +3,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	Sound::Sound()
 	{
 		
@@ -13,6 +15,8 @@ namespace ml
 		cleanup();
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	bool Sound::cleanup()
 	{
 		return false;
@@ -22,4 +26,6 @@ namespace ml
 	{
 		return false;
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

@@ -5,6 +5,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_SCRIPT_API Command final
 		: public ITrackable
 	{
@@ -26,6 +28,8 @@ namespace ml
 		String	m_name;
 		fn_type	m_func;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_COMMAND_HPP_

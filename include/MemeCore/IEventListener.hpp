@@ -5,11 +5,15 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_CORE_API IEventListener
 	{
 	public:
 		virtual void onEvent(const IEvent * ev) = 0;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_I_EVENT_LISTENER_HPP_

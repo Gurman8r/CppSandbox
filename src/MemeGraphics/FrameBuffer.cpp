@@ -3,6 +3,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	FrameBuffer::FrameBuffer()
 		: IHandle(NULL)
 	{
@@ -18,6 +20,7 @@ namespace ml
 		clean();
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	FrameBuffer & FrameBuffer::clean()
 	{
@@ -38,6 +41,7 @@ namespace ml
 		return (*this);
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 	
 	void FrameBuffer::bind() const
 	{
@@ -49,9 +53,12 @@ namespace ml
 		ML_GL.bindFramebuffer(GL::Framebuffer, NULL);
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	void FrameBuffer::setTexture(uint32_t attchment, uint32_t value, GL::Target target, int32_t level) const
 	{
 		ML_GL.framebufferTexture2D(ml::GL::Framebuffer, attchment, target, value, level);
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

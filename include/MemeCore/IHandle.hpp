@@ -5,6 +5,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	template <class T = uint32_t>
 	class IHandle
 	{
@@ -42,6 +44,8 @@ namespace ml
 	private:
 		mutable value_type m_ID;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_I_HANDLE_HPP_

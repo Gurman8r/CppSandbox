@@ -4,6 +4,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	Sprite::Sprite()
 	{
 	}
@@ -12,6 +14,7 @@ namespace ml
 	{
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool Sprite::cleanup()
 	{
@@ -33,6 +36,7 @@ namespace ml
 		return false;
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	Sprite & Sprite::setTexture(const Texture * value)
 	{
@@ -90,7 +94,8 @@ namespace ml
 		return (*this);
 	}
 
-	
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	void Sprite::update() const
 	{
 		if (m_requiresUpdate)
@@ -126,10 +131,10 @@ namespace ml
 
 		if (m_texture)
 		{
-			if (Uniform * u = batch.uniforms->find("Frag.mainTex")) 
+			if (Uniform * u = batch.uniforms.find("Frag.mainTex")) 
 				u->data = m_texture;
 			
-			if (Uniform * u = batch.uniforms->find("Frag.mainCol")) 
+			if (Uniform * u = batch.uniforms.find("Frag.mainCol")) 
 				u->data = &m_color;
 
 			const ml::vec2f size = (m_scale * m_texture->size());
@@ -141,4 +146,6 @@ namespace ml
 				batch);
 		}
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

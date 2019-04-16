@@ -2,6 +2,8 @@
 #include <MemeGraphics/OpenGL.hpp>
 #include <MemeGraphics/Vertex.hpp>
 
+// BufferLayout::Element
+/* * * * * * * * * * * * * * * * * * * * */
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -20,20 +22,22 @@ namespace ml
 	}
 
 	BufferLayout::Element::Element(uint32_t index, uint32_t size, GL::Type type, bool normalized, uint32_t stride, uint32_t offset, uint32_t width)
-		: index		(index)
-		, size		(size)
-		, type		(type)
+		: index(index)
+		, size(size)
+		, type(type)
 		, normalized(normalized)
-		, stride	(stride)
-		, offset	(offset)
-		, width		(width)
+		, stride(stride)
+		, offset(offset)
+		, width(width)
 	{
 	}
 
-	BufferLayout::Element::Element(const Element & e) 
+	BufferLayout::Element::Element(const Element & e)
 		: Element(e.index, e.size, e.type, e.normalized, e.stride, e.offset, e.width)
 	{
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	void BufferLayout::Element::use() const
 	{
@@ -48,6 +52,13 @@ namespace ml
 		ML_GL.enableVertexAttribArray(index);
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
+}
+
+// BufferLayout
+/* * * * * * * * * * * * * * * * * * * * */
+namespace ml
+{
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	BufferLayout::BufferLayout()

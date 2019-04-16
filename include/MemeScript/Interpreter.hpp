@@ -12,6 +12,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_SCRIPT_API Interpreter final
 		: public ITrackable
 		, public ISingleton<Interpreter>
@@ -48,6 +50,8 @@ namespace ml
 	private:
 		CommandMap m_commands;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_INTERPRETER_HPP_

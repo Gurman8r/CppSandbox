@@ -9,6 +9,8 @@ static_assert(std::is_base_of<ml::AST_Node, T>::value, "Type must derive ml::AST
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_SCRIPT_API AST_Node
 		: public ITrackable
 	{
@@ -179,6 +181,8 @@ namespace ml
 		int32_t			m_id;
 		static int32_t	s_id;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_AST_NODE_HPP_

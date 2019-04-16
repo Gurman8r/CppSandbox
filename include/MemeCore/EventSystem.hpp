@@ -8,6 +8,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_CORE_API EventSystem final
 		: public ITrackable
 		, public ISingleton<EventSystem>
@@ -32,6 +34,8 @@ namespace ml
 
 		ListenerMap m_listeners;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_EVENT_SYSTEM_HPP_

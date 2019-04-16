@@ -2,6 +2,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	UniformSet::UniformSet()
 		: UniformSet(UniformMap())
 	{
@@ -40,6 +42,7 @@ namespace ml
 		m_map.clear();
 	}
 	
+	/* * * * * * * * * * * * * * * * * * * * */
 	
 	void UniformSet::clear()
 	{
@@ -61,6 +64,12 @@ namespace ml
 		return false;
 	}
 
+	size_t UniformSet::size() const
+	{
+		return m_map.size();
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	Uniform * UniformSet::find(const String & name)
 	{
@@ -82,21 +91,5 @@ namespace ml
 		return NULL;
 	}
 
-
-	size_t UniformSet::size() const
-	{
-		return m_map.size();
-	}
-
-
-	inline List<String> UniformSet::getKeys() const
-	{
-		List<String> keys;
-		keys.reserve(size());
-		for (auto pair : m_map)
-		{
-			keys.push_back(pair.first);
-		}
-		return keys;
-	}
+	/* * * * * * * * * * * * * * * * * * * * */
 }

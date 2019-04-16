@@ -2,6 +2,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	GUID::GUID()
 		: GUID(0)
 	{
@@ -16,6 +18,8 @@ namespace ml
 		: GUID(copy.id)
 	{
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	inline GUID::operator uint64_t() const
 	{
@@ -46,4 +50,6 @@ namespace ml
 	{
 		return id < value.id;
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }

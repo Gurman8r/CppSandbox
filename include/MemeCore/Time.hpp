@@ -8,6 +8,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_CORE_API Time final
 		: public ITrackable
 		, public ISingleton<Time>
@@ -39,6 +41,8 @@ namespace ml
 		float		m_nextSecond = 0.0f;
 		float		m_prevSecond = 0.0f;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_TIME_HPP_

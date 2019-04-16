@@ -8,6 +8,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_GRAPHICS_API Mesh final
 		: public ITrackable
 		, public IReadable
@@ -39,6 +41,8 @@ namespace ml
 		IndexList	m_indices;
 		FloatList	m_contiguous;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_MESH_HPP_

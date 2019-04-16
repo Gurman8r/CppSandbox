@@ -6,6 +6,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	struct AST_Func;
 	struct AST_Struct;
 
@@ -50,6 +52,8 @@ namespace ml
 		FuncTable	m_funcs;
 		StructTable m_structs;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_AST_BLOCK_HPP_

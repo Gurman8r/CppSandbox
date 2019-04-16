@@ -7,6 +7,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	template <
 		class _Elem,
 		size_t _Size
@@ -123,6 +125,8 @@ namespace ml
 			return true;
 		}
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

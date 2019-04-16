@@ -9,6 +9,8 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	void *	MemoryManager::allocate(size_t size)
 	{
 		//if (!m_head && (m_head = writeChunk(m_used, size))) // create head
@@ -84,6 +86,7 @@ namespace ml
 		return good();
 	}
 	
+	/* * * * * * * * * * * * * * * * * * * * */
 	
 	void	MemoryManager::serialize(std::ostream & out) const
 	{
@@ -123,6 +126,7 @@ namespace ml
 			<< ml::endl;
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 	
 	bool	MemoryManager::isValidChunk(Chunk * value) const
 	{
@@ -137,6 +141,7 @@ namespace ml
 		return &m_data[(addr + total)];
 	}
 	
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	Chunk * MemoryManager::writeChunk(size_t addr, size_t size)
 	{
@@ -176,6 +181,7 @@ namespace ml
 		return NULL;
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	Chunk * MemoryManager::findEmpty(size_t size) const
 	{
@@ -213,6 +219,7 @@ namespace ml
 		return NULL;
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 	
 	Chunk *	MemoryManager::mergePrev(Chunk * value) const
 	{
@@ -281,4 +288,6 @@ namespace ml
 		}
 		return NULL;
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
