@@ -21,7 +21,7 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	class ML_ENGINE_API Resources
+	class ML_ENGINE_API Resources final
 		: public ITrackable
 		, public IDisposable
 		, public IReadable
@@ -61,7 +61,6 @@ namespace ml
 		Registry<Sound> 	sounds;
 		Registry<Sprite>	sprites;
 		Registry<Texture>	textures;
-
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

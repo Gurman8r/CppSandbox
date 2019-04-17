@@ -217,7 +217,7 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (!(ML_AL.init()))
 		{
-			ml::Debug::logError("Failed Loading OpenAL");
+			ml::Debug::fatal("Failed Loading OpenAL");
 		}
 
 		// Load Network
@@ -370,10 +370,10 @@ namespace DEMO
 					},
 					ml::UniformSet
 					{
-						ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&uni.persp.matrix()),
-						ml::Uniform("Vert.view",	ml::Uniform::Mat4,	&uni.camera.matrix()),
-						ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&transform->matrix()),
-						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&uni.lightCol),
+						{ "Vert.proj",		ml::Uniform::Mat4,	&uni.persp.matrix() },
+						{ "Vert.view",		ml::Uniform::Mat4,	&uni.camera.matrix() },
+						{ "Vert.model",		ml::Uniform::Mat4,	&transform->matrix() },
+						{ "Frag.mainCol",	ml::Uniform::Vec4,	&uni.lightCol },
 					}
 				});
 			}
@@ -398,11 +398,11 @@ namespace DEMO
 					},
 					ml::UniformSet
 					{
-						ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&uni.persp.matrix()),
-						ml::Uniform("Vert.view",	ml::Uniform::Mat4,	&uni.camera.matrix()),
-						ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&transform->matrix()),
-						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
-						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("borg")),
+						{ "Vert.proj",		ml::Uniform::Mat4,	&uni.persp.matrix() },
+						{ "Vert.view",		ml::Uniform::Mat4,	&uni.camera.matrix() },
+						{ "Vert.model",		ml::Uniform::Mat4,	&transform->matrix() },
+						{ "Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White },
+						{ "Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("borg") },
 					}
 				});
 			}
@@ -427,11 +427,11 @@ namespace DEMO
 					},
 					ml::UniformSet
 					{
-						ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&uni.persp.matrix()),
-						ml::Uniform("Vert.view",	ml::Uniform::Mat4,	&uni.camera.matrix()),
-						ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&transform->matrix()),
-						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
-						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("sanic")),
+						{ "Vert.proj",		ml::Uniform::Mat4,	&uni.persp.matrix() },
+						{ "Vert.view",		ml::Uniform::Mat4,	&uni.camera.matrix() },
+						{ "Vert.model",		ml::Uniform::Mat4,	&transform->matrix() },
+						{ "Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White },
+						{ "Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("sanic") },
 					}
 				});
 			}
@@ -456,11 +456,11 @@ namespace DEMO
 					},
 					ml::UniformSet
 					{
-						ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&uni.persp.matrix()),
-						ml::Uniform("Vert.view",	ml::Uniform::Mat4,	&uni.camera.matrix()),
-						ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&transform->matrix()),
-						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
-						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm")),
+						{ "Vert.proj",		ml::Uniform::Mat4,	&uni.persp.matrix() },
+						{ "Vert.view",		ml::Uniform::Mat4,	&uni.camera.matrix() },
+						{ "Vert.model",		ml::Uniform::Mat4,	&transform->matrix() },
+						{ "Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White },
+						{ "Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm") },
 					}
 				});
 			}
@@ -485,11 +485,11 @@ namespace DEMO
 					},
 					ml::UniformSet
 					{
-						ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&uni.persp.matrix()),
-						ml::Uniform("Vert.view",	ml::Uniform::Mat4,	&uni.camera.matrix()),
-						ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&transform->matrix()),
-						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
-						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm")),
+						{ "Vert.proj",		ml::Uniform::Mat4,	&uni.persp.matrix() },
+						{ "Vert.view",		ml::Uniform::Mat4,	&uni.camera.matrix() },
+						{ "Vert.model",		ml::Uniform::Mat4,	&transform->matrix() },
+						{ "Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White },
+						{ "Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm") },
 					}
 				});
 			}
@@ -514,17 +514,17 @@ namespace DEMO
 					},
 					ml::UniformSet
 					{
-						ml::Uniform("Vert.proj",		ml::Uniform::Mat4,	&uni.persp.matrix()),
-						ml::Uniform("Vert.view",		ml::Uniform::Mat4,	&uni.camera.matrix()),
-						ml::Uniform("Vert.model",		ml::Uniform::Mat4,	&transform->matrix()),
-						ml::Uniform("Frag.tex_dm",		ml::Uniform::Tex2D,	ML_Res.textures.get("moon_dm")),
-						ml::Uniform("Frag.tex_sm",		ml::Uniform::Tex2D,	ML_Res.textures.get("moon_nm")),
-						ml::Uniform("Frag.camPos",		ml::Uniform::Vec3,	&uni.camPos),
-						ml::Uniform("Frag.lightPos",	ml::Uniform::Vec3,	&uni.lightPos),
-						ml::Uniform("Frag.lightCol",	ml::Uniform::Vec4,	&uni.lightCol),
-						ml::Uniform("Frag.ambient",		ml::Uniform::Float, &uni.ambient),
-						ml::Uniform("Frag.specular",	ml::Uniform::Float, &uni.specular),
-						ml::Uniform("Frag.shininess",	ml::Uniform::Int,	&uni.shininess),
+						{ "Vert.proj",		ml::Uniform::Mat4,	&uni.persp.matrix() },
+						{ "Vert.view",		ml::Uniform::Mat4,	&uni.camera.matrix() },
+						{ "Vert.model",		ml::Uniform::Mat4,	&transform->matrix() },
+						{ "Frag.tex_dm",	ml::Uniform::Tex2D,	ML_Res.textures.get("moon_dm") },
+						{ "Frag.tex_sm",	ml::Uniform::Tex2D,	ML_Res.textures.get("moon_nm") },
+						{ "Frag.camPos",	ml::Uniform::Vec3,	&uni.camPos },
+						{ "Frag.lightPos",	ml::Uniform::Vec3,	&uni.lightPos },
+						{ "Frag.lightCol",	ml::Uniform::Vec4,	&uni.lightCol },
+						{ "Frag.ambient",	ml::Uniform::Float, &uni.ambient },
+						{ "Frag.specular",	ml::Uniform::Float, &uni.specular },
+						{ "Frag.shininess",	ml::Uniform::Int,	&uni.shininess },
 					}
 				});
 			}
@@ -549,17 +549,17 @@ namespace DEMO
 					},
 					ml::UniformSet 
 					{
-						ml::Uniform("Vert.proj",		ml::Uniform::Mat4,	&uni.persp.matrix()),
-						ml::Uniform("Vert.view",		ml::Uniform::Mat4,	&uni.camera.matrix()),
-						ml::Uniform("Vert.model",		ml::Uniform::Mat4,	&transform->matrix()),
-						ml::Uniform("Frag.tex_dm",		ml::Uniform::Tex2D,	ML_Res.textures.get("earth_dm")),
-						ml::Uniform("Frag.tex_sm",		ml::Uniform::Tex2D,	ML_Res.textures.get("earth_sm")),
-						ml::Uniform("Frag.camPos",		ml::Uniform::Vec3,	&uni.camPos),
-						ml::Uniform("Frag.lightPos",	ml::Uniform::Vec3,	&uni.lightPos),
-						ml::Uniform("Frag.lightCol",	ml::Uniform::Vec4,	&uni.lightCol),
-						ml::Uniform("Frag.ambient",		ml::Uniform::Float, &uni.ambient),
-						ml::Uniform("Frag.specular",	ml::Uniform::Float, &uni.specular),
-						ml::Uniform("Frag.shininess",	ml::Uniform::Int,	&uni.shininess),
+						{ "Vert.proj",		ml::Uniform::Mat4,	&uni.persp.matrix() },
+						{ "Vert.view",		ml::Uniform::Mat4,	&uni.camera.matrix() },
+						{ "Vert.model",		ml::Uniform::Mat4,	&transform->matrix() },
+						{ "Frag.tex_dm",	ml::Uniform::Tex2D,	ML_Res.textures.get("earth_dm") },
+						{ "Frag.tex_sm",	ml::Uniform::Tex2D,	ML_Res.textures.get("earth_sm") },
+						{ "Frag.camPos",	ml::Uniform::Vec3,	&uni.camPos },
+						{ "Frag.lightPos",	ml::Uniform::Vec3,	&uni.lightPos },
+						{ "Frag.lightCol",	ml::Uniform::Vec4,	&uni.lightCol },
+						{ "Frag.ambient",	ml::Uniform::Float, &uni.ambient },
+						{ "Frag.specular",	ml::Uniform::Float, &uni.specular },
+						{ "Frag.shininess",	ml::Uniform::Int,	&uni.shininess },
 					}
 				});
 			}
@@ -571,7 +571,7 @@ namespace DEMO
 		{
 			/* * * * * * * * * * * * * * * * * * * * */
 
-			ML_Physics.world().state().resize(5); // Setup State
+			ML_Physics.world().state().resize(ML_Res.entities.size());
 
 			/* * * * * * * * * * * * * * * * * * * * */
 
@@ -820,7 +820,7 @@ namespace DEMO
 
 	void Sandbox::onDraw(const ml::DrawEvent * ev)
 	{
-		// Update Resolutions
+		// Update Resolution
 		/* * * * * * * * * * * * * * * * * * * * */
 		ml::vec2i resolution;
 		if ((resolution = this->getFramebufferSize()) != ml::vec2i::Zero)
@@ -882,12 +882,13 @@ namespace DEMO
 				/* * * * * * * * * * * * * * * * * * * * */
 				if (const ml::Shader * shader = ML_Res.shaders.get("geometry"))
 				{
-					static ml::UniformSet uniforms = {
-						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&uni.lineColor),
-						ml::Uniform("Curve.mode",	ml::Uniform::Int,	&uni.lineMode),
-						ml::Uniform("Curve.delta",	ml::Uniform::Float, &uni.lineDelta),
-						ml::Uniform("Curve.size",	ml::Uniform::Float, &uni.lineSize),
-						ml::Uniform("Curve.samples",ml::Uniform::Int,	&uni.lineSamples),
+					static ml::UniformSet uniforms = 
+					{
+						{ "Frag.mainCol",	ml::Uniform::Vec4,	&uni.lineColor },
+						{ "Curve.mode",		ml::Uniform::Int,	&uni.lineMode },
+						{ "Curve.delta",	ml::Uniform::Float, &uni.lineDelta },
+						{ "Curve.size",		ml::Uniform::Float, &uni.lineSize },
+						{ "Curve.samples",	ml::Uniform::Int,	&uni.lineSamples },
 					};
 					shader->applyUniforms(uniforms);
 					shader->bind();
@@ -898,11 +899,17 @@ namespace DEMO
 				/* * * * * * * * * * * * * * * * * * * * */
 				if (const ml::Shader * shader = ML_Res.shaders.get("sprites"))
 				{
-					static ml::RenderBatch batch(&m_canvas.vao(), &m_canvas.vbo(), shader, {
-						ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&uni.ortho.matrix()),
-						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4),
-						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D),
-					});
+					static ml::RenderBatch batch(
+						&m_canvas.vao(),
+						&m_canvas.vbo(),
+						shader,
+						ml::UniformSet
+						{
+							{ "Vert.proj",		ml::Uniform::Mat4,	&uni.ortho.matrix() },
+							{ "Frag.mainCol",	ml::Uniform::Vec4 },
+							{ "Frag.mainTex",	ml::Uniform::Tex2D },
+						}
+					);
 
 					for (auto & pair : ML_Res.sprites)
 					{
@@ -914,11 +921,17 @@ namespace DEMO
 				/* * * * * * * * * * * * * * * * * * * * */
 				if (const ml::Shader * shader = ML_Res.shaders.get("text"))
 				{
-					static ml::RenderBatch batch(&m_canvas.vao(), &m_canvas.vbo(), shader, {
-						ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&uni.ortho.matrix()),
-						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4),
-						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D),
-					});
+					static ml::RenderBatch batch(
+						&m_canvas.vao(),
+						&m_canvas.vbo(), 
+						shader, 
+						ml::UniformSet 
+						{
+							{ "Vert.proj",		ml::Uniform::Mat4,	&uni.ortho.matrix() },
+							{ "Frag.mainCol",	ml::Uniform::Vec4 },
+							{ "Frag.mainTex",	ml::Uniform::Tex2D },
+						}
+					);
 
 					for (auto & pair : m_text)
 					{
@@ -942,7 +955,7 @@ namespace DEMO
 				{
 					post->bind();
 					shader->applyUniforms({
-						ml::Uniform("Effect.mode", ml::Uniform::Int, &uni.effectMode),
+						{ "Effect.mode", ml::Uniform::Int, &uni.effectMode },
 					});
 					this->draw(*scene);
 					post->unbind();

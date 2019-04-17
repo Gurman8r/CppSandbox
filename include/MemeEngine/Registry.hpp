@@ -4,7 +4,8 @@
 #include <MemeEngine/Export.hpp>
 #include <MemeCore/FileSystem.hpp>
 
-#define ML_assert_readable(T) static_assert(std::is_base_of<ml::IReadable, T>::value, "Type must derive ml::IReadable")
+#define ML_assert_readable(T) \
+static_assert(std::is_base_of<ml::IReadable, T>::value, "Type must derive ml::IReadable")
 
 namespace ml
 {
@@ -14,24 +15,24 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	template <class _Elem>
-	class Registry final
+	template <
+		class T
+	> class Registry final
 		: public ITrackable
 		, public INonCopyable
 	{
 		friend class Resources;
 
-		ML_assert_readable(_Elem);
+		// Type must derive IReadable
+		ML_assert_readable(T);
 
 	public:
-		using value_type	= _Elem;
+		using value_type	= typename T;
 		using pointer		= typename value_type * ;
 		using const_pointer = typename const pointer ;
-
-		using PointerMap	= HashMap<String, pointer>;
-		using FileMap		= HashMap<String, String>;
-		using Pair			= Pair<String, pointer>;
-		
+		using PointerMap	= typename HashMap<String, pointer>;
+		using FileMap		= typename HashMap<String, String>;
+		using Pair			= typename Pair<String, pointer>;
 		using iterator		= typename PointerMap::iterator;
 		using const_iterator= typename PointerMap::const_iterator;
 
@@ -43,11 +44,6 @@ namespace ml
 		{
 		}
 		~Registry() {}
-
-	private:
-		String		m_name;
-		PointerMap	m_data;
-		FileMap		m_files;
 
 	public:
 		inline void serialize(std::ostream & out) const override
@@ -259,6 +255,11 @@ namespace ml
 		inline const_iterator	end()	 const	{ return m_data.end();	  }
 		inline const_iterator	cbegin() const	{ return m_data.cbegin(); }
 		inline const_iterator	cend()	 const	{ return m_data.cend();	  }
+
+	private:
+		String		m_name;
+		PointerMap	m_data;
+		FileMap		m_files;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

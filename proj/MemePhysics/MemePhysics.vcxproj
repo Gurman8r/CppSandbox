@@ -159,6 +159,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemePhysics\BoxCollider.hpp" />
+    <ClInclude Include="..\..\include\MemePhysics\AABB.hpp" />
     <ClInclude Include="..\..\include\MemePhysics\Collider.hpp" />
     <ClInclude Include="..\..\include\MemePhysics\Export.hpp" />
     <ClInclude Include="..\..\include\MemePhysics\Force.hpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="..\..\include\MemePhysics\SphereCollider.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\MemePhysics\AABB.cpp" />
     <ClCompile Include="..\..\src\MemePhysics\BoxCollider.cpp" />
     <ClCompile Include="..\..\src\MemePhysics\Collider.cpp" />
     <ClCompile Include="..\..\src\MemePhysics\Force.cpp" />
