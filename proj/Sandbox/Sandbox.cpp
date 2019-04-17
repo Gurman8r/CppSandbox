@@ -629,7 +629,7 @@ namespace DEMO
 			}
 		}
 
-		// Update Models
+		// Update Objects
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
 			// Borg
@@ -864,9 +864,10 @@ namespace DEMO
 			// Draw Objects
 			/* * * * * * * * * * * * * * * * * * * * */
 			{
-				ml::Hierarchy::ObjectMap & obj = ML_Hierarchy.objects();
-
-				for (auto it = obj.begin(); it != obj.end(); it++)
+				ml::Hierarchy::iterator it;
+				for (it = ML_Hierarchy.objects().begin();
+					(it != ML_Hierarchy.objects().end());
+					(it++))
 				{
 					this->draw(*it->second);
 				}
@@ -904,7 +905,7 @@ namespace DEMO
 						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D),
 					});
 
-					for (auto pair : ML_Res.sprites)
+					for (auto & pair : ML_Res.sprites)
 					{
 						this->draw((*pair.second), batch);
 					}
@@ -920,9 +921,9 @@ namespace DEMO
 						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D),
 					});
 
-					for (auto it = m_text.begin(); it != m_text.end(); it++)
+					for (auto & pair : m_text)
 					{
-						this->draw(it->second, batch);
+						this->draw(pair.second, batch);
 					}
 				}
 			}

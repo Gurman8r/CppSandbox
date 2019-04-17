@@ -1,6 +1,7 @@
 #include <MemeGraphics/Sprite.hpp>
 #include <MemeGraphics/RenderTarget.hpp>
 #include <MemeGraphics/Shapes.hpp>
+#include <MemeGraphics/ShaderAPI.hpp>
 
 namespace ml
 {
@@ -131,11 +132,11 @@ namespace ml
 
 		if (m_texture)
 		{
-			if (Uniform * u = batch.uniforms.find("Frag.mainTex")) 
-				u->data = m_texture;
-			
-			if (Uniform * u = batch.uniforms.find("Frag.mainCol")) 
+			if (Uniform * u = batch.uniforms.find(ML_FRAG_MAIN_COL))
 				u->data = &m_color;
+			
+			if (Uniform * u = batch.uniforms.find(ML_FRAG_MAIN_TEX))
+				u->data = m_texture;
 
 			const ml::vec2f size = (m_scale * m_texture->size());
 			const ml::vec2f dest = (m_position - (size * m_origin));

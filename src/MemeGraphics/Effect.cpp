@@ -1,7 +1,8 @@
 #include <MemeGraphics/Effect.hpp>
 #include <MemeGraphics/OpenGL.hpp>
-#include <MemeCore/Debug.hpp>
 #include <MemeGraphics/RenderTarget.hpp>
+#include <MemeGraphics/ShaderAPI.hpp>
+#include <MemeCore/Debug.hpp>
 
 namespace ml
 {
@@ -123,7 +124,7 @@ namespace ml
 	{
 		if (m_model && m_shader && m_texture)
 		{
-			m_shader->setUniform("Frag.mainTex", m_texture);
+			m_shader->setUniform(ML_FRAG_MAIN_TEX, m_texture);
 
 			m_shader->bind();
 
