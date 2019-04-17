@@ -234,6 +234,9 @@
     <ClInclude Include="..\..\include\MemeCore\StringUtility.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Allocator.hpp">
+      <Filter>Header Files\STD</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeCore\Timer.cpp">

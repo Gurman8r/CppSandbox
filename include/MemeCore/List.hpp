@@ -10,7 +10,7 @@ namespace ml
 	// std::vector with serialization
 	template <
 		class _Elem,
-		class _Alloc = std::allocator<_Elem>
+		class _Alloc = Allocator<_Elem>
 	>
 	class List
 		: public std::vector<_Elem, _Alloc>

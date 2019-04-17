@@ -5,6 +5,7 @@
 
 #include <MemeCore/IComparable.hpp>
 #include <MemeCore/IO.hpp>
+#include <MemeCore/Allocator.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
@@ -13,7 +14,7 @@ namespace ml
 	template <
 		class _Elem,
 		class _Traits = std::char_traits<_Elem>,
-		class _Alloc = std::allocator<_Elem>
+		class _Alloc = Allocator<_Elem>
 	>
 	class BasicString
 		: public std::basic_string<_Elem, _Traits, _Alloc>
