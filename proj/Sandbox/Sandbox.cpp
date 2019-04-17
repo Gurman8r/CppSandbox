@@ -369,8 +369,8 @@ namespace DEMO
 			{
 				ml::Transform * transform = ent->add<ml::Transform>({
 					uni.lightPos, // position
-					ml::vec3f::One, // scale
-					ml::quat() // rotation
+					{ 1.0f }, // scale
+					{ } // rotation
 				});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
@@ -383,10 +383,10 @@ namespace DEMO
 					},
 					ml::UniformSet
 					{
-						ml::Uniform("Vert.proj",		ml::Uniform::Mat4,	&uni.persp.matrix()),
-						ml::Uniform("Vert.view",		ml::Uniform::Mat4,	&uni.camera.matrix()),
-						ml::Uniform("Vert.model",		ml::Uniform::Mat4,	&transform->matrix()),
-						ml::Uniform("Frag.mainCol",		ml::Uniform::Vec4,	&uni.lightCol),
+						ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&uni.persp.matrix()),
+						ml::Uniform("Vert.view",	ml::Uniform::Mat4,	&uni.camera.matrix()),
+						ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&transform->matrix()),
+						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&uni.lightCol),
 					}
 				});
 			}
@@ -398,7 +398,7 @@ namespace DEMO
 				ml::Transform * transform = ent->add<ml::Transform>({
 					{ 5.0f, 0.0f, 0.0f }, // position
 					{ 1.0f }, // scale
-					ml::quat() // rotation
+					{ } // rotation
 				});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
@@ -411,11 +411,11 @@ namespace DEMO
 					},
 					ml::UniformSet
 					{
-						ml::Uniform("Vert.proj",		ml::Uniform::Mat4,	&uni.persp.matrix()),
-						ml::Uniform("Vert.view",		ml::Uniform::Mat4,	&uni.camera.matrix()),
-						ml::Uniform("Vert.model",		ml::Uniform::Mat4,	&transform->matrix()),
-						ml::Uniform("Frag.mainCol",		ml::Uniform::Vec4,	&ml::Color::White),
-						ml::Uniform("Frag.mainTex",		ml::Uniform::Tex2D,	ML_Res.textures.get("borg")),
+						ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&uni.persp.matrix()),
+						ml::Uniform("Vert.view",	ml::Uniform::Mat4,	&uni.camera.matrix()),
+						ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&transform->matrix()),
+						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
+						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("borg")),
 					}
 				});
 			}
@@ -427,7 +427,7 @@ namespace DEMO
 				ml::Transform * transform = ent->add<ml::Transform>({
 					{ -5.0f, 0.0f, 0.0f }, // position
 					{ 1.0f }, // scale
-					ml::quat() // rotation
+					{ } // rotation
 				});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
@@ -440,11 +440,11 @@ namespace DEMO
 					},
 					ml::UniformSet
 					{
-						ml::Uniform("Vert.proj",		ml::Uniform::Mat4,	&uni.persp.matrix()),
-						ml::Uniform("Vert.view",		ml::Uniform::Mat4,	&uni.camera.matrix()),
-						ml::Uniform("Vert.model",		ml::Uniform::Mat4,	&transform->matrix()),
-						ml::Uniform("Frag.mainCol",		ml::Uniform::Vec4,	&ml::Color::White),
-						ml::Uniform("Frag.mainTex",		ml::Uniform::Tex2D,	ML_Res.textures.get("sanic")),
+						ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&uni.persp.matrix()),
+						ml::Uniform("Vert.view",	ml::Uniform::Mat4,	&uni.camera.matrix()),
+						ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&transform->matrix()),
+						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
+						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("sanic")),
 					}
 				});
 			}
@@ -456,7 +456,7 @@ namespace DEMO
 				ml::Transform * transform = ent->add<ml::Transform>({
 					{ 0.0f, 0.0f, -5.0f }, // position
 					{ 0.5f }, // scale
-					ml::quat() // rotation
+					{ } // rotation
 				});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
@@ -469,11 +469,11 @@ namespace DEMO
 					},
 					ml::UniformSet
 					{
-						ml::Uniform("Vert.proj",		ml::Uniform::Mat4,	&uni.persp.matrix()),
-						ml::Uniform("Vert.view",		ml::Uniform::Mat4,	&uni.camera.matrix()),
-						ml::Uniform("Vert.model",		ml::Uniform::Mat4,	&transform->matrix()),
-						ml::Uniform("Frag.mainCol",		ml::Uniform::Vec4,	&ml::Color::White),
-						ml::Uniform("Frag.mainTex",		ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm")),
+						ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&uni.persp.matrix()),
+						ml::Uniform("Vert.view",	ml::Uniform::Mat4,	&uni.camera.matrix()),
+						ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&transform->matrix()),
+						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
+						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm")),
 					}
 				});
 			}
@@ -485,7 +485,7 @@ namespace DEMO
 				ml::Transform * transform = ent->add<ml::Transform>({
 					{ 0.0f, -2.5f, 0.0f }, // position
 					{ 12.5, 0.25f, 12.5 }, // scale
-					ml::quat() // rotation
+					{ } // rotation
 				});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
@@ -498,11 +498,11 @@ namespace DEMO
 					},
 					ml::UniformSet
 					{
-						ml::Uniform("Vert.proj",		ml::Uniform::Mat4,	&uni.persp.matrix()),
-						ml::Uniform("Vert.view",		ml::Uniform::Mat4,	&uni.camera.matrix()),
-						ml::Uniform("Vert.model",		ml::Uniform::Mat4,	&transform->matrix()),
-						ml::Uniform("Frag.mainCol",		ml::Uniform::Vec4,	&ml::Color::White),
-						ml::Uniform("Frag.mainTex",		ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm")),
+						ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&uni.persp.matrix()),
+						ml::Uniform("Vert.view",	ml::Uniform::Mat4,	&uni.camera.matrix()),
+						ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&transform->matrix()),
+						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
+						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm")),
 					}
 				});
 			}
@@ -514,7 +514,7 @@ namespace DEMO
 				ml::Transform * transform = ent->add<ml::Transform>({
 					{ 0.0f, 0.0f, 5.0f }, // position
 					{ 0.5f }, // scale
-					ml::quat() // rotation
+					{ } // rotation
 				});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
@@ -544,12 +544,12 @@ namespace DEMO
 
 			// Earth
 			/* * * * * * * * * * * * * * * * * * * * */
-			if (ml::Entity * ent = ML_Res.entities.get("earth"))
+			if (ml::Entity * ent = ML_Res.entities.load("earth"))
 			{
 				ml::Transform * transform = ent->add<ml::Transform>({
 					{ 0.0f }, // position
 					{ 1.0f }, // scale
-					ml::quat() // rotation
+					{ } // rotation
 				});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
@@ -580,7 +580,7 @@ namespace DEMO
 
 		// Setup Physics
 		/* * * * * * * * * * * * * * * * * * * * */
-		if (ml::Debug::log("Launching Physics...") && !ML_Physics.thread().launch([&]()
+		if (!ML_Physics.thread().launch([&]()
 		{
 			/* * * * * * * * * * * * * * * * * * * * */
 
@@ -652,12 +652,13 @@ namespace DEMO
 		// Update Entities (WIP)
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
-			// Earth
+			// Light
 			/* * * * * * * * * * * * * * * * * * * * */
-			if (ml::Entity * ent = ML_Res.entities.get("earth"))
+			if (ml::Entity * ent = ML_Res.entities.get("light"))
 			{
 				ent->get<ml::Transform>()
-					->rotate((uni.animate ? ev->elapsed.delta() : 0.f), ml::vec3f::Up);
+					->setPosition(uni.lightPos)
+					.rotate(-ev->elapsed.delta(), ml::vec3f::Forward);
 			}
 
 			// Borg
@@ -690,17 +691,6 @@ namespace DEMO
 					.rotate(-ev->elapsed.delta(), ml::vec3f::One);
 			}
 
-			// Moon
-			/* * * * * * * * * * * * * * * * * * * * */
-			if (ml::Entity * ent = ML_Res.entities.get("moon"))
-			{
-				ml::vec3f pos = ent->get<ml::Transform>()->getPosition();
-				pos[1] = +ML_Time.sin();
-				ent->get<ml::Transform>()
-					->setPosition(pos)
-					.rotate(-ev->elapsed.delta(), ml::vec3f::Up);
-			}
-
 			// Sanic
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::Entity * ent = ML_Res.entities.get("sanic"))
@@ -712,34 +702,41 @@ namespace DEMO
 					.rotate(-ev->elapsed.delta(), ml::vec3f::Forward);
 			}
 
-			// Light
+			// Moon
 			/* * * * * * * * * * * * * * * * * * * * */
-			if (ml::Entity * ent = ML_Res.entities.get("light"))
+			if (ml::Entity * ent = ML_Res.entities.get("moon"))
+			{
+				ml::vec3f pos = ent->get<ml::Transform>()->getPosition();
+				pos[1] = +ML_Time.sin();
+				ent->get<ml::Transform>()
+					->setPosition(pos)
+					.rotate(-ev->elapsed.delta(), ml::vec3f::Up);
+			}
+
+			// Earth
+			/* * * * * * * * * * * * * * * * * * * * */
+			if (ml::Entity * ent = ML_Res.entities.get("earth"))
 			{
 				ent->get<ml::Transform>()
-					->setPosition(uni.lightPos)
-					.rotate(-ev->elapsed.delta(), ml::vec3f::Forward);
+					->rotate((uni.animate ? ev->elapsed.delta() : 0.f), ml::vec3f::Up);
 			}
 		}
 
 		// Update Camera
 		/* * * * * * * * * * * * * * * * * * * * */
-		if (const ml::Entity * ent = ML_Res.entities.get("earth"))
+		if (const ml::Entity * target = ML_Res.entities.get("earth"))
 		{
-			if (const ml::Transform * target = ent->get<ml::Transform>())
-			{
-				// Look
-				ml::vec3f pos = target->getPosition();
-				ml::vec3f dir = (pos - uni.camPos).normalized();
-				ml::vec3f look = uni.camPos + (pos - uni.camPos).normalized();
-				uni.camera.lookAt(uni.camPos, look, ml::vec3f::Up);
+			// Look
+			ml::vec3f pos = target->get<ml::Transform>()->getPosition();
+			ml::vec3f dir = (pos - uni.camPos).normalized();
+			ml::vec3f look = uni.camPos + (pos - uni.camPos).normalized();
+			uni.camera.lookAt(uni.camPos, look, ml::vec3f::Up);
 
-				// Orbit
-				float speed = (uni.camAnimate ? uni.camSpd * ev->elapsed.delta() : 0.0f);
-				ml::vec3f fwd = (look - uni.camPos);
-				ml::vec3f right = (fwd.cross(ml::vec3f::Up) * ml::vec3f(1, 0, 1)).normalized();
-				uni.camPos += right * speed;
-			}
+			// Orbit
+			float speed = (uni.camAnimate ? uni.camSpd * ev->elapsed.delta() : 0.0f);
+			ml::vec3f fwd = (look - uni.camPos);
+			ml::vec3f right = (fwd.cross(ml::vec3f::Up) * ml::vec3f(1, 0, 1)).normalized();
+			uni.camPos += right * speed;
 		}
 
 		// Update Text

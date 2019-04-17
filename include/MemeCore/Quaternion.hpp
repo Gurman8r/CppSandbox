@@ -63,7 +63,7 @@ namespace ml
 			return (complex_type)(base_type)(*this);
 		}
 
-		inline value_type real() const
+		inline const_reference real() const
 		{
 			return this->back();
 		}
@@ -87,6 +87,8 @@ namespace ml
 			});
 		}
 
+	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		inline Quaternion & slerp(const Quaternion & other, const_value t)
 		{
 			return ((*this) = Quaternion::slerp((*this), other, t));
