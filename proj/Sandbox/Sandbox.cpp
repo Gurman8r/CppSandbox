@@ -861,67 +861,14 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 			this->clear(uni.clearColor);
 
-			// Draw 3D
+			// Draw Objects
 			/* * * * * * * * * * * * * * * * * * * * */
-			if (false)
 			{
-				// FIXME: doesn't work because black magic
-				const ml::Hierarchy::ObjectMap & o = ML_Hierarchy.objects();
+				ml::Hierarchy::ObjectMap & obj = ML_Hierarchy.objects();
 
-				for (auto it = o.begin(); it != o.end(); it++)
+				for (auto it = obj.begin(); it != obj.end(); it++)
 				{
 					this->draw(*it->second);
-				}
-			}
-			else
-			{
-				// Light
-				/* * * * * * * * * * * * * * * * * * * * */
-				if (const ml::GameObject * obj = ML_Hierarchy.getObject("light"))
-				{
-					this->draw(*obj);
-				}
-
-				// Borg
-				/* * * * * * * * * * * * * * * * * * * * */
-				if (const ml::GameObject * obj = ML_Hierarchy.getObject("borg"))
-				{
-					this->draw(*obj);
-				}
-
-				// Earth
-				/* * * * * * * * * * * * * * * * * * * * */
-				if (const ml::GameObject * obj = ML_Hierarchy.getObject("earth"))
-				{
-					this->draw(*obj);
-				}
-
-				// Moon
-				/* * * * * * * * * * * * * * * * * * * * */
-				if (const ml::GameObject * obj = ML_Hierarchy.getObject("moon"))
-				{
-					this->draw(*obj);
-				}
-
-				// Cube
-				/* * * * * * * * * * * * * * * * * * * * */
-				if (const ml::GameObject * obj = ML_Hierarchy.getObject("cube"))
-				{
-					this->draw(*obj);
-				}
-
-				// Ground
-				/* * * * * * * * * * * * * * * * * * * * */
-				if (const ml::GameObject * obj = ML_Hierarchy.getObject("ground"))
-				{
-					this->draw(*obj);
-				}
-
-				// Sanic
-				/* * * * * * * * * * * * * * * * * * * * */
-				if (const ml::GameObject * obj = ML_Hierarchy.getObject("sanic"))
-				{
-					this->draw(*obj);
 				}
 			}
 

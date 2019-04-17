@@ -23,7 +23,7 @@ namespace ml
 		ML_EventSystem.addListener(WindowEvent::EV_Char,			this);
 		ML_EventSystem.addListener(WindowEvent::EV_CursorEnter,		this);
 		ML_EventSystem.addListener(WindowEvent::EV_CursorPos,		this);
-		ML_EventSystem.addListener(WindowEvent::EV_FrameSize,	this);
+		ML_EventSystem.addListener(WindowEvent::EV_FrameSize,		this);
 		ML_EventSystem.addListener(WindowEvent::EV_Key,				this);
 		ML_EventSystem.addListener(WindowEvent::EV_MouseButton,		this);
 		ML_EventSystem.addListener(WindowEvent::EV_Scroll,			this);
