@@ -871,23 +871,16 @@ namespace DEMO
 
 			// Draw ECS (WIP)
 			/* * * * * * * * * * * * * * * * * * * * */
+			for (auto & pair : ML_Res.entities)
 			{
-				for (auto & pair : ML_Res.entities)
-				{
-					this->draw(*pair.second);
-				}
+				this->draw(*pair.second);
 			}
 
 			// Draw Objects
 			/* * * * * * * * * * * * * * * * * * * * */
+			for (auto & pair : ML_Hierarchy.objects())
 			{
-				ml::Hierarchy::iterator it;
-				for (it = ML_Hierarchy.objects().begin();
-					(it != ML_Hierarchy.objects().end());
-					(it++))
-				{
-					this->draw(*it->second);
-				}
+				this->draw(*pair.second);
 			}
 
 			// Draw 2D

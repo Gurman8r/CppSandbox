@@ -20,6 +20,7 @@ void main()
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 #include <common/Geom.Curve.shader>
 #shader geometry
 

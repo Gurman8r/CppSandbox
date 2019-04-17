@@ -82,8 +82,8 @@ namespace DEMO
 			float			lineSize	= 0.5f;
 			int32_t			lineSamples	= 16;
 			bool			animate		= true;
-		};
-		DemoUniforms uni;
+
+		} uni;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	};
