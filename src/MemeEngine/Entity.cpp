@@ -39,13 +39,13 @@ namespace ml
 
 	bool Entity::loadFromFile(const String & filename)
 	{
-		lua_State * lua = luaL_newstate();
-		if (lua)
+		lua_State * L = luaL_newstate();
+		if (L)
 		{
 			// try parsing Entities with Lua
 		}
-		lua_close(lua);
-		return lua;
+		lua_close(L);
+		return L;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

@@ -310,14 +310,9 @@ namespace DEMO
 			ml::Debug::logError("Failed Loading Manifest");
 		}
 
-		// Setup Batches
+		// Setup Canvas
 		/* * * * * * * * * * * * * * * * * * * * */
-		m_batchVAO.create(ml::GL::Triangles).bind();
-		m_batchVBO.create(ml::GL::DynamicDraw).bind();
-		m_batchVBO.bufferData(NULL, ml::RectQuad::Size);
-		ml::BufferLayout::Default.bind();
-		m_batchVBO.unbind();
-		m_batchVAO.unbind();
+		m_canvas.create();
 	}
 
 	void Sandbox::onStart(const ml::StartEvent * ev)
@@ -408,7 +403,7 @@ namespace DEMO
 				});
 				obj->transform()
 					.translate({ +5.0f, 0.0f, 0.0f })
-.scale(1.0f);
+					.scale(1.0f);
 			}
 
 			// Sanic
@@ -895,7 +890,7 @@ namespace DEMO
 				/* * * * * * * * * * * * * * * * * * * * */
 				if (const ml::Shader * shader = ML_Res.shaders.get("sprites"))
 				{
-					static ml::RenderBatch batch(&m_batchVAO, &m_batchVBO, shader, {
+					static ml::RenderBatch batch(&m_canvas.vao(), &m_canvas.vbo(), shader, {
 						ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&uni.ortho.matrix()),
 						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4),
 						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D),
@@ -911,7 +906,7 @@ namespace DEMO
 				/* * * * * * * * * * * * * * * * * * * * */
 				if (const ml::Shader * shader = ML_Res.shaders.get("text"))
 				{
-					static ml::RenderBatch batch(&m_batchVAO, &m_batchVBO, shader, {
+					static ml::RenderBatch batch(&m_canvas.vao(), &m_canvas.vbo(), shader, {
 						ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&uni.ortho.matrix()),
 						ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4),
 						ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D),

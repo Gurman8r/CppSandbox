@@ -1,7 +1,5 @@
 #include <MemeGraphics/Canvas.hpp>
 #include <MemeGraphics/BufferLayout.hpp>
-#include <MemeGraphics/OpenGL.hpp>
-#include <MemeGraphics/RenderTarget.hpp>
 #include <MemeGraphics/Shapes.hpp>
 #include <MemeCore/Debug.hpp>
 
@@ -12,8 +10,6 @@ namespace ml
 	Canvas::Canvas()
 		: m_vao		()
 		, m_vbo		()
-		, m_shader	(NULL)
-		, m_uniforms(NULL)
 	{
 	}
 
@@ -35,16 +31,6 @@ namespace ml
 			m_vao.unbind();
 		}
 		return false;
-	}
-	
-	bool Canvas::setShader(const Shader * value)
-	{
-		return (m_shader = value);
-	}
-	
-	bool Canvas::setUniforms(const UniformSet * value)
-	{
-		return (m_uniforms = value);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

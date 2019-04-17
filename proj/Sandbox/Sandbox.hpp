@@ -4,6 +4,7 @@
 #include <MemeEditor/EditorApplication.hpp>
 #include <MemeGraphics/Text.hpp>
 #include <MemeGraphics/Camera.hpp>
+#include <MemeGraphics/Canvas.hpp>
 
 namespace DEMO
 {
@@ -42,9 +43,8 @@ namespace DEMO
 	private:
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		// Batches
-		ml::VAO m_batchVAO;
-		ml::VBO m_batchVBO;
+		// Canvas
+		ml::Canvas m_canvas;
 
 		// Text
 		ml::HashMap<ml::String, ml::Text> m_text;

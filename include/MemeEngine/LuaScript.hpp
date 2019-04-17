@@ -8,18 +8,21 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	class ML_ENGINE_API LuaScript
+	class ML_ENGINE_API LuaScript final
 		: public ITrackable
 		, public IDisposable
 		, public IReadable
 	{
 	public:
 		LuaScript();
+		LuaScript(const LuaScript & copy);
 		~LuaScript();
 
 	public:
-		virtual bool dispose() override;
-		virtual bool loadFromFile(const String & filename) override;
+		bool dispose() override;
+		bool loadFromFile(const String & filename) override;
+
+	public:
 
 	private:
 		File m_file;

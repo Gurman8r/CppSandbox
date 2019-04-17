@@ -3,8 +3,6 @@
 
 #include <MemeGraphics/VertexArray.hpp>
 #include <MemeGraphics/VertexBuffer.hpp>
-#include <MemeGraphics/Shader.hpp>
-#include <MemeGraphics/IDrawable.hpp>
 
 namespace ml
 {
@@ -19,21 +17,14 @@ namespace ml
 		Canvas();
 		~Canvas();
 
+	public:
 		bool create();
 
-		bool setShader(const Shader * value);
-		bool setUniforms(const UniformSet * value);
-
 	public:
-		inline const Shader * shader() const { return m_shader; }
-		inline const UniformSet * uniforms() const { return m_uniforms; }
+		VAO & vao() { return m_vao; }
+		VBO & vbo() { return m_vbo; }
 
 	private:
-		const Shader *		m_shader;
-		const UniformSet *	m_uniforms;
-
-		VertexList m_vertices;
-
 		mutable VAO m_vao;
 		mutable VBO m_vbo;
 	};

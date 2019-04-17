@@ -32,6 +32,7 @@ namespace ml
 		File(const File & copy);
 		~File();
 
+	public:
 		bool dispose() override;
 		bool loadFromFile(const String & filename) override;
 		bool loadFromFile();

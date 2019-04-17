@@ -1,7 +1,7 @@
 #ifndef _ML_LUA_HPP_
 #define _ML_LUA_HPP_
 
-#include <MemeEngine/Export.hpp>
+#include <MemeCore/Config.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * */
 

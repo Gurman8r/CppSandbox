@@ -6,6 +6,12 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	LuaScript::LuaScript()
+		: m_file()
+	{
+	}
+
+	LuaScript::LuaScript(const LuaScript & copy)
+		: m_file(copy.m_file)
 	{
 	}
 
@@ -25,6 +31,8 @@ namespace ml
 	{
 		return m_file.loadFromFile(filename);
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	/* * * * * * * * * * * * * * * * * * * * */
 }
