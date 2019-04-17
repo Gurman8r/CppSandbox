@@ -30,7 +30,7 @@ namespace ml
 	bool Skybox::loadFromFile(const String & filename)
 	{
 		SStream file;
-		if (ML_FileSystem.getFileContents(filename, file))
+		if (ML_FS.getFileContents(filename, file))
 		{
 			file >> (*this);
 			return true;

@@ -175,7 +175,7 @@ namespace DEMO
 
 			// Run Boot Script
 			ml::Script scr;
-			if (scr.loadFromFile(ML_FileSystem.pathTo(SETTINGS.bootScript)))
+			if (scr.loadFromFile(ML_FS.pathTo(SETTINGS.bootScript)))
 			{
 				if (!(scr.buildAndRun(ml::Args(ev->argc, ev->argv))))
 				{
@@ -287,7 +287,7 @@ namespace DEMO
 
 		// Load Manifest
 		/* * * * * * * * * * * * * * * * * * * * */
-		if (!ML_Res.loadFromFile(ML_FileSystem.pathTo(SETTINGS.manifest)))
+		if (!ML_Res.loadFromFile(ML_FS.pathTo(SETTINGS.manifest)))
 		{
 			ml::Debug::logError("Failed Loading Manifest");
 		}

@@ -5,7 +5,7 @@
 #include <MemeCore/File.hpp>
 #include <MemeCore/List.hpp>
 
-#define ML_FileSystem ml::FileSystem::getInstance()
+#define ML_FS ml::FileSystem::getInstance()
 
 namespace ml
 {

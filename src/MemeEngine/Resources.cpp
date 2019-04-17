@@ -81,7 +81,7 @@ namespace ml
 	bool Resources::loadFromFile(const String & filename)
 	{
 		SStream file;
-		return ML_FileSystem.getFileContents(filename, file) && parseFile(file);
+		return ML_FS.getFileContents(filename, file) && parseFile(file);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

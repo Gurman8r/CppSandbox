@@ -59,11 +59,11 @@ namespace ml
 
 				if (parseWrapped(line, '\"', '\"', name))
 				{
-					path = ML_FileSystem.pathTo(name);
+					path = ML_FS.pathTo(name);
 				}
 				else if (parseWrapped(line, '<', '>', name))
 				{
-					path = ML_FileSystem.pathTo(ML_INCLUDE_SHADER_PATH + name);
+					path = ML_FS.pathTo(ML_INCLUDE_SHADER_PATH + name);
 				}
 				else
 				{
@@ -74,7 +74,7 @@ namespace ml
 				if (name && path)
 				{
 					String file;
-					if (ML_FileSystem.getFileContents(path, file))
+					if (ML_FS.getFileContents(path, file))
 					{
 						file.pop_back();
 						out << parseIncludes(file);

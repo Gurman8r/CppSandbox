@@ -37,7 +37,7 @@ namespace ml
 	Var EngineCommands::cmd_cat(Args & args)
 	{
 		String buf;
-		if (ML_FileSystem.getFileContents(args.pop(), buf))
+		if (ML_FS.getFileContents(args.pop(), buf))
 		{
 			cout << buf << endl;
 
@@ -51,12 +51,12 @@ namespace ml
 		const String path = args.pop();
 		if (path == "/")
 		{
-			return Var().boolValue(ML_FileSystem.setWorkingDir(
-				ML_FileSystem.pathTo("")));
+			return Var().boolValue(ML_FS.setWorkingDir(
+				ML_FS.pathTo("")));
 		}
 		else
 		{
-			return Var().boolValue(ML_FileSystem.setWorkingDir(path));
+			return Var().boolValue(ML_FS.setWorkingDir(path));
 		}
 	}
 
@@ -169,7 +169,7 @@ namespace ml
 		}
 		else
 		{
-			return Var().boolValue(ML_FileSystem.fileExists(str));
+			return Var().boolValue(ML_FS.fileExists(str));
 		}
 	}
 
@@ -196,7 +196,7 @@ namespace ml
 
 	Var EngineCommands::cmd_getcwd(Args & args)
 	{
-		return Var().stringValue(ML_FileSystem.getWorkingDir());
+		return Var().stringValue(ML_FS.getWorkingDir());
 	}
 
 	Var EngineCommands::cmd_help(Args & args)
@@ -238,7 +238,7 @@ namespace ml
 	{
 		const String name = args.pop_front().empty() ? "." : args.ToString();
 		SStream ss;
-		if (ML_FileSystem.getDirContents(name, ss))
+		if (ML_FS.getDirContents(name, ss))
 		{
 			cout << ss.str();
 			return Var().boolValue(true);
@@ -266,10 +266,10 @@ namespace ml
 	Var EngineCommands::cmd_read(Args & args)
 	{
 		const String name = args.pop();
-		if (ML_FileSystem.fileExists(name))
+		if (ML_FS.fileExists(name))
 		{
 			String buf;
-			if (ML_FileSystem.getFileContents(name, buf))
+			if (ML_FS.getFileContents(name, buf))
 			{
 				return Var().stringValue(buf);
 			}
@@ -277,7 +277,7 @@ namespace ml
 		else
 		{
 			SStream ss;
-			if (ML_FileSystem.getDirContents(name, ss))
+			if (ML_FS.getDirContents(name, ss))
 			{
 				return Var().stringValue(ss.str());
 			}

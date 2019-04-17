@@ -41,8 +41,8 @@ namespace ml
 		case CoreEvent::EV_FileSystem:
 			if (const auto * ev = value->as<FileSystemEvent>())
 			{
-				m_path = ML_FileSystem.getWorkingDir();
-				if (ML_FileSystem.getDirContents(m_path, m_dir))
+				m_path = ML_FS.getWorkingDir();
+				if (ML_FS.getDirContents(m_path, m_dir))
 				{
 					set_selected(T_Dir, 0);
 				}
@@ -77,7 +77,7 @@ namespace ml
 				switch (m_type)
 				{
 				case T_Dir: 
-					ML_FileSystem.setWorkingDir(get_selected_name()); 
+					ML_FS.setWorkingDir(get_selected_name()); 
 					break;
 				}
 			}
@@ -222,7 +222,7 @@ namespace ml
 		{
 			if (get_selected_size() <= MaxPreviewSize)
 			{
-				if (ML_FileSystem.getFileContents(get_selected_path(), m_preview))
+				if (ML_FS.getFileContents(get_selected_path(), m_preview))
 				{
 					m_preview.pop_back(); // remove last char, shows up as '?'
 				}
@@ -243,7 +243,7 @@ namespace ml
 		break;
 
 		case T_Dir:
-			if (!ML_FileSystem.getDirContents(get_selected_path(), m_preview))
+			if (!ML_FS.getDirContents(get_selected_path(), m_preview))
 			{
 				m_preview = get_selected_path();
 			}
@@ -270,7 +270,7 @@ namespace ml
 	{
 		switch (m_type)
 		{
-		case T_Reg	: return ML_FileSystem.getFileType(get_selected_path());
+		case T_Reg	: return ML_FS.getFileType(get_selected_path());
 		case T_Dir	: return String("Directory");
 		case T_Lnk	: return String("Link");
 		default		: return String("?");
@@ -279,7 +279,7 @@ namespace ml
 
 	size_t Browser::get_selected_size() const
 	{
-		return ML_FileSystem.getFileSize(get_selected_path());
+		return ML_FS.getFileSize(get_selected_path());
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

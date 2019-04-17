@@ -134,18 +134,18 @@ namespace ml
 							{
 								Funcs::Field("File", [&](CString label)
 								{
-									const String fName = ML_FileSystem.getFileName(file);
+									const String fName = ML_FS.getFileName(file);
 									if (ImGui::Selectable(fName.c_str()))
 									{
-										ML_OS.execute("open", ML_FileSystem.pathTo(file));
+										ML_OS.execute("open", ML_FS.pathTo(file));
 									}
 								});
 								Funcs::Field("Path", [&](CString label)
 								{
-									const String fPath = ML_FileSystem.getFilePath(file);
+									const String fPath = ML_FS.getFilePath(file);
 									if (ImGui::Selectable(fPath.c_str()))
 									{
-										ML_OS.execute("open", ML_FileSystem.pathTo(fPath));
+										ML_OS.execute("open", ML_FS.pathTo(fPath));
 									}
 								});
 							}
@@ -168,18 +168,18 @@ namespace ml
 							{
 								Funcs::Field("File", [&](CString label)
 								{
-									const String fName = ML_FileSystem.getFileName(file);
+									const String fName = ML_FS.getFileName(file);
 									if (ImGui::Selectable(fName.c_str()))
 									{
-										ML_OS.execute("open", ML_FileSystem.pathTo(file));
+										ML_OS.execute("open", ML_FS.pathTo(file));
 									}
 								});
 								Funcs::Field("Path", [&](CString label)
 								{
-									const String fPath = ML_FileSystem.getFilePath(file);
+									const String fPath = ML_FS.getFilePath(file);
 									if (ImGui::Selectable(fPath.c_str()))
 									{
-										ML_OS.execute("open", ML_FileSystem.pathTo(fPath));
+										ML_OS.execute("open", ML_FS.pathTo(fPath));
 									}
 								});
 							}
@@ -206,18 +206,18 @@ namespace ml
 							{
 								Funcs::Field("File", [&](CString label)
 								{
-									const String fName = ML_FileSystem.getFileName(file);
+									const String fName = ML_FS.getFileName(file);
 									if (ImGui::Selectable(fName.c_str()))
 									{
-										ML_OS.execute("open", ML_FileSystem.pathTo(file));
+										ML_OS.execute("open", ML_FS.pathTo(file));
 									}
 								});
 								Funcs::Field("Path", [&](CString label)
 								{
-									const String fPath = ML_FileSystem.getFilePath(file);
+									const String fPath = ML_FS.getFilePath(file);
 									if (ImGui::Selectable(fPath.c_str()))
 									{
-										ML_OS.execute("open", ML_FileSystem.pathTo(fPath));
+										ML_OS.execute("open", ML_FS.pathTo(fPath));
 									}
 								});
 							}
@@ -244,18 +244,18 @@ namespace ml
 							{
 								Funcs::Field("File", [&](CString label)
 								{
-									const String fName = ML_FileSystem.getFileName(file);
+									const String fName = ML_FS.getFileName(file);
 									if (ImGui::Selectable(fName.c_str()))
 									{
-										ML_OS.execute("open", ML_FileSystem.pathTo(file));
+										ML_OS.execute("open", ML_FS.pathTo(file));
 									}
 								});
 								Funcs::Field("Path", [&](CString label)
 								{
-									const String fPath = ML_FileSystem.getFilePath(file);
+									const String fPath = ML_FS.getFilePath(file);
 									if (ImGui::Selectable(fPath.c_str()))
 									{
-										ML_OS.execute("open", ML_FileSystem.pathTo(fPath));
+										ML_OS.execute("open", ML_FS.pathTo(fPath));
 									}
 								});
 							}
@@ -278,18 +278,18 @@ namespace ml
 							{
 								Funcs::Field("File", [&](CString label)
 								{
-									const String fName = ML_FileSystem.getFileName(file);
+									const String fName = ML_FS.getFileName(file);
 									if (ImGui::Selectable(fName.c_str()))
 									{
-										ML_OS.execute("open", ML_FileSystem.pathTo(file));
+										ML_OS.execute("open", ML_FS.pathTo(file));
 									}
 								});
 								Funcs::Field("Path", [&](CString label)
 								{
-									const String fPath = ML_FileSystem.getFilePath(file);
+									const String fPath = ML_FS.getFilePath(file);
 									if (ImGui::Selectable(fPath.c_str()))
 									{
-										ML_OS.execute("open", ML_FileSystem.pathTo(fPath));
+										ML_OS.execute("open", ML_FS.pathTo(fPath));
 									}
 								});
 							}
@@ -312,18 +312,18 @@ namespace ml
 							{
 								Funcs::Field("File", [&](CString label)
 								{
-									const String fName = ML_FileSystem.getFileName(file);
+									const String fName = ML_FS.getFileName(file);
 									if (ImGui::Selectable(fName.c_str()))
 									{
-										ML_OS.execute("open", ML_FileSystem.pathTo(file));
+										ML_OS.execute("open", ML_FS.pathTo(file));
 									}
 								});
 								Funcs::Field("Path", [&](CString label)
 								{
-									const String fPath = ML_FileSystem.getFilePath(file);
+									const String fPath = ML_FS.getFilePath(file);
 									if (ImGui::Selectable(fPath.c_str()))
 									{
-										ML_OS.execute("open", ML_FileSystem.pathTo(fPath));
+										ML_OS.execute("open", ML_FS.pathTo(fPath));
 									}
 								});
 							}
@@ -346,18 +346,18 @@ namespace ml
 							{
 								Funcs::Field("File", [&](CString label)
 								{
-									const String fName = ML_FileSystem.getFileName(file);
+									const String fName = ML_FS.getFileName(file);
 									if (ImGui::Selectable(fName.c_str()))
 									{
-										ML_OS.execute("open", ML_FileSystem.pathTo(file));
+										ML_OS.execute("open", ML_FS.pathTo(file));
 									}
 								});
 								Funcs::Field("Path", [&](CString label)
 								{
-									const String fPath = ML_FileSystem.getFilePath(file);
+									const String fPath = ML_FS.getFilePath(file);
 									if (ImGui::Selectable(fPath.c_str()))
 									{
-										ML_OS.execute("open", ML_FileSystem.pathTo(fPath));
+										ML_OS.execute("open", ML_FS.pathTo(fPath));
 									}
 								});
 							}
@@ -380,18 +380,18 @@ namespace ml
 							{
 								Funcs::Field("File", [&](CString label)
 								{
-									const String fName = ML_FileSystem.getFileName(file);
+									const String fName = ML_FS.getFileName(file);
 									if (ImGui::Selectable(fName.c_str()))
 									{
-										ML_OS.execute("open", ML_FileSystem.pathTo(file));
+										ML_OS.execute("open", ML_FS.pathTo(file));
 									}
 								});
 								Funcs::Field("Path", [&](CString label)
 								{
-									const String fPath = ML_FileSystem.getFilePath(file);
+									const String fPath = ML_FS.getFilePath(file);
 									if (ImGui::Selectable(fPath.c_str()))
 									{
-										ML_OS.execute("open", ML_FileSystem.pathTo(fPath));
+										ML_OS.execute("open", ML_FS.pathTo(fPath));
 									}
 								});
 							}
@@ -414,18 +414,18 @@ namespace ml
 							{
 								Funcs::Field("File", [&](CString label)
 								{
-									const String fName = ML_FileSystem.getFileName(file);
+									const String fName = ML_FS.getFileName(file);
 									if (ImGui::Selectable(fName.c_str()))
 									{
-										ML_OS.execute("open", ML_FileSystem.pathTo(file));
+										ML_OS.execute("open", ML_FS.pathTo(file));
 									}
 								});
 								Funcs::Field("Path", [&](CString label)
 								{
-									const String fPath = ML_FileSystem.getFilePath(file);
+									const String fPath = ML_FS.getFilePath(file);
 									if (ImGui::Selectable(fPath.c_str()))
 									{
-										ML_OS.execute("open", ML_FileSystem.pathTo(fPath));
+										ML_OS.execute("open", ML_FS.pathTo(fPath));
 									}
 								});
 							}
@@ -448,18 +448,18 @@ namespace ml
 							{
 								Funcs::Field("File", [&](CString label)
 								{
-									const String fName = ML_FileSystem.getFileName(file);
+									const String fName = ML_FS.getFileName(file);
 									if (ImGui::Selectable(fName.c_str()))
 									{
-										ML_OS.execute("open", ML_FileSystem.pathTo(file));
+										ML_OS.execute("open", ML_FS.pathTo(file));
 									}
 								});
 								Funcs::Field("Path", [&](CString label)
 								{
-									const String fPath = ML_FileSystem.getFilePath(file);
+									const String fPath = ML_FS.getFilePath(file);
 									if (ImGui::Selectable(fPath.c_str()))
 									{
-										ML_OS.execute("open", ML_FileSystem.pathTo(fPath));
+										ML_OS.execute("open", ML_FS.pathTo(fPath));
 									}
 								});
 							}
@@ -482,18 +482,18 @@ namespace ml
 							{
 								Funcs::Field("File", [&](CString label)
 								{
-									const String fName = ML_FileSystem.getFileName(file);
+									const String fName = ML_FS.getFileName(file);
 									if (ImGui::Selectable(fName.c_str()))
 									{
-										ML_OS.execute("open", ML_FileSystem.pathTo(file));
+										ML_OS.execute("open", ML_FS.pathTo(file));
 									}
 								});
 								Funcs::Field("Path", [&](CString label)
 								{
-									const String fPath = ML_FileSystem.getFilePath(file);
+									const String fPath = ML_FS.getFilePath(file);
 									if (ImGui::Selectable(fPath.c_str()))
 									{
-										ML_OS.execute("open", ML_FileSystem.pathTo(fPath));
+										ML_OS.execute("open", ML_FS.pathTo(fPath));
 									}
 								});
 							}
@@ -516,18 +516,18 @@ namespace ml
 							{
 								Funcs::Field("File", [&](CString label)
 								{
-									const String fName = ML_FileSystem.getFileName(file);
+									const String fName = ML_FS.getFileName(file);
 									if (ImGui::Selectable(fName.c_str()))
 									{
-										ML_OS.execute("open", ML_FileSystem.pathTo(file));
+										ML_OS.execute("open", ML_FS.pathTo(file));
 									}
 								});
 								Funcs::Field("Path", [&](CString label)
 								{
-									const String fPath = ML_FileSystem.getFilePath(file);
+									const String fPath = ML_FS.getFilePath(file);
 									if (ImGui::Selectable(fPath.c_str()))
 									{
-										ML_OS.execute("open", ML_FileSystem.pathTo(fPath));
+										ML_OS.execute("open", ML_FS.pathTo(fPath));
 									}
 								});
 							}
@@ -550,18 +550,18 @@ namespace ml
 							{
 								Funcs::Field("File", [&](CString label)
 								{
-									const String fName = ML_FileSystem.getFileName(file);
+									const String fName = ML_FS.getFileName(file);
 									if (ImGui::Selectable(fName.c_str()))
 									{
-										ML_OS.execute("open", ML_FileSystem.pathTo(file));
+										ML_OS.execute("open", ML_FS.pathTo(file));
 									}
 								});
 								Funcs::Field("Path", [&](CString label)
 								{
-									const String fPath = ML_FileSystem.getFilePath(file);
+									const String fPath = ML_FS.getFilePath(file);
 									if (ImGui::Selectable(fPath.c_str()))
 									{
-										ML_OS.execute("open", ML_FileSystem.pathTo(fPath));
+										ML_OS.execute("open", ML_FS.pathTo(fPath));
 									}
 								});
 							}
@@ -584,18 +584,18 @@ namespace ml
 							{
 								Funcs::Field("File", [&](CString label)
 								{
-									const String fName = ML_FileSystem.getFileName(file);
+									const String fName = ML_FS.getFileName(file);
 									if (ImGui::Selectable(fName.c_str()))
 									{
-										ML_OS.execute("open", ML_FileSystem.pathTo(file));
+										ML_OS.execute("open", ML_FS.pathTo(file));
 									}
 								});
 								Funcs::Field("Path", [&](CString label)
 								{
-									const String fPath = ML_FileSystem.getFilePath(file);
+									const String fPath = ML_FS.getFilePath(file);
 									if (ImGui::Selectable(fPath.c_str()))
 									{
-										ML_OS.execute("open", ML_FileSystem.pathTo(fPath));
+										ML_OS.execute("open", ML_FS.pathTo(fPath));
 									}
 								});
 							}
@@ -626,18 +626,18 @@ namespace ml
 							{
 								Funcs::Field("File", [&](CString label)
 								{
-									const String fName = ML_FileSystem.getFileName(file);
+									const String fName = ML_FS.getFileName(file);
 									if (ImGui::Selectable(fName.c_str()))
 									{
-										ML_OS.execute("open", ML_FileSystem.pathTo(file));
+										ML_OS.execute("open", ML_FS.pathTo(file));
 									}
 								});
 								Funcs::Field("Path", [&](CString label)
 								{
-									const String fPath = ML_FileSystem.getFilePath(file);
+									const String fPath = ML_FS.getFilePath(file);
 									if (ImGui::Selectable(fPath.c_str()))
 									{
-										ML_OS.execute("open", ML_FileSystem.pathTo(fPath));
+										ML_OS.execute("open", ML_FS.pathTo(fPath));
 									}
 								});
 							}

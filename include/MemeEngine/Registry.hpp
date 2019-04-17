@@ -167,7 +167,7 @@ namespace ml
 			{
 				if (m_files[name] = file)
 				{
-					if (const String path = ML_FileSystem.pathTo(file))
+					if (const String path = ML_FS.pathTo(file))
 					{
 						pointer temp = new value_type();
 
@@ -216,7 +216,7 @@ namespace ml
 				const String & file = it->second;
 				if (name && file)
 				{
-					if (const String path = ML_FileSystem.pathTo(file))
+					if (const String path = ML_FS.pathTo(file))
 					{
 						if (pointer temp = get(name))
 						{
