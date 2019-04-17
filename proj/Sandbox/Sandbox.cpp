@@ -408,7 +408,7 @@ namespace DEMO
 				});
 				obj->transform()
 					.translate({ +5.0f, 0.0f, 0.0f })
-					.scale(1.0f);
+.scale(1.0f);
 			}
 
 			// Sanic
@@ -508,37 +508,39 @@ namespace DEMO
 
 		// Setup Entities (WIP)
 		/* * * * * * * * * * * * * * * * * * * * */
-		if (ml::Entity * ent = ML_Res.entities.get("earth"))
 		{
-			ml::Transform * transform = ent->add<ml::Transform>({
-				{ 0.0f }, // position
-				{ 1.0f }, // scale
-				{ ml::vec3f::One, 0.0f } // rotation
-			});
+			if (ml::Entity * ent = ML_Res.entities.get("earth"))
+			{
+				ml::Transform * transform = ent->add<ml::Transform>({
+					ml::vec3f::Zero, // position
+					ml::vec3f::One, // scale
+					ml::quat() // rotation
+				});
 
-			ml::Renderer * renderer = ent->add<ml::Renderer>({
-				ML_Res.models.get("earth"),
-				ML_Res.shaders.get("lighting"),
-				ml::RenderFlags
-				{
-					{ ml::GL::CullFace, true },
-					{ ml::GL::DepthTest, true },
-				},
-				ml::UniformSet 
-				{
-					ml::Uniform("Vert.proj",		ml::Uniform::Mat4,	&uni.persp.matrix()),
-					ml::Uniform("Vert.view",		ml::Uniform::Mat4,	&uni.camera.matrix()),
-					ml::Uniform("Vert.model",		ml::Uniform::Mat4,	&transform->matrix()),
-					ml::Uniform("Frag.tex_dm",		ml::Uniform::Tex2D,	ML_Res.textures.get("earth_dm")),
-					ml::Uniform("Frag.tex_sm",		ml::Uniform::Tex2D,	ML_Res.textures.get("earth_sm")),
-					ml::Uniform("Frag.camPos",		ml::Uniform::Vec3,	&uni.camPos),
-					ml::Uniform("Frag.lightPos",	ml::Uniform::Vec3,	&uni.lightPos),
-					ml::Uniform("Frag.lightCol",	ml::Uniform::Vec4,	&uni.lightCol),
-					ml::Uniform("Frag.ambient",		ml::Uniform::Float, &uni.ambient),
-					ml::Uniform("Frag.specular",	ml::Uniform::Float, &uni.specular),
-					ml::Uniform("Frag.shininess",	ml::Uniform::Int,	&uni.shininess),
-				}
-			});
+				ml::Renderer * renderer = ent->add<ml::Renderer>({
+					ML_Res.models.get("earth"),
+					ML_Res.shaders.get("lighting"),
+					ml::RenderFlags
+					{
+						{ ml::GL::CullFace, true },
+						{ ml::GL::DepthTest, true },
+					},
+					ml::UniformSet 
+					{
+						ml::Uniform("Vert.proj",		ml::Uniform::Mat4,	&uni.persp.matrix()),
+						ml::Uniform("Vert.view",		ml::Uniform::Mat4,	&uni.camera.matrix()),
+						ml::Uniform("Vert.model",		ml::Uniform::Mat4,	&transform->matrix()),
+						ml::Uniform("Frag.tex_dm",		ml::Uniform::Tex2D,	ML_Res.textures.get("earth_dm")),
+						ml::Uniform("Frag.tex_sm",		ml::Uniform::Tex2D,	ML_Res.textures.get("earth_sm")),
+						ml::Uniform("Frag.camPos",		ml::Uniform::Vec3,	&uni.camPos),
+						ml::Uniform("Frag.lightPos",	ml::Uniform::Vec3,	&uni.lightPos),
+						ml::Uniform("Frag.lightCol",	ml::Uniform::Vec4,	&uni.lightCol),
+						ml::Uniform("Frag.ambient",		ml::Uniform::Float, &uni.ambient),
+						ml::Uniform("Frag.specular",	ml::Uniform::Float, &uni.specular),
+						ml::Uniform("Frag.shininess",	ml::Uniform::Int,	&uni.shininess),
+					}
+				});
+			}
 		}
 
 		// Setup Physics

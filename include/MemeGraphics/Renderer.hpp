@@ -13,12 +13,16 @@ namespace ml
 		, public IDrawable
 	{
 	public:
+		Renderer();
+
 		Renderer(
 			const IDrawable		* drawable, 
 			const Shader		* shader,
 			const RenderFlags	& flags,
 			const UniformSet	& uniforms);
-
+		
+		Renderer(const Renderer & copy);
+		
 		virtual ~Renderer() {}
 
 	public:

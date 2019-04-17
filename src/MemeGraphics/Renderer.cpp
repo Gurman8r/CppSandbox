@@ -6,6 +6,14 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
+	Renderer::Renderer()
+		: m_drawable(NULL)
+		, m_shader	(NULL)
+		, m_flags	()
+		, m_uniforms()
+	{
+	}
+
 	Renderer::Renderer(
 		const IDrawable		* drawable,
 		const Shader		* shader,
@@ -15,6 +23,14 @@ namespace ml
 		, m_shader			(shader)
 		, m_flags			(flags)
 		, m_uniforms		(uniforms)
+	{
+	}
+
+	Renderer::Renderer(const Renderer & copy)
+		: m_drawable(copy.m_drawable)
+		, m_shader	(copy.m_shader)
+		, m_flags	(copy.m_flags)
+		, m_uniforms(copy.m_uniforms)
 	{
 	}
 

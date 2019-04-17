@@ -9,13 +9,24 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Effect::Effect()
-		: m_fbo()
-		, m_rbo()
-		, m_model(NULL)
-		, m_shader(NULL)
-		, m_texture()
-		, m_size(0)
-		, m_attachment(GL::ColorAttachment0)
+		: m_fbo			()
+		, m_rbo			()
+		, m_model		(NULL)
+		, m_shader		(NULL)
+		, m_texture		()
+		, m_size		(0)
+		, m_attachment	(GL::ColorAttachment0)
+	{
+	}
+
+	Effect::Effect(const Effect & copy)
+		: m_fbo			(copy.m_fbo)
+		, m_rbo			(copy.m_rbo)
+		, m_model		(copy.m_model)
+		, m_shader		(copy.m_shader)
+		, m_texture		(copy.m_texture)
+		, m_size		(copy.m_size)
+		, m_attachment	(copy.m_attachment)
 	{
 	}
 

@@ -9,7 +9,7 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	class ML_GRAPHICS_API Sprite
+	class ML_GRAPHICS_API Sprite final
 		: public ITrackable
 		, public IDisposable
 		, public IDrawable
@@ -17,12 +17,15 @@ namespace ml
 	{
 	public:
 		Sprite();
+		Sprite(const Sprite & copy);
 		~Sprite();
 
+	public:
 		bool dispose() override;
 		bool loadFromFile(const String & filename) override;
 		bool loadFromMemory(const Texture * value);
 
+	public:
 		Sprite & setTexture(const Texture * value);
 		Sprite & setPosition(const vec2f & value);
 		Sprite & setScale(const vec2f & value);
@@ -30,6 +33,7 @@ namespace ml
 		Sprite & setOrigin(const vec2f & value);
 		Sprite & setColor(const vec4f & value);
 
+	public:
 		void update() const;
 		void draw(RenderTarget & target, RenderBatch batch) const override;
 

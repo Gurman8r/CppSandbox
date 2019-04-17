@@ -11,6 +11,7 @@ namespace ml
 
 	LuaScript::~LuaScript()
 	{
+		dispose();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

@@ -19,8 +19,10 @@ namespace ml
 	{
 	public:
 		Effect();
+		Effect(const Effect & copy);
 		~Effect();
 
+	public:
 		bool dispose() override;
 		bool loadFromFile(const String & filename) override;
 
@@ -33,6 +35,7 @@ namespace ml
 		bool setModel(const Model * value);
 		bool setShader(const Shader * value);
 
+	public:
 		void draw(RenderTarget & target, RenderBatch batch) const override;
 
 	public:

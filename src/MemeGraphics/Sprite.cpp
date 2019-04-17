@@ -8,11 +8,28 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Sprite::Sprite()
+		: m_texture	(NULL)
+		, m_position(vec2f::Zero)
+		, m_scale	(vec2f::One)
+		, m_rotation(0.0f)
+		, m_origin	(0.5f)
+		, m_color	(Color::White)
+	{
+	}
+
+	Sprite::Sprite(const Sprite & copy)
+		: m_texture	(copy.m_texture)
+		, m_position(copy.m_position)
+		, m_scale	(copy.m_scale)
+		, m_rotation(copy.m_rotation)
+		, m_origin	(copy.m_origin)
+		, m_color	(copy.m_color)
 	{
 	}
 
 	Sprite::~Sprite()
 	{
+		dispose();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
