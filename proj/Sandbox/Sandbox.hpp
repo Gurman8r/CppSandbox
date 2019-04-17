@@ -35,10 +35,10 @@ namespace DEMO
 
 	private:
 		/* * * * * * * * * * * * * * * * * * * * */
-		bool ML_MainMenuBar_draw();
-		bool ML_Dockspace_draw(bool * p_open);
-		bool ML_SceneView_draw(bool * p_open);
-		bool ML_Inspector_draw(bool * p_open);
+		bool drawMainMenuBar();
+		bool drawDockspace(bool * p_open);
+		bool drawSceneView(bool * p_open);
+		bool drawInspector(bool * p_open);
 
 	private:
 		/* * * * * * * * * * * * * * * * * * * * */

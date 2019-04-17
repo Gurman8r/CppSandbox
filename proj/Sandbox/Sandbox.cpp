@@ -967,9 +967,9 @@ namespace DEMO
 	void Sandbox::onGui(const ml::GuiEvent * ev)
 	{
 		// Main Menu Bar
-		if (ML_Editor.show_mainMenuBar)		{ ML_MainMenuBar_draw(); }
+		if (ML_Editor.show_mainMenuBar)		{ drawMainMenuBar(); }
 		// Dockspace
-		if (ML_Editor.show_dockspace)		{ ML_Dockspace_draw(&ML_Editor.show_dockspace); }
+		if (ML_Editor.show_dockspace)		{ drawDockspace(&ML_Editor.show_dockspace); }
 		// ImGui Builtin
 		if (ML_Editor.show_imgui_demo)		{ ml::ImGui_Builtin::showDemo(&ML_Editor.show_imgui_demo); }
 		if (ML_Editor.show_imgui_metrics)	{ ml::ImGui_Builtin::showMetrics(&ML_Editor.show_imgui_metrics); }
@@ -983,8 +983,8 @@ namespace DEMO
 		if (ML_Editor.show_terminal)		{ ML_Terminal.drawGui(&ML_Editor.show_terminal); }
 		if (ML_Editor.show_textEditor)		{ ML_TextEditor.drawGui(&ML_Editor.show_textEditor); }
 		if (ML_Editor.show_builder)			{ ML_Builder.drawGui(&ML_Editor.show_builder); }
-		if (ML_Editor.show_sceneView)		{ ML_SceneView_draw(&ML_Editor.show_sceneView); }
-		if (ML_Editor.show_inspector)		{ ML_Inspector_draw(&ML_Editor.show_inspector); }
+		if (ML_Editor.show_sceneView)		{ drawSceneView(&ML_Editor.show_sceneView); }
+		if (ML_Editor.show_inspector)		{ drawInspector(&ML_Editor.show_inspector); }
 	}
 
 	void Sandbox::onUnload(const ml::UnloadEvent * ev)
@@ -1008,7 +1008,7 @@ namespace DEMO
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-	bool Sandbox::ML_MainMenuBar_draw()
+	bool Sandbox::drawMainMenuBar()
 	{
 		// Draw Main Menu Bar
 		return ML_MainMenuBar.drawFun([&]()
@@ -1100,7 +1100,7 @@ namespace DEMO
 		});
 	}
 
-	bool Sandbox::ML_Dockspace_draw(bool * p_open)
+	bool Sandbox::drawDockspace(bool * p_open)
 	{
 		// Draw Dockspace
 		return ML_Dockspace.drawFun(p_open, [&]()
@@ -1134,7 +1134,7 @@ namespace DEMO
 		});
 	}
 
-	bool Sandbox::ML_SceneView_draw(bool * p_open)
+	bool Sandbox::drawSceneView(bool * p_open)
 	{
 		// Draw Scene View
 		return ML_SceneView.drawFun(p_open, [&]()
@@ -1146,7 +1146,7 @@ namespace DEMO
 		});
 	}
 
-	bool Sandbox::ML_Inspector_draw(bool * p_open)
+	bool Sandbox::drawInspector(bool * p_open)
 	{
 		// Draw Inspector
 		return ML_Inspector.drawFun(p_open, [&]()
