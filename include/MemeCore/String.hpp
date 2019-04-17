@@ -3,9 +3,9 @@
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+#include <MemeCore/Allocator.hpp>
 #include <MemeCore/IComparable.hpp>
 #include <MemeCore/IO.hpp>
-#include <MemeCore/Allocator.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
