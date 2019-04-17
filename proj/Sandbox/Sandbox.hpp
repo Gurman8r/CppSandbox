@@ -72,7 +72,7 @@ namespace DEMO
 			float			specular	= 0.5f;
 			int32_t			shininess	= 8;
 			
-			// Framebuffers
+			// Effects
 			int32_t			effectMode	= 0;
 			
 			// Geometry
@@ -81,7 +81,6 @@ namespace DEMO
 			float			lineDelta	= 1.f;
 			float			lineSize	= 0.5f;
 			int32_t			lineSamples	= 16;
-			bool			animate		= true;
 
 		};
 		DemoUniforms uni;

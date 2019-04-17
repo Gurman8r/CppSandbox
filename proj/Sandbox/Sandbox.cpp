@@ -699,7 +699,7 @@ namespace DEMO
 			if (ml::Entity * ent = ML_Res.entities.get("earth"))
 			{
 				ent->get<ml::Transform>()
-					->rotate((uni.animate ? ev->elapsed.delta() : 0.f), ml::vec3f::Up);
+					->rotate(ev->elapsed.delta(), ml::vec3f::Up);
 			}
 		}
 
