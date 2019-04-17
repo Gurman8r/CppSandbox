@@ -19,7 +19,6 @@ namespace ml
 		: public ITrackable
 		, public IDisposable
 		, public IReadable
-		, public IDrawable
 	{
 		friend class ECS;
 
@@ -36,10 +35,6 @@ namespace ml
 	public:
 		virtual bool dispose() override;
 		virtual bool loadFromFile(const String & filename) override;
-
-	public:
-		virtual void update() const;
-		virtual void draw(RenderTarget & target, RenderBatch batch) const override;
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */

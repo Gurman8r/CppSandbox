@@ -14,6 +14,7 @@
 #include <MemeGraphics/Camera.hpp>
 #include <MemeGraphics/OpenGL.hpp>
 #include <MemeGraphics/RenderStates.hpp>
+#include <MemeGraphics/Renderer.hpp>
 #include <MemeEditor/Editor.hpp>
 #include <MemeEditor/EditorCommands.hpp>
 #include <MemeEditor/EditorEvents.hpp>
@@ -454,34 +455,6 @@ namespace DEMO
 					.scale(0.5f);
 			}
 
-			// Earth
-			/* * * * * * * * * * * * * * * * * * * * */
-			if (ml::GameObject * obj = ML_Hierarchy.newObject("earth"))
-			{
-				obj->model = ML_Res.models.get("earth");
-				obj->shader = ML_Res.shaders.get("lighting");
-				obj->uniforms = {
-					ml::Uniform("Vert.proj",		ml::Uniform::Mat4,	&uni.persp.matrix()),
-					ml::Uniform("Vert.view",		ml::Uniform::Mat4,	&uni.camera.matrix()),
-					ml::Uniform("Vert.model",		ml::Uniform::Mat4,	&obj->transform().matrix()),
-					ml::Uniform("Frag.tex_dm",		ml::Uniform::Tex2D,	ML_Res.textures.get("earth_dm")),
-					ml::Uniform("Frag.tex_sm",		ml::Uniform::Tex2D,	ML_Res.textures.get("earth_sm")),
-					ml::Uniform("Frag.camPos",		ml::Uniform::Vec3,	&uni.camPos),
-					ml::Uniform("Frag.lightPos",	ml::Uniform::Vec3,	&uni.lightPos),
-					ml::Uniform("Frag.lightCol",	ml::Uniform::Vec4,	&uni.lightCol),
-					ml::Uniform("Frag.ambient",		ml::Uniform::Float, &uni.ambient),
-					ml::Uniform("Frag.specular",	ml::Uniform::Float, &uni.specular),
-					ml::Uniform("Frag.shininess",	ml::Uniform::Int,	&uni.shininess),
-				};
-				obj->renderFlags = ml::RenderFlags({
-					{ ml::GL::CullFace, true },
-					{ ml::GL::DepthTest, true },
-				});
-				obj->transform()
-					.translate({ 0.0f, 0.0f, 0.0f })
-					.scale(1.0f);
-			}
-
 			// Moon
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::GameObject * obj = ML_Hierarchy.newObject("moon"))
@@ -533,27 +506,38 @@ namespace DEMO
 			}
 		}
 
-		// Setup ECS (WIP)
+		// Setup Entities (WIP)
 		/* * * * * * * * * * * * * * * * * * * * */
-		if (ml::Entity * ent = ML_Res.entities.get("test"))
+		if (ml::Entity * ent = ML_Res.entities.get("earth"))
 		{
 			ml::Transform * transform = ent->add<ml::Transform>({
-				{ 0.0f, -2.5f, 0.0f },
-				{ 12.5f, 0.25f, 12.5f },
-				{ ml::vec3f::One, 0.0f }
+				{ 0.0f }, // position
+				{ 1.0f }, // scale
+				{ ml::vec3f::One, 0.0f } // rotation
 			});
 
-			ml::UniformSet * uniforms = ent->add<ml::UniformSet>({
-				ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&uni.persp.matrix()),
-				ml::Uniform("Vert.view",	ml::Uniform::Mat4,	&uni.camera.matrix()),
-				ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&transform->matrix()),
-				ml::Uniform("Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White),
-				ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm")),
-			});
-
-			ml::RenderFlags * flags = ent->add<ml::RenderFlags>({
-				{ ml::GL::CullFace, true },
-				{ ml::GL::DepthTest, true },
+			ml::Renderer * renderer = ent->add<ml::Renderer>({
+				ML_Res.models.get("earth"),
+				ML_Res.shaders.get("lighting"),
+				ml::RenderFlags
+				{
+					{ ml::GL::CullFace, true },
+					{ ml::GL::DepthTest, true },
+				},
+				ml::UniformSet 
+				{
+					ml::Uniform("Vert.proj",		ml::Uniform::Mat4,	&uni.persp.matrix()),
+					ml::Uniform("Vert.view",		ml::Uniform::Mat4,	&uni.camera.matrix()),
+					ml::Uniform("Vert.model",		ml::Uniform::Mat4,	&transform->matrix()),
+					ml::Uniform("Frag.tex_dm",		ml::Uniform::Tex2D,	ML_Res.textures.get("earth_dm")),
+					ml::Uniform("Frag.tex_sm",		ml::Uniform::Tex2D,	ML_Res.textures.get("earth_sm")),
+					ml::Uniform("Frag.camPos",		ml::Uniform::Vec3,	&uni.camPos),
+					ml::Uniform("Frag.lightPos",	ml::Uniform::Vec3,	&uni.lightPos),
+					ml::Uniform("Frag.lightCol",	ml::Uniform::Vec4,	&uni.lightCol),
+					ml::Uniform("Frag.ambient",		ml::Uniform::Float, &uni.ambient),
+					ml::Uniform("Frag.specular",	ml::Uniform::Float, &uni.specular),
+					ml::Uniform("Frag.shininess",	ml::Uniform::Int,	&uni.shininess),
+				}
 			});
 		}
 
@@ -628,12 +612,14 @@ namespace DEMO
 			}
 		}
 
-		// Update ECS (WIP)
+		// Update Entities (WIP)
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
-			for (auto & pair : ML_Res.entities)
+			// Earth
+			/* * * * * * * * * * * * * * * * * * * * */
+			if (ml::Entity * ent = ML_Res.entities.get("earth"))
 			{
-				pair.second->update();
+				ent->get<ml::Transform>()->rotate((uni.animate ? ev->elapsed.delta() : 0.f), ml::vec3f::Up);
 			}
 		}
 
@@ -670,14 +656,6 @@ namespace DEMO
 					.rotate(-ev->elapsed.delta(), ml::vec3f::One);
 			}
 
-			// Earth
-			/* * * * * * * * * * * * * * * * * * * * */
-			if (ml::GameObject * obj = ML_Hierarchy.getObject("earth"))
-			{
-				obj->transform()
-					.rotate((uni.animate ? ev->elapsed.delta() : 0.f), ml::vec3f::Up);
-			}
-
 			// Moon
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::GameObject * obj = ML_Hierarchy.getObject("moon"))
@@ -712,19 +690,22 @@ namespace DEMO
 
 		// Update Camera
 		/* * * * * * * * * * * * * * * * * * * * */
-		if (const ml::GameObject * target = ML_Hierarchy.getObject("earth"))
+		if (const ml::Entity * ent = ML_Res.entities.get("earth"))
 		{
-			// Look
-			ml::vec3f pos = target->transform().getPosition();
-			ml::vec3f dir = (pos - uni.camPos).normalized();
-			ml::vec3f look = uni.camPos + (pos - uni.camPos).normalized();
-			uni.camera.lookAt(uni.camPos, look, ml::vec3f::Up);
+			if (const ml::Transform * target = ent->get<ml::Transform>())
+			{
+				// Look
+				ml::vec3f pos = target->getPosition();
+				ml::vec3f dir = (pos - uni.camPos).normalized();
+				ml::vec3f look = uni.camPos + (pos - uni.camPos).normalized();
+				uni.camera.lookAt(uni.camPos, look, ml::vec3f::Up);
 
-			// Orbit
-			float speed = (uni.camAnimate ? uni.camSpd * ev->elapsed.delta() : 0.0f);
-			ml::vec3f fwd = (look - uni.camPos);
-			ml::vec3f right = (fwd.cross(ml::vec3f::Up) * ml::vec3f(1, 0, 1)).normalized();
-			uni.camPos += right * speed;
+				// Orbit
+				float speed = (uni.camAnimate ? uni.camSpd * ev->elapsed.delta() : 0.0f);
+				ml::vec3f fwd = (look - uni.camPos);
+				ml::vec3f right = (fwd.cross(ml::vec3f::Up) * ml::vec3f(1, 0, 1)).normalized();
+				uni.camPos += right * speed;
+			}
 		}
 
 		// Update Text
@@ -869,11 +850,14 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 			this->clear(uni.clearColor);
 
-			// Draw ECS (WIP)
+			// Draw Entities (WIP)
 			/* * * * * * * * * * * * * * * * * * * * */
 			for (auto & pair : ML_Res.entities)
 			{
-				this->draw(*pair.second);
+				if (ml::Renderer * renderer = pair.second->get<ml::Renderer>())
+				{
+					this->draw(*renderer);
+				}
 			}
 
 			// Draw Objects

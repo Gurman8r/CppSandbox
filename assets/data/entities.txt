@@ -3,7 +3,7 @@
 
 <item>
 	type:	entity
-	name:	test
+	name:	earth
 </item>
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #

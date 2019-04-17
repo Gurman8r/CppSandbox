@@ -49,16 +49,4 @@ namespace ml
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
-
-	void Entity::update() const
-	{
-
-	}
-
-	void Entity::draw(RenderTarget & target, RenderBatch batch) const
-	{
-
-	}
-
-	/* * * * * * * * * * * * * * * * * * * * */
 }
