@@ -7,7 +7,7 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	template <class T = uint32_t>
+	template <class T>
 	class IHandle
 	{
 	public:

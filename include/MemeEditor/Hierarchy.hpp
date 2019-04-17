@@ -27,15 +27,11 @@ namespace ml
 		void onEvent(const IEvent * value) override;
 		bool draw(bool * p_open) override;
 
-
-	public:
+	private:
 		GameObject * getObject(const String & name);
 		GameObject * newObject(const GameObject & value);
 
-
-	private:
 		bool edit_object_name(char * buf, GameObject * value);
-
 
 	public:
 		inline const ObjectMap & objects() const { return m_objects; }
