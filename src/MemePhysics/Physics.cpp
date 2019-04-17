@@ -16,9 +16,9 @@ namespace ml
 
 			timer().start();
 			
-			mutex().lock();
-
 			value = world().state();
+
+			mutex().lock();
 			
 			return true;
 		}
@@ -34,9 +34,9 @@ namespace ml
 			
 			mutex().unlock();
 
-			world().state() = value;
-
 			const Duration & elapsed = timer().stop().elapsed();
+
+			world().state() = value;
 
 			if (elapsed.millis() < ML_PHYSICS_TIMESTEP)
 			{
