@@ -1,4 +1,4 @@
-// normal3D.shader
+// normal.shader
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #include <common/Vert.MVP.shader>

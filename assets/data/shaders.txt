@@ -15,8 +15,8 @@
 
 <item>
 	type: shader
-	name: normal3D
-	file: ../../../assets/shaders/normal3D.shader
+	name: normal
+	file: ../../../assets/shaders/normal.shader
 </item>
 
 <item>

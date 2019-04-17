@@ -448,7 +448,7 @@ namespace DEMO
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("cube"),
-					ML_Res.shaders.get("normal3D"),
+					ML_Res.shaders.get("normal"),
 					ml::RenderFlags
 					{
 						{ ml::GL::CullFace, true },
@@ -477,7 +477,7 @@ namespace DEMO
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("ground"),
-					ML_Res.shaders.get("normal3D"),
+					ML_Res.shaders.get("normal"),
 					ml::RenderFlags
 					{
 						{ ml::GL::CullFace, true },
