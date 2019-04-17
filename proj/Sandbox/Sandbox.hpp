@@ -43,14 +43,10 @@ namespace DEMO
 	private:
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		// Canvas
 		ml::Canvas m_canvas;
-
-		// Text
 		ml::HashMap<ml::String, ml::Text> m_text;
 
-		// Uniform Values
-		struct DemoUniforms
+		struct DemoData
 		{
 			// Projections
 			ml::Transform	persp;
@@ -83,7 +79,7 @@ namespace DEMO
 			int32_t			lineSamples	= 16;
 
 		};
-		DemoUniforms uni;
+		DemoData data;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	};

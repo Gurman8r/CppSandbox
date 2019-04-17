@@ -8,7 +8,7 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	class ML_GRAPHICS_API Renderer
+	class ML_GRAPHICS_API Renderer final
 		: public ITrackable
 		, public IDrawable
 	{

@@ -328,9 +328,9 @@ namespace DEMO
 		// Setup Camera
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
-			uni.camera.lookAt(
-				uni.camPos,
-				uni.camPos + ml::vec3f::Back,
+			data.camera.lookAt(
+				data.camPos,
+				data.camPos + ml::vec3f::Back,
 				ml::vec3f::Up);
 		}
 
@@ -355,7 +355,7 @@ namespace DEMO
 			if (ml::Entity * ent = ML_Res.entities.load("light"))
 			{
 				ml::Transform * transform = ent->add<ml::Transform>({
-					uni.lightPos, // position
+					data.lightPos, // position
 					{ 1.0f }, // scale
 					{ } // rotation
 				});
@@ -370,10 +370,10 @@ namespace DEMO
 					},
 					ml::UniformSet
 					{
-						{ "Vert.proj",		ml::Uniform::Mat4,	&uni.persp.matrix() },
-						{ "Vert.view",		ml::Uniform::Mat4,	&uni.camera.matrix() },
+						{ "Vert.proj",		ml::Uniform::Mat4,	&data.persp.matrix() },
+						{ "Vert.view",		ml::Uniform::Mat4,	&data.camera.matrix() },
 						{ "Vert.model",		ml::Uniform::Mat4,	&transform->matrix() },
-						{ "Frag.mainCol",	ml::Uniform::Vec4,	&uni.lightCol },
+						{ "Frag.mainCol",	ml::Uniform::Vec4,	&data.lightCol },
 					}
 				});
 			}
@@ -398,8 +398,8 @@ namespace DEMO
 					},
 					ml::UniformSet
 					{
-						{ "Vert.proj",		ml::Uniform::Mat4,	&uni.persp.matrix() },
-						{ "Vert.view",		ml::Uniform::Mat4,	&uni.camera.matrix() },
+						{ "Vert.proj",		ml::Uniform::Mat4,	&data.persp.matrix() },
+						{ "Vert.view",		ml::Uniform::Mat4,	&data.camera.matrix() },
 						{ "Vert.model",		ml::Uniform::Mat4,	&transform->matrix() },
 						{ "Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White },
 						{ "Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("borg") },
@@ -427,8 +427,8 @@ namespace DEMO
 					},
 					ml::UniformSet
 					{
-						{ "Vert.proj",		ml::Uniform::Mat4,	&uni.persp.matrix() },
-						{ "Vert.view",		ml::Uniform::Mat4,	&uni.camera.matrix() },
+						{ "Vert.proj",		ml::Uniform::Mat4,	&data.persp.matrix() },
+						{ "Vert.view",		ml::Uniform::Mat4,	&data.camera.matrix() },
 						{ "Vert.model",		ml::Uniform::Mat4,	&transform->matrix() },
 						{ "Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White },
 						{ "Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("sanic") },
@@ -456,8 +456,8 @@ namespace DEMO
 					},
 					ml::UniformSet
 					{
-						{ "Vert.proj",		ml::Uniform::Mat4,	&uni.persp.matrix() },
-						{ "Vert.view",		ml::Uniform::Mat4,	&uni.camera.matrix() },
+						{ "Vert.proj",		ml::Uniform::Mat4,	&data.persp.matrix() },
+						{ "Vert.view",		ml::Uniform::Mat4,	&data.camera.matrix() },
 						{ "Vert.model",		ml::Uniform::Mat4,	&transform->matrix() },
 						{ "Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White },
 						{ "Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm") },
@@ -485,8 +485,8 @@ namespace DEMO
 					},
 					ml::UniformSet
 					{
-						{ "Vert.proj",		ml::Uniform::Mat4,	&uni.persp.matrix() },
-						{ "Vert.view",		ml::Uniform::Mat4,	&uni.camera.matrix() },
+						{ "Vert.proj",		ml::Uniform::Mat4,	&data.persp.matrix() },
+						{ "Vert.view",		ml::Uniform::Mat4,	&data.camera.matrix() },
 						{ "Vert.model",		ml::Uniform::Mat4,	&transform->matrix() },
 						{ "Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White },
 						{ "Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm") },
@@ -514,17 +514,17 @@ namespace DEMO
 					},
 					ml::UniformSet
 					{
-						{ "Vert.proj",		ml::Uniform::Mat4,	&uni.persp.matrix() },
-						{ "Vert.view",		ml::Uniform::Mat4,	&uni.camera.matrix() },
+						{ "Vert.proj",		ml::Uniform::Mat4,	&data.persp.matrix() },
+						{ "Vert.view",		ml::Uniform::Mat4,	&data.camera.matrix() },
 						{ "Vert.model",		ml::Uniform::Mat4,	&transform->matrix() },
 						{ "Frag.tex_dm",	ml::Uniform::Tex2D,	ML_Res.textures.get("moon_dm") },
 						{ "Frag.tex_sm",	ml::Uniform::Tex2D,	ML_Res.textures.get("moon_nm") },
-						{ "Frag.camPos",	ml::Uniform::Vec3,	&uni.camPos },
-						{ "Frag.lightPos",	ml::Uniform::Vec3,	&uni.lightPos },
-						{ "Frag.lightCol",	ml::Uniform::Vec4,	&uni.lightCol },
-						{ "Frag.ambient",	ml::Uniform::Float, &uni.ambient },
-						{ "Frag.specular",	ml::Uniform::Float, &uni.specular },
-						{ "Frag.shininess",	ml::Uniform::Int,	&uni.shininess },
+						{ "Frag.camPos",	ml::Uniform::Vec3,	&data.camPos },
+						{ "Frag.lightPos",	ml::Uniform::Vec3,	&data.lightPos },
+						{ "Frag.lightCol",	ml::Uniform::Vec4,	&data.lightCol },
+						{ "Frag.ambient",	ml::Uniform::Float, &data.ambient },
+						{ "Frag.specular",	ml::Uniform::Float, &data.specular },
+						{ "Frag.shininess",	ml::Uniform::Int,	&data.shininess },
 					}
 				});
 			}
@@ -549,17 +549,17 @@ namespace DEMO
 					},
 					ml::UniformSet 
 					{
-						{ "Vert.proj",		ml::Uniform::Mat4,	&uni.persp.matrix() },
-						{ "Vert.view",		ml::Uniform::Mat4,	&uni.camera.matrix() },
+						{ "Vert.proj",		ml::Uniform::Mat4,	&data.persp.matrix() },
+						{ "Vert.view",		ml::Uniform::Mat4,	&data.camera.matrix() },
 						{ "Vert.model",		ml::Uniform::Mat4,	&transform->matrix() },
 						{ "Frag.tex_dm",	ml::Uniform::Tex2D,	ML_Res.textures.get("earth_dm") },
 						{ "Frag.tex_sm",	ml::Uniform::Tex2D,	ML_Res.textures.get("earth_sm") },
-						{ "Frag.camPos",	ml::Uniform::Vec3,	&uni.camPos },
-						{ "Frag.lightPos",	ml::Uniform::Vec3,	&uni.lightPos },
-						{ "Frag.lightCol",	ml::Uniform::Vec4,	&uni.lightCol },
-						{ "Frag.ambient",	ml::Uniform::Float, &uni.ambient },
-						{ "Frag.specular",	ml::Uniform::Float, &uni.specular },
-						{ "Frag.shininess",	ml::Uniform::Int,	&uni.shininess },
+						{ "Frag.camPos",	ml::Uniform::Vec3,	&data.camPos },
+						{ "Frag.lightPos",	ml::Uniform::Vec3,	&data.lightPos },
+						{ "Frag.lightCol",	ml::Uniform::Vec4,	&data.lightCol },
+						{ "Frag.ambient",	ml::Uniform::Float, &data.ambient },
+						{ "Frag.specular",	ml::Uniform::Float, &data.specular },
+						{ "Frag.shininess",	ml::Uniform::Int,	&data.shininess },
 					}
 				});
 			}
@@ -638,7 +638,7 @@ namespace DEMO
 			if (ml::Entity * ent = ML_Res.entities.get("light"))
 			{
 				ent->get<ml::Transform>()
-					->setPosition(uni.lightPos)
+					->setPosition(data.lightPos)
 					.rotate(-ev->elapsed.delta(), ml::vec3f::Forward);
 			}
 
@@ -709,15 +709,15 @@ namespace DEMO
 		{
 			// Look
 			ml::vec3f pos = target->get<ml::Transform>()->getPosition();
-			ml::vec3f dir = (pos - uni.camPos).normalized();
-			ml::vec3f look = uni.camPos + (pos - uni.camPos).normalized();
-			uni.camera.lookAt(uni.camPos, look, ml::vec3f::Up);
+			ml::vec3f dir = (pos - data.camPos).normalized();
+			ml::vec3f look = data.camPos + (pos - data.camPos).normalized();
+			data.camera.lookAt(data.camPos, look, ml::vec3f::Up);
 
 			// Orbit
-			float speed = (uni.camAnimate ? uni.camSpd * ev->elapsed.delta() : 0.0f);
-			ml::vec3f fwd = (look - uni.camPos);
+			float speed = (data.camAnimate ? data.camSpd * ev->elapsed.delta() : 0.0f);
+			ml::vec3f fwd = (look - data.camPos);
 			ml::vec3f right = (fwd.cross(ml::vec3f::Up) * ml::vec3f(1, 0, 1)).normalized();
-			uni.camPos += right * speed;
+			data.camPos += right * speed;
 		}
 
 		// Update Text
@@ -837,13 +837,13 @@ namespace DEMO
 			if (changed)
 			{
 				// Orthographic
-				uni.ortho.orthographic(
+				data.ortho.orthographic(
 					{ ml::vec2f::Zero, (ml::vec2f)resolution },
 					{ SETTINGS.orthoNear, SETTINGS.orthoFar }
 				);
 
 				// Perspective
-				uni.persp.perspective(
+				data.persp.perspective(
 					SETTINGS.fieldOfView, ((float)resolution[0] / (float)resolution[1]),
 					SETTINGS.perspNear, SETTINGS.perspFar
 				);
@@ -860,7 +860,7 @@ namespace DEMO
 
 			// Clear Screen
 			/* * * * * * * * * * * * * * * * * * * * */
-			this->clear(uni.clearColor);
+			this->clear(data.clearColor);
 
 			// Draw Entities
 			/* * * * * * * * * * * * * * * * * * * * */
@@ -884,11 +884,11 @@ namespace DEMO
 				{
 					static ml::UniformSet uniforms = 
 					{
-						{ "Frag.mainCol",	ml::Uniform::Vec4,	&uni.lineColor },
-						{ "Curve.mode",		ml::Uniform::Int,	&uni.lineMode },
-						{ "Curve.delta",	ml::Uniform::Float, &uni.lineDelta },
-						{ "Curve.size",		ml::Uniform::Float, &uni.lineSize },
-						{ "Curve.samples",	ml::Uniform::Int,	&uni.lineSamples },
+						{ "Frag.mainCol",	ml::Uniform::Vec4,	&data.lineColor },
+						{ "Curve.mode",		ml::Uniform::Int,	&data.lineMode },
+						{ "Curve.delta",	ml::Uniform::Float, &data.lineDelta },
+						{ "Curve.size",		ml::Uniform::Float, &data.lineSize },
+						{ "Curve.samples",	ml::Uniform::Int,	&data.lineSamples },
 					};
 					shader->applyUniforms(uniforms);
 					shader->bind();
@@ -905,7 +905,7 @@ namespace DEMO
 						shader,
 						ml::UniformSet
 						{
-							{ "Vert.proj",		ml::Uniform::Mat4,	&uni.ortho.matrix() },
+							{ "Vert.proj",		ml::Uniform::Mat4,	&data.ortho.matrix() },
 							{ "Frag.mainCol",	ml::Uniform::Vec4 },
 							{ "Frag.mainTex",	ml::Uniform::Tex2D },
 						}
@@ -927,7 +927,7 @@ namespace DEMO
 						shader, 
 						ml::UniformSet 
 						{
-							{ "Vert.proj",		ml::Uniform::Mat4,	&uni.ortho.matrix() },
+							{ "Vert.proj",		ml::Uniform::Mat4,	&data.ortho.matrix() },
 							{ "Frag.mainCol",	ml::Uniform::Vec4 },
 							{ "Frag.mainTex",	ml::Uniform::Tex2D },
 						}
@@ -955,7 +955,7 @@ namespace DEMO
 				{
 					post->bind();
 					shader->applyUniforms({
-						{ "Effect.mode", ml::Uniform::Int, &uni.effectMode },
+						{ "Effect.mode", ml::Uniform::Int, &data.effectMode },
 					});
 					this->draw(*scene);
 					post->unbind();
@@ -1170,7 +1170,7 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 
 			ImGui::Text("Scene");
-			ImGui::ColorEdit4("Color##Scene", &uni.clearColor[0]);
+			ImGui::ColorEdit4("Color##Scene", &data.clearColor[0]);
 			ImGui::Separator();
 
 			/* * * * * * * * * * * * * * * * * * * * */
@@ -1183,35 +1183,35 @@ namespace DEMO
 				"Juicy",
 				"Inverted",
 			};
-			ImGui::Combo("Shader##Framebuffer", &uni.effectMode, fbo_modes, IM_ARRAYSIZE(fbo_modes));
+			ImGui::Combo("Shader##Framebuffer", &data.effectMode, fbo_modes, IM_ARRAYSIZE(fbo_modes));
 			ImGui::Separator();
 
 			/* * * * * * * * * * * * * * * * * * * * */
 
 			ImGui::Text("Camera");
-			ImGui::Checkbox("Move##Camera", &uni.camAnimate);
-			ml::GUI::EditVec3f("Position##Camera", uni.camPos);
-			ImGui::DragFloat("Speed##Camera", &uni.camSpd, 0.1f, -5.f, 5.f);
+			ImGui::Checkbox("Move##Camera", &data.camAnimate);
+			ml::GUI::EditVec3f("Position##Camera", data.camPos);
+			ImGui::DragFloat("Speed##Camera", &data.camSpd, 0.1f, -5.f, 5.f);
 			ImGui::Separator();
 
 			/* * * * * * * * * * * * * * * * * * * * */
 
 			ImGui::Text("Light");
-			ml::GUI::EditVec3f("Position##Light", uni.lightPos);
-			ImGui::ColorEdit4("Color##Light", &uni.lightCol[0]);
-			ImGui::DragFloat("Ambient##Light", &uni.ambient, 0.01f, 0.f, 1.f);
-			ImGui::DragFloat("Specular##Light", &uni.specular, 0.01f, 0.1f, 10.f);
-			ImGui::DragInt("Shininess##Light", &uni.shininess, 1.f, 1, 256);
+			ml::GUI::EditVec3f("Position##Light", data.lightPos);
+			ImGui::ColorEdit4("Color##Light", &data.lightCol[0]);
+			ImGui::DragFloat("Ambient##Light", &data.ambient, 0.01f, 0.f, 1.f);
+			ImGui::DragFloat("Specular##Light", &data.specular, 0.01f, 0.1f, 10.f);
+			ImGui::DragInt("Shininess##Light", &data.shininess, 1.f, 1, 256);
 			ImGui::Separator();
 
 			/* * * * * * * * * * * * * * * * * * * * */
 
 			ImGui::Text("Geometry");
-			ImGui::SliderInt("Mode##Geometry", &uni.lineMode, -1, 3);
-			ImGui::ColorEdit4("Color##Geometry", &uni.lineColor[0]);
-			ImGui::SliderFloat("Delta##Geometry", &uni.lineDelta, 0.f, 1.f);
-			ImGui::SliderFloat("Size##Geometry", &uni.lineSize, 0.f, 1.f);
-			ImGui::SliderInt("Samples##Geometry", &uni.lineSamples, 1, 128);
+			ImGui::SliderInt("Mode##Geometry", &data.lineMode, -1, 3);
+			ImGui::ColorEdit4("Color##Geometry", &data.lineColor[0]);
+			ImGui::SliderFloat("Delta##Geometry", &data.lineDelta, 0.f, 1.f);
+			ImGui::SliderFloat("Size##Geometry", &data.lineSize, 0.f, 1.f);
+			ImGui::SliderInt("Samples##Geometry", &data.lineSamples, 1, 128);
 			ImGui::Separator();
 
 			/* * * * * * * * * * * * * * * * * * * * */

@@ -44,7 +44,7 @@ namespace DEMO
 		uint32_t	width;			// Window Width
 		uint32_t	height;			// Window Height
 		uint32_t	bitsPerPixel;	// Bits Per Pixel
-		uint32_t	style;
+		uint32_t	style;			// Window Style
 		uint32_t	majorVersion;	// Major Version
 		uint32_t	minorVersion;	// Minor Version
 		uint32_t	depthBits;		// Depth Bits
