@@ -14,9 +14,9 @@ namespace ml
 		{
 			m_updating = true;
 
-			timer().start();
-			
 			value = world().state();
+			
+			timer().start();
 
 			mutex().lock();
 			
