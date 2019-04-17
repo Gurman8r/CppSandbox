@@ -32,6 +32,7 @@ namespace ml
 			entities.clean()	+
 			sounds.clean()		+
 			scripts.clean()		+
+			lua.reload()		+
 			plugins.clean()		;
 	}
 
@@ -51,6 +52,7 @@ namespace ml
 			entities.clean()	+
 			sounds.reload()		+
 			scripts.reload()	+
+			lua.reload()		+
 			plugins.reload()	;
 	}
 
@@ -117,14 +119,6 @@ namespace ml
 	{
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		auto getStr = [](const HashMap<String, String> & data, const String & find)
-		{
-			HashMap<String, String>::const_iterator it;
-			return (((it = data.find(find)) != data.end()) ? it->second : String());
-		};
-
-		/* * * * * * * * * * * * * * * * * * * * */
-
 		const String type = item.getStr("type");
 		const String name = item.getStr("name");
 		if (type && name)
@@ -187,6 +181,19 @@ namespace ml
 				else
 				{
 					return images.load(name);
+				}
+			}
+			// Lua
+			/* * * * * * * * * * * * * * * * * * * * */
+			else if (type == "lua")
+			{
+				if (const String file = item.getStr("file"))
+				{
+					return lua.load(name, file);
+				}
+				else
+				{
+					return lua.load(name);
 				}
 			}
 			// Materials

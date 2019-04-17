@@ -1,10 +1,12 @@
 #ifndef _ML_RESOURCES_HPP_
 #define _ML_RESOURCES_HPP_
 
+#include <MemeAudio/Sound.hpp>
+#include <MemeCore/List.hpp>
 #include <MemeEngine/Registry.hpp>
 #include <MemeEngine/ManifestItem.hpp>
-#include <MemeCore/List.hpp>
-#include <MemeAudio/Sound.hpp>
+#include <MemeEngine/Entity.hpp>
+#include <MemeEngine/LuaScript.hpp>
 #include <MemeEngine/Plugin.hpp>
 #include <MemeGraphics/Effect.hpp>
 #include <MemeGraphics/Font.hpp>
@@ -12,7 +14,6 @@
 #include <MemeGraphics/Skybox.hpp>
 #include <MemeGraphics/Sprite.hpp>
 #include <MemeScript/Script.hpp>
-#include <MemeEngine/Entity.hpp>
 
 #define ML_Res ml::Resources::getInstance()
 
@@ -49,6 +50,7 @@ namespace ml
 		Registry<Entity>	entities;
 		Registry<Font>		fonts;
 		Registry<Image>		images;
+		Registry<LuaScript>	lua;
 		Registry<Material>	mats;
 		Registry<Mesh>		meshes;
 		Registry<Model>		models;

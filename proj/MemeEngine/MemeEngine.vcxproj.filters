@@ -40,6 +40,9 @@
     <Filter Include="Header Files\Lua">
       <UniqueIdentifier>{ed5cfdca-75a9-41e4-81b0-b592df270aa8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Lua">
+      <UniqueIdentifier>{7ede356a-b9f5-4586-8726-2fa696a29ac4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeEngine\Export.hpp">
@@ -90,6 +93,9 @@
     <ClInclude Include="..\..\include\MemeEngine\SharedLibrary.hpp">
       <Filter>Header Files\Plugins</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeEngine\LuaScript.hpp">
+      <Filter>Header Files\Lua</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeEngine\Plugin.cpp">
@@ -124,6 +130,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEngine\SharedLibrary.cpp">
       <Filter>Source Files\Plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeEngine\LuaScript.cpp">
+      <Filter>Source Files\Lua</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

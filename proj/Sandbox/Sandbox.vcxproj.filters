@@ -61,6 +61,9 @@
     <Filter Include="Resource Files\assets\textures\earth">
       <UniqueIdentifier>{3fe6c404-f6f0-4fc5-8bdc-2ce7efe8944d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\assets\lua">
+      <UniqueIdentifier>{6d8f12ae-b5bf-4dbc-9754-cb216841fb2f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -119,6 +122,9 @@
       <Filter>Resource Files\assets</Filter>
     </Text>
     <Text Include="..\..\assets\data\entities.txt">
+      <Filter>Resource Files\assets\data</Filter>
+    </Text>
+    <Text Include="..\..\assets\data\lua.txt">
       <Filter>Resource Files\assets\data</Filter>
     </Text>
   </ItemGroup>
@@ -318,6 +324,9 @@
     </None>
     <None Include="..\..\ML_Config.ini">
       <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\assets\lua\test.lua">
+      <Filter>Resource Files\assets\lua</Filter>
     </None>
   </ItemGroup>
 </Project>
