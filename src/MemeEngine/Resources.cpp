@@ -19,6 +19,7 @@ namespace ml
 	size_t Resources::cleanupAll()
 	{
 		return
+			lua.clean()			+
 			effects.clean()		+
 			sprites.clean()		+
 			models.clean()		+
@@ -32,13 +33,13 @@ namespace ml
 			entities.clean()	+
 			sounds.clean()		+
 			scripts.clean()		+
-			lua.reload()		+
 			plugins.clean()		;
 	}
 
 	size_t Resources::reloadAll()
 	{
 		return
+			lua.reload()		+
 			fonts.reload()		+
 			images.reload()		+
 			meshes.reload()		+
@@ -52,7 +53,6 @@ namespace ml
 			entities.clean()	+
 			sounds.reload()		+
 			scripts.reload()	+
-			lua.reload()		+
 			plugins.reload()	;
 	}
 

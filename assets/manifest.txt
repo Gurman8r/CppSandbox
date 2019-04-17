@@ -1,3 +1,10 @@
+# Lua
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+<item>
+	type: manifest
+	name: ../../../assets/data/lua.txt
+</item>
+
 # Fonts
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 <item>

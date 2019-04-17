@@ -83,7 +83,8 @@ namespace DEMO
 			int32_t			lineSamples	= 16;
 			bool			animate		= true;
 
-		} uni;
+		};
+		DemoUniforms uni;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	};
