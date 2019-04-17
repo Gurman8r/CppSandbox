@@ -649,7 +649,7 @@ namespace DEMO
 			}
 		}
 
-		// Update Entities (WIP)
+		// Update Entities
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
 			// Light
@@ -881,7 +881,7 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 			this->clear(uni.clearColor);
 
-			// Draw Entities (WIP)
+			// Draw Entities
 			/* * * * * * * * * * * * * * * * * * * * */
 			for (auto & pair : ML_Res.entities)
 			{
@@ -1164,7 +1164,7 @@ namespace DEMO
 
 			if (ImGui::BeginMenuBar())
 			{
-				ImGui::Text("%s (WIP)", ML_Inspector.title());
+				ImGui::Text("%s", ML_Inspector.title());
 				ImGui::EndMenuBar();
 			}
 
