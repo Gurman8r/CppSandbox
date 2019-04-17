@@ -1,7 +1,7 @@
 #ifndef _ML_RANDOM_HPP_
 #define _ML_RANDOM_HPP_
 
-#include <MemeCore/Maths.hpp>
+#include <MemeCore/Export.hpp>
 #include <MemeCore/STD.hpp>
 
 namespace ml

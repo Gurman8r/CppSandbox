@@ -1,5 +1,7 @@
 #include <MemeEngine/Entity.hpp>
 #include <MemeEngine/Lua.hpp>
+#include <MemeEngine/ECS.hpp>
+#include <MemeGraphics/RenderTarget.hpp>
 #include <MemeCore/Debug.hpp>
 
 namespace ml
@@ -22,15 +24,14 @@ namespace ml
 	{
 		for (auto pair : m_cmp)
 		{
-			if (static_cast<ITrackable *>(pair.second))
+			if (ITrackable * trackable = (ITrackable *)(pair.second))
 			{
-				delete static_cast<ITrackable *>(pair.second);
+				delete trackable;
 			}
 			else
 			{
 				delete pair.second;
 			}
-			pair.second = NULL;
 		}
 		m_cmp.clear();
 		return true;
@@ -45,6 +46,18 @@ namespace ml
 		}
 		lua_close(lua);
 		return lua;
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	void Entity::update() const
+	{
+
+	}
+
+	void Entity::draw(RenderTarget & target, RenderBatch batch) const
+	{
+
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

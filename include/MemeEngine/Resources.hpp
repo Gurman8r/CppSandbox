@@ -12,6 +12,7 @@
 #include <MemeGraphics/Skybox.hpp>
 #include <MemeGraphics/Sprite.hpp>
 #include <MemeScript/Script.hpp>
+#include <MemeEngine/Entity.hpp>
 
 #define ML_Res ml::Resources::getInstance()
 
@@ -45,6 +46,7 @@ namespace ml
 
 	public:
 		Registry<Effect>	effects;
+		Registry<Entity>	entities;
 		Registry<Font>		fonts;
 		Registry<Image>		images;
 		Registry<Material>	mats;

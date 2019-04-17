@@ -24,6 +24,9 @@ namespace ml
 		ECS();
 		~ECS();
 
+	public:
+
+
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

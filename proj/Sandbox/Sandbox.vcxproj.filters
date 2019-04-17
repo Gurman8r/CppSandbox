@@ -118,6 +118,9 @@
     <Text Include="..\..\assets\manifest.txt">
       <Filter>Resource Files\assets</Filter>
     </Text>
+    <Text Include="..\..\assets\data\entities.txt">
+      <Filter>Resource Files\assets\data</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <Font Include="..\..\assets\fonts\clacon.ttf">

@@ -535,16 +535,15 @@ namespace DEMO
 
 		// Setup ECS (WIP)
 		/* * * * * * * * * * * * * * * * * * * * */
-		ml::Entity ent;
-		if (ent.loadFromFile(""))
+		if (ml::Entity * ent = ML_Res.entities.get("test"))
 		{
-			ml::Transform * transform = ent.add<ml::Transform>({
+			ml::Transform * transform = ent->add<ml::Transform>({
 				{ 0.0f, -2.5f, 0.0f },
 				{ 12.5f, 0.25f, 12.5f },
 				{ ml::vec3f::One, 0.0f }
 			});
 
-			ml::UniformSet * uniforms = ent.add<ml::UniformSet>({
+			ml::UniformSet * uniforms = ent->add<ml::UniformSet>({
 				ml::Uniform("Vert.proj",	ml::Uniform::Mat4,	&uni.persp.matrix()),
 				ml::Uniform("Vert.view",	ml::Uniform::Mat4,	&uni.camera.matrix()),
 				ml::Uniform("Vert.model",	ml::Uniform::Mat4,	&transform->matrix()),
@@ -552,7 +551,7 @@ namespace DEMO
 				ml::Uniform("Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm")),
 			});
 
-			ml::RenderFlags * flags = ent.add<ml::RenderFlags>({
+			ml::RenderFlags * flags = ent->add<ml::RenderFlags>({
 				{ ml::GL::CullFace, true },
 				{ ml::GL::DepthTest, true },
 			});
@@ -626,6 +625,15 @@ namespace DEMO
 			else if (SETTINGS.isClient)
 			{
 				ML_NetClient.poll();
+			}
+		}
+
+		// Update ECS (WIP)
+		/* * * * * * * * * * * * * * * * * * * * */
+		{
+			for (auto & pair : ML_Res.entities)
+			{
+				pair.second->update();
 			}
 		}
 
@@ -860,6 +868,15 @@ namespace DEMO
 			// Clear Screen
 			/* * * * * * * * * * * * * * * * * * * * */
 			this->clear(uni.clearColor);
+
+			// Draw ECS (WIP)
+			/* * * * * * * * * * * * * * * * * * * * */
+			{
+				for (auto & pair : ML_Res.entities)
+				{
+					this->draw(*pair.second);
+				}
+			}
 
 			// Draw Objects
 			/* * * * * * * * * * * * * * * * * * * * */

@@ -10,20 +10,20 @@ namespace ml
 	public:
 		virtual ~ITransformable() {}
 
+	public:
+		inline Transform & transform()
+		{
+			return m_transform;
+		}
+
 		inline const Transform & transform() const 
 		{
 			return m_transform;
 		}
 		
-		inline Transform & transform() 
-		{ 
-			return m_transform;
-		}
-		
-		inline ITransformable &	transform(const Transform & value)
+		inline Transform & transform(const Transform & value)
 		{
-			m_transform = value;
-			return (*this);
+			return (m_transform = value);
 		}
 
 	private:

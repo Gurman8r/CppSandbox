@@ -4,6 +4,8 @@
 #include <MemeEngine/Export.hpp>
 #include <MemeCore/FileSystem.hpp>
 
+#define ML_assert_readable(T) static_assert(std::is_base_of<ml::IReadable, T>::value, "Type must derive ml::IReadable")
+
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -17,11 +19,9 @@ namespace ml
 		: public ITrackable
 		, public INonCopyable
 	{
-		static_assert(
-			std::is_base_of<ml::IReadable, _Elem>::value, 
-			"Type must derive ml::IReadable");
-
 		friend class Resources;
+
+		ML_assert_readable(_Elem);
 
 	public:
 		using value_type	= _Elem;
@@ -106,17 +106,21 @@ namespace ml
 		inline const_pointer get(const String & name) const
 		{
 			const_iterator it;
-			return ((it = find(name)) != end())
-				? it->second
-				: NULL;
+			return ((name)
+				? ((it = find(name)) != end())
+					? (it->second)
+					: (NULL)
+				: (NULL));
 		}
 
 		inline pointer get(const String & name)
 		{
 			iterator it;
-			return ((it = find(name)) != end())
-				? it->second
-				: NULL;
+			return ((name)
+				? ((it = find(name)) != end())
+					? (it->second)
+					: (NULL)
+				: (NULL));
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * */

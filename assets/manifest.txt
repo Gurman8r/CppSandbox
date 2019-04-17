@@ -84,3 +84,11 @@
 	type: manifest
 	name: ../../../assets/data/plugins.txt
 </item>
+
+
+# Entities
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+<item>
+	type: manifest
+	name: ../../../assets/data/entities.txt
+</item>

@@ -19,37 +19,39 @@ namespace ml
 	size_t Resources::cleanupAll()
 	{
 		return
-			sounds.clean() +
-			effects.clean() +
-			sprites.clean() +
-			models.clean() +
-			meshes.clean() +
-			mats.clean() +
-			shaders.clean() +
-			skyboxes.clean() +
-			textures.clean() +
-			images.clean() +
-			fonts.clean() +
-			scripts.clean() +
-			plugins.clean();
+			effects.clean()		+
+			sprites.clean()		+
+			models.clean()		+
+			meshes.clean()		+
+			mats.clean()		+
+			shaders.clean()		+
+			skyboxes.clean()	+
+			textures.clean()	+
+			images.clean()		+
+			fonts.clean()		+
+			entities.clean()	+
+			sounds.clean()		+
+			scripts.clean()		+
+			plugins.clean()		;
 	}
 
 	size_t Resources::reloadAll()
 	{
 		return
-			scripts.reload() +
-			fonts.reload() +
-			images.reload() +
-			meshes.reload() +
-			models.reload() +
-			mats.reload() +
-			shaders.reload() +
-			skyboxes.reload() +
-			sounds.reload() +
-			sprites.reload() +
-			textures.reload() +
-			effects.reload() +
-			plugins.reload();
+			fonts.reload()		+
+			images.reload()		+
+			meshes.reload()		+
+			models.reload()		+
+			mats.reload()		+
+			shaders.reload()	+
+			skyboxes.reload()	+
+			sprites.reload()	+
+			textures.reload()	+
+			effects.reload()	+
+			entities.clean()	+
+			sounds.reload()		+
+			scripts.reload()	+
+			plugins.reload()	;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -132,6 +134,12 @@ namespace ml
 			if (type == "manifest")
 			{
 				return loadFromFile(name);
+			}
+			// Entities
+			/* * * * * * * * * * * * * * * * * * * * */
+			else if (type == "entity")
+			{
+				return entities.load(name);
 			}
 			// Effects
 			/* * * * * * * * * * * * * * * * * * * * */
