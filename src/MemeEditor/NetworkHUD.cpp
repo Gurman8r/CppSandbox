@@ -20,7 +20,7 @@ namespace ml
 	{
 	}
 
-	bool NetworkHUD::draw(bool * p_open)
+	bool NetworkHUD::drawGui(bool * p_open)
 	{
 		if (beginDraw(p_open, ImGuiWindowFlags_MenuBar))
 		{

@@ -17,7 +17,7 @@ namespace ml
 
 	public:
 		virtual void onEvent(const IEvent * value) override = 0;
-		virtual bool draw(bool * p_open) = 0;
+		virtual bool drawGui(bool * p_open) = 0;
 
 	protected:
 		virtual bool beginDraw(bool * p_open, int32_t flags = 0);
@@ -28,7 +28,7 @@ namespace ml
 			typename _Fun
 		> inline bool drawFun(bool * p_open, _Fun fun)
 		{
-			if (draw(p_open))
+			if (drawGui(p_open))
 			{
 				fun();
 			}

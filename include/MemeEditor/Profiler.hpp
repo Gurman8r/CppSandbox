@@ -22,7 +22,7 @@ namespace ml
 
 	public:
 		void onEvent(const IEvent * value) override;
-		bool draw(bool * p_open) override;
+		bool drawGui(bool * p_open) override;
 
 		struct GraphLines
 		{

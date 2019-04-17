@@ -55,7 +55,7 @@ namespace ml
 		}
 	}
 
-	bool Terminal::draw(bool * p_open)
+	bool Terminal::drawGui(bool * p_open)
 	{
 		if (beginDraw(p_open))
 		{

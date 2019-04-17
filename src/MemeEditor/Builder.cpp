@@ -122,7 +122,7 @@ namespace ml
 	{
 	}
 
-	bool Builder::draw(bool * p_open)
+	bool Builder::drawGui(bool * p_open)
 	{
 		if (beginDraw(p_open, ImGuiWindowFlags_AlwaysAutoResize))
 		{

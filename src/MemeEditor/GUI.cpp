@@ -1,30 +1,15 @@
 #include <MemeEditor/GUI.hpp>
 #include <MemeEditor/ImGui.hpp>
 #include <MemeEngine/Resources.hpp>
+#include <MemeGraphics/Shader.hpp>
 
 namespace ml
 {
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	bool GUI::DrawLabel(CString label)
-	{
-		if (label)
-		{
-			CString label_end;
-			if ((label_end = ImGui::FindRenderedTextEnd(label)) != label)
-			{
-				ImGui::SameLine(0, GImGui->Style.ItemInnerSpacing.x);
-				ImGui::TextEx(label, label_end);
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	template <typename T, size_t C, size_t R>
-	inline static bool EditMatrix(CString label, Matrix<T, C, R> & value, float speed)
+	template <
+		typename T, 
+		size_t C, 
+		size_t R
+	> inline static bool EditMatrix(CString label, Matrix<T, C, R> & value, float speed)
 	{
 		if (!ImGui::GetCurrentWindow()->SkipItems)
 		{
@@ -56,7 +41,28 @@ namespace ml
 		}
 		return false;
 	}
+}
 
+namespace ml
+{
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	bool GUI::DrawLabel(CString label)
+	{
+		if (label)
+		{
+			CString label_end;
+			if ((label_end = ImGui::FindRenderedTextEnd(label)) != label)
+			{
+				ImGui::SameLine(0, GImGui->Style.ItemInnerSpacing.x);
+				ImGui::TextEx(label, label_end);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool GUI::EditVec2f(CString label, vec2f & value, float speed)
 	{

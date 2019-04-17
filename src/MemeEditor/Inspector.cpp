@@ -22,7 +22,7 @@ namespace ml
 	{
 	}
 
-	bool Inspector::draw(bool * p_open)
+	bool Inspector::drawGui(bool * p_open)
 	{
 		return beginDraw(p_open, ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_AlwaysAutoResize);
 	}

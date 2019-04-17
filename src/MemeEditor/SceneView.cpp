@@ -20,7 +20,7 @@ namespace ml
 	{
 	}
 
-	bool SceneView::draw(bool * p_open)
+	bool SceneView::drawGui(bool * p_open)
 	{
 		return beginDraw(p_open, ImGuiWindowFlags_MenuBar);
 	}

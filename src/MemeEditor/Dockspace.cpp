@@ -24,7 +24,7 @@ namespace ml
 	{
 	}
 
-	bool Dockspace::draw(bool * p_open)
+	bool Dockspace::drawGui(bool * p_open)
 	{
 		return beginDraw(p_open, 
 			ImGuiWindowFlags_NoTitleBar |

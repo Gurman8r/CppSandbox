@@ -3,10 +3,15 @@
 
 #include <MemeEditor/Export.hpp>
 #include <MemeCore/Transform.hpp>
-#include <MemeGraphics/Shader.hpp>
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	class Uniform;
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_EDITOR_API GUI final
 	{
 	public:
@@ -46,6 +51,8 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_GUI_HPP_

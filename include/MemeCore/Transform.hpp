@@ -51,11 +51,6 @@ namespace ml
 		inline const mat4f	& matrix() const { return m_matrix; }
 		inline mat4f		& matrix()		 { return m_matrix; }
 
-	public: // Operators
-		/* * * * * * * * * * * * * * * * * * * * */
-		inline operator	const	mat4f & () const { return matrix(); }
-		inline operator			mat4f & ()		 { return matrix(); }
-
 	private:
 		/* * * * * * * * * * * * * * * * * * * * */
 		mat4f m_matrix;

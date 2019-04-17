@@ -22,7 +22,7 @@ namespace ml
 	{
 	}
 
-	bool TextEditor::draw(bool * p_open)
+	bool TextEditor::drawGui(bool * p_open)
 	{
 		if (beginDraw(p_open,
 			ImGuiWindowFlags_MenuBar |

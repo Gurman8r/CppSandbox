@@ -21,7 +21,7 @@ namespace ml
 	{
 	}
 
-	bool Profiler::draw(bool * p_open)
+	bool Profiler::drawGui(bool * p_open)
 	{
 		if (beginDraw(p_open, ImGuiWindowFlags_MenuBar))
 		{
