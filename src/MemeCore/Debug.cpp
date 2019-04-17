@@ -5,51 +5,6 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void Debug::checkError(CString file, uint32_t line, CString expression)
-	{
-		if (getInstance().m_errorCode == ML_FAILURE)
-		{
-			String fileName(file);
-			fileName = fileName.substr(fileName.find_last_of("\\/") + 1);
-
-			cerr
-				<< FMT()
-				<< ml::endl
-				<< FG::Red
-				<< "A fatal internal call failed in " << fileName << "(" << line << ")"
-				<< FG::Yellow << ml::endl << "Code: "
-				<< FG::White << ml::endl << "\t" << getInstance().m_errorCode
-				<< FG::Yellow << ml::endl << "Expression: "
-				<< FG::White << ml::endl << "\t" << expression
-				<< FG::Yellow << ml::endl << "Description:"
-				<< FG::White << ml::endl << "\t" << getInstance().m_errorName
-				<< FG::White << ml::endl << "\t" << getInstance().m_errorDesc
-				<< FMT()
-				<< ml::endl
-				<< ml::endl;
-
-# ifdef ML_DEBUG
-			pause(EXIT_FAILURE);
-			terminate();
-# else
-			exit(EXIT_FAILURE);
-# endif // ML_DEBUG
-		}
-		else
-		{
-			setError(ML_SUCCESS, String(), String());
-		}
-	}
-
-	void Debug::setError(const int32_t code, const String & name, const String & desc)
-	{
-		getInstance().m_errorCode = code;
-		getInstance().m_errorName = name;
-		getInstance().m_errorDesc = desc;
-	}
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
 	int32_t Debug::clear()
 	{
 #ifdef ML_SYSTEM_WINDOWS
@@ -62,6 +17,17 @@ namespace ml
 	void Debug::exit(int32_t exitCode)
 	{
 		return std::exit(exitCode);
+	}
+
+	void Debug::fatal(const String & message)
+	{
+		logError(message);
+
+#ifdef ML_DEBUG
+		terminate();
+#else
+		exit(EXIT_FAILURE);
+#endif // ML_DEBUG
 	}
 
 	int32_t Debug::pause(int32_t exitCode)

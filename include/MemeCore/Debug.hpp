@@ -3,38 +3,19 @@
 
 #include <MemeCore/Console.hpp>
 #include <MemeCore/String.hpp>
-#include <MemeCore/ISingleton.hpp>
 
 #define ML_WARNING -1 // | -1  | true  |
 #define ML_FAILURE	0 // |  0  | false |
 #define ML_SUCCESS	1 // | +1  | true  |
 
-# ifdef ML_DEBUG
-	// Debug macro to check ML errors
-	// The do-while loop is needed so that mlCheck can be used as a single statement in if/else branches
-#	define mlCheck(expr) do { expr; ml::Debug::checkError(__FILE__, __LINE__, #expr); } while (false)
-# else
-#	define mlCheck(expr) (expr)
-# endif
-
 namespace ml
 {
 	class ML_CORE_API Debug final
-		: public ISingleton<Debug>
 	{
-		friend class ISingleton<Debug>;
-
-		int32_t m_errorCode = ML_SUCCESS;
-		String	m_errorName = String();
-		String	m_errorDesc = String();
-
-	public:
-		static void	checkError(CString file, uint32_t line, CString expression);
-		static void	setError(const int32_t code, const String & name, const String & desc);
-
 	public:
 		static int32_t	clear();
 		static void		exit(int32_t exitCode);
+		static void		fatal(const String & message);
 		static int32_t	pause(int32_t exitCode);
 		static int32_t	system(CString cmd);
 		static int32_t	system(CString cmd, std::ostream & out);

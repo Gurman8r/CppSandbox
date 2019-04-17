@@ -44,9 +44,9 @@ int32_t main(int32_t argc, char ** argv)
 	{ State::Enter, [](void * data)
 	{
 		// Enter
-		mlCheck(ML_EventSystem.fireEvent(ml::EnterEvent(
+		ML_EventSystem.fireEvent(ml::EnterEvent(
 			__argc, __argv
-		)));
+		));
 		return states.run(State::Load, data);
 	} },
 	{ State::Load, [](void * data)

@@ -196,10 +196,7 @@ namespace DEMO
 		}
 		else
 		{
-			return ml::Debug::setError(
-				ML_FAILURE,
-				"System Failure",
-				"Failed Loading Window.");
+			ml::Debug::fatal("Failed Creating Window");
 		}
 
 		// Load ImGui
@@ -212,10 +209,7 @@ namespace DEMO
 			ImGui::GetStyle().FrameBorderSize = 1;
 			if (!ImGui_ML_Init("#version 410", this, true, SETTINGS.imguiINI.c_str()))
 			{
-				return ml::Debug::setError(
-					ML_FAILURE,
-					"System Failure",
-					"Failed Loading ImGui");
+				ml::Debug::fatal("Failed Loading ImGui");
 			}
 		}
 
@@ -223,10 +217,7 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (!(ML_AL.init()))
 		{
-			return ml::Debug::setError(
-				ML_FAILURE,
-				"System Failure",
-				"Failed Loading OpenAL");
+			ml::Debug::logError("Failed Loading OpenAL");
 		}
 
 		// Load Network
@@ -576,7 +567,7 @@ namespace DEMO
 
 		// Setup Physics
 		/* * * * * * * * * * * * * * * * * * * * */
-		if (!ML_Physics.thread().launch([&]()
+		ML_Physics.thread().launch([&]()
 		{
 			/* * * * * * * * * * * * * * * * * * * * */
 
@@ -611,13 +602,7 @@ namespace DEMO
 			}
 
 			/* * * * * * * * * * * * * * * * * * * * */
-		}))
-		{
-			return ml::Debug::setError(
-				ML_FAILURE,
-				"System Failure",
-				"Failed Loading Physics");
-		}
+		});
 	}
 
 	void Sandbox::onUpdate(const ml::UpdateEvent * ev)
