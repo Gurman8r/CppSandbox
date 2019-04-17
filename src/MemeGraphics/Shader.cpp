@@ -222,7 +222,7 @@ namespace ml
 			case Uniform::Tex2D:return setUniform(u.name, u.get_value<Texture>());
 			}
 		}
-		return Debug::logError("Invalid Uniform | {0}", u);
+		return false;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
