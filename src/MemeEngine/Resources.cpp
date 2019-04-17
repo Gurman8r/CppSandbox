@@ -6,12 +6,27 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Resources::Resources()
+		: effects	("Effects"	)
+		, entities	("Entities"	)
+		, fonts		("Fonts"	)
+		, images	("Images"	)
+		, lua		("Lua"		)
+		, mats		("Materials")
+		, meshes	("Meshes"	)
+		, models	("Models"	)
+		, plugins	("Plugins"	)
+		, scripts	("Scripts"	)
+		, shaders	("Shaders"	)
+		, skyboxes	("Skyboxes"	)
+		, sounds	("Sounds"	)
+		, sprites	("Sprites"	)
+		, textures	("Textures"	)
 	{
 	}
 
 	Resources::~Resources()
 	{
-		cleanupAll();
+		dispose();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

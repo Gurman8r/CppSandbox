@@ -120,7 +120,41 @@ namespace ml
 			Funcs::Columns([&]()
 			{
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-				Funcs::Group("Fonts", [&]()
+				Funcs::Group(ML_Res.entities.getName().c_str(), [&]()
+				{
+					for (auto pair : ML_Res.entities)
+					{
+						Funcs::Group(pair.first.c_str(), [&](CString name, const Entity * e)
+						{
+							Funcs::Field("Name", [&](CString label)
+							{
+								ImGui::Text("%s", name);
+							});
+							if (const String file = ML_Res.entities.getFile(name))
+							{
+								Funcs::Field("File", [&](CString label)
+								{
+									const String fName = ML_FileSystem.getFileName(file);
+									if (ImGui::Selectable(fName.c_str()))
+									{
+										ML_OS.execute("open", ML_FileSystem.pathTo(file));
+									}
+								});
+								Funcs::Field("Path", [&](CString label)
+								{
+									const String fPath = ML_FileSystem.getFilePath(file);
+									if (ImGui::Selectable(fPath.c_str()))
+									{
+										ML_OS.execute("open", ML_FileSystem.pathTo(fPath));
+									}
+								});
+							}
+
+						}, pair.first.c_str(), pair.second);
+					}
+				});
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+				Funcs::Group(ML_Res.fonts.getName().c_str(), [&]()
 				{
 					for (auto pair : ML_Res.fonts)
 					{
@@ -158,7 +192,7 @@ namespace ml
 					}
 				});
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-				Funcs::Group("Images", [&]()
+				Funcs::Group(ML_Res.images.getName().c_str(), [&]()
 				{
 					for (auto pair : ML_Res.images)
 					{
@@ -196,7 +230,41 @@ namespace ml
 					}
 				});
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-				Funcs::Group("Materials", [&]()
+				Funcs::Group(ML_Res.lua.getName().c_str(), [&]()
+				{
+					for (auto pair : ML_Res.lua)
+					{
+						Funcs::Group(pair.first.c_str(), [&](CString name, const LuaScript * e)
+						{
+							Funcs::Field("Name", [&](CString label)
+							{
+								ImGui::Text("%s", name);
+							});
+							if (const String file = ML_Res.lua.getFile(name))
+							{
+								Funcs::Field("File", [&](CString label)
+								{
+									const String fName = ML_FileSystem.getFileName(file);
+									if (ImGui::Selectable(fName.c_str()))
+									{
+										ML_OS.execute("open", ML_FileSystem.pathTo(file));
+									}
+								});
+								Funcs::Field("Path", [&](CString label)
+								{
+									const String fPath = ML_FileSystem.getFilePath(file);
+									if (ImGui::Selectable(fPath.c_str()))
+									{
+										ML_OS.execute("open", ML_FileSystem.pathTo(fPath));
+									}
+								});
+							}
+
+						}, pair.first.c_str(), pair.second);
+					}
+				});
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+				Funcs::Group(ML_Res.mats.getName().c_str(), [&]()
 				{
 					for (auto pair : ML_Res.mats)
 					{
@@ -230,7 +298,7 @@ namespace ml
 					}
 				});
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-				Funcs::Group("Meshes", [&]()
+				Funcs::Group(ML_Res.meshes.getName().c_str(), [&]()
 				{
 					for (auto pair : ML_Res.meshes)
 					{
@@ -264,7 +332,7 @@ namespace ml
 					}
 				});
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-				Funcs::Group("Models", [&]()
+				Funcs::Group(ML_Res.models.getName().c_str(), [&]()
 				{
 					for (auto pair : ML_Res.models)
 					{
@@ -298,7 +366,7 @@ namespace ml
 					}
 				});
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-				Funcs::Group("Plugins", [&]()
+				Funcs::Group(ML_Res.plugins.getName().c_str(), [&]()
 				{
 					for (auto pair : ML_Res.plugins)
 					{
@@ -332,7 +400,7 @@ namespace ml
 					}
 				});
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-				Funcs::Group("Scripts", [&]()
+				Funcs::Group(ML_Res.scripts.getName().c_str(), [&]()
 				{
 					for (auto pair : ML_Res.scripts)
 					{
@@ -366,7 +434,7 @@ namespace ml
 					}
 				});
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-				Funcs::Group("Shaders", [&]()
+				Funcs::Group(ML_Res.shaders.getName().c_str(), [&]()
 				{
 					for (auto pair : ML_Res.shaders)
 					{
@@ -400,7 +468,7 @@ namespace ml
 					}
 				});
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-				Funcs::Group("Skyboxes", [&]()
+				Funcs::Group(ML_Res.skyboxes.getName().c_str(), [&]()
 				{
 					for (auto pair : ML_Res.skyboxes)
 					{
@@ -434,7 +502,7 @@ namespace ml
 					}
 				});
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-				Funcs::Group("Sounds", [&]()
+				Funcs::Group(ML_Res.sounds.getName().c_str(), [&]()
 				{
 					for (auto pair : ML_Res.sounds)
 					{
@@ -468,7 +536,7 @@ namespace ml
 					}
 				});
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-				Funcs::Group("Sprites", [&]()
+				Funcs::Group(ML_Res.sprites.getName().c_str(), [&]()
 				{
 					for (auto pair : ML_Res.sprites)
 					{
@@ -502,7 +570,7 @@ namespace ml
 					}
 				});
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-				Funcs::Group("Textures", [&]()
+				Funcs::Group(ML_Res.textures.getName().c_str(), [&]()
 				{
 					for (auto pair : ML_Res.textures)
 					{

@@ -36,10 +36,16 @@ namespace ml
 		using const_iterator= typename PointerMap::const_iterator;
 
 	private:
-		Registry() {}
+		Registry(String && name)
+			: m_name(name)
+			, m_data()
+			, m_files()
+		{
+		}
 		~Registry() {}
 
 	private:
+		String		m_name;
 		PointerMap	m_data;
 		FileMap		m_files;
 
@@ -134,6 +140,11 @@ namespace ml
 				keys.push_back(pair.first);
 			}
 			return keys;
+		}
+
+		inline const String & getName() const
+		{
+			return m_name;
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
