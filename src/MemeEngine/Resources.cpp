@@ -144,12 +144,6 @@ namespace ml
 			{
 				return loadFromFile(name);
 			}
-			// Entities
-			/* * * * * * * * * * * * * * * * * * * * */
-			else if (type == "entity")
-			{
-				return entities.load(name);
-			}
 			// Effects
 			/* * * * * * * * * * * * * * * * * * * * */
 			else if (type == "effect")
@@ -171,6 +165,12 @@ namespace ml
 				{
 					return effects.load(name);
 				}
+			}
+			// Entities
+			/* * * * * * * * * * * * * * * * * * * * */
+			else if (type == "entity")
+			{
+				return entities.load(name);
 			}
 			// Fonts
 			/* * * * * * * * * * * * * * * * * * * * */

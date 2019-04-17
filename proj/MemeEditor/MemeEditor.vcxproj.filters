@@ -22,17 +22,11 @@
     <Filter Include="Source Files\Utility">
       <UniqueIdentifier>{e3f08586-19a5-4a55-bf15-c7b02a7cb83e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\DS">
-      <UniqueIdentifier>{a740db58-683d-46df-9dfa-8d3a195dbcd2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Tools">
       <UniqueIdentifier>{170c2bac-0d65-404a-9d6c-f1631acd3794}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Windows">
       <UniqueIdentifier>{24b8649c-9e82-4234-8f9d-97a490429f25}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\DS">
-      <UniqueIdentifier>{4e9592a2-09b6-4845-8ee9-7bd04c1b754e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Internal">
       <UniqueIdentifier>{6a1b1fee-b91a-4e69-8e9d-a868bfbb21a0}</UniqueIdentifier>
@@ -69,9 +63,6 @@
     <ClInclude Include="..\..\thirdparty\include\imgui\imstb_rectpack.h">
       <Filter>Resource Files\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeEditor\Document.hpp">
-      <Filter>Header Files\DS</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\thirdparty\include\imgui\imgui_impl_ml.hpp">
       <Filter>Resource Files\imgui</Filter>
     </ClInclude>
@@ -91,9 +82,6 @@
       <Filter>Header Files\Windows</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\Dockspace.hpp">
-      <Filter>Header Files\Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeEditor\Hierarchy.hpp">
       <Filter>Header Files\Windows</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\SceneView.hpp">
@@ -120,13 +108,7 @@
     <ClInclude Include="..\..\include\MemeEditor\ImGui.hpp">
       <Filter>Header Files\Internal</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeEditor\GameObject.hpp">
-      <Filter>Header Files\DS</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\NetworkHUD.hpp">
-      <Filter>Header Files\Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeEditor\ResourceHUD.hpp">
       <Filter>Header Files\Windows</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\Profiler.hpp">
@@ -144,11 +126,14 @@
     <ClInclude Include="..\..\include\MemeEditor\Editor.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeEditor\Project.hpp">
+      <Filter>Header Files\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeEditor\Document.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\MemeEditor\Document.cpp">
-      <Filter>Source Files\DS</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\thirdparty\include\imgui\imgui.cpp">
       <Filter>Resource Files\imgui</Filter>
     </ClCompile>
@@ -174,9 +159,6 @@
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\Dockspace.cpp">
-      <Filter>Source Files\Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeEditor\Hierarchy.cpp">
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\SceneView.cpp">
@@ -206,13 +188,7 @@
     <ClCompile Include="..\..\src\MemeEditor\ImGui_Builtin.cpp">
       <Filter>Source Files\Internal</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemeEditor\GameObject.cpp">
-      <Filter>Source Files\DS</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\NetworkHUD.cpp">
-      <Filter>Source Files\Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeEditor\ResourceHUD.cpp">
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\Profiler.cpp">
@@ -225,6 +201,12 @@
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\Editor.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeEditor\Project.cpp">
+      <Filter>Source Files\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeEditor\Document.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
   </ItemGroup>

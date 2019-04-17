@@ -62,12 +62,6 @@ namespace ml
 		Registry<Sprite>	sprites;
 		Registry<Texture>	textures;
 
-	public:
-		inline bool setPath(const String & value) { return (m_path = value); }
-		inline const String & getPath() const { return m_path; }
-
-	private:
-		String m_path;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

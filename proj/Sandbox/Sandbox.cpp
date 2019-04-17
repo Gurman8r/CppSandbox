@@ -154,15 +154,6 @@ namespace DEMO
 			// Start Master Timer
 			ML_Time.start();
 
-			// Set Asset Path
-			if (!ML_Res.setPath(SETTINGS.assetPath))
-			{
-				return ml::Debug::setError(
-					ML_FAILURE,
-					"Invalid Path",
-					"Path to Resources Cannot Be Empty");
-			}
-
 			// Seed Random
 			ml::Random::seed();
 
@@ -312,7 +303,10 @@ namespace DEMO
 
 		// Setup Canvas
 		/* * * * * * * * * * * * * * * * * * * * */
-		m_canvas.create();
+		if (!m_canvas.create())
+		{
+			ml::Debug::logError("Failed Creating Canvas");
+		}
 	}
 
 	void Sandbox::onStart(const ml::StartEvent * ev)
@@ -321,9 +315,11 @@ namespace DEMO
 
 		// Set Window Icon
 		/* * * * * * * * * * * * * * * * * * * * */
-		if (ml::Image * icon = ML_Res.images.get("icon"))
+		if (const ml::Image * icon = ML_Res.images.get("icon"))
 		{
-			this->setIcons({ icon->flipVertically() });
+			ml::Image temp = ml::Image(*icon).flipVertically();
+
+			this->setIcons({ temp });
 		}
 
 		// Setup Plugins
@@ -984,8 +980,7 @@ namespace DEMO
 		// Editors
 		if (ML_Editor.show_network)			{ ML_NetworkHUD.draw(&ML_Editor.show_network); }
 		if (ML_Editor.show_profiler)		{ ML_Profiler.draw(&ML_Editor.show_profiler); }
-		if (ML_Editor.show_hierarchy)		{ ML_Hierarchy.draw(&ML_Editor.show_hierarchy); }
-		if (ML_Editor.show_resources)		{ ML_ResourceHUD.draw(&ML_Editor.show_resources); }
+		if (ML_Editor.show_project)			{ ML_Project.draw(&ML_Editor.show_project); }
 		if (ML_Editor.show_browser)			{ ML_Browser.draw(&ML_Editor.show_browser); }
 		if (ML_Editor.show_terminal)		{ ML_Terminal.draw(&ML_Editor.show_terminal); }
 		if (ML_Editor.show_textEditor)		{ ML_TextEditor.draw(&ML_Editor.show_textEditor); }
@@ -1085,8 +1080,7 @@ namespace DEMO
 				ImGui::MenuItem(ML_SceneView.title(), "Ctrl+Alt+S", &ML_Editor.show_sceneView);
 				ImGui::MenuItem(ML_Inspector.title(), "Ctrl+Alt+I", &ML_Editor.show_inspector);
 				ImGui::MenuItem(ML_TextEditor.title(), NULL, &ML_Editor.show_textEditor);
-				ImGui::MenuItem(ML_Hierarchy.title(), NULL, &ML_Editor.show_hierarchy);
-				ImGui::MenuItem(ML_ResourceHUD.title(), NULL, &ML_Editor.show_resources);
+				ImGui::MenuItem(ML_Project.title(), NULL, &ML_Editor.show_project);
 				ImGui::MenuItem(ML_NetworkHUD.title(), NULL, &ML_Editor.show_network);
 				ImGui::EndMenu();
 			}
@@ -1130,8 +1124,7 @@ namespace DEMO
 				ML_Dockspace.dockWindow(ML_Profiler.title(), left_U);
 				ML_Dockspace.dockWindow(ML_NetworkHUD.title(), left_U);
 				ML_Dockspace.dockWindow(ML_Browser.title(), left_U);
-				ML_Dockspace.dockWindow(ML_Hierarchy.title(), left_U);
-				ML_Dockspace.dockWindow(ML_ResourceHUD.title(), left_U);
+				ML_Dockspace.dockWindow(ML_Project.title(), left_U);
 				ML_Dockspace.dockWindow(ML_Terminal.title(), left_D);
 				ML_Dockspace.dockWindow(ML_SceneView.title(), center_U);
 				ML_Dockspace.dockWindow(ML_Builder.title(), center_D);

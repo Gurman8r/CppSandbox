@@ -8,10 +8,9 @@
 #include <MemeEditor/ImGui_Builtin.hpp>
 #include <MemeEditor/Dockspace.hpp>
 #include <MemeEditor/TextEditor.hpp>
-#include <MemeEditor/Hierarchy.hpp>
 #include <MemeEditor/SceneView.hpp>
 #include <MemeEditor/Inspector.hpp>
-#include <MemeEditor/ResourceHUD.hpp>
+#include <MemeEditor/Project.hpp>
 #include <MemeEditor/NetworkHUD.hpp>
 #include <MemeEditor/Profiler.hpp>
 
@@ -45,8 +44,7 @@ namespace ml
 		bool show_inspector		= true;
 		bool show_sceneView		= true;
 		bool show_textEditor	= true;
-		bool show_hierarchy		= true;
-		bool show_resources		= true;
+		bool show_project		= true;
 		bool show_profiler		= true;
 		bool show_network		= false;
 		/* * * * * * * * * * * * * * * * * * * * */

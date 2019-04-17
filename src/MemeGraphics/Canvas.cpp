@@ -8,8 +8,8 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Canvas::Canvas()
-		: m_vao		()
-		, m_vbo		()
+		: m_vao()
+		, m_vbo()
 	{
 	}
 
@@ -29,6 +29,7 @@ namespace ml
 			BufferLayout::Default.bind();
 			m_vbo.unbind();
 			m_vao.unbind();
+			return (m_vao && m_vbo);
 		}
 		return false;
 	}

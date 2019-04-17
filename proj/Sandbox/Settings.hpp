@@ -25,7 +25,7 @@ namespace DEMO
 	public:
 		// [General]
 		/* * * * * * * * * * * * * * * * * * * * */
-		ml::String	assetPath;		// Solution Dir
+		ml::String	resourcePath;		// Solution Dir
 		ml::String	projectURL;		// Project Github URL
 		bool		escapeIsExit;	// Escape key is Exit?
 		ml::String	manifest;		// Name of manifest file
@@ -64,10 +64,6 @@ namespace DEMO
 		float		orthoNear;		// Ortho Near Clipping Range 
 		float		orthoFar;		// Ortho Far  Clipping Range
 
-		// [Audio]
-		/* * * * * * * * * * * * * * * * * * * * */
-		bool		isMuted;		// Is Muted?
-
 		// [Network]
 		/* * * * * * * * * * * * * * * * * * * * */
 		bool		isServer;		// Is Server?
@@ -83,7 +79,7 @@ namespace DEMO
 
 			// [General]
 			/* * * * * * * * * * * * * * * * * * * * */
-			assetPath		= ini.Get("General", "assetPath", "../../../");
+			resourcePath		= ini.Get("General", "resourcePath", "../../../");
 			projectURL		= ini.Get("General", "projectURL", "");
 			escapeIsExit	= ini.GetBoolean("General", "escapeIsExit", true);
 			manifest		= ini.Get("General", "manifest", "manifest.txt");
@@ -120,10 +116,6 @@ namespace DEMO
 			perspFar		= (float)ini.GetReal("Graphics", "perspFar", 1000.0);
 			orthoNear		= (float)ini.GetReal("Graphics", "orthoNear", -1.0);
 			orthoFar		= (float)ini.GetReal("Graphics", "orthoFar", +1.0);
-
-			// [Audio]
-			/* * * * * * * * * * * * * * * * * * * * */
-			isMuted			= ini.GetBoolean("Audio", "isMuted", false);
 
 			// [Network]
 			/* * * * * * * * * * * * * * * * * * * * */

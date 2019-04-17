@@ -3,21 +3,21 @@
 
 #include <MemeEditor/GUI_Window.hpp>
 
-#define ML_ResourceHUD ml::ResourceHUD::getInstance()
+#define ML_Project ml::Project::getInstance()
 
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	class ML_EDITOR_API ResourceHUD final
+	class ML_EDITOR_API Project final
 		: public GUI_Window
-		, public ISingleton<ResourceHUD>
+		, public ISingleton<Project>
 	{
-		friend class ISingleton<ResourceHUD>;
+		friend class ISingleton<Project>;
 
 	private:
-		ResourceHUD();
-		~ResourceHUD();
+		Project();
+		~Project();
 
 	public:
 		void onEvent(const IEvent * value) override;

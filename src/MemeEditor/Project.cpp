@@ -1,4 +1,4 @@
-#include <MemeEditor/ResourceHUD.hpp>
+#include <MemeEditor/Project.hpp>
 #include <MemeEditor/ImGui.hpp>
 #include <MemeEngine/Resources.hpp>
 #include <MemeEditor/Terminal.hpp>
@@ -7,7 +7,7 @@
 
 namespace ml
 {
-	struct ResourceHUD::Funcs
+	struct Project::Funcs
 	{
 		/* * * * * * * * * * * * * * * * * * * * */
 
@@ -81,22 +81,22 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	ResourceHUD::ResourceHUD()
-		: GUI_Window("Resources")
+	Project::Project()
+		: GUI_Window("Project")
 	{
 	}
 
-	ResourceHUD::~ResourceHUD()
+	Project::~Project()
 	{
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void ResourceHUD::onEvent(const IEvent * value)
+	void Project::onEvent(const IEvent * value)
 	{
 	}
 
-	bool ResourceHUD::draw(bool * p_open)
+	bool Project::draw(bool * p_open)
 	{
 		if (beginDraw(p_open, ImGuiWindowFlags_MenuBar))
 		{
@@ -119,6 +119,40 @@ namespace ml
 
 			Funcs::Columns([&]()
 			{
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+				Funcs::Group(ML_Res.effects.getName().c_str(), [&]()
+				{
+					for (auto pair : ML_Res.effects)
+					{
+						Funcs::Group(pair.first.c_str(), [&](CString name, const Effect * e)
+						{
+							Funcs::Field("Name", [&](CString label)
+							{
+								ImGui::Text("%s", name);
+							});
+							if (const String file = ML_Res.effects.getFile(name))
+							{
+								Funcs::Field("File", [&](CString label)
+								{
+									const String fName = ML_FileSystem.getFileName(file);
+									if (ImGui::Selectable(fName.c_str()))
+									{
+										ML_OS.execute("open", ML_FileSystem.pathTo(file));
+									}
+								});
+								Funcs::Field("Path", [&](CString label)
+								{
+									const String fPath = ML_FileSystem.getFilePath(file);
+									if (ImGui::Selectable(fPath.c_str()))
+									{
+										ML_OS.execute("open", ML_FileSystem.pathTo(fPath));
+									}
+								});
+							}
+
+						}, pair.first.c_str(), pair.second);
+					}
+				});
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 				Funcs::Group(ML_Res.entities.getName().c_str(), [&]()
 				{
