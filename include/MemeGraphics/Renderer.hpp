@@ -13,20 +13,15 @@ namespace ml
 		, public IDrawable
 	{
 	public:
-		Renderer();
-
 		Renderer(
-			const IDrawable		* drawable, 
+			const IDrawable		* drawable,
 			const Shader		* shader,
 			const RenderFlags	& flags,
 			const UniformSet	& uniforms);
-		
-		Renderer(const Renderer & copy);
-		
-		virtual ~Renderer() {}
 
-	public:
-		void draw(RenderTarget & target, RenderBatch batch) const override;
+		Renderer();
+		Renderer(const Renderer & copy);
+		virtual ~Renderer();
 
 	public:
 		inline const IDrawable		* drawable()	const { return m_drawable;	}
@@ -35,10 +30,13 @@ namespace ml
 		inline const UniformSet		& uniforms()	const { return m_uniforms;	}
 
 	public:
-		inline const IDrawable		* drawable()		  { return m_drawable;	}
-		inline const Shader			* shader()			  { return m_shader;	}
-		inline		 RenderFlags	& renderFlags()		  { return m_flags;		}
-		inline		 UniformSet		& uniforms()		  { return m_uniforms;	}
+		inline const IDrawable *	& drawable()	{ return m_drawable;	}
+		inline const Shader *		& shader()		{ return m_shader;		}
+		inline RenderFlags			& renderFlags() { return m_flags;		}
+		inline UniformSet			& uniforms()	{ return m_uniforms;	}
+
+	public:
+		void draw(RenderTarget & target, RenderBatch batch) const override;
 
 	private:
 		const IDrawable *	m_drawable;

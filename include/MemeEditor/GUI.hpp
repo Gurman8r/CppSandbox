@@ -29,10 +29,6 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		static bool EditUniform(CString label, Uniform * u);
-
-		/* * * * * * * * * * * * * * * * * * * * */
-
 		static bool Begin(CString label, bool * p_open, int32_t flags);
 		static void End();
 

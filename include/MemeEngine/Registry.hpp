@@ -6,7 +6,7 @@
 
 namespace ml
 {
-	/* * * * * * * * * * * * * * * * * * * * */
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	class Resources;
 
@@ -26,7 +26,7 @@ namespace ml
 	public:
 		using value_type	= typename T;
 		using pointer		= typename value_type * ;
-		using const_pointer = typename const pointer ;
+		using const_pointer = typename const value_type *;
 		using PointerMap	= typename HashMap<String, pointer>;
 		using FileMap		= typename HashMap<String, String>;
 		using Pair			= typename Pair<String, pointer>;
@@ -34,6 +34,7 @@ namespace ml
 		using const_iterator= typename PointerMap::const_iterator;
 
 	private:
+		/* * * * * * * * * * * * * * * * * * * * */
 		Registry(String && name)
 			: m_name(name)
 			, m_data()
@@ -43,6 +44,7 @@ namespace ml
 		~Registry() {}
 
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		inline void serialize(std::ostream & out) const override
 		{
 			for (auto pair : m_files)
@@ -88,6 +90,11 @@ namespace ml
 			return false;
 		}
 
+		inline const size_t size() const
+		{
+			return m_data.size();
+		}
+
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		inline iterator find(const String & name)
@@ -123,6 +130,14 @@ namespace ml
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
+
+		inline const String getFile(const String & value) const
+		{
+			FileMap::const_iterator it;
+			return ((it = m_files.find(value)) != m_files.end())
+				? it->second
+				: String();
+		}
 
 		inline const List<String> & getKeys() const
 		{
@@ -194,16 +209,6 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		inline const String getFile(const String & value) const
-		{
-			FileMap::const_iterator it;
-			return ((it = m_files.find(value)) != m_files.end())
-				? it->second
-				: String();
-		}
-
-		/* * * * * * * * * * * * * * * * * * * * */
-
 		inline size_t reload()
 		{
 			size_t count = 0;
@@ -228,24 +233,57 @@ namespace ml
 			return count;
 		}
 
-		/* * * * * * * * * * * * * * * * * * * * */
-
 		inline pointer set(const String & name, pointer value)
 		{
 			m_data[name] = value;
 			return get(name);
 		}
-
+		
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		inline const size_t size() const
+		inline const_iterator iterAt(const int32_t value) const
 		{
-			return m_data.size();
+			if ((value >= 0) && ((size_t)value < this->size()))
+			{
+				const_iterator it = this->cbegin();
+				for (int32_t i = 0; i < value; i++)
+				{
+					if ((++it) == this->cend())
+					{
+						return it;
+					}
+				}
+				return it;
+			}
+			return this->cend();
+		}
+
+		inline const_pointer atIndex(const int32_t value) const
+		{
+			const_iterator it;
+			return (((it = this->iterAt(value)) != this->end())
+				? (it->second)
+				: (NULL));
+		}
+
+		inline const int32_t indexOf(const_pointer value) const
+		{
+			int32_t index = 0;
+			for (auto it = this->cbegin(); it != this->cend(); it++)
+			{
+				if (it->second == value)
+				{
+					return index;
+				}
+				index++;
+			}
+			return (index = (-1));
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-	public:
+	public: // Iterators
+		/* * * * * * * * * * * * * * * * * * * * */
 		inline iterator			begin()			{ return m_data.begin();  }
 		inline iterator			end()			{ return m_data.end();	  }
 		inline const_iterator	begin()  const	{ return m_data.begin();  }
@@ -253,13 +291,14 @@ namespace ml
 		inline const_iterator	cbegin() const	{ return m_data.cbegin(); }
 		inline const_iterator	cend()	 const	{ return m_data.cend();	  }
 
-	private:
+	private: // Data
+		/* * * * * * * * * * * * * * * * * * * * */
 		String		m_name;
 		PointerMap	m_data;
 		FileMap		m_files;
 	};
 
-	/* * * * * * * * * * * * * * * * * * * * */
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_REGISTRY_HPP_

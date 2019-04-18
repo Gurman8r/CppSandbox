@@ -172,6 +172,7 @@
     <ClInclude Include="..\..\include\MemeEditor\EditorEvents.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Export.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Document.hpp" />
+    <ClInclude Include="..\..\include\MemeEditor\ImGui_Helper.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Inspector.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\MainMenuBar.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\NetworkHUD.hpp" />

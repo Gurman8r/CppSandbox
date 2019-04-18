@@ -1,5 +1,6 @@
 #include <MemeEditor/ProjectView.hpp>
 #include <MemeEditor/ImGui.hpp>
+#include <MemeEditor/ImGui_Helper.hpp>
 #include <MemeEditor/Terminal.hpp>
 #include <MemeEditor/GUI.hpp>
 #include <MemeEngine/Resources.hpp>
@@ -196,50 +197,207 @@ namespace ml
 		{
 			for (auto & pair : ML_Res.entities)
 			{
-				Funcs::Group(pair.first.c_str(), [&](CString name, Entity * e)
+				Funcs::Group(pair.first.c_str(), [&](CString name, Entity * ent)
 				{
+					/* * * * * * * * * * * * * * * * * * * * */
+
 					Funcs::Field("Name", [&](CString)
 					{
 						ImGui::Text("%s", name);
 					});
 
-					Funcs::Group("Components", [&](CString) 
+					/* * * * * * * * * * * * * * * * * * * * */
+
+					Funcs::Group("Components", [&]() 
 					{
-						// Transform
-						if (Transform * t = e->get<Transform>())
+						/* * * * * * * * * * * * * * * * * * * * */
+
+						if (Transform * transform = ent->get<Transform>())
 						{
-							Funcs::Field("Transform", [&](CString)
+							Funcs::Group("Transform", [&]()
 							{
-								vec3f pos = t->getPosition();
-								if (GUI::EditVec3f("Position##Transform", pos))
+								Funcs::Field("Position", [&](CString) 
 								{
-									t->setPosition(pos);
-								}
+									vec3f pos = transform->getPosition();
+									if (GUI::EditVec3f("##Position##Transform", pos))
+									{
+										transform->setPosition(pos);
+									}
+								});
 
-								vec3f scl = t->getScale();
-								if (GUI::EditVec3f("Scale##Transform", scl))
+								Funcs::Field("Scale", [&](CString)
 								{
-									t->setScale(scl);
-								}
+									vec3f scl = transform->getScale();
+									if (GUI::EditVec3f("##Scale##Transform", scl))
+									{
+										transform->setScale(scl);
+									}
+								});
 
-								quat rot = t->getRotation();
-								if (GUI::EditVec4f("Rotation##Transform", rot))
+								Funcs::Field("Rotation", [&](CString)
 								{
-									t->setRotation(rot);
-								}
+									quat rot = transform->getRotation();
+									if (GUI::EditVec4f("##Rotation##Transform", rot))
+									{
+										transform->setRotation(rot);
+									}
+								});
+
 							});
 						}
 
-						// Renderer
-						if (Renderer * r = e->get<Renderer>())
+						/* * * * * * * * * * * * * * * * * * * * */
+
+						if (Renderer * renderer = ent->get<Renderer>())
 						{
-							Funcs::Field("Renderer", [&](CString)
+							Funcs::Group("Renderer", [&]()
 							{
-								ImGui::Text("OK");
+								// Model
+								Funcs::Field("Model", [&](CString)
+								{
+									List<String> keys = ML_Res.models.getKeys();
+									int32_t index = ML_Res.models.indexOf((Model *)(renderer->drawable()));
+									if (ImGui::Combo(
+										"##Model",
+										&index,
+										ImGui_Helper::vector_getter,
+										static_cast<void *>(&keys),
+										(int32_t)(keys.size())))
+									{
+										if (const Model * value = ML_Res.models.atIndex(index))
+										{
+											renderer->drawable() = value;
+										}
+									}
+								});
+
+								// Shader
+								Funcs::Field("Shader", [&](CString)
+								{
+									List<String> keys = ML_Res.shaders.getKeys();
+									int32_t index = ML_Res.shaders.indexOf(renderer->shader());
+									if (ImGui::Combo(
+										"##Shader",
+										&index,
+										ImGui_Helper::vector_getter,
+										static_cast<void *>(&keys),
+										(int32_t)(keys.size())))
+									{
+										if (const Shader * value = ML_Res.shaders.atIndex(index))
+										{
+											renderer->shader() = value;
+										}
+									}
+								});
+
+								// Render Flags
+								Funcs::Group("Render Flags", [&]()
+								{
+									for (auto & pair : renderer->renderFlags())
+									{
+										switch (pair.first)
+										{
+										case GL::CullFace:
+											Funcs::Field("Cull Face", [&](CString)
+											{
+												ImGui::Checkbox("##Cull Face", (bool *)(&pair.second));
+											});
+											break;
+										case GL::DepthTest:
+											Funcs::Field("Depth Test", [&](CString)
+											{
+												ImGui::Checkbox("##Depth Test", (bool *)(&pair.second));
+											});
+											break;
+										}
+									}
+								});
+
+								// Uniforms
+								Funcs::Group("Uniforms", [&]()
+								{
+									for (auto & pair : renderer->uniforms())
+									{
+										ImGui::PushID(pair.second.name.c_str());
+
+										Funcs::Field(pair.first.c_str(), [&](CString, Uniform * u)
+										{
+											switch (u->type)
+											{
+											case Uniform::Int:
+											{
+												static int32_t temp;
+												ImGui::DragInt("##Int##Value", &temp);
+											}
+											break;
+											case Uniform::Float:
+											{
+												static float temp;
+												ImGui::DragFloat("##Float##Value", &temp, 0.1f);
+											}
+											break;
+											case Uniform::Vec2:
+											{
+												static vec2f temp;
+												GUI::EditVec2f("##Vec2##Value", temp);
+											}
+											break;
+											case Uniform::Vec3:
+											{
+												static vec3f temp;
+												GUI::EditVec3f("##Vec3##Value", temp);
+											}
+											break;
+											case Uniform::Vec4:
+											{
+												static vec4f temp;
+												GUI::EditVec4f("##Vec4##Value", temp);
+											}
+											break;
+											case Uniform::Mat3:
+											{
+												static mat3f temp;
+												GUI::EditMat3f("##Mat3##Value", temp);
+											}
+											break;
+											case Uniform::Mat4:
+											{
+												static mat4f temp;
+												GUI::EditMat4f("##Mat4##Value", temp);
+											}
+											break;
+											case Uniform::Tex2D:
+											{
+												int32_t index = ML_Res.textures.indexOf(u->get_pointer<Texture>());
+												List<String> keys = ML_Res.textures.getKeys();
+												if (ImGui::Combo(
+													"##Tex2D##Value",
+													&index,
+													ImGui_Helper::vector_getter,
+													static_cast<void *>(&keys),
+													(int32_t)(keys.size())))
+												{
+													if (const Texture * value = ML_Res.textures.atIndex(index))
+													{
+														u->data = value;
+													}
+												}
+											}
+											break;
+											}
+
+										}, &pair.second);
+
+										ImGui::PopID();
+									}
+								});
 							});
 						}
 
-					}, (CString)(NULL));
+						/* * * * * * * * * * * * * * * * * * * * */
+					});
+
+					/* * * * * * * * * * * * * * * * * * * * */
 
 				}, pair.first.c_str(), pair.second);
 			}
