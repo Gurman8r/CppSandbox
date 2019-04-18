@@ -2,6 +2,13 @@
 #include <MemeEngine/Application.hpp>
 #include <MemeCore/Time.hpp>
 
+# ifdef ML_SYSTEM_WINDOWS
+#	include <Windows.h>
+#	include <conio.h>
+#	define SC_CLOSE 0xF060
+#	define MF_GRAYED 0x00000001L
+# endif // ML_SYSTEM_WINDOWS
+
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -9,6 +16,12 @@ namespace ml
 	Engine::Engine()
 		: m_app(NULL)
 	{
+#ifdef ML_SYSTEM_WINDOWS
+		// Disable Console Close Button
+		HWND hwnd = GetConsoleWindow();
+		HMENU hmenu = GetSystemMenu(hwnd, false);
+		EnableMenuItem(hmenu, SC_CLOSE, MF_GRAYED);
+#endif // ML_SYSTEM_WINDOWS
 	}
 
 	Engine::~Engine()
