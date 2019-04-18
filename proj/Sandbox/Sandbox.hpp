@@ -50,8 +50,7 @@ namespace DEMO
 			
 			// Camera
 			ml::Camera		camera;
-			bool			camAnimate	= true;
-			ml::vec3f		camPos		= { 0, 1, 10 };
+			bool			camAnim		= true;
 			float			camSpd		= 1.f;
 			
 			// Light

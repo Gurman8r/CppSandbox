@@ -13,13 +13,20 @@ namespace ml
 	{
 	public:
 		Camera();
-		Camera(const vec3f & position, const quat & rotation);
 		Camera(const Camera & copy);
 		~Camera();
 
+	public:
+		void rotateAround(const vec3f & target, const float speed);
+
+	public:
+		inline const vec3f & position() const { return m_position; }
+
+	public:
+		inline vec3f & position() { return m_position; }
+
 	private:
 		vec3f m_position;
-		quat m_rotation;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

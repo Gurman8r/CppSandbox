@@ -5,26 +5,38 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Camera::Camera()
-		: Camera(vec3f::Zero, quat())
-	{
-	}
-
-	Camera::Camera(const vec3f & position, const quat & rotation)
-		: Transform(position, vec2f::One, rotation)
-		, m_position(position)
-		, m_rotation(rotation)
+		: Transform()
+		, m_position(vec3f::Zero)
 	{
 	}
 
 	Camera::Camera(const Camera & copy)
 		: Transform(copy)
 		, m_position(copy.m_position)
-		, m_rotation(copy.m_rotation)
 	{
 	}
 
 	Camera::~Camera()
 	{
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	void Camera::rotateAround(const vec3f & target, const float speed)
+	{
+		// Look
+		vec3f lookDir = (target - m_position).normalized();
+		
+		vec3f lookPos = (m_position + (target - m_position).normalized());
+		
+		this->lookAt(m_position, lookPos, vec3f::Up);
+
+		// Orbit
+		vec3f fwd = (lookPos - m_position);
+		
+		vec3f right = (fwd.cross(vec3f::Up) * vec3f(1, 0, 1)).normalized();
+		
+		m_position += (right * speed);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

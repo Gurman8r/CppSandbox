@@ -158,28 +158,27 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	const vec3f & Transform::getPosition() const
+	const vec3f Transform::getPosition() const
 	{
-		static vec3f temp;
-		temp[0] = matrix()[0xC];
-		temp[1] = matrix()[0xD];
-		temp[2] = matrix()[0xE];
-		return temp;
+		return {
+			matrix()[0xC],
+			matrix()[0xD],
+			matrix()[0xE]
+		};
 	}
 
-	const vec3f & Transform::getScale() const
+	const vec3f Transform::getScale() const
 	{
-		static vec3f temp;
-		temp[0] = matrix()[0x0];
-		temp[1] = matrix()[0x5];
-		temp[2] = matrix()[0xA];
-		return temp;
+		return {
+			matrix()[0x0],
+			matrix()[0x5],
+			matrix()[0xA]
+		};
 	}
 
-	const quat & Transform::getRotation() const
+	const quat Transform::getRotation() const
 	{
-		static quat temp;
-		return temp;
+		return quat();
 	}
 
 

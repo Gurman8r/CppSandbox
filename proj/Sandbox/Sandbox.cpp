@@ -328,9 +328,10 @@ namespace DEMO
 		// Setup Camera
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
+			data.camera.position() = { 0, 1, 10 };
 			data.camera.lookAt(
-				data.camPos,
-				data.camPos + ml::vec3f::Back,
+				data.camera.position(),
+				data.camera.position() + ml::vec3f::Back,
 				ml::vec3f::Up);
 		}
 
@@ -519,7 +520,7 @@ namespace DEMO
 						{ "Vert.model",		ml::Uniform::Mat4,	&transform->matrix() },
 						{ "Frag.tex_dm",	ml::Uniform::Tex2D,	ML_Res.textures.get("moon_dm") },
 						{ "Frag.tex_sm",	ml::Uniform::Tex2D,	ML_Res.textures.get("moon_nm") },
-						{ "Frag.camPos",	ml::Uniform::Vec3,	&data.camPos },
+						{ "Frag.camPos",	ml::Uniform::Vec3,	&data.camera.position() },
 						{ "Frag.lightPos",	ml::Uniform::Vec3,	&data.lightPos },
 						{ "Frag.lightCol",	ml::Uniform::Vec4,	&data.lightCol },
 						{ "Frag.ambient",	ml::Uniform::Float, &data.ambient },
@@ -554,7 +555,7 @@ namespace DEMO
 						{ "Vert.model",		ml::Uniform::Mat4,	&transform->matrix() },
 						{ "Frag.tex_dm",	ml::Uniform::Tex2D,	ML_Res.textures.get("earth_dm") },
 						{ "Frag.tex_sm",	ml::Uniform::Tex2D,	ML_Res.textures.get("earth_sm") },
-						{ "Frag.camPos",	ml::Uniform::Vec3,	&data.camPos },
+						{ "Frag.camPos",	ml::Uniform::Vec3,	&data.camera.position() },
 						{ "Frag.lightPos",	ml::Uniform::Vec3,	&data.lightPos },
 						{ "Frag.lightCol",	ml::Uniform::Vec4,	&data.lightCol },
 						{ "Frag.ambient",	ml::Uniform::Float, &data.ambient },
@@ -707,17 +708,9 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (const ml::Entity * target = ML_Res.entities.get("earth"))
 		{
-			// Look
-			ml::vec3f pos = target->get<ml::Transform>()->getPosition();
-			ml::vec3f dir = (pos - data.camPos).normalized();
-			ml::vec3f look = data.camPos + (pos - data.camPos).normalized();
-			data.camera.lookAt(data.camPos, look, ml::vec3f::Up);
-
-			// Orbit
-			float speed = (data.camAnimate ? data.camSpd * ev->elapsed.delta() : 0.0f);
-			ml::vec3f fwd = (look - data.camPos);
-			ml::vec3f right = (fwd.cross(ml::vec3f::Up) * ml::vec3f(1, 0, 1)).normalized();
-			data.camPos += right * speed;
+			data.camera.rotateAround(
+				target->get<ml::Transform>()->getPosition(),
+				(data.camAnim ? data.camSpd * ev->elapsed.delta() : 0.0f));
 		}
 
 		// Update Text
@@ -1042,8 +1035,8 @@ namespace DEMO
 				/* * * * * * * * * * * * * * * * * * * * */
 
 				ImGui::Text("Camera");
-				ImGui::Checkbox("Move##Camera", &data.camAnimate);
-				ml::GUI::EditVec3f("Position##Camera", data.camPos);
+				ImGui::Checkbox("Move##Camera", &data.camAnim);
+				ml::GUI::EditVec3f("Position##Camera", data.camera.position());
 				ImGui::DragFloat("Speed##Camera", &data.camSpd, 0.1f, -5.f, 5.f);
 				ImGui::Separator();
 

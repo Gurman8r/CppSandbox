@@ -155,7 +155,7 @@ namespace ml
 	{
 		Funcs::Group(ML_Res.effects.getName().c_str(), [&]()
 		{
-			for (auto pair : ML_Res.effects)
+			for (auto & pair : ML_Res.effects)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Effect * e)
 				{
@@ -192,7 +192,7 @@ namespace ml
 	{
 		Funcs::Group(ML_Res.entities.getName().c_str(), [&]()
 		{
-			for (auto pair : ML_Res.entities)
+			for (auto & pair : ML_Res.entities)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Entity * e)
 				{
@@ -229,7 +229,7 @@ namespace ml
 	{
 		Funcs::Group(ML_Res.fonts.getName().c_str(), [&]()
 		{
-			for (auto pair : ML_Res.fonts)
+			for (auto & pair : ML_Res.fonts)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Font * e)
 				{
@@ -270,7 +270,7 @@ namespace ml
 	{
 		Funcs::Group(ML_Res.images.getName().c_str(), [&]()
 		{
-			for (auto pair : ML_Res.images)
+			for (auto & pair : ML_Res.images)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Image * e)
 				{
@@ -311,7 +311,7 @@ namespace ml
 	{
 		Funcs::Group(ML_Res.lua.getName().c_str(), [&]()
 		{
-			for (auto pair : ML_Res.lua)
+			for (auto & pair : ML_Res.lua)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const LuaScript * e)
 				{
@@ -348,7 +348,7 @@ namespace ml
 	{
 		Funcs::Group(ML_Res.mats.getName().c_str(), [&]()
 		{
-			for (auto pair : ML_Res.mats)
+			for (auto & pair : ML_Res.mats)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Material * e)
 				{
@@ -385,7 +385,7 @@ namespace ml
 	{
 		Funcs::Group(ML_Res.meshes.getName().c_str(), [&]()
 		{
-			for (auto pair : ML_Res.meshes)
+			for (auto & pair : ML_Res.meshes)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Mesh * e)
 				{
@@ -422,7 +422,7 @@ namespace ml
 	{
 		Funcs::Group(ML_Res.models.getName().c_str(), [&]()
 		{
-			for (auto pair : ML_Res.models)
+			for (auto & pair : ML_Res.models)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Model * e)
 				{
@@ -459,7 +459,7 @@ namespace ml
 	{
 		Funcs::Group(ML_Res.plugins.getName().c_str(), [&]()
 		{
-			for (auto pair : ML_Res.plugins)
+			for (auto & pair : ML_Res.plugins)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Plugin * e)
 				{
@@ -496,7 +496,7 @@ namespace ml
 	{
 		Funcs::Group(ML_Res.scripts.getName().c_str(), [&]()
 		{
-			for (auto pair : ML_Res.scripts)
+			for (auto & pair : ML_Res.scripts)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Script * e)
 				{
@@ -533,7 +533,7 @@ namespace ml
 	{
 		Funcs::Group(ML_Res.shaders.getName().c_str(), [&]()
 		{
-			for (auto pair : ML_Res.shaders)
+			for (auto & pair : ML_Res.shaders)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Shader * e)
 				{
@@ -570,7 +570,7 @@ namespace ml
 	{
 		Funcs::Group(ML_Res.skyboxes.getName().c_str(), [&]()
 		{
-			for (auto pair : ML_Res.skyboxes)
+			for (auto & pair : ML_Res.skyboxes)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Skybox * e)
 				{
@@ -607,7 +607,7 @@ namespace ml
 	{
 		Funcs::Group(ML_Res.sounds.getName().c_str(), [&]()
 		{
-			for (auto pair : ML_Res.sounds)
+			for (auto & pair : ML_Res.sounds)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Sound * e)
 				{
@@ -644,7 +644,7 @@ namespace ml
 	{
 		Funcs::Group(ML_Res.sprites.getName().c_str(), [&]()
 		{
-			for (auto pair : ML_Res.sprites)
+			for (auto & pair : ML_Res.sprites)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Sprite * e)
 				{
@@ -681,7 +681,7 @@ namespace ml
 	{
 		Funcs::Group(ML_Res.textures.getName().c_str(), [&]()
 		{
-			for (auto pair : ML_Res.textures)
+			for (auto & pair : ML_Res.textures)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Texture * e)
 				{

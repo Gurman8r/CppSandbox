@@ -36,12 +36,10 @@ namespace ml
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
-		const vec3f & getPosition() const;
-		const vec3f & getScale() const;
-		const quat & getRotation() const;
+		const vec3f getPosition() const;
+		const vec3f getScale() const;
+		const quat	getRotation() const;
 
-	public:
-		/* * * * * * * * * * * * * * * * * * * * */
 		Transform & setPosition(const vec3f & value);
 		Transform & setScale(const vec3f & value);
 		Transform & setRotation(const quat & value);
