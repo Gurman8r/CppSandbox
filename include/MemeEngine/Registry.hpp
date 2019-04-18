@@ -4,9 +4,6 @@
 #include <MemeEngine/Export.hpp>
 #include <MemeCore/FileSystem.hpp>
 
-#define ML_assert_readable(T) \
-static_assert(std::is_base_of<ml::IReadable, T>::value, "Type must derive ml::IReadable")
-
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -24,7 +21,7 @@ namespace ml
 		friend class Resources;
 
 		// Type must derive IReadable
-		ML_assert_readable(T);
+		static_assert(std::is_base_of<ml::IReadable, T>::value, "Type must derive ml::IReadable");
 
 	public:
 		using value_type	= typename T;
