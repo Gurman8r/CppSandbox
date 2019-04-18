@@ -1,6 +1,8 @@
 #ifndef _ML_CONFIG_HPP_
 #define _ML_CONFIG_HPP_
 
+#include <MemeCore/Version.hpp>
+
 // Disable safety.
 /* * * * * * * * * * * * * * * * * * * */
 #ifndef _CRT_SECURE_NO_WARNINGS

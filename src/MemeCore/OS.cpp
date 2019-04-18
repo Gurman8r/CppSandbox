@@ -1,5 +1,7 @@
 #include <MemeCore/OS.hpp>
 #include <MemeCore/FileSystem.hpp>
+#include <MemeCore/EventSystem.hpp>
+#include <MemeCore/CoreEvents.hpp>
 #include <MemeCore/Debug.hpp>
 
 #ifdef ML_SYSTEM_WINDOWS
@@ -11,7 +13,10 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	OS::OS() { }
+	OS::OS()
+	{
+		ML_EventSystem.addListener(CoreEvent::EV_OS_Execute, this);
+	}
 
 	OS::~OS() { }
 
@@ -19,6 +24,20 @@ namespace ml
 
 	void OS::onEvent(const IEvent * value)
 	{
+		switch (*value)
+		{
+		case CoreEvent::EV_OS_Execute:
+			if (const auto * ev = value->as<OS_ExecuteEvent>())
+			{
+				ML_OS.execute(
+					ev->cmd,
+					ev->file,
+					ev->args,
+					ev->path
+				);
+			}
+			break;
+		}
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

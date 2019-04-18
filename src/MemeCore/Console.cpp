@@ -1,64 +1,49 @@
 #include <MemeCore/Console.hpp>
 #include <MemeCore/Debug.hpp>
 
-#ifdef ML_SYSTEM_WINDOWS
-#include <Windows.h>
-#endif // ML_SYSTEM_WINDOWS
+# ifdef ML_SYSTEM_WINDOWS
+#	include <Windows.h>
+#	include <conio.h>
+# endif // ML_SYSTEM_WINDOWS
 
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void Console::setConsoleTextAttribute(const uint16_t & value)
+	Console::Console()
 	{
-#ifdef ML_SYSTEM_WINDOWS
-		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), static_cast<WORD>(value));
-#else
+	}
 
-#endif
+	Console::~Console()
+	{
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	const FG::Color FG::Values[FG::MAX_COLOR] = {
-		Black,
-		DarkBlue,
-		DarkGreen,
-		DarkCyan,
-		DarkRed,
-		DarkMagenta,
-		DarkYellow,
-		Normal,
-		Gray,
-		Blue,
-		Green,
-		Cyan,
-		Red,
-		Magenta,
-		Yellow,
-		White,
-	};
+	bool Console::enableMenuItem(uint32_t item, uint32_t enable) const
+	{
+#ifdef ML_SYSTEM_WINDOWS
+		if (HWND console = GetConsoleWindow())
+		{
+			if (HMENU menu = GetSystemMenu(console, false))
+			{
+				return EnableMenuItem(menu, item, enable);
+			}
+		}
+		return false;
+#else 
+		return false;
+#endif
+	}
 
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	const BG::Color BG::Values[BG::MAX_COLOR] = {
-		Black,
-		DarkBlue,
-		DarkGreen,
-		DarkCyan,
-		DarkRed,
-		DarkMagenta,
-		DarkYellow,
-		Gray,
-		DarkGray,
-		Blue,
-		Green,
-		Cyan,
-		Red,
-		Magenta,
-		Yellow,
-		White,
-	};
+	bool Console::setTextAttribute(const uint16_t value) const
+	{
+#ifdef ML_SYSTEM_WINDOWS
+		return SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), value);
+#else 
+		return false;
+#endif
+	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 }

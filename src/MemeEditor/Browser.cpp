@@ -23,9 +23,9 @@ namespace ml
 		, m_preview()
 		, m_isDouble(false)
 	{
-		ML_EventSystem.addListener(CoreEvent::EV_FileSystem, this);
+		ML_EventSystem.addListener(CoreEvent::EV_FS_ChangeDir, this);
 
-		onEvent(&FileSystemEvent());
+		onEvent(&FS_ChangDirEvent(ML_FS.getWorkingDir()));
 	}
 
 	Browser::~Browser()
@@ -38,8 +38,8 @@ namespace ml
 	{
 		switch (*value)
 		{
-		case CoreEvent::EV_FileSystem:
-			if (const auto * ev = value->as<FileSystemEvent>())
+		case CoreEvent::EV_FS_ChangeDir:
+			if (const auto * ev = value->as<FS_ChangDirEvent>())
 			{
 				m_path = ML_FS.getWorkingDir();
 				if (ML_FS.getDirContents(m_path, m_dir))
@@ -95,7 +95,9 @@ namespace ml
 			{
 				if (ImGui::MenuItem("Open"))
 				{
-					ML_OS.execute("open", get_selected_path());
+					ML_EventSystem.fireEvent(OS_ExecuteEvent(
+						"open",
+						get_selected_path()));
 				}
 				ImGui::EndMenu();
 			}

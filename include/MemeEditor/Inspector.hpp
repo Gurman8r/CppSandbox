@@ -20,6 +20,18 @@ namespace ml
 	public:
 		void onEvent(const IEvent * value) override;
 		bool drawGui(bool * p_open) override;
+
+	public:
+		template <
+			typename _Fun
+		> inline bool drawFun(bool * p_open, _Fun fun)
+		{
+			if (drawGui(p_open))
+			{
+				fun();
+			}
+			return endDraw();
+		}
 	};
 }
 

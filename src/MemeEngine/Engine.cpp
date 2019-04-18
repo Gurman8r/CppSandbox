@@ -1,10 +1,10 @@
 #include <MemeEngine/Engine.hpp>
 #include <MemeEngine/Application.hpp>
 #include <MemeCore/Time.hpp>
+#include <MemeCore/Debug.hpp>
 
 # ifdef ML_SYSTEM_WINDOWS
 #	include <Windows.h>
-#	include <conio.h>
 #	define SC_CLOSE 0xF060
 #	define MF_GRAYED 0x00000001L
 # endif // ML_SYSTEM_WINDOWS
@@ -17,14 +17,7 @@ namespace ml
 		: m_app(NULL)
 	{
 #ifdef ML_SYSTEM_WINDOWS
-		// Disable Console Close Button
-		if (HWND console = GetConsoleWindow())
-		{
-			if (HMENU menu = GetSystemMenu(console, false))
-			{
-				EnableMenuItem(menu, SC_CLOSE, MF_GRAYED);
-			}
-		}
+		ML_Console.enableMenuItem(SC_CLOSE, MF_GRAYED);
 #endif // ML_SYSTEM_WINDOWS
 	}
 
@@ -36,7 +29,7 @@ namespace ml
 
 	Application * Engine::launchApp(Application * value)
 	{
-		return ((!m_app) ? (m_app = value) : (NULL));
+		return ((!isRunning()) ? (m_app = value) : (NULL));
 	}
 
 	int32_t Engine::freeApp(Application * value)

@@ -39,6 +39,8 @@ namespace ml
 		bool	setWorkingDir(const String & value);
 		String	getWorkingDir() const;
 
+		/* * * * * * * * * * * * * * * * * * * * */
+
 		bool	getDirContents(const String & dirName, List<char> & value) const;
 		bool	getDirContents(const String & dirName, String & value) const;
 		bool	getDirContents(const String & dirName, SStream & value) const;
@@ -54,6 +56,9 @@ namespace ml
 
 		bool	dirExists(const String & dirName) const;
 		bool	fileExists(const String & filename) const;
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
 		String	getFileType(const String & filename) const;
 		String  getFileName(const String & filename) const;
 		String	getFilePath(const String & filename) const;

@@ -16,18 +16,6 @@ namespace ml
 	public:
 		virtual bool beginDraw() = 0;
 		virtual bool endDraw() = 0;
-
-	public:
-		template <
-			typename _Fun
-		> inline bool drawFun(_Fun fun)
-		{
-			if (beginDraw())
-			{
-				fun();
-			}
-			return endDraw();
-		}
 	};
 }
 

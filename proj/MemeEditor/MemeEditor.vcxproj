@@ -176,7 +176,7 @@
     <ClInclude Include="..\..\include\MemeEditor\MainMenuBar.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\NetworkHUD.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Profiler.hpp" />
-    <ClInclude Include="..\..\include\MemeEditor\Project.hpp" />
+    <ClInclude Include="..\..\include\MemeEditor\ProjectView.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\SceneView.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Terminal.hpp" />
     <ClInclude Include="..\..\include\MemeEditor\Builder.hpp" />
@@ -205,7 +205,7 @@
     <ClCompile Include="..\..\src\MemeEditor\MainMenuBar.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\NetworkHUD.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\Profiler.cpp" />
-    <ClCompile Include="..\..\src\MemeEditor\Project.cpp" />
+    <ClCompile Include="..\..\src\MemeEditor\ProjectView.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\SceneView.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\Terminal.cpp" />
     <ClCompile Include="..\..\src\MemeEditor\Builder.cpp" />

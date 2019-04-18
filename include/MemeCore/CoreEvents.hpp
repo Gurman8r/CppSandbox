@@ -13,7 +13,8 @@ namespace ml
 		{
 			MIN_CORE_EVENT = IEvent::EV_CORE + 1,
 			
-			EV_FileSystem,
+			EV_FS_ChangeDir,
+			EV_OS_Execute,
 			
 			MAX_CORE_EVENT
 		};
@@ -26,16 +27,64 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_CORE_API FileSystemEvent : public CoreEvent
+	struct ML_CORE_API FS_ChangDirEvent : public CoreEvent
 	{
-		FileSystemEvent()
-			: CoreEvent(EV_FileSystem)
+		const String dir;
+
+		FS_ChangDirEvent(const String & dir)
+			: CoreEvent(EV_FS_ChangeDir)
+			, dir(dir)
 		{
 		}
 
 		inline void serialize(std::ostream & out) const override
 		{
-			out << GetTypeInfo().name() << " ";
+			out << GetTypeInfo().name() << " " << dir;
+		}
+	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	struct ML_CORE_API OS_ExecuteEvent : public CoreEvent
+	{
+		const String	cmd;
+		const String	file;
+		const String	args;
+		const String	path;
+
+		OS_ExecuteEvent(
+			const String & cmd,
+			const String & file = String(),
+			const String & args = String(),
+			const String & path = String())
+			: CoreEvent(EV_OS_Execute)
+			, cmd	(cmd)
+			, file	(file)
+			, args	(args)
+			, path	(path)
+		{
+		}
+
+		inline void serialize(std::ostream & out) const override
+		{
+			out << GetTypeInfo().name() << " "
+				<< cmd << " "
+				<< file << " "
+				<< args << " "
+				<< path << " ";
+		}
+	};
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	struct ML_CORE_API OS_OpenEvent : public OS_ExecuteEvent
+	{
+		OS_OpenEvent(
+			const String & file,
+			const String & args = String(),
+			const String & path = String())
+			: OS_ExecuteEvent("open", file, args, path)
+		{
 		}
 	};
 

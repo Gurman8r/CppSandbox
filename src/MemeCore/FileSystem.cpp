@@ -30,7 +30,7 @@ namespace ml
 #ifdef ML_SYSTEM_WINDOWS
 		if (_chdir(value.c_str()) == EXIT_SUCCESS)
 		{
-			ML_EventSystem.fireEvent(FileSystemEvent());
+			ML_EventSystem.fireEvent(FS_ChangDirEvent(getWorkingDir()));
 			return true;
 		}
 		return false;
@@ -48,6 +48,7 @@ namespace ml
 #endif
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool FileSystem::getDirContents(const String & dirName, List<char> & value) const
 	{
@@ -173,6 +174,8 @@ namespace ml
 	{
 		return (bool)(std::ifstream(filename));
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 	
 	String FileSystem::getFileType(const String & filename) const
 	{

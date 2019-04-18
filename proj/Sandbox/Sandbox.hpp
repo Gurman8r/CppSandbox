@@ -35,13 +35,6 @@ namespace DEMO
 
 	private:
 		/* * * * * * * * * * * * * * * * * * * * */
-		bool drawMainMenuBar();
-		bool drawDockspace(bool * p_open);
-		bool drawSceneView(bool * p_open);
-		bool drawInspector(bool * p_open);
-
-	private:
-		/* * * * * * * * * * * * * * * * * * * * */
 
 		ml::Canvas m_canvas;
 		ml::HashMap<ml::String, ml::Text> m_text;

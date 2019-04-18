@@ -47,8 +47,8 @@ namespace ml
 	{
 		switch (*value)
 		{
-		case CoreEvent::EV_FileSystem:
-			if (const auto * ev = value->as<FileSystemEvent>())
+		case CoreEvent::EV_FS_ChangeDir:
+			if (const auto * ev = value->as<FS_ChangDirEvent>())
 			{
 			}
 			break;

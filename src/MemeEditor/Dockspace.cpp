@@ -1,6 +1,7 @@
 #include <MemeEditor/Dockspace.hpp>
 #include <MemeEditor/GUI.hpp>
 #include <MemeEditor/ImGui.hpp>
+#include <MemeEditor/Editor.hpp>
 
 namespace ml
 {
@@ -26,7 +27,7 @@ namespace ml
 
 	bool Dockspace::drawGui(bool * p_open)
 	{
-		return beginDraw(p_open, 
+		if (beginDraw(p_open,
 			ImGuiWindowFlags_NoTitleBar |
 			ImGuiWindowFlags_NoCollapse |
 			ImGuiWindowFlags_NoResize |
@@ -35,7 +36,36 @@ namespace ml
 			ImGuiWindowFlags_NoNavFocus |
 			ImGuiWindowFlags_MenuBar |
 			ImGuiWindowFlags_NoDocking |
-			ImGuiWindowFlags_NoBackground);
+			ImGuiWindowFlags_NoBackground))
+		{
+			// Dockspace Builder
+			if (uint32_t root = beginBuilder(ImGuiDockNodeFlags_None))
+			{
+				uint32_t left = splitNode(root, ImGuiDir_Left, 0.29f, &root);
+				uint32_t center = splitNode(root, ImGuiDir_Right, 0.5f, &root);
+				uint32_t right = splitNode(center, ImGuiDir_Right, 0.21f, &center);
+
+				const uint32_t left_U	= splitNode(left, ImGuiDir_Up, 0.65f, &left);
+				const uint32_t left_D	= splitNode(left, ImGuiDir_Down, 0.35f, &left);
+				const uint32_t center_U = splitNode(center, ImGuiDir_Up, 0.65f, &center);
+				const uint32_t center_D = splitNode(center, ImGuiDir_Down, 0.35f, &center);
+				const uint32_t right_U	= splitNode(right, ImGuiDir_Up, 0.65f, &right);
+				const uint32_t right_D	= splitNode(right, ImGuiDir_Down, 0.35f, &right);
+
+				dockWindow(ML_Profiler.title(),		left_U);
+				dockWindow(ML_NetworkHUD.title(),	left_U);
+				dockWindow(ML_Browser.title(),		left_U);
+				dockWindow(ML_ProjectView.title(),	left_U);
+				dockWindow(ML_Terminal.title(),		left_D);
+				dockWindow(ML_SceneView.title(),	center_U);
+				dockWindow(ML_Builder.title(),		center_D);
+				dockWindow(ML_TextEditor.title(),	center_D);
+				dockWindow(ML_Inspector.title(),	right_U);
+
+				endBuilder(root);
+			};
+		}
+		return endDraw();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

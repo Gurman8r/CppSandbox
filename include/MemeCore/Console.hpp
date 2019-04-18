@@ -2,15 +2,26 @@
 #define _ML_CONSOLE_HPP_
 
 #include <MemeCore/IO.hpp>
+#include <MemeCore/ISingleton.hpp>
+
+#define ML_Console ml::Console::getInstance()
 
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	class ML_CORE_API Console final
+		: public ISingleton<Console>
 	{
+		friend class ISingleton<Console>;
+
+	private:
+		Console();
+		~Console();
+
 	public:
-		static void	setConsoleTextAttribute(const uint16_t & value);
+		bool enableMenuItem(uint32_t item, uint32_t enable) const;
+		bool setTextAttribute(const uint16_t value) const;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -38,8 +49,6 @@ namespace ml
 
 			MAX_COLOR = 16
 		};
-
-		const static FG::Color Values[FG::MAX_COLOR];
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -67,8 +76,6 @@ namespace ml
 
 			MAX_COLOR = 16
 		};
-
-		const static BG::Color Values[BG::MAX_COLOR];
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -107,33 +114,33 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	inline FMT operator|(const BG::Color& bg, const FG::Color& fg)
+	inline FMT operator|(const BG::Color & bg, const FG::Color & fg)
 	{
 		return FMT(fg, bg);
 	};
 
-	inline FMT operator|(const FG::Color& fg, const BG::Color& bg)
+	inline FMT operator|(const FG::Color & fg, const BG::Color & bg)
 	{
 		return FMT(fg, bg);
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	inline std::ostream& operator<<(std::ostream& out, const FG::Color & value)
+	inline std::ostream& operator<<(std::ostream & out, const FG::Color & value)
 	{
-		Console::setConsoleTextAttribute(uint16_t(value));
+		ML_Console.setTextAttribute(uint16_t(value));
 		return out;
 	};
 
-	inline std::ostream& operator<<(std::ostream& out, const BG::Color & value)
+	inline std::ostream& operator<<(std::ostream & out, const BG::Color & value)
 	{
-		Console::setConsoleTextAttribute(uint16_t(value));
+		ML_Console.setTextAttribute(uint16_t(value));
 		return out;
 	};
 
-	inline std::ostream& operator<<(std::ostream& out, const FMT & value)
+	inline std::ostream& operator<<(std::ostream & out, const FMT & value)
 	{
-		Console::setConsoleTextAttribute(uint16_t(value.fg) | uint16_t(value.bg));
+		ML_Console.setTextAttribute(uint16_t(value.fg) | uint16_t(value.bg));
 		return out;
 	};
 

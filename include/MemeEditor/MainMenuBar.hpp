@@ -20,6 +20,7 @@ namespace ml
 	public:
 		bool beginDraw() override;
 		bool endDraw() override;
+		bool drawGui();
 	};
 }
 

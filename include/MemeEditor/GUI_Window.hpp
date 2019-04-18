@@ -24,18 +24,6 @@ namespace ml
 		virtual bool endDraw();
 
 	public:
-		template <
-			typename _Fun
-		> inline bool drawFun(bool * p_open, _Fun fun)
-		{
-			if (drawGui(p_open))
-			{
-				fun();
-			}
-			return endDraw();
-		}
-
-	public:
 		inline CString	title() const { return m_title; }
 		inline bool *	open()	const { return m_open; }
 		inline int32_t	flags() const { return m_flags; }
