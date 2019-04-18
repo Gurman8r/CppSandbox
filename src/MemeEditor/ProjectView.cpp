@@ -1,11 +1,13 @@
 #include <MemeEditor/ProjectView.hpp>
 #include <MemeEditor/ImGui.hpp>
-#include <MemeEngine/Resources.hpp>
 #include <MemeEditor/Terminal.hpp>
+#include <MemeEditor/GUI.hpp>
+#include <MemeEngine/Resources.hpp>
 #include <MemeCore/Debug.hpp>
 #include <MemeCore/OS.hpp>
 #include <MemeCore/CoreEvents.hpp>
 #include <MemeCore/EventSystem.hpp>
+#include <MemeGraphics/Renderer.hpp>
 
 namespace ml
 {
@@ -194,31 +196,66 @@ namespace ml
 		{
 			for (auto & pair : ML_Res.entities)
 			{
-				Funcs::Group(pair.first.c_str(), [&](CString name, const Entity * e)
+				Funcs::Group(pair.first.c_str(), [&](CString name, Entity * e)
 				{
-					Funcs::Field("Name", [&](CString label)
+					Funcs::Field("Name", [&](CString)
 					{
 						ImGui::Text("%s", name);
 					});
-					if (const String file = ML_Res.entities.getFile(name))
+
+					Funcs::Field("Transform", [&](CString)
 					{
-						Funcs::Field("File", [&](CString label)
+						if (Transform * t = e->get<Transform>())
 						{
-							const String fName = ML_FS.getFileName(file);
-							if (ImGui::Selectable(fName.c_str()))
+							vec3f pos = t->getPosition();
+							if (GUI::EditVec3f("Position##Transform", pos))
 							{
-								ML_EventSystem.fireEvent(OS_OpenEvent(ML_FS.pathTo(file)));
+								t->setPosition(pos);
 							}
-						});
-						Funcs::Field("Path", [&](CString label)
+
+							vec3f scl = t->getScale();
+							if (GUI::EditVec3f("Scale##Transform", scl))
+							{
+								t->setScale(scl);
+							}
+
+							quat rot = t->getRotation();
+							if (GUI::EditVec4f("Rotation##Transform", rot))
+							{
+								t->setRotation(rot);
+							}
+
+							mat4f matrix = t->matrix();
+							if (GUI::EditMat4f("Matrix", matrix))
+							{
+								t->matrix() = matrix;
+							}
+						}
+						else if (t = e->add<Transform>())
 						{
-							const String fPath = ML_FS.getFilePath(file);
-							if (ImGui::Selectable(fPath.c_str()))
-							{
-								ML_EventSystem.fireEvent(OS_OpenEvent(ML_FS.pathTo(fPath)));
-							}
-						});
-					}
+							ML_Terminal.printf("[ LOG ] Added %s to %s", t->GetTypeInfo().name(), name);
+						}
+						else
+						{
+							ML_Terminal.print("[ ERR ] Failed adding component");
+						}
+					});
+
+					Funcs::Field("Renderer", [&](CString) 
+					{
+						if (ml::Renderer * r = e->get<ml::Renderer>())
+						{
+							ImGui::Text("OK");
+						}
+						else if (r = e->add<ml::Renderer>())
+						{
+							ML_Terminal.printf("[ LOG ] Added %s to %s", r->GetTypeInfo().name(), name);
+						}
+						else
+						{
+							ML_Terminal.print("[ ERR ] Failed adding component");
+						}
+					});
 
 				}, pair.first.c_str(), pair.second);
 			}
