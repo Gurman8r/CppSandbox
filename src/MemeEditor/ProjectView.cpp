@@ -203,59 +203,43 @@ namespace ml
 						ImGui::Text("%s", name);
 					});
 
-					Funcs::Field("Transform", [&](CString)
+					Funcs::Group("Components", [&](CString) 
 					{
+						// Transform
 						if (Transform * t = e->get<Transform>())
 						{
-							vec3f pos = t->getPosition();
-							if (GUI::EditVec3f("Position##Transform", pos))
+							Funcs::Field("Transform", [&](CString)
 							{
-								t->setPosition(pos);
-							}
+								vec3f pos = t->getPosition();
+								if (GUI::EditVec3f("Position##Transform", pos))
+								{
+									t->setPosition(pos);
+								}
 
-							vec3f scl = t->getScale();
-							if (GUI::EditVec3f("Scale##Transform", scl))
+								vec3f scl = t->getScale();
+								if (GUI::EditVec3f("Scale##Transform", scl))
+								{
+									t->setScale(scl);
+								}
+
+								quat rot = t->getRotation();
+								if (GUI::EditVec4f("Rotation##Transform", rot))
+								{
+									t->setRotation(rot);
+								}
+							});
+						}
+
+						// Renderer
+						if (Renderer * r = e->get<Renderer>())
+						{
+							Funcs::Field("Renderer", [&](CString)
 							{
-								t->setScale(scl);
-							}
+								ImGui::Text("OK");
+							});
+						}
 
-							quat rot = t->getRotation();
-							if (GUI::EditVec4f("Rotation##Transform", rot))
-							{
-								t->setRotation(rot);
-							}
-
-							mat4f matrix = t->matrix();
-							if (GUI::EditMat4f("Matrix", matrix))
-							{
-								t->matrix() = matrix;
-							}
-						}
-						else if (t = e->add<Transform>())
-						{
-							ML_Terminal.printf("[ LOG ] Added %s to %s", t->GetTypeInfo().name(), name);
-						}
-						else
-						{
-							ML_Terminal.print("[ ERR ] Failed adding component");
-						}
-					});
-
-					Funcs::Field("Renderer", [&](CString) 
-					{
-						if (ml::Renderer * r = e->get<ml::Renderer>())
-						{
-							ImGui::Text("OK");
-						}
-						else if (r = e->add<ml::Renderer>())
-						{
-							ML_Terminal.printf("[ LOG ] Added %s to %s", r->GetTypeInfo().name(), name);
-						}
-						else
-						{
-							ML_Terminal.print("[ ERR ] Failed adding component");
-						}
-					});
+					}, (CString)(NULL));
 
 				}, pair.first.c_str(), pair.second);
 			}

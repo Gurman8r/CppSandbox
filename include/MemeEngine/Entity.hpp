@@ -23,10 +23,9 @@ namespace ml
 		friend class ECS;
 
 	public:
-		using TypeInfo		= typename const std::type_info *;
-		using ComponentMap	= typename HashMap<TypeInfo, void *>;
-		using iterator		= typename ComponentMap::iterator;
-		using const_iterator= typename ComponentMap::const_iterator;
+		using map_type		= typename HashMap<size_t, void *>;
+		using iterator		= typename map_type::iterator;
+		using const_iterator= typename map_type::const_iterator;
 
 	public:
 		Entity();
@@ -63,7 +62,7 @@ namespace ml
 		{
 			iterator it;
 			return (((it = this->find<Component>()) != this->end())
-				? ((Component *)(it->second))
+				? (reinterpret_cast<Component *>(it->second))
 				: (NULL));
 		}
 
@@ -72,8 +71,8 @@ namespace ml
 		> inline const Component * get() const
 		{
 			const_iterator it;
-			return (((it = this->find<Component>()) != this->end())
-				? ((const Component *)(it->second))
+			return (((it = this->find<Component>()) != this->cend())
+				? (reinterpret_cast<const Component *>(it->second))
 				: (NULL));
 		}
 
@@ -81,16 +80,16 @@ namespace ml
 
 		template <
 			class Component
-		> inline const_iterator find() const
+		> inline iterator find()
 		{
-			return m_cmp.find(&typeid(Component));
+			return (iterator)(m_cmp.find((&typeid(Component))->hash_code()));
 		}
 
 		template <
 			class Component
-		> inline iterator find()
+		> inline const_iterator find() const
 		{
-			return m_cmp.find(&typeid(Component));
+			return (const_iterator)(m_cmp.find((&typeid(Component))->hash_code()));
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -99,7 +98,7 @@ namespace ml
 			class Component
 		> inline Component * set(Component * value)
 		{
-			return ((Component *)(m_cmp[&typeid(Component)] = value));
+			return ((Component *)(m_cmp[(&typeid(Component))->hash_code()] = value));
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -113,7 +112,7 @@ namespace ml
 		inline const_iterator	cend()	const	{ return m_cmp.cend();	}
 
 	private:
-		ComponentMap m_cmp;
+		map_type m_cmp;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */
