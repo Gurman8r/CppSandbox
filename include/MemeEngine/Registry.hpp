@@ -139,10 +139,9 @@ namespace ml
 				: String();
 		}
 
-		inline const List<String> & getKeys() const
+		inline const List<String> getKeys() const
 		{
-			static List<String> keys;
-			keys.reserve(this->size());
+			List<String> keys;
 			for (auto pair : (*this))
 			{
 				keys.push_back(pair.first);
