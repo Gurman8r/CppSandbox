@@ -15,7 +15,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	class ML_ENGINE_API Entity
+	class ML_ENGINE_API Entity final
 		: public ITrackable
 		, public IDisposable
 		, public IReadable
@@ -30,11 +30,11 @@ namespace ml
 
 	public:
 		Entity();
-		virtual ~Entity();
+		~Entity();
 
 	public:
-		virtual bool dispose() override;
-		virtual bool loadFromFile(const String & filename) override;
+		bool dispose() override;
+		bool loadFromFile(const String & filename) override;
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
