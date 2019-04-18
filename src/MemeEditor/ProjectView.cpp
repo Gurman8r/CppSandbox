@@ -326,43 +326,43 @@ namespace ml
 											{
 											case Uniform::Int:
 											{
-												static int32_t temp;
+												int32_t temp = u->get_value<int32_t>();
 												ImGui::DragInt("##Int##Value", &temp);
 											}
 											break;
 											case Uniform::Float:
 											{
-												static float temp;
+												float temp = u->get_value<float>();
 												ImGui::DragFloat("##Float##Value", &temp, 0.1f);
 											}
 											break;
 											case Uniform::Vec2:
 											{
-												static vec2f temp;
+												vec2f temp = u->get_value<vec2f>();
 												GUI::EditVec2f("##Vec2##Value", temp);
 											}
 											break;
 											case Uniform::Vec3:
 											{
-												static vec3f temp;
+												vec3f temp = u->get_value<vec3f>();
 												GUI::EditVec3f("##Vec3##Value", temp);
 											}
 											break;
 											case Uniform::Vec4:
 											{
-												static vec4f temp;
+												vec4f temp = u->get_value<vec4f>();
 												GUI::EditVec4f("##Vec4##Value", temp);
 											}
 											break;
 											case Uniform::Mat3:
 											{
-												static mat3f temp;
+												mat3f temp = u->get_value<mat3f>();
 												GUI::EditMat3f("##Mat3##Value", temp);
 											}
 											break;
 											case Uniform::Mat4:
 											{
-												static mat4f temp;
+												mat4f temp = u->get_value<mat4f>();
 												GUI::EditMat4f("##Mat4##Value", temp);
 											}
 											break;
