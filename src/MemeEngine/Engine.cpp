@@ -18,9 +18,13 @@ namespace ml
 	{
 #ifdef ML_SYSTEM_WINDOWS
 		// Disable Console Close Button
-		HWND hwnd = GetConsoleWindow();
-		HMENU hmenu = GetSystemMenu(hwnd, false);
-		EnableMenuItem(hmenu, SC_CLOSE, MF_GRAYED);
+		if (HWND console = GetConsoleWindow())
+		{
+			if (HMENU menu = GetSystemMenu(console, false))
+			{
+				EnableMenuItem(menu, SC_CLOSE, MF_GRAYED);
+			}
+		}
 #endif // ML_SYSTEM_WINDOWS
 	}
 
