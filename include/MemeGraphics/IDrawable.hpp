@@ -13,9 +13,6 @@ namespace ml
 		virtual ~IDrawable() {}
 
 		virtual void draw(RenderTarget & target, RenderBatch batch) const = 0;
-
-	private:
-
 	};
 }
 

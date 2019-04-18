@@ -19,9 +19,6 @@
     <Filter Include="Source Files\DS">
       <UniqueIdentifier>{af5c254e-15a7-4a77-9673-c744352d7b68}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Interfaces">
-      <UniqueIdentifier>{0bee5786-4dbe-41db-81dd-9cad85974a90}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Drawable">
       <UniqueIdentifier>{d15342cc-d15c-402e-accc-c3a2c45796a3}</UniqueIdentifier>
     </Filter>
@@ -75,9 +72,6 @@
     <ClInclude Include="..\..\include\MemeGraphics\Vertex.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\ITransformable.hpp">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\GL.hpp">
       <Filter>Header Files\Internal</Filter>
     </ClInclude>
@@ -101,9 +95,6 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\RenderWindow.hpp">
       <Filter>Header Files\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\IDrawable.hpp">
-      <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\UniformSet.hpp">
       <Filter>Header Files\DS</Filter>
@@ -175,6 +166,9 @@
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Renderer.hpp">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\IDrawable.hpp">
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
   </ItemGroup>

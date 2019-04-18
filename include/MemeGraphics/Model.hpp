@@ -2,7 +2,6 @@
 #define _ML_MODEL_HPP_
 
 #include <MemeGraphics/IDrawable.hpp>
-#include <MemeGraphics/ITransformable.hpp>
 #include <MemeGraphics/Mesh.hpp>
 #include <MemeGraphics/Material.hpp>
 #include <MemeGraphics/BufferLayout.hpp>

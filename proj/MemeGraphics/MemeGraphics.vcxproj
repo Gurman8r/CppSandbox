@@ -32,7 +32,6 @@
     <ClInclude Include="..\..\include\MemeGraphics\Glyph.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Image.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\IndexBuffer.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\ITransformable.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Lists.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Material.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Mesh.hpp" />
