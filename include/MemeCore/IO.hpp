@@ -1,8 +1,7 @@
 #ifndef _ML_IO_HPP_
 #define _ML_IO_HPP_
 
-#include <MemeCore/Export.hpp>
-#include <MemeCore/STD.hpp>
+#include <MemeCore/String.hpp>
 
 namespace ml
 {
@@ -22,10 +21,12 @@ namespace ml
 	{
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		template <typename Fun, typename ... Args>
-		inline static StreamBuf * capture(std::ostream & src, Fun fun, Args ... args)
+		template <
+			class Fun, 
+			class ... Args
+		> inline static StreamBuf * capture(std::ostream & src, Fun fun, Args ... args)
 		{
-			std::stringstream dst;
+			SStream dst;
 			if (StreamBuf * buf = src.rdbuf(dst.rdbuf()))
 			{
 				fun(dst, (args)...);
@@ -35,8 +36,10 @@ namespace ml
 			return NULL;
 		}
 
-		template <typename Fun, typename ... Args>
-		inline static StreamBuf * capture_cout(Fun fun, Args ... args)
+		template <
+			class Fun,
+			class ... Args
+		> inline static StreamBuf * capture_cout(Fun fun, Args ... args)
 		{
 			return capture(cout, fun, (args)...);
 		}
@@ -46,8 +49,10 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	template <class _Elem, class _Traits>
-	inline std::basic_ostream<_Elem, _Traits> & endl(std::basic_ostream<_Elem, _Traits> & out)
+	template <
+		class _Elem, 
+		class _Traits
+	> inline std::basic_ostream<_Elem, _Traits> & endl(std::basic_ostream<_Elem, _Traits> & out)
 	{
 		out.put(out.widen('\n'));
 		out.flush();

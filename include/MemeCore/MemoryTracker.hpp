@@ -43,7 +43,7 @@ namespace ml
 
 		struct Record;
 
-		using RecordMap = HashMap<ITrackable *, Record>;
+		using RecordMap = typename HashMap<ITrackable *, Record>;
 
 		RecordMap	m_records;
 		size_t		m_guid;
