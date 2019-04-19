@@ -166,29 +166,34 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Shader::bind(bool bindTextures) const
+	void Shader::bind(bool bindTextures) const
 	{
-		if (*this)
+		bind(this, bindTextures);
+	}
+
+	void Shader::bind(const Shader * shader, bool bindTextures)
+	{
+		if (shader && (*shader))
 		{
-			ML_GL.useShader(*this);
+			shader->bind(bindTextures);
+
+			ML_GL.useShader(*shader);
 
 			if (bindTextures)
 			{
 				GL::TextureID tex = GL::Texture0;
 
-				for (const TexturePair & pair : m_textures)
+				for (const auto & pair : shader->m_textures)
 				{
 					ML_GL.activeTexture(tex++);
 
 					Texture::bind(pair.second);
 				}
 			}
-			return true;
 		}
 		else
 		{
 			ML_GL.useShader(NULL);
-			return false;
 		}
 	}
 

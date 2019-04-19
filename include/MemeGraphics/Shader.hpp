@@ -31,8 +31,9 @@ namespace ml
 		bool loadFromMemory(const String & vs, const String & fs);
 
 	public:
-		// Core
-		bool bind(bool bindTextures = true) const;
+		void bind(bool bindTextures = true) const;
+		static void bind(const Shader * shader, bool bindTextures = true);
+		
 		bool applyUniforms(const UniformSet & value) const;
 		bool setUniform(const Uniform & value) const;
 
@@ -67,7 +68,6 @@ namespace ml
 		struct	UniformBinder;
 
 		using	TextureTable = Map<int32_t, const Texture *>;
-		using	TexturePair  = Pair<int32_t, const Texture *>;
 		using	UniformTable = Map<String, int32_t>;
 
 		mutable TextureTable m_textures;
