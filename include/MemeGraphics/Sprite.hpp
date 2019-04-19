@@ -3,7 +3,7 @@
 
 #include <MemeGraphics/IDrawable.hpp>
 #include <MemeGraphics/Texture.hpp>
-#include <MemeCore/Transform.hpp>
+#include <MemeGraphics/RectTransform.hpp>
 
 namespace ml
 {
@@ -26,35 +26,28 @@ namespace ml
 		bool loadFromMemory(const Texture * value);
 
 	public:
-		Sprite & setTexture(const Texture * value);
-		Sprite & setPosition(const vec2f & value);
-		Sprite & setScale(const vec2f & value);
-		Sprite & setRotation(const float value);
-		Sprite & setOrigin(const vec2f & value);
-		Sprite & setColor(const vec4f & value);
+		Sprite & setColor	(const vec4f &	value);
+		Sprite & setOrigin	(const vec2f &	value);
+		Sprite & setPosition(const vec2f &	value);
+		Sprite & setRotation(const float	value);
+		Sprite & setScale	(const vec2f &	value);
+		Sprite & setTexture	(const Texture *value);
 
 	public:
-		void update() const;
 		void draw(RenderTarget & target, RenderBatch batch) const override;
 
 	public:
-		inline const Texture *	texture()	const { return m_texture;	}
-		inline const vec2f &	position()	const { return m_position;	}
-		inline const vec2f &	scale()		const { return m_scale;		}
-		inline const float		rotation()	const { return m_rotation;	}
-		inline const vec2f &	origin()	const { return m_origin;	}
-		inline const vec4f &	color()		const { return m_color;		}
+		inline const vec4f &	color()		const { return m_color;					}
+		inline const vec2f &	origin()	const { return m_transform.origin();	}
+		inline const vec2f &	position()	const { return m_transform.position();	}
+		inline const float		rotation()	const { return m_transform.rotation();	}
+		inline const vec2f &	scale()		const { return m_transform.scale();		}
+		inline const Texture *	texture()	const { return m_texture;				}
 
 	private:
-		mutable bool m_requiresUpdate;
-		mutable Transform m_transform;
-
-		const Texture * m_texture;
-		vec2f			m_position;
-		vec2f			m_scale;
-		float			m_rotation;
-		vec2f			m_origin;
 		vec4f			m_color;
+		const Texture * m_texture;
+		RectTransform	m_transform;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */
