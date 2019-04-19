@@ -1,7 +1,10 @@
 #ifndef _ML_CONFIG_HPP_
 #define _ML_CONFIG_HPP_
 
-#include <MemeCore/Version.hpp>
+// Github project URL
+/* * * * * * * * * * * * * * * * * * * */
+#define ML_PROJECT_URL	"https://www.github.com/Gurman8r/Cppsandbox"
+
 
 // Disable safety.
 /* * * * * * * * * * * * * * * * * * * */

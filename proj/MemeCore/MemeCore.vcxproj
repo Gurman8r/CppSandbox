@@ -213,7 +213,6 @@
     <ClInclude Include="..\..\include\MemeCore\Vector2.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Vector3.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Vector4.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\Version.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Worker.hpp" />
   </ItemGroup>
   <ItemGroup>
