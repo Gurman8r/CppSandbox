@@ -14,6 +14,7 @@
 #include <MemeGraphics/Camera.hpp>
 #include <MemeGraphics/OpenGL.hpp>
 #include <MemeGraphics/Renderer.hpp>
+#include <MemeGraphics/ShaderAPI.hpp>
 #include <MemeEditor/Editor.hpp>
 #include <MemeEditor/EditorCommands.hpp>
 #include <MemeEditor/EditorEvents.hpp>
@@ -367,15 +368,19 @@ namespace DEMO
 					ML_Res.shaders.get("solid"),
 					ml::RenderStates
 					{
-						{ ml::GL::CullFace, { ml::RenderVar::Bool, true } },
-						{ ml::GL::DepthTest, { ml::RenderVar::Bool, true } },
+						{ ml::GL::AlphaTest,	{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::Blend,		{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::CullFace,		{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::DepthTest,	{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::Multisample,	{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::Texture2D,	{ ml::RenderVar::Bool, 1 } },
 					},
 					ml::UniformSet
 					{
-						{ "Vert.proj",		ml::Uniform::Mat4,	&data.persp.matrix() },
-						{ "Vert.view",		ml::Uniform::Mat4,	&data.camera.matrix() },
-						{ "Vert.model",		ml::Uniform::Mat4,	&transform->matrix() },
-						{ "Frag.mainCol",	ml::Uniform::Vec4,	&data.lightCol },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&data.persp.matrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&data.camera.matrix() },
+						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
+						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&data.lightCol },
 					}
 				});
 			}
@@ -395,16 +400,20 @@ namespace DEMO
 					ML_Res.shaders.get("basic"),
 					ml::RenderStates
 					{
-						{ ml::GL::CullFace, { ml::RenderVar::Bool, true } },
-						{ ml::GL::DepthTest, { ml::RenderVar::Bool, true } },
+						{ ml::GL::AlphaTest,	{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::Blend,		{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::CullFace,		{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::DepthTest,	{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::Multisample,	{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::Texture2D,	{ ml::RenderVar::Bool, 1 } },
 					},
 					ml::UniformSet
 					{
-						{ "Vert.proj",		ml::Uniform::Mat4,	&data.persp.matrix() },
-						{ "Vert.view",		ml::Uniform::Mat4,	&data.camera.matrix() },
-						{ "Vert.model",		ml::Uniform::Mat4,	&transform->matrix() },
-						{ "Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White },
-						{ "Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("borg") },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&data.persp.matrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&data.camera.matrix() },
+						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
+						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
+						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("borg") },
 					}
 				});
 			}
@@ -424,16 +433,20 @@ namespace DEMO
 					ML_Res.shaders.get("basic"),
 					ml::RenderStates
 					{
-						{ ml::GL::CullFace, { ml::RenderVar::Bool, false } },
-						{ ml::GL::DepthTest, { ml::RenderVar::Bool, true } },
+						{ ml::GL::AlphaTest,	{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::Blend,		{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::CullFace,		{ ml::RenderVar::Bool, 0 } },
+						{ ml::GL::DepthTest,	{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::Multisample,	{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::Texture2D,	{ ml::RenderVar::Bool, 1 } },
 					},
 					ml::UniformSet
 					{
-						{ "Vert.proj",		ml::Uniform::Mat4,	&data.persp.matrix() },
-						{ "Vert.view",		ml::Uniform::Mat4,	&data.camera.matrix() },
-						{ "Vert.model",		ml::Uniform::Mat4,	&transform->matrix() },
-						{ "Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White },
-						{ "Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("sanic") },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&data.persp.matrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&data.camera.matrix() },
+						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
+						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
+						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("sanic") },
 					}
 				});
 			}
@@ -453,16 +466,20 @@ namespace DEMO
 					ML_Res.shaders.get("normal"),
 					ml::RenderStates
 					{
-						{ ml::GL::CullFace, { ml::RenderVar::Bool, true } },
-						{ ml::GL::DepthTest, { ml::RenderVar::Bool, true } },
+						{ ml::GL::AlphaTest,	{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::Blend,		{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::CullFace,		{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::DepthTest,	{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::Multisample,	{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::Texture2D,	{ ml::RenderVar::Bool, 1 } },
 					},
 					ml::UniformSet
 					{
-						{ "Vert.proj",		ml::Uniform::Mat4,	&data.persp.matrix() },
-						{ "Vert.view",		ml::Uniform::Mat4,	&data.camera.matrix() },
-						{ "Vert.model",		ml::Uniform::Mat4,	&transform->matrix() },
-						{ "Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White },
-						{ "Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm") },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&data.persp.matrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&data.camera.matrix() },
+						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
+						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
+						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm") },
 					}
 				});
 			}
@@ -482,16 +499,20 @@ namespace DEMO
 					ML_Res.shaders.get("normal"),
 					ml::RenderStates
 					{
-						{ ml::GL::CullFace, { ml::RenderVar::Bool, true } },
-						{ ml::GL::DepthTest, { ml::RenderVar::Bool, true } },
+						{ ml::GL::AlphaTest,	{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::Blend,		{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::CullFace,		{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::DepthTest,	{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::Multisample,	{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::Texture2D,	{ ml::RenderVar::Bool, 1 } },
 					},
 					ml::UniformSet
 					{
-						{ "Vert.proj",		ml::Uniform::Mat4,	&data.persp.matrix() },
-						{ "Vert.view",		ml::Uniform::Mat4,	&data.camera.matrix() },
-						{ "Vert.model",		ml::Uniform::Mat4,	&transform->matrix() },
-						{ "Frag.mainCol",	ml::Uniform::Vec4,	&ml::Color::White },
-						{ "Frag.mainTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm") },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&data.persp.matrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&data.camera.matrix() },
+						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
+						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
+						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm") },
 					}
 				});
 			}
@@ -511,16 +532,20 @@ namespace DEMO
 					ML_Res.shaders.get("lighting"),
 					ml::RenderStates
 					{
-						{ ml::GL::CullFace, { ml::RenderVar::Bool, true } },
-						{ ml::GL::DepthTest, { ml::RenderVar::Bool, true } },
+						{ ml::GL::AlphaTest,	{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::Blend,		{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::CullFace,		{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::DepthTest,	{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::Multisample,	{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::Texture2D,	{ ml::RenderVar::Bool, 1 } },
 					},
 					ml::UniformSet
 					{
-						{ "Vert.proj",		ml::Uniform::Mat4,	&data.persp.matrix() },
-						{ "Vert.view",		ml::Uniform::Mat4,	&data.camera.matrix() },
-						{ "Vert.model",		ml::Uniform::Mat4,	&transform->matrix() },
-						{ "Frag.tex_dm",	ml::Uniform::Tex2D,	ML_Res.textures.get("moon_dm") },
-						{ "Frag.tex_sm",	ml::Uniform::Tex2D,	ML_Res.textures.get("moon_nm") },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&data.persp.matrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&data.camera.matrix() },
+						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
+						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("moon_dm") },
+						{ "Frag.specTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("moon_nm") },
 						{ "Frag.camPos",	ml::Uniform::Vec3,	&data.camera.position() },
 						{ "Frag.lightPos",	ml::Uniform::Vec3,	&data.lightPos },
 						{ "Frag.lightCol",	ml::Uniform::Vec4,	&data.lightCol },
@@ -546,16 +571,20 @@ namespace DEMO
 					ML_Res.shaders.get("lighting"),
 					ml::RenderStates
 					{
-						{ ml::GL::CullFace, { ml::RenderVar::Bool, true } },
-						{ ml::GL::DepthTest, { ml::RenderVar::Bool, true } },
+						{ ml::GL::AlphaTest,	{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::Blend,		{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::CullFace,		{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::DepthTest,	{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::Multisample,	{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::Texture2D,	{ ml::RenderVar::Bool, 1 } },
 					},
 					ml::UniformSet 
 					{
-						{ "Vert.proj",		ml::Uniform::Mat4,	&data.persp.matrix() },
-						{ "Vert.view",		ml::Uniform::Mat4,	&data.camera.matrix() },
-						{ "Vert.model",		ml::Uniform::Mat4,	&transform->matrix() },
-						{ "Frag.tex_dm",	ml::Uniform::Tex2D,	ML_Res.textures.get("earth_dm") },
-						{ "Frag.tex_sm",	ml::Uniform::Tex2D,	ML_Res.textures.get("earth_sm") },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&data.persp.matrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&data.camera.matrix() },
+						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
+						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("earth_dm") },
+						{ "Frag.specTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("earth_sm") },
 						{ "Frag.camPos",	ml::Uniform::Vec3,	&data.camera.position() },
 						{ "Frag.lightPos",	ml::Uniform::Vec3,	&data.lightPos },
 						{ "Frag.lightCol",	ml::Uniform::Vec4,	&data.lightCol },
@@ -879,11 +908,11 @@ namespace DEMO
 				{
 					static ml::UniformSet uniforms = 
 					{
-						{ "Frag.mainCol",	ml::Uniform::Vec4,	&data.lineColor },
-						{ "Curve.mode",		ml::Uniform::Int,	&data.lineMode },
-						{ "Curve.delta",	ml::Uniform::Float, &data.lineDelta },
-						{ "Curve.size",		ml::Uniform::Float, &data.lineSize },
-						{ "Curve.samples",	ml::Uniform::Int,	&data.lineSamples },
+						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&data.lineColor },
+						{ "Geom.mode",		ml::Uniform::Int,	&data.lineMode },
+						{ "Geom.delta",		ml::Uniform::Float, &data.lineDelta },
+						{ "Geom.size",		ml::Uniform::Float, &data.lineSize },
+						{ "Geom.samples",	ml::Uniform::Int,	&data.lineSamples },
 					};
 					shader->applyUniforms(uniforms);
 					shader->bind();
@@ -900,9 +929,9 @@ namespace DEMO
 						shader,
 						ml::UniformSet
 						{
-							{ "Vert.proj",		ml::Uniform::Mat4,	&data.ortho.matrix() },
-							{ "Frag.mainCol",	ml::Uniform::Vec4 },
-							{ "Frag.mainTex",	ml::Uniform::Tex2D },
+							{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&data.ortho.matrix() },
+							{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4 },
+							{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D },
 						}
 					);
 					for (auto & pair : ML_Res.sprites)
@@ -921,9 +950,9 @@ namespace DEMO
 						shader, 
 						ml::UniformSet 
 						{
-							{ "Vert.proj",		ml::Uniform::Mat4,	&data.ortho.matrix() },
-							{ "Frag.mainCol",	ml::Uniform::Vec4 },
-							{ "Frag.mainTex",	ml::Uniform::Tex2D },
+							{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&data.ortho.matrix() },
+							{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4 },
+							{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D },
 						}
 					);
 					for (auto & pair : m_text)

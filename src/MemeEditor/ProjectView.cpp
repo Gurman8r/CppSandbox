@@ -117,10 +117,21 @@ namespace ml
 			{
 				if (ImGui::BeginMenu("New (WIP)"))
 				{
-					if (ImGui::MenuItem("Font")) {}
-					if (ImGui::MenuItem("Image")) {}
-					if (ImGui::MenuItem("Material")) {}
-					if (ImGui::MenuItem("Mesh")) {}
+					if (ImGui::MenuItem("Effect"	)) { /**/ }
+					if (ImGui::MenuItem("Entity"	)) { /**/ }
+					if (ImGui::MenuItem("Font"		)) { /**/ }
+					if (ImGui::MenuItem("Image"		)) { /**/ }
+					if (ImGui::MenuItem("Lua"		)) { /**/ }
+					if (ImGui::MenuItem("Material"	)) { /**/ }
+					if (ImGui::MenuItem("Mesh"		)) { /**/ }
+					if (ImGui::MenuItem("Model"		)) { /**/ }
+					if (ImGui::MenuItem("Plugin"	)) { /**/ }
+					if (ImGui::MenuItem("Script"	)) { /**/ }
+					if (ImGui::MenuItem("Shader"	)) { /**/ }
+					if (ImGui::MenuItem("Skybox"	)) { /**/ }
+					if (ImGui::MenuItem("Sound"		)) { /**/ }
+					if (ImGui::MenuItem("Sprite"	)) { /**/ }
+					if (ImGui::MenuItem("Texture"	)) { /**/ }
 					ImGui::EndMenu();
 				}
 				ImGui::EndMenuBar();
@@ -268,7 +279,7 @@ namespace ml
 									List<String> keys = ML_Res.models.getKeys();
 									int32_t index = ML_Res.models.indexOf((Model *)(renderer->drawable()));
 									if (ImGui::Combo(
-										"##Model",
+										"##Model##Renderer",
 										&index,
 										ImGui_Helper::vector_getter,
 										static_cast<void *>(&keys),
@@ -287,7 +298,7 @@ namespace ml
 									List<String> keys = ML_Res.shaders.getKeys();
 									int32_t index = ML_Res.shaders.indexOf(renderer->shader());
 									if (ImGui::Combo(
-										"##Shader",
+										"##Shader##Renderer",
 										&index,
 										ImGui_Helper::vector_getter,
 										static_cast<void *>(&keys),
@@ -307,16 +318,40 @@ namespace ml
 									{
 										switch (pair.first)
 										{
+										case GL::AlphaTest:
+											Funcs::Field("Alpha Test", [&](CString)
+											{
+												ImGui::Checkbox("##AlphaTest##States", (bool *)(pair.second.ptr()));
+											});
+											break;
+										case GL::Blend:
+											Funcs::Field("Blend", [&](CString)
+											{
+												ImGui::Checkbox("##Blend##States", (bool *)(pair.second.ptr()));
+											});
+											break;
 										case GL::CullFace:
 											Funcs::Field("Cull Face", [&](CString)
 											{
-												ImGui::Checkbox("##CullFace", (bool *)(pair.second.ptr()));
+												ImGui::Checkbox("##CullFace##States", (bool *)(pair.second.ptr()));
 											});
 											break;
 										case GL::DepthTest:
 											Funcs::Field("Depth Test", [&](CString)
 											{
-												ImGui::Checkbox("##DepthTest", (bool *)(pair.second.ptr()));
+												ImGui::Checkbox("##DepthTest##States", (bool *)(pair.second.ptr()));
+											});
+											break;
+										case GL::Multisample:
+											Funcs::Field("Multisample", [&](CString)
+											{
+												ImGui::Checkbox("##Multisample##States", (bool *)(pair.second.ptr()));
+											});
+											break;
+										case GL::Texture2D:
+											Funcs::Field("Texture2D", [&](CString)
+											{
+												ImGui::Checkbox("##Texture2D##States", (bool *)(pair.second.ptr()));
 											});
 											break;
 										}
@@ -329,7 +364,6 @@ namespace ml
 									for (auto & pair : renderer->uniforms())
 									{
 										ImGui::PushID(pair.second.name.c_str());
-
 										Funcs::Field(pair.first.c_str(), [&](CString, Uniform * uni)
 										{
 											switch (uni->type)
@@ -355,49 +389,62 @@ namespace ml
 											case Uniform::Int:
 											{
 												int32_t temp = uni->get_value<int32_t>();
-												ImGui::DragInt("##Int##Value", &temp);
+												if (ImGui::DragInt("##Int##Value", &temp, 0.1f))
+												{
+												}
 											}
 											break;
 											case Uniform::Float:
 											{
 												float temp = uni->get_value<float>();
-												ImGui::DragFloat("##Float##Value", &temp, 0.1f);
+												if (ImGui::DragFloat("##Float##Value", &temp, 0.1f))
+												{
+												}
 											}
 											break;
 											case Uniform::Vec2:
 											{
 												vec2f temp = uni->get_value<vec2f>();
-												GUI::EditVec2f("##Vec2##Value", temp);
+												if (GUI::EditVec2f("##Vec2##Value", temp, 0.1f))
+												{
+												}
 											}
 											break;
 											case Uniform::Vec3:
 											{
 												vec3f temp = uni->get_value<vec3f>();
-												GUI::EditVec3f("##Vec3##Value", temp);
+												if (GUI::EditVec3f("##Vec3##Value", temp, 0.1f))
+												{
+												}
 											}
 											break;
 											case Uniform::Vec4:
 											{
 												vec4f temp = uni->get_value<vec4f>();
-												GUI::EditVec4f("##Vec4##Value", temp);
+												if (GUI::EditVec4f("##Vec4##Value", temp, 0.1f))
+												{
+												}
 											}
 											break;
 											case Uniform::Mat3:
 											{
 												mat3f temp = uni->get_value<mat3f>();
-												GUI::EditMat3f("##Mat3##Value", temp);
+												if (GUI::EditMat3f("##Mat3##Value", temp, 0.1f))
+												{
+												}
 											}
 											break;
 											case Uniform::Mat4:
 											{
 												mat4f temp = uni->get_value<mat4f>();
-												GUI::EditMat4f("##Mat4##Value", temp);
+												if (GUI::EditMat4f("##Mat4##Value", temp, 0.1f))
+												{
+												}
 											}
 											break;
 											}
 
 										}, &pair.second);
-
 										ImGui::PopID();
 									}
 								});

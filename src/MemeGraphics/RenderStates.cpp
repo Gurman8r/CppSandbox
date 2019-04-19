@@ -63,6 +63,16 @@ namespace ml
 			}
 		}
 		break;
+
+		case RenderVar::Int:
+		{
+			switch (key)
+			{
+			default:
+				return false;
+			}
+		}
+		break;
 		}
 		return false;
 	}

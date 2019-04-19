@@ -64,6 +64,9 @@
     <Filter Include="Resource Files\assets\lua">
       <UniqueIdentifier>{6d8f12ae-b5bf-4dbc-9754-cb216841fb2f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\assets\materials">
+      <UniqueIdentifier>{2378eaaf-e698-4b98-9efc-8f519f7cf05f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -122,6 +125,9 @@
       <Filter>Resource Files\assets\data</Filter>
     </Text>
     <Text Include="..\..\assets\data\lua.txt">
+      <Filter>Resource Files\assets\data</Filter>
+    </Text>
+    <Text Include="..\..\assets\data\materials.txt">
       <Filter>Resource Files\assets\data</Filter>
     </Text>
   </ItemGroup>
@@ -324,6 +330,9 @@
     </None>
     <None Include="..\..\assets\shaders\normal.shader">
       <Filter>Resource Files\assets\shaders</Filter>
+    </None>
+    <None Include="..\..\assets\materials\test.mat">
+      <Filter>Resource Files\assets\materials</Filter>
     </None>
   </ItemGroup>
 </Project>

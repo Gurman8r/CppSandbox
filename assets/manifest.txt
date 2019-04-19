@@ -37,6 +37,14 @@
 </item>
 
 
+# Materials
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+<item>
+	type: manifest
+	name: ../../../assets/data/materials.txt
+</item>
+
+
 # Skyboxes
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 <item>

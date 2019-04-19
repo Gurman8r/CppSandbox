@@ -1,0 +1,10 @@
+# Materials
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+
+<item>
+	type:	material
+	name:	test
+	file:	../../../assets/materials/test.mat
+</item>
+
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #

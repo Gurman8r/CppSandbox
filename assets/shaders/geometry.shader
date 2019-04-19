@@ -39,21 +39,21 @@ layout(line_strip, max_vertices = SAMPLES_MAX) out;
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-struct Curve_Uniforms
+struct Geom_Uniforms
 {
 	int		mode;
 	float	delta;
 	float	size;
 	int		samples;
 };
-uniform Curve_Uniforms Curve;
+uniform Geom_Uniforms Geom;
 
 /* * * * * * * * * * * * * * * * * * * * */
 
 void stub(in int samples, in float dt)
 {
 	// test points
-	float size = Curve.size;
+	float size = Geom.size;
 	vec4 testP0 = vec4(-size, +size, 0.0, 1.0);
 	vec4 testP1 = vec4(+size, +size, 0.0, 1.0);
 	vec4 testP2 = vec4(+size, -size, 0.0, 1.0);
@@ -61,7 +61,7 @@ void stub(in int samples, in float dt)
 
 	vec4 p0, p1, p2, p3, pPrev, pNext, m0, m1;
 
-	switch (Curve.mode)
+	switch (Geom.mode)
 	{
 	case CURVE_MODE_LINES:
 		// multiple segments
@@ -108,7 +108,7 @@ void stub(in int samples, in float dt)
 
 void main()
 {
-	stub(Curve.samples, (Curve.delta / float(Curve.samples)));
+	stub(Geom.samples, (Geom.delta / float(Geom.samples)));
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

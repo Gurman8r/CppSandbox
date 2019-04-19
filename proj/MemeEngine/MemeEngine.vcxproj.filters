@@ -31,17 +31,17 @@
     <Filter Include="Source Files\Engine">
       <UniqueIdentifier>{89a7c166-7115-499f-8ca5-c8b821da55d5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\ECS">
-      <UniqueIdentifier>{41cfde1c-d754-45c3-b258-b33cf7b25f48}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\ECS">
-      <UniqueIdentifier>{c63e57f2-7804-4d91-a44f-65c15044b468}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Lua">
       <UniqueIdentifier>{ed5cfdca-75a9-41e4-81b0-b592df270aa8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Lua">
       <UniqueIdentifier>{7ede356a-b9f5-4586-8726-2fa696a29ac4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DS">
+      <UniqueIdentifier>{41cfde1c-d754-45c3-b258-b33cf7b25f48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DS">
+      <UniqueIdentifier>{c63e57f2-7804-4d91-a44f-65c15044b468}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -81,9 +81,6 @@
     <ClInclude Include="..\..\include\MemeEngine\Preferences.hpp">
       <Filter>Header Files\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeEngine\StateMachine.hpp">
-      <Filter>Header Files\Engine</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeEngine\SharedLibrary.hpp">
       <Filter>Header Files\Plugins</Filter>
     </ClInclude>
@@ -91,7 +88,10 @@
       <Filter>Header Files\Lua</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEngine\Entity.hpp">
-      <Filter>Header Files\Engine</Filter>
+      <Filter>Header Files\DS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeEngine\StateMachine.hpp">
+      <Filter>Header Files\DS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -116,17 +116,17 @@
     <ClCompile Include="..\..\src\MemeEngine\Preferences.cpp">
       <Filter>Source Files\Resources</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemeEngine\StateMachine.cpp">
-      <Filter>Source Files\Engine</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemeEngine\SharedLibrary.cpp">
       <Filter>Source Files\Plugins</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEngine\LuaScript.cpp">
       <Filter>Source Files\Lua</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\MemeEngine\StateMachine.cpp">
+      <Filter>Source Files\DS</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\MemeEngine\Entity.cpp">
-      <Filter>Source Files\Engine</Filter>
+      <Filter>Source Files\DS</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

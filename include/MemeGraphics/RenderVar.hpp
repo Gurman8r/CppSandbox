@@ -20,7 +20,7 @@ namespace ml
 
 		enum : uint32_t
 		{
-			Bool
+			Bool, Int
 		};
 
 	public:
