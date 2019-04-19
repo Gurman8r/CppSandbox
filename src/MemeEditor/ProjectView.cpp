@@ -289,7 +289,7 @@ namespace ml
 										}
 									}
 								});
-
+								
 								// States
 								Funcs::Group("States", [&]()
 								{
@@ -300,13 +300,13 @@ namespace ml
 										case GL::CullFace:
 											Funcs::Field("Cull Face", [&](CString)
 											{
-												ImGui::Checkbox("##CullFace", (bool *)(pair.second.data()));
+												ImGui::Checkbox("##CullFace", (bool *)(pair.second.ptr()));
 											});
 											break;
 										case GL::DepthTest:
 											Funcs::Field("Depth Test", [&](CString)
 											{
-												ImGui::Checkbox("##DepthTest", (bool *)(pair.second.data()));
+												ImGui::Checkbox("##DepthTest", (bool *)(pair.second.ptr()));
 											});
 											break;
 										}
@@ -324,6 +324,24 @@ namespace ml
 										{
 											switch (uni->type)
 											{
+											case Uniform::Tex2D:
+											{
+												int32_t index = ML_Res.textures.indexOf(uni->get_pointer<Texture>());
+												List<String> keys = ML_Res.textures.getKeys();
+												if (ImGui::Combo(
+													"##Tex2D##Value",
+													&index,
+													ImGui_Helper::vector_getter,
+													static_cast<void *>(&keys),
+													(int32_t)(keys.size())))
+												{
+													if (const Texture * value = ML_Res.textures.atIndex(index))
+													{
+														uni->data = value;
+													}
+												}
+											}
+											break;
 											case Uniform::Int:
 											{
 												int32_t temp = uni->get_value<int32_t>();
@@ -364,24 +382,6 @@ namespace ml
 											{
 												mat4f temp = uni->get_value<mat4f>();
 												GUI::EditMat4f("##Mat4##Value", temp);
-											}
-											break;
-											case Uniform::Tex2D:
-											{
-												int32_t index = ML_Res.textures.indexOf(uni->get_pointer<Texture>());
-												List<String> keys = ML_Res.textures.getKeys();
-												if (ImGui::Combo(
-													"##Tex2D##Value",
-													&index,
-													ImGui_Helper::vector_getter,
-													static_cast<void *>(&keys),
-													(int32_t)(keys.size())))
-												{
-													if (const Texture * value = ML_Res.textures.atIndex(index))
-													{
-														uni->data = value;
-													}
-												}
 											}
 											break;
 											}

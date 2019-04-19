@@ -365,8 +365,8 @@ namespace DEMO
 					ML_Res.shaders.get("solid"),
 					ml::RenderStates
 					{
-						{ ml::GL::CullFace, { ml::GL::Byte, true } },
-						{ ml::GL::DepthTest, { ml::GL::Byte, true } },
+						{ ml::GL::CullFace, { ml::RenderVar::Bool, true } },
+						{ ml::GL::DepthTest, { ml::RenderVar::Bool, true } },
 					},
 					ml::UniformSet
 					{
@@ -393,8 +393,8 @@ namespace DEMO
 					ML_Res.shaders.get("basic"),
 					ml::RenderStates
 					{
-						{ ml::GL::CullFace, { ml::GL::Byte, true } },
-						{ ml::GL::DepthTest, { ml::GL::Byte, true } },
+						{ ml::GL::CullFace, { ml::RenderVar::Bool, true } },
+						{ ml::GL::DepthTest, { ml::RenderVar::Bool, true } },
 					},
 					ml::UniformSet
 					{
@@ -422,8 +422,8 @@ namespace DEMO
 					ML_Res.shaders.get("basic"),
 					ml::RenderStates
 					{
-						{ ml::GL::CullFace, { ml::GL::Byte, false } },
-						{ ml::GL::DepthTest, { ml::GL::Byte, true } },
+						{ ml::GL::CullFace, { ml::RenderVar::Bool, false } },
+						{ ml::GL::DepthTest, { ml::RenderVar::Bool, true } },
 					},
 					ml::UniformSet
 					{
@@ -451,8 +451,8 @@ namespace DEMO
 					ML_Res.shaders.get("normal"),
 					ml::RenderStates
 					{
-						{ ml::GL::CullFace, { ml::GL::Byte, true } },
-						{ ml::GL::DepthTest, { ml::GL::Byte, true } },
+						{ ml::GL::CullFace, { ml::RenderVar::Bool, true } },
+						{ ml::GL::DepthTest, { ml::RenderVar::Bool, true } },
 					},
 					ml::UniformSet
 					{
@@ -480,8 +480,8 @@ namespace DEMO
 					ML_Res.shaders.get("normal"),
 					ml::RenderStates
 					{
-						{ ml::GL::CullFace, { ml::GL::Byte, true } },
-						{ ml::GL::DepthTest, { ml::GL::Byte, true } },
+						{ ml::GL::CullFace, { ml::RenderVar::Bool, true } },
+						{ ml::GL::DepthTest, { ml::RenderVar::Bool, true } },
 					},
 					ml::UniformSet
 					{
@@ -509,8 +509,8 @@ namespace DEMO
 					ML_Res.shaders.get("lighting"),
 					ml::RenderStates
 					{
-						{ ml::GL::CullFace, { ml::GL::Byte, true } },
-						{ ml::GL::DepthTest, { ml::GL::Byte, true } },
+						{ ml::GL::CullFace, { ml::RenderVar::Bool, true } },
+						{ ml::GL::DepthTest, { ml::RenderVar::Bool, true } },
 					},
 					ml::UniformSet
 					{
@@ -544,8 +544,8 @@ namespace DEMO
 					ML_Res.shaders.get("lighting"),
 					ml::RenderStates
 					{
-						{ ml::GL::CullFace, { ml::GL::Byte, true } },
-						{ ml::GL::DepthTest, { ml::GL::Byte, true } },
+						{ ml::GL::CullFace, { ml::RenderVar::Bool, true } },
+						{ ml::GL::DepthTest, { ml::RenderVar::Bool, true } },
 					},
 					ml::UniformSet 
 					{
@@ -709,7 +709,8 @@ namespace DEMO
 		{
 			data.camera.rotateAround(
 				target->get<ml::Transform>()->getPosition(),
-				(data.camAnim ? data.camSpd * ev->elapsed.delta() : 0.0f));
+				(data.camAnim ? data.camSpd * ev->elapsed.delta() : 0.0f)
+			);
 		}
 
 		// Update Text
@@ -902,7 +903,6 @@ namespace DEMO
 							{ "Frag.mainTex",	ml::Uniform::Tex2D },
 						}
 					);
-
 					for (auto & pair : ML_Res.sprites)
 					{
 						this->draw((*pair.second), batch);
@@ -924,7 +924,6 @@ namespace DEMO
 							{ "Frag.mainTex",	ml::Uniform::Tex2D },
 						}
 					);
-
 					for (auto & pair : m_text)
 					{
 						this->draw(pair.second, batch);

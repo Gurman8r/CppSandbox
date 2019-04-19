@@ -12,7 +12,7 @@ namespace ml
 	{
 	}
 
-	RenderVar::RenderVar(const uint32_t type, void * data)
+	RenderVar::RenderVar(const uint32_t type, const_reference data)
 		: m_type(type)
 		, m_data(data)
 	{

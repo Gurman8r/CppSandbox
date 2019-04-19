@@ -48,7 +48,7 @@ namespace ml
 	{
 		switch (value.type())
 		{
-		case GL::Byte:
+		case RenderVar::Bool:
 		{
 			switch (key)
 			{

@@ -42,7 +42,7 @@ namespace ml
 			class Component
 		> inline Component * add()
 		{
-			return this->add(Component());
+			return this->add<Component>({ });
 		}
 
 		template <
