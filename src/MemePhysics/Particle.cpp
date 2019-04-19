@@ -4,7 +4,7 @@
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
-	//update these as well
+	//Melody: (and me) update these as well
 	Particle::Particle()
 		: pos		(vec3f::Zero)
 		, vel		(vec3f::Zero)
@@ -76,7 +76,54 @@ namespace ml
 		return (*this);
 	}
 
+	Particle & Particle::reset()
+	{
+		// TODO: insert return statement here
+		return (*this);
+	}
+
+	bool Particle::isRotating()
+	{
+		// TODO: insert return statement here
+		return (angularVel.sqrMagnitude() != 0.0f);
+	}
+
+	Particle & Particle::applyForceLocation(const vec3f & force, const vec3f worldLoc)
+	{
+		// TODO: insert return statement here
+		vec3f arm = worldLoc - centerMass_world;
+		torque += arm.cross(force);		//Melody: please make sure I'm using cross right
+		return (*this);
+
+	}
+
+	Particle & Particle::convertTorque()
+	{
+		// TODO: insert return statement here
+		//Melody: how do you multiply a matrix and a vector?
+
+		//angularAcc = 
+		return (*this);
+	}
+
+	Particle & Particle::resetTorque()
+	{
+		// TODO: insert return statement here
+		torque = { 0.0f,0.0f,0.0f };
+
+	}
+
 	/* * * * * * * * * * * * * * * * * * * * */
+
+	//Melody: (and me) these need to be updated to include rotational
+
+	vec3f Particle::rotateForce(Particle * p, vec3f force)
+	{
+		vec3f wv = force * p->rotation[3];
+		//Melody: (and me) check this once I'm sure how cross works
+
+		return vec3f();
+	}
 
 	Particle & Particle::integrateEulerExplicit(const float dt)
 	{

@@ -47,7 +47,7 @@ namespace ml
 		Particle & resetForce();
 		Particle & setMass(float value);
 		Particle & reset();
-		Particle & isRotating();
+		bool isRotating();
 		Particle & applyForceLocation(const vec3f & force, const vec3f worldLoc);
 		Particle & convertTorque();
 		Particle & resetTorque();
