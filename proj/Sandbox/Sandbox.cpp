@@ -19,7 +19,7 @@
 #include <MemeEditor/EditorEvents.hpp>
 #include <MemeEditor/GUI.hpp>
 #include <MemeEditor/ImGui.hpp>
-#include <MemeEngine/ECS.hpp>
+#include <MemeEngine/Entity.hpp>
 #include <MemeEngine/EngineCommands.hpp>
 #include <MemeEngine/Resources.hpp>
 #include <MemeEngine/Preferences.hpp>

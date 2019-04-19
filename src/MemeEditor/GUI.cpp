@@ -1,7 +1,6 @@
 #include <MemeEditor/GUI.hpp>
 #include <MemeEditor/ImGui.hpp>
 #include <MemeEditor/ImGui_Helper.hpp>
-#include <MemeEngine/Resources.hpp>
 #include <MemeGraphics/Shader.hpp>
 
 namespace ml

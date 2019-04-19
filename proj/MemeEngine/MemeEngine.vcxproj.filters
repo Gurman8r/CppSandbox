@@ -69,12 +69,6 @@
     <ClInclude Include="..\..\include\MemeEngine\Application.hpp">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeEngine\ECS.hpp">
-      <Filter>Header Files\ECS</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeEngine\Entity.hpp">
-      <Filter>Header Files\ECS</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeEngine\Lua.hpp">
       <Filter>Header Files\Lua</Filter>
     </ClInclude>
@@ -96,6 +90,9 @@
     <ClInclude Include="..\..\include\MemeEngine\LuaScript.hpp">
       <Filter>Header Files\Lua</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeEngine\Entity.hpp">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeEngine\Plugin.cpp">
@@ -113,12 +110,6 @@
     <ClCompile Include="..\..\src\MemeEngine\Engine.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemeEngine\ECS.cpp">
-      <Filter>Source Files\ECS</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeEngine\Entity.cpp">
-      <Filter>Source Files\ECS</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemeEngine\EngineCommands.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
@@ -133,6 +124,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEngine\LuaScript.cpp">
       <Filter>Source Files\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeEngine\Entity.cpp">
+      <Filter>Source Files\Engine</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

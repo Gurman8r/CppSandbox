@@ -159,7 +159,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeEngine\Application.hpp" />
-    <ClInclude Include="..\..\include\MemeEngine\ECS.hpp" />
     <ClInclude Include="..\..\include\MemeEngine\Engine.hpp" />
     <ClInclude Include="..\..\include\MemeEngine\EngineCommands.hpp" />
     <ClInclude Include="..\..\include\MemeEngine\EngineEvents.hpp" />
@@ -178,7 +177,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeEngine\Application.cpp" />
-    <ClCompile Include="..\..\src\MemeEngine\ECS.cpp" />
     <ClCompile Include="..\..\src\MemeEngine\Engine.cpp" />
     <ClCompile Include="..\..\src\MemeEngine\EngineCommands.cpp" />
     <ClCompile Include="..\..\src\MemeEngine\Entity.cpp" />

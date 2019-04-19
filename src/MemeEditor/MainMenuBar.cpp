@@ -2,7 +2,6 @@
 #include <MemeEditor/ImGui.hpp>
 #include <MemeEditor/Editor.hpp>
 #include <MemeEditor/EditorEvents.hpp>
-#include <MemeEngine/Resources.hpp>
 #include <MemeEngine/EngineEvents.hpp>
 #include <MemeCore/EventSystem.hpp>
 #include <MemeCore/CoreEvents.hpp>

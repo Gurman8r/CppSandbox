@@ -1,7 +1,5 @@
 #include <MemeEngine/Entity.hpp>
 #include <MemeEngine/Lua.hpp>
-#include <MemeEngine/ECS.hpp>
-#include <MemeGraphics/RenderTarget.hpp>
 #include <MemeCore/Debug.hpp>
 
 namespace ml
@@ -24,14 +22,7 @@ namespace ml
 	{
 		for (auto pair : m_map)
 		{
-			if (ITrackable * trackable = reinterpret_cast<ITrackable *>(pair.second))
-			{
-				delete trackable;
-			}
-			else
-			{
-				delete pair.second;
-			}
+			delete pair.second;
 		}
 		m_map.clear();
 		return true;
@@ -39,13 +30,13 @@ namespace ml
 
 	bool Entity::loadFromFile(const String & filename)
 	{
-		lua_State * L = luaL_newstate();
-		if (L)
+		if (lua_State * L = luaL_newstate())
 		{
-			// try parsing Entities with Lua
+			lua_close(L);
+
+			return true;
 		}
-		lua_close(L);
-		return L;
+		return false;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
