@@ -175,8 +175,6 @@ namespace ml
 	{
 		if (shader && (*shader))
 		{
-			shader->bind(bindTextures);
-
 			ML_GL.useShader(*shader);
 
 			if (bindTextures)
