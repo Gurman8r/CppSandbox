@@ -59,7 +59,7 @@ namespace ml
 			case GL::FramebufferSRGB:
 			case GL::Multisample:
 			case GL::Texture2D:
-				return (((bool)value) ? (ML_GL.enable(key)) : (ML_GL.disable(key)));
+				return ((value.data()) ? (ML_GL.enable(key)) : (ML_GL.disable(key)));
 			}
 		}
 		break;

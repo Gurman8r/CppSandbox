@@ -7,20 +7,20 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	RenderVar::RenderVar()
-		: IHandle(NULL)
-		, m_type(NULL)
+		: m_type(NULL)
+		, m_data(NULL)
 	{
 	}
 
-	RenderVar::RenderVar(const uint32_t type, const int64_t data)
-		: IHandle(data)
-		, m_type(type)
+	RenderVar::RenderVar(const uint32_t type, void * data)
+		: m_type(type)
+		, m_data(data)
 	{
 	}
 
 	RenderVar::RenderVar(const RenderVar & copy)
-		: IHandle(copy)
-		, m_type(copy.m_type)
+		: m_type(copy.m_type)
+		, m_data(copy.m_data)
 	{
 	}
 

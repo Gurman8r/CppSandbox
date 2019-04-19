@@ -300,13 +300,13 @@ namespace ml
 										case GL::CullFace:
 											Funcs::Field("Cull Face", [&](CString)
 											{
-												ImGui::Checkbox("##CullFace", (bool *)(pair.second.get_ptr()));
+												ImGui::Checkbox("##CullFace", (bool *)(pair.second.data()));
 											});
 											break;
 										case GL::DepthTest:
 											Funcs::Field("Depth Test", [&](CString)
 											{
-												ImGui::Checkbox("##DepthTest", (bool *)(pair.second.get_ptr()));
+												ImGui::Checkbox("##DepthTest", (bool *)(pair.second.data()));
 											});
 											break;
 										}
