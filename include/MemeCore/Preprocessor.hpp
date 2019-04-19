@@ -1,41 +1,45 @@
 #ifndef _ML_PREPROCESSOR_HPP_
 #define _ML_PREPROCESSOR_HPP_
 
-// Stringify
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-#define ML_xstr(a) ML_str(a)
-#define ML_str(a) #a
+#include <MemeCore/Config.hpp>
 
-// Assertions
+// Bit Math Macros
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-#define ML_assert_is_base_of(base, derived) \
-static_assert( \
-	std::is_base_of<base, derived>::value, \
-	"" ML_str(derived) " must derive " ML_xstr(base) "" \
-);
+#define ML_bitRead(value, bit) \
+(((value) >> (bit)) & 0x01)
 
-// Clamp
+#define ML_bitSet(value, bit) \
+((value) |= (1UL << (bit)))
+
+#define ML_bitClear(value, bit) \
+((value) &= ~(1UL << (bit)))
+
+#define ML_bitWrite(value, bit, bitvalue) \
+(bitvalue ? ML_bitSet(value, bit) : ML_bitClear(value, bit))
+
+
+// Clamp Macro
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 #define ML_CLAMP(value, min, max) \
-(((value) > (max)) \
-	? (((value) < (min)) \
+((value > max) \
+	? ((value < min) \
 		? (min) \
 		: (value)) \
 	: (max))
 
 
-// Lerp
+// Lerp Macro
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 #define ML_LERP(a, b, c) (a * c + b * ((1) - c))
 
 
-// Map Range
+// Map Range Macro
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 #define ML_MAP_RANGE(value, min1, max1, min2, max2) \
 (min2 + (value - min1) * (max2 - min2) / (max1 - min1))
 
 
-// Sign
+// Sign Macro
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 #define ML_SIGN(value) \
 (((value) == (0)) \
@@ -45,32 +49,54 @@ static_assert( \
 		: (-1)))
 
 
-// Generate Mask Operators
+// Stringify Macro
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-#define ML_GENERATE_MASK_OPERATORS(NAME, TYPE) \
-inline NAME operator&(const NAME a, const NAME b) { return (NAME)((TYPE)a & (TYPE)b); } \
-inline NAME operator|(const NAME a, const NAME b) { return (NAME)((TYPE)a | (TYPE)b); } \
-inline NAME & operator &=(NAME & a, const NAME b) { return (a = (a & b)); } \
-inline NAME & operator |=(NAME & a, const NAME b) { return (a = (a | b)); }
+#define ML_xstr(a) ML_str(a)
+#define ML_str(a) #a
 
 
-// Generate Iter Operators
+// Generate Key-Value Pair Type Macro
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-#define ML_GENERATE_ITER_OPERATORS_T(T, NAME, TYPE, ITER, MIN, MAX) \
-template <class T> inline NAME operator+(const NAME a, const T b) \
+#define ML_GENERATE_KV_TYPE(name, type) \
+template <class K, class V> using name = typename type<K, V>;
+
+
+// Generate Bit Mask Operators Macro
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+#define ML_GENERATE_MASK_OPERATORS(name, type) \
+inline name operator&(const name a, const name b) { return (name)((type)a & (type)b); } \
+inline name operator|(const name a, const name b) { return (name)((type)a | (type)b); } \
+inline name & operator &=(name & a, const name b) { return (a = (a & b)); } \
+inline name & operator |=(name & a, const name b) { return (a = (a | b)); }
+
+
+// Generate Iterator Operators Macro
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+#define ML_GENERATE_ITER_OPERATORS_T(T, name, type, iter, min, max) \
+template <class T> inline name operator+(const name a, const T b) \
 { \
-	return (NAME)(ML_CLAMP(((TYPE)a + (TYPE)b), MIN, MAX)); \
+	return (name)(ML_CLAMP(((type)a + (type)b), min, max)); \
 } \
-template <class T> inline NAME operator-(const NAME a, const T b) { return (a + (-b)); } \
-template <class T> inline NAME & operator+=(NAME & a, const T b) { return (a = (a + b)); } \
-template <class T> inline NAME & operator-=(NAME & a, const T b) { return (a = (a - b)); } \
-inline NAME operator++(NAME & a)		{ return (a += 1); } \
-inline NAME operator--(NAME & a)		{ return (a -= 1); } \
-inline NAME operator++(NAME & a, ITER)	{ NAME c = a; a += 1; return c; } \
-inline NAME operator--(NAME & a, ITER)	{ NAME c = a; a -= 1; return c; }
+template <class T> inline name operator-(const name a, const T b) { return (a + (-b)); } \
+template <class T> inline name & operator+=(name & a, const T b) { return (a = (a + b)); } \
+template <class T> inline name & operator-=(name & a, const T b) { return (a = (a - b)); } \
+inline name operator++(name & a)		{ return (a += 1); } \
+inline name operator--(name & a)		{ return (a -= 1); } \
+inline name operator++(name & a, iter)	{ name c = a; a += 1; return c; } \
+inline name operator--(name & a, iter)	{ name c = a; a -= 1; return c; }
 
-#define ML_GENERATE_ITER_OPERATORS(NAME, TYPE, ITER, MIN, MAX) \
-ML_GENERATE_ITER_OPERATORS_T(T, NAME, TYPE, ITER, MIN, MAX)
+#define ML_GENERATE_ITER_OPERATORS(name, type, iter, min, max) \
+ML_GENERATE_ITER_OPERATORS_T(T, name, type, iter, min, max)
+
+
+// Assertion Macros
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+#define ML_assert_is_base_of(base, derived) \
+static_assert( \
+	std::is_base_of<base, derived>::value, \
+	"" ML_str(derived) " must derive " ML_xstr(base) "" \
+);
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 

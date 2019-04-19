@@ -4,7 +4,7 @@
 #include <MemeEngine/Export.hpp>
 #include <MemeCore/ITrackable.hpp>
 
-#define ML_STATE_INVALID (-1)
+#define ML_STATE_INVALID -1
 
 namespace ml
 {
@@ -15,26 +15,29 @@ namespace ml
 		, public INonCopyable
 	{
 	public:
-		using StateKey	= typename int32_t;
-		using StateRet	= typename int32_t;
-		using StateArg	= typename void *;
-		using StateFun	= typename StateRet(*)(StateArg);
-		using StateMap	= typename HashMap<StateKey, StateFun>;
-		using StatePair	= typename Pair<StateKey, StateFun>;
-		using StateInit	= typename std::initializer_list<StatePair>;
+		using key_type		= typename int32_t;
+		using ret_type		= typename int32_t;
+		using arg_type		= typename void *;
+		using fun_type		= typename ret_type(*)(arg_type);
+		using map_type		= typename HashMap<key_type, fun_type>;
+		using pair_type		= typename Pair<key_type, fun_type>;
+		using init_type		= typename std::initializer_list<pair_type>;
+		using iterator		= typename map_type::iterator;
+		using const_iterator= typename map_type::const_iterator;
 
 	public:
 		StateMachine();
-		StateMachine(const StateInit & states);
+		StateMachine(const map_type & states);
+		StateMachine(const init_type & init);
 		~StateMachine();
 
 	public:
-		StateFun get(const StateKey key) const;
-		StateFun set(const StateKey key, StateFun && fun);
-		StateRet run(const StateKey key, StateArg data);
+		fun_type get(const key_type key) const;
+		fun_type set(const key_type key, fun_type && fun);
+		ret_type run(const key_type key, arg_type data);
 
 	private:
-		StateMap m_states;
+		map_type m_states;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

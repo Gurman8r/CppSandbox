@@ -32,7 +32,7 @@ namespace std
 			class Default,
 			template <class ...> class Op,
 			class ... Args
-	> struct detector<Default, std::void_t<Op<Args...>>, Op, Args...>
+		> struct detector<Default, std::void_t<Op<Args...>>, Op, Args...>
 		{
 			// Note that std::void_t is a C++17 feature
 			using value_t = std::true_type;

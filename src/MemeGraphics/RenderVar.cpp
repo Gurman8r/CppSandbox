@@ -7,8 +7,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	RenderVar::RenderVar()
-		: m_type(NULL)
-		, m_data(NULL)
+		: RenderVar(NULL, NULL)
 	{
 	}
 
@@ -19,8 +18,7 @@ namespace ml
 	}
 
 	RenderVar::RenderVar(const RenderVar & copy)
-		: m_type(copy.m_type)
-		, m_data(copy.m_data)
+		: RenderVar(copy.m_type, (value_type)copy.m_data)
 	{
 	}
 

@@ -1,29 +1,36 @@
 #ifndef _ML_CONFIG_HPP_
 #define _ML_CONFIG_HPP_
 
-// Github project URL
+// Project Info
 /* * * * * * * * * * * * * * * * * * * */
-#define ML_PROJECT_URL	"https://www.github.com/Gurman8r/Cppsandbox"
+#define ML_PROJECT_VER "1.0.0"
+#define ML_PROJECT_URL "https://www.github.com/Gurman8r/Cppsandbox"
 
 
-// Disable safety.
+// Disable C-Runtime Warnings
 /* * * * * * * * * * * * * * * * * * * */
-#ifndef _CRT_SECURE_NO_WARNINGS
-#define _CRT_SECURE_NO_WARNINGS
-#endif
+# ifndef _CRT_SECURE_NO_WARNINGS
+#	define _CRT_SECURE_NO_WARNINGS
+# endif
 
 
-//	Configuration Macro
+//	Configuration Macro (Debug / Release)
 /* * * * * * * * * * * * * * * * * * * */
 # if defined(_DEBUG)
-#	define ML_DEBUG
+#	define ML_DEBUG _DEBUG
+# endif
+
+# if defined(ML_DEBUG)
+#	define ML_CONFIGURATION "Debug"
+# else
+#	define ML_CONFIGURATION "Release"
 # endif
 
 
 //	C/C++ Macro
 /* * * * * * * * * * * * * * * * * * * */
 # if defined(__cplusplus)
-#	define ML_CPP
+#	define ML_CPP __cplusplus
 # endif
 
 
@@ -58,7 +65,7 @@
 # endif
 
 
-//	MsBuild / GCC Macro
+//	Compiler Macro
 /* * * * * * * * * * * * * * * * * * * */
 # ifdef ML_SYSTEM_WINDOWS
 # 	ifdef _MSC_VER
@@ -70,8 +77,16 @@
 # 	endif
 # endif
 
+# if defined(ML_MSB)
+#	define ML_CC "MSB"
+# elif defined(ML_GCC)
+#	define ML_CC "GCC"
+# else
+#	define ML_CC "?"
+# endif
 
-//	Platform Macro
+
+//	Platform Macro (x86 / x64)
 /* * * * * * * * * * * * * * * * * * * */
 # if defined(ML_SYSTEM_WINDOWS)
 #	if defined(_WIN64)
@@ -87,6 +102,14 @@
 #	endif
 # else
 #	error The target platform does not support memes.
+# endif
+
+# if defined(ML_x64)
+#	define ML_PLATFORM "x64"
+# elif defined(ML_x86)
+#	define ML_PLATFORM "x86"
+# else
+#	define ML_PLATFORM "?"
 # endif
 
 

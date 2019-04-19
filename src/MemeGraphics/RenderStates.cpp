@@ -66,11 +66,6 @@ namespace ml
 
 		case RenderVar::Int:
 		{
-			switch (key)
-			{
-			default:
-				return false;
-			}
 		}
 		break;
 		}

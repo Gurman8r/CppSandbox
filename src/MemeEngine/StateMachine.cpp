@@ -10,10 +10,15 @@ namespace ml
 	{
 	}
 
-	StateMachine::StateMachine(const StateInit & states)
-		: StateMachine()
+	StateMachine::StateMachine(const map_type & states)
+		: m_states(states)
 	{
-		for (auto it = states.begin(); it != states.end(); it++)
+	}
+
+	StateMachine::StateMachine(const init_type & init)
+		: m_states()
+	{
+		for (auto it = init.begin(); it != init.end(); it++)
 		{
 			if ((it->first > ML_STATE_INVALID) && it->second)
 			{
@@ -28,9 +33,9 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	StateMachine::StateFun StateMachine::get(const StateKey key) const
+	StateMachine::fun_type StateMachine::get(const key_type key) const
 	{
-		StateMap::const_iterator it;
+		const_iterator it;
 		return ((key > ML_STATE_INVALID)
 			? ((((it = m_states.find(key)) != m_states.end())
 				? (it->second)
@@ -38,9 +43,9 @@ namespace ml
 			: (NULL));
 	}
 
-	StateMachine::StateFun StateMachine::set(const StateKey key, StateFun && fun)
+	StateMachine::fun_type StateMachine::set(const key_type key, fun_type && fun)
 	{
-		StateMap::iterator it;
+		iterator it;
 		return ((key > ML_STATE_INVALID)
 			? (((it = m_states.find(key)) == m_states.end()
 				? (it->second = fun)
@@ -48,9 +53,9 @@ namespace ml
 			: (NULL));
 	}
 
-	StateMachine::StateRet StateMachine::run(const StateKey key, StateArg data)
+	StateMachine::ret_type StateMachine::run(const key_type key, arg_type data)
 	{
-		StateFun fun;
+		fun_type fun;
 		return ((key > ML_STATE_INVALID)
 			? (((fun = get(key))
 				? (fun(data))

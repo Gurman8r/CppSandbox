@@ -120,9 +120,6 @@
     <ClInclude Include="..\..\include\MemeCore\Timer.hpp">
       <Filter>Header Files\Time</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\BitHelper.hpp">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Console.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
@@ -228,14 +225,14 @@
     <ClInclude Include="..\..\include\MemeCore\Maths.hpp">
       <Filter>Header Files\Maths</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Preprocessor.hpp">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\StringUtility.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Allocator.hpp">
       <Filter>Header Files\STD</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Preprocessor.hpp">
+      <Filter>Header Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

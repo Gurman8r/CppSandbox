@@ -5,7 +5,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	UniformSet::UniformSet()
-		: UniformSet(map_type())
+		: m_map()
 	{
 	}
 
@@ -15,7 +15,7 @@ namespace ml
 	}
 
 	UniformSet::UniformSet(const List<Uniform> & value)
-		: UniformSet()
+		: m_map()
 	{
 		for (const Uniform & u : value)
 		{
@@ -24,7 +24,7 @@ namespace ml
 	}
 
 	UniformSet::UniformSet(const init_type & value)
-		: UniformSet()
+		: m_map()
 	{
 		for (auto it = value.begin(); it != value.end(); it++)
 		{
@@ -33,13 +33,13 @@ namespace ml
 	}
 
 	UniformSet::UniformSet(const UniformSet & copy)
-		: UniformSet(copy.m_map)
+		: m_map(copy.m_map)
 	{
 	}
 
 	UniformSet::~UniformSet()
 	{
-		m_map.clear();
+		clear();
 	}
 	
 	/* * * * * * * * * * * * * * * * * * * * */
