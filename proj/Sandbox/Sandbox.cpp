@@ -32,11 +32,6 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-#define ML_FBO_MAIN "fbo_main"
-#define ML_FBO_POST "fbo_post"
-
-/* * * * * * * * * * * * * * * * * * * * */
-
 namespace DEMO
 {
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -343,10 +338,10 @@ namespace DEMO
 			if (ml::Sprite * s = ML_Res.sprites.get("neutrino"))
 			{
 				(*s).setPosition((ml::vec2f(0.95f, 0.075f) * this->getSize()))
-					.setScale(0.5f)
+					.setScale	(0.5f)
 					.setRotation(0.0f)
-					.setOrigin(0.5f)
-					.setColor(ml::Color::White);
+					.setOrigin	(0.5f)
+					.setColor	(ml::Color::White);
 			}
 		}
 
@@ -358,9 +353,9 @@ namespace DEMO
 			if (ml::Entity * ent = ML_Res.entities.load("light"))
 			{
 				ml::Transform * transform = ent->add<ml::Transform>({
-					data.lightPos,
-					{ 1.0f },
-					{ }
+					data.lightPos, // position
+					{ 1.0f }, // scale
+					{ } // rotation
 				});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
@@ -390,9 +385,9 @@ namespace DEMO
 			if (ml::Entity * ent = ML_Res.entities.load("borg"))
 			{
 				ml::Transform * transform = ent->add<ml::Transform>({
-					{ 5.0f, 0.0f, 0.0f },
-					{ 1.0f },
-					{ }
+					{ 5.0f, 0.0f, 0.0f }, // position
+					{ 1.0f }, // scale
+					{ } // rotation
 				});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
@@ -423,9 +418,9 @@ namespace DEMO
 			if (ml::Entity * ent = ML_Res.entities.load("sanic"))
 			{
 				ml::Transform * transform = ent->add<ml::Transform>({
-					{ -5.0f, 0.0f, 0.0f },
-					{ 1.0f },
-					{ }
+					{ -5.0f, 0.0f, 0.0f }, // position
+					{ 1.0f }, // scale
+					{ } // rotation
 				});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
@@ -456,9 +451,9 @@ namespace DEMO
 			if (ml::Entity * ent = ML_Res.entities.load("cube"))
 			{
 				ml::Transform * transform = ent->add<ml::Transform>({
-					{ 0.0f, 0.0f, -5.0f },
-					{ 0.5f },
-					{ }
+					{ 0.0f, 0.0f, -5.0f }, // position
+					{ 0.5f }, // scale
+					{ } // rotation
 				});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
@@ -489,9 +484,9 @@ namespace DEMO
 			if (ml::Entity * ent = ML_Res.entities.load("ground"))
 			{
 				ml::Transform * transform = ent->add<ml::Transform>({
-					{ 0.0f, -2.5f, 0.0f },
-					{ 12.5, 0.25f, 12.5 },
-					{ }
+					{ 0.0f, -2.5f, 0.0f }, // position
+					{ 12.5, 0.25f, 12.5 }, // scale
+					{ } // rotation
 				});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
@@ -522,9 +517,9 @@ namespace DEMO
 			if (ml::Entity * ent = ML_Res.entities.load("moon"))
 			{
 				ml::Transform * transform = ent->add<ml::Transform>({
-					{ 0.0f, 0.0f, 5.0f },
-					{ 0.5f },
-					{ }
+					{ 0.0f, 0.0f, 5.0f }, // position
+					{ 0.5f }, // scale
+					{ } // rotation
 				});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
@@ -561,9 +556,9 @@ namespace DEMO
 			if (ml::Entity * ent = ML_Res.entities.load("earth"))
 			{
 				ml::Transform * transform = ent->add<ml::Transform>({
-					{ 0.0f },
-					{ 1.0f },
-					{ }
+					{ 0.0f }, // position
+					{ 1.0f }, // scale
+					{ } // rotation
 				});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
@@ -876,7 +871,7 @@ namespace DEMO
 
 		// Draw Scene
 		/* * * * * * * * * * * * * * * * * * * * */
-		if (ml::Effect * scene = ML_Res.effects.get(ML_FBO_MAIN))
+		if (ml::Effect * scene = ML_Res.effects.get("frame_main"))
 		{
 			// Bind Scene
 			/* * * * * * * * * * * * * * * * * * * * */
@@ -969,16 +964,18 @@ namespace DEMO
 
 		// Draw Post Processing
 		/* * * * * * * * * * * * * * * * * * * * */
-		if (ml::Effect * post = ML_Res.effects.get(ML_FBO_POST))
+		if (ml::Effect * post = ML_Res.effects.get("frame_post"))
 		{
-			if (ml::Effect * scene = ML_Res.effects.get(ML_FBO_MAIN))
+			if (ml::Effect * scene = ML_Res.effects.get("frame_main"))
 			{
 				if (const ml::Shader * shader = scene->shader())
 				{
-					post->bind();
-					shader->applyUniforms({
+					static ml::UniformSet uniforms = 
+					{
 						{ "Effect.mode", ml::Uniform::Int, &data.effectMode },
-					});
+					};
+					post->bind();
+					shader->applyUniforms(uniforms);
 					this->draw(*scene);
 					post->unbind();
 				}
@@ -1014,7 +1011,7 @@ namespace DEMO
 		{
 			ML_SceneView.drawFun(&ML_Editor.show_sceneView, [&]()
 			{
-				if (ml::Effect * post = ML_Res.effects.get(ML_FBO_POST))
+				if (ml::Effect * post = ML_Res.effects.get("frame_post"))
 				{
 					ML_SceneView.updateTexture(&post->texture());
 				}

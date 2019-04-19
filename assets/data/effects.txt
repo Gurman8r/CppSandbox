@@ -3,7 +3,7 @@
 
 <item>
 	type:	effect
-	name:	fbo_main
+	name:	frame_main
 	model:	default_quad
 	shader: framebuffer
 	width:	1920
@@ -12,7 +12,7 @@
 
 <item>
 	type:	effect
-	name:	fbo_post
+	name:	frame_post
 	model:	default_quad
 	shader: framebuffer
 	width:	1920
