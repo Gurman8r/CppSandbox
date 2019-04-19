@@ -12,15 +12,16 @@ namespace ml
 		: public ITrackable
 	{
 	public:
-		using UniformMap		= HashMap<String, Uniform>;
-		using iterator			= typename UniformMap::iterator;
-		using const_iterator	= typename UniformMap::const_iterator;
+		using map_type			= typename HashMap<String, Uniform>;
+		using init_type			= typename std::initializer_list<Uniform>;
+		using iterator			= typename map_type::iterator;
+		using const_iterator	= typename map_type::const_iterator;
 
 	public:
 		UniformSet();
-		UniformSet(const UniformMap & value);
+		UniformSet(const map_type & value);
 		UniformSet(const List<Uniform> & value);
-		UniformSet(const std::initializer_list<Uniform> & value);
+		UniformSet(const init_type & value);
 		UniformSet(const UniformSet & copy);
 		~UniformSet();
 
@@ -58,7 +59,7 @@ namespace ml
 		inline const_iterator	cend()	const	{ return m_map.cend(); }
 
 	private:
-		UniformMap m_map;
+		map_type m_map;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

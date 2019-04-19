@@ -5,11 +5,11 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	UniformSet::UniformSet()
-		: UniformSet(UniformMap())
+		: UniformSet(map_type())
 	{
 	}
 
-	UniformSet::UniformSet(const UniformMap & value)
+	UniformSet::UniformSet(const map_type & value)
 		: m_map(value)
 	{
 	}
@@ -23,7 +23,7 @@ namespace ml
 		}
 	}
 
-	UniformSet::UniformSet(const std::initializer_list<Uniform> & value)
+	UniformSet::UniformSet(const init_type & value)
 		: UniformSet()
 	{
 		for (auto it = value.begin(); it != value.end(); it++)

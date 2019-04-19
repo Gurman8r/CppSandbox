@@ -3,33 +3,39 @@
 
 #include <MemeEngine/Export.hpp>
 #include <MemeCore/FileSystem.hpp>
+#include <MemeCore/Preprocessor.hpp>
 
-#define ML_assert_readable(T) \
+/* * * * * * * * * * * * * * * * * * * * */
+
+#define ML_registry_base ml::IReadable
+#define ML_assert_registry(Value) \
 static_assert( \
-	std::is_base_of<ml::IReadable, T>::value, \
-	"Component must derive ml::IReadable" \
+	std::is_base_of<ML_registry_base, Value>::value, \
+	"" ML_str(Value) " must derive " ML_xstr(ML_registry_base) "" \
 );
+
+/* * * * * * * * * * * * * * * * * * * * */
 
 namespace ml
 {
-	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	class Resources;
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	template <
-		class T
+		class Elem
 	> class Registry final
 		: public ITrackable
 		, public INonCopyable
 	{
 		friend class Resources;
 
-		ML_assert_readable(T) // Type must derive IReadable
+		ML_assert_registry(Elem) // Type must derive IReadable
 
 	public:
-		using value_type	= typename T;
+		using value_type	= typename Elem;
 		using pointer		= typename value_type * ;
 		using const_pointer = typename const value_type *;
 		using map_type		= typename HashMap<String, pointer>;

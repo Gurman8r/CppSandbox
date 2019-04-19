@@ -3,9 +3,18 @@
 
 #include <MemeScript/Export.hpp>
 #include <MemeCore/List.hpp>
+#include <MemeCore/Preprocessor.hpp>
 
-#define assert_typeof_node(T) \
-static_assert(std::is_base_of<ml::AST_Node, T>::value, "Type must derive ml::AST_Node") \
+/* * * * * * * * * * * * * * * * * * * * */
+
+#define ML_node_base ml::AST_Node
+#define ML_assert_node(Node) \
+static_assert( \
+	std::is_base_of<ML_node_base, Node>::value, \
+	"" ML_str(Node) " must derive " ML_xstr(ML_node_base) "" \
+);
+
+/* * * * * * * * * * * * * * * * * * * * */
 
 namespace ml
 {
@@ -95,82 +104,90 @@ namespace ml
 		bool runNext();
 
 	public: // Templates
-		template <class T>
-		inline const T * as() const
+		template <
+			class Node
+		> inline const Node * as() const
 		{
-			assert_typeof_node(T);
-			return dynamic_cast<const T *>(this);
+			ML_assert_node(Node);
+			return dynamic_cast<const Node *>(this);
 		}
 		
-		template <class T>
-		inline T * as()
+		template <
+			class Node
+		> inline Node * as()
 		{
-			assert_typeof_node(T);
-			return dynamic_cast<T *>(this);
+			ML_assert_node(Node);
+			return dynamic_cast<Node *>(this);
 		}
 
-		template <class T>
-		T * nextAs() const
+		template <
+			class Node
+		> Node * nextAs() const
 		{
-			assert_typeof_node(T);
+			ML_assert_node(Node);
 			if (AST_Node * n = getNext())
 			{
-				return n->as<T>();
+				return n->as<Node>();
 			}
 			return NULL;
 		}
 
-		template <class T>
-		T * prevAs() const
+		template <
+			class Node
+		> Node * prevAs() const
 		{
-			assert_typeof_node(T);
+			ML_assert_node(Node);
 			if (AST_Node * p = getPrev())
 			{
-				return p->as<T>();
+				return p->as<Node>();
 			}
 			return NULL;
 		}
 
-		template <class T>
-		T * parentAs() const
+		template <
+			class Node
+		> Node * parentAs() const
 		{
-			assert_typeof_node(T);
+			ML_assert_node(Node);
 			if (AST_Node * p = getParent())
 			{
-				return p->as<T>();
+				return p->as<Node>();
 			}
 			return NULL;
 		}
 
-		template <class T>
-		T * childAs(size_t index) const
+		template <
+			class Node
+		> Node * childAs(size_t index) const
 		{
-			assert_typeof_node(T);
+			ML_assert_node(Node);
 			if (AST_Node * c = getChild(index))
 			{
-				return c->as<T>();
+				return c->as<Node>();
 			}
 			return NULL;
 		}
 
-		template <class T>
-		T * firstAs() const
+		template <
+			class Node
+		> Node * firstAs() const
 		{
-			assert_typeof_node(T);
+			ML_assert_node(Node);
 			if (!empty())
 			{
-				return (*begin())->as<T>();
+				return (*begin())->as<Node>();
 			}
 			return NULL;
 		}
 
-		template <class T>
-		T * lastAs() const
+		template <
+			class Node
+		> Node * lastAs() const
 		{
-			assert_typeof_node(T);
+			ML_assert_node(Node);
 			if (!empty())
 			{
-				return (*end() - 1)->as<T>();
+				return (*end() - 1)->as<Node>();
 			}
 			return NULL;
 		}

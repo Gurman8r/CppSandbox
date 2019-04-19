@@ -17,6 +17,7 @@ namespace ml
 		Material(const Material & copy);
 		~Material();
 
+	public:
 		bool dispose() override;
 		bool loadFromFile(const String & filename) override;
 

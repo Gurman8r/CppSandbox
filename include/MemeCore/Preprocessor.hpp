@@ -1,6 +1,11 @@
 #ifndef _ML_PREPROCESSOR_HPP_
 #define _ML_PREPROCESSOR_HPP_
 
+// Stringify
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+#define ML_xstr(a) ML_str(a)
+#define ML_str(a) #a
+
 // Clamp
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 #define ML_CLAMP(value, min, max) \

@@ -137,7 +137,6 @@ namespace DEMO
 			break;
 		}
 	}
-
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	void Sandbox::onEnter(const ml::EnterEvent * ev)
@@ -315,7 +314,7 @@ namespace DEMO
 			if (ml::Plugin * p = ML_Res.plugins.get("TestPlugin"))
 			{
 				if (void * msg = p->lib().callFunction<void *>(
-					ML_STRINGIFY(ML_Plugin_Test), "TEST"))
+					ML_str(ML_Plugin_Test), "TEST"))
 				{
 					ml::Debug::log((ml::CString)(msg));
 				}
@@ -1030,7 +1029,7 @@ namespace DEMO
 		if (ML_Editor.show_network)			{ ML_NetworkHUD.drawGui(&ML_Editor.show_network); }
 		if (ML_Editor.show_profiler)		{ ML_Profiler.drawGui(&ML_Editor.show_profiler); }
 		if (ML_Editor.show_browser)			{ ML_Browser.drawGui(&ML_Editor.show_browser); }
-		if (ML_Editor.show_projectView)		{ ML_ResourceView.drawGui(&ML_Editor.show_projectView); }
+		if (ML_Editor.show_resourceView)	{ ML_ResourceView.drawGui(&ML_Editor.show_resourceView); }
 		if (ML_Editor.show_terminal)		{ ML_Terminal.drawGui(&ML_Editor.show_terminal); }
 		if (ML_Editor.show_textEditor)		{ ML_TextEditor.drawGui(&ML_Editor.show_textEditor); }
 		if (ML_Editor.show_builder)			{ ML_Builder.drawGui(&ML_Editor.show_builder); }

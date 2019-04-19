@@ -4,12 +4,11 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #include <MemeEngine/Export.hpp>
+#include <MemeCore/Preprocessor.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #define ML_PLUGIN_API ML_API_EXPORT
-
-#define ML_STRINGIFY(expr) #expr
 
 #define ML_Plugin_Test ML_Plugin_Test
 
