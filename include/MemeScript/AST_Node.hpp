@@ -7,12 +7,7 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-#define ML_node_base ml::AST_Node
-#define ML_assert_node(Node) \
-static_assert( \
-	std::is_base_of<ML_node_base, Node>::value, \
-	"" ML_str(Node) " must derive " ML_xstr(ML_node_base) "" \
-);
+#define ML_assert_node(derived) ML_assert_is_base_of(ml::AST_Node, derived)
 
 /* * * * * * * * * * * * * * * * * * * * */
 

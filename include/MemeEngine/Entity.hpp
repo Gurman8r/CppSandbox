@@ -10,12 +10,7 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-#define ML_component_base ml::ITrackable
-#define ML_assert_component(Component) \
-static_assert( \
-	std::is_base_of<ML_component_base, Component>::value, \
-	"" ML_str(Component) " must derive " ML_xstr(ML_component_base) "" \
-);
+#define ML_assert_component(derived) ML_assert_is_base_of(ml::ITrackable, derived)
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -30,24 +25,26 @@ namespace ml
 		, public IWritable
 		, public INonCopyable
 	{
-	public:
-		using value_type	= typename ML_component_base *;
+	public: // Usings
+		/* * * * * * * * * * * * * * * * * * * * */
+		using value_type	= typename ml::ITrackable *;
 		using map_type		= typename HashMap<size_t, value_type>;
 		using iterator		= typename map_type::iterator;
 		using const_iterator= typename map_type::const_iterator;
 
-	public:
+	public: //
+		/* * * * * * * * * * * * * * * * * * * * */
 		Entity();
 		~Entity();
 
-	public:
+	public: // Overrides
+		/* * * * * * * * * * * * * * * * * * * * */
 		bool dispose() override;
 		bool loadFromFile(const String & filename) override;
 		bool saveToFile(const String & filename) const override;
 
-	public:
+	public: // Functions
 		/* * * * * * * * * * * * * * * * * * * * */
-
 		template <
 			class Component
 		> inline Component * add()
@@ -148,9 +145,8 @@ namespace ml
 			return ((Component *)(this->at<Component>() = value));
 		}
 
+	public: // Iterators
 		/* * * * * * * * * * * * * * * * * * * * */
-		
-	public:
 		inline iterator			begin()			{ return m_map.begin(); }
 		inline const_iterator	begin()	const	{ return m_map.begin(); }
 		inline const_iterator	cbegin()const	{ return m_map.cbegin();}
@@ -158,7 +154,8 @@ namespace ml
 		inline const_iterator	end()	const	{ return m_map.end();	}
 		inline const_iterator	cend()	const	{ return m_map.cend();	}
 
-	private:
+	private: // Data
+		/* * * * * * * * * * * * * * * * * * * * */
 		map_type m_map;
 	};
 

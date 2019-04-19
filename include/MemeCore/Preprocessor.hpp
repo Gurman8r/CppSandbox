@@ -6,6 +6,14 @@
 #define ML_xstr(a) ML_str(a)
 #define ML_str(a) #a
 
+// Assertions
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+#define ML_assert_is_base_of(base, derived) \
+static_assert( \
+	std::is_base_of<base, derived>::value, \
+	"" ML_str(derived) " must derive " ML_xstr(base) "" \
+);
+
 // Clamp
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 #define ML_CLAMP(value, min, max) \
