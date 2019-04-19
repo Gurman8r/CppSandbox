@@ -39,5 +39,10 @@ namespace ml
 		return false;
 	}
 
+	bool Entity::saveToFile(const String & filename) const
+	{
+		return true;
+	}
+
 	/* * * * * * * * * * * * * * * * * * * * */
 }

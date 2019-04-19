@@ -5,10 +5,11 @@
 #include <MemeCore/ITrackable.hpp>
 #include <MemeCore/IDisposable.hpp>
 #include <MemeCore/IReadable.hpp>
+#include <MemeCore/IWritable.hpp>
 
-#define ML_assert_trackable(Component) \
+#define ML_assert_trackable(T) \
 static_assert( \
-	std::is_base_of<ml::ITrackable, Component>::value, \
+	std::is_base_of<ml::ITrackable, T>::value, \
 	"Component must derive ml::ITrackable" \
 );
 
@@ -20,6 +21,7 @@ namespace ml
 		: public ITrackable
 		, public IDisposable
 		, public IReadable
+		, public IWritable
 	{
 	public:
 		using value_type	= typename ITrackable *;
@@ -34,6 +36,7 @@ namespace ml
 	public:
 		bool dispose() override;
 		bool loadFromFile(const String & filename) override;
+		bool saveToFile(const String & filename) const override;
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */

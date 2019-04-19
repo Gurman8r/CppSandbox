@@ -4,6 +4,12 @@
 #include <MemeEngine/Export.hpp>
 #include <MemeCore/FileSystem.hpp>
 
+#define ML_assert_readable(T) \
+static_assert( \
+	std::is_base_of<ml::IReadable, T>::value, \
+	"Component must derive ml::IReadable" \
+);
+
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -20,18 +26,17 @@ namespace ml
 	{
 		friend class Resources;
 
-		// Type must derive IReadable
-		static_assert(std::is_base_of<ml::IReadable, T>::value, "Type must derive ml::IReadable");
+		ML_assert_readable(T) // Type must derive IReadable
 
 	public:
 		using value_type	= typename T;
 		using pointer		= typename value_type * ;
 		using const_pointer = typename const value_type *;
-		using PointerMap	= typename HashMap<String, pointer>;
-		using FileMap		= typename HashMap<String, String>;
-		using Pair			= typename Pair<String, pointer>;
-		using iterator		= typename PointerMap::iterator;
-		using const_iterator= typename PointerMap::const_iterator;
+		using map_type		= typename HashMap<String, pointer>;
+		using file_map		= typename HashMap<String, String>;
+		using pair_type		= typename Pair<String, pointer>;
+		using iterator		= typename map_type::iterator;
+		using const_iterator= typename map_type::const_iterator;
 
 	private:
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -138,7 +143,7 @@ namespace ml
 
 		inline const String getFile(const String & value) const
 		{
-			FileMap::const_iterator it;
+			file_map::const_iterator it;
 			return ((it = m_files.find(value)) != m_files.end())
 				? it->second
 				: String();
@@ -216,7 +221,7 @@ namespace ml
 		inline size_t reload()
 		{
 			size_t count = 0;
-			for (FileMap::const_iterator it = m_files.cbegin(); it != m_files.end(); it++)
+			for (file_map::const_iterator it = m_files.cbegin(); it != m_files.end(); it++)
 			{
 				const String & name = it->first;
 				const String & file = it->second;
@@ -298,8 +303,8 @@ namespace ml
 	private: // Data
 		/* * * * * * * * * * * * * * * * * * * * */
 		String		m_name;
-		PointerMap	m_data;
-		FileMap		m_files;
+		map_type	m_data;
+		file_map		m_files;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
