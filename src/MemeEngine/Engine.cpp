@@ -37,7 +37,6 @@ namespace ml
 		if (m_app && (m_app == value))
 		{
 			delete m_app;
-			m_app = NULL;
 		}
 		return ((m_app) ? (EXIT_FAILURE) : (EXIT_SUCCESS));
 	}

@@ -29,6 +29,7 @@ namespace ml
 		void * execute(const String & cmd, const String & file);
 		void * execute(const String & cmd, const String & file, const String & args);
 		void * execute(const String & cmd, const String & file, const String & args, const String & path);
+		void * execute(const String & cmd, const String & file, const String & args, const String & path, const int32_t flags);
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

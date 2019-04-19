@@ -49,7 +49,11 @@ namespace ml
 			Debug::logError("Final allocations follow:");
 			
 			cerr << (*this);
-			
+
+#ifdef ML_DEBUG
+			Debug::pause(EXIT_FAILURE);
+#endif // ML_DEBUG
+
 			Debug::fatal();
 		}
 	}
@@ -63,7 +67,10 @@ namespace ml
 			RecordMap::iterator it;
 			if ((it = m_records.find(trackable)) == m_records.end())
 			{
-				m_records.insert({ trackable, Record(trackable, (m_guid++), size) });
+				m_records.insert({
+					trackable,
+					Record(trackable, (m_guid++), size) 
+				});
 				return trackable;
 			}
 		}
@@ -72,17 +79,16 @@ namespace ml
 
 	void MemoryTracker::freeAllocation(void * value)
 	{
-		if (value)
+		if (ITrackable * trackable = static_cast<ITrackable *>(value))
 		{
-			if (ITrackable * trackable = static_cast<ITrackable *>(value))
+			RecordMap::iterator it;
+			if ((it = m_records.find(trackable)) != m_records.end())
 			{
-				RecordMap::iterator it;
-				if ((it = m_records.find(trackable)) != m_records.end())
-				{
-					m_records.erase(it);
-					std::free(trackable);
-					trackable = NULL;
-				}
+				m_records.erase(it);
+				
+				std::free(trackable);
+				
+				trackable = NULL;
 			}
 		}
 	}

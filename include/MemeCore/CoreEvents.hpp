@@ -51,17 +51,29 @@ namespace ml
 		const String	file;
 		const String	args;
 		const String	path;
+		const int32_t	flags;
+
+		OS_ExecuteEvent(
+			const String & cmd,
+			const String & file,
+			const String & args,
+			const String & path,
+			const int32_t  flags)
+			: CoreEvent(EV_OS_Execute)
+			, cmd	(cmd)
+			, file	(file)
+			, args	(args)
+			, path	(path)
+			, flags	(flags)
+		{
+		}
 
 		OS_ExecuteEvent(
 			const String & cmd,
 			const String & file = String(),
 			const String & args = String(),
 			const String & path = String())
-			: CoreEvent(EV_OS_Execute)
-			, cmd	(cmd)
-			, file	(file)
-			, args	(args)
-			, path	(path)
+			: OS_ExecuteEvent(cmd, file, args, path, 5) // SW_SHOW
 		{
 		}
 

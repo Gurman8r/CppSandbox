@@ -75,7 +75,7 @@ namespace ml
 
 	int32_t Debug::logWarning(const String & message)
 	{
-		ml::cout
+		cout
 			<< FMT()
 			<< FG::White << "["
 			<< FG::Yellow << " WRN "
@@ -87,7 +87,7 @@ namespace ml
 
 	int32_t Debug::logError(const String & message)
 	{
-		ml::cout
+		cout
 			<< FMT()
 			<< FG::White << "["
 			<< FG::Red << " ERR "
@@ -99,7 +99,7 @@ namespace ml
 	
 	int32_t Debug::log(const String & message)
 	{
-		ml::cout
+		cout
 			<< FMT()
 			<< FG::White << "["
 			<< FG::Green << " LOG "

@@ -4,10 +4,10 @@
 #include <MemeCore/CoreEvents.hpp>
 #include <MemeCore/Debug.hpp>
 
-#ifdef ML_SYSTEM_WINDOWS
-#include <windows.h>
-#include <shellapi.h>
-#endif
+# ifdef ML_SYSTEM_WINDOWS
+#	include <windows.h>
+#	include <shellapi.h>
+# endif
 
 namespace ml
 {
@@ -33,7 +33,8 @@ namespace ml
 					ev->cmd,
 					ev->file,
 					ev->args,
-					ev->path
+					ev->path,
+					ev->flags
 				);
 			}
 			break;
@@ -59,17 +60,16 @@ namespace ml
 
 	void * OS::execute(const String & cmd, const String & file, const String & args, const String & path)
 	{
-#ifdef ML_SYSTEM_WINDOWS
-		return ShellExecuteA(
-			GetDesktopWindow(), 
-			cmd.c_str(), 
-			file.c_str(), 
-			args.c_str(), 
-			path.c_str(), 
-			SW_SHOW);
+		return execute(cmd, file, args, path, 5); // SW_SHOW
+	}
+
+	void * OS::execute(const String & cmd, const String & file, const String & args, const String & path, const int32_t flags)
+	{
+#if defined(ML_SYSTEM_WINDOWS)
+		return ShellExecuteA(GetDesktopWindow(), cmd.c_str(), file.c_str(), args.c_str(), path.c_str(), flags);
 #else
 		return NULL;
-#endif
+#endif // ML_SYSTEM_WINDOWS
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

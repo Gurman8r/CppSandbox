@@ -30,7 +30,7 @@
 
 // Lerp Macro
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-#define ML_LERP(a, b, c) (a * c + b * ((1) - c))
+#define ML_LERP(a, b, c) (a * c + b * (1 - c))
 
 
 // Map Range Macro
