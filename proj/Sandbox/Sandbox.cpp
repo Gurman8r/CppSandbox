@@ -317,10 +317,12 @@ namespace DEMO
 		{
 			if (ml::Plugin * p = ML_Res.plugins.get("TestPlugin"))
 			{
-				p->lib().callFunction<void *>(
-					ML_STRINGIFY(ML_Plugin_Test),
-					"Hello from Test Plugin!"
-					);
+				if (void * msg = p->lib().callFunction<void *>(
+					ML_STRINGIFY(ML_Plugin_Test), 
+					"TEST"))
+				{
+					ml::Debug::log((ml::CString)(msg));
+				}
 			}
 		}
 

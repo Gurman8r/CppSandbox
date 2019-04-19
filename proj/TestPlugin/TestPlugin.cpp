@@ -7,8 +7,14 @@
 
 ML_PLUGIN_API void * ML_Plugin_Test(void * data)
 {
-	ml::cout << ((ml::CString)data) << ml::endl;
-	return NULL;
+	if ((ml::String)((ml::CString)data) == "TEST")
+	{
+		return (void *)("Hello from Test Plugin!");
+	}
+	else
+	{
+		return NULL;
+	}
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
