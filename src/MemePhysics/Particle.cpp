@@ -111,6 +111,7 @@ namespace ml
 		// TODO: insert return statement here
 		torque = { 0.0f,0.0f,0.0f };
 
+		return (*this);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

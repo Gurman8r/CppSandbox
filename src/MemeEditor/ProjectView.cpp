@@ -399,6 +399,28 @@ namespace ml
 
 					/* * * * * * * * * * * * * * * * * * * * */
 
+					if (const String file = ML_Res.entities.getFile(name))
+					{
+						Funcs::Field("File", [&](CString label)
+						{
+							const String fName = ML_FS.getFileName(file);
+							if (ImGui::Selectable(fName.c_str()))
+							{
+								ML_EventSystem.fireEvent(OS_OpenEvent(ML_FS.pathTo(file)));
+							}
+						});
+						Funcs::Field("Path", [&](CString label)
+						{
+							const String fPath = ML_FS.getFilePath(file);
+							if (ImGui::Selectable(fPath.c_str()))
+							{
+								ML_EventSystem.fireEvent(OS_OpenEvent(ML_FS.pathTo(fPath)));
+							}
+						});
+					}
+
+					/* * * * * * * * * * * * * * * * * * * * */
+
 				}, pair.first.c_str(), pair.second);
 			}
 		});
