@@ -4,7 +4,7 @@
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
-
+	//update these as well
 	Particle::Particle()
 		: pos		(vec3f::Zero)
 		, vel		(vec3f::Zero)
