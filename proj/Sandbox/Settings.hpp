@@ -25,7 +25,6 @@ namespace DEMO
 	public:
 		// [General]
 		/* * * * * * * * * * * * * * * * * * * * */
-		ml::String	resourcePath;		// Solution Dir
 		bool		escapeIsExit;	// Escape key is Exit?
 		ml::String	manifest;		// Name of manifest file
 		ml::String	imguiINI;		// Name of imgui INI
@@ -78,7 +77,6 @@ namespace DEMO
 
 			// [General]
 			/* * * * * * * * * * * * * * * * * * * * */
-			resourcePath		= ini.Get("General", "resourcePath", "../../../");
 			escapeIsExit	= ini.GetBoolean("General", "escapeIsExit", true);
 			manifest		= ini.Get("General", "manifest", "manifest.txt");
 			imguiINI		= ini.Get("General", "imguiINI", "");
