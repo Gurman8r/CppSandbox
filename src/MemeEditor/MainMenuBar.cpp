@@ -114,7 +114,7 @@ namespace ml
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ImGui::BeginMenu("Help"))
 			{
-				if (ImGui::MenuItem("ProjectView Page"))
+				if (ImGui::MenuItem("Project Page"))
 				{
 					ML_EventSystem.fireEvent(OS_OpenEvent(ML_PROJECT_URL));
 				}
