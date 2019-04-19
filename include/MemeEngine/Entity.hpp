@@ -1,5 +1,5 @@
-#ifndef _ML_I_ENTITY_HPP_
-#define _ML_I_ENTITY_HPP_
+#ifndef _ML_ENTITY_HPP_
+#define _ML_ENTITY_HPP_
 
 #include <MemeEngine/Export.hpp>
 #include <MemeCore/ITrackable.hpp>
@@ -146,4 +146,4 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 }
 
-#endif // !_ML_I_ENTITY_HPP_
+#endif // !_ML_ENTITY_HPP_
