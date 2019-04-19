@@ -150,12 +150,6 @@
     <ClInclude Include="..\..\include\MemeGraphics\GraphicsEvents.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\RenderStates.hpp">
-      <Filter>Header Files\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\RenderFlags.hpp">
-      <Filter>Header Files\Rendering</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Camera.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
@@ -170,6 +164,12 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\IDrawable.hpp">
       <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\RenderStates.hpp">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\RenderVar.hpp">
+      <Filter>Header Files\Rendering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -257,12 +257,6 @@
     <ClCompile Include="..\..\src\MemeGraphics\ShaderParser.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemeGraphics\RenderStates.cpp">
-      <Filter>Source Files\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeGraphics\RenderFlags.cpp">
-      <Filter>Source Files\Rendering</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Camera.cpp">
       <Filter>Source Files\DS</Filter>
     </ClCompile>
@@ -271,6 +265,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Renderer.cpp">
       <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\RenderStates.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\RenderVar.cpp">
+      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

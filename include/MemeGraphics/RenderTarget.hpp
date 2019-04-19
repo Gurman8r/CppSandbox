@@ -7,7 +7,6 @@
 #include <MemeGraphics/IndexBuffer.hpp>
 #include <MemeGraphics/FrameBuffer.hpp>
 #include <MemeGraphics/RenderBuffer.hpp>
-#include <MemeGraphics/RenderStates.hpp>
 
 namespace ml
 {

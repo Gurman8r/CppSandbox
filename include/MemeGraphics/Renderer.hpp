@@ -2,7 +2,7 @@
 #define _ML_RENDERER_HPP_
 
 #include <MemeGraphics/IDrawable.hpp>
-#include <MemeGraphics/RenderFlags.hpp>
+#include <MemeGraphics/RenderStates.hpp>
 
 namespace ml
 {
@@ -16,7 +16,7 @@ namespace ml
 		Renderer(
 			const IDrawable		* drawable,
 			const Shader		* shader,
-			const RenderFlags	& flags,
+			const RenderStates	& states,
 			const UniformSet	& uniforms);
 
 		Renderer();
@@ -26,13 +26,13 @@ namespace ml
 	public:
 		inline const IDrawable		* drawable()	const { return m_drawable;	}
 		inline const Shader			* shader()		const { return m_shader;	}
-		inline const RenderFlags	& renderFlags() const { return m_flags;		}
+		inline const RenderStates	& states()		const { return m_states;	}
 		inline const UniformSet		& uniforms()	const { return m_uniforms;	}
 
 	public:
 		inline const IDrawable *	& drawable()	{ return m_drawable;	}
 		inline const Shader *		& shader()		{ return m_shader;		}
-		inline RenderFlags			& renderFlags() { return m_flags;		}
+		inline RenderStates			& states()		{ return m_states;		}
 		inline UniformSet			& uniforms()	{ return m_uniforms;	}
 
 	public:
@@ -41,7 +41,7 @@ namespace ml
 	private:
 		const IDrawable *	m_drawable;
 		const Shader *		m_shader;
-		RenderFlags			m_flags;
+		RenderStates		m_states;
 		UniformSet			m_uniforms;
 	};
 

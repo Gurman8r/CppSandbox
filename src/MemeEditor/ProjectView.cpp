@@ -290,23 +290,23 @@ namespace ml
 									}
 								});
 
-								// Render Flags
-								Funcs::Group("Render Flags", [&]()
+								// States
+								Funcs::Group("States", [&]()
 								{
-									for (auto & pair : renderer->renderFlags())
+									for (auto & pair : renderer->states())
 									{
 										switch (pair.first)
 										{
 										case GL::CullFace:
 											Funcs::Field("Cull Face", [&](CString)
 											{
-												ImGui::Checkbox("##Cull Face", (bool *)(&pair.second));
+												ImGui::Checkbox("##CullFace", (bool *)(pair.second.get_ptr()));
 											});
 											break;
 										case GL::DepthTest:
 											Funcs::Field("Depth Test", [&](CString)
 											{
-												ImGui::Checkbox("##Depth Test", (bool *)(&pair.second));
+												ImGui::Checkbox("##DepthTest", (bool *)(pair.second.get_ptr()));
 											});
 											break;
 										}
@@ -320,55 +320,55 @@ namespace ml
 									{
 										ImGui::PushID(pair.second.name.c_str());
 
-										Funcs::Field(pair.first.c_str(), [&](CString, Uniform * u)
+										Funcs::Field(pair.first.c_str(), [&](CString, Uniform * uni)
 										{
-											switch (u->type)
+											switch (uni->type)
 											{
 											case Uniform::Int:
 											{
-												int32_t temp = u->get_value<int32_t>();
+												int32_t temp = uni->get_value<int32_t>();
 												ImGui::DragInt("##Int##Value", &temp);
 											}
 											break;
 											case Uniform::Float:
 											{
-												float temp = u->get_value<float>();
+												float temp = uni->get_value<float>();
 												ImGui::DragFloat("##Float##Value", &temp, 0.1f);
 											}
 											break;
 											case Uniform::Vec2:
 											{
-												vec2f temp = u->get_value<vec2f>();
+												vec2f temp = uni->get_value<vec2f>();
 												GUI::EditVec2f("##Vec2##Value", temp);
 											}
 											break;
 											case Uniform::Vec3:
 											{
-												vec3f temp = u->get_value<vec3f>();
+												vec3f temp = uni->get_value<vec3f>();
 												GUI::EditVec3f("##Vec3##Value", temp);
 											}
 											break;
 											case Uniform::Vec4:
 											{
-												vec4f temp = u->get_value<vec4f>();
+												vec4f temp = uni->get_value<vec4f>();
 												GUI::EditVec4f("##Vec4##Value", temp);
 											}
 											break;
 											case Uniform::Mat3:
 											{
-												mat3f temp = u->get_value<mat3f>();
+												mat3f temp = uni->get_value<mat3f>();
 												GUI::EditMat3f("##Mat3##Value", temp);
 											}
 											break;
 											case Uniform::Mat4:
 											{
-												mat4f temp = u->get_value<mat4f>();
+												mat4f temp = uni->get_value<mat4f>();
 												GUI::EditMat4f("##Mat4##Value", temp);
 											}
 											break;
 											case Uniform::Tex2D:
 											{
-												int32_t index = ML_Res.textures.indexOf(u->get_pointer<Texture>());
+												int32_t index = ML_Res.textures.indexOf(uni->get_pointer<Texture>());
 												List<String> keys = ML_Res.textures.getKeys();
 												if (ImGui::Combo(
 													"##Tex2D##Value",
@@ -379,7 +379,7 @@ namespace ml
 												{
 													if (const Texture * value = ML_Res.textures.atIndex(index))
 													{
-														u->data = value;
+														uni->data = value;
 													}
 												}
 											}

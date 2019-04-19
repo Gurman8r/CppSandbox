@@ -29,12 +29,12 @@ namespace ml
 			ML_GL.validateVersion(m_context.majorVersion, m_context.minorVersion);
 
 			// Setup OpenGL
+			ML_GL.enable(GL::AlphaTest);
+			ML_GL.enable(GL::Blend);
 			ML_GL.enable(GL::CullFace);
 			ML_GL.enable(GL::DepthTest);
-			ML_GL.enable(GL::Blend);
-			ML_GL.enable(GL::AlphaTest);
-			ML_GL.enable(GL::Texture2D);
 			ML_GL.enable(GL::Multisample, m_context.multisample);
+			ML_GL.enable(GL::Texture2D);
 
 			if (!ML_GL.enable(GL::FramebufferSRGB, m_context.srgbCapable))
 			{

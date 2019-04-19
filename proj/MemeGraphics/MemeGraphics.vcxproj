@@ -41,7 +41,7 @@
     <ClInclude Include="..\..\include\MemeGraphics\RenderBatch.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\RenderBuffer.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Renderer.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\RenderFlags.hpp" />
+    <ClInclude Include="..\..\include\MemeGraphics\RenderVar.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\RenderStates.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\RenderTarget.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\RenderWindow.hpp" />
@@ -78,7 +78,7 @@
     <ClCompile Include="..\..\src\MemeGraphics\RectTransform.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\RenderBuffer.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Renderer.cpp" />
-    <ClCompile Include="..\..\src\MemeGraphics\RenderFlags.cpp" />
+    <ClCompile Include="..\..\src\MemeGraphics\RenderVar.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\RenderStates.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\RenderTarget.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\RenderWindow.cpp" />

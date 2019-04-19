@@ -13,7 +13,6 @@
 #include <MemeCore/Time.hpp>
 #include <MemeGraphics/Camera.hpp>
 #include <MemeGraphics/OpenGL.hpp>
-#include <MemeGraphics/RenderStates.hpp>
 #include <MemeGraphics/Renderer.hpp>
 #include <MemeEditor/Editor.hpp>
 #include <MemeEditor/EditorCommands.hpp>
@@ -356,18 +355,18 @@ namespace DEMO
 			if (ml::Entity * ent = ML_Res.entities.load("light"))
 			{
 				ml::Transform * transform = ent->add<ml::Transform>({
-					data.lightPos, // position
-					{ 1.0f }, // scale
-					{ } // rotation
+					data.lightPos,
+					{ 1.0f },
+					{ }
 				});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("light"),
 					ML_Res.shaders.get("solid"),
-					ml::RenderFlags
+					ml::RenderStates
 					{
-						{ ml::GL::CullFace, true },
-						{ ml::GL::DepthTest, true },
+						{ ml::GL::CullFace, { ml::GL::Byte, true } },
+						{ ml::GL::DepthTest, { ml::GL::Byte, true } },
 					},
 					ml::UniformSet
 					{
@@ -384,18 +383,18 @@ namespace DEMO
 			if (ml::Entity * ent = ML_Res.entities.load("borg"))
 			{
 				ml::Transform * transform = ent->add<ml::Transform>({
-					{ 5.0f, 0.0f, 0.0f }, // position
-					{ 1.0f }, // scale
-					{ } // rotation
+					{ 5.0f, 0.0f, 0.0f },
+					{ 1.0f },
+					{ }
 				});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("borg"),
 					ML_Res.shaders.get("basic"),
-					ml::RenderFlags
+					ml::RenderStates
 					{
-						{ ml::GL::CullFace, true },
-						{ ml::GL::DepthTest, true },
+						{ ml::GL::CullFace, { ml::GL::Byte, true } },
+						{ ml::GL::DepthTest, { ml::GL::Byte, true } },
 					},
 					ml::UniformSet
 					{
@@ -413,18 +412,18 @@ namespace DEMO
 			if (ml::Entity * ent = ML_Res.entities.load("sanic"))
 			{
 				ml::Transform * transform = ent->add<ml::Transform>({
-					{ -5.0f, 0.0f, 0.0f }, // position
-					{ 1.0f }, // scale
-					{ } // rotation
+					{ -5.0f, 0.0f, 0.0f },
+					{ 1.0f },
+					{ }
 				});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("sanic"),
 					ML_Res.shaders.get("basic"),
-					ml::RenderFlags
+					ml::RenderStates
 					{
-						{ ml::GL::CullFace, false },
-						{ ml::GL::DepthTest, true },
+						{ ml::GL::CullFace, { ml::GL::Byte, false } },
+						{ ml::GL::DepthTest, { ml::GL::Byte, true } },
 					},
 					ml::UniformSet
 					{
@@ -442,18 +441,18 @@ namespace DEMO
 			if (ml::Entity * ent = ML_Res.entities.load("cube"))
 			{
 				ml::Transform * transform = ent->add<ml::Transform>({
-					{ 0.0f, 0.0f, -5.0f }, // position
-					{ 0.5f }, // scale
-					{ } // rotation
+					{ 0.0f, 0.0f, -5.0f },
+					{ 0.5f },
+					{ }
 				});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("cube"),
 					ML_Res.shaders.get("normal"),
-					ml::RenderFlags
+					ml::RenderStates
 					{
-						{ ml::GL::CullFace, true },
-						{ ml::GL::DepthTest, true },
+						{ ml::GL::CullFace, { ml::GL::Byte, true } },
+						{ ml::GL::DepthTest, { ml::GL::Byte, true } },
 					},
 					ml::UniformSet
 					{
@@ -471,18 +470,18 @@ namespace DEMO
 			if (ml::Entity * ent = ML_Res.entities.load("ground"))
 			{
 				ml::Transform * transform = ent->add<ml::Transform>({
-					{ 0.0f, -2.5f, 0.0f }, // position
-					{ 12.5, 0.25f, 12.5 }, // scale
-					{ } // rotation
+					{ 0.0f, -2.5f, 0.0f },
+					{ 12.5, 0.25f, 12.5 },
+					{ }
 				});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("ground"),
 					ML_Res.shaders.get("normal"),
-					ml::RenderFlags
+					ml::RenderStates
 					{
-						{ ml::GL::CullFace, true },
-						{ ml::GL::DepthTest, true },
+						{ ml::GL::CullFace, { ml::GL::Byte, true } },
+						{ ml::GL::DepthTest, { ml::GL::Byte, true } },
 					},
 					ml::UniformSet
 					{
@@ -500,18 +499,18 @@ namespace DEMO
 			if (ml::Entity * ent = ML_Res.entities.load("moon"))
 			{
 				ml::Transform * transform = ent->add<ml::Transform>({
-					{ 0.0f, 0.0f, 5.0f }, // position
-					{ 0.5f }, // scale
-					{ } // rotation
+					{ 0.0f, 0.0f, 5.0f },
+					{ 0.5f },
+					{ }
 				});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("moon"),
 					ML_Res.shaders.get("lighting"),
-					ml::RenderFlags
+					ml::RenderStates
 					{
-						{ ml::GL::CullFace, true },
-						{ ml::GL::DepthTest, true },
+						{ ml::GL::CullFace, { ml::GL::Byte, true } },
+						{ ml::GL::DepthTest, { ml::GL::Byte, true } },
 					},
 					ml::UniformSet
 					{
@@ -535,18 +534,18 @@ namespace DEMO
 			if (ml::Entity * ent = ML_Res.entities.load("earth"))
 			{
 				ml::Transform * transform = ent->add<ml::Transform>({
-					{ 0.0f }, // position
-					{ 1.0f }, // scale
-					{ } // rotation
+					{ 0.0f },
+					{ 1.0f },
+					{ }
 				});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("earth"),
 					ML_Res.shaders.get("lighting"),
-					ml::RenderFlags
+					ml::RenderStates
 					{
-						{ ml::GL::CullFace, true },
-						{ ml::GL::DepthTest, true },
+						{ ml::GL::CullFace, { ml::GL::Byte, true } },
+						{ ml::GL::DepthTest, { ml::GL::Byte, true } },
 					},
 					ml::UniformSet 
 					{

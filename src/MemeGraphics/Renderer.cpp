@@ -9,11 +9,11 @@ namespace ml
 	Renderer::Renderer(
 		const IDrawable		* drawable,
 		const Shader		* shader,
-		const RenderFlags	& flags,
+		const RenderStates	& states,
 		const UniformSet	& uniforms)
 		: m_drawable(drawable)
 		, m_shader(shader)
-		, m_flags(flags)
+		, m_states(states)
 		, m_uniforms(uniforms)
 	{
 	}
@@ -21,7 +21,7 @@ namespace ml
 	Renderer::Renderer() : Renderer(
 		NULL, 
 		NULL,
-		RenderFlags(), 
+		RenderStates(), 
 		UniformSet())
 	{
 	}
@@ -29,7 +29,7 @@ namespace ml
 	Renderer::Renderer(const Renderer & copy) : Renderer(
 		copy.m_drawable, 
 		copy.m_shader, 
-		copy.m_flags, 
+		copy.m_states, 
 		copy.m_uniforms)
 	{
 	}
@@ -44,7 +44,7 @@ namespace ml
 	{
 		if (m_drawable && m_shader)
 		{
-			m_flags.apply();
+			m_states.apply();
 
 			m_shader->applyUniforms(m_uniforms);
 

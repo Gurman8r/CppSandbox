@@ -1,49 +1,47 @@
 #ifndef _ML_RENDER_STATES_HPP_
 #define _ML_RENDER_STATES_HPP_
 
-#include <MemeGraphics/Export.hpp>
-#include <MemeCore/ITrackable.hpp>
+#include <MemeGraphics/RenderVar.hpp>
 
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	// WIP
 	class ML_GRAPHICS_API RenderStates final
 		: public ITrackable
 	{
-	public:
+	public: // Usings
+		using pair_type			= typename Pair<uint32_t, RenderVar>;
+		using init_type			= typename std::initializer_list<pair_type>;
+		using map_type			= typename HashMap<uint32_t, RenderVar>;
+		using iterator			= typename map_type::iterator;
+		using const_iterator	= typename map_type::const_iterator;
+
+	public: // Conststructors
 		RenderStates();
+		RenderStates(const init_type & init);
+		RenderStates(const map_type & flags);
 		RenderStates(const RenderStates & copy);
 		~RenderStates();
 
-		void backup();
-		void restore();
+	public: // Functions
+		void apply() const;
+		bool apply(const uint32_t key, const RenderVar & value) const;
+		
+	public: // Iterators
+		inline iterator			begin()			{ return m_map.begin();	}
+		inline const_iterator	begin()	const	{ return m_map.begin();	}
+		inline const_iterator	cbegin()const	{ return m_map.cbegin();}
+		inline iterator			end()			{ return m_map.end();	}
+		inline const_iterator	end()	const	{ return m_map.end();	}
+		inline const_iterator	cend()	const	{ return m_map.cend();	}
 
-	private:
-		uint32_t	last_active_texture;
+	public: // Operators
+		inline const RenderVar	& operator[](const uint32_t key) const	{ return m_map.at(key); }
+		inline RenderVar		& operator[](const uint32_t key)		{ return m_map[key];	}
 
-		int32_t		last_program;
-		int32_t		last_texture;
-		int32_t		last_sampler;
-		int32_t		last_array_buffer;
-		int32_t		last_vertex_array;
-
-		int32_t *	last_polygon_mode;
-		int32_t *	last_viewport;
-		int32_t *	last_scissor_box;
-
-		uint32_t	last_blend_src_rgb;
-		uint32_t	last_blend_dst_rgb;
-		uint32_t	last_blend_src_alpha;
-		uint32_t	last_blend_dst_alpha;
-		uint32_t	last_blend_equation_rgb;
-		uint32_t	last_blend_equation_alpha;
-
-		bool		last_enable_blend;
-		bool		last_enable_cull_face;
-		bool		last_enable_depth_test;
-		bool		last_enable_scissor_test;
+	private: // Data
+		map_type m_map;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */
