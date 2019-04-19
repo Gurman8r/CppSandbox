@@ -9,7 +9,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Entity::Entity()
-		: m_cmp()
+		: m_map()
 	{
 	}
 
@@ -22,9 +22,9 @@ namespace ml
 
 	bool Entity::dispose()
 	{
-		for (auto pair : m_cmp)
+		for (auto pair : m_map)
 		{
-			if (ITrackable * trackable = (ITrackable *)(pair.second))
+			if (ITrackable * trackable = reinterpret_cast<ITrackable *>(pair.second))
 			{
 				delete trackable;
 			}
@@ -33,7 +33,7 @@ namespace ml
 				delete pair.second;
 			}
 		}
-		m_cmp.clear();
+		m_map.clear();
 		return true;
 	}
 

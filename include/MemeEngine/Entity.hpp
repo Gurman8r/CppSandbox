@@ -23,7 +23,8 @@ namespace ml
 		friend class ECS;
 
 	public:
-		using map_type		= typename HashMap<size_t, void *>;
+		using value_type	= typename void *;
+		using map_type		= typename HashMap<size_t, value_type>;
 		using iterator		= typename map_type::iterator;
 		using const_iterator= typename map_type::const_iterator;
 
@@ -42,7 +43,9 @@ namespace ml
 			class Component
 		> inline Component * add()
 		{
-			return this->add<Component>({ });
+			return ((this->find<Component>() == this->end())
+				? (this->set(new Component()))
+				: (NULL));
 		}
 
 		template <
@@ -52,6 +55,22 @@ namespace ml
 			return ((this->find<Component>() == this->end())
 				? (this->set(new Component(value)))
 				: (NULL));
+		}
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		template <
+			class Component
+		> inline value_type & at()
+		{
+			return m_map[this->hash<Component>()];
+		}
+
+		template <
+			class Component
+		> inline const value_type & at() const
+		{
+			return m_map.at(this->hash<Component>());
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -82,14 +101,23 @@ namespace ml
 			class Component
 		> inline iterator find()
 		{
-			return (iterator)(m_cmp.find((&typeid(Component))->hash_code()));
+			return (iterator)(m_map.find(this->hash<Component>()));
 		}
 
 		template <
 			class Component
 		> inline const_iterator find() const
 		{
-			return (const_iterator)(m_cmp.find((&typeid(Component))->hash_code()));
+			return (const_iterator)(m_map.find(this->hash<Component>()));
+		}
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		template <
+			class Component
+		> inline size_t hash() const
+		{
+			return (&typeid(Component))->hash_code();
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -98,21 +126,21 @@ namespace ml
 			class Component
 		> inline Component * set(Component * value)
 		{
-			return ((Component *)(m_cmp[(&typeid(Component))->hash_code()] = value));
+			return ((Component *)(this->at<Component>() = value));
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
 		
 	public:
-		inline iterator			begin()			{ return m_cmp.begin(); }
-		inline const_iterator	begin()	const	{ return m_cmp.begin(); }
-		inline const_iterator	cbegin()const	{ return m_cmp.cbegin();}
-		inline iterator			end()			{ return m_cmp.end();	}
-		inline const_iterator	end()	const	{ return m_cmp.end();	}
-		inline const_iterator	cend()	const	{ return m_cmp.cend();	}
+		inline iterator			begin()			{ return m_map.begin(); }
+		inline const_iterator	begin()	const	{ return m_map.begin(); }
+		inline const_iterator	cbegin()const	{ return m_map.cbegin();}
+		inline iterator			end()			{ return m_map.end();	}
+		inline const_iterator	end()	const	{ return m_map.end();	}
+		inline const_iterator	cend()	const	{ return m_map.cend();	}
 
 	private:
-		map_type m_cmp;
+		map_type m_map;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */
