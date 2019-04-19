@@ -137,6 +137,7 @@ namespace DEMO
 			break;
 		}
 	}
+	
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	void Sandbox::onEnter(const ml::EnterEvent * ev)
@@ -194,7 +195,7 @@ namespace DEMO
 			ml::Debug::fatal("Failed Creating Window");
 		}
 
-		// Load ImGui
+		// Setup ImGui
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (ml::Debug::log("Dear ImGui..."))
 		{
@@ -208,18 +209,18 @@ namespace DEMO
 			}
 		}
 
-		// Load Audio
+		// Setup Audio
 		/* * * * * * * * * * * * * * * * * * * * */
-		if (!(ML_AL.init()))
+		if (!ML_AL.init())
 		{
 			ml::Debug::fatal("Failed Loading OpenAL");
 		}
 
-		// Load Network
+		// Setup Network
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (SETTINGS.isServer)
 		{
-			// Server Setup
+			// Start Server
 			ml::Debug::log("Starting Server...");
 			if (ML_NetServer.setup())
 			{
@@ -231,7 +232,7 @@ namespace DEMO
 		}
 		else if (SETTINGS.isClient)
 		{
-			// Client Setup
+			// Start Client
 			ml::Debug::log("Starting Client...");
 			if (ML_NetClient.setup())
 			{
@@ -311,12 +312,17 @@ namespace DEMO
 		// Setup Plugins
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
-			if (ml::Plugin * p = ML_Res.plugins.get("TestPlugin"))
+			if (ml::Plugin * plugin = ML_Res.plugins.get("TestPlugin"))
 			{
-				if (void * msg = p->lib().callFunction<void *>(
-					ML_str(ML_Plugin_Test), "TEST"))
+				if (void * msg = plugin->lib().callFunction<void *>(
+					ML_str(ML_Plugin_Test), "TEST"
+				))
 				{
 					ml::Debug::log((ml::CString)(msg));
+				}
+				else
+				{
+					ml::Debug::logError("Plugin Callback Failed");
 				}
 			}
 		}
@@ -324,10 +330,10 @@ namespace DEMO
 		// Setup Camera
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
-			data.camera.position() = { 0, 1, 10 };
-			data.camera.lookAt(
-				data.camera.position(),
-				data.camera.position() + ml::vec3f::Back,
+			m_camera.position() = { 0, 1, 10 };
+			m_camera.lookAt(
+				m_camera.position(),
+				m_camera.position() + ml::vec3f::Back,
 				ml::vec3f::Up);
 		}
 
@@ -372,7 +378,7 @@ namespace DEMO
 					ml::UniformSet
 					{
 						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&data.persp.matrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&data.camera.matrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&m_camera.matrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&data.lightCol },
 					}
@@ -408,7 +414,7 @@ namespace DEMO
 					ml::UniformSet
 					{
 						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&data.persp.matrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&data.camera.matrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&m_camera.matrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("borg") },
@@ -445,7 +451,7 @@ namespace DEMO
 					ml::UniformSet
 					{
 						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&data.persp.matrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&data.camera.matrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&m_camera.matrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("sanic") },
@@ -482,7 +488,7 @@ namespace DEMO
 					ml::UniformSet
 					{
 						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&data.persp.matrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&data.camera.matrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&m_camera.matrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm") },
@@ -519,7 +525,7 @@ namespace DEMO
 					ml::UniformSet
 					{
 						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&data.persp.matrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&data.camera.matrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&m_camera.matrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm") },
@@ -556,11 +562,11 @@ namespace DEMO
 					ml::UniformSet
 					{
 						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&data.persp.matrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&data.camera.matrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&m_camera.matrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("moon_dm") },
 						{ "Frag.specTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("moon_nm") },
-						{ "Frag.camPos",	ml::Uniform::Vec3,	&data.camera.position() },
+						{ "Frag.camPos",	ml::Uniform::Vec3,	&m_camera.position() },
 						{ "Frag.lightPos",	ml::Uniform::Vec3,	&data.lightPos },
 						{ "Frag.lightCol",	ml::Uniform::Vec4,	&data.lightCol },
 						{ "Frag.ambient",	ml::Uniform::Float, &data.ambient },
@@ -599,11 +605,11 @@ namespace DEMO
 					ml::UniformSet 
 					{
 						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&data.persp.matrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&data.camera.matrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&m_camera.matrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("earth_dm") },
 						{ "Frag.specTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("earth_sm") },
-						{ "Frag.camPos",	ml::Uniform::Vec3,	&data.camera.position() },
+						{ "Frag.camPos",	ml::Uniform::Vec3,	&m_camera.position() },
 						{ "Frag.lightPos",	ml::Uniform::Vec3,	&data.lightPos },
 						{ "Frag.lightCol",	ml::Uniform::Vec4,	&data.lightCol },
 						{ "Frag.ambient",	ml::Uniform::Float, &data.ambient },
@@ -761,7 +767,7 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (const ml::Entity * target = ML_Res.entities.get("earth"))
 		{
-			data.camera.rotateAround(
+			m_camera.rotateAround(
 				target->get<ml::Transform>()->getPosition(),
 				(data.camAnim ? data.camSpd * ev->elapsed.delta() : 0.0f)
 			);
@@ -1090,7 +1096,7 @@ namespace DEMO
 
 				ImGui::Text("Camera");
 				ImGui::Checkbox("Move##Camera", &data.camAnim);
-				ml::GUI::EditVec3f("Position##Camera", data.camera.position());
+				ml::GUI::EditVec3f("Position##Camera", m_camera.position());
 				ImGui::DragFloat("Speed##Camera", &data.camSpd, 0.1f, -5.f, 5.f);
 				ImGui::Separator();
 

@@ -36,6 +36,7 @@ namespace DEMO
 	private:
 		/* * * * * * * * * * * * * * * * * * * * */
 
+		ml::Camera m_camera;
 		ml::Canvas m_canvas;
 		ml::HashMap<ml::String, ml::Text> m_text;
 
@@ -46,10 +47,9 @@ namespace DEMO
 			ml::Transform	ortho;
 
 			// Scene
-			ml::vec4f		clearColor = ml::Color::Gray;
+			ml::vec4f		clearColor	= ml::Color::Gray;
 			
 			// Camera
-			ml::Camera		camera;
 			bool			camAnim		= true;
 			float			camSpd		= 1.f;
 			

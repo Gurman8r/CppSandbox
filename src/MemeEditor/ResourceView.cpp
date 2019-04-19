@@ -265,6 +265,58 @@ namespace ml
 									}
 								});
 
+								Funcs::Group("Matrix", [&]()
+								{
+									Funcs::Field("Value", [&](CString)
+									{
+										mat4f matrix = transform->matrix();
+										if (GUI::EditMat4f("##Matrix##Transform", matrix, 0.1f))
+										{
+											transform->matrix() = matrix;
+										}
+										ImGui::NewLine();
+									});
+								});
+
+								Funcs::Group("Decompose", [&]()
+								{
+									vec3f scale;
+									quat  orient;
+									vec3f trans;
+									vec3f skew;
+									vec4f persp;
+
+									if (transform->decompose(scale, orient, trans, skew, persp))
+									{
+										Funcs::Field("Scale", [&](CString label)
+										{
+											GUI::EditVec3f("##Scale##Transform##Decompose", scale);
+										});
+
+										Funcs::Field("Orientation", [&](CString label)
+										{
+											GUI::EditVec4f("##Orientation##Transform##Decompose", orient);
+										});
+
+										Funcs::Field("Translation", [&](CString label)
+										{
+											GUI::EditVec3f("##Translation##Transform##Decompose", trans);
+										});
+
+										Funcs::Field("Skew", [&](CString label)
+										{
+											GUI::EditVec3f("##Skew##Transform##Decompose", skew);
+										});
+
+										Funcs::Field("Perspective", [&](CString label)
+										{
+											GUI::EditVec4f("##Perspective##Transform##Decompose", persp);
+										});
+
+										ImGui::NewLine();
+									}
+								});
+
 							});
 						}
 
