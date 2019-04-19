@@ -1,7 +1,7 @@
 #ifndef _ML_INTERPRETER_HPP_
 #define _ML_INTERPRETER_HPP_
 
-#include <MemeCore/ISingleton.hpp>
+#include <MemeCore/IEventListener.hpp>
 #include <MemeCore/StringUtility.hpp>
 #include <MemeScript/Lexer.hpp>
 #include <MemeScript/Parser.hpp>
@@ -16,6 +16,7 @@ namespace ml
 
 	class ML_SCRIPT_API Interpreter final
 		: public ITrackable
+		, public IEventListener
 		, public ISingleton<Interpreter>
 	{	
 		friend ISingleton<Interpreter>;
@@ -27,6 +28,9 @@ namespace ml
 	private:
 		Interpreter();
 		~Interpreter();
+
+	public:
+		void onEvent(const IEvent * value) override;
 
 	public:
 		Command * install(const Command & value);

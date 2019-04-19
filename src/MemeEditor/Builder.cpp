@@ -486,7 +486,7 @@ namespace ml
 				{
 					if (ImGui::Button("Compile")) 
 					{
-						IO::capture_cout([&](SStream & ss)
+						IO::capture(cout, [&](SStream & ss)
 						{
 							if (m_shader && m_shader->loadFromMemory(src.str()))
 							{

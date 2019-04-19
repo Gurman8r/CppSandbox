@@ -3,7 +3,6 @@
 
 #include <MemeWindow/Export.hpp>
 #include <MemeCore/ITrackable.hpp>
-#include <MemeCore/BitHelper.hpp>
 
 #define ML_RELEASE	0
 #define ML_PRESS	1

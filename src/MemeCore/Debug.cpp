@@ -19,15 +19,23 @@ namespace ml
 		return std::exit(exitCode);
 	}
 
+	void Debug::fatal()
+	{
+		return fatal(String());
+	}
+
 	void Debug::fatal(const String & message)
 	{
-		logError(message);
+		if (message)
+		{
+			logError(message);
+		}
 
 #ifdef ML_DEBUG
-		terminate();
+		std::terminate();
 #else
-		exit(EXIT_FAILURE);
-#endif // ML_DEBUG
+		std::exit(EXIT_FAILURE);
+#endif
 	}
 
 	int32_t Debug::pause(int32_t exitCode)
@@ -42,7 +50,7 @@ namespace ml
 
 	int32_t	Debug::system(CString cmd)
 	{
-		return system(cmd, ml::cout);
+		return system(cmd, cout);
 	}
 
 	int32_t Debug::system(CString cmd, std::ostream & out)
@@ -61,35 +69,6 @@ namespace ml
 			return EXIT_SUCCESS;
 		}
 		return EXIT_FAILURE;
-	}
-
-	void Debug::terminate()
-	{
-		return std::terminate();
-	}
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	const String & Debug::platformTarget()
-	{
-		static String temp;
-#if defined(ML_x64)
-		if (!temp) temp = "x64";
-#elif defined(ML_x86)
-		if (!temp) temp = "x86";
-#endif
-		return temp;
-	}
-
-	const String & Debug::configuration()
-	{
-		static String temp;
-#if defined(ML_DEBUG)
-		if (!temp) temp = "Debug";
-#else
-		if (!temp) temp = "Release";
-#endif
-		return temp;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

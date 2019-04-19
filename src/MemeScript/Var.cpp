@@ -3,7 +3,6 @@
 #include <MemeCore/StringUtility.hpp>
 #include <MemeScript/Operator.hpp>
 #include <MemeScript/Interpreter.hpp>
-#include <MemeCore/BitHelper.hpp>
 
 namespace ml
 {

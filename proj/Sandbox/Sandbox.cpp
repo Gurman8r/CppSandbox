@@ -664,8 +664,8 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 		this->setTitle(ml::String("{0} | {1} | {2} | {3} ms/frame ({4} fps)").format(
 			SETTINGS.title,
-			ml::Debug::configuration(),
-			ml::Debug::platformTarget(),
+			ML_CONFIGURATION,
+			ML_PLATFORM,
 			ev->elapsed.delta(),
 			ML_Time.calculateFPS(ev->elapsed.delta())
 		));

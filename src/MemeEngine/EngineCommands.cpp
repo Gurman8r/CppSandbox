@@ -1,10 +1,12 @@
 #include <MemeEngine/EngineCommands.hpp>
+#include <MemeEngine/Engine.hpp>
 #include <MemeEngine/Resources.hpp>
 #include <MemeScript/Interpreter.hpp>
 #include <MemeCore/Debug.hpp>
 #include <MemeCore/EventSystem.hpp>
 #include <MemeCore/FileSystem.hpp>
 #include <MemeCore/OS.hpp>
+#include <MemeEngine/Application.hpp>
 
 namespace ml
 {
@@ -175,7 +177,10 @@ namespace ml
 
 	Var EngineCommands::cmd_exit(Args & args)
 	{
-		//ML_EventSystem.fireEvent(RequestExitEvent());
+		if (Application * app = ML_Engine.app())
+		{
+			app->close();
+		}
 		return Var().voidValue();
 	}
 
@@ -325,11 +330,11 @@ namespace ml
 			}
 			else if (opt == "config")
 			{
-				return Var().stringValue(Debug::configuration());
+				return Var().stringValue(ML_CONFIGURATION);
 			}
 			else if (opt == "platform")
 			{
-				return Var().stringValue(Debug::platformTarget());
+				return Var().stringValue(ML_PLATFORM);
 			}
 		}
 		return Var().boolValue(true);

@@ -9,7 +9,7 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	class ML_CORE_API Dispatcher
+	class ML_CORE_API Dispatcher final
 		: public ITrackable
 		, public ISingleton<Dispatcher>
 	{

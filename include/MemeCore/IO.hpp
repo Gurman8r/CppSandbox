@@ -11,9 +11,9 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	static std::ostream & cout = std::cout;
-	static std::ostream & cerr = std::cerr;
-	static std::istream & cin = std::cin;
+	static std::ostream & cout	= std::cout;
+	static std::ostream & cerr	= std::cerr;
+	static std::istream & cin	= std::cin;
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
@@ -24,7 +24,7 @@ namespace ml
 		template <
 			class Fun, 
 			class ... Args
-		> inline static StreamBuf * capture(std::ostream & src, Fun fun, Args ... args)
+		> inline static StreamBuf * capture(std::ostream & src, Fun && fun, Args && ... args)
 		{
 			SStream dst;
 			if (StreamBuf * buf = src.rdbuf(dst.rdbuf()))
@@ -34,14 +34,6 @@ namespace ml
 				return src.rdbuf(buf);
 			}
 			return NULL;
-		}
-
-		template <
-			class Fun,
-			class ... Args
-		> inline static StreamBuf * capture_cout(Fun fun, Args ... args)
-		{
-			return capture(cout, fun, (args)...);
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * */

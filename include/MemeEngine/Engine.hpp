@@ -53,9 +53,10 @@ namespace ml
 		}
 
 	public:
-		inline const Application *	app()		{ return m_app; }
-		inline const Timer &		timer()		{ return m_timer; }
-		inline const Duration &		elapsed()	{ return m_elapsed; }
+		inline const Application *	app()		const	{ return m_app;		}
+		inline		 Application *	app()				{ return m_app;		}
+		inline const Timer &		timer()		const	{ return m_timer;	}
+		inline const Duration &		elapsed()	const	{ return m_elapsed; }
 
 	private:
 		Application *	m_app;

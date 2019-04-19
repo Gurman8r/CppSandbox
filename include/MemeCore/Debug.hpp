@@ -15,15 +15,11 @@ namespace ml
 	public:
 		static int32_t	clear();
 		static void		exit(int32_t exitCode);
+		static void		fatal();
 		static void		fatal(const String & message);
 		static int32_t	pause(int32_t exitCode);
 		static int32_t	system(CString cmd);
 		static int32_t	system(CString cmd, std::ostream & out);
-		static void		terminate();
-
-	public:
-		static const String & platformTarget();
-		static const String & configuration();
 
 	public:
 		static int32_t logWarning(const String & message); // - 1 true

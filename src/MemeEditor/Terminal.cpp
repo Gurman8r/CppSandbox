@@ -4,6 +4,7 @@
 #include <MemeCore/FileSystem.hpp>
 #include <MemeCore/EventSystem.hpp>
 #include <MemeCore/Debug.hpp>
+#include <MemeScript/ScriptEvents.hpp>
 
 namespace ml
 {
@@ -183,16 +184,13 @@ namespace ml
 		m_history.push_back(Strdup(value));
 
 		// Run Command
-		IO::capture_cout([&](SStream & ss) 
+		IO::capture(cout, [&](SStream & ss) 
 		{
-			if (ML_Interpreter.execCommand(value).isErrorType())
-			{
-				Debug::logError("{0}", value);
-			}
+			ML_EventSystem.fireEvent(CommandEvent(value));
+
 			this->print(ss);
 		});
 	}
-
 	int32_t Terminal::textEditCallback(void * value)
 	{
 		ImGuiInputTextCallbackData * data;

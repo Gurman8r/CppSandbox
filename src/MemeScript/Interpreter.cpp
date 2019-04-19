@@ -1,6 +1,9 @@
 #include <MemeScript/Interpreter.hpp>	
 #include <MemeScript/ScriptMacros.hpp>
+#include <MemeScript/ScriptEvents.hpp>
 #include <MemeCore/FileSystem.hpp>
+#include <MemeCore/EventSystem.hpp>
+#include <MemeCore/Debug.hpp>
 
 namespace ml
 {
@@ -8,10 +11,32 @@ namespace ml
 
 	Interpreter::Interpreter()
 	{
+		ML_EventSystem.addListener(ScriptEvent::EV_Command, this);
 	}
 
 	Interpreter::~Interpreter()
 	{
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	void Interpreter::onEvent(const IEvent * value)
+	{
+		switch (*value)
+		{
+		case ScriptEvent::EV_Command:
+			if (const auto * ev = value->as<CommandEvent>())
+			{
+				if (const String & cmd = ev->cmd)
+				{
+					if (execCommand(cmd).isErrorType())
+					{
+						Debug::logError(ev->cmd);
+					}
+				}
+			}
+			break;
+		}
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

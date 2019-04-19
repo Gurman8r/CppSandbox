@@ -29,8 +29,10 @@ namespace ml
 
 	struct ML_SCRIPT_API CommandEvent : public ScriptEvent
 	{
-		CommandEvent()
+		const String & cmd;
+		CommandEvent(const String & cmd)
 			: ScriptEvent(EV_Command)
+			, cmd(cmd)
 		{
 		}
 	};

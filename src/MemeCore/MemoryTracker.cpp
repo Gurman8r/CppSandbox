@@ -50,7 +50,7 @@ namespace ml
 			
 			cerr << (*this);
 			
-			Debug::terminate();
+			Debug::fatal();
 		}
 	}
 
