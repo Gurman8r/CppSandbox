@@ -55,7 +55,7 @@ namespace ml
 				dockWindow(ML_Profiler.title(),		left_U);
 				dockWindow(ML_NetworkHUD.title(),	left_U);
 				dockWindow(ML_Browser.title(),		left_U);
-				dockWindow(ML_ProjectView.title(),	left_U);
+				dockWindow(ML_ResourceView.title(),	left_U);
 				dockWindow(ML_Terminal.title(),		left_D);
 				dockWindow(ML_SceneView.title(),	center_U);
 				dockWindow(ML_Builder.title(),		center_D);

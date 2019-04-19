@@ -2,7 +2,7 @@
 #define _ML_RIGIDBODY_HPP_
 
 #include <MemePhysics/Export.hpp>
-#include <MemeCore/ITrackable.hpp>
+#include <MemeCore/Transform.hpp>
 
 namespace ml
 {
@@ -13,10 +13,16 @@ namespace ml
 	{
 	public:
 		Rigidbody();
+		Rigidbody(Transform * transform);
+		Rigidbody(const Rigidbody & copy);
 		~Rigidbody();
 
-	private:
+	public:
+		inline const Transform	* transform() const { return m_transform; }
+		inline Transform		* transform()		{ return m_transform; }
 
+	private:
+		Transform * m_transform;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

@@ -129,11 +129,11 @@
     <ClInclude Include="..\..\include\MemeEditor\Document.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeEditor\ProjectView.hpp">
-      <Filter>Header Files\Windows</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeEditor\ImGui_Helper.hpp">
       <Filter>Header Files\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeEditor\ResourceView.hpp">
+      <Filter>Header Files\Windows</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -209,7 +209,7 @@
     <ClCompile Include="..\..\src\MemeEditor\Document.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemeEditor\ProjectView.cpp">
+    <ClCompile Include="..\..\src\MemeEditor\ResourceView.cpp">
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
   </ItemGroup>

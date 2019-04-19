@@ -27,6 +27,7 @@
 #include <MemeNet/NetClient.hpp>
 #include <MemeNet/NetServer.hpp>
 #include <MemePhysics/Physics.hpp>
+#include <MemePhysics/Rigidbody.hpp>
 #include <MemeScript/Interpreter.hpp>
 #include <MemeWindow/WindowEvents.hpp>
 
@@ -314,8 +315,7 @@ namespace DEMO
 			if (ml::Plugin * p = ML_Res.plugins.get("TestPlugin"))
 			{
 				if (void * msg = p->lib().callFunction<void *>(
-					ML_STRINGIFY(ML_Plugin_Test), 
-					"TEST"))
+					ML_STRINGIFY(ML_Plugin_Test), "TEST"))
 				{
 					ml::Debug::log((ml::CString)(msg));
 				}
@@ -378,6 +378,10 @@ namespace DEMO
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&data.lightCol },
 					}
 				});
+
+				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
+					transform
+				});
 			}
 
 			// Borg
@@ -410,6 +414,10 @@ namespace DEMO
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("borg") },
 					}
+				});
+
+				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
+					transform
 				});
 			}
 
@@ -444,6 +452,10 @@ namespace DEMO
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("sanic") },
 					}
 				});
+
+				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
+					transform
+				});
 			}
 
 			// Cube
@@ -477,6 +489,10 @@ namespace DEMO
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm") },
 					}
 				});
+
+				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
+					transform
+				});
 			}
 
 			// Ground
@@ -509,6 +525,10 @@ namespace DEMO
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm") },
 					}
+				});
+
+				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
+					transform
 				});
 			}
 
@@ -549,6 +569,10 @@ namespace DEMO
 						{ "Frag.shininess",	ml::Uniform::Int,	&data.shininess },
 					}
 				});
+
+				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
+					transform
+				});
 			}
 
 			// Earth
@@ -588,6 +612,10 @@ namespace DEMO
 						{ "Frag.shininess",	ml::Uniform::Int,	&data.shininess },
 					}
 				});
+
+				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
+					transform
+				});
 			}
 		}
 
@@ -614,15 +642,15 @@ namespace DEMO
 						ml::mat4f	inv; // Inverse Transform
 						if (state.getData(i, pos, rot, mat, inv))
 						{
+							// just updating one object for testing purposes
 							if (i == 0)
 							{
-								pos[1] = +ML_Time.cos(); // just updating one object for testing purposes
+								pos[1] = ML_Time.cos();
 							}
 
 							state.setData(i, pos, rot, mat, inv);
 						}
 					}
-
 					ML_Physics.endUpdate(state);
 				}
 			}
@@ -672,7 +700,8 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::Entity * ent = ML_Res.entities.get("borg"))
 			{
-				// FIXME: this is a hack, needs to update PhysicsState a bit
+				// FIXME: this is a hack
+
 				static bool once;
 				if (!once && (once = true))
 				{
@@ -839,7 +868,7 @@ namespace DEMO
 
 	void Sandbox::onDraw(const ml::DrawEvent * ev)
 	{
-		// Update Resolution
+		// Update Projections
 		/* * * * * * * * * * * * * * * * * * * * */
 		ml::vec2i resolution;
 		if ((resolution = this->getFramebufferSize()) != ml::vec2i::Zero)
@@ -1001,7 +1030,7 @@ namespace DEMO
 		if (ML_Editor.show_network)			{ ML_NetworkHUD.drawGui(&ML_Editor.show_network); }
 		if (ML_Editor.show_profiler)		{ ML_Profiler.drawGui(&ML_Editor.show_profiler); }
 		if (ML_Editor.show_browser)			{ ML_Browser.drawGui(&ML_Editor.show_browser); }
-		if (ML_Editor.show_projectView)		{ ML_ProjectView.drawGui(&ML_Editor.show_projectView); }
+		if (ML_Editor.show_projectView)		{ ML_ResourceView.drawGui(&ML_Editor.show_projectView); }
 		if (ML_Editor.show_terminal)		{ ML_Terminal.drawGui(&ML_Editor.show_terminal); }
 		if (ML_Editor.show_textEditor)		{ ML_TextEditor.drawGui(&ML_Editor.show_textEditor); }
 		if (ML_Editor.show_builder)			{ ML_Builder.drawGui(&ML_Editor.show_builder); }

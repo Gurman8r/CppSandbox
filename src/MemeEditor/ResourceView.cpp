@@ -1,4 +1,4 @@
-#include <MemeEditor/ProjectView.hpp>
+#include <MemeEditor/ResourceView.hpp>
 #include <MemeEditor/ImGui.hpp>
 #include <MemeEditor/ImGui_Helper.hpp>
 #include <MemeEditor/Terminal.hpp>
@@ -9,10 +9,11 @@
 #include <MemeCore/CoreEvents.hpp>
 #include <MemeCore/EventSystem.hpp>
 #include <MemeGraphics/Renderer.hpp>
+#include <MemePhysics/Rigidbody.hpp>
 
 namespace ml
 {
-	struct ProjectView::Funcs
+	struct ResourceView::Funcs
 	{
 		/* * * * * * * * * * * * * * * * * * * * */
 
@@ -43,7 +44,7 @@ namespace ml
 			ImGui::AlignTextToFramePadding();
 			bool node_open;
 			{
-				node_open = ImGui::TreeNode("ProjectView_Group", "%s", label);
+				node_open = ImGui::TreeNode("ResourceView_Group", "%s", label);
 			}
 			ImGui::NextColumn();
 			ImGui::AlignTextToFramePadding();
@@ -69,7 +70,7 @@ namespace ml
 		{
 			ImGui::AlignTextToFramePadding();
 			ImGui::TreeNodeEx(
-				"ProjectView_Field",
+				"ResourceView_Field",
 				ImGuiTreeNodeFlags_Leaf |
 				ImGuiTreeNodeFlags_NoTreePushOnOpen |
 				ImGuiTreeNodeFlags_Bullet,
@@ -92,22 +93,22 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	ProjectView::ProjectView()
-		: GUI_Window("Project View")
+	ResourceView::ResourceView()
+		: GUI_Window("Resources")
 	{
 	}
 
-	ProjectView::~ProjectView()
+	ResourceView::~ResourceView()
 	{
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void ProjectView::onEvent(const IEvent * value)
+	void ResourceView::onEvent(const IEvent * value)
 	{
 	}
 
-	bool ProjectView::drawGui(bool * p_open)
+	bool ResourceView::drawGui(bool * p_open)
 	{
 		if (beginDraw(p_open, ImGuiWindowFlags_MenuBar))
 		{
@@ -165,7 +166,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void ProjectView::draw_effects()
+	void ResourceView::draw_effects()
 	{
 		Funcs::Group(ML_Res.effects.getName().c_str(), [&]()
 		{
@@ -207,7 +208,7 @@ namespace ml
 		});
 	}
 
-	void ProjectView::draw_entities()
+	void ResourceView::draw_entities()
 	{
 		Funcs::Group(ML_Res.entities.getName().c_str(), [&]()
 		{
@@ -220,19 +221,19 @@ namespace ml
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, Entity * ent)
 				{
+					// Name
 					/* * * * * * * * * * * * * * * * * * * * */
-
 					Funcs::Field("Name", [&](CString)
 					{
 						ImGui::Text("%s", name);
 					});
 
+					// Components
 					/* * * * * * * * * * * * * * * * * * * * */
-
 					Funcs::Group("Components", [&]() 
 					{
+						// Transform
 						/* * * * * * * * * * * * * * * * * * * * */
-
 						if (Transform * transform = ent->get<Transform>())
 						{
 							Funcs::Group("Transform", [&]()
@@ -267,8 +268,8 @@ namespace ml
 							});
 						}
 
+						// Renderer
 						/* * * * * * * * * * * * * * * * * * * * */
-
 						if (Renderer * renderer = ent->get<Renderer>())
 						{
 							Funcs::Group("Renderer", [&]()
@@ -389,57 +390,43 @@ namespace ml
 											case Uniform::Int:
 											{
 												int32_t temp = uni->get_value<int32_t>();
-												if (ImGui::DragInt("##Int##Value", &temp, 0.1f))
-												{
-												}
+												if (ImGui::DragInt("##Int##Value", &temp, 0.1f)) {}
 											}
 											break;
 											case Uniform::Float:
 											{
 												float temp = uni->get_value<float>();
-												if (ImGui::DragFloat("##Float##Value", &temp, 0.1f))
-												{
-												}
+												if (ImGui::DragFloat("##Float##Value", &temp, 0.1f)) {}
 											}
 											break;
 											case Uniform::Vec2:
 											{
 												vec2f temp = uni->get_value<vec2f>();
-												if (GUI::EditVec2f("##Vec2##Value", temp, 0.1f))
-												{
-												}
+												if (GUI::EditVec2f("##Vec2##Value", temp, 0.1f)) {}
 											}
 											break;
 											case Uniform::Vec3:
 											{
 												vec3f temp = uni->get_value<vec3f>();
-												if (GUI::EditVec3f("##Vec3##Value", temp, 0.1f))
-												{
-												}
+												if (GUI::EditVec3f("##Vec3##Value", temp, 0.1f)) {}
 											}
 											break;
 											case Uniform::Vec4:
 											{
 												vec4f temp = uni->get_value<vec4f>();
-												if (GUI::EditVec4f("##Vec4##Value", temp, 0.1f))
-												{
-												}
+												if (GUI::EditVec4f("##Vec4##Value", temp, 0.1f)) {}
 											}
 											break;
 											case Uniform::Mat3:
 											{
 												mat3f temp = uni->get_value<mat3f>();
-												if (GUI::EditMat3f("##Mat3##Value", temp, 0.1f))
-												{
-												}
+												if (GUI::EditMat3f("##Mat3##Value", temp, 0.1f)) {}
 											}
 											break;
 											case Uniform::Mat4:
 											{
 												mat4f temp = uni->get_value<mat4f>();
-												if (GUI::EditMat4f("##Mat4##Value", temp, 0.1f))
-												{
-												}
+												if (GUI::EditMat4f("##Mat4##Value", temp, 0.1f)) {}
 											}
 											break;
 											}
@@ -451,11 +438,19 @@ namespace ml
 							});
 						}
 
+						// Rigidbody
 						/* * * * * * * * * * * * * * * * * * * * */
+						if (Rigidbody * rigidbody = ent->get<Rigidbody>())
+						{
+							Funcs::Group("Rigidbody", [&]()
+							{
+								ImGui::Text("OK");
+							});
+						}
 					});
 
+					// File
 					/* * * * * * * * * * * * * * * * * * * * */
-
 					if (const String file = ML_Res.entities.getFile(name))
 					{
 						Funcs::Field("File", [&](CString label)
@@ -483,7 +478,7 @@ namespace ml
 		});
 	}
 
-	void ProjectView::draw_fonts()
+	void ResourceView::draw_fonts()
 	{
 		Funcs::Group(ML_Res.fonts.getName().c_str(), [&]()
 		{
@@ -529,7 +524,7 @@ namespace ml
 		});
 	}
 
-	void ProjectView::draw_images()
+	void ResourceView::draw_images()
 	{
 		Funcs::Group(ML_Res.images.getName().c_str(), [&]()
 		{
@@ -575,7 +570,7 @@ namespace ml
 		});
 	}
 
-	void ProjectView::draw_lua()
+	void ResourceView::draw_lua()
 	{
 		Funcs::Group(ML_Res.lua.getName().c_str(), [&]()
 		{
@@ -617,7 +612,7 @@ namespace ml
 		});
 	}
 
-	void ProjectView::draw_mats()
+	void ResourceView::draw_mats()
 	{
 		Funcs::Group(ML_Res.mats.getName().c_str(), [&]()
 		{
@@ -659,7 +654,7 @@ namespace ml
 		});
 	}
 
-	void ProjectView::draw_meshes()
+	void ResourceView::draw_meshes()
 	{
 		Funcs::Group(ML_Res.meshes.getName().c_str(), [&]()
 		{
@@ -701,7 +696,7 @@ namespace ml
 		});
 	}
 
-	void ProjectView::draw_models()
+	void ResourceView::draw_models()
 	{
 		Funcs::Group(ML_Res.models.getName().c_str(), [&]()
 		{
@@ -743,7 +738,7 @@ namespace ml
 		});
 	}
 
-	void ProjectView::draw_plugins()
+	void ResourceView::draw_plugins()
 	{
 		Funcs::Group(ML_Res.plugins.getName().c_str(), [&]()
 		{
@@ -785,7 +780,7 @@ namespace ml
 		});
 	}
 
-	void ProjectView::draw_scripts()
+	void ResourceView::draw_scripts()
 	{
 		Funcs::Group(ML_Res.scripts.getName().c_str(), [&]()
 		{
@@ -827,7 +822,7 @@ namespace ml
 		});
 	}
 
-	void ProjectView::draw_shaders()
+	void ResourceView::draw_shaders()
 	{
 		Funcs::Group(ML_Res.shaders.getName().c_str(), [&]()
 		{
@@ -869,7 +864,7 @@ namespace ml
 		});
 	}
 
-	void ProjectView::draw_skyboxes()
+	void ResourceView::draw_skyboxes()
 	{
 		Funcs::Group(ML_Res.skyboxes.getName().c_str(), [&]()
 		{
@@ -911,7 +906,7 @@ namespace ml
 		});
 	}
 
-	void ProjectView::draw_sounds()
+	void ResourceView::draw_sounds()
 	{
 		Funcs::Group(ML_Res.sounds.getName().c_str(), [&]()
 		{
@@ -953,7 +948,7 @@ namespace ml
 		});
 	}
 
-	void ProjectView::draw_sprites()
+	void ResourceView::draw_sprites()
 	{
 		Funcs::Group(ML_Res.sprites.getName().c_str(), [&]()
 		{
@@ -995,7 +990,7 @@ namespace ml
 		});
 	}
 
-	void ProjectView::draw_textures()
+	void ResourceView::draw_textures()
 	{
 		Funcs::Group(ML_Res.textures.getName().c_str(), [&]()
 		{

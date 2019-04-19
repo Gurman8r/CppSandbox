@@ -1,23 +1,23 @@
-#ifndef _ML_PROJECT_VIEW_HPP_
-#define _ML_PROJECT_VIEW_HPP_
+#ifndef _ML_RESOURCE_VIEW_HPP_
+#define _ML_RESOURCE_VIEW_HPP_
 
 #include <MemeEditor/GUI_Window.hpp>
 
-#define ML_ProjectView ml::ProjectView::getInstance()
+#define ML_ResourceView ml::ResourceView::getInstance()
 
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	class ML_EDITOR_API ProjectView final
+	class ML_EDITOR_API ResourceView final
 		: public GUI_Window
-		, public ISingleton<ProjectView>
+		, public ISingleton<ResourceView>
 	{
-		friend class ISingleton<ProjectView>;
+		friend class ISingleton<ResourceView>;
 
 	private:
-		ProjectView();
-		~ProjectView();
+		ResourceView();
+		~ResourceView();
 
 	public:
 		void onEvent(const IEvent * value) override;
@@ -46,4 +46,4 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 }
 
-#endif // !_ML_PROJECT_VIEW_HPP_
+#endif // !_ML_RESOURCE_VIEW_HPP_

@@ -11,7 +11,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	// Effect is Framebuffer + Renderbuffer
-	class ML_GRAPHICS_API Effect
+	class ML_GRAPHICS_API Effect final
 		: public ITrackable
 		, public IDisposable
 		, public IDrawable

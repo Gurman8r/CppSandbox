@@ -13,7 +13,7 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	class ML_GRAPHICS_API Text
+	class ML_GRAPHICS_API Text final
 		: public ITrackable
 		, public IDrawable
 	{

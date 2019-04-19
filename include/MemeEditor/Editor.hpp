@@ -10,7 +10,7 @@
 #include <MemeEditor/TextEditor.hpp>
 #include <MemeEditor/SceneView.hpp>
 #include <MemeEditor/Inspector.hpp>
-#include <MemeEditor/ProjectView.hpp>
+#include <MemeEditor/ResourceView.hpp>
 #include <MemeEditor/NetworkHUD.hpp>
 #include <MemeEditor/Profiler.hpp>
 
