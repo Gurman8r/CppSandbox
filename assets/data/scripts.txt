@@ -2,45 +2,45 @@
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
 <item>
-	type: script
-	name: hello
-	file: ../../../assets/scripts/hello.meme
+	type = script
+	name = hello
+	file = ../../../assets/scripts/hello.meme
 </item>
 
 <item>
-	type: script
-	name: fib
-	file: ../../../assets/scripts/fib.meme
+	type = script
+	name = fib
+	file = ../../../assets/scripts/fib.meme
 </item>
 
 <item>
-	type: script
-	name: files
-	file: ../../../assets/scripts/files.meme
+	type = script
+	name = files
+	file = ../../../assets/scripts/files.meme
 </item>
 
 <item>
-	type: script
-	name: test
-	file: ../../../assets/scripts/test.meme
+	type = script
+	name = test
+	file = ../../../assets/scripts/test.meme
 </item>
 
 <item>
-	type: script
-	name: stub
-	file: ../../../assets/scripts/stub.meme
+	type = script
+	name = stub
+	file = ../../../assets/scripts/stub.meme
 </item>
 
 <item>
-	type: script
-	name: tool
-	file: ../../../assets/scripts/tool.meme
+	type = script
+	name = tool
+	file = ../../../assets/scripts/tool.meme
 </item>
 
 <item>
-	type: script
-	name: fizzbuzz
-	file: ../../../assets/scripts/fizzbuzz.meme
+	type = script
+	name = fizzbuzz
+	file = ../../../assets/scripts/fizzbuzz.meme
 </item>
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #

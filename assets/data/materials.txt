@@ -2,9 +2,9 @@
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
 <item>
-	type:	material
-	name:	test
-	file:	../../../assets/materials/test.mat
+	type =	material
+	name =	test
+	file =	../../../assets/materials/test.mat
 </item>
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #

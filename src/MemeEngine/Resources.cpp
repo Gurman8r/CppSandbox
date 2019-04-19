@@ -112,7 +112,7 @@ namespace ml
 					else
 					{
 						size_t i;
-						if ((i = line.find_first_of(":")) != String::npos)
+						if ((i = line.find_first_of("=")) != String::npos)
 						{
 							if (const String key = String(line.substr(0, i)).trim())
 							{

@@ -2,9 +2,9 @@
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
 <item>
-	type: plugin
-	name: TestPlugin
-	file: ./TestPlugin_$(Configuration)_$(PlatformTarget).dll
+	type = plugin
+	name = TestPlugin
+	file = ./TestPlugin_$(Configuration)_$(PlatformTarget).dll
 </item>
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #

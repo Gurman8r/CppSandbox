@@ -2,9 +2,9 @@
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
 <item>
-	type:	lua
-	name:	test
-	file:	../../../assets/lua/test.lua
+	type =	lua
+	name =	test
+	file =	../../../assets/lua/test.lua
 </item>
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #

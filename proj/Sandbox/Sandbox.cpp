@@ -811,7 +811,7 @@ namespace DEMO
 					ev->elapsed.delta(),
 					ML_Time.calculateFPS(ev->elapsed.delta())));
 
-			m_text["time"]
+			m_text["time_total"]
 				.setFont(font)
 				.setFontSize(fontSize)
 				.setPosition(nextLine())
@@ -820,14 +820,14 @@ namespace DEMO
 
 			nextLine();
 
-			m_text["sin"]
+			m_text["time_sin"]
 				.setFont(font)
 				.setFontSize(fontSize)
 				.setPosition(nextLine())
 				.setString(ml::String("sin: {0}").format(
 					ML_Time.sin()));
 
-			m_text["cos"]
+			m_text["time_cos"]
 				.setFont(font)
 				.setFontSize(fontSize)
 				.setPosition(nextLine())

@@ -2,45 +2,45 @@
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
 <item>
-	type: model
-	name: borg
-	mesh: default_cube
+	type = model
+	name = borg
+	mesh = default_cube
 </item>
 
 <item>
-	type: model
-	name: sanic
-	mesh: default_quad
+	type = model
+	name = sanic
+	mesh = default_quad
 </item>
 
 <item>
-	type: model
-	name: cube
-	mesh: cube
+	type = model
+	name = cube
+	mesh = cube
 </item>
 
 <item>
-	type: model
-	name: ground
-	mesh: cube
+	type = model
+	name = ground
+	mesh = cube
 </item>
 
 <item>
-	type: model
-	name: light
-	mesh: sphere8x6
+	type = model
+	name = light
+	mesh = sphere8x6
 </item>
 
 <item>
-	type: model
-	name: earth
-	mesh: sphere32x24
+	type = model
+	name = earth
+	mesh = sphere32x24
 </item>
 
 <item>
-	type: model
-	name: moon
-	mesh: sphere32x24
+	type = model
+	name = moon
+	mesh = sphere32x24
 </item>
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #

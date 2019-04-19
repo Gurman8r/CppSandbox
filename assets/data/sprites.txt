@@ -2,9 +2,9 @@
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
 <item>
-	type: sprite
-	name: neutrino
-	texture: neutrino
+	type = sprite
+	name = neutrino
+	texture = neutrino
 </item>
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
