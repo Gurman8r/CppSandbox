@@ -2,7 +2,7 @@
 #define _ML_FORCE_HPP_
 
 #include <MemePhysics/Export.hpp>
-#include <MemeCore/Vector3.hpp>
+#include <MemeCore/Transform.hpp>
 
 namespace ml
 {
