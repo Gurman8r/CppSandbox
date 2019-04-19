@@ -10,25 +10,25 @@ namespace ml
 	class ML_GRAPHICS_API RenderStates final
 		: public ITrackable
 	{
-	public: // Usings
+	public:
 		using pair_type			= typename Pair<uint32_t, RenderVar>;
 		using init_type			= typename std::initializer_list<pair_type>;
 		using map_type			= typename HashMap<uint32_t, RenderVar>;
 		using iterator			= typename map_type::iterator;
 		using const_iterator	= typename map_type::const_iterator;
 
-	public: // Conststructors
+	public:
 		RenderStates();
 		RenderStates(const init_type & init);
 		RenderStates(const map_type & flags);
 		RenderStates(const RenderStates & copy);
 		~RenderStates();
 
-	public: // Functions
+	public:
 		void apply() const;
 		bool apply(const uint32_t key, const RenderVar & value) const;
 		
-	public: // Iterators
+	public:
 		inline iterator			begin()			{ return m_map.begin();	}
 		inline const_iterator	begin()	const	{ return m_map.begin();	}
 		inline const_iterator	cbegin()const	{ return m_map.cbegin();}
@@ -36,11 +36,11 @@ namespace ml
 		inline const_iterator	end()	const	{ return m_map.end();	}
 		inline const_iterator	cend()	const	{ return m_map.cend();	}
 
-	public: // Operators
+	public:
 		inline const RenderVar	& operator[](const uint32_t key) const	{ return m_map.at(key); }
 		inline RenderVar		& operator[](const uint32_t key)		{ return m_map[key];	}
 
-	private: // Data
+	private:
 		map_type m_map;
 	};
 

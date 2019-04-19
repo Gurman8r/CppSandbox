@@ -1,13 +1,37 @@
 #include <MemeCore/Transform.hpp>
 #include <MemeCore/GLM.hpp>
 
-#define ML_MAT4(value) glm::mat4( \
-value[0x0], value[0x1], value[0x2], value[0x3], \
-value[0x4], value[0x5], value[0x6], value[0x7], \
-value[0x8], value[0x9], value[0xA], value[0xB], \
-value[0xC], value[0xD], value[0xE], value[0xF])
+/* * * * * * * * * * * * * * * * * * * * */
 
+#define MPX 0xC // position X
+#define MPY 0xD // position Y
+#define MPZ 0xE // position Z
+
+#define MSX 0x0 // scale X
+#define MSY 0x5 // scale Y
+#define MSZ 0xA // scale Z
+
+/* * * * * * * * * * * * * * * * * * * * */
+
+#define ML_VEC2(value) glm::vec2(value[0], value[1])
 #define ML_VEC3(value) glm::vec3(value[0], value[1], value[2])
+#define ML_VEC4(value) glm::vec4(value[0], value[1], value[2], value[3])
+#define ML_QUAT(value) glm::quat(value[0], value[1], value[2], value[3])
+
+/* * * * * * * * * * * * * * * * * * * * */
+
+#define ML_MAT3(value) glm::mat3( \
+	value[0], value[1], value[2], \
+	value[3], value[4], value[5], \
+	value[6], value[7], value[8])
+
+#define ML_MAT4(value) glm::mat4( \
+	value[MSX], value[0x1], value[0x2], value[0x3], \
+	value[0x4], value[MSY], value[0x6], value[0x7], \
+	value[0x8], value[0x9], value[MSZ], value[0xB], \
+	value[MPX], value[MPY], value[MPZ], value[0xF])
+
+/* * * * * * * * * * * * * * * * * * * * */
 
 namespace ml
 {
@@ -79,8 +103,8 @@ namespace ml
 			rect.right(), 
 			rect.top(), 
 			rect.bot(), 
-			clip[0], 
-			clip[1]))
+			clip.front(), 
+			clip.back()))
 		);
 	}
 
@@ -181,20 +205,21 @@ namespace ml
 		return quat();
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	Transform & Transform::setPosition(const vec3f & value)
 	{
-		matrix()[0xC] = value[0];
-		matrix()[0xD] = value[1];
-		matrix()[0xE] = value[2];
+		matrix()[MPX] = value[0];
+		matrix()[MPY] = value[1];
+		matrix()[MPZ] = value[2];
 		return (*this);
 	}
 
 	Transform & Transform::setScale(const vec3f & value)
 	{
-		matrix()[0x0] = value[0];
-		matrix()[0x5] = value[1];
-		matrix()[0xA] = value[2];
+		matrix()[MSX] = value[0];
+		matrix()[MSY] = value[1];
+		matrix()[MSZ] = value[2];
 		return (*this);
 	}
 
