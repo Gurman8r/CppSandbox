@@ -43,7 +43,7 @@ namespace ml
 			ImGui::AlignTextToFramePadding();
 			bool node_open;
 			{
-				node_open = ImGui::TreeNode("ResourceHUD_Group", "%s", label);
+				node_open = ImGui::TreeNode("ProjectView_Group", "%s", label);
 			}
 			ImGui::NextColumn();
 			ImGui::AlignTextToFramePadding();
@@ -69,7 +69,7 @@ namespace ml
 		{
 			ImGui::AlignTextToFramePadding();
 			ImGui::TreeNodeEx(
-				"ResourceHUD_Field",
+				"ProjectView_Field",
 				ImGuiTreeNodeFlags_Leaf |
 				ImGuiTreeNodeFlags_NoTreePushOnOpen |
 				ImGuiTreeNodeFlags_Bullet,
@@ -158,6 +158,11 @@ namespace ml
 	{
 		Funcs::Group(ML_Res.effects.getName().c_str(), [&]()
 		{
+			if (ML_Res.effects.empty())
+			{
+				return ImGui::Text("None");
+			}
+
 			for (auto & pair : ML_Res.effects)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Effect * e)
@@ -195,6 +200,11 @@ namespace ml
 	{
 		Funcs::Group(ML_Res.entities.getName().c_str(), [&]()
 		{
+			if (ML_Res.entities.empty())
+			{
+				return ImGui::Text("None");
+			}
+
 			for (auto & pair : ML_Res.entities)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, Entity * ent)
@@ -430,6 +440,11 @@ namespace ml
 	{
 		Funcs::Group(ML_Res.fonts.getName().c_str(), [&]()
 		{
+			if (ML_Res.fonts.empty())
+			{
+				return ImGui::Text("None");
+			}
+
 			for (auto & pair : ML_Res.fonts)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Font * e)
@@ -471,6 +486,11 @@ namespace ml
 	{
 		Funcs::Group(ML_Res.images.getName().c_str(), [&]()
 		{
+			if (ML_Res.images.empty())
+			{
+				return ImGui::Text("None");
+			}
+
 			for (auto & pair : ML_Res.images)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Image * e)
@@ -512,6 +532,11 @@ namespace ml
 	{
 		Funcs::Group(ML_Res.lua.getName().c_str(), [&]()
 		{
+			if (ML_Res.lua.empty())
+			{
+				return ImGui::Text("None");
+			}
+
 			for (auto & pair : ML_Res.lua)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const LuaScript * e)
@@ -549,6 +574,11 @@ namespace ml
 	{
 		Funcs::Group(ML_Res.mats.getName().c_str(), [&]()
 		{
+			if (ML_Res.mats.empty())
+			{
+				return ImGui::Text("None");
+			}
+
 			for (auto & pair : ML_Res.mats)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Material * e)
@@ -586,6 +616,11 @@ namespace ml
 	{
 		Funcs::Group(ML_Res.meshes.getName().c_str(), [&]()
 		{
+			if (ML_Res.meshes.empty())
+			{
+				return ImGui::Text("None");
+			}
+
 			for (auto & pair : ML_Res.meshes)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Mesh * e)
@@ -623,6 +658,11 @@ namespace ml
 	{
 		Funcs::Group(ML_Res.models.getName().c_str(), [&]()
 		{
+			if (ML_Res.models.empty())
+			{
+				return ImGui::Text("None");
+			}
+
 			for (auto & pair : ML_Res.models)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Model * e)
@@ -660,6 +700,11 @@ namespace ml
 	{
 		Funcs::Group(ML_Res.plugins.getName().c_str(), [&]()
 		{
+			if (ML_Res.plugins.empty())
+			{
+				return ImGui::Text("None");
+			}
+
 			for (auto & pair : ML_Res.plugins)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Plugin * e)
@@ -697,6 +742,11 @@ namespace ml
 	{
 		Funcs::Group(ML_Res.scripts.getName().c_str(), [&]()
 		{
+			if (ML_Res.scripts.empty())
+			{
+				return ImGui::Text("None");
+			}
+
 			for (auto & pair : ML_Res.scripts)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Script * e)
@@ -734,6 +784,11 @@ namespace ml
 	{
 		Funcs::Group(ML_Res.shaders.getName().c_str(), [&]()
 		{
+			if (ML_Res.shaders.empty())
+			{
+				return ImGui::Text("None");
+			}
+
 			for (auto & pair : ML_Res.shaders)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Shader * e)
@@ -771,6 +826,11 @@ namespace ml
 	{
 		Funcs::Group(ML_Res.skyboxes.getName().c_str(), [&]()
 		{
+			if (ML_Res.skyboxes.empty())
+			{
+				return ImGui::Text("None");
+			}
+
 			for (auto & pair : ML_Res.skyboxes)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Skybox * e)
@@ -808,6 +868,11 @@ namespace ml
 	{
 		Funcs::Group(ML_Res.sounds.getName().c_str(), [&]()
 		{
+			if (ML_Res.sounds.empty())
+			{
+				return ImGui::Text("None");
+			}
+
 			for (auto & pair : ML_Res.sounds)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Sound * e)
@@ -845,6 +910,11 @@ namespace ml
 	{
 		Funcs::Group(ML_Res.sprites.getName().c_str(), [&]()
 		{
+			if (ML_Res.sprites.empty())
+			{
+				return ImGui::Text("None");
+			}
+
 			for (auto & pair : ML_Res.sprites)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Sprite * e)
@@ -882,6 +952,11 @@ namespace ml
 	{
 		Funcs::Group(ML_Res.textures.getName().c_str(), [&]()
 		{
+			if (ML_Res.textures.empty())
+			{
+				return ImGui::Text("None");
+			}
+
 			for (auto & pair : ML_Res.textures)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Texture * e)

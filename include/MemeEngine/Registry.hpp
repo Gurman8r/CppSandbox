@@ -78,6 +78,11 @@ namespace ml
 			return count;
 		}
 
+		inline bool empty() const
+		{
+			return m_data.empty();
+		}
+
 		inline bool erase(const String & name)
 		{
 			iterator it;
