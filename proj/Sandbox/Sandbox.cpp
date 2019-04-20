@@ -156,7 +156,7 @@ namespace DEMO
 			// GL Error Pause
 			ML_GL.errorPause(SETTINGS.glErrorPause);
 
-			// Setup Stream Redirect
+			// Setup Terminal Redirect
 			m_buf = ml::cout.rdbuf(m_ss.rdbuf());
 		}
 
@@ -669,12 +669,14 @@ namespace DEMO
 
 	void Sandbox::onUpdate(const ml::UpdateEvent * ev)
 	{
-		// Update Stream Redirect
-		if (const ml::String str = m_ss.str())
+		// Update Terminal Redirect
+		/* * * * * * * * * * * * * * * * * * * * */
 		{
-			ML_Terminal.print(str);
-
-			m_ss.str(ml::String());
+			ml::String line;
+			while (std::getline(m_ss, line))
+			{
+				ML_Terminal.printf("%s\n", line.c_str());
+			}
 		}
 
 		// Update Window Title
@@ -1150,7 +1152,7 @@ namespace DEMO
 	{
 		ml::Debug::log("Exiting...");
 
-		// Cleanup Stream Redirect
+		// Cleanup Terminal Redirect
 		if (m_buf)
 		{
 			ml::cout.rdbuf(m_buf);

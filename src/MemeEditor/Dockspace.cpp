@@ -41,9 +41,9 @@ namespace ml
 			// Dockspace Builder
 			if (uint32_t root = beginBuilder(ImGuiDockNodeFlags_None))
 			{
-				uint32_t left = splitNode(root, ImGuiDir_Left, 0.29f, &root);
+				uint32_t left = splitNode(root, ImGuiDir_Left, 0.30f, &root);
 				uint32_t center = splitNode(root, ImGuiDir_Right, 0.5f, &root);
-				uint32_t right = splitNode(center, ImGuiDir_Right, 0.21f, &center);
+				uint32_t right = splitNode(center, ImGuiDir_Right, 0.20f, &center);
 
 				const uint32_t left_U	= splitNode(left, ImGuiDir_Up, 0.65f, &left);
 				const uint32_t left_D	= splitNode(left, ImGuiDir_Down, 0.35f, &left);

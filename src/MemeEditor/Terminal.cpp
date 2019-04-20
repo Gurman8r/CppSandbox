@@ -6,7 +6,9 @@
 #include <MemeCore/Debug.hpp>
 #include <MemeScript/ScriptEvents.hpp>
 
-#define ML_strdup _strdup // strdup is deprecated apparently
+# ifndef strdup
+#	define strdup _strdup // strdup is deprecated
+# endif
 
 namespace ml
 {
@@ -14,20 +16,24 @@ namespace ml
 
 	Terminal::Terminal()
 		: GUI_Window("Terminal")
+		, m_inputBuf	()
+		, m_lines		()
+		, m_scrollBottom(false)
+		, m_history		()
+		, m_historyPos	(-1)
+		, m_autoFill	()
 	{
-		clear();
+		this->clear();
+
 		memset(m_inputBuf, 0, sizeof(m_inputBuf));
-		m_historyPos = -1;
+
+		for (auto & pair : ML_Interpreter.commands())
+		{
+			m_autoFill.push_back(pair.first.c_str());
+		}
 
 		this->printf("# Using this feature may result in crashes or system instability.");
 		this->printf("# Type \'help\' for a list of commands.");
-
-		for (auto it = ML_Interpreter.commands().begin(); 
-			it != ML_Interpreter.commands().end(); 
-			it++)
-		{
-			m_autoFill.push_back(it->first.c_str());
-		}
 	}
 	
 	Terminal::~Terminal()
@@ -54,13 +60,15 @@ namespace ml
 		if (beginDraw(p_open))
 		{
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+
 			static ImGuiTextFilter filter;
 			filter.Draw("Filter (\"incl,-excl\") (\"error\")", 180);
 			ImGui::PopStyleVar();
 			ImGui::Separator();
 
-			const float footer_height_to_reserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing();
-			ImGui::BeginChild("ScrollingRegion", ImVec2(0, -footer_height_to_reserve), false, ImGuiWindowFlags_HorizontalScrollbar);
+			const float footer_height = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing();
+			
+			ImGui::BeginChild("ScrollingRegion", ImVec2(0, -footer_height), false, ImGuiWindowFlags_HorizontalScrollbar);
 			
 			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1));
 
@@ -71,22 +79,22 @@ namespace ml
 				if (filter.PassFilter(item))
 				{
 					ImVec4 col = col_default_text;
-					if (strstr(item, "[ LOG ]")) col = ImColor(0.0f, 1.0f, 0.4f, 1.0f);
-					else if (strstr(item, "[ WRN ]")) col = ImColor(1.0f, 1.0f, 0.4f, 1.0f);
-					else if (strstr(item, "[ ERR ]")) col = ImColor(1.0f, 0.4f, 0.4f, 1.0f);
-					else if (strncmp(item, "# ", 2) == 0) col = ImColor(1.0f, 0.78f, 0.58f, 1.0f);
+					if (std::strstr(item, "[ LOG ]")) col = ImColor(0.0f, 1.0f, 0.4f, 1.0f);
+					else if (std::strstr(item, "[ WRN ]")) col = ImColor(1.0f, 1.0f, 0.4f, 1.0f);
+					else if (std::strstr(item, "[ ERR ]")) col = ImColor(1.0f, 0.4f, 0.4f, 1.0f);
+					else if (std::strncmp(item, "# ", 2) == 0) col = ImColor(1.0f, 0.78f, 0.58f, 1.0f);
 					ImGui::PushStyleColor(ImGuiCol_Text, col);
 					ImGui::TextUnformatted(item);
 					ImGui::PopStyleColor();
 				}
 			}
 
-			if (m_scrollToBottom)
+			if (m_scrollBottom)
 			{
 				ImGui::SetScrollHereY(1.0f);
 			}
 
-			m_scrollToBottom = false;
+			m_scrollBottom = false;
 			ImGui::PopStyleVar();
 			ImGui::EndChild();
 			ImGui::Separator();
@@ -108,9 +116,9 @@ namespace ml
 				auto strtrim = [](char * str)
 				{
 					char * str_end = str + strlen(str);
-					while (str_end > str && str_end[-1] == ' ')
+					while ((str_end > str) && (str_end[-1] == ' '))
 						str_end--;
-					*str_end = 0;
+					(*str_end) = NULL;
 					return str;
 				};
 
@@ -119,7 +127,7 @@ namespace ml
 				{
 					execCommand(s);
 				}
-				strcpy(s, "");
+				std::strcpy(s, "");
 				reclaim_focus = true;
 			}
 
@@ -138,7 +146,7 @@ namespace ml
 	void Terminal::clear()
 	{
 		m_lines.clear();
-		m_scrollToBottom = true;
+		m_scrollBottom = true;
 	}
 
 	void Terminal::print(const String & value)
@@ -154,8 +162,8 @@ namespace ml
 		vsnprintf(buf, IM_ARRAYSIZE(buf), value, args);
 		buf[IM_ARRAYSIZE(buf) - 1] = 0;
 		va_end(args);
-		m_lines.push_back(ML_strdup(buf));
-		m_scrollToBottom = true;
+		m_lines.push_back(strdup(buf));
+		m_scrollBottom = true;
 	}
 
 	void Terminal::execCommand(CString value)
@@ -166,14 +174,14 @@ namespace ml
 		m_historyPos = -1;
 		for (int32_t i = (int32_t)m_history.size() - 1; i >= 0; i--)
 		{
-			if (strcmp(m_history[i], value) == 0)
+			if (std::strcmp(m_history[i], value) == 0)
 			{
 				free(m_history[i]);
 				m_history.erase(m_history.begin() + i);
 				break;
 			}
 		}
-		m_history.push_back(ML_strdup(value));
+		m_history.push_back(strdup(value));
 
 		ML_EventSystem.fireEvent(CommandEvent(value));
 	}
@@ -210,7 +218,7 @@ namespace ml
 			ImVector<CString> candidates;
 			for (int32_t i = 0; i < (int32_t)m_autoFill.size(); i++)
 			{
-				if (strncmp(m_autoFill[i], word_start, (int32_t)(word_end - word_start)) == 0)
+				if (std::strncmp(m_autoFill[i], word_start, (int32_t)(word_end - word_start)) == 0)
 				{
 					candidates.push_back(m_autoFill[i]);
 				}

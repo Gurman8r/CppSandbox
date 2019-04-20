@@ -19,7 +19,7 @@ namespace ml
 		enum : size_t { BufferSize = 256 };
 
 		using InputBuffer = typename char[BufferSize];
-	
+
 	private:
 		Terminal();
 		~Terminal();
@@ -41,7 +41,7 @@ namespace ml
 	private:
 		InputBuffer		m_inputBuf;
 		List<String>	m_lines;
-		bool			m_scrollToBottom;
+		bool			m_scrollBottom;
 		List<char *>	m_history;
 		int32_t			m_historyPos;
 		List<CString>	m_autoFill;
