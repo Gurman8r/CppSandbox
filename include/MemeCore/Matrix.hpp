@@ -88,10 +88,8 @@ namespace ml
 			{
 				for (size_t i = 0; i < this->size(); i++)
 				{
-					auto it = (value.begin() + i);
-
-					(*this)[i] = ((it < value.end())
-						? (*it)
+					(*this)[i] = (((value.begin() + i) < value.end())
+						? (*(value.begin() + i))
 						: (static_cast<value_type>(0))
 					);
 				}
@@ -124,9 +122,9 @@ namespace ml
 
 	public: // Member Functions
 		/* * * * * * * * * * * * * * * * * * * * */
-		inline size_t			cols()				const	{ return self_type::Cols;	}
-		inline size_t			rows()				const	{ return self_type::Rows;	}
-		inline size_t			size()				const	{ return self_type::Size;	}
+		inline constexpr size_t	cols()	const noexcept		{ return self_type::Cols;	}
+		inline constexpr size_t	rows()	const noexcept		{ return self_type::Rows;	}
+		inline constexpr size_t	size()	const noexcept		{ return self_type::Size;	}
 		
 		inline reference		at(const size_t i)			{ return (*this)[i];		}
 		inline reference		back()						{ return at(size() - 1);	}
@@ -201,9 +199,10 @@ namespace ml
 				{
 					for (size_t x = 0; x < self_type::Cols; x++)
 					{
-						temp.at(y * self_type::Cols + x) = ((x == y)
+						temp[y * self_type::Cols + x] = ((x == y)
 							? static_cast<value_type>(1)
-							: static_cast<value_type>(0));
+							: static_cast<value_type>(0)
+						);
 					}
 				}
 			}
@@ -215,11 +214,11 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 		inline virtual void serialize(std::ostream & out) const override
 		{
-			for (size_t y = 0; y < Rows; y++)
+			for (size_t y = 0; y < this->rows(); y++)
 			{
-				for (size_t x = 0; x < Cols; x++)
+				for (size_t x = 0; x < this->cols(); x++)
 				{
-					out << (*this)[y * Cols + x] << " ";
+					out << (*this)[y * this->cols() + x] << " ";
 				}
 				out << ml::endl;
 			}
