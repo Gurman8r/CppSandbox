@@ -7,7 +7,7 @@
 #include <MemeScript/ScriptEvents.hpp>
 
 # ifndef strdup
-#	define strdup _strdup // strdup is deprecated
+# define strdup _strdup
 # endif
 
 namespace ml
@@ -18,14 +18,14 @@ namespace ml
 		: GUI_Window("Terminal")
 		, m_inputBuf	()
 		, m_lines		()
-		, m_scrollBottom(false)
+		, m_scrollBottom()
 		, m_history		()
 		, m_historyPos	(-1)
 		, m_autoFill	()
 	{
-		this->clear();
+		clear();
 
-		memset(m_inputBuf, 0, sizeof(m_inputBuf));
+		std::memset(m_inputBuf, 0, sizeof(m_inputBuf));
 
 		for (auto & pair : ML_Interpreter.commands())
 		{
@@ -59,19 +59,25 @@ namespace ml
 	{
 		if (beginDraw(p_open))
 		{
+			// Filter
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
-
 			static ImGuiTextFilter filter;
 			filter.Draw("Filter (\"incl,-excl\") (\"error\")", 180);
 			ImGui::PopStyleVar();
 			ImGui::Separator();
 
-			const float footer_height = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing();
-			
-			ImGui::BeginChild("ScrollingRegion", ImVec2(0, -footer_height), false, ImGuiWindowFlags_HorizontalScrollbar);
-			
-			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1));
+			// Text
+			const float footer_height =
+				ImGui::GetStyle().ItemSpacing.y + 
+				ImGui::GetFrameHeightWithSpacing();
 
+			if (ImGui::BeginChild(
+				"ScrollingRegion",
+				{ 0, -footer_height },
+				false,
+				ImGuiWindowFlags_HorizontalScrollbar)) { }
+
+			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1));
 			ImVec4 col_default_text = ImGui::GetStyleColorVec4(ImGuiCol_Text);
 			for (size_t i = 0; i < m_lines.size(); i++)
 			{
@@ -98,44 +104,48 @@ namespace ml
 			ImGui::PopStyleVar();
 			ImGui::EndChild();
 			ImGui::Separator();
-
-			// Command-line
-			bool reclaim_focus = false;
-			if (ImGui::InputText(
-				"Input",
-				m_inputBuf,
-				IM_ARRAYSIZE(m_inputBuf),
+			
+			// Input
+			auto callback = [](auto data) 
+			{ 
+				return (static_cast<Terminal *>(data->UserData))->textEditCallback(data);
+			};
+			
+			bool reclaim_focus;
+			if (reclaim_focus = ImGui::InputText(
+				("Input"), m_inputBuf, IM_ARRAYSIZE(m_inputBuf),
 				(
 					ImGuiInputTextFlags_EnterReturnsTrue |
 					ImGuiInputTextFlags_CallbackCompletion |
 					ImGuiInputTextFlags_CallbackHistory
-					),
-				[](auto data) { return ((Terminal *)data->UserData)->textEditCallback(data); },
-				(void *)this))
+				),
+				callback, static_cast<void *>(this)))
 			{
 				auto strtrim = [](char * str)
 				{
-					char * str_end = str + strlen(str);
-					while ((str_end > str) && (str_end[-1] == ' '))
+					char * str_end = str + std::strlen(str);
+					while (str_end > str && str_end[-1] == ' ')
 						str_end--;
-					(*str_end) = NULL;
+					*str_end = 0;
 					return str;
 				};
 
 				char * s = strtrim(m_inputBuf);
 				if (s[0])
 				{
-					execCommand(s);
+					execute(s);
 				}
-				std::strcpy(s, "");
+				strcpy(s, "");
 				reclaim_focus = true;
 			}
+
 
 			// Auto-focus on window apparition
 			ImGui::SetItemDefaultFocus();
 			if (reclaim_focus)
 			{
-				ImGui::SetKeyboardFocusHere(-1); // Auto focus previous widget
+				// Auto focus previous widget
+				ImGui::SetKeyboardFocusHere(-1);
 			}
 		}
 		return endDraw();
@@ -149,38 +159,7 @@ namespace ml
 		m_scrollBottom = true;
 	}
 
-	void Terminal::print(const String & value)
-	{
-		this->printf("%s", value.c_str());
-	}
-
-	void Terminal::printl(const String & value)
-	{
-		this->printf("%s\n", value.c_str());
-	}
-
-	void Terminal::prints(SStream & value)
-	{
-		String line;
-		while (std::getline(value, line))
-		{
-			this->printl(line);
-		}
-	}
-
-	void Terminal::printf(CString value, ...)
-	{
-		char buf[1024];
-		va_list args;
-		va_start(args, value);
-		vsnprintf(buf, IM_ARRAYSIZE(buf), value, args);
-		buf[IM_ARRAYSIZE(buf) - 1] = 0;
-		va_end(args);
-		m_lines.push_back(strdup(buf));
-		m_scrollBottom = true;
-	}
-
-	void Terminal::execCommand(CString value)
+	void Terminal::execute(CString value)
 	{
 		this->printf("# %s\n", value);
 
@@ -199,6 +178,41 @@ namespace ml
 
 		ML_EventSystem.fireEvent(CommandEvent(value));
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	void Terminal::printf(CString value, ...)
+	{
+		char buf[1024];
+		va_list args;
+		va_start(args, value);
+		vsnprintf(buf, IM_ARRAYSIZE(buf), value, args);
+		buf[IM_ARRAYSIZE(buf) - 1] = '\0';
+		va_end(args);
+		this->printl(buf);
+	}
+
+	void Terminal::printl(const String & value)
+	{
+		m_lines.push_back(value);
+		m_scrollBottom = true;
+	}
+
+	void Terminal::prints(SStream & value)
+	{
+		if (const String text = value.str())
+		{
+			SStream sink(text);
+			String	line;
+			while (std::getline(sink, line))
+			{
+				this->printl(line);
+			}
+			value.str(String());
+		}
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	int32_t Terminal::textEditCallback(void * value)
 	{

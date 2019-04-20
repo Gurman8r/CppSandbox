@@ -18,7 +18,7 @@ namespace ml
 	public:
 		enum : size_t { BufferSize = 256 };
 
-		using InputBuffer = typename char[BufferSize];
+		using InputBuffer = typename char[256];
 
 	private:
 		Terminal();
@@ -30,11 +30,10 @@ namespace ml
 
 	public:
 		void    clear();
-		void	print(const String & value);	// Print String
+		void    printf(CString value, ...);		// Print Format
 		void	printl(const String & value);	// Print Line
 		void	prints(SStream & value);		// Print Stream
-		void    printf(CString value, ...);		// Print Format
-		void    execCommand(CString value);
+		void    execute(CString value);
 		int32_t textEditCallback(void * value);
 
 	public:

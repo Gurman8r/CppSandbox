@@ -31,9 +31,9 @@ namespace ml
 
 	Var EditorCommands::cmd_history(Args & args)
 	{
-		for (auto & h : ML_Terminal.history())
+		for (CString h : ML_Terminal.history())
 		{
-			ML_Terminal.print(h);
+			ML_Terminal.printf("%s", h);
 		}
 		return Var().boolValue(true);
 	}

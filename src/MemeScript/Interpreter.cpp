@@ -27,12 +27,9 @@ namespace ml
 		case ScriptEvent::EV_Command:
 			if (const auto * ev = value->as<CommandEvent>())
 			{
-				if (const String & cmd = ev->cmd)
+				if (execCommand(ev->cmd).isErrorType())
 				{
-					if (execCommand(cmd).isErrorType())
-					{
-						Debug::logError(ev->cmd);
-					}
+					Debug::logError(ev->cmd);
 				}
 			}
 			break;
@@ -85,7 +82,7 @@ namespace ml
 				return execString(value);
 			}
 		}
-		return Var().voidValue();
+		return Var().errorValue("Unknown Command ", value);
 	}
 
 	Var	Interpreter::execFile(const String & value)

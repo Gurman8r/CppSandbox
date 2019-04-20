@@ -245,7 +245,11 @@ namespace ml
 		SStream ss;
 		if (ML_FS.getDirContents(name, ss))
 		{
-			cout << ss.str();
+			String line;
+			while (std::getline(ss, line))
+			{
+				cout << line << endl;
+			}
 			return Var().boolValue(true);
 		}
 		return Var().boolValue(false);
