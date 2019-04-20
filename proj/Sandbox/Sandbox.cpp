@@ -782,15 +782,15 @@ namespace DEMO
 				.setPosition({ 48 })
 				.setString(ML_PROJECT_URL);
 
-			const ml::Font *font = ML_Res.fonts.get("consolas");
-			uint32_t		fontSize = 18;
-			float			hOff = 0.0f;
-			float			vOff = 4.0f;
-			ml::vec2f		offset = { hOff, -(vOff + (float)fontSize) };
-			ml::vec2f		origin = { (float)fontSize, (float)this->height() - 48 };
-			ml::vec2f		linePos = 0;
-			size_t			lineNum = 0;
-			auto			nextLine = [&]() { return linePos = (origin + (offset * (float)(lineNum++))); };
+			const ml::Font *font	 = ML_Res.fonts.get("consolas");
+			const uint32_t	fontSize = 24;
+			const float		hOff	 = 0.0f;
+			const float		vOff	 = 4.0f;
+			const ml::vec2f	offset	 = { hOff, -(vOff + (float)fontSize) };
+			const ml::vec2f	origin	 = { (float)fontSize, (float)this->height() - (fontSize * 2) };
+			ml::vec2f		linePos	 = 0.0f;
+			size_t			lineNum	 = 0;
+			auto			nextLine = [&]() { return (linePos = (origin + (offset * (float)(lineNum++)))); };
 
 			m_text["gl_version"]
 				.setFont(font)
