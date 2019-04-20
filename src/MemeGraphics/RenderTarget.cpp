@@ -65,10 +65,12 @@ namespace ml
 			batch.vbo->bufferSubData(vertices, (uint32_t)vertexCount, 0);
 			batch.vbo->unbind();
 
-			this->draw((*batch.vao), (*batch.vbo));
+			return draw((*batch.vao), (*batch.vbo));
 		}
-
-		return (*this);
+		else
+		{
+			return (*this);
+		}
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
