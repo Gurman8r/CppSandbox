@@ -413,7 +413,7 @@ namespace ml
 				};
 
 				List<String> names;
-				for (auto pair : ML_Res.textures)
+				for (auto & pair : ML_Res.textures)
 				{
 					names.push_back(pair.first);
 				}

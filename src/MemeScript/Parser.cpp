@@ -19,7 +19,7 @@ namespace ml
 
 	Parser::~Parser()
 	{
-		for (auto pair : m_rules)
+		for (auto & pair : m_rules)
 		{
 			delete pair.second;
 			pair.second = NULL;

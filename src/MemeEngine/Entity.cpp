@@ -20,7 +20,7 @@ namespace ml
 
 	bool Entity::dispose()
 	{
-		for (auto pair : m_map)
+		for (auto & pair : m_map)
 		{
 			delete pair.second;
 		}

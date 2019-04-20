@@ -16,9 +16,9 @@ namespace ml
 	{
 	public: // Usings
 		/* * * * * * * * * * * * * * * * * * * * */
-		using value_type	= typename _Elem;
-		using base_type		= Vector<value_type, 4>;
-		using self_type		= Vector4<value_type>;
+		using value_type		= typename _Elem;
+		using base_type			= Vector<value_type, 4>;
+		using self_type			= Vector4<value_type>;
 
 		using pointer			= typename base_type::pointer;
 		using reference			= typename base_type::reference;

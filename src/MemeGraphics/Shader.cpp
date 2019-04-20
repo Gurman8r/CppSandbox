@@ -40,7 +40,10 @@ namespace ml
 			}
 		}
 
-		inline operator bool() const { return (location != -1); }
+		inline operator bool() const 
+		{
+			return (location != -1); 
+		}
 	};
 }
 
@@ -415,6 +418,38 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
+	bool Shader::setUniformArray(const String & name, const List<float> & value) const
+	{
+		return setUniformArray(name, (int32_t)value.size(), value.data());
+	}
+
+	bool Shader::setUniformArray(const String & name, const List<vec2f> & value) const
+	{
+		return setUniformArray(name, (int32_t)value.size(), value.data());
+	}
+
+	bool Shader::setUniformArray(const String & name, const List<vec3f> & value) const
+	{
+		return setUniformArray(name, (int32_t)value.size(), value.data());
+	}
+
+	bool Shader::setUniformArray(const String & name, const List<vec4f> & value) const
+	{
+		return setUniformArray(name, (int32_t)value.size(), value.data());
+	}
+
+	bool Shader::setUniformArray(const String & name, const List<mat3f> & value) const
+	{
+		return setUniformArray(name, (int32_t)value.size(), value.data());
+	}
+
+	bool Shader::setUniformArray(const String & name, const List<mat4f> & value) const
+	{
+		return setUniformArray(name, (int32_t)value.size(), value.data());
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	bool Shader::compile(CString vs, CString gs, CString fs)
 	{
 		if (!ML_GL.shadersAvailable())
@@ -477,9 +512,7 @@ namespace ml
 		if (!ML_GL.linkShader(*this))
 		{
 			CString log = ML_GL.getProgramInfoLog(*this);
-			
 			ML_GL.deleteShader(*this);
-			
 			return Debug::logError("Failed linking source: {0}", log);
 		}
 

@@ -349,6 +349,7 @@ namespace ml
 		glCheck(glFlush());
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	void OpenGL::pushMatrix()
 	{
@@ -375,6 +376,7 @@ namespace ml
 		glCheck(glEnd());
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	void OpenGL::vertex3f(float x, float y, float z)
 	{
@@ -547,6 +549,7 @@ namespace ml
 		return value;
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	uint32_t OpenGL::genTextures(uint32_t count)
 	{
@@ -820,14 +823,6 @@ namespace ml
 	{
 		if (source)
 		{
-			String name;
-			switch (type)
-			{
-			case GL::FragmentShader: name = "Fragment"; break;
-			case GL::VertexShader:	 name = "Vertex";	break;
-			case GL::GeometryShader: name = "Geometry"; break;
-			}
-
 			out = createShaderObject(type);
 
 			shaderSource(out, 1, &source, NULL);
@@ -835,13 +830,21 @@ namespace ml
 			int32_t status;
 			if (!(status = compileShader(out)))
 			{
+				String name;
+				switch (type)
+				{
+				case GL::FragmentShader: name = "Fragment"; break;
+				case GL::VertexShader:	 name = "Vertex";	break;
+				case GL::GeometryShader: name = "Geometry"; break;
+				}
+
 				CString log = getProgramInfoLog(out);
 				deleteShader(out);
 				return Debug::logError("Failed compiling {0} source: {1}", name, log);
 			}
 			return status;
 		}
-		return ML_WARNING;
+		return ML_WARNING; // -1
 	}
 
 	int32_t OpenGL::linkShader(uint32_t obj)

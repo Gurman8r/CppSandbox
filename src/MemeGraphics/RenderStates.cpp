@@ -38,7 +38,7 @@ namespace ml
 
 	void RenderStates::apply() const
 	{
-		for (auto pair : (*this))
+		for (auto & pair : (*this))
 		{
 			apply(pair.first, pair.second);
 		}

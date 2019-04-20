@@ -39,7 +39,7 @@ namespace ml
 		{
 			List<String> keys;
 			keys.reserve(size());
-			for (auto pair : m_map)
+			for (auto & pair : m_map)
 			{
 				keys.push_back(pair.first);
 			}

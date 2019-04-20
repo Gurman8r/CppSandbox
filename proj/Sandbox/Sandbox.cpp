@@ -100,7 +100,7 @@ namespace DEMO
 				// Toggle Smooth Textures (Num2)
 				if (ev->getKeyDown(ml::KeyCode::Num2))
 				{
-					for (auto pair : ML_Res.textures)
+					for (auto & pair : ML_Res.textures)
 					{
 						pair.second->setSmooth(!pair.second->smooth());
 					}
@@ -799,7 +799,6 @@ namespace DEMO
 				.setString(ml::String("GL Version: {0}").format(
 					ML_GL.getString(ml::GL::Version)));
 
-
 			m_text["gl_vendor"]
 				.setFont(font)
 				.setFontSize(fontSize)
@@ -864,7 +863,7 @@ namespace DEMO
 					this->getSize()));
 
 			// Force Update All Text
-			for (auto pair : m_text)
+			for (auto & pair : m_text)
 			{
 				pair.second.update();
 			}
@@ -880,7 +879,7 @@ namespace DEMO
 		{
 			// Resize Effects
 			bool changed = false;
-			for (auto pair : ML_Res.effects)
+			for (auto & pair : ML_Res.effects)
 			{
 				if (pair.second->resize(resolution))
 				{

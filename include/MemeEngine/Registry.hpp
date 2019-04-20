@@ -53,7 +53,7 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 		inline void serialize(std::ostream & out) const override
 		{
-			for (auto pair : m_files)
+			for (auto & pair : m_files)
 			{
 				out << std::left << std::setw(12)
 					<< pair.first << " \'" << pair.second << "\'"
@@ -153,7 +153,7 @@ namespace ml
 		inline const List<String> getKeys() const
 		{
 			List<String> keys;
-			for (auto pair : (*this))
+			for (auto & pair : (*this))
 			{
 				keys.push_back(pair.first);
 			}

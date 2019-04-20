@@ -207,7 +207,7 @@ namespace ml
 	Var EngineCommands::cmd_help(Args & args)
 	{
 		SStream ss;
-		for (auto pair : ML_Interpreter.commands())
+		for (auto & pair : ML_Interpreter.commands())
 		{
 			cout << pair.first << endl;
 		}

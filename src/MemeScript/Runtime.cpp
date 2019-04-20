@@ -167,7 +167,7 @@ namespace ml
 	{
 		if (VarMap * vars = values(index))
 		{
-			for (auto pair : (*vars))
+			for (auto & pair : (*vars))
 			{
 				delete pair.second;
 			}

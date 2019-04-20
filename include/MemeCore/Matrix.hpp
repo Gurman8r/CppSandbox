@@ -2,7 +2,6 @@
 #define _ML_MATRIX_HPP_
 
 #include <MemeCore/IEnumerable.hpp>
-#include <MemeCore/Array.hpp>
 #include <MemeCore/List.hpp>
 #include <MemeCore/Maths.hpp>
 
@@ -75,19 +74,12 @@ namespace ml
 		Matrix(const init_type & value)
 			: self_type()
 		{
-			if (value.size() == this->size())
+			for (size_t i = 0; i < this->size(); i++)
 			{
-				this->copy(value.begin(), value.end());
-			}
-			else
-			{
-				for (size_t i = 0; i < this->size(); i++)
-				{
-					(*this)[i] = (((value.begin() + i) < value.end())
-						? (*(value.begin() + i))
-						: (static_cast<value_type>(0))
-					);
-				}
+				(*this)[i] = (((value.begin() + i) < value.end())
+					? (*(value.begin() + i))
+					: (static_cast<value_type>(0))
+				);
 			}
 		}
 
