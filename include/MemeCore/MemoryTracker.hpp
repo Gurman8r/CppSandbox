@@ -31,21 +31,40 @@ namespace ml
 		friend ISingleton<MemoryTracker>;
 
 	public:
-		ITrackable * newAllocation(size_t size);
+		/* * * * * * * * * * * * * * * * * * * * */
+		struct Record final : public ISerializable
+		{
+			void *	addr; // Address
+			size_t	indx; // Index
+			size_t	size; // Size
+
+			Record(void * addr, const size_t indx, const size_t size);
+			Record(const Record & copy);
+			void serialize(std::ostream & out) const override;
+		};
+
+	public:
+		/* * * * * * * * * * * * * * * * * * * * */
+		using record_map		= typename HashMap<ITrackable *, Record>;
+		using iterator			= typename record_map::iterator;
+		using const_iterator	= typename record_map::const_iterator;
+
+	private:
+		/* * * * * * * * * * * * * * * * * * * * */
+		MemoryTracker();
+		~MemoryTracker();
+
+	public:
+		/* * * * * * * * * * * * * * * * * * * * */
+		ITrackable * newAllocation(const size_t size);
 
 		void freeAllocation(void * ptr);
 
 		void serialize(std::ostream & out) const override;
 
 	private:
-		MemoryTracker();
-		~MemoryTracker();
-
-		struct Record;
-
-		using RecordMap = typename HashMap<ITrackable *, Record>;
-
-		RecordMap	m_records;
+		/* * * * * * * * * * * * * * * * * * * * */
+		record_map	m_records;
 		size_t		m_guid;
 	};
 

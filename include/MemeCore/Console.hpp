@@ -20,8 +20,8 @@ namespace ml
 		~Console();
 
 	public:
-		bool enableMenuItem(uint32_t item, uint32_t enable) const;
-		bool setTextAttribute(const uint16_t value) const;
+		static bool enableMenuItem(uint32_t item, uint32_t enable);
+		static bool setTextAttribute(const uint16_t value);
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

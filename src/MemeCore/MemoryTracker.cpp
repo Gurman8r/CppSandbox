@@ -6,28 +6,27 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct MemoryTracker::Record final
-		: public ISerializable
+	MemoryTracker::Record::Record(void * addr, const size_t indx, const size_t size)
+		: addr	(addr)
+		, indx	(indx)
+		, size	(size)
 	{
-		void *	addr;
-		size_t	index;
-		size_t	size;
+	}
 
-		Record(void * addr, size_t index, size_t size)
-			: addr(addr)
-			, index(index)
-			, size(size)
-		{
-		}
+	MemoryTracker::Record::Record(const Record & copy)
+		: addr	(copy.addr)
+		, indx	(copy.indx)
+		, size	(copy.size)
+	{
+	}
 
-		void serialize(std::ostream & out) const override
-		{
-			out << " { addr: " << addr
-				<< " | size: " << size
-				<< " | indx: " << index
-				<< " }";
-		}
-	};
+	void MemoryTracker::Record::serialize(std::ostream & out) const
+	{
+		out << " { addr: " << addr
+			<< " | size: " << size
+			<< " | indx: " << indx
+			<< " }";
+	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 }
@@ -50,9 +49,7 @@ namespace ml
 			
 			cerr << (*this);
 
-#ifdef ML_DEBUG
 			Debug::pause(EXIT_FAILURE);
-#endif // ML_DEBUG
 
 			Debug::fatal();
 		}
@@ -60,18 +57,16 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	ITrackable * MemoryTracker::newAllocation(size_t size)
+	ITrackable * MemoryTracker::newAllocation(const size_t size)
 	{
 		if (ITrackable * trackable = static_cast<ITrackable *>(std::malloc(size)))
 		{
-			RecordMap::iterator it;
+			iterator it;
 			if ((it = m_records.find(trackable)) == m_records.end())
 			{
-				m_records.insert({
-					trackable,
-					Record(trackable, (m_guid++), size) 
-				});
-				return trackable;
+				return m_records.insert({
+					trackable, { trackable, (m_guid++), size }
+				}).first->first;
 			}
 		}
 		return NULL;
@@ -81,13 +76,11 @@ namespace ml
 	{
 		if (ITrackable * trackable = static_cast<ITrackable *>(value))
 		{
-			RecordMap::iterator it;
+			iterator it;
 			if ((it = m_records.find(trackable)) != m_records.end())
 			{
 				m_records.erase(it);
-				
 				std::free(trackable);
-				
 				trackable = NULL;
 			}
 		}
@@ -97,7 +90,7 @@ namespace ml
 
 	void MemoryTracker::serialize(std::ostream & out) const
 	{
-		RecordMap::const_iterator it;
+		const_iterator it;
 		for (it = m_records.begin(); it != m_records.end(); ++it)
 		{
 			out << (*it->first) << (it->second) << ml::endl;

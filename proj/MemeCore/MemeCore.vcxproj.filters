@@ -150,9 +150,6 @@
     <ClInclude Include="..\..\include\MemeCore\Thread.hpp">
       <Filter>Header Files\Threading</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Random.hpp">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Function.hpp">
       <Filter>Header Files\Threading</Filter>
     </ClInclude>
@@ -232,6 +229,9 @@
       <Filter>Header Files\STD</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Preprocessor.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Random.hpp">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>

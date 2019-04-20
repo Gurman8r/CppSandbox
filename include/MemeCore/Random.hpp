@@ -3,34 +3,43 @@
 
 #include <MemeCore/Export.hpp>
 #include <MemeCore/STD.hpp>
+#include <MemeCore/ISingleton.hpp>
+
+#define ML_Random ml::Random::getInstance()
 
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	class ML_CORE_API Random final
+		: public ISingleton<Random>
 	{
+		friend class ISingleton<Random>;
+
 	public:
 		static void seed();
 		static void seed(const uint32_t value);
 
 	public:
-		template <typename T>
-		inline T roll()
+		template <
+			class T
+		> static inline T roll()
 		{
-			return static_cast<T>(rand());
+			return static_cast<T>(std::rand());
 		}
 
-		template <typename T>
-		inline T roll(const T max)
+		template <
+			class T
+		> static inline T roll(const T max)
 		{ 
-			return roll<T>() / max; 
+			return (roll<T>() / max);
 		}
 
-		template <typename T>
-		inline T roll(const T min, const T max)
+		template <
+			class T
+		> static inline T roll(const T min, const T max)
 		{
-			return min + (roll<T>(max) * (max - min)); 
+			return (min + (roll<T>(max) * (max - min)));
 		}
 	};
 

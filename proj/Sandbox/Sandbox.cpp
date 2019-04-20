@@ -147,19 +147,20 @@ namespace DEMO
 		// Setup Miscellaneous
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
+			// Seed Random
+			ML_Random.seed();
+
 			// Start Master Timer
 			ML_Time.start();
-
-			// Seed Random
-			ml::Random::seed();
 
 			// GL Error Pause
 			ML_GL.errorPause(SETTINGS.glErrorPause);
 
-#if defined(ML_Terminal)
 			// Setup Terminal Redirect
-			m_rdbuf = ml::cout.rdbuf(m_rdstr.rdbuf());
-#endif // ML_Terminal
+			if (!(m_rdbuf = ml::cout.rdbuf(m_rdstr.rdbuf())))
+			{
+				return ml::Debug::fatal("Failed Redirecting Std Output Handle");
+			}
 		}
 
 		// Setup Interpreter
@@ -197,20 +198,19 @@ namespace DEMO
 		}
 		else
 		{
-			ml::Debug::fatal("Failed Creating Window");
+			return ml::Debug::fatal("Failed Creating Window");
 		}
 
 		// Setup ImGui
 		/* * * * * * * * * * * * * * * * * * * * */
-		if (ml::Debug::log("Dear ImGui..."))
+		if (IMGUI_CHECKVERSION())
 		{
-			IMGUI_CHECKVERSION();
 			ImGui::CreateContext();
 			ImGui::StyleColorsDark();
 			ImGui::GetStyle().FrameBorderSize = 1;
 			if (!ImGui_ML_Init("#version 410", this, true, SETTINGS.imguiINI.c_str()))
 			{
-				ml::Debug::fatal("Failed Loading ImGui");
+				return ml::Debug::fatal("Failed Loading ImGui");
 			}
 		}
 
@@ -218,7 +218,7 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (!ML_AL.init())
 		{
-			ml::Debug::fatal("Failed Loading OpenAL");
+			return ml::Debug::fatal("Failed Loading OpenAL");
 		}
 
 		// Setup Network
@@ -252,6 +252,10 @@ namespace DEMO
 	void Sandbox::onLoad(const ml::LoadEvent * ev)
 	{
 		ml::Debug::log("Loading...");
+
+		// Setup Canvas
+		/* * * * * * * * * * * * * * * * * * * * */
+		m_canvas.create();
 
 		// Load Default Meshes
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -291,13 +295,6 @@ namespace DEMO
 		if (!ML_Res.loadFromFile(ML_FS.pathTo(SETTINGS.manifest)))
 		{
 			ml::Debug::logError("Failed Loading Manifest");
-		}
-
-		// Setup Canvas
-		/* * * * * * * * * * * * * * * * * * * * */
-		if (!m_canvas.create())
-		{
-			ml::Debug::logError("Failed Creating Canvas");
 		}
 	}
 
@@ -675,6 +672,7 @@ namespace DEMO
 	{
 		// Update Terminal Redirect
 		/* * * * * * * * * * * * * * * * * * * * */
+		if (m_rdbuf)
 		{
 			ML_Terminal.prints(m_rdstr);
 		}
@@ -711,7 +709,7 @@ namespace DEMO
 			{
 				ent->get<ml::Transform>()
 					->setPosition(data.lightPos)
-					.rotate(-ev->elapsed.delta(), ml::vec3f::Forward);
+					.rotate(-(ev->elapsed.delta()), ml::vec3f::Forward);
 			}
 
 			// Borg
@@ -731,7 +729,7 @@ namespace DEMO
 
 				ent->get<ml::Transform>()
 					->setPosition(pos)
-					.rotate(+ev->elapsed.delta(), ml::vec3f::One);
+					.rotate(+(ev->elapsed.delta()), ml::vec3f::One);
 			}
 
 			// Cube
@@ -742,7 +740,7 @@ namespace DEMO
 				pos[1] = -ML_Time.sin();
 				ent->get<ml::Transform>()
 					->setPosition(pos)
-					.rotate(-ev->elapsed.delta(), ml::vec3f::One);
+					.rotate(-(ev->elapsed.delta()), ml::vec3f::One);
 			}
 
 			// Sanic
@@ -753,7 +751,7 @@ namespace DEMO
 				pos[1] = -ML_Time.cos();
 				ent->get<ml::Transform>()
 					->setPosition(pos)
-					.rotate(-ev->elapsed.delta(), ml::vec3f::Forward);
+					.rotate(-(ev->elapsed.delta()), ml::vec3f::Forward);
 			}
 
 			// Moon
@@ -764,7 +762,7 @@ namespace DEMO
 				pos[1] = +ML_Time.sin();
 				ent->get<ml::Transform>()
 					->setPosition(pos)
-					.rotate(-ev->elapsed.delta(), ml::vec3f::Up);
+					.rotate(-(ev->elapsed.delta()), ml::vec3f::Up);
 			}
 
 			// Earth
@@ -772,7 +770,7 @@ namespace DEMO
 			if (ml::Entity * ent = ML_Res.entities.get("earth"))
 			{
 				ent->get<ml::Transform>()
-					->rotate(ev->elapsed.delta(), ml::vec3f::Up);
+					->rotate(+(ev->elapsed.delta()), ml::vec3f::Up);
 			}
 		}
 

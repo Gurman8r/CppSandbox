@@ -20,7 +20,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Console::enableMenuItem(uint32_t item, uint32_t enable) const
+	bool Console::enableMenuItem(uint32_t item, uint32_t enable)
 	{
 #ifdef ML_SYSTEM_WINDOWS
 		if (HWND console = GetConsoleWindow())
@@ -36,7 +36,7 @@ namespace ml
 #endif
 	}
 
-	bool Console::setTextAttribute(const uint16_t value) const
+	bool Console::setTextAttribute(const uint16_t value)
 	{
 #ifdef ML_SYSTEM_WINDOWS
 		return SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), value);

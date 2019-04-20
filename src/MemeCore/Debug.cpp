@@ -30,12 +30,8 @@ namespace ml
 		{
 			logError(message);
 		}
-
-#ifdef ML_DEBUG
-		std::terminate();
-#else
-		std::exit(EXIT_FAILURE);
-#endif
+		
+		std::abort();
 	}
 
 	int32_t Debug::pause(int32_t exitCode)
@@ -75,37 +71,34 @@ namespace ml
 
 	int32_t Debug::logWarning(const String & message)
 	{
-		cout
-			<< FMT()
+		cout<< FMT()
 			<< FG::White << "["
 			<< FG::Yellow << " WRN "
 			<< FG::White << "]"
 			<< FMT() << " " << message
-			<< ml::endl;
+			<< endl;
 		return ML_WARNING;
 	}
 
 	int32_t Debug::logError(const String & message)
 	{
-		cout
-			<< FMT()
+		cout<< FMT()
 			<< FG::White << "["
 			<< FG::Red << " ERR "
 			<< FG::White << "]"
 			<< FMT() << " " << message
-			<< ml::endl;
+			<< endl;
 		return ML_FAILURE;
 	}
 	
 	int32_t Debug::log(const String & message)
 	{
-		cout
-			<< FMT()
+		cout<< FMT()
 			<< FG::White << "["
 			<< FG::Green << " LOG "
 			<< FG::White << "]"
 			<< FMT() << " " << message
-			<< ml::endl;
+			<< endl;
 		return ML_SUCCESS;
 	}
 
