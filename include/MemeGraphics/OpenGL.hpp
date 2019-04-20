@@ -34,18 +34,16 @@ namespace ml
 		friend class ISingleton<OpenGL>;
 
 		bool m_good;
-		bool m_errorPause;
 
 	public: // Errors
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		static GL::Err	getError();
-		static void		errorPause(bool value);
-		static void		checkError(CString file, uint32_t line, CString expression);
+		static void		checkError(CString file, uint32_t line, CString expr);
 
 	public: // Initialization
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-		static bool		init(bool experimental);
 		static bool		good();
+		static bool		init();
 		static void		validateVersion(uint32_t & major, uint32_t & minor);
 
 	public: // Flags

@@ -32,7 +32,7 @@ namespace ml
 		void    clear();
 		void    printf(CString value, ...);		// Print Format
 		void	printl(const String & value);	// Print Line
-		void	prints(SStream & value);		// Print Stream
+		void	printss(SStream & value);		// Print Stream
 		void    execute(CString value);
 		int32_t inputCallback(void * value);
 

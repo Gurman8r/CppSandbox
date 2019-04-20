@@ -49,9 +49,11 @@ namespace ml
 			
 			cerr << (*this);
 
+#ifdef ML_DEBUG
 			Debug::pause(EXIT_FAILURE);
+#endif // ML_DEBUG
 
-			Debug::fatal();
+			Debug::fatal("Memory Leaks Detected");
 		}
 	}
 

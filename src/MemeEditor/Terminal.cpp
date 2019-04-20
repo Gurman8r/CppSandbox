@@ -192,7 +192,7 @@ namespace ml
 		m_scrollBottom = true;
 	}
 
-	void Terminal::prints(SStream & value)
+	void Terminal::printss(SStream & value)
 	{
 		if (const String text = value.str())
 		{

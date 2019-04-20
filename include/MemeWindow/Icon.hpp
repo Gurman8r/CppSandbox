@@ -15,18 +15,15 @@ namespace ml
 	{
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		using pixels_ptr = typename const uint8_t *;
-
-		/* * * * * * * * * * * * * * * * * * * * */
-
 		int32_t		width;
 		int32_t		height;
-		pixels_ptr	pixels;
+		uint8_t *	pixels;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		Icon();
-		Icon(const int32_t width, const int32_t height, pixels_ptr pixels);
+		Icon(const int32_t width, const int32_t height, uint8_t * pixels);
+		Icon(const int32_t width, const int32_t height, const uint8_t * pixels);
 		Icon(const Icon & copy);
 		~Icon();
 

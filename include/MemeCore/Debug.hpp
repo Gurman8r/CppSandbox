@@ -15,7 +15,6 @@ namespace ml
 	public:
 		static int32_t	clear();
 		static void		exit(int32_t exitCode);
-		static void		fatal();
 		static void		fatal(const String & message);
 		static int32_t	pause(int32_t exitCode);
 		static int32_t	system(CString cmd);

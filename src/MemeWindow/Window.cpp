@@ -367,7 +367,7 @@ namespace ml
 				temp[i] = GLFWimage {
 					value[i].width,
 					value[i].height,
-					std::remove_cv_t<uint8_t *>(value[i].pixels),
+					value[i].pixels,
 				};
 			}
 

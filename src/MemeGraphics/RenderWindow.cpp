@@ -18,12 +18,7 @@ namespace ml
 
 	bool RenderWindow::setup()
 	{
-		return setup(true);
-	}
-
-	bool RenderWindow::setup(bool experimental)
-	{
-		if (Window::setup() && ML_GL.init(experimental))
+		if (Window::setup() && ML_GL.init())
 		{
 			// Validate OpenGL Version
 			ML_GL.validateVersion(m_context.majorVersion, m_context.minorVersion);
@@ -41,7 +36,7 @@ namespace ml
 				ml::Debug::logWarning("Failed to enable Framebuffer SRGB");
 				m_context.srgbCapable = false;
 			}
-			
+
 			ML_GL.cullFace(GL::Back);
 			ML_GL.depthFunc(GL::Less);
 			ML_GL.blendFunc(GL::SourceAlpha, GL::OneMinusSourceAlpha);

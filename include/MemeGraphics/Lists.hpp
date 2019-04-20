@@ -15,7 +15,6 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	// VertexList | List<Vertex> | std::vector<Vertex>
 	class ML_GRAPHICS_API VertexList final
 		: public List<Vertex>
 	{

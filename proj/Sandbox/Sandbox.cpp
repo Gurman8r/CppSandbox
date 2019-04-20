@@ -15,6 +15,7 @@
 #include <MemeGraphics/OpenGL.hpp>
 #include <MemeGraphics/Renderer.hpp>
 #include <MemeGraphics/ShaderAPI.hpp>
+#include <MemeGraphics/GraphicsEvents.hpp>
 #include <MemeEditor/Editor.hpp>
 #include <MemeEditor/EditorCommands.hpp>
 #include <MemeEditor/EditorEvents.hpp>
@@ -40,6 +41,7 @@ namespace DEMO
 	Sandbox::Sandbox() 
 		: EditorApplication() 
 	{
+		ML_EventSystem.addListener(ml::GraphicsEvent::EV_GL_Error, this);
 	}
 
 	Sandbox::~Sandbox() 
@@ -55,6 +57,19 @@ namespace DEMO
 
 		switch (*value)
 		{
+			// OpenGL Error
+		case ml::GraphicsEvent::EV_GL_Error:
+			if (const auto * ev = value->as<ml::GL_ErrorEvent>())
+			{
+				ml::cout << (*ev) << ml::endl;
+
+				if (SETTINGS.glErrorPause)
+				{
+					ml::Debug::pause(0);
+				}
+			}
+			break;
+
 			// File -> Close ...
 			/* * * * * * * * * * * * * * * * * * * * */
 		case ml::EditorEvent::EV_File_Close:
@@ -144,7 +159,7 @@ namespace DEMO
 	{
 		ml::Debug::log("Entering...");
 
-		// Setup Miscellaneous
+		// Initialize Miscellaneous
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
 			// Seed Random
@@ -153,19 +168,14 @@ namespace DEMO
 			// Start Master Timer
 			ML_Time.start();
 
-			// GL Error Pause
-			ML_GL.errorPause(SETTINGS.glErrorPause);
-
-#if defined(ML_Editor)
-			// Setup Cout Redirect
-			if (!(m_rdbuf = ml::cout.rdbuf(m_rdstr.rdbuf())))
+			// Setup Std Out Redirect
+			if (SETTINGS.redirStdOut && !(m_rdbuf = ml::cout.rdbuf(m_rdstr.rdbuf())))
 			{
 				return ml::Debug::fatal("Failed Redirecting Std Output Handle");
 			}
-#endif
 		}
 
-		// Setup Interpreter
+		// Initialize Interpreter
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
 			// Set Parser Flags
@@ -188,10 +198,10 @@ namespace DEMO
 			}
 		}
 
-		// Create Window
+		// Initialize Window
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (this->create(SETTINGS.title, SETTINGS.video(), SETTINGS.style, SETTINGS.context()) &&
-			this->setup(SETTINGS.glExperimental))
+			this->setup())
 		{
 			this->seCursorMode(ml::Cursor::Normal);
 			this->setPosition((ml::VideoMode::desktop().size - this->getSize()) / 2);
@@ -203,7 +213,7 @@ namespace DEMO
 			return ml::Debug::fatal("Failed Creating Window");
 		}
 
-		// Setup ImGui
+		// Initialize ImGui
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (IMGUI_CHECKVERSION())
 		{
@@ -216,14 +226,14 @@ namespace DEMO
 			}
 		}
 
-		// Setup Audio
+		// Initialize Audio
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (!ML_AL.init())
 		{
 			return ml::Debug::fatal("Failed Loading OpenAL");
 		}
 
-		// Setup Network
+		// Initialize Network
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (SETTINGS.isServer)
 		{
@@ -672,11 +682,11 @@ namespace DEMO
 
 	void Sandbox::onUpdate(const ml::UpdateEvent * ev)
 	{
-		// Update Cout Redirect
+		// Update Std Out Redirect
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (m_rdbuf)
 		{
-			ML_Terminal.prints(m_rdstr);
+			ML_Terminal.printss(m_rdstr);
 		}
 
 		// Update Window Title
@@ -1143,6 +1153,13 @@ namespace DEMO
 	{
 		ml::Debug::log("Unloading...");
 
+		// Cleanup Std Out Redirect
+		if (m_rdbuf)
+		{
+			ml::cout.rdbuf(m_rdbuf);
+			m_rdbuf = NULL;
+		}
+
 		// Unload Resources
 		ML_Res.dispose();
 
@@ -1153,13 +1170,6 @@ namespace DEMO
 	void Sandbox::onExit(const ml::ExitEvent * ev)
 	{
 		ml::Debug::log("Exiting...");
-
-		// Cleanup Cout Redirect
-		if (m_rdbuf) 
-		{ 
-			ml::cout.rdbuf(m_rdbuf); 
-			m_rdbuf = NULL; 
-		}
 
 		// Shutdown ImGui
 		ImGui_ML_Shutdown();

@@ -27,6 +27,7 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 		bool		escapeIsExit;	// Escape key is Exit?
 		ml::String	manifest;		// Name of manifest file
+		bool		redirStdOut;		// Redirect Std Out?
 		ml::String	imguiINI;		// Name of imgui INI
 
 		// [Script]
@@ -55,7 +56,6 @@ namespace DEMO
 		// [Graphics]
 		/* * * * * * * * * * * * * * * * * * * * */
 		bool		glErrorPause;	// OpenGL Error Pause?
-		bool		glExperimental;	// GLEW Experimental?
 		float		fieldOfView;	// Field of View
 		float		perspNear;		// Persp Near Clipping Range 
 		float		perspFar;		// Persp Far  Clipping Range 
@@ -79,6 +79,7 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 			escapeIsExit	= ini.GetBoolean("General", "escapeIsExit", true);
 			manifest		= ini.Get("General", "manifest", "manifest.txt");
+			redirStdOut		= ini.GetBoolean("General", "redirStdOut", false);
 			imguiINI		= ini.Get("General", "imguiINI", "");
 
 			// [Script]
@@ -106,7 +107,6 @@ namespace DEMO
 			// [Graphics]	
 			/* * * * * * * * * * * * * * * * * * * * */
 			glErrorPause	= ini.GetBoolean("Graphics", "glErrorPause", false);
-			glExperimental	= ini.GetBoolean("Graphics", "glExperimental", true);
 			fieldOfView		= (float)ini.GetReal("Graphics", "fieldOfView", 90.0);
 			perspNear		= (float)ini.GetReal("Graphics", "perspNear", 0.1);
 			perspFar		= (float)ini.GetReal("Graphics", "perspFar", 1000.0);

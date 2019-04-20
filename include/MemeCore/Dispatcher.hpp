@@ -2,6 +2,7 @@
 #define _ML_DISPATCHER_HPP_
 
 #include <MemeCore/Worker.hpp>
+#include <MemeCore/List.hpp>
 
 #define ML_Dispatcher ml::Dispatcher::getInstance()
 
@@ -28,12 +29,12 @@ namespace ml
 		bool addWorker(Worker * value);
 
 	private:
-		std::queue<IRequest *>		m_requests;
-		std::queue<Worker *>		m_workers;
-		std::mutex					m_requestMutex;
-		std::mutex					m_workersMutex;
-		std::vector<Worker *>		m_allWorkers;
-		std::vector<std::thread *>	m_threads;
+		std::queue<IRequest *>	m_requests;
+		std::queue<Worker *>	m_workers;
+		std::mutex				m_requestMutex;
+		std::mutex				m_workersMutex;
+		List<Worker *>			m_allWorkers;
+		List<std::thread *>		m_threads;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

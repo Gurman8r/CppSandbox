@@ -5,6 +5,29 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
+	inline static const int32_t ml_log(
+		std::ostream &	out, 
+		const int32_t	exitCode, 
+		const ml::FMT & color, 
+		const String &	prefix, 
+		const String &	message)
+	{
+		out << FMT()
+			<< FG::White << "["
+			<< color << " " << prefix << " "
+			<< FG::White << "]"
+			<< FMT() << " " << message
+			<< endl;
+		return exitCode;
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+}
+
+namespace ml
+{
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	int32_t Debug::clear()
 	{
 #ifdef ML_SYSTEM_WINDOWS
@@ -19,19 +42,11 @@ namespace ml
 		return std::exit(exitCode);
 	}
 
-	void Debug::fatal()
-	{
-		return fatal(String());
-	}
-
 	void Debug::fatal(const String & message)
 	{
-		if (message)
-		{
-			logError(message);
-		}
-		
-		std::abort();
+		ml_log(cerr, ML_FAILURE, FG::Red, "ERR", message);
+
+		return std::abort();
 	}
 
 	int32_t Debug::pause(int32_t exitCode)
@@ -71,35 +86,17 @@ namespace ml
 
 	int32_t Debug::logWarning(const String & message)
 	{
-		cout<< FMT()
-			<< FG::White << "["
-			<< FG::Yellow << " WRN "
-			<< FG::White << "]"
-			<< FMT() << " " << message
-			<< endl;
-		return ML_WARNING;
+		return ml_log(cout, ML_WARNING, FG::Yellow, "WRN", message);
 	}
 
 	int32_t Debug::logError(const String & message)
 	{
-		cout<< FMT()
-			<< FG::White << "["
-			<< FG::Red << " ERR "
-			<< FG::White << "]"
-			<< FMT() << " " << message
-			<< endl;
-		return ML_FAILURE;
+		return ml_log(cout, ML_FAILURE, FG::Red, "ERR", message);
 	}
 	
 	int32_t Debug::log(const String & message)
 	{
-		cout<< FMT()
-			<< FG::White << "["
-			<< FG::Green << " LOG "
-			<< FG::White << "]"
-			<< FMT() << " " << message
-			<< endl;
-		return ML_SUCCESS;
+		return ml_log(cout, ML_SUCCESS, FG::Green, "LOG", message);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

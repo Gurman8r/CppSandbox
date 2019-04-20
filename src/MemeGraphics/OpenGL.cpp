@@ -1,5 +1,7 @@
 #include <MemeGraphics/OpenGL.hpp>
 #include <MemeCore/Debug.hpp>
+#include <MemeCore/EventSystem.hpp>
+#include <MemeGraphics/GraphicsEvents.hpp>
 
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -20,12 +22,7 @@ namespace ml
 		return static_cast<GL::Err>(glGetError());
 	}
 
-	void OpenGL::errorPause(bool value)
-	{
-		ML_GL.m_errorPause = value;
-	}
-
-	void OpenGL::checkError(CString file, uint32_t line, CString expression)
+	void OpenGL::checkError(CString file, uint32_t line, CString expr)
 	{
 		// Get the last error
 		if (GL::Err errorCode = getError())
@@ -72,26 +69,14 @@ namespace ml
 				break;
 			}
 
-			cerr
-				<< FMT()
-				<< ml::endl
-				<< FG::Red
-				<< "An internal OpenGL call failed in " << fileName << "(" << line << ")"
-				<< FG::Yellow << ml::endl << "Code: "
-				<< FG::White << ml::endl << "\t" << errorCode
-				<< FG::Yellow << ml::endl << "Expression: "
-				<< FG::White << ml::endl << "\t" << expression
-				<< FG::Yellow << ml::endl << "Description:"
-				<< FG::White << ml::endl << "\t" << errorName
-				<< FG::White << ml::endl << "\t" << errorDesc
-				<< FMT()
-				<< ml::endl
-				<< ml::endl;
-
-			if (ML_GL.m_errorPause)
-			{
-				Debug::pause(EXIT_FAILURE);
-			}
+			ML_EventSystem.fireEvent(GL_ErrorEvent(
+				fileName,
+				line, 
+				expr,
+				errorCode,
+				errorName,
+				errorDesc
+			));
 		}
 	}
 
@@ -99,23 +84,23 @@ namespace ml
 	// Initialization
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-	bool OpenGL::init(bool experimental)
+	bool OpenGL::good()
+	{
+		return ML_GL.m_good;
+	}
+
+	bool OpenGL::init()
 	{
 		static bool checked = false;
 		if (!checked)
 		{
 			checked = true;
 
-			glewExperimental = experimental;
+			glewExperimental = true;
 
 			ML_GL.m_good = (glewInit() == GLEW_OK);
 		}
 		return good();
-	}
-
-	bool OpenGL::good()
-	{
-		return ML_GL.m_good;
 	}
 
 	void OpenGL::validateVersion(uint32_t & majorVersion, uint32_t & minorVersion)

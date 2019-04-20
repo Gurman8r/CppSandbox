@@ -11,10 +11,17 @@ namespace ml
 	{
 	}
 
-	Icon::Icon(const int32_t width, const int32_t height, pixels_ptr pixels)
-		: width	(width)
+	Icon::Icon(const int32_t width, const int32_t height, uint8_t * pixels)
+		: width(width)
 		, height(height)
 		, pixels(pixels)
+	{
+	}
+
+	Icon::Icon(const int32_t width, const int32_t height, const uint8_t * pixels)
+		: width	(width)
+		, height(height)
+		, pixels(std::remove_cv_t<uint8_t *>(pixels))
 	{
 	}
 
@@ -42,12 +49,18 @@ namespace ml
 
 	bool Icon::equals(const Icon & other) const
 	{
-		return (width == other.width) && (height == other.height);
+		return 
+			(width == other.width) && 
+			(height == other.height) &&
+			(std::memcmp(pixels, other.pixels, (width * height)) == 0);
 	}
 
 	bool Icon::lessThan(const Icon & other) const
 	{
-		return (width < other.width) || (height < other.height);
+		return
+			(width < other.width) || 
+			(height < other.height) ||
+			(std::memcmp(pixels, other.pixels, (width * height)) < 0);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
