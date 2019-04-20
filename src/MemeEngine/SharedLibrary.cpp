@@ -1,8 +1,8 @@
 #include <MemeEngine/SharedLibrary.hpp>
 
-#ifdef ML_SYSTEM_WINDOWS
-#include <Windows.h>
-#endif
+# ifdef ML_SYSTEM_WINDOWS
+#	include <Windows.h>
+# endif // ML_SYSTEM_WINDOWS
 
 namespace ml
 {
@@ -24,7 +24,7 @@ namespace ml
 	bool SharedLibrary::dispose()
 	{
 #ifdef ML_SYSTEM_WINDOWS
-		return (FreeLibrary((HINSTANCE)m_instance));
+		return FreeLibrary((HINSTANCE)m_instance);
 #else
 		return false;
 #endif

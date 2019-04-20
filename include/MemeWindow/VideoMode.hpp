@@ -3,6 +3,7 @@
 
 #include <MemeWindow/Export.hpp>
 #include <MemeCore/Vector2.hpp>
+#include <MemeCore/List.hpp>
 
 namespace ml
 {
@@ -28,7 +29,7 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		static const VideoMode & desktop();
-		static const std::vector<VideoMode> & resolutions();
+		static const List<VideoMode> & resolutions();
 
 		/* * * * * * * * * * * * * * * * * * * * */
 

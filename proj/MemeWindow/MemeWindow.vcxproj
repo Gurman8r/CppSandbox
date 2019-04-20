@@ -170,6 +170,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\include\MemeWindow\WindowInput.hpp" />
+    <ClCompile Include="..\..\src\MemeWindow\Icon.cpp" />
     <ClCompile Include="..\..\src\MemeWindow\VideoMode.cpp" />
     <ClCompile Include="..\..\src\MemeWindow\Window.cpp" />
   </ItemGroup>

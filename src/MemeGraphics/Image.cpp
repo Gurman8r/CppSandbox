@@ -1,6 +1,6 @@
 #include <MemeGraphics/Image.hpp>
 #include <MemeCore/Debug.hpp>
-#include <algorithm>
+#include <MemeWindow/Icon.hpp>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -215,6 +215,6 @@ namespace ml
 
 		return (*this);
 	}
-
+	
 	/* * * * * * * * * * * * * * * * * * * * */
 }

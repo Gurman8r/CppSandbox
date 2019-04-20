@@ -3,9 +3,6 @@
 #include <MemeCore/Debug.hpp>
 #include <GLFW/glfw3.h>
 
-#define ML_WINDOW	static_cast<GLFWwindow*>
-#define ML_MONITOR	static_cast<GLFWmonitor*>
-
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -36,8 +33,8 @@ namespace ml
 	
 	Window::~Window() 
 	{
-		destroy();
-		terminate();
+		this->destroy();
+		this->terminate();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -67,12 +64,12 @@ namespace ml
 			glfwWindowHint(GLFW_FLOATING,		(m_style & Window::Floating));
 			glfwWindowHint(GLFW_MAXIMIZED,		(m_style & Window::Maximized));
 
-			if (m_window = ML_WINDOW(glfwCreateWindow(
+			if (m_window = static_cast<GLFWwindow*>(glfwCreateWindow(
 				width(), 
 				height(), 
 				m_title.c_str(),
-				ML_MONITOR(m_monitor),
-				ML_WINDOW(m_share))))
+				static_cast<GLFWmonitor*>(m_monitor = NULL),
+				static_cast<GLFWwindow*>(m_share = NULL))))
 			{
 				makeContextCurrent();
 
@@ -228,37 +225,50 @@ namespace ml
 
 	Window & Window::close()
 	{
-		glfwSetWindowShouldClose(ML_WINDOW(m_window), GLFW_TRUE);
+		glfwSetWindowShouldClose(
+			static_cast<GLFWwindow*>(m_window), 
+			GLFW_TRUE
+		);
 		return (*this);
 	}
 
 	Window & Window::destroy()
 	{
-		glfwDestroyWindow(ML_WINDOW(m_window));
+		glfwDestroyWindow(
+			static_cast<GLFWwindow*>(m_window)
+		);
 		return (*this);
 	}
 
 	Window & Window::makeContextCurrent()
 	{
-		glfwMakeContextCurrent(ML_WINDOW(m_window));
+		glfwMakeContextCurrent(
+			static_cast<GLFWwindow*>(m_window)
+		);
 		return (*this);
 	}
 	
 	Window & Window::maximize()
 	{
-		glfwMaximizeWindow(ML_WINDOW(m_window));
+		glfwMaximizeWindow(
+			static_cast<GLFWwindow*>(m_window)
+		);
 		return (*this);
 	}
 
 	Window & Window::restore()
 	{
-		glfwRestoreWindow(ML_WINDOW(m_window));
+		glfwRestoreWindow(
+			static_cast<GLFWwindow*>(m_window)
+		);
 		return (*this);
 	}
 
 	Window & Window::iconify()
 	{
-		glfwIconifyWindow(ML_WINDOW(m_window));
+		glfwIconifyWindow(
+			static_cast<GLFWwindow*>(m_window)
+		);
 		return (*this);
 	}
 
@@ -270,7 +280,9 @@ namespace ml
 
 	Window & Window::swapBuffers()
 	{
-		glfwSwapBuffers(ML_WINDOW(m_window));
+		glfwSwapBuffers(
+			static_cast<GLFWwindow*>(m_window)
+		);
 		return (*this);
 	}
 
@@ -284,65 +296,93 @@ namespace ml
 
 	Window & Window::setClipboardString(const String & value)
 	{
-		glfwSetClipboardString(ML_WINDOW(m_window), value.c_str());
+		glfwSetClipboardString(
+			static_cast<GLFWwindow*>(m_window), 
+			value.c_str()
+		);
 		return (*this);
 	}
 
 	Window & Window::setCursor(void * value)
 	{
-		glfwSetCursor(ML_WINDOW(m_window), static_cast<GLFWcursor*>(value));
+		glfwSetCursor(
+			static_cast<GLFWwindow*>(m_window), 
+			static_cast<GLFWcursor*>(value)
+		);
 		return (*this);
 	}
 	
-	Window & Window::setCursorPos(const vec2i & value)
+	Window & Window::seCursorMode(Cursor::Mode value)
 	{
-		glfwSetCursorPos(ML_WINDOW(m_window), value[0], value[1]);
+		glfwSetInputMode(
+			static_cast<GLFWwindow*>(m_window),
+			GLFW_CURSOR, 
+			value
+		);
 		return (*this);
 	}
 
-	Window & Window::setIcons(const std::vector<Icon> & value)
+	Window & Window::setCursorPos(const vec2i & value)
+	{
+		glfwSetCursorPos(
+			static_cast<GLFWwindow*>(m_window), 
+			value[0], 
+			value[1]
+		);
+		return (*this);
+	}
+
+	Window & Window::setIcons(const List<Icon> & value)
 	{
 		if (const uint32_t count = (uint32_t)value.size())
 		{
-			static std::vector<GLFWimage> temp;
-
-			temp.resize(count);
+			std::vector<GLFWimage> temp(count);
 
 			for (size_t i = 0; i < count; i++)
 			{
 				temp[i] = GLFWimage {
-					(int32_t)value[i].width,
-					(int32_t)value[i].height,
+					value[i].width,
+					value[i].height,
 					std::remove_cv_t<uint8_t *>(value[i].pixels),
 				};
 			}
 
-			glfwSetWindowIcon(ML_WINDOW(m_window), count, &temp[0]);
+			glfwSetWindowIcon(
+				static_cast<GLFWwindow*>(m_window),
+				count,
+				&temp[0]
+			);
 		}
 		else
 		{
-			glfwSetWindowIcon(ML_WINDOW(m_window), 0, NULL);
+			glfwSetWindowIcon(
+				static_cast<GLFWwindow*>(m_window), 
+				NULL,
+				NULL
+			);
 		}
-		return (*this);
-	}
-
-	Window & Window::setInputMode(Cursor::Mode value)
-	{
-		glfwSetInputMode(ML_WINDOW(m_window), GLFW_CURSOR, value);
 		return (*this);
 	}
 
 	Window & Window::setPosition(const vec2i & value)
 	{
 		m_position = value;
-		glfwSetWindowPos(ML_WINDOW(m_window), value[0], value[1]);
+		glfwSetWindowPos(
+			static_cast<GLFWwindow*>(m_window),
+			value[0],
+			value[1]
+		);
 		return (*this);
 	}
 
 	Window & Window::setSize(const vec2u & value)
 	{
 		m_videoMode.size = value;
-		glfwSetWindowSize(ML_WINDOW(m_window), value[0], value[1]);
+		glfwSetWindowSize(
+			static_cast<GLFWwindow*>(m_window), 
+			value[0], 
+			value[1]
+		);
 		return (*this);
 	}
 
@@ -355,7 +395,10 @@ namespace ml
 	Window & Window::setTitle(const String & value)
 	{
 		m_title = value;
-		glfwSetWindowTitle(ML_WINDOW(m_window), value.c_str());
+		glfwSetWindowTitle(
+			static_cast<GLFWwindow*>(m_window),
+			value.c_str()
+		);
 		return (*this);
 	}
 
@@ -368,54 +411,76 @@ namespace ml
 
 	bool	Window::isOpen() const
 	{
-		return !glfwWindowShouldClose(ML_WINDOW(m_window));
+		return !glfwWindowShouldClose(
+			static_cast<GLFWwindow*>(m_window)
+		);
 	}
 	
 	int32_t Window::getAttrib(int32_t value) const
 	{
-		return glfwGetWindowAttrib(ML_WINDOW(m_window), value);
+		return glfwGetWindowAttrib(
+			static_cast<GLFWwindow*>(m_window), value
+		);
 	}
 
 	char	Window::getChar() const
 	{
 		static char temp;
-		temp = m_char;
-		m_char = NULL;
+		std::swap(m_char, temp);
 		return temp;
 	}
 
 	CString Window::getClipboardString() const
 	{
-		return (glfwGetClipboardString(ML_WINDOW(m_window)));
+		return (glfwGetClipboardString(
+			static_cast<GLFWwindow*>(m_window)
+		));
 	}
 
 	vec2f	Window::getCursorPos() const
 	{
 		static vec2d temp;
-		glfwGetCursorPos(ML_WINDOW(m_window), &temp[0], &temp[1]);
+		glfwGetCursorPos(
+			static_cast<GLFWwindow*>(m_window), 
+			&temp[0],
+			&temp[1]
+		);
 		return (vec2f)temp;
 	}
 
 	vec2i	Window::getFramebufferSize() const
 	{
 		static vec2i temp;
-		glfwGetFramebufferSize(ML_WINDOW(m_window), &temp[0], &temp[1]);
+		glfwGetFramebufferSize(
+			static_cast<GLFWwindow*>(m_window), 
+			&temp[0], 
+			&temp[1]
+		);
 		return temp;
 	}
 
 	int32_t	Window::getKey(int32_t value) const
 	{
-		return glfwGetKey(ML_WINDOW(m_window), value);
+		return glfwGetKey(
+			static_cast<GLFWwindow*>(m_window),
+			value
+		);
 	}
 
 	int32_t Window::getInputMode() const
 	{
-		return static_cast<Cursor::Mode>(glfwGetInputMode(ML_WINDOW(m_window), GLFW_CURSOR));
+		return static_cast<Cursor::Mode>(glfwGetInputMode(
+			static_cast<GLFWwindow*>(m_window), 
+			GLFW_CURSOR
+		));
 	}
 
 	int32_t	Window::getMouseButton(int32_t value) const
 	{
-		return glfwGetMouseButton(ML_WINDOW(m_window), value);
+		return glfwGetMouseButton(
+			static_cast<GLFWwindow*>(m_window),
+			value
+		);
 	}
 
 	double	Window::getTime() const
@@ -439,86 +504,109 @@ namespace ml
 
 	Window::CharFun Window::setCharCallback(CharFun callback)
 	{
-		return glfwSetCharCallback(ML_WINDOW(m_window), reinterpret_cast<GLFWcharfun>(callback))
-			? callback
-			: NULL;
+		return glfwSetCharCallback(
+			static_cast<GLFWwindow*>(m_window), 
+			reinterpret_cast<GLFWcharfun>(callback))
+				? (callback)
+				: (NULL);
 	}
 	
 	Window::CursorEnterFun Window::setCursorEnterCallback(CursorEnterFun callback)
 	{
-		return glfwSetCursorEnterCallback(ML_WINDOW(m_window), reinterpret_cast<GLFWcursorenterfun>(callback))
-			? callback
-			: NULL;
+		return glfwSetCursorEnterCallback(
+			static_cast<GLFWwindow*>(m_window),
+			reinterpret_cast<GLFWcursorenterfun>(callback))
+				? (callback)
+				: (NULL);
 	}
 	
 	Window::CursorPosFun Window::setCursorPosCallback(CursorPosFun callback)
 	{
-		return glfwSetCursorPosCallback(ML_WINDOW(m_window), reinterpret_cast<GLFWcursorposfun>(callback))
-			? callback
-			: NULL;
+		return glfwSetCursorPosCallback(
+			static_cast<GLFWwindow*>(m_window), 
+			reinterpret_cast<GLFWcursorposfun>(callback))
+				? (callback)
+				: (NULL);
 	}
 	
 	Window::ErrorFun Window::setErrorCallback(ErrorFun callback)
 	{
-		return glfwSetErrorCallback(reinterpret_cast<GLFWerrorfun>(callback))
-			? callback
-			: NULL;
+		return glfwSetErrorCallback(
+			reinterpret_cast<GLFWerrorfun>(callback))
+				? (callback)
+				: (NULL);
 	}
 
 	Window::FrameSizeFun Window::setFrameSizeCallback(FrameSizeFun callback)
 	{
-		return glfwSetFramebufferSizeCallback(ML_WINDOW(m_window), reinterpret_cast<GLFWframebuffersizefun>(callback))
-			? callback
-			: NULL;
+		return glfwSetFramebufferSizeCallback(
+			static_cast<GLFWwindow*>(m_window), 
+			reinterpret_cast<GLFWframebuffersizefun>(callback))
+				? (callback)
+				: (NULL);
 	}
 	
 	Window::KeyFun Window::setKeyCallback(KeyFun callback)
 	{
-		return glfwSetKeyCallback(ML_WINDOW(m_window), reinterpret_cast<GLFWkeyfun>(callback))
-			? callback
-			: NULL;
+		return glfwSetKeyCallback(
+			static_cast<GLFWwindow*>(m_window), 
+			reinterpret_cast<GLFWkeyfun>(callback))
+				? (callback)
+				: (NULL);
 	}
 	
 	Window::MouseButtonFun Window::setMouseButtonCallback(MouseButtonFun callback)
 	{
-		return glfwSetMouseButtonCallback(ML_WINDOW(m_window), reinterpret_cast<GLFWmousebuttonfun>(callback))
-			? callback
-			: NULL;
+		return glfwSetMouseButtonCallback(
+			static_cast<GLFWwindow*>(m_window), 
+			reinterpret_cast<GLFWmousebuttonfun>(callback))
+				? (callback)
+				: (NULL);
 	}
 	
 	Window::ScrollFun Window::setScrollCallback(ScrollFun callback)
 	{
-		return glfwSetScrollCallback(ML_WINDOW(m_window), reinterpret_cast<GLFWscrollfun>(callback))
-			? callback 
-			: NULL;
+		return glfwSetScrollCallback(
+			static_cast<GLFWwindow*>(m_window), 
+			reinterpret_cast<GLFWscrollfun>(callback))
+				? (callback) 
+				: (NULL);
 	}
 	
 	Window::CloseFun Window::setWindowCloseCallback(CloseFun callback)
 	{
-		return glfwSetWindowCloseCallback(ML_WINDOW(m_window), reinterpret_cast<GLFWwindowclosefun>(callback))
-			? callback
-			: NULL;
+		return glfwSetWindowCloseCallback(
+			static_cast<GLFWwindow*>(m_window), 
+			reinterpret_cast<GLFWwindowclosefun>(callback))
+				? (callback)
+				: (NULL);
 	}
 	
 	Window::FocusFun Window::setWindowFocusCallback(FocusFun callback)
 	{
-		return glfwSetWindowFocusCallback(ML_WINDOW(m_window), reinterpret_cast<GLFWwindowfocusfun>(callback))
-			? callback
-			: NULL;
+		return glfwSetWindowFocusCallback(
+			static_cast<GLFWwindow*>(m_window), 
+			reinterpret_cast<GLFWwindowfocusfun>(callback))
+				? (callback)
+				: (NULL);
 	}
 	
 	Window::PositionFun Window::setWindowPosCallback(PositionFun callback)
 	{
-		return glfwSetWindowPosCallback(ML_WINDOW(m_window), reinterpret_cast<GLFWwindowposfun>(callback))
-			? callback
-			: NULL;
+		return glfwSetWindowPosCallback(
+			static_cast<GLFWwindow*>(m_window), 
+			reinterpret_cast<GLFWwindowposfun>(callback))
+				? (callback)
+				: (NULL);
 	}
 	
 	Window::SizeFun Window::setWindowSizeCallback(SizeFun callback)
 	{
-		return glfwSetWindowSizeCallback(ML_WINDOW(m_window), reinterpret_cast<GLFWwindowposfun>(callback))
-			? callback
-			: NULL;
+		return glfwSetWindowSizeCallback(
+			static_cast<GLFWwindow*>(m_window), 
+			reinterpret_cast<GLFWwindowposfun>(callback))
+				? (callback)
+				: (NULL);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

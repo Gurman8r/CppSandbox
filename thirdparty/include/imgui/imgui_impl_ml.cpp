@@ -71,14 +71,14 @@ inline static void ImGui_ML_HandleInput()
 	if (imgui_cursor == ImGuiMouseCursor_None || io.MouseDrawCursor)
 	{
 		// Hide OS mouse cursor if imgui is drawing it or if it wants no cursor
-		g_Window->setInputMode(ml::Cursor::Hidden);
+		g_Window->seCursorMode(ml::Cursor::Hidden);
 	}
 	else
 	{
 		// Show OS mouse cursor
 		// FIXME-PLATFORM: Unfocused windows seems to fail changing the mouse cursor with ML 3.2, but 3.3 works here.
 		g_Window->setCursor(g_MouseCursors[imgui_cursor] ? g_MouseCursors[imgui_cursor] : g_MouseCursors[ImGuiMouseCursor_Arrow]);
-		g_Window->setInputMode(ml::Cursor::Normal);
+		g_Window->seCursorMode(ml::Cursor::Normal);
 	}
 }
 

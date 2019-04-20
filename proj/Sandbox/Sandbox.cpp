@@ -185,7 +185,7 @@ namespace DEMO
 		if (this->create(SETTINGS.title, SETTINGS.video(), SETTINGS.style, SETTINGS.context()) &&
 			this->setup(SETTINGS.glExperimental))
 		{
-			this->setInputMode(ml::Cursor::Normal);
+			this->seCursorMode(ml::Cursor::Normal);
 			this->setPosition((ml::VideoMode::desktop().size - this->getSize()) / 2);
 			this->setViewport(ml::vec2i::Zero, this->getFramebufferSize());
 			this->maximize();

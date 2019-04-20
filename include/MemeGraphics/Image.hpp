@@ -17,7 +17,7 @@ namespace ml
 		, public IReadable
 	{
 	public:
-		using Pixels = std::vector<uint8_t>;
+		using Pixels = typename List<uint8_t>;
 
 	public:
 		Image();
@@ -29,6 +29,7 @@ namespace ml
 		bool dispose() override;
 		bool loadFromFile(const String & filename) override;		
 
+	public:
 		Image & create(uint32_t width, uint32_t height, const vec4b & color);
 		Image & create(uint32_t width, uint32_t height, const uint8_t * pixels);
 		Image & createMaskFromColor(const vec4b & color, uint8_t alpha = 0);
@@ -49,9 +50,9 @@ namespace ml
 	public:
 		inline const uint8_t &	operator[](uint32_t index) const { return m_pixels[index]; }
 		inline uint8_t &		operator[](uint32_t index) { return m_pixels[index]; }
-
+		
 		inline operator bool() const { return !m_pixels.empty(); }
-		inline operator Icon() const { return Icon(width(), height(), ptr()); }
+		inline operator Icon() const { return Icon((int32_t)width(), (int32_t)height(), ptr()); }
 
 	private:
 		vec2u	m_size;

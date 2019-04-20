@@ -1,8 +1,8 @@
 #include <MemeWindow/VideoMode.hpp>
 
-#ifdef ML_SYSTEM_WINDOWS
-#include <Windows.h>
-#endif // ML_SYSTEM_WINDOWS
+# ifdef ML_SYSTEM_WINDOWS
+#	include <Windows.h>
+# endif // ML_SYSTEM_WINDOWS
 
 namespace ml
 {
@@ -38,10 +38,9 @@ namespace ml
 	const VideoMode & VideoMode::desktop()
 	{
 		static VideoMode temp;
-		static bool checked = false;
-		if(!checked)
-		{	checked = true;
-
+		static bool checked = true;
+		if (checked)
+		{	checked = false;
 #ifdef ML_SYSTEM_WINDOWS
 			DEVMODE win32Mode;
 			win32Mode.dmSize = sizeof(win32Mode);
@@ -57,13 +56,12 @@ namespace ml
 		return temp;
 	}
 
-	const std::vector<VideoMode> & VideoMode::resolutions()
+	const List<VideoMode> & VideoMode::resolutions()
 	{
-		static std::vector<VideoMode> temp;
-		static bool checked = false;
-		if(!checked)
-		{	checked = true;
-
+		static List<VideoMode> temp;
+		static bool checked = true;
+		if (checked)
+		{	checked = false;
 #ifdef ML_SYSTEM_WINDOWS
 			DEVMODE win32Mode;
 			win32Mode.dmSize = sizeof(win32Mode);
@@ -80,7 +78,7 @@ namespace ml
 				}
 			}
 #else
-			temp = std::vector<VideoMode>();
+			temp = List<VideoMode>();
 #endif
 		}
 		return temp;
@@ -102,12 +100,16 @@ namespace ml
 
 	bool VideoMode::equals(const VideoMode & value) const
 	{
-		return (size == value.size) && (bitsPerPixel == value.bitsPerPixel);
+		return 
+			(size == value.size) && 
+			(bitsPerPixel == value.bitsPerPixel);
 	}
 
 	bool VideoMode::lessThan(const VideoMode & value) const
 	{
-		return (size < value.size) && (bitsPerPixel < value.bitsPerPixel);
+		return
+			(size < value.size) && 
+			(bitsPerPixel < value.bitsPerPixel);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

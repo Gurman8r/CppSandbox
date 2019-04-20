@@ -1,7 +1,6 @@
 #ifndef _ML_WINDOW_HPP_
 #define _ML_WINDOW_HPP_
 
-#include <MemeCore/Vector4.hpp>
 #include <MemeCore/IEventListener.hpp>
 #include <MemeCore/INonCopyable.hpp>
 #include <MemeWindow/Cursor.hpp>
@@ -18,6 +17,21 @@ namespace ml
 		, public INonCopyable
 		, public IEventListener
 	{
+	public:
+		/* * * * * * * * * * * * * * * * * * * * */
+		using CharFun			= void(*)(void *, uint32_t);
+		using CursorEnterFun	= void(*)(void *, int32_t);
+		using CursorPosFun		= void(*)(void *, double, double);
+		using ErrorFun			= void(*)(int32_t, CString);
+		using FrameSizeFun		= void(*)(void *, int32_t, int32_t);
+		using KeyFun			= void(*)(void *, int32_t, int32_t, int32_t, int32_t);
+		using MouseButtonFun	= void(*)(void *, int32_t, int32_t, int32_t);
+		using ScrollFun			= void(*)(void *, double, double);
+		using CloseFun			= void(*)(void *);
+		using FocusFun			= void(*)(void *, int32_t);
+		using PositionFun		= void(*)(void *, int32_t, int32_t);
+		using SizeFun			= void(*)(void *, int32_t, int32_t);
+
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
 		enum Style : uint32_t
@@ -63,9 +77,9 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 		Window & setClipboardString(const String & value);
 		Window & setCursor(void * value);
+		Window & seCursorMode(Cursor::Mode value);
 		Window & setCursorPos(const vec2i & value);
-		Window & setIcons(const std::vector<Icon> & value);
-		Window & setInputMode(Cursor::Mode value);
+		Window & setIcons(const List<Icon> & value);
 		Window & setPosition(const vec2i & value);
 		Window & setSize(const vec2u & value);
 		Window & setSwapInterval(int32_t value);
@@ -118,33 +132,18 @@ namespace ml
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
-		using CharFun			= void(*)(void *, uint32_t);
-		using CursorEnterFun	= void(*)(void *, int32_t);
-		using CursorPosFun		= void(*)(void *, double, double);
-		using ErrorFun			= void(*)(int32_t, CString);
-		using FrameSizeFun		= void(*)(void *, int32_t, int32_t);
-		using KeyFun			= void(*)(void *, int32_t, int32_t, int32_t, int32_t);
-		using MouseButtonFun	= void(*)(void *, int32_t, int32_t, int32_t);
-		using ScrollFun			= void(*)(void *, double, double);
-		using CloseFun			= void(*)(void *);
-		using FocusFun			= void(*)(void *, int32_t);
-		using PositionFun		= void(*)(void *, int32_t, int32_t);
-		using SizeFun			= void(*)(void *, int32_t, int32_t);
-
-	public:
-		/* * * * * * * * * * * * * * * * * * * * */
-		CharFun			setCharCallback(CharFun callback);
-		CursorEnterFun	setCursorEnterCallback(CursorEnterFun callback);
-		CursorPosFun	setCursorPosCallback(CursorPosFun callback);
-		ErrorFun		setErrorCallback(ErrorFun callback);
-		FrameSizeFun	setFrameSizeCallback(FrameSizeFun callback);
-		KeyFun			setKeyCallback(KeyFun callback);
-		MouseButtonFun	setMouseButtonCallback(MouseButtonFun callback);
-		ScrollFun		setScrollCallback(ScrollFun callback);
-		CloseFun		setWindowCloseCallback(CloseFun callback);
-		FocusFun		setWindowFocusCallback(FocusFun callback);
-		PositionFun		setWindowPosCallback(PositionFun callback);
-		SizeFun			setWindowSizeCallback(SizeFun callback);
+		CharFun			setCharCallback			(CharFun		callback);
+		CursorEnterFun	setCursorEnterCallback	(CursorEnterFun callback);
+		CursorPosFun	setCursorPosCallback	(CursorPosFun	callback);
+		ErrorFun		setErrorCallback		(ErrorFun		callback);
+		FrameSizeFun	setFrameSizeCallback	(FrameSizeFun	callback);
+		KeyFun			setKeyCallback			(KeyFun			callback);
+		MouseButtonFun	setMouseButtonCallback	(MouseButtonFun callback);
+		ScrollFun		setScrollCallback		(ScrollFun		callback);
+		CloseFun		setWindowCloseCallback	(CloseFun		callback);
+		FocusFun		setWindowFocusCallback	(FocusFun		callback);
+		PositionFun		setWindowPosCallback	(PositionFun	callback);
+		SizeFun			setWindowSizeCallback	(SizeFun		callback);
 
 	protected:
 		/* * * * * * * * * * * * * * * * * * * * */

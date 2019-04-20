@@ -3,6 +3,7 @@
 
 #include <MemeWindow/Export.hpp>
 #include <MemeCore/ITrackable.hpp>
+#include <MemeCore/IComparable.hpp>
 
 namespace ml
 {
@@ -10,44 +11,34 @@ namespace ml
 
 	struct ML_WINDOW_API Icon final
 		: public ITrackable
+		, public IComparable<Icon>
 	{
-		uint32_t		width;
-		uint32_t		height;
-		const uint8_t *	pixels;
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		using pixels_ptr = typename const uint8_t *;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		Icon()
-			: width(0)
-			, height(0)
-			, pixels(0)
-		{
-		}
-
-		Icon(uint32_t width, uint32_t height, const uint8_t * pixels)
-			: width(width)
-			, height(height)
-			, pixels(pixels)
-		{
-		}
-
-		Icon(const Icon & copy)
-			: width(copy.width)
-			, height(copy.height)
-			, pixels(copy.pixels)
-		{
-		}
+		int32_t		width;
+		int32_t		height;
+		pixels_ptr	pixels;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		inline void serialize(std::ostream & out) const override
-		{
-			out << GetTypeInfo().name() << " " << width << " " << height << " ";
-		}
+		Icon();
+		Icon(const int32_t width, const int32_t height, pixels_ptr pixels);
+		Icon(const Icon & copy);
+		~Icon();
 
-		inline void deserialize(std::istream & in) override
-		{
-		}
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		void serialize(std::ostream & out) const override;
+		void deserialize(std::istream & in) override;
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		bool equals(const Icon & other) const override;
+		bool lessThan(const Icon & other) const override;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	};
