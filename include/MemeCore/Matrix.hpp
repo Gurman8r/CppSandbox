@@ -50,11 +50,6 @@ namespace ml
 		using const_reverse_iterator= typename enumerable_type::const_reverse_iterator;
 
 
-	private: // Data
-		/* * * * * * * * * * * * * * * * * * * * */
-		array_type m_data;
-
-
 	public: // Constructors
 		/* * * * * * * * * * * * * * * * * * * * */
 		Matrix()
@@ -286,7 +281,10 @@ namespace ml
 			return m_data[index];
 		}
 
+
+	private: // Data
 		/* * * * * * * * * * * * * * * * * * * * */
+		array_type m_data;
 	};
 }
 

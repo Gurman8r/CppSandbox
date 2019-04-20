@@ -16,9 +16,9 @@ namespace ml
 	{
 	public: // Usings
 		/* * * * * * * * * * * * * * * * * * * * */
-		using value_type	= typename _Elem;
-		using base_type		= typename Vector<value_type, 3>;
-		using self_type		= typename Vector3<value_type>;
+		using value_type		= typename _Elem;
+		using base_type			= typename Vector<value_type, 3>;
+		using self_type			= typename Vector3<value_type>;
 
 		using pointer			= typename base_type::pointer;
 		using reference			= typename base_type::reference;
@@ -58,7 +58,7 @@ namespace ml
 		}
 		
 		template <
-			class U, 
+			class  U, 
 			size_t S
 		> Vector3(const Vector<U, S> & copy, const_reference def = static_cast<value_type>(0))
 			: base_type(copy, def)
@@ -72,12 +72,12 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 		inline self_type & cross(const self_type & other)
 		{
-			return (*this) = cross((*this), other);
+			return (*this) = self_type::cross((*this), other);
 		}
 
 		inline self_type & project(const self_type & other)
 		{
-			return (*this) = project((*this), other);
+			return (*this) = self_type::project((*this), other);
 		}
 
 
