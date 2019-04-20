@@ -60,22 +60,20 @@ namespace ml
 		if (beginDraw(p_open))
 		{
 			// Filter
-			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
 			static ImGuiTextFilter filter;
+			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
 			filter.Draw("Filter (\"incl,-excl\") (\"error\")", 180);
 			ImGui::PopStyleVar();
 			ImGui::Separator();
 
 			// Text
-			const float footer_height =
-				ImGui::GetStyle().ItemSpacing.y + 
-				ImGui::GetFrameHeightWithSpacing();
+			const float footer_height = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing();
 
-			if (ImGui::BeginChild(
+			ImGui::BeginChild(
 				"ScrollingRegion",
 				{ 0, -footer_height },
 				false,
-				ImGuiWindowFlags_HorizontalScrollbar)) { }
+				ImGuiWindowFlags_HorizontalScrollbar);
 
 			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1));
 			ImVec4 col_default_text = ImGui::GetStyleColorVec4(ImGuiCol_Text);
@@ -106,20 +104,19 @@ namespace ml
 			ImGui::Separator();
 			
 			// Input
-			auto callback = [](auto data) 
-			{ 
-				return (static_cast<Terminal *>(data->UserData))->textEditCallback(data);
-			};
-			
 			bool reclaim_focus;
 			if (reclaim_focus = ImGui::InputText(
-				("Input"), m_inputBuf, IM_ARRAYSIZE(m_inputBuf),
+				"Input", 
+				m_inputBuf,
+				IM_ARRAYSIZE(m_inputBuf),
 				(
 					ImGuiInputTextFlags_EnterReturnsTrue |
 					ImGuiInputTextFlags_CallbackCompletion |
 					ImGuiInputTextFlags_CallbackHistory
 				),
-				callback, static_cast<void *>(this)))
+				[](auto data) { return (static_cast<Terminal *>(data->UserData))->inputCallback(data); },
+				static_cast<void *>(this))
+			)
 			{
 				auto strtrim = [](char * str)
 				{
@@ -136,10 +133,7 @@ namespace ml
 					execute(s);
 				}
 				strcpy(s, "");
-				reclaim_focus = true;
 			}
-
-
 			// Auto-focus on window apparition
 			ImGui::SetItemDefaultFocus();
 			if (reclaim_focus)
@@ -214,7 +208,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	int32_t Terminal::textEditCallback(void * value)
+	int32_t Terminal::inputCallback(void * value)
 	{
 		ImGuiInputTextCallbackData * data;
 		if (!(data = (ImGuiInputTextCallbackData *)(value))) 

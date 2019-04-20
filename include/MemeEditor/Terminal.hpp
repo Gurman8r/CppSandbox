@@ -34,7 +34,7 @@ namespace ml
 		void	printl(const String & value);	// Print Line
 		void	prints(SStream & value);		// Print Stream
 		void    execute(CString value);
-		int32_t textEditCallback(void * value);
+		int32_t inputCallback(void * value);
 
 	public:
 		inline const List<char *> & history() const { return m_history; }
