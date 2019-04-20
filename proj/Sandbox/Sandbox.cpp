@@ -192,7 +192,7 @@ namespace DEMO
 		{
 			this->seCursorMode(ml::Cursor::Normal);
 			this->setPosition((ml::VideoMode::desktop().size - this->getSize()) / 2);
-			this->setViewport(ml::vec2i::Zero, this->getFramebufferSize());
+			this->setViewport(ml::vec2i::Zero, this->getFrameSize());
 			this->maximize();
 		}
 		else
@@ -888,7 +888,7 @@ namespace DEMO
 		// Update Projections
 		/* * * * * * * * * * * * * * * * * * * * */
 		ml::vec2i resolution;
-		if ((resolution = this->getFramebufferSize()) != ml::vec2i::Zero)
+		if ((resolution = this->getFrameSize()) != ml::vec2i::Zero)
 		{
 			// Resize Effects
 			bool changed = false;

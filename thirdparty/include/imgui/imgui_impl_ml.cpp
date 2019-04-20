@@ -239,7 +239,7 @@ void ImGui_ML_NewFrame()
 
 	// Setup display size (every frame to accommodate for window resizing)
 	ml::vec2f size = ml::vec2f(g_Window->getSize());
-	ml::vec2f display = ml::vec2f(g_Window->getFramebufferSize());
+	ml::vec2f display = ml::vec2f(g_Window->getFrameSize());
 	io.DisplaySize = ImVec2(size[0], size[1]);
 	io.DisplayFramebufferScale = ImVec2(size[0] > 0 ? (display[0] / size[0]) : 0, size[1] > 0 ? (display[1] / size[1]) : 0);
 

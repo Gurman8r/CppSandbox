@@ -472,7 +472,7 @@ namespace ml
 		return (vec2f)temp;
 	}
 
-	vec2i	Window::getFramebufferSize() const
+	vec2i	Window::getFrameSize() const
 	{
 		static vec2i temp;
 		glfwGetFramebufferSize(

@@ -93,7 +93,7 @@ namespace ml
 		char	getChar() const;
 		CString	getClipboardString() const;
 		vec2f	getCursorPos() const;
-		vec2i	getFramebufferSize() const;
+		vec2i	getFrameSize() const;
 		int32_t	getKey(int32_t value) const;
 		int32_t	getInputMode() const;
 		int32_t	getMouseButton(int32_t button) const;
@@ -113,8 +113,8 @@ namespace ml
 		inline const String &	getTitle()		const { return m_title; }
 		inline const uint32_t	width()			const { return getSize()[0]; }
 		inline const uint32_t	height()		const { return getSize()[1]; }
-		inline const int32_t	frameWidth()	const { return getFramebufferSize()[0]; }
-		inline const int32_t	frameHeight()	const { return getFramebufferSize()[1]; }
+		inline const int32_t	frameWidth()	const { return getFrameSize()[0]; }
+		inline const int32_t	frameHeight()	const { return getFrameSize()[1]; }
 
 		inline const float aspect() const 
 		{
