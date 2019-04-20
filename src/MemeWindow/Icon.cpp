@@ -42,12 +42,12 @@ namespace ml
 
 	bool Icon::equals(const Icon & other) const
 	{
-		return false;
+		return (width == other.width) && (height == other.height);
 	}
 
 	bool Icon::lessThan(const Icon & other) const
 	{
-		return false;
+		return (width < other.width) || (height < other.height);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
