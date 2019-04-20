@@ -41,7 +41,7 @@ namespace ml
 
 		using self_type				= typename Matrix<value_type, Cols, Rows>;
 		using init_type				= typename std::initializer_list<value_type>;
-		using contiguous_type		= typename std::vector<value_type>;
+		using contiguous_type		= typename List<value_type>;
 
 		using enumerable_type		= typename IEnumerable<value_type, Size>;
 		using iterator				= typename enumerable_type::iterator;

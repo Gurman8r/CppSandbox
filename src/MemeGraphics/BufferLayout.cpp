@@ -22,18 +22,24 @@ namespace ml
 	}
 
 	BufferLayout::Element::Element(uint32_t index, uint32_t size, GL::Type type, bool normalized, uint32_t stride, uint32_t offset, uint32_t width)
-		: index(index)
-		, size(size)
-		, type(type)
+		: index		(index)
+		, size		(size)
+		, type		(type)
 		, normalized(normalized)
-		, stride(stride)
-		, offset(offset)
-		, width(width)
+		, stride	(stride)
+		, offset	(offset)
+		, width		(width)
 	{
 	}
 
-	BufferLayout::Element::Element(const Element & e)
-		: Element(e.index, e.size, e.type, e.normalized, e.stride, e.offset, e.width)
+	BufferLayout::Element::Element(const Element & copy) : Element(
+		copy.index, 
+		copy.size, 
+		copy.type, 
+		copy.normalized, 
+		copy.stride, 
+		copy.offset, 
+		copy.width)
 	{
 	}
 
@@ -52,6 +58,30 @@ namespace ml
 		ML_GL.enableVertexAttribArray(index);
 	}
 
+	bool BufferLayout::Element::equals(const Element & other) const
+	{
+		return
+			this->index		 == other.index &&
+			this->size		 == other.size &&
+			this->type		 == other.type &&
+			this->normalized == other.normalized &&
+			this->stride	 == other.stride &&
+			this->offset	 == other.offset &&
+			this->width		 == other.width;
+	}
+
+	bool BufferLayout::Element::lessThan(const Element & other) const
+	{
+		return
+			this->index		 < other.index ||
+			this->size		 < other.size ||
+			this->type		 < other.type ||
+			this->normalized < other.normalized ||
+			this->stride	 < other.stride ||
+			this->offset	 < other.offset ||
+			this->width		 < other.width;
+	}
+
 	/* * * * * * * * * * * * * * * * * * * * */
 }
 
@@ -62,11 +92,11 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	BufferLayout::BufferLayout()
-		: BufferLayout(std::vector<Element>())
+		: BufferLayout(List<Element>())
 	{
 	}
 
-	BufferLayout::BufferLayout(const std::vector<Element> & elements)
+	BufferLayout::BufferLayout(const List<Element> & elements)
 		: m_elements(elements)
 	{
 	}

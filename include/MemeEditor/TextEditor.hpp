@@ -46,7 +46,7 @@ namespace ml
 
 	private:
 		int32_t m_selected;
-		std::vector<Document> m_files;
+		List<Document> m_files;
 	};
 }
 

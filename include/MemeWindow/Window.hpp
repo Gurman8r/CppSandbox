@@ -111,10 +111,15 @@ namespace ml
 		inline const vec2i &	getPosition()	const { return m_position; }
 		inline const vec2u &	getSize()		const { return m_videoMode.size; }
 		inline const String &	getTitle()		const { return m_title; }
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
 		inline const uint32_t	width()			const { return getSize()[0]; }
 		inline const uint32_t	height()		const { return getSize()[1]; }
 		inline const int32_t	frameWidth()	const { return getFrameSize()[0]; }
 		inline const int32_t	frameHeight()	const { return getFrameSize()[1]; }
+
+		/* * * * * * * * * * * * * * * * * * * * */
 
 		inline const float aspect() const 
 		{

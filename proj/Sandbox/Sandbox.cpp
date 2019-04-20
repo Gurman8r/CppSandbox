@@ -156,11 +156,13 @@ namespace DEMO
 			// GL Error Pause
 			ML_GL.errorPause(SETTINGS.glErrorPause);
 
-			// Setup Terminal Redirect
+#if defined(ML_Editor)
+			// Setup Cout Redirect
 			if (!(m_rdbuf = ml::cout.rdbuf(m_rdstr.rdbuf())))
 			{
 				return ml::Debug::fatal("Failed Redirecting Std Output Handle");
 			}
+#endif
 		}
 
 		// Setup Interpreter
@@ -670,7 +672,7 @@ namespace DEMO
 
 	void Sandbox::onUpdate(const ml::UpdateEvent * ev)
 	{
-		// Update Terminal Redirect
+		// Update Cout Redirect
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (m_rdbuf)
 		{
@@ -1152,7 +1154,7 @@ namespace DEMO
 	{
 		ml::Debug::log("Exiting...");
 
-		// Cleanup Terminal Redirect
+		// Cleanup Cout Redirect
 		if (m_rdbuf) 
 		{ 
 			ml::cout.rdbuf(m_rdbuf); 

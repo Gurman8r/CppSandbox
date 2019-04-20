@@ -3,6 +3,7 @@
 
 #include <MemeGraphics/GL.hpp>
 #include <MemeCore/ITrackable.hpp>
+#include <MemeCore/List.hpp>
 
 namespace ml
 {
@@ -17,7 +18,10 @@ namespace ml
 	public:
 		struct Element final
 			: public ITrackable
+			, public IComparable<Element>
 		{
+			/* * * * * * * * * * * * * * * * * * * * */
+
 			uint32_t	index;
 			uint32_t	size;
 			GL::Type	type;
@@ -26,16 +30,24 @@ namespace ml
 			uint32_t	offset;
 			uint32_t	width;
 
+			/* * * * * * * * * * * * * * * * * * * * */
+
 			Element();
 			Element(uint32_t index, uint32_t size, GL::Type type, bool normalized, uint32_t stride, uint32_t offset, uint32_t width);
 			Element(const Element & copy);
 
+			/* * * * * * * * * * * * * * * * * * * * */
+
 			void use() const;
+			bool equals(const Element & other) const override;
+			bool lessThan(const Element & other) const override;
+
+			/* * * * * * * * * * * * * * * * * * * * */
 		};
 
 	public:
 		BufferLayout();
-		BufferLayout(const std::vector<Element> & elements);
+		BufferLayout(const List<Element> & elements);
 		BufferLayout(const std::initializer_list<Element> & elements);
 		BufferLayout(const BufferLayout & copy);
 		~BufferLayout();
@@ -44,10 +56,10 @@ namespace ml
 
 		BufferLayout & push_back(const Element & value);
 		
-		inline const std::vector<Element> & elements() const { return m_elements; }
+		inline const List<Element> & elements() const { return m_elements; }
 
 	private:
-		std::vector<Element> m_elements;
+		List<Element> m_elements;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

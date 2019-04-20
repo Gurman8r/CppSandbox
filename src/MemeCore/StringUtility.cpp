@@ -21,7 +21,7 @@ namespace ml
 
 	String StringUtility::Sprintf(const String fmt, ...)
 	{
-		std::vector<char> buf(BUFFER_SIZE);
+		List<char> buf(BUFFER_SIZE);
 		va_list args;
 		va_start(args, fmt);
 		{
@@ -66,7 +66,7 @@ namespace ml
 
 	List<String> StringUtility::Split(const String & value, const String & delim)
 	{
-		std::vector<String> list;
+		List<String> list;
 		String	cpy = value;
 		size_t	pos = 0;
 		String	tok;

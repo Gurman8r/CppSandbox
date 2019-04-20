@@ -10,6 +10,7 @@ namespace ml
 
 	struct ML_EDITOR_API Document
 		: public ITrackable
+		, public IComparable<Document>
 	{
 		/* * * * * * * * * * * * * * * * * * * * */
 
@@ -103,6 +104,22 @@ namespace ml
 		> inline _OutIt find(const _Elem & value)
 		{
 			return this->find<_OutIt>(begin(), end(), value);
+		}
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		inline bool equals(const Document & other) const override
+		{
+			return 
+				(this->sizeUsed() == other.sizeUsed()) &&
+				(String(this->data) == String(other.data));
+		}
+
+		inline bool lessThan(const Document & other) const override
+		{
+			return 
+				(this->sizeUsed() < other.sizeUsed()) ||
+				(String(this->data) < String(other.data));
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
