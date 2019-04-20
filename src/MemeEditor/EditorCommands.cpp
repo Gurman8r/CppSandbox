@@ -1,6 +1,6 @@
 #include <MemeEditor/EditorCommands.hpp>
 #include <MemeEditor/EditorEvents.hpp>
-#include <MemeEditor/Terminal.hpp>
+#include <MemeEditor/Editor.hpp>
 #include <MemeEngine/Resources.hpp>
 #include <MemeScript/Interpreter.hpp>
 #include <MemeCore/Debug.hpp>
@@ -31,7 +31,7 @@ namespace ml
 
 	Var EditorCommands::cmd_history(Args & args)
 	{
-		for (auto h : ML_Terminal.history())
+		for (auto & h : ML_Terminal.history())
 		{
 			ML_Terminal.print(h);
 		}
@@ -106,9 +106,10 @@ namespace ml
 		const String name = args.pop();
 		if (Script * scr = ML_Res.scripts.get(name))
 		{
-			auto build_fun = flag_rebuild
-				? &Script::rebuild
-				: &Script::build;
+			auto build_fun = ((flag_rebuild)
+				? (&Script::rebuild)
+				: (&Script::build)
+			);
 
 			args.pop_front();
 

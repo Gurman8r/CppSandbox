@@ -41,8 +41,9 @@ namespace DEMO
 		ml::Camera		m_camera;
 		ml::Canvas		m_canvas;
 		TextMap			m_text;
-		ml::SStream		m_ss;
-		ml::StreamBuf * m_buf = NULL;
+
+		ml::SStream		m_rdStr; // Redirect Stream
+		ml::StreamBuf * m_rdbuf; // Redirect Buffer
 
 		struct DemoData
 		{

@@ -157,7 +157,10 @@ namespace DEMO
 			ML_GL.errorPause(SETTINGS.glErrorPause);
 
 			// Setup Terminal Redirect
-			m_buf = ml::cout.rdbuf(m_ss.rdbuf());
+#ifdef ML_Terminal
+			m_rdbuf = ml::cout.rdbuf(m_rdStr.rdbuf());
+#endif
+
 		}
 
 		// Setup Interpreter
@@ -667,16 +670,14 @@ namespace DEMO
 		});
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 	void Sandbox::onUpdate(const ml::UpdateEvent * ev)
 	{
 		// Update Terminal Redirect
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
-			ml::String line;
-			while (std::getline(m_ss, line))
-			{
-				ML_Terminal.printf("%s\n", line.c_str());
-			}
+			ML_Terminal.prints(m_rdStr);
 		}
 
 		// Update Window Title
@@ -1137,6 +1138,8 @@ namespace DEMO
 		}
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 	void Sandbox::onUnload(const ml::UnloadEvent * ev)
 	{
 		ml::Debug::log("Unloading...");
@@ -1153,10 +1156,10 @@ namespace DEMO
 		ml::Debug::log("Exiting...");
 
 		// Cleanup Terminal Redirect
-		if (m_buf)
-		{
-			ml::cout.rdbuf(m_buf);
-			m_buf = NULL;
+		if (m_rdbuf) 
+		{ 
+			ml::cout.rdbuf(m_rdbuf); 
+			m_rdbuf = NULL; 
 		}
 
 		// Shutdown ImGui

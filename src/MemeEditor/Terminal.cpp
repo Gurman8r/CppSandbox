@@ -151,7 +151,21 @@ namespace ml
 
 	void Terminal::print(const String & value)
 	{
-		printf("%s", value.c_str());
+		this->printf("%s", value.c_str());
+	}
+
+	void Terminal::printl(const String & value)
+	{
+		this->printf("%s\n", value.c_str());
+	}
+
+	void Terminal::prints(SStream & value)
+	{
+		String line;
+		while (std::getline(value, line))
+		{
+			this->printl(line);
+		}
 	}
 
 	void Terminal::printf(CString value, ...)

@@ -30,8 +30,10 @@ namespace ml
 
 	public:
 		void    clear();
-		void	print(const String & value);
-		void    printf(CString value, ...);
+		void	print(const String & value);	// Print String
+		void	printl(const String & value);	// Print Line
+		void	prints(SStream & value);		// Print Stream
+		void    printf(CString value, ...);		// Print Format
 		void    execCommand(CString value);
 		int32_t textEditCallback(void * value);
 
