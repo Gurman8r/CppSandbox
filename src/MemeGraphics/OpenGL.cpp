@@ -4,9 +4,9 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 
-#ifdef ML_SYSTEM_WINDOWS
-#pragma comment(lib, "glew32s.lib")
-#endif
+# ifdef ML_SYSTEM_WINDOWS
+#	pragma comment(lib, "glew32s.lib")
+# endif
 
 #define ML_BUFFER_SIZE 1024
 
@@ -133,25 +133,22 @@ namespace ml
 				{
 					majorVersion = version[0] - '0';
 					minorVersion = version[2] - '0';
+					Debug::logWarning("Using OpenGL Version: {0}.{1}", majorVersion, minorVersion);
 				}
 				else
 				{
-					Debug::logWarning("Can't get the version number, assuming 1.1");
 					majorVersion = 1;
 					minorVersion = 1;
+					Debug::logWarning("Can't get the version number, assuming 1.1");
 				}
 			}
-
-			Debug::log("Using OpenGL Version: {0}.{1}",
-				majorVersion,
-				minorVersion);
 
 			if (!framebuffersAvailable())
 			{
 				static bool warned = false;
 				if (!warned)
 				{
-					Debug::logWarning("Texture Mipmap Framebuffers Unavailable");
+					Debug::logWarning("Framebuffers Unavailable");
 					warned = true;
 				}
 			}
