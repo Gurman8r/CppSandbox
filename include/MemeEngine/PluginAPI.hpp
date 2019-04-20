@@ -8,19 +8,8 @@
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#define ML_PLUGIN_API ML_API_EXPORT
-
-#define ML_Plugin_Test ML_Plugin_Test
-
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-namespace ml
-{
-	using PluginFun	= void * (*)(void *);
-}
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+#define ML_PLUGIN_API	ML_API_EXPORT
+#define ML_Plugin_Test	ML_Plugin_Test
 
 extern "C"
 {

@@ -10,9 +10,9 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-#define ML_LOCALHOST "127.0.0.1"
-#define ML_PORT 60000
-#define ML_MAX_CLIENTS 10
+#define ML_LOCALHOST	"127.0.0.1"
+#define ML_DEFAULT_PORT	60000
+#define ML_MAX_CLIENTS	10
 
 /* * * * * * * * * * * * * * * * * * * * */
 

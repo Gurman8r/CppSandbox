@@ -4,6 +4,7 @@
 #include <MemeScript/Export.hpp>
 #include <MemeCore/List.hpp>
 #include <MemeCore/Preprocessor.hpp>
+#include <MemeCore/ITrackable.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * */
 

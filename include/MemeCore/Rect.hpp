@@ -1,7 +1,6 @@
 #ifndef _ML_RECT_HPP_
 #define _ML_RECT_HPP_
 
-#include <MemeCore/Vector2.hpp>
 #include <MemeCore/Vector4.hpp>
 
 namespace ml
@@ -18,7 +17,7 @@ namespace ml
 		using value_type		= typename _Elem;
 		using base_type			= typename Vector4<value_type>;
 		using self_type			= typename Rect<value_type>;
-		using coord_type		= typename Vector2<value_type>;
+		using coord_type		= typename Vector<value_type, 2>;
 
 		using pointer			= typename base_type::pointer;
 		using reference			= typename base_type::reference;
@@ -74,10 +73,10 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		inline self_type & left		(value_type value) { ((*this)[0] = value); return (*this); }
-		inline self_type & top		(value_type value) { ((*this)[1] = value); return (*this); }
-		inline self_type & width	(value_type value) { ((*this)[2] = value); return (*this); }
-		inline self_type & height	(value_type value) { ((*this)[3] = value); return (*this); }
+		inline self_type & left		(value_type value)	{ ((*this)[0] = value); return (*this); }
+		inline self_type & top		(value_type value)	{ ((*this)[1] = value); return (*this); }
+		inline self_type & width	(value_type value)	{ ((*this)[2] = value); return (*this); }
+		inline self_type & height	(value_type value)	{ ((*this)[3] = value); return (*this); }
 
 		inline self_type & bot		(value_type value)			{ return height(value - top()); }
 		inline self_type & right	(value_type value)			{ return width(value - left()); }

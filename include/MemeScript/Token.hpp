@@ -87,6 +87,7 @@ namespace ml
 		bool equals(const char & value) const override;
 		bool equals(const String & value) const override;
 
+	public:
 		bool lessThan(const Token & value) const override;
 		bool lessThan(const char & value) const override;
 		bool lessThan(const String & value) const override;

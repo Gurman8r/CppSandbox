@@ -9,7 +9,7 @@ namespace ml
 	{
 	}
 
-	GUID::GUID(uint64_t id)
+	GUID::GUID(const uint64_t id)
 		: id(id)
 	{
 	}
@@ -26,29 +26,40 @@ namespace ml
 		return id;
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	inline void GUID::serialize(std::ostream & out) const
 	{
 		out << id;
 	}
 
+	void GUID::deserialize(std::istream & in)
+	{
+		in >> id;
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	inline bool GUID::equals(const uint64_t & value) const
 	{
-		return (*this) == value;
+		return ((*this) == value);
 	}
 
 	inline bool GUID::equals(const GUID & value) const
 	{
-		return id == value.id;
+		return (id == value.id);
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	inline bool GUID::lessThan(const uint64_t & value) const
 	{
-		return (*this) < value;
+		return ((*this) < value);
 	}
 
 	inline bool GUID::lessThan(const GUID & value) const
 	{
-		return id < value.id;
+		return (id < value.id);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

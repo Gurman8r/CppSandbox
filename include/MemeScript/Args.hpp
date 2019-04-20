@@ -1,8 +1,9 @@
 #ifndef _ML_ARGS_HPP_
 #define _ML_ARGS_HPP_
 
-#include <MemeCore/List.hpp>
 #include <MemeScript/Export.hpp>
+#include <MemeCore/List.hpp>
+#include <MemeCore/ITrackable.hpp>
 
 namespace ml
 {
@@ -13,11 +14,12 @@ namespace ml
 		, public IComparable<Args>
 	{
 	public:
-		using iterator				= List<String>::iterator;
-		using const_iterator		= List<String>::const_iterator;
-		using reverse_iterator		= List<String>::reverse_iterator;
-		using const_reverse_iterator= List<String>::const_reverse_iterator;
-		using difference_type		= List<String>::difference_type;
+		using list_type				= typename List<String>;
+		using iterator				= typename list_type::iterator;
+		using const_iterator		= typename list_type::const_iterator;
+		using reverse_iterator		= typename list_type::reverse_iterator;
+		using const_reverse_iterator= typename list_type::const_reverse_iterator;
+		using difference_type		= typename list_type::difference_type;
 
 	public:
 		Args();

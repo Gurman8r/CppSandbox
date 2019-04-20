@@ -52,7 +52,7 @@ namespace ml
 
 		template <
 			class U
-		> Vector3(const Vector3<U>& copy)
+		> Vector3(const Vector3<U> & copy)
 			: base_type(copy)
 		{
 		}
@@ -72,12 +72,12 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 		inline self_type & cross(const self_type & other)
 		{
-			return (*this) = self_type::cross((*this), other);
+			return ((*this) = self_type::cross((*this), other));
 		}
 
 		inline self_type & project(const self_type & other)
 		{
-			return (*this) = self_type::project((*this), other);
+			return ((*this) = self_type::project((*this), other));
 		}
 
 

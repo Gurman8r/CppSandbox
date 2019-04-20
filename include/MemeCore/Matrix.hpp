@@ -1,6 +1,7 @@
 #ifndef _ML_MATRIX_HPP_
 #define _ML_MATRIX_HPP_
 
+#include <MemeCore/ITrackable.hpp>
 #include <MemeCore/IEnumerable.hpp>
 #include <MemeCore/List.hpp>
 #include <MemeCore/Maths.hpp>

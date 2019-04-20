@@ -224,7 +224,7 @@ namespace DEMO
 			ml::Debug::log("Starting Server...");
 			if (ML_NetServer.setup())
 			{
-				if (ML_NetServer.start({ ML_LOCALHOST, ML_PORT }, ML_MAX_CLIENTS))
+				if (ML_NetServer.start({ ML_LOCALHOST, ML_DEFAULT_PORT }, ML_MAX_CLIENTS))
 				{
 					ml::Debug::log("Server Started: {0}", ML_NetServer.getMyAddress());
 				}
@@ -236,7 +236,7 @@ namespace DEMO
 			ml::Debug::log("Starting Client...");
 			if (ML_NetClient.setup())
 			{
-				if (ML_NetClient.connect({ ML_LOCALHOST, ML_PORT }))
+				if (ML_NetClient.connect({ ML_LOCALHOST, ML_DEFAULT_PORT }))
 				{
 					ml::Debug::log("Client Connected: {0}", ML_NetClient.getMyAddress());
 				}

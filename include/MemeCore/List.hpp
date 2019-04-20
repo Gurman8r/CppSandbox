@@ -1,7 +1,10 @@
 #ifndef _ML_LIST_HPP_
 #define _ML_LIST_HPP_
 
-#include <MemeCore/ITrackable.hpp>
+#include <MemeCore/Export.hpp>
+#include <MemeCore/STD.hpp>
+#include <MemeCore/IComparable.hpp>
+#include <MemeCore/ISerializable.hpp>
 
 namespace ml
 {
