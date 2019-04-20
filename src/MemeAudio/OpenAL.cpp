@@ -87,8 +87,8 @@ namespace ml
 				<< FG::White << ml::endl << "\t" << errorName
 				<< FG::White << ml::endl << "\t" << errorDesc
 				<< FMT()
-				<< ml::endl
-				<< ml::endl;
+				<< endl
+				<< endl;
 		}
 	}
 	

@@ -42,7 +42,7 @@ namespace DEMO
 		ml::Canvas		m_canvas;
 		TextMap			m_text;
 
-		ml::SStream		m_rdStr; // Redirect Stream
+		ml::SStream		m_rdstr; // Redirect Stream
 		ml::StreamBuf * m_rdbuf; // Redirect Buffer
 
 		struct DemoData

@@ -1,13 +1,6 @@
 #include <MemeEngine/Engine.hpp>
 #include <MemeEngine/Application.hpp>
 #include <MemeCore/Time.hpp>
-#include <MemeCore/Debug.hpp>
-
-# ifdef ML_SYSTEM_WINDOWS
-#	include <Windows.h>
-#	define SC_CLOSE 0xF060
-#	define MF_GRAYED 0x00000001L
-# endif // ML_SYSTEM_WINDOWS
 
 namespace ml
 {
@@ -16,9 +9,6 @@ namespace ml
 	Engine::Engine()
 		: m_app(NULL)
 	{
-#ifdef ML_SYSTEM_WINDOWS
-		ML_Console.enableMenuItem(SC_CLOSE, MF_GRAYED);
-#endif // ML_SYSTEM_WINDOWS
 	}
 
 	Engine::~Engine()

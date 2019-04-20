@@ -65,11 +65,11 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 		Window & close();
 		Window & destroy();
+		Window & iconify();
 		Window & makeContextCurrent();
 		Window & maximize();
-		Window & restore();
-		Window & iconify();
 		Window & pollEvents();
+		Window & restore();
 		Window & swapBuffers();
 		Window & terminate();
 

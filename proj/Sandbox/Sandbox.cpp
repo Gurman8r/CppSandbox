@@ -156,11 +156,10 @@ namespace DEMO
 			// GL Error Pause
 			ML_GL.errorPause(SETTINGS.glErrorPause);
 
+#if defined(ML_Terminal)
 			// Setup Terminal Redirect
-#ifdef ML_Terminal
-			m_rdbuf = ml::cout.rdbuf(m_rdStr.rdbuf());
-#endif
-
+			m_rdbuf = ml::cout.rdbuf(m_rdstr.rdbuf());
+#endif // ML_Terminal
 		}
 
 		// Setup Interpreter
@@ -677,7 +676,7 @@ namespace DEMO
 		// Update Terminal Redirect
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
-			ML_Terminal.prints(m_rdStr);
+			ML_Terminal.prints(m_rdstr);
 		}
 
 		// Update Window Title
