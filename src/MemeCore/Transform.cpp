@@ -38,7 +38,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Transform::Transform()
-		: m_matrix(mat4f::identity())
+		: m_matrix(mat4f::Identity())
 	{
 		this->translate(vec3f::Zero);
 		this->rotate(0.0f, vec3f::One);
@@ -46,7 +46,7 @@ namespace ml
 	}
 
 	Transform::Transform(const vec3f & position, const vec3f & scale)
-		: m_matrix(mat4f::identity())
+		: m_matrix(mat4f::Identity())
 	{
 		this->translate(position);
 		this->rotate(0.f, vec3f::One);
@@ -54,7 +54,7 @@ namespace ml
 	}
 
 	Transform::Transform(const vec3f & pos, const vec3f & scl, const quat & rot)
-		: m_matrix(mat4f::identity())
+		: m_matrix(mat4f::Identity())
 	{
 		this->translate(pos);
 		this->rotate(rot.real(), rot.complex());

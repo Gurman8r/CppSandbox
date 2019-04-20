@@ -10,16 +10,21 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	template <
-		class T
+		class _Elem
 	> class Vector4
-		: public Vector<T, 4>
+		: public Vector<_Elem, 4>
 	{
 	public: // Usings
 		/* * * * * * * * * * * * * * * * * * * * */
-		using value_type	= typename T;
-		using const_value	= typename const value_type;
+		using value_type	= typename _Elem;
 		using base_type		= Vector<value_type, 4>;
 		using self_type		= Vector4<value_type>;
+
+		using pointer			= typename base_type::pointer;
+		using reference			= typename base_type::reference;
+		using const_pointer		= typename base_type::const_pointer;
+		using const_reference	= typename base_type::const_reference;
+
 
 	public: // Constructors
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -28,19 +33,19 @@ namespace ml
 		{
 		}
 
-		Vector4(const_value xyzw)
+		Vector4(const_reference xyzw)
 			: base_type(xyzw)
 		{
 		}
 
-		Vector4(const_value x, const_value y, const_value z, const_value w)
+		Vector4(const_reference x, const_reference y, const_reference z, const_reference w)
 			: base_type({ x, y, z, w })
 		{
 		}
 
 		template <
 			size_t S
-		> Vector4(const Vector<T, S> & copy)
+		> Vector4(const Vector<value_type, S> & copy)
 			: base_type(copy)
 		{
 		}
@@ -55,12 +60,13 @@ namespace ml
 		template <
 			class U, 
 			size_t S
-		> Vector4(const Vector<U, S> & copy, const_value dv = (value_type)(0))
-			: base_type(copy, dv)
+		> Vector4(const Vector<U, S> & copy, const_reference def = static_cast<value_type>(0))
+			: base_type(copy, def)
 		{
 		}
 
 		virtual ~Vector4() {}
+
 
 	public: // Constants
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -75,8 +81,8 @@ namespace ml
 {
 	// Constants
 	/* * * * * * * * * * * * * * * * * * * * */
-	template <class T> const Vector4<T> Vector4<T>::Zero = Vector4<T>(0);
-	template <class T> const Vector4<T> Vector4<T>::One = Vector4<T>(1);
+	template <class E> const Vector4<E> Vector4<E>::Zero	= Vector4<E>(0);
+	template <class E> const Vector4<E> Vector4<E>::One		= Vector4<E>(1);
 
 	// Types
 	/* * * * * * * * * * * * * * * * * * * * */

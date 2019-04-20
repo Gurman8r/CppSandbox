@@ -12,10 +12,15 @@ namespace ml
 	{
 	public: // Usings
 		/* * * * * * * * * * * * * * * * * * * * */
-		using value_type	= typename float;
-		using const_value	= typename const value_type;
-		using base_type		= typename Vector4<value_type>;
-		using complex_type	= typename Vector<value_type, 3>;
+		using value_type		= typename float;
+		using base_type			= typename Vector4<value_type>;
+		using complex_type		= typename Vector<value_type, 3>;
+
+		using pointer			= typename base_type::pointer;
+		using reference			= typename base_type::reference;
+		using const_pointer		= typename base_type::const_pointer;
+		using const_reference	= typename base_type::const_reference;
+
 
 	public: // Constructors
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -24,17 +29,17 @@ namespace ml
 		{
 		}
 		
-		Quaternion(const_value xyz)
+		Quaternion(const_reference xyz)
 			: Quaternion(xyz, xyz, xyz)
 		{
 		}
 		
-		Quaternion(const_value x, const_value y, const_value z)
+		Quaternion(const_reference x, const_reference y, const_reference z)
 			: Quaternion(x, y, z, 0.0f)
 		{
 		}
 		
-		Quaternion(const_value x, const_value y, const_value z, const_value w)
+		Quaternion(const_reference x, const_reference y, const_reference z, const_reference w)
 			: base_type(x, y, z, w)
 		{
 		}
@@ -44,7 +49,7 @@ namespace ml
 		{
 		}
 		
-		Quaternion(const complex_type & xyz, const_value w)
+		Quaternion(const complex_type & xyz, const_reference w)
 			: base_type(xyz[0], xyz[1], xyz[2], w)
 		{
 		}
@@ -56,7 +61,8 @@ namespace ml
 		
 		~Quaternion() {}
 
-	public:
+
+	public: // Member Functions
 		/* * * * * * * * * * * * * * * * * * * * */
 		inline complex_type complex() const
 		{
@@ -87,14 +93,12 @@ namespace ml
 			});
 		}
 
-	public:
-		/* * * * * * * * * * * * * * * * * * * * */
-		inline Quaternion & slerp(const Quaternion & other, const_value t)
+		inline Quaternion & slerp(const Quaternion & other, const_reference t)
 		{
 			return ((*this) = Quaternion::slerp((*this), other, t));
 		}
 
-		inline static Quaternion slerp(const Quaternion & lhs, const Quaternion & rhs, const_value t)
+		inline static Quaternion slerp(const Quaternion & lhs, const Quaternion & rhs, const_reference t)
 		{
 			Quaternion a = lhs.normalized();
 			Quaternion b = rhs.normalized();

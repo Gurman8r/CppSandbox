@@ -13,26 +13,26 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 	
 	template <
-		class T, 
-		size_t C, 
-		size_t R
+		class	_Elem, 
+		size_t	_Cols, 
+		size_t	_Rows
 	> class Matrix
 		: public ITrackable
-		, public IComparable<Matrix<T, C, R>>
-		, public IEnumerable<T, C * R>
+		, public IComparable<Matrix<_Elem, _Cols, _Rows>>
+		, public IEnumerable<_Elem, _Cols * _Rows>
 	{
 	public: // Enums
 		/* * * * * * * * * * * * * * * * * * * * */
 		enum : size_t
 		{
-			Cols = C,
-			Rows = R,
-			Size = Cols * Rows
+			Cols = _Cols,
+			Rows = _Rows,
+			Size = (Cols * Rows)
 		};
-		
+
 	public: // Usings
 		/* * * * * * * * * * * * * * * * * * * * */
-		using value_type			= typename T;
+		using value_type			= typename _Elem;
 		using array_type			= typename value_type[Size];
 		using pointer				= typename value_type *;
 		using reference				= typename value_type &;
@@ -40,7 +40,7 @@ namespace ml
 		using const_reference		= typename const value_type &;
 
 		using self_type				= typename Matrix<value_type, Cols, Rows>;
-		using initializer			= typename std::initializer_list<value_type>;
+		using init_type				= typename std::initializer_list<value_type>;
 		using contiguous_type		= typename std::vector<value_type>;
 
 		using enumerable_type		= typename IEnumerable<value_type, Size>;
@@ -49,9 +49,11 @@ namespace ml
 		using reverse_iterator		= typename enumerable_type::reverse_iterator;
 		using const_reverse_iterator= typename enumerable_type::const_reverse_iterator;
 
+
 	private: // Data
 		/* * * * * * * * * * * * * * * * * * * * */
 		array_type m_data;
+
 
 	public: // Constructors
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -69,45 +71,48 @@ namespace ml
 		Matrix(const_pointer value)
 			: self_type()
 		{
-			for (size_t i = 0; i < Size; i++)
+			for (size_t i = 0; i < this->size(); i++)
 			{
 				(*this)[i] = value[i];
 			}
 		}
 
-		Matrix(const initializer & value)
+		Matrix(const init_type & value)
 			: self_type()
 		{
-			if (value.size() == Size)
+			if (value.size() == this->size())
 			{
-				std::copy(value.begin(), value.end(), this->begin());
+				this->copy(value.begin(), value.end());
 			}
 			else
 			{
-				for (size_t i = 0; i < Size; i++)
+				for (size_t i = 0; i < this->size(); i++)
 				{
 					auto it = (value.begin() + i);
 
-					(*this)[i] = (it < value.end()) ? (*it) : (value_type)(0);
+					(*this)[i] = ((it < value.end())
+						? (*it)
+						: (static_cast<value_type>(0))
+					);
 				}
 			}
 		}
 
 		Matrix(const self_type & value)
-			: self_type(value.data())
+			: self_type(value.m_data)
 		{
 		}
 
 		template <
-			class U, 
-			size_t X, 
-			size_t Y
-		> Matrix(const Matrix<U, X, Y> & value, const_reference dv = (value_type)(0))
+			class	E,
+			size_t	C,
+			size_t	R
+		> Matrix(const Matrix<E, C, R> & value, const_reference dv = static_cast<value_type>(0))
 			: self_type()
 		{
-			for (size_t i = 0; i < Size; i++)
+			for (size_t i = 0; i < this->size(); i++)
 			{
-				(*this)[i] = ((i < value.Size)
+				(*this)[i] = ((i < value.size())
 					? (static_cast<value_type>(value[i]))
 					: (dv)
 				);
@@ -117,119 +122,92 @@ namespace ml
 		virtual ~Matrix() {}
 
 
-	public: // Functions
+	public: // Member Functions
 		/* * * * * * * * * * * * * * * * * * * * */
-		inline void fill(const_reference value)
+		inline size_t			cols()				const	{ return self_type::Cols;	}
+		inline size_t			rows()				const	{ return self_type::Rows;	}
+		inline size_t			size()				const	{ return self_type::Size;	}
+		
+		inline reference		at(const size_t i)			{ return (*this)[i];		}
+		inline reference		back()						{ return at(size() - 1);	}
+		inline pointer			data()						{ return &at(0);			}
+		inline reference		front()						{ return at(0);				}
+
+		inline const_reference	at(const size_t i)	const	{ return (*this)[i];		}
+		inline const_reference	back()				const	{ return at(size() - 1);	}
+		inline const_pointer	data()				const	{ return &at(0);			}
+		inline const_reference	front()				const	{ return at(0);				}
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		template <
+			class Iter
+		> inline self_type & copy(Iter first, Iter last)
+		{
+			std::copy(first, last, this->begin());
+			return (*this);
+		}
+
+		inline self_type & copy(const self_type & value)
+		{
+			return this->copy(value.begin(), value.end());
+		}
+
+		inline self_type & fill(const_reference value)
 		{
 			std::fill(this->begin(), this->end(), value);
+			return (*this);
 		}
 
-		inline void swap(self_type & other)
+		inline self_type & swap(self_type & other)
 		{
-			std::swap(m_data, other.m_data);
+			std::swap(this->data(), other.data());
+			return other;
 		}
-		
+
+
+	public: // Static Functions
 		/* * * * * * * * * * * * * * * * * * * * */
-
-		inline reference at(size_t i)
+		inline static const contiguous_type & Contiguous(const self_type * value, size_t length)
 		{
-			return (*this)[i];
-		}
-		
-		inline reference at(size_t x, size_t y)
-		{
-			return at(y * Cols + x);
-		}
-		
-		inline reference back()
-		{
-			return at(size() - 1);
-		}
-		
-		inline pointer data()
-		{
-			return m_data;
-		}
-		
-		inline reference front()
-		{
-			return at(0);
+			static contiguous_type out;
+			{
+				if (const size_t imax = (length * self_type::Size))
+				{
+					if (out.size() != imax)
+					{
+						out.resize(imax);
+					}
+					for (size_t i = 0; i < imax; i++)
+					{
+						out[i] = value[i / self_type::Size][i % self_type::Size];
+					}
+				}
+				else if (!out.empty())
+				{
+					out.clear();
+				}
+			}
+			return out;
 		}
 
-		/* * * * * * * * * * * * * * * * * * * * */
-
-		inline const_reference at(size_t i) const
-		{
-			return (*this)[i];
-		}
-		
-		inline const_reference at(size_t x, size_t y) const
-		{
-			return at(y * Cols + x);
-		}
-		
-		inline const_pointer data() const
-		{
-			return m_data;
-		}
-		
-		inline const_reference back() const
-		{
-			return at(size() - 1);
-		}
-
-		inline const_reference front() const
-		{
-			return at(0);
-		}
-		
-		/* * * * * * * * * * * * * * * * * * * * */
-
-		inline size_t cols() const { return Cols; }
-		
-		inline size_t rows() const { return Rows; }
-		
-		inline size_t size() const { return Size; }
-
-		/* * * * * * * * * * * * * * * * * * * * */
-
-		inline static self_type & identity()
+		inline static const self_type & Identity()
 		{
 			static self_type temp;
-			static bool checked = false;
-			if (!checked)
-			{
-				checked = true;
-				for (size_t y = 0; y < Rows; y++)
+			static bool check = true;
+			if (check)
+			{	check = false;
+				for (size_t y = 0; y < self_type::Rows; y++)
 				{
-					for (size_t x = 0; x < Cols; x++)
+					for (size_t x = 0; x < self_type::Cols; x++)
 					{
-						temp.at(x, y) = (x == y) ? (value_type)1 : (value_type)0;
+						temp.at(y * self_type::Cols + x) = ((x == y)
+							? static_cast<value_type>(1)
+							: static_cast<value_type>(0));
 					}
 				}
 			}
 			return temp;
-		}
-
-		inline static const contiguous_type & contiguous(const self_type * value, size_t length)
-		{
-			static contiguous_type out;
-			if (const size_t imax = (length * Size))
-			{
-				if (out.size() != imax)
-				{
-					out.resize(imax);
-				}
-				for (size_t i = 0; i < imax; i++)
-				{
-					out[i] = value[i / Size][i % Size];
-				}
-			}
-			else if (!out.empty())
-			{
-				out.clear();
-			}
-			return out;
 		}
 
 
@@ -250,7 +228,7 @@ namespace ml
 		
 		inline virtual void deserialize(std::istream & in) override
 		{
-			for (size_t i = 0; i < Size; i++)
+			for (size_t i = 0; i < this->size(); i++)
 			{
 				if (in.good())
 				{
@@ -258,7 +236,7 @@ namespace ml
 				}
 				else
 				{
-					(*this)[i] = (value_type)0;
+					(*this)[i] = static_cast<value_type>(0);
 				}
 			}
 		}
@@ -267,7 +245,7 @@ namespace ml
 
 		inline virtual bool equals(const self_type & value) const override
 		{
-			for (size_t i = 0; i < Size; i++)
+			for (size_t i = 0; i < this->size(); i++)
 			{
 				if ((*this)[i] != value[i])
 				{
@@ -279,7 +257,7 @@ namespace ml
 		
 		inline virtual bool lessThan(const self_type & value) const override
 		{
-			for (size_t i = 0; i < Size; i++)
+			for (size_t i = 0; i < this->size(); i++)
 			{
 				if ((*this)[i] >= value[i])
 				{
@@ -299,13 +277,13 @@ namespace ml
 
 		inline const_reference operator[](size_t index) const
 		{
-			assert((index < Size) && "Matrix subscript out of range!");
+			assert((index < this->size()) && "Matrix subscript out of range!");
 			return m_data[index];
 		}
 
 		inline reference operator[](size_t index)
 		{
-			assert((index < Size) && "Matrix subscript out of range!");
+			assert((index < this->size()) && "Matrix subscript out of range!");
 			return m_data[index];
 		}
 

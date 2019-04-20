@@ -10,16 +10,21 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	template <
-		class T
+		class _Elem
 	> class Vector2
-		: public Vector<T, 2>
+		: public Vector<_Elem, 2>
 	{
 	public: // Usings
 		/* * * * * * * * * * * * * * * * * * * * */
-		using value_type	= typename T;
-		using const_value	= typename const value_type;
+		using value_type	= typename _Elem;
 		using base_type		= typename Vector<value_type, 2>;
 		using self_type		= typename Vector2<value_type>;
+
+		using pointer			= typename base_type::pointer;
+		using reference			= typename base_type::reference;
+		using const_pointer		= typename base_type::const_pointer;
+		using const_reference	= typename base_type::const_reference;
+
 
 	public: // Constructors
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -28,19 +33,19 @@ namespace ml
 		{
 		}
 
-		Vector2(const_value xy)
+		Vector2(const_reference xy)
 			: base_type(xy)
 		{
 		}
 
-		Vector2(const_value x, const_value y)
+		Vector2(const_reference x, const_reference y)
 			: base_type({ x, y })
 		{
 		}
 		
 		template <
 			size_t S
-		> Vector2(const Vector<T, S> & copy)
+		> Vector2(const Vector<value_type, S> & copy)
 			: base_type(copy)
 		{
 		}
@@ -55,14 +60,15 @@ namespace ml
 		template <
 			class U, 
 			size_t S
-		> Vector2(const Vector<U, S> & copy, const_value dv = (value_type)(0))
-			: base_type(copy, dv)
+		> Vector2(const Vector<U, S> & copy, const_reference def = static_cast<value_type>(0))
+			: base_type(copy, def)
 		{
 		}
 
 		virtual ~Vector2() {}
+
 		
-	public: // Functions
+	public: // Static Functions
 		/* * * * * * * * * * * * * * * * * * * * */
 		inline static float angle(const self_type & from, const self_type & to)
 		{
@@ -86,6 +92,7 @@ namespace ml
 			return self_type(cos(value), sin(value));
 		};
 
+
 	public: // Constants
 		/* * * * * * * * * * * * * * * * * * * * */
 		static const self_type Zero;
@@ -103,12 +110,12 @@ namespace ml
 {
 	// Constants
 	/* * * * * * * * * * * * * * * * * * * * */
-	template <class T> const Vector2<T> Vector2<T>::Zero = Vector2<T>(0, 0);
-	template <class T> const Vector2<T> Vector2<T>::One = Vector2<T>(1, 1);
-	template <class T> const Vector2<T> Vector2<T>::Up = Vector2<T>(0, 1);
-	template <class T> const Vector2<T> Vector2<T>::Down = Vector2<T>(0, -1);
-	template <class T> const Vector2<T> Vector2<T>::Left = Vector2<T>(-1, 0);
-	template <class T> const Vector2<T> Vector2<T>::Right = Vector2<T>(1, 0);
+	template <class E> const Vector2<E> Vector2<E>::Zero	= Vector2<E>( 0,  0);
+	template <class E> const Vector2<E> Vector2<E>::One		= Vector2<E>( 1,  1);
+	template <class E> const Vector2<E> Vector2<E>::Up		= Vector2<E>( 0,  1);
+	template <class E> const Vector2<E> Vector2<E>::Down	= Vector2<E>( 0, -1);
+	template <class E> const Vector2<E> Vector2<E>::Left	= Vector2<E>(-1,  0);
+	template <class E> const Vector2<E> Vector2<E>::Right	= Vector2<E>( 1,  0);
 
 	// Types
 	/* * * * * * * * * * * * * * * * * * * * */

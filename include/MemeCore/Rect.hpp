@@ -9,16 +9,21 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	template <
-		class T
+		class _Elem
 	> class Rect final
-		: public Vector4<T>
+		: public Vector4<_Elem>
 	{
 	public: // Usings
 		/* * * * * * * * * * * * * * * * * * * * */
-		using value_type	= T;
-		using base_type		= Vector4<T>;
-		using self_type		= Rect<value_type>;
-		using coord_type	= Vector2<value_type>;
+		using value_type		= typename _Elem;
+		using base_type			= typename Vector4<_Elem>;
+		using self_type			= typename Rect<value_type>;
+		using coord_type		= typename Vector2<value_type>;
+
+		using pointer			= typename base_type::pointer;
+		using reference			= typename base_type::reference;
+		using const_pointer		= typename base_type::const_pointer;
+		using const_reference	= typename base_type::const_reference;
 
 	public: // Constructors
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -27,12 +32,12 @@ namespace ml
 		{
 		}
 		
-		Rect(const value_type width, const value_type height)
+		Rect(const_reference width, const_reference height)
 			: base_type(0, 0, width, height)
 		{
 		}
 		
-		Rect(const value_type left, const value_type top, const value_type width, const value_type height)
+		Rect(const_reference left, const_reference top, const_reference width, const_reference height)
 			: base_type(left, top, width, height)
 		{
 		}
@@ -54,105 +59,38 @@ namespace ml
 		
 		~Rect() {}
 
-	public: // Getters
+	public: // Member Functions
 		/* * * * * * * * * * * * * * * * * * * * */
-		inline const value_type left() const
-		{
-			return (*this)[0];
-		}
-		
-		inline const value_type top() const
-		{
-			return (*this)[1];
-		}
-		
-		inline const value_type width() const
-		{
-			return (*this)[2];
-		}
-		
-		inline const value_type height() const
-		{
-			return (*this)[3];
-		}		
-		
-		inline const value_type bot() const
-		{
-			return top() + height();
-		}
-		
-		inline const value_type right() const
-		{
-			return left() + width();
-		}
-		
-		inline const coord_type position() const
-		{
-			return coord_type(left(), top());
-		}
-		
-		inline const coord_type size() const
-		{
-			return coord_type(width(), height());
-		}
-		
-		inline const coord_type center() const
-		{
-			return position() + (size() / value_type(2));
-		}
+		inline value_type left()	const { return (*this)[0]; }
+		inline value_type top()		const { return (*this)[1]; }
+		inline value_type width()	const { return (*this)[2]; }
+		inline value_type height()	const { return (*this)[3]; }
 
-	public: // Setters
+		inline self_type & left		(value_type value) { ((*this)[0] = value); return (*this); }
+		inline self_type & top		(value_type value) { ((*this)[1] = value); return (*this); }
+		inline self_type & width	(value_type value) { ((*this)[2] = value); return (*this); }
+		inline self_type & height	(value_type value) { ((*this)[3] = value); return (*this); }
+
 		/* * * * * * * * * * * * * * * * * * * * */
-		inline self_type & left(value_type value)
-		{
-			((*this)[0] = value); return (*this);
-		}
-						   
-		inline self_type & top(value_type value)
-		{
-			((*this)[1] = value); return (*this);
-		}
-						   
-		inline self_type & width(value_type value)
-		{
-			((*this)[2] = value); return (*this);
-		}
-						   
-		inline self_type & height(value_type value)
-		{
-			((*this)[3] = value); return (*this);
-		}
-						   
-		inline self_type & bot(value_type value)
-		{
-			return height(value - top());
-		}
-						   
-		inline self_type & right(value_type value)
-		{
-			return width(value - left());
-		}
-						   
-		inline self_type & position(const coord_type & value)
-		{
-			return left(value[0]).top(value[1]);
-		}
-						   
-		inline self_type & size(const coord_type & value)
-		{
-			return width(value[0]).height(value[1]);
-		}
-						   
-		inline self_type & center(const coord_type & value)
-		{
-			return position(value - (size() / value_type(2)));
-		}
+
+		inline value_type bot()		const { return top() + height(); }
+		inline value_type right()	const { return left() + width(); }
+		inline coord_type position()const { return { left(), top() }; }
+		inline coord_type size()	const { return { width(), height() }; }
+		inline coord_type center()	const { return (position() + (size() / 2)); }
+
+		inline self_type & bot		(value_type value)			{ return height(value - top()); }
+		inline self_type & right	(value_type value)			{ return width(value - left()); }
+		inline self_type & position	(const coord_type & value)	{ return left(value[0]).top(value[1]); }
+		inline self_type & size		(const coord_type & value)	{ return width(value[0]).height(value[1]); }
+		inline self_type & center	(const coord_type & value)	{ return position(value - (size() / 2)); }
+
 
 	public: // Operators
 		/* * * * * * * * * * * * * * * * * * * * */
 		inline operator base_type() const
 		{
-			return base_type((*this)[0], (*this)[1], (*this)[2], (*this)[3]);
+			return base_type { (*this)[0], (*this)[1], (*this)[2], (*this)[3] };
 		}
 	};
 

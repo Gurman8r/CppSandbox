@@ -9,6 +9,28 @@ namespace ml
 
 	class ML_CORE_API ISerializable
 	{
+	public: // Usings
+		/* * * * * * * * * * * * * * * * * * * * */
+		using TypeInfo = typename const std::type_info &;
+
+	public: // Virtual
+		/* * * * * * * * * * * * * * * * * * * * */
+		inline virtual void serialize(std::ostream & out) const
+		{
+			out << this->GetTypeInfo().name();
+		}
+		
+		inline virtual void deserialize(std::istream & in)
+		{
+		}
+
+	public: // Functions
+		/* * * * * * * * * * * * * * * * * * * * */
+		inline TypeInfo GetTypeInfo()	const { return typeid(*this); }
+		inline CString	ToCString()		const { return ToString().c_str(); }
+		inline String	ToString()		const { return ToStream().str(); }
+		inline SStream	ToStream()		const { SStream s; s << (*this); return s; }
+
 	public: // Operators
 		/* * * * * * * * * * * * * * * * * * * * */
 		inline friend std::ostream & operator<<(std::ostream & out, const ISerializable & value)
@@ -21,41 +43,6 @@ namespace ml
 		{
 			value.deserialize(in);
 			return in;
-		}
-
-	public: // Virtual
-		/* * * * * * * * * * * * * * * * * * * * */
-		inline virtual void serialize(std::ostream & out) const
-		{
-			out << GetTypeInfo().name();
-		}
-		
-		inline virtual void deserialize(std::istream & in)
-		{
-		}
-
-	public: // Functions
-		/* * * * * * * * * * * * * * * * * * * * */
-		inline const std::type_info & GetTypeInfo() const
-		{
-			return typeid(*this);
-		}
-
-		inline CString ToCString() const
-		{
-			return ToString().c_str();
-		}
-
-		inline String ToString() const
-		{
-			return ToStream().str();
-		}
-
-		inline SStream ToStream() const
-		{ 
-			SStream ss;
-			ss << (*this);
-			return ss;
 		}
 	};
 
