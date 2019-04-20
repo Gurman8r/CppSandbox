@@ -20,18 +20,18 @@ namespace ml
 		, m_style		(Window::Default)
 		, m_position	(vec2i::Zero)
 	{
-		ML_EventSystem.addListener(WindowEvent::EV_Char,			this);
-		ML_EventSystem.addListener(WindowEvent::EV_CursorEnter,		this);
-		ML_EventSystem.addListener(WindowEvent::EV_CursorPos,		this);
-		ML_EventSystem.addListener(WindowEvent::EV_FrameSize,		this);
-		ML_EventSystem.addListener(WindowEvent::EV_Key,				this);
-		ML_EventSystem.addListener(WindowEvent::EV_MouseButton,		this);
-		ML_EventSystem.addListener(WindowEvent::EV_Scroll,			this);
-		ML_EventSystem.addListener(WindowEvent::EV_WindowClose,		this);
-		ML_EventSystem.addListener(WindowEvent::EV_WindowError,		this);
-		ML_EventSystem.addListener(WindowEvent::EV_WindowFocus,		this);
-		ML_EventSystem.addListener(WindowEvent::EV_WindowSize,		this);
-		ML_EventSystem.addListener(WindowEvent::Ev_WindowPos,		this);
+		ML_EventSystem.addListener(WindowEvent::EV_Char,		this);
+		ML_EventSystem.addListener(WindowEvent::EV_CursorEnter,	this);
+		ML_EventSystem.addListener(WindowEvent::EV_CursorPos,	this);
+		ML_EventSystem.addListener(WindowEvent::EV_FrameSize,	this);
+		ML_EventSystem.addListener(WindowEvent::EV_Key,			this);
+		ML_EventSystem.addListener(WindowEvent::EV_MouseButton,	this);
+		ML_EventSystem.addListener(WindowEvent::EV_Scroll,		this);
+		ML_EventSystem.addListener(WindowEvent::EV_WindowClose,	this);
+		ML_EventSystem.addListener(WindowEvent::EV_WindowError,	this);
+		ML_EventSystem.addListener(WindowEvent::EV_WindowFocus,	this);
+		ML_EventSystem.addListener(WindowEvent::EV_WindowSize,	this);
+		ML_EventSystem.addListener(WindowEvent::Ev_WindowPos,	this);
 	}
 	
 	Window::~Window() 
