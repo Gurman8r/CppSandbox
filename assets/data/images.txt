@@ -37,4 +37,10 @@
 	file = ../../../assets/images/grass.png
 </item>
 
+<item>
+	type = image
+	name = navball
+	file = ../../../assets/images/navball.png
+</item>
+
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #

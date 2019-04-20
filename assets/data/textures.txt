@@ -33,6 +33,12 @@
 	image = grass
 </item>
 
+<item>
+	type = texture
+	name = navball
+	image = navball
+</item>
+
 
 # Earth
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
