@@ -155,6 +155,9 @@ namespace DEMO
 
 			// GL Error Pause
 			ML_GL.errorPause(SETTINGS.glErrorPause);
+
+			// Setup Stream Redirect
+			m_buf = ml::cout.rdbuf(m_ss.rdbuf());
 		}
 
 		// Setup Interpreter
@@ -666,6 +669,14 @@ namespace DEMO
 
 	void Sandbox::onUpdate(const ml::UpdateEvent * ev)
 	{
+		// Update Stream Redirect
+		if (const ml::String str = m_ss.str())
+		{
+			ML_Terminal.print(str);
+
+			m_ss.str(ml::String());
+		}
+
 		// Update Window Title
 		/* * * * * * * * * * * * * * * * * * * * */
 		this->setTitle(ml::String("{0} | {1} | {2} | {3} ms/frame ({4} fps)").format(
@@ -1138,6 +1149,13 @@ namespace DEMO
 	void Sandbox::onExit(const ml::ExitEvent * ev)
 	{
 		ml::Debug::log("Exiting...");
+
+		// Cleanup Stream Redirect
+		if (m_buf)
+		{
+			ml::cout.rdbuf(m_buf);
+			m_buf = NULL;
+		}
 
 		// Shutdown ImGui
 		ImGui_ML_Shutdown();

@@ -6,14 +6,7 @@
 #include <MemeCore/Debug.hpp>
 #include <MemeScript/ScriptEvents.hpp>
 
-namespace ml
-{
-	// Portable helpers
-	static int32_t  Stricmp(CString str1, CString str2) { int32_t d; while ((d = toupper(*str2) - toupper(*str1)) == 0 && *str1) { str1++; str2++; } return d; }
-	static int32_t  Strnicmp(CString str1, CString str2, int32_t n) { int32_t d = 0; while (n > 0 && (d = toupper(*str2) - toupper(*str1)) == 0 && *str1) { str1++; str2++; n--; } return d; }
-	static char *	Strdup(CString str) { size_t len = strlen(str) + 1; void * buff = malloc(len); return (char *)memcpy(buff, (const void *)str, len); }
-	static void		Strtrim(char * str) { char * str_end = str + strlen(str); while (str_end > str && str_end[-1] == ' ') str_end--; *str_end = 0; }
-}
+#define ML_strdup _strdup // strdup is deprecated apparently
 
 namespace ml
 {
@@ -33,7 +26,7 @@ namespace ml
 			it != ML_Interpreter.commands().end(); 
 			it++)
 		{
-			m_auto.push_back(it->first.c_str());
+			m_autoFill.push_back(it->first.c_str());
 		}
 	}
 	
@@ -112,8 +105,16 @@ namespace ml
 				[](auto data) { return ((Terminal *)data->UserData)->textEditCallback(data); },
 				(void *)this))
 			{
-				char * s = m_inputBuf;
-				Strtrim(s);
+				auto strtrim = [](char * str)
+				{
+					char * str_end = str + strlen(str);
+					while (str_end > str && str_end[-1] == ' ')
+						str_end--;
+					*str_end = 0;
+					return str;
+				};
+
+				char * s = strtrim(m_inputBuf);
 				if (s[0])
 				{
 					execCommand(s);
@@ -140,15 +141,6 @@ namespace ml
 		m_scrollToBottom = true;
 	}
 
-	void Terminal::print(SStream & value)
-	{
-		String line;
-		while (std::getline(value, line))
-		{
-			print(line);
-		}
-	}
-
 	void Terminal::print(const String & value)
 	{
 		printf("%s", value.c_str());
@@ -162,7 +154,7 @@ namespace ml
 		vsnprintf(buf, IM_ARRAYSIZE(buf), value, args);
 		buf[IM_ARRAYSIZE(buf) - 1] = 0;
 		va_end(args);
-		m_lines.push_back(Strdup(buf));
+		m_lines.push_back(ML_strdup(buf));
 		m_scrollToBottom = true;
 	}
 
@@ -174,23 +166,18 @@ namespace ml
 		m_historyPos = -1;
 		for (int32_t i = (int32_t)m_history.size() - 1; i >= 0; i--)
 		{
-			if (Stricmp(m_history[i], value) == 0)
+			if (strcmp(m_history[i], value) == 0)
 			{
 				free(m_history[i]);
 				m_history.erase(m_history.begin() + i);
 				break;
 			}
 		}
-		m_history.push_back(Strdup(value));
+		m_history.push_back(ML_strdup(value));
 
-		// Run Command
-		IO::capture(cout, [&](SStream & ss) 
-		{
-			ML_EventSystem.fireEvent(CommandEvent(value));
-
-			this->print(ss);
-		});
+		ML_EventSystem.fireEvent(CommandEvent(value));
 	}
+
 	int32_t Terminal::textEditCallback(void * value)
 	{
 		ImGuiInputTextCallbackData * data;
@@ -221,11 +208,11 @@ namespace ml
 
 			// Build a list of candidates
 			ImVector<CString> candidates;
-			for (int32_t i = 0; i < (int32_t)m_auto.size(); i++)
+			for (int32_t i = 0; i < (int32_t)m_autoFill.size(); i++)
 			{
-				if (Strnicmp(m_auto[i], word_start, (int32_t)(word_end - word_start)) == 0)
+				if (strncmp(m_autoFill[i], word_start, (int32_t)(word_end - word_start)) == 0)
 				{
-					candidates.push_back(m_auto[i]);
+					candidates.push_back(m_autoFill[i]);
 				}
 			}
 

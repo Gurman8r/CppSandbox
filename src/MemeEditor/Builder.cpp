@@ -486,19 +486,14 @@ namespace ml
 				{
 					if (ImGui::Button("Compile")) 
 					{
-						IO::capture(cout, [&](SStream & ss)
+						if (m_shader && m_shader->loadFromMemory(src.str()))
 						{
-							if (m_shader && m_shader->loadFromMemory(src.str()))
-							{
-								Debug::log("Compiled Shader");
-							}
-							else
-							{
-								Debug::logError("Failed Compiling Shader");
-							}
-
-							ML_Terminal.print(ss);
-						});
+							Debug::log("Compiled Shader");
+						}
+						else
+						{
+							Debug::logError("Failed Compiling Shader");
+						}
 					}
 
 					ImGui::EndTabItem();

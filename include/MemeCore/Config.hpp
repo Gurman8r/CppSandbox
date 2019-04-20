@@ -69,7 +69,7 @@
 /* * * * * * * * * * * * * * * * * * * */
 # ifdef ML_SYSTEM_WINDOWS
 # 	ifdef _MSC_VER
-#		define ML_MSB _MSC_VER
+#		define ML_MSC _MSC_VER
 # 	endif
 # else
 # 	ifdef __GNUC__
@@ -77,12 +77,12 @@
 # 	endif
 # endif
 
-# if defined(ML_MSB)
-#	define ML_CC "MSB"
+# if defined(ML_MSC)
+#	define ML_CC "MSC"
 # elif defined(ML_GCC)
 #	define ML_CC "GCC"
 # else
-#	define ML_CC "?"
+#	define ML_CC "???"
 # endif
 
 
@@ -109,7 +109,7 @@
 # elif defined(ML_x86)
 #	define ML_PLATFORM "x86"
 # else
-#	define ML_PLATFORM "?"
+#	define ML_PLATFORM "???"
 # endif
 
 
@@ -119,7 +119,7 @@
 #	ifdef ML_SYSTEM_WINDOWS
 #		define ML_API_EXPORT __declspec(dllexport)
 #		define ML_API_IMPORT __declspec(dllimport)
-#		ifdef ML_MSB
+#		ifdef ML_MSC
 #			pragma warning(disable: 4031)
 #			pragma warning(disable: 4099)
 #			pragma warning(disable: 4251)

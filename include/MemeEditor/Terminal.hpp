@@ -14,6 +14,11 @@ namespace ml
 		, public ISingleton<Terminal>
 	{
 		friend class ISingleton<Terminal>;
+
+	public:
+		enum : size_t { BufferSize = 256 };
+
+		using InputBuffer = typename char[BufferSize];
 	
 	private:
 		Terminal();
@@ -25,7 +30,6 @@ namespace ml
 
 	public:
 		void    clear();
-		void	print(SStream & value);
 		void	print(const String & value);
 		void    printf(CString value, ...);
 		void    execCommand(CString value);
@@ -35,12 +39,12 @@ namespace ml
 		inline const List<char *> & history() const { return m_history; }
 
 	private:
-		char			m_inputBuf[256];
+		InputBuffer		m_inputBuf;
 		List<String>	m_lines;
 		bool			m_scrollToBottom;
 		List<char *>	m_history;
 		int32_t			m_historyPos;
-		List<CString>	m_auto;
+		List<CString>	m_autoFill;
 	};
 
 }
