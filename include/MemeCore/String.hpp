@@ -1,31 +1,29 @@
 #ifndef _ML_STRING_HPP_
 #define _ML_STRING_HPP_
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-#include <MemeCore/Allocator.hpp>
+#include <MemeCore/Export.hpp>
+#include <MemeCore/STD.hpp>
 #include <MemeCore/IComparable.hpp>
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 namespace ml
 {
 	template <
 		class _Elem,
 		class _Traits = std::char_traits<_Elem>,
-		class _Alloc = Allocator<_Elem>
+		class _Alloc  = std::allocator<_Elem>
 	>
 	class BasicString
 		: public std::basic_string<_Elem, _Traits, _Alloc>
 		, public IComparable<std::basic_string<_Elem, _Traits, _Alloc>>
 	{
-	public: // Types
-		using value_type			= _Elem;
-		using traits_type			= _Traits;
-		using allocator_type		= _Alloc;
-		using self_type				= BasicString<value_type, traits_type, allocator_type>;
-		using base_type				= std::basic_string<value_type, traits_type, allocator_type>;
-		using Stream				= std::basic_stringstream<value_type, traits_type, allocator_type>;
+	public: // Usings
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		using value_type			= typename _Elem;
+		using traits_type			= typename _Traits;
+		using allocator_type		= typename _Alloc;
+		using self_type				= typename BasicString<value_type, traits_type, allocator_type>;
+		using base_type				= typename std::basic_string<value_type, traits_type, allocator_type>;
+		using stream_type			= typename std::basic_stringstream<value_type, traits_type, allocator_type>;
 		using reference				= typename base_type::reference;
 		using pointer				= typename base_type::pointer;
 		using const_reference		= typename base_type::const_reference;
@@ -39,9 +37,9 @@ namespace ml
 		using _Alty					= typename base_type::_Alty;
 		using _Alty_traits			= typename base_type::_Alty_traits;
 
-		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	public: // Constructors
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		BasicString()
 			: base_type()
 		{
@@ -137,9 +135,27 @@ namespace ml
 		
 		virtual ~BasicString() noexcept {}
 
+
+	public: // Operators
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		inline operator bool() const
+		{
+			return !(this->empty());
+		}
+
+		inline operator base_type() const
+		{
+			return static_cast<base_type>(*this);
+		}
+
+		inline operator const base_type &() const
+		{
+			return static_cast<const base_type &>(*this);
+		}
+
 
 	public: // Assignment
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		inline self_type & operator=(const self_type & other)
 		{
 			using namespace std;
@@ -177,23 +193,10 @@ namespace ml
 			}
 			return (*this);
 		}
-		
-		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-	public: // Cast
-		inline operator base_type() const
-		{
-			return static_cast<base_type>(*this);
-		}
-
-		inline operator const base_type &() const
-		{
-			return static_cast<const base_type &>(*this);
-		}
-
-		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	public: // Comparison
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		inline bool equals(const base_type & value) const override
 		{
 			return (value == (const base_type &)(*this));
@@ -204,33 +207,26 @@ namespace ml
 			return (value < (const base_type &)(*this));
 		}
 
-	public:
+
+	public: // Custom
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-		inline operator bool() const 
-		{ 
-			return !(this->empty()); 
-		}
-
-		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 		template <
 			class T,
 			class ... Args
 		> inline static self_type Format(self_type value, const T & arg0, Args && ... args)
 		{
-			self_type::Stream ss;
+			self_type::stream_type ss;
 			ss << arg0 << ml::endl;
 
 			int32_t sink[] = { 0, ((void)(ss << args << ml::endl), 0)... };
 			(void)sink;
 
-			for (size_type a = 0; ss.good(); a++)
+			for (size_type i = 0; ss.good(); i++)
 			{
 				self_type arg;
 				if (std::getline(ss, arg))
 				{
-					value.replaceAll(("{" + std::to_string(a) + "}"), arg);
+					value.replaceAll(("{" + std::to_string(i) + "}"), arg);
 				}
 			}
 			return value;
@@ -306,7 +302,7 @@ namespace ml
 	};
 }
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * */
 
 namespace std
 {
@@ -327,7 +323,7 @@ namespace std
 	};
 }
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * */
 
 namespace ml
 {
@@ -336,10 +332,10 @@ namespace ml
 	using U16String		= BasicString<char16_t>;
 	using U32String		= BasicString<char32_t>;
 	
-	using SStream		= typename String::Stream;
-	using WStream		= typename WString::Stream;
-	using U16Stream		= typename U16String::Stream;
-	using U32Stream		= typename U32String::Stream;
+	using SStream		= typename String::stream_type;
+	using WStream		= typename WString::stream_type;
+	using U16Stream		= typename U16String::stream_type;
+	using U32Stream		= typename U32String::stream_type;
 
 	using CString		= typename const char *;
 	using CWString		= typename const wchar_t *;
@@ -347,6 +343,6 @@ namespace ml
 	using CU32String	= typename const char32_t *;
 }
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * */
 
 #endif // !_ML_STRING_HPP_

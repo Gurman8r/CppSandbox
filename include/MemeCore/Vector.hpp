@@ -20,7 +20,7 @@ namespace ml
 		using self_type			= typename Vector<value_type, _Size>;
 		using base_type			= typename Matrix<value_type, _Size, 1>;
 		using init_type			= typename base_type::init_type;
-
+		
 		using pointer			= typename base_type::pointer;
 		using reference			= typename base_type::reference;
 		using const_pointer		= typename base_type::const_pointer;
@@ -63,7 +63,7 @@ namespace ml
 
 		template <
 			class E
-		> Vector(const Vector<E, base_type::Size> & copy)
+		> Vector(const Vector<E, self_type::Size> & copy)
 			: base_type(copy)
 		{
 		}
@@ -83,7 +83,7 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 		inline virtual bool equals(const self_type & value) const override
 		{
-			for (size_t i = 0; i < (*this).size(); i++)
+			for (size_t i = 0; i < this->size(); i++)
 			{
 				if ((*this)[i] != value[i])
 				{
@@ -95,7 +95,7 @@ namespace ml
 		
 		inline virtual bool lessThan(const self_type & value) const override
 		{
-			for (size_t i = 0; i < (*this).size(); i++)
+			for (size_t i = 0; i < this->size(); i++)
 			{
 				if ((*this)[i] >= value[i])
 				{
@@ -126,7 +126,7 @@ namespace ml
 		inline float sqrMagnitude() const
 		{
 			float value = 0;
-			for (size_t i = 0; i < (*this).size(); i++)
+			for (size_t i = 0; i < this->size(); i++)
 			{
 				value += (*this)[i] * (*this)[i];
 			}
@@ -221,7 +221,7 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		template <class E> 
-		inline friend self_type operator+(const self_type & lhs, const Vector<E, base_type::Size> & rhs)
+		inline friend self_type operator+(const self_type & lhs, const Vector<E, self_type::Size> & rhs)
 		{
 			self_type tmp;
 			for (size_t i = 0; i < tmp.size(); i++)
@@ -232,7 +232,7 @@ namespace ml
 		};
 		
 		template <class E>
-		inline friend self_type operator-(const self_type & lhs, const Vector<E, base_type::Size> & rhs)
+		inline friend self_type operator-(const self_type & lhs, const Vector<E, self_type::Size> & rhs)
 		{
 			self_type tmp;
 			for (size_t i = 0; i < tmp.size(); i++)
@@ -243,7 +243,7 @@ namespace ml
 		};
 		
 		template <class E>
-		inline friend self_type operator*(const self_type & lhs, const Vector<E, base_type::Size> & rhs)
+		inline friend self_type operator*(const self_type & lhs, const Vector<E, self_type::Size> & rhs)
 		{
 			self_type tmp;
 			for (size_t i = 0; i < tmp.size(); i++)
@@ -254,7 +254,7 @@ namespace ml
 		};
 		
 		template <class E>
-		inline friend self_type operator/(const self_type & lhs, const Vector<E, base_type::Size> & rhs)
+		inline friend self_type operator/(const self_type & lhs, const Vector<E, self_type::Size> & rhs)
 		{
 			self_type tmp;
 			for (size_t i = 0; i < tmp.size(); i++)
@@ -267,25 +267,25 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		template <class E>
-		inline friend self_type & operator+=(self_type & lhs, const Vector<E, base_type::Size> & rhs)
+		inline friend self_type & operator+=(self_type & lhs, const Vector<E, self_type::Size> & rhs)
 		{
 			return (lhs = (lhs + rhs));
 		};
 		
 		template <class E>
-		inline friend self_type & operator-=(self_type & lhs, const Vector<E, base_type::Size> & rhs)
+		inline friend self_type & operator-=(self_type & lhs, const Vector<E, self_type::Size> & rhs)
 		{
 			return (lhs = (lhs - rhs));
 		};
 		
 		template <class E>
-		inline friend self_type & operator*=(self_type & lhs, const Vector<E, base_type::Size> & rhs)
+		inline friend self_type & operator*=(self_type & lhs, const Vector<E, self_type::Size> & rhs)
 		{
 			return (lhs = (lhs * rhs));
 		};
 		
 		template <class E>
-		inline friend self_type & operator/=(self_type & lhs, const Vector<E, base_type::Size> & rhs)
+		inline friend self_type & operator/=(self_type & lhs, const Vector<E, self_type::Size> & rhs)
 		{
 			return (lhs = (lhs / rhs));
 		};

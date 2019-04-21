@@ -3,7 +3,7 @@
 
 #include <MemeCore/Array.hpp>
 #include <MemeCore/Rect.hpp>
-#include <MemeGraphics/Lists.hpp>
+#include <MemeGraphics/VertexList.hpp>
 
 namespace ml
 {
@@ -26,24 +26,24 @@ namespace ml
 		struct ML_GRAPHICS_API Triangle final
 		{
 			const static VertexList	Vertices;
-			const static IndexList	Indices;
+			const static List<uint32_t>	Indices;
 		};
 
 		struct ML_GRAPHICS_API Quad final
 		{
 			const static VertexList	Vertices;
-			const static IndexList	Indices;
+			const static List<uint32_t>	Indices;
 		};
 
 		struct ML_GRAPHICS_API Cube final
 		{
 			const static VertexList	Vertices;
-			const static IndexList	Indices;
+			const static List<uint32_t>	Indices;
 		};
 
 		struct ML_GRAPHICS_API Sky final
 		{
-			const static FloatList Vertices;
+			const static List<float> Vertices;
 		};
 	};
 

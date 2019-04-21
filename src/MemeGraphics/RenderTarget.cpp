@@ -46,12 +46,12 @@ namespace ml
 		return draw(vertices.contiguous(), batch);
 	}
 
-	RenderTarget & RenderTarget::draw(const FloatList & vertices, const RenderBatch & batch)
+	RenderTarget & RenderTarget::draw(const List<float> & vertices, const RenderBatch & batch)
 	{
 		return draw(vertices.data(), vertices.size(), batch);
 	}
 
-	RenderTarget & RenderTarget::draw(const float * vertices, size_t vertexCount, const RenderBatch & batch)
+	RenderTarget & RenderTarget::draw(const float * vertices, const size_t vertexCount, const RenderBatch & batch)
 	{
 		if (batch.shader)
 		{
@@ -61,10 +61,12 @@ namespace ml
 
 		if (batch.vbo && batch.vbo)
 		{
-			batch.vbo->bind();
-			batch.vbo->bufferSubData(vertices, (uint32_t)vertexCount, 0);
-			batch.vbo->unbind();
-
+			if (*batch.vbo)
+			{
+				batch.vbo->bind();
+				batch.vbo->bufferSubData(vertices, (uint32_t)vertexCount, 0);
+				batch.vbo->unbind();
+			}
 			return draw((*batch.vao), (*batch.vbo));
 		}
 		else

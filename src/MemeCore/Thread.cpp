@@ -44,7 +44,7 @@ namespace ml
 	{
 		if (joinable())
 		{
-			std::this_thread::sleep_for((Millis)value);
+			std::this_thread::sleep_for((Milliseconds)value);
 		}
 	}
 

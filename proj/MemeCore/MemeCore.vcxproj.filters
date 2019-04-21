@@ -28,9 +28,6 @@
     <Filter Include="Source Files\Memory">
       <UniqueIdentifier>{dfa1a930-d4c4-4209-a9b4-51b3d1a085c9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\STD">
-      <UniqueIdentifier>{485dbe29-b211-4cd5-b452-6ce26ff91e9e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\FS">
       <UniqueIdentifier>{12815f7e-eacb-44de-84de-fa49c5edeb6d}</UniqueIdentifier>
     </Filter>
@@ -54,6 +51,9 @@
     </Filter>
     <Filter Include="Source Files\Maths">
       <UniqueIdentifier>{a48dca0d-732a-464d-a13e-ca7b39e35d35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Standard">
+      <UniqueIdentifier>{485dbe29-b211-4cd5-b452-6ce26ff91e9e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -103,13 +103,13 @@
       <Filter>Header Files\Memory</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Iterator.hpp">
-      <Filter>Header Files\STD</Filter>
+      <Filter>Header Files\Standard</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\List.hpp">
-      <Filter>Header Files\STD</Filter>
+      <Filter>Header Files\Standard</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\String.hpp">
-      <Filter>Header Files\STD</Filter>
+      <Filter>Header Files\Standard</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Duration.hpp">
       <Filter>Header Files\Time</Filter>
@@ -133,13 +133,13 @@
       <Filter>Resource Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\STD.hpp">
-      <Filter>Header Files\STD</Filter>
+      <Filter>Header Files\Standard</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\IO.hpp">
-      <Filter>Header Files\STD</Filter>
+      <Filter>Header Files\Standard</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\OStream.hpp">
-      <Filter>Header Files\STD</Filter>
+      <Filter>Header Files\Standard</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\FileSystem.hpp">
       <Filter>Header Files\FS</Filter>
@@ -154,7 +154,7 @@
       <Filter>Header Files\Threading</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Map.hpp">
-      <Filter>Header Files\STD</Filter>
+      <Filter>Header Files\Standard</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\File.hpp">
       <Filter>Header Files\FS</Filter>
@@ -166,13 +166,13 @@
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\IStream.hpp">
-      <Filter>Header Files\STD</Filter>
+      <Filter>Header Files\Standard</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Quaternion.hpp">
       <Filter>Header Files\Maths</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Array.hpp">
-      <Filter>Header Files\STD</Filter>
+      <Filter>Header Files\Standard</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\IEvent.hpp">
       <Filter>Header Files\Interfaces</Filter>
@@ -202,10 +202,10 @@
       <Filter>Header Files\Threading</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Detection.hpp">
-      <Filter>Header Files\STD</Filter>
+      <Filter>Header Files\Standard</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Ratio.hpp">
-      <Filter>Header Files\STD</Filter>
+      <Filter>Header Files\Standard</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Lock.hpp">
       <Filter>Header Files\Threading</Filter>
@@ -224,9 +224,6 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\StringUtility.hpp">
       <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Allocator.hpp">
-      <Filter>Header Files\STD</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Preprocessor.hpp">
       <Filter>Header Files\Utility</Filter>

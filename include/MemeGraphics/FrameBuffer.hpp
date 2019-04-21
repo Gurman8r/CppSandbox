@@ -2,7 +2,8 @@
 #define _ML_FRAMEBUFFER_HPP_
 
 #include <MemeGraphics/GL.hpp>
-#include <MemeGraphics/Lists.hpp>
+#include <MemeCore/ITrackable.hpp>
+#include <MemeCore/List.hpp>
 #include <MemeCore/IHandle.hpp>
 
 namespace ml

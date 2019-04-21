@@ -21,11 +21,13 @@ namespace ml
 		, public IComparable<uint64_t>
 	{
 	private:
+		/* * * * * * * * * * * * * * * * * * * * */
 		uint64_t	m_real;	// Size before ratio
 		uint64_t	m_size;	// Size after ratio
 		CString		m_name;	// Unit of display size
 
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		Bytes(const Bytes & copy)
 			: m_size(copy.m_size)
 			, m_name(copy.m_name)
@@ -87,14 +89,24 @@ namespace ml
 			}
 		}
 
-		/* * * * * * * * * * * * * * * * * * * * */
+		~Bytes() {}
 
+	public:
+		/* * * * * * * * * * * * * * * * * * * * */
+		inline operator uint64_t() const
+		{
+			return m_real;
+		}
+
+	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		inline uint64_t real() const { return m_real; }
 		inline uint64_t size() const { return m_size; }
 		inline CString	name() const { return m_name; }
 
-		/* * * * * * * * * * * * * * * * * * * * */
 
+	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		inline void serialize(std::ostream & out) const override
 		{
 			if (m_size)
@@ -111,13 +123,7 @@ namespace ml
 			(*this) = Bytes(temp);
 		}
 
-		/* * * * * * * * * * * * * * * * * * * * */
-
-		inline operator uint64_t() const
-		{
-			return m_real;
-		}
-
+		
 		inline bool equals(const uint64_t & other) const override
 		{
 			return (m_real == other);

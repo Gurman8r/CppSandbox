@@ -38,9 +38,9 @@ namespace ml
 
 			world().state() = value;
 
-			if (elapsed.millis() < ML_PHYSICS_TIMESTEP)
+			if (elapsed.milliseconds() < ML_PHYSICS_TIMESTEP)
 			{
-				thread().sleep(ML_PHYSICS_TIMESTEP - elapsed.millis());
+				thread().sleep(ML_PHYSICS_TIMESTEP - elapsed.milliseconds());
 			}
 			
 			return true;

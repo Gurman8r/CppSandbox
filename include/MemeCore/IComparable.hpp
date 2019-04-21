@@ -10,8 +10,8 @@ namespace ml
 	{
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
-		using comp_type = T;
-		using self_type = IComparable<comp_type>;
+		using comp_type = typename T;
+		using self_type = typename IComparable<comp_type>;
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -54,12 +54,12 @@ namespace ml
 
 		inline friend bool operator>=(const self_type & lhs, const comp_type & rhs)
 		{
-			return lhs.equals(rhs) || lhs.greaterThan(rhs);
+			return (lhs.equals(rhs) || lhs.greaterThan(rhs));
 		}
 
 		inline friend bool operator<=(const self_type & lhs, const comp_type & rhs)
 		{
-			return lhs.equals(rhs) || lhs.lessThan(rhs);
+			return (lhs.equals(rhs) || lhs.lessThan(rhs));
 		}
 	};
 

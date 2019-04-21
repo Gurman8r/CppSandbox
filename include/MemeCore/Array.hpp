@@ -1,7 +1,8 @@
 #ifndef _ML_ARRAY_HPP_
 #define _ML_ARRAY_HPP_
 
-#include <MemeCore/ITrackable.hpp>
+#include <MemeCore/ISerializable.hpp>
+#include <MemeCore/IComparable.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -21,16 +22,19 @@ namespace ml
 	public:
 		enum : size_t { Size = _Size };
 
+	public:
 		using self_type				= typename Array<_Elem, _Size>;
 		using base_type				= typename std::array<_Elem, _Size>;
-		using initializer_type		= typename std::initializer_list<_Elem>;
+		using init_type				= typename std::initializer_list<_Elem>;
 		using value_type			= typename base_type::value_type;
 		using size_type				= typename base_type::size_type;
 		using difference_type		= typename base_type::difference_type;
+		
 		using pointer				= typename base_type::pointer;
 		using const_pointer			= typename base_type::const_pointer;
 		using reference				= typename base_type::reference;
 		using const_reference		= typename base_type::const_reference;
+
 		using iterator				= typename base_type::iterator;
 		using const_iterator		= typename base_type::const_iterator;
 		using reverse_iterator		= typename base_type::reverse_iterator;
@@ -47,7 +51,7 @@ namespace ml
 		{
 			this->fill(value);
 		}
-		Array(const initializer_type & copy)
+		Array(const init_type & copy)
 			: base_type()
 		{
 			assert((copy.size() == Size) && "ml::Array Initializer Size Mismatch");

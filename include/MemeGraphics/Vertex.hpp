@@ -18,6 +18,9 @@ namespace ml
 		enum { Size = 9U };
 
 	public:
+		using array_type = typename float[Size];
+
+	public:
 		Vertex();
 		Vertex(const vec3f & position);
 		Vertex(const vec3f & position, const vec4f & color);
@@ -26,17 +29,20 @@ namespace ml
 		Vertex(const Vertex & copy);
 		~Vertex();
 
+	public:
 		const vec3f & position() const;
 		const vec4f & color() const;
 		const vec2f & texcoords() const;
 
+	public:
 		Vertex & position(const vec3f & value);
 		Vertex & color(const vec4f & value);
 		Vertex & texcoords(const vec2f & value);
 
-		Vertex & position(float x, float y, float z);
-		Vertex & color(float r, float g, float b, float a);
-		Vertex & texcoords(float x, float y);
+	public:
+		Vertex & position(const float x, const float y, const float z);
+		Vertex & color(const float r, const float g, const float b, const float a);
+		Vertex & texcoords(const float x, const float y);
 
 	public:
 		inline const float & operator[](size_t index) const	{ return m_data[index]; }
@@ -56,11 +62,9 @@ namespace ml
 	public:
 		inline void serialize(std::ostream & out) const override
 		{
-			out << "{ ";
-			for (uint32_t i = 0; i < Size; i++)
+			for (size_t i = 0; i < Vertex::Size; i++)
 			{
-				out << (*this)[i]
-					<< ((i < Size - 1) ? ", " : " }");
+				out << (*this)[i] << ' ';
 			}
 		}
 		
@@ -98,7 +102,7 @@ namespace ml
 		}
 
 	private:
-		float m_data[Size];
+		array_type m_data;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

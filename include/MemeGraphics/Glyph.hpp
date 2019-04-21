@@ -2,6 +2,7 @@
 #define _ML_GLYPH_HPP_
 
 #include <MemeGraphics/Shapes.hpp>
+#include <MemeGraphics/Texture.hpp>
 
 namespace ml
 {

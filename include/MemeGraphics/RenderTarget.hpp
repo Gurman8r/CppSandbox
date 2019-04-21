@@ -14,8 +14,7 @@ namespace ml
 
 	class ML_GRAPHICS_API RenderTarget
 	{
-	public: // Destructor
-		/* * * * * * * * * * * * * * * * * * * * */
+	public:
 		virtual ~RenderTarget() {}
 
 
@@ -34,8 +33,8 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		RenderTarget & draw(const VertexList & vertices, const RenderBatch & batch);
-		RenderTarget & draw(const FloatList & vertices, const RenderBatch & batch);
-		RenderTarget & draw(const float * vertices, size_t vertexCount, const RenderBatch & batch);
+		RenderTarget & draw(const List<float> & vertices, const RenderBatch & batch);
+		RenderTarget & draw(const float * vertices, const size_t vertexCount, const RenderBatch & batch);
 		
 		/* * * * * * * * * * * * * * * * * * * * */
 

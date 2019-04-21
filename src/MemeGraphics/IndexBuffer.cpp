@@ -63,7 +63,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void IndexBuffer::bufferData(const IndexList & data) const
+	void IndexBuffer::bufferData(const List<uint32_t> & data) const
 	{
 		return bufferData(&data[0], (uint32_t)data.size());
 	}

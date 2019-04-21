@@ -36,7 +36,7 @@ namespace ml
 		Vertex({  0.5f, -0.5f, 0.0f }, Color::White, { 1.0f, 0.0f }), // bot right
 		Vertex({ -0.5f, -0.5f, 0.0f }, Color::White, { 0.0f, 0.0f }), // bot left
 	});
-	const IndexList Shapes::Triangle::Indices({
+	const List<uint32_t> Shapes::Triangle::Indices({
 		0, 1, 2
 	});
 
@@ -49,7 +49,7 @@ namespace ml
 		Vertex({ -1.0f, -1.0f, 0.0f }, Color::White, { 0.0f, 0.0f }),
 		Vertex({ -1.0f, +1.0f, 0.0f }, Color::White, { 0.0f, 1.0f }),
 	});
-	const IndexList Shapes::Quad::Indices({
+	const List<uint32_t> Shapes::Quad::Indices({
 		0, 1, 3,
 		1, 2, 3
 	});
@@ -88,7 +88,7 @@ namespace ml
 		Vertex({ +0.5f, -0.5f, -0.5f }, Color::White, { 0, 0 }), // 22
 		Vertex({ -0.5f, -0.5f, -0.5f }, Color::White, { 0, 1 }), // 23
 	});
-	const IndexList Shapes::Cube::Indices({
+	const List<uint32_t> Shapes::Cube::Indices({
 		0, 1, 3,
 		1, 2, 3,
 
@@ -108,7 +108,7 @@ namespace ml
 		20, 23, 22,
 	});
 
-	const FloatList Shapes::Sky::Vertices({ 
+	const List<float> Shapes::Sky::Vertices({ 
 		-1.0f,  1.0f, -1.0f,
 		-1.0f, -1.0f, -1.0f,
 		 1.0f, -1.0f, -1.0f,

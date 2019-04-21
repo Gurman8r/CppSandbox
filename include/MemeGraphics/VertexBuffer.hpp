@@ -2,7 +2,8 @@
 #define _ML_VERTEX_BUFFER_HPP_
 
 #include <MemeGraphics/GL.hpp>
-#include <MemeGraphics/Lists.hpp>
+#include <MemeCore/ITrackable.hpp>
+#include <MemeCore/List.hpp>
 #include <MemeCore/IHandle.hpp>
 
 namespace ml
@@ -24,9 +25,9 @@ namespace ml
 		void bind() const;
 		void unbind() const;
 		void bufferData(const void * data, uint32_t size) const;
-		void bufferData(const FloatList & data) const;
+		void bufferData(const List<float> & data) const;
 		void bufferSubData(const void * data, uint32_t size, uint32_t offset) const;
-		void bufferSubData(const FloatList & data, uint32_t offset) const;
+		void bufferSubData(const List<float> & data, uint32_t offset) const;
 
 		inline const void *			data()	const { return m_data;}
 		inline const GL::Usage &	usage() const { return m_usage; }

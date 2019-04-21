@@ -50,6 +50,11 @@ namespace ml
 		using const_reverse_iterator= typename enumerable_type::const_reverse_iterator;
 
 
+	private: // Data
+		/* * * * * * * * * * * * * * * * * * * * */
+		array_type m_data;
+
+
 	public: // Constructors
 		/* * * * * * * * * * * * * * * * * * * * */
 		Matrix()
@@ -93,19 +98,39 @@ namespace ml
 			class	E,
 			size_t	C,
 			size_t	R
-		> Matrix(const Matrix<E, C, R> & value, const_reference dv = static_cast<value_type>(0))
+		> Matrix(const Matrix<E, C, R> & value, const_reference def = static_cast<value_type>(0))
 			: self_type()
 		{
 			for (size_t i = 0; i < this->size(); i++)
 			{
 				(*this)[i] = ((i < value.size())
 					? (static_cast<value_type>(value[i]))
-					: (dv)
+					: (def)
 				);
 			}
 		}
 
 		virtual ~Matrix() {}
+
+
+	public: // Operators
+		/* * * * * * * * * * * * * * * * * * * * */
+		inline const_reference operator[](const size_t index) const
+		{
+			assert((index < this->size()) && "Matrix subscript out of range!");
+			return m_data[index];
+		}
+
+		inline reference operator[](const size_t index)
+		{
+			assert((index < this->size()) && "Matrix subscript out of range!");
+			return m_data[index];
+		}
+
+		inline self_type & operator=(const_reference value)
+		{
+			return ((*this) = self_type(value));
+		}
 
 
 	public: // Member Functions
@@ -154,7 +179,7 @@ namespace ml
 
 	public: // Static Functions
 		/* * * * * * * * * * * * * * * * * * * * */
-		inline static const contiguous_type & Contiguous(const self_type * value, size_t length)
+		inline static const contiguous_type & Contiguous(const self_type * value, const size_t length)
 		{
 			static contiguous_type out;
 			{
@@ -253,31 +278,6 @@ namespace ml
 			}
 			return true;
 		}
-
-
-	public: // Operators
-		/* * * * * * * * * * * * * * * * * * * * */
-		inline self_type & operator=(const_reference value)
-		{
-			return ((*this) = self_type(value));
-		}
-
-		inline const_reference operator[](size_t index) const
-		{
-			assert((index < this->size()) && "Matrix subscript out of range!");
-			return m_data[index];
-		}
-
-		inline reference operator[](size_t index)
-		{
-			assert((index < this->size()) && "Matrix subscript out of range!");
-			return m_data[index];
-		}
-
-
-	private: // Data
-		/* * * * * * * * * * * * * * * * * * * * */
-		array_type m_data;
 	};
 }
 
@@ -285,16 +285,22 @@ namespace ml
 
 namespace ml
 {
-	// Constants
-	/* * * * * * * * * * * * * * * * * * * * */
-	template <class T, size_t N> using MatrixNxN = Matrix<T, N, N>;
-	template <class T>			 using Matrix3x3 = MatrixNxN<T, 3>;
-	template <class T>			 using Matrix4x4 = MatrixNxN<T, 4>;
-
 	// Types
 	/* * * * * * * * * * * * * * * * * * * * */
-	using mat3f = Matrix3x3<float>;
-	using mat4f = Matrix4x4<float>;
+	template <
+		class T, size_t N
+	> using MatrixN = Matrix<T, N, N>;
+	
+	template <
+		class T
+	> using Matrix3 = MatrixN<T, 3>;
+	
+	template <
+		class T
+	> using Matrix4 = MatrixN<T, 4>;
+
+	using mat3f = Matrix3<float>;
+	using mat4f = Matrix4<float>;
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

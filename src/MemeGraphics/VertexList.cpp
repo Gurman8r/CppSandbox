@@ -1,4 +1,4 @@
-#include <MemeGraphics/Lists.hpp>
+#include <MemeGraphics/VertexList.hpp>
 
 namespace ml
 {
@@ -24,7 +24,7 @@ namespace ml
 	{
 	}
 
-	VertexList::VertexList(const initializer_type & value)
+	VertexList::VertexList(const init_type & value)
 		: base_type(value)
 	{
 	}
@@ -38,7 +38,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	const FloatList & VertexList::contiguous() const
+	const List<float> & VertexList::contiguous() const
 	{
 		if (const size_type imax = ((*this).size() * Vertex::Size))
 		{

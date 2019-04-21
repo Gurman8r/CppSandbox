@@ -28,7 +28,10 @@ namespace ml
 			class = ML_THREAD_CONDITIONS(Fun)
 		> inline std::thread * launch(Fun && fun, Args && ... args)
 		{
-			return alive() ? (NULL) : (m_thr = new std::thread(fun, (args)...));
+			return ((alive())
+				? (NULL)
+				: (m_thr = new std::thread(fun, (args)...))
+			);
 		}
 
 		bool alive() const;

@@ -15,25 +15,30 @@ namespace ml
 		using TimePoint = std::chrono::steady_clock::time_point;
 
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		Timer();
 		Timer(const Timer& copy);
 		~Timer();
 
+	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		Timer & pause(bool pause);
 		Timer & reset();
 		Timer & start();
 		Timer & stop();
 
+	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		const Duration & elapsed() const;
 		const bool & paused() const;
 
 	private:
-		mutable Duration m_elapsed;
-
 		bool		m_paused;
 		Clock		m_clock;
 		TimePoint	m_prev;
 		TimePoint	m_next;
+
+		mutable Duration m_elapsed;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

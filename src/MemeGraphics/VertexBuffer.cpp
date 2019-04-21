@@ -68,7 +68,7 @@ namespace ml
 		ML_GL.bufferData(GL::ArrayBuffer, (sizeof(float) * m_size), m_data, m_usage);
 	}
 	
-	void VertexBuffer::bufferData(const FloatList & data) const
+	void VertexBuffer::bufferData(const List<float> & data) const
 	{
 		return bufferData(&data[0], (uint32_t)data.size());
 	}
@@ -81,7 +81,7 @@ namespace ml
 		ML_GL.bufferSubData(GL::ArrayBuffer, offset, (sizeof(float) * m_size), m_data);
 	}
 	
-	void VertexBuffer::bufferSubData(const FloatList & data, uint32_t offset) const
+	void VertexBuffer::bufferSubData(const List<float> & data, uint32_t offset) const
 	{
 		return bufferSubData(&data[0], (uint32_t)data.size(), offset);
 	}

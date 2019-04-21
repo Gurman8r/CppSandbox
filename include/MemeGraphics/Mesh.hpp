@@ -3,8 +3,7 @@
 
 #include <MemeCore/IReadable.hpp>
 #include <MemeCore/IDisposable.hpp>
-#include <MemeGraphics/Vertex.hpp>
-#include <MemeGraphics/Lists.hpp>
+#include <MemeGraphics/VertexList.hpp>
 
 namespace ml
 {
@@ -18,29 +17,29 @@ namespace ml
 	public:
 		Mesh();
 		Mesh(const VertexList & vertices);
-		Mesh(const VertexList & vertices, const IndexList & indices);
+		Mesh(const VertexList & vertices, const List<uint32_t> & indices);
 		Mesh(const Mesh & copy);
 		~Mesh();
 
 	public:
 		bool dispose() override;
 		bool loadFromFile(const String & filename) override;
-		bool loadFromMemory(const FloatList & vertices);
+		bool loadFromMemory(const List<float> & vertices);
 		bool loadFromMemory(const VertexList & vertices);
-		bool loadFromMemory(const VertexList & vertices, const IndexList & indices);
+		bool loadFromMemory(const VertexList & vertices, const List<uint32_t> & indices);
 
 		void serialize(std::ostream & out) const override;
 		void deserialize(std::istream & in) override;
 
 	public:
-		inline const VertexList &	vertices	() const { return m_vertices;	}
-		inline const IndexList &	indices		() const { return m_indices;	}
-		inline const FloatList &	contiguous	() const { return m_contiguous; }
+		inline const VertexList		&	vertices	() const { return m_vertices;	}
+		inline const List<uint32_t> &	indices		() const { return m_indices;	}
+		inline const List<float>	&	contiguous	() const { return m_contiguous; }
 
 	private:
-		VertexList	m_vertices;
-		IndexList	m_indices;
-		FloatList	m_contiguous;
+		VertexList		m_vertices;
+		List<uint32_t>	m_indices;
+		List<float>		m_contiguous;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

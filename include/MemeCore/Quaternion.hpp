@@ -13,6 +13,7 @@ namespace ml
 	public: // Usings
 		/* * * * * * * * * * * * * * * * * * * * */
 		using value_type		= typename float;
+		using self_type			= typename Quaternion;
 		using base_type			= typename Vector4<value_type>;
 		using complex_type		= typename Vector<value_type, 3>;
 
@@ -25,17 +26,17 @@ namespace ml
 	public: // Constructors
 		/* * * * * * * * * * * * * * * * * * * * */
 		Quaternion()
-			: Quaternion(1.0f)
+			: self_type(1.0f)
 		{
 		}
 		
 		Quaternion(const_reference xyz)
-			: Quaternion(xyz, xyz, xyz)
+			: self_type(xyz, xyz, xyz)
 		{
 		}
 		
 		Quaternion(const_reference x, const_reference y, const_reference z)
-			: Quaternion(x, y, z, 0.0f)
+			: self_type(x, y, z, 0.0f)
 		{
 		}
 		
@@ -54,7 +55,7 @@ namespace ml
 		{
 		}
 		
-		Quaternion(const Quaternion & copy)
+		Quaternion(const self_type & copy)
 			: base_type((base_type)copy)
 		{
 		}
@@ -74,17 +75,17 @@ namespace ml
 			return this->back();
 		}
 
-		inline mat3f matrix() const
+		inline mat3f rotationMatrix() const
 		{
-			value_type xx = ((*this)[0] * (*this)[0]);
-			value_type xy = ((*this)[0] * (*this)[1]);
-			value_type xz = ((*this)[0] * (*this)[2]);
-			value_type xw = ((*this)[0] * (*this)[3]);
-			value_type yy = ((*this)[1] * (*this)[1]);
-			value_type yz = ((*this)[1] * (*this)[2]);
-			value_type yw = ((*this)[1] * (*this)[3]);
-			value_type zz = ((*this)[2] * (*this)[2]);
-			value_type zw = ((*this)[2] * (*this)[3]);
+			const value_type xx = ((*this)[0] * (*this)[0]);
+			const value_type xy = ((*this)[0] * (*this)[1]);
+			const value_type xz = ((*this)[0] * (*this)[2]);
+			const value_type xw = ((*this)[0] * (*this)[3]);
+			const value_type yy = ((*this)[1] * (*this)[1]);
+			const value_type yz = ((*this)[1] * (*this)[2]);
+			const value_type yw = ((*this)[1] * (*this)[3]);
+			const value_type zz = ((*this)[2] * (*this)[2]);
+			const value_type zw = ((*this)[2] * (*this)[3]);
 
 			return mat3f({
 				(1.f - 2.f * yy - 2.f * zz), (2.f * xy - 2.f * zw), (2.f * xz + 2.f * yw),
@@ -93,15 +94,18 @@ namespace ml
 			});
 		}
 
-		inline Quaternion & slerp(const Quaternion & other, const_reference t)
+		inline self_type & slerp(const self_type & other, const_reference t)
 		{
-			return ((*this) = Quaternion::slerp((*this), other, t));
+			return ((*this) = self_type::slerp((*this), other, t));
 		}
 
-		inline static Quaternion slerp(const Quaternion & lhs, const Quaternion & rhs, const_reference t)
+
+	public: // Static Functions
+		/* * * * * * * * * * * * * * * * * * * * */
+		inline static self_type slerp(const self_type & lhs, const self_type & rhs, const_reference t)
 		{
-			Quaternion a = lhs.normalized();
-			Quaternion b = rhs.normalized();
+			self_type a = lhs.normalized();
+			self_type b = rhs.normalized();
 			value_type d = a.dot(b);
 			if (d > 0.9995f)
 			{
@@ -120,29 +124,29 @@ namespace ml
 
 	public: // Operators
 		/* * * * * * * * * * * * * * * * * * * * */
-		inline friend Quaternion operator*(const Quaternion & lhs, const Quaternion & rhs)
-		{
-			return Quaternion(
-			( lhs[0] * rhs[3]) + (lhs[1] * rhs[2]) - (lhs[2] * rhs[1]) + (lhs[3] * rhs[0]),
-			(-lhs[0] * rhs[2]) + (lhs[1] * rhs[3]) + (lhs[2] * rhs[0]) + (lhs[3] * rhs[1]),
-			( lhs[0] * rhs[1]) - (lhs[1] * rhs[0]) + (lhs[2] * rhs[3]) + (lhs[3] * rhs[2]),
-			(-lhs[0] * rhs[0]) - (lhs[1] * rhs[1]) - (lhs[2] * rhs[2]) + (lhs[3] * rhs[3])
-			);
-		}
-		
-		inline friend Quaternion operator*(const Quaternion & lhs, value_type rhs)
-		{
-			return (base_type)(lhs) * rhs;
-		}
-		
-		inline friend Quaternion operator/(const Quaternion & lhs, value_type rhs)
-		{
-			return (base_type)(lhs) / rhs;
-		}
-		
 		inline operator base_type() const
 		{
 			return base_type((*this)[0], (*this)[1], (*this)[2], (*this)[3]);
+		}
+
+		inline friend self_type operator*(const self_type & lhs, const self_type & rhs)
+		{
+			return self_type(
+				( lhs[0] * rhs[3]) + (lhs[1] * rhs[2]) - (lhs[2] * rhs[1]) + (lhs[3] * rhs[0]),
+				(-lhs[0] * rhs[2]) + (lhs[1] * rhs[3]) + (lhs[2] * rhs[0]) + (lhs[3] * rhs[1]),
+				( lhs[0] * rhs[1]) - (lhs[1] * rhs[0]) + (lhs[2] * rhs[3]) + (lhs[3] * rhs[2]),
+				(-lhs[0] * rhs[0]) - (lhs[1] * rhs[1]) - (lhs[2] * rhs[2]) + (lhs[3] * rhs[3])
+			);
+		}
+
+		inline friend self_type operator*(const self_type & lhs, value_type rhs)
+		{
+			return ((base_type)(lhs)* rhs);
+		}
+
+		inline friend self_type operator/(const self_type & lhs, value_type rhs)
+		{
+			return ((base_type)(lhs) / rhs);
 		}
 	};
 }

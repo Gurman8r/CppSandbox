@@ -18,8 +18,6 @@
 #define ML_VEC4(value) glm::vec4(value[0], value[1], value[2], value[3])
 #define ML_QUAT(value) glm::quat(value[0], value[1], value[2], value[3])
 
-/* * * * * * * * * * * * * * * * * * * * */
-
 #define ML_MAT3(value) glm::mat3( \
 	value[0], value[1], value[2], \
 	value[3], value[4], value[5], \
@@ -108,7 +106,7 @@ namespace ml
 		);
 	}
 
-	Transform & Transform::perspective(float fov, float aspect, float near, float far)
+	Transform & Transform::perspective(const float fov, const float aspect, const float near, const float far)
 	{
 		return (*this) = mat4f(glm::value_ptr(glm::perspective(
 			fov,
@@ -118,7 +116,7 @@ namespace ml
 		);
 	}
 
-	Transform & Transform::rotate(float angle, const vec3f & axis)
+	Transform & Transform::rotate(const float angle, const vec3f & axis)
 	{
 		return (*this) = mat4f(glm::value_ptr(glm::rotate(
 			ML_MAT4(m_matrix), 
@@ -153,12 +151,7 @@ namespace ml
 		static glm::vec3 _skew;
 		static glm::vec4 _persp;
 
-		if (glm::decompose(glm::mat4(
-			matrix()[0x0], matrix()[0x1], matrix()[0x2], matrix()[0x3],
-			matrix()[0x4], matrix()[0x5], matrix()[0x6], matrix()[0x7],
-			matrix()[0x8], matrix()[0x9], matrix()[0xA], matrix()[0xB],
-			matrix()[0xC], matrix()[0xD], matrix()[0xE], matrix()[0xF]
-		), _scale, _orient, _trans, _skew, _persp))
+		if (glm::decompose(ML_MAT4(m_matrix), _scale, _orient, _trans, _skew, _persp))
 		{
 			scale	= { _scale.x,	_scale.y,	_scale.z				};
 			orient	= { _orient.x,	_orient.y,	_orient.z,	_orient.w	};
@@ -185,18 +178,18 @@ namespace ml
 	const vec3f Transform::getPosition() const
 	{
 		return {
-			matrix()[0xC],
-			matrix()[0xD],
-			matrix()[0xE]
+			m_matrix[MPX],
+			m_matrix[MPY],
+			m_matrix[MPZ]
 		};
 	}
 
 	const vec3f Transform::getScale() const
 	{
 		return {
-			matrix()[0x0],
-			matrix()[0x5],
-			matrix()[0xA]
+			m_matrix[MSX],
+			m_matrix[MSY],
+			m_matrix[MSZ]
 		};
 	}
 
@@ -209,17 +202,17 @@ namespace ml
 
 	Transform & Transform::setPosition(const vec3f & value)
 	{
-		matrix()[MPX] = value[0];
-		matrix()[MPY] = value[1];
-		matrix()[MPZ] = value[2];
+		m_matrix[MPX] = value[0];
+		m_matrix[MPY] = value[1];
+		m_matrix[MPZ] = value[2];
 		return (*this);
 	}
 
 	Transform & Transform::setScale(const vec3f & value)
 	{
-		matrix()[MSX] = value[0];
-		matrix()[MSY] = value[1];
-		matrix()[MSZ] = value[2];
+		m_matrix[MSX] = value[0];
+		m_matrix[MSY] = value[1];
+		m_matrix[MSZ] = value[2];
 		return (*this);
 	}
 

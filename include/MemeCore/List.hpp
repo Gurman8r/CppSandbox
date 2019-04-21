@@ -2,18 +2,15 @@
 #define _ML_LIST_HPP_
 
 #include <MemeCore/Export.hpp>
-#include <MemeCore/STD.hpp>
-#include <MemeCore/IComparable.hpp>
 #include <MemeCore/ISerializable.hpp>
 
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	// std::vector with serialization
 	template <
 		class _Elem,
-		class _Alloc = Allocator<_Elem>
+		class _Alloc = std::allocator<_Elem>
 	>
 	class List
 		: public std::vector<_Elem, _Alloc>
@@ -21,12 +18,13 @@ namespace ml
 		, public IComparable<std::vector<_Elem, _Alloc>>
 		, public IComparable<List<_Elem, _Alloc>>
 	{
-	public:
-		using value_type			= _Elem;
-		using allocator_type		= _Alloc;
-		using self_type				= List<value_type, allocator_type>;
-		using base_type				= std::vector<value_type, allocator_type>;
-		using initializer_type		= std::initializer_list<value_type>;
+	public: // Usings
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		using value_type			= typename _Elem;
+		using allocator_type		= typename _Alloc;
+		using self_type				= typename List<value_type, allocator_type>;
+		using base_type				= typename std::vector<value_type, allocator_type>;
+		using init_type				= typename std::initializer_list<value_type>;
 		using difference_type		= typename base_type::difference_type;
 		using size_type				= typename base_type::size_type;
 		using iterator				= typename base_type::iterator;
@@ -34,7 +32,9 @@ namespace ml
 		using reverse_iterator		= typename base_type::reverse_iterator;
 		using const_reverse_iterator= typename base_type::const_reverse_iterator;
 
-	public:
+
+	public: // Constructors
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		List()
 			: base_type()
 		{
@@ -55,7 +55,7 @@ namespace ml
 		{
 		}
 		
-		List(const initializer_type & value, const allocator_type & alloc = allocator_type())
+		List(const init_type & value, const allocator_type & alloc = allocator_type())
 			: base_type(value, alloc)
 		{
 		}
@@ -65,20 +65,23 @@ namespace ml
 		{
 		}
 		
-		template <class Iter>
-		List(Iter begin, Iter end, const allocator_type & alloc = allocator_type())
+		template <
+			class Iter
+		> List(Iter begin, Iter end, const allocator_type & alloc = allocator_type())
 			: base_type(begin, end, alloc)
 		{
 		}
 		
 		virtual ~List() {}
+
 		
-	public:
+	public: // Overrides
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		inline virtual void serialize(std::ostream & out) const override
 		{
-			for (size_type i = 0, imax = this->size(); i < imax; i++)
+			for (auto it = this->begin(); it != this->end(); it++)
 			{
-				out << (*this)[i] << " ";
+				out << (*it) << ' ';
 			}
 		}
 		
@@ -87,7 +90,13 @@ namespace ml
 		}
 
 
-	public:
+	public: // Operators
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		inline operator bool() const
+		{
+			return !(this->empty());
+		}
+
 		inline operator base_type() const
 		{
 			return static_cast<base_type>(*this);
@@ -99,15 +108,16 @@ namespace ml
 		}
 
 
-	public:
+	public: // Comparison
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		inline virtual bool equals(const base_type & value) const override
 		{
-			return value == (const base_type &)(*this);
+			return (value == (const base_type &)(*this));
 		}
 		
 		inline virtual bool lessThan(const base_type & value) const override
 		{
-			return value < (const base_type &)(*this);
+			return (value < (const base_type &)(*this));
 		}
 
 		

@@ -55,12 +55,6 @@
 #define ML_str(a) #a
 
 
-// Generate Key-Value Pair Type Macro
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-#define ML_GENERATE_KV_TYPE(name, type) \
-template <class K, class V> using name = typename type<K, V>;
-
-
 // Generate Bit Mask Operators Macro
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 #define ML_GENERATE_MASK_OPERATORS(name, type) \

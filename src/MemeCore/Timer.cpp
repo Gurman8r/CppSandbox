@@ -5,20 +5,20 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Timer::Timer()
-		: m_paused(true)
-		, m_elapsed(0)
-		, m_clock()
-		, m_prev()
-		, m_next()
+		: m_paused	(true)
+		, m_clock	()
+		, m_prev	()
+		, m_next	()
+		, m_elapsed	()
 	{
 	}
 
 	Timer::Timer(const Timer & copy)
-		: m_paused(copy.m_paused)
-		, m_elapsed(copy.m_elapsed)
-		, m_clock(copy.m_clock)
-		, m_prev(copy.m_prev)
-		, m_next(copy.m_next)
+		: m_paused	(copy.m_paused)
+		, m_clock	(copy.m_clock)
+		, m_prev	(copy.m_prev)
+		, m_next	(copy.m_next)
+		, m_elapsed	(copy.m_elapsed)
 	{
 	}
 
@@ -28,7 +28,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	Timer& Timer::pause(bool pause)
+	Timer & Timer::pause(bool pause)
 	{
 		if (pause && !m_paused)
 		{
@@ -44,31 +44,33 @@ namespace ml
 		return (*this);
 	}
 
-	Timer& Timer::reset()
+	Timer & Timer::reset()
 	{
 		return stop().start();
 	}
 
-	Timer& Timer::start()
+	Timer & Timer::start()
 	{
 		m_prev = m_next = m_clock.now();
-		m_elapsed = 0ULL;
+		m_elapsed = Duration();
 		return pause(false);
 	}
 
-	Timer& Timer::stop()
+	Timer & Timer::stop()
 	{
 		m_next = m_clock.now();
 		m_elapsed = (m_next - m_prev);
 		return (*this);
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	const Duration & Timer::elapsed() const
 	{
-		return (m_paused)
-			? m_elapsed
-			: m_elapsed = (m_clock.now() - m_prev);
+		return ((m_paused)
+			? (m_elapsed)
+			: (m_elapsed = (m_clock.now() - m_prev))
+		);
 	}
 
 	const bool & Timer::paused() const

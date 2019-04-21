@@ -2,16 +2,15 @@
 #define _ML_MAP_HPP_
 
 #include <MemeCore/STD.hpp>
-#include <MemeCore/Preprocessor.hpp>
 
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	ML_GENERATE_KV_TYPE(Map,		std::map)
-	ML_GENERATE_KV_TYPE(MultiMap,	std::multimap)
-	ML_GENERATE_KV_TYPE(HashMap,	std::unordered_map)
-	ML_GENERATE_KV_TYPE(Pair,		std::pair)
+	template <class K, class V> using Map		= typename std::map<K, V>;
+	template <class K, class V> using MultiMap	= typename std::multimap<K, V>;
+	template <class K, class V> using HashMap	= typename std::unordered_map<K, V>;
+	template <class K, class V> using Pair		= typename std::pair<K, V>;
 
 	/* * * * * * * * * * * * * * * * * * * * */
 }

@@ -2,7 +2,8 @@
 #define _ML_INDEX_BUFFER_HPP_
 
 #include <MemeGraphics/GL.hpp>
-#include <MemeGraphics/Lists.hpp>
+#include <MemeCore/ITrackable.hpp>
+#include <MemeGraphics/VertexList.hpp>
 #include <MemeCore/IHandle.hpp>
 
 namespace ml
@@ -25,7 +26,7 @@ namespace ml
 		void unbind() const;
 
 		void bufferData(const uint32_t * data, uint32_t count) const;
-		void bufferData(const IndexList & data) const;
+		void bufferData(const List<uint32_t> & data) const;
 
 		inline const uint32_t *		data()	const { return m_data; }
 		inline const uint32_t &		count() const { return m_count; }

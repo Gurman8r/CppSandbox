@@ -1,33 +1,25 @@
 #ifndef _ML_LISTS_HPP_
 #define _ML_LISTS_HPP_
 
-#include <MemeCore/List.hpp>
 #include <MemeGraphics/Vertex.hpp>
-#include <MemeGraphics/Texture.hpp>
 
 namespace ml
 {
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	using FloatList		= List<float>;
-	using IndexList		= List<uint32_t>;
-	using TextureList	= List<const Texture *>;
-
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	class ML_GRAPHICS_API VertexList final
 		: public List<Vertex>
 	{
 	public:
-		using base_type = List<value_type>;
-		using self_type = VertexList;
+		using base_type = typename List<value_type>;
+		using self_type = typename VertexList;
 
 	public:
 		VertexList();
 		explicit VertexList(const allocator_type & alloc);
 		explicit VertexList(const size_type count, const allocator_type & alloc = allocator_type());
 		VertexList(const base_type & value);
-		VertexList(const initializer_type & value);
+		VertexList(const init_type & value);
 		VertexList(const self_type & value);
 		
 		template <class Iter>
@@ -39,10 +31,10 @@ namespace ml
 		virtual ~VertexList();
 
 	public:
-		const FloatList & contiguous() const;
+		const List<float> & contiguous() const;
 
 	private:
-		mutable FloatList m_contiguous;
+		mutable List<float> m_contiguous;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

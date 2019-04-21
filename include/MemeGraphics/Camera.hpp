@@ -8,10 +8,6 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	class Window;
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
 	class ML_GRAPHICS_API Camera final
 		: public ITrackable
 	{

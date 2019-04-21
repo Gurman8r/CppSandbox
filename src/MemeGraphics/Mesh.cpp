@@ -20,7 +20,7 @@ namespace ml
 	{
 	}
 
-	Mesh::Mesh(const VertexList & vertices, const IndexList & indices)
+	Mesh::Mesh(const VertexList & vertices, const List<uint32_t> & indices)
 		: m_vertices	(vertices)
 		, m_indices		(indices)
 		, m_contiguous	(vertices.contiguous())
@@ -57,7 +57,7 @@ namespace ml
 		return false;
 	}
 
-	bool Mesh::loadFromMemory(const FloatList & vertices)
+	bool Mesh::loadFromMemory(const List<float> & vertices)
 	{
 		if (!vertices.empty())
 		{
@@ -81,7 +81,7 @@ namespace ml
 		return false;
 	}
 
-	bool Mesh::loadFromMemory(const VertexList & vertices, const IndexList & indices)
+	bool Mesh::loadFromMemory(const VertexList & vertices, const List<uint32_t> & indices)
 	{
 		if (!vertices.empty() && !indices.empty())
 		{
@@ -123,7 +123,7 @@ namespace ml
 		List<vec3f>		vp; // Positions
 		List<vec2f>		vt; // Texcoords
 		List<vec3f>		vn; // Normals
-		List<IndexList> vf;	// Faces
+		List<List<uint32_t>> vf;	// Faces
 
 		String line;
 		while (std::getline(in, line))
@@ -156,7 +156,7 @@ namespace ml
 			else if (parseLine(line, "f ", ss))
 			{
 				// Face
-				vf.push_back(IndexList());
+				vf.push_back(List<uint32_t>());
 
 				SStream lineStream(ss.str());
 				while (lineStream.good())
@@ -174,9 +174,9 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		IndexList vi; // Position Indices
-		IndexList ti; // Texcoord Indices
-		IndexList ni; // Normal Indices
+		List<uint32_t> vi; // Position Indices
+		List<uint32_t> ti; // Texcoord Indices
+		List<uint32_t> ni; // Normal Indices
 
 		for (size_t i = 0, imax = vf.size(); i < imax; i++)
 		{

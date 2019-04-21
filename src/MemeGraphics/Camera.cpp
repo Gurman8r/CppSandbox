@@ -69,7 +69,7 @@ namespace ml
 		
 		m_transform.lookAt(m_position, lookPos, vec3f::Up);
 
-		// Orbit
+		// Move
 		vec3f fwd = (lookPos - m_position);
 		
 		vec3f right = (fwd.cross(vec3f::Up) * vec3f(1, 0, 1)).normalized();

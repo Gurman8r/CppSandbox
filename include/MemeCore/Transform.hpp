@@ -27,11 +27,13 @@ namespace ml
 		Transform & lookAt(const vec3f & eye, const vec3f & pos, const vec3f & up);
 		Transform & orthographic(const FloatRect & rect);
 		Transform & orthographic(const FloatRect & rect, const vec2f & clip);
-		Transform & perspective(float fov, float aspect, float near, float far);
-		Transform &	rotate(float angle, const vec3f & axis);
+		Transform & perspective(const float fov, const float aspect, const float near, const float far);
+		Transform &	rotate(const float angle, const vec3f & axis);
 		Transform &	scale(const vec3f & value);
 		Transform &	translate(const vec3f & value);
 
+	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		bool decompose(vec3f & scale, quat  & orient, vec3f & trans, vec3f & skew, vec4f & persp);
 
 	public:

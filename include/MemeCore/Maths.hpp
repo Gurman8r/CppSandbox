@@ -32,28 +32,44 @@ namespace ml
 			class T
 		> inline static const T clamp(const T value, const T min, const T max)
 		{
-			return static_cast<T>(ML_CLAMP(value, min, max));
+			return static_cast<T>(ML_CLAMP(
+				static_cast<T>(value),
+				static_cast<T>(min),
+				static_cast<T>(max)
+			));
 		}
 
 		template <
 			class T
 		> inline static const T lerp(const T a, const T b, const float t)
 		{
-			return static_cast<T>(ML_LERP(a, b, t));
+			return static_cast<T>(ML_LERP(
+				static_cast<T>(a),
+				static_cast<T>(b),
+				static_cast<T>(t)
+			));
 		}
 
 		template <
 			class T
 		> inline static T mapRange(const T value, const T min1, const T max1, const T min2, const T max2)
 		{
-			return static_cast<T>(ML_MAP_RANGE(value, min1, max1, min2, max2));
+			return static_cast<T>(ML_MAP_RANGE(
+				static_cast<T>(value), 
+				static_cast<T>(min1),
+				static_cast<T>(max1), 
+				static_cast<T>(min2), 
+				static_cast<T>(max2)
+			));
 		}
 
 		template <
 			class T
 		> inline static const T sign(const T value)
 		{
-			return static_cast<T>(ML_SIGN(value));
+			return static_cast<T>(ML_SIGN(
+				static_cast<T>(value)
+			));
 		}
 
 	};

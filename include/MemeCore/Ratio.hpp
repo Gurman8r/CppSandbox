@@ -1,7 +1,7 @@
 #ifndef _ML_RATIO_HPP_
 #define _ML_RATIO_HPP_
 
-#include <MemeCore/ITrackable.hpp>
+#include <MemeCore/STD.hpp>
 
 namespace ml
 {
@@ -39,18 +39,19 @@ namespace ml
 		uint64_t N, 
 		uint64_t D
 	>
-	constexpr T ratio_cast(const T value, const Ratio<N, D> & r)
+	constexpr T ratio_cast(const T & value, const Ratio<N, D> & r)
 	{
-		const T num = static_cast<T>(r.num); // Numerator
-		const T den = static_cast<T>(r.den); // Denominator
 		return 
-			((num == 1 && den == 1)
+			((((T)(r.num) == (T)(1)) && ((T)(r.den) == (T)(1)))
 				? (value)
-				: ((num != 1 && den == 1)
-					? (value * num)
-					: ((num == 1 && den != 1)
-						? (value / den)
-						: (value * num / den))));
+				: ((((T)(r.num) != (T)(1)) && ((T)(r.den) == (T)(1)))
+					? (value * (T)(r.num))
+					: ((((T)(r.num) == (T)(1)) && ((T)(r.den) != (T)(1)))
+						? (value / (T)(r.den))
+						: (value * (T)(r.num) / (T)(r.den))
+					)
+				)
+			);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

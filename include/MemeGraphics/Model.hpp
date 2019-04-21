@@ -28,10 +28,10 @@ namespace ml
 		bool dispose() override;
 		bool loadFromFile(const String & filename) override;
 		bool loadFromMemory(const Mesh & mesh);
-		bool loadFromMemory(const FloatList & vertices);
+		bool loadFromMemory(const List<float> & vertices);
 		bool loadFromMemory(const VertexList & vertices);
-		bool loadFromMemory(const VertexList & vertices, const IndexList & indices);
-		bool loadFromMemory(const FloatList & vertices, const IndexList & indices);
+		bool loadFromMemory(const VertexList & vertices, const List<uint32_t> & indices);
+		bool loadFromMemory(const List<float> & vertices, const List<uint32_t> & indices);
 
 	public:
 		void draw(RenderTarget & target, RenderBatch batch) const override;

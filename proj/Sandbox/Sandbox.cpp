@@ -880,10 +880,9 @@ namespace DEMO
 				(data.camAnim ? data.camSpd * ev->elapsed.delta() : 0.0f)
 			);
 		}
-		ml::vec2i resolution;
-		if ((resolution = this->getFrameSize()) != ml::vec2i::Zero)
+		ml::vec2i resolution = this->getFrameSize();
+		if (resolution != ml::vec2i::Zero)
 		{
-			// Resize Effects
 			bool changed = false;
 			for (auto & pair : ML_Res.effects)
 			{
@@ -894,7 +893,6 @@ namespace DEMO
 			}
 			if (changed)
 			{
-				// Orthographic
 				m_camera.update(resolution);
 			}
 		}

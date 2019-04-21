@@ -3,8 +3,8 @@
 
 #include <MemeGraphics/IDrawable.hpp>
 #include <MemeGraphics/Font.hpp>
+#include <MemeGraphics/VertexList.hpp>
 #include <MemeGraphics/RenderTarget.hpp>
-#include <MemeGraphics/Lists.hpp>
 #include <MemeGraphics/VertexArray.hpp>
 #include <MemeGraphics/VertexBuffer.hpp>
 #include <MemeGraphics/Shapes.hpp>
@@ -50,9 +50,9 @@ namespace ml
 		String		m_string;
 		vec4f		m_color;
 
-		mutable bool			m_requiresUpdate;
-		mutable TextureList		m_textures;
-		mutable List<RectQuad>	m_vertices;
+		mutable bool m_requiresUpdate;
+		mutable List<const Texture *> m_textures;
+		mutable List<RectQuad> m_vertices;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */
