@@ -52,7 +52,7 @@ namespace ml
 	Timer& Timer::start()
 	{
 		m_prev = m_next = m_clock.now();
-		m_elapsed = 0UL;
+		m_elapsed = 0ULL;
 		return pause(false);
 	}
 
