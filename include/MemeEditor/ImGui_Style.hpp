@@ -7,7 +7,7 @@
 
 namespace ml
 {
-	namespace style
+	namespace style_helper
 	{
 		inline void Style0()
 		{

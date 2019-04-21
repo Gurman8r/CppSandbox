@@ -25,6 +25,22 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
+	const String & FileSystem::getRoot() const
+	{
+		return m_root;
+	}
+
+	const String FileSystem::getPathTo(const String & value) const
+	{
+#ifdef ML_SYSTEM_WINDOWS
+		return (m_root + "\\" + value);
+#else
+		return (m_root + "/" + value);
+#endif
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	bool FileSystem::setWorkingDir(const String & value)
 	{
 #ifdef ML_SYSTEM_WINDOWS

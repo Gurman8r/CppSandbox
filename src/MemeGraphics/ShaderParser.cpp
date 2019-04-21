@@ -59,11 +59,11 @@ namespace ml
 
 				if (parseWrapped(line, '\"', '\"', name))
 				{
-					path = ML_FS.pathTo(name);
+					path = ML_FS.getPathTo(name);
 				}
 				else if (parseWrapped(line, '<', '>', name))
 				{
-					path = ML_FS.pathTo(ML_INCLUDE_SHADER_PATH + name);
+					path = ML_FS.getPathTo(ML_INCLUDE_SHADER_PATH + name);
 				}
 				else
 				{

@@ -1,9 +1,7 @@
 #ifndef _ML_FILE_SYSTEM_HPP_
 #define _ML_FILE_SYSTEM_HPP_
 
-#include <MemeCore/ISingleton.hpp>
 #include <MemeCore/File.hpp>
-#include <MemeCore/List.hpp>
 
 #define ML_FS ml::FileSystem::getInstance()
 
@@ -24,15 +22,8 @@ namespace ml
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		inline const String & root() const 
-		{ 
-			return m_root; 
-		}
-
-		inline const String pathTo(const String & value) const
-		{
-			return root() + "\\" + value;
-		}
+		const String &	getRoot() const;
+		const String	getPathTo(const String & value) const;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 

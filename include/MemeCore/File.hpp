@@ -5,7 +5,6 @@
 #include <MemeCore/IDisposable.hpp>
 #include <MemeCore/IReadable.hpp>
 #include <MemeCore/IWritable.hpp>
-#include <MemeCore/IStream.hpp>
 #include <MemeCore/List.hpp>
 
 namespace ml
@@ -17,51 +16,51 @@ namespace ml
 		, public IWritable
 	{
 	public:
-		using Data = List<char>;
-
-		using iterator				= typename Data::iterator;
-		using const_iterator		= typename Data::const_iterator;
-		using reverse_iterator		= typename Data::reverse_iterator;
-		using const_reverse_iterator= typename Data::const_reverse_iterator;
+		using iterator				= typename List<char>::iterator;
+		using const_iterator		= typename List<char>::const_iterator;
+		using reverse_iterator		= typename List<char>::reverse_iterator;
+		using const_reverse_iterator= typename List<char>::const_reverse_iterator;
 
 	public:
 		File();
 		File(size_t count, CString const * data);
 		File(const String & data);
-		File(const Data & data);
+		File(const List<char> & data);
 		File(const File & copy);
 		~File();
 
 	public:
+		bool empty() const;
 		bool dispose() override;
+		
 		bool loadFromFile(const String & filename) override;
-		bool loadFromFile();
 		bool saveToFile(const String & filename) const override;
-		bool saveToFile() const;
-
+		
 		void serialize(std::ostream & out) const override;
 		void deserialize(std::istream & in) override;
 
 	public:
-		inline const char &		at(size_t i) const	{ return m_data[i]; }
-		inline char &			at(size_t i)		{ return m_data[i]; }
-		inline const Data &		data() const		{ return m_data;	}
-		inline Data &			data()				{ return m_data;	}
-		inline const String &	path() const		{ return m_path;	}
-
-	public:
-		inline const char & operator[](size_t i) const { return at(i); }
-		inline char &		operator[](size_t i)	   { return at(i); }
-
-		inline operator bool		() const { return !m_data.empty(); }
-		inline operator List<char>	() const { return data(); }
-		inline operator String		() const { return ToString(); }
-		inline operator CString		() const { return &at(0); }
-
 		inline File & operator=(const String & value)
 		{
-			return (*this) = File(value);
+			return ((*this) = File(value));
 		}
+
+	public:
+		inline const char & operator[](size_t i) const	{ return m_data[i];		}
+		inline char &		operator[](size_t i)		{ return m_data[i];		}
+
+	public:
+		inline const char &			at(size_t i) const	{ return m_data[i];		}
+		inline char &				at(size_t i)		{ return m_data[i];		}
+		inline const List<char> &	data() const		{ return m_data;		}
+		inline List<char> &			data()				{ return m_data;		}
+		inline const String &		path() const		{ return m_path;		}
+
+	public:
+		inline operator bool		() const			{ return !empty();		}
+		inline operator List<char>	() const			{ return data();		}
+		inline operator String		() const			{ return ToString();	}
+		inline operator CString		() const			{ return &m_data[0];	}
 
 	public:
 		inline iterator					begin()			{ return m_data.begin();	}
@@ -78,8 +77,8 @@ namespace ml
 		inline const_reverse_iterator	crend()	  const	{ return m_data.crend();	}
 
 	private:
-		String	m_path;
-		Data	m_data;
+		String		m_path;
+		List<char>	m_data;
 	};
 }
 

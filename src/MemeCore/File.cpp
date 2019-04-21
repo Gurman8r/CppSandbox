@@ -31,7 +31,7 @@ namespace ml
 	{
 	}
 
-	File::File(const Data & data)
+	File::File(const List<char> & data)
 		: m_data(data)
 		, m_path()
 	{
@@ -50,44 +50,37 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
+	bool File::empty() const
+	{
+		return m_data.empty();
+	}
+
 	bool File::dispose()
 	{
 		m_data.clear();
-		return m_data.empty();
+		return empty();
 	}
 
 	bool File::loadFromFile(const String & path)
 	{
-		std::ifstream file((m_path = path), std::ios_base::binary);
-		if (file)
+		if (std::ifstream stream = std::ifstream((m_path = path), std::ios_base::binary))
 		{
-			file >> (*this);
-			file.close();
+			stream >> (*this);
+			stream.close();
 			return true;
 		}
 		return false;
-	}
-
-	bool File::loadFromFile()
-	{
-		return loadFromFile(m_path);
 	}
 
 	bool File::saveToFile(const String & filename) const
 	{
-		std::ofstream file(filename, std::ios_base::binary);
-		if (file)
+		if (std::ofstream stream = std::ofstream(filename, std::ios_base::binary))
 		{
-			file << (*this);
-			file.close();
+			stream << (*this);
+			stream.close();
 			return true;
 		}
 		return false;
-	}
-
-	bool File::saveToFile() const
-	{
-		return saveToFile(m_path);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -97,23 +90,24 @@ namespace ml
 		out << String(begin(), end());
 	}
 
-	void File::deserialize(std::istream & file)
+	void File::deserialize(std::istream & in)
 	{
-		m_data.clear();
-
-		file.seekg(0, std::ios_base::end);
-
-		std::streamsize size;
-		if ((size = file.tellg()) > 0)
+		if (dispose())
 		{
-			file.seekg(0, std::ios_base::beg);
+			in.seekg(0, std::ios_base::end);
 
-			m_data.resize(static_cast<size_t>(size));
+			std::streamsize size;
+			if ((size = in.tellg()) > 0)
+			{
+				in.seekg(0, std::ios_base::beg);
 
-			file.read(&m_data[0], size);
+				m_data.resize(static_cast<size_t>(size));
+
+				in.read(&m_data[0], size);
+			}
+
+			m_data.push_back('\0');
 		}
-
-		m_data.push_back('\0');
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

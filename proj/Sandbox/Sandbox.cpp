@@ -169,7 +169,7 @@ namespace DEMO
 
 			// Run Boot Script
 			ml::Script scr;
-			if (scr.loadFromFile(ML_FS.pathTo(SETTINGS.bootScript)))
+			if (scr.loadFromFile(ML_FS.getPathTo(SETTINGS.bootScript)))
 			{
 				if (!(scr.buildAndRun(ml::Args(ev->argc, ev->argv))))
 				{
@@ -198,16 +198,16 @@ namespace DEMO
 		if (IMGUI_CHECKVERSION())
 		{
 			ImGui::CreateContext();
+			ml::style_helper::Style4();
 
-			if (SETTINGS.imguiFontFile)
+			if ((SETTINGS.imguiFontFile) && 
+				(SETTINGS.imguiFontSize > 0.f))
 			{
 				ImGui::GetIO().Fonts->AddFontFromFileTTF(
 					SETTINGS.imguiFontFile.c_str(),
 					SETTINGS.imguiFontSize
 				);
 			}
-
-			ml::style::Style4();
 			
 			if (!ImGui_ML_Init("#version 410", this, true, SETTINGS.imguiINI.c_str()))
 			{
@@ -291,7 +291,7 @@ namespace DEMO
 
 		// Load Manifest
 		/* * * * * * * * * * * * * * * * * * * * */
-		if (!ML_Res.loadFromFile(ML_FS.pathTo(SETTINGS.manifest)))
+		if (!ML_Res.loadFromFile(ML_FS.getPathTo(SETTINGS.manifest)))
 		{
 			ml::Debug::logError("Failed Loading Manifest");
 		}

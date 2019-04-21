@@ -54,7 +54,7 @@ namespace ml
 		if (path == "/")
 		{
 			return Var().boolValue(ML_FS.setWorkingDir(
-				ML_FS.pathTo("")));
+				ML_FS.getPathTo("")));
 		}
 		else
 		{
