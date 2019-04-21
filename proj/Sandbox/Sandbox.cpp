@@ -210,7 +210,7 @@ namespace DEMO
 		{
 			ImGui::CreateContext();
 
-			if (SETTINGS.imguiFontFile.data())
+			if (SETTINGS.imguiFontFile)
 			{
 				ImGui::GetIO().Fonts->AddFontFromFileTTF(
 					SETTINGS.imguiFontFile.data(),
