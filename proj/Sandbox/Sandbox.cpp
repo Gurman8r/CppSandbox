@@ -329,8 +329,14 @@ namespace DEMO
 		// Setup Camera
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
-			m_camera.position() = { 0, 1, 10 };
-			m_camera.lookAt(
+			m_camera.position()		= { 0, 1, 10 };
+			m_camera.fieldOfView()	= SETTINGS.fieldOfView;
+			m_camera.perspNear()	= SETTINGS.perspNear;
+			m_camera.perspFar()		= SETTINGS.perspFar;
+			m_camera.orthoNear()	= SETTINGS.orthoNear;
+			m_camera.orthoFar()		= SETTINGS.orthoFar;
+
+			m_camera.transform().lookAt(
 				m_camera.position(),
 				m_camera.position() + ml::vec3f::Back,
 				ml::vec3f::Up);
@@ -376,8 +382,8 @@ namespace DEMO
 					},
 					ml::UniformSet
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&data.persp.matrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&m_camera.matrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&m_camera.persp().matrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&m_camera.transform().matrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&data.lightCol },
 					}
@@ -412,8 +418,8 @@ namespace DEMO
 					},
 					ml::UniformSet
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&data.persp.matrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&m_camera.matrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&m_camera.persp().matrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&m_camera.transform().matrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("borg") },
@@ -449,8 +455,8 @@ namespace DEMO
 					},
 					ml::UniformSet
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&data.persp.matrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&m_camera.matrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&m_camera.persp().matrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&m_camera.transform().matrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("sanic") },
@@ -486,8 +492,8 @@ namespace DEMO
 					},
 					ml::UniformSet
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&data.persp.matrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&m_camera.matrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&m_camera.persp().matrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&m_camera.transform().matrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm") },
@@ -523,8 +529,8 @@ namespace DEMO
 					},
 					ml::UniformSet
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&data.persp.matrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&m_camera.matrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&m_camera.persp().matrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&m_camera.transform().matrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm") },
@@ -560,8 +566,8 @@ namespace DEMO
 					},
 					ml::UniformSet
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&data.persp.matrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&m_camera.matrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&m_camera.persp().matrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&m_camera.transform().matrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("moon_dm") },
 						{ "Frag.specTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("moon_nm") },
@@ -603,8 +609,8 @@ namespace DEMO
 					},
 					ml::UniformSet 
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&data.persp.matrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&m_camera.matrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&m_camera.persp().matrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&m_camera.transform().matrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("earth_dm") },
 						{ "Frag.specTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("earth_sm") },
@@ -686,25 +692,13 @@ namespace DEMO
 
 		// Update Network
 		/* * * * * * * * * * * * * * * * * * * * */
+		if (SETTINGS.isServer)
 		{
-			if (SETTINGS.isServer)
-			{
-				ML_NetServer.poll();
-			}
-			else if (SETTINGS.isClient)
-			{
-				ML_NetClient.poll();
-			}
+			ML_NetServer.poll();
 		}
-
-		// Update Camera
-		/* * * * * * * * * * * * * * * * * * * * */
-		if (const ml::Entity * target = ML_Res.entities.get("earth"))
+		else if (SETTINGS.isClient)
 		{
-			m_camera.rotateAround(
-				target->get<ml::Transform>()->getPosition(),
-				(data.camAnim ? data.camSpd * ev->elapsed.delta() : 0.0f)
-			);
+			ML_NetClient.poll();
 		}
 
 		// Update Entities
@@ -876,12 +870,16 @@ namespace DEMO
 				pair.second.update();
 			}
 		}
-	}
 
-	void Sandbox::onDraw(const ml::DrawEvent * ev)
-	{
-		// Update Scene Resolution
+		// Update Camera
 		/* * * * * * * * * * * * * * * * * * * * */
+		if (const ml::Entity * target = ML_Res.entities.get("earth"))
+		{
+			m_camera.orbit(
+				(target->get<ml::Transform>()->getPosition()),
+				(data.camAnim ? data.camSpd * ev->elapsed.delta() : 0.0f)
+			);
+		}
 		ml::vec2i resolution;
 		if ((resolution = this->getFrameSize()) != ml::vec2i::Zero)
 		{
@@ -894,23 +892,16 @@ namespace DEMO
 					changed = true;
 				}
 			}
-			// Resize Projections
 			if (changed)
 			{
 				// Orthographic
-				data.ortho.orthographic(
-					{ ml::vec2f::Zero, (ml::vec2f)resolution },
-					{ SETTINGS.orthoNear, SETTINGS.orthoFar }
-				);
-
-				// Perspective
-				data.persp.perspective(
-					SETTINGS.fieldOfView, ((float)resolution[0] / (float)resolution[1]),
-					SETTINGS.perspNear, SETTINGS.perspFar
-				);
+				m_camera.update(resolution);
 			}
 		}
+	}
 
+	void Sandbox::onDraw(const ml::DrawEvent * ev)
+	{
 		// Draw Scene
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (ml::Effect * scene = ML_Res.effects.get("frame_main"))
@@ -962,7 +953,7 @@ namespace DEMO
 				{
 					static ml::RenderBatch batch(&m_canvas.vao(), &m_canvas.vbo(), shader,
 						{
-							{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&data.ortho.matrix() },
+							{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&m_camera.ortho().matrix() },
 							{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4 },
 							{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D },
 						}
@@ -979,7 +970,7 @@ namespace DEMO
 				{
 					static ml::RenderBatch batch(&m_canvas.vao(), &m_canvas.vbo(), shader, 
 						{
-							{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&data.ortho.matrix() },
+							{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&m_camera.ortho().matrix() },
 							{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4 },
 							{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D },
 						}

@@ -111,7 +111,7 @@ namespace DEMO
 			// [Graphics]	
 			/* * * * * * * * * * * * * * * * * * * * */
 			glErrorPause	= ini.GetBoolean("Graphics", "glErrorPause", false);
-			fieldOfView		= (float)ini.GetReal("Graphics", "fieldOfView", 90.0);
+			fieldOfView		= (float)ini.GetReal("Graphics", "fieldOfView", 45.0);
 			perspNear		= (float)ini.GetReal("Graphics", "perspNear", 0.1);
 			perspFar		= (float)ini.GetReal("Graphics", "perspFar", 1000.0);
 			orthoNear		= (float)ini.GetReal("Graphics", "orthoNear", -1.0);

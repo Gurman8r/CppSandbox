@@ -5,7 +5,7 @@
 #include <MemeCore/Debug.hpp>
 
 # ifdef ML_SYSTEM_WINDOWS
-#	include <windows.h>
+#	include <Windows.h>
 #	include <shellapi.h>
 # endif
 

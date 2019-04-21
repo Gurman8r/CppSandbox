@@ -47,10 +47,6 @@ namespace DEMO
 
 		struct DemoData
 		{
-			// Projections
-			ml::Transform	persp;
-			ml::Transform	ortho;
-
 			// Scene
 			ml::vec4f		clearColor	= { 0.025f, 0.025f, 0.025f, 1.0f };
 			
