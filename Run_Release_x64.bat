@@ -16,5 +16,5 @@ if not exist %File% (
 
 echo %File%
 cd %Path%
-call %Name%
+start %Name%
 exit %ERRORLEVEL%
