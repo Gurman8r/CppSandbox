@@ -228,7 +228,6 @@ namespace ml
 
 					// Components
 					/* * * * * * * * * * * * * * * * * * * * */
-					Funcs::Group("Components", [&]() 
 					{
 						// Transform
 						/* * * * * * * * * * * * * * * * * * * * */
@@ -236,46 +235,6 @@ namespace ml
 						{
 							Funcs::Group("Transform", [&]()
 							{
-								Funcs::Field("Position", [&](CString) 
-								{
-									vec3f pos = transform->getPosition();
-									if (GUI::EditVec3f("##Position##Transform", pos))
-									{
-										transform->setPosition(pos);
-									}
-								});
-
-								Funcs::Field("Scale", [&](CString)
-								{
-									vec3f scl = transform->getScale();
-									if (GUI::EditVec3f("##Scale##Transform", scl))
-									{
-										transform->setScale(scl);
-									}
-								});
-
-								Funcs::Field("Rotation", [&](CString)
-								{
-									quat rot = transform->getRotation();
-									if (GUI::EditVec4f("##Rotation##Transform", rot))
-									{
-										transform->setRotation(rot);
-									}
-								});
-
-								Funcs::Group("Matrix", [&]()
-								{
-									Funcs::Field("Value", [&](CString)
-									{
-										mat4f matrix = transform->matrix();
-										if (GUI::EditMat4f("##Matrix##Transform", matrix, 0.1f))
-										{
-											transform->matrix() = matrix;
-										}
-										ImGui::NewLine();
-									});
-								});
-
 								Funcs::Group("Decompose", [&]()
 								{
 									vec3f scale;
@@ -313,6 +272,19 @@ namespace ml
 
 										ImGui::NewLine();
 									}
+								});
+
+								Funcs::Group("Matrix", [&]()
+								{
+									Funcs::Field("Value", [&](CString)
+									{
+										mat4f matrix = transform->matrix();
+										if (GUI::EditMat4f("##Matrix##Transform", matrix, 0.1f))
+										{
+											transform->matrix() = matrix;
+										}
+										ImGui::NewLine();
+									});
 								});
 
 							});
@@ -497,7 +469,7 @@ namespace ml
 								ImGui::Text("OK");
 							});
 						}
-					});
+					}
 
 					// File
 					/* * * * * * * * * * * * * * * * * * * * */
@@ -1009,7 +981,7 @@ namespace ml
 
 			for (auto & pair : ML_Res.textures)
 			{
-				Funcs::Group(pair.first.c_str(), [&](CString name, const Texture * e)
+				Funcs::Group(pair.first.c_str(), [&](CString name, Texture * tex)
 				{
 					Funcs::Field("Name", [&](CString label)
 					{
@@ -1017,12 +989,29 @@ namespace ml
 					});
 					Funcs::Field("Size", [&](CString label)
 					{
-						ImGui::Text("%u x %u", e->width(), e->height());
+						ImGui::Text("%u x %u", tex->width(), tex->height());
 					});
 					Funcs::Field("Real Size", [&](CString label)
 					{
-						ImGui::Text("%u x %u", e->realWidth(), e->realHeight());
+						ImGui::Text("%u x %u", tex->realWidth(), tex->realHeight());
 					});
+					Funcs::Field("Smooth", [&](CString label)
+					{
+						bool temp = tex->smooth();
+						if (ImGui::Checkbox("##Texture##Smooth", &temp))
+						{
+							tex->setSmooth(temp);
+						}
+					});
+					Funcs::Field("Repeated", [&](CString label)
+					{
+						bool temp = tex->repeated();
+						if (ImGui::Checkbox("##Texture##Repeated", &temp))
+						{
+							tex->setRepeated(temp);
+						}
+					});
+
 					if (const String file = ML_Res.textures.getFile(name))
 					{
 						Funcs::Field("File", [&](CString label)

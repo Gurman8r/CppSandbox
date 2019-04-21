@@ -12,8 +12,14 @@ rem Visual Studio 2013      (Platform Toolset = 'v120')
 rem Visual Studio 2015      (Platform Toolset = 'v140')
 rem Visual Studio 2017      (Platform Toolset = 'v141')
 
+rem Set Defaults
+: setDefaults
+set DefaultConfiguration=Debug
+set DefaultPlatformTarget=x86
+set DefaultPlatformToolset=v141
+
 rem Initialize
-:init
+:initialize
 set WorkingDir=%cd%\
 set MSBuildPath=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Enterprise\
 set VCTargetsPath=%MSBuildPath%Common7\IDE\VC\VCTargets\
@@ -21,12 +27,8 @@ set VCVarsPath=%MSBuildPath%VC\Auxiliary\Build\
 set VCVars32=vcvars32.bat
 set VCVars64=vcvars64.bat
 
-set DefaultConfiguration=Debug
-set DefaultPlatform=x86
-set DefaultToolset=v141
-
 rem Set Solution File
-:setSolution
+:setSolutionFile
 if "%1"=="" (
 	set /P SolutionFile="Solution: "
 ) else (
@@ -38,7 +40,7 @@ if exist "%SolutionPath%" (
 	echo OK
 ) else (
 	echo %SolutionPath% does not exist.
-	goto :setSolution
+	goto :setSolutionFile
 )
 
 
@@ -58,9 +60,9 @@ echo Set Configuration %Configuration%
 rem Set Platform Target
 :setPlatformTarget
 if "%3"=="" (
-	set /P PlatformTarget="Platform Target [%DefaultPlatform%]: "
+	set /P PlatformTarget="Platform Target [%DefaultPlatformTarget%]: "
 	if "%PlatformTarget%"=="" (
-		set PlatformTarget=%DefaultPlatform%
+		set PlatformTarget=%DefaultPlatformTarget%
 	)
 ) else (
 	set PlatformTarget=%3
@@ -68,7 +70,7 @@ if "%3"=="" (
 echo Set Platform Target %PlatformTarget%
 
 
-rem Setup Environment
+rem Setup Environment Variables
 :setupEnvironment
 cd %VCVarsPath%
 if "%PlatformTarget%"=="x86" (
@@ -80,8 +82,8 @@ if "%PlatformTarget%"=="x86" (
 )
 
 
-rem Build
+rem Run MsBuild
 :build
 cd %MSBuildPath%
-msbuild.exe %SolutionPath% /p:Configuration=%Configuration% /p:PlatformTarget=%PlatformTarget% /p:PlatformToolset=%DefaultToolset%
+msbuild.exe %SolutionPath% /p:Configuration=%Configuration% /p:PlatformTarget=%PlatformTarget% /p:PlatformToolset=%DefaultPlatformToolset%
 exit %ERRORLEVEL%

@@ -105,17 +105,6 @@ namespace DEMO
 
 				/* * * * * * * * * * * * * * * * * * * * */
 
-				// Toggle Smooth Textures (Ctrl+Num1)
-				if (ev->getKeyDown(ml::KeyCode::Num1) && (ev->mod_ctrl))
-				{
-					for (auto & pair : ML_Res.textures)
-					{
-						pair.second->setSmooth(!pair.second->smooth());
-					}
-				}
-
-				/* * * * * * * * * * * * * * * * * * * * */
-
 				// Show Terminal (Ctrl+Alt+T)
 				if (ev->getKeyDown(ml::KeyCode::T) && (ev->mod_ctrl && ev->mod_alt))
 					ML_Editor.show_terminal = true;
@@ -213,7 +202,7 @@ namespace DEMO
 			if (SETTINGS.imguiFontFile)
 			{
 				ImGui::GetIO().Fonts->AddFontFromFileTTF(
-					SETTINGS.imguiFontFile.data(),
+					SETTINGS.imguiFontFile.c_str(),
 					SETTINGS.imguiFontSize
 				);
 			}
