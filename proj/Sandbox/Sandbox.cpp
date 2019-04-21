@@ -719,7 +719,7 @@ namespace DEMO
 			{
 				// FIXME: this is a hack
 
-				static bool once;
+				static bool once = false;
 				if (!once && (once = true))
 				{
 					ML_Physics.world().state().setPosition(0, ent->get<ml::Transform>()->getPosition());
