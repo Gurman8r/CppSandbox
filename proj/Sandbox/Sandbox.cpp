@@ -21,6 +21,7 @@
 #include <MemeEditor/EditorEvents.hpp>
 #include <MemeEditor/GUI.hpp>
 #include <MemeEditor/ImGui.hpp>
+#include <MemeEditor/ImGui_Style.hpp>
 #include <MemeEngine/Entity.hpp>
 #include <MemeEngine/EngineCommands.hpp>
 #include <MemeEngine/Resources.hpp>
@@ -208,8 +209,17 @@ namespace DEMO
 		if (IMGUI_CHECKVERSION())
 		{
 			ImGui::CreateContext();
-			ImGui::StyleColorsDark();
-			ImGui::GetStyle().FrameBorderSize = 1;
+
+			if (SETTINGS.imguiFontFile.data())
+			{
+				ImGui::GetIO().Fonts->AddFontFromFileTTF(
+					SETTINGS.imguiFontFile.data(),
+					SETTINGS.imguiFontSize
+				);
+			}
+
+			ml::style::Style4();
+			
 			if (!ImGui_ML_Init("#version 410", this, true, SETTINGS.imguiINI.c_str()))
 			{
 				return ml::Debug::fatal("Failed Initializing ImGui");

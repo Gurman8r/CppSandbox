@@ -29,6 +29,8 @@ namespace DEMO
 		ml::String	manifest;		// Name of manifest file
 		bool		redirStdOut;	// Redirect Std Out?
 		ml::String	imguiINI;		// Name of imgui INI
+		ml::String	imguiFontFile;
+		float		imguiFontSize;
 
 		// [Script]
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -81,6 +83,8 @@ namespace DEMO
 			manifest		= ini.Get("General", "manifest", "manifest.txt");
 			redirStdOut		= ini.GetBoolean("General", "redirStdOut", false);
 			imguiINI		= ini.Get("General", "imguiINI", "");
+			imguiFontFile	= ini.Get("General", "imguiFontFile", "");
+			imguiFontSize	= (float)ini.GetReal("General", "imguiFontSize", 12.f);
 
 			// [Script]
 			/* * * * * * * * * * * * * * * * * * * * */

@@ -135,6 +135,9 @@
     <ClInclude Include="..\..\include\MemeEditor\ResourceView.hpp">
       <Filter>Header Files\Windows</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeEditor\ImGui_Style.hpp">
+      <Filter>Header Files\Internal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\thirdparty\include\imgui\imgui.cpp">
