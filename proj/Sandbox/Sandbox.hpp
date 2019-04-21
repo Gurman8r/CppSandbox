@@ -52,7 +52,7 @@ namespace DEMO
 			ml::Transform	ortho;
 
 			// Scene
-			ml::vec4f		clearColor	= ml::Color::Gray;
+			ml::vec4f		clearColor	= { 0.025f, 0.025f, 0.025f, 1.0f };
 			
 			// Camera
 			bool			camAnim		= true;

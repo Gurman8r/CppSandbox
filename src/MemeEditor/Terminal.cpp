@@ -62,7 +62,7 @@ namespace ml
 			// Filter
 			static ImGuiTextFilter filter;
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
-			filter.Draw("Filter (\"incl,-excl\") (\"error\")", 180);
+			filter.Draw("Filter (\"incl,-excl\")", 180);
 			ImGui::PopStyleVar();
 			ImGui::Separator();
 
