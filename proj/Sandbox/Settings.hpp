@@ -27,7 +27,7 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 		bool		escapeIsExit;	// Escape key is Exit?
 		ml::String	manifest;		// Name of manifest file
-		bool		redirStdOut;		// Redirect Std Out?
+		bool		redirStdOut;	// Redirect Std Out?
 		ml::String	imguiINI;		// Name of imgui INI
 
 		// [Script]

@@ -887,7 +887,7 @@ namespace DEMO
 
 	void Sandbox::onDraw(const ml::DrawEvent * ev)
 	{
-		// Update Projections
+		// Update Scene Resolution
 		/* * * * * * * * * * * * * * * * * * * * */
 		ml::vec2i resolution;
 		if ((resolution = this->getFrameSize()) != ml::vec2i::Zero)
@@ -901,6 +901,7 @@ namespace DEMO
 					changed = true;
 				}
 			}
+			// Resize Projections
 			if (changed)
 			{
 				// Orthographic
