@@ -7,7 +7,7 @@
 #if defined(ML_SYSTEM_WINDOWS)
 
 #	include <Windows.h>
-#	include <MemeCore/STD.hpp>
+#	include <MemeCore/StandardLib.hpp>
 
 extern int32_t main(int32_t, char **);
 

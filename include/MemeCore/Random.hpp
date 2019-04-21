@@ -2,7 +2,7 @@
 #define _ML_RANDOM_HPP_
 
 #include <MemeCore/Export.hpp>
-#include <MemeCore/STD.hpp>
+#include <MemeCore/StandardLib.hpp>
 #include <MemeCore/ISingleton.hpp>
 
 #define ML_Random ml::Random::getInstance()

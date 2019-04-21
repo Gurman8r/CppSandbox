@@ -36,6 +36,7 @@ namespace ml
 		const uint32_t		& errorCode;
 		const String		& errorName;
 		const String		& errorDesc;
+
 		GL_ErrorEvent(
 			const String	& file,
 			const uint32_t	& line,
@@ -52,6 +53,7 @@ namespace ml
 			, errorDesc		(errorDesc)
 		{
 		}
+
 		inline void serialize(std::ostream & out) const override
 		{
 			out << FMT()

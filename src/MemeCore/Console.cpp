@@ -20,29 +20,29 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Console::enableMenuItem(uint32_t item, uint32_t enable)
+	bool Console::enableMenuItem(const uint32_t item, const uint32_t enable)
 	{
 #ifdef ML_SYSTEM_WINDOWS
-		if (HWND console = GetConsoleWindow())
+		if (HWND window = GetConsoleWindow())
 		{
-			if (HMENU menu = GetSystemMenu(console, false))
+			if (HMENU menu = GetSystemMenu(window, false))
 			{
 				return EnableMenuItem(menu, item, enable);
 			}
 		}
-		return false;
-#else 
-		return false;
 #endif
+		return false;
 	}
 
 	bool Console::setTextAttribute(const uint16_t value)
 	{
 #ifdef ML_SYSTEM_WINDOWS
-		return SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), value);
-#else 
-		return false;
+		if (HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE))
+		{
+			return SetConsoleTextAttribute(handle, value);
+		}
 #endif
+		return false;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

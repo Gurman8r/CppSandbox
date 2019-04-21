@@ -85,7 +85,7 @@ namespace DEMO
 			{
 				if (ML_Editor.show_browser)
 				{
-					ML_EventSystem.fireEvent(ml::OS_OpenEvent(ML_Browser.get_selected_path()));
+					ML_EventSystem.fireEvent(ml::OS_ExecuteEvent("open", ML_Browser.get_selected_path()));
 				}
 			}
 			break;

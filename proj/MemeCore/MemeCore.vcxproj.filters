@@ -132,9 +132,6 @@
     <ClInclude Include="..\..\include\MemeCore\Export.hpp">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\STD.hpp">
-      <Filter>Header Files\Standard</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\IO.hpp">
       <Filter>Header Files\Standard</Filter>
     </ClInclude>
@@ -230,6 +227,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Random.hpp">
       <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\StandardLib.hpp">
+      <Filter>Header Files\Standard</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

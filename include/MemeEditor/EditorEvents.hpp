@@ -52,7 +52,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_EDITOR_API File_New_Event : public EditorEvent
+	struct ML_EDITOR_API File_New_Event final : public EditorEvent
 	{
 		File_New_Event()
 			: EditorEvent(EV_File_New)
@@ -62,7 +62,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_EDITOR_API File_Open_Event : public EditorEvent
+	struct ML_EDITOR_API File_Open_Event final : public EditorEvent
 	{
 		File_Open_Event()
 			: EditorEvent(EV_File_Open)
@@ -72,10 +72,10 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_EDITOR_API File_Save_Event : public EditorEvent
+	struct ML_EDITOR_API File_Save_Event final : public EditorEvent
 	{
-		bool all;
-		File_Save_Event(bool all)
+		const bool all;
+		File_Save_Event(const bool all)
 			: EditorEvent(EV_File_Save)
 			, all(all)
 		{
@@ -84,7 +84,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_EDITOR_API File_Close_Event : public EditorEvent
+	struct ML_EDITOR_API File_Close_Event final : public EditorEvent
 	{
 		File_Close_Event()
 			: EditorEvent(EV_File_Close)
@@ -94,7 +94,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_EDITOR_API Edit_Undo_Event : public EditorEvent
+	struct ML_EDITOR_API Edit_Undo_Event final : public EditorEvent
 	{
 		Edit_Undo_Event()
 			: EditorEvent(EV_Edit_Undo)
@@ -104,7 +104,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_EDITOR_API Edit_Redo_Event : public EditorEvent
+	struct ML_EDITOR_API Edit_Redo_Event final : public EditorEvent
 	{
 		Edit_Redo_Event()
 			: EditorEvent(EV_Edit_Redo)
@@ -114,7 +114,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_EDITOR_API Edit_Cut_Event : public EditorEvent
+	struct ML_EDITOR_API Edit_Cut_Event final : public EditorEvent
 	{
 		Edit_Cut_Event()
 			: EditorEvent(EV_Edit_Cut)
@@ -124,7 +124,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_EDITOR_API Edit_Copy_Event : public EditorEvent
+	struct ML_EDITOR_API Edit_Copy_Event final : public EditorEvent
 	{
 		Edit_Copy_Event()
 			: EditorEvent(EV_Edit_Copy)
@@ -134,7 +134,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_EDITOR_API Edit_Paste_Event : public EditorEvent
+	struct ML_EDITOR_API Edit_Paste_Event final : public EditorEvent
 	{
 		Edit_Paste_Event()
 			: EditorEvent(EV_Edit_Paste)

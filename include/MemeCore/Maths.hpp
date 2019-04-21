@@ -4,7 +4,7 @@
 /* * * * * * * * * * * * * * * * * * * * */
 
 #include <MemeCore/Export.hpp>
-#include <MemeCore/STD.hpp>
+#include <MemeCore/StandardLib.hpp>
 #include <MemeCore/Preprocessor.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * */

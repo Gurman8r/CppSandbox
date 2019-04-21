@@ -27,7 +27,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_CORE_API FS_ChangDirEvent : public CoreEvent
+	struct ML_CORE_API FS_ChangDirEvent final : public CoreEvent
 	{
 		const String dir;
 
@@ -45,7 +45,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_CORE_API OS_ExecuteEvent : public CoreEvent
+	struct ML_CORE_API OS_ExecuteEvent final : public CoreEvent
 	{
 		const String	cmd;
 		const String	file;
@@ -55,25 +55,16 @@ namespace ml
 
 		OS_ExecuteEvent(
 			const String & cmd,
-			const String & file,
-			const String & args,
-			const String & path,
-			const int32_t  flags)
+			const String & file	 = String(),
+			const String & args	 = String(),
+			const String & path	 = String(),
+			const int32_t  flags = 5) // SW_SHOW
 			: CoreEvent(EV_OS_Execute)
 			, cmd	(cmd)
 			, file	(file)
 			, args	(args)
 			, path	(path)
 			, flags	(flags)
-		{
-		}
-
-		OS_ExecuteEvent(
-			const String & cmd,
-			const String & file = String(),
-			const String & args = String(),
-			const String & path = String())
-			: OS_ExecuteEvent(cmd, file, args, path, 5) // SW_SHOW
 		{
 		}
 
@@ -84,19 +75,6 @@ namespace ml
 				<< file << " "
 				<< args << " "
 				<< path << " ";
-		}
-	};
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	struct ML_CORE_API OS_OpenEvent : public OS_ExecuteEvent
-	{
-		OS_OpenEvent(
-			const String & file,
-			const String & args = String(),
-			const String & path = String())
-			: OS_ExecuteEvent("open", file, args, path)
-		{
 		}
 	};
 

@@ -1,5 +1,5 @@
-#ifndef _ML_STD_HPP_
-#define _ML_STD_HPP_
+#ifndef _ML_STANDARD_LIB_HPP_
+#define _ML_STANDARD_LIB_HPP_
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -44,4 +44,4 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-#endif // !_ML_STD_HPP_
+#endif // !_ML_STANDARD_LIB_HPP_

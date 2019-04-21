@@ -20,7 +20,7 @@ namespace ml
 		~Console();
 
 	public:
-		static bool enableMenuItem(uint32_t item, uint32_t enable);
+		static bool enableMenuItem(const uint32_t item, const uint32_t enable);
 		static bool setTextAttribute(const uint16_t value);
 	};
 
@@ -47,7 +47,8 @@ namespace ml
 			Yellow		= Gray | DarkRed | DarkGreen,
 			White		= Gray | DarkRed | DarkGreen | DarkBlue,
 
-			MAX_COLOR = 16
+			MAX_COLOR	= 16,
+			DEFAULT		= Normal
 		};
 	};
 
@@ -74,7 +75,8 @@ namespace ml
 			Yellow		= DarkGray | DarkRed | DarkGreen,
 			White		= DarkGray | DarkRed | DarkGreen | DarkBlue,
 
-			MAX_COLOR = 16
+			MAX_COLOR	= 16,
+			DEFAULT		= Black
 		};
 	};
 
@@ -85,62 +87,51 @@ namespace ml
 		FG::Color fg;
 		BG::Color bg;
 
-		FMT()
-			: fg(FG::Normal)
-			, bg(BG::Black)
-		{
-		}
-		FMT(FG::Color fg)
-			: fg(fg)
-			, bg(BG::Black)
-		{
-		}
-		FMT(BG::Color bg)
-			: fg(FG::Normal)
-			, bg(bg)
-		{
-		}
-		FMT(FG::Color fg, BG::Color bg)
+		FMT(const FG::Color fg, const BG::Color bg)
 			: fg(fg)
 			, bg(bg)
+		{
+		}
+		FMT(const FG::Color fg)
+			: FMT(fg, BG::DEFAULT)
+		{
+		}
+		FMT(const BG::Color bg)
+			: FMT(FG::DEFAULT, bg)
 		{
 		}
 		FMT(const FMT & copy)
-			: fg(copy.fg)
-			, bg(copy.bg)
+			: FMT(copy.fg, copy.bg)
+		{
+		}
+		FMT()
+			: FMT(FG::DEFAULT, BG::DEFAULT)
 		{
 		}
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	inline FMT operator|(const BG::Color & bg, const FG::Color & fg)
-	{
-		return FMT(fg, bg);
-	};
-
-	inline FMT operator|(const FG::Color & fg, const BG::Color & bg)
-	{
-		return FMT(fg, bg);
-	};
+	inline FMT operator|(const BG::Color & bg, const FG::Color & fg) { return FMT(fg, bg); };
+	inline FMT operator|(const FG::Color & fg, const BG::Color & bg) { return FMT(fg, bg); };
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	inline std::ostream& operator<<(std::ostream & out, const FG::Color & value)
+	inline std::ostream & operator<<(std::ostream & out, const FG::Color & value)
 	{
-		ML_Console.setTextAttribute(uint16_t(value));
+		ML_Console.setTextAttribute((uint16_t)(value));
 		return out;
 	};
 
-	inline std::ostream& operator<<(std::ostream & out, const BG::Color & value)
+	inline std::ostream & operator<<(std::ostream & out, const BG::Color & value)
 	{
-		ML_Console.setTextAttribute(uint16_t(value));
+		ML_Console.setTextAttribute((uint16_t)(value));
 		return out;
 	};
 
-	inline std::ostream& operator<<(std::ostream & out, const FMT & value)
+	inline std::ostream & operator<<(std::ostream & out, const FMT & value)
 	{
-		ML_Console.setTextAttribute(uint16_t(value.fg) | uint16_t(value.bg));
+		ML_Console.setTextAttribute((uint16_t)(value.fg) | (uint16_t)(value.bg));
 		return out;
 	};
 

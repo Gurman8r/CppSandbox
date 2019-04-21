@@ -201,7 +201,7 @@
     <ClInclude Include="..\..\include\MemeCore\Quaternion.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Random.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Rect.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\STD.hpp" />
+    <ClInclude Include="..\..\include\MemeCore\StandardLib.hpp" />
     <ClInclude Include="..\..\include\MemeCore\String.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Thread.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Time.hpp" />
