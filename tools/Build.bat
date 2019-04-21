@@ -2,6 +2,16 @@ rem Build.bat
 @echo off
 cls
 
+rem Visual Studio .NET 2002 (Platform Toolset = 'v70')
+rem Visual Studio .NET 2003 (Platform Toolset = 'v71')
+rem Visual Studio 2005      (Platform Toolset = 'v80')
+rem Visual Studio 2008      (Platform Toolset = 'v90')
+rem Visual Studio 2010      (Platform Toolset = 'v100')
+rem Visual Studio 2012      (Platform Toolset = 'v110')
+rem Visual Studio 2013      (Platform Toolset = 'v120')
+rem Visual Studio 2015      (Platform Toolset = 'v140')
+rem Visual Studio 2017      (Platform Toolset = 'v141')
+
 rem Initialize
 :init
 set WorkingDir=%cd%\
@@ -13,7 +23,7 @@ set VCVars64=vcvars64.bat
 
 set DefaultConfiguration=Debug
 set DefaultPlatform=x86
-
+set DefaultToolset=v141
 
 rem Set Solution File
 :setSolution
@@ -73,5 +83,5 @@ if "%PlatformTarget%"=="x86" (
 rem Build
 :build
 cd %MSBuildPath%
-msbuild.exe %SolutionPath% /p:Configuration=%Configuration% /p:PlatformTarget=%PlatformTarget%
+msbuild.exe %SolutionPath% /p:Configuration=%Configuration% /p:PlatformTarget=%PlatformTarget% /p:PlatformToolset=%DefaultToolset%
 exit %ERRORLEVEL%
