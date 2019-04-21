@@ -3,12 +3,19 @@
 
 @"config b flag_itop 0"
 @"config b flag_toks 0"
-@"config b flag_tree 0"
+@"config b flag_tree 1"
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
 TEST = nodeid();
 {
+	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
+	
+	myStruct = $();
+	{
+		foo = 123;
+	};
+	
 	# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
 	main = [](args);
@@ -19,6 +26,8 @@ TEST = nodeid();
 		{
 			printl(args[i]);
 		};
+		
+		printl(myStruct.foo);
 
 		return true;
 	};
