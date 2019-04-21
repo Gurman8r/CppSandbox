@@ -33,7 +33,7 @@ namespace ml
 	{
 		for (CString h : ML_Terminal.history())
 		{
-			ML_Terminal.printf("%s", h);
+			ml::cout << h << ml::endl;
 		}
 		return Var().boolValue(true);
 	}
@@ -46,7 +46,6 @@ namespace ml
 			cout
 				<< "# Fonts" << endl << ML_Res.fonts
 				<< "# Images" << endl << ML_Res.images
-				<< "# Materials" << endl << ML_Res.mats
 				<< "# Meshes" << endl << ML_Res.meshes
 				<< "# Models" << endl << ML_Res.models
 				<< "# Scripts" << endl << ML_Res.scripts
@@ -59,7 +58,6 @@ namespace ml
 		}
 		else if (type == "fonts") { cout << ML_Res.fonts << endl; }
 		else if (type == "images") { cout << ML_Res.images << endl; }
-		else if (type == "mats") { cout << ML_Res.mats << endl; }
 		else if (type == "meshes") { cout << ML_Res.meshes << endl; }
 		else if (type == "models") { cout << ML_Res.models << endl; }
 		else if (type == "scripts") { cout << ML_Res.scripts << endl; }
@@ -84,7 +82,6 @@ namespace ml
 		}
 		else if (type == "fonts") { return Var().intValue((int32_t)ML_Res.fonts.reload()); }
 		else if (type == "images") { return Var().intValue((int32_t)ML_Res.images.reload()); }
-		else if (type == "mats") { return Var().intValue((int32_t)ML_Res.mats.reload()); }
 		else if (type == "meshes") { return Var().intValue((int32_t)ML_Res.meshes.reload()); }
 		else if (type == "models") { return Var().intValue((int32_t)ML_Res.models.reload()); }
 		else if (type == "scripts") { return Var().intValue((int32_t)ML_Res.scripts.reload()); }

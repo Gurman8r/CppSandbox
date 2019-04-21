@@ -418,32 +418,32 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Shader::setUniformArray(const String & name, const List<float> & value) const
+	bool Shader::setUniformList(const String & name, const List<float> & value) const
 	{
 		return setUniformArray(name, (int32_t)value.size(), value.data());
 	}
-
-	bool Shader::setUniformArray(const String & name, const List<vec2f> & value) const
+	
+	bool Shader::setUniformList(const String & name, const List<vec2f> & value) const
 	{
 		return setUniformArray(name, (int32_t)value.size(), value.data());
 	}
-
-	bool Shader::setUniformArray(const String & name, const List<vec3f> & value) const
+	
+	bool Shader::setUniformList(const String & name, const List<vec3f> & value) const
 	{
 		return setUniformArray(name, (int32_t)value.size(), value.data());
 	}
-
-	bool Shader::setUniformArray(const String & name, const List<vec4f> & value) const
+	
+	bool Shader::setUniformList(const String & name, const List<vec4f> & value) const
 	{
 		return setUniformArray(name, (int32_t)value.size(), value.data());
 	}
-
-	bool Shader::setUniformArray(const String & name, const List<mat3f> & value) const
+	
+	bool Shader::setUniformList(const String & name, const List<mat3f> & value) const
 	{
 		return setUniformArray(name, (int32_t)value.size(), value.data());
 	}
-
-	bool Shader::setUniformArray(const String & name, const List<mat4f> & value) const
+	
+	bool Shader::setUniformList(const String & name, const List<mat4f> & value) const
 	{
 		return setUniformArray(name, (int32_t)value.size(), value.data());
 	}
@@ -538,7 +538,7 @@ namespace ml
 			
 			if (location == -1)
 			{
-				Debug::logWarning("Unreferenced Uniform: \"{0}\"", value);
+				Debug::logWarning("Uniform Not Found: \"{0}\"", value);
 			}
 
 			return location;

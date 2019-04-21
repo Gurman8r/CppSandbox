@@ -74,7 +74,6 @@ namespace DEMO
 			float			lineDelta	= 1.f;
 			float			lineSize	= 0.5f;
 			int32_t			lineSamples	= 16;
-
 		};
 		DemoData data;
 

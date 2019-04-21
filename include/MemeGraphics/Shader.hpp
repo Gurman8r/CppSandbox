@@ -17,11 +17,13 @@ namespace ml
 		, public IHandle<uint32_t>
 	{
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		Shader();
 		Shader(const Shader & copy);
 		~Shader();
 
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		bool dispose() override;
 		bool loadFromFile(const String & filename) override;
 		bool loadFromFile(const String & vs, const String & fs);
@@ -31,6 +33,7 @@ namespace ml
 		bool loadFromMemory(const String & vs, const String & fs);
 
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		void bind(bool bindTextures = true) const;
 		static void bind(const Shader * shader, bool bindTextures = true);
 		
@@ -38,6 +41,7 @@ namespace ml
 		bool setUniform(const Uniform & value) const;
 
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		bool setUniform(const String & name, const float & value) const;
 		bool setUniform(const String & name, const int32_t & value) const;
 		bool setUniform(const String & name, const vec2f & value) const;
@@ -61,23 +65,25 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		bool setUniformArray(const String & name, const List<float> & value) const;
-		bool setUniformArray(const String & name, const List<vec2f> & value) const;
-		bool setUniformArray(const String & name, const List<vec3f> & value) const;
-		bool setUniformArray(const String & name, const List<vec4f> & value) const;
-		bool setUniformArray(const String & name, const List<mat3f> & value) const;
-		bool setUniformArray(const String & name, const List<mat4f> & value) const;
+		bool setUniformList(const String & name, const List<float> & value) const;
+		bool setUniformList(const String & name, const List<vec2f> & value) const;
+		bool setUniformList(const String & name, const List<vec3f> & value) const;
+		bool setUniformList(const String & name, const List<vec4f> & value) const;
+		bool setUniformList(const String & name, const List<mat3f> & value) const;
+		bool setUniformList(const String & name, const List<mat4f> & value) const;
 
 	private:
+		/* * * * * * * * * * * * * * * * * * * * */
 		bool	compile(CString vs, CString gs, CString fs);
 		int32_t	getUniformLocation(const String & value) const;
 		int32_t	getAttribLocation(const String & value) const;
 
 	private:
-		struct	UniformBinder;
+		/* * * * * * * * * * * * * * * * * * * * */
+		using TextureTable = typename Map<int32_t, const Texture *>;
+		using UniformTable = typename Map<String, int32_t>;
 
-		using	TextureTable = typename Map<int32_t, const Texture *>;
-		using	UniformTable = typename Map<String, int32_t>;
+		struct	UniformBinder;
 
 		mutable TextureTable m_textures;
 		mutable UniformTable m_uniforms;

@@ -219,8 +219,8 @@
     <Image Include="..\..\assets\textures\stone\stone_nm.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\assets\lua\test.lua" />
-    <None Include="..\..\assets\materials\test.mat" />
+    <None Include="..\..\assets\lua\placeholder.lua" />
+    <None Include="..\..\assets\materials\placeholder.mat" />
     <None Include="..\..\assets\meshes\cow.mesh" />
     <None Include="..\..\assets\meshes\cube.mesh" />
     <None Include="..\..\assets\meshes\pumpkin.mesh" />

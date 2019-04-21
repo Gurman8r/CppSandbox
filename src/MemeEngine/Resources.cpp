@@ -11,7 +11,6 @@ namespace ml
 		, fonts		("Fonts"	)
 		, images	("Images"	)
 		, lua		("Lua"		)
-		, mats		("Materials")
 		, meshes	("Meshes"	)
 		, models	("Models"	)
 		, plugins	("Plugins"	)
@@ -39,7 +38,6 @@ namespace ml
 			sprites.clean()		+
 			models.clean()		+
 			meshes.clean()		+
-			mats.clean()		+
 			shaders.clean()		+
 			skyboxes.clean()	+
 			textures.clean()	+
@@ -59,7 +57,6 @@ namespace ml
 			images.reload()		+
 			meshes.reload()		+
 			models.reload()		+
-			mats.reload()		+
 			shaders.reload()	+
 			skyboxes.reload()	+
 			sprites.reload()	+
@@ -211,20 +208,6 @@ namespace ml
 					return lua.load(name);
 				}
 			}
-			// Materials
-			/* * * * * * * * * * * * * * * * * * * * */
-			else if (type == "material")
-			{
-				if (const String file = item.getStr("file"))
-				{
-					return mats.load(name, file);
-				}
-				else
-				{
-					return mats.load(name);
-				}
-			}
-			// Meshes
 			/* * * * * * * * * * * * * * * * * * * * */
 			else if (type == "mesh")
 			{

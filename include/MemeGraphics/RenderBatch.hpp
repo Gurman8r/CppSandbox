@@ -25,7 +25,11 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		RenderBatch(const VAO * vao, const VBO * vbo, const Shader * shader, const UniformSet & uniforms)
+		RenderBatch(
+			const VAO		* vao, 
+			const VBO		* vbo, 
+			const Shader	* shader, 
+			const UniformSet& uniforms)
 			: vao		(vao)
 			, vbo		(vbo)
 			, shader	(shader)

@@ -44,9 +44,7 @@ namespace DEMO
 		ML_EventSystem.addListener(ml::GraphicsEvent::EV_GL_Error, this);
 	}
 
-	Sandbox::~Sandbox() 
-	{
-	}
+	Sandbox::~Sandbox() {}
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 	
@@ -91,7 +89,7 @@ namespace DEMO
 			}
 			break;
 			
-			// Key Event
+			// Keyboard Input
 			/* * * * * * * * * * * * * * * * * * * * */
 		case ml::WindowEvent::EV_Key:
 			if (const auto * ev = value->as<ml::KeyEvent>())
@@ -157,8 +155,6 @@ namespace DEMO
 
 	void Sandbox::onEnter(const ml::EnterEvent * ev)
 	{
-		ml::Debug::log("Entering...");
-
 		// Initialize Miscellaneous
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
@@ -210,7 +206,7 @@ namespace DEMO
 		}
 		else
 		{
-			return ml::Debug::fatal("Failed Creating Window");
+			return ml::Debug::fatal("Failed Initializing Window");
 		}
 
 		// Initialize ImGui
@@ -222,7 +218,7 @@ namespace DEMO
 			ImGui::GetStyle().FrameBorderSize = 1;
 			if (!ImGui_ML_Init("#version 410", this, true, SETTINGS.imguiINI.c_str()))
 			{
-				return ml::Debug::fatal("Failed Loading ImGui");
+				return ml::Debug::fatal("Failed Initializing ImGui");
 			}
 		}
 
@@ -230,7 +226,7 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (!ML_AL.init())
 		{
-			return ml::Debug::fatal("Failed Loading OpenAL");
+			return ml::Debug::fatal("Failed Initializing OpenAL");
 		}
 
 		// Initialize Network
@@ -263,8 +259,6 @@ namespace DEMO
 
 	void Sandbox::onLoad(const ml::LoadEvent * ev)
 	{
-		ml::Debug::log("Loading...");
-
 		// Setup Canvas
 		/* * * * * * * * * * * * * * * * * * * * */
 		m_canvas.create();
@@ -312,8 +306,6 @@ namespace DEMO
 
 	void Sandbox::onStart(const ml::StartEvent * ev)
 	{
-		ml::Debug::log("Starting...");
-
 		// Set Window Icon
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (const ml::Image * icon = ML_Res.images.get("icon"))
@@ -712,6 +704,16 @@ namespace DEMO
 			}
 		}
 
+		// Update Camera
+		/* * * * * * * * * * * * * * * * * * * * */
+		if (const ml::Entity * target = ML_Res.entities.get("earth"))
+		{
+			m_camera.rotateAround(
+				target->get<ml::Transform>()->getPosition(),
+				(data.camAnim ? data.camSpd * ev->elapsed.delta() : 0.0f)
+			);
+		}
+
 		// Update Entities
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
@@ -786,16 +788,6 @@ namespace DEMO
 			}
 		}
 
-		// Update Camera
-		/* * * * * * * * * * * * * * * * * * * * */
-		if (const ml::Entity * target = ML_Res.entities.get("earth"))
-		{
-			m_camera.rotateAround(
-				target->get<ml::Transform>()->getPosition(),
-				(data.camAnim ? data.camSpd * ev->elapsed.delta() : 0.0f)
-			);
-		}
-
 		// Update Text
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
@@ -813,28 +805,28 @@ namespace DEMO
 			const ml::vec2f	origin	 = { (float)fontSize, (float)this->height() - (fontSize * 2) };
 			ml::vec2f		linePos	 = 0.0f;
 			size_t			lineNum	 = 0;
-			auto			nextLine = [&]() { return (linePos = (origin + (offset * (float)(lineNum++)))); };
+			auto			newLine = [&]() { return (linePos = (origin + (offset * (float)(lineNum++)))); };
 
 			m_text["gl_version"]
 				.setFont(font)
 				.setFontSize(fontSize)
-				.setPosition(nextLine())
+				.setPosition(newLine())
 				.setString(ml::String("GL Version: {0}").format(
 					ML_GL.getString(ml::GL::Version)));
 
 			m_text["gl_vendor"]
 				.setFont(font)
 				.setFontSize(fontSize)
-				.setPosition(nextLine())
+				.setPosition(newLine())
 				.setString(ml::String("GL Vendor: {0}").format(
 					ML_GL.getString(ml::GL::Vendor)));
 
-			nextLine();
+			newLine();
 
 			m_text["fps_str"]
 				.setFont(font)
 				.setFontSize(fontSize)
-				.setPosition(nextLine())
+				.setPosition(newLine())
 				.setString(ml::String("{0} ms/frame ({1} fps)").format(
 					ev->elapsed.delta(),
 					ML_Time.calculateFPS(ev->elapsed.delta())));
@@ -842,46 +834,46 @@ namespace DEMO
 			m_text["time_total"]
 				.setFont(font)
 				.setFontSize(fontSize)
-				.setPosition(nextLine())
+				.setPosition(newLine())
 				.setString(ml::String("time: {0}").format(
 					ML_Time.elapsed()));
 
-			nextLine();
+			newLine();
 
 			m_text["time_sin"]
 				.setFont(font)
 				.setFontSize(fontSize)
-				.setPosition(nextLine())
+				.setPosition(newLine())
 				.setString(ml::String("sin: {0}").format(
 					ML_Time.sin()));
 
 			m_text["time_cos"]
 				.setFont(font)
 				.setFontSize(fontSize)
-				.setPosition(nextLine())
+				.setPosition(newLine())
 				.setString(ml::String("cos: {0}").format(
 					ML_Time.cos()));
 
-			nextLine();
+			newLine();
 
 			m_text["cursor_pos"]
 				.setFont(font)
 				.setFontSize(fontSize)
-				.setPosition(nextLine())
+				.setPosition(newLine())
 				.setString(ml::String("cx/cy: {0}").format(
 					this->getCursorPos()));
 
 			m_text["window_pos"]
 				.setFont(font)
 				.setFontSize(fontSize)
-				.setPosition(nextLine())
+				.setPosition(newLine())
 				.setString(ml::String("wx/wy: {0}").format(
 					this->getPosition()));
 
 			m_text["window_size"]
 				.setFont(font)
 				.setFontSize(fontSize)
-				.setPosition(nextLine())
+				.setPosition(newLine())
 				.setString(ml::String("ww/wh: {0}").format(
 					this->getSize()));
 
@@ -939,9 +931,9 @@ namespace DEMO
 
 			// Draw Entities
 			/* * * * * * * * * * * * * * * * * * * * */
-			for (auto & pair : ML_Res.entities)
+			for (const auto & pair : ML_Res.entities)
 			{
-				if (ml::Renderer * renderer = pair.second->get<ml::Renderer>())
+				if (const ml::Renderer * renderer = pair.second->get<ml::Renderer>())
 				{
 					this->draw(*renderer);
 				}
@@ -953,7 +945,7 @@ namespace DEMO
 				ML_GL.disable(ml::GL::CullFace);
 				ML_GL.disable(ml::GL::DepthTest);
 
-				// Geometry
+				// Draw Geometry
 				/* * * * * * * * * * * * * * * * * * * * */
 				if (const ml::Shader * shader = ML_Res.shaders.get("geometry"))
 				{
@@ -970,43 +962,35 @@ namespace DEMO
 					ML_GL.drawArrays(ml::GL::Points, 0, 4);
 				}
 
-				// Sprites
+				// Draw Sprites
 				/* * * * * * * * * * * * * * * * * * * * */
 				if (const ml::Shader * shader = ML_Res.shaders.get("sprites"))
 				{
-					static ml::RenderBatch batch(
-						&m_canvas.vao(),
-						&m_canvas.vbo(),
-						shader,
-						ml::UniformSet
+					static ml::RenderBatch batch(&m_canvas.vao(), &m_canvas.vbo(), shader,
 						{
 							{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&data.ortho.matrix() },
 							{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4 },
 							{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D },
 						}
 					);
-					for (auto & pair : ML_Res.sprites)
+					for (const auto & pair : ML_Res.sprites)
 					{
 						this->draw((*pair.second), batch);
 					}
 				}
 
-				// Text
+				// Draw Text
 				/* * * * * * * * * * * * * * * * * * * * */
 				if (const ml::Shader * shader = ML_Res.shaders.get("text"))
 				{
-					static ml::RenderBatch batch(
-						&m_canvas.vao(),
-						&m_canvas.vbo(), 
-						shader, 
-						ml::UniformSet 
+					static ml::RenderBatch batch(&m_canvas.vao(), &m_canvas.vbo(), shader, 
 						{
 							{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&data.ortho.matrix() },
 							{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4 },
 							{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D },
 						}
 					);
-					for (auto & pair : m_text)
+					for (const auto & pair : m_text)
 					{
 						this->draw(pair.second, batch);
 					}
@@ -1154,13 +1138,9 @@ namespace DEMO
 		ml::Debug::log("Unloading...");
 
 		// Cleanup Std Out Redirect
-		if (m_rdbuf)
-		{
-			ml::cout.rdbuf(m_rdbuf);
-			m_rdbuf = NULL;
-		}
+		if (m_rdbuf) { ml::cout.rdbuf(m_rdbuf); m_rdbuf = NULL; }
 
-		// Unload Resources
+		// Cleanup Resources
 		ML_Res.dispose();
 
 		// Cleanup Physics Thread

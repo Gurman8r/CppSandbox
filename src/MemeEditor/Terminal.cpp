@@ -194,7 +194,7 @@ namespace ml
 
 	void Terminal::printss(SStream & value)
 	{
-		if (const String text = value.str())
+		if (const String & text = value.str())
 		{
 			SStream sink(text);
 			String	line;

@@ -123,7 +123,6 @@ namespace ml
 					if (ImGui::MenuItem("Font"		)) { /**/ }
 					if (ImGui::MenuItem("Image"		)) { /**/ }
 					if (ImGui::MenuItem("Lua"		)) { /**/ }
-					if (ImGui::MenuItem("Material"	)) { /**/ }
 					if (ImGui::MenuItem("Mesh"		)) { /**/ }
 					if (ImGui::MenuItem("Model"		)) { /**/ }
 					if (ImGui::MenuItem("Plugin"	)) { /**/ }
@@ -147,7 +146,6 @@ namespace ml
 				draw_fonts();
 				draw_images();
 				draw_lua();
-				draw_mats();
 				draw_meshes();
 				draw_models();
 				draw_plugins();
@@ -640,48 +638,6 @@ namespace ml
 						ImGui::Text("%s", name);
 					});
 					if (const String file = ML_Res.lua.getFile(name))
-					{
-						Funcs::Field("File", [&](CString label)
-						{
-							const String fName = ML_FS.getFileName(file);
-							if (ImGui::Selectable(fName.c_str()))
-							{
-								ML_EventSystem.fireEvent(OS_OpenEvent(ML_FS.pathTo(file)));
-							}
-						});
-						Funcs::Field("Path", [&](CString label)
-						{
-							const String fPath = ML_FS.getFilePath(file);
-							if (ImGui::Selectable(fPath.c_str()))
-							{
-								ML_EventSystem.fireEvent(OS_OpenEvent(ML_FS.pathTo(fPath)));
-							}
-						});
-					}
-
-				}, pair.first.c_str(), pair.second);
-			}
-		});
-	}
-
-	void ResourceView::draw_mats()
-	{
-		Funcs::Group(ML_Res.mats.getName().c_str(), [&]()
-		{
-			if (ML_Res.mats.empty())
-			{
-				return ImGui::Text("None");
-			}
-
-			for (auto & pair : ML_Res.mats)
-			{
-				Funcs::Group(pair.first.c_str(), [&](CString name, const Material * e)
-				{
-					Funcs::Field("Name", [&](CString label)
-					{
-						ImGui::Text("%s", name);
-					});
-					if (const String file = ML_Res.mats.getFile(name))
 					{
 						Funcs::Field("File", [&](CString label)
 						{

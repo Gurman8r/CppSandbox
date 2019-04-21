@@ -20,30 +20,31 @@ namespace ml
 
 	public:
 		IHandle(const value_type value)
-			: m_ID(value)
+			: m_handle(value)
 		{
 		}
 
 		virtual ~IHandle() {}
 
 	public:
-		inline bool				good() const			{ return  m_ID; }
-		inline reference		get_ref()				{ return  m_ID; }
-		inline pointer			get_ptr()				{ return &m_ID; }
-		inline const_pointer	get_const_ptr() const	{ return &m_ID; }
-		inline const_reference	get_const_ref() const	{ return  m_ID; }
-
 		inline void * get_address() { return (void *)(intptr_t)(get_ref()); }
 
 	public:
-		inline operator bool			() const	{ return good(); }
-		inline operator reference		()			{ return get_ref(); }
-		inline operator pointer			()			{ return get_ptr(); }
-		inline operator const_pointer	() const	{ return get_const_ptr(); }
-		inline operator const_reference	() const	{ return get_const_ref(); }
+		inline bool				good() const			{ return  m_handle; }
+		inline reference		get_ref()				{ return  m_handle; }
+		inline pointer			get_ptr()				{ return &m_handle; }
+		inline const_pointer	get_const_ptr() const	{ return &m_handle; }
+		inline const_reference	get_const_ref() const	{ return  m_handle; }
+
+	public:
+		inline operator bool			() const		{ return good(); }
+		inline operator reference		()				{ return get_ref(); }
+		inline operator pointer			()				{ return get_ptr(); }
+		inline operator const_pointer	() const		{ return get_const_ptr(); }
+		inline operator const_reference	() const		{ return get_const_ref(); }
 	
 	private:
-		value_type m_ID;
+		value_type m_handle;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

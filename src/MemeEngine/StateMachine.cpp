@@ -33,7 +33,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	StateMachine::fun_type StateMachine::get(const key_type key) const
+	inline StateMachine::fun_type StateMachine::get(const key_type key) const
 	{
 		const_iterator it;
 		return ((key > ML_STATE_INVALID)
@@ -43,7 +43,7 @@ namespace ml
 			: (NULL));
 	}
 
-	StateMachine::fun_type StateMachine::set(const key_type key, fun_type && fun)
+	inline StateMachine::fun_type StateMachine::set(const key_type key, fun_type && fun)
 	{
 		iterator it;
 		return ((key > ML_STATE_INVALID)
@@ -53,7 +53,7 @@ namespace ml
 			: (NULL));
 	}
 
-	StateMachine::ret_type StateMachine::run(const key_type key, arg_type data)
+	inline StateMachine::ret_type StateMachine::run(const key_type key, arg_type data)
 	{
 		fun_type fun;
 		return ((key > ML_STATE_INVALID)

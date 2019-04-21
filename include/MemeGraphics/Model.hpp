@@ -3,7 +3,6 @@
 
 #include <MemeGraphics/IDrawable.hpp>
 #include <MemeGraphics/Mesh.hpp>
-#include <MemeGraphics/Material.hpp>
 #include <MemeGraphics/BufferLayout.hpp>
 #include <MemeGraphics/VertexArray.hpp>
 #include <MemeGraphics/VertexBuffer.hpp>

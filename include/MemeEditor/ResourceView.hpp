@@ -31,7 +31,6 @@ namespace ml
 		void draw_fonts		();
 		void draw_images	();
 		void draw_lua		();
-		void draw_mats		();
 		void draw_meshes	();
 		void draw_models	();
 		void draw_plugins	();
