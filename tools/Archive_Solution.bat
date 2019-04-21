@@ -9,6 +9,7 @@ set OutFile=%OutDir%%OutName%%OutType%
 cd C:\Program Files\7-Zip
 
 7z a -r %OutFile% %WorkingDir%../tools
+7z a -r %OutFile% %WorkingDir%../.git
 7z a 	%OutFile% %WorkingDir%../%OutName%.sln
 7z a 	%OutFile% %WorkingDir%../ML_Config.ini
 7z a 	%OutFile% %WorkingDir%../*.bat
