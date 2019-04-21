@@ -104,14 +104,8 @@ namespace DEMO
 
 				/* * * * * * * * * * * * * * * * * * * * */
 
-				// Reload Shaders (Num1)
-				if (ev->getKeyDown(ml::KeyCode::Num1))
-				{
-					ml::Debug::log("Reloaded {0} Shaders.", ML_Res.shaders.reload());
-				}
-
-				// Toggle Smooth Textures (Num2)
-				if (ev->getKeyDown(ml::KeyCode::Num2))
+				// Toggle Smooth Textures (Ctrl+Num1)
+				if (ev->getKeyDown(ml::KeyCode::Num1) && (ev->mod_ctrl))
 				{
 					for (auto & pair : ML_Res.textures)
 					{
