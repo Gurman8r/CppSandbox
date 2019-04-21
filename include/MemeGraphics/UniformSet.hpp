@@ -47,10 +47,6 @@ namespace ml
 		}
 
 	public:
-		inline const Uniform & operator[](const String & name) const { return m_map.at(name); }
-		inline Uniform & operator[](const String & name) { return m_map[name]; }
-
-	public:
 		inline iterator			begin()			{ return m_map.begin(); }
 		inline iterator			end()			{ return m_map.end(); }
 		inline const_iterator	begin() const	{ return m_map.begin(); }

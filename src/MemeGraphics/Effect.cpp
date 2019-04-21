@@ -61,8 +61,7 @@ namespace ml
 			if (((m_size = size) != vec2i::Zero) && (m_attachment = attachment))
 			{
 				// Setup Framebuffer
-				m_fbo.create();
-				m_fbo.bind();
+				m_fbo.create().bind();
 				{
 					// Setup Renderbuffer
 					m_rbo.create(m_size[0], m_size[1]);

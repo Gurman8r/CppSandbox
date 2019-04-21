@@ -104,6 +104,7 @@ namespace ml
 				ImGui::MenuItem(ML_Builder.title(), "Ctrl+Alt+B", &ML_Editor.show_builder);
 				ImGui::MenuItem(ML_SceneView.title(), "Ctrl+Alt+S", &ML_Editor.show_sceneView);
 				ImGui::MenuItem(ML_Inspector.title(), "Ctrl+Alt+I", &ML_Editor.show_inspector);
+				ImGui::MenuItem(ML_Profiler.title(), NULL, &ML_Editor.show_profiler);
 				ImGui::MenuItem(ML_TextEditor.title(), NULL, &ML_Editor.show_textEditor);
 				ImGui::MenuItem(ML_ResourceView.title(), NULL, &ML_Editor.show_resourceView);
 				ImGui::MenuItem(ML_NetworkHUD.title(), NULL, &ML_Editor.show_network);

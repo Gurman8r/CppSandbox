@@ -810,7 +810,7 @@ namespace DEMO
 
 			newLine();
 
-			m_text["fps_str"]
+			m_text["framerate"]
 				.setFont(font)
 				.setFontSize(fontSize)
 				.setPosition(newLine())
@@ -873,27 +873,33 @@ namespace DEMO
 
 		// Update Camera
 		/* * * * * * * * * * * * * * * * * * * * */
-		if (const ml::Entity * target = ML_Res.entities.get("earth"))
 		{
-			m_camera.orbit(
-				(target->get<ml::Transform>()->getPosition()),
-				(data.camAnim ? data.camSpd * ev->elapsed.delta() : 0.0f)
-			);
-		}
-		ml::vec2i resolution = this->getFrameSize();
-		if (resolution != ml::vec2i::Zero)
-		{
-			bool changed = false;
-			for (auto & pair : ML_Res.effects)
+			if (const ml::Entity * target = ML_Res.entities.get("earth"))
 			{
-				if (pair.second->resize(resolution))
-				{
-					changed = true;
-				}
+				m_camera.orbit(
+					(target->get<ml::Transform>()->getPosition()),
+					(data.camAnim ? data.camSpd * ev->elapsed.delta() : 0.0f)
+				);
 			}
-			if (changed)
+			
+			const ml::vec2i resolution = this->getFrameSize();
+
+			if (resolution != ml::vec2i::Zero)
 			{
-				m_camera.update(resolution);
+				bool changed = false;
+
+				for (auto & pair : ML_Res.effects)
+				{
+					if (pair.second->resize(resolution))
+					{
+						changed = true;
+					}
+				}
+
+				if (changed)
+				{
+					m_camera.update(resolution);
+				}
 			}
 		}
 	}
