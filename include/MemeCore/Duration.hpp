@@ -48,9 +48,9 @@ namespace ml
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
-		inline operator uint64_t() const { return milliseconds(); }
+		inline operator uint64_t() const { return nanoseconds(); }
 
-		inline const float delta() const { return std::fabs((float)(*this) / 1000.0f); }
+		inline const float delta() const { return ((float)(*this) / 1000000000.0f); }
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -79,7 +79,7 @@ namespace ml
 
 	private:
 		/* * * * * * * * * * * * * * * * * * * * */
-		uint64_t m_nanoseconds;
+		uint64_t m_count;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

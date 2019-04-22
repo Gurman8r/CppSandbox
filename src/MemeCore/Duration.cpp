@@ -5,17 +5,17 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Duration::Duration()
-		: m_nanoseconds(0ULL)
+		: m_count(0ULL)
 	{
 	}
 	
 	Duration::Duration(const uint64_t value)
-		: m_nanoseconds(value)
+		: m_count(value)
 	{
 	}
 
 	Duration::Duration(const Duration & copy)
-		: m_nanoseconds(copy.m_nanoseconds)
+		: m_count(copy.m_count)
 	{
 	}
 	
@@ -62,30 +62,30 @@ namespace ml
 	
 	const uint64_t Duration::nanoseconds() const
 	{
-		return m_nanoseconds;
+		return m_count;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool Duration::equals(const Duration & other) const
 	{
-		return (milliseconds() == other.milliseconds());
+		return (m_count == other.m_count);
 	}
 
 	bool Duration::lessThan(const Duration & other) const
 	{
-		return (milliseconds() < other.milliseconds());
+		return (m_count < other.m_count);
 	}
 
 
 	bool Duration::equals(const uint64_t & other) const
 	{
-		return (milliseconds() == other);
+		return (m_count == other);
 	}
 
 	bool Duration::lessThan(const uint64_t & other) const
 	{
-		return (milliseconds() < other);
+		return (m_count < other);
 	}
 
 	
@@ -107,7 +107,7 @@ namespace ml
 
 	void Duration::deserialize(std::istream & in)
 	{
-		in >> m_nanoseconds;
+		in >> m_count;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -125,12 +125,12 @@ namespace ml
 	
 	Duration operator+(const Duration & lhs, uint64_t rhs)
 	{
-		return (lhs.milliseconds() + rhs);
+		return ((uint64_t)lhs + rhs);
 	}
 	
 	Duration operator-(const Duration & lhs, uint64_t rhs)
 	{
-		return (lhs.milliseconds() - rhs);
+		return ((uint64_t)lhs - rhs);
 	}
 	
 	
