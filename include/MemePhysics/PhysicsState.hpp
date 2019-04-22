@@ -14,8 +14,13 @@ namespace ml
 	{
 	public:
 		PhysicsState();
-		PhysicsState(const PhysicsState &copy);
+		PhysicsState(const PhysicsState & copy);
+		PhysicsState(PhysicsState && copy);
 		~PhysicsState();
+
+	public:
+		PhysicsState & operator=(const PhysicsState & other);
+		PhysicsState & operator=(PhysicsState && other);
 
 	public:
 		PhysicsState & resize(const size_t value);

@@ -22,8 +22,39 @@ namespace ml
 	{
 	}
 
+	PhysicsState::PhysicsState(PhysicsState && copy)
+		: m_size(copy.m_size)
+		, m_position(copy.m_position)
+		, m_rotation(copy.m_rotation)
+		, m_transform(copy.m_transform)
+		, m_invTransform(copy.m_invTransform)
+	{
+	}
+
 	PhysicsState::~PhysicsState()
 	{
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	PhysicsState & PhysicsState::operator=(const PhysicsState & copy)
+	{
+		m_size = copy.m_size;
+		m_position = copy.m_position;
+		m_rotation = copy.m_rotation;
+		m_transform = copy.m_transform;
+		m_invTransform = copy.m_invTransform;
+		return (*this);
+	}
+
+	PhysicsState & PhysicsState::operator=(PhysicsState && copy)
+	{
+		std::swap(m_size, copy.m_size);
+		std::swap(m_position, copy.m_position);
+		std::swap(m_rotation, copy.m_rotation);
+		std::swap(m_transform, copy.m_transform);
+		std::swap(m_invTransform, copy.m_invTransform);
+		return (*this);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -31,10 +62,10 @@ namespace ml
 	PhysicsState & PhysicsState::resize(const size_t value)
 	{
 		m_size = value;
-		m_position.resize(m_size);
-		m_rotation.resize(m_size);
-		m_transform.resize(m_size);
-		m_invTransform.resize(m_size);
+		m_position.resize(value);
+		m_rotation.resize(value);
+		m_transform.resize(value);
+		m_invTransform.resize(value);
 		return (*this);
 	}
 

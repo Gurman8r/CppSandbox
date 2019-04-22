@@ -1,15 +1,18 @@
 #include <MemeCore/Transform.hpp>
-#include <MemeCore/GLM.hpp>
+#include <glm/gtx/transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/rotate_vector.hpp>
+#include <glm/gtx/matrix_decompose.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-#define MPX 0xC // position X
-#define MPY 0xD // position Y
-#define MPZ 0xE // position Z
+#define MPX 0xC // 12 | position X
+#define MPY 0xD // 13 | position Y
+#define MPZ 0xE // 14 | position Z
 
-#define MSX 0x0 // scale X
-#define MSY 0x5 // scale Y
-#define MSZ 0xA // scale Z
+#define MSX 0x0 // 0 | scale X
+#define MSY 0x5 // 5 | scale Y
+#define MSZ 0xA // 10 | scale Z
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -84,6 +87,11 @@ namespace ml
 		);
 	}
 
+	Transform & Transform::invert()
+	{
+		return ((*this) = this->inverse());
+	}
+
 	Transform & Transform::orthographic(const FloatRect & rect)
 	{
 		return (*this) = mat4f(glm::value_ptr(glm::ortho(
@@ -150,7 +158,6 @@ namespace ml
 		static glm::vec3 _trans;
 		static glm::vec3 _skew;
 		static glm::vec4 _persp;
-
 		if (glm::decompose(ML_MAT4(m_matrix), _scale, _orient, _trans, _skew, _persp))
 		{
 			scale	= { _scale.x,	_scale.y,	_scale.z				};
@@ -158,7 +165,6 @@ namespace ml
 			trans	= { _trans.x,	_trans.y,	_trans.z				};
 			skew	= { _skew.x,	_skew.y,	_skew.z					};
 			persp	= { _persp.x,	_persp.y,	_persp.z,	_persp.w	};
-
 			return true;
 		}
 		else
@@ -168,9 +174,13 @@ namespace ml
 			trans	= 0.0f;
 			skew	= 0.0f;
 			persp	= 0.0f;
-
 			return false;
 		}
+	}
+
+	mat4f Transform::inverse() const
+	{
+		return mat4f(glm::value_ptr(glm::inverse(ML_MAT4(m_matrix))));
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

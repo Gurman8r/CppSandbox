@@ -18,12 +18,12 @@ namespace ml
 
 	bool Plugin::dispose()
 	{
-		return lib().dispose();
+		return m_lib.dispose();
 	}
 
 	bool Plugin::loadFromFile(const String & filename)
 	{
-		return lib().loadFromFile(filename);
+		return m_lib.loadFromFile(filename);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

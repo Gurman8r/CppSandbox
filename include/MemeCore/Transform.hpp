@@ -24,7 +24,13 @@ namespace ml
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
+		inline const mat4f	& matrix() const { return m_matrix; }
+		inline mat4f		& matrix()		 { return m_matrix; }
+
+	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		Transform & lookAt(const vec3f & eye, const vec3f & pos, const vec3f & up);
+		Transform & invert();
 		Transform & orthographic(const FloatRect & rect);
 		Transform & orthographic(const FloatRect & rect, const vec2f & clip);
 		Transform & perspective(const float fov, const float aspect, const float near, const float far);
@@ -36,6 +42,8 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 		bool decompose(vec3f & scale, quat  & orient, vec3f & trans, vec3f & skew, vec4f & persp);
 
+		mat4f inverse() const;
+
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
 		const vec3f getPosition() const;
@@ -45,11 +53,6 @@ namespace ml
 		Transform & setPosition(const vec3f & value);
 		Transform & setScale(const vec3f & value);
 		Transform & setRotation(const quat & value);
-
-	public:
-		/* * * * * * * * * * * * * * * * * * * * */
-		inline const mat4f	& matrix() const { return m_matrix; }
-		inline mat4f		& matrix()		 { return m_matrix; }
 
 	private:
 		/* * * * * * * * * * * * * * * * * * * * */

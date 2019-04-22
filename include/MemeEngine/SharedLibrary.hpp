@@ -27,15 +27,15 @@ namespace ml
 
 	public:
 		template <
-			class Res,
+			class Out,
 			class ... Args
-		> inline Res callFunction(const String & name, Args && ... args)
+		> inline Out callFunction(const String & name, Args && ... args)
 		{
-			using Fun = Res(*)(Args...);
+			using Fun = Out(*)(Args...);
 			static Fun fun;
-			return ((fun = (Fun)(loadFunction(name)))
-				? ((Res)(fun((args)...)))
-				: (Res()));
+			return ((fun = reinterpret_cast<Fun>(loadFunction(name)))
+				? (static_cast<Out>(fun((args)...)))
+				: (static_cast<Out>(NULL)));
 		}
 
 	public:
@@ -45,6 +45,8 @@ namespace ml
 	private:
 		String m_filename;
 		void * m_instance;
+
+		mutable Map<String, void *> m_fun;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

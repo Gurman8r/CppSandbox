@@ -1,8 +1,16 @@
 #include <MemeEngine/SharedLibrary.hpp>
+#include <MemeCore/Debug.hpp>
 
 # ifdef ML_SYSTEM_WINDOWS
 #	include <Windows.h>
-# endif // ML_SYSTEM_WINDOWS
+#	define ML_FREE_LIBRARY(inst)		(FreeLibrary((HINSTANCE)inst))
+#	define ML_LOAD_LIBRARY(file)		(LoadLibraryA(file))
+#	define ML_LOAD_FUNCTION(inst, name) (GetProcAddress((HINSTANCE)inst, name))
+# else
+#	define ML_LOAD_LIBRARY(file)		(0)
+#	define ML_FREE_LIBRARY(inst)		(0)
+#	define ML_LOAD_FUNCTION(inst, name) (0)
+# endif
 
 namespace ml
 {
@@ -23,31 +31,31 @@ namespace ml
 
 	bool SharedLibrary::dispose()
 	{
-#ifdef ML_SYSTEM_WINDOWS
-		return FreeLibrary((HINSTANCE)m_instance);
-#else
-		return false;
-#endif
+		return ML_FREE_LIBRARY(m_instance);
 	}
 
 	bool SharedLibrary::loadFromFile(const String & filename)
 	{
-#ifdef ML_SYSTEM_WINDOWS
-		return (m_instance = LoadLibraryA((m_filename = filename).c_str()));
-#else
-		return false;
-#endif
+		return (m_instance = ML_LOAD_LIBRARY(filename.c_str()));
 	}
 
 	void * SharedLibrary::loadFunction(const String & name)
 	{
-#ifdef ML_SYSTEM_WINDOWS
-		return ((m_instance)
-			? (GetProcAddress((HINSTANCE)m_instance, name.c_str()))
-			: (NULL));
-#else
-		return NULL;
-#endif
+		Map<String, void *>::const_iterator it;
+		if ((it = m_fun.find(name)) != m_fun.end())
+		{
+			return it->second;
+		}
+		else
+		{
+			void * location;
+			if (!(location = ML_LOAD_FUNCTION(m_instance, name.c_str())))
+			{
+				Debug::logWarning("Uniform Not Found: \"{0}\"", name);
+
+			}
+			return m_fun.insert({ name, location }).first->second;
+		}
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

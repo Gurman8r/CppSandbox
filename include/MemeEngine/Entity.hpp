@@ -10,7 +10,8 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-#define ML_assert_component(derived) ML_assert_is_base_of(ml::ITrackable, derived)
+#define ML_COMPONENT_BASE ml::ITrackable
+#define ML_ASSERT_COMPONENT(derived) ML_assert_is_base_of(ML_COMPONENT_BASE, derived)
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -27,7 +28,7 @@ namespace ml
 	{
 	public: // Usings
 		/* * * * * * * * * * * * * * * * * * * * */
-		using value_type	= typename ITrackable *;
+		using value_type	= typename ML_COMPONENT_BASE *;
 		using map_type		= typename HashMap<size_t, value_type>;
 		using iterator		= typename map_type::iterator;
 		using const_iterator= typename map_type::const_iterator;
@@ -49,7 +50,7 @@ namespace ml
 			class Component
 		> inline Component * add()
 		{
-			ML_assert_component(Component);
+			ML_ASSERT_COMPONENT(Component);
 			return ((this->find<Component>() == this->end())
 				? (this->set(new Component()))
 				: (NULL)
@@ -60,7 +61,7 @@ namespace ml
 			class Component
 		> inline Component * add(const Component & value)
 		{
-			ML_assert_component(Component);
+			ML_ASSERT_COMPONENT(Component);
 			return ((this->find<Component>() == this->end())
 				? (this->set(new Component(value)))
 				: (NULL)
@@ -73,7 +74,7 @@ namespace ml
 			class Component
 		> inline value_type & at()
 		{
-			ML_assert_component(Component);
+			ML_ASSERT_COMPONENT(Component);
 			return m_map[this->hash<Component>()];
 		}
 
@@ -81,7 +82,7 @@ namespace ml
 			class Component
 		> inline const value_type & at() const
 		{
-			ML_assert_component(Component);
+			ML_ASSERT_COMPONENT(Component);
 			return m_map.at(this->hash<Component>());
 		}
 
@@ -91,7 +92,7 @@ namespace ml
 			class Component
 		> inline Component * get()
 		{
-			ML_assert_component(Component);
+			ML_ASSERT_COMPONENT(Component);
 			iterator it;
 			return (((it = this->find<Component>()) != this->end())
 				? (reinterpret_cast<Component *>(it->second))
@@ -103,7 +104,7 @@ namespace ml
 			class Component
 		> inline const Component * get() const
 		{
-			ML_assert_component(Component);
+			ML_ASSERT_COMPONENT(Component);
 			const_iterator it;
 			return (((it = this->find<Component>()) != this->cend())
 				? (reinterpret_cast<const Component *>(it->second))
@@ -117,7 +118,7 @@ namespace ml
 			class Component
 		> inline iterator find()
 		{
-			ML_assert_component(Component);
+			ML_ASSERT_COMPONENT(Component);
 			return (iterator)(m_map.find(this->hash<Component>()));
 		}
 
@@ -125,7 +126,7 @@ namespace ml
 			class Component
 		> inline const_iterator find() const
 		{
-			ML_assert_component(Component);
+			ML_ASSERT_COMPONENT(Component);
 			return (const_iterator)(m_map.find(this->hash<Component>()));
 		}
 
@@ -135,7 +136,7 @@ namespace ml
 			class Component
 		> inline size_t hash() const
 		{
-			ML_assert_component(Component);
+			ML_ASSERT_COMPONENT(Component);
 			return (&typeid(Component))->hash_code();
 		}
 
@@ -145,7 +146,7 @@ namespace ml
 			class Component
 		> inline Component * set(Component * value)
 		{
-			ML_assert_component(Component);
+			ML_ASSERT_COMPONENT(Component);
 			return ((Component *)(this->at<Component>() = value));
 		}
 

@@ -23,6 +23,7 @@ namespace ml
 		, m_preview()
 		, m_isDouble(false)
 	{
+		ML_EventSystem.addListener(EditorEvent::EV_File_Open, this);
 		ML_EventSystem.addListener(CoreEvent::EV_FS_ChangeDir, this);
 
 		onEvent(&FS_ChangDirEvent(ML_FS.getWorkingDir()));
@@ -38,6 +39,15 @@ namespace ml
 	{
 		switch (*value)
 		{
+		case EditorEvent::EV_File_Open:
+			if (const auto * ev = value->as<File_Open_Event>())
+			{
+				ML_EventSystem.fireEvent(OS_ExecuteEvent(
+					"open", get_selected_path()
+				));
+			}
+			break;
+
 		case CoreEvent::EV_FS_ChangeDir:
 			if (const auto * ev = value->as<FS_ChangDirEvent>())
 			{

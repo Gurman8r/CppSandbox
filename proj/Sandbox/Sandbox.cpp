@@ -65,17 +65,6 @@ namespace DEMO
 				this->close();
 			}
 			break;
-
-			// File -> Open ...
-			/* * * * * * * * * * * * * * * * * * * * */
-		case ml::EditorEvent::EV_File_Open:
-			if (const auto * ev = value->as<ml::File_Open_Event>())
-			{
-				ML_EventSystem.fireEvent(ml::OS_ExecuteEvent(
-					"open", ML_Browser.get_selected_path()
-				));
-			}
-			break;
 			
 			// Keyboard Input
 			/* * * * * * * * * * * * * * * * * * * * */
@@ -202,7 +191,7 @@ namespace DEMO
 			static ml::StyleLoader loader;
 			if (loader.loadFromFile(ML_FS.getPathTo("../../../assets/styles/style4.txt")))
 			{
-
+				// TODO
 			}
 
 			ImGui::StyleHelper::Style4();
@@ -630,6 +619,28 @@ namespace DEMO
 
 			ML_Physics.world().state().resize(ML_Res.entities.size());
 
+			size_t i = 0;
+			for (const auto & pair : ML_Res.entities)
+			{
+				if (ml::Transform * transform = pair.second->get<ml::Transform>())
+				{
+					ml::vec3f scale;
+					ml::quat  orient;
+					ml::vec3f translation;
+					ml::vec3f skew;
+					ml::vec4f persp;
+					if (transform->decompose(scale, orient, translation, skew, persp))
+					{
+						ML_Physics.world().state().setData((i++),
+							translation,
+							orient, 
+							transform->matrix(), 
+							transform->inverse()
+						);
+					}
+				}
+			}
+
 			/* * * * * * * * * * * * * * * * * * * * */
 
 			while (this->isOpen())
@@ -650,7 +661,6 @@ namespace DEMO
 							{
 								pos[1] = ML_Time.cos();
 							}
-
 							state.setData(i, pos, rot, mat, inv);
 						}
 					}
