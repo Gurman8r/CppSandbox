@@ -2,7 +2,6 @@
 #define _ML_ENGINE_HPP_
 
 #include <MemeEngine/Export.hpp>
-#include <MemeCore/ITrackable.hpp>
 #include <MemeCore/Timer.hpp>
 
 #define ML_Engine ml::Engine::getInstance()
@@ -45,23 +44,27 @@ namespace ml
 			while (this->isRunning())
 			{
 				this->beginFrame();
-
 				fun((args)...);
-
 				this->endFrame();
 			}
 		}
 
 	public:
-		inline const Application *	app()		const	{ return m_app;		}
-		inline		 Application *	app()				{ return m_app;		}
-		inline const Timer &		timer()		const	{ return m_timer;	}
-		inline const Duration &		elapsed()	const	{ return m_elapsed; }
+		inline const Application *	app()		const	{ return m_app;			}
+		inline		 Application *	app()				{ return m_app;			}
+		inline const Timer &		timer()		const	{ return m_timer;		}
+		inline const Duration &		elapsed()	const	{ return m_frameTime;	}
+		inline const uint32_t		frameRate()	const	{ return m_frameRate;	}
 
 	private:
-		Application *	m_app;
-		Timer			m_timer;
-		Duration		m_elapsed;
+		Application * m_app;
+		
+		Timer		m_timer;
+		Duration	m_frameTime;
+		uint32_t	m_frameCount	= 0;
+		uint32_t	m_frameRate		= 0;
+		float		m_nextSecond	= 0;
+		float		m_prevSecond	= 0;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

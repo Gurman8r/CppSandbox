@@ -22,6 +22,7 @@
 #include <MemeEditor/GUI.hpp>
 #include <MemeEditor/ImGui.hpp>
 #include <MemeEditor/ImGui_Style.hpp>
+#include <MemeEngine/Engine.hpp>
 #include <MemeEngine/Entity.hpp>
 #include <MemeEngine/EngineCommands.hpp>
 #include <MemeEngine/Resources.hpp>
@@ -681,13 +682,15 @@ namespace DEMO
 
 		// Update Window Title
 		/* * * * * * * * * * * * * * * * * * * * */
-		this->setTitle(ml::String("{0} | {1} | {2} | {3} ms/frame ({4} fps)").format(
-			SETTINGS.title,
-			ML_CONFIGURATION,
-			ML_PLATFORM,
-			ev->elapsed.delta(),
-			ML_Time.calculateFPS(ev->elapsed.delta())
-		));
+		{
+			this->setTitle(ml::String("{0} | {1} | {2} | {3} ms/frame ({4} fps)").format(
+				SETTINGS.title,
+				ML_CONFIGURATION,
+				ML_PLATFORM,
+				ev->elapsed.delta(),
+				ML_Engine.frameRate()
+			));
+		}
 
 		// Update Network
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -836,7 +839,7 @@ namespace DEMO
 				.setPosition(newLine())
 				.setString(ml::String("{0} ms/frame ({1} fps)").format(
 					ev->elapsed.delta(),
-					ML_Time.calculateFPS(ev->elapsed.delta())));
+					ML_Engine.frameRate()));
 
 			m_text["time_total"]
 				.setFont(font)

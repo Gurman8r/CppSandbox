@@ -39,6 +39,7 @@ namespace ml
 	void Engine::beginFrame()
 	{
 		m_timer.start();
+
 		if (m_app)
 		{
 			m_app->pollEvents();
@@ -51,7 +52,19 @@ namespace ml
 		{
 			m_app->swapBuffers();
 		}
-		m_elapsed = m_timer.stop().elapsed();
+
+		m_frameTime = m_timer.stop().elapsed();
+
+		m_frameCount++;
+
+		if (((m_nextSecond += m_frameTime.delta()) - m_prevSecond) > 1.0f)
+		{
+			m_prevSecond = m_nextSecond;
+			
+			m_frameRate = m_frameCount;
+			
+			m_frameCount = 0;
+		}
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

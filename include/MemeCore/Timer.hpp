@@ -17,7 +17,7 @@ namespace ml
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
 		Timer();
-		Timer(const Timer& copy);
+		Timer(const Timer & copy);
 		~Timer();
 
 	public:

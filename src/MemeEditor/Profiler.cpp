@@ -1,6 +1,6 @@
 #include <MemeEditor/Profiler.hpp>
 #include <MemeEditor/ImGui.hpp>
-#include <MemeCore/Time.hpp>
+#include <MemeEngine/Engine.hpp>
 
 namespace ml
 {
@@ -35,11 +35,7 @@ namespace ml
 
 			/* * * * * * * * * * * * * * * * * * * * */
 
-			graph.update(
-				"##Framerate",
-				(float)ML_Time.calculateFPS((float)ImGui::GetIO().DeltaTime),
-				"fps {0}"
-			);
+			graph.update("##Framerate", (float)ML_Engine.frameRate(), "fps {0}");
 
 			/* * * * * * * * * * * * * * * * * * * * */
 		}
