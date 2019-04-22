@@ -7,7 +7,13 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Engine::Engine()
-		: m_app(NULL)
+		: m_app			(NULL)
+		, m_timer		(m_timer)
+		, m_frameTime	(m_frameTime)	
+		, m_frameCount	(m_frameCount)
+		, m_frameRate	(m_frameRate)	
+		, m_nextSecond	(m_nextSecond)
+		, m_prevSecond	(m_prevSecond)
 	{
 	}
 
@@ -35,6 +41,8 @@ namespace ml
 	{
 		return ((m_app) && (m_app->isOpen()));
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	void Engine::beginFrame()
 	{

@@ -52,7 +52,8 @@ namespace ml
 			ML_assert_component(Component);
 			return ((this->find<Component>() == this->end())
 				? (this->set(new Component()))
-				: (NULL));
+				: (NULL)
+			);
 		}
 
 		template <
@@ -62,7 +63,8 @@ namespace ml
 			ML_assert_component(Component);
 			return ((this->find<Component>() == this->end())
 				? (this->set(new Component(value)))
-				: (NULL));
+				: (NULL)
+			);
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -93,7 +95,8 @@ namespace ml
 			iterator it;
 			return (((it = this->find<Component>()) != this->end())
 				? (reinterpret_cast<Component *>(it->second))
-				: (NULL));
+				: (NULL)
+			);
 		}
 
 		template <
@@ -104,7 +107,8 @@ namespace ml
 			const_iterator it;
 			return (((it = this->find<Component>()) != this->cend())
 				? (reinterpret_cast<const Component *>(it->second))
-				: (NULL));
+				: (NULL)
+			);
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * */

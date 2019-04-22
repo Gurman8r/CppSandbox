@@ -26,13 +26,11 @@ namespace ml
 
 	public:
 		Application * launchApp(Application * app);
-		
 		int32_t freeApp(Application * value);
-		
 		bool isRunning() const;
-
+	
+	private:
 		void beginFrame();
-
 		void endFrame();
 
 	public:
@@ -61,10 +59,10 @@ namespace ml
 		
 		Timer		m_timer;
 		Duration	m_frameTime;
-		uint32_t	m_frameCount	= 0;
-		uint32_t	m_frameRate		= 0;
-		float		m_nextSecond	= 0;
-		float		m_prevSecond	= 0;
+		uint32_t	m_frameCount;
+		uint32_t	m_frameRate;
+		float		m_nextSecond;
+		float		m_prevSecond;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

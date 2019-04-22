@@ -39,7 +39,7 @@ int32_t main(int32_t argc, char ** argv)
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	static ml::StateMachine<State, int32_t, void *> control =
+	static ml::StateMachine<State, void *> control =
 	{
 	{ State::Enter, [](auto data)
 	{
@@ -66,10 +66,8 @@ int32_t main(int32_t argc, char ** argv)
 		{
 			// Update
 			ML_EventSystem.fireEvent(ml::UpdateEvent(ML_Engine.frameTime()));
-
 			// Draw
 			ML_EventSystem.fireEvent(ml::DrawEvent(ML_Engine.frameTime()));
-
 			// Gui
 			ML_EventSystem.fireEvent(ml::GuiEvent(ML_Engine.frameTime()));
 		});
