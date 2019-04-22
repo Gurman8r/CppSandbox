@@ -11,16 +11,14 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	template <
-		class _Key, 
-		class _Arg
+		class _Key
 	> class StateMachine final
 		: public ITrackable
 		, public INonCopyable
 	{
 	public:
 		using key_type		= typename _Key;
-		using arg_type		= typename _Arg;
-		using fun_type		= typename key_type(*)(arg_type);
+		using fun_type		= typename key_type(*)(void);
 
 		using map_type		= typename HashMap<key_type, fun_type>;
 		using pair_type		= typename Pair<key_type, fun_type>;
@@ -60,12 +58,12 @@ namespace ml
 			);
 		}
 
-		inline key_type run(const key_type & key, const arg_type & arg)
+		inline key_type run(const key_type & key)
 		{
 			fun_type fun;
 			return ((key > static_cast<key_type>(ML_STATE_INVALID))
 				? (((fun = get(key))
-					? (fun(arg))
+					? (fun())
 					: (static_cast<key_type>(ML_STATE_INVALID))))
 				: (static_cast<key_type>(ML_STATE_INVALID))
 			);
