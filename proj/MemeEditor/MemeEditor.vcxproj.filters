@@ -138,6 +138,9 @@
     <ClInclude Include="..\..\include\MemeEditor\ImGui_Style.hpp">
       <Filter>Header Files\Internal</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeEditor\StyleLoader.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\thirdparty\include\imgui\imgui.cpp">
@@ -214,6 +217,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEditor\ResourceView.cpp">
       <Filter>Source Files\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeEditor\StyleLoader.cpp">
+      <Filter>Source Files\Utility</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

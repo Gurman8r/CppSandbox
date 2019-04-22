@@ -7,17 +7,23 @@
 
 namespace ml
 {
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 	class ML_CORE_API FileSystem final
 		: public ITrackable
 		, public ISingleton<FileSystem>
 	{
 		friend class ISingleton<FileSystem>;
 
+	public:
+		using Directory = typename HashMap<char, List<String>>;
+
 	private:
 		FileSystem();
 		~FileSystem();
-
-		String m_root;
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -35,7 +41,7 @@ namespace ml
 		bool	getDirContents(const String & dirName, List<char> & value) const;
 		bool	getDirContents(const String & dirName, String & value) const;
 		bool	getDirContents(const String & dirName, SStream & value) const;
-		bool	getDirContents(const String & dirName, HashMap<char, List<String>> & value) const;
+		bool	getDirContents(const String & dirName, Directory & value) const;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
@@ -56,7 +62,12 @@ namespace ml
 		size_t	getFileSize(const String & filename) const;
 
 		/* * * * * * * * * * * * * * * * * * * * */
+
+	private:
+		String m_root;
 	};
+
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_FILE_SYSTEM_HPP_

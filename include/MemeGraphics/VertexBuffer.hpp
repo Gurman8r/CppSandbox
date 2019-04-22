@@ -43,7 +43,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	using VBO = VertexBuffer;
+	using VBO = typename VertexBuffer;
 
 	/* * * * * * * * * * * * * * * * * * * * */
 }

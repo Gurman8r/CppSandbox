@@ -11,8 +11,11 @@ namespace ml
 		: public List<Vertex>
 	{
 	public:
-		using base_type = typename List<value_type>;
-		using self_type = typename VertexList;
+		using self_type			= typename VertexList;
+		using base_type			= typename List<value_type>;
+		using size_type			= typename base_type::size_type;
+		using allocator_type	= typename base_type::allocator_type;
+		using init_type			= typename base_type::init_type;
 
 	public:
 		VertexList();
@@ -22,8 +25,9 @@ namespace ml
 		VertexList(const init_type & value);
 		VertexList(const self_type & value);
 		
-		template <class Iter>
-		VertexList(Iter begin, Iter end)
+		template <
+			class Iter
+		> VertexList(Iter begin, Iter end)
 			: base_type(begin, end)
 		{
 		}

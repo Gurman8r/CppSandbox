@@ -67,6 +67,9 @@
     <Filter Include="Resource Files\assets\materials">
       <UniqueIdentifier>{2378eaaf-e698-4b98-9efc-8f519f7cf05f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\assets\styles">
+      <UniqueIdentifier>{82ea26c6-af3d-4450-88b3-3fcd5e68b240}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -132,6 +135,9 @@
     </Text>
     <Text Include="..\..\assets\data\materials.txt">
       <Filter>Resource Files\assets\data</Filter>
+    </Text>
+    <Text Include="..\..\assets\styles\style4.txt">
+      <Filter>Resource Files\assets\styles</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

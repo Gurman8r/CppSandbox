@@ -23,14 +23,13 @@ namespace ml
 
 	public:
 		File();
-		File(size_t count, CString const * data);
+		File(const size_t count, const CString * data);
 		File(const String & data);
 		File(const List<char> & data);
 		File(const File & copy);
 		~File();
 
 	public:
-		bool empty() const;
 		bool dispose() override;
 		
 		bool loadFromFile(const String & filename) override;
@@ -45,22 +44,17 @@ namespace ml
 			return ((*this) = File(value));
 		}
 
-	public:
-		inline const char & operator[](size_t i) const	{ return m_data[i];		}
-		inline char &		operator[](size_t i)		{ return m_data[i];		}
+		inline operator		bool()				const	{ return !this->empty();	}
+		inline const char & operator[](size_t i)const	{ return m_data[i];			}
+		inline char &		operator[](size_t i)		{ return m_data[i];			}
 
 	public:
-		inline const char &			at(size_t i) const	{ return m_data[i];		}
-		inline char &				at(size_t i)		{ return m_data[i];		}
-		inline const List<char> &	data() const		{ return m_data;		}
-		inline List<char> &			data()				{ return m_data;		}
-		inline const String &		path() const		{ return m_path;		}
-
-	public:
-		inline operator bool		() const			{ return !empty();		}
-		inline operator List<char>	() const			{ return data();		}
-		inline operator String		() const			{ return ToString();	}
-		inline operator CString		() const			{ return &m_data[0];	}
+		inline const char &			at(size_t i) const	{ return m_data[i];			}
+		inline char &				at(size_t i)		{ return m_data[i];			}
+		inline const List<char> &	data() const		{ return m_data;			}
+		inline List<char> &			data()				{ return m_data;			}
+		inline const bool			empty() const		{ return m_data.empty();	}
+		inline const String &		path() const		{ return m_path;			}
 
 	public:
 		inline iterator					begin()			{ return m_data.begin();	}

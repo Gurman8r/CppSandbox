@@ -182,6 +182,7 @@
     <Text Include="..\..\assets\data\sprites.txt" />
     <Text Include="..\..\assets\data\textures.txt" />
     <Text Include="..\..\assets\manifest.txt" />
+    <Text Include="..\..\assets\styles\style4.txt" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="..\..\assets\fonts\clacon.ttf" />

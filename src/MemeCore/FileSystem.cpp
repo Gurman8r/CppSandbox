@@ -2,13 +2,12 @@
 #include <MemeCore/EventSystem.hpp>
 #include <MemeCore/Debug.hpp>
 
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <dirent.h>
-
-#ifdef ML_SYSTEM_WINDOWS
-#include <direct.h>
-#endif
+# ifdef ML_SYSTEM_WINDOWS
+#	include <dirent.h> // from /thirdparty/include
+#	include <direct.h>
+#	include <sys/types.h>
+#	include <sys/stat.h>
+# endif
 
 namespace ml
 {
@@ -109,7 +108,7 @@ namespace ml
 		return false;
 	}
 
-	bool FileSystem::getDirContents(const String & dirName, HashMap<char, List<String>> & value) const
+	bool FileSystem::getDirContents(const String & dirName, Directory & value) const
 	{
 		value.clear();
 		if (DIR * dir = opendir(dirName.c_str()))
@@ -137,36 +136,25 @@ namespace ml
 	bool FileSystem::getFileContents(const String & filename, List<char> & value) const
 	{
 		static File file;
-		if (file.loadFromFile(filename))
-		{
-			value = file.data();
-			return true;
-		}
-		return false;
+		file.loadFromFile(filename);
+		value = file.data();
+		return file;
 	}
 
 	bool FileSystem::getFileContents(const String & filename, String & value) const
 	{
 		static File file;
-		if (file.loadFromFile(filename))
-		{
-			value = file.ToString();
-			return true;
-		}
-		value.clear();
-		return false;
+		file.loadFromFile(filename);
+		value = file.ToString();
+		return file;
 	}
 
 	bool FileSystem::getFileContents(const String & filename, SStream & value) const
 	{
-		static String temp;
-		if (getFileContents(filename, temp))
-		{
-			value.str(temp);
-			return true;
-		}
-		value.str(String());
-		return false;
+		static File file;
+		file.loadFromFile(filename);
+		value = file.ToStream();
+		return file;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -174,16 +162,9 @@ namespace ml
 	bool FileSystem::dirExists(const String & name) const
 	{
 		struct stat info;
-
-		if (stat(name.c_str(), &info) != EXIT_SUCCESS)
-		{
-			return false;
-		}
-		else if (info.st_mode & S_IFDIR)
-		{
-			return true;
-		}
-		return false;
+		return 
+			(stat(name.c_str(), &info) == EXIT_SUCCESS) && 
+			(info.st_mode & S_IFDIR);
 	}
 
 	bool FileSystem::fileExists(const String & filename) const
@@ -195,50 +176,52 @@ namespace ml
 	
 	String FileSystem::getFileType(const String & filename) const
 	{
-		auto find_in = [](const String & value, const char c)
-		{
-			size_t i;
-			if ((i = value.find_last_of(c)) != String::npos)
-			{
-				return (String)value.substr(i + 1, value.size() - i - 1);
-			}
-			return String();
-		};
-		String temp;
-		if (!(temp = find_in(filename, '.')).empty())	{ return temp; }
-		if (!(temp = find_in(filename, '\\')).empty())	{ return temp; }
-		if (!(temp = find_in(filename, '/')).empty())	{ return temp; }
-		return temp;
+		size_t i;
+		return (
+			(
+			((i = filename.find_last_of('.')) != String::npos) ||
+			((i = filename.find_last_of('/')) != String::npos) ||
+			((i = filename.find_last_of('\\')) != String::npos)
+			)
+			? (String(filename.substr(i + 1, filename.size() - i - 1)))
+			: (String())
+		);
 	}
 
 	String FileSystem::getFileName(const String & filename) const
 	{
 		size_t i;
-		if (((i = filename.find_last_of('/')) != String::npos) ||
-			((i = filename.find_last_of('\\')) != String::npos))
-		{
-			return filename.substr(i + 1, filename.size() - i - 1);
-		}
-		return filename;
+		return (
+			(
+			((i = filename.find_last_of('/')) != String::npos) ||
+			((i = filename.find_last_of('\\')) != String::npos)
+			)
+			? (String(filename.substr(i + 1, filename.size() - i - 1)))
+			: (filename)
+		);
 	}
 
 	String FileSystem::getFilePath(const String & filename) const
 	{
 		size_t i;
-		if (((i = filename.find_last_of('/')) != String::npos) ||
-			((i = filename.find_last_of('\\')) != String::npos))
-		{
-			return  filename.substr(0, i);
-		}
-		return filename;
+		return (
+			(
+			((i = filename.find_last_of('/')) != String::npos) ||
+			((i = filename.find_last_of('\\')) != String::npos)
+			)
+			? (String(filename.substr(0, i)))
+			: (filename)
+		);
 	}
 
 	size_t FileSystem::getFileSize(const String & filename) const
 	{
-		std::ifstream in(filename, std::ifstream::ate | std::ifstream::binary);
-		return ((in)
-			? (size_t)in.tellg()
-			: 0);
+		std::ifstream stream;
+		return (
+			(stream = std::ifstream(filename, std::ifstream::ate | std::ifstream::binary))
+				? ((size_t)(stream.tellg()))
+				: ((size_t)(0))
+		);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

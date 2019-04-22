@@ -33,7 +33,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	using FBO = FrameBuffer;
+	using FBO = typename FrameBuffer;
 
 	/* * * * * * * * * * * * * * * * * * * * */
 }

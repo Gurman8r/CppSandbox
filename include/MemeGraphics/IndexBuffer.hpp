@@ -42,7 +42,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	using IBO = IndexBuffer;
+	using IBO = typename IndexBuffer;
 
 	/* * * * * * * * * * * * * * * * * * * * */
 }

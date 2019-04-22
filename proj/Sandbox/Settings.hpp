@@ -28,9 +28,12 @@ namespace DEMO
 		bool		escapeIsExit;	// Escape key is Exit?
 		ml::String	manifest;		// Name of manifest file
 		bool		redirStdOut;	// Redirect Std Out?
+
+		// [ImGui]
+		/* * * * * * * * * * * * * * * * * * * * */
 		ml::String	imguiINI;		// Name of imgui INI
-		ml::String	imguiFontFile;
-		float		imguiFontSize;
+		ml::String	imguiFontFile;	// Name of imgui TTF
+		float		imguiFontSize;	// Size of imgui TTF
 
 		// [Script]
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -56,7 +59,6 @@ namespace DEMO
 
 		// [Graphics]
 		/* * * * * * * * * * * * * * * * * * * * */
-		bool		glErrorPause;	// OpenGL Error Pause?
 		float		fieldOfView;	// Field of View
 		float		perspNear;		// Persp Near Clipping Range 
 		float		perspFar;		// Persp Far  Clipping Range 
@@ -82,9 +84,12 @@ namespace DEMO
 				escapeIsExit	= ini.GetBoolean("General", "escapeIsExit", true);
 				manifest		= ini.Get("General", "manifest", "manifest.txt");
 				redirStdOut		= ini.GetBoolean("General", "redirStdOut", false);
-				imguiINI		= ini.Get("General", "imguiINI", "");
-				imguiFontFile	= ini.Get("General", "imguiFontFile", "");
-				imguiFontSize	= (float)ini.GetReal("General", "imguiFontSize", 12.0f);
+				
+				// [ImGui]
+				/* * * * * * * * * * * * * * * * * * * * */
+				imguiINI		= ini.Get("ImGui", "imguiINI", "");
+				imguiFontFile	= ini.Get("ImGui", "imguiFontFile", "");
+				imguiFontSize	= (float)ini.GetReal("ImGui", "imguiFontSize", 12.0f);
 
 				// [Script]
 				/* * * * * * * * * * * * * * * * * * * * */
@@ -109,7 +114,6 @@ namespace DEMO
 
 				// [Graphics]	
 				/* * * * * * * * * * * * * * * * * * * * */
-				glErrorPause	= ini.GetBoolean("Graphics", "glErrorPause", false);
 				fieldOfView		= (float)ini.GetReal("Graphics", "fieldOfView", 45.0);
 				perspNear		= (float)ini.GetReal("Graphics", "perspNear", 0.1);
 				perspFar		= (float)ini.GetReal("Graphics", "perspFar", 1000.0);

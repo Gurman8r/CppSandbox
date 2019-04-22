@@ -310,8 +310,7 @@ namespace std
 		class _Elem,
 		class _Traits,
 		class _Alloc
-	>
-	struct hash<ml::BasicString<_Elem, _Traits, _Alloc>>
+	> struct hash<ml::BasicString<_Elem, _Traits, _Alloc>>
 	{
 		using argument_type = ml::BasicString<_Elem, _Traits, _Alloc>;
 		using result_type	= size_t;

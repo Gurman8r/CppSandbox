@@ -22,6 +22,7 @@
 #include <MemeEditor/GUI.hpp>
 #include <MemeEditor/ImGui.hpp>
 #include <MemeEditor/ImGui_Style.hpp>
+#include <MemeEditor/StyleLoader.hpp>
 #include <MemeEngine/Engine.hpp>
 #include <MemeEngine/Entity.hpp>
 #include <MemeEngine/EngineCommands.hpp>
@@ -43,7 +44,6 @@ namespace DEMO
 	Sandbox::Sandbox() 
 		: EditorApplication() 
 	{
-		ML_EventSystem.addListener(ml::GraphicsEvent::EV_GL_Error, this);
 	}
 
 	Sandbox::~Sandbox() {}
@@ -57,19 +57,6 @@ namespace DEMO
 
 		switch (*value)
 		{
-			// OpenGL Error
-		case ml::GraphicsEvent::EV_GL_Error:
-			if (const auto * ev = value->as<ml::GL_ErrorEvent>())
-			{
-				ml::cout << (*ev) << ml::endl;
-
-				if (SETTINGS.glErrorPause)
-				{
-					ml::Debug::pause(0);
-				}
-			}
-			break;
-
 			// File -> Close ...
 			/* * * * * * * * * * * * * * * * * * * * */
 		case ml::EditorEvent::EV_File_Close:
@@ -216,6 +203,12 @@ namespace DEMO
 		if (IMGUI_CHECKVERSION())
 		{
 			ImGui::CreateContext();
+
+			static ml::StyleLoader loader;
+			if (loader.loadFromFile(ML_FS.getPathTo("../../../assets/styles/style4.txt")))
+			{
+
+			}
 
 			ImGui::StyleHelper::Style4();
 

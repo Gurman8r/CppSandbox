@@ -94,7 +94,7 @@ namespace ml
 		static File file;
 		if (file.loadFromFile(filename))
 		{
-			return loadFromMemory(file);
+			return loadFromMemory(file.ToString());
 		}
 		return Debug::logError("Failed to open shader source file \"{0}\"", filename);
 	}
@@ -116,7 +116,7 @@ namespace ml
 		}
 
 		// Compile the shader program
-		return compile(vert, NULL, frag);
+		return compile(vert.ToCString(), NULL, frag.ToCString());
 	}
 
 	bool Shader::loadFromFile(const String & vs, const String & gs, const String & fs)
@@ -143,7 +143,7 @@ namespace ml
 		}
 
 		// Compile the shader program
-		return compile(vert, geom, frag);
+		return compile(vert.ToCString(), geom.ToCString(), frag.ToCString());
 	}
 
 	bool Shader::loadFromMemory(const String & source)

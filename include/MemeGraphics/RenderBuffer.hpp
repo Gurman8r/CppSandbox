@@ -28,7 +28,6 @@ namespace ml
 		void bufferStorage(GL::Format internalFormat) const;
 		void setFramebuffer(GL::FBO_Attachment attachment) const;
 
-
 	public:
 		inline const int32_t width()  const { return m_width;  }
 		inline const int32_t height() const { return m_height; }
@@ -40,7 +39,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	using RBO = RenderBuffer;
+	using RBO = typename RenderBuffer;
 
 	/* * * * * * * * * * * * * * * * * * * * */
 }

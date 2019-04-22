@@ -12,14 +12,16 @@ namespace ml
 	{
 	}
 
-	File::File(size_t count, CString const * data)
+	File::File(const size_t count, const CString * data)
 		: m_data()
 		, m_path()
 	{
 		for (size_t i = 0; i < count; i++)
 		{
 			String line(data[i]);
+
 			line = String::ReplaceAll(line, "\0", "");
+			
 			m_data.insert(end(), line.begin(), line.end());
 		}
 		m_data.push_back('\0');
@@ -50,31 +52,26 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool File::empty() const
-	{
-		return m_data.empty();
-	}
-
 	bool File::dispose()
 	{
 		m_data.clear();
 		return empty();
 	}
 
-	bool File::loadFromFile(const String & path)
+	bool File::loadFromFile(const String & filename)
 	{
-		if (std::ifstream stream = std::ifstream((m_path = path), std::ios_base::binary))
+		if (auto stream = std::ifstream((m_path = filename), std::ios_base::binary))
 		{
 			stream >> (*this);
 			stream.close();
 			return true;
 		}
-		return false;
+		return !dispose();
 	}
 
 	bool File::saveToFile(const String & filename) const
 	{
-		if (std::ofstream stream = std::ofstream(filename, std::ios_base::binary))
+		if (auto stream = std::ofstream(filename, std::ios_base::binary))
 		{
 			stream << (*this);
 			stream.close();
@@ -87,7 +84,7 @@ namespace ml
 
 	void File::serialize(std::ostream & out) const
 	{
-		out << String(begin(), end());
+		out << String(&m_data[0], m_data.size());
 	}
 
 	void File::deserialize(std::istream & in)

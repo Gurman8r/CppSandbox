@@ -20,10 +20,6 @@ namespace ml
 		using const_pointer		= typename const value_type * ;
 		using const_reference	= typename const value_type & ;
 
-	private:
-		/* * * * * * * * * * * * * * * * * * * * */
-		value_type m_handle;
-
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
 		IHandle(const_reference value)
@@ -47,19 +43,23 @@ namespace ml
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
-		inline bool				good() const			{ return  m_handle; }
-		inline pointer			get_pointer()			{ return &m_handle; }
-		inline reference		get_reference()			{ return  m_handle; }
-		inline const_pointer	get_cpointer() const	{ return &m_handle; }
-		inline const_reference	get_creference() const	{ return  m_handle; }
+		inline bool				good() const				{ return  m_handle; }
+		inline pointer			get_pointer()				{ return &m_handle; }
+		inline reference		get_reference()				{ return  m_handle; }
+		inline const_pointer	get_const_pointer() const	{ return &m_handle; }
+		inline const_reference	get_const_reference() const	{ return  m_handle; }
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
-		inline operator bool			() const		{ return good(); }
-		inline operator pointer			()				{ return get_pointer(); }
-		inline operator reference		()				{ return get_reference(); }
-		inline operator const_pointer	() const		{ return get_cpointer(); }
-		inline operator const_reference	() const		{ return get_creference(); }
+		inline operator bool			() const			{ return good();				}
+		inline operator pointer			()					{ return get_pointer();			}
+		inline operator reference		()					{ return get_reference();		}
+		inline operator const_pointer	() const			{ return get_const_pointer();	}
+		inline operator const_reference	() const			{ return get_const_reference(); }
+
+	private:
+		/* * * * * * * * * * * * * * * * * * * * */
+		value_type m_handle;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

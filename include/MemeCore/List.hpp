@@ -12,8 +12,7 @@ namespace ml
 	template <
 		class _Elem,
 		class _Alloc = std::allocator<_Elem>
-	>
-	class List
+	> class List
 		: public std::vector<_Elem, _Alloc>
 		, public ISerializable
 		, public IComparable<std::vector<_Elem, _Alloc>>
@@ -144,5 +143,24 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 }
+
+namespace std
+{
+	template <
+		class _Elem,
+		class _Alloc
+	> struct hash<ml::List<_Elem, _Alloc>>
+	{
+		using argument_type = ml::List<_Elem, _Alloc>;
+		using result_type = size_t;
+
+		inline result_type operator()(const argument_type & value) const noexcept
+		{
+			return _Hash_array_representation(value.data(), value.size());
+		}
+	};
+}
+
+/* * * * * * * * * * * * * * * * * * * * */
 
 #endif // !_ML_LIST_HPP_

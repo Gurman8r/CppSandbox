@@ -33,7 +33,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	using VAO = VertexArray;
+	using VAO = typename VertexArray;
 
 	/* * * * * * * * * * * * * * * * * * * * */
 }

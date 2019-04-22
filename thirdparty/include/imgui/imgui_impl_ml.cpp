@@ -26,12 +26,18 @@ static void *		g_MouseCursors[ImGuiMouseCursor_COUNT] = { 0 };
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-static char         g_GlslVersionString[32] = "";
-static uint32_t     g_FontTexture = 0;
-static uint32_t     g_ShaderHandle = 0, g_VertHandle = 0, g_FragHandle = 0;
-static int32_t      g_AttribLocationTex = 0, g_AttribLocationProjMtx = 0;
-static int32_t      g_AttribLocationPosition = 0, g_AttribLocationUV = 0, g_AttribLocationColor = 0;
-static uint32_t		g_VboHandle = 0, g_ElementsHandle = 0;
+static char         g_GlslVersionString[32]		= "";
+static uint32_t     g_FontTexture				= NULL;
+static uint32_t     g_ShaderHandle				= NULL, 
+					g_VertHandle				= NULL, 
+					g_FragHandle				= NULL;
+static int32_t      g_AttribLocationTex			= NULL, 
+					g_AttribLocationProjMtx		= NULL;
+static int32_t      g_AttribLocationPosition	= NULL, 
+					g_AttribLocationUV			= NULL, 
+					g_AttribLocationColor		= NULL;
+static uint32_t		g_VboHandle					= NULL, 
+					g_ElementsHandle			= NULL;
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -82,7 +88,7 @@ inline static void ImGui_ML_HandleInput()
 	}
 }
 
-inline static bool ImGui_ML_CompileShader(uint32_t & obj, ml::CString const * vs, ml::CString const * fs)
+inline static bool ImGui_ML_CompileShader(uint32_t & obj, const ml::CString * vs, const ml::CString * fs)
 {
 	if (!ML_GL.shadersAvailable())
 	{
@@ -104,7 +110,7 @@ inline static bool ImGui_ML_CompileShader(uint32_t & obj, ml::CString const * vs
 	if (dispose() && (obj = ML_GL.createProgramObject()))
 	{
 		// Compile Vertex
-		switch (ML_GL.compileShader(g_VertHandle, ml::GL::VertexShader, ml::File(2, vs)))
+		switch (ML_GL.compileShader(g_VertHandle, ml::GL::VertexShader, &ml::File(2, vs)[0]))
 		{
 		case ML_SUCCESS:
 			ML_GL.attachShader(obj, g_VertHandle);
@@ -115,7 +121,7 @@ inline static bool ImGui_ML_CompileShader(uint32_t & obj, ml::CString const * vs
 		}
 
 		// Compile Fragment
-		switch (ML_GL.compileShader(g_FragHandle, ml::GL::FragmentShader, ml::File(2, fs)))
+		switch (ML_GL.compileShader(g_FragHandle, ml::GL::FragmentShader, &ml::File(2, fs)[0]))
 		{
 		case ML_SUCCESS:
 			ML_GL.attachShader(obj, g_FragHandle);

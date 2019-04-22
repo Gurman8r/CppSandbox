@@ -2,6 +2,7 @@
 #include <MemeGraphics/OpenGL.hpp>
 #include <MemeCore/Debug.hpp>
 #include <MemeWindow/WindowEvents.hpp>
+#include <MemeGraphics/GraphicsEvents.hpp>
 
 namespace ml
 {
@@ -10,6 +11,7 @@ namespace ml
 	RenderWindow::RenderWindow()
 		: Window()
 	{
+		ML_EventSystem.addListener(GraphicsEvent::EV_GL_Error, this);
 	}
 
 	RenderWindow::~RenderWindow() {}
@@ -54,6 +56,13 @@ namespace ml
 
 		switch (*value)
 		{
+		case ml::GraphicsEvent::EV_GL_Error:
+			if (const auto * ev = value->as<ml::GL_ErrorEvent>())
+			{
+				ml::cout << (*ev) << ml::endl;
+			}
+			break;
+
 		case WindowEvent::EV_FrameSize:
 			if (const auto * ev = value->as<FrameSizeEvent>())
 			{
