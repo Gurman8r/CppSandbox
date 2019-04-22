@@ -159,7 +159,7 @@ namespace DEMO
 		if (this->create(
 			SETTINGS.title,
 			ml::VideoMode({ SETTINGS.width, SETTINGS.height }, SETTINGS.bitsPerPixel),
-			ml::Window::Default, 
+			ml::Window::Style::Default, 
 			ml::ContextSettings 
 			{
 				SETTINGS.majorVersion,

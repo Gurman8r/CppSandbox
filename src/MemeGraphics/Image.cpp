@@ -47,22 +47,26 @@ namespace ml
 	{
 		stbi_set_flip_vertically_on_load(true);
 		
-		int32_t w, h;
-		if (uint8_t * data = stbi_load(filename.c_str(), &w, &h, &m_channels, 0))
+		uint8_t * data = stbi_load(
+			filename.c_str(),
+			&(int32_t &)(m_size[0]),
+			&(int32_t &)(m_size[1]),
+			&m_channels,
+			NULL
+		);
+		if (data)
 		{
-			m_size = { (uint32_t)w, (uint32_t)h };
-			m_pixels.resize(w * h * m_channels);
-			memcpy(&m_pixels[0], data, m_pixels.size());
-			stbi_image_free(data);
-			return true;
+			m_pixels.assign(&data[0], &data[m_size[0] * m_size[1] * m_channels]);
 		}
 		else
 		{
-			m_size = vec2u::Zero;
+			m_size = vec2i::Zero;
 			m_pixels.clear();
-			stbi_image_free(data);
-			return false;
 		}
+		
+		stbi_image_free(data);
+		
+		return !m_pixels.empty();
 	}
 	
 	/* * * * * * * * * * * * * * * * * * * * */
