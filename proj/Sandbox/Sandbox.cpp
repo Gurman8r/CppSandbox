@@ -180,11 +180,20 @@ namespace DEMO
 		// Initialize Window
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (this->create(
-				SETTINGS.title, 
-				SETTINGS.video(),
-				ml::Window::Default, 
-				SETTINGS.context()
-		)&& this->setup())
+			SETTINGS.title,
+			ml::VideoMode({ SETTINGS.width, SETTINGS.height }, SETTINGS.bitsPerPixel),
+			ml::Window::Default, 
+			ml::ContextSettings 
+			{
+				SETTINGS.majorVersion,
+				SETTINGS.minorVersion,
+				SETTINGS.profile,
+				SETTINGS.depthBits,
+				SETTINGS.stencilBits,
+				SETTINGS.multisample,
+				SETTINGS.srgbCapable
+			}
+		) && this->setup())
 		{
 			this->maximize();
 			this->seCursorMode(ml::Cursor::Normal);
@@ -800,7 +809,7 @@ namespace DEMO
 			const float		hOff	 = 0.0f;
 			const float		vOff	 = 4.0f;
 			const ml::vec2f	offset	 = { hOff, -(vOff + (float)fontSize) };
-			const ml::vec2f	origin	 = { (float)fontSize, (float)this->height() - (fontSize * 2) };
+			const ml::vec2f	origin	 = { (float)fontSize, (float)this->getHeight() - (fontSize * 2) };
 			ml::vec2f		linePos	 = 0.0f;
 			size_t			lineNum	 = 0;
 			auto			newLine = [&]() { return (linePos = (origin + (offset * (float)(lineNum++)))); };

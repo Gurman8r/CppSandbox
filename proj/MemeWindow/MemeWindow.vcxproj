@@ -160,7 +160,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\MemeWindow\Context.hpp" />
+    <ClInclude Include="..\..\include\MemeWindow\ContextSettings.hpp" />
     <ClInclude Include="..\..\include\MemeWindow\Cursor.hpp" />
     <ClInclude Include="..\..\include\MemeWindow\WindowEvents.hpp" />
     <ClInclude Include="..\..\include\MemeWindow\Export.hpp" />

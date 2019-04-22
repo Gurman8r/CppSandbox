@@ -26,7 +26,7 @@ namespace ml
 		, m_monitor		(NULL)
 		, m_share		(NULL)
 		, m_title		(GetTypeName())
-		, m_context		(Context())
+		, m_context		(ContextSettings())
 		, m_videoMode	(VideoMode())
 		, m_style		(Window::Default)
 		, m_position	(vec2i::Zero)
@@ -63,7 +63,11 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Window::create(const String & title, const VideoMode & videoMode, uint32_t style, const Context & context)
+	bool Window::create(
+		const String &			title, 
+		const VideoMode &		videoMode, 
+		const uint32_t			style,
+		const ContextSettings & context)
 	{
 		m_title		= title;
 		m_videoMode	= videoMode;
@@ -89,8 +93,8 @@ namespace ml
 			glfwWindowHint(GLFW_MAXIMIZED,		(m_style & Window::Maximized));
 
 			if (m_window = static_cast<GLFWwindow *>(glfwCreateWindow(
-				width(), 
-				height(), 
+				getWidth(), 
+				getHeight(), 
 				m_title.c_str(),
 				static_cast<GLFWmonitor *>(m_monitor = NULL),
 				static_cast<GLFWwindow *>(m_share = NULL))))
@@ -99,9 +103,15 @@ namespace ml
 
 				return true;
 			}
-			return ml::Debug::logError("Failed to Create GLFW Window");
+			else
+			{
+				return ml::Debug::logError("Failed to Create GLFW Window");
+			}
 		}
-		return ml::Debug::logError("Failed to Initialize GLFW");
+		else
+		{
+			return ml::Debug::logError("Failed to Initialize GLFW");
+		}
 	}
 
 	bool Window::setup()
@@ -310,13 +320,11 @@ namespace ml
 		return (*this);
 	}
 
-	Window & Window::terminate()
+	Window & Window::swapInterval(const int32_t value)
 	{
-		glfwTerminate();
+		glfwSwapInterval(value);
 		return (*this);
 	}
-
-	/* * * * * * * * * * * * * * * * * * * * */
 
 	Window & Window::setClipboardString(const String & value)
 	{
@@ -336,7 +344,7 @@ namespace ml
 		return (*this);
 	}
 	
-	Window & Window::seCursorMode(Cursor::Mode value)
+	Window & Window::seCursorMode(const Cursor::Mode value)
 	{
 		glfwSetInputMode(
 			static_cast<GLFWwindow *>(m_window),
@@ -410,12 +418,6 @@ namespace ml
 		return (*this);
 	}
 
-	Window & Window::setSwapInterval(int32_t value)
-	{
-		glfwSwapInterval(value);
-		return (*this);
-	}
-
 	Window & Window::setTitle(const String & value)
 	{
 		m_title = value;
@@ -423,6 +425,12 @@ namespace ml
 			static_cast<GLFWwindow *>(m_window),
 			value.c_str()
 		);
+		return (*this);
+	}
+	
+	Window & Window::terminate()
+	{
+		glfwTerminate();
 		return (*this);
 	}
 
@@ -440,7 +448,7 @@ namespace ml
 		);
 	}
 	
-	int32_t Window::getAttrib(int32_t value) const
+	int32_t Window::getAttrib(const int32_t value) const
 	{
 		return glfwGetWindowAttrib(
 			static_cast<GLFWwindow *>(m_window), value
@@ -483,7 +491,7 @@ namespace ml
 		return temp;
 	}
 
-	int32_t	Window::getKey(int32_t value) const
+	int32_t	Window::getKey(const int32_t value) const
 	{
 		return glfwGetKey(
 			static_cast<GLFWwindow *>(m_window),
@@ -499,7 +507,7 @@ namespace ml
 		));
 	}
 
-	int32_t	Window::getMouseButton(int32_t value) const
+	int32_t	Window::getMouseButton(const int32_t value) const
 	{
 		return glfwGetMouseButton(
 			static_cast<GLFWwindow *>(m_window),

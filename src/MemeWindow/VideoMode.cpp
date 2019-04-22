@@ -59,9 +59,9 @@ namespace ml
 	const List<VideoMode> & VideoMode::resolutions()
 	{
 		static List<VideoMode> temp;
-		static bool checked = true;
-		if (checked)
-		{	checked = false;
+		static bool check = true;
+		if (check)
+		{	check = false;
 #ifdef ML_SYSTEM_WINDOWS
 			DEVMODE win32Mode;
 			win32Mode.dmSize = sizeof(win32Mode);

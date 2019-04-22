@@ -4,13 +4,21 @@
 #include <MemeCore/IEventListener.hpp>
 #include <MemeCore/INonCopyable.hpp>
 #include <MemeWindow/Cursor.hpp>
-#include <MemeWindow/Context.hpp>
+#include <MemeWindow/ContextSettings.hpp>
 #include <MemeWindow/Icon.hpp>
 #include <MemeWindow/VideoMode.hpp>
 
+/* * * * * * * * * * * * * * * * * * * * */
+
+#define ML_ASPECT(w, h) ((w && h) \
+	? (static_cast<float>(w) / static_cast<float>(h)) \
+	: (0.0f))
+
+/* * * * * * * * * * * * * * * * * * * * */
+
 namespace ml
 {
-	/* * * * * * * * * * * * * * * * * * * * */
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	class ML_WINDOW_API Window
 		: public ITrackable
@@ -56,9 +64,14 @@ namespace ml
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
-		bool create(const String & title, const VideoMode & mode, uint32_t style, const Context	& context);
+		bool create(
+			const String &			title, 
+			const VideoMode &		videoMode,
+			const uint32_t			style,
+			const ContextSettings & context);
 
 		virtual bool setup();
+
 		virtual void onEvent(const IEvent * ev) override;
 
 	public:
@@ -71,69 +84,49 @@ namespace ml
 		Window & pollEvents();
 		Window & restore();
 		Window & swapBuffers();
-		Window & terminate();
-
-	public:
-		/* * * * * * * * * * * * * * * * * * * * */
+		Window & swapInterval(const int32_t value);
 		Window & setClipboardString(const String & value);
 		Window & setCursor(void * value);
-		Window & seCursorMode(Cursor::Mode value);
+		Window & seCursorMode(const Cursor::Mode value);
 		Window & setCursorPos(const vec2i & value);
 		Window & setIcons(const List<Icon> & value);
 		Window & setPosition(const vec2i & value);
 		Window & setSize(const vec2u & value);
-		Window & setSwapInterval(int32_t value);
 		Window & setTitle(const String & value);
+		Window & terminate();
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
 		bool	isFocused() const;
 		bool	isOpen() const;
-		int32_t	getAttrib(int32_t value) const;
+		int32_t	getAttrib(const int32_t value) const;
 		char	getChar() const;
 		CString	getClipboardString() const;
 		vec2f	getCursorPos() const;
 		vec2i	getFrameSize() const;
-		int32_t	getKey(int32_t value) const;
+		int32_t	getKey(const int32_t value) const;
 		int32_t	getInputMode() const;
-		int32_t	getMouseButton(int32_t button) const;
+		int32_t	getMouseButton(const int32_t button) const;
 		double	getTime() const;
+
+		/* * * * * * * * * * * * * * * * * * * * */
+		
+		inline const ContextSettings &	getContext()	const { return m_context; }
+		inline const uint32_t &			getStyle()		const { return m_style; }
+		inline const vec2i &			getPosition()	const { return m_position; }
+		inline const vec2u &			getSize()		const { return m_videoMode.size; }
+		inline const String &			getTitle()		const { return m_title; }
+		inline const uint32_t			getWidth()		const { return getSize()[0]; }
+		inline const uint32_t			getHeight()		const { return getSize()[1]; }
+		inline const int32_t			getFrameWidth()	const { return getFrameSize()[0]; }
+		inline const int32_t			getFrameHeight()const { return getFrameSize()[1]; }
+		inline const float				getAspect()		const { return ML_ASPECT(getWidth(), getHeight()); };
+		inline const float				getFrameAspect()const { return ML_ASPECT(getFrameWidth(), getFrameHeight()); };
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
 		void *	createCursor(uint32_t value) const;
 		void	destroyCursor(void * value) const;
-
-	public:
-		/* * * * * * * * * * * * * * * * * * * * */
-		inline const Context &	getContext()	const { return m_context; }
-		inline const uint32_t &	getStyle()		const { return m_style; }
-		inline const vec2i &	getPosition()	const { return m_position; }
-		inline const vec2u &	getSize()		const { return m_videoMode.size; }
-		inline const String &	getTitle()		const { return m_title; }
-
-		/* * * * * * * * * * * * * * * * * * * * */
-
-		inline const uint32_t	width()			const { return getSize()[0]; }
-		inline const uint32_t	height()		const { return getSize()[1]; }
-		inline const int32_t	frameWidth()	const { return getFrameSize()[0]; }
-		inline const int32_t	frameHeight()	const { return getFrameSize()[1]; }
-
-		/* * * * * * * * * * * * * * * * * * * * */
-
-		inline const float aspect() const 
-		{
-			return ((width() && height())
-				? ((float)width() / (float)height())
-				: (0.0f));
-		};
-
-		inline const float frameAspect() const 
-		{
-			return ((frameWidth() && frameHeight())
-				? ((float)frameWidth() / (float)frameHeight())
-				: (0.0f));
-		};
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -155,7 +148,7 @@ namespace ml
 		void *			m_window;
 		void *			m_monitor;
 		void *			m_share;
-		Context			m_context;
+		ContextSettings	m_context;
 		VideoMode		m_videoMode;
 		uint32_t		m_style;
 		vec2i			m_position;
@@ -163,6 +156,6 @@ namespace ml
 		mutable char	m_char;
 	};
 
-	/* * * * * * * * * * * * * * * * * * * * */
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 }
 #endif // !_ML_WINDOW_HPP_
