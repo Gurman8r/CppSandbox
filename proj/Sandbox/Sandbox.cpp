@@ -624,16 +624,16 @@ namespace DEMO
 			{
 				if (ml::Transform * transform = pair.second->get<ml::Transform>())
 				{
-					ml::vec3f scale;
-					ml::quat  orient;
-					ml::vec3f translation;
+					ml::vec3f scl;
+					ml::quat  rot;
+					ml::vec3f pos;
 					ml::vec3f skew;
-					ml::vec4f persp;
-					if (transform->decompose(scale, orient, translation, skew, persp))
+					ml::vec4f perspective;
+					if (transform->decompose(scl, rot, pos, skew, perspective))
 					{
 						ML_Physics.world().state().setData((i++),
-							translation,
-							orient, 
+							pos,
+							rot, 
 							transform->matrix(), 
 							transform->inverse()
 						);

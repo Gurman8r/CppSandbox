@@ -95,12 +95,12 @@ namespace ml
 		const uint64_t min = minutes();
 		const uint64_t sec = seconds();
 		const uint64_t mil = milliseconds();
-		
-		out << ((hrs / 10) % 10)
-			<< (hrs % 10) 
+
+		out << (((hrs % 24) / 10) % 10)
+			<< ((hrs % 24) % 10)
 			<< ':'
-			<< ((min / 10) % 10)
-			<< (min % 10)
+			<< (((min % 60) / 10) % 10)
+			<< ((min % 60) % 10)
 			<< ':'
 			<< (((sec % 60) / 10) % 10)
 			<< ((sec % 60) % 10)

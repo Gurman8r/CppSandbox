@@ -50,7 +50,7 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 		inline operator uint64_t() const { return nanoseconds(); }
 
-		inline const float delta() const { return ((float)(milliseconds()) / 1000.0f); }
+		inline const float delta() const { return ((float)(milliseconds()) / (float)(Milli::den)); }
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
