@@ -23,6 +23,7 @@ namespace ml
 		static Var cmd_get		(Args & args); // Get Variable
 		static Var cmd_getcwd	(Args & args); // Return Working Directory
 		static Var cmd_help		(Args & args); // Display Installed Commands
+		static Var cmd_load		(Args & args); // Load a resource
 		static Var cmd_log		(Args & args); // Debug Log (msg/wrn/err)
 		static Var cmd_ls		(Args & args); // Display a Directory
 		static Var cmd_pause	(Args & args); // System Pause

@@ -98,8 +98,8 @@ namespace ml
 			{
 				switch (e->d_type)
 				{
-				case DT_DIR	: value << e->d_name << "/" << ml::endl; break;
-				default		: value << e->d_name << " " << ml::endl; break;
+				case DT_DIR	: value << e->d_name << "/" << endl; break;
+				default		: value << e->d_name << " " << endl; break;
 				}
 			}
 			closedir(dir);

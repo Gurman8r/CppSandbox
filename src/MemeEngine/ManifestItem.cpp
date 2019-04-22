@@ -10,15 +10,26 @@ namespace ml
 	{
 	}
 
-	ManifestItem::ManifestItem(const Data & data)
+	ManifestItem::ManifestItem(const map_type & data)
 		: data(data)
 	{
+	}
+
+	ManifestItem::ManifestItem(const init_type & init)
+		: data()
+	{
+		for (auto it = init.begin(); it != init.end(); it++)
+		{
+			data.insert(*it);
+		}
 	}
 
 	ManifestItem::ManifestItem(const ManifestItem & copy)
 		: data(copy.data)
 	{
 	}
+
+	ManifestItem::~ManifestItem() {}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 

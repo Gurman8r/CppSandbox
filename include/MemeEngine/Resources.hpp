@@ -41,7 +41,7 @@ namespace ml
 		bool dispose() override;
 		bool loadFromFile(const String & filename) override;
 
-	private:
+	public:
 		bool parseFile(SStream & file);
 		bool parseItem(const ManifestItem & data);
 

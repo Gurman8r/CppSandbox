@@ -8,24 +8,27 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_ENGINE_API ManifestItem final 
-		: public ITrackable
+	struct ML_ENGINE_API ManifestItem final : public ITrackable
 	{
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		using Data = HashMap<String, String>;
-		using iterator = typename Data::iterator;
-		using const_iterator = typename Data::const_iterator;
+		using map_type			= typename HashMap<String, String>;
+		using pair_type			= typename Pair<String, String>;
+		using init_type			= typename std::initializer_list<pair_type>;
+		using iterator			= typename map_type::iterator;
+		using const_iterator	= typename map_type::const_iterator;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		Data data;
+		map_type data;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		ManifestItem();
-		ManifestItem(const Data & data);
+		ManifestItem(const map_type & data);
+		ManifestItem(const init_type & init);
 		ManifestItem(const ManifestItem & copy);
+		~ManifestItem();
 
 		/* * * * * * * * * * * * * * * * * * * * */
 

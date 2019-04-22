@@ -24,6 +24,7 @@ namespace ml
 		ML_Interpreter.install({ "get",		EngineCommands::cmd_get		});
 		ML_Interpreter.install({ "getcwd",	EngineCommands::cmd_getcwd	});
 		ML_Interpreter.install({ "help",	EngineCommands::cmd_help	});
+		ML_Interpreter.install({ "load",	EngineCommands::cmd_load });
 		ML_Interpreter.install({ "log",		EngineCommands::cmd_log		});
 		ML_Interpreter.install({ "ls",		EngineCommands::cmd_ls		});
 		ML_Interpreter.install({ "pause",	EngineCommands::cmd_pause	});
@@ -212,6 +213,42 @@ namespace ml
 			cout << pair.first << endl;
 		}
 		return Var().boolValue(true);
+	}
+
+	Var EngineCommands::cmd_load(Args & args)
+	{
+		if (const String type = args.pop())
+		{
+			if (const String name = args.pop())
+			{
+				if (const String file = args.pop())
+				{
+					const ManifestItem item = 
+					{
+						{ "type", type },
+						{ "name", name },
+						{ "file", file },
+					};
+					if (ML_Res.parseItem(item))
+					{
+						return Var().boolValue(Debug::log(
+							"Success loading {0}: {1} \'{2}\'",
+							type, name, file
+						));
+					}
+					else
+					{
+						return Var().errorValue(
+							"Failed loading {0}: {1} \'{2}\'",
+							type, name, file
+						);
+					}
+				}
+				return Var().errorValue("Invalid File");
+			}
+			return Var().errorValue("Invalid Name");
+		}
+		return Var().errorValue("Invalid Type");
 	}
 
 	Var EngineCommands::cmd_log(Args & args)

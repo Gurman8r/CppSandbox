@@ -161,7 +161,8 @@ namespace ml
 	{
 		return ((gs)
 			? (compile(vs.c_str(), gs.c_str(), fs.c_str()))
-			: (loadFromMemory(vs, fs)));
+			: (loadFromMemory(vs, fs))
+		);
 	}
 
 	bool Shader::loadFromMemory(const String & vs, const String & fs)
