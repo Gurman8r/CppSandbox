@@ -4,9 +4,9 @@
 #include <MemeCore/Console.hpp>
 #include <MemeCore/String.hpp>
 
-#define ML_WARNING -1 // | -1  | true  |
-#define ML_FAILURE	0 // |  0  | false |
-#define ML_SUCCESS	1 // | +1  | true  |
+#define ML_WARNING -1 // -1
+#define ML_FAILURE	0 //  0
+#define ML_SUCCESS	1 // +1
 
 namespace ml
 {

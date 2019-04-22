@@ -28,7 +28,7 @@ namespace ml
 					ML_GL.useShader(program);
 				}
 
-				location = shader->getUniformLocation(name);
+				location = shader->getUniform(name);
 			}
 		}
 
@@ -53,6 +53,7 @@ namespace ml
 {
 	Shader::Shader()
 		: IHandle(NULL)
+		, m_attribs()
 		, m_textures()
 		, m_uniforms()
 	{
@@ -60,6 +61,7 @@ namespace ml
 
 	Shader::Shader(const Shader & copy)
 		: IHandle(copy)
+		, m_attribs(copy.m_attribs)
 		, m_textures(copy.m_textures)
 		, m_uniforms(copy.m_uniforms)
 	{
@@ -74,6 +76,7 @@ namespace ml
 
 	bool Shader::dispose()
 	{
+		m_attribs.clear();
 		m_textures.clear();
 		m_uniforms.clear();
 
@@ -81,10 +84,9 @@ namespace ml
 		if ((*this))
 		{
 			ML_GL.deleteShader((*this));
-			get_ref() = NULL;
-			return true;
+			get_reference() = NULL;
 		}
-		return false;
+		return !(*this);
 	}
 
 	bool Shader::loadFromFile(const String & filename)
@@ -198,13 +200,15 @@ namespace ml
 		}
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	bool Shader::applyUniforms(const UniformSet & value) const
 	{
 		size_t count = 0;
 		UniformSet::const_iterator it;
 		for (it = value.begin(); it != value.end(); it++)
 		{
-			if (setUniform(it->second))
+			if (applyUniform(it->second))
 			{
 				count++;
 			}
@@ -212,9 +216,9 @@ namespace ml
 		return count;
 	}
 
-	bool Shader::setUniform(const Uniform & u) const
+	bool Shader::applyUniform(const Uniform & u) const
 	{
-		if (u.good())
+		if (u.name && u.data && u.type)
 		{
 			switch (u.type)
 			{
@@ -341,7 +345,7 @@ namespace ml
 			TextureTable::iterator it;
 			if ((it = m_textures.find(u.location)) == m_textures.end())
 			{
-				static size_t maxUnits = static_cast<size_t>(ML_GL.getMaxTextureUnits());
+				static size_t maxUnits(static_cast<size_t>(ML_GL.getMaxTextureUnits()));
 
 				if ((m_textures.size() + 1) >= maxUnits)
 				{
@@ -459,71 +463,92 @@ namespace ml
 
 		if (gs && !ML_GL.geometryShadersAvailable())
 		{
-			return ml::Debug::logError("Geometry shaders are not available on your system.");
+			return Debug::logError("Geometry shaders are not available on your system.");
 		}
 
-		dispose();
-
-		if (!(*this) && !(get_ref() = ML_GL.createProgramObject()))
+		// Create Program
+		if (dispose() && set_handle(ML_GL.createProgramObject()))
 		{
-			return Debug::logError("Failed creating shader object");
-		}
+			// Compile Vertex
+			uint32_t vert = NULL;
+			switch (ML_GL.compileShader(vert, GL::VertexShader, vs))
+			{
+			case ML_SUCCESS:
+				ML_GL.attachShader((*this), vert);
+				ML_GL.deleteShader(vert);
+				break;
+			case ML_FAILURE:
+				ML_GL.deleteShader((*this));
+				return false;
+			}
 
-		// Vertex
-		uint32_t v = NULL;
-		switch (ML_GL.compileShader(v, GL::VertexShader, vs))
+			// Compile Geometry
+			uint32_t geom = NULL;
+			switch (ML_GL.compileShader(geom, GL::GeometryShader, gs))
+			{
+			case ML_SUCCESS:
+				ML_GL.attachShader((*this), geom);
+				ML_GL.deleteShader(geom);
+				break;
+			case ML_FAILURE:
+				ML_GL.deleteShader((*this));
+				return false;
+			}
+
+			// Compile Fragment
+			uint32_t frag = NULL;
+			switch (ML_GL.compileShader(frag, GL::FragmentShader, fs))
+			{
+			case ML_SUCCESS:
+				ML_GL.attachShader((*this), frag);
+				ML_GL.deleteShader(frag);
+				break;
+			case ML_FAILURE:
+				ML_GL.deleteShader((*this));
+				return false;
+			}
+
+			// Link the program
+			if (!ML_GL.linkShader(*this))
+			{
+				CString log = ML_GL.getProgramInfoLog(*this);
+				ML_GL.deleteShader(*this);
+				return Debug::logError("Failed linking shader source:\n{0}", log);
+			}
+
+			// Refresh OpenGL
+			ML_GL.flush();
+			return true;
+		}
+		else
 		{
-		case ML_SUCCESS:
-			ML_GL.attachShader((*this), v);
-			ML_GL.deleteShader(v);
-			break;
-		case ML_FAILURE:
-			ML_GL.deleteShader((*this));
-			return false;
+			return Debug::logError("Failed compiling shader");
 		}
-
-		// Geometry
-		uint32_t g = NULL;
-		switch (ML_GL.compileShader(g, GL::GeometryShader, gs))
-		{
-		case ML_SUCCESS:
-			ML_GL.attachShader((*this), g);
-			ML_GL.deleteShader(g);
-			break;
-		case ML_FAILURE:
-			ML_GL.deleteShader((*this));
-			return false;
-		}
-
-		// Fragment
-		uint32_t f = NULL;
-		switch (ML_GL.compileShader(f, GL::FragmentShader, fs))
-		{
-		case ML_SUCCESS:
-			ML_GL.attachShader((*this), f);
-			ML_GL.deleteShader(f);
-			break;
-		case ML_FAILURE:
-			ML_GL.deleteShader((*this));
-			return false;
-		}
-
-		// Link the program
-		if (!ML_GL.linkShader(*this))
-		{
-			CString log = ML_GL.getProgramInfoLog(*this);
-			ML_GL.deleteShader(*this);
-			return Debug::logError("Failed linking source: {0}", log);
-		}
-
-		ML_GL.flush();
-
-		return true;
 	}
 	
-	int32_t Shader::getUniformLocation(const String & value) const
+	int32_t Shader::getAttribute(const String & value) const
 	{
-		// Check the cache
+		AttribTable::const_iterator it;
+		if ((it = m_attribs.find(value)) != m_attribs.end())
+		{
+			return it->second;
+		}
+		else
+		{
+			int32_t location;
+			if ((location = ML_GL.getAttribLocation((*this), value.c_str())) != -1)
+			{
+				return m_attribs.insert({ value, location }).first->second;
+			}
+			else
+			{
+				return Debug::logWarning("Attribute Not Found: \"{0}\"", value); // -1
+			}
+		}
+	}
+	
+	int32_t Shader::getUniform(const String & value) const
+	{
 		UniformTable::const_iterator it;
 		if ((it = m_uniforms.find(value)) != m_uniforms.end())
 		{
@@ -531,23 +556,16 @@ namespace ml
 		}
 		else
 		{
-			// Not in cache, request the location from OpenGL
-			int32_t location = ML_GL.getUniformLocation((*this), value.c_str());
-			
-			m_uniforms.insert({ value, location });
-			
-			if (location == -1)
+			int32_t location;
+			if ((location = ML_GL.getUniformLocation((*this), value.c_str())) != -1)
 			{
-				Debug::logWarning("Uniform Not Found: \"{0}\"", value);
+				return m_uniforms.insert({ value, location }).first->second;
 			}
-
-			return location;
+			else
+			{
+				return Debug::logWarning("Uniform Not Found: \"{0}\"", value); // -1
+			}
 		}
-	}
-	
-	int32_t Shader::getAttribLocation(const String & value) const
-	{
-		return ML_GL.getAttribLocation(*this, value.c_str());
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

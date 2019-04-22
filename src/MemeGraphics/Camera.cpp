@@ -40,7 +40,7 @@ namespace ml
 
 	void Camera::update(const vec2i & resolution)
 	{
-		if ((m_resolution != resolution) && ((resolution[0] >= 0) && (resolution[1] >= 0)))
+		if ((resolution != vec2i::Zero) && (m_resolution != resolution))
 		{
 			m_resolution = resolution;
 

@@ -81,7 +81,7 @@ namespace ml
 		if ((*this))
 		{
 			ML_GL.deleteTextures(1, (*this));
-			get_ref() = NULL;
+			get_reference() = NULL;
 			return true;
 		}
 		return false;
@@ -185,7 +185,7 @@ namespace ml
 			return Debug::logError("Failed creating texture, invalid getSize {0}", size);
 		}
 
-		if (!(*this) && (get_ref() = ML_GL.genTextures(1)))
+		if (set_handle(ML_GL.genTextures(1)))
 		{
 			m_size = size;
 
@@ -353,7 +353,7 @@ namespace ml
 
 	Texture & Texture::swap(Texture & other)
 	{
-		std::swap(get_ref(),	other.get_ref());
+		std::swap(get_reference(),	other.get_reference());
 		std::swap(m_target,		other.m_target);
 		std::swap(m_level,		other.m_level);
 		std::swap(m_size,		other.m_size);
@@ -406,7 +406,7 @@ namespace ml
 	{
 		if (value)
 		{
-			ML_GL.bindTexture(value->target(), (uint32_t)(*value));
+			ML_GL.bindTexture(value->target(), (*value));
 		}
 		else
 		{
@@ -418,7 +418,7 @@ namespace ml
 
 	void Texture::serialize(std::ostream & out) const
 	{
-		out << GetTypeInfo().name();
+		out << GetTypeName();
 	}
 
 	void Texture::deserialize(std::istream & in)

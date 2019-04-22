@@ -39,7 +39,7 @@ namespace ml
 
 	VertexBuffer & VertexBuffer::create(GL::Usage usage)
 	{
-		if (!(*this) && (get_ref() = ML_GL.genBuffers(1)))
+		if (set_handle(ML_GL.genBuffers(1)))
 		{
 			m_usage = usage;
 		}

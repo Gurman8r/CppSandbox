@@ -82,55 +82,65 @@ inline static void ImGui_ML_HandleInput()
 	}
 }
 
-inline static bool ImGui_ML_CompileShader(uint32_t & program, ml::CString const * vs, ml::CString const * fs)
+inline static bool ImGui_ML_CompileShader(uint32_t & obj, ml::CString const * vs, ml::CString const * fs)
 {
 	if (!ML_GL.shadersAvailable())
 	{
-		ml::cerr << ("Shaders are not available on your system.") << ml::endl;
-		return false;
+		return ml::Debug::logError("ImGui: Shaders are not available on your system.");
 	}
 
-	if (!program && !(program = ML_GL.createProgramObject()))
+	auto dispose = [&]() 
 	{
-		ml::cerr << ("Failed creating shader object") << ml::endl;
-		return false;
-	}
+		ML_GL.useShader(NULL);
+		if (obj)
+		{
+			ML_GL.deleteShader(obj);
+			obj = NULL;
+		}
+		return (!obj);
+	};
 
-	// Vertex
-	switch (ML_GL.compileShader(g_VertHandle, ml::GL::VertexShader, ml::File(2, vs)))
+	// Create Program
+	if (dispose() && (obj = ML_GL.createProgramObject()))
 	{
-	case ML_SUCCESS:
-		ML_GL.attachShader(program, g_VertHandle);
-		break;
-	case ML_FAILURE:
-		ML_GL.deleteShader(program);
-		return false;
-	}
+		// Compile Vertex
+		switch (ML_GL.compileShader(g_VertHandle, ml::GL::VertexShader, ml::File(2, vs)))
+		{
+		case ML_SUCCESS:
+			ML_GL.attachShader(obj, g_VertHandle);
+			break;
+		case ML_FAILURE:
+			ML_GL.deleteShader(obj);
+			return false;
+		}
 
-	// Fragment
-	switch (ML_GL.compileShader(g_FragHandle, ml::GL::FragmentShader, ml::File(2, fs)))
+		// Compile Fragment
+		switch (ML_GL.compileShader(g_FragHandle, ml::GL::FragmentShader, ml::File(2, fs)))
+		{
+		case ML_SUCCESS:
+			ML_GL.attachShader(obj, g_FragHandle);
+			break;
+		case ML_FAILURE:
+			ML_GL.deleteShader(obj);
+			return false;
+		}
+
+		// Link the program
+		if (!ML_GL.linkShader(obj))
+		{
+			ml::CString log = ML_GL.getProgramInfoLog(obj);
+			ML_GL.deleteShader(obj);
+			return ml::Debug::logError("ImGui: Failed linking shader source:\n{0}", log);
+		}
+
+		// Refresh OpenGL
+		ML_GL.flush();
+		return true;
+	}
+	else
 	{
-	case ML_SUCCESS:
-		ML_GL.attachShader(program, g_FragHandle);
-		break;
-	case ML_FAILURE:
-		ML_GL.deleteShader(program);
-		return false;
+		return ml::Debug::logError("ImGui: Failed compiling shader");
 	}
-
-	// Link the program
-	if (!ML_GL.linkShader(program))
-	{
-		ml::CString log = ML_GL.getProgramInfoLog(program);
-
-		ML_GL.deleteShader(program);
-
-		return ml::Debug::logError("Failed to link source: {0}", log);
-	}
-
-	ML_GL.flush();
-
-	return true;
 }
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -487,7 +497,7 @@ bool ImGui_ML_CreateDeviceObjects()
 	int32_t glsl_version = 130;
 	sscanf(g_GlslVersionString, "#version %d", &glsl_version);
 
-	ml::CString vertex_shader_glsl_120 =
+	static const ml::CString vertex_shader_glsl_120 =
 		"uniform mat4 ProjMtx;\n"
 		"attribute vec2 Position;\n"
 		"attribute vec2 UV;\n"
@@ -501,7 +511,7 @@ bool ImGui_ML_CreateDeviceObjects()
 		"    gl_Position = ProjMtx * vec4(Position.xy,0,1);\n"
 		"}\n";
 
-	ml::CString vertex_shader_glsl_130 =
+	static const ml::CString vertex_shader_glsl_130 =
 		"uniform mat4 ProjMtx;\n"
 		"in vec2 Position;\n"
 		"in vec2 UV;\n"
@@ -515,7 +525,7 @@ bool ImGui_ML_CreateDeviceObjects()
 		"    gl_Position = ProjMtx * vec4(Position.xy,0,1);\n"
 		"}\n";
 
-	ml::CString vertex_shader_glsl_300_es =
+	static const ml::CString vertex_shader_glsl_300_es =
 		"precision mediump float;\n"
 		"layout (location = 0) in vec2 Position;\n"
 		"layout (location = 1) in vec2 UV;\n"
@@ -530,7 +540,7 @@ bool ImGui_ML_CreateDeviceObjects()
 		"    gl_Position = ProjMtx * vec4(Position.xy,0,1);\n"
 		"}\n";
 
-	ml::CString vertex_shader_glsl_410_core =
+	static const ml::CString vertex_shader_glsl_410_core =
 		"layout (location = 0) in vec2 Position;\n"
 		"layout (location = 1) in vec2 UV;\n"
 		"layout (location = 2) in vec4 Color;\n"
@@ -544,7 +554,7 @@ bool ImGui_ML_CreateDeviceObjects()
 		"    gl_Position = ProjMtx * vec4(Position.xy,0,1);\n"
 		"}\n";
 
-	ml::CString fragment_shader_glsl_120 =
+	static const ml::CString fragment_shader_glsl_120 =
 		"#ifdef GL_ES\n"
 		"    precision mediump float;\n"
 		"#endif\n"
@@ -556,7 +566,7 @@ bool ImGui_ML_CreateDeviceObjects()
 		"    gl_FragColor = Frag_Color * texture2D(Texture, Frag_UV.st);\n"
 		"}\n";
 
-	ml::CString fragment_shader_glsl_130 =
+	static const ml::CString fragment_shader_glsl_130 =
 		"uniform sampler2D Texture;\n"
 		"in vec2 Frag_UV;\n"
 		"in vec4 Frag_Color;\n"
@@ -566,7 +576,7 @@ bool ImGui_ML_CreateDeviceObjects()
 		"    Out_Color = Frag_Color * texture(Texture, Frag_UV.st);\n"
 		"}\n";
 
-	ml::CString fragment_shader_glsl_300_es =
+	static const ml::CString fragment_shader_glsl_300_es =
 		"precision mediump float;\n"
 		"uniform sampler2D Texture;\n"
 		"in vec2 Frag_UV;\n"
@@ -577,7 +587,7 @@ bool ImGui_ML_CreateDeviceObjects()
 		"    Out_Color = Frag_Color * texture(Texture, Frag_UV.st);\n"
 		"}\n";
 
-	ml::CString fragment_shader_glsl_410_core =
+	static const ml::CString fragment_shader_glsl_410_core =
 		"in vec2 Frag_UV;\n"
 		"in vec4 Frag_Color;\n"
 		"uniform sampler2D Texture;\n"
@@ -639,22 +649,45 @@ bool ImGui_ML_CreateDeviceObjects()
 
 void ImGui_ML_DestroyDeviceObjects()
 {
-	if (g_VboHandle) ML_GL.deleteBuffers(1, &g_VboHandle);
-	if (g_ElementsHandle) ML_GL.deleteBuffers(1, &g_ElementsHandle);
-	g_VboHandle = g_ElementsHandle = 0;
+	if (g_VboHandle)
+	{
+		ML_GL.deleteBuffers(1, &g_VboHandle);
+	}
+	g_VboHandle = NULL;
 
-	if (g_ShaderHandle && g_VertHandle) ML_GL.detachShader(g_ShaderHandle, g_VertHandle);
-	if (g_VertHandle) ML_GL.deleteShader(g_VertHandle);
-	g_VertHandle = 0;
+	if (g_ElementsHandle)
+	{
+		ML_GL.deleteBuffers(1, &g_ElementsHandle);
+	}
+	g_ElementsHandle = NULL;
 
-	if (g_ShaderHandle && g_FragHandle) 
+	if (g_ShaderHandle && g_VertHandle)
+	{
+		ML_GL.detachShader(g_ShaderHandle, g_VertHandle);
+	}
+
+	if (g_VertHandle)
+	{
+		ML_GL.deleteShader(g_VertHandle);
+	}
+	g_VertHandle = NULL;
+
+	if (g_ShaderHandle && g_FragHandle)
+	{
 		ML_GL.detachShader(g_ShaderHandle, g_FragHandle);
+	}
 
-	if (g_FragHandle) ML_GL.deleteShader(g_FragHandle);
-	g_FragHandle = 0;
+	if (g_FragHandle)
+	{
+		ML_GL.deleteShader(g_FragHandle);
+	}
+	g_FragHandle = NULL;
 
-	if (g_ShaderHandle) ML_GL.deleteShader(g_ShaderHandle);
-	g_ShaderHandle = 0;
+	if (g_ShaderHandle)
+	{
+		ML_GL.deleteShader(g_ShaderHandle);
+	}
+	g_ShaderHandle = NULL;
 
 	ImGui_ML_DestroyFontsTexture();
 }

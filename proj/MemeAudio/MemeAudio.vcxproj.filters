@@ -13,12 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Buffers">
-      <UniqueIdentifier>{f442ec10-6795-48f3-a90b-484e137cb821}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Buffers">
-      <UniqueIdentifier>{d8b1bc38-acbb-4e83-b7b1-954000c6f7dc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Utility">
       <UniqueIdentifier>{4ceab270-368d-4630-a19c-cee3ad95225f}</UniqueIdentifier>
     </Filter>
@@ -31,6 +25,12 @@
     <Filter Include="Source Files\Internal">
       <UniqueIdentifier>{c0b656a8-1013-4cc1-b90c-7a59b2747737}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Handles">
+      <UniqueIdentifier>{f442ec10-6795-48f3-a90b-484e137cb821}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Handles">
+      <UniqueIdentifier>{d8b1bc38-acbb-4e83-b7b1-954000c6f7dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeAudio\AL.hpp">
@@ -40,10 +40,10 @@
       <Filter>Header Files\Internal</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeAudio\AudioBuffer.hpp">
-      <Filter>Header Files\Buffers</Filter>
+      <Filter>Header Files\Handles</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeAudio\AudioSource.hpp">
-      <Filter>Header Files\Buffers</Filter>
+      <Filter>Header Files\Handles</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeAudio\Export.hpp">
       <Filter>Resource Files</Filter>
@@ -60,10 +60,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeAudio\AudioSource.cpp">
-      <Filter>Source Files\Buffers</Filter>
+      <Filter>Source Files\Handles</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeAudio\AudioBuffer.cpp">
-      <Filter>Source Files\Buffers</Filter>
+      <Filter>Source Files\Handles</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeAudio\OpenAL.cpp">
       <Filter>Source Files\Internal</Filter>

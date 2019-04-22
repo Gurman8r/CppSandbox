@@ -158,6 +158,10 @@ namespace ml
 				}
 			}
 		}
+		else
+		{
+			Debug::logError("OpenGL has not been initialized.");
+		}
 	}
 
 	
@@ -497,24 +501,26 @@ namespace ml
 
 	int32_t OpenGL::getMaxTextureUnits()
 	{
-		static int32_t maxUnits;
+		static int32_t temp;
 		static bool checked = false;
 		if (!checked)
 		{
-			maxUnits = getInt(GL::MaxCombTexImgUnits);
+			checked = true;
+			temp = getInt(GL::MaxCombTexImgUnits);
 		}
-		return maxUnits;
+		return temp;
 	}
 
 	uint32_t OpenGL::getMaxTextureSize()
 	{
-		static uint32_t size = 0;
+		static uint32_t temp;
 		static bool checked = false;
 		if (!checked)
 		{
-			size = static_cast<uint32_t>(OpenGL::getInt(GL::MaxTextureSize));
+			checked = true;
+			temp = (uint32_t)(getInt(GL::MaxTextureSize));
 		}
-		return size;
+		return temp;
 	}
 
 	uint32_t OpenGL::getValidTextureSize(uint32_t value)
@@ -713,9 +719,9 @@ namespace ml
 
 	CString OpenGL::getProgramInfoLog(uint32_t obj)
 	{
-		static char log[ML_BUFFER_SIZE];
-		glCheck(glGetInfoLogARB(obj, sizeof(log), 0, log));
-		return log;
+		static char temp[ML_BUFFER_SIZE];
+		glCheck(glGetInfoLogARB(obj, sizeof(temp), 0, temp));
+		return temp;
 	}
 
 	uint32_t OpenGL::getProgramHandle(uint32_t name)
@@ -801,32 +807,46 @@ namespace ml
 		return getProgramParameter(obj, GL::ObjectCompileStatus);
 	}
 
-	int32_t OpenGL::compileShader(uint32_t & out, GL::ShaderType type, CString source)
+	int32_t OpenGL::compileShader(uint32_t & obj, GL::ShaderType type, CString source)
 	{
+		CString name;
+		switch (type)
+		{
+		case GL::FragmentShader: name = "Fragment"; break;
+		case GL::VertexShader:	 name = "Vertex";	break;
+		case GL::GeometryShader: name = "Geometry"; break;
+		default:
+			return Debug::logError("Invalid Shader Type: {0}", type);
+		}
+
 		if (source)
 		{
-			out = createShaderObject(type);
-
-			shaderSource(out, 1, &source, NULL);
-
-			int32_t status;
-			if (!(status = compileShader(out)))
+			if (obj = createShaderObject(type))
 			{
-				String name;
-				switch (type)
-				{
-				case GL::FragmentShader: name = "Fragment"; break;
-				case GL::VertexShader:	 name = "Vertex";	break;
-				case GL::GeometryShader: name = "Geometry"; break;
-				}
+				shaderSource(obj, 1, &source, NULL);
 
-				CString log = getProgramInfoLog(out);
-				deleteShader(out);
-				return Debug::logError("Failed compiling {0} source: {1}", name, log);
+				if (compileShader(obj))
+				{
+					return ML_SUCCESS; // +1
+				}
+				else
+				{
+					CString log = getProgramInfoLog(obj);
+
+					deleteShader(obj);
+
+					return Debug::logError("Failed compiling {0} source:\n{1}", name, log);
+				}
 			}
-			return status;
+			else
+			{
+				return Debug::logError("Failed creating {0} object", name);
+			}
 		}
-		return ML_WARNING; // -1
+		else
+		{
+			return ML_WARNING; // -1
+		}
 	}
 
 	int32_t OpenGL::linkShader(uint32_t obj)

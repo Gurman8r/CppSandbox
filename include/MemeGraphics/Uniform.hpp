@@ -14,6 +14,7 @@ namespace ml
 		, public IComparable<Uniform>
 	{
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		enum : int32_t
 		{
 			None,
@@ -29,6 +30,7 @@ namespace ml
 		};
 
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		Uniform();
 		Uniform(const String & name);
 		Uniform(const String & name, const int32_t type);
@@ -37,34 +39,40 @@ namespace ml
 		~Uniform();
 
 	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		String		 name;
 		int32_t		 type;
 		const void * data;
 
 	public:
-		template <class T>
-		inline const T * get_pointer() const
+		/* * * * * * * * * * * * * * * * * * * * */
+		void serialize(std::ostream & out) const override;
+		void deserialize(std::istream & in) override;
+
+	public:
+		/* * * * * * * * * * * * * * * * * * * * */
+		bool equals(const Uniform & other) const override;
+		bool lessThan(const Uniform & other) const override;
+
+	public:
+		/* * * * * * * * * * * * * * * * * * * * */
+		template <
+			class T
+		> inline const T * get_pointer() const
 		{
 			return reinterpret_cast<const T *>(data);
 		}
 
-		template <class T>
-		inline const T & get_value(const T & dv = T()) const
+		template <
+			class T
+		> inline const T & get_value(const T & def = T()) const
 		{
-			const T * p;
-			return ((p = get_pointer<T>()) ? (*p) : dv);
+			const T * temp;
+			return ((temp = get_pointer<T>()) 
+				? (*temp) 
+				: (def)
+			);
 		}
-
-	public:
-		bool good() const;
-		
-		inline operator bool() const { return good(); }
-
-		void serialize(std::ostream & out) const override;
-		void deserialize(std::istream & in) override;
-
-		bool equals(const Uniform & other) const override;
-		bool lessThan(const Uniform & other) const override;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

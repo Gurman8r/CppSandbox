@@ -83,10 +83,9 @@ namespace DEMO
 		case ml::EditorEvent::EV_File_Open:
 			if (const auto * ev = value->as<ml::File_Open_Event>())
 			{
-				if (ML_Editor.show_browser)
-				{
-					ML_EventSystem.fireEvent(ml::OS_ExecuteEvent("open", ML_Browser.get_selected_path()));
-				}
+				ML_EventSystem.fireEvent(ml::OS_ExecuteEvent(
+					"open", ML_Browser.get_selected_path()
+				));
 			}
 			break;
 			
@@ -198,6 +197,7 @@ namespace DEMO
 		if (IMGUI_CHECKVERSION())
 		{
 			ImGui::CreateContext();
+
 			ml::style_helper::Style4();
 
 			if ((SETTINGS.imguiFontFile) && 
@@ -701,6 +701,27 @@ namespace DEMO
 			ML_NetClient.poll();
 		}
 
+		// Update Effects
+		/* * * * * * * * * * * * * * * * * * * * */
+		for (auto & pair : ML_Res.effects)
+		{
+			pair.second->resize(this->getFrameSize());
+		}
+
+		// Update Camera
+		/* * * * * * * * * * * * * * * * * * * * */
+		{
+			if (const ml::Entity * target = ML_Res.entities.get("earth"))
+			{
+				m_camera.orbit(
+					(target->get<ml::Transform>()->getPosition()),
+					(data.camAnim ? data.camSpd * ev->elapsed.delta() : 0.0f)
+				);
+			}
+
+			m_camera.update(this->getFrameSize());
+		}
+
 		// Update Entities
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
@@ -870,45 +891,13 @@ namespace DEMO
 				pair.second.update();
 			}
 		}
-
-		// Update Camera
-		/* * * * * * * * * * * * * * * * * * * * */
-		{
-			if (const ml::Entity * target = ML_Res.entities.get("earth"))
-			{
-				m_camera.orbit(
-					(target->get<ml::Transform>()->getPosition()),
-					(data.camAnim ? data.camSpd * ev->elapsed.delta() : 0.0f)
-				);
-			}
-			
-			const ml::vec2i resolution = this->getFrameSize();
-
-			if (resolution != ml::vec2i::Zero)
-			{
-				bool changed = false;
-
-				for (auto & pair : ML_Res.effects)
-				{
-					if (pair.second->resize(resolution))
-					{
-						changed = true;
-					}
-				}
-
-				if (changed)
-				{
-					m_camera.update(resolution);
-				}
-			}
-		}
 	}
 
 	void Sandbox::onDraw(const ml::DrawEvent * ev)
 	{
 		// Draw Scene
 		/* * * * * * * * * * * * * * * * * * * * */
-		if (ml::Effect * scene = ML_Res.effects.get("frame_main"))
+		if (const ml::Effect * scene = ML_Res.effects.get("frame_main"))
 		{
 			// Bind Scene
 			/* * * * * * * * * * * * * * * * * * * * */
@@ -993,9 +982,9 @@ namespace DEMO
 
 		// Draw Post Processing
 		/* * * * * * * * * * * * * * * * * * * * */
-		if (ml::Effect * post = ML_Res.effects.get("frame_post"))
+		if (const ml::Effect * post = ML_Res.effects.get("frame_post"))
 		{
-			if (ml::Effect * scene = ML_Res.effects.get("frame_main"))
+			if (const ml::Effect * scene = ML_Res.effects.get("frame_main"))
 			{
 				if (const ml::Shader * shader = scene->shader())
 				{

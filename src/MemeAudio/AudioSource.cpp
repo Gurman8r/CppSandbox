@@ -35,7 +35,7 @@ namespace ml
 
 	AudioSource & AudioSource::create(uint32_t count)
 	{
-		if (!(*this) && (get_ref() = OpenAL::genSources(count)))
+		if (set_handle(ML_AL.genSources(count)))
 		{
 			m_count = count;
 		}

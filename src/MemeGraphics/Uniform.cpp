@@ -45,11 +45,6 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Uniform::good() const
-	{
-		return !name.empty() && data && type;
-	}
-
 	void Uniform::serialize(std::ostream & out) const
 	{
 		out << name << " " << type << " ";
@@ -59,6 +54,8 @@ namespace ml
 	{
 		in >> name >> type;
 	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool Uniform::equals(const Uniform & other) const
 	{

@@ -36,9 +36,11 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 		void bind(bool bindTextures = true) const;
 		static void bind(const Shader * shader, bool bindTextures = true);
-		
+
+	public:
+		/* * * * * * * * * * * * * * * * * * * * */
 		bool applyUniforms(const UniformSet & value) const;
-		bool setUniform(const Uniform & value) const;
+		bool applyUniform(const Uniform & value) const;
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -75,18 +77,20 @@ namespace ml
 	private:
 		/* * * * * * * * * * * * * * * * * * * * */
 		bool	compile(CString vs, CString gs, CString fs);
-		int32_t	getUniformLocation(const String & value) const;
-		int32_t	getAttribLocation(const String & value) const;
+		int32_t	getAttribute(const String & value) const;
+		int32_t	getUniform(const String & value) const;
 
 	private:
 		/* * * * * * * * * * * * * * * * * * * * */
-		using TextureTable = typename Map<int32_t, const Texture *>;
-		using UniformTable = typename Map<String, int32_t>;
+		using AttribTable	= typename Map<String, int32_t>;
+		using TextureTable	= typename Map<int32_t, const Texture *>;
+		using UniformTable	= typename Map<String, int32_t>;
 
 		struct	UniformBinder;
 
-		mutable TextureTable m_textures;
-		mutable UniformTable m_uniforms;
+		mutable AttribTable		m_attribs;
+		mutable TextureTable	m_textures;
+		mutable UniformTable	m_uniforms;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

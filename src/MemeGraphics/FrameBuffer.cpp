@@ -27,14 +27,14 @@ namespace ml
 		if ((*this))
 		{
 			ML_GL.deleteFramebuffers(1, (*this));
-			get_ref() = NULL;
+			get_reference() = NULL;
 		}
 		return (*this);
 	}
 
 	FrameBuffer & FrameBuffer::create()
 	{
-		if (!(*this) && (get_ref() = ML_GL.genFramebuffers(1)))
+		if (set_handle(ML_GL.genFramebuffers(1)))
 		{
 			// good
 		}

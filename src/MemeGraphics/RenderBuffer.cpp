@@ -27,14 +27,14 @@ namespace ml
 		if ((*this))
 		{
 			ML_GL.deleteRenderbuffers(1, (*this));
-			get_ref() = NULL;
+			get_reference() = NULL;
 		}
 		return (*this);
 	}
 	
 	RenderBuffer & RenderBuffer::create(int32_t width, int32_t height)
 	{
-		if (!(*this) && (get_ref() = ML_GL.genRenderbuffers(1)))
+		if (set_handle(ML_GL.genRenderbuffers(1)))
 		{
 			m_width = width;
 			m_height = height;

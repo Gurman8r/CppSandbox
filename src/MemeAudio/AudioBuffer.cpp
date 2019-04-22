@@ -34,7 +34,7 @@ namespace ml
 
 	AudioBuffer & AudioBuffer::create(uint32_t count)
 	{
-		if (!(*this) && (get_ref() = OpenAL::genBuffers(count)))
+		if (set_handle(ML_AL.genBuffers(count)))
 		{
 			m_count = count;
 		}

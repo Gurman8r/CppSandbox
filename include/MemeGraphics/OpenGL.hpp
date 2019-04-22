@@ -167,7 +167,7 @@ namespace ml
 		static void		attachShader(uint32_t containerObj, uint32_t obj);
 		static void		shaderSource(uint32_t obj, int32_t count, CString const * src, const int32_t * length);
 		static int32_t	compileShader(uint32_t obj);
-		static int32_t	compileShader(uint32_t & out, GL::ShaderType type, CString source);
+		static int32_t	compileShader(uint32_t & obj, GL::ShaderType type, CString source);
 		static int32_t	linkShader(uint32_t obj);
 
 		static void		uniform1f(int32_t location, float value);
