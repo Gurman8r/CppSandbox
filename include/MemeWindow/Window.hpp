@@ -45,8 +45,8 @@ namespace ml
 			Floating	= (1 << 5),
 			Maximized	= (1 << 6),
 
-			// Resizable | Visible | Decorated | Focused | AutoIconify
-			Default	= Resizable | Decorated | Focused | AutoIconify,
+			// Resizable | Visible | Decorated | Focused | AutoIconify | Maximized
+			Default	= Resizable | Decorated | Focused | AutoIconify | Maximized,
 		};
 
 	public:

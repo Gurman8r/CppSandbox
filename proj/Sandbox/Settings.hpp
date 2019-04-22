@@ -84,7 +84,7 @@ namespace DEMO
 			redirStdOut		= ini.GetBoolean("General", "redirStdOut", false);
 			imguiINI		= ini.Get("General", "imguiINI", "");
 			imguiFontFile	= ini.Get("General", "imguiFontFile", "");
-			imguiFontSize	= (float)ini.GetReal("General", "imguiFontSize", 12.f);
+			imguiFontSize	= (float)ini.GetReal("General", "imguiFontSize", 12.0f);
 
 			// [Script]
 			/* * * * * * * * * * * * * * * * * * * * */

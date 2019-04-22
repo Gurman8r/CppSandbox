@@ -5,17 +5,18 @@
 
 // https://github.com/ocornut/imgui/issues/707
 
-namespace ml
+namespace ImGui
 {
-	namespace style_helper
+	class StyleHelper final
 	{
-		inline void Style0()
+	public:
+		inline static void Style0()
 		{
 			ImGui::StyleColorsDark();
 			ImGui::GetStyle().FrameBorderSize = 1;
 		}
 
-		inline void Style1()
+		inline static void Style1()
 		{
 			ImGuiStyle & style = ImGui::GetStyle();
 			ImVec4 * colors = style.Colors;
@@ -107,7 +108,7 @@ namespace ml
 #endif
 		}
 
-		inline void Style2()
+		inline static void Style2()
 		{
 			ImGuiStyle* style = &ImGui::GetStyle();
 			ImVec4* colors = style->Colors;
@@ -175,7 +176,7 @@ namespace ml
 			style->WindowRounding = 4.0f;
 		}
 
-		inline void Style3()
+		inline static void Style3()
 		{
 			ImGuiStyle* style = &ImGui::GetStyle();
 			ImVec4* colors = style->Colors;
@@ -246,7 +247,7 @@ namespace ml
 			colors[ImGuiCol_NavWindowingHighlight]  = ImVec4(0.70f, 0.70f, 0.70f, 0.70f);
 		}
 
-		inline void Style4()
+		inline static void Style4()
 		{
 			ImGuiStyle &st = ImGui::GetStyle();
 			st.FrameBorderSize = 1.0f;
@@ -315,7 +316,7 @@ namespace ml
 			colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
 		}
 
-		inline void Style5()
+		inline static void Style5()
 		{
 			// cherry colors, 3 intensities
 			#define HI(v)   ImVec4(0.502f, 0.075f, 0.256f, v)
@@ -387,7 +388,7 @@ namespace ml
 			style.FrameBorderSize = 0.0f;
 		}
 
-		inline void Style6()
+		inline static void Style6()
 		{
 			ImGuiStyle* style = &ImGui::GetStyle();
 			style->WindowRounding = 5.3f;
@@ -436,7 +437,7 @@ namespace ml
 			style->Colors[ImGuiCol_PlotHistogramHovered]  = {1.00f, 0.60f, 0.00f, 1.00f};
 			style->Colors[ImGuiCol_TextSelectedBg]        = {0.18431373f, 0.39607847f, 0.79215693f, 0.90f};
 		}
-	}
+	};
 }
 
 #endif // !_ML_IMGUI_STYLE_HPP_

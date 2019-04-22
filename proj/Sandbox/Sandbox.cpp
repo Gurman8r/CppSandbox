@@ -179,13 +179,17 @@ namespace DEMO
 
 		// Initialize Window
 		/* * * * * * * * * * * * * * * * * * * * */
-		if (this->create(SETTINGS.title, SETTINGS.video(), SETTINGS.style, SETTINGS.context()) &&
-			this->setup())
+		if (this->create(
+				SETTINGS.title, 
+				SETTINGS.video(),
+				ml::Window::Default, 
+				SETTINGS.context()
+		)&& this->setup())
 		{
+			this->maximize();
 			this->seCursorMode(ml::Cursor::Normal);
 			this->setPosition((ml::VideoMode::desktop().size - this->getSize()) / 2);
 			this->setViewport(ml::vec2i::Zero, this->getFrameSize());
-			this->maximize();
 		}
 		else
 		{
@@ -198,7 +202,7 @@ namespace DEMO
 		{
 			ImGui::CreateContext();
 
-			ml::style_helper::Style4();
+			ImGui::StyleHelper::Style4();
 
 			if ((SETTINGS.imguiFontFile) && 
 				(SETTINGS.imguiFontSize > 0.f))
@@ -329,7 +333,7 @@ namespace DEMO
 		// Setup Camera
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
-			m_camera.position()		= { 0, 1, 10 };
+			m_camera.position()		= { 0.0f, 1.0f, 10.0f };
 			m_camera.fieldOfView()	= SETTINGS.fieldOfView;
 			m_camera.perspNear()	= SETTINGS.perspNear;
 			m_camera.perspFar()		= SETTINGS.perspFar;
@@ -347,7 +351,7 @@ namespace DEMO
 		{
 			if (ml::Sprite * s = ML_Res.sprites.get("neutrino"))
 			{
-				(*s).setPosition((ml::vec2f(0.95f, 0.075f) * this->getSize()))
+				(*s).setPosition(ml::vec2f(0.95f, 0.075f) * this->getSize())
 					.setScale	(0.5f)
 					.setRotation(0.0f)
 					.setOrigin	(0.5f)
@@ -377,8 +381,6 @@ namespace DEMO
 						{ ml::GL::Blend,		{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::CullFace,		{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::DepthTest,	{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::Multisample,	{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::Texture2D,	{ ml::RenderVar::Bool, 1 } },
 					},
 					ml::UniformSet
 					{
@@ -413,8 +415,6 @@ namespace DEMO
 						{ ml::GL::Blend,		{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::CullFace,		{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::DepthTest,	{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::Multisample,	{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::Texture2D,	{ ml::RenderVar::Bool, 1 } },
 					},
 					ml::UniformSet
 					{
@@ -450,8 +450,6 @@ namespace DEMO
 						{ ml::GL::Blend,		{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::CullFace,		{ ml::RenderVar::Bool, 0 } },
 						{ ml::GL::DepthTest,	{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::Multisample,	{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::Texture2D,	{ ml::RenderVar::Bool, 1 } },
 					},
 					ml::UniformSet
 					{
@@ -487,8 +485,6 @@ namespace DEMO
 						{ ml::GL::Blend,		{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::CullFace,		{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::DepthTest,	{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::Multisample,	{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::Texture2D,	{ ml::RenderVar::Bool, 1 } },
 					},
 					ml::UniformSet
 					{
@@ -524,8 +520,6 @@ namespace DEMO
 						{ ml::GL::Blend,		{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::CullFace,		{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::DepthTest,	{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::Multisample,	{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::Texture2D,	{ ml::RenderVar::Bool, 1 } },
 					},
 					ml::UniformSet
 					{
@@ -561,8 +555,6 @@ namespace DEMO
 						{ ml::GL::Blend,		{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::CullFace,		{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::DepthTest,	{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::Multisample,	{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::Texture2D,	{ ml::RenderVar::Bool, 1 } },
 					},
 					ml::UniformSet
 					{
@@ -604,8 +596,6 @@ namespace DEMO
 						{ ml::GL::Blend,		{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::CullFace,		{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::DepthTest,	{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::Multisample,	{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::Texture2D,	{ ml::RenderVar::Bool, 1 } },
 					},
 					ml::UniformSet 
 					{
@@ -920,8 +910,14 @@ namespace DEMO
 			// Draw 2D
 			/* * * * * * * * * * * * * * * * * * * * */
 			{
-				ML_GL.disable(ml::GL::CullFace);
-				ML_GL.disable(ml::GL::DepthTest);
+				static ml::RenderStates states =
+				{
+					{ ml::GL::AlphaTest,	{ ml::RenderVar::Bool, 1 } },
+					{ ml::GL::Blend,		{ ml::RenderVar::Bool, 1 } },
+					{ ml::GL::CullFace,		{ ml::RenderVar::Bool, 0 } },
+					{ ml::GL::DepthTest,	{ ml::RenderVar::Bool, 0 } },
+				};
+				states.apply();
 
 				// Draw Geometry
 				/* * * * * * * * * * * * * * * * * * * * */
@@ -1116,7 +1112,11 @@ namespace DEMO
 		ml::Debug::log("Unloading...");
 
 		// Cleanup Std Out Redirect
-		if (m_rdbuf) { ml::cout.rdbuf(m_rdbuf); m_rdbuf = NULL; }
+		if (m_rdbuf) 
+		{ 
+			ml::cout.rdbuf(m_rdbuf);
+			m_rdbuf = NULL; 
+		}
 
 		// Cleanup Resources
 		ML_Res.dispose();

@@ -42,8 +42,8 @@ namespace DEMO
 		ml::Canvas		m_canvas;
 		TextMap			m_text;
 
-		ml::SStream		m_rdstr; // Redirect Stream
-		ml::StreamBuf * m_rdbuf; // Redirect Buffer
+		ml::SStream		m_rdstr;
+		ml::StreamBuf * m_rdbuf = NULL;
 
 		struct DemoData
 		{
@@ -52,7 +52,7 @@ namespace DEMO
 			
 			// Camera
 			bool			camAnim		= true;
-			float			camSpd		= 1.f;
+			float			camSpd		= 1.0f;
 			
 			// Light
 			ml::vec3f		lightPos	= { 0, 1, 30 };
@@ -67,7 +67,7 @@ namespace DEMO
 			// Geometry
 			int32_t			lineMode	= 1;
 			ml::vec4f		lineColor	= ml::Color::Red;
-			float			lineDelta	= 1.f;
+			float			lineDelta	= 1.0f;
 			float			lineSize	= 0.5f;
 			int32_t			lineSamples	= 16;
 		};
