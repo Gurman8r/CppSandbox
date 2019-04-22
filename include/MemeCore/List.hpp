@@ -3,6 +3,7 @@
 
 #include <MemeCore/Export.hpp>
 #include <MemeCore/ISerializable.hpp>
+#include <MemeCore/Detail.hpp>
 
 namespace ml
 {
@@ -18,6 +19,11 @@ namespace ml
 		, public IComparable<std::vector<_Elem, _Alloc>>
 		, public IComparable<List<_Elem, _Alloc>>
 	{
+		static_assert(
+			detail::has_left_shift<std::ostream &, _Elem>::value, 
+			"List values must be serializable."
+		);
+
 	public: // Usings
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		using value_type			= typename _Elem;
@@ -87,6 +93,10 @@ namespace ml
 		
 		inline virtual void deserialize(std::istream & in) override
 		{
+			for (size_t i = 0; in.good(); i++)
+			{
+				// TODO...
+			}
 		}
 
 

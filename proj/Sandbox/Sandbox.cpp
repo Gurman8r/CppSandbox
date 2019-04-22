@@ -167,6 +167,11 @@ namespace DEMO
 			ml::EngineCommands::install();
 			ml::EditorCommands::install();
 
+			ML_Interpreter.install({ "load", [](ml::Args & args)
+			{
+				return ml::Var(); 
+			} });
+
 			// Run Boot Script
 			ml::Script scr;
 			if (scr.loadFromFile(ML_FS.getPathTo(SETTINGS.bootScript)))

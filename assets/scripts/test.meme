@@ -27,7 +27,7 @@ TEST = nodeid();
 			printl(args[i]);
 		};
 		
-		printl(myStruct.0foo);
+		printl(myStruct.foo);
 
 		return true;
 	};

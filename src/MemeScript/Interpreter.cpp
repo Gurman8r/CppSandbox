@@ -40,26 +40,19 @@ namespace ml
 
 	Command * Interpreter::install(const Command & value)
 	{
-		if (!value.name().empty())
-		{
-			if (m_commands.find(value.name()) == m_commands.end())
-			{
-				m_commands.insert({ value.name(), value });
-
-				return &m_commands[value.name()];
-			}
-		}
-		return NULL;
+		return ((value.name() && (m_cmd.find(value.name()) == m_cmd.end()))
+			? (&m_cmd.insert({ value.name(), value }).first->second)
+			: (NULL)
+		);
 	}
 
 	Command * Interpreter::getCommand(const String & value)
 	{
 		CommandMap::iterator it;
-		if ((it = m_commands.find(value)) != m_commands.begin())
-		{
-			return &it->second;
-		}
-		return NULL;
+		return (((it = m_cmd.find(value)) != m_cmd.begin())
+			? (&it->second)
+			: (NULL)
+		);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -70,9 +63,8 @@ namespace ml
 		{
 			Args args(value, " ");
 
-			CommandMap::iterator it = m_commands.find(args.front());
-
-			if ((it = m_commands.find(args.front())) != m_commands.end())
+			CommandMap::iterator it;
+			if ((it = m_cmd.find(args.front())) != m_cmd.end())
 			{
 				return it->second(args);
 			}
@@ -82,7 +74,7 @@ namespace ml
 				return execString(value);
 			}
 		}
-		return Var().errorValue("Unknown Command ", value);
+		return Var().errorValue("Interpreter : Unknown Command ", value);
 	}
 
 	Var	Interpreter::execFile(const String & value)
@@ -94,36 +86,33 @@ namespace ml
 			{
 				return execTokens(ML_Lexer.genTokenList(file.data()));
 			}
-			return Var().errorValue("File not found {0}", value);
+			return Var().errorValue("Interpreter : File not found {0}", value);
 		}
-		return Var().errorValue("File cannot be empty", value);
+		return Var().errorValue("Interpreter : File cannot be empty", value);
 	}
 
 	Var	Interpreter::execString(const String & value)
 	{
-		if (!value.empty())
-		{
-			return execTokens(ML_Lexer.genTokenList(value));
-		}
-		return Var().errorValue("Buffer cannot be empty");
+		return ((!value.empty())
+			? (execTokens(ML_Lexer.genTokenList(value)))
+			: (Var().errorValue("Interpreter : String cannot be empty"))
+		);
 	}
 
 	Var	Interpreter::execTokens(const TokenList & value)
 	{
-		if (!value.empty())
-		{
-			return execTree(ML_Lexer.genTokenTree(value));
-		}
-		return Var().errorValue("TokenList cannot be empty");
+		return ((!value.empty())
+			? (execTree(ML_Lexer.genTokenTree(value)))
+			: (Var().errorValue("Interpreter : Token List cannot be empty"))
+		);
 	}
 
 	Var Interpreter::execTree(const TokenTree & value)
 	{
-		if (!value.empty())
-		{
-			return execBlock(ML_Parser.genFromTree(value));
-		}
-		return Var().errorValue("Statements cannot be empty");
+		return ((!value.empty())
+			? (execBlock(ML_Parser.genFromTree(value)))
+			: (Var().errorValue("Interpreter : Token Tree cannot be empty"))
+		);
 	}
 
 	Var	Interpreter::execBlock(AST_Block * value)
@@ -136,9 +125,10 @@ namespace ml
 
 				delete value;
 
-				return ML_Runtime.setVar(0, ML_NAME_RETV, v)
-					? v
-					: Var().errorValue("Interpreter : Failed setting return");
+				return ((ML_Runtime.setVar(0, ML_NAME_RETV, v))
+					? (v)
+					: (Var().errorValue("Interpreter : Failed setting return"))
+				);
 			}
 			else
 			{

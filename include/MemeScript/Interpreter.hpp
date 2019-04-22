@@ -49,10 +49,10 @@ namespace ml
 		Var execTree(const TokenTree & value);
 		Var	execBlock(AST_Block * value);
 
-		inline const CommandMap & commands() const { return m_commands; }
+		inline const CommandMap & commands() const { return m_cmd; }
 
 	private:
-		CommandMap m_commands;
+		CommandMap m_cmd;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

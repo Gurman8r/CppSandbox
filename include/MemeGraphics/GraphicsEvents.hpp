@@ -45,7 +45,7 @@ namespace ml
 			const String	& errorName,
 			const String	& errorDesc)
 			: GraphicsEvent	(EV_GL_Error)
-			, file		(file)
+			, file			(file)
 			, line			(line)
 			, expr			(expr)
 			, errorCode		(errorCode)

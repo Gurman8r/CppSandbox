@@ -21,6 +21,21 @@ namespace ml
 		, public IComparable<Matrix<_Elem, _Cols, _Rows>>
 		, public IEnumerable<_Elem, _Cols * _Rows>
 	{
+		static_assert(
+			std::is_trivial<_Elem>::value, 
+			"Matrix values must be trivial."
+		);
+
+		static_assert(
+			detail::has_left_shift<std::ostream &, const _Elem &>::value,
+			"Matrix values must be serializable."
+		);
+
+		static_assert(
+			detail::has_right_shift<std::istream &, _Elem &>::value,
+			"Matrix values must be deserializable."
+		);
+
 	public: // Enums
 		/* * * * * * * * * * * * * * * * * * * * */
 		enum : size_t
