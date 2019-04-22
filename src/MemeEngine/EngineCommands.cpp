@@ -24,7 +24,7 @@ namespace ml
 		ML_Interpreter.install({ "get",		EngineCommands::cmd_get		});
 		ML_Interpreter.install({ "getcwd",	EngineCommands::cmd_getcwd	});
 		ML_Interpreter.install({ "help",	EngineCommands::cmd_help	});
-		ML_Interpreter.install({ "load",	EngineCommands::cmd_load });
+		ML_Interpreter.install({ "load",	EngineCommands::cmd_load	});
 		ML_Interpreter.install({ "log",		EngineCommands::cmd_log		});
 		ML_Interpreter.install({ "ls",		EngineCommands::cmd_ls		});
 		ML_Interpreter.install({ "pause",	EngineCommands::cmd_pause	});
