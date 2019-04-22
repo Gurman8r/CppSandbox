@@ -91,11 +91,15 @@ namespace ml
 	
 	void Duration::serialize(std::ostream & out) const
 	{
+		const uint64_t hrs = hours();
 		const uint64_t min = minutes();
 		const uint64_t sec = seconds();
 		const uint64_t mil = milliseconds();
 		
-		out << ((min / 10) % 10)
+		out << ((hrs / 10) % 10)
+			<< (hrs % 10) 
+			<< ':'
+			<< ((min / 10) % 10)
 			<< (min % 10)
 			<< ':'
 			<< (((sec % 60) / 10) % 10)
