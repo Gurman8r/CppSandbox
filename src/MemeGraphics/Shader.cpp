@@ -536,14 +536,11 @@ namespace ml
 		else
 		{
 			int32_t location;
-			if ((location = ML_GL.getAttribLocation((*this), value.c_str())) != -1)
+			if ((location = ML_GL.getAttribLocation((*this), value.c_str())) == -1)
 			{
-				return m_attribs.insert({ value, location }).first->second;
+				Debug::logWarning("Attribute Not Found: \"{0}\"", value);
 			}
-			else
-			{
-				return Debug::logWarning("Attribute Not Found: \"{0}\"", value); // -1
-			}
+			return m_attribs.insert({ value, location }).first->second;
 		}
 	}
 	
@@ -557,14 +554,11 @@ namespace ml
 		else
 		{
 			int32_t location;
-			if ((location = ML_GL.getUniformLocation((*this), value.c_str())) != -1)
+			if ((location = ML_GL.getUniformLocation((*this), value.c_str())) == -1)
 			{
-				return m_uniforms.insert({ value, location }).first->second;
+				Debug::logWarning("Uniform Not Found: \"{0}\"", value);
 			}
-			else
-			{
-				return Debug::logWarning("Uniform Not Found: \"{0}\"", value); // -1
-			}
+			return m_uniforms.insert({ value, location }).first->second;
 		}
 	}
 
