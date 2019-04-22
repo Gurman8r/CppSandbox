@@ -84,7 +84,7 @@ namespace ml
 
 	void File::serialize(std::ostream & out) const
 	{
-		out << String(&m_data[0], m_data.size());
+		out << String(begin(), end());
 	}
 
 	void File::deserialize(std::istream & in)
