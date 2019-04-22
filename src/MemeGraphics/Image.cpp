@@ -75,35 +75,33 @@ namespace ml
 	{
 		if (width && height)
 		{
-			// Create a new pix buffer first for exception safety's sake
+			// Create a new pixel buffer first for exception safety's sake
 			Pixels newPixels(width * height * 4);
 
 			// Fill it with the specified color
-			uint8_t* ptr = &newPixels[0];
-			uint8_t* end = ptr + newPixels.size();
+			uint8_t * ptr = &newPixels[0];
+			uint8_t * end = ptr + newPixels.size();
 			while (ptr < end)
 			{
-				*ptr++ = color[0];
-				*ptr++ = color[1];
-				*ptr++ = color[2];
-				*ptr++ = color[3];
+				*(ptr++) = color[0];
+				*(ptr++) = color[1];
+				*(ptr++) = color[2];
+				*(ptr++) = color[3];
 			}
 
-			// Commit the new pix buffer
+			// Commit the new pixel buffer
 			m_pixels.swap(newPixels);
 
 			// Assign the new size
-			m_size[0] = width;
-			m_size[1] = height;
+			m_size = { width, height };
 		}
 		else
 		{
-			// Dump the pix buffer
+			// Dump the pixel buffer
 			Pixels().swap(m_pixels);
 
 			// Assign the new size
-			m_size[0] = 0;
-			m_size[1] = 0;
+			m_size = 0;
 		}
 		return (*this);
 	}
@@ -112,24 +110,22 @@ namespace ml
 	{
 		if (pixels && width && height)
 		{
-			// Create a new pix buffer first for exception safety's sake
+			// Create a new pixel buffer first for exception safety's sake
 			Pixels newPixels(pixels, pixels + width * height * 4);
 
-			// Commit the new pix buffer
+			// Commit the new pixel buffer
 			m_pixels.swap(newPixels);
 
 			// Assign the new size
-			m_size[0] = width;
-			m_size[1] = height;
+			m_size = { width, height };
 		}
 		else
 		{
-			// Dump the pix buffer
+			// Dump the pixel buffer
 			Pixels().swap(m_pixels);
 
 			// Assign the new size
-			m_size[0] = 0;
-			m_size[1] = 0;
+			m_size = 0;
 		}
 		return (*this);
 	}
@@ -140,8 +136,8 @@ namespace ml
 		if (!m_pixels.empty())
 		{
 			// Replace the alpha of the pixels that match the transparent color
-			uint8_t* ptr = &m_pixels[0];
-			uint8_t* end = ptr + m_pixels.size();
+			uint8_t * ptr = &m_pixels[0];
+			uint8_t * end = ptr + m_pixels.size();
 			while (ptr < end)
 			{
 				if ((ptr[0] == color[0]) &&
@@ -203,19 +199,18 @@ namespace ml
 
 	vec4b	Image::getPixel(uint32_t x, uint32_t y) const
 	{
-		const uint8_t* pix = &m_pixels[(x + y * m_size[0]) * 4];
+		const uint8_t * pixel = &m_pixels[(x + y * m_size[0]) * 4];
 
-		return vec4u(pix[0], pix[1], pix[2], pix[3]);
+		return vec4u(pixel[0], pixel[1], pixel[2], pixel[3]);
 	}
 
 	Image & Image::setPixel(uint32_t x, uint32_t y, const vec4b & color)
 	{
-		uint8_t* pixel = &m_pixels[(x + y * m_size[0]) * 4];
-
-		*pixel++ = color[0];
-		*pixel++ = color[1];
-		*pixel++ = color[2];
-		*pixel++ = color[3];
+		uint8_t * ptr = &m_pixels[(x + y * m_size[0]) * 4];
+		*(ptr++) = color[0];
+		*(ptr++) = color[1];
+		*(ptr++) = color[2];
+		*(ptr++) = color[3];
 
 		return (*this);
 	}
