@@ -26,16 +26,6 @@ namespace ml
 			"Matrix values must be trivial."
 		);
 
-		static_assert(
-			detail::has_left_shift<std::ostream &, const _Elem &>::value,
-			"Matrix values must be serializable."
-		);
-
-		static_assert(
-			detail::has_right_shift<std::istream &, _Elem &>::value,
-			"Matrix values must be deserializable."
-		);
-
 	public: // Enums
 		/* * * * * * * * * * * * * * * * * * * * */
 		enum : size_t
