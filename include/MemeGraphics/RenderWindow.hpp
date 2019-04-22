@@ -18,7 +18,8 @@ namespace ml
 
 	public:
 		bool setup() override;
-		void onEvent(const IEvent * ev) override;
+
+		virtual void onEvent(const IEvent * ev) override;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

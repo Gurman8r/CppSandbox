@@ -15,12 +15,20 @@ namespace ml
 	static std::ostream & cerr	= std::cerr;
 	static std::istream & cin	= std::cin;
 
+	template <
+		class _Elem,
+		class _Traits
+	> inline std::basic_ostream<_Elem, _Traits> & endl(std::basic_ostream<_Elem, _Traits> & out)
+	{
+		out.put(out.widen('\n'));
+		out.flush();
+		return (out);
+	}
+
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	struct ML_CORE_API IO final
 	{
-		/* * * * * * * * * * * * * * * * * * * * */
-
 		template <
 			class Fun, 
 			class ... Args
@@ -35,21 +43,7 @@ namespace ml
 			}
 			return NULL;
 		}
-
-		/* * * * * * * * * * * * * * * * * * * * */
 	};
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	template <
-		class _Elem, 
-		class _Traits
-	> inline std::basic_ostream<_Elem, _Traits> & endl(std::basic_ostream<_Elem, _Traits> & out)
-	{
-		out.put(out.widen('\n'));
-		out.flush();
-		return (out);
-	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 }

@@ -193,7 +193,7 @@ namespace DEMO
 				SETTINGS.multisample,
 				SETTINGS.srgbCapable
 			}
-		) && this->setup())
+		))
 		{
 			this->maximize();
 			this->seCursorMode(ml::Cursor::Normal);

@@ -101,7 +101,7 @@ namespace ml
 			{
 				makeContextCurrent();
 
-				return true;
+				return setup();
 			}
 			else
 			{
