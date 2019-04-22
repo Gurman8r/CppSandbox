@@ -186,7 +186,6 @@
     <ClCompile Include="..\..\src\MemeEngine\Plugin.cpp" />
     <ClCompile Include="..\..\src\MemeEngine\Resources.cpp" />
     <ClCompile Include="..\..\src\MemeEngine\SharedLibrary.cpp" />
-    <ClCompile Include="..\..\src\MemeEngine\StateMachine.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

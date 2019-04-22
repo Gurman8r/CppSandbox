@@ -53,7 +53,7 @@ namespace ml
 		inline const Application *	app()		const	{ return m_app;			}
 		inline		 Application *	app()				{ return m_app;			}
 		inline const Timer &		timer()		const	{ return m_timer;		}
-		inline const Duration &		elapsed()	const	{ return m_frameTime;	}
+		inline const Duration &		frameTime()	const	{ return m_frameTime;	}
 		inline const uint32_t		frameRate()	const	{ return m_frameRate;	}
 
 	private:
