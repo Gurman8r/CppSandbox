@@ -6,19 +6,6 @@
 #include <MemeGraphics/Image.hpp>
 #include <MemeCore/IHandle.hpp>
 
-/* * * * * * * * * * * * * * * * * * * * */
-
-#define ML_TEX_DEFAULT_TARGET	GL::Texture2D
-#define ML_TEX_DEFAULT_SMOOTH	true
-#define ML_TEX_DEFAULT_REPEAT	false
-#define ML_TEX_DEFAULT_MIPMAP	false
-#define ML_TEX_DEFAULT_FORMAT	GL::RGBA
-#define ML_TEX_DEFAULT_LEVEL	0
-#define ML_TEX_DEFAULT_BORDER	0
-#define ML_TEX_DEFAULT_TYPE		GL::UnsignedByte
-
-/* * * * * * * * * * * * * * * * * * * * */
-
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -72,6 +59,7 @@ namespace ml
 		bool update(const Image & image, const vec2u & position, const vec2u & size);
 		bool update(const Image & image, uint32_t x, uint32_t y, uint32_t w, uint32_t h);
 		
+		bool update(const uint8_t * pixels);
 		bool update(const uint8_t * pixels, const UintRect & area);
 		bool update(const uint8_t * pixels, const vec2u & position, const vec2u & size);
 		bool update(const uint8_t * pixels, uint32_t x, uint32_t y, uint32_t w, uint32_t h);

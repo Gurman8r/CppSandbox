@@ -2,6 +2,15 @@
 #include <MemeGraphics/OpenGL.hpp>
 #include <MemeCore/Debug.hpp>
 
+#define ML_TEX_DEFAULT_TARGET	GL::Texture2D
+#define ML_TEX_DEFAULT_SMOOTH	true
+#define ML_TEX_DEFAULT_REPEAT	false
+#define ML_TEX_DEFAULT_MIPMAP	false
+#define ML_TEX_DEFAULT_FORMAT	GL::RGBA
+#define ML_TEX_DEFAULT_LEVEL	0
+#define ML_TEX_DEFAULT_BORDER	0
+#define ML_TEX_DEFAULT_TYPE		GL::UnsignedByte
+
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -204,11 +213,10 @@ namespace ml
 				if ((m_realSize[0] > maxSize) || (m_realSize[1] > maxSize))
 				{
 					return Debug::logError(
-						"Failed creating texture: "
-						"Internal size is too high {0} "
-						"Maximum is {1}",
-						m_realSize,
-						vec2u(maxSize));
+						"Failed creating texture, size is too large {0} max is {1}",
+						m_realSize, 
+						vec2u(maxSize)
+					);
 				}
 
 				Texture::bind(this);
@@ -242,8 +250,7 @@ namespace ml
 		}
 		else
 		{
-			return Debug::logError("Failed creating texture, invalid size: {0}", 
-				vec2u(w, h));
+			return Debug::logError("Failed creating texture, invalid size: {0}", vec2u(w, h));
 		}
 	}
 
@@ -291,6 +298,11 @@ namespace ml
 	}
 
 	
+	bool Texture::update(const uint8_t * pixels)
+	{
+		return update(pixels, width(), height());
+	}
+
 	bool Texture::update(const uint8_t * pixels, const UintRect & area)
 	{
 		return update(pixels, area.position(), area.size());
@@ -303,33 +315,43 @@ namespace ml
 
 	bool Texture::update(const uint8_t * pixels, uint32_t x, uint32_t y, uint32_t w, uint32_t h)
 	{
-		if ((*this) && pixels)
+		if (w && h)
 		{
-			Texture::bind(this);
+			if ((*this) && (pixels))
 			{
-				ML_GL.texSubImage2D(
-					m_target,
-					m_level,
-					x,
-					y,
-					w,
-					h,
-					m_internalFormat,
-					m_type,
-					pixels
-				);
+				Texture::bind(this);
+				{
+					ML_GL.texSubImage2D(
+						m_target,
+						m_level,
+						x,
+						y,
+						w,
+						h,
+						m_internalFormat,
+						m_type,
+						pixels
+					);
+				}
+				Texture::bind(NULL);
+
+				ML_GL.flush();
+
+				setRepeated(m_repeated);
+
+				setSmooth(m_smooth);
+
+				return true;
 			}
-			Texture::bind(NULL);
-
-			ML_GL.flush();
-
-			setRepeated(m_repeated);
-
-			setSmooth(m_smooth);
-
-			return true;
+			else
+			{
+				return Debug::logError("Failed updating texture, failed updating handle.");
+			}
 		}
-		return false;
+		else
+		{
+			return Debug::logError("Failed updating texture, invalid size: {0}", vec2u(w, h));
+		}
 	}
 	
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

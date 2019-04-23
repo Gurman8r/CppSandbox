@@ -6,13 +6,17 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-#define MPX 0xC // 12 | position X
-#define MPY 0xD // 13 | position Y
-#define MPZ 0xE // 14 | position Z
+#define MPX 12	// position X
+#define MPY 13	// position Y
+#define MPZ 14	// position Z
 
-#define MSX 0x0 // 0 | scale X
-#define MSY 0x5 // 5 | scale Y
-#define MSZ 0xA // 10 | scale Z
+#define MSX 0	// scale X
+#define MSY 5	// scale Y
+#define MSZ 10	// scale Z
+
+#define MTX 3	// translation Z
+#define MTY 7	// translation Y
+#define MTZ 11	// translation Z
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -27,9 +31,9 @@
 	value[6], value[7], value[8])
 
 #define ML_MAT4(value) glm::mat4( \
-	value[MSX], value[0x1], value[0x2], value[0x3], \
-	value[0x4], value[MSY], value[0x6], value[0x7], \
-	value[0x8], value[0x9], value[MSZ], value[0xB], \
+	value[MSX], value[0x1], value[0x2], value[MTX], \
+	value[0x4], value[MSY], value[0x6], value[MTY], \
+	value[0x8], value[0x9], value[MSZ], value[MTZ], \
 	value[MPX], value[MPY], value[MPZ], value[0xF])
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -151,29 +155,30 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Transform::decompose(vec3f & scale, quat & orient, vec3f & trans, vec3f & skew, vec4f & persp)
+	bool Transform::decompose(vec3f & scl, quat & rot, vec3f & pos, vec3f & skw, vec4f & psp)
 	{
-		static glm::vec3 _scale;
-		static glm::quat _orient;
-		static glm::vec3 _trans;
-		static glm::vec3 _skew;
-		static glm::vec4 _persp;
-		if (glm::decompose(ML_MAT4(m_matrix), _scale, _orient, _trans, _skew, _persp))
+		static glm::vec3 _scl; // scale
+		static glm::quat _rot; // orientation
+		static glm::vec3 _pos; // position
+		static glm::vec3 _skw; // skew
+		static glm::vec4 _psp; // perspective
+
+		if (glm::decompose(ML_MAT4(m_matrix), _scl, _rot, _pos, _skw, _psp))
 		{
-			scale	= { _scale.x,	_scale.y,	_scale.z				};
-			orient	= { _orient.x,	_orient.y,	_orient.z,	_orient.w	};
-			trans	= { _trans.x,	_trans.y,	_trans.z				};
-			skew	= { _skew.x,	_skew.y,	_skew.z					};
-			persp	= { _persp.x,	_persp.y,	_persp.z,	_persp.w	};
+			scl	= { _scl.x,	_scl.y,	_scl.z			};
+			rot	= { _rot.x,	_rot.y,	_rot.z,	_rot.w	};
+			pos	= { _pos.x,	_pos.y,	_pos.z			};
+			skw	= { _skw.x,	_skw.y,	_skw.z			};
+			psp	= { _psp.x,	_psp.y,	_psp.z,	_psp.w	};
 			return true;
 		}
 		else
 		{
-			scale	= 0.0f;
-			orient	= 0.0f;
-			trans	= 0.0f;
-			skew	= 0.0f;
-			persp	= 0.0f;
+			scl	= 0.0f;
+			rot	= 0.0f;
+			pos	= 0.0f;
+			skw	= 0.0f;
+			psp	= 0.0f;
 			return false;
 		}
 	}
