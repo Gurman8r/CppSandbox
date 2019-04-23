@@ -57,15 +57,6 @@ namespace DEMO
 
 		switch (*value)
 		{
-			// File -> Close ...
-			/* * * * * * * * * * * * * * * * * * * * */
-		case ml::EditorEvent::EV_File_Close:
-			if (const auto * ev = value->as<ml::File_Close_Event>())
-			{
-				this->close();
-			}
-			break;
-			
 			// Keyboard Input
 			/* * * * * * * * * * * * * * * * * * * * */
 		case ml::WindowEvent::EV_Key:
@@ -106,6 +97,14 @@ namespace DEMO
 					ML_Editor.show_imgui_demo = true;
 
 				/* * * * * * * * * * * * * * * * * * * * */
+			}
+			break;
+
+			// Mouse Button Input
+			/* * * * * * * * * * * * * * * * * * * * */
+		case ml::WindowEvent::EV_MouseButton:
+			if (const auto * ev = value->as<ml::MouseButtonEvent>())
+			{
 			}
 			break;
 		}
@@ -293,13 +292,15 @@ namespace DEMO
 		}
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 	void Sandbox::onStart(const ml::StartEvent * ev)
 	{
 		// Set Window Icon
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (const ml::Image * icon = ML_Res.images.get("icon"))
 		{
-			ml::Image temp = ml::Image(*icon).flipVertically();
+			const ml::Image temp = ml::Image(*icon).flipVertically();
 
 			this->setIcons({ temp });
 		}
@@ -671,8 +672,6 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 		});
 	}
-
-	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	void Sandbox::onUpdate(const ml::UpdateEvent * ev)
 	{

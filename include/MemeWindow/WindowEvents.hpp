@@ -105,17 +105,11 @@ namespace ml
 
 		int32_t button, scan, action;
 
-		bool 
-			mod_shift,
-			mod_ctrl,
-			mod_alt,
-			mod_super;
+		bool mod_shift, mod_ctrl, mod_alt, mod_super;
 
-		KeyEvent(int32_t button, int32_t scan, int32_t action, 
-			bool mod_shift,
-			bool mod_ctrl,
-			bool mod_alt,
-			bool mod_super)
+		KeyEvent(
+			int32_t button, int32_t scan, int32_t action, 
+			bool mod_shift, bool mod_ctrl, bool mod_alt, bool mod_super)
 			: WindowEvent(EV_Key)
 			, button	(button)
 			, scan		(scan)

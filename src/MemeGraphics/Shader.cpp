@@ -14,9 +14,9 @@ namespace ml
 		uint32_t	program;
 		int32_t		location;
 
-		UniformBinder(const Shader * shader, const String & name)
+		UniformBinder(const Shader * value, const String & name)
 			: cached	(NULL)
-			, program	(*shader)
+			, program	(*value)
 			, location	(-1)
 		{
 			if (program)
@@ -28,7 +28,7 @@ namespace ml
 					ML_GL.useShader(program);
 				}
 
-				location = shader->getUniform(name);
+				location = value->getUniform(name);
 			}
 		}
 
@@ -346,15 +346,23 @@ namespace ml
 			TextureTable::iterator it;
 			if ((it = m_textures.find(u.location)) == m_textures.end())
 			{
-				static size_t maxUnits(static_cast<size_t>(ML_GL.getMaxTextureUnits()));
+				static const size_t maxTexUnits = (size_t)(ML_GL.getMaxTextureUnits());
 
-				if ((m_textures.size() + 1) >= maxUnits)
+				if ((m_textures.size() + 1) >= maxTexUnits)
 				{
-					Debug::logError("All available texture units are used: {0}", maxUnits);
-					return u;
+					return Debug::logError("All available texture units are used: {0}", 
+						maxTexUnits
+					);
+				}
+				else
+				{
+					m_textures[u.location] = &value;
 				}
 			}
-			m_textures[u.location] = &value;
+			else
+			{
+				it->second = &value;
+			}
 		}
 		return u;
 	}

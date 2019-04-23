@@ -4,66 +4,112 @@
 
 namespace ml
 {
-	/* * * * * * * * * * * * * * * * * * * * */
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-	Texture::Texture()
-		: Texture(GL::Texture2D)
+	Texture::Texture() : Texture(
+		ML_TEX_DEFAULT_TARGET
+	)
 	{
 	}
 
-	Texture::Texture(GL::Target target)
-		: Texture(target, true, false)
+	Texture::Texture(GL::Target target) : Texture(
+		target, 
+		ML_TEX_DEFAULT_SMOOTH,
+		ML_TEX_DEFAULT_REPEAT
+	) 
 	{
 	}
 
-	Texture::Texture(bool smooth, bool repeated)
-		: Texture(GL::Texture2D, smooth, repeated)
+	Texture::Texture(bool smooth, bool repeated) : Texture(
+		ML_TEX_DEFAULT_TARGET,
+		smooth, 
+		repeated
+	)
 	{
 	}
 
-	Texture::Texture(GL::Target target, bool smooth, bool repeated)
-		: Texture(target, GL::RGBA, smooth, repeated)
+	Texture::Texture(GL::Target target, bool smooth, bool repeated) : Texture(
+		target, 
+		ML_TEX_DEFAULT_FORMAT,
+		smooth, 
+		repeated
+	)
 	{
 	}
 
-	Texture::Texture(GL::Target target, GL::Format format, bool smooth, bool repeated)
-		: Texture(target, format, smooth, repeated, false)
+	Texture::Texture(GL::Target target, GL::Format format, bool smooth, bool repeated) : Texture(
+		target, 
+		format, 
+		smooth, 
+		repeated, 
+		ML_TEX_DEFAULT_MIPMAP
+	)
 	{
 	}
 
-	Texture::Texture(GL::Target target, GL::Format format, bool smooth, bool repeated, bool mipmapped)
-		: Texture(target, format, format, smooth, repeated, mipmapped)
+	Texture::Texture(GL::Target target, GL::Format format, bool smooth, bool repeated, bool mipmapped) : Texture(
+		target, 
+		format, // internal format
+		format, // color format
+		smooth, 
+		repeated, 
+		mipmapped
+	)
 	{
 	}
 
-	Texture::Texture(GL::Target target, GL::Format intFormat, GL::Format colFormat, bool smooth, bool repeated)
-		: Texture(target, intFormat, colFormat, smooth, repeated, false)
+	Texture::Texture(GL::Target target, GL::Format internalFormat, GL::Format colFormat, bool smooth, bool repeated) : Texture(
+		target, 
+		internalFormat, 
+		colFormat, 
+		smooth, 
+		repeated, 
+		ML_TEX_DEFAULT_MIPMAP
+	)
 	{
 	}
 
-	Texture::Texture(GL::Target target, GL::Format intFormat, GL::Format colFormat, bool smooth, bool repeated, bool mipmapped)
-		: Texture(target, intFormat, colFormat, smooth, repeated, mipmapped, 0, 0, GL::UnsignedByte)
+	Texture::Texture(GL::Target target, GL::Format internalFormat, GL::Format colFormat, bool smooth, bool repeated, bool mipmapped) : Texture(
+		target, 
+		internalFormat, 
+		colFormat, 
+		smooth, 
+		repeated, 
+		mipmapped, 
+		ML_TEX_DEFAULT_LEVEL,
+		ML_TEX_DEFAULT_BORDER,
+		ML_TEX_DEFAULT_TYPE
+	)
 	{
 	}
 
-	Texture::Texture(GL::Target target, GL::Format intFormat, GL::Format colFormat, bool smooth, bool repeated, bool mipmapped, int32_t level, int32_t border, GL::Type type)
-		: IHandle		(NULL)
-		, m_size		(vec2u::Zero)
-		, m_realSize	(vec2u::Zero)
-		, m_target		(target)
-		, m_intFormat	(intFormat)
-		, m_colFormat	(colFormat)
-		, m_smooth		(smooth)
-		, m_repeated	(repeated)
-		, m_mipmapped	(mipmapped)
-		, m_level		(level)
-		, m_border		(border)
-		, m_type		(type)
+	Texture::Texture(GL::Target target, GL::Format internalFormat, GL::Format colFormat, bool smooth, bool repeated, bool mipmapped, int32_t level, int32_t border, GL::Type type)
+		: IHandle			(NULL)
+		, m_size			(vec2u::Zero)
+		, m_realSize		(vec2u::Zero)
+		, m_target			(target)
+		, m_internalFormat	(internalFormat)
+		, m_colorFormat		(colFormat)
+		, m_smooth			(smooth)
+		, m_repeated		(repeated)
+		, m_mipmapped		(mipmapped)
+		, m_level			(level)
+		, m_border			(border)
+		, m_type			(type)
 	{
 	}
 
-	Texture::Texture(const Texture & copy)
-		: Texture(copy.m_target, copy.m_intFormat, copy.m_colFormat, copy.m_smooth, copy.m_repeated, copy.m_mipmapped, copy.m_level, copy.m_border, copy.m_type)
+	Texture::Texture(const Texture & copy) : Texture(
+		copy.m_target,
+		copy.m_internalFormat,
+		copy.m_colorFormat,
+		copy.m_smooth,
+		copy.m_repeated,
+		copy.m_mipmapped,
+		copy.m_level,
+		copy.m_border,
+		copy.m_type
+	)
 	{
 		create(copy);
 	}
@@ -73,11 +119,11 @@ namespace ml
 		dispose();
 	}
 
-	/* * * * * * * * * * * * * * * * * * * * */
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	bool Texture::dispose()
 	{
-		bind(NULL);
+		Texture::bind(NULL);
 		if ((*this))
 		{
 			ML_GL.deleteTextures(1, (*this));
@@ -108,69 +154,17 @@ namespace ml
 		return create(value.size()) && update(value);
 	}
 	
-	/* * * * * * * * * * * * * * * * * * * * */
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 	
-	bool Texture::update(const Texture & texture)
+	bool Texture::create(const Texture & other)
 	{
-		return update(texture.copyToImage());
-	}
-
-	bool Texture::update(const Image & image)
-	{
-		return update(image, vec2u::Zero, image.size());
-	}
-
-	bool Texture::update(const Image & image, const vec2u & pos, const vec2u & size)
-	{
-		return update(image.ptr(), pos, size);
-	}
-
-	bool Texture::update(const uint8_t * pixels, const vec2u & pos, const vec2u & size)
-	{
-		if ((*this) && pixels)
-		{
-			bind(this);
-
-			ML_GL.texSubImage2D(
-				m_target,
-				m_level,
-				pos [0],
-				pos [1],
-				size[0],
-				size[1],
-				m_intFormat,
-				m_type,
-				pixels);
-
-			bind(NULL);
-
-			ML_GL.flush();
-
-			setRepeated(m_repeated);
-
-			setSmooth(m_smooth);
-
-			return true;
-		}
-		return false;
-	}
-	
-	/* * * * * * * * * * * * * * * * * * * * */
-	
-	bool Texture::create(const Texture & copy)
-	{
-		if (copy)
-		{
-			if (create(copy.size()))
-			{
-				return update(copy);
-			}
-			else
-			{
-				return Debug::logError("Failed to copy texture, failed to create new texture");
-			}
-		}
-		return false;
+		return ((other)
+			? ((create(other.size()))
+				? (update(other))
+				: (Debug::logError("Failed to copy texture, failed to create new texture"))
+			)
+			: (false)
+		);
 	}
 
 	bool Texture::create(const vec2u & size)
@@ -178,46 +172,154 @@ namespace ml
 		return create(NULL, size);
 	}
 
+	bool Texture::create(const Image & image, const vec2u & size)
+	{
+		return create(&image.pixels()[0], size);
+	}
+
+	bool Texture::create(const Image & image, uint32_t w, uint32_t h)
+	{
+		return create(&image.pixels()[0], w, h);
+	}
+
 	bool Texture::create(const uint8_t * pixels, const vec2u & size)
 	{
-		if (!size[0] || !size[1])
+		return create(pixels, size[0], size[1]);
+	}
+
+	bool Texture::create(const uint8_t * pixels, uint32_t w, uint32_t h)
+	{
+		if (w && h)
 		{
-			return Debug::logError("Failed creating texture, invalid getSize {0}", size);
-		}
-
-		if (set_handle(ML_GL.genTextures(1)))
-		{
-			m_size = size;
-
-			m_realSize = vec2u(
-				ML_GL.getValidTextureSize(m_size[0]),
-				ML_GL.getValidTextureSize(m_size[1]));
-
-			static const uint32_t maxSize = ML_GL.getMaxTextureSize();
-			if ((m_realSize[0] > maxSize) || (m_realSize[1] > maxSize))
+			if (set_handle(ML_GL.genTextures(1)))
 			{
-				return Debug::logError(
-					"Failed creating texture: "
-					"Internal getSize is too high {0} "
-					"Maximum is {1}",
-					m_realSize,
-					vec2u(maxSize));
+				m_size = { w, h };
+				m_realSize =
+				{
+					ML_GL.getValidTextureSize(m_size[0]),
+					ML_GL.getValidTextureSize(m_size[1])
+				};
+
+				static const uint32_t maxSize = ML_GL.getMaxTextureSize();
+				if ((m_realSize[0] > maxSize) || (m_realSize[1] > maxSize))
+				{
+					return Debug::logError(
+						"Failed creating texture: "
+						"Internal size is too high {0} "
+						"Maximum is {1}",
+						m_realSize,
+						vec2u(maxSize));
+				}
+
+				Texture::bind(this);
+				{
+					ML_GL.texImage2D(
+						m_target,
+						m_level,
+						m_internalFormat,
+						m_size[0],
+						m_size[1],
+						m_border,
+						m_colorFormat,
+						m_type,
+						pixels
+					);
+				}
+				Texture::bind(NULL);
+
+				ML_GL.flush();
+
+				setRepeated(m_repeated);
+
+				setSmooth(m_smooth);
+
+				return true;
 			}
+			else
+			{
+				return Debug::logError("Failed creating texture, failed setting handle.");
+			}
+		}
+		else
+		{
+			return Debug::logError("Failed creating texture, invalid size: {0}", 
+				vec2u(w, h));
+		}
+	}
 
-			bind(this);
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+	
+	bool Texture::update(const Texture & other)
+	{
+		return update(other.copyToImage());
+	}
 
-			ML_GL.texImage2D(
-				m_target,
-				m_level,
-				m_intFormat,
-				m_size[0],
-				m_size[1],
-				m_border,
-				m_colFormat,
-				m_type,
-				pixels);
+	bool Texture::update(const Texture & other, const UintRect & area)
+	{
+		return update(other.copyToImage(), area);
+	}
 
-			bind(NULL);
+	bool Texture::update(const Texture & other, const vec2u & position, const vec2u & size)
+	{
+		return update(other.copyToImage(), position, size);
+	}
+
+	bool Texture::update(const Texture & other, uint32_t x, uint32_t y, uint32_t w, uint32_t h)
+	{
+		return update(other.copyToImage(), x, y, w, h);
+	}
+
+
+	bool Texture::update(const Image & image)
+	{
+		return update(&image.pixels()[0], image.bounds());
+	}
+
+	bool Texture::update(const Image & image, const UintRect & area)
+	{
+		return update(&image.pixels()[0], area.position(), area.size());
+	}
+
+	bool Texture::update(const Image & image, const vec2u & position, const vec2u & size)
+	{
+		return update(&image.pixels()[0], position[0], position[1], size[0], size[1]);
+	}
+
+	bool Texture::update(const Image & image, uint32_t x, uint32_t y, uint32_t w, uint32_t h)
+	{
+		return update(&image.pixels()[0], x, y, w, h);
+	}
+
+	
+	bool Texture::update(const uint8_t * pixels, const UintRect & area)
+	{
+		return update(pixels, area.position(), area.size());
+	}
+
+	bool Texture::update(const uint8_t * pixels, const vec2u & position, const vec2u & size)
+	{
+		return update(pixels, position[0], position[1], size[0], size[1]);
+	}
+
+	bool Texture::update(const uint8_t * pixels, uint32_t x, uint32_t y, uint32_t w, uint32_t h)
+	{
+		if ((*this) && pixels)
+		{
+			Texture::bind(this);
+			{
+				ML_GL.texSubImage2D(
+					m_target,
+					m_level,
+					x,
+					y,
+					w,
+					h,
+					m_internalFormat,
+					m_type,
+					pixels
+				);
+			}
+			Texture::bind(NULL);
 
 			ML_GL.flush();
 
@@ -229,8 +331,8 @@ namespace ml
 		}
 		return false;
 	}
-
-	/* * * * * * * * * * * * * * * * * * * * */
+	
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	Texture & Texture::setMipmapped(bool value)
 	{
@@ -245,32 +347,32 @@ namespace ml
 					warned = true;
 				}
 				m_mipmapped = false;
-			}
-
-			if (!m_mipmapped)
-			{
 				return setSmooth(m_smooth);
 			}
 
-			bind(this);
+			Texture::bind(this);
+			{
+				ML_GL.generateMipmap(m_target);
 
-			ML_GL.generateMipmap(m_target);
+				ML_GL.texParameter(
+					m_target,
+					GL::TexMinFilter,
+					(((m_smooth)
+						? (GL::LinearMipmapLinear)
+						: (GL::NearestMipmapNearest))
+					)
+				);
 
-			ML_GL.texParameter(
-				m_target,
-				GL::TexMinFilter,
-				((m_smooth
-					? GL::LinearMipmapLinear
-					: GL::NearestMipmapNearest)));
-
-			ML_GL.texParameter(
-				m_target,
-				GL::TexMagFilter,
-				((m_smooth
-					? GL::LinearMipmapLinear
-					: GL::NearestMipmapNearest)));
-
-			bind(NULL);
+				ML_GL.texParameter(
+					m_target,
+					GL::TexMagFilter,
+					(((m_smooth)
+						? (GL::LinearMipmapLinear)
+						: (GL::NearestMipmapNearest))
+					)
+				);
+			}
+			Texture::bind(NULL);
 
 			ML_GL.flush();
 		}
@@ -281,7 +383,7 @@ namespace ml
 	{
 		if ((*this))
 		{
-			if ((m_repeated = value) && !ML_GL.edgeClampAvailable())
+			if (((m_repeated) = value) && !(ML_GL.edgeClampAvailable()))
 			{
 				static bool warned = false;
 				if (!warned)
@@ -293,27 +395,33 @@ namespace ml
 				}
 			}
 
-			bind(this);
+			Texture::bind(this);
+			{
+				ML_GL.texParameter(
+					m_target,
+					GL::TexWrapS,
+					((m_repeated)
+						? (GL::Repeat)
+						: ((ML_GL.edgeClampAvailable())
+							? (GL::ClampToEdge)
+							: (GL::Clamp)
+						)
+					)
+				);
 
-			ML_GL.texParameter(
-				m_target,
-				GL::TexWrapS,
-				(m_repeated
-					? GL::Repeat
-					: (ML_GL.edgeClampAvailable()
-						? GL::ClampToEdge
-						: GL::Clamp)));
-
-			ML_GL.texParameter(
-				m_target,
-				GL::TexWrapT,
-				(m_repeated
-					? GL::Repeat
-					: (ML_GL.edgeClampAvailable()
-						? GL::ClampToEdge
-						: GL::Clamp)));
-
-			bind(NULL);
+				ML_GL.texParameter(
+					m_target,
+					GL::TexWrapT,
+					((m_repeated)
+						? (GL::Repeat)
+						: ((ML_GL.edgeClampAvailable())
+							? (GL::ClampToEdge)
+							: (GL::Clamp)
+						)
+					)
+				);
+			}
+			Texture::bind(NULL);
 
 			ML_GL.flush();
 		}
@@ -326,45 +434,49 @@ namespace ml
 		{
 			m_smooth = value;
 
-			bind(this);
+			Texture::bind(this);
+			{
+				ML_GL.texParameter(
+					m_target,
+					GL::TexMinFilter,
+					((m_smooth)
+						? (GL::Linear)
+						: (GL::Nearest)
+					)
+				);
 
-			ML_GL.texParameter(
-				m_target,
-				GL::TexMinFilter,
-				(m_smooth
-					? GL::Linear
-					: GL::Nearest));
-
-			ML_GL.texParameter(
-				m_target,
-				GL::TexMagFilter,
-				(m_smooth
-					? GL::Linear
-					: GL::Nearest));
-
-			bind(NULL);
+				ML_GL.texParameter(
+					m_target,
+					GL::TexMagFilter,
+					((m_smooth)
+						? GL::Linear
+						: (GL::Nearest)
+					)
+				);
+			}
+			Texture::bind(NULL);
 
 			ML_GL.flush();
 		}
 		return (*this);
 	}
 
-	/* * * * * * * * * * * * * * * * * * * * */
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	Texture & Texture::swap(Texture & other)
 	{
 		std::swap(get_reference(),	other.get_reference());
-		std::swap(m_target,		other.m_target);
-		std::swap(m_level,		other.m_level);
-		std::swap(m_size,		other.m_size);
-		std::swap(m_realSize,	other.m_realSize);
-		std::swap(m_border,		other.m_border);
-		std::swap(m_intFormat,	other.m_intFormat);
-		std::swap(m_colFormat,	other.m_colFormat);
-		std::swap(m_type,		other.m_type);
-		std::swap(m_smooth,		other.m_smooth);
-		std::swap(m_repeated,	other.m_repeated);
-		std::swap(m_mipmapped,	other.m_mipmapped);
+		std::swap(m_target,			other.m_target);
+		std::swap(m_level,			other.m_level);
+		std::swap(m_size,			other.m_size);
+		std::swap(m_realSize,		other.m_realSize);
+		std::swap(m_border,			other.m_border);
+		std::swap(m_internalFormat,	other.m_internalFormat);
+		std::swap(m_colorFormat,	other.m_colorFormat);
+		std::swap(m_type,			other.m_type);
+		std::swap(m_smooth,			other.m_smooth);
+		std::swap(m_repeated,		other.m_repeated);
+		std::swap(m_mipmapped,		other.m_mipmapped);
 
 		return other;
 	}
@@ -375,7 +487,7 @@ namespace ml
 		return swap(temp);
 	}
 
-	/* * * * * * * * * * * * * * * * * * * * */
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	const Image Texture::copyToImage() const
 	{
@@ -385,16 +497,17 @@ namespace ml
 
 			if ((m_size == m_realSize))
 			{
-				bind(this);
+				Texture::bind(this);
 
 				ML_GL.getTexImage(
 					m_target,
 					0,
-					m_intFormat,
+					m_internalFormat,
 					GL::UnsignedByte,
-					&pixels[0]);
+					&pixels[0]
+				);
 
-				bind(NULL);
+				Texture::bind(NULL);
 			}
 
 			return Image().create(width(), height(), &pixels[0]);
@@ -404,26 +517,11 @@ namespace ml
 
 	void Texture::bind(const Texture * value)
 	{
-		if (value)
-		{
-			ML_GL.bindTexture(value->target(), (*value));
-		}
-		else
-		{
-			ML_GL.bindTexture(GL::Texture2D, NULL);
-		}
-	}
-	
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	void Texture::serialize(std::ostream & out) const
-	{
-		out << GetTypeName();
+		return ((value)
+			? (ML_GL.bindTexture(value->target(), (*value)))
+			: (ML_GL.bindTexture(GL::Texture2D, NULL))
+		);
 	}
 
-	void Texture::deserialize(std::istream & in)
-	{
-	}
-
-	/* * * * * * * * * * * * * * * * * * * * */
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 }

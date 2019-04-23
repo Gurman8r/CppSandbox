@@ -995,12 +995,12 @@ namespace ml
 					{
 						ImGui::Text("%u x %u", tex->realWidth(), tex->realHeight());
 					});
-					Funcs::Field("Smooth", [&](CString label)
+					Funcs::Field("Mipmapped", [&](CString label)
 					{
-						bool temp = tex->smooth();
-						if (ImGui::Checkbox("##Texture##Smooth", &temp))
+						bool temp = tex->mipmapped();
+						if (ImGui::Checkbox("##Texture##Mipmapped", &temp))
 						{
-							tex->setSmooth(temp);
+							tex->setMipmapped(temp);
 						}
 					});
 					Funcs::Field("Repeated", [&](CString label)
@@ -1009,6 +1009,14 @@ namespace ml
 						if (ImGui::Checkbox("##Texture##Repeated", &temp))
 						{
 							tex->setRepeated(temp);
+						}
+					});
+					Funcs::Field("Smooth", [&](CString label)
+					{
+						bool temp = tex->smooth();
+						if (ImGui::Checkbox("##Texture##Smooth", &temp))
+						{
+							tex->setSmooth(temp);
 						}
 					});
 

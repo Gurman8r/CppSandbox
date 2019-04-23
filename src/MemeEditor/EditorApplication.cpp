@@ -31,14 +31,28 @@ namespace ml
 
 		switch (*value)
 		{
+			// Draw Gui
+			/* * * * * * * * * * * * * * * * * * * * */
 		case EditorEvent::EV_Gui: 
-			ImGui_ML_NewFrame();
-			ImGui::NewFrame();
+			if (const auto * ev = value->as<GuiEvent>())
 			{
-				onGui(value->as<GuiEvent>());
+				ImGui_ML_NewFrame();
+				ImGui::NewFrame();
+				{
+					this->onGui(ev);
+				}
+				ImGui::Render();
+				ImGui_ML_Render(ImGui::GetDrawData());
 			}
-			ImGui::Render();
-			ImGui_ML_Render(ImGui::GetDrawData());
+			break;
+
+			// File -> Close ...
+			/* * * * * * * * * * * * * * * * * * * * */
+		case EditorEvent::EV_File_Close:
+			if (const auto * ev = value->as<File_Close_Event>())
+			{
+				this->close();
+			}
 			break;
 		}
 	}

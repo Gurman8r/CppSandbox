@@ -126,7 +126,7 @@ namespace ml
 		if (uint32_t textureID = ML_GL.genTextures(1))
 		{
 			ML_GL.bindTexture(GL::TextureCubeMap, textureID);
-
+		
 			for (uint32_t i = 0; i < faces.size(); i++)
 			{
 				Image image;
@@ -141,7 +141,7 @@ namespace ml
 						0,
 						GL::RGB,
 						GL::UnsignedByte,
-						image.ptr()
+						&image.pixels()[0]
 					);
 				}
 				else
@@ -149,7 +149,7 @@ namespace ml
 					cout << "Cubemap texture failed to load at path: " << faces[i] << endl;
 				}
 			}
-
+		
 			ML_GL.texParameter(GL::TextureCubeMap, GL::TexMinFilter, GL::Linear);
 			ML_GL.texParameter(GL::TextureCubeMap, GL::TexMagFilter, GL::Linear);
 			ML_GL.texParameter(GL::TextureCubeMap, GL::TexWrapS, GL::ClampToEdge);
@@ -157,7 +157,7 @@ namespace ml
 			ML_GL.texParameter(GL::TextureCubeMap, GL::TexWrapR, GL::ClampToEdge);
 			
 			ML_GL.bindTexture(GL::TextureCubeMap, NULL);
-
+		
 			return textureID;
 		}
 		return NULL;
