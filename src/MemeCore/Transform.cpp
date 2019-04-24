@@ -45,25 +45,28 @@ namespace ml
 	Transform::Transform()
 		: m_matrix(mat4f::Identity())
 	{
-		this->translate(vec3f::Zero);
-		this->rotate(0.0f, vec3f::One);
-		this->scale(vec3f::One);
+		(*this)
+			.translate(vec3f::Zero)
+			.rotate(0.0f, vec3f::One)
+			.scale(vec3f::One);
 	}
 
 	Transform::Transform(const vec3f & position, const vec3f & scale)
 		: m_matrix(mat4f::Identity())
 	{
-		this->translate(position);
-		this->rotate(0.f, vec3f::One);
-		this->scale(scale);
+		(*this)
+			.translate(position)
+			.rotate(0.f, vec3f::One)
+			.scale(scale);
 	}
 
 	Transform::Transform(const vec3f & pos, const vec3f & scl, const quat & rot)
 		: m_matrix(mat4f::Identity())
 	{
-		this->translate(pos);
-		this->rotate(rot.real(), rot.complex());
-		this->scale(scl);
+		(*this)
+			.translate(pos)
+			.rotate(rot.real(), rot.complex())
+			.scale(scl);
 	}
 
 	Transform::Transform(const mat4f & value)
@@ -154,6 +157,13 @@ namespace ml
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
+
+	bool Transform::decompose(vec3f & scl, quat & rot, vec3f & pos)
+	{
+		static vec3f skw;
+		static vec4f psp;
+		return decompose(scl, rot, pos, skw, psp);
+	}
 
 	bool Transform::decompose(vec3f & scl, quat & rot, vec3f & pos, vec3f & skw, vec4f & psp)
 	{

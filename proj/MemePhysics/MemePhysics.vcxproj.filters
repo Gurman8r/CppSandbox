@@ -86,9 +86,6 @@
     <ClCompile Include="..\..\src\MemePhysics\PhysicsWorld.cpp">
       <Filter>Source Files\DS</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemePhysics\PhysicsState.cpp">
-      <Filter>Source Files\DS</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemePhysics\Collider.cpp">
       <Filter>Source Files\Colliders</Filter>
     </ClCompile>
@@ -100,6 +97,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemePhysics\AABB.cpp">
       <Filter>Source Files\Colliders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemePhysics\PhysicsState.cpp">
+      <Filter>Source Files\DS</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

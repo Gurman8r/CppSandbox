@@ -15,42 +15,122 @@ namespace ml
 	public:
 		PhysicsState();
 		PhysicsState(const PhysicsState & copy);
-		PhysicsState(PhysicsState && copy);
 		~PhysicsState();
 
-	public:
-		PhysicsState & operator=(const PhysicsState & other);
-		PhysicsState & operator=(PhysicsState && other);
 
 	public:
-		PhysicsState & resize(const size_t value);
+		inline const vec3f * getPos(const String & key) const
+		{
+			HashMap<String, vec3f>::const_iterator it;
+			return (((it = m_pos.find(key)) != m_pos.end())
+				? (&it->second)
+				: (NULL)
+			);
+		}
+
+		inline const quat  * getRot(const String & key) const
+		{
+			HashMap<String, quat>::const_iterator it;
+			return (((it = m_rot.find(key)) != m_rot.end())
+				? (&it->second)
+				: (NULL)
+			);
+		}
+
+		inline const mat4f * getMat(const String & key) const
+		{
+			HashMap<String, mat4f>::const_iterator it;
+			return (((it = m_mat.find(key)) != m_mat.end())
+				? (&it->second)
+				: (NULL)
+			);
+		}
+
+		inline const mat4f * getInv(const String & key) const
+		{
+			HashMap<String, mat4f>::const_iterator it;
+			return (((it = m_inv.find(key)) != m_inv.end())
+				? (&it->second)
+				: (NULL)
+			);
+		}
+
 
 	public:
-		bool getPosition(const size_t index, vec3f & value) const;
-		bool getRotation(const size_t index, quat & value) const;
-		bool getTransform(const size_t index, mat4f & value) const;
-		bool getInvTransform(const size_t index, mat4f & value) const;
+		inline vec3f * getPos(const String & key)
+		{
+			HashMap<String, vec3f>::iterator it;
+			return (((it = m_pos.find(key)) != m_pos.end())
+				? (&it->second)
+				: (NULL)
+			);
+		}
+
+		inline quat  * getRot(const String & key)
+		{
+			HashMap<String, quat>::iterator it;
+			return (((it = m_rot.find(key)) != m_rot.end())
+				? (&it->second)
+				: (NULL)
+			);
+		}
+
+		inline mat4f * getMat(const String & key)
+		{
+			HashMap<String, mat4f>::iterator it;
+			return (((it = m_mat.find(key)) != m_mat.end())
+				? (&it->second)
+				: (NULL)
+			);
+		}
+
+		inline mat4f * getInv(const String & key)
+		{
+			HashMap<String, mat4f>::iterator it;
+			return (((it = m_inv.find(key)) != m_inv.end())
+				? (&it->second)
+				: (NULL)
+			);
+		}
+
 
 	public:
-		bool setPosition(const size_t index, const vec3f & value);
-		bool setRotation(const size_t index, const quat & value);
-		bool setTransform(const size_t index, const mat4f & value);
-		bool setInvTransform(const size_t index, const mat4f & value);
+		inline PhysicsState & setPos(const String & key, const vec3f & value)
+		{
+			(m_pos[key] = value); return (*this);
+		}
+
+		inline PhysicsState & setRot(const String & key, const quat	 & value)
+		{
+			(m_rot[key] = value); return (*this);
+		}
+
+		inline PhysicsState & setMat(const String & key, const mat4f & value)
+		{
+			(m_mat[key] = value); return (*this);
+		}
+
+		inline PhysicsState & setInv(const String & key, const mat4f & value)
+		{
+			(m_inv[key] = value); return (*this);
+		}
+
 
 	public:
-		bool getData(const size_t index, vec3f & pos, quat & rot, mat4f & tf, mat4f & inv) const;
-		bool setData(const size_t index, const vec3f & pos, const quat & rot, const mat4f & tf, const mat4f & inv);
-
-	public:
-		inline size_t size() const { return m_size; }
+		inline bool getData(const String & key, vec3f * pos, quat * rot, mat4f * mat, mat4f * inv)
+		{
+			pos = getPos(key);
+			rot = getRot(key);
+			mat = getMat(key);
+			inv = getInv(key);
+			return (pos && rot && mat && inv);
+		}
 
 	private:
-		size_t m_size;
-
-		List<vec3f> m_position;
-		List<quat>	m_rotation;
-		List<mat4f> m_transform;
-		List<mat4f> m_invTransform;
+		HashMap<String, vec3f>	m_pos;
+		HashMap<String, quat>	m_rot;
+		HashMap<String, mat4f>	m_mat;
+		HashMap<String, mat4f>	m_inv;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

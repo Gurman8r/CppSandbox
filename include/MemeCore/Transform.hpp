@@ -40,7 +40,8 @@ namespace ml
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
-		bool decompose(vec3f & scale, quat  & orient, vec3f & trans, vec3f & skew, vec4f & persp);
+		bool decompose(vec3f & scl, quat & rot, vec3f & pos);
+		bool decompose(vec3f & scl, quat & rot, vec3f & pos, vec3f & skw, vec4f & psp);
 
 		mat4f inverse() const;
 

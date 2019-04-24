@@ -618,27 +618,15 @@ namespace DEMO
 		{
 			/* * * * * * * * * * * * * * * * * * * * */
 
-			ML_Physics.world().state().resize(ML_Res.entities.size());
-
-			size_t i = 0;
 			for (const auto & pair : ML_Res.entities)
 			{
-				if (ml::Transform * transform = pair.second->get<ml::Transform>())
+				if (const ml::Transform * transform = pair.second->get<ml::Transform>())
 				{
-					ml::vec3f scl;
-					ml::quat  rot;
-					ml::vec3f pos;
-					ml::vec3f skew;
-					ml::vec4f perspective;
-					if (transform->decompose(scl, rot, pos, skew, perspective))
-					{
-						ML_Physics.world().state().setData((i++),
-							pos,
-							rot, 
-							transform->matrix(), 
-							transform->inverse()
-						);
-					}
+					ML_Physics.world().state()
+						.setPos(pair.first, transform->getPosition())
+						.setRot(pair.first, transform->getRotation())
+						.setMat(pair.first, transform->matrix())
+						.setInv(pair.first, transform->inverse());
 				}
 			}
 
@@ -649,20 +637,18 @@ namespace DEMO
 				ml::PhysicsState state;
 				if (ML_Physics.beginUpdate(state))
 				{
-					for (size_t i = 0, imax = state.size(); i < imax; i++)
+					for (const auto & pair : ML_Res.entities)
 					{
-						ml::vec3f	pos; // Position
-						ml::quat	rot; // Rotation
-						ml::mat4f	mat; // Transform
-						ml::mat4f	inv; // Inverse Transform
-						if (state.getData(i, pos, rot, mat, inv))
+						ml::vec3f * pos;
+						ml::quat  * rot;
+						ml::mat4f * mat;
+						ml::mat4f * inv;
+						if (state.getData(pair.first, pos, rot, mat, inv))
 						{
-							// just updating one object for testing purposes
-							if (i == 0)
+							if (pair.first == "borg")
 							{
-								pos[1] = ML_Time.cos();
+								(*pos) = { (*pos)[0], ML_Time.cos(), (*pos)[2] }; // testing
 							}
-							state.setData(i, pos, rot, mat, inv);
 						}
 					}
 					ML_Physics.endUpdate(state);
@@ -715,15 +701,18 @@ namespace DEMO
 		// Update Camera
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
+			m_camera.update(this->getFrameSize());
+
 			if (const ml::Entity * target = ML_Res.entities.get("earth"))
 			{
-				m_camera.orbit(
-					(target->get<ml::Transform>()->getPosition()),
-					(data.camAnim ? data.camSpd * ev->elapsed.delta() : 0.0f)
-				);
+				if (const ml::Transform * transform = target->get<ml::Transform>())
+				{
+					m_camera.orbit(
+						(transform->getPosition()),
+						(data.camAnim ? data.camSpd * ev->elapsed.delta() : 0.0f)
+					);
+				}
 			}
-
-			m_camera.update(this->getFrameSize());
 		}
 
 		// Update Entities
@@ -733,70 +722,83 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::Entity * ent = ML_Res.entities.get("light"))
 			{
-				ent->get<ml::Transform>()
-					->setPosition(data.lightPos)
-					.rotate(-(ev->elapsed.delta()), ml::vec3f::Forward);
+				if (ml::Transform * transform = ent->get<ml::Transform>())
+				{
+					(*transform)
+						.setPosition(data.lightPos)
+						.rotate(-(ev->elapsed.delta()), ml::vec3f::Forward);
+				}
 			}
 
 			// Borg
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::Entity * ent = ML_Res.entities.get("borg"))
 			{
-				// FIXME: this is a hack
-
-				static bool once = false;
-				if (!once && (once = true))
+				if (ml::Transform * transform = ent->get<ml::Transform>())
 				{
-					ML_Physics.world().state().setPosition(0, ent->get<ml::Transform>()->getPosition());
+					(*transform)
+						.setPosition(*ML_Physics.world().state().getPos("borg"))
+						.rotate(+(ev->elapsed.delta()), ml::vec3f::One);
 				}
-
-				ml::vec3f pos; 
-				ML_Physics.world().state().getPosition(0, pos);
-
-				ent->get<ml::Transform>()
-					->setPosition(pos)
-					.rotate(+(ev->elapsed.delta()), ml::vec3f::One);
 			}
 
 			// Cube
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::Entity * ent = ML_Res.entities.get("cube"))
 			{
-				ml::vec3f pos = ent->get<ml::Transform>()->getPosition();
-				pos[1] = -ML_Time.sin();
-				ent->get<ml::Transform>()
-					->setPosition(pos)
-					.rotate(-(ev->elapsed.delta()), ml::vec3f::One);
+				if (ml::Transform * transform = ent->get<ml::Transform>())
+				{
+					(*transform)
+						.setPosition({ 
+							transform->getPosition()[0], 
+							-ML_Time.sin(), 
+							transform->getPosition()[2]
+							})
+						.rotate(-(ev->elapsed.delta()), ml::vec3f::One);
+				}
 			}
 
 			// Sanic
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::Entity * ent = ML_Res.entities.get("sanic"))
 			{
-				ml::vec3f pos = ent->get<ml::Transform>()->getPosition();
-				pos[1] = -ML_Time.cos();
-				ent->get<ml::Transform>()
-					->setPosition(pos)
-					.rotate(-(ev->elapsed.delta()), ml::vec3f::Forward);
+				if (ml::Transform * transform = ent->get<ml::Transform>())
+				{
+					(*transform)
+						.setPosition({
+							transform->getPosition()[0],
+							ML_Time.cos(),
+							transform->getPosition()[2]
+							})
+						.rotate(-(ev->elapsed.delta()), ml::vec3f::Forward);
+				}
 			}
 
 			// Moon
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::Entity * ent = ML_Res.entities.get("moon"))
 			{
-				ml::vec3f pos = ent->get<ml::Transform>()->getPosition();
-				pos[1] = +ML_Time.sin();
-				ent->get<ml::Transform>()
-					->setPosition(pos)
-					.rotate(-(ev->elapsed.delta()), ml::vec3f::Up);
+				if (ml::Transform * transform = ent->get<ml::Transform>())
+				{
+					(*transform)
+						.setPosition({
+							transform->getPosition()[0],
+							ML_Time.sin(),
+							transform->getPosition()[2]
+							})
+						.rotate(-(ev->elapsed.delta()), ml::vec3f::Up);
+				}
 			}
 
 			// Earth
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::Entity * ent = ML_Res.entities.get("earth"))
 			{
-				ent->get<ml::Transform>()
-					->rotate(+(ev->elapsed.delta()), ml::vec3f::Up);
+				if (ml::Transform * transform = ent->get<ml::Transform>())
+				{
+					(*transform)
+						.rotate(+(ev->elapsed.delta()), ml::vec3f::Up);
+				}
 			}
 		}
 
