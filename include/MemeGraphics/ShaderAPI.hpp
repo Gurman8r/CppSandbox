@@ -12,10 +12,6 @@
 /* * * * * * * * * * * * * * * * * * * * */
 #define ML_FRAG_MAIN_COL	"Frag.mainCol"
 #define ML_FRAG_MAIN_TEX	"Frag.mainTex"
-
-
-// Geometry Uniforms
-/* * * * * * * * * * * * * * * * * * * * */
-
+#define ML_FRAG_SPEC_TEX	"Frag.specTex"
 
 #endif // !_ML_SHADER_API_HPP_

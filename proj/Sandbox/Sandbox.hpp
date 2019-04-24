@@ -44,7 +44,7 @@ namespace DEMO
 		ml::Canvas		m_canvas;
 		TextTable		m_text;
 
-		struct DemoData
+		struct Globals
 		{
 			// Scene
 			ml::vec4f		clearColor	= { 0.025f, 0.025f, 0.025f, 1.0f };
@@ -68,7 +68,7 @@ namespace DEMO
 			float			lineSize	= 0.5f;
 			int32_t			lineSamples	= 16;
 		};
-		DemoData data;
+		Globals globals;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	};

@@ -41,20 +41,20 @@
 
 enum Rigidbody_ID : int32_t
 {
-	DEMO_BORG,
-	DEMO_CUBE,
-	DEMO_SANIC,
-	DEMO_MOON,
-	DEMO_EARTH,
-	DEMO_GROUND,
+	RB_BORG,
+	RB_CUBE,
+	RB_SANIC,
+	RB_MOON,
+	RB_EARTH,
+	RB_GROUND,
 
 	MAX_RIGIDBODY_ID
 };
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-#define ML_DEMO_CAMERA	ML_Res.entities.get("camera")->get<ml::Camera>()
-#define ML_DEMO_LIGHT	ML_Res.entities.get("light")->get<ml::Light>()
+#define ML_MAIN_CAMERA	ML_Res.entities.get("camera")->get<ml::Camera>()
+#define ML_MAIN_LIGHT	ML_Res.entities.get("light")->get<ml::Light>()
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -356,14 +356,20 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::Entity * ent = ML_Res.entities.get("camera"))
 			{
-				ml::Camera * camera = ent->add<ml::Camera>(); // ML_DEMO_CAMERA
-				camera->position = { 0.0f, 1.0f, 10.0f };
+				ml::Transform * transform = ent->add<ml::Transform>({
+					{ 0.0f, 1.0f, 10.0f }, // position
+					{ 1.0f }, // scale
+					{ } // rotation
+				});
+
+				ml::Camera * camera = ent->add<ml::Camera>();
+				camera->position	= transform->getPosition();
 				camera->fieldOfView = SETTINGS.fieldOfView;
-				camera->perspNear = SETTINGS.perspNear;
-				camera->perspFar = SETTINGS.perspFar;
-				camera->orthoNear = SETTINGS.orthoNear;
-				camera->orthoFar = SETTINGS.orthoFar;
-				camera->transform = ml::Transform::LookAt(
+				camera->perspNear	= SETTINGS.perspNear;
+				camera->perspFar	= SETTINGS.perspFar;
+				camera->orthoNear	= SETTINGS.orthoNear;
+				camera->orthoFar	= SETTINGS.orthoFar;
+				camera->transform	= ml::Transform::LookAt(
 					camera->position,
 					camera->position + ml::vec3f::Back,
 					ml::vec3f::Up
@@ -380,7 +386,7 @@ namespace DEMO
 					{ } // rotation
 				});
 
-				ml::Light * light = ent->add<ml::Light>({ // ML_DEMO_LIGHT
+				ml::Light * light = ent->add<ml::Light>({
 					transform->getPosition(),
 					ml::Color::LightYellow
 				});
@@ -389,8 +395,8 @@ namespace DEMO
 					ML_Res.models.get("light"),
 					ml::Material(ML_Res.shaders.get("solid"), 
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_DEMO_CAMERA->persp.matrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_DEMO_CAMERA->transform.matrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_MAIN_CAMERA->persp.matrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_MAIN_CAMERA->transform.matrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&light->color },
 					}),
@@ -414,15 +420,15 @@ namespace DEMO
 				});
 
 				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
-					DEMO_BORG, transform
+					RB_BORG, transform
 				});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("borg"),
 					ml::Material(ML_Res.shaders.get("basic"),
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_DEMO_CAMERA->persp.matrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_DEMO_CAMERA->transform.matrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_MAIN_CAMERA->persp.matrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_MAIN_CAMERA->transform.matrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("borg") },
@@ -447,15 +453,15 @@ namespace DEMO
 				});
 
 				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
-					DEMO_CUBE, transform
+					RB_CUBE, transform
 				});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("cube"),
 					ml::Material(ML_Res.shaders.get("normal"), 
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_DEMO_CAMERA->persp.matrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_DEMO_CAMERA->transform.matrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_MAIN_CAMERA->persp.matrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_MAIN_CAMERA->transform.matrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm") },
@@ -480,15 +486,15 @@ namespace DEMO
 				});
 
 				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
-					DEMO_SANIC, transform
+					RB_SANIC, transform
 				});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("sanic"),
 					ml::Material(ML_Res.shaders.get("basic"),
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_DEMO_CAMERA->persp.matrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_DEMO_CAMERA->transform.matrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_MAIN_CAMERA->persp.matrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_MAIN_CAMERA->transform.matrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("sanic") },
@@ -513,24 +519,24 @@ namespace DEMO
 				});
 
 				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
-					DEMO_MOON, transform
+					RB_MOON, transform
 				});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("moon"),
 					ml::Material(ML_Res.shaders.get("lighting"),
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_DEMO_CAMERA->persp.matrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_DEMO_CAMERA->transform.matrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_MAIN_CAMERA->persp.matrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_MAIN_CAMERA->transform.matrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("moon_dm") },
-						{ "Frag.specTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("moon_nm") },
-						{ "Frag.cameraPos",	ml::Uniform::Vec3,	&ML_DEMO_CAMERA->position },
-						{ "Frag.lightPos",	ml::Uniform::Vec3,	&ML_DEMO_LIGHT->position },
-						{ "Frag.lightCol",	ml::Uniform::Vec4,	&ML_DEMO_LIGHT->color },
-						{ "Frag.ambient",	ml::Uniform::Float, &data.ambient },
-						{ "Frag.specular",	ml::Uniform::Float, &data.specular },
-						{ "Frag.shininess",	ml::Uniform::Int,	&data.shininess },
+						{ ML_FRAG_SPEC_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("moon_nm") },
+						{ "Frag.cameraPos",	ml::Uniform::Vec3,	&ML_MAIN_CAMERA->position },
+						{ "Frag.lightPos",	ml::Uniform::Vec3,	&ML_MAIN_LIGHT->position },
+						{ "Frag.diffuse",	ml::Uniform::Vec4,	&ML_MAIN_LIGHT->color },
+						{ "Frag.ambient",	ml::Uniform::Float, &globals.ambient },
+						{ "Frag.specular",	ml::Uniform::Float, &globals.specular },
+						{ "Frag.shininess",	ml::Uniform::Int,	&globals.shininess },
 					}),
 					ml::RenderStates({
 						{ ml::GL::AlphaTest,{ ml::RenderVar::Bool, 1 } },
@@ -552,24 +558,24 @@ namespace DEMO
 				});
 
 				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
-					DEMO_EARTH, transform
+					RB_EARTH, transform
 				});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("earth"),
 					ml::Material(ML_Res.shaders.get("lighting"), 
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_DEMO_CAMERA->persp.matrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_DEMO_CAMERA->transform.matrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_MAIN_CAMERA->persp.matrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_MAIN_CAMERA->transform.matrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("earth_dm") },
-						{ "Frag.specTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("earth_sm") },
-						{ "Frag.cameraPos",	ml::Uniform::Vec3,	&ML_DEMO_CAMERA->position },
-						{ "Frag.lightPos",	ml::Uniform::Vec3,	&ML_DEMO_LIGHT->position },
-						{ "Frag.lightCol",	ml::Uniform::Vec4,	&ML_DEMO_LIGHT->color },
-						{ "Frag.ambient",	ml::Uniform::Float, &data.ambient },
-						{ "Frag.specular",	ml::Uniform::Float, &data.specular },
-						{ "Frag.shininess",	ml::Uniform::Int,	&data.shininess },
+						{ ML_FRAG_SPEC_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("earth_sm") },
+						{ "Frag.cameraPos",	ml::Uniform::Vec3,	&ML_MAIN_CAMERA->position },
+						{ "Frag.lightPos",	ml::Uniform::Vec3,	&ML_MAIN_LIGHT->position },
+						{ "Frag.diffuse",	ml::Uniform::Vec4,	&ML_MAIN_LIGHT->color },
+						{ "Frag.ambient",	ml::Uniform::Float, &globals.ambient },
+						{ "Frag.specular",	ml::Uniform::Float, &globals.specular },
+						{ "Frag.shininess",	ml::Uniform::Int,	&globals.shininess },
 					}),
 					ml::RenderStates({
 						{ ml::GL::AlphaTest,{ ml::RenderVar::Bool, 1 } },
@@ -591,15 +597,15 @@ namespace DEMO
 				});
 
 				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
-					DEMO_GROUND, transform
+					RB_GROUND, transform
 				});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("ground"),
 					ml::Material(ML_Res.shaders.get("normal"), 
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_DEMO_CAMERA->persp.matrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_DEMO_CAMERA->transform.matrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_MAIN_CAMERA->persp.matrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_MAIN_CAMERA->transform.matrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm") },
@@ -658,31 +664,31 @@ namespace DEMO
 						{
 							switch (i)
 							{
-							case DEMO_BORG:
+							case RB_BORG:
 								pos = { pos[0], +ML_Time.cos(), pos[2] };
 								rot = { ml::vec3f::One, +dt };
 								break;
 
-							case DEMO_CUBE:
+							case RB_CUBE:
 								pos = { pos[0], -ML_Time.sin(), pos[2] };
 								rot = { ml::vec3f::One, -dt };
 								break;
 
-							case DEMO_SANIC:
+							case RB_SANIC:
 								pos = { pos[0], -ML_Time.cos(), pos[2] };
 								rot = { ml::vec3f::Forward, -dt };
 								break;
 
-							case DEMO_MOON:
+							case RB_MOON:
 								pos = { pos[0], +ML_Time.sin(), pos[2] };
 								rot = { ml::vec3f::Up, -dt };
 								break;
 
-							case DEMO_EARTH:
+							case RB_EARTH:
 								rot = { ml::vec3f::Up, +dt };
 								break;
 
-							case DEMO_GROUND:
+							case RB_GROUND:
 								break;
 							}
 
@@ -739,20 +745,20 @@ namespace DEMO
 
 		// Update Camera
 		/* * * * * * * * * * * * * * * * * * * * */
-		if (ML_DEMO_CAMERA)
+		if (ML_MAIN_CAMERA)
 		{
-			ML_DEMO_CAMERA->update(this->getFrameSize());
-			ML_DEMO_CAMERA->orbit(
+			ML_MAIN_CAMERA->update(this->getFrameSize());
+			ML_MAIN_CAMERA->orbit(
 				ML_Res.entities.get("earth")->get<ml::Transform>()->getPosition(),
-				(data.camMove ? data.camSpeed * ev->elapsed.delta() : 0.0f)
+				(globals.camMove ? globals.camSpeed * ev->elapsed.delta() : 0.0f)
 			);
 		}
 
 		// Update Light
 		/* * * * * * * * * * * * * * * * * * * * */
-		if (ML_DEMO_LIGHT)
+		if (ML_MAIN_LIGHT)
 		{
-			ML_DEMO_LIGHT->position = ML_Res.entities.get("light")->get<ml::Transform>()->getPosition();
+			ML_MAIN_LIGHT->position = ML_Res.entities.get("light")->get<ml::Transform>()->getPosition();
 		}
 
 		// Update Physics
@@ -882,7 +888,7 @@ namespace DEMO
 			scene->bind();
 
 			// Clear Screen
-			this->clear(data.clearColor);
+			this->clear(globals.clearColor);
 
 			// Draw Entities
 			for (const auto & pair : ML_Res.entities)
@@ -912,7 +918,7 @@ namespace DEMO
 				{
 					static ml::RenderBatch batch(&m_canvas.vao(), &m_canvas.vbo(), { shader,
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_DEMO_CAMERA->ortho.matrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_MAIN_CAMERA->ortho.matrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4 },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D },
 					} });
@@ -928,7 +934,7 @@ namespace DEMO
 				{
 					static ml::RenderBatch batch(&m_canvas.vao(), &m_canvas.vbo(), { shader,
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_DEMO_CAMERA->ortho.matrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_MAIN_CAMERA->ortho.matrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4 },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D },
 					} });
@@ -942,11 +948,11 @@ namespace DEMO
 				// Draw Geometry
 				static ml::Material geometry = { ML_Res.shaders.get("geometry"),
 				{
-					{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&data.lineColor },
-					{ "Geom.mode",		ml::Uniform::Int,	&data.lineMode },
-					{ "Geom.delta",		ml::Uniform::Float, &data.lineDelta },
-					{ "Geom.size",		ml::Uniform::Float, &data.lineSize },
-					{ "Geom.samples",	ml::Uniform::Int,	&data.lineSamples },
+					{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&globals.lineColor },
+					{ "Geom.mode",		ml::Uniform::Int,	&globals.lineMode },
+					{ "Geom.delta",		ml::Uniform::Float, &globals.lineDelta },
+					{ "Geom.size",		ml::Uniform::Float, &globals.lineSize },
+					{ "Geom.samples",	ml::Uniform::Int,	&globals.lineSamples },
 				} };
 				if (geometry.apply())
 				{
@@ -967,7 +973,7 @@ namespace DEMO
 				if (const ml::Shader * shader = scene->shader())
 				{
 					post->bind();
-					shader->setUniform({ "Effect.mode", ml::Uniform::Int, &data.effectMode });
+					shader->setUniform({ "Effect.mode", ml::Uniform::Int, &globals.effectMode });
 					this->draw(*scene);
 					post->unbind();
 				}
@@ -1034,7 +1040,7 @@ namespace DEMO
 				/* * * * * * * * * * * * * * * * * * * * */
 
 				ImGui::Text("Scene");
-				ImGui::ColorEdit4("Color##Scene", &data.clearColor[0]);
+				ImGui::ColorEdit4("Color##Scene", &globals.clearColor[0]);
 				ImGui::Separator();
 
 				/* * * * * * * * * * * * * * * * * * * * */
@@ -1047,35 +1053,35 @@ namespace DEMO
 					"Juicy",
 					"Inverted",
 				};
-				ImGui::Combo("Shader##Framebuffer", &data.effectMode, fbo_modes, IM_ARRAYSIZE(fbo_modes));
+				ImGui::Combo("Shader##Framebuffer", &globals.effectMode, fbo_modes, IM_ARRAYSIZE(fbo_modes));
 				ImGui::Separator();
 
 				/* * * * * * * * * * * * * * * * * * * * */
 
 				ImGui::Text("Camera");
-				ImGui::Checkbox("Move##Camera", &data.camMove);
-				ml::GUI::EditVec3f("Position##Camera", ML_DEMO_CAMERA->position);
-				ImGui::DragFloat("Speed##Camera", &data.camSpeed, 0.1f, -5.f, 5.f);
+				ImGui::Checkbox("Move##Camera", &globals.camMove);
+				ml::GUI::EditVec3f("Position##Camera", ML_MAIN_CAMERA->position);
+				ImGui::DragFloat("Speed##Camera", &globals.camSpeed, 0.1f, -5.f, 5.f);
 				ImGui::Separator();
 
 				/* * * * * * * * * * * * * * * * * * * * */
 
 				ImGui::Text("Light");
-				ml::GUI::EditVec3f("Position##Light", ML_DEMO_LIGHT->position);
-				ImGui::ColorEdit4("Color##Light", &ML_DEMO_LIGHT->color[0]);
-				ImGui::DragFloat("Ambient##Light", &data.ambient, 0.01f, 0.f, 1.f);
-				ImGui::DragFloat("Specular##Light", &data.specular, 0.01f, 0.1f, 10.f);
-				ImGui::DragInt("Shininess##Light", &data.shininess, 1.f, 1, 256);
+				ml::GUI::EditVec3f("Position##Light", ML_MAIN_LIGHT->position);
+				ImGui::ColorEdit4("Color##Light", &ML_MAIN_LIGHT->color[0]);
+				ImGui::DragFloat("Ambient##Light", &globals.ambient, 0.01f, 0.f, 1.f);
+				ImGui::DragFloat("Specular##Light", &globals.specular, 0.01f, 0.1f, 10.f);
+				ImGui::DragInt("Shininess##Light", &globals.shininess, 1.f, 1, 256);
 				ImGui::Separator();
 
 				/* * * * * * * * * * * * * * * * * * * * */
 
 				ImGui::Text("Geometry");
-				ImGui::SliderInt("Mode##Geometry", &data.lineMode, -1, 3);
-				ImGui::ColorEdit4("Color##Geometry", &data.lineColor[0]);
-				ImGui::SliderFloat("Delta##Geometry", &data.lineDelta, 0.f, 1.f);
-				ImGui::SliderFloat("Size##Geometry", &data.lineSize, 0.f, 1.f);
-				ImGui::SliderInt("Samples##Geometry", &data.lineSamples, 1, 128);
+				ImGui::SliderInt("Mode##Geometry", &globals.lineMode, -1, 3);
+				ImGui::ColorEdit4("Color##Geometry", &globals.lineColor[0]);
+				ImGui::SliderFloat("Delta##Geometry", &globals.lineDelta, 0.f, 1.f);
+				ImGui::SliderFloat("Size##Geometry", &globals.lineSize, 0.f, 1.f);
+				ImGui::SliderInt("Samples##Geometry", &globals.lineSamples, 1, 128);
 				ImGui::Separator();
 
 				/* * * * * * * * * * * * * * * * * * * * */
