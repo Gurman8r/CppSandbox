@@ -3,43 +3,19 @@
 
 <item>
 	type = model
-	name = borg
-	mesh = default_cube
-</item>
-
-<item>
-	type = model
-	name = sanic
-	mesh = default_quad
-</item>
-
-<item>
-	type = model
 	name = cube
 	mesh = cube
 </item>
 
 <item>
 	type = model
-	name = ground
-	mesh = cube
-</item>
-
-<item>
-	type = model
-	name = light
+	name = sphere8x6
 	mesh = sphere8x6
 </item>
 
 <item>
 	type = model
-	name = earth
-	mesh = sphere32x24
-</item>
-
-<item>
-	type = model
-	name = moon
+	name = sphere32x24
 	mesh = sphere32x24
 </item>
 

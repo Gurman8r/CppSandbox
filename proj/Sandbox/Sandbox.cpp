@@ -392,7 +392,7 @@ namespace DEMO
 				});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
-					ML_Res.models.get("light"),
+					ML_Res.models.get("sphere8x6"),
 					ml::Material(ML_Res.shaders.get("solid"), 
 					{
 						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_MAIN_CAMERA->persp.matrix() },
@@ -424,7 +424,7 @@ namespace DEMO
 				});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
-					ML_Res.models.get("borg"),
+					ML_Res.models.get("default_cube"),
 					ml::Material(ML_Res.shaders.get("basic"),
 					{
 						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_MAIN_CAMERA->persp.matrix() },
@@ -490,7 +490,7 @@ namespace DEMO
 				});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
-					ML_Res.models.get("sanic"),
+					ML_Res.models.get("default_quad"),
 					ml::Material(ML_Res.shaders.get("basic"),
 					{
 						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_MAIN_CAMERA->persp.matrix() },
@@ -523,7 +523,7 @@ namespace DEMO
 				});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
-					ML_Res.models.get("moon"),
+					ML_Res.models.get("sphere32x24"),
 					ml::Material(ML_Res.shaders.get("lighting"),
 					{
 						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_MAIN_CAMERA->persp.matrix() },
@@ -562,7 +562,7 @@ namespace DEMO
 				});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
-					ML_Res.models.get("earth"),
+					ML_Res.models.get("sphere32x24"),
 					ml::Material(ML_Res.shaders.get("lighting"), 
 					{
 						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_MAIN_CAMERA->persp.matrix() },
@@ -601,7 +601,7 @@ namespace DEMO
 				});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
-					ML_Res.models.get("ground"),
+					ML_Res.models.get("cube"),
 					ml::Material(ML_Res.shaders.get("normal"), 
 					{
 						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_MAIN_CAMERA->persp.matrix() },
