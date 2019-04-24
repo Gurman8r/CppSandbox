@@ -1,10 +1,7 @@
 #include <MemeAudio/OpenAL.hpp>
 #include <MemeCore/Debug.hpp>
-#include <AL/al.h>
-#include <AL/alc.h>
-
-#define DEVICE(ptr) static_cast<ALCdevice *>(ptr)
-#define CONTEXT(ptr) static_cast<ALCcontext *>(ptr)
+# include <AL/al.h>
+# include <AL/alc.h>
 
 namespace ml
 {
@@ -100,7 +97,7 @@ namespace ml
 		static bool check = false;
 		if (!check && !ML_AL.m_device)
 		{
-			alCheck(check = (ML_AL.m_device = DEVICE(alcOpenDevice(NULL))));
+			alCheck(check = (ML_AL.m_device = static_cast<ALCdevice *>(alcOpenDevice(NULL))));
 		}
 		return check;
 	}
@@ -110,7 +107,7 @@ namespace ml
 		static bool check = false;
 		if (!check && ML_AL.m_device)
 		{
-			alCheck(check = alcCloseDevice(DEVICE(ML_AL.m_device)));
+			alCheck(check = alcCloseDevice(static_cast<ALCdevice *>(ML_AL.m_device)));
 		}
 		return check;
 	}
@@ -123,7 +120,7 @@ namespace ml
 		static bool check = false;
 		if (!check && ML_AL.m_device && !ML_AL.m_context)
 		{
-			alCheck(check = (ML_AL.m_context = CONTEXT(alcCreateContext(DEVICE(ML_AL.m_device), NULL))));
+			alCheck(check = (ML_AL.m_context = static_cast<ALCcontext *>(alcCreateContext(static_cast<ALCdevice *>(ML_AL.m_device), NULL))));
 		}
 		return check;
 	}
@@ -133,7 +130,7 @@ namespace ml
 		static bool check = false;
 		if (!check && ML_AL.m_context)
 		{
-			alCheck(check = alcMakeContextCurrent(CONTEXT(ML_AL.m_context)));
+			alCheck(check = alcMakeContextCurrent(static_cast<ALCcontext *>(ML_AL.m_context)));
 		}
 		return check;
 	}

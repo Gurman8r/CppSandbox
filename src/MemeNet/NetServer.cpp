@@ -5,7 +5,7 @@
 #include <RakNet/RakPeerInterface.h>
 #include <RakNet/MessageIdentifiers.h>
 #include <RakNet/BitStream.h>
-#include <RakNet/RakNetTypes.h>
+#include <MemeNet/RakNet.hpp>
 
 #define ML_PEER	static_cast<RakNet::RakPeerInterface *>
 

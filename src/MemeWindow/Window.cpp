@@ -5,7 +5,7 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-# ifdef ML_SYSTEM_WINDOWS
+# if defined(ML_SYSTEM_WINDOWS)
 #	ifdef APIENTRY
 #		undef APIENTRY
 #	endif

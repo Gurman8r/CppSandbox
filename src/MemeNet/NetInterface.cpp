@@ -2,13 +2,7 @@
 #include <MemeNet/NetworkEvents.hpp>
 #include <MemeCore/Debug.hpp>
 #include <MemeCore/EventSystem.hpp>
-#include <RakNet/RakPeerInterface.h>
-#include <RakNet/MessageIdentifiers.h>
-#include <RakNet/BitStream.h>
-#include <RakNet/RakNetTypes.h>
-
-#define ML_PEER		static_cast<RakNet::RakPeerInterface *>
-#define ML_PACKET	static_cast<RakNet::Packet *>
+#include <MemeNet/RakNet.hpp>
 
 namespace ml
 {

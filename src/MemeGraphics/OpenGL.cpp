@@ -6,12 +6,6 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 
-# ifdef ML_SYSTEM_WINDOWS
-#	pragma comment(lib, "glew32s.lib")
-# endif
-
-#define ML_BUFFER_SIZE 1024
-
 namespace ml
 {
 	// Errors
@@ -719,7 +713,7 @@ namespace ml
 
 	CString OpenGL::getProgramInfoLog(uint32_t obj)
 	{
-		static char temp[ML_BUFFER_SIZE];
+		static char temp[512];
 		glCheck(glGetInfoLogARB(obj, sizeof(temp), 0, temp));
 		return temp;
 	}

@@ -12,9 +12,9 @@ if not exist %File% (
 	echo File Not Found: "%File%"
 	pause
 	exit 1
+) else (
+	echo Opening... "%File%"
+	cd %Path%
+	start %Name%
+	exit %ERRORLEVEL%
 )
-
-echo %File%
-cd %Path%
-start %Name%
-exit %ERRORLEVEL%

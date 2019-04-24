@@ -48,6 +48,9 @@
     <ClInclude Include="..\..\include\MemeNet\SendSettings.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeNet\RakNet.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeNet\NetClient.cpp">

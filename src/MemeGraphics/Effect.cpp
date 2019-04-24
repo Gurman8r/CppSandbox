@@ -85,7 +85,6 @@ namespace ml
 						(m_texture.target()),
 						(m_texture.level())
 					);
-
 				}
 				m_fbo.unbind();
 
