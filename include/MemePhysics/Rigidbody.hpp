@@ -13,15 +13,17 @@ namespace ml
 	{
 	public:
 		Rigidbody();
-		Rigidbody(Transform * transform);
+		Rigidbody(Transform * transform, int32_t index);
 		Rigidbody(const Rigidbody & copy);
 		~Rigidbody();
 
 	public:
-		inline const Transform	* transform() const { return m_transform; }
-		inline Transform		* transform()		{ return m_transform; }
+		inline const int32_t	index()		const	{ return m_index;		}
+		inline const Transform *transform() const	{ return m_transform;	}
+		inline Transform *		transform()			{ return m_transform;	}
 
 	private:
+		int32_t		m_index;
 		Transform * m_transform;
 	};
 

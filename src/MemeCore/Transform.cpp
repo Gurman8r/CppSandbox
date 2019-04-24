@@ -121,7 +121,7 @@ namespace ml
 		);
 	}
 
-	Transform & Transform::perspective(const float fov, const float aspect, const float near, const float far)
+	Transform & Transform::perspective(float fov, float aspect, float near, float far)
 	{
 		return (*this) = mat4f(glm::value_ptr(glm::perspective(
 			fov,
@@ -131,7 +131,7 @@ namespace ml
 		);
 	}
 
-	Transform & Transform::rotate(const float angle, const vec3f & axis)
+	Transform & Transform::rotate(float angle, const vec3f & axis)
 	{
 		return (*this) = mat4f(glm::value_ptr(glm::rotate(
 			ML_MAT4(m_matrix), 
@@ -154,6 +154,13 @@ namespace ml
 			ML_MAT4(m_matrix), 
 			ML_VEC3(value)))
 		);
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	mat4f Transform::inverse() const
+	{
+		return mat4f(glm::value_ptr(glm::inverse(ML_MAT4(m_matrix))));
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -193,11 +200,6 @@ namespace ml
 		}
 	}
 
-	mat4f Transform::inverse() const
-	{
-		return mat4f(glm::value_ptr(glm::inverse(ML_MAT4(m_matrix))));
-	}
-
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	const vec3f Transform::getPosition() const
@@ -208,41 +210,11 @@ namespace ml
 			m_matrix[MPZ]
 		};
 	}
-
-	const vec3f Transform::getScale() const
-	{
-		return {
-			m_matrix[MSX],
-			m_matrix[MSY],
-			m_matrix[MSZ]
-		};
-	}
-
-	const quat Transform::getRotation() const
-	{
-		return quat();
-	}
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
 	Transform & Transform::setPosition(const vec3f & value)
 	{
 		m_matrix[MPX] = value[0];
 		m_matrix[MPY] = value[1];
 		m_matrix[MPZ] = value[2];
-		return (*this);
-	}
-
-	Transform & Transform::setScale(const vec3f & value)
-	{
-		m_matrix[MSX] = value[0];
-		m_matrix[MSY] = value[1];
-		m_matrix[MSZ] = value[2];
-		return (*this);
-	}
-
-	Transform & Transform::setRotation(const quat & value)
-	{
 		return (*this);
 	}
 	

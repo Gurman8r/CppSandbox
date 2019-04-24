@@ -37,6 +37,19 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
+enum Rigidbody_ID : int32_t
+{
+	DEMO_BORG,
+	DEMO_CUBE,
+	DEMO_SANIC,
+	DEMO_MOON,
+	DEMO_EARTH,
+
+	MAX_RIGIDBODY_ID
+};
+
+/* * * * * * * * * * * * * * * * * * * * */
+
 namespace DEMO
 {
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -383,10 +396,6 @@ namespace DEMO
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&data.lightCol },
 					}
 				});
-
-				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
-					transform
-				});
 			}
 
 			// Borg
@@ -420,42 +429,8 @@ namespace DEMO
 				});
 
 				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
-					transform
-				});
-			}
-
-			// Sanic
-			/* * * * * * * * * * * * * * * * * * * * */
-			if (ml::Entity * ent = ML_Res.entities.load("sanic"))
-			{
-				ml::Transform * transform = ent->add<ml::Transform>({
-					{ -5.0f, 0.0f, 0.0f }, // position
-					{ 1.0f }, // scale
-					{ } // rotation
-				});
-
-				ml::Renderer * renderer = ent->add<ml::Renderer>({
-					ML_Res.models.get("sanic"),
-					ML_Res.shaders.get("basic"),
-					ml::RenderStates
-					{
-						{ ml::GL::AlphaTest,	{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::Blend,		{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::CullFace,		{ ml::RenderVar::Bool, 0 } },
-						{ ml::GL::DepthTest,	{ ml::RenderVar::Bool, 1 } },
-					},
-					ml::UniformSet
-					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&m_camera.persp().matrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&m_camera.transform().matrix() },
-						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
-						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
-						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("sanic") },
-					}
-				});
-
-				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
-					transform
+					transform, 
+					DEMO_BORG
 				});
 			}
 
@@ -490,28 +465,29 @@ namespace DEMO
 				});
 
 				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
-					transform
+					transform, 
+					DEMO_CUBE
 				});
 			}
 
-			// Ground
+			// Sanic
 			/* * * * * * * * * * * * * * * * * * * * */
-			if (ml::Entity * ent = ML_Res.entities.load("ground"))
+			if (ml::Entity * ent = ML_Res.entities.load("sanic"))
 			{
 				ml::Transform * transform = ent->add<ml::Transform>({
-					{ 0.0f, -2.5f, 0.0f }, // position
-					{ 12.5, 0.25f, 12.5 }, // scale
+					{ -5.0f, 0.0f, 0.0f }, // position
+					{ 1.0f }, // scale
 					{ } // rotation
 				});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
-					ML_Res.models.get("ground"),
-					ML_Res.shaders.get("normal"),
+					ML_Res.models.get("sanic"),
+					ML_Res.shaders.get("basic"),
 					ml::RenderStates
 					{
 						{ ml::GL::AlphaTest,	{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::Blend,		{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::CullFace,		{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::CullFace,		{ ml::RenderVar::Bool, 0 } },
 						{ ml::GL::DepthTest,	{ ml::RenderVar::Bool, 1 } },
 					},
 					ml::UniformSet
@@ -520,12 +496,13 @@ namespace DEMO
 						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&m_camera.transform().matrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
-						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm") },
+						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("sanic") },
 					}
 				});
 
 				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
-					transform
+					transform,
+					DEMO_SANIC
 				});
 			}
 
@@ -566,7 +543,8 @@ namespace DEMO
 				});
 
 				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
-					transform
+					transform, 
+					DEMO_MOON
 				});
 			}
 
@@ -590,7 +568,7 @@ namespace DEMO
 						{ ml::GL::CullFace,		{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::DepthTest,	{ ml::RenderVar::Bool, 1 } },
 					},
-					ml::UniformSet 
+					ml::UniformSet
 					{
 						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&m_camera.persp().matrix() },
 						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&m_camera.transform().matrix() },
@@ -607,7 +585,39 @@ namespace DEMO
 				});
 
 				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
-					transform
+					transform,
+					DEMO_EARTH
+				});
+			}
+
+			// Ground
+			/* * * * * * * * * * * * * * * * * * * * */
+			if (ml::Entity * ent = ML_Res.entities.load("ground"))
+			{
+				ml::Transform * transform = ent->add<ml::Transform>({
+					{ 0.0f, -2.5f, 0.0f }, // position
+					{ 12.5, 0.25f, 12.5 }, // scale
+					{ } // rotation
+				});
+
+				ml::Renderer * renderer = ent->add<ml::Renderer>({
+					ML_Res.models.get("ground"),
+					ML_Res.shaders.get("normal"),
+					ml::RenderStates
+					{
+						{ ml::GL::AlphaTest,	{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::Blend,		{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::CullFace,		{ ml::RenderVar::Bool, 1 } },
+						{ ml::GL::DepthTest,	{ ml::RenderVar::Bool, 1 } },
+					},
+					ml::UniformSet
+					{
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&m_camera.persp().matrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&m_camera.transform().matrix() },
+						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
+						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
+						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm") },
+					}
 				});
 			}
 		}
@@ -618,15 +628,16 @@ namespace DEMO
 		{
 			/* * * * * * * * * * * * * * * * * * * * */
 
+			ML_Physics.world().state().resize(MAX_RIGIDBODY_ID);
+
 			for (const auto & pair : ML_Res.entities)
 			{
-				if (const ml::Transform * transform = pair.second->get<ml::Transform>())
+				if (const ml::Rigidbody * rigidbody = pair.second->get<ml::Rigidbody>())
 				{
-					ML_Physics.world().state()
-						.setPos(pair.first, transform->getPosition())
-						.setRot(pair.first, transform->getRotation())
-						.setMat(pair.first, transform->matrix())
-						.setInv(pair.first, transform->inverse());
+					ML_Physics.world().state().setPos(
+						rigidbody->index(), 
+						rigidbody->transform()->getPosition()
+					);
 				}
 			}
 
@@ -637,19 +648,37 @@ namespace DEMO
 				ml::PhysicsState state;
 				if (ML_Physics.beginUpdate(state))
 				{
-					for (const auto & pair : ML_Res.entities)
+					for (int32_t i = 0; i < state.size(); i++)
 					{
-						ml::vec3f * pos = state.getPos(pair.first);
-						ml::quat  * rot = state.getRot(pair.first);
-						ml::mat4f * mat = state.getMat(pair.first);
-						ml::mat4f * inv = state.getInv(pair.first);
-
-						if (pos && rot && mat && inv)
+						ml::vec3f	pos;
+						ml::quat	rot;
+						ml::mat4f	mat;
+						ml::mat4f	inv;
+						if (state.getData(i, pos, rot, mat, inv))
 						{
-							if (pair.first == "borg")
+							switch (i)
 							{
-								(*pos) = { (*pos)[0], ML_Time.cos(), (*pos)[2] }; // testing
+							case DEMO_BORG: 
+								pos = { pos[0], +ML_Time.cos(), pos[2] }; 
+								break;
+
+							case DEMO_CUBE: 
+								pos = { pos[0], -ML_Time.sin(), pos[2] }; 
+								break;
+
+							case DEMO_SANIC: 
+								pos = { pos[0], -ML_Time.cos(), pos[2] }; 
+								break;
+
+							case DEMO_MOON: 
+								pos = { pos[0], +ML_Time.sin(), pos[2] }; 
+								break;
+
+							case DEMO_EARTH: 
+								pos = pos;
+								break;
 							}
+							state.setData(i, pos, rot, mat, inv);
 						}
 					}
 					ML_Physics.endUpdate(state);
@@ -735,11 +764,22 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::Entity * ent = ML_Res.entities.get("borg"))
 			{
-				if (ml::Transform * transform = ent->get<ml::Transform>())
+				if (ml::Rigidbody * rigidbody = ent->get<ml::Rigidbody>())
 				{
-					(*transform)
-						.setPosition(*ML_Physics.world().state().getPos("borg"))
-						.rotate(+(ev->elapsed.delta()), ml::vec3f::One);
+					if (ml::Transform * transform = rigidbody->transform())
+					{
+						ml::vec3f pos;
+						if (ML_Physics.world().state().getPos(rigidbody->index(), pos))
+						{
+							transform->setPosition(pos);
+						}
+
+						ml::quat rot;
+						if (ML_Physics.world().state().getRot(rigidbody->index(), rot))
+						{
+							transform->rotate(+(ev->elapsed.delta()), ml::vec3f::One);
+						}
+					}
 				}
 			}
 
@@ -747,15 +787,22 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::Entity * ent = ML_Res.entities.get("cube"))
 			{
-				if (ml::Transform * transform = ent->get<ml::Transform>())
+				if (ml::Rigidbody * rigidbody = ent->get<ml::Rigidbody>())
 				{
-					(*transform)
-						.setPosition({ 
-							transform->getPosition()[0], 
-							-ML_Time.sin(), 
-							transform->getPosition()[2]
-							})
-						.rotate(-(ev->elapsed.delta()), ml::vec3f::One);
+					if (ml::Transform * transform = rigidbody->transform())
+					{
+						ml::vec3f pos;
+						if (ML_Physics.world().state().getPos(rigidbody->index(), pos))
+						{
+							transform->setPosition(pos);
+						}
+
+						ml::quat rot;
+						if (ML_Physics.world().state().getRot(rigidbody->index(), rot))
+						{
+							transform->rotate(-(ev->elapsed.delta()), ml::vec3f::One);
+						}
+					}
 				}
 			}
 
@@ -763,15 +810,22 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::Entity * ent = ML_Res.entities.get("sanic"))
 			{
-				if (ml::Transform * transform = ent->get<ml::Transform>())
+				if (ml::Rigidbody * rigidbody = ent->get<ml::Rigidbody>())
 				{
-					(*transform)
-						.setPosition({
-							transform->getPosition()[0],
-							ML_Time.cos(),
-							transform->getPosition()[2]
-							})
-						.rotate(-(ev->elapsed.delta()), ml::vec3f::Forward);
+					if (ml::Transform * transform = rigidbody->transform())
+					{
+						ml::vec3f pos;
+						if (ML_Physics.world().state().getPos(rigidbody->index(), pos))
+						{
+							transform->setPosition(pos);
+						}
+
+						ml::quat rot;
+						if (ML_Physics.world().state().getRot(rigidbody->index(), rot))
+						{
+							transform->rotate(-(ev->elapsed.delta()), ml::vec3f::Forward);
+						}
+					}
 				}
 			}
 
@@ -779,15 +833,22 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::Entity * ent = ML_Res.entities.get("moon"))
 			{
-				if (ml::Transform * transform = ent->get<ml::Transform>())
+				if (ml::Rigidbody * rigidbody = ent->get<ml::Rigidbody>())
 				{
-					(*transform)
-						.setPosition({
-							transform->getPosition()[0],
-							ML_Time.sin(),
-							transform->getPosition()[2]
-							})
-						.rotate(-(ev->elapsed.delta()), ml::vec3f::Up);
+					if (ml::Transform * transform = rigidbody->transform())
+					{
+						ml::vec3f pos;
+						if (ML_Physics.world().state().getPos(rigidbody->index(), pos))
+						{
+							transform->setPosition(pos);
+						}
+
+						ml::quat rot;
+						if (ML_Physics.world().state().getRot(rigidbody->index(), rot))
+						{
+							transform->rotate(-(ev->elapsed.delta()), ml::vec3f::Up);
+						}
+					}
 				}
 			}
 
@@ -795,10 +856,22 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::Entity * ent = ML_Res.entities.get("earth"))
 			{
-				if (ml::Transform * transform = ent->get<ml::Transform>())
+				if (ml::Rigidbody * rigidbody = ent->get<ml::Rigidbody>())
 				{
-					(*transform)
-						.rotate(+(ev->elapsed.delta()), ml::vec3f::Up);
+					if (ml::Transform * transform = rigidbody->transform())
+					{
+						ml::vec3f pos;
+						if (ML_Physics.world().state().getPos(rigidbody->index(), pos))
+						{
+							transform->setPosition(pos);
+						}
+
+						ml::quat rot;
+						if (ML_Physics.world().state().getRot(rigidbody->index(), rot))
+						{
+							transform->rotate(+(ev->elapsed.delta()), ml::vec3f::Up);
+						}
+					}
 				}
 			}
 		}

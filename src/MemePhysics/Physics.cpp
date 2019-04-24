@@ -22,7 +22,6 @@ namespace ml
 			
 			return true;
 		}
-		value = PhysicsState();
 		return false;
 	}
 

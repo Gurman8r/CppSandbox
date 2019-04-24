@@ -13,114 +13,41 @@ namespace ml
 		: public ITrackable
 	{
 	public:
+		enum : int32_t { InvalidIndex = -1 };
+
+	public:
 		PhysicsState();
 		PhysicsState(const PhysicsState & copy);
 		~PhysicsState();
 
+	public:
+		void	clear();
+		void	resize(const size_t value);
+		int32_t	size() const;
 
 	public:
-		inline const vec3f * getPos(const String & key) const
-		{
-			HashMap<String, vec3f>::const_iterator it;
-			return (((it = m_pos.find(key)) != m_pos.end())
-				? (&it->second)
-				: (NULL)
-			);
-		}
-
-		inline const quat  * getRot(const String & key) const
-		{
-			HashMap<String, quat>::const_iterator it;
-			return (((it = m_rot.find(key)) != m_rot.end())
-				? (&it->second)
-				: (NULL)
-			);
-		}
-
-		inline const mat4f * getMat(const String & key) const
-		{
-			HashMap<String, mat4f>::const_iterator it;
-			return (((it = m_mat.find(key)) != m_mat.end())
-				? (&it->second)
-				: (NULL)
-			);
-		}
-
-		inline const mat4f * getInv(const String & key) const
-		{
-			HashMap<String, mat4f>::const_iterator it;
-			return (((it = m_inv.find(key)) != m_inv.end())
-				? (&it->second)
-				: (NULL)
-			);
-		}
-
+		bool	getData(const int32_t index, vec3f & pos, quat & rot, mat4f & mat, mat4f & inv) const;
+		bool	setData(const int32_t index, const vec3f & pos, const quat & rot, const mat4f & mat, const mat4f & inv);
 
 	public:
-		inline vec3f * getPos(const String & key)
-		{
-			HashMap<String, vec3f>::iterator it;
-			return (((it = m_pos.find(key)) != m_pos.end())
-				? (&it->second)
-				: (NULL)
-			);
-		}
-
-		inline quat  * getRot(const String & key)
-		{
-			HashMap<String, quat>::iterator it;
-			return (((it = m_rot.find(key)) != m_rot.end())
-				? (&it->second)
-				: (NULL)
-			);
-		}
-
-		inline mat4f * getMat(const String & key)
-		{
-			HashMap<String, mat4f>::iterator it;
-			return (((it = m_mat.find(key)) != m_mat.end())
-				? (&it->second)
-				: (NULL)
-			);
-		}
-
-		inline mat4f * getInv(const String & key)
-		{
-			HashMap<String, mat4f>::iterator it;
-			return (((it = m_inv.find(key)) != m_inv.end())
-				? (&it->second)
-				: (NULL)
-			);
-		}
-
+		bool	getPos(const int32_t index, vec3f & pos) const;
+		bool	getRot(const int32_t index, quat  & pos) const;
+		bool	getMat(const int32_t index, mat4f & pos) const;
+		bool	getInv(const int32_t index, mat4f & pos) const;
 
 	public:
-		inline PhysicsState & setPos(const String & key, const vec3f & value)
-		{
-			(m_pos[key] = value); return (*this);
-		}
-
-		inline PhysicsState & setRot(const String & key, const quat	 & value)
-		{
-			(m_rot[key] = value); return (*this);
-		}
-
-		inline PhysicsState & setMat(const String & key, const mat4f & value)
-		{
-			(m_mat[key] = value); return (*this);
-		}
-
-		inline PhysicsState & setInv(const String & key, const mat4f & value)
-		{
-			(m_inv[key] = value); return (*this);
-		}
-
+		bool	setPos(const int32_t index, const vec3f & value);
+		bool	setRot(const int32_t index, const quat  & value);
+		bool	setMat(const int32_t index, const mat4f & value);
+		bool	setInv(const int32_t index, const mat4f & value);
 
 	private:
-		HashMap<String, vec3f>	m_pos;
-		HashMap<String, quat>	m_rot;
-		HashMap<String, mat4f>	m_mat;
-		HashMap<String, mat4f>	m_inv;
+		int32_t m_size;
+
+		List<vec3f> m_pos;
+		List<quat>	m_rot;
+		List<mat4f> m_mat;
+		List<mat4f>	m_inv;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */
