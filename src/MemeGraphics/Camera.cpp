@@ -45,13 +45,13 @@ namespace ml
 			m_resolution = resolution;
 
 			// Orthographic
-			m_ortho.orthographic(
+			m_ortho = Transform::Orthographic(
 				{ vec2f::Zero, (vec2f)(resolution) },
 				{ m_orthoNear, m_orthoFar }
 			);
 
 			// Perspective
-			m_persp.perspective(
+			m_persp = Transform::Perspective(
 				m_fieldOfView, ((float)resolution[0] / (float)resolution[1]),
 				m_perspNear, m_perspFar
 			);
@@ -67,7 +67,7 @@ namespace ml
 		
 		vec3f lookPos = (m_position + (target - m_position).normalized());
 		
-		m_transform.lookAt(m_position, lookPos, vec3f::Up);
+		m_transform = Transform::LookAt(m_position, lookPos, vec3f::Up);
 
 		// Move
 		vec3f fwd = (lookPos - m_position);

@@ -347,7 +347,7 @@ namespace DEMO
 			m_camera.orthoNear()	= SETTINGS.orthoNear;
 			m_camera.orthoFar()		= SETTINGS.orthoFar;
 
-			m_camera.transform().lookAt(
+			m_camera.transform() = ml::Transform::LookAt(
 				m_camera.position(),
 				m_camera.position() + ml::vec3f::Back,
 				ml::vec3f::Up);
@@ -632,21 +632,21 @@ namespace DEMO
 
 			for (const auto & pair : ML_Res.entities)
 			{
-				if (const ml::Rigidbody * rigidbody = pair.second->get<ml::Rigidbody>())
+				if (const ml::Rigidbody * rb = pair.second->get<ml::Rigidbody>())
 				{
 					ML_Physics.world().state().setData(
-						rigidbody->index(), 
-						rigidbody->transform()->getPosition(),
+						rb->index(), 
+						rb->transform()->getPosition(),
 						ml::quat(),
-						rigidbody->transform()->matrix(),
-						rigidbody->transform()->inverse()
+						rb->transform()->matrix(),
+						rb->transform()->getInverse()
 					);
 				}
 			}
 
 			/* * * * * * * * * * * * * * * * * * * * */
 
-			auto updatePhysics = [](const float deltaTime)
+			auto updatePhysics = [](const float dt)
 			{
 				ml::PhysicsState state;
 				if (ML_Physics.beginUpdate(state))
@@ -663,26 +663,26 @@ namespace DEMO
 							{
 							case DEMO_BORG:
 								pos = { pos[0], +ML_Time.cos(), pos[2] };
-								rot = { ml::vec3f::One, +deltaTime };
+								rot = { ml::vec3f::One, +dt };
 								break;
 
 							case DEMO_CUBE:
 								pos = { pos[0], -ML_Time.sin(), pos[2] };
-								rot = { ml::vec3f::One, -deltaTime };
+								rot = { ml::vec3f::One, -dt };
 								break;
 
 							case DEMO_SANIC:
 								pos = { pos[0], -ML_Time.cos(), pos[2] };
-								rot = { ml::vec3f::Forward, -deltaTime };
+								rot = { ml::vec3f::Forward, -dt };
 								break;
 
 							case DEMO_MOON:
 								pos = { pos[0], +ML_Time.sin(), pos[2] };
-								rot = { ml::vec3f::Up, -deltaTime };
+								rot = { ml::vec3f::Up, -dt };
 								break;
 
 							case DEMO_EARTH:
-								rot = { ml::vec3f::Up, +deltaTime };
+								rot = { ml::vec3f::Up, +dt };
 								break;
 
 							case DEMO_GROUND:
@@ -767,6 +767,7 @@ namespace DEMO
 		// Update Entities
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
+			// Light
 			if (ml::Entity * ent = ML_Res.entities.get("light"))
 			{
 				if (ml::Transform * transform = ent->get<ml::Transform>())
@@ -776,6 +777,7 @@ namespace DEMO
 				}
 			}
 
+			// Physics
 			for (auto & pair : ML_Res.entities)
 			{
 				if (ml::Rigidbody * rigidbody = pair.second->get<ml::Rigidbody>())
@@ -783,14 +785,16 @@ namespace DEMO
 					if (ml::Transform * transform = rigidbody->transform())
 					{
 						ml::vec3f pos;
-						if (ML_Physics.world().state().getPos(rigidbody->index(), pos))
+						ml::quat  rot;
+						ml::mat4f mat;
+						ml::mat4f inv;
+						if (ML_Physics.world().state().getData(
+							rigidbody->index(), pos, rot, mat, inv
+						))
 						{
 							transform->setPosition(pos);
-						}
 
-						ml::quat rot;
-						if (ML_Physics.world().state().getRot(rigidbody->index(), rot))
-						{
+							// FIXME: this is not how you use quaternions
 							transform->rotate(rot.real(), rot.complex());
 						}
 					}

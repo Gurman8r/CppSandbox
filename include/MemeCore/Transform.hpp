@@ -14,7 +14,7 @@ namespace ml
 		: public ITrackable
 	{
 	public:
-		/* * * * * * * * * * * * * * * * * * * * */
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		Transform();
 		Transform(const vec3f & position, const vec3f & scale);
 		Transform(const vec3f & position, const vec3f & scale, const quat & rotation);
@@ -23,37 +23,43 @@ namespace ml
 		~Transform();
 
 	public:
-		/* * * * * * * * * * * * * * * * * * * * */
-		inline const mat4f	& matrix() const { return m_matrix; }
-		inline mat4f		& matrix()		 { return m_matrix; }
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		static bool  Decompose(const mat4f & value, vec3f & scl, quat & rot, vec3f & tns, vec3f & skw, vec4f & psp);
+		static mat4f Inverse(const mat4f & value);
+		
+		static mat4f Rotate(const mat4f & value, float angle, const vec3f & axis);
+		static mat4f Scale(const mat4f & value, const vec3f & scl);
+		static mat4f Translate(const mat4f & value, const vec3f & trans);
+
+		static mat4f LookAt(const vec3f & eye, const vec3f & pos, const vec3f & up);
+		static mat4f Orthographic(const FloatRect & rect);
+		static mat4f Orthographic(const FloatRect & rect, const vec2f & clip);
+		static mat4f Perspective(float fov, float aspect, float near, float far);
 
 	public:
-		/* * * * * * * * * * * * * * * * * * * * */
-		Transform & lookAt		(const vec3f & eye, const vec3f & pos, const vec3f & up);
-		Transform & invert		();
-		Transform & orthographic(const FloatRect & rect);
-		Transform & orthographic(const FloatRect & rect, const vec2f & clip);
-		Transform & perspective	(float fov, float aspect, float near, float far);
-		Transform &	rotate		(float angle, const vec3f & axis);
-		Transform &	scale		(const vec3f & value);
-		Transform &	translate	(const vec3f & value);
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		Transform & invert();
+		Transform &	rotate(float angle, const vec3f & axis);
+		Transform &	scale(const vec3f & value);
+		Transform &	translate(const vec3f & value);
 
 	public:
-		/* * * * * * * * * * * * * * * * * * * * */
-		mat4f inverse() const;
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		bool	decompose(vec3f & scl, quat & rot, vec3f & tns, vec3f & skw, vec4f & psp) const;
+		mat4f	getInverse() const;
 
 	public:
-		/* * * * * * * * * * * * * * * * * * * * */
-		bool decompose(vec3f & scl, quat & rot, vec3f & pos);
-		bool decompose(vec3f & scl, quat & rot, vec3f & pos, vec3f & skw, vec4f & psp);
-
-	public:
-		/* * * * * * * * * * * * * * * * * * * * */
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		const vec3f getPosition() const;
 		Transform & setPosition(const vec3f & value);
 
+	public:
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		inline const mat4f	& matrix() const { return m_matrix; }
+		inline mat4f		& matrix()		 { return m_matrix; }
+
 	private:
-		/* * * * * * * * * * * * * * * * * * * * */
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		mat4f m_matrix;
 	};
 

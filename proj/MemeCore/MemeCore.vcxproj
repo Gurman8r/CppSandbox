@@ -156,6 +156,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeCore\Detail.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Detection.hpp" />
+    <ClInclude Include="..\..\include\MemeCore\GLM.hpp" />
     <ClInclude Include="..\..\include\MemeCore\IDisposable.hpp" />
     <ClInclude Include="..\..\include\MemeCore\IRequest.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Array.hpp" />
