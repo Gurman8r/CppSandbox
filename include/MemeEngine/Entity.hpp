@@ -11,7 +11,8 @@
 /* * * * * * * * * * * * * * * * * * * * */
 
 #define ML_COMPONENT_BASE ml::ITrackable
-#define ML_ASSERT_COMPONENT(derived) ML_assert_is_base_of(ML_COMPONENT_BASE, derived)
+#define ML_COMPONENT_ASSERT(derived) \
+	ML_assert_is_base_of(ML_COMPONENT_BASE, derived)
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -26,73 +27,82 @@ namespace ml
 		, public IWritable
 		, public INonCopyable
 	{
-	public: // Usings
+	public:
 		/* * * * * * * * * * * * * * * * * * * * */
 		using value_type	= typename ML_COMPONENT_BASE *;
 		using map_type		= typename HashMap<size_t, value_type>;
 		using iterator		= typename map_type::iterator;
 		using const_iterator= typename map_type::const_iterator;
 
-	public: //
+	public:
 		/* * * * * * * * * * * * * * * * * * * * */
 		Entity();
 		~Entity();
 
-	public: // Overrides
+	public:
 		/* * * * * * * * * * * * * * * * * * * * */
 		bool dispose() override;
 		bool loadFromFile(const String & filename) override;
 		bool saveToFile(const String & filename) const override;
 
-	public: // Functions
+	public:
+		// Hash Component
 		/* * * * * * * * * * * * * * * * * * * * */
-		template <
-			class Component
-		> inline Component * add()
+		template <class Component> 
+		inline size_t hash() const
 		{
-			ML_ASSERT_COMPONENT(Component);
+			ML_COMPONENT_ASSERT(Component);
+			return (size_t)(&typeid(Component))->hash_code();
+		}
+
+		// Find Component
+		/* * * * * * * * * * * * * * * * * * * * */
+		template <class Component> 
+		inline iterator find()
+		{
+			ML_COMPONENT_ASSERT(Component);
+			return (iterator)(m_map.find(this->hash<Component>()));
+		}
+
+		template <class Component>
+		inline const_iterator find() const
+		{
+			ML_COMPONENT_ASSERT(Component);
+			return (const_iterator)(m_map.find(this->hash<Component>()));
+		}
+
+		// Add Component
+		/* * * * * * * * * * * * * * * * * * * * */
+		template <class Component>
+		inline Component * add()
+		{
+			ML_COMPONENT_ASSERT(Component);
 			return ((this->find<Component>() == this->end())
-				? (this->set(new Component()))
+				? (reinterpret_cast<Component *>(m_map.insert({
+						this->hash<Component>(), new Component() 
+					}).first->second))
 				: (NULL)
 			);
 		}
 
-		template <
-			class Component
-		> inline Component * add(const Component & value)
+		template <class Component>
+		inline Component * add(const Component & value)
 		{
-			ML_ASSERT_COMPONENT(Component);
+			ML_COMPONENT_ASSERT(Component);
 			return ((this->find<Component>() == this->end())
-				? (this->set(new Component(value)))
+				? (reinterpret_cast<Component *>(m_map.insert({ 
+						this->hash<Component>(), new Component(value) 
+					}).first->second))
 				: (NULL)
 			);
 		}
 
+		// Get Component
 		/* * * * * * * * * * * * * * * * * * * * */
-
-		template <
-			class Component
-		> inline value_type & at()
+		template <class Component>
+		inline Component * get()
 		{
-			ML_ASSERT_COMPONENT(Component);
-			return m_map[this->hash<Component>()];
-		}
-
-		template <
-			class Component
-		> inline const value_type & at() const
-		{
-			ML_ASSERT_COMPONENT(Component);
-			return m_map.at(this->hash<Component>());
-		}
-
-		/* * * * * * * * * * * * * * * * * * * * */
-
-		template <
-			class Component
-		> inline Component * get()
-		{
-			ML_ASSERT_COMPONENT(Component);
+			ML_COMPONENT_ASSERT(Component);
 			iterator it;
 			return (((it = this->find<Component>()) != this->end())
 				? (reinterpret_cast<Component *>(it->second))
@@ -100,11 +110,10 @@ namespace ml
 			);
 		}
 
-		template <
-			class Component
-		> inline const Component * get() const
+		template <class Component>
+		inline const Component * get() const
 		{
-			ML_ASSERT_COMPONENT(Component);
+			ML_COMPONENT_ASSERT(Component);
 			const_iterator it;
 			return (((it = this->find<Component>()) != this->cend())
 				? (reinterpret_cast<const Component *>(it->second))
@@ -112,54 +121,16 @@ namespace ml
 			);
 		}
 
+	public:
 		/* * * * * * * * * * * * * * * * * * * * */
+		inline iterator			begin()				{ return m_map.begin();  }
+		inline const_iterator	begin()		const	{ return m_map.begin();  }
+		inline const_iterator	cbegin()	const	{ return m_map.cbegin(); }
+		inline iterator			end()				{ return m_map.end();	 }
+		inline const_iterator	end()		const	{ return m_map.end();	 }
+		inline const_iterator	cend()		const	{ return m_map.cend();	 }
 
-		template <
-			class Component
-		> inline iterator find()
-		{
-			ML_ASSERT_COMPONENT(Component);
-			return (iterator)(m_map.find(this->hash<Component>()));
-		}
-
-		template <
-			class Component
-		> inline const_iterator find() const
-		{
-			ML_ASSERT_COMPONENT(Component);
-			return (const_iterator)(m_map.find(this->hash<Component>()));
-		}
-
-		/* * * * * * * * * * * * * * * * * * * * */
-
-		template <
-			class Component
-		> inline size_t hash() const
-		{
-			ML_ASSERT_COMPONENT(Component);
-			return (&typeid(Component))->hash_code();
-		}
-
-		/* * * * * * * * * * * * * * * * * * * * */
-
-		template <
-			class Component
-		> inline Component * set(Component * value)
-		{
-			ML_ASSERT_COMPONENT(Component);
-			return ((Component *)(this->at<Component>() = value));
-		}
-
-	public: // Iterators
-		/* * * * * * * * * * * * * * * * * * * * */
-		inline iterator			begin()			{ return m_map.begin(); }
-		inline const_iterator	begin()	const	{ return m_map.begin(); }
-		inline const_iterator	cbegin()const	{ return m_map.cbegin();}
-		inline iterator			end()			{ return m_map.end();	}
-		inline const_iterator	end()	const	{ return m_map.end();	}
-		inline const_iterator	cend()	const	{ return m_map.cend();	}
-
-	private: // Data
+	private:
 		/* * * * * * * * * * * * * * * * * * * * */
 		map_type m_map;
 	};
