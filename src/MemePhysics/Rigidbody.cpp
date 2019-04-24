@@ -11,7 +11,7 @@ namespace ml
 	{
 	}
 
-	Rigidbody::Rigidbody(Transform * transform, int32_t index)
+	Rigidbody::Rigidbody(int32_t index, Transform * transform)
 		: m_index(index)
 		, m_transform(transform)
 	{

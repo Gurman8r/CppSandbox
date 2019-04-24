@@ -11,7 +11,7 @@
 /* * * * * * * * * * * * * * * * * * * * */
 
 # ifndef ML_PHYSICS_TIMESTEP
-#	define ML_PHYSICS_TIMESTEP 30
+# define ML_PHYSICS_TIMESTEP 15
 # endif
 
 /* * * * * * * * * * * * * * * * * * * * */

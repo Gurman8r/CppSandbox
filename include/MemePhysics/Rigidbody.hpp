@@ -13,7 +13,7 @@ namespace ml
 	{
 	public:
 		Rigidbody();
-		Rigidbody(Transform * transform, int32_t index);
+		Rigidbody(int32_t index, Transform * transform);
 		Rigidbody(const Rigidbody & copy);
 		~Rigidbody();
 

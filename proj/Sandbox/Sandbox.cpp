@@ -44,6 +44,7 @@ enum Rigidbody_ID : int32_t
 	DEMO_SANIC,
 	DEMO_MOON,
 	DEMO_EARTH,
+	DEMO_GROUND,
 
 	MAX_RIGIDBODY_ID
 };
@@ -429,8 +430,7 @@ namespace DEMO
 				});
 
 				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
-					transform, 
-					DEMO_BORG
+					DEMO_BORG, transform
 				});
 			}
 
@@ -465,8 +465,7 @@ namespace DEMO
 				});
 
 				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
-					transform, 
-					DEMO_CUBE
+					DEMO_CUBE, transform
 				});
 			}
 
@@ -501,8 +500,7 @@ namespace DEMO
 				});
 
 				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
-					transform,
-					DEMO_SANIC
+					DEMO_SANIC, transform
 				});
 			}
 
@@ -543,8 +541,7 @@ namespace DEMO
 				});
 
 				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
-					transform, 
-					DEMO_MOON
+					DEMO_MOON, transform
 				});
 			}
 
@@ -585,8 +582,7 @@ namespace DEMO
 				});
 
 				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
-					transform,
-					DEMO_EARTH
+					DEMO_EARTH, transform
 				});
 			}
 
@@ -619,6 +615,10 @@ namespace DEMO
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm") },
 					}
 				});
+
+				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
+					DEMO_GROUND, transform
+				});
 			}
 		}
 
@@ -634,9 +634,12 @@ namespace DEMO
 			{
 				if (const ml::Rigidbody * rigidbody = pair.second->get<ml::Rigidbody>())
 				{
-					ML_Physics.world().state().setPos(
+					ML_Physics.world().state().setData(
 						rigidbody->index(), 
-						rigidbody->transform()->getPosition()
+						rigidbody->transform()->getPosition(),
+						ml::quat(),
+						rigidbody->transform()->matrix(),
+						rigidbody->transform()->inverse()
 					);
 				}
 			}
@@ -656,29 +659,41 @@ namespace DEMO
 						ml::mat4f	inv;
 						if (state.getData(i, pos, rot, mat, inv))
 						{
+							const float deltaTime = ML_Engine.frameTime().delta();
 							switch (i)
 							{
 							case DEMO_BORG: 
 								pos = { pos[0], +ML_Time.cos(), pos[2] }; 
+								rot = { ml::vec3f::One, +deltaTime };
 								break;
 
 							case DEMO_CUBE: 
-								pos = { pos[0], -ML_Time.sin(), pos[2] }; 
+								pos = { pos[0], -ML_Time.sin(), pos[2] };
+								rot = { ml::vec3f::One, -deltaTime };
 								break;
 
 							case DEMO_SANIC: 
-								pos = { pos[0], -ML_Time.cos(), pos[2] }; 
+								pos = { pos[0], -ML_Time.cos(), pos[2] };
+								rot = { ml::vec3f::Forward, -deltaTime };
 								break;
 
 							case DEMO_MOON: 
-								pos = { pos[0], +ML_Time.sin(), pos[2] }; 
+								pos = { pos[0], +ML_Time.sin(), pos[2] };
+								rot = { ml::vec3f::Up, -deltaTime };
 								break;
 
-							case DEMO_EARTH: 
-								pos = pos;
+							case DEMO_EARTH:
+								rot = { ml::vec3f::Up, +deltaTime };
+								break;
+
+							case DEMO_GROUND:
 								break;
 							}
-							state.setData(i, pos, rot, mat, inv);
+							
+							if (!state.setData(i, pos, rot, mat, inv))
+							{
+								ml::Debug::logError("Failed setting physics state: {0}", i);
+							}
 						}
 					}
 					ML_Physics.endUpdate(state);
@@ -748,23 +763,18 @@ namespace DEMO
 		// Update Entities
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
-			// Light
-			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::Entity * ent = ML_Res.entities.get("light"))
 			{
 				if (ml::Transform * transform = ent->get<ml::Transform>())
 				{
-					(*transform)
-						.setPosition(data.lightPos)
-						.rotate(-(ev->elapsed.delta()), ml::vec3f::Forward);
+					transform->setPosition(data.lightPos);
+					transform->rotate(-ev->elapsed.delta(), ml::vec3f::Forward);
 				}
 			}
 
-			// Borg
-			/* * * * * * * * * * * * * * * * * * * * */
-			if (ml::Entity * ent = ML_Res.entities.get("borg"))
+			for (auto & pair : ML_Res.entities)
 			{
-				if (ml::Rigidbody * rigidbody = ent->get<ml::Rigidbody>())
+				if (ml::Rigidbody * rigidbody = pair.second->get<ml::Rigidbody>())
 				{
 					if (ml::Transform * transform = rigidbody->transform())
 					{
@@ -777,99 +787,7 @@ namespace DEMO
 						ml::quat rot;
 						if (ML_Physics.world().state().getRot(rigidbody->index(), rot))
 						{
-							transform->rotate(+(ev->elapsed.delta()), ml::vec3f::One);
-						}
-					}
-				}
-			}
-
-			// Cube
-			/* * * * * * * * * * * * * * * * * * * * */
-			if (ml::Entity * ent = ML_Res.entities.get("cube"))
-			{
-				if (ml::Rigidbody * rigidbody = ent->get<ml::Rigidbody>())
-				{
-					if (ml::Transform * transform = rigidbody->transform())
-					{
-						ml::vec3f pos;
-						if (ML_Physics.world().state().getPos(rigidbody->index(), pos))
-						{
-							transform->setPosition(pos);
-						}
-
-						ml::quat rot;
-						if (ML_Physics.world().state().getRot(rigidbody->index(), rot))
-						{
-							transform->rotate(-(ev->elapsed.delta()), ml::vec3f::One);
-						}
-					}
-				}
-			}
-
-			// Sanic
-			/* * * * * * * * * * * * * * * * * * * * */
-			if (ml::Entity * ent = ML_Res.entities.get("sanic"))
-			{
-				if (ml::Rigidbody * rigidbody = ent->get<ml::Rigidbody>())
-				{
-					if (ml::Transform * transform = rigidbody->transform())
-					{
-						ml::vec3f pos;
-						if (ML_Physics.world().state().getPos(rigidbody->index(), pos))
-						{
-							transform->setPosition(pos);
-						}
-
-						ml::quat rot;
-						if (ML_Physics.world().state().getRot(rigidbody->index(), rot))
-						{
-							transform->rotate(-(ev->elapsed.delta()), ml::vec3f::Forward);
-						}
-					}
-				}
-			}
-
-			// Moon
-			/* * * * * * * * * * * * * * * * * * * * */
-			if (ml::Entity * ent = ML_Res.entities.get("moon"))
-			{
-				if (ml::Rigidbody * rigidbody = ent->get<ml::Rigidbody>())
-				{
-					if (ml::Transform * transform = rigidbody->transform())
-					{
-						ml::vec3f pos;
-						if (ML_Physics.world().state().getPos(rigidbody->index(), pos))
-						{
-							transform->setPosition(pos);
-						}
-
-						ml::quat rot;
-						if (ML_Physics.world().state().getRot(rigidbody->index(), rot))
-						{
-							transform->rotate(-(ev->elapsed.delta()), ml::vec3f::Up);
-						}
-					}
-				}
-			}
-
-			// Earth
-			/* * * * * * * * * * * * * * * * * * * * */
-			if (ml::Entity * ent = ML_Res.entities.get("earth"))
-			{
-				if (ml::Rigidbody * rigidbody = ent->get<ml::Rigidbody>())
-				{
-					if (ml::Transform * transform = rigidbody->transform())
-					{
-						ml::vec3f pos;
-						if (ML_Physics.world().state().getPos(rigidbody->index(), pos))
-						{
-							transform->setPosition(pos);
-						}
-
-						ml::quat rot;
-						if (ML_Physics.world().state().getRot(rigidbody->index(), rot))
-						{
-							transform->rotate(+(ev->elapsed.delta()), ml::vec3f::Up);
+							transform->rotate(rot.real(), rot.complex());
 						}
 					}
 				}
