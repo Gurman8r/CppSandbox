@@ -64,17 +64,27 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 		Matrix()
 			: enumerable_type(m_data)
+			, m_data()
 		{
+			for (size_t i = 0; i < this->size(); i++)
+			{
+				(*this)[i] = static_cast<value_type>(0);
+			}
 		}
 
 		Matrix(const_reference value)
-			: self_type()
+			: enumerable_type(m_data)
+			, m_data()
 		{
-			this->fill(value);
+			for (size_t i = 0; i < this->size(); i++)
+			{
+				(*this)[i] = value;
+			}
 		}
 
 		Matrix(const_pointer value)
-			: self_type()
+			: enumerable_type(m_data)
+			, m_data()
 		{
 			for (size_t i = 0; i < this->size(); i++)
 			{
@@ -83,7 +93,8 @@ namespace ml
 		}
 
 		Matrix(const init_type & value)
-			: self_type()
+			: enumerable_type(m_data)
+			, m_data()
 		{
 			for (size_t i = 0; i < this->size(); i++)
 			{
@@ -95,8 +106,13 @@ namespace ml
 		}
 
 		Matrix(const self_type & value)
-			: self_type(value.m_data)
+			: enumerable_type(m_data)
+			, m_data()
 		{
+			for (size_t i = 0; i < this->size(); i++)
+			{
+				(*this)[i] = value[i];
+			}
 		}
 
 		template <
@@ -104,7 +120,8 @@ namespace ml
 			size_t	C,
 			size_t	R
 		> Matrix(const Matrix<E, C, R> & value, const_reference def = static_cast<value_type>(0))
-			: self_type()
+			: enumerable_type(m_data)
+			, m_data()
 		{
 			for (size_t i = 0; i < this->size(); i++)
 			{
@@ -153,34 +170,6 @@ namespace ml
 		inline const_reference	back()				const	{ return at(size() - 1);	}
 		inline const_pointer	data()				const	{ return &at(0);			}
 		inline const_reference	front()				const	{ return at(0);				}
-
-		/* * * * * * * * * * * * * * * * * * * * */
-
-		template <
-			class Iter
-		> inline self_type & copy(Iter first, Iter last)
-		{
-			std::copy(first, last, this->begin());
-			return (*this);
-		}
-
-		inline self_type & copy(const self_type & value)
-		{
-			return this->copy(value.begin(), value.end());
-		}
-
-		inline self_type & fill(const_reference value)
-		{
-			std::fill(this->begin(), this->end(), value);
-			return (*this);
-		}
-
-		inline self_type & swap(self_type & other)
-		{
-			std::swap(this->data(), other.data());
-			return other;
-		}
-
 
 	public: // Static Functions
 		/* * * * * * * * * * * * * * * * * * * * */
