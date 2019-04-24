@@ -16,6 +16,8 @@
 #include <MemeGraphics/Renderer.hpp>
 #include <MemeGraphics/ShaderAPI.hpp>
 #include <MemeGraphics/GraphicsEvents.hpp>
+#include <MemeGraphics/Canvas.hpp>
+#include <MemeGraphics/Light.hpp>
 #include <MemeEditor/Editor.hpp>
 #include <MemeEditor/EditorCommands.hpp>
 #include <MemeEditor/EditorEvents.hpp>
@@ -113,14 +115,6 @@ namespace DEMO
 				/* * * * * * * * * * * * * * * * * * * * */
 			}
 			break;
-
-			// Mouse Button Input
-			/* * * * * * * * * * * * * * * * * * * * */
-		case ml::WindowEvent::EV_MouseButton:
-			if (const auto * ev = value->as<ml::MouseButtonEvent>())
-			{
-			}
-			break;
 		}
 	}
 	
@@ -137,7 +131,7 @@ namespace DEMO
 			// Start Master Timer
 			ML_Time.start();
 
-			// Setup Std Out Redirect
+			// Setup Std Out
 			if (SETTINGS.redirStdOut && !(m_rdbuf = ml::cout.rdbuf(m_rdstr.rdbuf())))
 			{
 				return ml::Debug::fatal("Failed Redirecting Std Output Handle");
@@ -261,10 +255,6 @@ namespace DEMO
 
 	void Sandbox::onLoad(const ml::LoadEvent * ev)
 	{
-		// Setup Canvas
-		/* * * * * * * * * * * * * * * * * * * * */
-		m_canvas.create();
-
 		// Load Default Meshes
 		/* * * * * * * * * * * * * * * * * * * * */
 		ML_Res.meshes.load("default_triangle")->loadFromMemory(
@@ -304,13 +294,17 @@ namespace DEMO
 		{
 			ml::Debug::logError("Failed Loading Manifest");
 		}
+
+		// Create Canvas
+		/* * * * * * * * * * * * * * * * * * * * */
+		m_canvas.create();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	void Sandbox::onStart(const ml::StartEvent * ev)
 	{
-		// Set Window Icon
+		// Set Icon
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (const ml::Image * icon = ML_Res.images.get("icon"))
 		{
@@ -356,9 +350,9 @@ namespace DEMO
 		// Setup Sprites
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
-			if (ml::Sprite * s = ML_Res.sprites.get("neutrino"))
+			if (ml::Sprite * spr = ML_Res.sprites.get("neutrino"))
 			{
-				(*s).setPosition(ml::vec2f(0.95f, 0.075f) * this->getSize())
+				spr->setPosition(ml::vec2f(0.95f, 0.075f) * this->getSize())
 					.setScale	(0.5f)
 					.setRotation(0.0f)
 					.setOrigin	(0.5f)
@@ -371,7 +365,7 @@ namespace DEMO
 		{
 			// Light
 			/* * * * * * * * * * * * * * * * * * * * */
-			if (ml::Entity * ent = ML_Res.entities.load("light"))
+			if (ml::Entity * ent = ML_Res.entities.get("light"))
 			{
 				ml::Transform * transform = ent->add<ml::Transform>({
 					data.lightPos, // position
@@ -379,29 +373,31 @@ namespace DEMO
 					{ } // rotation
 				});
 
+				ml::Light * light = ent->add<ml::Light>({
+				});
+				light->color = ml::Color::LightYellow;
+
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("light"),
-					ML_Res.shaders.get("solid"),
-					ml::RenderStates
-					{
+					ml::RenderStates({
 						{ ml::GL::AlphaTest,	{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::Blend,		{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::CullFace,		{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::DepthTest,	{ ml::RenderVar::Bool, 1 } },
-					},
-					ml::UniformSet
+					}),
+					ml::Material(ML_Res.shaders.get("solid"), 
 					{
 						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&m_camera.persp().matrix() },
 						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&m_camera.transform().matrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&data.lightCol },
-					}
+					})
 				});
 			}
 
 			// Borg
 			/* * * * * * * * * * * * * * * * * * * * */
-			if (ml::Entity * ent = ML_Res.entities.load("borg"))
+			if (ml::Entity * ent = ML_Res.entities.get("borg"))
 			{
 				ml::Transform * transform = ent->add<ml::Transform>({
 					{ 5.0f, 0.0f, 0.0f }, // position
@@ -409,34 +405,32 @@ namespace DEMO
 					{ } // rotation
 				});
 
+				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
+					DEMO_BORG, transform
+				});
+
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("borg"),
-					ML_Res.shaders.get("basic"),
-					ml::RenderStates
-					{
+					ml::RenderStates({
 						{ ml::GL::AlphaTest,	{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::Blend,		{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::CullFace,		{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::DepthTest,	{ ml::RenderVar::Bool, 1 } },
-					},
-					ml::UniformSet
+					}),
+					ml::Material(ML_Res.shaders.get("basic"), 
 					{
 						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&m_camera.persp().matrix() },
 						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&m_camera.transform().matrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("borg") },
-					}
-				});
-
-				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
-					DEMO_BORG, transform
+					})
 				});
 			}
 
 			// Cube
 			/* * * * * * * * * * * * * * * * * * * * */
-			if (ml::Entity * ent = ML_Res.entities.load("cube"))
+			if (ml::Entity * ent = ML_Res.entities.get("cube"))
 			{
 				ml::Transform * transform = ent->add<ml::Transform>({
 					{ 0.0f, 0.0f, -5.0f }, // position
@@ -444,34 +438,32 @@ namespace DEMO
 					{ } // rotation
 				});
 
+				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
+					DEMO_CUBE, transform
+				});
+
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("cube"),
-					ML_Res.shaders.get("normal"),
-					ml::RenderStates
-					{
+					ml::RenderStates({
 						{ ml::GL::AlphaTest,	{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::Blend,		{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::CullFace,		{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::DepthTest,	{ ml::RenderVar::Bool, 1 } },
-					},
-					ml::UniformSet
+					}),
+					ml::Material(ML_Res.shaders.get("normal"), 
 					{
 						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&m_camera.persp().matrix() },
 						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&m_camera.transform().matrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm") },
-					}
-				});
-
-				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
-					DEMO_CUBE, transform
+					})
 				});
 			}
 
 			// Sanic
 			/* * * * * * * * * * * * * * * * * * * * */
-			if (ml::Entity * ent = ML_Res.entities.load("sanic"))
+			if (ml::Entity * ent = ML_Res.entities.get("sanic"))
 			{
 				ml::Transform * transform = ent->add<ml::Transform>({
 					{ -5.0f, 0.0f, 0.0f }, // position
@@ -479,34 +471,32 @@ namespace DEMO
 					{ } // rotation
 				});
 
+				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
+					DEMO_SANIC, transform
+				});
+
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("sanic"),
-					ML_Res.shaders.get("basic"),
-					ml::RenderStates
-					{
+					ml::RenderStates({
 						{ ml::GL::AlphaTest,	{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::Blend,		{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::CullFace,		{ ml::RenderVar::Bool, 0 } },
 						{ ml::GL::DepthTest,	{ ml::RenderVar::Bool, 1 } },
-					},
-					ml::UniformSet
+					}),
+					ml::Material(ML_Res.shaders.get("basic"),
 					{
 						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&m_camera.persp().matrix() },
 						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&m_camera.transform().matrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("sanic") },
-					}
-				});
-
-				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
-					DEMO_SANIC, transform
+					})
 				});
 			}
 
 			// Moon
 			/* * * * * * * * * * * * * * * * * * * * */
-			if (ml::Entity * ent = ML_Res.entities.load("moon"))
+			if (ml::Entity * ent = ML_Res.entities.get("moon"))
 			{
 				ml::Transform * transform = ent->add<ml::Transform>({
 					{ 0.0f, 0.0f, 5.0f }, // position
@@ -514,17 +504,19 @@ namespace DEMO
 					{ } // rotation
 				});
 
+				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
+					DEMO_MOON, transform
+				});
+
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("moon"),
-					ML_Res.shaders.get("lighting"),
-					ml::RenderStates
-					{
+					ml::RenderStates({
 						{ ml::GL::AlphaTest,	{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::Blend,		{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::CullFace,		{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::DepthTest,	{ ml::RenderVar::Bool, 1 } },
-					},
-					ml::UniformSet
+					}),
+					ml::Material(ML_Res.shaders.get("lighting"),
 					{
 						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&m_camera.persp().matrix() },
 						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&m_camera.transform().matrix() },
@@ -537,17 +529,13 @@ namespace DEMO
 						{ "Frag.ambient",	ml::Uniform::Float, &data.ambient },
 						{ "Frag.specular",	ml::Uniform::Float, &data.specular },
 						{ "Frag.shininess",	ml::Uniform::Int,	&data.shininess },
-					}
-				});
-
-				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
-					DEMO_MOON, transform
+					})
 				});
 			}
 
 			// Earth
 			/* * * * * * * * * * * * * * * * * * * * */
-			if (ml::Entity * ent = ML_Res.entities.load("earth"))
+			if (ml::Entity * ent = ML_Res.entities.get("earth"))
 			{
 				ml::Transform * transform = ent->add<ml::Transform>({
 					{ 0.0f }, // position
@@ -555,17 +543,19 @@ namespace DEMO
 					{ } // rotation
 				});
 
+				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
+					DEMO_EARTH, transform
+				});
+
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("earth"),
-					ML_Res.shaders.get("lighting"),
-					ml::RenderStates
-					{
+					ml::RenderStates({
 						{ ml::GL::AlphaTest,	{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::Blend,		{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::CullFace,		{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::DepthTest,	{ ml::RenderVar::Bool, 1 } },
-					},
-					ml::UniformSet
+					}),
+					ml::Material(ML_Res.shaders.get("lighting"), 
 					{
 						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&m_camera.persp().matrix() },
 						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&m_camera.transform().matrix() },
@@ -578,17 +568,13 @@ namespace DEMO
 						{ "Frag.ambient",	ml::Uniform::Float, &data.ambient },
 						{ "Frag.specular",	ml::Uniform::Float, &data.specular },
 						{ "Frag.shininess",	ml::Uniform::Int,	&data.shininess },
-					}
-				});
-
-				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
-					DEMO_EARTH, transform
+					})
 				});
 			}
 
 			// Ground
 			/* * * * * * * * * * * * * * * * * * * * */
-			if (ml::Entity * ent = ML_Res.entities.load("ground"))
+			if (ml::Entity * ent = ML_Res.entities.get("ground"))
 			{
 				ml::Transform * transform = ent->add<ml::Transform>({
 					{ 0.0f, -2.5f, 0.0f }, // position
@@ -596,28 +582,26 @@ namespace DEMO
 					{ } // rotation
 				});
 
+				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
+					DEMO_GROUND, transform
+				});
+
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("ground"),
-					ML_Res.shaders.get("normal"),
-					ml::RenderStates
-					{
+					ml::RenderStates({
 						{ ml::GL::AlphaTest,	{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::Blend,		{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::CullFace,		{ ml::RenderVar::Bool, 1 } },
 						{ ml::GL::DepthTest,	{ ml::RenderVar::Bool, 1 } },
-					},
-					ml::UniformSet
+					}),
+					ml::Material(ML_Res.shaders.get("normal"), 
 					{
 						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&m_camera.persp().matrix() },
 						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&m_camera.transform().matrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm") },
-					}
-				});
-
-				ml::Rigidbody * rigidbody = ent->add<ml::Rigidbody>({
-					DEMO_GROUND, transform
+					})
 				});
 			}
 		}
@@ -632,15 +616,18 @@ namespace DEMO
 
 			for (const auto & pair : ML_Res.entities)
 			{
-				if (const ml::Rigidbody * rb = pair.second->get<ml::Rigidbody>())
+				if (const ml::Rigidbody * rigidbody = pair.second->get<ml::Rigidbody>())
 				{
-					ML_Physics.world().state().setData(
-						rb->index(), 
-						rb->transform()->getPosition(),
-						ml::quat(),
-						rb->transform()->matrix(),
-						rb->transform()->getInverse()
-					);
+					if (const ml::Transform * transform = rigidbody->transform())
+					{
+						ML_Physics.world().state().setData(
+							rigidbody->index(),
+							transform->getPosition(),
+							ml::quat(),
+							transform->matrix(),
+							transform->getInverse()
+						);
+					}
 				}
 			}
 
@@ -712,14 +699,14 @@ namespace DEMO
 
 	void Sandbox::onUpdate(const ml::UpdateEvent * ev)
 	{
-		// Update Std Out Redirect
+		// Update Std Out
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (m_rdbuf)
 		{
 			ML_Terminal.printss(m_rdstr);
 		}
 
-		// Update Window Title
+		// Update Title
 		/* * * * * * * * * * * * * * * * * * * * */
 		{
 			this->setTitle(ml::String("{0} | {1} | {2} | {3} ms/frame ({4} fps)").format(
@@ -790,8 +777,8 @@ namespace DEMO
 						ml::quat  rot;
 						ml::mat4f mat;
 						ml::mat4f inv;
-						if (ML_Physics.world().state().getData(
-							rigidbody->index(), pos, rot, mat, inv
+						if (ML_Physics.world().state().getData(rigidbody->index(), 
+							pos, rot, mat, inv
 						))
 						{
 							transform->setPosition(pos);
@@ -880,8 +867,7 @@ namespace DEMO
 					this->getCursorPos()));
 
 			m_text["window_pos"]
-				.setFont(font)
-				.setFontSize(fontSize)
+				
 				.setPosition(newLine())
 				.setString(ml::String("wx/wy: {0}").format(
 					this->getPosition()));
@@ -908,15 +894,12 @@ namespace DEMO
 		if (const ml::Effect * scene = ML_Res.effects.get("frame_main"))
 		{
 			// Bind Scene
-			/* * * * * * * * * * * * * * * * * * * * */
 			scene->bind();
 
 			// Clear Screen
-			/* * * * * * * * * * * * * * * * * * * * */
 			this->clear(data.clearColor);
 
 			// Draw Entities
-			/* * * * * * * * * * * * * * * * * * * * */
 			for (const auto & pair : ML_Res.entities)
 			{
 				if (const ml::Renderer * renderer = pair.second->get<ml::Renderer>())
@@ -928,43 +911,27 @@ namespace DEMO
 			// Draw 2D
 			/* * * * * * * * * * * * * * * * * * * * */
 			{
-				static ml::RenderStates states =
-				{
+				// Setup States
+				static ml::RenderStates states
+				({
 					{ ml::GL::AlphaTest,	{ ml::RenderVar::Bool, 1 } },
 					{ ml::GL::Blend,		{ ml::RenderVar::Bool, 1 } },
 					{ ml::GL::CullFace,		{ ml::RenderVar::Bool, 0 } },
 					{ ml::GL::DepthTest,	{ ml::RenderVar::Bool, 0 } },
-				};
+					{ ml::GL::Texture2D,	{ ml::RenderVar::Bool, 1 } },
+				});
 				states.apply();
 
-				// Draw Geometry
-				/* * * * * * * * * * * * * * * * * * * * */
-				if (const ml::Shader * shader = ML_Res.shaders.get("geometry"))
-				{
-					static ml::UniformSet uniforms = 
-					{
-						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&data.lineColor },
-						{ "Geom.mode",		ml::Uniform::Int,	&data.lineMode },
-						{ "Geom.delta",		ml::Uniform::Float, &data.lineDelta },
-						{ "Geom.size",		ml::Uniform::Float, &data.lineSize },
-						{ "Geom.samples",	ml::Uniform::Int,	&data.lineSamples },
-					};
-					shader->applyUniforms(uniforms);
-					shader->bind();
-					ML_GL.drawArrays(ml::GL::Points, 0, 4);
-				}
-
 				// Draw Sprites
-				/* * * * * * * * * * * * * * * * * * * * */
 				if (const ml::Shader * shader = ML_Res.shaders.get("sprites"))
 				{
-					static ml::RenderBatch batch(&m_canvas.vao(), &m_canvas.vbo(), shader,
-						{
-							{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&m_camera.ortho().matrix() },
-							{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4 },
-							{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D },
-						}
-					);
+					static ml::RenderBatch batch(&m_canvas.vao(), &m_canvas.vbo(), { shader,
+					{
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&m_camera.ortho().matrix() },
+						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4 },
+						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D },
+					} });
+					
 					for (const auto & pair : ML_Res.sprites)
 					{
 						this->draw((*pair.second), batch);
@@ -972,29 +939,42 @@ namespace DEMO
 				}
 
 				// Draw Text
-				/* * * * * * * * * * * * * * * * * * * * */
 				if (const ml::Shader * shader = ML_Res.shaders.get("text"))
 				{
-					static ml::RenderBatch batch(&m_canvas.vao(), &m_canvas.vbo(), shader, 
-						{
-							{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&m_camera.ortho().matrix() },
-							{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4 },
-							{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D },
-						}
-					);
+					static ml::RenderBatch batch(&m_canvas.vao(), &m_canvas.vbo(), { shader,
+					{
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&m_camera.ortho().matrix() },
+						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4 },
+						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D },
+					} });
+
 					for (const auto & pair : m_text)
 					{
 						this->draw(pair.second, batch);
 					}
 				}
+
+				// Draw Geometry
+				if (const ml::Shader * shader = ML_Res.shaders.get("geometry"))
+				{
+					static ml::Material material = { shader, 
+					{
+						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&data.lineColor },
+						{ "Geom.mode",		ml::Uniform::Int,	&data.lineMode },
+						{ "Geom.delta",		ml::Uniform::Float, &data.lineDelta },
+						{ "Geom.size",		ml::Uniform::Float, &data.lineSize },
+						{ "Geom.samples",	ml::Uniform::Int,	&data.lineSamples },
+					} };
+					material.apply();
+					ML_GL.drawArrays(ml::GL::Points, 0, 4);
+				}
 			}
 
 			// Unbind Scene
-			/* * * * * * * * * * * * * * * * * * * * */
 			scene->unbind();
 		}
 
-		// Draw Post Processing
+		// Draw Post
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (const ml::Effect * post = ML_Res.effects.get("frame_post"))
 		{
@@ -1002,12 +982,8 @@ namespace DEMO
 			{
 				if (const ml::Shader * shader = scene->shader())
 				{
-					static ml::UniformSet uniforms = 
-					{
-						{ "Effect.mode", ml::Uniform::Int, &data.effectMode },
-					};
 					post->bind();
-					shader->applyUniforms(uniforms);
+					shader->setUniform({ "Effect.mode", ml::Uniform::Int, &data.effectMode });
 					this->draw(*scene);
 					post->unbind();
 				}
@@ -1129,7 +1105,7 @@ namespace DEMO
 	{
 		ml::Debug::log("Unloading...");
 
-		// Cleanup Std Out Redirect
+		// Cleanup Std Out
 		if (m_rdbuf) 
 		{ 
 			ml::cout.rdbuf(m_rdbuf);

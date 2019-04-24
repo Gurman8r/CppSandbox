@@ -203,21 +203,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Shader::applyUniforms(const UniformSet & value) const
-	{
-		size_t count = 0;
-		UniformSet::const_iterator it;
-		for (it = value.begin(); it != value.end(); it++)
-		{
-			if (applyUniform(it->second))
-			{
-				count++;
-			}
-		}
-		return count;
-	}
-
-	bool Shader::applyUniform(const Uniform & u) const
+	bool Shader::setUniform(const Uniform & u) const
 	{
 		if (u.name && u.data && u.type)
 		{
@@ -238,7 +224,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 	
-	bool Shader::setUniform(const String & name, const float & value) const
+	bool Shader::setUniform(const String & name, const float value) const
 	{
 		UniformBinder u(this, name);
 		if (u)
@@ -248,7 +234,7 @@ namespace ml
 		return u;
 	}
 	
-	bool Shader::setUniform(const String & name, const int32_t & value) const
+	bool Shader::setUniform(const String & name, const int32_t value) const
 	{
 		UniformBinder u(this, name);
 		if (u)

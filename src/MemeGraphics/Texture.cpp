@@ -276,6 +276,7 @@ namespace ml
 		return update(other.copyToImage(), x, y, w, h);
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool Texture::update(const Image & image)
 	{
@@ -297,7 +298,8 @@ namespace ml
 		return update(&image.pixels()[0], x, y, w, h);
 	}
 
-	
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	bool Texture::update(const uint8_t * pixels)
 	{
 		return update(pixels, width(), height());

@@ -39,13 +39,12 @@ namespace ml
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
-		bool applyUniforms(const UniformSet & value) const;
-		bool applyUniform(const Uniform & value) const;
+		bool setUniform(const Uniform & value) const;
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
-		bool setUniform(const String & name, const float & value) const;
-		bool setUniform(const String & name, const int32_t & value) const;
+		bool setUniform(const String & name, const float value) const;
+		bool setUniform(const String & name, const int32_t value) const;
 		bool setUniform(const String & name, const vec2f & value) const;
 		bool setUniform(const String & name, const vec3f & value) const;
 		bool setUniform(const String & name, const vec4f & value) const;

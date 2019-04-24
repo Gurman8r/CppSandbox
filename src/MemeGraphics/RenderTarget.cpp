@@ -53,20 +53,14 @@ namespace ml
 
 	RenderTarget & RenderTarget::draw(const float * vertices, const size_t vertexCount, const RenderBatch & batch)
 	{
-		if (batch.shader)
-		{
-			batch.shader->applyUniforms(batch.uniforms);
-			batch.shader->bind();
-		}
+		batch.mat.apply();
 
 		if (batch.vbo && batch.vbo)
 		{
-			if (*batch.vbo)
-			{
-				batch.vbo->bind();
-				batch.vbo->bufferSubData(vertices, (uint32_t)vertexCount, 0);
-				batch.vbo->unbind();
-			}
+			batch.vbo->bind();
+			batch.vbo->bufferSubData(vertices, (uint32_t)(vertexCount), 0);
+			batch.vbo->unbind();
+
 			return draw((*batch.vao), (*batch.vbo));
 		}
 		else

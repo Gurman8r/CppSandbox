@@ -6,31 +6,27 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
+	Renderer::Renderer()
+		: m_drawable(NULL)
+		, m_states	()
+		, m_material()
+	{
+	}
+
 	Renderer::Renderer(
-		const IDrawable		* drawable,
-		const Shader		* shader,
-		const RenderStates	& states,
-		const UniformSet	& uniforms)
+		const IDrawable		* drawable, 
+		const RenderStates	& states, 
+		const Material		& material)
 		: m_drawable(drawable)
-		, m_shader(shader)
-		, m_states(states)
-		, m_uniforms(uniforms)
+		, m_states	(states)
+		, m_material(material)
 	{
 	}
 
-	Renderer::Renderer() : Renderer(
-		NULL, 
-		NULL,
-		RenderStates(), 
-		UniformSet())
-	{
-	}
-
-	Renderer::Renderer(const Renderer & copy) : Renderer(
-		copy.m_drawable, 
-		copy.m_shader, 
-		copy.m_states, 
-		copy.m_uniforms)
+	Renderer::Renderer(const Renderer & copy)
+		: m_drawable(copy.m_drawable)
+		, m_states	(copy.m_states)
+		, m_material(copy.m_material)
 	{
 	}
 
@@ -42,13 +38,11 @@ namespace ml
 
 	void Renderer::draw(RenderTarget & target, RenderBatch batch) const
 	{
-		if (m_drawable && m_shader)
+		if (m_drawable && m_material.shader())
 		{
 			m_states.apply();
 
-			m_shader->applyUniforms(m_uniforms);
-
-			m_shader->bind();
+			m_material.apply();
 
 			target.draw(*m_drawable);
 		}

@@ -43,4 +43,10 @@
 	file = ../../../assets/scripts/fizzbuzz.meme
 </item>
 
+<item>
+	type = script
+	name = loader
+	file = ../../../assets/scripts/loader.meme
+</item>
+
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #

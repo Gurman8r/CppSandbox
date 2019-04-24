@@ -1,9 +1,39 @@
 # Entities
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
-#<item>
-#	type =	entity
-#	name =	test
-#</item>
+<item>
+	type = entity
+	name = light
+</item>
+
+<item>
+	type = entity
+	name = borg
+</item>
+
+<item>
+	type = entity
+	name = cube
+</item>
+
+<item>
+	type = entity
+	name = sanic
+</item>
+
+<item>
+	type = entity
+	name = moon
+</item>
+
+<item>
+	type = entity
+	name = earth
+</item>
+
+<item>
+	type = entity
+	name = ground
+</item>
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #

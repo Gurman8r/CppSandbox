@@ -19,7 +19,7 @@ namespace ml
 		static Var cmd_cwd		(Args & args); // Print Working Directory
 		static Var cmd_exec		(Args & args); // Execute File
 		static Var cmd_exists	(Args & args); // Check Exists (File/Var)
-		static Var cmd_exit		(Args & args); // Fire RequestExitEvent
+		static Var cmd_exit		(Args & args); // Close Application
 		static Var cmd_get		(Args & args); // Get Variable
 		static Var cmd_getcwd	(Args & args); // Return Working Directory
 		static Var cmd_help		(Args & args); // Display Installed Commands

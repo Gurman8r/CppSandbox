@@ -51,6 +51,7 @@ namespace ml
 		Registry<Font>		fonts;
 		Registry<Image>		images;
 		Registry<LuaScript>	lua;
+		Registry<Material>	materials;
 		Registry<Mesh>		meshes;
 		Registry<Model>		models;
 		Registry<Plugin>	plugins;

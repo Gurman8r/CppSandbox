@@ -343,5 +343,8 @@
     <None Include="..\..\assets\materials\placeholder.mat">
       <Filter>Resource Files\assets\materials</Filter>
     </None>
+    <None Include="..\..\assets\scripts\loader.meme">
+      <Filter>Resource Files\assets\scripts</Filter>
+    </None>
   </ItemGroup>
 </Project>

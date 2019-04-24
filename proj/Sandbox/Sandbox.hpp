@@ -36,14 +36,13 @@ namespace DEMO
 	private:
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		using TextMap = typename ml::HashMap<ml::String, ml::Text>;
-
-		ml::Camera		m_camera;
-		ml::Canvas		m_canvas;
-		TextMap			m_text;
+		using TextTable = typename ml::HashMap<ml::String, ml::Text>;
 
 		ml::SStream		m_rdstr;
 		ml::StreamBuf * m_rdbuf = NULL;
+		ml::Camera		m_camera;
+		ml::Canvas		m_canvas;
+		TextTable		m_text;
 
 		struct DemoData
 		{

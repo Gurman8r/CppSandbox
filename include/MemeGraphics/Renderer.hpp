@@ -3,6 +3,7 @@
 
 #include <MemeGraphics/IDrawable.hpp>
 #include <MemeGraphics/RenderStates.hpp>
+#include <MemeGraphics/Material.hpp>
 
 namespace ml
 {
@@ -13,36 +14,34 @@ namespace ml
 		, public IDrawable
 	{
 	public:
+		Renderer();
+
 		Renderer(
 			const IDrawable		* drawable,
-			const Shader		* shader,
 			const RenderStates	& states,
-			const UniformSet	& uniforms);
+			const Material		& material);
 
-		Renderer();
 		Renderer(const Renderer & copy);
+
 		virtual ~Renderer();
 
 	public:
-		inline const IDrawable		* drawable()	const { return m_drawable;	}
-		inline const Shader			* shader()		const { return m_shader;	}
-		inline const RenderStates	& states()		const { return m_states;	}
-		inline const UniformSet		& uniforms()	const { return m_uniforms;	}
+		inline const IDrawable		* drawable() const	{ return m_drawable; }
+		inline const RenderStates	& states()	 const	{ return m_states; }
+		inline const Material		& material() const	{ return m_material; }
 
 	public:
-		inline const IDrawable *	& drawable()	{ return m_drawable;	}
-		inline const Shader *		& shader()		{ return m_shader;		}
-		inline RenderStates			& states()		{ return m_states;		}
-		inline UniformSet			& uniforms()	{ return m_uniforms;	}
+		inline const IDrawable *	& drawable()		{ return m_drawable; }
+		inline RenderStates			& states()			{ return m_states; }
+		inline Material				& material()		{ return m_material; }
 
 	public:
 		void draw(RenderTarget & target, RenderBatch batch) const override;
 
 	private:
 		const IDrawable *	m_drawable;
-		const Shader *		m_shader;
 		RenderStates		m_states;
-		UniformSet			m_uniforms;
+		Material			m_material;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

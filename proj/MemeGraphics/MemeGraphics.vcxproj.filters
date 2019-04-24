@@ -37,12 +37,6 @@
     <Filter Include="Source Files\Utility">
       <UniqueIdentifier>{70520228-82c3-4544-8907-42e3e4ecce42}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Internal">
-      <UniqueIdentifier>{e6925aeb-bae2-4cf0-bfbb-70aba96f9b5e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Internal">
-      <UniqueIdentifier>{18eb3d43-0a77-4af5-9975-896e67ff95dc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Handles">
       <UniqueIdentifier>{4977d517-feb9-4227-b6fb-ba795bdc1809}</UniqueIdentifier>
     </Filter>
@@ -72,12 +66,6 @@
     <ClInclude Include="..\..\include\MemeGraphics\Vertex.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\GL.hpp">
-      <Filter>Header Files\Internal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\OpenGL.hpp">
-      <Filter>Header Files\Internal</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Text.hpp">
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
@@ -98,9 +86,6 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\UniformSet.hpp">
       <Filter>Header Files\DS</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Canvas.hpp">
-      <Filter>Header Files\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Skybox.hpp">
       <Filter>Header Files\DS</Filter>
@@ -168,6 +153,21 @@
     <ClInclude Include="..\..\include\MemeGraphics\Texture.hpp">
       <Filter>Header Files\Handles</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\Material.hpp">
+      <Filter>Header Files\DS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\Canvas.hpp">
+      <Filter>Header Files\DS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\OpenGL.hpp">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\GL.hpp">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\Light.hpp">
+      <Filter>Header Files\DS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeGraphics\Color.cpp">
@@ -184,9 +184,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Font.cpp">
       <Filter>Source Files\DS</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeGraphics\OpenGL.cpp">
-      <Filter>Source Files\Internal</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Uniform.cpp">
       <Filter>Source Files\DS</Filter>
@@ -208,9 +205,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\UniformSet.cpp">
       <Filter>Source Files\DS</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeGraphics\Canvas.cpp">
-      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Skybox.cpp">
       <Filter>Source Files\DS</Filter>
@@ -265,6 +259,18 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Shader.cpp">
       <Filter>Source Files\Handles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\Material.cpp">
+      <Filter>Source Files\DS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\Light.cpp">
+      <Filter>Source Files\DS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\Canvas.cpp">
+      <Filter>Source Files\DS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeGraphics\OpenGL.cpp">
+      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

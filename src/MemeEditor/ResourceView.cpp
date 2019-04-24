@@ -9,6 +9,7 @@
 #include <MemeCore/CoreEvents.hpp>
 #include <MemeCore/EventSystem.hpp>
 #include <MemeGraphics/Renderer.hpp>
+#include <MemeGraphics/Light.hpp>
 #include <MemePhysics/Rigidbody.hpp>
 
 namespace ml
@@ -290,6 +291,26 @@ namespace ml
 							});
 						}
 
+						// Light
+						/* * * * * * * * * * * * * * * * * * * * */
+						if (Light * light = ent->get<Light>())
+						{
+							Funcs::Group("Light", [&]()
+							{
+								ImGui::Text("OK");
+							});
+						}
+
+						// Rigidbody
+						/* * * * * * * * * * * * * * * * * * * * */
+						if (Rigidbody * rigidbody = ent->get<Rigidbody>())
+						{
+							Funcs::Group("Rigidbody", [&]()
+							{
+								ImGui::Text("OK");
+							});
+						}
+
 						// Renderer
 						/* * * * * * * * * * * * * * * * * * * * */
 						if (Renderer * renderer = ent->get<Renderer>())
@@ -319,7 +340,7 @@ namespace ml
 								Funcs::Field("Shader", [&](CString)
 								{
 									List<String> keys = ML_Res.shaders.getKeys();
-									int32_t index = ML_Res.shaders.indexOf(renderer->shader());
+									int32_t index = ML_Res.shaders.indexOf(renderer->material().shader());
 									if (ImGui::Combo(
 										"##Shader##Renderer",
 										&index,
@@ -329,7 +350,7 @@ namespace ml
 									{
 										if (const Shader * value = ML_Res.shaders.atIndex(index))
 										{
-											renderer->shader() = value;
+											renderer->material().shader() = value;
 										}
 									}
 								});
@@ -384,7 +405,7 @@ namespace ml
 								// Uniforms
 								Funcs::Group("Uniforms", [&]()
 								{
-									for (auto & pair : renderer->uniforms())
+									for (auto & pair : renderer->material().uniforms())
 									{
 										ImGui::PushID(pair.second.name.c_str());
 										Funcs::Field(pair.first.c_str(), [&](CString, Uniform * uni)
@@ -457,16 +478,6 @@ namespace ml
 										ImGui::PopID();
 									}
 								});
-							});
-						}
-
-						// Rigidbody
-						/* * * * * * * * * * * * * * * * * * * * */
-						if (Rigidbody * rigidbody = ent->get<Rigidbody>())
-						{
-							Funcs::Group("Rigidbody", [&]()
-							{
-								ImGui::Text("OK");
 							});
 						}
 					}

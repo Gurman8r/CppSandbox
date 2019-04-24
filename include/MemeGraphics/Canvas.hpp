@@ -8,8 +8,8 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	// WIP, Meant to take over for 2D rendering
-	class ML_GRAPHICS_API Canvas
+	// Used to store and create a VAO and VBO for 2D rendering
+	class ML_GRAPHICS_API Canvas final
 		: public ITrackable
 		, public INonCopyable
 	{

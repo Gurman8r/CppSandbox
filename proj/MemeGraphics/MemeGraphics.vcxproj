@@ -32,6 +32,8 @@
     <ClInclude Include="..\..\include\MemeGraphics\Glyph.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Image.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\IndexBuffer.hpp" />
+    <ClInclude Include="..\..\include\MemeGraphics\Light.hpp" />
+    <ClInclude Include="..\..\include\MemeGraphics\Material.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\VertexList.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Mesh.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Model.hpp" />
@@ -68,6 +70,8 @@
     <ClCompile Include="..\..\src\MemeGraphics\Font.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\FrameBuffer.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\IndexBuffer.cpp" />
+    <ClCompile Include="..\..\src\MemeGraphics\Light.cpp" />
+    <ClCompile Include="..\..\src\MemeGraphics\Material.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\VertexList.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Model.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\OpenGL.cpp" />

@@ -92,10 +92,10 @@ namespace ml
 	{
 		if (m_texture)
 		{
-			if (Uniform * u = batch.uniforms.find(ML_FRAG_MAIN_COL))
+			if (Uniform * u = batch.mat.uniforms().find(ML_FRAG_MAIN_COL))
 				u->data = &m_color;
 			
-			if (Uniform * u = batch.uniforms.find(ML_FRAG_MAIN_TEX))
+			if (Uniform * u = batch.mat.uniforms().find(ML_FRAG_MAIN_TEX))
 				u->data = m_texture;
 
 			const ml::vec2f size = (scale() * m_texture->size());

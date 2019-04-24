@@ -235,6 +235,7 @@
     <None Include="..\..\assets\scripts\files.meme" />
     <None Include="..\..\assets\scripts\fizzbuzz.meme" />
     <None Include="..\..\assets\scripts\hello.meme" />
+    <None Include="..\..\assets\scripts\loader.meme" />
     <None Include="..\..\assets\scripts\stub.meme" />
     <None Include="..\..\assets\scripts\test.meme" />
     <None Include="..\..\assets\scripts\tool.meme" />
