@@ -18,7 +18,7 @@ void main()
 
 struct Frag_Uniforms
 {
-	vec3		camPos;
+	vec3		cameraPos;
 	vec3		lightPos;
 	vec4		lightCol;
 	float		ambient;
@@ -44,7 +44,7 @@ void main()
 	vec4	diffuse = (diffCol * diffTex);
 
 	// Specular		 
-	vec3	specCam = normalize(Frag.camPos - In.Position);
+	vec3	specCam = normalize(Frag.cameraPos - In.Position);
 	vec3	specRfl = reflect(-diffDir, diffNml);
 	float	specAmt = pow(max(dot(specCam, specRfl), 0.0), Frag.shininess);
 	vec4	specCol = vec4(Frag.specular * specAmt * Frag.lightCol.rgb, 1.0);

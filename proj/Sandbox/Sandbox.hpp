@@ -5,6 +5,7 @@
 #include <MemeGraphics/Text.hpp>
 #include <MemeGraphics/Camera.hpp>
 #include <MemeGraphics/Canvas.hpp>
+#include <MemeGraphics/Light.hpp>
 
 namespace DEMO
 {
@@ -40,7 +41,6 @@ namespace DEMO
 
 		ml::SStream		m_rdstr;
 		ml::StreamBuf * m_rdbuf = NULL;
-		ml::Camera		m_camera;
 		ml::Canvas		m_canvas;
 		TextTable		m_text;
 
@@ -50,12 +50,10 @@ namespace DEMO
 			ml::vec4f		clearColor	= { 0.025f, 0.025f, 0.025f, 1.0f };
 			
 			// Camera
-			bool			camAnim		= true;
-			float			camSpd		= 1.0f;
+			bool			camMove		= true;
+			float			camSpeed	= 1.0f;
 			
 			// Light
-			ml::vec3f		lightPos	= { 0, 1, 30 };
-			ml::vec4f		lightCol	= ml::Color::LightYellow;
 			float			ambient		= 0.01f;
 			float			specular	= 0.5f;
 			int32_t			shininess	= 8;

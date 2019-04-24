@@ -65,27 +65,6 @@
 # endif
 
 
-//	Compiler Macro
-/* * * * * * * * * * * * * * * * * * * */
-# ifdef ML_SYSTEM_WINDOWS
-# 	ifdef _MSC_VER
-#		define ML_MSC _MSC_VER
-# 	endif
-# else
-# 	ifdef __GNUC__
-#		define ML_GCC __GNUC__
-# 	endif
-# endif
-
-# if defined(ML_MSC)
-#	define ML_CC "MSC"
-# elif defined(ML_GCC)
-#	define ML_CC "GCC"
-# else
-#	define ML_CC "???"
-# endif
-
-
 //	Platform Macro (x86 / x64)
 /* * * * * * * * * * * * * * * * * * * */
 # if defined(ML_SYSTEM_WINDOWS)
@@ -94,7 +73,7 @@
 #	else
 #		define ML_x86
 #	endif
-# elif defined(ML_GCC)
+# elif defined(__GNUC__)
 #	if defined(__x86_64__) || defined(__ppc64__)
 #		define ML_x64
 #	else
@@ -109,7 +88,7 @@
 # elif defined(ML_x86)
 #	define ML_PLATFORM "x86"
 # else
-#	define ML_PLATFORM "???"
+#	define ML_PLATFORM "x??"
 # endif
 
 
@@ -119,13 +98,13 @@
 #	ifdef ML_SYSTEM_WINDOWS
 #		define ML_API_EXPORT __declspec(dllexport)
 #		define ML_API_IMPORT __declspec(dllimport)
-#		ifdef ML_MSC
+#		ifdef _MSC_VER
 #			pragma warning(disable: 4031)
 #			pragma warning(disable: 4099)
 #			pragma warning(disable: 4251)
 #		endif
 #	else
-#		if ML_GCC >= 4
+#		if __GNUC__ >= 4
 #			define ML_API_EXPORT __attribute__ ((__visibility__ ("default")))
 #			define ML_API_IMPORT __attribute__ ((__visibility__ ("default")))
 #		else

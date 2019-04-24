@@ -1,5 +1,6 @@
 #include <MemeGraphics/Material.hpp>
 #include <MemeCore/Debug.hpp>
+#include <MemeCore/File.hpp>
 
 namespace ml
 {

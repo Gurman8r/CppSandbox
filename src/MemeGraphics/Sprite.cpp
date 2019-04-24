@@ -92,18 +92,18 @@ namespace ml
 	{
 		if (m_texture)
 		{
-			if (Uniform * u = batch.mat.uniforms().find(ML_FRAG_MAIN_COL))
-				u->data = &m_color;
+			if (Uniform * col = batch.mat.uniforms().find(ML_FRAG_MAIN_COL))
+				col->data = &m_color;
 			
-			if (Uniform * u = batch.mat.uniforms().find(ML_FRAG_MAIN_TEX))
-				u->data = m_texture;
+			if (Uniform * tex = batch.mat.uniforms().find(ML_FRAG_MAIN_TEX))
+				tex->data = m_texture;
 
 			const ml::vec2f size = (scale() * m_texture->size());
 			const ml::vec2f dest = (position() - (size * origin()));
 
 			target.draw(
-				ml::Shapes::genSpriteQuad({ dest, size }).data(),
-				ml::Shapes::RectSize,
+				ml::Shapes::RectQuad::genSpriteQuad({ dest, size }).data(),
+				ml::Shapes::RectQuad::Size,
 				batch);
 		}
 	}

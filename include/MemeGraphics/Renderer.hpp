@@ -18,8 +18,8 @@ namespace ml
 
 		Renderer(
 			const IDrawable		* drawable,
-			const RenderStates	& states,
-			const Material		& material);
+			const Material		& material,
+			const RenderStates	& states);
 
 		Renderer(const Renderer & copy);
 

@@ -50,9 +50,9 @@ namespace ml
 		String		m_string;
 		vec4f		m_color;
 
-		mutable bool m_requiresUpdate;
+		mutable bool m_changed;
 		mutable List<const Texture *> m_textures;
-		mutable List<RectQuad> m_vertices;
+		mutable List<RectQuadArray> m_vertices;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

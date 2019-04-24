@@ -2,7 +2,7 @@
 #define _ML_BROWSER_HPP_
 
 #include <MemeEditor/GUI_Window.hpp>
-#include <MemeCore/File.hpp>
+#include <MemeCore/FileSystem.hpp>
 #include <MemeCore/Bytes.hpp>
 
 #define ML_Browser ml::Browser::getInstance()
@@ -25,8 +25,10 @@ namespace ml
 			T_Unk = '*',
 		};
 
-		using Directory = HashMap<char, List<String>>;
+	public:
+		using Directory = typename FileSystem::Directory;
 
+	public:
 		static const Bytes MaxPreviewSize;
 
 	private:

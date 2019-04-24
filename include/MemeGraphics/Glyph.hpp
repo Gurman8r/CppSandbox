@@ -19,6 +19,8 @@ namespace ml
 
 		Glyph()
 			: texture(GL::Texture2D, GL::RGBA, GL::Red, true, true)
+			, bounds (0.0f)
+			, advance(0)
 		{
 		}
 

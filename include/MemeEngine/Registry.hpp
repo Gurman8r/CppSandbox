@@ -5,12 +5,6 @@
 #include <MemeCore/FileSystem.hpp>
 #include <MemeCore/Preprocessor.hpp>
 
-/* * * * * * * * * * * * * * * * * * * * */
-
-#define ML_assert_readable(derived) ML_assert_is_base_of(ml::IReadable, derived)
-
-/* * * * * * * * * * * * * * * * * * * * */
-
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -27,7 +21,7 @@ namespace ml
 	{
 		friend class Resources;
 
-		ML_assert_readable(Elem) // Type must derive IReadable
+		ML_assert_is_base_of(IReadable, Elem); // Type must derive IReadable
 
 	public:
 		using value_type	= typename Elem;

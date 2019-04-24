@@ -25,7 +25,7 @@ namespace ml
 		{
 			m_vao.create(GL::Triangles).bind();
 			m_vbo.create(GL::DynamicDraw).bind();
-			m_vbo.bufferData(NULL, RectQuad::Size);
+			m_vbo.bufferData(NULL, Shapes::RectQuad::Size);
 			BufferLayout::Default.bind();
 			m_vbo.unbind();
 			m_vao.unbind();

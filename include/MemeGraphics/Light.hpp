@@ -2,6 +2,7 @@
 #define _ML_LIGHT_HPP_
 
 #include <MemeGraphics/Color.hpp>
+#include <MemeCore/Vector3.hpp>
 
 namespace ml
 {
@@ -13,10 +14,12 @@ namespace ml
 	{
 	public:
 		Light();
+		Light(const vec3f & position, const vec4f & color);
 		Light(const Light & copy);
 		~Light();
 
 	public:
+		vec3f position;
 		vec4f color;
 	};
 

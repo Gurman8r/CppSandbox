@@ -87,13 +87,13 @@
     <ClInclude Include="..\..\include\MemeEngine\StateMachine.hpp">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeEngine\Entity.hpp">
-      <Filter>Header Files\Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeEngine\Engine.hpp">
+    <ClInclude Include="..\..\include\MemeEngine\ECS.hpp">
       <Filter>Header Files\ECS</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeEngine\ECS.hpp">
+    <ClInclude Include="..\..\include\MemeEngine\Engine.hpp">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeEngine\Entity.hpp">
       <Filter>Header Files\ECS</Filter>
     </ClInclude>
   </ItemGroup>

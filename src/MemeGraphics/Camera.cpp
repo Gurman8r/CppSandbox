@@ -5,30 +5,30 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Camera::Camera()
-		: m_position	(vec3f::Zero)
-		, m_resolution	(vec2i::Zero)
-		, m_transform	()
-		, m_ortho		()
-		, m_persp		()
-		, m_fieldOfView	(45.0f)
-		, m_perspNear	(0.1f)
-		, m_perspFar	(1000.0f)
-		, m_orthoNear	(-1.0f)
-		, m_orthoFar	(+1.0f)
+		: position		(vec3f::Zero)
+		, resolution	(vec2i::Zero)
+		, transform		()
+		, ortho			()
+		, persp			()
+		, fieldOfView	(45.0f)
+		, perspNear		(0.1f)
+		, perspFar		(1000.0f)
+		, orthoNear		(-1.0f)
+		, orthoFar		(+1.0f)
 	{
 	}
 
 	Camera::Camera(const Camera & copy)
-		: m_position	(copy.m_position)
-		, m_resolution	(copy.m_resolution)
-		, m_transform	(copy.m_transform)
-		, m_ortho		(copy.m_ortho)
-		, m_persp		(copy.m_persp)
-		, m_fieldOfView	(copy.m_fieldOfView)
-		, m_perspNear	(copy.m_perspNear)
-		, m_perspFar	(copy.m_perspFar)
-		, m_orthoNear	(copy.m_orthoNear)
-		, m_orthoFar	(copy.m_orthoFar)
+		: resolution	(copy.resolution)
+		, position		(copy.position)
+		, transform		(copy.transform)
+		, ortho			(copy.ortho)
+		, persp			(copy.persp)
+		, fieldOfView	(copy.fieldOfView)
+		, perspNear		(copy.perspNear)
+		, perspFar		(copy.perspFar)
+		, orthoNear		(copy.orthoNear)
+		, orthoFar		(copy.orthoFar)
 	{
 	}
 
@@ -38,22 +38,22 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void Camera::update(const vec2i & resolution)
+	void Camera::update(const vec2i & value)
 	{
-		if ((resolution != vec2i::Zero) && (m_resolution != resolution))
+		if ((value != vec2i::Zero) && (resolution != value))
 		{
-			m_resolution = resolution;
+			resolution = value;
 
 			// Orthographic
-			m_ortho = Transform::Orthographic(
+			ortho = Transform::Orthographic(
 				{ vec2f::Zero, (vec2f)(resolution) },
-				{ m_orthoNear, m_orthoFar }
+				{ orthoNear, orthoFar }
 			);
 
 			// Perspective
-			m_persp = Transform::Perspective(
-				m_fieldOfView, ((float)resolution[0] / (float)resolution[1]),
-				m_perspNear, m_perspFar
+			persp = Transform::Perspective(
+				fieldOfView, ((float)resolution[0] / (float)resolution[1]),
+				perspNear, perspFar
 			);
 		}
 	}
@@ -63,18 +63,18 @@ namespace ml
 	void Camera::orbit(const vec3f & target, const float speed)
 	{
 		// Look
-		vec3f lookDir = (target - m_position).normalized();
+		vec3f lookDir = (target - position).normalized();
 		
-		vec3f lookPos = (m_position + (target - m_position).normalized());
+		vec3f lookPos = (position + (target - position).normalized());
 		
-		m_transform = Transform::LookAt(m_position, lookPos, vec3f::Up);
-
+		transform = Transform::LookAt(position, lookPos, vec3f::Up);
+		
 		// Move
-		vec3f fwd = (lookPos - m_position);
+		vec3f fwd = (lookPos - position);
 		
 		vec3f right = (fwd.cross(vec3f::Up) * vec3f(1, 0, 1)).normalized();
 		
-		m_position += (right * speed);
+		position += (right * speed);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

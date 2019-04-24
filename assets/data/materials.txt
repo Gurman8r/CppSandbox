@@ -2,9 +2,8 @@
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
 
 <item>
-	type =	material
-	name =	test
-	file =	../../../assets/materials/placeholder.mat
+	type = material
+	name = test
 </item>
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #

@@ -36,7 +36,7 @@ namespace ml
 	{
 		if (m_position != value)
 		{
-			m_requiresUpdate = true;
+			m_changed = true;
 			m_position = value;
 		}
 		return (*this);
@@ -46,7 +46,7 @@ namespace ml
 	{
 		if (m_scale != value)
 		{
-			m_requiresUpdate = true;
+			m_changed = true;
 			m_scale = value;
 		}
 		return (*this);
@@ -62,7 +62,7 @@ namespace ml
 	{
 		if (m_font != value)
 		{
-			m_requiresUpdate = true;
+			m_changed = true;
 			m_font = value;
 		}
 		return (*this);
@@ -72,7 +72,7 @@ namespace ml
 	{
 		if (m_fontSize != value)
 		{
-			m_requiresUpdate = true;
+			m_changed = true;
 			m_fontSize = value;
 		}
 		return (*this);
@@ -82,7 +82,7 @@ namespace ml
 	{
 		if (m_string != value)
 		{
-			m_requiresUpdate = true;
+			m_changed = true;
 			m_string = value;
 		}
 		return (*this);
@@ -92,33 +92,35 @@ namespace ml
 
 	void Text::update() const
 	{
-		if (m_font && m_requiresUpdate)
+		if (m_font && m_changed)
 		{	
-			m_requiresUpdate = false;
+			m_changed = false;
+			
 			m_vertices.resize(m_string.size());
 			m_textures.resize(m_string.size());
 			
-			vec2f drawPos = m_position;
+			vec2f pos = getPosition();
+
 			for (size_t i = 0, imax = m_string.size(); i < imax; i++)
 			{
 				const Glyph & glyph = (*m_font).getGlyph(m_string[i], m_fontSize);
 				
 				const FloatRect rect(
-					glyph.offset() + drawPos * m_scale,
+					glyph.offset() + pos * m_scale,
 					glyph.size() * m_scale
 				);
 
-				m_vertices[i] = Shapes::genGlyphQuad(rect);
+				m_vertices[i] = Shapes::RectQuad::genGlyphQuad(rect);
 				m_textures[i] = (&glyph.texture);
 				
 				switch (m_string[i])
 				{
 				case '\n':
-					drawPos[0] = m_position[0];
-					drawPos[1] -= rect.height() * 2.0f;
+					pos[0] = m_position[0];
+					pos[1] -= rect.height() * 2.0f;
 					break;
 				default:
-					drawPos[0] += (glyph.step() * m_scale[0]);
+					pos[0] += (glyph.step() * m_scale[0]);
 					break;
 				}
 			}
@@ -131,15 +133,15 @@ namespace ml
 		{
 			update();
 
-			if (Uniform * u = batch.mat.uniforms().find(ML_FRAG_MAIN_COL))
-				u->data = &m_color;
+			if (Uniform * col = batch.mat.uniforms().find(ML_FRAG_MAIN_COL))
+				col->data = &m_color;
 
 			for (size_t i = 0, imax = m_string.size(); i < imax; i++)
 			{
-				if (Uniform * u = batch.mat.uniforms().find(ML_FRAG_MAIN_TEX))
-					u->data = m_textures[i];
+				if (Uniform * tex = batch.mat.uniforms().find(ML_FRAG_MAIN_TEX))
+					tex->data = m_textures[i];
 
-				target.draw(m_vertices[i].data(), RectQuad::Size, batch);
+				target.draw(m_vertices[i].data(), Shapes::RectQuad::Size, batch);
 			}
 		}
 	}

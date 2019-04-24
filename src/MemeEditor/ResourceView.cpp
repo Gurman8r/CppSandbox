@@ -11,6 +11,7 @@
 #include <MemeGraphics/Renderer.hpp>
 #include <MemeGraphics/Light.hpp>
 #include <MemePhysics/Rigidbody.hpp>
+#include <MemeGraphics/Camera.hpp>
 
 namespace ml
 {
@@ -184,7 +185,7 @@ namespace ml
 					});
 					if (const String file = ML_Res.effects.getFile(name))
 					{
-						Funcs::Field("File", [&](CString label)
+						Funcs::Field("File", [&](CString)
 						{
 							const String fName = ML_FS.getFileName(file);
 							if (ImGui::Selectable(fName.c_str()))
@@ -192,7 +193,7 @@ namespace ml
 								ML_EventSystem.fireEvent(OS_ExecuteEvent("open", ML_FS.getPathTo(file)));
 							}
 						});
-						Funcs::Field("Path", [&](CString label)
+						Funcs::Field("Path", [&](CString)
 						{
 							const String fPath = ML_FS.getFilePath(file);
 							if (ImGui::Selectable(fPath.c_str()))
@@ -230,64 +231,16 @@ namespace ml
 					// Components
 					/* * * * * * * * * * * * * * * * * * * * */
 					{
-						// Transform
+						// Camera
 						/* * * * * * * * * * * * * * * * * * * * */
-						if (Transform * transform = ent->get<Transform>())
+						if (Camera * camera = ent->get<Camera>())
 						{
-							Funcs::Group("Transform", [&]()
+							Funcs::Group("Camera", [&]()
 							{
-								Funcs::Group("Decompose", [&]()
+								Funcs::Field("Position", [&](CString)
 								{
-									vec3f scale;
-									quat  orient;
-									vec3f trans;
-									vec3f skew;
-									vec4f persp;
-
-									if (transform->decompose(scale, orient, trans, skew, persp))
-									{
-										Funcs::Field("Scale", [&](CString label)
-										{
-											GUI::EditVec3f("##Scale##Transform##Decompose", scale);
-										});
-
-										Funcs::Field("Orientation", [&](CString label)
-										{
-											GUI::EditVec4f("##Orientation##Transform##Decompose", orient);
-										});
-
-										Funcs::Field("Translation", [&](CString label)
-										{
-											GUI::EditVec3f("##Translation##Transform##Decompose", trans);
-										});
-
-										Funcs::Field("Skew", [&](CString label)
-										{
-											GUI::EditVec3f("##Skew##Transform##Decompose", skew);
-										});
-
-										Funcs::Field("Perspective", [&](CString label)
-										{
-											GUI::EditVec4f("##Perspective##Transform##Decompose", persp);
-										});
-
-										ImGui::NewLine();
-									}
+									GUI::EditVec3f("##Position##Camera", camera->position);
 								});
-
-								Funcs::Group("Matrix", [&]()
-								{
-									Funcs::Field("Value", [&](CString)
-									{
-										mat4f matrix = transform->matrix();
-										if (GUI::EditMat4f("##Matrix##Transform", matrix, 0.1f))
-										{
-											transform->matrix() = matrix;
-										}
-										ImGui::NewLine();
-									});
-								});
-
 							});
 						}
 
@@ -297,17 +250,10 @@ namespace ml
 						{
 							Funcs::Group("Light", [&]()
 							{
-								ImGui::Text("OK");
-							});
-						}
-
-						// Rigidbody
-						/* * * * * * * * * * * * * * * * * * * * */
-						if (Rigidbody * rigidbody = ent->get<Rigidbody>())
-						{
-							Funcs::Group("Rigidbody", [&]()
-							{
-								ImGui::Text("OK");
+								Funcs::Field("Color", [&](CString) 
+								{
+									ImGui::ColorEdit4("##Color##Light", &light->color[0]);
+								});
 							});
 						}
 
@@ -480,13 +426,84 @@ namespace ml
 								});
 							});
 						}
+
+						// Rigidbody
+						/* * * * * * * * * * * * * * * * * * * * */
+						if (Rigidbody * rigidbody = ent->get<Rigidbody>())
+						{
+							Funcs::Group("Rigidbody", [&]()
+							{
+								ImGui::Text("OK");
+							});
+						}
+
+						// Transform
+						/* * * * * * * * * * * * * * * * * * * * */
+						if (Transform * transform = ent->get<Transform>())
+						{
+							Funcs::Group("Transform", [&]()
+							{
+								Funcs::Group("Decompose", [&]()
+								{
+									vec3f scale;
+									quat  orient;
+									vec3f trans;
+									vec3f skew;
+									vec4f persp;
+
+									if (transform->decompose(scale, orient, trans, skew, persp))
+									{
+										Funcs::Field("Scale", [&](CString label)
+										{
+											GUI::EditVec3f("##Scale##Transform##Decompose", scale);
+										});
+
+										Funcs::Field("Orientation", [&](CString label)
+										{
+											GUI::EditVec4f("##Orientation##Transform##Decompose", orient);
+										});
+
+										Funcs::Field("Translation", [&](CString label)
+										{
+											GUI::EditVec3f("##Translation##Transform##Decompose", trans);
+										});
+
+										Funcs::Field("Skew", [&](CString label)
+										{
+											GUI::EditVec3f("##Skew##Transform##Decompose", skew);
+										});
+
+										Funcs::Field("Perspective", [&](CString label)
+										{
+											GUI::EditVec4f("##Perspective##Transform##Decompose", persp);
+										});
+
+										ImGui::NewLine();
+									}
+								});
+
+								Funcs::Group("Matrix", [&]()
+								{
+									Funcs::Field("Value", [&](CString)
+									{
+										mat4f matrix = transform->matrix();
+										if (GUI::EditMat4f("##Matrix##Transform", matrix, 0.1f))
+										{
+											transform->matrix() = matrix;
+										}
+										ImGui::NewLine();
+									});
+								});
+
+							});
+						}
 					}
 
 					// File
 					/* * * * * * * * * * * * * * * * * * * * */
 					if (const String file = ML_Res.entities.getFile(name))
 					{
-						Funcs::Field("File", [&](CString label)
+						Funcs::Field("File", [&](CString)
 						{
 							const String fName = ML_FS.getFileName(file);
 							if (ImGui::Selectable(fName.c_str()))
@@ -494,7 +511,7 @@ namespace ml
 								ML_EventSystem.fireEvent(OS_ExecuteEvent("open", ML_FS.getPathTo(file)));
 							}
 						});
-						Funcs::Field("Path", [&](CString label)
+						Funcs::Field("Path", [&](CString)
 						{
 							const String fPath = ML_FS.getFilePath(file);
 							if (ImGui::Selectable(fPath.c_str()))
@@ -534,7 +551,7 @@ namespace ml
 					});
 					if (const String file = ML_Res.fonts.getFile(name))
 					{
-						Funcs::Field("File", [&](CString label)
+						Funcs::Field("File", [&](CString)
 						{
 							const String fName = ML_FS.getFileName(file);
 							if (ImGui::Selectable(fName.c_str()))
@@ -542,7 +559,7 @@ namespace ml
 								ML_EventSystem.fireEvent(OS_ExecuteEvent("open", ML_FS.getPathTo(file)));
 							}
 						});
-						Funcs::Field("Path", [&](CString label)
+						Funcs::Field("Path", [&](CString)
 						{
 							const String fPath = ML_FS.getFilePath(file);
 							if (ImGui::Selectable(fPath.c_str()))
@@ -580,7 +597,7 @@ namespace ml
 					});
 					if (const String file = ML_Res.images.getFile(name))
 					{
-						Funcs::Field("File", [&](CString label)
+						Funcs::Field("File", [&](CString)
 						{
 							const String fName = ML_FS.getFileName(file);
 							if (ImGui::Selectable(fName.c_str()))
@@ -588,7 +605,7 @@ namespace ml
 								ML_EventSystem.fireEvent(OS_ExecuteEvent("open", ML_FS.getPathTo(file)));
 							}
 						});
-						Funcs::Field("Path", [&](CString label)
+						Funcs::Field("Path", [&](CString)
 						{
 							const String fPath = ML_FS.getFilePath(file);
 							if (ImGui::Selectable(fPath.c_str()))
@@ -622,7 +639,7 @@ namespace ml
 					});
 					if (const String file = ML_Res.lua.getFile(name))
 					{
-						Funcs::Field("File", [&](CString label)
+						Funcs::Field("File", [&](CString)
 						{
 							const String fName = ML_FS.getFileName(file);
 							if (ImGui::Selectable(fName.c_str()))
@@ -630,7 +647,50 @@ namespace ml
 								ML_EventSystem.fireEvent(OS_ExecuteEvent("open", ML_FS.getPathTo(file)));
 							}
 						});
-						Funcs::Field("Path", [&](CString label)
+						Funcs::Field("Path", [&](CString)
+						{
+							const String fPath = ML_FS.getFilePath(file);
+							if (ImGui::Selectable(fPath.c_str()))
+							{
+								ML_EventSystem.fireEvent(OS_ExecuteEvent("open", ML_FS.getPathTo(fPath)));
+							}
+						});
+					}
+
+				}, pair.first.c_str(), pair.second);
+			}
+		});
+	}
+
+	void ResourceView::draw_materials()
+	{
+		Funcs::Group(ML_Res.materials.getName().c_str(), [&]()
+		{
+			if (ML_Res.materials.empty())
+			{
+				return ImGui::Text("None");
+			}
+
+			for (auto & pair : ML_Res.materials)
+			{
+				Funcs::Group(pair.first.c_str(), [&](CString name, const Material * mat)
+				{
+					Funcs::Field("Name", [&](CString)
+					{
+						ImGui::Text("%s", name);
+					});
+
+					if (const String file = ML_Res.materials.getFile(name))
+					{
+						Funcs::Field("File", [&](CString)
+						{
+							const String fName = ML_FS.getFileName(file);
+							if (ImGui::Selectable(fName.c_str()))
+							{
+								ML_EventSystem.fireEvent(OS_ExecuteEvent("open", ML_FS.getPathTo(file)));
+							}
+						});
+						Funcs::Field("Path", [&](CString)
 						{
 							const String fPath = ML_FS.getFilePath(file);
 							if (ImGui::Selectable(fPath.c_str()))
@@ -664,7 +724,7 @@ namespace ml
 					});
 					if (const String file = ML_Res.meshes.getFile(name))
 					{
-						Funcs::Field("File", [&](CString label)
+						Funcs::Field("File", [&](CString)
 						{
 							const String fName = ML_FS.getFileName(file);
 							if (ImGui::Selectable(fName.c_str()))
@@ -672,7 +732,7 @@ namespace ml
 								ML_EventSystem.fireEvent(OS_ExecuteEvent("open", ML_FS.getPathTo(file)));
 							}
 						});
-						Funcs::Field("Path", [&](CString label)
+						Funcs::Field("Path", [&](CString)
 						{
 							const String fPath = ML_FS.getFilePath(file);
 							if (ImGui::Selectable(fPath.c_str()))
@@ -706,7 +766,7 @@ namespace ml
 					});
 					if (const String file = ML_Res.models.getFile(name))
 					{
-						Funcs::Field("File", [&](CString label)
+						Funcs::Field("File", [&](CString)
 						{
 							const String fName = ML_FS.getFileName(file);
 							if (ImGui::Selectable(fName.c_str()))
@@ -714,7 +774,7 @@ namespace ml
 								ML_EventSystem.fireEvent(OS_ExecuteEvent("open", ML_FS.getPathTo(file)));
 							}
 						});
-						Funcs::Field("Path", [&](CString label)
+						Funcs::Field("Path", [&](CString)
 						{
 							const String fPath = ML_FS.getFilePath(file);
 							if (ImGui::Selectable(fPath.c_str()))
@@ -748,7 +808,7 @@ namespace ml
 					});
 					if (const String file = ML_Res.plugins.getFile(name))
 					{
-						Funcs::Field("File", [&](CString label)
+						Funcs::Field("File", [&](CString)
 						{
 							const String fName = ML_FS.getFileName(file);
 							if (ImGui::Selectable(fName.c_str()))
@@ -756,7 +816,7 @@ namespace ml
 								ML_EventSystem.fireEvent(OS_ExecuteEvent("open", ML_FS.getPathTo(file)));
 							}
 						});
-						Funcs::Field("Path", [&](CString label)
+						Funcs::Field("Path", [&](CString)
 						{
 							const String fPath = ML_FS.getFilePath(file);
 							if (ImGui::Selectable(fPath.c_str()))
@@ -790,7 +850,7 @@ namespace ml
 					});
 					if (const String file = ML_Res.scripts.getFile(name))
 					{
-						Funcs::Field("File", [&](CString label)
+						Funcs::Field("File", [&](CString)
 						{
 							const String fName = ML_FS.getFileName(file);
 							if (ImGui::Selectable(fName.c_str()))
@@ -798,7 +858,7 @@ namespace ml
 								ML_EventSystem.fireEvent(OS_ExecuteEvent("open", ML_FS.getPathTo(file)));
 							}
 						});
-						Funcs::Field("Path", [&](CString label)
+						Funcs::Field("Path", [&](CString)
 						{
 							const String fPath = ML_FS.getFilePath(file);
 							if (ImGui::Selectable(fPath.c_str()))
@@ -832,7 +892,7 @@ namespace ml
 					});
 					if (const String file = ML_Res.shaders.getFile(name))
 					{
-						Funcs::Field("File", [&](CString label)
+						Funcs::Field("File", [&](CString)
 						{
 							const String fName = ML_FS.getFileName(file);
 							if (ImGui::Selectable(fName.c_str()))
@@ -840,7 +900,7 @@ namespace ml
 								ML_EventSystem.fireEvent(OS_ExecuteEvent("open", ML_FS.getPathTo(file)));
 							}
 						});
-						Funcs::Field("Path", [&](CString label)
+						Funcs::Field("Path", [&](CString)
 						{
 							const String fPath = ML_FS.getFilePath(file);
 							if (ImGui::Selectable(fPath.c_str()))
@@ -874,7 +934,7 @@ namespace ml
 					});
 					if (const String file = ML_Res.skyboxes.getFile(name))
 					{
-						Funcs::Field("File", [&](CString label)
+						Funcs::Field("File", [&](CString)
 						{
 							const String fName = ML_FS.getFileName(file);
 							if (ImGui::Selectable(fName.c_str()))
@@ -882,7 +942,7 @@ namespace ml
 								ML_EventSystem.fireEvent(OS_ExecuteEvent("open", ML_FS.getPathTo(file)));
 							}
 						});
-						Funcs::Field("Path", [&](CString label)
+						Funcs::Field("Path", [&](CString)
 						{
 							const String fPath = ML_FS.getFilePath(file);
 							if (ImGui::Selectable(fPath.c_str()))
@@ -916,7 +976,7 @@ namespace ml
 					});
 					if (const String file = ML_Res.sounds.getFile(name))
 					{
-						Funcs::Field("File", [&](CString label)
+						Funcs::Field("File", [&](CString)
 						{
 							const String fName = ML_FS.getFileName(file);
 							if (ImGui::Selectable(fName.c_str()))
@@ -924,7 +984,7 @@ namespace ml
 								ML_EventSystem.fireEvent(OS_ExecuteEvent("open", ML_FS.getPathTo(file)));
 							}
 						});
-						Funcs::Field("Path", [&](CString label)
+						Funcs::Field("Path", [&](CString)
 						{
 							const String fPath = ML_FS.getFilePath(file);
 							if (ImGui::Selectable(fPath.c_str()))
@@ -958,7 +1018,7 @@ namespace ml
 					});
 					if (const String file = ML_Res.sprites.getFile(name))
 					{
-						Funcs::Field("File", [&](CString label)
+						Funcs::Field("File", [&](CString)
 						{
 							const String fName = ML_FS.getFileName(file);
 							if (ImGui::Selectable(fName.c_str()))
@@ -966,7 +1026,7 @@ namespace ml
 								ML_EventSystem.fireEvent(OS_ExecuteEvent("open", ML_FS.getPathTo(file)));
 							}
 						});
-						Funcs::Field("Path", [&](CString label)
+						Funcs::Field("Path", [&](CString)
 						{
 							const String fPath = ML_FS.getFilePath(file);
 							if (ImGui::Selectable(fPath.c_str()))
@@ -1033,7 +1093,7 @@ namespace ml
 
 					if (const String file = ML_Res.textures.getFile(name))
 					{
-						Funcs::Field("File", [&](CString label)
+						Funcs::Field("File", [&](CString)
 						{
 							const String fName = ML_FS.getFileName(file);
 							if (ImGui::Selectable(fName.c_str()))
@@ -1041,7 +1101,7 @@ namespace ml
 								ML_EventSystem.fireEvent(OS_ExecuteEvent("open", ML_FS.getPathTo(file)));
 							}
 						});
-						Funcs::Field("Path", [&](CString label)
+						Funcs::Field("Path", [&](CString)
 						{
 							const String fPath = ML_FS.getFilePath(file);
 							if (ImGui::Selectable(fPath.c_str()))
