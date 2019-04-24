@@ -88,7 +88,7 @@ ML_GENERATE_ITER_OPERATORS_T(T, name, type, iter, min, max)
 #define ML_assert_is_base_of(base, derived) \
 static_assert( \
 	std::is_base_of<base, derived>::value, \
-	"" ML_str(derived) " must derive " ML_xstr(base) "" \
+	"Type \'" ML_str(derived) "\' must derive \'" ML_xstr(base) "\'" \
 );
 
 

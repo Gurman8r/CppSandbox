@@ -1,5 +1,4 @@
 #include <MemeEngine/Entity.hpp>
-#include <MemeEngine/Lua.hpp>
 #include <MemeCore/Debug.hpp>
 
 namespace ml
@@ -30,13 +29,7 @@ namespace ml
 
 	bool Entity::loadFromFile(const String & filename)
 	{
-		if (lua_State * L = luaL_newstate())
-		{
-			lua_close(L);
-
-			return true;
-		}
-		return false;
+		return true;
 	}
 
 	bool Entity::saveToFile(const String & filename) const

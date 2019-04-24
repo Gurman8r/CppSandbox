@@ -10,12 +10,6 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-#define ML_COMPONENT_BASE ml::ITrackable
-#define ML_COMPONENT_ASSERT(derived) \
-	ML_assert_is_base_of(ML_COMPONENT_BASE, derived)
-
-/* * * * * * * * * * * * * * * * * * * * */
-
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -29,7 +23,7 @@ namespace ml
 	{
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
-		using value_type	= typename ML_COMPONENT_BASE *;
+		using value_type	= typename ITrackable *;
 		using map_type		= typename HashMap<size_t, value_type>;
 		using iterator		= typename map_type::iterator;
 		using const_iterator= typename map_type::const_iterator;
@@ -51,7 +45,7 @@ namespace ml
 		template <class Component> 
 		inline size_t hash() const
 		{
-			ML_COMPONENT_ASSERT(Component);
+			ML_assert_is_base_of(ITrackable, Component);
 			return (size_t)(&typeid(Component))->hash_code();
 		}
 
@@ -60,14 +54,14 @@ namespace ml
 		template <class Component> 
 		inline iterator find()
 		{
-			ML_COMPONENT_ASSERT(Component);
+			ML_assert_is_base_of(ITrackable, Component);
 			return (iterator)(m_map.find(this->hash<Component>()));
 		}
 
 		template <class Component>
 		inline const_iterator find() const
 		{
-			ML_COMPONENT_ASSERT(Component);
+			ML_assert_is_base_of(ITrackable, Component);
 			return (const_iterator)(m_map.find(this->hash<Component>()));
 		}
 
@@ -76,9 +70,9 @@ namespace ml
 		template <class Component>
 		inline Component * add()
 		{
-			ML_COMPONENT_ASSERT(Component);
+			ML_assert_is_base_of(ITrackable, Component);
 			return ((this->find<Component>() == this->end())
-				? (reinterpret_cast<Component *>(m_map.insert({
+				? (reinterpret_cast<Component *>(m_map.insert({ 
 						this->hash<Component>(), new Component() 
 					}).first->second))
 				: (NULL)
@@ -88,10 +82,10 @@ namespace ml
 		template <class Component>
 		inline Component * add(const Component & value)
 		{
-			ML_COMPONENT_ASSERT(Component);
+			ML_assert_is_base_of(ITrackable, Component);
 			return ((this->find<Component>() == this->end())
-				? (reinterpret_cast<Component *>(m_map.insert({ 
-						this->hash<Component>(), new Component(value) 
+				? (reinterpret_cast<Component *>(m_map.insert({
+						this->hash<Component>(), new Component(value)
 					}).first->second))
 				: (NULL)
 			);
@@ -102,7 +96,7 @@ namespace ml
 		template <class Component>
 		inline Component * get()
 		{
-			ML_COMPONENT_ASSERT(Component);
+			ML_assert_is_base_of(ITrackable, Component);
 			iterator it;
 			return (((it = this->find<Component>()) != this->end())
 				? (reinterpret_cast<Component *>(it->second))
@@ -113,7 +107,7 @@ namespace ml
 		template <class Component>
 		inline const Component * get() const
 		{
-			ML_COMPONENT_ASSERT(Component);
+			ML_assert_is_base_of(ITrackable, Component);
 			const_iterator it;
 			return (((it = this->find<Component>()) != this->cend())
 				? (reinterpret_cast<const Component *>(it->second))

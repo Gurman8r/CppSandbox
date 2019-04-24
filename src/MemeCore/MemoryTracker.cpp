@@ -63,11 +63,10 @@ namespace ml
 	{
 		if (ITrackable * trackable = static_cast<ITrackable *>(std::malloc(size)))
 		{
-			iterator it;
-			if ((it = m_records.find(trackable)) == m_records.end())
+			if (m_records.find(trackable) == m_records.end())
 			{
 				return m_records.insert({
-					trackable, { trackable, (m_guid++), size }
+					trackable, Record(trackable, m_guid++, size)
 				}).first->first;
 			}
 		}
@@ -76,15 +75,15 @@ namespace ml
 
 	void MemoryTracker::freeAllocation(void * value)
 	{
-		if (ITrackable * trackable = static_cast<ITrackable *>(value))
+		if (value)
 		{
 			iterator it;
-			if ((it = m_records.find(trackable)) != m_records.end())
+			if ((it = m_records.find(static_cast<ITrackable *>(value))) != m_records.end())
 			{
 				m_records.erase(it);
-				std::free(trackable);
-				trackable = NULL;
 			}
+			std::free(value);
+			value = NULL;
 		}
 	}
 
