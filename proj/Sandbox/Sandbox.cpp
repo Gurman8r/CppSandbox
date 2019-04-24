@@ -646,7 +646,7 @@ namespace DEMO
 
 			/* * * * * * * * * * * * * * * * * * * * */
 
-			while (this->isOpen())
+			auto updatePhysics = [](const float deltaTime)
 			{
 				ml::PhysicsState state;
 				if (ML_Physics.beginUpdate(state))
@@ -659,25 +659,24 @@ namespace DEMO
 						ml::mat4f	inv;
 						if (state.getData(i, pos, rot, mat, inv))
 						{
-							const float deltaTime = ML_Engine.frameTime().delta();
 							switch (i)
 							{
-							case DEMO_BORG: 
-								pos = { pos[0], +ML_Time.cos(), pos[2] }; 
+							case DEMO_BORG:
+								pos = { pos[0], +ML_Time.cos(), pos[2] };
 								rot = { ml::vec3f::One, +deltaTime };
 								break;
 
-							case DEMO_CUBE: 
+							case DEMO_CUBE:
 								pos = { pos[0], -ML_Time.sin(), pos[2] };
 								rot = { ml::vec3f::One, -deltaTime };
 								break;
 
-							case DEMO_SANIC: 
+							case DEMO_SANIC:
 								pos = { pos[0], -ML_Time.cos(), pos[2] };
 								rot = { ml::vec3f::Forward, -deltaTime };
 								break;
 
-							case DEMO_MOON: 
+							case DEMO_MOON:
 								pos = { pos[0], +ML_Time.sin(), pos[2] };
 								rot = { ml::vec3f::Up, -deltaTime };
 								break;
@@ -689,7 +688,7 @@ namespace DEMO
 							case DEMO_GROUND:
 								break;
 							}
-							
+
 							if (!state.setData(i, pos, rot, mat, inv))
 							{
 								ml::Debug::logError("Failed setting physics state: {0}", i);
@@ -698,6 +697,11 @@ namespace DEMO
 					}
 					ML_Physics.endUpdate(state);
 				}
+			};
+
+			while (this->isOpen())
+			{
+				updatePhysics(ML_Engine.frameTime().delta());
 			}
 
 			/* * * * * * * * * * * * * * * * * * * * */
