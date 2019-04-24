@@ -2,8 +2,7 @@
 #include <MemeEngine/Resources.hpp>
 #include <MemeEditor/GUI.hpp>
 #include <MemeEditor/ImGui.hpp>
-#include <MemeEditor/Terminal.hpp>
-#include <MemeGraphics/ShaderParser.hpp>
+#include <MemeGraphics/ShaderAPI.hpp>
 #include <MemeCore/Debug.hpp>
 
 namespace ml
@@ -52,64 +51,31 @@ namespace ml
 		set_data(BuilderData("Vertex",
 			"#include <common/Vert.MVP.shader>\n"
 			"#shader vertex\n"
-			"\n"
 			"void main()\n"
 			"{\n"
 			"\tgl_Position = ml_MVP_Position();\n"
 			"}\n",
 			{
-				Uniform("Vert.model", Uniform::Mat4),
-				Uniform("Vert.view", Uniform::Mat4),
-				Uniform("Vert.proj", Uniform::Mat4),
-			}
-		));
-
-		set_data(BuilderData("Geometry",
-			"#include <common/Geom.Curve.shader>\n"
-			"#shader geometry\n"
-			"\n"
-			"struct Curve_Uniforms\n"
-			"{\n"
-			"\tint		mode;\n"
-			"\tfloat	delta;\n"
-			"\tfloat	size;\n"
-			"\tint		samples;\n"
-			"};\n"
-			"uniform Curve_Uniforms Curve;\n"
-			"\n"
-			"void main()\n"
-			"{\n"
-			"\tfloat size = Curve.size;\n"
-			"\tvec4 testP0 = vec4(-size, +size, 0.0, 1.0);\n"
-			"\tvec4 testP1 = vec4(+size, +size, 0.0, 1.0);\n"
-			"\tvec4 testP2 = vec4(+size, -size, 0.0, 1.0);\n"
-			"\tvec4 testP3 = vec4(-size, -size, 0.0, 1.0);\n"
-			"\tdrawLineFull(testP0, testP1);\n"
-			"\tdrawLineFull(testP1, testP2);\n"
-			"\tdrawLineFull(testP2, testP3);\n"
-			"\tdrawLineFull(testP3, testP0);\n"
-			"}\n",
-			{
-				Uniform("Curve.mode",	Uniform::Int),
-				Uniform("Curve.delta",	Uniform::Float),
-				Uniform("Curve.size",	Uniform::Float),
-				Uniform("Curve.samples",Uniform::Int),
+				Uniform(ML_VERT_MODEL,	Uniform::Mat4),
+				Uniform(ML_VERT_VIEW,	Uniform::Mat4),
+				Uniform(ML_VERT_PROJ,	Uniform::Mat4),
 			}
 		));
 
 		set_data(BuilderData("Fragment",
 			"#include <common/Frag.Draw.shader>\n"
 			"#shader fragment\n"
-			"\n"
 			"void main()\n"
 			"{\n"
 			"\tgl_Color = Frag.mainCol * texture(Frag.mainTex, In.Texcoord);\n"
 			"}\n",
 			{
-				Uniform("Frag.mainCol", Uniform::Vec4),
-				Uniform("Frag.mainTex", Uniform::Tex2D),
+				Uniform(ML_FRAG_MAIN_COL, Uniform::Vec4),
+				Uniform(ML_FRAG_MAIN_TEX, Uniform::Tex2D),
 			}
 		));
+
+		set_data(BuilderData("Geometry", "", {}));
 	}
 
 	Builder::~Builder()
@@ -169,7 +135,7 @@ namespace ml
 			ImGui::SameLine();
 
 			// Data
-			draw_uniform_data(get_selected_uniform(value));
+			//draw_uniform_data(get_selected_uniform(value));
 
 			ImGui::SameLine();
 
@@ -269,171 +235,6 @@ namespace ml
 
 			/* * * * * * * * * * * * * * * * * * * * */
 
-			ImGui::EndChild();
-		}
-	}
-
-	void Builder::draw_uniform_data(Uniform * value)
-	{
-		if (ImGui::BeginChild(
-			("Uniform Data"),
-			{ 300, 0 },
-			(true),
-			(ImGuiWindowFlags_None)))
-		{
-			if (!value)
-			{
-				ImGui::Text("Nothing Selected");
-				return ImGui::EndChild();
-			}
-
-			ImGui::PushID(value->name.c_str());
-
-			// Name
-			/* * * * * * * * * * * * * * * * * * * * */
-			char name[64];
-			strcpy(name, value->name.data());
-			if (ImGui::InputText(
-				("Name"),
-				(name),
-				(sizeof(name)),
-				(ImGuiInputTextFlags_EnterReturnsTrue),
-				(NULL),
-				(NULL)))
-			{
-				value->name = String(name);
-			}
-
-			// Type
-			/* * * * * * * * * * * * * * * * * * * * */
-			static CString uni_types[] = {
-				"None",
-				"Int",
-				"Float",
-				"Vec2",
-				"Vec3",
-				"Vec4",
-				"Mat3",
-				"Mat4",
-				"Tex2D",
-			};
-			if (ImGui::Combo(
-				("Type"),
-				(&value->type),
-				(uni_types),
-				(IM_ARRAYSIZE(uni_types))))
-			{
-			}
-
-			// Data
-			/* * * * * * * * * * * * * * * * * * * * */
-			switch (value->type)
-			{
-			case Uniform::Int:
-			{
-				static int32_t temp = 0;
-				temp = value->get_value<int32_t>(0);
-				if (ImGui::DragInt("Value", &temp))
-				{
-					// changed
-				}
-			}
-			break;
-			case Uniform::Float:
-			{
-				static float temp = 0.f;
-				temp = value->get_value<float>(0.f);
-				if (ImGui::DragFloat("Value", &temp, 0.1f))
-				{
-					// changed
-				}
-			}
-			break;
-			case Uniform::Vec2:
-			{
-				static vec2f temp = 0.f;
-				temp = value->get_value<vec2f>(0.f);
-				if (GUI::EditVec2f("Value", temp))
-				{
-					// changed
-				}
-			}
-			break;
-			case Uniform::Vec3:
-			{
-				static vec3f temp = 0.f;
-				temp = value->get_value<vec3f>(0.f);
-				if (GUI::EditVec3f("Value", temp))
-				{
-					// changed
-				}
-			}
-			break;
-			case Uniform::Vec4:
-			{
-				static vec4f temp = 0.f;
-				temp = value->get_value<vec4f>(0.f);
-				if (GUI::EditVec4f("Value", temp))
-				{
-					// changed
-				}
-			}
-			break;
-			case Uniform::Mat3:
-			{
-				static mat3f temp = 0.f;
-				temp = value->get_value<mat3f>(0.f);
-				if (GUI::EditMat3f("Value", temp))
-				{
-					// changed
-				}
-			}
-			break;
-			case Uniform::Mat4:
-			{
-				static mat4f temp = 0.f;
-				temp = value->get_value<mat4f>(0.f);
-				if (GUI::EditMat4f("Value", temp))
-				{
-					// changed
-				}
-			}
-			break;
-			case Uniform::Tex2D:
-			{
-				auto vector_getter = [](void * vec, int idx, CString * out)
-				{
-					auto & vector = (*static_cast<List<String>*>(vec));
-					if (idx >= 0 && idx < static_cast<int32_t>(vector.size()))
-					{
-						(*out) = vector.at(idx).c_str();
-						return true;
-					}
-					return false;
-				};
-
-				List<String> names;
-				for (auto & pair : ML_Res.textures)
-				{
-					names.push_back(pair.first);
-				}
-
-				static int32_t index = 0;
-
-				if (ImGui::Combo(
-					"Texture",
-					&index,
-					vector_getter,
-					static_cast<void *>(&names),
-					(int32_t)names.size()))
-				{
-					// changed
-				}
-			}
-			break;
-			}
-
-			ImGui::PopID();
 			ImGui::EndChild();
 		}
 	}

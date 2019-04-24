@@ -125,6 +125,7 @@ namespace ml
 					if (ImGui::MenuItem("Font"		)) { /**/ }
 					if (ImGui::MenuItem("Image"		)) { /**/ }
 					if (ImGui::MenuItem("Lua"		)) { /**/ }
+					if (ImGui::MenuItem("Material"	)) { /**/ }
 					if (ImGui::MenuItem("Mesh"		)) { /**/ }
 					if (ImGui::MenuItem("Model"		)) { /**/ }
 					if (ImGui::MenuItem("Plugin"	)) { /**/ }
@@ -143,20 +144,21 @@ namespace ml
 
 			Funcs::Columns([&]()
 			{
-				draw_effects();
-				draw_entities();
-				draw_fonts();
-				draw_images();
-				draw_lua();
-				draw_meshes();
-				draw_models();
-				draw_plugins();
-				draw_scripts();
-				draw_shaders();
-				draw_skyboxes();
-				draw_sounds();
-				draw_sprites();
-				draw_textures();
+				draw_effects	();
+				draw_entities	();
+				draw_fonts		();
+				draw_images		();
+				draw_lua		();
+				draw_meshes		();
+				draw_materials	();
+				draw_models		();
+				draw_plugins	();
+				draw_scripts	();
+				draw_shaders	();
+				draw_skyboxes	();
+				draw_sounds		();
+				draw_sprites	();
+				draw_textures	();
 			});
 
 			/* * * * * * * * * * * * * * * * * * * * */
@@ -168,7 +170,7 @@ namespace ml
 
 	void ResourceView::draw_effects()
 	{
-		Funcs::Group(ML_Res.effects.getName().c_str(), [&]()
+		Funcs::Group(ML_Res.effects.name().c_str(), [&]()
 		{
 			if (ML_Res.effects.empty())
 			{
@@ -210,7 +212,7 @@ namespace ml
 
 	void ResourceView::draw_entities()
 	{
-		Funcs::Group(ML_Res.entities.getName().c_str(), [&]()
+		Funcs::Group(ML_Res.entities.name().c_str(), [&]()
 		{
 			if (ML_Res.entities.empty())
 			{
@@ -266,8 +268,8 @@ namespace ml
 								// Model
 								Funcs::Field("Model", [&](CString)
 								{
-									List<String> keys = ML_Res.models.getKeys();
-									int32_t index = ML_Res.models.indexOf((Model *)(renderer->drawable()));
+									List<String> keys = ML_Res.models.keys();
+									int32_t index = ML_Res.models.getIndexOf((Model *)(renderer->drawable()));
 									if (ImGui::Combo(
 										"##Model##Renderer",
 										&index,
@@ -275,7 +277,7 @@ namespace ml
 										static_cast<void *>(&keys),
 										(int32_t)(keys.size())))
 									{
-										if (const Model * value = ML_Res.models.atIndex(index))
+										if (const Model * value = ML_Res.models.getByIndex(index))
 										{
 											renderer->drawable() = value;
 										}
@@ -285,8 +287,8 @@ namespace ml
 								// Shader
 								Funcs::Field("Shader", [&](CString)
 								{
-									List<String> keys = ML_Res.shaders.getKeys();
-									int32_t index = ML_Res.shaders.indexOf(renderer->material().shader());
+									List<String> keys = ML_Res.shaders.keys();
+									int32_t index = ML_Res.shaders.getIndexOf(renderer->material().shader());
 									if (ImGui::Combo(
 										"##Shader##Renderer",
 										&index,
@@ -294,7 +296,7 @@ namespace ml
 										static_cast<void *>(&keys),
 										(int32_t)(keys.size())))
 									{
-										if (const Shader * value = ML_Res.shaders.atIndex(index))
+										if (const Shader * value = ML_Res.shaders.getByIndex(index))
 										{
 											renderer->material().shader() = value;
 										}
@@ -360,8 +362,8 @@ namespace ml
 											{
 											case Uniform::Tex2D:
 											{
-												int32_t index = ML_Res.textures.indexOf(uni->get_pointer<Texture>());
-												List<String> keys = ML_Res.textures.getKeys();
+												int32_t index = ML_Res.textures.getIndexOf(uni->get_pointer<Texture>());
+												List<String> keys = ML_Res.textures.keys();
 												if (ImGui::Combo(
 													"##Tex2D##Value",
 													&index,
@@ -369,7 +371,7 @@ namespace ml
 													static_cast<void *>(&keys),
 													(int32_t)(keys.size())))
 												{
-													if (const Texture * value = ML_Res.textures.atIndex(index))
+													if (const Texture * value = ML_Res.textures.getByIndex(index))
 													{
 														uni->data = value;
 													}
@@ -530,7 +532,7 @@ namespace ml
 
 	void ResourceView::draw_fonts()
 	{
-		Funcs::Group(ML_Res.fonts.getName().c_str(), [&]()
+		Funcs::Group(ML_Res.fonts.name().c_str(), [&]()
 		{
 			if (ML_Res.fonts.empty())
 			{
@@ -576,7 +578,7 @@ namespace ml
 
 	void ResourceView::draw_images()
 	{
-		Funcs::Group(ML_Res.images.getName().c_str(), [&]()
+		Funcs::Group(ML_Res.images.name().c_str(), [&]()
 		{
 			if (ML_Res.images.empty())
 			{
@@ -622,7 +624,7 @@ namespace ml
 
 	void ResourceView::draw_lua()
 	{
-		Funcs::Group(ML_Res.lua.getName().c_str(), [&]()
+		Funcs::Group(ML_Res.lua.name().c_str(), [&]()
 		{
 			if (ML_Res.lua.empty())
 			{
@@ -664,7 +666,7 @@ namespace ml
 
 	void ResourceView::draw_materials()
 	{
-		Funcs::Group(ML_Res.materials.getName().c_str(), [&]()
+		Funcs::Group(ML_Res.materials.name().c_str(), [&]()
 		{
 			if (ML_Res.materials.empty())
 			{
@@ -707,7 +709,7 @@ namespace ml
 
 	void ResourceView::draw_meshes()
 	{
-		Funcs::Group(ML_Res.meshes.getName().c_str(), [&]()
+		Funcs::Group(ML_Res.meshes.name().c_str(), [&]()
 		{
 			if (ML_Res.meshes.empty())
 			{
@@ -749,7 +751,7 @@ namespace ml
 
 	void ResourceView::draw_models()
 	{
-		Funcs::Group(ML_Res.models.getName().c_str(), [&]()
+		Funcs::Group(ML_Res.models.name().c_str(), [&]()
 		{
 			if (ML_Res.models.empty())
 			{
@@ -791,7 +793,7 @@ namespace ml
 
 	void ResourceView::draw_plugins()
 	{
-		Funcs::Group(ML_Res.plugins.getName().c_str(), [&]()
+		Funcs::Group(ML_Res.plugins.name().c_str(), [&]()
 		{
 			if (ML_Res.plugins.empty())
 			{
@@ -833,7 +835,7 @@ namespace ml
 
 	void ResourceView::draw_scripts()
 	{
-		Funcs::Group(ML_Res.scripts.getName().c_str(), [&]()
+		Funcs::Group(ML_Res.scripts.name().c_str(), [&]()
 		{
 			if (ML_Res.scripts.empty())
 			{
@@ -875,7 +877,7 @@ namespace ml
 
 	void ResourceView::draw_shaders()
 	{
-		Funcs::Group(ML_Res.shaders.getName().c_str(), [&]()
+		Funcs::Group(ML_Res.shaders.name().c_str(), [&]()
 		{
 			if (ML_Res.shaders.empty())
 			{
@@ -917,7 +919,7 @@ namespace ml
 
 	void ResourceView::draw_skyboxes()
 	{
-		Funcs::Group(ML_Res.skyboxes.getName().c_str(), [&]()
+		Funcs::Group(ML_Res.skyboxes.name().c_str(), [&]()
 		{
 			if (ML_Res.skyboxes.empty())
 			{
@@ -959,7 +961,7 @@ namespace ml
 
 	void ResourceView::draw_sounds()
 	{
-		Funcs::Group(ML_Res.sounds.getName().c_str(), [&]()
+		Funcs::Group(ML_Res.sounds.name().c_str(), [&]()
 		{
 			if (ML_Res.sounds.empty())
 			{
@@ -1001,7 +1003,7 @@ namespace ml
 
 	void ResourceView::draw_sprites()
 	{
-		Funcs::Group(ML_Res.sprites.getName().c_str(), [&]()
+		Funcs::Group(ML_Res.sprites.name().c_str(), [&]()
 		{
 			if (ML_Res.sprites.empty())
 			{
@@ -1043,7 +1045,7 @@ namespace ml
 
 	void ResourceView::draw_textures()
 	{
-		Funcs::Group(ML_Res.textures.getName().c_str(), [&]()
+		Funcs::Group(ML_Res.textures.name().c_str(), [&]()
 		{
 			if (ML_Res.textures.empty())
 			{

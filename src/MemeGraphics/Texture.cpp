@@ -137,9 +137,8 @@ namespace ml
 		{
 			ML_GL.deleteTextures(1, (*this));
 			get_reference() = NULL;
-			return true;
 		}
-		return false;
+		return !(*this);
 	}
 
 	bool Texture::loadFromFile(const String & filename)
@@ -200,7 +199,7 @@ namespace ml
 	{
 		if (w && h)
 		{
-			if (set_handle(ML_GL.genTextures(1)))
+			if (dispose() && set_handle(ML_GL.genTextures(1)))
 			{
 				m_size = { w, h };
 				m_realSize =

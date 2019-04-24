@@ -56,6 +56,8 @@ enum Rigidbody_ID : int32_t
 #define ML_DEMO_CAMERA	ML_Res.entities.get("camera")->get<ml::Camera>()
 #define ML_DEMO_LIGHT	ML_Res.entities.get("light")->get<ml::Light>()
 
+/* * * * * * * * * * * * * * * * * * * * */
+
 namespace DEMO
 {
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -522,13 +524,13 @@ namespace DEMO
 						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_DEMO_CAMERA->transform.matrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("moon_dm") },
-						{ "Frag.ambient",	ml::Uniform::Float, &data.ambient },
-						{ "Frag.specular",	ml::Uniform::Float, &data.specular },
-						{ "Frag.shininess",	ml::Uniform::Int,	&data.shininess },
 						{ "Frag.specTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("moon_nm") },
 						{ "Frag.cameraPos",	ml::Uniform::Vec3,	&ML_DEMO_CAMERA->position },
 						{ "Frag.lightPos",	ml::Uniform::Vec3,	&ML_DEMO_LIGHT->position },
 						{ "Frag.lightCol",	ml::Uniform::Vec4,	&ML_DEMO_LIGHT->color },
+						{ "Frag.ambient",	ml::Uniform::Float, &data.ambient },
+						{ "Frag.specular",	ml::Uniform::Float, &data.specular },
+						{ "Frag.shininess",	ml::Uniform::Int,	&data.shininess },
 					}),
 					ml::RenderStates({
 						{ ml::GL::AlphaTest,{ ml::RenderVar::Bool, 1 } },
@@ -562,12 +564,12 @@ namespace DEMO
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->matrix() },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("earth_dm") },
 						{ "Frag.specTex",	ml::Uniform::Tex2D,	ML_Res.textures.get("earth_sm") },
-						{ "Frag.ambient",	ml::Uniform::Float, &data.ambient },
-						{ "Frag.specular",	ml::Uniform::Float, &data.specular },
-						{ "Frag.shininess",	ml::Uniform::Int,	&data.shininess },
 						{ "Frag.cameraPos",	ml::Uniform::Vec3,	&ML_DEMO_CAMERA->position },
 						{ "Frag.lightPos",	ml::Uniform::Vec3,	&ML_DEMO_LIGHT->position },
 						{ "Frag.lightCol",	ml::Uniform::Vec4,	&ML_DEMO_LIGHT->color },
+						{ "Frag.ambient",	ml::Uniform::Float, &data.ambient },
+						{ "Frag.specular",	ml::Uniform::Float, &data.specular },
+						{ "Frag.shininess",	ml::Uniform::Int,	&data.shininess },
 					}),
 					ml::RenderStates({
 						{ ml::GL::AlphaTest,{ ml::RenderVar::Bool, 1 } },

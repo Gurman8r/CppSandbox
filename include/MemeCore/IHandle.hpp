@@ -38,7 +38,7 @@ namespace ml
 
 		inline bool set_handle(const_reference value)
 		{
-			return ((!good()) && (get_reference() = (value)));
+			return ((!m_handle) && (m_handle = value));
 		}
 
 	public:

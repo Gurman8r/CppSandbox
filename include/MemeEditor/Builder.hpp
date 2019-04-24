@@ -50,7 +50,6 @@ namespace ml
 	private:
 		void draw_shader_tab(const String & value);
 		void draw_uniform_list(UniformList * value);
-		void draw_uniform_data(Uniform * value);
 		void draw_shader_text(char * value);
 
 		void draw_tools();
