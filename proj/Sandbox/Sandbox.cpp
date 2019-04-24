@@ -699,6 +699,8 @@ namespace DEMO
 				}
 			};
 
+			/* * * * * * * * * * * * * * * * * * * * */
+
 			while (this->isOpen())
 			{
 				updatePhysics(ML_Engine.frameTime().delta());

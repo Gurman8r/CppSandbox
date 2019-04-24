@@ -4,17 +4,25 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-#if defined(ML_SYSTEM_WINDOWS)
+#ifdef ML_SYSTEM_WINDOWS
 
-#	include <Windows.h>
-#	include <MemeCore/StandardLib.hpp>
+/* * * * * * * * * * * * * * * * * * * * */
+
+#include <Windows.h>
+#include <MemeCore/StandardLib.hpp>
+
+/* * * * * * * * * * * * * * * * * * * * */
 
 extern int32_t main(int32_t, char **);
 
-int32_t WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, INT)
+/* * * * * * * * * * * * * * * * * * * * */
+
+INT WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, INT)
 {
 	return main(__argc, __argv);
 }
+
+/* * * * * * * * * * * * * * * * * * * * */
 
 #endif
 
