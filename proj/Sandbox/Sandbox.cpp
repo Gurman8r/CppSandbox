@@ -639,11 +639,12 @@ namespace DEMO
 				{
 					for (const auto & pair : ML_Res.entities)
 					{
-						ml::vec3f * pos;
-						ml::quat  * rot;
-						ml::mat4f * mat;
-						ml::mat4f * inv;
-						if (state.getData(pair.first, pos, rot, mat, inv))
+						ml::vec3f * pos = state.getPos(pair.first);
+						ml::quat  * rot = state.getRot(pair.first);
+						ml::mat4f * mat = state.getMat(pair.first);
+						ml::mat4f * inv = state.getInv(pair.first);
+
+						if (pos && rot && mat && inv)
 						{
 							if (pair.first == "borg")
 							{

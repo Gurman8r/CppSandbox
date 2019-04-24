@@ -116,16 +116,6 @@ namespace ml
 		}
 
 
-	public:
-		inline bool getData(const String & key, vec3f * pos, quat * rot, mat4f * mat, mat4f * inv)
-		{
-			pos = getPos(key);
-			rot = getRot(key);
-			mat = getMat(key);
-			inv = getInv(key);
-			return (pos && rot && mat && inv);
-		}
-
 	private:
 		HashMap<String, vec3f>	m_pos;
 		HashMap<String, quat>	m_rot;
