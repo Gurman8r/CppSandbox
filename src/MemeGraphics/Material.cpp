@@ -49,7 +49,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void Material::apply() const
+	bool Material::apply() const
 	{
 		if (m_shader && (*m_shader))
 		{
@@ -58,7 +58,9 @@ namespace ml
 				m_shader->setUniform(pair.second);
 			}
 			m_shader->bind();
+			return true;
 		}
+		return false;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

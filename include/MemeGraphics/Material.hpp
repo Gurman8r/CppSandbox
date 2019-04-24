@@ -25,7 +25,7 @@ namespace ml
 		bool loadFromFile(const String & filename) override;
 
 	public:
-		void apply() const;
+		bool apply() const;
 		
 	public:
 		inline const Shader		* shader() const	{ return m_shader; }

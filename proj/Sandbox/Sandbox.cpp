@@ -938,17 +938,16 @@ namespace DEMO
 				}
 
 				// Draw Geometry
-				if (const ml::Shader * shader = ML_Res.shaders.get("geometry"))
+				static ml::Material geometry = { ML_Res.shaders.get("geometry"),
 				{
-					static ml::Material material = { shader, 
-					{
-						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&data.lineColor },
-						{ "Geom.mode",		ml::Uniform::Int,	&data.lineMode },
-						{ "Geom.delta",		ml::Uniform::Float, &data.lineDelta },
-						{ "Geom.size",		ml::Uniform::Float, &data.lineSize },
-						{ "Geom.samples",	ml::Uniform::Int,	&data.lineSamples },
-					} };
-					material.apply();
+					{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&data.lineColor },
+					{ "Geom.mode",		ml::Uniform::Int,	&data.lineMode },
+					{ "Geom.delta",		ml::Uniform::Float, &data.lineDelta },
+					{ "Geom.size",		ml::Uniform::Float, &data.lineSize },
+					{ "Geom.samples",	ml::Uniform::Int,	&data.lineSamples },
+				} };
+				if (geometry.apply())
+				{
 					ML_GL.drawArrays(ml::GL::Points, 0, 4);
 				}
 			}
