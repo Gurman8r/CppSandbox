@@ -3,20 +3,12 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-#include <MemeCore/Config.hpp>
-
-/* * * * * * * * * * * * * * * * * * * * */
-
 extern "C"
 {
-# include <lua/lua.h>
-# include <lua/lauxlib.h>
-# include <lua/lualib.h>
+#include <lua/lua.h>
+#include <lua/lauxlib.h>
+#include <lua/lualib.h>
 }
-
-# ifdef ML_SYSTEM_WINDOWS
-#	pragma comment(lib, "lua.lib")
-# endif
 
 /* * * * * * * * * * * * * * * * * * * * */
 

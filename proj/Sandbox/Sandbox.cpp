@@ -633,8 +633,10 @@ namespace DEMO
 
 			/* * * * * * * * * * * * * * * * * * * * */
 
-			auto updatePhysics = [](const float dt)
+			while (this->isOpen())
 			{
+				const float dt = ML_Engine.frameTime().delta();
+				
 				ml::PhysicsState state;
 				if (ML_Physics.beginUpdate(state))
 				{
@@ -684,13 +686,6 @@ namespace DEMO
 					}
 					ML_Physics.endUpdate(state);
 				}
-			};
-
-			/* * * * * * * * * * * * * * * * * * * * */
-
-			while (this->isOpen())
-			{
-				updatePhysics(ML_Engine.frameTime().delta());
 			}
 
 			/* * * * * * * * * * * * * * * * * * * * */

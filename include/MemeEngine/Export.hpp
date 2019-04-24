@@ -15,4 +15,10 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
+# ifdef ML_SYSTEM_WINDOWS
+#	pragma comment(lib, "lua.lib")
+# endif
+
+/* * * * * * * * * * * * * * * * * * * * */
+
 #endif // !_ML_ENGINE_EXPORT_HPP_

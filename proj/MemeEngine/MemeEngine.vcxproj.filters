@@ -37,6 +37,12 @@
     <Filter Include="Source Files\Lua">
       <UniqueIdentifier>{7ede356a-b9f5-4586-8726-2fa696a29ac4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ECS">
+      <UniqueIdentifier>{22328d71-87bf-4f0d-a911-51c08aedf9b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ECS">
+      <UniqueIdentifier>{278637e6-d46d-4bd6-938f-a4afced7e2d6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemeEngine\Export.hpp">
@@ -56,9 +62,6 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEngine\Registry.hpp">
       <Filter>Header Files\Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeEngine\Engine.hpp">
-      <Filter>Header Files\Engine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEngine\Application.hpp">
       <Filter>Header Files\Engine</Filter>
@@ -86,6 +89,12 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeEngine\Entity.hpp">
       <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeEngine\Engine.hpp">
+      <Filter>Header Files\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeEngine\ECS.hpp">
+      <Filter>Header Files\ECS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -117,7 +126,10 @@
       <Filter>Source Files\Lua</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeEngine\Entity.cpp">
-      <Filter>Source Files\Resources</Filter>
+      <Filter>Source Files\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeEngine\ECS.cpp">
+      <Filter>Source Files\ECS</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
