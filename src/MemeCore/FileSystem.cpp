@@ -2,6 +2,8 @@
 #include <MemeCore/EventSystem.hpp>
 #include <MemeCore/Debug.hpp>
 
+#include <experimental/filesystem>
+
 # ifdef ML_SYSTEM_WINDOWS
 #	include <dirent.h> // from /thirdparty/include
 #	include <direct.h>

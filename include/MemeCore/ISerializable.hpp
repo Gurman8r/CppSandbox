@@ -1,6 +1,7 @@
 #ifndef _ML_I_SERIALIZABLE_HPP_
 #define _ML_I_SERIALIZABLE_HPP_
 
+#include <MemeCore/Export.hpp>
 #include <MemeCore/IO.hpp>
 
 namespace ml

@@ -2,9 +2,6 @@
 #define _ML_ARRAY_HPP_
 
 #include <MemeCore/ISerializable.hpp>
-#include <MemeCore/IComparable.hpp>
-
-/* * * * * * * * * * * * * * * * * * * * */
 
 namespace ml
 {
@@ -25,7 +22,7 @@ namespace ml
 	public:
 		using self_type				= typename Array<_Elem, _Size>;
 		using base_type				= typename std::array<_Elem, _Size>;
-		using init_type				= typename std::initializer_list<_Elem>;
+		using init_type				= typename Initializer<_Elem>;
 		using value_type			= typename base_type::value_type;
 		using size_type				= typename base_type::size_type;
 		using difference_type		= typename base_type::difference_type;

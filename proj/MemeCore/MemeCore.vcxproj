@@ -181,7 +181,6 @@
     <ClInclude Include="..\..\include\MemeCore\IO.hpp" />
     <ClInclude Include="..\..\include\MemeCore\IStream.hpp" />
     <ClInclude Include="..\..\include\MemeCore\IWritable.hpp" />
-    <ClInclude Include="..\..\include\MemeCore\Map.hpp" />
     <ClInclude Include="..\..\include\MemeCore\MemoryManager.hpp" />
     <ClInclude Include="..\..\include\MemeCore\List.hpp" />
     <ClInclude Include="..\..\include\MemeCore\Config.hpp" />

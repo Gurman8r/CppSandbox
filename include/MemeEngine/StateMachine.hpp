@@ -22,7 +22,7 @@ namespace ml
 
 		using map_type		= typename HashMap<key_type, fun_type>;
 		using pair_type		= typename Pair<key_type, fun_type>;
-		using init_type		= typename std::initializer_list<pair_type>;
+		using init_type		= typename Initializer<pair_type>;
 		using iterator		= typename map_type::iterator;
 		using const_iterator= typename map_type::const_iterator;
 

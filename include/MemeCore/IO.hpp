@@ -27,7 +27,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_CORE_API IO final
+	struct IO final
 	{
 		template <
 			class Fun, 

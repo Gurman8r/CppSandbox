@@ -1,20 +1,13 @@
 #ifndef _ML_LIST_HPP_
 #define _ML_LIST_HPP_
 
-#include <MemeCore/Export.hpp>
 #include <MemeCore/ISerializable.hpp>
 #include <MemeCore/Detail.hpp>
 
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
-
-	template <
-		class T
-	> using InitializerList = typename std::initializer_list<T>;
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
+	
 	template <
 		class _Elem,
 		class _Alloc = std::allocator<_Elem>
@@ -24,9 +17,8 @@ namespace ml
 		, public IComparable<std::vector<_Elem, _Alloc>>
 		, public IComparable<List<_Elem, _Alloc>>
 	{
-		static_assert(
-			detail::has_left_shift<std::ostream &, _Elem>::value, 
-			"List values must be serializable."
+		static_assert(detail::has_left_shift<std::ostream &, _Elem>::value, 
+			"List must contain serializable values."
 		);
 
 	public: // Usings
@@ -35,7 +27,7 @@ namespace ml
 		using allocator_type		= typename _Alloc;
 		using self_type				= typename List<value_type, allocator_type>;
 		using base_type				= typename std::vector<value_type, allocator_type>;
-		using init_type				= typename std::initializer_list<value_type>;
+		using init_type				= typename Initializer<value_type>;
 		using difference_type		= typename base_type::difference_type;
 		using size_type				= typename base_type::size_type;
 		using iterator				= typename base_type::iterator;

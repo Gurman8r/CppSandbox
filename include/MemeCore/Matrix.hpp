@@ -44,7 +44,7 @@ namespace ml
 		using const_reference		= typename const value_type &;
 
 		using self_type				= typename Matrix<value_type, Cols, Rows>;
-		using init_type				= typename std::initializer_list<value_type>;
+		using init_type				= typename Initializer<value_type>;
 		using contiguous_type		= typename List<value_type>;
 
 		using enumerable_type		= typename IEnumerable<value_type, Size>;

@@ -1,7 +1,6 @@
 #ifndef _ML_STRING_HPP_
 #define _ML_STRING_HPP_
 
-#include <MemeCore/Export.hpp>
 #include <MemeCore/StandardLib.hpp>
 #include <MemeCore/IComparable.hpp>
 

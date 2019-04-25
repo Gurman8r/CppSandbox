@@ -39,8 +39,14 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-#include <experimental/coroutine>
-#include <experimental/filesystem>
+namespace ml
+{
+	template <class K, class V> using HashMap		= typename std::unordered_map<K, V>;
+	template <class T>			using Initializer	= typename std::initializer_list<T>;
+	template <class K, class V> using Map			= typename std::map<K, V>;
+	template <class K, class V> using MultiMap		= typename std::multimap<K, V>;
+	template <class K, class V> using Pair			= typename std::pair<K, V>;
+}
 
 /* * * * * * * * * * * * * * * * * * * * */
 

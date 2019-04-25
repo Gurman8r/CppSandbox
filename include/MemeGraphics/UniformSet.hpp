@@ -13,7 +13,7 @@ namespace ml
 	{
 	public:
 		using map_type			= typename HashMap<String, Uniform>;
-		using init_type			= typename std::initializer_list<Uniform>;
+		using init_type			= typename Initializer<Uniform>;
 		using iterator			= typename map_type::iterator;
 		using const_iterator	= typename map_type::const_iterator;
 

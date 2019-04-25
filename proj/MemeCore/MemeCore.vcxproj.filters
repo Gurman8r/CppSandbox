@@ -34,9 +34,6 @@
     <Filter Include="Header Files\Utility">
       <UniqueIdentifier>{aa9cd324-f987-4bac-9b0c-1520e7a689c5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Threading">
-      <UniqueIdentifier>{c04760b5-ba7d-4cfb-bde9-91f5bce95b72}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Threading">
       <UniqueIdentifier>{c5afbb30-6fd2-4557-8924-cdb640ab384d}</UniqueIdentifier>
     </Filter>
@@ -54,6 +51,9 @@
     </Filter>
     <Filter Include="Header Files\STD">
       <UniqueIdentifier>{485dbe29-b211-4cd5-b452-6ce26ff91e9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Threading">
+      <UniqueIdentifier>{c04760b5-ba7d-4cfb-bde9-91f5bce95b72}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -149,9 +149,6 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Function.hpp">
       <Filter>Header Files\Threading</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Map.hpp">
-      <Filter>Header Files\STD</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\File.hpp">
       <Filter>Header Files\FS</Filter>
