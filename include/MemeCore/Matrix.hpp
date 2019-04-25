@@ -21,9 +21,8 @@ namespace ml
 		, public IComparable<Matrix<_Elem, _Cols, _Rows>>
 		, public IEnumerable<_Elem, _Cols * _Rows>
 	{
-		static_assert(
-			std::is_trivial<_Elem>::value, 
-			"Matrix values must be trivial."
+		static_assert(std::is_trivial<_Elem>::value, 
+			"Matricies must contain trivial values."
 		);
 
 	public: // Enums

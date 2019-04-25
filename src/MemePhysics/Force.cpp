@@ -12,7 +12,9 @@ namespace ml
 
 	const vec3f Force::normal(const vec3f & grav, const vec3f & unorm)
 	{
-		return -(vec3f::project(grav, unorm));
+		// FIXME
+		//return -(vec3f::project(grav, unorm));
+		return vec3f();
 	}
 
 	const vec3f Force::sliding(const vec3f & grav, const vec3f & norm)

@@ -1,7 +1,7 @@
 #ifndef _ML_TRANSFORM_HPP_
 #define _ML_TRANSFORM_HPP_
 
-#include <MemeCore/Quaternion.hpp>
+#include <MemeCore/Quat.hpp>
 #include <MemeCore/Vector3.hpp>
 #include <MemeCore/Vector2.hpp>
 #include <MemeCore/Rect.hpp>
@@ -17,14 +17,14 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		Transform();
 		Transform(const vec3f & position, const vec3f & scale);
-		Transform(const vec3f & position, const vec3f & scale, const quat & rotation);
+		Transform(const vec3f & position, const vec3f & scale, const Quat & rotation);
 		Transform(const mat4f & value);
 		Transform(const Transform & copy);
 		~Transform();
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-		static bool  Decompose(const mat4f & value, vec3f & scl, quat & rot, vec3f & tns, vec3f & skw, vec4f & psp);
+		static bool  Decompose(const mat4f & value, vec3f & scl, Quat & rot, vec3f & tns, vec3f & skw, vec4f & psp);
 		static mat4f Inverse(const mat4f & value);
 		
 		static mat4f Rotate(const mat4f & value, float angle, const vec3f & axis);
@@ -45,7 +45,7 @@ namespace ml
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-		bool	decompose(vec3f & scl, quat & rot, vec3f & tns, vec3f & skw, vec4f & psp) const;
+		bool	decompose(vec3f & scl, Quat & rot, vec3f & tns, vec3f & skw, vec4f & psp) const;
 		mat4f	getInverse() const;
 
 	public:

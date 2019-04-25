@@ -165,9 +165,6 @@
     <ClInclude Include="..\..\include\MemeCore\IStream.hpp">
       <Filter>Header Files\STD</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Quaternion.hpp">
-      <Filter>Header Files\Maths</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\Array.hpp">
       <Filter>Header Files\STD</Filter>
     </ClInclude>
@@ -232,6 +229,9 @@
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\GLM.hpp">
+      <Filter>Header Files\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeCore\Quat.hpp">
       <Filter>Header Files\Maths</Filter>
     </ClInclude>
   </ItemGroup>

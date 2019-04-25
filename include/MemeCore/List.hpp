@@ -10,6 +10,12 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	template <
+		class T
+	> using InitializerList = typename std::initializer_list<T>;
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	template <
 		class _Elem,
 		class _Alloc = std::allocator<_Elem>
 	> class List

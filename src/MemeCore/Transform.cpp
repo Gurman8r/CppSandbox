@@ -23,7 +23,7 @@ namespace ml
 			.scale(scale);
 	}
 
-	Transform::Transform(const vec3f & pos, const vec3f & scl, const quat & rot)
+	Transform::Transform(const vec3f & pos, const vec3f & scl, const Quat & rot)
 		: m_matrix(mat4f::Identity())
 	{
 		(*this)
@@ -48,8 +48,9 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-	bool Transform::Decompose(const mat4f & value, vec3f & scl, quat & rot, vec3f & tns, vec3f & skw, vec4f & psp)
+	bool Transform::Decompose(const mat4f & value, vec3f & scl, Quat & rot, vec3f & tns, vec3f & skw, vec4f & psp)
 	{
+		//glm::project()
 		static glm::vec3 _scl; // scale
 		static glm::quat _rot; // orientation
 		static glm::vec3 _tns; // translation
@@ -165,7 +166,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-	bool Transform::decompose(vec3f & scl, quat & rot, vec3f & tns, vec3f & skw, vec4f & psp) const
+	bool Transform::decompose(vec3f & scl, Quat & rot, vec3f & tns, vec3f & skw, vec4f & psp) const
 	{
 		return Transform::Decompose(m_matrix, scl, rot, tns, skw, psp);
 	}

@@ -14,15 +14,21 @@ namespace ml
 	{
 	public: // Usings
 		/* * * * * * * * * * * * * * * * * * * * */
-		using value_type		= typename _Elem;
-		using base_type			= typename Vector4<value_type>;
-		using self_type			= typename Rect<value_type>;
-		using coord_type		= typename Vector<value_type, 2>;
+		using value_type			= typename _Elem;
+		using self_type				= typename Rect<value_type>;
+		using base_type				= typename Vector4<value_type>;
+		using coord_type			= typename Vector<value_type, 2>;
+		using array_type			= typename base_type::array_type;
 
-		using pointer			= typename base_type::pointer;
-		using reference			= typename base_type::reference;
-		using const_pointer		= typename base_type::const_pointer;
-		using const_reference	= typename base_type::const_reference;
+		using pointer				= typename base_type::pointer;
+		using reference				= typename base_type::reference;
+		using const_pointer			= typename base_type::const_pointer;
+		using const_reference		= typename base_type::const_reference;
+
+		using iterator				= typename base_type::iterator;
+		using const_iterator		= typename base_type::const_iterator;
+		using reverse_iterator		= typename base_type::reverse_iterator;
+		using const_reverse_iterator= typename base_type::const_reverse_iterator;
 
 	public: // Constructors
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -91,13 +97,6 @@ namespace ml
 		}
 	};
 
-	/* * * * * * * * * * * * * * * * * * * * */
-}
-
-/* * * * * * * * * * * * * * * * * * * * */
-
-namespace ml
-{
 	// Types
 	/* * * * * * * * * * * * * * * * * * * * */
 	using FloatRect = Rect<float>;

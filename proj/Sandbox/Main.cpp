@@ -8,6 +8,7 @@
 #include <MemeEngine/Engine.hpp>
 #include <MemeEngine/StateMachine.hpp>
 #include <MemeEditor/AnyVar.hpp>
+#include <MemeCore/Quat.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -19,6 +20,8 @@
 
 int32_t main(int32_t argc, char ** argv)
 {
+	ml::Quat q;
+
 	//ml::AnyVar a;
 	//a.allocFloat(3);
 	//float f[3] = { 1, 2, 3 };

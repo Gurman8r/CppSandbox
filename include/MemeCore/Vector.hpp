@@ -16,15 +16,21 @@ namespace ml
 	{
 	public: // Usings
 		/* * * * * * * * * * * * * * * * * * * * */
-		using value_type		= typename _Elem;
-		using self_type			= typename Vector<value_type, _Size>;
-		using base_type			= typename Matrix<value_type, _Size, 1>;
-		using init_type			= typename base_type::init_type;
-		
-		using pointer			= typename base_type::pointer;
-		using reference			= typename base_type::reference;
-		using const_pointer		= typename base_type::const_pointer;
-		using const_reference	= typename base_type::const_reference;
+		using value_type			= typename _Elem;
+		using self_type				= typename Vector<value_type, _Size>;
+		using base_type				= typename Matrix<value_type, _Size, 1>;
+		using init_type				= typename base_type::init_type;
+		using array_type			= typename base_type::array_type;
+
+		using pointer				= typename base_type::pointer;
+		using reference				= typename base_type::reference;
+		using const_pointer			= typename base_type::const_pointer;
+		using const_reference		= typename base_type::const_reference;
+
+		using iterator				= typename base_type::iterator;
+		using const_iterator		= typename base_type::const_iterator;
+		using reverse_iterator		= typename base_type::reverse_iterator;
+		using const_reverse_iterator= typename base_type::const_reverse_iterator;
 
 
 	public: // Constructors
@@ -62,16 +68,16 @@ namespace ml
 		}
 
 		template <
-			class E
-		> Vector(const Vector<E, self_type::Size> & copy)
+			class T
+		> Vector(const Vector<T, self_type::Size> & copy)
 			: base_type(copy)
 		{
 		}
 
 		template <
-			class E, 
+			class T, 
 			size_t S
-		> Vector(const Vector<E, S> & copy, const_reference def = static_cast<value_type>(0))
+		> Vector(const Vector<T, S> & copy, const_reference def = static_cast<value_type>(0))
 			: base_type(copy, def)
 		{
 		}
@@ -108,76 +114,74 @@ namespace ml
 
 	public: // Member Functions
 		/* * * * * * * * * * * * * * * * * * * * */
-		inline float distanceTo(const self_type & value) const
+		inline value_type distanceTo(const self_type & value) const
 		{
-			return self_type::distance((*this), value);
+			return self_type::Distance((*this), value);
 		}
 
-		inline float dot(const self_type & value) const
+		inline value_type dot(const self_type & value) const
 		{
-			return self_type::dot((*this), value);
+			return self_type::Dot((*this), value);
 		}
 		
-		inline float magnitude() const
-		{
-			return sqrt(sqrMagnitude());
-		};
-
-		inline float sqrMagnitude() const
-		{
-			float value = 0;
-			for (size_t i = 0; i < this->size(); i++)
-			{
-				value += (*this)[i] * (*this)[i];
-			}
-			return value;
-		};
-		
-		/* * * * * * * * * * * * * * * * * * * * */
-
 		inline self_type & normalize()
 		{
-			return (*this) /= magnitude();
+			return ((*this) /= magnitude());
 		};
 
 		inline self_type normalized() const
 		{
 			return self_type(*this).normalize();
 		};
-
-
-	public: // Static Functions
-		/* * * * * * * * * * * * * * * * * * * * */
-		inline static float distance(const self_type & a, const self_type & b)
+		
+		inline value_type magnitude() const
 		{
-			return self_type(a - b).magnitude();
+			return sqrt(sqrMagnitude());
 		};
 
-		inline static float dot(const self_type & a, const self_type & b)
+		inline value_type sqrMagnitude() const
 		{
-			float value = 0;
-			for (size_t i = 0; i < self_type::Size; i++)
+			value_type value = 0;
+			for (size_t i = 0; i < this->size(); i++)
 			{
-				value += static_cast<float>(a[i]) * static_cast<float>(b[i]);
+				value += (*this)[i] * (*this)[i];
 			}
 			return value;
 		};
 
-		/* * * * * * * * * * * * * * * * * * * * */
 
-		inline static self_type direction(const self_type & from, const self_type & to)
+	public: // Static Functions
+		/* * * * * * * * * * * * * * * * * * * * */
+		inline static value_type Dot(const self_type & a, const self_type & b)
+		{
+			value_type value = static_cast<value_type>(0);
+			for (size_t i = 0; i < self_type::Size; i++)
+			{
+				value += static_cast<value_type>(a[i]) * static_cast<value_type>(b[i]);
+			}
+			return value;
+		};
+
+		inline static self_type Direction(const self_type & from, const self_type & to)
 		{
 			return (to - from).normalized();
 		};
 
-		inline static self_type lerp(const self_type & a, const self_type & b, float t)
+		inline static value_type Distance(const self_type & a, const self_type & b)
+		{
+			return self_type(a - b).magnitude();
+		};
+
+		inline static self_type Lerp(const self_type & a, const self_type & b, value_type t)
 		{
 			return Maths::lerp<self_type>(a, b, t);
 		};
 
-		inline static self_type reflect(const self_type & direction, const self_type & normal)
+		inline static self_type Reflect(const self_type & direction, const self_type & normal)
 		{
-			return (normal - direction) * (static_cast<value_type>(2) * dot(direction, normal));
+			return 
+				(normal - direction) * 
+				(static_cast<value_type>(2) * self_type::Dot(direction, normal));
 		};
 
 
@@ -190,22 +194,22 @@ namespace ml
 
 		inline friend self_type operator*(const self_type & lhs, const_reference rhs)
 		{
-			self_type tmp;
-			for (size_t i = 0; i < tmp.size(); i++)
+			self_type temp;
+			for (size_t i = 0, imax = temp.size(); i < imax; i++)
 			{
-				tmp[i] = lhs[i] * rhs;
+				temp[i] = lhs[i] * rhs;
 			}
-			return tmp;
+			return temp;
 		};
 
 		inline friend self_type operator/(const self_type & lhs, const_reference rhs)
 		{
-			self_type tmp;
-			for (size_t i = 0; i < tmp.size(); i++)
+			self_type temp;
+			for (size_t i = 0, imax = temp.size(); i < imax; i++)
 			{
-				tmp[i] = lhs[i] / rhs;
+				temp[i] = lhs[i] / rhs;
 			}
-			return tmp;
+			return temp;
 		};
 
 		inline friend self_type & operator*=(self_type & lhs, const_reference rhs)
@@ -220,72 +224,72 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		template <class E> 
-		inline friend self_type operator+(const self_type & lhs, const Vector<E, self_type::Size> & rhs)
+		template <class T> 
+		inline friend self_type operator+(const self_type & lhs, const Vector<T, self_type::Size> & rhs)
 		{
-			self_type tmp;
-			for (size_t i = 0; i < tmp.size(); i++)
+			self_type temp;
+			for (size_t i = 0, imax = temp.size(); i < imax; i++)
 			{
-				tmp[i] = lhs[i] + static_cast<value_type>(rhs[i]);
+				temp[i] = lhs[i] + static_cast<value_type>(rhs[i]);
 			}
-			return tmp;
+			return temp;
 		};
 		
-		template <class E>
-		inline friend self_type operator-(const self_type & lhs, const Vector<E, self_type::Size> & rhs)
+		template <class T>
+		inline friend self_type operator-(const self_type & lhs, const Vector<T, self_type::Size> & rhs)
 		{
-			self_type tmp;
-			for (size_t i = 0; i < tmp.size(); i++)
+			self_type temp;
+			for (size_t i = 0, imax = temp.size(); i < imax; i++)
 			{
-				tmp[i] = lhs[i] - static_cast<value_type>(rhs[i]);
+				temp[i] = lhs[i] - static_cast<value_type>(rhs[i]);
 			}
-			return tmp;
+			return temp;
 		};
 		
-		template <class E>
-		inline friend self_type operator*(const self_type & lhs, const Vector<E, self_type::Size> & rhs)
+		template <class T>
+		inline friend self_type operator*(const self_type & lhs, const Vector<T, self_type::Size> & rhs)
 		{
-			self_type tmp;
-			for (size_t i = 0; i < tmp.size(); i++)
+			self_type temp;
+			for (size_t i = 0, imax = temp.size(); i < imax; i++)
 			{
-				tmp[i] = lhs[i] * static_cast<value_type>(rhs[i]);
+				temp[i] = lhs[i] * static_cast<value_type>(rhs[i]);
 			}
-			return tmp;
+			return temp;
 		};
 		
-		template <class E>
-		inline friend self_type operator/(const self_type & lhs, const Vector<E, self_type::Size> & rhs)
+		template <class T>
+		inline friend self_type operator/(const self_type & lhs, const Vector<T, self_type::Size> & rhs)
 		{
-			self_type tmp;
-			for (size_t i = 0; i < tmp.size(); i++)
+			self_type temp;
+			for (size_t i = 0, imax = temp.size(); i < imax; i++)
 			{
-				tmp[i] = lhs[i] / static_cast<value_type>(rhs[i]);
+				temp[i] = lhs[i] / static_cast<value_type>(rhs[i]);
 			}
-			return tmp;
+			return temp;
 		};
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		template <class E>
-		inline friend self_type & operator+=(self_type & lhs, const Vector<E, self_type::Size> & rhs)
+		template <class T>
+		inline friend self_type & operator+=(self_type & lhs, const Vector<T, self_type::Size> & rhs)
 		{
 			return (lhs = (lhs + rhs));
 		};
 		
-		template <class E>
-		inline friend self_type & operator-=(self_type & lhs, const Vector<E, self_type::Size> & rhs)
+		template <class T>
+		inline friend self_type & operator-=(self_type & lhs, const Vector<T, self_type::Size> & rhs)
 		{
 			return (lhs = (lhs - rhs));
 		};
 		
-		template <class E>
-		inline friend self_type & operator*=(self_type & lhs, const Vector<E, self_type::Size> & rhs)
+		template <class T>
+		inline friend self_type & operator*=(self_type & lhs, const Vector<T, self_type::Size> & rhs)
 		{
 			return (lhs = (lhs * rhs));
 		};
 		
-		template <class E>
-		inline friend self_type & operator/=(self_type & lhs, const Vector<E, self_type::Size> & rhs)
+		template <class T>
+		inline friend self_type & operator/=(self_type & lhs, const Vector<T, self_type::Size> & rhs)
 		{
 			return (lhs = (lhs / rhs));
 		};

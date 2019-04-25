@@ -16,14 +16,20 @@ namespace ml
 	{
 	public: // Usings
 		/* * * * * * * * * * * * * * * * * * * * */
-		using value_type		= typename _Elem;
-		using base_type			= typename Vector<value_type, 3>;
-		using self_type			= typename Vector3<value_type>;
+		using value_type			= typename _Elem;
+		using self_type				= typename Vector3<value_type>;
+		using base_type				= typename Vector<value_type, 3>;
+		using array_type			= typename base_type::array_type;
 
-		using pointer			= typename base_type::pointer;
-		using reference			= typename base_type::reference;
-		using const_pointer		= typename base_type::const_pointer;
-		using const_reference	= typename base_type::const_reference;
+		using pointer				= typename base_type::pointer;
+		using reference				= typename base_type::reference;
+		using const_pointer			= typename base_type::const_pointer;
+		using const_reference		= typename base_type::const_reference;
+
+		using iterator				= typename base_type::iterator;
+		using const_iterator		= typename base_type::const_iterator;
+		using reverse_iterator		= typename base_type::reverse_iterator;
+		using const_reverse_iterator= typename base_type::const_reverse_iterator;
 
 
 	public: // Constructors
@@ -51,16 +57,16 @@ namespace ml
 		}
 
 		template <
-			class U
-		> Vector3(const Vector3<U> & copy)
+			class T
+		> Vector3(const Vector3<T> & copy)
 			: base_type(copy)
 		{
 		}
 		
 		template <
-			class  U, 
+			class  T, 
 			size_t S
-		> Vector3(const Vector<U, S> & copy, const_reference def = static_cast<value_type>(0))
+		> Vector3(const Vector<T, S> & copy, const_reference def = static_cast<value_type>(0))
 			: base_type(copy, def)
 		{
 		}
@@ -73,11 +79,6 @@ namespace ml
 		inline self_type & cross(const self_type & other)
 		{
 			return ((*this) = self_type::cross((*this), other));
-		}
-
-		inline self_type & project(const self_type & other)
-		{
-			return ((*this) = self_type::project((*this), other));
 		}
 
 
@@ -94,12 +95,6 @@ namespace ml
 				(a[0] * b[1]) - (a[1] * b[0]));
 		}
 
-		inline static self_type project(const self_type & a, const self_type & b)
-		{
-			return self_type();
-		}
-
-
 	public: // Constants
 		/* * * * * * * * * * * * * * * * * * * * */
 		static const self_type Zero;
@@ -112,23 +107,16 @@ namespace ml
 		static const self_type Back;
 	};
 
-	/* * * * * * * * * * * * * * * * * * * * */
-}
-
-/* * * * * * * * * * * * * * * * * * * * */
-
-namespace ml
-{
 	// Constants
 	/* * * * * * * * * * * * * * * * * * * * */
-	template <class E> const Vector3<E> Vector3<E>::Zero	= Vector3<E>( 0,  0,  0);
-	template <class E> const Vector3<E> Vector3<E>::One		= Vector3<E>( 1,  1,  1);
-	template <class E> const Vector3<E> Vector3<E>::Up		= Vector3<E>( 0,  1,  0);
-	template <class E> const Vector3<E> Vector3<E>::Down	= Vector3<E>( 0, -1,  0);
-	template <class E> const Vector3<E> Vector3<E>::Left	= Vector3<E>(-1,  0,  0);
-	template <class E> const Vector3<E> Vector3<E>::Right	= Vector3<E>( 1,  0,  0);
-	template <class E> const Vector3<E> Vector3<E>::Forward = Vector3<E>( 0,  0,  1);
-	template <class E> const Vector3<E> Vector3<E>::Back	= Vector3<E>( 0,  0, -1);
+	template <class T> const Vector3<T> Vector3<T>::Zero	= Vector3<T>( 0,  0,  0);
+	template <class T> const Vector3<T> Vector3<T>::One		= Vector3<T>( 1,  1,  1);
+	template <class T> const Vector3<T> Vector3<T>::Up		= Vector3<T>( 0,  1,  0);
+	template <class T> const Vector3<T> Vector3<T>::Down	= Vector3<T>( 0, -1,  0);
+	template <class T> const Vector3<T> Vector3<T>::Left	= Vector3<T>(-1,  0,  0);
+	template <class T> const Vector3<T> Vector3<T>::Right	= Vector3<T>( 1,  0,  0);
+	template <class T> const Vector3<T> Vector3<T>::Forward = Vector3<T>( 0,  0,  1);
+	template <class T> const Vector3<T> Vector3<T>::Back	= Vector3<T>( 0,  0, -1);
 
 	// Types
 	/* * * * * * * * * * * * * * * * * * * * */

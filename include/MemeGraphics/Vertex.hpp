@@ -4,7 +4,6 @@
 #include <MemeGraphics/Color.hpp>
 #include <MemeCore/Vector2.hpp>
 #include <MemeCore/Vector3.hpp>
-#include <MemeCore/Vector4.hpp>
 
 namespace ml
 {

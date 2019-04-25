@@ -638,7 +638,7 @@ namespace DEMO
 						ML_Physics.world().state().setData(
 							rigidbody->index(),
 							transform->getPosition(),
-							ml::quat(),
+							ml::Quat(),
 							transform->matrix(),
 							transform->getInverse()
 						);
@@ -658,7 +658,7 @@ namespace DEMO
 					for (int32_t i = 0; i < state.size(); i++)
 					{
 						ml::vec3f	pos;
-						ml::quat	rot;
+						ml::Quat	rot;
 						ml::mat4f	mat;
 						ml::mat4f	inv;
 						if (state.getData(i, pos, rot, mat, inv))
@@ -769,7 +769,7 @@ namespace DEMO
 			if (ml::Rigidbody * rigidbody = pair.second->get<ml::Rigidbody>())
 			{
 				ml::vec3f pos;
-				ml::quat  rot;
+				ml::Quat  rot;
 				ml::mat4f mat;
 				ml::mat4f inv;
 				if (ML_Physics.world().state().getData(rigidbody->index(),
