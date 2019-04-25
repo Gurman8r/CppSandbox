@@ -25,6 +25,7 @@
 #include <MemeEditor/ImGui.hpp>
 #include <MemeEditor/ImGui_Style.hpp>
 #include <MemeEditor/StyleLoader.hpp>
+#include <MemeEditor/AnyVar.hpp>
 #include <MemeEngine/Engine.hpp>
 #include <MemeEngine/Entity.hpp>
 #include <MemeEngine/EngineCommands.hpp>

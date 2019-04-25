@@ -27,21 +27,21 @@ namespace ml
 
 	public:
 		inline const IDrawable		* drawable() const	{ return m_drawable; }
-		inline const RenderStates	& states()	 const	{ return m_states; }
 		inline const Material		& material() const	{ return m_material; }
+		inline const RenderStates	& states()	 const	{ return m_states; }
 
 	public:
 		inline const IDrawable *	& drawable()		{ return m_drawable; }
-		inline RenderStates			& states()			{ return m_states; }
 		inline Material				& material()		{ return m_material; }
+		inline RenderStates			& states()			{ return m_states; }
 
 	public:
 		void draw(RenderTarget & target, RenderBatch batch) const override;
 
 	private:
 		const IDrawable *	m_drawable;
-		RenderStates		m_states;
 		Material			m_material;
+		RenderStates		m_states;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

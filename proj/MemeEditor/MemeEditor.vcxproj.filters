@@ -147,6 +147,12 @@
     <ClInclude Include="..\..\thirdparty\include\imgui\imstb_rectpack.h">
       <Filter>Resource Files\ImGui\include</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeEditor\CustomShader.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MemeEditor\AnyVar.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeEditor\GUI_Base.cpp">
@@ -226,6 +232,12 @@
     </ClCompile>
     <ClCompile Include="..\..\thirdparty\include\imgui\imgui_impl_ml.cpp">
       <Filter>Resource Files\ImGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeEditor\CustomShader.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MemeEditor\AnyVar.cpp">
+      <Filter>Source Files\Utility</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

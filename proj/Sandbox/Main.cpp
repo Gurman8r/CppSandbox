@@ -7,6 +7,7 @@
 #include <MemeCore/EventSystem.hpp>
 #include <MemeEngine/Engine.hpp>
 #include <MemeEngine/StateMachine.hpp>
+#include <MemeEditor/AnyVar.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -18,6 +19,13 @@
 
 int32_t main(int32_t argc, char ** argv)
 {
+	//ml::AnyVar a;
+	//a.allocFloat(3);
+	//float f[3] = { 1, 2, 3 };
+	//a.setFloat(f);
+	//ml::Debug::log("A: {0}", a);
+	//return ml::Debug::pause(0);
+
 	// Load Settings
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 	if (!SETTINGS.loadFromFile(ML_CONFIG_INI))
