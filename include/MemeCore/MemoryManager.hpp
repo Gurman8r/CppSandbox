@@ -22,7 +22,7 @@ namespace ml
 	public:
 		void *	allocate(size_t size);
 		bool	free(void * value);
-		bool	prime(byte * data, size_t size);
+		bool	prime(uint8_t * data, size_t size);
 
 		void	serialize(std::ostream & out) const override;
 		void	serializeChunk(std::ostream & out, const Chunk & c) const;
@@ -62,11 +62,11 @@ namespace ml
 		}
 		~MemoryManager() {}
 
-		byte *	m_data; // Pointer to byte array
-		size_t	m_size; // Total bytes available
-		size_t	m_used; // Number of bytes used
-		Chunk *	m_head; // First chunk in list
-		Chunk *	m_tail; // Last chunk in list
+		uint8_t *	m_data; // Pointer to uint8_t array
+		size_t		m_size; // Total bytes available
+		size_t		m_used; // Number of bytes used
+		Chunk *		m_head; // First chunk in list
+		Chunk *		m_tail; // Last chunk in list
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

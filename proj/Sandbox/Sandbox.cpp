@@ -721,7 +721,7 @@ namespace DEMO
 		this->setTitle(ml::String("{0} | {1} | {2} | {3} ms/frame ({4} fps)").format(
 			SETTINGS.title,
 			ML_CONFIGURATION,
-			ML_PLATFORM,
+			ML_PLATFORM_TARGET,
 			ev->elapsed.delta(),
 			ML_Engine.frameRate()
 		));

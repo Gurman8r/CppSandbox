@@ -1,7 +1,8 @@
 #ifndef _ML_CONSOLE_HPP_
 #define _ML_CONSOLE_HPP_
 
-#include <MemeCore/IO.hpp>
+#include <MemeCore/Export.hpp>
+#include <MemeCore/String.hpp>
 #include <MemeCore/ISingleton.hpp>
 
 #define ML_Console ml::Console::getInstance()

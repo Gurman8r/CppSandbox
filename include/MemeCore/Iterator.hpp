@@ -15,8 +15,8 @@ namespace ml
 		class _Category,
 		class _Value, 
 		class _Unqualified,
-		class _Difference>
-	class Iterator
+		class _Difference
+	> class Iterator
 		: public std::iterator<_Category, _Unqualified, _Difference, _Value *, _Value &>
 		, public IComparable<Iterator<_Category, _Value, _Unqualified, _Difference>>
 	{

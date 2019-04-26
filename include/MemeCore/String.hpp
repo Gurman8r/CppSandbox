@@ -10,8 +10,7 @@ namespace ml
 		class _Elem,
 		class _Traits = std::char_traits<_Elem>,
 		class _Alloc  = std::allocator<_Elem>
-	>
-	class BasicString
+	> class BasicString
 		: public std::basic_string<_Elem, _Traits, _Alloc>
 		, public IComparable<std::basic_string<_Elem, _Traits, _Alloc>>
 	{
@@ -215,9 +214,9 @@ namespace ml
 		> inline static self_type Format(self_type value, const T & arg0, Args && ... args)
 		{
 			self_type::stream_type ss;
-			ss << arg0 << ml::endl;
+			ss << arg0 << std::endl;
 
-			int32_t sink[] = { 0, ((void)(ss << args << ml::endl), 0)... };
+			int32_t sink[] = { 0, ((void)(ss << args << std::endl), 0)... };
 			(void)sink;
 
 			for (size_type i = 0; ss.good(); i++)

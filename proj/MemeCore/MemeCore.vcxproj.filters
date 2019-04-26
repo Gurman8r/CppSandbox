@@ -132,9 +132,6 @@
     <ClInclude Include="..\..\include\MemeCore\Export.hpp">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\IO.hpp">
-      <Filter>Header Files\STD</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeCore\OStream.hpp">
       <Filter>Header Files\STD</Filter>
     </ClInclude>

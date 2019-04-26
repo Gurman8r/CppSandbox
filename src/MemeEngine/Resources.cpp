@@ -103,7 +103,7 @@ namespace ml
 				while (std::getline(file, line))
 				{
 					line.replaceAll("$(Configuration)", ML_CONFIGURATION);
-					line.replaceAll("$(PlatformTarget)", ML_PLATFORM);
+					line.replaceAll("$(PlatformTarget)", ML_PLATFORM_TARGET);
 
 					if (line.find("</item>") != String::npos)
 					{

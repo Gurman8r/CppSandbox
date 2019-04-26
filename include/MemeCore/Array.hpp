@@ -10,8 +10,7 @@ namespace ml
 	template <
 		class _Elem,
 		size_t _Size
-	>
-	class Array
+	> class Array
 		: public std::array<_Elem, _Size>
 		, public ISerializable
 		, public IComparable<Array<_Elem, _Size>>

@@ -13,13 +13,9 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-# ifdef ML_DEBUG
-	// In debug configuration, perform a test on every OpenGL call
-	// The do-while loop is needed so that glCheck can be 
-	// used as a single statement in if/else branches
+# if ML_DEBUG
 #	define glCheck(expr) do { expr; ML_GL.checkError(__FILE__, __LINE__, #expr); } while (false)
-# else
-	// Else, we don't add any overhead
+#else
 #	define glCheck(expr) (expr)
 # endif
 

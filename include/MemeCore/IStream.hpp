@@ -1,7 +1,8 @@
 #ifndef _ML_ISTREAM_HPP_
 #define _ML_ISTREAM_HPP_
 
-#include <MemeCore/IO.hpp>
+#include <MemeCore/Export.hpp>
+#include <MemeCore/StandardLib.hpp>
 
 namespace ml
 {
@@ -9,7 +10,7 @@ namespace ml
 
 	class ML_CORE_API BasicIStream
 		: public std::istream
-		, public std::streambuf
+		, public StreamBuf
 	{
 	public:
 		using base_type		= std::basic_istream<char>;

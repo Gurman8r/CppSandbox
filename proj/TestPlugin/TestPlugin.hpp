@@ -8,14 +8,14 @@
 /* * * * * * * * * * * * * * * * * * * * */
 
 # ifdef ML_SYSTEM_WINDOWS
-#	pragma comment(lib, "MemeAudio_"	ML_CONFIGURATION "_" ML_PLATFORM ".lib")
-#	pragma comment(lib, "MemeCore_"		ML_CONFIGURATION "_" ML_PLATFORM ".lib")
-#	pragma comment(lib, "MemeEditor_"	ML_CONFIGURATION "_" ML_PLATFORM ".lib")
-#	pragma comment(lib, "MemeEngine_"	ML_CONFIGURATION "_" ML_PLATFORM ".lib")
-#	pragma comment(lib, "MemeNet_"		ML_CONFIGURATION "_" ML_PLATFORM ".lib")
-#	pragma comment(lib, "MemePhysics_"	ML_CONFIGURATION "_" ML_PLATFORM ".lib")
-#	pragma comment(lib, "MemeScript_"	ML_CONFIGURATION "_" ML_PLATFORM ".lib")
-#	pragma comment(lib, "MemeWindow_"	ML_CONFIGURATION "_" ML_PLATFORM ".lib")
+#	pragma comment(lib, "MemeAudio_"	ML_CONFIGURATION "_" ML_PLATFORM_TARGET ".lib")
+#	pragma comment(lib, "MemeCore_"		ML_CONFIGURATION "_" ML_PLATFORM_TARGET ".lib")
+#	pragma comment(lib, "MemeEditor_"	ML_CONFIGURATION "_" ML_PLATFORM_TARGET ".lib")
+#	pragma comment(lib, "MemeEngine_"	ML_CONFIGURATION "_" ML_PLATFORM_TARGET ".lib")
+#	pragma comment(lib, "MemeNet_"		ML_CONFIGURATION "_" ML_PLATFORM_TARGET ".lib")
+#	pragma comment(lib, "MemePhysics_"	ML_CONFIGURATION "_" ML_PLATFORM_TARGET ".lib")
+#	pragma comment(lib, "MemeScript_"	ML_CONFIGURATION "_" ML_PLATFORM_TARGET ".lib")
+#	pragma comment(lib, "MemeWindow_"	ML_CONFIGURATION "_" ML_PLATFORM_TARGET ".lib")
 # endif
 
 /* * * * * * * * * * * * * * * * * * * * */

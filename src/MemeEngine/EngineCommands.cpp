@@ -375,7 +375,7 @@ namespace ml
 			}
 			else if (opt == "platform")
 			{
-				return Var().stringValue(ML_PLATFORM);
+				return Var().stringValue(ML_PLATFORM_TARGET);
 			}
 		}
 		return Var().boolValue(true);

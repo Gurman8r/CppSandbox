@@ -14,38 +14,32 @@
 # endif
 
 
-//	Configuration Macro (Debug / Release)
+//	Configuration (Debug / Release)
 /* * * * * * * * * * * * * * * * * * * */
 # if defined(_DEBUG)
-#	define ML_DEBUG _DEBUG
-# endif
-
-# if defined(ML_DEBUG)
+#	define ML_DEBUG			1
+#	define ML_RELEASE		0
 #	define ML_CONFIGURATION "Debug"
 # else
+#	define ML_DEBUG			0
+#	define ML_RELEASE		1
 #	define ML_CONFIGURATION "Release"
 # endif
 
 
-//	C/C++ Macro
+//	C/C++
 /* * * * * * * * * * * * * * * * * * * */
 # if defined(__cplusplus)
-#	define ML_CPP __cplusplus
+#	define ML_CPP
 # endif
 
 
-//	Operating System Macro
+//	Operating System
 /* * * * * * * * * * * * * * * * * * * */
-# if defined(_WIN64) || defined(_WIN32)
+# if defined(_WIN32) || defined(_WIN64)
 #	define ML_SYSTEM_WINDOWS
 #	ifndef NOMINMAX
 #		define NOMINMAX
-#	endif
-#	ifdef near
-#		undef near
-#	endif
-#	ifdef far
-#		undef far
 #	endif
 # elif defined(__APPLE__) && defined(__MACH__)
 #	define ML_SYSTEM_APPLE
@@ -65,34 +59,27 @@
 # endif
 
 
-//	Platform Macro (x86 / x64)
+//	Architecture / Platform
 /* * * * * * * * * * * * * * * * * * * */
-# if defined(ML_SYSTEM_WINDOWS)
-#	if defined(_WIN64)
-#		define ML_x64
-#	else
-#		define ML_x86
-#	endif
-# elif defined(__GNUC__)
-#	if defined(__x86_64__) || defined(__ppc64__)
-#		define ML_x64
-#	else
-#		define ML_x86
-#	endif
+# if defined(_WIN64		)\
+  || defined(WIN64		)\
+  || defined(__x86_64__	)\
+  || defined(__ppc64__	)\
+  || defined(_x64		)\
+  || defined(_M_X64		)\
+  || defined(__LP64__	)\
+  || defined(__LLP64__	)
+#	define ML_64
+#	define ML_ARCHITECTURE 64
+#	define ML_PLATFORM_TARGET "x64"
 # else
-#	error The target platform does not support memes.
-# endif
-
-# if defined(ML_x64)
-#	define ML_PLATFORM "x64"
-# elif defined(ML_x86)
-#	define ML_PLATFORM "x86"
-# else
-#	define ML_PLATFORM "x??"
+#	define ML_32
+#	define ML_ARCHITECTURE 32
+#	define ML_PLATFORM_TARGET "x86"
 # endif
 
 
-//	Export / Import Macro
+//	Export / Import
 /* * * * * * * * * * * * * * * * * * * */
 # ifndef ML_STATIC
 #	ifdef ML_SYSTEM_WINDOWS

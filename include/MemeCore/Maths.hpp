@@ -30,7 +30,7 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 		template <
 			class T
-		> inline static const T clamp(const T value, const T min, const T max)
+		> inline static T clamp(const T & value, const T & min, const T & max)
 		{
 			return static_cast<T>(ML_CLAMP(
 				static_cast<T>(value),
@@ -41,7 +41,7 @@ namespace ml
 
 		template <
 			class T
-		> inline static const T lerp(const T a, const T b, const float t)
+		> inline static T lerp(const T & a, const T & b, const float t)
 		{
 			return static_cast<T>(ML_LERP(
 				static_cast<T>(a),
@@ -52,7 +52,7 @@ namespace ml
 
 		template <
 			class T
-		> inline static T mapRange(const T value, const T min1, const T max1, const T min2, const T max2)
+		> inline static T mapRange(const T & value, const T & min1, const T & max1, const T & min2, const T & max2)
 		{
 			return static_cast<T>(ML_MAP_RANGE(
 				static_cast<T>(value), 
@@ -65,7 +65,7 @@ namespace ml
 
 		template <
 			class T
-		> inline static const T sign(const T value)
+		> inline static T sign(const T & value)
 		{
 			return static_cast<T>(ML_SIGN(
 				static_cast<T>(value)

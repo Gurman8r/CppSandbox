@@ -10,8 +10,7 @@ namespace ml
 	template <
 		uint64_t N, // Numerator
 		uint64_t D	// Denominator
-	>
-	using Ratio = typename std::ratio<N, D>;
+	> using Ratio = typename std::ratio<N, D>;
 
 	/* * * * * * * * * * * * * * * * * * * * */
 

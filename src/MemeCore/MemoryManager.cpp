@@ -2,7 +2,7 @@
 #include <MemeCore/Debug.hpp>
 
 #define CHUNK_SIZE	sizeof(ml::Chunk)	// Size of Chunk
-#define PTR_SIZE	sizeof(ml::byte *)	// Size of npos pointer
+#define PTR_SIZE	sizeof(ml::uint8_t *)	// Size of npos pointer
 #define OFFSET (CHUNK_SIZE + PTR_SIZE)
 
 namespace ml
@@ -66,7 +66,7 @@ namespace ml
 		return false;
 	}
 
-	bool	MemoryManager::prime(byte * data, size_t size)
+	bool	MemoryManager::prime(uint8_t * data, size_t size)
 	{
 		if (!good() && (data && size))
 		{
@@ -91,7 +91,7 @@ namespace ml
 		out << "Bytes Used: "
 			<< "( " << m_used << " / " << m_size << " ) "
 			<< "( " << (((double)m_used / m_size) * 100.0) << " % )"
-			<< ml::endl;
+			<< endl;
 
 		if (Chunk * chunk = m_head)
 		{
@@ -104,7 +104,7 @@ namespace ml
 		}
 		else
 		{
-			out << "Empty" << ml::endl;
+			out << "Empty" << endl;
 		}
 	}
 
@@ -121,7 +121,7 @@ namespace ml
 			<< FG::White << " | " << FG::Green << "npos: " << FG::Yellow << (&c.npos)
 			<< FG::White << " }"
 			<< FMT()
-			<< ml::endl;
+			<< endl;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

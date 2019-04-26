@@ -49,9 +49,9 @@ namespace ml
 			
 			cerr << (*this);
 
-#ifdef ML_DEBUG
+#if ML_DEBUG
 			Debug::pause(EXIT_FAILURE);
-#endif // ML_DEBUG
+#endif
 
 			Debug::fatal("Memory Leaks Detected");
 		}
@@ -91,12 +91,11 @@ namespace ml
 
 	void MemoryTracker::serialize(std::ostream & out) const
 	{
-		const_iterator it;
-		for (it = m_records.begin(); it != m_records.end(); ++it)
+		for (const_iterator it = m_records.begin(); it != m_records.end(); ++it)
 		{
-			out << (*it->first) << (it->second) << ml::endl;
+			out << (*it->first) << (it->second) << endl;
 		}
-		out << ml::endl;
+		out << endl;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

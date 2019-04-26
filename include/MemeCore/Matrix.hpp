@@ -25,6 +25,7 @@ namespace ml
 			"Matricies must contain trivial values."
 		);
 
+
 	public: // Enums
 		/* * * * * * * * * * * * * * * * * * * * */
 		enum : size_t
@@ -33,6 +34,7 @@ namespace ml
 			Rows = _Rows,
 			Size = (Cols * Rows)
 		};
+
 
 	public: // Usings
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -115,10 +117,10 @@ namespace ml
 		}
 
 		template <
-			class	E,
-			size_t	C,
-			size_t	R
-		> Matrix(const Matrix<E, C, R> & value, const_reference def = static_cast<value_type>(0))
+			class	T,
+			size_t	X,
+			size_t	Y
+		> Matrix(const Matrix<T, X, Y> & value, const_reference def = static_cast<value_type>(0))
 			: enumerable_type(m_data)
 			, m_data()
 		{
@@ -169,6 +171,7 @@ namespace ml
 		inline const_reference	back()				const	{ return at(size() - 1);	}
 		inline const_pointer	data()				const	{ return &at(0);			}
 		inline const_reference	front()				const	{ return at(0);				}
+
 
 	public: // Static Functions
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -226,9 +229,9 @@ namespace ml
 				{
 					out << (*this)[y * this->cols() + x] << " ";
 				}
-				out << ml::endl;
+				out << endl;
 			}
-			out << ml::endl;
+			out << endl;
 		}
 		
 		inline virtual void deserialize(std::istream & in) override

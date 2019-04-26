@@ -70,26 +70,11 @@ namespace ml
 
 	public: // Member Functions
 		/* * * * * * * * * * * * * * * * * * * * */
-		inline complex_type complex() const
-		{
-			return (complex_type)(base_type)(*this);
-		}
+		inline complex_type complex() const { return (complex_type)(*this); }
 
-		inline const_reference real() const
-		{
-			return this->back();
-		}
+		inline const_reference real() const { return this->back(); }
 
-		
-
-	public: // Operators
-		/* * * * * * * * * * * * * * * * * * * * */
-		inline operator base_type() const
-		{
-			return base_type((*this)[0], (*this)[1], (*this)[2], (*this)[3]);
-		}
-
-		inline operator mat3f() const
+		inline mat3f rotationMatrix() const
 		{
 			const value_type xx = ((*this)[0] * (*this)[0]);
 			const value_type xy = ((*this)[0] * (*this)[1]);
@@ -100,12 +85,19 @@ namespace ml
 			const value_type yw = ((*this)[1] * (*this)[3]);
 			const value_type zz = ((*this)[2] * (*this)[2]);
 			const value_type zw = ((*this)[2] * (*this)[3]);
-
 			return mat3f({
 				(1.f - 2.f * yy - 2.f * zz), (2.f * xy - 2.f * zw), (2.f * xz + 2.f * yw),
 				(2.f * xy + 2.f * zw), (1.f - 2.f * xx - 2.f * zz), (2.f * yz - 2.f * xw),
 				(2.f * xz - 2.f * yw), (2.f * yz + 2.f * xw), (1.f - 2.f * xx - 2.f * yy)
 			});
+		}
+		
+
+	public: // Operators
+		/* * * * * * * * * * * * * * * * * * * * */
+		inline operator base_type() const
+		{
+			return base_type((*this)[0], (*this)[1], (*this)[2], (*this)[3]);
 		}
 
 		inline friend Quat operator*(const Quat & lhs, const Quat & rhs)
