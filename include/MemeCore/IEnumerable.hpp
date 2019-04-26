@@ -15,6 +15,8 @@ namespace ml
 	{
 	public:
 		using value_type			= typename T;
+		using array_type			= typename T[N];
+
 		using pointer				= typename value_type *;
 		using const_pointer			= typename const value_type *;
 		using reference				= typename value_type &;

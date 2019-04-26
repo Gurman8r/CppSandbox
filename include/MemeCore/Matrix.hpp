@@ -2,7 +2,6 @@
 #define _ML_MATRIX_HPP_
 
 #include <MemeCore/ITrackable.hpp>
-#include <MemeCore/IEnumerable.hpp>
 #include <MemeCore/List.hpp>
 #include <MemeCore/Maths.hpp>
 
@@ -19,7 +18,6 @@ namespace ml
 	> class Matrix
 		: public ITrackable
 		, public IComparable<Matrix<_Elem, _Cols, _Rows>>
-		, public IEnumerable<_Elem, _Cols * _Rows>
 	{
 		static_assert(std::is_trivial<_Elem>::value, 
 			"Matricies must contain trivial values."
@@ -49,11 +47,10 @@ namespace ml
 		using init_type				= typename Initializer<value_type>;
 		using contiguous_type		= typename List<value_type>;
 
-		using enumerable_type		= typename IEnumerable<value_type, Size>;
-		using iterator				= typename enumerable_type::iterator;
-		using const_iterator		= typename enumerable_type::const_iterator;
-		using reverse_iterator		= typename enumerable_type::reverse_iterator;
-		using const_reverse_iterator= typename enumerable_type::const_reverse_iterator;
+		using iterator				= typename std::_Array_iterator<value_type, Size>;
+		using const_iterator		= typename std::_Array_const_iterator<value_type, Size>;
+		using reverse_iterator		= typename std::reverse_iterator<iterator>;
+		using const_reverse_iterator= typename std::reverse_iterator<const_iterator>;
 
 
 	private: // Data
@@ -64,56 +61,34 @@ namespace ml
 	public: // Constructors
 		/* * * * * * * * * * * * * * * * * * * * */
 		Matrix()
-			: enumerable_type(m_data)
-			, m_data()
+			: m_data()
 		{
-			for (size_t i = 0; i < this->size(); i++)
-			{
-				(*this)[i] = static_cast<value_type>(0);
-			}
+			std::fill(this->begin(), this->end(), static_cast<value_type>(0));
 		}
 
 		Matrix(const_reference value)
-			: enumerable_type(m_data)
-			, m_data()
+			: m_data()
 		{
-			for (size_t i = 0; i < this->size(); i++)
-			{
-				(*this)[i] = value;
-			}
+			std::fill(this->begin(), this->end(), value);
 		}
 
 		Matrix(const_pointer value)
-			: enumerable_type(m_data)
-			, m_data()
+			: m_data()
 		{
-			for (size_t i = 0; i < this->size(); i++)
-			{
-				(*this)[i] = value[i];
-			}
+			std::copy(&value[0], &value[this->size()], this->begin());
 		}
 
 		Matrix(const init_type & value)
-			: enumerable_type(m_data)
-			, m_data()
+			: m_data()
 		{
-			for (size_t i = 0; i < this->size(); i++)
-			{
-				(*this)[i] = (((value.begin() + i) < value.end())
-					? (*(value.begin() + i))
-					: (static_cast<value_type>(0))
-				);
-			}
+			assert((value.size() == this->size()) && "Matrix initializer size mismatch");
+			std::copy(value.begin(), value.end(), this->begin());
 		}
 
 		Matrix(const self_type & value)
-			: enumerable_type(m_data)
-			, m_data()
+			: m_data()
 		{
-			for (size_t i = 0; i < this->size(); i++)
-			{
-				(*this)[i] = value[i];
-			}
+			std::copy(value.begin(), value.end(), this->begin());
 		}
 
 		template <
@@ -121,8 +96,7 @@ namespace ml
 			size_t	X,
 			size_t	Y
 		> Matrix(const Matrix<T, X, Y> & value, const_reference def = static_cast<value_type>(0))
-			: enumerable_type(m_data)
-			, m_data()
+			: m_data()
 		{
 			for (size_t i = 0; i < this->size(); i++)
 			{
@@ -158,19 +132,17 @@ namespace ml
 
 	public: // Member Functions
 		/* * * * * * * * * * * * * * * * * * * * */
-		inline constexpr size_t	cols()	const noexcept		{ return self_type::Cols;	}
-		inline constexpr size_t	rows()	const noexcept		{ return self_type::Rows;	}
-		inline constexpr size_t	size()	const noexcept		{ return self_type::Size;	}
-		
-		inline reference		at(const size_t i)			{ return (*this)[i];		}
-		inline reference		back()						{ return at(size() - 1);	}
-		inline pointer			data()						{ return &at(0);			}
-		inline reference		front()						{ return at(0);				}
+		inline size_t			cols()	const	{ return Cols;				}
+		inline size_t			rows()	const	{ return Rows;				}
+		inline size_t			size()	const	{ return Size;				}
 
-		inline const_reference	at(const size_t i)	const	{ return (*this)[i];		}
-		inline const_reference	back()				const	{ return at(size() - 1);	}
-		inline const_pointer	data()				const	{ return &at(0);			}
-		inline const_reference	front()				const	{ return at(0);				}
+		inline reference		back()			{ return (*this)[Size - 1];	}
+		inline pointer			data()			{ return &(*this)[0];		}
+		inline reference		front()			{ return (*this)[0];		}
+
+		inline const_reference	back()	const	{ return (*this)[Size - 1];	}
+		inline const_pointer	data()	const	{ return &(*this)[0];		}
+		inline const_reference	front()	const	{ return (*this)[0];		}
 
 
 	public: // Static Functions
@@ -179,7 +151,7 @@ namespace ml
 		{
 			static contiguous_type out;
 			{
-				if (const size_t imax = (length * self_type::Size))
+				if (const size_t imax = (length * Size))
 				{
 					if (out.size() != imax)
 					{
@@ -187,7 +159,7 @@ namespace ml
 					}
 					for (size_t i = 0; i < imax; i++)
 					{
-						out[i] = value[i / self_type::Size][i % self_type::Size];
+						out[i] = value[i / Size][i % Size];
 					}
 				}
 				else if (!out.empty())
@@ -204,11 +176,11 @@ namespace ml
 			static bool check = true;
 			if (check)
 			{	check = false;
-				for (size_t y = 0; y < self_type::Rows; y++)
+				for (size_t y = 0; y < Rows; y++)
 				{
-					for (size_t x = 0; x < self_type::Cols; x++)
+					for (size_t x = 0; x < Cols; x++)
 					{
-						temp[y * self_type::Cols + x] = ((x == y)
+						temp[y * Cols + x] = ((x == y)
 							? static_cast<value_type>(1)
 							: static_cast<value_type>(0)
 						);
@@ -274,6 +246,23 @@ namespace ml
 			}
 			return true;
 		}
+		
+
+	public: // Iterators
+		/* * * * * * * * * * * * * * * * * * * * */
+		inline iterator					begin()				{ return iterator(m_data, 0); }
+		inline iterator					end()				{ return iterator(m_data, this->size()); }
+		inline const_iterator			begin()		const	{ return const_iterator(m_data, 0); }
+		inline const_iterator			end()		const	{ return const_iterator(m_data, this->size()); }
+		inline const_iterator			cbegin()	const	{ return begin(); }
+		inline const_iterator			cend()		const	{ return end(); }
+		inline reverse_iterator			rbegin()			{ return reverse_iterator(end()); }
+		inline reverse_iterator			rend()				{ return reverse_iterator(begin()); }
+		inline const_reverse_iterator	rbegin()	const	{ return const_reverse_iterator(end()); }
+		inline const_reverse_iterator	rend()		const	{ return const_reverse_iterator(begin()); }
+		inline const_reverse_iterator	crbegin()	const	{ return rbegin(); }
+		inline const_reverse_iterator	crend()		const	{ return rend(); }
+
 
 # ifdef GLM_VERSION
 	public: // GLM
@@ -281,8 +270,8 @@ namespace ml
 
 		// From glm::mat3
 		template <
-			size_t X = self_type::Cols,
-			size_t Y = self_type::Rows
+			size_t X = Cols,
+			size_t Y = Rows
 		> Matrix(
 			const glm::tmat3x3<value_type, glm::defaultp> & value,
 			typename std::enable_if<(X == 3 && Y == 3)>::type * = 0)
@@ -292,8 +281,8 @@ namespace ml
 
 		// To glm::mat3
 		template <
-			size_t X = self_type::Cols,
-			size_t Y = self_type::Rows
+			size_t X = Cols,
+			size_t Y = Rows
 		> inline operator glm::tmat3x3<value_type, glm::defaultp>() const
 		{
 			static_assert((X == 3 && Y == 3),
@@ -310,8 +299,8 @@ namespace ml
 
 		// From glm::mat4
 		template <
-			size_t X = self_type::Cols,
-			size_t Y = self_type::Rows
+			size_t X = Cols,
+			size_t Y = Rows
 		> Matrix(
 			const glm::tmat4x4<value_type, glm::defaultp> & value,
 			typename std::enable_if<(X == 4 && Y == 4)>::type * = 0)
@@ -321,8 +310,8 @@ namespace ml
 
 		// To glm::mat4
 		template <
-			size_t X = self_type::Cols,
-			size_t Y = self_type::Rows
+			size_t X = Cols,
+			size_t Y = Rows
 		> inline operator glm::tmat4x4<value_type, glm::defaultp>() const
 		{
 			static_assert((X == 4 && Y == 4),
