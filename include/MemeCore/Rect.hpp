@@ -18,8 +18,10 @@ namespace ml
 		using self_type				= typename Rect<value_type>;
 		using base_type				= typename Vector4<value_type>;
 		using coord_type			= typename Vector<value_type, 2>;
-		using array_type			= typename base_type::array_type;
 
+		using init_type				= typename base_type::init_type;
+		using array_type			= typename base_type::array_type;
+		using const_value			= typename base_type::const_value;
 		using pointer				= typename base_type::pointer;
 		using reference				= typename base_type::reference;
 		using const_pointer			= typename base_type::const_pointer;

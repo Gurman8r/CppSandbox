@@ -19,9 +19,10 @@ namespace ml
 		using value_type			= typename _Elem;
 		using self_type				= typename Vector<value_type, _Size>;
 		using base_type				= typename Matrix<value_type, _Size, 1>;
+
 		using init_type				= typename base_type::init_type;
 		using array_type			= typename base_type::array_type;
-
+		using const_value			= typename base_type::const_value;
 		using pointer				= typename base_type::pointer;
 		using reference				= typename base_type::reference;
 		using const_pointer			= typename base_type::const_pointer;

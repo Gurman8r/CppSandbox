@@ -17,6 +17,9 @@ namespace ml
 		using base_type				= typename Vector<value_type, 4>;
 		using complex_type			= typename Vector<value_type, 3>;
 
+		using init_type				= typename base_type::init_type;
+		using array_type			= typename base_type::array_type;
+		using const_value			= typename base_type::const_value;
 		using pointer				= typename base_type::pointer;
 		using reference				= typename base_type::reference;
 		using const_pointer			= typename base_type::const_pointer;
@@ -72,7 +75,7 @@ namespace ml
 		template <
 			class T,
 			size_t S
-		> Quaternion(const Vector<T, S> & copy, const_reference def = static_cast<value_type>(0))
+		> Quaternion(const Vector<T, S> & copy, const_reference def = 0.0f)
 			: base_type(copy, def)
 		{
 		}
@@ -82,28 +85,116 @@ namespace ml
 
 	public: // Member Functions
 		/* * * * * * * * * * * * * * * * * * * * */
-		inline complex_type complex() const { return (complex_type)(*this); }
-
-		inline const_reference real() const { return this->back(); }
-
-		inline mat3f rotationMatrix() const
-		{
-			const value_type xx = ((*this)[0] * (*this)[0]);
-			const value_type xy = ((*this)[0] * (*this)[1]);
-			const value_type xz = ((*this)[0] * (*this)[2]);
-			const value_type xw = ((*this)[0] * (*this)[3]);
-			const value_type yy = ((*this)[1] * (*this)[1]);
-			const value_type yz = ((*this)[1] * (*this)[2]);
-			const value_type yw = ((*this)[1] * (*this)[3]);
-			const value_type zz = ((*this)[2] * (*this)[2]);
-			const value_type zw = ((*this)[2] * (*this)[3]);
-			return mat3f({
-				(1.f - 2.f * yy - 2.f * zz), (2.f * xy - 2.f * zw), (2.f * xz + 2.f * yw),
-				(2.f * xy + 2.f * zw), (1.f - 2.f * xx - 2.f * zz), (2.f * yz - 2.f * xw),
-				(2.f * xz - 2.f * yw), (2.f * yz + 2.f * xw), (1.f - 2.f * xx - 2.f * yy)
-			});
+		inline complex_type complex() const 
+		{ 
+			return complex_type({ (*this)[0], (*this)[1], (*this)[2] });
 		}
 		
+		inline const_reference real() const 
+		{ 
+			return this->back();
+		}
+
+		inline const_value angle() const
+		{ 
+			return std::acosf(this->real()) * 2.0f;
+		}
+
+		inline complex_type axis() const
+		{
+			const_value tmp1 = (1.0f - this->real() * this->real());
+			if (tmp1 <= 0.0f)
+			{
+				return complex_type({ 0, 0, 1 });
+			}
+			return this->complex() * (1.0f / std::sqrtf(tmp1));
+		}
+
+		inline static self_type angleAxis(const_reference angle, const complex_type & axis)
+		{
+			const_value s = std::sinf(angle * 0.5f);
+			return self_type(
+				axis[0] * s,
+				axis[1] * s,
+				axis[2] * s,
+				std::cosf(angle * 0.5f)
+			);
+		}
+
+		inline complex_type eulerAngles() const
+		{
+			return complex_type({
+				this->pitch(),
+				this->yaw(),
+				this->roll()
+			});
+		}
+
+		inline const_value pitch() const
+		{
+			return value_type(std::atan2f(
+				(2.0f * ((*this)[1] * (*this)[2] + this->real() * (*this)[0])),
+				(
+					this->real() * this->real() - (*this)[0] *
+					(*this)[0] - (*this)[1] * (*this)[1] + (*this)[2] * (*this)[2])
+				)
+			);
+		}
+
+		inline const_value roll() const
+		{
+			return value_type(std::atan2f(
+				(2.0f * ((*this)[0] * (*this)[1] + this->real() * (*this)[2])),
+				(
+					this->real() * this->real() + (*this)[0] * (*this)[0] -
+					(*this)[1] * (*this)[1] - (*this)[2] * (*this)[2])
+				)
+			);
+		}
+
+		inline const_value yaw() const
+		{
+			return std::asinf(std::min(std::max(
+				(-2.0f * ((*this)[0] * (*this)[2] - this->real() * (*this)[1])),
+				-1.0f),
+				1.0f
+			));
+		}
+
+		inline mat3f toMat3() const
+		{
+			const_value xx = ((*this)[0] * (*this)[0]);
+			const_value xy = ((*this)[0] * (*this)[1]);
+			const_value xz = ((*this)[0] * (*this)[2]);
+			const_value xw = ((*this)[0] * (*this)[3]);
+			const_value yy = ((*this)[1] * (*this)[1]);
+			const_value yz = ((*this)[1] * (*this)[2]);
+			const_value yw = ((*this)[1] * (*this)[3]);
+			const_value zz = ((*this)[2] * (*this)[2]);
+			const_value zw = ((*this)[2] * (*this)[3]);
+			mat3f m;
+			m[0] = (1.0f - 2.0f * yy - 2.0f * zz);
+			m[1] = (2.0f * xy - 2.0f * zw); 
+			m[2] = (2.0f * xz + 2.0f * yw);
+			m[3] = (2.0f * xy + 2.0f * zw);
+			m[4] = (1.0f - 2.0f * xx - 2.0f * zz);
+			m[5] = (2.0f * yz - 2.0f * xw);
+			m[6] = (2.0f * xz - 2.0f * yw);
+			m[7] = (2.0f * yz + 2.0f * xw);
+			m[8] = (1.0f - 2.0f * xx - 2.0f * yy);
+			return m;
+		}
+		
+		inline mat4f toMat4() const
+		{
+			const mat3f r = toMat3();
+			mat4f m;
+			m[ 0] = r[0];	m[ 1] = r[1];	m[ 2] = r[2];	m[ 3] = 0.0f;
+			m[ 4] = r[3];	m[ 5] = r[4];	m[ 6] = r[5];	m[ 7] = 0.0f;
+			m[ 8] = r[6];	m[ 9] = r[7];	m[10] = r[8];	m[11] = 0.0f;
+			m[12] = 0.0f;	m[13] = 0.0f;	m[14] = 0.0f;	m[15] = 1.0f;
+			return m;
+		}
 
 	public: // Operators
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -112,15 +203,21 @@ namespace ml
 			return vec4f((*this)[0], (*this)[1], (*this)[2], (*this)[3]);
 		}
 
-		inline friend Quaternion operator*(const Quaternion & lhs, const Quaternion & rhs)
+		inline friend self_type operator*(const self_type & lhs, const self_type & rhs)
 		{
-			return Quaternion(
+			return self_type(
 				( lhs[0] * rhs[3]) + (lhs[1] * rhs[2]) - (lhs[2] * rhs[1]) + (lhs[3] * rhs[0]),
 				(-lhs[0] * rhs[2]) + (lhs[1] * rhs[3]) + (lhs[2] * rhs[0]) + (lhs[3] * rhs[1]),
 				( lhs[0] * rhs[1]) - (lhs[1] * rhs[0]) + (lhs[2] * rhs[3]) + (lhs[3] * rhs[2]),
 				(-lhs[0] * rhs[0]) - (lhs[1] * rhs[1]) - (lhs[2] * rhs[2]) + (lhs[3] * rhs[3])
 			);
 		}
+
+		inline self_type & operator*=(const self_type & other)
+		{
+			return ((*this) = ((*this) * other));
+		}
+
 
 # ifdef GLM_VERSION
 	public: // GLM
@@ -133,7 +230,7 @@ namespace ml
 		inline operator glm::tquat<float, glm::defaultp>() const
 		{
 			return glm::tquat<float, glm::defaultp>(
-				(*this)[3], (*this)[0], (*this)[1], (*this)[2]
+				this->real(), (*this)[0], (*this)[1], (*this)[2]
 			);
 		}
 # endif

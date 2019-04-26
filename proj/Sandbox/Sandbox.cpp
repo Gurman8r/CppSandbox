@@ -391,7 +391,7 @@ namespace DEMO
 				});
 
 				ml::Light * light = ent->add<ml::Light>({
-					transform->getPosition(),
+					transform->getPos(),
 					ml::Color::LightYellow
 				});
 
@@ -640,8 +640,8 @@ namespace DEMO
 					{
 						ML_Physics.world().state().setData(
 							rb->index(),
-							transform->getPosition(),
-							transform->getRotation(),
+							transform->getPos(),
+							transform->getRot(),
 							transform->getMatrix(),
 							glm::inverse((glm::mat4)transform->getMatrix())
 						);
@@ -653,7 +653,13 @@ namespace DEMO
 
 			while (this->isOpen())
 			{
-				const float dt = ML_Engine.frameTime().delta();
+				const float tt = ( // Total Time
+					(float)ML_Time.elapsed().milliseconds() / (float)ml::Milli::den
+				);
+
+				const float dt = ( // Delta Time
+					ML_Engine.frameTime().delta()
+				);
 				
 				ml::PhysicsState state;
 				if (ML_Physics.beginUpdate(state))
@@ -670,35 +676,29 @@ namespace DEMO
 							{
 							case RB_BORG:
 								pos = { pos[0], +ML_Time.cos(), pos[2] };
-								//rot = { ml::vec3f::One, 0.0f };
-								rot = glm::angleAxis(dt, (glm::vec3)ml::vec3f::One);
+								rot = ml::quat::angleAxis(tt, ml::vec3f::One);
 								break;
 
 							case RB_CUBE:
 								pos = { pos[0], -ML_Time.sin(), pos[2] };
-								rot = glm::angleAxis(dt, (glm::vec3)ml::vec3f::One);
-								//rot = { ml::vec3f::One, 0.0f };
+								rot = ml::quat::angleAxis(tt, ml::vec3f::One);
 								break;
 
 							case RB_SANIC:
 								pos = { pos[0], -ML_Time.cos(), pos[2] };
-								rot = glm::angleAxis(dt, (glm::vec3)ml::vec3f::Forward);
-								//rot = { ml::vec3f::One, 0.0f };
+								rot = ml::quat::angleAxis(tt, ml::vec3f::Forward);
 								break;
 
 							case RB_MOON:
 								pos = { pos[0], +ML_Time.sin(), pos[2] };
-								rot = glm::angleAxis(dt, (glm::vec3)ml::vec3f::Up);
-								//rot = { ml::vec3f::One, 0.0f };
+								rot = ml::quat::angleAxis(tt, ml::vec3f::Up);
 								break;
 
 							case RB_EARTH:
-								rot = glm::angleAxis(dt, (glm::vec3)ml::vec3f::Up);
-								//rot = { ml::vec3f::One, 0.0f };
+								rot = ml::quat::angleAxis(tt, ml::vec3f::Up);
 								break;
 
 							case RB_GROUND:
-								//rot = { ml::vec3f::One, 0.0f };
 								break;
 							}
 
@@ -759,7 +759,7 @@ namespace DEMO
 		{
 			ML_CAMERA->updateRes(this->getFrameSize());
 			
-			ML_CAMERA->lookAt(ML_Res.entities.get("earth")->get<ml::Transform>()->getPosition());
+			ML_CAMERA->lookAt(ML_Res.entities.get("earth")->get<ml::Transform>()->getPos());
 			
 			ML_CAMERA->position += ML_CAMERA->right() * 
 				(globals.camMove ? ev->elapsed.delta() : 0.0f);
@@ -769,7 +769,7 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (ML_LIGHT)
 		{
-			ML_LIGHT->position = ML_Res.entities.get("light")->get<ml::Transform>()->getPosition();
+			ML_LIGHT->position = ML_Res.entities.get("light")->get<ml::Transform>()->getPos();
 		}
 
 		// Update Physics
@@ -780,21 +780,23 @@ namespace DEMO
 			{
 				if (ml::Rigidbody * rb = ent->get<ml::Rigidbody>())
 				{
-					ml::vec3f pos;
-					ml::quat  rot;
-					ml::mat4f mat;
-					ml::mat4f inv;
-					if (ML_Physics.world().state().getData(rb->index(),
-						pos, rot, mat, inv
-					))
+					if (ml::Transform * transform = rb->transform())
 					{
-						//rb->transform()->setAll(
-						//	pos, rot, rb->transform()->getScale()
-						//);
-						rb->transform()->setPosition(pos);
-						rb->transform()->setRotation(rot); // FIXME
-						//rb->transform()->setRotation(ml::mat3f::Identity()); // FIXME
-						rb->transform()->setScale	(rb->transform()->getScale());
+						ml::vec3f pos;
+						ml::quat  rot;
+						ml::mat4f mat;
+						ml::mat4f inv;
+						if (ML_Physics.world().state().getData(rb->index(),
+							pos, rot, mat, inv
+						))
+						{
+							(*transform)
+								.update(ml::mat4f::Identity())
+								.translate(pos)
+								.rotate(rot)
+								.scale(transform->getScl())
+								;
+						}
 					}
 				}
 			}
