@@ -6,6 +6,7 @@
 #include <MemeCore/Export.hpp>
 #include <MemeCore/StandardLib.hpp>
 #include <MemeCore/Preprocessor.hpp>
+#include <MemeCore/GLM.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * */
 

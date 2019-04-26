@@ -1,5 +1,4 @@
 #include <MemeCore/Transform.hpp>
-#include <MemeCore/GLM.hpp>
 
 namespace ml
 {
