@@ -14,12 +14,11 @@ namespace ml
 	{
 	public:
 		Light();
-		Light(const vec3f & position, const vec4f & color);
+		Light(const vec4f & color);
 		Light(const Light & copy);
 		~Light();
 
 	public:
-		vec3f position;
 		vec4f color;
 	};
 

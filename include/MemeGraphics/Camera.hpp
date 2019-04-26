@@ -19,7 +19,6 @@ namespace ml
 
 	public:
 		Camera & updateRes(const vec2i & resolution);
-		Camera & lookAt(const vec3f & value);
 
 	public:
 		inline vec3f forward() const 

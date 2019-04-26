@@ -88,15 +88,5 @@ namespace ml
 		return (*this);
 	}
 
-	Camera & Camera::lookAt(const vec3f & value)
-	{
-		this->trans.lookAt(
-			this->position,
-			(this->target = (this->position + (value - this->position).normalized())),
-			vec3f::Up
-		);
-		return (*this);
-	}
-
 	/* * * * * * * * * * * * * * * * * * * * */
 }

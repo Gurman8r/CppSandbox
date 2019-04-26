@@ -54,8 +54,8 @@ enum Rigidbody_ID : int32_t
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-#define ML_CAMERA	ML_Res.entities.get("camera")->get<ml::Camera>()
-#define ML_LIGHT	ML_Res.entities.get("light")->get<ml::Light>()
+#define ML_CAMERA	ML_Res.entities.get("camera")
+#define ML_LIGHT	ML_Res.entities.get("light")
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -358,10 +358,14 @@ namespace DEMO
 			if (ml::Entity * ent = ML_Res.entities.get("camera"))
 			{
 				//ml::Transform * transform = ent->add<ml::Transform>({
-				//	{ 0.0f, 1.0f, 10.0f }, // position
-				//	{ 1.0f }, // scale
-				//	{ } // rotation
+				//	{ 0.0f, 1.0f, 10.0f },
+				//	{ 1.0f }
 				//});
+				//transform->lookAt(
+				//	transform->getPos(),
+				//	transform->getPos() + ml::vec3f::Back,
+				//	ml::vec3f::Up
+				//);
 
 				ml::Camera * camera = ent->add<ml::Camera>({
 					SETTINGS.fieldOfView,
@@ -370,11 +374,10 @@ namespace DEMO
 					SETTINGS.orthoNear,
 					SETTINGS.orthoFar
 				});
-
 				camera->backgroundColor = { 0.025f, 0.025f, 0.025f, 1.0f };
 				camera->position = { 0.0f, 1.0f, 10.0f };
 				camera->trans.lookAt(
-					camera->position, 
+					camera->position,
 					camera->position + ml::vec3f::Back,
 					ml::vec3f::Up
 				);
@@ -391,7 +394,6 @@ namespace DEMO
 				});
 
 				ml::Light * light = ent->add<ml::Light>({
-					transform->getPos(),
 					ml::Color::LightYellow
 				});
 
@@ -399,8 +401,8 @@ namespace DEMO
 					ML_Res.models.get("sphere8x6"),
 					ml::Material(ML_Res.shaders.get("solid"), 
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->persp.getMatrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->trans.getMatrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->persp.getMatrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->trans.getMatrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->getMatrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&light->color },
 					}),
@@ -431,8 +433,8 @@ namespace DEMO
 					ML_Res.models.get("default_cube"),
 					ml::Material(ML_Res.shaders.get("basic"),
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->persp.getMatrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->trans.getMatrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->persp.getMatrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->trans.getMatrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->getMatrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("borg") },
@@ -464,8 +466,8 @@ namespace DEMO
 					ML_Res.models.get("cube"),
 					ml::Material(ML_Res.shaders.get("normal"), 
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->persp.getMatrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->trans.getMatrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->persp.getMatrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->trans.getMatrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->getMatrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm") },
@@ -497,8 +499,8 @@ namespace DEMO
 					ML_Res.models.get("default_quad"),
 					ml::Material(ML_Res.shaders.get("basic"),
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->persp.getMatrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->trans.getMatrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->persp.getMatrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->trans.getMatrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->getMatrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("sanic") },
@@ -530,14 +532,14 @@ namespace DEMO
 					ML_Res.models.get("sphere32x24"),
 					ml::Material(ML_Res.shaders.get("lighting"),
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->persp.getMatrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->trans.getMatrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->persp.getMatrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->trans.getMatrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->getMatrix() },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("moon_dm") },
 						{ ML_FRAG_SPEC_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("moon_nm") },
-						{ "Frag.cameraPos",	ml::Uniform::Vec3,	&ML_CAMERA->position },
-						{ "Frag.lightPos",	ml::Uniform::Vec3,	&ML_LIGHT->position },
-						{ "Frag.diffuse",	ml::Uniform::Vec4,	&ML_LIGHT->color },
+						{ "Frag.cameraPos",	ml::Uniform::Vec3,	&ML_CAMERA->get<ml::Camera>()->trans.getPos() },
+						{ "Frag.lightPos",	ml::Uniform::Vec3,	&ML_LIGHT->get<ml::Transform>()->getPos() },
+						{ "Frag.diffuse",	ml::Uniform::Vec4,	&ML_LIGHT->get<ml::Light>()->color },
 						{ "Frag.ambient",	ml::Uniform::Float, &globals.ambient },
 						{ "Frag.specular",	ml::Uniform::Float, &globals.specular },
 						{ "Frag.shininess",	ml::Uniform::Int,	&globals.shininess },
@@ -569,14 +571,14 @@ namespace DEMO
 					ML_Res.models.get("sphere32x24"),
 					ml::Material(ML_Res.shaders.get("lighting"), 
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->persp.getMatrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->trans.getMatrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->persp.getMatrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->trans.getMatrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->getMatrix() },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("earth_dm") },
 						{ ML_FRAG_SPEC_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("earth_sm") },
-						{ "Frag.cameraPos",	ml::Uniform::Vec3,	&ML_CAMERA->position },
-						{ "Frag.lightPos",	ml::Uniform::Vec3,	&ML_LIGHT->position },
-						{ "Frag.diffuse",	ml::Uniform::Vec4,	&ML_LIGHT->color },
+						{ "Frag.cameraPos",	ml::Uniform::Vec3,	&ML_CAMERA->get<ml::Camera>()->trans.getPos() },
+						{ "Frag.lightPos",	ml::Uniform::Vec3,	&ML_LIGHT->get<ml::Transform>()->getPos() },
+						{ "Frag.diffuse",	ml::Uniform::Vec4,	&ML_LIGHT->get<ml::Light>()->color },
 						{ "Frag.ambient",	ml::Uniform::Float, &globals.ambient },
 						{ "Frag.specular",	ml::Uniform::Float, &globals.specular },
 						{ "Frag.shininess",	ml::Uniform::Int,	&globals.shininess },
@@ -608,8 +610,8 @@ namespace DEMO
 					ML_Res.models.get("cube"),
 					ml::Material(ML_Res.shaders.get("normal"), 
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->persp.getMatrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->trans.getMatrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->persp.getMatrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->trans.getMatrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->getMatrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm") },
@@ -755,21 +757,24 @@ namespace DEMO
 
 		// Update Camera
 		/* * * * * * * * * * * * * * * * * * * * */
-		if (ML_CAMERA)
+		if (ml::Camera * camera = ML_CAMERA->get<ml::Camera>())
 		{
-			ML_CAMERA->updateRes(this->getFrameSize());
-			
-			ML_CAMERA->lookAt(ML_Res.entities.get("earth")->get<ml::Transform>()->getPos());
-			
-			ML_CAMERA->position += ML_CAMERA->right() * 
-				(globals.camMove ? ev->elapsed.delta() : 0.0f);
-		}
+			camera->updateRes(this->getFrameSize());
 
-		// Update Light
-		/* * * * * * * * * * * * * * * * * * * * */
-		if (ML_LIGHT)
-		{
-			ML_LIGHT->position = ML_Res.entities.get("light")->get<ml::Transform>()->getPos();
+			const ml::vec3f target = ML_Res.entities.get("earth")->get<ml::Transform>()->getPos();
+
+			camera->target = (camera->position + (target - camera->position).normalized());
+
+			camera->trans.lookAt(
+				camera->position,
+				camera->target,
+				ml::vec3f::Up
+			);
+
+			camera->position += camera->right() * ((globals.camMove)
+				? (ev->elapsed.delta() * globals.camSpeed)
+				: (0.0f)
+			);
 		}
 
 		// Update Physics
@@ -778,24 +783,21 @@ namespace DEMO
 		{
 			for (auto & pair : ML_Res.entities)
 			{
-				if (ml::Entity * ent = pair.second)
+				if (ml::Rigidbody * rb = pair.second->get<ml::Rigidbody>())
 				{
-					if (ml::Rigidbody * rb = ent->get<ml::Rigidbody>())
+					if (ml::Transform * transform = rb->transform())
 					{
-						if (ml::Transform * transform = rb->transform())
+						ml::vec3f pos;
+						ml::quat  rot;
+						if (state.getPos(rb->index(), pos) &&
+							state.getRot(rb->index(), rot))
 						{
-							ml::vec3f pos;
-							ml::quat  rot;
-							if (state.getPos(rb->index(), pos) &&
-								state.getRot(rb->index(), rot))
-							{
-								(*transform)
-									.update(ml::mat4f::Identity())
-									.translate(pos)
-									.rotate(rot)
-									.scale(transform->getScl())
-									;
-							}
+							(*transform)
+								.update(ml::mat4f::Identity())
+								.translate(pos)
+								.rotate(rot)
+								.scale(transform->getScl())
+								;
 						}
 					}
 				}
@@ -908,7 +910,7 @@ namespace DEMO
 			scene->bind();
 
 			// Clear Screen
-			this->clear(ML_CAMERA->backgroundColor);
+			this->clear(ML_CAMERA->get<ml::Camera>()->backgroundColor);
 
 			// Draw Renderers
 			for (const auto & pair : ML_Res.entities)
@@ -938,7 +940,7 @@ namespace DEMO
 				{
 					static ml::RenderBatch batch(&m_canvas.vao(), &m_canvas.vbo(), { shader,
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->ortho.getMatrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->ortho.getMatrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4 },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D },
 					} });
@@ -954,7 +956,7 @@ namespace DEMO
 				{
 					static ml::RenderBatch batch(&m_canvas.vao(), &m_canvas.vbo(), { shader,
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->ortho.getMatrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->ortho.getMatrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4 },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D },
 					} });
@@ -1060,7 +1062,7 @@ namespace DEMO
 				/* * * * * * * * * * * * * * * * * * * * */
 
 				ImGui::Text("Scene");
-				ImGui::ColorEdit4("Color##Scene", &ML_CAMERA->backgroundColor[0]);
+				ImGui::ColorEdit4("Color##Scene", &ML_CAMERA->get<ml::Camera>()->backgroundColor[0]);
 				ImGui::Separator();
 
 				/* * * * * * * * * * * * * * * * * * * * */
@@ -1080,15 +1082,31 @@ namespace DEMO
 
 				ImGui::Text("Camera");
 				ImGui::Checkbox("Move##Camera", &globals.camMove);
-				ml::GUI::EditVec3f("Position##Camera", ML_CAMERA->position);
+				auto camPos = ML_CAMERA->get<ml::Camera>()->trans.getPos();
+				if (ml::GUI::EditVec3f("Position##Camera", camPos))
+				{
+					(ML_CAMERA->get<ml::Camera>()->trans)
+						.translate(camPos - ML_CAMERA->get<ml::Camera>()->trans.getPos())
+						.rotate(0.0f, ml::vec3f::One)
+						.scale(1.0f)
+						;
+				}
 				ImGui::DragFloat("Speed##Camera", &globals.camSpeed, 0.1f, -5.f, 5.f);
 				ImGui::Separator();
 
 				/* * * * * * * * * * * * * * * * * * * * */
 
 				ImGui::Text("Light");
-				ml::GUI::EditVec3f("Position##Light", ML_LIGHT->position);
-				ImGui::ColorEdit4("Color##Light", &ML_LIGHT->color[0]);
+				auto lightPos = ML_LIGHT->get<ml::Transform>()->getPos();
+				if (ml::GUI::EditVec3f("Position##Light", lightPos))
+				{
+					(*ML_LIGHT->get<ml::Transform>())
+						.translate(lightPos - ML_LIGHT->get<ml::Transform>()->getPos())
+						.rotate(0.0f, ml::vec3f::One)
+						.scale(1.0f)
+						;
+				}
+				ImGui::ColorEdit4("Color##Light", &ML_LIGHT->get<ml::Light>()->color[0]);
 				ImGui::DragFloat("Ambient##Light", &globals.ambient, 0.01f, 0.f, 1.f);
 				ImGui::DragFloat("Specular##Light", &globals.specular, 0.01f, 0.1f, 10.f);
 				ImGui::DragInt("Shininess##Light", &globals.shininess, 1.f, 1, 256);
