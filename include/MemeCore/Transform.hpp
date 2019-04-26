@@ -24,9 +24,10 @@ namespace ml
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-		static bool  Decompose(const mat4f & value, vec3f & scl, Quat & rot, vec3f & tns, vec3f & skw, vec4f & psp);
-		static mat4f Inverse(const mat4f & value);
+		bool decompose(vec3f & scl, Quat & rot, vec3f & tns, vec3f & skw, vec4f & psp) const;
 		
+	public:
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		static mat4f Rotate(const mat4f & value, float angle, const vec3f & axis);
 		static mat4f Scale(const mat4f & value, const vec3f & scl);
 		static mat4f Translate(const mat4f & value, const vec3f & trans);
@@ -38,15 +39,9 @@ namespace ml
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-		Transform & invert();
 		Transform &	rotate(float angle, const vec3f & axis);
 		Transform &	scale(const vec3f & value);
 		Transform &	translate(const vec3f & value);
-
-	public:
-		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-		bool	decompose(vec3f & scl, Quat & rot, vec3f & tns, vec3f & skw, vec4f & psp) const;
-		mat4f	getInverse() const;
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

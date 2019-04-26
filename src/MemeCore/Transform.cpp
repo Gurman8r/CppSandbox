@@ -47,16 +47,15 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-	bool Transform::Decompose(const mat4f & value, vec3f & scl, Quat & rot, vec3f & tns, vec3f & skw, vec4f & psp)
+	bool Transform::decompose(vec3f & scl, Quat & rot, vec3f & tns, vec3f & skw, vec4f & psp) const
 	{
-		//glm::project()
 		static glm::vec3 _scl; // scale
 		static glm::quat _rot; // orientation
 		static glm::vec3 _tns; // translation
 		static glm::vec3 _skw; // skew
 		static glm::vec4 _psp; // perspective
 
-		if (glm::decompose(ML_MAT4(value), _scl, _rot, _tns, _skw, _psp))
+		if (glm::decompose((glm::mat4)(m_matrix), _scl, _rot, _tns, _skw, _psp))
 		{
 			scl	= { _scl.x,	_scl.y,	_scl.z			};
 			rot	= { _rot.x,	_rot.y,	_rot.z,	_rot.w	};
@@ -75,78 +74,68 @@ namespace ml
 			return false;
 		}
 	}
-
-	mat4f Transform::Inverse(const mat4f & value)
-	{
-		return mat4f(glm::value_ptr(glm::inverse(ML_MAT4(value))));
-	}
-
+	
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	mat4f Transform::Rotate(const mat4f & value, float angle, const vec3f & axis)
 	{
-		return mat4f(glm::value_ptr(glm::rotate(ML_MAT4(value), angle, ML_VEC3(axis))));
+		return glm::rotate((glm::mat4)(value), angle, (glm::vec3)(axis));
 	}
 
 	mat4f Transform::Scale(const mat4f & value, const vec3f & scl)
 	{
-		return mat4f(glm::value_ptr(glm::scale(ML_MAT4(value), ML_VEC3(scl))));
+		return glm::scale((glm::mat4)(value), (glm::vec3)(scl));
 	}
 
 	mat4f Transform::Translate(const mat4f & value, const vec3f & trans)
 	{
-		return mat4f(glm::value_ptr(glm::translate(ML_MAT4(value), ML_VEC3(trans))));
+		return glm::translate((glm::mat4)(value), (glm::vec3)(trans));
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	mat4f Transform::LookAt(const vec3f & eye, const vec3f & pos, const vec3f & up)
 	{
-		return mat4f(glm::value_ptr(glm::lookAt(
-			ML_VEC3(eye),
-			ML_VEC3(pos),
-			ML_VEC3(up)))
+		return glm::lookAt(
+			(glm::vec3)(eye),
+			(glm::vec3)(pos),
+			(glm::vec3)(up)
 		);
 	}
 
 	mat4f Transform::Orthographic(const FloatRect & rect)
 	{
-		return mat4f(glm::value_ptr(glm::ortho(
+		return glm::ortho(
 			rect.left(),
 			rect.right(),
 			rect.top(),
-			rect.bot()))
+			rect.bot()
 		);
 	}
 
 	mat4f Transform::Orthographic(const FloatRect & rect, const vec2f & clip)
 	{
-		return mat4f(glm::value_ptr(glm::ortho(
+		return glm::ortho(
 			rect.left(),
 			rect.right(),
 			rect.top(),
 			rect.bot(),
 			clip.front(),
-			clip.back()))
+			clip.back()
 		);
 	}
 
 	mat4f Transform::Perspective(float fov, float aspect, float near, float far)
 	{
-		return mat4f(glm::value_ptr(glm::perspective(
+		return glm::perspective(
 			fov,
 			aspect,
 			near,
-			far))
+			far
 		);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-	Transform & Transform::invert()
-	{
-		return ((*this) = Transform::Inverse(m_matrix));
-	}
 
 	Transform & Transform::rotate(float angle, const vec3f & axis)
 	{
@@ -165,16 +154,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-	bool Transform::decompose(vec3f & scl, Quat & rot, vec3f & tns, vec3f & skw, vec4f & psp) const
-	{
-		return Transform::Decompose(m_matrix, scl, rot, tns, skw, psp);
-	}
 	
-	mat4f Transform::getInverse() const
-	{
-		return Transform::Inverse(m_matrix);
-	}
-
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	const vec3f Transform::getPosition() const

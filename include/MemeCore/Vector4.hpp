@@ -78,6 +78,22 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 		static const self_type Zero;
 		static const self_type One;
+
+# ifdef GLM_VERSION
+	public: // GLM
+		/* * * * * * * * * * * * * * * * * * * * */
+		Vector4(const glm::tvec4<value_type, glm::defaultp> & value)
+			: self_type(value.x, value.y, value.z, value.w)
+		{
+		}
+
+		inline operator glm::tvec4<value_type, glm::defaultp>() const
+		{
+			return glm::tvec4<value_type, glm::defaultp>(
+				(*this)[0], (*this)[1], (*this)[2], (*this)[3]
+			);
+		}
+# endif
 	};
 
 	// Constants

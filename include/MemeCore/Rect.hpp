@@ -30,6 +30,7 @@ namespace ml
 		using reverse_iterator		= typename base_type::reverse_iterator;
 		using const_reverse_iterator= typename base_type::const_reverse_iterator;
 
+
 	public: // Constructors
 		/* * * * * * * * * * * * * * * * * * * * */
 		Rect()
@@ -63,6 +64,7 @@ namespace ml
 		}
 		
 		~Rect() {}
+
 
 	public: // Member Functions
 		/* * * * * * * * * * * * * * * * * * * * */

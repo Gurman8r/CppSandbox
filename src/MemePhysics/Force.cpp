@@ -10,11 +10,9 @@ namespace ml
 		return (up * Physics::Gravity[1]);
 	}
 
-	const vec3f Force::normal(const vec3f & grav, const vec3f & unorm)
+	const vec3f Force::normal(const vec3f & grav, const vec3f & norm)
 	{
-		// FIXME
-		//return -(vec3f::project(grav, unorm));
-		return vec3f();
+		return glm::proj((glm::vec3)grav, (glm::vec3)norm);
 	}
 
 	const vec3f Force::sliding(const vec3f & grav, const vec3f & norm)

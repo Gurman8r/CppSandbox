@@ -8,13 +8,13 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	class Quat final
-		: public Vector4<float>
+		: public Vector<float, 4>
 	{
 	public: // Usings
 		/* * * * * * * * * * * * * * * * * * * * */
 		using value_type			= typename value_type;
 		using self_type				= typename Quat;
-		using base_type				= typename Vector4<value_type>;
+		using base_type				= typename Vector<value_type, 4>;
 		using complex_type			= typename Vector<value_type, 3>;
 
 		using pointer				= typename base_type::pointer;
@@ -46,22 +46,34 @@ namespace ml
 		}
 		
 		Quat(const_reference x, const_reference y, const_reference z, const_reference w)
-			: base_type(x, y, z, w)
+			: base_type({ x, y, z, w })
 		{
 		}
 		
 		Quat(const complex_type & xyz, const_reference w)
-			: base_type(xyz[0], xyz[1], xyz[2], w)
-		{
-		}
-		
-		Quat(const Quat & copy)
-			: base_type(copy[0], copy[1], copy[2], copy[3])
+			: base_type({ xyz[0], xyz[1], xyz[2], w })
 		{
 		}
 
-		Quat(const base_type & copy)
+		template <
+			size_t S
+		> Quat(const Vector<value_type, S> & copy)
 			: base_type(copy)
+		{
+		}
+
+		template <
+			class T
+		> Quat(const Vector4<T> & copy)
+			: base_type(copy)
+		{
+		}
+
+		template <
+			class T,
+			size_t S
+		> Quat(const Vector<T, S> & copy, const_reference def = static_cast<value_type>(0))
+			: base_type(copy, def)
 		{
 		}
 		
@@ -95,9 +107,9 @@ namespace ml
 
 	public: // Operators
 		/* * * * * * * * * * * * * * * * * * * * */
-		inline operator base_type() const
+		inline operator vec4f() const
 		{
-			return base_type((*this)[0], (*this)[1], (*this)[2], (*this)[3]);
+			return vec4f((*this)[0], (*this)[1], (*this)[2], (*this)[3]);
 		}
 
 		inline friend Quat operator*(const Quat & lhs, const Quat & rhs)
@@ -119,6 +131,22 @@ namespace ml
 		{
 			return Quat();
 		}
+
+# ifdef GLM_VERSION
+	public: // GLM
+		/* * * * * * * * * * * * * * * * * * * * */
+		Quat(const glm::tquat<float, glm::defaultp> & value)
+			: self_type(value.x, value.y, value.z, value.w)
+		{
+		}
+
+		inline operator glm::tquat<float, glm::defaultp>() const
+		{
+			return glm::tquat<float, glm::defaultp>(
+				(*this)[0], (*this)[1], (*this)[2], (*this)[3]
+			);
+		}
+# endif
 	};
 }
 

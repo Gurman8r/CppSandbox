@@ -274,6 +274,70 @@ namespace ml
 			}
 			return true;
 		}
+
+# ifdef GLM_VERSION
+	public: // GLM
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+		// From glm::mat3
+		template <
+			size_t X = self_type::Cols,
+			size_t Y = self_type::Rows
+		> Matrix(
+			const glm::tmat3x3<value_type, glm::defaultp> & value,
+			typename std::enable_if<(X == 3 && Y == 3)>::type * = 0)
+			: self_type((const_pointer)(glm::value_ptr(value)))
+		{
+		}
+
+		// To glm::mat3
+		template <
+			size_t X = self_type::Cols,
+			size_t Y = self_type::Rows
+		> inline operator glm::tmat3x3<value_type, glm::defaultp>() const
+		{
+			static_assert((X == 3 && Y == 3),
+				"Size mismatch, unable to convert matrix to glm::mat3"
+			);
+			return glm::tmat3x3<value_type, glm::defaultp>(
+				(*this)[0], (*this)[1], (*this)[2],
+				(*this)[3], (*this)[4], (*this)[5],
+				(*this)[6], (*this)[7], (*this)[8]
+			);
+		}
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		// From glm::mat4
+		template <
+			size_t X = self_type::Cols,
+			size_t Y = self_type::Rows
+		> Matrix(
+			const glm::tmat4x4<value_type, glm::defaultp> & value,
+			typename std::enable_if<(X == 4 && Y == 4)>::type * = 0)
+			: self_type((const_pointer)(glm::value_ptr(value)))
+		{
+		}
+
+		// To glm::mat4
+		template <
+			size_t X = self_type::Cols,
+			size_t Y = self_type::Rows
+		> inline operator glm::tmat4x4<value_type, glm::defaultp>() const
+		{
+			static_assert((X == 4 && Y == 4),
+				"Size mismatch, unable to convert matrix to glm::mat4"
+			);
+			return glm::tmat4x4<value_type, glm::defaultp>(
+				(*this)[ 0], (*this)[ 1], (*this)[ 2], (*this)[ 3],
+				(*this)[ 4], (*this)[ 5], (*this)[ 6], (*this)[ 7],
+				(*this)[ 8], (*this)[ 9], (*this)[10], (*this)[11],
+				(*this)[12], (*this)[13], (*this)[14], (*this)[15]
+			);
+		}
+
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+# endif
 	};
 }
 
@@ -283,20 +347,8 @@ namespace ml
 {
 	// Types
 	/* * * * * * * * * * * * * * * * * * * * */
-	template <
-		class T, size_t N
-	> using MatrixN = Matrix<T, N, N>;
-	
-	template <
-		class T
-	> using Matrix3 = MatrixN<T, 3>;
-	
-	template <
-		class T
-	> using Matrix4 = MatrixN<T, 4>;
-
-	using mat3f = Matrix3<float>;
-	using mat4f = Matrix4<float>;
+	using mat3f = Matrix<float, 3, 3>;
+	using mat4f = Matrix<float, 4, 4>;
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

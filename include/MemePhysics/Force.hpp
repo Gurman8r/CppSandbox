@@ -12,7 +12,7 @@ namespace ml
 	{
 	public:
 		static const vec3f gravity(const vec3f & up, const float mass);
-		static const vec3f normal(const vec3f & grav, const vec3f & unorm);
+		static const vec3f normal(const vec3f & grav, const vec3f & norm);
 		static const vec3f sliding(const vec3f & grav, const vec3f & norm);
 		static const vec3f frictionStatic(const vec3f & norm, const vec3f & vel, const vec3f & opp, const vec3f & coeff);
 		static const vec3f frictionKinematic(const vec3f & norm, const vec3f & vel, const float coeff);

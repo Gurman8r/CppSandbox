@@ -640,7 +640,7 @@ namespace DEMO
 							transform->getPosition(),
 							ml::Quat(),
 							transform->matrix(),
-							transform->getInverse()
+							glm::inverse((glm::mat4)transform->matrix())
 						);
 					}
 				}

@@ -105,6 +105,22 @@ namespace ml
 		static const self_type Right;
 		static const self_type Forward;
 		static const self_type Back;
+
+# ifdef GLM_VERSION
+	public: // GLM
+		/* * * * * * * * * * * * * * * * * * * * */
+		Vector3(const glm::tvec3<value_type, glm::defaultp> & value)
+			: self_type(value.x, value.y, value.z)
+		{
+		}
+
+		inline operator glm::tvec3<value_type, glm::defaultp>() const
+		{
+			return glm::tvec3<value_type, glm::defaultp>(
+				(*this)[0], (*this)[1], (*this)[2]
+			);
+		}
+# endif
 	};
 
 	// Constants

@@ -101,6 +101,9 @@ namespace ml
 	{
 		// TODO: insert return statement here
 		//Melody: how do you multiply a matrix and a vector?
+		glm::mat4 m1 = mat4f();
+		glm::vec4 v1 = vec4f(vec3f(1, 2, 3), 0);
+		vec4f v2 = (m1 * v1);
 
 		//angularAcc = 
 		return (*this);
@@ -109,7 +112,7 @@ namespace ml
 	Particle & Particle::resetTorque()
 	{
 		// TODO: insert return statement here
-		torque = { 0.0f,0.0f,0.0f };
+		torque = 0.0f;
 
 		return (*this);
 	}

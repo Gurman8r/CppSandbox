@@ -462,7 +462,7 @@ namespace ml
 
 										Funcs::Field("Orientation", [&](CString label)
 										{
-											GUI::EditVec4f("##Orientation##Transform##Decompose", orient);
+											GUI::EditQuat("##Orientation##Transform##Decompose", orient);
 										});
 
 										Funcs::Field("Translation", [&](CString label)

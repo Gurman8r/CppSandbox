@@ -6,10 +6,10 @@
 namespace ml
 {
 	template <
-		typename T, 
-		size_t C, 
-		size_t R
-	> inline static bool EditMatrix(CString label, Matrix<T, C, R> & value, float speed)
+		class	T, 
+		size_t	X, 
+		size_t	Y
+	> inline static bool EditMatrix(CString label, Matrix<T, X, Y> & value, float speed)
 	{
 		if (!ImGui::GetCurrentWindow()->SkipItems)
 		{
@@ -128,6 +128,45 @@ namespace ml
 	}
 
 	bool GUI::EditVec4f(CString label, vec4f & value, float speed)
+	{
+		if (!ImGui::GetCurrentWindow()->SkipItems)
+		{
+			bool changed = false;
+			ImGui::BeginGroup();
+			ImGui::PushID(label);
+			{
+				ImGui::PushItemWidth(64);
+				if (ImGui::DragFloat("##X", &value[0], speed, 0.f, 0.f, "X:%.3f"))
+				{
+					changed = true;
+				}
+				ImGui::SameLine();
+				if (ImGui::DragFloat("##Y", &value[1], speed, 0.f, 0.f, "Y:%.3f"))
+				{
+					changed = true;
+				}
+				ImGui::SameLine();
+				if (ImGui::DragFloat("##Z", &value[2], speed, 0.f, 0.f, "Z:%.3f"))
+				{
+					changed = true;
+				}
+				ImGui::SameLine();
+				if (ImGui::DragFloat("##W", &value[3], speed, 0.f, 0.f, "W:%.3f"))
+				{
+					changed = true;
+				}
+				ImGui::PopItemWidth();
+
+				DrawLabel(label);
+			}
+			ImGui::PopID();
+			ImGui::EndGroup();
+			return changed;
+		}
+		return false;
+	}
+
+	bool GUI::EditQuat(CString label, Quat & value, float speed)
 	{
 		if (!ImGui::GetCurrentWindow()->SkipItems)
 		{
