@@ -1,7 +1,7 @@
 #ifndef _ML_TRANSFORM_HPP_
 #define _ML_TRANSFORM_HPP_
 
-#include <MemeCore/Quat.hpp>
+#include <MemeCore/Quaternion.hpp>
 #include <MemeCore/Rect.hpp>
 #include <MemeCore/Vector2.hpp>
 #include <MemeCore/Vector3.hpp>
@@ -17,14 +17,14 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		Transform();
 		Transform(const vec3f & position, const vec3f & scale);
-		Transform(const vec3f & position, const vec3f & scale, const Quat & rotation);
+		Transform(const vec3f & position, const vec3f & scale, const quat & rotation);
 		Transform(const mat4f & value);
 		Transform(const Transform & copy);
 		~Transform();
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-		bool decompose(vec3f & scl, Quat & rot, vec3f & tns, vec3f & skw, vec4f & psp) const;
+		bool decompose(vec3f & scl, quat & rot, vec3f & tns, vec3f & skw, vec4f & psp) const;
 		
 	public:
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

@@ -3,7 +3,7 @@
 
 #include <MemePhysics/Export.hpp>
 #include <MemeCore/Vector3.hpp>
-#include <MemeCore/Quat.hpp>
+#include <MemeCore/Quaternion.hpp>
 
 namespace ml
 {
@@ -26,18 +26,18 @@ namespace ml
 		int32_t	size() const;
 
 	public:
-		bool	getData(const int32_t index, vec3f & pos, Quat & rot, mat4f & mat, mat4f & inv) const;
-		bool	setData(const int32_t index, const vec3f & pos, const Quat & rot, const mat4f & mat, const mat4f & inv);
+		bool	getData(const int32_t index, vec3f & pos, quat & rot, mat4f & mat, mat4f & inv) const;
+		bool	setData(const int32_t index, const vec3f & pos, const quat & rot, const mat4f & mat, const mat4f & inv);
 
 	public:
 		bool	getPos(const int32_t index, vec3f & pos) const;
-		bool	getRot(const int32_t index, Quat  & pos) const;
+		bool	getRot(const int32_t index, quat  & pos) const;
 		bool	getMat(const int32_t index, mat4f & pos) const;
 		bool	getInv(const int32_t index, mat4f & pos) const;
 
 	public:
 		bool	setPos(const int32_t index, const vec3f & value);
-		bool	setRot(const int32_t index, const Quat  & value);
+		bool	setRot(const int32_t index, const quat  & value);
 		bool	setMat(const int32_t index, const mat4f & value);
 		bool	setInv(const int32_t index, const mat4f & value);
 
@@ -45,7 +45,7 @@ namespace ml
 		int32_t m_size;
 
 		List<vec3f> m_pos;
-		List<Quat>	m_rot;
+		List<quat>	m_rot;
 		List<mat4f> m_mat;
 		List<mat4f>	m_inv;
 	};

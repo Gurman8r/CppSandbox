@@ -51,7 +51,7 @@ namespace ml
 		return m_size;
 	}
 
-	bool PhysicsState::getData(const int32_t index, vec3f & pos, Quat & rot, mat4f & mat, mat4f & inv) const
+	bool PhysicsState::getData(const int32_t index, vec3f & pos, quat & rot, mat4f & mat, mat4f & inv) const
 	{
 		return 
 			getPos(index, pos) &&
@@ -60,7 +60,7 @@ namespace ml
 			getInv(index, inv);
 	}		   
 
-	bool PhysicsState::setData(const int32_t index, const vec3f & pos, const Quat & rot, const mat4f & mat, const mat4f & inv)
+	bool PhysicsState::setData(const int32_t index, const vec3f & pos, const quat & rot, const mat4f & mat, const mat4f & inv)
 	{
 		return
 			setPos(index, pos) &&
@@ -81,7 +81,7 @@ namespace ml
 		return false;
 	}
 
-	bool PhysicsState::getRot(const int32_t index, Quat & value) const
+	bool PhysicsState::getRot(const int32_t index, quat & value) const
 	{
 		if ((index > PhysicsState::InvalidIndex) && ((size_t)(index) < m_rot.size()))
 		{
@@ -123,7 +123,7 @@ namespace ml
 		return false;
 	}
 
-	bool PhysicsState::setRot(const int32_t index, const Quat & value)
+	bool PhysicsState::setRot(const int32_t index, const quat & value)
 	{
 		if ((index > PhysicsState::InvalidIndex) && ((size_t)(index) < m_rot.size()))
 		{

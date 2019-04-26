@@ -22,7 +22,7 @@ namespace ml
 			.scale(scale);
 	}
 
-	Transform::Transform(const vec3f & pos, const vec3f & scl, const Quat & rot)
+	Transform::Transform(const vec3f & pos, const vec3f & scl, const quat & rot)
 		: m_matrix(mat4f::Identity())
 	{
 		(*this)
@@ -47,7 +47,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-	bool Transform::decompose(vec3f & scl, Quat & rot, vec3f & tns, vec3f & skw, vec4f & psp) const
+	bool Transform::decompose(vec3f & scl, quat & rot, vec3f & tns, vec3f & skw, vec4f & psp) const
 	{
 		static glm::vec3 _scl; // scale
 		static glm::quat _rot; // orientation

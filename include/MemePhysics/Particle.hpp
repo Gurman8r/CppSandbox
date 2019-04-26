@@ -20,7 +20,7 @@ namespace ml
 		float massInv;
 
 		//angular
-		Quat rotation;
+		quat rotation;
 		vec3f angularVel;
 		vec3f angularAcc;
 		vec3f angularMomentum;

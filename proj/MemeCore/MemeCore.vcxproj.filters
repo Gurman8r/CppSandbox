@@ -225,7 +225,7 @@
     <ClInclude Include="..\..\include\MemeCore\GLM.hpp">
       <Filter>Header Files\Maths</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeCore\Quat.hpp">
+    <ClInclude Include="..\..\include\MemeCore\Quaternion.hpp">
       <Filter>Header Files\Maths</Filter>
     </ClInclude>
   </ItemGroup>

@@ -7,13 +7,13 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	class Quat final
+	class Quaternion final
 		: public Vector<float, 4>
 	{
 	public: // Usings
 		/* * * * * * * * * * * * * * * * * * * * */
 		using value_type			= typename value_type;
-		using self_type				= typename Quat;
+		using self_type				= typename Quaternion;
 		using base_type				= typename Vector<value_type, 4>;
 		using complex_type			= typename Vector<value_type, 3>;
 
@@ -30,41 +30,41 @@ namespace ml
 
 	public: // Constructors
 		/* * * * * * * * * * * * * * * * * * * * */
-		Quat()
+		Quaternion()
 			: self_type(1.0f)
 		{
 		}
 		
-		Quat(const_reference xyz)
+		Quaternion(const_reference xyz)
 			: self_type(xyz, xyz, xyz)
 		{
 		}
 		
-		Quat(const_reference x, const_reference y, const_reference z)
+		Quaternion(const_reference x, const_reference y, const_reference z)
 			: self_type(x, y, z, 0.0f)
 		{
 		}
 		
-		Quat(const_reference x, const_reference y, const_reference z, const_reference w)
+		Quaternion(const_reference x, const_reference y, const_reference z, const_reference w)
 			: base_type({ x, y, z, w })
 		{
 		}
 		
-		Quat(const complex_type & xyz, const_reference w)
+		Quaternion(const complex_type & xyz, const_reference w)
 			: base_type({ xyz[0], xyz[1], xyz[2], w })
 		{
 		}
 
 		template <
 			size_t S
-		> Quat(const Vector<value_type, S> & copy)
+		> Quaternion(const Vector<value_type, S> & copy)
 			: base_type(copy)
 		{
 		}
 
 		template <
 			class T
-		> Quat(const Vector4<T> & copy)
+		> Quaternion(const Vector4<T> & copy)
 			: base_type(copy)
 		{
 		}
@@ -72,12 +72,12 @@ namespace ml
 		template <
 			class T,
 			size_t S
-		> Quat(const Vector<T, S> & copy, const_reference def = static_cast<value_type>(0))
+		> Quaternion(const Vector<T, S> & copy, const_reference def = static_cast<value_type>(0))
 			: base_type(copy, def)
 		{
 		}
 		
-		~Quat() {}
+		~Quaternion() {}
 
 
 	public: // Member Functions
@@ -112,9 +112,9 @@ namespace ml
 			return vec4f((*this)[0], (*this)[1], (*this)[2], (*this)[3]);
 		}
 
-		inline friend Quat operator*(const Quat & lhs, const Quat & rhs)
+		inline friend Quaternion operator*(const Quaternion & lhs, const Quaternion & rhs)
 		{
-			return Quat(
+			return Quaternion(
 				( lhs[0] * rhs[3]) + (lhs[1] * rhs[2]) - (lhs[2] * rhs[1]) + (lhs[3] * rhs[0]),
 				(-lhs[0] * rhs[2]) + (lhs[1] * rhs[3]) + (lhs[2] * rhs[0]) + (lhs[3] * rhs[1]),
 				( lhs[0] * rhs[1]) - (lhs[1] * rhs[0]) + (lhs[2] * rhs[3]) + (lhs[3] * rhs[2]),
@@ -122,20 +122,20 @@ namespace ml
 			);
 		}
 
-		inline friend Quat operator*(const Quat & lhs, value_type rhs)
+		inline friend Quaternion operator*(const Quaternion & lhs, value_type rhs)
 		{
-			return Quat();
+			return Quaternion();
 		}
 
-		inline friend Quat operator/(const Quat & lhs, value_type rhs)
+		inline friend Quaternion operator/(const Quaternion & lhs, value_type rhs)
 		{
-			return Quat();
+			return Quaternion();
 		}
 
 # ifdef GLM_VERSION
 	public: // GLM
 		/* * * * * * * * * * * * * * * * * * * * */
-		Quat(const glm::tquat<float, glm::defaultp> & value)
+		Quaternion(const glm::tquat<float, glm::defaultp> & value)
 			: self_type(value.x, value.y, value.z, value.w)
 		{
 		}
@@ -148,6 +148,10 @@ namespace ml
 		}
 # endif
 	};
+
+	// Types
+	/* * * * * * * * * * * * * * * * * * * * */
+	using quat = typename Quaternion;
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

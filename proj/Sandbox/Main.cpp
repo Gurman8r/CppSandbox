@@ -8,7 +8,7 @@
 #include <MemeEngine/Engine.hpp>
 #include <MemeEngine/StateMachine.hpp>
 #include <MemeEditor/AnyVar.hpp>
-#include <MemeCore/Quat.hpp>
+#include <MemeCore/Quaternion.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * */
 

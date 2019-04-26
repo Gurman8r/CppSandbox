@@ -166,7 +166,7 @@ namespace ml
 		return false;
 	}
 
-	bool GUI::EditQuat(CString label, Quat & value, float speed)
+	bool GUI::EditQuat(CString label, quat & value, float speed)
 	{
 		if (!ImGui::GetCurrentWindow()->SkipItems)
 		{

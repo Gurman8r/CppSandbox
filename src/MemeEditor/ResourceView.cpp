@@ -448,7 +448,7 @@ namespace ml
 								Funcs::Group("Decompose", [&]()
 								{
 									vec3f scale;
-									Quat  orient;
+									quat  orient;
 									vec3f trans;
 									vec3f skew;
 									vec4f persp;
