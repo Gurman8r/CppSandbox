@@ -33,7 +33,7 @@ namespace ml
 		inline const vec2f & scale()	const { return m_scale;		}
 
 	public:
-		inline const mat4f & matrix() const
+		inline const mat4f & getMatrix() const
 		{
 			update();
 			return m_matrix;

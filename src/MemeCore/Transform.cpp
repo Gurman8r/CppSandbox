@@ -47,99 +47,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-	
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	mat4f Transform::Rotate(const mat4f & value, float angle, const vec3f & axis)
-	{
-		return glm::rotate((glm::mat4)(value), angle, (glm::vec3)(axis));
-	}
-
-	mat4f Transform::Scale(const mat4f & value, const vec3f & scl)
-	{
-		return glm::scale((glm::mat4)(value), (glm::vec3)(scl));
-	}
-
-	mat4f Transform::Translate(const mat4f & value, const vec3f & trans)
-	{
-		return glm::translate((glm::mat4)(value), (glm::vec3)(trans));
-	}
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	mat4f Transform::LookAt(const vec3f & eye, const vec3f & pos, const vec3f & up)
-	{
-		return glm::lookAt(
-			(glm::vec3)(eye),
-			(glm::vec3)(pos),
-			(glm::vec3)(up)
-		);
-	}
-
-	mat4f Transform::Orthographic(const FloatRect & rect)
-	{
-		return glm::ortho(
-			rect.left(),
-			rect.right(),
-			rect.top(),
-			rect.bot()
-		);
-	}
-
-	mat4f Transform::Orthographic(const FloatRect & rect, const vec2f & clip)
-	{
-		return glm::ortho(
-			rect.left(),
-			rect.right(),
-			rect.top(),
-			rect.bot(),
-			clip.front(),
-			clip.back()
-		);
-	}
-
-	mat4f Transform::Perspective(float fov, float aspect, float near, float far)
-	{
-		return glm::perspective(
-			fov,
-			aspect,
-			near,
-			far
-		);
-	}
-
-	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-	Transform & Transform::rotate(float angle, const vec3f & axis)
-	{
-		return update(Rotate(m_matrix, angle, axis));
-	}
-
-	Transform & Transform::scale(const vec3f & value)
-	{
-		return update(Scale(m_matrix, value));
-	}
-
-	Transform & Transform::translate(const vec3f & value)
-	{
-		return update(Translate(m_matrix, value));
-	}
-
-	Transform & Transform::lookAt(const vec3f & eye, const vec3f & pos, const vec3f & up)
-	{
-		return update(LookAt(eye, pos, up));
-	}
-
-	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-	Transform & Transform::update(const mat4f & value)
-	{
-		m_matrix = value;
-		m_changed = true;
-		return (*this);
-	}
-
-	bool Transform::decompose(vec3f & scl, quat & rot, vec3f & tns, vec3f & skw, vec4f & psp) const
+	bool Transform::Decompose(const mat4f & value, vec3f & scl, quat & rot, vec3f & tns, vec3f & skw, vec4f & psp)
 	{
 		static glm::vec3 _scl; // scale
 		static glm::quat _rot; // orientation
@@ -147,7 +55,7 @@ namespace ml
 		static glm::vec3 _skw; // skew
 		static glm::vec4 _psp; // perspective
 
-		if (glm::decompose((glm::mat4)(m_matrix), _scl, _rot, _tns, _skw, _psp))
+		if (glm::decompose((glm::mat4)(value), _scl, _rot, _tns, _skw, _psp))
 		{
 			scl = _scl;
 			rot = _rot;
@@ -167,7 +75,77 @@ namespace ml
 		}
 	}
 
-	void Transform::updateMutables() const
+	mat4f Transform::Rotate(const mat4f & value, float angle, const vec3f & axis)
+	{
+		return glm::rotate((glm::mat4)(value), angle, (glm::vec3)(axis));
+	}
+
+	mat4f Transform::Rotate(const mat4f & value, const quat & rot)
+	{
+		return mat4f();
+	}
+
+	mat4f Transform::Scale(const mat4f & value, const vec3f & scl)
+	{
+		return glm::scale((glm::mat4)(value), (glm::vec3)(scl));
+	}
+
+	mat4f Transform::Translate(const mat4f & value, const vec3f & trans)
+	{
+		return glm::translate((glm::mat4)(value), (glm::vec3)(trans));
+	}
+
+	mat4f Transform::LookAt(const vec3f & eye, const vec3f & pos, const vec3f & up)
+	{
+		return glm::lookAt(
+			(glm::vec3)(eye),
+			(glm::vec3)(pos),
+			(glm::vec3)(up)
+		);
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+	Transform & Transform::rotate(float angle, const vec3f & axis)
+	{
+		return update(Rotate(m_matrix, angle, axis));
+	}
+
+	Transform & Transform::rotate(const quat & value)
+	{
+		return update(Rotate(m_matrix, value));
+	}
+
+	Transform & Transform::scale(const vec3f & value)
+	{
+		return update(Scale(m_matrix, value));
+	}
+
+	Transform & Transform::translate(const vec3f & value)
+	{
+		return update(Translate(m_matrix, value));
+	}
+
+	Transform & Transform::lookAt(const vec3f & eye, const vec3f & pos, const vec3f & up)
+	{
+		return update(LookAt(eye, pos, up));
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	Transform & Transform::update(const mat4f & value)
+	{
+		m_matrix = value;
+		m_changed = true;
+		return (*this);
+	}
+
+	bool Transform::decompose(vec3f & scl, quat & rot, vec3f & tns, vec3f & skw, vec4f & psp) const
+	{
+		return Decompose(m_matrix, scl, rot, tns, skw, psp);
+	}
+
+	void Transform::decompose() const
 	{
 		if (m_changed)
 		{
@@ -180,39 +158,54 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	const vec3f & Transform::getScale() const
+	const vec4f & Transform::getPerspective() const
 	{
-		updateMutables(); return m_scl;
+		decompose(); return m_psp;
 	}
 
 	const vec3f & Transform::getPosition() const
 	{
-		updateMutables(); return m_pos;
+		decompose(); return m_pos;
 	}
-
+	
 	const quat  & Transform::getRotation() const
 	{
-		updateMutables(); return m_rot;
+		decompose(); return m_rot;
+	}
+
+	const vec3f & Transform::getScale() const
+	{
+		decompose(); return m_scl;
 	}
 
 	const vec3f & Transform::getSkew() const
 	{
-		updateMutables(); return m_skw;
-	}
-
-	const vec4f & Transform::getPerspective() const
-	{
-		updateMutables(); return m_psp;
+		decompose(); return m_skw;
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 	
 	Transform & Transform::setPosition(const vec3f & value)
 	{
-		m_changed = true;
-		m_matrix[12] = value[0];
-		m_matrix[13] = value[1];
-		m_matrix[14] = value[2];
+		if (value != getPosition())
+		{
+			return translate(value - getPosition());
+		}
+		return (*this);
+	}
+
+	Transform & Transform::setRotation(const quat & value)
+	{
+		// FIXME
+		return rotate(value.real(), value.complex());
+	}
+
+	Transform & Transform::setScale(const vec3f & value)
+	{
+		if (value != getScale())
+		{
+			return scale(value - getScale());
+		}
 		return (*this);
 	}
 	

@@ -488,8 +488,8 @@ namespace ml
 								{
 									Funcs::Field("Value", [&](CString)
 									{
-										mat4f matrix = transform->matrix();
-										if (GUI::EditMat4f("##Matrix##Transform", matrix, 0.1f))
+										mat4f getMatrix = transform->getMatrix();
+										if (GUI::EditMat4f("##Matrix##Transform", getMatrix, 0.1f))
 										{
 											//transform->matrix() = matrix;
 										}

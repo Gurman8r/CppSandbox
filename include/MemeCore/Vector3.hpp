@@ -86,9 +86,6 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 		inline static self_type cross(const self_type & a, const self_type & b)
 		{
-			// (y - z) - (z - y)
-			// (z - x) - (x - z)
-			// (x - y) - (y - x)
 			return self_type(
 				(a[1] * b[2]) - (a[2] * b[1]),
 				(a[2] * b[0]) - (a[0] * b[2]),

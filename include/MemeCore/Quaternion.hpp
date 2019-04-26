@@ -122,16 +122,6 @@ namespace ml
 			);
 		}
 
-		inline friend Quaternion operator*(const Quaternion & lhs, value_type rhs)
-		{
-			return Quaternion();
-		}
-
-		inline friend Quaternion operator/(const Quaternion & lhs, value_type rhs)
-		{
-			return Quaternion();
-		}
-
 # ifdef GLM_VERSION
 	public: // GLM
 		/* * * * * * * * * * * * * * * * * * * * */

@@ -102,8 +102,10 @@ namespace ml
 		// TODO: insert return statement here
 		//Melody: how do you multiply a matrix and a vector?
 		glm::mat4 m1 = mat4f();
-		glm::vec4 v1 = vec4f(vec3f(1, 2, 3), 0);
+		glm::vec4 v1 = vec4f(vec3f(1, 2, 3), 4);
+		
 		vec4f v2 = (m1 * v1);
+		vec3f v3 = glm::vec3(((glm::mat4)(mat4f::Identity()))[3]); 
 
 		//angularAcc = 
 		return (*this);

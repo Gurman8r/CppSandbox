@@ -13,30 +13,37 @@ namespace ml
 	{
 	public:
 		Camera();
-		Camera(float fieldOfView, float pNear, float pFar, float oNear, float oFar);
+		Camera(float fov, float pNear, float pFar, float oNear, float oFar);
 		Camera(const Camera & copy);
 		~Camera();
 
 	public:
 		Camera & update(const vec2i & resolution);
+		Camera & lookAt(const vec3f & value);
 
-		Camera & lookDir(const vec3f & dir);
-
-		Camera & lookAt(const vec3f & target);
-
-		Camera & orbit(const vec3f & target, const float speed);
+	public:
+		inline vec3f forward() const 
+		{
+			return (this->target - this->position).normalized(); 
+		}
+		
+		inline vec3f right() const 
+		{ 
+			return (vec3f::cross(this->forward(), vec3f::Up) * vec3f(1, 0, 1)).normalized(); 
+		}
 
 	public:
 		vec2i		resolution;
 		vec3f		position;
-		Transform	transform;
+		vec3f		target;
+		
+		Transform	trans;
 		Transform	ortho;
 		Transform	persp;
-		float		fieldOfView;
-		float		perspNear;
-		float		perspFar;
-		float		orthoNear;
-		float		orthoFar;
+
+		float		fov;
+		float		pNear, pFar;
+		float		oNear, oFar;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */
