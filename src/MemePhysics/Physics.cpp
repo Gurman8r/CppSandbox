@@ -1,10 +1,12 @@
 #include <MemePhysics/Physics.hpp>
 
+#define ML_GRAVITY -9.80665f
+
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	const vec3f Physics::Gravity(0.0f, -9.80665f, 0.0f);
+	const vec3f Physics::Gravity(0.0f, ML_GRAVITY, 0.0f);
 
 	/* * * * * * * * * * * * * * * * * * * * */
 

@@ -371,6 +371,7 @@ namespace DEMO
 					SETTINGS.orthoFar
 				});
 
+				camera->backgroundColor = { 0.025f, 0.025f, 0.025f, 1.0f };
 				camera->position = { 0.0f, 1.0f, 10.0f };
 				camera->trans.lookAt(
 					camera->position, 
@@ -751,7 +752,7 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (ML_CAMERA)
 		{
-			ML_CAMERA->update(this->getFrameSize());
+			ML_CAMERA->updateRes(this->getFrameSize());
 			
 			ML_CAMERA->lookAt(ML_Res.entities.get("earth")->get<ml::Transform>()->getPosition());
 			
@@ -895,7 +896,7 @@ namespace DEMO
 			scene->bind();
 
 			// Clear Screen
-			this->clear(globals.clearColor);
+			this->clear(ML_CAMERA->backgroundColor);
 
 			// Draw Entities
 			for (const auto & pair : ML_Res.entities)
@@ -1047,7 +1048,7 @@ namespace DEMO
 				/* * * * * * * * * * * * * * * * * * * * */
 
 				ImGui::Text("Scene");
-				ImGui::ColorEdit4("Color##Scene", &globals.clearColor[0]);
+				ImGui::ColorEdit4("Color##Scene", &ML_CAMERA->backgroundColor[0]);
 				ImGui::Separator();
 
 				/* * * * * * * * * * * * * * * * * * * * */

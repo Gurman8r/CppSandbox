@@ -18,7 +18,7 @@ namespace ml
 		~Camera();
 
 	public:
-		Camera & update(const vec2i & resolution);
+		Camera & updateRes(const vec2i & resolution);
 		Camera & lookAt(const vec3f & value);
 
 	public:
@@ -44,6 +44,8 @@ namespace ml
 		float		fov;
 		float		pNear, pFar;
 		float		oNear, oFar;
+
+		vec4f		backgroundColor;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

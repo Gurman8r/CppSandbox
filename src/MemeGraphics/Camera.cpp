@@ -61,7 +61,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	Camera & Camera::update(const vec2i & value)
+	Camera & Camera::updateRes(const vec2i & value)
 	{
 		if ((value != vec2i::Zero) && (this->resolution != value))
 		{

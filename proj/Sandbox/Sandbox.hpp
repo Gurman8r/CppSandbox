@@ -46,9 +46,6 @@ namespace DEMO
 
 		struct Globals
 		{
-			// Scene
-			ml::vec4f		clearColor	= { 0.025f, 0.025f, 0.025f, 1.0f };
-			
 			// Camera
 			bool			camMove		= true;
 			float			camSpeed	= 1.0f;
