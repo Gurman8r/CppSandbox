@@ -74,14 +74,6 @@ namespace ml
 		virtual ~Vector3() {}
 
 
-	public: // Member Functions
-		/* * * * * * * * * * * * * * * * * * * * */
-		inline self_type & cross(const self_type & other)
-		{
-			return ((*this) = self_type::cross((*this), other));
-		}
-
-
 	public: // Static Functions
 		/* * * * * * * * * * * * * * * * * * * * */
 		inline static self_type cross(const self_type & a, const self_type & b)
@@ -91,6 +83,7 @@ namespace ml
 				(a[2] * b[0]) - (a[0] * b[2]),
 				(a[0] * b[1]) - (a[1] * b[0]));
 		}
+
 
 	public: // Constants
 		/* * * * * * * * * * * * * * * * * * * * */

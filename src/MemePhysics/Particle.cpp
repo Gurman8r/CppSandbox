@@ -91,8 +91,7 @@ namespace ml
 	Particle & Particle::applyForceLocation(const vec3f & force, const vec3f worldLoc)
 	{
 		// TODO: insert return statement here
-		vec3f arm = worldLoc - centerMass_world;
-		torque += arm.cross(force);		//Melody: please make sure I'm using cross right
+		torque += vec3f::cross((worldLoc - centerMass_world), force);
 		return (*this);
 
 	}

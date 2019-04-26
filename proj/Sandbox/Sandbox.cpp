@@ -898,7 +898,7 @@ namespace DEMO
 			// Clear Screen
 			this->clear(ML_CAMERA->backgroundColor);
 
-			// Draw Entities
+			// Draw Renderers
 			for (const auto & pair : ML_Res.entities)
 			{
 				if (const ml::Renderer * renderer = pair.second->get<ml::Renderer>())
