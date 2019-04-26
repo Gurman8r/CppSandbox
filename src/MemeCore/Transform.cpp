@@ -166,8 +166,10 @@ namespace ml
 	{
 		if (m_changed)
 		{
-			m_changed = false;
-			decompose(m_scl, m_rot, m_pos, m_skw, m_psp);
+			if (decompose(m_scl, m_rot, m_pos, m_skw, m_psp))
+			{
+				m_changed = false;
+			}
 		}
 	}
 
