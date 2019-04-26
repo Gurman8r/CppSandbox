@@ -774,28 +774,28 @@ namespace DEMO
 
 		// Update Physics
 		/* * * * * * * * * * * * * * * * * * * * */
-		for (auto & pair : ML_Res.entities)
+		if (const ml::PhysicsState state = ML_Physics.world().state())
 		{
-			if (ml::Entity * ent = pair.second)
+			for (auto & pair : ML_Res.entities)
 			{
-				if (ml::Rigidbody * rb = ent->get<ml::Rigidbody>())
+				if (ml::Entity * ent = pair.second)
 				{
-					if (ml::Transform * transform = rb->transform())
+					if (ml::Rigidbody * rb = ent->get<ml::Rigidbody>())
 					{
-						ml::vec3f pos;
-						ml::quat  rot;
-						ml::mat4f mat;
-						ml::mat4f inv;
-						if (ML_Physics.world().state().getData(rb->index(),
-							pos, rot, mat, inv
-						))
+						if (ml::Transform * transform = rb->transform())
 						{
-							(*transform)
-								.update(ml::mat4f::Identity())
-								.translate(pos)
-								.rotate(rot)
-								.scale(transform->getScl())
-								;
+							ml::vec3f pos;
+							ml::quat  rot;
+							if (state.getPos(rb->index(), pos) &&
+								state.getRot(rb->index(), rot))
+							{
+								(*transform)
+									.update(ml::mat4f::Identity())
+									.translate(pos)
+									.rotate(rot)
+									.scale(transform->getScl())
+									;
+							}
 						}
 					}
 				}

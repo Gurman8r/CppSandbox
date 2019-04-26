@@ -8,6 +8,8 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
+
+	// Rigidbody currently just links a transform to the physics state
 	class ML_PHYSICS_API Rigidbody
 		: public ITrackable
 	{

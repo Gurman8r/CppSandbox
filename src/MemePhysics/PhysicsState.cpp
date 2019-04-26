@@ -35,6 +35,11 @@ namespace ml
 		m_inv.clear();
 	}
 
+	bool PhysicsState::empty() const
+	{
+		return (size() == 0);
+	}
+
 	void PhysicsState::resize(const size_t value)
 	{
 		if (m_size = (int32_t)(value))

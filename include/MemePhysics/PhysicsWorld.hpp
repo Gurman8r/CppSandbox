@@ -18,7 +18,8 @@ namespace ml
 		~PhysicsWorld();
 
 	public:
-		inline PhysicsState & state() { return m_state; }
+		const inline PhysicsState & state() const	{ return m_state; }
+		inline PhysicsState &		state()			{ return m_state; }
 
 	private:
 		PhysicsState m_state;

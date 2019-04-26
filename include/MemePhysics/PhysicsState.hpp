@@ -22,8 +22,15 @@ namespace ml
 
 	public:
 		void	clear();
+		bool	empty() const;
 		void	resize(const size_t value);
 		int32_t	size() const;
+
+	public:
+		inline operator bool() const
+		{
+			return !this->empty();
+		}
 
 	public:
 		bool	getData(const int32_t index, vec3f & pos, quat & rot, mat4f & mat, mat4f & inv) const;
