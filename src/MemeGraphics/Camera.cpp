@@ -11,12 +11,11 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Camera::Camera()
-		: resolution(vec2i::Zero)
+		: m_res(vec2i::Zero)
 		, position	(vec3f::Zero)
-		, target	(vec3f::Forward)
-		, trans		(mat4f::Identity())
-		, ortho		(mat4f::Identity())
-		, persp		(mat4f::Identity())
+		, m_target	(vec3f::Forward)
+		, m_ortho		(mat4f::Identity())
+		, m_persp		(mat4f::Identity())
 		, fov		(ML_CAM_DEFAULT_FOV)
 		, pNear		(ML_CAM_DEFAULT_PNEAR)
 		, pFar		(ML_CAM_DEFAULT_PFAR)
@@ -26,12 +25,11 @@ namespace ml
 	}
 
 	Camera::Camera(float fov, float pNear, float pFar, float oNear, float oFar)
-		: resolution(vec2i::Zero)
+		: m_res(vec2i::Zero)
 		, position	(vec3f::Zero)
-		, target	(vec3f::Forward)
-		, trans		(mat4f::Identity())
-		, ortho		(mat4f::Identity())
-		, persp		(mat4f::Identity())
+		, m_target	(vec3f::Forward)
+		, m_ortho		(mat4f::Identity())
+		, m_persp		(mat4f::Identity())
 		, fov		(fov)
 		, pNear		(pNear)
 		, pFar		(pFar)
@@ -41,12 +39,11 @@ namespace ml
 	}
 
 	Camera::Camera(const Camera & copy)
-		: resolution(copy.resolution)
+		: m_res(copy.m_res)
 		, position	(copy.position)
-		, target	(copy.target)
-		, trans		(copy.trans)
-		, ortho		(copy.ortho)
-		, persp		(copy.persp)
+		, m_target	(copy.m_target)
+		, m_ortho		(copy.m_ortho)
+		, m_persp		(copy.m_persp)
 		, fov		(copy.fov)
 		, pNear		(copy.pNear)
 		, pFar		(copy.pFar)
@@ -63,12 +60,12 @@ namespace ml
 
 	Camera & Camera::updateRes(const vec2i & value)
 	{
-		if ((value != vec2i::Zero) && (this->resolution != value))
+		if ((value != vec2i::Zero) && (this->m_res != value))
 		{
-			this->resolution = value;
+			this->m_res = value;
 
 			// Orthographic
-			this->ortho.update(glm::ortho(
+			this->m_ortho.update(glm::ortho(
 				0.0f,
 				0.0f,
 				(float)value[0],
@@ -78,7 +75,7 @@ namespace ml
 			));
 
 			// Perspective
-			this->persp.update(glm::perspective(
+			this->m_persp.update(glm::perspective(
 				this->fov,
 				(float)value[0] / (float)value[1],
 				this->pNear, 

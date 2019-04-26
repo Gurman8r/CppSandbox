@@ -357,10 +357,7 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::Entity * ent = ML_Res.entities.get("camera"))
 			{
-				//ml::Transform * transform = ent->add<ml::Transform>({
-				//	{ 0.0f, 1.0f, 10.0f },
-				//	{ 1.0f }
-				//});
+				
 				//transform->lookAt(
 				//	transform->getPos(),
 				//	transform->getPos() + ml::vec3f::Back,
@@ -376,7 +373,11 @@ namespace DEMO
 				});
 				camera->backgroundColor = { 0.025f, 0.025f, 0.025f, 1.0f };
 				camera->position = { 0.0f, 1.0f, 10.0f };
-				camera->trans.lookAt(
+
+				ml::Transform * transform = ent->add<ml::Transform>(
+					ml::mat4f::Identity()
+				);
+				transform->lookAt(
 					camera->position,
 					camera->position + ml::vec3f::Back,
 					ml::vec3f::Up
@@ -401,8 +402,8 @@ namespace DEMO
 					ML_Res.models.get("sphere8x6"),
 					ml::Material(ML_Res.shaders.get("solid"), 
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->persp.getMatrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->trans.getMatrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->getPerspMatrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Transform>()->getMatrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->getMatrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&light->color },
 					}),
@@ -433,8 +434,8 @@ namespace DEMO
 					ML_Res.models.get("default_cube"),
 					ml::Material(ML_Res.shaders.get("basic"),
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->persp.getMatrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->trans.getMatrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->getPerspMatrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Transform>()->getMatrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->getMatrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("borg") },
@@ -466,8 +467,8 @@ namespace DEMO
 					ML_Res.models.get("cube"),
 					ml::Material(ML_Res.shaders.get("normal"), 
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->persp.getMatrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->trans.getMatrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->getPerspMatrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Transform>()->getMatrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->getMatrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm") },
@@ -499,8 +500,8 @@ namespace DEMO
 					ML_Res.models.get("default_quad"),
 					ml::Material(ML_Res.shaders.get("basic"),
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->persp.getMatrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->trans.getMatrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->getPerspMatrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Transform>()->getMatrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->getMatrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("sanic") },
@@ -532,12 +533,12 @@ namespace DEMO
 					ML_Res.models.get("sphere32x24"),
 					ml::Material(ML_Res.shaders.get("lighting"),
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->persp.getMatrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->trans.getMatrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->getPerspMatrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Transform>()->getMatrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->getMatrix() },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("moon_dm") },
 						{ ML_FRAG_SPEC_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("moon_nm") },
-						{ "Frag.cameraPos",	ml::Uniform::Vec3,	&ML_CAMERA->get<ml::Camera>()->trans.getPos() },
+						{ "Frag.cameraPos",	ml::Uniform::Vec3,	&ML_CAMERA->get<ml::Transform>()->getPos() },
 						{ "Frag.lightPos",	ml::Uniform::Vec3,	&ML_LIGHT->get<ml::Transform>()->getPos() },
 						{ "Frag.diffuse",	ml::Uniform::Vec4,	&ML_LIGHT->get<ml::Light>()->color },
 						{ "Frag.ambient",	ml::Uniform::Float, &globals.ambient },
@@ -571,12 +572,12 @@ namespace DEMO
 					ML_Res.models.get("sphere32x24"),
 					ml::Material(ML_Res.shaders.get("lighting"), 
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->persp.getMatrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->trans.getMatrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->getPerspMatrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Transform>()->getMatrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->getMatrix() },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("earth_dm") },
 						{ ML_FRAG_SPEC_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("earth_sm") },
-						{ "Frag.cameraPos",	ml::Uniform::Vec3,	&ML_CAMERA->get<ml::Camera>()->trans.getPos() },
+						{ "Frag.cameraPos",	ml::Uniform::Vec3,	&ML_CAMERA->get<ml::Transform>()->getPos() },
 						{ "Frag.lightPos",	ml::Uniform::Vec3,	&ML_LIGHT->get<ml::Transform>()->getPos() },
 						{ "Frag.diffuse",	ml::Uniform::Vec4,	&ML_LIGHT->get<ml::Light>()->color },
 						{ "Frag.ambient",	ml::Uniform::Float, &globals.ambient },
@@ -610,8 +611,8 @@ namespace DEMO
 					ML_Res.models.get("cube"),
 					ml::Material(ML_Res.shaders.get("normal"), 
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->persp.getMatrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->trans.getMatrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->getPerspMatrix() },
+						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Transform>()->getMatrix() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->getMatrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm") },
@@ -761,20 +762,22 @@ namespace DEMO
 		{
 			camera->updateRes(this->getFrameSize());
 
-			const ml::vec3f target = ML_Res.entities.get("earth")->get<ml::Transform>()->getPos();
+			if (ml::Transform * transform = ML_CAMERA->get<ml::Transform>())
+			{
+				if (globals.camMove)
+				{
+					transform->lookAt(
+						camera->position,
+						camera->forward(
+							ML_Res.entities.get("earth")->get<ml::Transform>()->getPos() -
+							camera->position
+						),
+						ml::vec3f::Up
+					);
 
-			camera->target = (camera->position + (target - camera->position).normalized());
-
-			camera->trans.lookAt(
-				camera->position,
-				camera->target,
-				ml::vec3f::Up
-			);
-
-			camera->position += camera->right() * ((globals.camMove)
-				? (ev->elapsed.delta() * globals.camSpeed)
-				: (0.0f)
-			);
+					camera->position += camera->right() * ev->elapsed.delta();
+				}
+			}
 		}
 
 		// Update Physics
@@ -940,7 +943,7 @@ namespace DEMO
 				{
 					static ml::RenderBatch batch(&m_canvas.vao(), &m_canvas.vbo(), { shader,
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->ortho.getMatrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->getOrthoMatrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4 },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D },
 					} });
@@ -956,7 +959,7 @@ namespace DEMO
 				{
 					static ml::RenderBatch batch(&m_canvas.vao(), &m_canvas.vbo(), { shader,
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->ortho.getMatrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->getOrthoMatrix() },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4 },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D },
 					} });
@@ -1082,11 +1085,11 @@ namespace DEMO
 
 				ImGui::Text("Camera");
 				ImGui::Checkbox("Move##Camera", &globals.camMove);
-				auto camPos = ML_CAMERA->get<ml::Camera>()->trans.getPos();
-				if (ml::GUI::EditVec3f("Position##Camera", camPos))
+				auto camPos = ML_CAMERA->get<ml::Transform>()->getPos();
+				if (ml::GUI::EditVec3f("Position##Camera", camPos) && !globals.camMove)
 				{
-					(ML_CAMERA->get<ml::Camera>()->trans)
-						.translate(camPos - ML_CAMERA->get<ml::Camera>()->trans.getPos())
+					(*ML_CAMERA->get<ml::Transform>())
+						.translate(camPos - ML_CAMERA->get<ml::Transform>()->getPos())
 						.rotate(0.0f, ml::vec3f::One)
 						.scale(1.0f)
 						;
