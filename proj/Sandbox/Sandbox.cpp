@@ -670,30 +670,35 @@ namespace DEMO
 							{
 							case RB_BORG:
 								pos = { pos[0], +ML_Time.cos(), pos[2] };
-								rot = { ml::vec3f::One, 0.0f };
+								//rot = { ml::vec3f::One, 0.0f };
+								rot = glm::angleAxis(dt, (glm::vec3)ml::vec3f::One);
 								break;
 
 							case RB_CUBE:
 								pos = { pos[0], -ML_Time.sin(), pos[2] };
-								rot = { ml::vec3f::One, 0.0f };
+								rot = glm::angleAxis(dt, (glm::vec3)ml::vec3f::One);
+								//rot = { ml::vec3f::One, 0.0f };
 								break;
 
 							case RB_SANIC:
 								pos = { pos[0], -ML_Time.cos(), pos[2] };
-								rot = { ml::vec3f::One, 0.0f };
+								rot = glm::angleAxis(dt, (glm::vec3)ml::vec3f::Forward);
+								//rot = { ml::vec3f::One, 0.0f };
 								break;
 
 							case RB_MOON:
 								pos = { pos[0], +ML_Time.sin(), pos[2] };
-								rot = { ml::vec3f::One, 0.0f };
+								rot = glm::angleAxis(dt, (glm::vec3)ml::vec3f::Up);
+								//rot = { ml::vec3f::One, 0.0f };
 								break;
 
 							case RB_EARTH:
-								rot = { ml::vec3f::One, 0.0f };
+								rot = glm::angleAxis(dt, (glm::vec3)ml::vec3f::Up);
+								//rot = { ml::vec3f::One, 0.0f };
 								break;
 
 							case RB_GROUND:
-								rot = { ml::vec3f::One, 0.0f };
+								//rot = { ml::vec3f::One, 0.0f };
 								break;
 							}
 
@@ -756,7 +761,8 @@ namespace DEMO
 			
 			ML_CAMERA->lookAt(ML_Res.entities.get("earth")->get<ml::Transform>()->getPosition());
 			
-			ML_CAMERA->position += ML_CAMERA->right() * ev->elapsed.delta();
+			ML_CAMERA->position += ML_CAMERA->right() * 
+				(globals.camMove ? ev->elapsed.delta() : 0.0f);
 		}
 
 		// Update Light
@@ -782,8 +788,12 @@ namespace DEMO
 						pos, rot, mat, inv
 					))
 					{
+						//rb->transform()->setAll(
+						//	pos, rot, rb->transform()->getScale()
+						//);
 						rb->transform()->setPosition(pos);
 						rb->transform()->setRotation(rot); // FIXME
+						//rb->transform()->setRotation(ml::mat3f::Identity()); // FIXME
 						rb->transform()->setScale	(rb->transform()->getScale());
 					}
 				}

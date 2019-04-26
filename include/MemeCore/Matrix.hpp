@@ -290,7 +290,7 @@ namespace ml
 			return glm::tmat3x3<value_type, glm::defaultp>(
 				(*this)[0], (*this)[1], (*this)[2],
 				(*this)[3], (*this)[4], (*this)[5],
-				(*this)[6], (*this)[7], (*this)[8]
+				(*this)[6], (*this)[7], (*this)[8] 
 			);
 		}
 

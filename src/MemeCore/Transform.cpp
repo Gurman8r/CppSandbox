@@ -185,6 +185,21 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 	
+	Transform & Transform::setAll(const vec3f & p, const quat & r, const vec3f & s)
+	{
+		mat4f temp = mat4f::Identity();
+		
+		glm::mat4 tns = glm::translate((glm::mat4)temp, (glm::vec3)p);
+
+		float angle = glm::angle((glm::quat)r);
+		glm::vec3 axis = glm::axis((glm::quat)r);
+		glm::mat4 rot = glm::rotate((glm::mat4)temp, angle, axis);
+
+		glm::mat4 scl = glm::scale((glm::mat4)temp, (glm::vec3)s);
+
+		return update(tns * rot * scl);
+	}
+
 	Transform & Transform::setPosition(const vec3f & value)
 	{
 		if (value != getPosition())
@@ -194,10 +209,28 @@ namespace ml
 		return (*this);
 	}
 
+	Transform & Transform::setRotation(const mat3f & value)
+	{
+		m_changed = true;
+		//mat3f rot = {
+		//	value[0], value[1], value[2],
+		//	value[3], value[4], value[5],
+		//	value[6], value[7], value[8]
+		//};
+
+		m_matrix[0] = value[0]; m_matrix[1] = value[1]; m_matrix[2] =  value[2]; // 3
+		m_matrix[4] = value[3]; m_matrix[5] = value[4]; m_matrix[6] =  value[5]; // 7
+		m_matrix[8] = value[6]; m_matrix[9] = value[7]; m_matrix[10] = value[8]; // 11
+		// 12 13 14 15
+		return (*this);
+	}
+
 	Transform & Transform::setRotation(const quat & value)
 	{
-		// FIXME
-		return rotate(value.real(), value.complex());
+		float angle = glm::angle((glm::quat)value);
+		glm::vec3 axis = glm::axis((glm::quat)value);
+		//glm::mat4 rot = glm::rotate((glm::mat4)m_matrix, angle, axis);
+		return rotate(angle, axis);
 	}
 
 	Transform & Transform::setScale(const vec3f & value)

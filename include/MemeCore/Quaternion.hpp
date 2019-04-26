@@ -133,7 +133,7 @@ namespace ml
 		inline operator glm::tquat<float, glm::defaultp>() const
 		{
 			return glm::tquat<float, glm::defaultp>(
-				(*this)[0], (*this)[1], (*this)[2], (*this)[3]
+				(*this)[3], (*this)[0], (*this)[1], (*this)[2]
 			);
 		}
 # endif

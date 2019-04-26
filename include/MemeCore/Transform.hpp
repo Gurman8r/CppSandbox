@@ -56,7 +56,9 @@ namespace ml
 		const vec3f	& getScale() const;
 		const vec3f	& getSkew() const;
 
+		Transform & setAll(const vec3f & pos, const quat & rot, const vec3f & scl);
 		Transform & setPosition(const vec3f & value);
+		Transform & setRotation(const mat3f & value);
 		Transform & setRotation(const quat & value);
 		Transform & setScale(const vec3f & value);
 
