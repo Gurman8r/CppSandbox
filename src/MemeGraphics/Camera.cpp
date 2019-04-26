@@ -87,7 +87,6 @@ namespace ml
 	Camera & Camera::orbit(const vec3f & target, const float speed)
 	{
 		// Look
-		vec3f lookDir = (target - position).normalized();
 		vec3f lookPos = (position + (target - position).normalized());
 		transform.lookAt(position, lookPos, vec3f::Up);
 

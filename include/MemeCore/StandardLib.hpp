@@ -61,12 +61,6 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	using float32_t		= typename float;				// 4 bytes
-	using float64_t		= typename double;				// 8 bytes
-	using float128_t	= typename long double;			// 10 bytes
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
 #ifdef ML_64
 	using size_t		= typename uint64_t;
 	using ptrdiff_t		= typename int64_t;
