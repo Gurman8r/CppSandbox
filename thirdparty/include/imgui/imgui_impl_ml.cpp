@@ -702,7 +702,7 @@ void ImGui_ML_DestroyDeviceObjects()
 
 void ImGui_ML_MouseButtonCallback(void * window, int32_t button, int32_t action, int32_t mods)
 {
-	if (action == ML_PRESS && button >= 0 && button < IM_ARRAYSIZE(g_MouseJustPressed))
+	if (action == ML_KEY_PRESS && button >= 0 && button < IM_ARRAYSIZE(g_MouseJustPressed))
 	{
 		g_MouseJustPressed[button] = true;
 	}
@@ -723,7 +723,7 @@ void ImGui_ML_KeyCallback(void * window, int32_t key, int32_t scancode, int32_t 
 {
 	ImGuiIO & io = ImGui::GetIO();
 
-	if (action == ML_PRESS)
+	if (action == ML_KEY_PRESS)
 	{
 		io.KeysDown[key] = true;
 	}

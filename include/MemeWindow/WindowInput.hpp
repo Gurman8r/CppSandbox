@@ -4,9 +4,9 @@
 #include <MemeWindow/Export.hpp>
 #include <MemeCore/ITrackable.hpp>
 
-#define ML_RELEASE	0
-#define ML_PRESS	1
-#define ML_REPEAT	2
+#define ML_KEY_RELEASE	0
+#define ML_KEY_PRESS	1
+#define ML_KEY_REPEAT	2
 
 #define ML_MOD_SHIFT	(0 << 1)
 #define ML_MOD_CTRL		(1 << 1)
