@@ -125,6 +125,11 @@ namespace ml
 		return update(Translate(m_matrix, value));
 	}
 
+	Transform & Transform::lookAt(const vec3f & eye, const vec3f & pos, const vec3f & up)
+	{
+		return update(LookAt(eye, pos, up));
+	}
+
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	Transform & Transform::update(const mat4f & value)

@@ -13,14 +13,18 @@ namespace ml
 	{
 	public:
 		Camera();
+		Camera(float fieldOfView, float pNear, float pFar, float oNear, float oFar);
 		Camera(const Camera & copy);
 		~Camera();
 
 	public:
-		void update(const vec2i & size);
+		Camera & update(const vec2i & resolution);
 
-	public:
-		void orbit(const vec3f & target, const float speed);
+		Camera & lookDir(const vec3f & dir);
+
+		Camera & lookAt(const vec3f & target);
+
+		Camera & orbit(const vec3f & target, const float speed);
 
 	public:
 		vec2i		resolution;

@@ -38,6 +38,7 @@ namespace ml
 		Transform &	rotate(float angle, const vec3f & axis);
 		Transform &	scale(const vec3f & value);
 		Transform &	translate(const vec3f & value);
+		Transform & lookAt(const vec3f & eye, const vec3f & pos, const vec3f & up);
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

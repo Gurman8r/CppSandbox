@@ -357,24 +357,22 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::Entity * ent = ML_Res.entities.get("camera"))
 			{
-				ml::Transform * transform = ent->add<ml::Transform>({
-					{ 0.0f, 1.0f, 10.0f }, // position
-					{ 1.0f }, // scale
-					{ } // rotation
+				//ml::Transform * transform = ent->add<ml::Transform>({
+				//	{ 0.0f, 1.0f, 10.0f }, // position
+				//	{ 1.0f }, // scale
+				//	{ } // rotation
+				//});
+
+				ml::Camera * camera = ent->add<ml::Camera>({
+					SETTINGS.fieldOfView,
+					SETTINGS.perspNear,
+					SETTINGS.perspFar,
+					SETTINGS.orthoNear,
+					SETTINGS.orthoFar
 				});
 
-				ml::Camera * camera = ent->add<ml::Camera>();
-				camera->position	= transform->getPosition();
-				camera->fieldOfView = SETTINGS.fieldOfView;
-				camera->perspNear	= SETTINGS.perspNear;
-				camera->perspFar	= SETTINGS.perspFar;
-				camera->orthoNear	= SETTINGS.orthoNear;
-				camera->orthoFar	= SETTINGS.orthoFar;
-				camera->transform	= ml::Transform::LookAt(
-					camera->position,
-					camera->position + ml::vec3f::Back,
-					ml::vec3f::Up
-				);
+				camera->position = { 0.0f, 1.0f, 10.0f };
+				camera->lookDir(ml::vec3f::Back);
 			}
 
 			// Light
