@@ -45,11 +45,6 @@ namespace ml
 		{
 		}
 		
-		Vector(const_pointer value)
-			: base_type(value)
-		{
-		}
-		
 		Vector(const init_type & value)
 			: base_type(value)
 		{

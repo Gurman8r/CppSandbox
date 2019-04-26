@@ -57,12 +57,12 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		bool setUniformArray(const String & name, int32_t count, const float * value) const;
-		bool setUniformArray(const String & name, int32_t count, const vec2f * value) const;
-		bool setUniformArray(const String & name, int32_t count, const vec3f * value) const;
-		bool setUniformArray(const String & name, int32_t count, const vec4f * value) const;
-		bool setUniformArray(const String & name, int32_t count, const mat3f * value) const;
-		bool setUniformArray(const String & name, int32_t count, const mat4f * value) const;
+		bool setUniformArray(const String & name, const int32_t count, const float * value) const;
+		bool setUniformArray(const String & name, const int32_t count, const vec2f * value) const;
+		bool setUniformArray(const String & name, const int32_t count, const vec3f * value) const;
+		bool setUniformArray(const String & name, const int32_t count, const vec4f * value) const;
+		bool setUniformArray(const String & name, const int32_t count, const mat3f * value) const;
+		bool setUniformArray(const String & name, const int32_t count, const mat4f * value) const;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 

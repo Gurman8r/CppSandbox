@@ -355,7 +355,7 @@ namespace ml
 	
 	/* * * * * * * * * * * * * * * * * * * * */
 	
-	bool Shader::setUniformArray(const String & name, int32_t count, const float * value) const
+	bool Shader::setUniformArray(const String & name, const int32_t count, const float * value) const
 	{
 		UniformBinder u(this, name);
 		if (u)
@@ -365,52 +365,52 @@ namespace ml
 		return u;
 	}
 	
-	bool Shader::setUniformArray(const String & name, int32_t count, const vec2f * value) const
+	bool Shader::setUniformArray(const String & name, const int32_t count, const vec2f * value) const
 	{
 		UniformBinder u(this, name);
 		if (u)
 		{
-			ML_GL.uniform2fv(u.location, count, &vec2f::Contiguous(value, count)[0]);
+			ML_GL.uniform2fv(u.location, count, &vec2f::Contiguous(value, (size_t)count)[0]);
 		}
 		return u;
 	}
 	
-	bool Shader::setUniformArray(const String & name, int32_t count, const vec3f * value) const
+	bool Shader::setUniformArray(const String & name, const int32_t count, const vec3f * value) const
 	{
 		UniformBinder u(this, name);
 		if (u)
 		{
-			ML_GL.uniform3fv(u.location, count, &vec3f::Contiguous(value, count)[0]);
+			ML_GL.uniform3fv(u.location, count, &vec3f::Contiguous(value, (size_t)count)[0]);
 		}
 		return u;
 	}
 	
-	bool Shader::setUniformArray(const String & name, int32_t count, const vec4f * value) const
+	bool Shader::setUniformArray(const String & name, const int32_t count, const vec4f * value) const
 	{
 		UniformBinder u(this, name);
 		if (u)
 		{
-			ML_GL.uniform4fv(u.location, count, &vec4f::Contiguous(value, count)[0]);
+			ML_GL.uniform4fv(u.location, count, &vec4f::Contiguous(value, (size_t)count)[0]);
 		}
 		return u;
 	}
 	
-	bool Shader::setUniformArray(const String & name, int32_t count, const mat3f * value) const
+	bool Shader::setUniformArray(const String & name, const int32_t count, const mat3f * value) const
 	{
 		UniformBinder u(this, name);
 		if (u)
 		{
-			ML_GL.uniformMatrix3fv(u.location, count, false, &mat3f::Contiguous(value, count)[0]);
+			ML_GL.uniformMatrix3fv(u.location, count, false, &mat3f::Contiguous(value, (size_t)count)[0]);
 		}
 		return u;
 	}
 	
-	bool Shader::setUniformArray(const String & name, int32_t count, const mat4f * value) const
+	bool Shader::setUniformArray(const String & name, const int32_t count, const mat4f * value) const
 	{
 		UniformBinder u(this, name);
 		if (u)
 		{
-			ML_GL.uniformMatrix4fv(u.location, count, false, &mat4f::Contiguous(value, count)[0]);
+			ML_GL.uniformMatrix4fv(u.location, count, false, &mat4f::Contiguous(value, (size_t)count)[0]);
 		}
 		return u;
 	}

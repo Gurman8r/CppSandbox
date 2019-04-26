@@ -72,12 +72,6 @@ namespace ml
 			std::fill(this->begin(), this->end(), value);
 		}
 
-		Matrix(const_pointer value)
-			: m_data()
-		{
-			std::copy(&value[0], &value[this->size()], this->begin());
-		}
-
 		Matrix(const init_type & value)
 			: m_data()
 		{
@@ -149,25 +143,26 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 		inline static const contiguous_type & Contiguous(const self_type * value, const size_t length)
 		{
-			static contiguous_type out;
+			static contiguous_type temp;
+			if (value)
 			{
 				if (const size_t imax = (length * Size))
 				{
-					if (out.size() != imax)
+					if (temp.size() != imax)
 					{
-						out.resize(imax);
+						temp.resize(imax);
 					}
 					for (size_t i = 0; i < imax; i++)
 					{
-						out[i] = value[i / Size][i % Size];
+						temp[i] = value[i / Size][i % Size];
 					}
 				}
-				else if (!out.empty())
+				else if (!temp.empty())
 				{
-					out.clear();
+					temp.clear();
 				}
 			}
-			return out;
+			return temp;
 		}
 
 		inline static const self_type & Identity()
@@ -275,8 +270,12 @@ namespace ml
 		> Matrix(
 			const glm::tmat3x3<value_type, glm::defaultp> & value,
 			typename std::enable_if<(X == 3 && Y == 3)>::type * = 0)
-			: self_type((const_pointer)(glm::value_ptr(value)))
+			: m_data()
 		{
+			if (const_pointer temp = glm::value_ptr(value))
+			{
+				std::copy(&temp[0], &temp[this->size()], this->begin());
+			}
 		}
 
 		// To glm::mat3
@@ -304,8 +303,12 @@ namespace ml
 		> Matrix(
 			const glm::tmat4x4<value_type, glm::defaultp> & value,
 			typename std::enable_if<(X == 4 && Y == 4)>::type * = 0)
-			: self_type((const_pointer)(glm::value_ptr(value)))
+			: m_data()
 		{
+			if (const_pointer temp = glm::value_ptr(value))
+			{
+				std::copy(&temp[0], &temp[this->size()], this->begin());
+			}
 		}
 
 		// To glm::mat4
