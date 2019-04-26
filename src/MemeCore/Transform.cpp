@@ -47,33 +47,6 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-	bool Transform::decompose(vec3f & scl, quat & rot, vec3f & tns, vec3f & skw, vec4f & psp) const
-	{
-		static glm::vec3 _scl; // scale
-		static glm::quat _rot; // orientation
-		static glm::vec3 _tns; // translation
-		static glm::vec3 _skw; // skew
-		static glm::vec4 _psp; // perspective
-
-		if (glm::decompose((glm::mat4)(m_matrix), _scl, _rot, _tns, _skw, _psp))
-		{
-			scl	= { _scl.x,	_scl.y,	_scl.z			};
-			rot	= { _rot.x,	_rot.y,	_rot.z,	_rot.w	};
-			tns	= { _tns.x,	_tns.y,	_tns.z			};
-			skw	= { _skw.x,	_skw.y,	_skw.z			};
-			psp	= { _psp.x,	_psp.y,	_psp.z,	_psp.w	};
-			return true;
-		}
-		else
-		{
-			scl	= 0.0f;
-			rot	= 0.0f;
-			tns	= 0.0f;
-			skw	= 0.0f;
-			psp	= 0.0f;
-			return false;
-		}
-	}
 	
 	/* * * * * * * * * * * * * * * * * * * * */
 
@@ -139,35 +112,97 @@ namespace ml
 
 	Transform & Transform::rotate(float angle, const vec3f & axis)
 	{
-		return ((*this) = Transform::Rotate(m_matrix, angle, axis));
+		return update(Rotate(m_matrix, angle, axis));
 	}
 
 	Transform & Transform::scale(const vec3f & value)
 	{
-		return ((*this) = Transform::Scale(m_matrix, value));
+		return update(Scale(m_matrix, value));
 	}
 
 	Transform & Transform::translate(const vec3f & value)
 	{
-		return ((*this) = Transform::Translate(m_matrix, value));
+		return update(Translate(m_matrix, value));
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-	
-	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-	const vec3f Transform::getPosition() const
+	Transform & Transform::update(const mat4f & value)
 	{
-		return {
-			m_matrix[12],
-			m_matrix[13],
-			m_matrix[14]
-		};
+		m_matrix = value;
+		m_changed = true;
+		return (*this);
 	}
+
+	bool Transform::decompose(vec3f & scl, quat & rot, vec3f & tns, vec3f & skw, vec4f & psp) const
+	{
+		static glm::vec3 _scl; // scale
+		static glm::quat _rot; // orientation
+		static glm::vec3 _tns; // translation
+		static glm::vec3 _skw; // skew
+		static glm::vec4 _psp; // perspective
+
+		if (glm::decompose((glm::mat4)(m_matrix), _scl, _rot, _tns, _skw, _psp))
+		{
+			scl = _scl;
+			rot = _rot;
+			tns = _tns;
+			skw = _skw;
+			psp = _psp;
+			return true;
+		}
+		else
+		{
+			scl = 0.0f;
+			rot = 0.0f;
+			tns = 0.0f;
+			skw = 0.0f;
+			psp = 0.0f;
+			return false;
+		}
+	}
+
+	void Transform::updateMutables() const
+	{
+		if (m_changed)
+		{
+			m_changed = false;
+			decompose(m_scl, m_rot, m_pos, m_skw, m_psp);
+		}
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	const vec3f & Transform::getScale() const
+	{
+		updateMutables(); return m_scl;
+	}
+
+	const vec3f & Transform::getPosition() const
+	{
+		updateMutables(); return m_pos;
+	}
+
+	const quat  & Transform::getRotation() const
+	{
+		updateMutables(); return m_rot;
+	}
+
+	const vec3f & Transform::getSkew() const
+	{
+		updateMutables(); return m_skw;
+	}
+
+	const vec4f & Transform::getPerspective() const
+	{
+		updateMutables(); return m_psp;
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 	
 	Transform & Transform::setPosition(const vec3f & value)
 	{
+		m_changed = true;
 		m_matrix[12] = value[0];
 		m_matrix[13] = value[1];
 		m_matrix[14] = value[2];

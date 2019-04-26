@@ -5,8 +5,8 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Camera::Camera()
-		: position		(vec3f::Zero)
-		, resolution	(vec2i::Zero)
+		: resolution	(vec2i::Zero)
+		, position		(vec3f::Zero)
 		, transform		()
 		, ortho			()
 		, persp			()
@@ -45,16 +45,16 @@ namespace ml
 			resolution = value;
 
 			// Orthographic
-			ortho = Transform::Orthographic(
+			ortho.update(Transform::Orthographic(
 				{ vec2f::Zero, (vec2f)(resolution) },
 				{ orthoNear, orthoFar }
-			);
+			));
 
 			// Perspective
-			persp = Transform::Perspective(
+			persp.update(Transform::Perspective(
 				fieldOfView, ((float)resolution[0] / (float)resolution[1]),
 				perspNear, perspFar
-			);
+			));
 		}
 	}
 
@@ -67,7 +67,11 @@ namespace ml
 		
 		vec3f lookPos = (position + (target - position).normalized());
 		
-		transform = Transform::LookAt(position, lookPos, vec3f::Up);
+		transform.update(Transform::LookAt(
+			position,
+			lookPos, 
+			vec3f::Up
+		));
 		
 		// Move
 		vec3f fwd = (lookPos - position);

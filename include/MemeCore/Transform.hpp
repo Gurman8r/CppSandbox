@@ -24,10 +24,6 @@ namespace ml
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-		bool decompose(vec3f & scl, quat & rot, vec3f & tns, vec3f & skw, vec4f & psp) const;
-		
-	public:
-		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		static mat4f Rotate(const mat4f & value, float angle, const vec3f & axis);
 		static mat4f Scale(const mat4f & value, const vec3f & scl);
 		static mat4f Translate(const mat4f & value, const vec3f & trans);
@@ -45,7 +41,16 @@ namespace ml
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-		const vec3f getPosition() const;
+		Transform & update(const mat4f & value);
+		bool decompose(vec3f & scl, quat & rot, vec3f & tns, vec3f & skw, vec4f & psp) const;
+		void updateMutables() const;
+
+		const vec3f	& getScale() const;
+		const vec3f	& getPosition() const;
+		const quat	& getRotation() const;
+		const vec3f	& getSkew() const;
+		const vec4f	& getPerspective() const;
+
 		Transform & setPosition(const vec3f & value);
 
 	public:
@@ -56,6 +61,13 @@ namespace ml
 	private:
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		mat4f m_matrix;
+
+		mutable bool	m_changed	= true;
+		mutable vec3f	m_scl		= 0.0f;
+		mutable quat	m_rot		= 1.0f;
+		mutable vec3f	m_pos		= 0.0f;
+		mutable vec3f	m_skw		= 0.0f;
+		mutable vec4f	m_psp		= 0.0f;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

@@ -241,7 +241,7 @@ namespace ml
 							{
 								Funcs::Field("Position", [&](CString)
 								{
-									GUI::EditVec3f("##Position##Camera", camera->position);
+									//GUI::EditVec3f("##Position##Camera", camera->position);
 								});
 							});
 						}
@@ -491,7 +491,7 @@ namespace ml
 										mat4f matrix = transform->matrix();
 										if (GUI::EditMat4f("##Matrix##Transform", matrix, 0.1f))
 										{
-											transform->matrix() = matrix;
+											//transform->matrix() = matrix;
 										}
 										ImGui::NewLine();
 									});
