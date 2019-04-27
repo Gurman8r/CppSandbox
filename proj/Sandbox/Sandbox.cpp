@@ -596,9 +596,9 @@ namespace DEMO
 					{ } // rotation
 				});
 
-				ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
-					RB_GROUND, transform
-				});
+				//ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
+				//	RB_GROUND, transform
+				//});
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("cube"),
@@ -626,7 +626,7 @@ namespace DEMO
 		{
 			// Setup
 			/* * * * * * * * * * * * * * * * * * * * */
-			if (ml::PhysicsState & state = ML_Physics.world().state().resize(MAX_RIGIDBODY))
+			if (ml::PhysicsState & state = ML_Physics.world().state().resize(MAX_RIGIDBODY - 1))
 			{
 				for (const auto & pair : ML_Res.entities)
 				{

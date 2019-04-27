@@ -507,61 +507,20 @@ namespace ml
 										(*transform)
 											.translate(0.0f)
 											.rotate(0.0f, vec3::One)
-											.scale(scl - transform->getScl())
+											.scale(scl)
 											;
 									}
 								});
 
-								Funcs::Group("Decompose", [&]()
+								Funcs::Field("Matrix", [&](CString)
 								{
-									vec3 scale;
-									quat  orient;
-									vec3 trans;
-									vec3 skew;
-									vec4 persp;
-
-									if (transform->decompose(scale, orient, trans, skew, persp))
+									ImGui::NewLine();
+									mat4 mat = transform->getMatrix();
+									if (GUI::EditMat4f("##Matrix##Transform", mat, 0.01f))
 									{
-										Funcs::Field("Scale", [&](CString label)
-										{
-											GUI::EditVec3f("##Scale##Transform##Decompose", scale);
-										});
-
-										Funcs::Field("Orientation", [&](CString label)
-										{
-											GUI::EditQuat("##Orientation##Transform##Decompose", orient);
-										});
-
-										Funcs::Field("Translation", [&](CString label)
-										{
-											GUI::EditVec3f("##Translation##Transform##Decompose", trans);
-										});
-
-										Funcs::Field("Skew", [&](CString label)
-										{
-											GUI::EditVec3f("##Skew##Transform##Decompose", skew);
-										});
-
-										Funcs::Field("Perspective", [&](CString label)
-										{
-											GUI::EditVec4f("##Perspective##Transform##Decompose", persp);
-										});
-
-										ImGui::NewLine();
+										transform->update(mat);
 									}
-								});
-
-								Funcs::Group("Matrix", [&]()
-								{
-									Funcs::Field("Value", [&](CString)
-									{
-										mat4 getMatrix = transform->getMatrix();
-										if (GUI::EditMat4f("##Matrix##Transform", getMatrix, 0.1f))
-										{
-											//transform->matrix() = matrix;
-										}
-										ImGui::NewLine();
-									});
+									ImGui::NewLine();
 								});
 
 							});
