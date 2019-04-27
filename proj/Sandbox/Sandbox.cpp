@@ -756,7 +756,7 @@ namespace DEMO
 
 			if (ml::Transform * transform = ML_CAMERA->get<ml::Transform>())
 			{
-				if (globals.camMove)
+				if (globals.camAuto)
 				{
 					transform->lookAt(
 						camera->position,
@@ -1043,28 +1043,6 @@ namespace DEMO
 			{
 				/* * * * * * * * * * * * * * * * * * * * */
 
-				if (ImGui::BeginMenuBar())
-				{
-					ImGui::Text("%s", ML_Inspector.title());
-					ImGui::EndMenuBar();
-				}
-
-				/* * * * * * * * * * * * * * * * * * * * */
-
-				if (ImGui::Button("Reload Shaders"))
-				{
-					ml::Debug::log("Reloaded {0} Shaders.", ML_Res.shaders.reload());
-				}
-				ImGui::Separator();
-
-				/* * * * * * * * * * * * * * * * * * * * */
-
-				ImGui::Text("Scene");
-				ImGui::ColorEdit4("Color##Scene", &ML_CAMERA->get<ml::Camera>()->backgroundColor[0]);
-				ImGui::Separator();
-
-				/* * * * * * * * * * * * * * * * * * * * */
-
 				ImGui::Text("Framebuffer");
 				static ml::CString fbo_modes[] = {
 					"Normal",
@@ -1079,32 +1057,13 @@ namespace DEMO
 				/* * * * * * * * * * * * * * * * * * * * */
 
 				ImGui::Text("Camera");
-				ImGui::Checkbox("Move##Camera", &globals.camMove);
-				auto camPos = ML_CAMERA->get<ml::Transform>()->getPos();
-				if (ml::GUI::EditVec3f("Position##Camera", camPos) && !globals.camMove)
-				{
-					(*ML_CAMERA->get<ml::Transform>())
-						.translate(camPos - ML_CAMERA->get<ml::Transform>()->getPos())
-						.rotate(0.0f, ml::vec3::One)
-						.scale(1.0f)
-						;
-				}
+				ImGui::Checkbox("Auto##Camera", &globals.camAuto);
 				ImGui::DragFloat("Speed##Camera", &globals.camSpd, 0.1f, -5.f, 5.f);
 				ImGui::Separator();
 
 				/* * * * * * * * * * * * * * * * * * * * */
 
 				ImGui::Text("Light");
-				auto lightPos = ML_LIGHT->get<ml::Transform>()->getPos();
-				if (ml::GUI::EditVec3f("Position##Light", lightPos))
-				{
-					(*ML_LIGHT->get<ml::Transform>())
-						.translate(lightPos - ML_LIGHT->get<ml::Transform>()->getPos())
-						.rotate(0.0f, ml::vec3::One)
-						.scale(1.0f)
-						;
-				}
-				ImGui::ColorEdit4("Color##Light", &ML_LIGHT->get<ml::Light>()->color[0]);
 				ImGui::DragFloat("Ambient##Light", &globals.ambient, 0.01f, 0.f, 1.f);
 				ImGui::DragFloat("Specular##Light", &globals.specular, 0.01f, 0.1f, 10.f);
 				ImGui::DragInt("Shininess##Light", &globals.shininess, 1.f, 1, 256);

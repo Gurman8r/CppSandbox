@@ -47,7 +47,7 @@ namespace DEMO
 		struct Globals
 		{
 			// Camera
-			bool			camMove		= true;
+			bool			camAuto		= true;
 			float			camSpd		= 1.0f;
 			
 			// Light

@@ -39,7 +39,7 @@ namespace ml
 	}
 
 	Camera::Camera(const Camera & copy)
-		: m_res(copy.m_res)
+		: m_res		(copy.m_res)
 		, position	(copy.position)
 		, m_target	(copy.m_target)
 		, m_ortho	(copy.m_ortho)

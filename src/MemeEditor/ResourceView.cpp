@@ -241,21 +241,27 @@ namespace ml
 							{
 								Funcs::Field("FOV", [&](CString)
 								{
+									ImGui::DragFloat("##FOV##Camera", &camera->fov, 0.5f, 10.f, 100.f);
 								});
-								Funcs::Field("P-Near", [&](CString)
+								Funcs::Field("Persp-Near", [&](CString)
 								{
+									ImGui::DragFloat("##pNear##Camera", &camera->pNear, 0.5f, 10.f, camera->pFar - 1.f);
 								});
-								Funcs::Field("P-Far", [&](CString)
+								Funcs::Field("Persp-Far", [&](CString)
 								{
+									ImGui::DragFloat("##pFar##Camera", &camera->pFar, 0.5f, camera->pNear + 1.f, 1000.0f);
 								});
-								Funcs::Field("O-Near", [&](CString)
+								Funcs::Field("Ortho-Near", [&](CString)
 								{
+									ImGui::DragFloat("##oNear##Camera", &camera->oNear, 0.5f, 10.f, camera->oFar - 1.f);
 								});
-								Funcs::Field("O-Far", [&](CString)
+								Funcs::Field("Ortho-Far", [&](CString)
 								{
+									ImGui::DragFloat("##oFar##Camera", &camera->oFar, 0.5f, camera->oNear + 1.f, 100.f);
 								});
 								Funcs::Field("Background Color", [&](CString)
 								{
+									ImGui::ColorEdit4("##BackgroundColor##Camera", &camera->backgroundColor[0]);
 								});
 							});
 						}
@@ -459,9 +465,52 @@ namespace ml
 						{
 							Funcs::Group("Transform", [&]()
 							{
-								vec3 pos = transform->getPos();
-								quat rot = transform->getRot();
-								vec3 scl = transform->getScl();
+								Funcs::Field("Actions", [&](CString) 
+								{
+									if (ImGui::Selectable("Reset"))
+									{
+										transform->update(mat4::Identity());
+									}
+								});
+
+								Funcs::Field("Position", [&](CString)
+								{
+									vec3 pos = transform->getPos();
+									if (GUI::EditVec3f("##Position##Transform", pos, 0.01f))
+									{
+										(*transform)
+											.translate(pos - transform->getPos())
+											.rotate(0.0f, vec3::One)
+											.scale(1.0f)
+											;
+									}
+								});
+
+								Funcs::Field("Rotation", [&](CString) 
+								{
+									quat rot = transform->getRot();
+									if (GUI::EditQuat("##Rotation##Transform", rot, 0.01f))
+									{
+										(*transform)
+											.translate(0.0f)
+											.rotate(rot)
+											.scale(1.0f)
+											;
+									}
+								});
+								
+								Funcs::Field("Scale", [&](CString)
+								{
+									vec3 scl = transform->getScl();
+									if (GUI::EditVec3f("##Scale##Transform", scl, 0.01f))
+									{
+										(*transform)
+											.translate(0.0f)
+											.rotate(0.0f, vec3::One)
+											.scale(scl - transform->getScl())
+											;
+									}
+								});
 
 								Funcs::Group("Decompose", [&]()
 								{
