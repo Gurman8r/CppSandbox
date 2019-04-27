@@ -21,7 +21,7 @@ namespace ml
 	public: // Utility
 		/* * * * * * * * * * * * * * * * * * * * */
 		RenderTarget & clear();
-		RenderTarget & clear(const vec4f & color);
+		RenderTarget & clear(const vec4 & color);
 		RenderTarget & setViewport(const vec2i & pos, const vec2i & size);
 
 

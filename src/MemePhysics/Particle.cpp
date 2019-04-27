@@ -6,25 +6,25 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 	//Melody: (and me) update these as well
 	Particle::Particle()
-		: pos		(vec3f::Zero)
-		, vel		(vec3f::Zero)
-		, acc		(vec3f::Zero)
-		, force		(vec3f::Zero)
+		: pos		(vec3::Zero)
+		, vel		(vec3::Zero)
+		, acc		(vec3::Zero)
+		, force		(vec3::Zero)
 		, mass		(0.0f)
 		, massInv	(0.0f)
 	{
 	}
 
-	Particle::Particle(const vec3f & pos, const float mass)
-		: Particle(pos, vec3f::Zero, vec3f::Zero, mass)
+	Particle::Particle(const vec3 & pos, const float mass)
+		: Particle(pos, vec3::Zero, vec3::Zero, mass)
 	{
 	}
 
-	Particle::Particle(const vec3f & pos, const vec3f & vel, const vec3f & acc, const float mass)
+	Particle::Particle(const vec3 & pos, const vec3 & vel, const vec3 & acc, const float mass)
 		: pos		(pos)
 		, vel		(vel)
 		, acc		(acc)
-		, force		(vec3f::Zero)
+		, force		(vec3::Zero)
 	{
 		setMass(mass);
 	}
@@ -50,7 +50,7 @@ namespace ml
 		return (vel.sqrMagnitude() != 0.0f);
 	}
 
-	Particle & Particle::applyForce(const vec3f & value)
+	Particle & Particle::applyForce(const vec3 & value)
 	{
 		force += value;
 		return (*this);
@@ -64,7 +64,7 @@ namespace ml
 
 	Particle & Particle::resetForce()
 	{
-		force = vec3f::Zero;
+		force = vec3::Zero;
 		return (*this);
 	}
 
@@ -88,10 +88,10 @@ namespace ml
 		return (angularVel.sqrMagnitude() != 0.0f);
 	}
 
-	Particle & Particle::applyForceLocation(const vec3f & force, const vec3f worldLoc)
+	Particle & Particle::applyForceLocation(const vec3 & force, const vec3 worldLoc)
 	{
 		// TODO: insert return statement here
-		torque += vec3f::cross((worldLoc - centerMass_world), force);
+		torque += vec3::cross((worldLoc - centerMass_world), force);
 		return (*this);
 
 	}
@@ -100,11 +100,11 @@ namespace ml
 	{
 		// TODO: insert return statement here
 		//Melody: how do you multiply a matrix and a vector?
-		glm::mat4 m1 = mat4f();
-		glm::vec4 v1 = vec4f(vec3f(1, 2, 3), 4);
+		glm::mat4 m1 = mat4();
+		glm::vec4 v1 = vec4(vec3(1, 2, 3), 4);
 		
-		vec4f v2 = (m1 * v1);
-		vec3f v3 = glm::vec3(((glm::mat4)(mat4f::Identity()))[3]); 
+		vec4 v2 = (m1 * v1);
+		vec3 v3 = glm::vec3(((glm::mat4)(mat4::Identity()))[3]); 
 
 		//angularAcc = 
 		return (*this);
@@ -122,12 +122,12 @@ namespace ml
 
 	//Melody: (and me) these need to be updated to include rotational
 
-	vec3f Particle::rotateForce(Particle * p, vec3f force)
+	vec3 Particle::rotateForce(Particle * p, vec3 force)
 	{
-		vec3f wv = force * p->rotation[3];
+		vec3 wv = force * p->rotation[3];
 		//Melody: (and me) check this once I'm sure how cross works
 
-		return vec3f();
+		return vec3();
 	}
 
 	Particle & Particle::integrateEulerExplicit(const float dt)

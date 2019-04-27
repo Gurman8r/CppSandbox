@@ -102,7 +102,7 @@ namespace ml
 		int32_t	getAttrib(const int32_t value) const;
 		char	getChar() const;
 		CString	getClipboardString() const;
-		vec2f	getCursorPos() const;
+		vec2	getCursorPos() const;
 		vec2i	getFrameSize() const;
 		int32_t	getKey(const int32_t value) const;
 		int32_t	getInputMode() const;

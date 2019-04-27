@@ -23,9 +23,9 @@ namespace ml
 		~Text();
 
 	public:
-		Text & setPosition(const vec2f & value);
-		Text & setScale(const vec2f & value);
-		Text & setColor(const vec4f & value);
+		Text & setPosition(const vec2 & value);
+		Text & setScale(const vec2 & value);
+		Text & setColor(const vec4 & value);
 		Text & setFont(const Font * value);
 		Text & setFontSize(uint32_t value);
 		Text & setString(const String & value);
@@ -33,10 +33,10 @@ namespace ml
 	public:
 		inline const Font *		getFont()		const { return m_font;		}
 		inline const uint32_t	getFontSize()	const { return m_fontSize;	}
-		inline const vec2f &	getPosition()	const { return m_position;	}
-		inline const vec2f &	getScale()		const { return m_scale;		}
+		inline const vec2 &	getPosition()	const { return m_position;	}
+		inline const vec2 &	getScale()		const { return m_scale;		}
 		inline const String &	getString()		const { return m_string;	}
-		inline const vec4f &	getColor()		const { return m_color;		}
+		inline const vec4 &	getColor()		const { return m_color;		}
 
 	public:
 		void update() const;
@@ -45,10 +45,10 @@ namespace ml
 	private:
 		const Font *m_font;
 		uint32_t	m_fontSize;
-		vec2f		m_position;
-		vec2f		m_scale;
+		vec2		m_position;
+		vec2		m_scale;
 		String		m_string;
-		vec4f		m_color;
+		vec4		m_color;
 
 		mutable bool m_changed;
 		mutable List<const Texture *> m_textures;

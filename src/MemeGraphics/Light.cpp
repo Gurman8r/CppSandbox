@@ -9,7 +9,7 @@ namespace ml
 	{
 	}
 
-	Light::Light(const vec4f & color)
+	Light::Light(const vec4 & color)
 		: color(color)
 	{
 	}

@@ -36,9 +36,9 @@ namespace ml
 
 	private:
 		float	m_border;
-		vec2f	m_padding;
+		vec2	m_padding;
 		float	m_rounding;
-		vec2f	m_size;
+		vec2	m_size;
 		float	m_bgAlpha;
 	};
 }

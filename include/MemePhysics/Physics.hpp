@@ -26,7 +26,7 @@ namespace ml
 		friend class ISingleton<Physics>;
 
 	public:
-		static const vec3f Gravity;
+		static const vec3 Gravity;
 
 	public:
 		bool beginUpdate(PhysicsState & value);

@@ -11,28 +11,28 @@ namespace ml
 	struct ML_GRAPHICS_API Color final
 		: public ITrackable
 	{
-		const static vec4f Clear;
-		const static vec4f White;
-		const static vec4f Black;
-		const static vec4f Gray;
+		const static vec4 Clear;
+		const static vec4 White;
+		const static vec4 Black;
+		const static vec4 Gray;
 
-		const static vec4f Red;
-		const static vec4f Blue;
-		const static vec4f Green;
+		const static vec4 Red;
+		const static vec4 Blue;
+		const static vec4 Green;
 		
-		const static vec4f Cyan;
-		const static vec4f Yellow;
-		const static vec4f LightYellow;
-		const static vec4f Magenta;
+		const static vec4 Cyan;
+		const static vec4 Yellow;
+		const static vec4 LightYellow;
+		const static vec4 Magenta;
 
-		const static vec4f Violet;
-		const static vec4f Lime;
+		const static vec4 Violet;
+		const static vec4 Lime;
 
-		const static vec4f Orange;
-		const static vec4f Fuchsia;
+		const static vec4 Orange;
+		const static vec4 Fuchsia;
 
-		const static vec4f Aqua;
-		const static vec4f Azure;
+		const static vec4 Aqua;
+		const static vec4 Azure;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

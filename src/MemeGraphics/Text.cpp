@@ -32,7 +32,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	Text & Text::setPosition(const vec2f & value)
+	Text & Text::setPosition(const vec2 & value)
 	{
 		if (m_position != value)
 		{
@@ -42,7 +42,7 @@ namespace ml
 		return (*this);
 	}
 	
-	Text & Text::setScale(const vec2f & value)
+	Text & Text::setScale(const vec2 & value)
 	{
 		if (m_scale != value)
 		{
@@ -52,7 +52,7 @@ namespace ml
 		return (*this);
 	}
 	
-	Text & Text::setColor(const vec4f & value)
+	Text & Text::setColor(const vec4 & value)
 	{
 		m_color = value;
 		return (*this);
@@ -99,7 +99,7 @@ namespace ml
 			m_vertices.resize(m_string.size());
 			m_textures.resize(m_string.size());
 			
-			vec2f pos = getPosition();
+			vec2 pos = getPosition();
 
 			for (size_t i = 0, imax = m_string.size(); i < imax; i++)
 			{

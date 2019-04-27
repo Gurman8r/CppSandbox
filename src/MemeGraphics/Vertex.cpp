@@ -6,33 +6,33 @@ namespace ml
 
 	Vertex::Vertex()
 	{
-		this->position(vec3f::Zero);
+		this->position(vec3::Zero);
 		this->color(Color::White);
-		this->texcoords(vec2f::Zero);
+		this->texcoords(vec2::Zero);
 	}
 
-	Vertex::Vertex(const vec3f & position)
+	Vertex::Vertex(const vec3 & position)
 	{
 		this->position(position);
 		this->color(Color::White);
-		this->texcoords(vec2f::Zero);
+		this->texcoords(vec2::Zero);
 	}
 
-	Vertex::Vertex(const vec3f & position, const vec4f & color)
+	Vertex::Vertex(const vec3 & position, const vec4 & color)
 	{
 		this->position(position);
 		this->color(color);
-		this->texcoords(vec2f::Zero);
+		this->texcoords(vec2::Zero);
 	}
 
-	Vertex::Vertex(const vec3f & position, const vec2f & texcoords)
+	Vertex::Vertex(const vec3 & position, const vec2 & texcoords)
 	{
 		this->position(position);
 		this->color(Color::White);
 		this->texcoords(texcoords);
 	}
 
-	Vertex::Vertex(const vec3f & position, const vec4f & color, const vec2f & texcoords)
+	Vertex::Vertex(const vec3 & position, const vec4 & color, const vec2 & texcoords)
 	{
 		this->position(position);
 		this->color(color);
@@ -52,18 +52,18 @@ namespace ml
 	
 	/* * * * * * * * * * * * * * * * * * * * */
 	
-	const vec3f & Vertex::position() const
+	const vec3 & Vertex::position() const
 	{
-		static vec3f temp;
+		static vec3 temp;
 		temp[0] = (*this)[0];
 		temp[1] = (*this)[1];
 		temp[2] = (*this)[2];
 		return temp;
 	}
 	
-	const vec4f & Vertex::color() const
+	const vec4 & Vertex::color() const
 	{
-		static vec4f temp;
+		static vec4 temp;
 		temp[0] = (*this)[3];
 		temp[1] = (*this)[4];
 		temp[2] = (*this)[5];
@@ -71,9 +71,9 @@ namespace ml
 		return temp;
 	}
 	
-	const vec2f & Vertex::texcoords() const
+	const vec2 & Vertex::texcoords() const
 	{
-		static vec2f temp;
+		static vec2 temp;
 		temp[0] = (*this)[7];
 		temp[1] = (*this)[8];
 		return temp;
@@ -81,7 +81,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	Vertex & Vertex::position(const vec3f & value)
+	Vertex & Vertex::position(const vec3 & value)
 	{
 		return position(
 			value[0],
@@ -89,7 +89,7 @@ namespace ml
 			value[2]);
 	}
 	
-	Vertex & Vertex::color(const vec4f & value)
+	Vertex & Vertex::color(const vec4 & value)
 	{
 		return color(
 			value[0],
@@ -98,7 +98,7 @@ namespace ml
 			value[3]);
 	}
 	
-	Vertex & Vertex::texcoords(const vec2f & value)
+	Vertex & Vertex::texcoords(const vec2 & value)
 	{
 		return texcoords(
 			value[0],

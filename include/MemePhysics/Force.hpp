@@ -11,14 +11,14 @@ namespace ml
 	class ML_PHYSICS_API Force
 	{
 	public:
-		static const vec3f gravity(const vec3f & up, const float mass);
-		static const vec3f normal(const vec3f & grav, const vec3f & norm);
-		static const vec3f sliding(const vec3f & grav, const vec3f & norm);
-		static const vec3f frictionStatic(const vec3f & norm, const vec3f & vel, const vec3f & opp, const vec3f & coeff);
-		static const vec3f frictionKinematic(const vec3f & norm, const vec3f & vel, const float coeff);
-		static const vec3f drag(const vec3f & vel, const vec3f & fluidVel, const float fluidDensity, const float area, const float coeff);
-		static const vec3f spring(const vec3f & pos, const vec3f & anchor, const float rest, const float coeff);
-		static const vec3f dampingLinear(const vec3f & vel, const float coeff);
+		static const vec3 gravity(const vec3 & up, const float mass);
+		static const vec3 normal(const vec3 & grav, const vec3 & norm);
+		static const vec3 sliding(const vec3 & grav, const vec3 & norm);
+		static const vec3 frictionStatic(const vec3 & norm, const vec3 & vel, const vec3 & opp, const vec3 & coeff);
+		static const vec3 frictionKinematic(const vec3 & norm, const vec3 & vel, const float coeff);
+		static const vec3 drag(const vec3 & vel, const vec3 & fluidVel, const float fluidDensity, const float area, const float coeff);
+		static const vec3 spring(const vec3 & pos, const vec3 & anchor, const float rest, const float coeff);
+		static const vec3 dampingLinear(const vec3 & vel, const float coeff);
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

@@ -59,7 +59,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool PhysicsState::getPos(const int32_t index, vec3f & value) const
+	bool PhysicsState::getPos(const int32_t index, vec3 & value) const
 	{
 		if ((index > PhysicsState::InvalidIndex) && ((size_t)(index) < m_pos.size()))
 		{
@@ -79,7 +79,7 @@ namespace ml
 		return false;
 	}
 
-	bool PhysicsState::getMat(const int32_t index, mat4f & value) const
+	bool PhysicsState::getMat(const int32_t index, mat4 & value) const
 	{
 		if ((index > PhysicsState::InvalidIndex) && ((size_t)(index) < m_mat.size()))
 		{
@@ -89,7 +89,7 @@ namespace ml
 		return false;
 	}
 
-	bool PhysicsState::getInv(const int32_t index, mat4f & value) const
+	bool PhysicsState::getInv(const int32_t index, mat4 & value) const
 	{
 		if ((index > PhysicsState::InvalidIndex) && ((size_t)(index) < m_inv.size()))
 		{
@@ -101,7 +101,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool PhysicsState::setPos(const int32_t index, const vec3f & value)
+	bool PhysicsState::setPos(const int32_t index, const vec3 & value)
 	{
 		if ((index > PhysicsState::InvalidIndex) && ((size_t)(index) < m_pos.size()))
 		{
@@ -121,7 +121,7 @@ namespace ml
 		return false;
 	}
 
-	bool PhysicsState::setMat(const int32_t index, const mat4f & value)
+	bool PhysicsState::setMat(const int32_t index, const mat4 & value)
 	{
 		if ((index > PhysicsState::InvalidIndex) && ((size_t)(index) < m_mat.size()))
 		{
@@ -131,7 +131,7 @@ namespace ml
 		return false;
 	}
 
-	bool PhysicsState::setInv(const int32_t index, const mat4f & value)
+	bool PhysicsState::setInv(const int32_t index, const mat4 & value)
 	{
 		if ((index > PhysicsState::InvalidIndex) && ((size_t)(index) < m_inv.size()))
 		{

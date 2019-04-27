@@ -50,19 +50,19 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	Sprite & Sprite::setColor(const vec4f & value)
+	Sprite & Sprite::setColor(const vec4 & value)
 	{
 		m_color = value;
 		return (*this);
 	}
 	
-	Sprite & Sprite::setOrigin(const vec2f & value)
+	Sprite & Sprite::setOrigin(const vec2 & value)
 	{
 		m_transform.setOrigin(value);
 		return (*this);
 	}
 
-	Sprite & Sprite::setPosition(const vec2f & value)
+	Sprite & Sprite::setPosition(const vec2 & value)
 	{
 		m_transform.setPosition(value);
 		return (*this);
@@ -74,7 +74,7 @@ namespace ml
 		return (*this);
 	}
 
-	Sprite & Sprite::setScale(const vec2f & value)
+	Sprite & Sprite::setScale(const vec2 & value)
 	{
 		m_transform.setScale(value);
 		return (*this);
@@ -98,8 +98,8 @@ namespace ml
 			if (Uniform * tex = batch.mat.uniforms().find(ML_FRAG_MAIN_TEX))
 				tex->data = m_texture;
 
-			const ml::vec2f size = (scale() * m_texture->size());
-			const ml::vec2f dest = (position() - (size * origin()));
+			const ml::vec2 size = (scale() * m_texture->size());
+			const ml::vec2 dest = (position() - (size * origin()));
 
 			target.draw(
 				ml::Shapes::RectQuad::genSpriteQuad({ dest, size }).data(),

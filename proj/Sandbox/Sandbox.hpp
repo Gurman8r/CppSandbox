@@ -60,7 +60,7 @@ namespace DEMO
 			
 			// Geometry
 			int32_t			lineMode	= 1;
-			ml::vec4f		lineColor	= ml::Color::Red;
+			ml::vec4		lineColor	= ml::Color::Red;
 			float			lineDelta	= 1.0f;
 			float			lineSize	= 0.5f;
 			int32_t			lineSamples	= 16;

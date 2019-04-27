@@ -469,7 +469,7 @@ namespace ml
 		));
 	}
 
-	vec2f	Window::getCursorPos() const
+	vec2	Window::getCursorPos() const
 	{
 		static vec2d temp;
 		glfwGetCursorPos(
@@ -477,7 +477,7 @@ namespace ml
 			&temp[0],
 			&temp[1]
 		);
-		return (vec2f)temp;
+		return (vec2)temp;
 	}
 
 	vec2i	Window::getFrameSize() const

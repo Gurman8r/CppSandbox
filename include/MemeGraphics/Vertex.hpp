@@ -21,22 +21,22 @@ namespace ml
 
 	public:
 		Vertex();
-		Vertex(const vec3f & position);
-		Vertex(const vec3f & position, const vec4f & color);
-		Vertex(const vec3f & position, const vec2f & texcoords);
-		Vertex(const vec3f & position, const vec4f & color, const vec2f & texcoords);
+		Vertex(const vec3 & position);
+		Vertex(const vec3 & position, const vec4 & color);
+		Vertex(const vec3 & position, const vec2 & texcoords);
+		Vertex(const vec3 & position, const vec4 & color, const vec2 & texcoords);
 		Vertex(const Vertex & copy);
 		~Vertex();
 
 	public:
-		const vec3f & position() const;
-		const vec4f & color() const;
-		const vec2f & texcoords() const;
+		const vec3 & position() const;
+		const vec4 & color() const;
+		const vec2 & texcoords() const;
 
 	public:
-		Vertex & position(const vec3f & value);
-		Vertex & color(const vec4f & value);
-		Vertex & texcoords(const vec2f & value);
+		Vertex & position(const vec3 & value);
+		Vertex & color(const vec4 & value);
+		Vertex & texcoords(const vec2 & value);
 
 	public:
 		Vertex & position(const float x, const float y, const float z);

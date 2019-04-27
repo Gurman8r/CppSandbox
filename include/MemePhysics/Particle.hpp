@@ -12,29 +12,29 @@ namespace ml
 	{
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		vec3f pos;
-		vec3f vel;
-		vec3f acc;
-		vec3f force;
+		vec3 pos;
+		vec3 vel;
+		vec3 acc;
+		vec3 force;
 		float mass;
 		float massInv;
 
 		//angular
 		quat rotation;
-		vec3f angularVel;
-		vec3f angularAcc;
-		vec3f angularMomentum;
-		vec3f torque;
-		mat3f inertiaTensor, inertiaTensorInv;
-		mat3f inertiaTensor_world, inertiaTensorInv_world;
-		vec3f centerMass;
-		vec3f centerMass_world;
+		vec3 angularVel;
+		vec3 angularAcc;
+		vec3 angularMomentum;
+		vec3 torque;
+		mat4 inertiaTensor, inertiaTensorInv;
+		mat4 inertiaTensor_world, inertiaTensorInv_world;
+		vec3 centerMass;
+		vec3 centerMass_world;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		Particle();
-		Particle(const vec3f & pos, const float mass);
-		Particle(const vec3f & pos, const vec3f & vel, const vec3f & acc, const float mass);
+		Particle(const vec3 & pos, const float mass);
+		Particle(const vec3 & pos, const vec3 & vel, const vec3 & acc, const float mass);
 		Particle(const Particle & copy);
 		~Particle();
 
@@ -42,13 +42,13 @@ namespace ml
 
 		bool isMoving() const;
 
-		Particle & applyForce(const vec3f & value);
+		Particle & applyForce(const vec3 & value);
 		Particle & convertForce();
 		Particle & resetForce();
 		Particle & setMass(float value);
 		Particle & reset();
 		bool isRotating();
-		Particle & applyForceLocation(const vec3f & force, const vec3f worldLoc);
+		Particle & applyForceLocation(const vec3 & force, const vec3 worldLoc);
 		Particle & convertTorque();
 		Particle & resetTorque();
 
@@ -58,7 +58,7 @@ namespace ml
 
 
 		/* * * * * * * * * * * * * * * * * * * * */
-		static vec3f rotateForce(Particle *p, vec3f force);
+		static vec3 rotateForce(Particle *p, vec3 force);
 
 
 		/* * * * * * * * * * * * * * * * * * * * */

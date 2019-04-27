@@ -66,7 +66,7 @@ namespace ml
 		case WindowEvent::EV_FrameSize:
 			if (const auto * ev = value->as<FrameSizeEvent>())
 			{
-				this->setViewport(vec2f::Zero, ev->size());
+				this->setViewport(vec2::Zero, ev->size());
 			}
 			break;
 		}

@@ -6,7 +6,7 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	const vec3f Physics::Gravity(0.0f, ML_GRAVITY, 0.0f);
+	const vec3 Physics::Gravity(0.0f, ML_GRAVITY, 0.0f);
 
 	/* * * * * * * * * * * * * * * * * * * * */
 

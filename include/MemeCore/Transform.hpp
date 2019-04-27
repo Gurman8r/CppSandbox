@@ -16,64 +16,64 @@ namespace ml
 	public:
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		Transform();
-		Transform(const vec3f & pos, const vec3f & scl);
-		Transform(const vec3f & pos, const vec3f & scl, const quat & rot);
-		Transform(const mat4f & value);
+		Transform(const vec3 & pos, const vec3 & scl);
+		Transform(const vec3 & pos, const vec3 & scl, const quat & rot);
+		Transform(const mat4 & value);
 		Transform(const Transform & copy);
 		~Transform();
 
 
 	public: // Static Functions
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-		static bool  Decompose(const mat4f & value, vec3f & scl, quat & rot, vec3f & tns, vec3f & skw, vec4f & psp);
-		static mat4f Rotate(const mat4f & value, const float angle, const vec3f & axis);
-		static mat4f Rotate(const mat4f & value, const quat & rot);
-		static mat4f Scale(const mat4f & value, const vec3f & scl);
-		static mat4f Translate(const mat4f & value, const vec3f & tns);
-		static mat4f LookAt(const vec3f & eye, const vec3f & pos, const vec3f & up);
+		static bool  Decompose(const mat4 & value, vec3 & scl, quat & rot, vec3 & tns, vec3 & skw, vec4 & psp);
+		static mat4 Rotate(const mat4 & value, const float angle, const vec3 & axis);
+		static mat4 Rotate(const mat4 & value, const quat & rot);
+		static mat4 Scale(const mat4 & value, const vec3 & scl);
+		static mat4 Translate(const mat4 & value, const vec3 & tns);
+		static mat4 LookAt(const vec3 & eye, const vec3 & pos, const vec3 & up);
 
 
 	public: // Member Functions
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-		Transform &	rotate(const float angle, const vec3f & axis);
+		Transform &	rotate(const float angle, const vec3 & axis);
 		Transform & rotate(const quat & value);
-		Transform &	scale(const vec3f & value);
-		Transform &	translate(const vec3f & value);
-		Transform & lookAt(const vec3f & eye, const vec3f & pos, const vec3f & up);
+		Transform &	scale(const vec3 & value);
+		Transform &	translate(const vec3 & value);
+		Transform & lookAt(const vec3 & eye, const vec3 & pos, const vec3 & up);
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		Transform & update(const Transform & other);// Set Matrix
-		Transform & update(const mat4f & value);	// Set Matrix
+		Transform & update(const mat4 & value);	// Set Matrix
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		bool decompose(vec3f & scl, quat & rot, vec3f & tns, vec3f & skw, vec4f & psp) const;
+		bool decompose(vec3 & scl, quat & rot, vec3 & tns, vec3 & skw, vec4 & psp) const;
 		const Transform & decompose() const;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		inline const mat4f & getMatrix() const		// Get Matrix
+		inline const mat4 & getMatrix() const		// Get Matrix
 		{ 
 			return m_matrix; 
 		}
 
-		const vec4f	& getPsp() const;				// Get Perspective
-		const vec3f	& getPos() const;				// Get Position
+		const vec4	& getPsp() const;				// Get Perspective
+		const vec3	& getPos() const;				// Get Position
 		const quat	& getRot() const;				// Get Rotation
-		const vec3f	& getScl() const;				// Get Scale
-		const vec3f	& getSkw() const;				// Get Skew
+		const vec3	& getScl() const;				// Get Scale
+		const vec3	& getSkw() const;				// Get Skew
 
 	private:
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-		mat4f m_matrix;
+		mat4 m_matrix;
 
 		mutable bool	m_changed	= true;
-		mutable vec4f	m_psp		= 0.0f;			// Perspective
-		mutable vec3f	m_pos		= 0.0f;			// Position
+		mutable vec4	m_psp		= 0.0f;			// Perspective
+		mutable vec3	m_pos		= 0.0f;			// Position
 		mutable quat	m_rot		= 1.0f;			// Rotation
-		mutable vec3f	m_scl		= 0.0f;			// Scale
-		mutable vec3f	m_skw		= 0.0f;			// Skew
+		mutable vec3	m_scl		= 0.0f;			// Scale
+		mutable vec3	m_skw		= 0.0f;			// Skew
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

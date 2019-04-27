@@ -239,9 +239,23 @@ namespace ml
 						{
 							Funcs::Group("Camera", [&]()
 							{
-								Funcs::Field("Position", [&](CString)
+								Funcs::Field("FOV", [&](CString)
 								{
-									//GUI::EditVec3f("##Position##Camera", camera->position);
+								});
+								Funcs::Field("P-Near", [&](CString)
+								{
+								});
+								Funcs::Field("P-Far", [&](CString)
+								{
+								});
+								Funcs::Field("O-Near", [&](CString)
+								{
+								});
+								Funcs::Field("O-Far", [&](CString)
+								{
+								});
+								Funcs::Field("Background Color", [&](CString)
+								{
 								});
 							});
 						}
@@ -392,31 +406,31 @@ namespace ml
 											break;
 											case Uniform::Vec2:
 											{
-												vec2f temp = uni->get_value<vec2f>();
+												vec2 temp = uni->get_value<vec2>();
 												if (GUI::EditVec2f("##Vec2##Value", temp, 0.1f)) {}
 											}
 											break;
 											case Uniform::Vec3:
 											{
-												vec3f temp = uni->get_value<vec3f>();
+												vec3 temp = uni->get_value<vec3>();
 												if (GUI::EditVec3f("##Vec3##Value", temp, 0.1f)) {}
 											}
 											break;
 											case Uniform::Vec4:
 											{
-												vec4f temp = uni->get_value<vec4f>();
+												vec4 temp = uni->get_value<vec4>();
 												if (GUI::EditVec4f("##Vec4##Value", temp, 0.1f)) {}
 											}
 											break;
 											case Uniform::Mat3:
 											{
-												mat3f temp = uni->get_value<mat3f>();
+												mat3 temp = uni->get_value<mat3>();
 												if (GUI::EditMat3f("##Mat3##Value", temp, 0.1f)) {}
 											}
 											break;
 											case Uniform::Mat4:
 											{
-												mat4f temp = uni->get_value<mat4f>();
+												mat4 temp = uni->get_value<mat4>();
 												if (GUI::EditMat4f("##Mat4##Value", temp, 0.1f)) {}
 											}
 											break;
@@ -445,13 +459,17 @@ namespace ml
 						{
 							Funcs::Group("Transform", [&]()
 							{
+								vec3 pos = transform->getPos();
+								quat rot = transform->getRot();
+								vec3 scl = transform->getScl();
+
 								Funcs::Group("Decompose", [&]()
 								{
-									vec3f scale;
+									vec3 scale;
 									quat  orient;
-									vec3f trans;
-									vec3f skew;
-									vec4f persp;
+									vec3 trans;
+									vec3 skew;
+									vec4 persp;
 
 									if (transform->decompose(scale, orient, trans, skew, persp))
 									{
@@ -488,7 +506,7 @@ namespace ml
 								{
 									Funcs::Field("Value", [&](CString)
 									{
-										mat4f getMatrix = transform->getMatrix();
+										mat4 getMatrix = transform->getMatrix();
 										if (GUI::EditMat4f("##Matrix##Transform", getMatrix, 0.1f))
 										{
 											//transform->matrix() = matrix;

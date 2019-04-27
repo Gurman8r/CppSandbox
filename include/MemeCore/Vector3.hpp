@@ -133,11 +133,12 @@ namespace ml
 
 	// Types
 	/* * * * * * * * * * * * * * * * * * * * */
-	using vec3f = Vector3<float>;
-	using vec3i = Vector3<int32_t>;
-	using vec3d = Vector3<double>;
-	using vec3b = Vector3<uint8_t>;
-	using vec3u = Vector3<uint32_t>;
+	using vec3f = typename Vector3<float>;
+	using vec3i = typename Vector3<int32_t>;
+	using vec3d = typename Vector3<double>;
+	using vec3b = typename Vector3<uint8_t>;
+	using vec3u = typename Vector3<uint32_t>;
+	using vec3	= typename vec3f;
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

@@ -14,7 +14,7 @@ namespace ml
 	{
 	}
 
-	RectTransform::RectTransform(const vec2f & position, const vec2f & scale, const float rotation, const vec2f & origin)
+	RectTransform::RectTransform(const vec2 & position, const vec2 & scale, const float rotation, const vec2 & origin)
 		: m_changed	(true)
 		, m_matrix	()
 		, m_position(position)
@@ -59,7 +59,7 @@ namespace ml
 			float m03 = -sxs; float m04 = syc; float m05 = ty;
 			float m10 =  0.f; float m11 = 0.f; float m12 = 0.f;
 
-			m_matrix = mat4f {
+			m_matrix = mat4 {
 				m00, m01, 0.f, m02,
 				m03, m04, 0.f, m05,
 				0.f, 0.f, 1.f, 0.f,
@@ -70,7 +70,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	RectTransform & RectTransform::setOrigin(const vec2f & value)
+	RectTransform & RectTransform::setOrigin(const vec2 & value)
 	{
 		if (m_origin != value)
 		{
@@ -80,7 +80,7 @@ namespace ml
 		return (*this);
 	}
 
-	RectTransform & RectTransform::setPosition(const vec2f & value)
+	RectTransform & RectTransform::setPosition(const vec2 & value)
 	{
 		if (m_position != value)
 		{
@@ -100,7 +100,7 @@ namespace ml
 		return (*this);
 	}
 
-	RectTransform & RectTransform::setScale(const vec2f & value)
+	RectTransform & RectTransform::setScale(const vec2 & value)
 	{
 		if (m_scale != value)
 		{

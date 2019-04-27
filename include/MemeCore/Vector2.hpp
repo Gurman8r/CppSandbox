@@ -136,11 +136,12 @@ namespace ml
 
 	// Types
 	/* * * * * * * * * * * * * * * * * * * * */
-	using vec2f = Vector2<float>;
-	using vec2i = Vector2<int32_t>;
-	using vec2d = Vector2<double>;
-	using vec2b = Vector2<uint8_t>;
-	using vec2u = Vector2<uint32_t>;
+	using vec2f = typename Vector2<float>;
+	using vec2i = typename Vector2<int32_t>;
+	using vec2d = typename Vector2<double>;
+	using vec2b = typename Vector2<uint8_t>;
+	using vec2u = typename Vector2<uint32_t>;
+	using vec2	= typename vec2f;
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

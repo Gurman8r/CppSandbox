@@ -161,7 +161,7 @@ namespace ml
 			));
 		}
 
-		inline mat3f toMat3() const
+		inline mat3 toMat3() const
 		{
 			const_value xx = ((*this)[0] * (*this)[0]);
 			const_value xy = ((*this)[0] * (*this)[1]);
@@ -172,7 +172,7 @@ namespace ml
 			const_value yw = ((*this)[1] * (*this)[3]);
 			const_value zz = ((*this)[2] * (*this)[2]);
 			const_value zw = ((*this)[2] * (*this)[3]);
-			mat3f m;
+			mat3 m;
 			m[0] = (1.0f - 2.0f * yy - 2.0f * zz);
 			m[1] = (2.0f * xy - 2.0f * zw); 
 			m[2] = (2.0f * xz + 2.0f * yw);
@@ -185,10 +185,10 @@ namespace ml
 			return m;
 		}
 		
-		inline mat4f toMat4() const
+		inline mat4 toMat4() const
 		{
-			const mat3f r = toMat3();
-			mat4f m;
+			const mat3 r = toMat3();
+			mat4 m;
 			m[ 0] = r[0];	m[ 1] = r[1];	m[ 2] = r[2];	m[ 3] = 0.0f;
 			m[ 4] = r[3];	m[ 5] = r[4];	m[ 6] = r[5];	m[ 7] = 0.0f;
 			m[ 8] = r[6];	m[ 9] = r[7];	m[10] = r[8];	m[11] = 0.0f;
@@ -198,9 +198,9 @@ namespace ml
 
 	public: // Operators
 		/* * * * * * * * * * * * * * * * * * * * */
-		inline operator vec4f() const
+		inline operator vec4() const
 		{
-			return vec4f((*this)[0], (*this)[1], (*this)[2], (*this)[3]);
+			return vec4((*this)[0], (*this)[1], (*this)[2], (*this)[3]);
 		}
 
 		inline friend self_type operator*(const self_type & lhs, const self_type & rhs)

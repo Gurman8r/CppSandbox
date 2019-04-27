@@ -120,9 +120,9 @@ namespace ml
 		
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		List<vec3f>		vp; // Positions
-		List<vec2f>		vt; // Texcoords
-		List<vec3f>		vn; // Normals
+		List<vec3>		vp; // Positions
+		List<vec2>		vt; // Texcoords
+		List<vec3>		vn; // Normals
 		List<List<uint32_t>> vf;	// Faces
 
 		String line;
@@ -135,21 +135,21 @@ namespace ml
 			if (parseLine(line, "v ", ss))
 			{
 				// Position
-				vec3f temp;
+				vec3 temp;
 				ss >> temp;
 				vp.push_back(temp);
 			}
 			else if (parseLine(line, "vt ", ss))
 			{
 				// Texcoord
-				vec2f temp;
+				vec2 temp;
 				ss >> temp;
 				vt.push_back(temp);
 			}
 			else if (parseLine(line, "vn ", ss))
 			{
 				// Normal
-				vec3f temp;
+				vec3 temp;
 				ss >> temp;
 				vn.push_back(temp);
 			}
@@ -201,9 +201,9 @@ namespace ml
 
 		for (size_t i = 0, imax = m_vertices.size(); i < imax; i++)
 		{
-			const vec3f p = vp[vi[i]];
-			const vec4f n = vec4f(vn[vi[i]], 1.0f);
-			const vec2f t = vt[ti[i]];
+			const vec3 p = vp[vi[i]];
+			const vec4 n = vec4(vn[vi[i]], 1.0f);
+			const vec2 t = vt[ti[i]];
 
 			m_vertices[i] = Vertex(p, n, t);
 		}

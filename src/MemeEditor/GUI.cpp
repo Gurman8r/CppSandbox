@@ -64,7 +64,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool GUI::EditVec2f(CString label, vec2f & value, float speed)
+	bool GUI::EditVec2f(CString label, vec2 & value, float speed)
 	{
 		if (!ImGui::GetCurrentWindow()->SkipItems)
 		{
@@ -93,7 +93,7 @@ namespace ml
 		return false;
 	}
 
-	bool GUI::EditVec3f(CString label, vec3f & value, float speed)
+	bool GUI::EditVec3f(CString label, vec3 & value, float speed)
 	{
 		if (!ImGui::GetCurrentWindow()->SkipItems)
 		{
@@ -127,7 +127,7 @@ namespace ml
 		return false;
 	}
 
-	bool GUI::EditVec4f(CString label, vec4f & value, float speed)
+	bool GUI::EditVec4f(CString label, vec4 & value, float speed)
 	{
 		if (!ImGui::GetCurrentWindow()->SkipItems)
 		{
@@ -205,12 +205,12 @@ namespace ml
 		return false;
 	}
 
-	bool GUI::EditMat3f(CString label, mat3f & value, float speed)
+	bool GUI::EditMat3f(CString label, mat3 & value, float speed)
 	{
 		return EditMatrix<float, 3, 3>(label, value, speed);
 	}
 
-	bool GUI::EditMat4f(CString label, mat4f & value, float speed)
+	bool GUI::EditMat4f(CString label, mat4 & value, float speed)
 	{
 		return EditMatrix<float, 4, 4>(label, value, speed);
 	}

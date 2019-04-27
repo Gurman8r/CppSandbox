@@ -21,12 +21,12 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		static bool EditVec2f	(CString label, vec2f & value, float speed = 1.f);
-		static bool EditVec3f	(CString label, vec3f & value, float speed = 1.f);
-		static bool EditVec4f	(CString label, vec4f & value, float speed = 1.f);
-		static bool EditQuat	(CString label, quat  & value, float speed = 1.f);
-		static bool EditMat3f	(CString label, mat3f & value, float speed = 1.f);
-		static bool EditMat4f	(CString label, mat4f & value, float speed = 1.f);
+		static bool EditVec2f	(CString label, vec2 & value, float speed = 1.f);
+		static bool EditVec3f	(CString label, vec3 & value, float speed = 1.f);
+		static bool EditVec4f	(CString label, vec4 & value, float speed = 1.f);
+		static bool EditQuat	(CString label, quat & value, float speed = 1.f);
+		static bool EditMat3f	(CString label, mat3 & value, float speed = 1.f);
+		static bool EditMat4f	(CString label, mat4 & value, float speed = 1.f);
 
 		/* * * * * * * * * * * * * * * * * * * * */
 

@@ -33,24 +33,24 @@ namespace ml
 		}
 
 	public:
-		bool	getPos(const int32_t index, vec3f & pos) const;
+		bool	getPos(const int32_t index, vec3 & pos) const;
 		bool	getRot(const int32_t index, quat  & pos) const;
-		bool	getMat(const int32_t index, mat4f & pos) const;
-		bool	getInv(const int32_t index, mat4f & pos) const;
+		bool	getMat(const int32_t index, mat4 & pos) const;
+		bool	getInv(const int32_t index, mat4 & pos) const;
 
 	public:
-		bool	setPos(const int32_t index, const vec3f & value);
+		bool	setPos(const int32_t index, const vec3 & value);
 		bool	setRot(const int32_t index, const quat  & value);
-		bool	setMat(const int32_t index, const mat4f & value);
-		bool	setInv(const int32_t index, const mat4f & value);
+		bool	setMat(const int32_t index, const mat4 & value);
+		bool	setInv(const int32_t index, const mat4 & value);
 
 	private:
 		int32_t m_size;
 
-		List<vec3f> m_pos;
+		List<vec3> m_pos;
 		List<quat>	m_rot;
-		List<mat4f> m_mat;
-		List<mat4f>	m_inv;
+		List<mat4> m_mat;
+		List<mat4>	m_inv;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

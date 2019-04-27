@@ -12,7 +12,7 @@ namespace ml
 		return (*this);
 	}
 	
-	RenderTarget & RenderTarget::clear(const vec4f & color)
+	RenderTarget & RenderTarget::clear(const vec4 & color)
 	{
 		ML_GL.clearColor(color[0], color[1], color[2], color[3]);
 		ML_GL.clear(GL::ColorBufferBit | GL::DepthBufferBit);

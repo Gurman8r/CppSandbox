@@ -337,6 +337,9 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 	using mat3f = Matrix<float, 3, 3>;
 	using mat4f = Matrix<float, 4, 4>;
+
+	using mat3	= typename mat3f;
+	using mat4	= typename mat4f;
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

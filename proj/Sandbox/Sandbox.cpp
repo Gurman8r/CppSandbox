@@ -342,7 +342,7 @@ namespace DEMO
 		{
 			if (ml::Sprite * spr = ML_Res.sprites.get("neutrino"))
 			{
-				spr->setPosition(ml::vec2f(0.95f, 0.075f) * this->getSize())
+				spr->setPosition(ml::vec2(0.95f, 0.075f) * this->getSize())
 					.setScale	(0.5f)
 					.setRotation(0.0f)
 					.setOrigin	(0.5f)
@@ -368,12 +368,12 @@ namespace DEMO
 				camera->position = { 0.0f, 1.0f, 10.0f };
 
 				ml::Transform * transform = ent->add<ml::Transform>(
-					ml::mat4f::Identity()
+					ml::mat4::Identity()
 				);
 				transform->lookAt(
 					camera->position,
-					camera->position + ml::vec3f::Back,
-					ml::vec3f::Up
+					camera->position + ml::vec3::Back,
+					ml::vec3::Up
 				);
 			}
 
@@ -661,8 +661,8 @@ namespace DEMO
 				{
 					for (int32_t i = 0; i < state.size(); i++)
 					{
-						ml::vec3f pos;
-						ml::quat  rot;
+						ml::vec3 pos;
+						ml::quat rot;
 						if (state.getPos(i, pos) &&
 							state.getRot(i, rot))
 						{
@@ -670,26 +670,26 @@ namespace DEMO
 							{
 							case RB_BORG:
 								pos = { pos[0], +ML_Time.cos(), pos[2] };
-								rot = ml::quat::angleAxis(totalT, ml::vec3f::One);
+								rot = ml::quat::angleAxis(totalT, ml::vec3::One);
 								break;
 
 							case RB_CUBE:
 								pos = { pos[0], -ML_Time.sin(), pos[2] };
-								rot = ml::quat::angleAxis(totalT, ml::vec3f::One);
+								rot = ml::quat::angleAxis(totalT, ml::vec3::One);
 								break;
 
 							case RB_SANIC:
 								pos = { pos[0], -ML_Time.cos(), pos[2] };
-								rot = ml::quat::angleAxis(totalT, ml::vec3f::Forward);
+								rot = ml::quat::angleAxis(totalT, ml::vec3::Forward);
 								break;
 
 							case RB_MOON:
 								pos = { pos[0], +ML_Time.sin(), pos[2] };
-								rot = ml::quat::angleAxis(totalT, ml::vec3f::Up);
+								rot = ml::quat::angleAxis(totalT, ml::vec3::Up);
 								break;
 
 							case RB_EARTH:
-								rot = ml::quat::angleAxis(totalT, ml::vec3f::Up);
+								rot = ml::quat::angleAxis(totalT, ml::vec3::Up);
 								break;
 
 							case RB_GROUND:
@@ -764,7 +764,7 @@ namespace DEMO
 							ML_Res.entities.get("earth")->get<ml::Transform>()->getPos() -
 							camera->position
 						),
-						ml::vec3f::Up
+						ml::vec3::Up
 					);
 
 					camera->position += 
@@ -785,13 +785,13 @@ namespace DEMO
 				{
 					if (ml::Transform * transform = rb->transform())
 					{
-						ml::vec3f pos;
-						ml::quat  rot;
+						ml::vec3 pos;
+						ml::quat rot;
 						if (state.getPos(rb->index(), pos) &&
 							state.getRot(rb->index(), rot))
 						{
 							(*transform)
-								.update(ml::mat4f::Identity())
+								.update(ml::mat4::Identity())
 								.translate(pos)
 								.rotate(rot)
 								.scale(transform->getScl())
@@ -815,9 +815,9 @@ namespace DEMO
 			const uint32_t	fontSize = 24;
 			const float		hOff	 = 0.0f;
 			const float		vOff	 = 4.0f;
-			const ml::vec2f	offset	 = { hOff, -(vOff + (float)fontSize) };
-			const ml::vec2f	origin	 = { (float)fontSize, (float)this->getHeight() - (fontSize * 2) };
-			ml::vec2f		linePos	 = 0.0f;
+			const ml::vec2	offset	 = { hOff, -(vOff + (float)fontSize) };
+			const ml::vec2	origin	 = { (float)fontSize, (float)this->getHeight() - (fontSize * 2) };
+			ml::vec2		linePos	 = 0.0f;
 			size_t			lineNum	 = 0;
 			auto			newLine = [&]() { return (linePos = (origin + (offset * (float)(lineNum++)))); };
 
@@ -1085,7 +1085,7 @@ namespace DEMO
 				{
 					(*ML_CAMERA->get<ml::Transform>())
 						.translate(camPos - ML_CAMERA->get<ml::Transform>()->getPos())
-						.rotate(0.0f, ml::vec3f::One)
+						.rotate(0.0f, ml::vec3::One)
 						.scale(1.0f)
 						;
 				}
@@ -1100,7 +1100,7 @@ namespace DEMO
 				{
 					(*ML_LIGHT->get<ml::Transform>())
 						.translate(lightPos - ML_LIGHT->get<ml::Transform>()->getPos())
-						.rotate(0.0f, ml::vec3f::One)
+						.rotate(0.0f, ml::vec3::One)
 						.scale(1.0f)
 						;
 				}

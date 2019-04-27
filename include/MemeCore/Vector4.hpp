@@ -100,16 +100,17 @@ namespace ml
 
 	// Constants
 	/* * * * * * * * * * * * * * * * * * * * */
-	template <class T> const Vector4<T> Vector4<T>::Zero	= Vector4<T>(0);
-	template <class T> const Vector4<T> Vector4<T>::One		= Vector4<T>(1);
+	template <class T> const Vector4<T> Vector4<T>::Zero = Vector4<T>(0);
+	template <class T> const Vector4<T> Vector4<T>::One	 = Vector4<T>(1);
 
 	// Types
 	/* * * * * * * * * * * * * * * * * * * * */
-	using vec4f = Vector4<float>;
-	using vec4i = Vector4<int32_t>;
-	using vec4d = Vector4<double>;
-	using vec4b = Vector4<uint8_t>;
-	using vec4u = Vector4<uint32_t>;
+	using vec4f = typename Vector4<float>;
+	using vec4i = typename Vector4<int32_t>;
+	using vec4d = typename Vector4<double>;
+	using vec4b = typename Vector4<uint8_t>;
+	using vec4u = typename Vector4<uint32_t>;
+	using vec4	= typename vec4f;
 }
 
 /* * * * * * * * * * * * * * * * * * * * */

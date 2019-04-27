@@ -64,7 +64,7 @@ inline static void ImGui_ML_HandleInput()
 		}
 		else
 		{
-			ml::vec2f mousePos = g_Window->getCursorPos();
+			ml::vec2 mousePos = g_Window->getCursorPos();
 			io.MousePos = ImVec2(mousePos[0], mousePos[1]);
 		}
 	}
@@ -254,8 +254,8 @@ void ImGui_ML_NewFrame()
 	IM_ASSERT(io.Fonts->IsBuilt() && "Font atlas not built! It is generally built by the renderer back-end. Missing call to renderer _NewFrame() function? e.g. ImGui_ImplOpenGL3_NewFrame().");
 
 	// Setup display size (every frame to accommodate for window resizing)
-	ml::vec2f size = ml::vec2f(g_Window->getSize());
-	ml::vec2f display = ml::vec2f(g_Window->getFrameSize());
+	ml::vec2 size = ml::vec2(g_Window->getSize());
+	ml::vec2 display = ml::vec2(g_Window->getFrameSize());
 	io.DisplaySize = ImVec2(size[0], size[1]);
 	io.DisplayFramebufferScale = ImVec2(size[0] > 0 ? (display[0] / size[0]) : 0, size[1] > 0 ? (display[1] / size[1]) : 0);
 

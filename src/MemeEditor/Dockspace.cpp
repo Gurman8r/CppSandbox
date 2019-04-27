@@ -10,9 +10,9 @@ namespace ml
 	Dockspace::Dockspace()
 		: GUI_Window("Dockspace")
 		, m_border	(0.0f)
-		, m_padding	(vec2f::Zero)
+		, m_padding	(vec2::Zero)
 		, m_rounding(0.0f)
-		, m_size	(vec2f::Zero)
+		, m_size	(vec2::Zero)
 		, m_bgAlpha	(1.0f)
 	{
 	}

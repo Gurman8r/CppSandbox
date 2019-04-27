@@ -52,24 +52,24 @@ namespace ml
 		if (good() && (texture && (*texture)))
 		{
 			// Texture Size
-			const ml::vec2f src = texture->size();
+			const ml::vec2 src = texture->size();
 
 			// Window Size
-			const ml::vec2f dst = ml::vec2f {
+			const ml::vec2 dst = ml::vec2 {
 				ImGui::GetWindowSize().x,
 				ImGui::GetWindowSize().y
 			};
 
-			auto scaleToFit = [](const ml::vec2f & src, const ml::vec2f & dst)
+			auto scaleToFit = [](const ml::vec2 & src, const ml::vec2 & dst)
 			{
-				const ml::vec2f
+				const ml::vec2
 					hs = (dst[0] / src[0]),
 					vs = (dst[1] / src[1]);
 				return (src * (((hs) < (vs)) ? (hs) : (vs)));
 			};
 
-			const ml::vec2f scl = scaleToFit(src, dst);
-			const ml::vec2f pos = ((dst - scl) * 0.5f);
+			const ml::vec2 scl = scaleToFit(src, dst);
+			const ml::vec2 pos = ((dst - scl) * 0.5f);
 
 			ImGui::SetCursorPos({ pos[0], pos[1] });
 

@@ -33,7 +33,7 @@ namespace ml
 			float	refresh		= 0.0f;
 			float	min			= 1.f;
 			float	max			= 128.f;
-			vec2f	size		= { 0, 80 };
+			vec2	size		= { 0, 80 };
 
 			void update(CString label, const float sample, const String & fmt = "{0}");
 		};
