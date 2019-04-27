@@ -21,11 +21,10 @@ namespace ml
 		Camera & updateRes(const vec2i & resolution);
 
 	public:
-		inline const Transform & getOrtho() const { return m_ortho; }
-		inline const Transform & getPersp() const { return m_persp; }
-
-		inline const mat4f & getOrthoMatrix() const { return m_ortho.getMatrix(); }
-		inline const mat4f & getPerspMatrix() const { return m_persp.getMatrix(); }
+		inline const Transform &	getOrtho() const		{ return m_ortho; }
+		inline const Transform &	getPersp() const		{ return m_persp; }
+		inline const mat4f &		getOrthoMatrix() const	{ return m_ortho.getMatrix(); }
+		inline const mat4f &		getPerspMatrix() const	{ return m_persp.getMatrix(); }
 
 		inline const vec3f & forward(const vec3f & value)
 		{

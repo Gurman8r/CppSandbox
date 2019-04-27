@@ -40,7 +40,7 @@ namespace ml
 		return (size() == 0);
 	}
 
-	void PhysicsState::resize(const size_t value)
+	PhysicsState & PhysicsState::resize(const size_t value)
 	{
 		if (m_size = (int32_t)(value))
 		{
@@ -49,29 +49,12 @@ namespace ml
 			m_mat.resize(m_size);
 			m_inv.resize(m_size);
 		}
+		return (*this);
 	}
 
 	int32_t PhysicsState::size() const
 	{
 		return m_size;
-	}
-
-	bool PhysicsState::getData(const int32_t index, vec3f & pos, quat & rot, mat4f & mat, mat4f & inv) const
-	{
-		return 
-			getPos(index, pos) &&
-			getRot(index, rot) &&
-			getMat(index, mat) && 
-			getInv(index, inv);
-	}		   
-
-	bool PhysicsState::setData(const int32_t index, const vec3f & pos, const quat & rot, const mat4f & mat, const mat4f & inv)
-	{
-		return
-			setPos(index, pos) &&
-			setRot(index, rot) &&
-			setMat(index, mat) &&
-			setInv(index, inv);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

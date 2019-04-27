@@ -49,7 +49,7 @@ enum Rigidbody_ID : int32_t
 	RB_EARTH,
 	RB_GROUND,
 
-	MAX_RIGIDBODY_ID
+	MAX_RIGIDBODY
 };
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -357,13 +357,6 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 			if (ml::Entity * ent = ML_Res.entities.get("camera"))
 			{
-				
-				//transform->lookAt(
-				//	transform->getPos(),
-				//	transform->getPos() + ml::vec3f::Back,
-				//	ml::vec3f::Up
-				//);
-
 				ml::Camera * camera = ent->add<ml::Camera>({
 					SETTINGS.fieldOfView,
 					SETTINGS.perspNear,
@@ -627,40 +620,39 @@ namespace DEMO
 			}
 		}
 
-		// Setup Physics
+		// Physics
 		/* * * * * * * * * * * * * * * * * * * * */
-		ML_Physics.thread().launch([&]()
+		ML_Physics.thread().launch([]()
 		{
+			// Setup
 			/* * * * * * * * * * * * * * * * * * * * */
-
-			ML_Physics.world().state().resize(MAX_RIGIDBODY_ID);
-
-			for (const auto & pair : ML_Res.entities)
+			if (ml::PhysicsState & state = ML_Physics.world().state().resize(MAX_RIGIDBODY))
 			{
-				if (const ml::Rigidbody * rb = pair.second->get<ml::Rigidbody>())
+				for (const auto & pair : ML_Res.entities)
 				{
-					if (const ml::Transform * transform = rb->transform())
+					if (const ml::Rigidbody * rb = pair.second->get<ml::Rigidbody>())
 					{
-						ML_Physics.world().state().setData(
-							rb->index(),
-							transform->getPos(),
-							transform->getRot(),
-							transform->getMatrix(),
-							glm::inverse((glm::mat4)transform->getMatrix())
-						);
+						if (const ml::Transform * transform = rb->transform())
+						{
+							assert(
+								state.setPos(rb->index(), transform->getPos()) &&
+								state.setRot(rb->index(), transform->getRot()) &&
+								"Failed initializing physics data!"
+							);
+						}
 					}
 				}
 			}
 
+			// Update
 			/* * * * * * * * * * * * * * * * * * * * */
-
-			while (this->isOpen())
+			while (ML_Engine.isRunning())
 			{
-				const float tt = ( // Total Time
+				const float totalT = ( // Total Time
 					(float)ML_Time.elapsed().milliseconds() / (float)ml::Milli::den
 				);
 
-				const float dt = ( // Delta Time
+				const float deltaT = ( // Delta Time
 					ML_Engine.frameTime().delta()
 				);
 				
@@ -669,46 +661,46 @@ namespace DEMO
 				{
 					for (int32_t i = 0; i < state.size(); i++)
 					{
-						ml::vec3f	pos;
-						ml::quat	rot;
-						ml::mat4f	mat;
-						ml::mat4f	inv;
-						if (state.getData(i, pos, rot, mat, inv))
+						ml::vec3f pos;
+						ml::quat  rot;
+						if (state.getPos(i, pos) &&
+							state.getRot(i, rot))
 						{
 							switch (i)
 							{
 							case RB_BORG:
 								pos = { pos[0], +ML_Time.cos(), pos[2] };
-								rot = ml::quat::angleAxis(tt, ml::vec3f::One);
+								rot = ml::quat::angleAxis(totalT, ml::vec3f::One);
 								break;
 
 							case RB_CUBE:
 								pos = { pos[0], -ML_Time.sin(), pos[2] };
-								rot = ml::quat::angleAxis(tt, ml::vec3f::One);
+								rot = ml::quat::angleAxis(totalT, ml::vec3f::One);
 								break;
 
 							case RB_SANIC:
 								pos = { pos[0], -ML_Time.cos(), pos[2] };
-								rot = ml::quat::angleAxis(tt, ml::vec3f::Forward);
+								rot = ml::quat::angleAxis(totalT, ml::vec3f::Forward);
 								break;
 
 							case RB_MOON:
 								pos = { pos[0], +ML_Time.sin(), pos[2] };
-								rot = ml::quat::angleAxis(tt, ml::vec3f::Up);
+								rot = ml::quat::angleAxis(totalT, ml::vec3f::Up);
 								break;
 
 							case RB_EARTH:
-								rot = ml::quat::angleAxis(tt, ml::vec3f::Up);
+								rot = ml::quat::angleAxis(totalT, ml::vec3f::Up);
 								break;
 
 							case RB_GROUND:
 								break;
 							}
 
-							if (!state.setData(i, pos, rot, mat, inv))
-							{
-								ml::Debug::logError("Failed setting physics state: {0}", i);
-							}
+							assert(
+								state.setPos(i, pos) &&
+								state.setRot(i, rot) &&
+								"Failed updating physics data!"
+							);
 						}
 					}
 					ML_Physics.endUpdate(state);
@@ -775,7 +767,10 @@ namespace DEMO
 						ml::vec3f::Up
 					);
 
-					camera->position += camera->right() * ev->elapsed.delta();
+					camera->position += 
+						camera->right() * 
+						ev->elapsed.delta() * 
+						globals.camSpd;
 				}
 			}
 		}
@@ -1094,7 +1089,7 @@ namespace DEMO
 						.scale(1.0f)
 						;
 				}
-				ImGui::DragFloat("Speed##Camera", &globals.camSpeed, 0.1f, -5.f, 5.f);
+				ImGui::DragFloat("Speed##Camera", &globals.camSpd, 0.1f, -5.f, 5.f);
 				ImGui::Separator();
 
 				/* * * * * * * * * * * * * * * * * * * * */

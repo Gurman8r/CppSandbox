@@ -48,11 +48,11 @@ namespace DEMO
 		{
 			// Camera
 			bool			camMove		= true;
-			float			camSpeed	= 1.0f;
+			float			camSpd		= 1.0f;
 			
 			// Light
 			float			ambient		= 0.01f;
-			float			specular	= 0.5f;
+			float			specular	= 0.1f;
 			int32_t			shininess	= 8;
 			
 			// Effects

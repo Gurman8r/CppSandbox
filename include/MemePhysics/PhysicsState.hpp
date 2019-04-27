@@ -21,20 +21,16 @@ namespace ml
 		~PhysicsState();
 
 	public:
-		void	clear();
-		bool	empty() const;
-		void	resize(const size_t value);
-		int32_t	size() const;
+		void			clear();
+		bool			empty() const;
+		PhysicsState &	resize(const size_t value);
+		int32_t			size() const;
 
 	public:
 		inline operator bool() const
 		{
 			return !this->empty();
 		}
-
-	public:
-		bool	getData(const int32_t index, vec3f & pos, quat & rot, mat4f & mat, mat4f & inv) const;
-		bool	setData(const int32_t index, const vec3f & pos, const quat & rot, const mat4f & mat, const mat4f & inv);
 
 	public:
 		bool	getPos(const int32_t index, vec3f & pos) const;
