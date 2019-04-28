@@ -102,12 +102,15 @@ namespace ml
 
 		inline complex_type axis() const
 		{
-			const_value tmp1 = (1.0f - this->real() * this->real());
-			if (tmp1 <= 0.0f)
+			const_value temp = (1.0f - this->real() * this->real());
+			if (temp <= 0.0f)
 			{
 				return complex_type({ 0, 0, 1 });
 			}
-			return this->complex() * (1.0f / std::sqrtf(tmp1));
+			else
+			{
+				return this->complex() * (1.0f / std::sqrtf(temp));
+			}
 		}
 
 		inline static self_type angleAxis(const_reference angle, const complex_type & axis)

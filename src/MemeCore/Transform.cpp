@@ -116,6 +116,12 @@ namespace ml
 	
 	mat4 Transform::Rotate(const mat4 & m, const float angle, const vec3 & v)
 	{
+		//const float a = angle;
+		//const float c = std::cosf(a);
+		//const float s = std::sinf(a);
+		//vec3 axis = v.normalized();
+		//vec3 temp = (axis * (1.0f * c));
+
 		return glm::rotate(
 			(glm::mat4)(m), 
 			angle, 

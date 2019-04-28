@@ -7,8 +7,22 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
+#define ML_ENIF_MAT(XCOND, YCOND) typename std::enable_if<(XCOND  &&  YCOND)>::type
+#define ML_ENIF_3x3(X, Y) ML_ENIF_MAT(X == 3, Y == 3)
+#define ML_ENIF_4x4(X, Y) ML_ENIF_MAT(X == 4, Y == 4)
+
+/* * * * * * * * * * * * * * * * * * * * */
+
 namespace ml
 {
+	// Declarations
+	/* * * * * * * * * * * * * * * * * * * * */
+
+	template <class E, size_t N>	class Vector;
+	template <class E>				class Vector2;
+	template <class E>				class Vector3;
+	template <class E>				class Vector4;
+
 	/* * * * * * * * * * * * * * * * * * * * */
 	
 	template <
@@ -154,19 +168,68 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		template <
-			size_t X = Cols, size_t Y = Rows,
-			typename = typename std::enable_if<(X > 1 && Y > 1)>::type
+			size_t X = Cols, size_t Y = Rows, typename = ML_ENIF_MAT(X > 1, Y > 1)
 		> inline const_reference get(const size_t x, const size_t y) const
 		{
-			return get(y * Cols + x);
+			return this->get(y * Cols + x);
 		}
 
 		template <
-			size_t X = Cols, size_t Y = Rows,
-			typename = typename std::enable_if<(X > 1 && Y > 1)>::type
+			size_t X = Cols, size_t Y = Rows, typename = ML_ENIF_MAT(X > 1, Y > 1)
 		> inline self_type & set(const size_t x, const size_t y, const_reference value)
 		{
-			return set(y * Cols + x, value);
+			return this->set(y * Cols + x, value);
+		}
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		template <
+			size_t X = Cols, size_t Y = Rows, typename = ML_ENIF_MAT(X > 1, Y > 1)
+		> constexpr self_type & setCol(const size_t c, const Vector<value_type, Cols> & value)
+		{
+
+			return (*this)
+				.set(c, 0, value[0])
+				.set(c, 1, value[1])
+				.set(c, 2, value[2])
+				.set(c, 3, value[3]);
+		}
+
+		template <
+			size_t X = Cols, size_t Y = Rows, typename = ML_ENIF_MAT(X > 1, Y > 1)
+		> constexpr self_type & setRow(const size_t r, const Vector<value_type, Rows> & value)
+		{
+			return (*this)
+				.set(0, r, value[0])
+				.set(1, r, value[1])
+				.set(2, r, value[2])
+				.set(3, r, value[3]);
+		}
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		template <
+			size_t X = Cols, size_t Y = Rows, typename = ML_ENIF_MAT(X > 1, Y > 1)
+		> inline Vector<value_type, Cols> getCol(const size_t c)
+		{
+			return Vector<value_type, Rows> {
+				this->get(c, 0),
+				this->get(c, 1),
+				this->get(c, 2),
+				this->get(c, 3)
+			};
+		}
+
+		template <
+			size_t X = Cols, size_t Y = Rows, typename = ML_ENIF_MAT(X > 1, Y > 1)
+		> inline Vector<value_type, Rows> getRow(const size_t r)
+		{
+			return Vector<value_type, Rows> {
+				this->get(0, r),
+				this->get(1, r),
+				this->get(2, r),
+				this->get(3, r)
+			};
 		}
 
 
@@ -249,7 +312,7 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		inline virtual bool equals(const self_type & value) const override
+		inline bool equals(const self_type & value) const override
 		{
 			for (size_t i = 0; i < this->size(); i++)
 			{
@@ -260,8 +323,8 @@ namespace ml
 			}
 			return true;
 		}
-		
-		inline virtual bool lessThan(const self_type & value) const override
+
+		inline bool lessThan(const self_type & value) const override
 		{
 			for (size_t i = 0; i < this->size(); i++)
 			{
@@ -298,9 +361,7 @@ namespace ml
 		template <
 			size_t X = Cols,
 			size_t Y = Rows
-		> Matrix(
-			const glm::tmat3x3<value_type, glm::defaultp> & value,
-			typename std::enable_if<(X == 3 && Y == 3)>::type * = 0)
+		> Matrix(const glm::tmat3x3<value_type, glm::defaultp> & value, ML_ENIF_3x3(X, Y) * = 0)
 			: m_data()
 		{
 			if (const_pointer temp = glm::value_ptr(value))
@@ -331,9 +392,7 @@ namespace ml
 		template <
 			size_t X = Cols,
 			size_t Y = Rows
-		> Matrix(
-			const glm::tmat4x4<value_type, glm::defaultp> & value,
-			typename std::enable_if<(X == 4 && Y == 4)>::type * = 0)
+		> Matrix(const glm::tmat4x4<value_type, glm::defaultp> & value, ML_ENIF_4x4(X, Y) * = 0)
 			: m_data()
 		{
 			if (const_pointer temp = glm::value_ptr(value))
@@ -361,6 +420,7 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 # endif
+
 	};
 
 	// Types
