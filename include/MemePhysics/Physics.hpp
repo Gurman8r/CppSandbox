@@ -38,56 +38,78 @@ namespace ml
 		friend class ISingleton<Physics>;
 
 	public:
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		static const vec3 Gravity;
 
 	private:
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		Physics();
 		~Physics();
 
 	public:
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		bool dispose() override;
 
-	public:
-		bool setupRigidbody(const Rigidbody * value);
 
 	public:
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		bool setupState(const size_t count);
+		bool setupRigidbody(const Rigidbody * value);
+
+
+	private:
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		bool beginUpdate(PhysicsState & value);
 		bool endUpdate(const PhysicsState & value);
 
-	public:
-		inline const PhysicsState &	state()		const	{ return m_state;	}
-		inline PhysicsState	&		state()				{ return m_state;	}
-		inline const Mutex &		mutex()		const	{ return m_mutex;	}
-		inline const Thread &		thread()	const	{ return m_thread;	}
-		inline const Timer &		timer()		const	{ return m_timer;	}
-		inline const Duration &		elapsed()	const	{ return m_elapsed; }
 
 	public:
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		template <
-			class Fun,
-			class ... Args
+			class Fun, class ... Args
 		> inline bool launch(Fun && fun, Args && ... args)
 		{
 			return m_thread.launch(fun, (args)...);
 		}
 
 		template <
-			class Fun,
-			class ... Args
-		> inline void forEach(Fun && fun, Args && ... args)
+			class Fun, class ... Args
+		> inline bool forEach(Fun && fun, Args && ... args)
 		{
-			PhysicsState stateCopy;
-			if (beginUpdate(stateCopy))
+			PhysicsState temp;
+			if (beginUpdate(temp))
 			{
-				for (int32_t i = 0, imax = stateCopy.size(); i < imax; i++)
+				for (int32_t i = 0, imax = temp.size(); i < imax; i++)
 				{
-					fun(i, stateCopy, (args)...);
+					fun(i, temp, (args)...);
 				}
-				endUpdate(stateCopy);
+				return endUpdate(temp);
 			}
+			return false;
 		}
 
+		template <
+			class Fun, class ... Args
+		> inline bool copyState(Fun && fun, Args && ... args)
+		{
+			PhysicsState temp;
+			if (temp.deepCopy(m_state))
+			{
+				fun(temp, (args)...);
+			}
+			return (bool)(temp);
+		}
+		
+	public:
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		inline const PhysicsState &	state()		const	{ return m_state;	}
+		inline const Mutex &		mutex()		const	{ return m_mutex;	}
+		inline const Thread &		thread()	const	{ return m_thread;	}
+		inline const Timer &		timer()		const	{ return m_timer;	}
+		inline const Duration &		elapsed()	const	{ return m_elapsed; }
+
 	private:
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		bool			m_updating = false;
 		PhysicsState	m_state;
 		Mutex			m_mutex;

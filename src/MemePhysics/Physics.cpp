@@ -11,7 +11,7 @@ namespace ml
 
 	const vec3 Physics::Gravity(0.0f, ML_GRAVITY, 0.0f);
 
-	/* * * * * * * * * * * * * * * * * * * * */
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 	
 	Physics::Physics() 
 	{
@@ -22,21 +22,31 @@ namespace ml
 		dispose();
 	}
 
-	/* * * * * * * * * * * * * * * * * * * * */
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	bool Physics::dispose()
 	{
 		return m_thread.dispose();
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+	bool Physics::setupState(const size_t count)
+	{
+		return m_state.resize(count);
+	}
+
 	bool Physics::setupRigidbody(const Rigidbody * value)
 	{
-		if (value && (value->index() < m_state.size()))
+		int32_t i;
+		if (value && ((i = value->index()) < m_state.size()))
 		{
 			if (const Transform * transform = value->transform())
 			{
-				if (m_state.setPos(value->index(), transform->getPos()) &&
-					m_state.setRot(value->index(), transform->getRot()))
+				if (m_state.set<PhysicsState::T_Pos>(i, transform->getPos()) &&
+					m_state.set<PhysicsState::T_Rot>(i, transform->getRot()) &&
+					m_state.set<PhysicsState::T_Mat>(i, transform->getMat()) &&
+					m_state.set<PhysicsState::T_Inv>(i, transform->getInv()))
 				{
 					return true;
 				}
@@ -45,7 +55,7 @@ namespace ml
 		return false;
 	}
 
-	/* * * * * * * * * * * * * * * * * * * * */
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	bool Physics::beginUpdate(PhysicsState & value)
 	{
@@ -53,7 +63,7 @@ namespace ml
 		{
 			m_updating = true;
 
-			value = m_state;
+			value.deepCopy(m_state);
 			
 			m_timer.start();
 
@@ -74,7 +84,7 @@ namespace ml
 
 			m_elapsed = m_timer.stop().elapsed();
 
-			m_state = value;
+			m_state.deepCopy(value);
 
 			if (m_elapsed.milliseconds() < ML_PHYSICS_TIMESTEP)
 			{
@@ -86,5 +96,5 @@ namespace ml
 		return false;
 	}
 
-	/* * * * * * * * * * * * * * * * * * * * */
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 }

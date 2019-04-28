@@ -2,37 +2,39 @@
 
 namespace ml
 {
-	/* * * * * * * * * * * * * * * * * * * * */
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-	PhysicsState::PhysicsState()
-		: m_pos()
-		, m_rot()
-		, m_mat()
-		, m_inv()
+	PhysicsState::PhysicsState() { dispose(); }
+
+	PhysicsState::~PhysicsState() { dispose(); }
+
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+	PhysicsState & PhysicsState::deepCopy(const PhysicsState & other)
 	{
+		if (other)
+		{
+			m_size	= other.m_size;
+			m_pos	= other.m_pos;
+			m_rot	= other.m_rot;
+			m_mat	= other.m_mat;
+			m_inv	= other.m_inv;
+		}
+		else
+		{
+			dispose();
+		}
+		return (*this);
 	}
 
-	PhysicsState::PhysicsState(const PhysicsState & copy)
-		: m_pos(copy.m_pos)
-		, m_rot(copy.m_rot)
-		, m_mat(copy.m_mat)
-		, m_inv(copy.m_inv)
+	bool PhysicsState::dispose()
 	{
-	}
-
-	PhysicsState::~PhysicsState()
-	{
-		clear();
-	}
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	void PhysicsState::clear()
-	{
+		m_size = 0;
 		m_pos.clear();
 		m_rot.clear();
 		m_mat.clear();
 		m_inv.clear();
+		return empty();
 	}
 
 	bool PhysicsState::empty() const
@@ -67,89 +69,5 @@ namespace ml
 		return m_size;
 	}
 
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	bool PhysicsState::getPos(const int32_t index, vec3 & value) const
-	{
-		if ((index > PhysicsState::InvalidIndex) && ((size_t)(index) < m_pos.size()))
-		{
-			value = m_pos[(size_t)(index)];
-			return true;
-		}
-		return false;
-	}
-
-	bool PhysicsState::getRot(const int32_t index, quat & value) const
-	{
-		if ((index > PhysicsState::InvalidIndex) && ((size_t)(index) < m_rot.size()))
-		{
-			value = m_rot[(size_t)(index)];
-			return true;
-		}
-		return false;
-	}
-
-	bool PhysicsState::getMat(const int32_t index, mat4 & value) const
-	{
-		if ((index > PhysicsState::InvalidIndex) && ((size_t)(index) < m_mat.size()))
-		{
-			value = m_mat[(size_t)(index)];
-			return true;
-		}
-		return false;
-	}
-
-	bool PhysicsState::getInv(const int32_t index, mat4 & value) const
-	{
-		if ((index > PhysicsState::InvalidIndex) && ((size_t)(index) < m_inv.size()))
-		{
-			value = m_inv[(size_t)(index)];
-			return true;
-		}
-		return false;
-	}
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	bool PhysicsState::setPos(const int32_t index, const vec3 & value)
-	{
-		if ((index > PhysicsState::InvalidIndex) && ((size_t)(index) < m_pos.size()))
-		{
-			m_pos[(size_t)(index)] = value;
-			return true;
-		}
-		return false;
-	}
-
-	bool PhysicsState::setRot(const int32_t index, const quat & value)
-	{
-		if ((index > PhysicsState::InvalidIndex) && ((size_t)(index) < m_rot.size()))
-		{
-			m_rot[(size_t)(index)] = value;
-			return true;
-		}
-		return false;
-	}
-
-	bool PhysicsState::setMat(const int32_t index, const mat4 & value)
-	{
-		if ((index > PhysicsState::InvalidIndex) && ((size_t)(index) < m_mat.size()))
-		{
-			m_mat[(size_t)(index)] = value;
-			return true;
-		}
-		return false;
-	}
-
-	bool PhysicsState::setInv(const int32_t index, const mat4 & value)
-	{
-		if ((index > PhysicsState::InvalidIndex) && ((size_t)(index) < m_inv.size()))
-		{
-			m_inv[(size_t)(index)] = value;
-			return true;
-		}
-		return false;
-	}
-
-	/* * * * * * * * * * * * * * * * * * * * */
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 }
