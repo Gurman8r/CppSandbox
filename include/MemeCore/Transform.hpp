@@ -45,6 +45,7 @@ namespace ml
 		Transform &	scale(const vec3 & value);
 		Transform &	translate(const vec3 & value);
 		Transform & lookAt(const vec3 & eye, const vec3 & pos, const vec3 & up);
+		Transform & lookAt(const vec3 & eye, const vec3 & pos);
 
 		/* * * * * * * * * * * * * * * * * * * * */
 

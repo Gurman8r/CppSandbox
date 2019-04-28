@@ -182,6 +182,11 @@ namespace ml
 		return update(LookAt(eye, pos, up));
 	}
 
+	Transform & Transform::lookAt(const vec3 & eye, const vec3 & pos)
+	{
+		return lookAt(eye, pos, vec3::Up);
+	}
+
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Transform & Transform::update(const Transform & other)

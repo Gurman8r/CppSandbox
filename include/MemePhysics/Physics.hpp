@@ -53,7 +53,7 @@ namespace ml
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-		bool setupState(const size_t count);
+		bool initializeState(const size_t count);
 		bool setupRigidbody(const Rigidbody * value);
 
 
@@ -90,7 +90,7 @@ namespace ml
 
 		template <
 			class Fun, class ... Args
-		> inline bool copyState(Fun && fun, Args && ... args)
+		> inline bool getCopyState(Fun && fun, Args && ... args)
 		{
 			PhysicsState temp;
 			if (temp.deepCopy(m_state))

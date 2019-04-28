@@ -368,15 +368,12 @@ namespace DEMO
 				});
 				camera->color = { 0.025f, 0.025f, 0.025f, 1.0f };
 				camera->position = { 0.0f, 1.0f, 10.0f };
+				camera->forward(ml::vec3::Back);
 
 				ml::Transform * transform = ent->add<ml::Transform>(
 					ml::mat4::Identity()
 				);
-				transform->lookAt(
-					camera->position,
-					camera->position + ml::vec3::Back,
-					ml::vec3::Up
-				);
+				transform->lookAt(camera->position, camera->forward());
 			}
 
 			// Light
@@ -676,13 +673,14 @@ namespace DEMO
 			}
 		}
 
+
 		// Launch Physics
 		/* * * * * * * * * * * * * * * * * * * * */
-		if (!ML_Physics.launch([]()
+		ML_Physics.launch([]()
 		{
 			// Physics Setup
 			/* * * * * * * * * * * * * * * * * * * * */
-			if (ML_Physics.setupState(MAX_RIGIDBODY))
+			if (ML_Physics.initializeState(MAX_RIGIDBODY))
 			{
 				for (const auto & pair : ML_Res.entities)
 				{
@@ -690,7 +688,9 @@ namespace DEMO
 					{
 						if (!ML_Physics.setupRigidbody(rb))
 						{
-							ml::Debug::logError("Failed Initializing Rigidbody");
+							ml::Debug::logError("Failed initializing rigidbody: {0}",
+								rb->index()
+							);
 						}
 					}
 				}
@@ -710,12 +710,12 @@ namespace DEMO
 					ml::quat rot;
 					ml::mat4 mat;
 					ml::mat4 inv;
-
 					if (state.get<state.T_Pos>(i, pos) &&
 						state.get<state.T_Rot>(i, rot) &&
 						state.get<state.T_Mat>(i, mat) &&
 						state.get<state.T_Inv>(i, inv))
 					{
+						// Modify copy's data
 						switch (i)
 						{
 						case RB_BORG:
@@ -746,22 +746,20 @@ namespace DEMO
 							break;
 						}
 
-						assert( // Set copy's data
-							state.set<state.T_Pos>(i, pos) &&
-							state.set<state.T_Rot>(i, rot) &&
-							state.set<state.T_Mat>(i, mat) &&
-							state.set<state.T_Inv>(i, inv) &&
-							"Failed updating state!"
-						);
+						// Set copy's data
+						if (!state.set<state.T_Pos>(i, pos) ||
+							!state.set<state.T_Rot>(i, rot) ||
+							!state.set<state.T_Mat>(i, mat) ||
+							!state.set<state.T_Inv>(i, inv))
+						{
+							ml::Debug::logError("Failed updating state: {0}", i);
+						}
 					}
 				});
 			}
 
 			/* * * * * * * * * * * * * * * * * * * * */
-		}))
-		{
-			ml::Debug::fatal("Failed launching physics thread!");
-		}
+		});
 	}
 
 	void Sandbox::onUpdate(const ml::UpdateEvent * ev)
@@ -809,28 +807,26 @@ namespace DEMO
 
 			if (ml::Transform * transform = ML_CAMERA->get<ml::Transform>())
 			{
-				if (globals.camAuto)
+				if (ml::Transform * target = ML_Res.entities.get("earth")->get<ml::Transform>())
 				{
-					transform->lookAt(
-						camera->position,
-						camera->forward(
-							ML_Res.entities.get("earth")->get<ml::Transform>()->getPos() -
-							camera->position
-						),
-						ml::vec3::Up
-					);
+					if (globals.camAuto)
+					{
+						camera->forward(target->getPos() - camera->position);
 
-					camera->position 
-						+=	camera->right() 
-						*	ev->elapsed.delta() 
-						*	globals.camSpd;
+						transform->lookAt(camera->position, camera->forward());
+
+						camera->position
+							+= camera->right()
+							*	ev->elapsed.delta()
+							*	globals.camSpd;
+					}
 				}
 			}
 		}
 
 		// Update Physics
 		/* * * * * * * * * * * * * * * * * * * * */
-		ML_Physics.copyState([&](const ml::PhysicsState & state)
+		ML_Physics.getCopyState([&](const ml::PhysicsState & state)
 		{
 			for (auto & pair : ML_Res.entities)
 			{

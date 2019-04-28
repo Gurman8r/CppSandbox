@@ -31,9 +31,12 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-	bool Physics::setupState(const size_t count)
+	bool Physics::initializeState(const size_t count)
 	{
-		return m_state.resize(count);
+		return ((!m_state)
+			? (m_state.resize(count))
+			: (false)
+		);
 	}
 
 	bool Physics::setupRigidbody(const Rigidbody * value)

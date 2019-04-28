@@ -8,7 +8,7 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	Rigidbody::Rigidbody()
-		: m_index		(PhysicsState::InvalidIndex)
+		: m_index		(-1)
 		, m_transform	(NULL)
 		, m_collider	(NULL)
 		, m_particle	(NULL)
