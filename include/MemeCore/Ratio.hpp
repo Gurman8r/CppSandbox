@@ -8,8 +8,8 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	template <
-		uint64_t N, // Numerator
-		uint64_t D	// Denominator
+		intmax_t N, // Numerator
+		intmax_t D	// Denominator
 	> using Ratio = typename std::ratio<N, D>;
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -35,8 +35,8 @@ namespace ml
 
 	template <
 		typename T, 
-		uint64_t N, 
-		uint64_t D
+		intmax_t N, 
+		intmax_t D
 	>
 	constexpr T ratio_cast(const T & value, const Ratio<N, D> & r)
 	{

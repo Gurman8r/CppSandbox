@@ -114,12 +114,12 @@ namespace ml
 		));
 	}
 	
-	mat4 Transform::Rotate(const mat4 & value, const float angle, const vec3 & axis)
+	mat4 Transform::Rotate(const mat4 & m, const float angle, const vec3 & v)
 	{
 		return glm::rotate(
-			(glm::mat4)(value), 
+			(glm::mat4)(m), 
 			angle, 
-			(glm::vec3)(axis)
+			(glm::vec3)(v)
 		);
 	}
 
@@ -140,6 +140,11 @@ namespace ml
 	mat4 Transform::Translate(const mat4 & value, const vec3 & tns)
 	{
 		return glm::translate((glm::mat4)(value), (glm::vec3)(tns));
+	}
+
+	mat4 Transform::Transpose(const mat4 & value)
+	{
+		return glm::transpose((glm::mat4)value);
 	}
 
 	

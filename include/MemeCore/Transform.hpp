@@ -35,6 +35,7 @@ namespace ml
 		static mat4 Rotate(const mat4 & value, const quat & rot);
 		static mat4 Scale(const mat4 & value, const vec3 & scl);
 		static mat4 Translate(const mat4 & value, const vec3 & tns);
+		static mat4 Transpose(const mat4 & value);
 
 
 	public: // Member Functions

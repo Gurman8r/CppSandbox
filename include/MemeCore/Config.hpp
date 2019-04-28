@@ -58,7 +58,6 @@
 #	error This operating system does not support memes.
 # endif
 
-
 //	Architecture / Platform
 /* * * * * * * * * * * * * * * * * * * */
 # if defined(_WIN64		)\
@@ -66,14 +65,12 @@
   || defined(__x86_64__	)\
   || defined(__ppc64__	)\
   || defined(_x64		)\
-  || defined(_M_X64		)\
-  || defined(__LP64__	)\
-  || defined(__LLP64__	)
-#	define ML_64
+  || defined(_M_X64		)
+#	define ML_x64
 #	define ML_ARCHITECTURE 64
 #	define ML_PLATFORM_TARGET "x64"
 # else
-#	define ML_32
+#	define ML_x32
 #	define ML_ARCHITECTURE 32
 #	define ML_PLATFORM_TARGET "x86"
 # endif

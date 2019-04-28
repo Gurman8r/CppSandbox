@@ -11,17 +11,15 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	template <
-		class _Key
+		class Key, class ... Args
 	> class StateMachine final
 		: public ITrackable
 		, public INonCopyable
 	{
 	public:
-		using key_type		= typename _Key;
-		using fun_type		= typename key_type(*)(void);
-
-		using map_type		= typename HashMap<key_type, fun_type>;
-		using pair_type		= typename Pair<key_type, fun_type>;
+		using fun_type		= typename Key(*)(Args...);
+		using map_type		= typename HashMap<Key, fun_type>;
+		using pair_type		= typename Pair<Key, fun_type>;
 		using init_type		= typename Initializer<pair_type>;
 		using iterator		= typename map_type::iterator;
 		using const_iterator= typename map_type::const_iterator;
@@ -37,7 +35,7 @@ namespace ml
 		{
 			for (auto it = init.begin(); it != init.end(); it++)
 			{
-				if (it->second && (it->first > (static_cast<key_type>(ML_STATE_INVALID))))
+				if (it->second && (it->first != (static_cast<Key>(ML_STATE_INVALID))))
 				{
 					m_states[it->first] = it->second;
 				}
@@ -47,10 +45,10 @@ namespace ml
 		~StateMachine() {}
 
 	public:
-		inline fun_type get(const key_type & key) const
+		inline fun_type get(const Key & key) const
 		{
 			const_iterator it;
-			return ((key > (static_cast<key_type>(ML_STATE_INVALID)))
+			return ((key != (static_cast<Key>(ML_STATE_INVALID)))
 				? ((((it = m_states.find(key)) != m_states.end())
 					? (it->second)
 					: (NULL)))
@@ -58,14 +56,14 @@ namespace ml
 			);
 		}
 
-		inline key_type run(const key_type & key)
+		inline Key run(const Key & key, Args && ... args)
 		{
 			fun_type fun;
-			return ((key > static_cast<key_type>(ML_STATE_INVALID))
+			return ((key != static_cast<Key>(ML_STATE_INVALID))
 				? (((fun = get(key))
-					? (fun())
-					: (static_cast<key_type>(ML_STATE_INVALID))))
-				: (static_cast<key_type>(ML_STATE_INVALID))
+					? (fun((args)...))
+					: (static_cast<Key>(ML_STATE_INVALID))))
+				: (static_cast<Key>(ML_STATE_INVALID))
 			);
 		}
 
