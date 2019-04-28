@@ -23,5 +23,10 @@ namespace ml
 	{
 	}
 
+	bool SphereCollider::checkCollision(const Collider & other) const
+	{
+		return false;
+	}
+
 	/* * * * * * * * * * * * * * * * * * * * */
 }

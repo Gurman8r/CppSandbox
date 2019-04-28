@@ -46,8 +46,8 @@ namespace ml
 		{	m_changed = false;
 
 			float angle		= m_rotation * Maths::Deg2Rad;
-			float cosine	= cosf(angle);
-			float sine		= sinf(angle);
+			float cosine	= std::cosf(angle);
+			float sine		= std::sinf(angle);
 			float sxc		= m_scale[0] * cosine;
 			float syc		= m_scale[1] * cosine;
 			float sxs		= m_scale[0] * sine;
@@ -59,7 +59,7 @@ namespace ml
 			float m03 = -sxs; float m04 = syc; float m05 = ty;
 			float m10 =  0.f; float m11 = 0.f; float m12 = 0.f;
 
-			m_matrix = mat4 {
+			m_matrix = {
 				m00, m01, 0.f, m02,
 				m03, m04, 0.f, m05,
 				0.f, 0.f, 1.f, 0.f,

@@ -7,7 +7,7 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	class ML_PHYSICS_API SphereCollider
+	class ML_PHYSICS_API SphereCollider final
 		: public Collider
 	{
 	public:
@@ -15,6 +15,9 @@ namespace ml
 		SphereCollider(const float radius);
 		SphereCollider(const SphereCollider & copy);
 		~SphereCollider();
+
+	public:
+		bool checkCollision(const Collider & other) const override;
 
 	public:
 		inline const float	radius() const	{ return m_radius; }

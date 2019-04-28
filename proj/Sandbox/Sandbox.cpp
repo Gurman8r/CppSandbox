@@ -656,7 +656,7 @@ namespace DEMO
 					{
 						if (!ML_Physics.world().setupRigidbody(rb))
 						{
-							ml::Debug::fatal("Failed Initializing Rigidbody");
+							ml::Debug::logError("Failed Initializing Rigidbody");
 						}
 					}
 				}
@@ -713,12 +713,15 @@ namespace DEMO
 							case RB_GROUND:
 								break;
 							}
+
 							// Set copy's data
-							assert(
-								stateCopy.setPos(i, pos) &&
-								stateCopy.setRot(i, rot) &&
-								"Failed updating physics data!"
-							);
+							if (stateCopy.setPos(i, pos) &&
+								stateCopy.setRot(i, rot)
+							) continue;
+							else
+							{
+								ml::Debug::log("Failed updating state: {0}", i);
+							}
 						}
 					}
 					// Update current world state

@@ -18,7 +18,7 @@ namespace ml
 	{
 		(*this)
 			.translate(pos)
-			.rotate(0.f, vec3::One)
+			.rotate(0.0f, vec3::One)
 			.scale(scl);
 	}
 

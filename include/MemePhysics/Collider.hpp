@@ -8,10 +8,6 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	class Rigidbody;
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
 	class ML_PHYSICS_API Collider
 		: public ITrackable
 	{
@@ -19,7 +15,8 @@ namespace ml
 		Collider();
 		virtual ~Collider();
 
-	private:
+	public:
+		virtual bool checkCollision(const Collider & other) const = 0;
 
 	};
 

@@ -23,5 +23,10 @@ namespace ml
 	{
 	}
 
+	bool BoxCollider::checkCollision(const Collider & other) const
+	{
+		return false;
+	}
+
 	/* * * * * * * * * * * * * * * * * * * * */
 }
