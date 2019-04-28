@@ -7,7 +7,7 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	struct ML_PHYSICS_API Particle
+	struct ML_PHYSICS_API Particle final
 		: public ITrackable
 	{
 		/* * * * * * * * * * * * * * * * * * * * */

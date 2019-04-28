@@ -422,8 +422,13 @@ namespace DEMO
 				transform->getScl() // size
 			});
 
+			ml::Particle * particle = ent->add<ml::Particle>({
+				transform->getPos(), // position
+				1.0f // mass
+			});
+
 			ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
-				RB_BORG, transform, collider, NULL
+				RB_BORG, transform, collider, particle
 			});
 
 			ml::Renderer * renderer = ent->add<ml::Renderer>({
@@ -459,8 +464,13 @@ namespace DEMO
 				transform->getScl() // size
 			});
 
+			ml::Particle * particle = ent->add<ml::Particle>({
+				transform->getPos(), // position
+				1.0f // mass
+			});
+
 			ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
-				RB_CUBE, transform, collider, NULL
+				RB_CUBE, transform, collider, particle
 			});
 
 			ml::Renderer * renderer = ent->add<ml::Renderer>({
@@ -488,7 +498,7 @@ namespace DEMO
 		{
 			ml::Transform * transform = ent->add<ml::Transform>({
 				{ -5.0f, 0.0f, 0.0f }, // position
-				{ 1.0f }, // scale
+				{ 0.5f }, // scale
 				{ } // rotation
 			});
 
@@ -496,8 +506,13 @@ namespace DEMO
 				transform->getScl()[1] // radius
 			});
 
+			ml::Particle * particle = ent->add<ml::Particle>({
+				transform->getPos(), // position
+				1.0f // mass
+			});
+
 			ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
-				RB_NAVBALL, transform, collider, NULL
+				RB_NAVBALL, transform, collider, particle
 			});
 
 			ml::Renderer * renderer = ent->add<ml::Renderer>({
@@ -533,8 +548,13 @@ namespace DEMO
 				transform->getScl()[1] // radius
 			});
 
+			ml::Particle * particle = ent->add<ml::Particle>({
+				transform->getPos(), // position
+				1.0f // mass
+			});
+
 			ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
-				RB_MOON, transform, collider, NULL
+				RB_MOON, transform, collider, particle
 			});
 
 			ml::Renderer * renderer = ent->add<ml::Renderer>({
@@ -576,8 +596,13 @@ namespace DEMO
 				transform->getScl()[0] // radius
 			});
 
+			ml::Particle * particle = ent->add<ml::Particle>({
+				transform->getPos(), // position
+				1.0f // mass
+			});
+
 			ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
-				RB_EARTH, transform, collider, NULL
+				RB_EARTH, transform, collider, particle
 			});
 
 			ml::Renderer * renderer = ent->add<ml::Renderer>({
@@ -619,8 +644,13 @@ namespace DEMO
 				transform->getScl() // size
 			});
 
+			ml::Particle * particle = ent->add<ml::Particle>({
+				transform->getPos(), // position
+				1.0f // mass
+			});
+
 			ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
-				RB_GROUND, transform, collider, NULL
+				RB_GROUND, transform, collider, particle
 			});
 
 			ml::Renderer * renderer = ent->add<ml::Renderer>({
@@ -644,7 +674,7 @@ namespace DEMO
 
 		// Launch Physics
 		/* * * * * * * * * * * * * * * * * * * * */
-		ML_Physics.thread().launch([]()
+		ML_Physics.thread().launch([&]()
 		{
 			// Physics Setup
 			/* * * * * * * * * * * * * * * * * * * * */
@@ -842,7 +872,7 @@ namespace DEMO
 			const ml::vec2	origin	 = { (float)fontSize, (float)(fontSize * 2) };
 			ml::vec2		linePos	 = 0.0f;
 			size_t			lineNum	 = 0;
-			auto			newLine = [&]() { return (linePos = (origin + (offset * (float)(lineNum++)))); };
+			auto			newLine  = [&]() { return (linePos = (origin + (offset * (float)(lineNum++)))); };
 
 			m_text["gl_version"]
 				.setFont(font)
