@@ -177,6 +177,11 @@ namespace ml
 		bind(this, bindTextures);
 	}
 
+	void Shader::unbind() const
+	{
+		bind(NULL, false);
+	}
+
 	void Shader::bind(const Shader * shader, bool bindTextures)
 	{
 		if (shader && (*shader))

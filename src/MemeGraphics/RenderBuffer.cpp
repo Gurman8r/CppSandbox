@@ -44,30 +44,34 @@ namespace ml
 	
 	/* * * * * * * * * * * * * * * * * * * * */
 	
-	void RenderBuffer::bind() const
+	const RenderBuffer & RenderBuffer::bind() const
 	{
 		ML_GL.bindRenderbuffer(GL::Renderbuffer, (*this));
+		return (*this);
 	}
 	
-	void RenderBuffer::unbind() const
+	const RenderBuffer & RenderBuffer::unbind() const
 	{
 		ML_GL.bindRenderbuffer(GL::Renderbuffer, NULL);
+		return (*this);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void RenderBuffer::bufferStorage(GL::Format format) const
+	const RenderBuffer & RenderBuffer::bufferStorage(GL::Format format) const
 	{
 		ML_GL.renderbufferStorage(GL::Renderbuffer, format, m_width, m_height);
+		return (*this);
 	}
 
-	void RenderBuffer::setFramebuffer(GL::FBO_Attachment attachment) const
+	const RenderBuffer & RenderBuffer::setFramebuffer(GL::FBO_Attachment attachment) const
 	{
 		ML_GL.framebufferRenderbuffer(
 			GL::Framebuffer, 
 			attachment, 
 			GL::Renderbuffer,
 			(*this));
+		return (*this);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

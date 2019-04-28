@@ -43,14 +43,16 @@ namespace ml
 	
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void VertexArray::bind() const
+	const VertexArray & VertexArray::bind() const
 	{
 		ML_GL.bindVertexArray((*this));
+		return (*this);
 	}
 
-	void VertexArray::unbind() const
+	const VertexArray & VertexArray::unbind() const
 	{
 		ML_GL.bindVertexArray(NULL);
+		return (*this);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

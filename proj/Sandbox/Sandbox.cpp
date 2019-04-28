@@ -901,7 +901,8 @@ namespace DEMO
 					this->getCursorPos()));
 
 			m_text["window_pos"]
-				
+				.setFont(font)
+				.setFontSize(fontSize)
 				.setPosition(newLine())
 				.setString(ml::String("wx/wy: {0}").format(
 					this->getPosition()));
@@ -962,12 +963,15 @@ namespace DEMO
 				// Draw Sprites
 				if (const ml::Shader * shader = ML_Res.shaders.get("sprites"))
 				{
-					static ml::RenderBatch batch(&m_canvas.vao(), &m_canvas.vbo(), { shader,
-					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ortho },
-						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4 },
-						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D },
-					} });
+					static ml::RenderBatch batch(
+						&m_canvas.vao(),
+						&m_canvas.vbo(),
+						ml::Material(shader,
+							{
+								{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ortho },
+								{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4 },
+								{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D },
+							}));
 					
 					for (const auto & pair : ML_Res.sprites)
 					{
@@ -978,12 +982,15 @@ namespace DEMO
 				// Draw Text
 				if (const ml::Shader * shader = ML_Res.shaders.get("text"))
 				{
-					static ml::RenderBatch batch(&m_canvas.vao(), &m_canvas.vbo(), { shader,
-					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ortho },
-						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4 },
-						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D },
-					} });
+					static ml::RenderBatch batch(
+						&m_canvas.vao(),
+						&m_canvas.vbo(),
+						ml::Material(shader,
+							{
+								{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ortho },
+								{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4 },
+								{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D },
+							}));
 
 					for (const auto & pair : m_text)
 					{
@@ -1000,9 +1007,10 @@ namespace DEMO
 					{ "Geom.size",		ml::Uniform::Float, &globals.lineSize },
 					{ "Geom.samples",	ml::Uniform::Int,	&globals.lineSamples },
 				} };
-				if (geometry.apply())
+				if (geometry.bind())
 				{
 					ML_GL.drawArrays(ml::GL::Points, 0, 4);
+					geometry.unbind();
 				}
 			}
 
@@ -1014,16 +1022,14 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (const ml::Effect * post = ML_Res.effects.get("frame_post"))
 		{
+			post->bind();
 			if (const ml::Effect * scene = ML_Res.effects.get("frame_main"))
 			{
-				if (const ml::Shader * shader = scene->shader())
-				{
-					post->bind();
-					shader->setUniform({ "Effect.mode", ml::Uniform::Int, &globals.effectMode });
-					this->draw(*scene);
-					post->unbind();
-				}
+				scene->shader()->setUniform("Effect.mode", globals.effectMode);
+
+				this->draw(*scene);
 			}
+			post->unbind();
 		}
 	}
 

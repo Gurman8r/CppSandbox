@@ -19,14 +19,15 @@ namespace ml
 		RenderBuffer(const RenderBuffer & copy);
 		~RenderBuffer();
 
+	public:
 		RenderBuffer & clean();
 		RenderBuffer & create(int32_t width, int32_t height);
 
-		void bind() const;
-		void unbind() const;
-
-		void bufferStorage(GL::Format internalFormat) const;
-		void setFramebuffer(GL::FBO_Attachment attachment) const;
+	public:
+		const RenderBuffer & bind() const;
+		const RenderBuffer & unbind() const;
+		const RenderBuffer & bufferStorage(GL::Format internalFormat) const;
+		const RenderBuffer & setFramebuffer(GL::FBO_Attachment attachment) const;
 
 	public:
 		inline const int32_t width()  const { return m_width;  }

@@ -48,40 +48,44 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void VertexBuffer::bind() const
+	const VertexBuffer & VertexBuffer::bind() const
 	{
 		ML_GL.bindBuffer(GL::ArrayBuffer, (*this));
+		return (*this);
 	}
 	
-	void VertexBuffer::unbind() const
+	const VertexBuffer & VertexBuffer::unbind() const
 	{
 		ML_GL.bindBuffer(GL::ArrayBuffer, NULL);
+		return (*this);
 	}
 	
 	/* * * * * * * * * * * * * * * * * * * * */
 	
-	void VertexBuffer::bufferData(const void * data, uint32_t size) const
+	const VertexBuffer & VertexBuffer::bufferData(const void * data, uint32_t size) const
 	{
 		m_data = data;
 		m_size = size;
 		m_count = size / Vertex::Size;
 		ML_GL.bufferData(GL::ArrayBuffer, (sizeof(float) * m_size), m_data, m_usage);
+		return (*this);
 	}
 	
-	void VertexBuffer::bufferData(const List<float> & data) const
+	const VertexBuffer & VertexBuffer::bufferData(const List<float> & data) const
 	{
 		return bufferData(&data[0], (uint32_t)data.size());
 	}
 	
-	void VertexBuffer::bufferSubData(const void * data, uint32_t size, uint32_t offset) const
+	const VertexBuffer & VertexBuffer::bufferSubData(const void * data, uint32_t size, uint32_t offset) const
 	{
 		m_data = data;
 		m_size = size;
 		m_count = size / Vertex::Size;
 		ML_GL.bufferSubData(GL::ArrayBuffer, offset, (sizeof(float) * m_size), m_data);
+		return (*this);
 	}
 	
-	void VertexBuffer::bufferSubData(const List<float> & data, uint32_t offset) const
+	const VertexBuffer & VertexBuffer::bufferSubData(const List<float> & data, uint32_t offset) const
 	{
 		return bufferSubData(&data[0], (uint32_t)data.size(), offset);
 	}

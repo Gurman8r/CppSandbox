@@ -19,16 +19,14 @@ namespace ml
 		FrameBuffer(const FrameBuffer & copy);
 		~FrameBuffer();
 
+	public:
 		FrameBuffer & clean();
 		FrameBuffer & create();
 
-		void bind() const;
-		void unbind() const;
-
-		void setTexture(uint32_t attchment, uint32_t value, GL::Target target, int32_t level) const;
-
-	private:
-
+	public:
+		const FrameBuffer & bind() const;
+		const FrameBuffer & unbind() const;
+		const FrameBuffer & setTexture(uint32_t attchment, uint32_t value, GL::Target target, int32_t level) const;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

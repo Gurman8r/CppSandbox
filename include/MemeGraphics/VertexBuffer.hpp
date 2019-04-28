@@ -19,16 +19,21 @@ namespace ml
 		VertexBuffer(const VertexBuffer & copy);
 		~VertexBuffer();
 
+	public:
 		VertexBuffer & clean();
 		VertexBuffer & create(GL::Usage usage);
 
-		void bind() const;
-		void unbind() const;
-		void bufferData(const void * data, uint32_t size) const;
-		void bufferData(const List<float> & data) const;
-		void bufferSubData(const void * data, uint32_t size, uint32_t offset) const;
-		void bufferSubData(const List<float> & data, uint32_t offset) const;
+	public:
+		const VertexBuffer & bind() const;
+		const VertexBuffer & unbind() const;
 
+		const VertexBuffer & bufferData(const void * data, uint32_t size) const;
+		const VertexBuffer & bufferData(const List<float> & data) const;
+
+		const VertexBuffer & bufferSubData(const void * data, uint32_t size, uint32_t offset) const;
+		const VertexBuffer & bufferSubData(const List<float> & data, uint32_t offset) const;
+
+	public:
 		inline const void *			data()	const { return m_data;}
 		inline const GL::Usage &	usage() const { return m_usage; }
 		inline const uint32_t &		size()	const { return m_size; }

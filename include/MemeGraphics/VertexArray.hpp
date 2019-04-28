@@ -19,12 +19,15 @@ namespace ml
 		VertexArray(const VertexArray & copy);
 		~VertexArray();
 
+	public:
 		VertexArray & clean();
 		VertexArray & create(GL::Mode mode);
 
-		void bind() const;
-		void unbind() const;
+	public:
+		const VertexArray & bind() const;
+		const VertexArray & unbind() const;
 
+	public:
 		inline const GL::Mode & mode()	const { return m_mode; }
 
 	private:

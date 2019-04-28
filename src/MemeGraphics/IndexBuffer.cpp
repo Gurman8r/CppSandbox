@@ -51,24 +51,26 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void IndexBuffer::bind() const
+	const IndexBuffer & IndexBuffer::bind() const
 	{
 		ML_GL.bindBuffer(GL::ElementArrayBuffer, (*this));
+		return (*this);
 	}
 
-	void IndexBuffer::unbind() const
+	const IndexBuffer & IndexBuffer::unbind() const
 	{
 		ML_GL.bindBuffer(GL::ElementArrayBuffer, NULL);
+		return (*this);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void IndexBuffer::bufferData(const List<uint32_t> & data) const
+	const IndexBuffer & IndexBuffer::bufferData(const List<uint32_t> & data) const
 	{
 		return bufferData(&data[0], (uint32_t)data.size());
 	}
 
-	void IndexBuffer::bufferData(const uint32_t * data, uint32_t count) const
+	const IndexBuffer & IndexBuffer::bufferData(const uint32_t * data, uint32_t count) const
 	{
 		m_data = data;
 		m_count = count;
@@ -78,6 +80,8 @@ namespace ml
 			(m_count * sizeof(uint32_t)),
 			m_data,
 			m_usage);
+
+		return (*this);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

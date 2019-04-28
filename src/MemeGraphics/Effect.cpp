@@ -138,6 +138,8 @@ namespace ml
 			m_shader->bind();
 
 			target.draw(*m_model);
+
+			m_shader->unbind();
 		}
 	}
 

@@ -35,6 +35,8 @@ namespace ml
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
 		void bind(bool bindTextures = true) const;
+		void unbind() const;
+
 		static void bind(const Shader * shader, bool bindTextures = true);
 
 	public:

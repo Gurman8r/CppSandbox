@@ -43,21 +43,24 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 	
-	void FrameBuffer::bind() const
+	const FrameBuffer & FrameBuffer::bind() const
 	{
 		ML_GL.bindFramebuffer(GL::Framebuffer, (*this));
+		return (*this);
 	}
 
-	void FrameBuffer::unbind() const
+	const FrameBuffer & FrameBuffer::unbind() const
 	{
 		ML_GL.bindFramebuffer(GL::Framebuffer, NULL);
+		return (*this);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	void FrameBuffer::setTexture(uint32_t attchment, uint32_t value, GL::Target target, int32_t level) const
+	const FrameBuffer & FrameBuffer::setTexture(uint32_t attchment, uint32_t value, GL::Target target, int32_t level) const
 	{
 		ML_GL.framebufferTexture2D(ml::GL::Framebuffer, attchment, target, value, level);
+		return (*this);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

@@ -19,15 +19,17 @@ namespace ml
 		IndexBuffer(const IndexBuffer & copy);
 		~IndexBuffer();
 
+	public:
 		IndexBuffer & clean();
 		IndexBuffer & create(GL::Usage usage, GL::Type type);
 
-		void bind() const;
-		void unbind() const;
+	public:
+		const IndexBuffer & bind() const;
+		const IndexBuffer & unbind() const;
+		const IndexBuffer & bufferData(const uint32_t * data, uint32_t count) const;
+		const IndexBuffer & bufferData(const List<uint32_t> & data) const;
 
-		void bufferData(const uint32_t * data, uint32_t count) const;
-		void bufferData(const List<uint32_t> & data) const;
-
+	public:
 		inline const uint32_t *		data()	const { return m_data; }
 		inline const uint32_t &		count() const { return m_count; }
 		inline const GL::Usage &	usage() const { return m_usage; }

@@ -38,13 +38,16 @@ namespace ml
 
 	void Renderer::draw(RenderTarget & target, RenderBatch batch) const
 	{
-		if (m_drawable && m_material.shader())
+		if (m_drawable)
 		{
 			m_states.apply();
 
-			m_material.apply();
+			if (m_material.bind())
+			{
+				target.draw(*m_drawable);
 
-			target.draw(*m_drawable);
+				m_material.unbind();
+			}
 		}
 	}
 

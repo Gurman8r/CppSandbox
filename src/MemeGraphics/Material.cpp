@@ -49,7 +49,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	bool Material::apply() const
+	bool Material::bind() const
 	{
 		if (m_shader && (*m_shader))
 		{
@@ -61,6 +61,14 @@ namespace ml
 			return true;
 		}
 		return false;
+	}
+
+	void Material::unbind() const
+	{
+		if (m_shader && (*m_shader))
+		{
+			m_shader->unbind();
+		}
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

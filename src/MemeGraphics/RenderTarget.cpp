@@ -53,9 +53,7 @@ namespace ml
 
 	RenderTarget & RenderTarget::draw(const float * vertices, const size_t vertexCount, const RenderBatch & batch)
 	{
-		batch.mat.apply();
-
-		if (batch.vbo && batch.vbo)
+		if (batch.vbo && batch.vbo && batch.mat.bind())
 		{
 			batch.vbo->bind();
 			batch.vbo->bufferSubData(vertices, (uint32_t)(vertexCount), 0);
@@ -63,10 +61,7 @@ namespace ml
 
 			return draw((*batch.vao), (*batch.vbo));
 		}
-		else
-		{
-			return (*this);
-		}
+		return (*this);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
