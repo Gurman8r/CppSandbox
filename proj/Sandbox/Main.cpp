@@ -59,11 +59,11 @@ int32_t main(int32_t argc, char ** argv)
 		ML_Engine.loop([]()
 		{
 			// Update
-			ML_EventSystem.fireEvent(ml::UpdateEvent(ML_Engine.frameTime()));
+			ML_EventSystem.fireEvent(ml::UpdateEvent(ML_Engine.elapsed()));
 			// Draw
-			ML_EventSystem.fireEvent(ml::DrawEvent(ML_Engine.frameTime()));
+			ML_EventSystem.fireEvent(ml::DrawEvent(ML_Engine.elapsed()));
 			// Gui
-			ML_EventSystem.fireEvent(ml::GuiEvent(ML_Engine.frameTime()));
+			ML_EventSystem.fireEvent(ml::GuiEvent(ML_Engine.elapsed()));
 		});
 		return control.run(State::Unload);
 	} },

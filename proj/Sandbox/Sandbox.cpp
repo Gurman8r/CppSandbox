@@ -674,17 +674,17 @@ namespace DEMO
 
 		// Launch Physics
 		/* * * * * * * * * * * * * * * * * * * * */
-		ML_Physics.thread().launch([&]()
+		if (!ML_Physics.launch([]()
 		{
 			// Physics Setup
 			/* * * * * * * * * * * * * * * * * * * * */
-			if (ML_Physics.world().state().resize(MAX_RIGIDBODY))
+			if (ML_Physics.state().resize(MAX_RIGIDBODY))
 			{
 				for (const auto & pair : ML_Res.entities)
 				{
 					if (const ml::Rigidbody * rb = pair.second->get<ml::Rigidbody>())
 					{
-						if (!ML_Physics.world().setupRigidbody(rb))
+						if (!ML_Physics.setupRigidbody(rb))
 						{
 							ml::Debug::logError("Failed Initializing Rigidbody");
 						}
@@ -697,14 +697,13 @@ namespace DEMO
 			while (ML_Engine.isRunning())
 			{
 				// Total Time
-				const float totalT = ML_Time.elapsed().milliseconds() / (float)ml::Milli::den;
+				const float totalT = ML_Time.elapsed().delta();
 
 				// Delta Time
-				const float deltaT = ML_Engine.frameTime().delta();
-				
+				const float deltaT = ML_Engine.elapsed().delta();
+
 				// Get copy of current world state
-				ml::PhysicsState stateCopy;
-				if (ML_Physics.beginUpdate(stateCopy))
+				ML_Physics.capture([&](ml::PhysicsState & stateCopy)
 				{
 					for (int32_t i = 0, imax = stateCopy.size(); i < imax; i++)
 					{
@@ -754,13 +753,14 @@ namespace DEMO
 							}
 						}
 					}
-					// Update current world state
-					ML_Physics.endUpdate(stateCopy);
-				}
+				});
 			}
 
 			/* * * * * * * * * * * * * * * * * * * * */
-		});
+		}))
+		{
+			ml::Debug::fatal("Failed launching physics thread!");
+		}
 	}
 
 	void Sandbox::onUpdate(const ml::UpdateEvent * ev)
@@ -829,7 +829,7 @@ namespace DEMO
 
 		// Update Physics
 		/* * * * * * * * * * * * * * * * * * * * */
-		if (const ml::PhysicsState stateCopy = ML_Physics.world().state())
+		if (const ml::PhysicsState stateCopy = ML_Physics.state())
 		{
 			for (auto & pair : ML_Res.entities)
 			{
@@ -1163,7 +1163,7 @@ namespace DEMO
 		ML_Res.dispose();
 
 		// Cleanup Physics Thread
-		ML_Physics.thread().dispose();
+		ML_Physics.dispose();
 	}
 
 	void Sandbox::onExit(const ml::ExitEvent * ev)

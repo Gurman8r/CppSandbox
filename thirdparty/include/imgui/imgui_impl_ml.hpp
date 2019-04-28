@@ -6,10 +6,6 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-struct ImDrawData;
-
-/* * * * * * * * * * * * * * * * * * * * */
-
 ML_EDITOR_API bool ImGui_ML_Init(ml::CString version, ml::Window * window, bool install_callbacks, ml::CString iniName);
 ML_EDITOR_API void ImGui_ML_Shutdown();
 ML_EDITOR_API void ImGui_ML_NewFrame();

@@ -45,14 +45,8 @@
     <ClInclude Include="..\..\include\MemePhysics\Rigidbody.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemePhysics\Physics.hpp">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemePhysics\PhysicsEvents.hpp">
       <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemePhysics\PhysicsWorld.hpp">
-      <Filter>Header Files\DS</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemePhysics\PhysicsState.hpp">
       <Filter>Header Files\DS</Filter>
@@ -72,6 +66,9 @@
     <ClInclude Include="..\..\include\MemePhysics\Ray.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemePhysics\Physics.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemePhysics\Force.cpp">
@@ -85,9 +82,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemePhysics\Physics.cpp">
       <Filter>Source Files\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemePhysics\PhysicsWorld.cpp">
-      <Filter>Source Files\DS</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemePhysics\Collider.cpp">
       <Filter>Source Files\Colliders</Filter>

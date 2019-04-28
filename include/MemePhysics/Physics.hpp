@@ -3,7 +3,9 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-#include <MemePhysics/PhysicsWorld.hpp>
+#include <MemePhysics/PhysicsState.hpp>
+#include <MemeCore/Timer.hpp>
+#include <MemeCore/Thread.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -25,34 +27,71 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
+	class Rigidbody;
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_PHYSICS_API Physics final
-		: public ISingleton<Physics>
+		: public IDisposable
+		, public ISingleton<Physics>
 	{
 		friend class ISingleton<Physics>;
+
+	public:
+		static const vec3 Gravity;
 
 	private:
 		Physics() {}
 		~Physics() {}
 
 	public:
-		static const vec3 Gravity;
+		bool dispose() override;
+
+	public:
+		bool setupRigidbody(const Rigidbody * value);
 
 	public:
 		bool beginUpdate(PhysicsState & value);
 		bool endUpdate(const PhysicsState & value);
 
 	public:
-		inline Mutex		& mutex()	{ return m_mutex;	}
-		inline Thread		& thread()	{ return m_thread;	}
-		inline Timer		& timer()	{ return m_timer;	}
-		inline PhysicsWorld & world()	{ return m_world;	}
+		inline const PhysicsState &	state()		const	{ return m_state;	}
+		inline PhysicsState	&		state()				{ return m_state;	}
+		inline const Mutex &		mutex()		const	{ return m_mutex;	}
+		inline const Thread &		thread()	const	{ return m_thread;	}
+		inline const Timer &		timer()		const	{ return m_timer;	}
+		inline const Duration &		elapsed()	const	{ return m_elapsed; }
+
+	public:
+		template <
+			class Fun,
+			class ... Args
+		> inline bool launch(Fun && fun, Args && ... args)
+		{
+			return m_thread.launch(fun, (args)...);
+		}
+
+		template <
+			class Fun,
+			class ... Args
+		> inline void capture(Fun && fun, Args && ... args)
+		{
+			PhysicsState stateCopy;
+			if (beginUpdate(stateCopy))
+			{
+				fun(stateCopy, (args)...);
+				endUpdate(stateCopy);
+			}
+
+		}
 
 	private:
 		bool			m_updating = false;
+		PhysicsState	m_state;
 		Mutex			m_mutex;
 		Thread			m_thread;
 		Timer			m_timer;
-		PhysicsWorld	m_world;
+		Duration		m_elapsed;
 
 	};
 

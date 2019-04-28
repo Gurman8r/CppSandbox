@@ -9,7 +9,7 @@ namespace ml
 	Engine::Engine()
 		: m_app			(NULL)
 		, m_timer		(m_timer)
-		, m_frameTime	(m_frameTime)	
+		, m_elapsed	(m_elapsed)	
 		, m_frameCount	(m_frameCount)
 		, m_frameRate	(m_frameRate)	
 		, m_nextSecond	(m_nextSecond)
@@ -61,11 +61,11 @@ namespace ml
 			m_app->swapBuffers();
 		}
 
-		m_frameTime = m_timer.stop().elapsed();
+		m_elapsed = m_timer.stop().elapsed();
 
 		m_frameCount++;
 
-		if (((m_nextSecond += m_frameTime.delta()) - m_prevSecond) > 1.0f)
+		if (((m_nextSecond += m_elapsed.delta()) - m_prevSecond) > 1.0f)
 		{
 			m_prevSecond = m_nextSecond;
 			
