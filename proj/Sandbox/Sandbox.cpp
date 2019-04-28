@@ -345,7 +345,7 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (ml::Sprite * spr = ML_Res.sprites.get("neutrino"))
 		{
-			spr->setPosition(ml::vec2(0.95f, 0.075f) * this->getSize())
+			spr->setPosition(ml::vec2(0.95f, 0.925f) * this->getSize())
 				.setScale	(0.5f)
 				.setRotation(0.0f)
 				.setOrigin	(0.5f)
@@ -419,6 +419,7 @@ namespace DEMO
 			});
 
 			ml::BoxCollider * collider = ent->add<ml::BoxCollider>({
+				transform->getScl() // size
 			});
 
 			ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
@@ -455,6 +456,7 @@ namespace DEMO
 			});
 
 			ml::BoxCollider * collider = ent->add<ml::BoxCollider>({
+				transform->getScl() // size
 			});
 
 			ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
@@ -491,6 +493,7 @@ namespace DEMO
 			});
 
 			ml::SphereCollider * collider = ent->add<ml::SphereCollider>({
+				transform->getScl()[1] // radius
 			});
 
 			ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
@@ -527,6 +530,7 @@ namespace DEMO
 			});
 
 			ml::SphereCollider * collider = ent->add<ml::SphereCollider>({
+				transform->getScl()[1] // radius
 			});
 
 			ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
@@ -569,6 +573,7 @@ namespace DEMO
 			});
 
 			ml::SphereCollider * collider = ent->add<ml::SphereCollider>({
+				transform->getScl()[0] // radius
 			});
 
 			ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
@@ -611,6 +616,7 @@ namespace DEMO
 			});
 
 			ml::BoxCollider * collider = ent->add<ml::BoxCollider>({
+				transform->getScl() // size
 			});
 
 			ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
@@ -640,47 +646,43 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 		ML_Physics.thread().launch([]()
 		{
-			// Setup
+			// Physics Setup
 			/* * * * * * * * * * * * * * * * * * * * */
-			if (ml::PhysicsState & state = ML_Physics.world().state().resize(MAX_RIGIDBODY))
+			if (ML_Physics.world().state().resize(MAX_RIGIDBODY))
 			{
 				for (const auto & pair : ML_Res.entities)
 				{
 					if (const ml::Rigidbody * rb = pair.second->get<ml::Rigidbody>())
 					{
-						if (const ml::Transform * transform = rb->transform())
+						if (!ML_Physics.world().setupRigidbody(rb))
 						{
-							assert(
-								state.setPos(rb->index(), transform->getPos()) &&
-								state.setRot(rb->index(), transform->getRot()) &&
-								"Failed initializing physics data!"
-							);
+							ml::Debug::fatal("Failed Initializing Rigidbody");
 						}
 					}
 				}
 			}
 
-			// Update
+			// Physics Update
 			/* * * * * * * * * * * * * * * * * * * * */
 			while (ML_Engine.isRunning())
 			{
-				const float totalT = ( // Total Time
-					(float)ML_Time.elapsed().milliseconds() / (float)ml::Milli::den
-				);
+				// Total Time
+				const float totalT = ML_Time.elapsed().milliseconds() / (float)ml::Milli::den;
 
-				const float deltaT = ( // Delta Time
-					ML_Engine.frameTime().delta()
-				);
+				// Delta Time
+				const float deltaT = ML_Engine.frameTime().delta();
 				
-				ml::PhysicsState state;
-				if (ML_Physics.beginUpdate(state))
+				// Get copy of current world state
+				ml::PhysicsState stateCopy;
+				if (ML_Physics.beginUpdate(stateCopy))
 				{
-					for (int32_t i = 0, imax = state.size(); i < imax; i++)
+					for (int32_t i = 0, imax = stateCopy.size(); i < imax; i++)
 					{
+						// Get copy's data
 						ml::vec3 pos;
 						ml::quat rot;
-						if (state.getPos(i, pos) &&
-							state.getRot(i, rot))
+						if (stateCopy.getPos(i, pos) &&
+							stateCopy.getRot(i, rot))
 						{
 							switch (i)
 							{
@@ -711,15 +713,16 @@ namespace DEMO
 							case RB_GROUND:
 								break;
 							}
-
+							// Set copy's data
 							assert(
-								state.setPos(i, pos) &&
-								state.setRot(i, rot) &&
+								stateCopy.setPos(i, pos) &&
+								stateCopy.setRot(i, rot) &&
 								"Failed updating physics data!"
 							);
 						}
 					}
-					ML_Physics.endUpdate(state);
+					// Update current world state
+					ML_Physics.endUpdate(stateCopy);
 				}
 			}
 
@@ -793,7 +796,7 @@ namespace DEMO
 
 		// Update Physics
 		/* * * * * * * * * * * * * * * * * * * * */
-		if (const ml::PhysicsState state = ML_Physics.world().state())
+		if (const ml::PhysicsState stateCopy = ML_Physics.world().state())
 		{
 			for (auto & pair : ML_Res.entities)
 			{
@@ -801,16 +804,17 @@ namespace DEMO
 				{
 					if (ml::Transform * transform = rb->transform())
 					{
+						ml::vec3 scl = transform->getScl();
 						ml::vec3 pos;
 						ml::quat rot;
-						if (state.getPos(rb->index(), pos) &&
-							state.getRot(rb->index(), rot))
+						if (stateCopy.getPos(rb->index(), pos) &&
+							stateCopy.getRot(rb->index(), rot))
 						{
 							(*transform)
 								.update(ml::mat4::Identity())
 								.translate(pos)
 								.rotate(rot)
-								.scale(transform->getScl())
+								.scale(scl)
 								;
 						}
 					}
@@ -824,15 +828,15 @@ namespace DEMO
 			m_text["project_url"]
 				.setFont(ML_Res.fonts.get("minecraft"))
 				.setFontSize(56)
-				.setPosition({ 48 })
+				.setPosition({ 48, (float)this->getFrameHeight() - 48 })
 				.setString(ML_PROJECT_URL);
 
 			const ml::Font *font	 = ML_Res.fonts.get("consolas");
 			const uint32_t	fontSize = 24;
 			const float		hOff	 = 0.0f;
 			const float		vOff	 = 4.0f;
-			const ml::vec2	offset	 = { hOff, -(vOff + (float)fontSize) };
-			const ml::vec2	origin	 = { (float)fontSize, (float)this->getHeight() - (fontSize * 2) };
+			const ml::vec2	offset	 = { hOff, (vOff + (float)fontSize) };
+			const ml::vec2	origin	 = { (float)fontSize, (float)(fontSize * 2) };
 			ml::vec2		linePos	 = 0.0f;
 			size_t			lineNum	 = 0;
 			auto			newLine = [&]() { return (linePos = (origin + (offset * (float)(lineNum++)))); };

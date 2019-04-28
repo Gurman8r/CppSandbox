@@ -12,10 +12,16 @@ namespace ml
 	{
 	public:
 		BoxCollider();
+		BoxCollider(const vec3 & size);
+		BoxCollider(const BoxCollider & copy);
 		~BoxCollider();
 
-	private:
+	public:
+		inline const vec3 & size() const	{ return m_size; }
+		inline vec3 &		size()			{ return m_size; }
 
+	private:
+		vec3 m_size;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

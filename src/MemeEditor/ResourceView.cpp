@@ -239,29 +239,45 @@ namespace ml
 						{
 							Funcs::Group("Camera", [&]()
 							{
+								Funcs::Field("Color", [&](CString)
+								{
+									ImGui::ColorEdit4("##Color##Camera", &camera->color[0]);
+								});
 								Funcs::Field("FOV", [&](CString)
 								{
 									ImGui::DragFloat("##FOV##Camera", &camera->fov, 0.5f, 10.f, 100.f);
 								});
-								Funcs::Field("Persp-Near", [&](CString)
+								Funcs::Group("Perspective", [&]() 
 								{
-									ImGui::DragFloat("##pNear##Camera", &camera->pNear, 0.5f, 10.f, camera->pFar - 1.f);
+									Funcs::Field("Near", [&](CString)
+									{
+										ImGui::DragFloat("##pNear##Camera", &camera->pNear, 0.5f, 10.f, camera->pFar - 1.f);
+									});
+									Funcs::Field("Far", [&](CString)
+									{
+										ImGui::DragFloat("##pFar##Camera", &camera->pFar, 0.5f, camera->pNear + 1.f, 1000.0f);
+									});
+									Funcs::Field("Matrix", [&](CString)
+									{
+										mat4 mat = camera->getPerspMatrix();
+										GUI::EditMat4f("##O##Matrix##Camera", mat);
+									});
 								});
-								Funcs::Field("Persp-Far", [&](CString)
+								Funcs::Group("Orthographic", [&]()
 								{
-									ImGui::DragFloat("##pFar##Camera", &camera->pFar, 0.5f, camera->pNear + 1.f, 1000.0f);
-								});
-								Funcs::Field("Ortho-Near", [&](CString)
-								{
-									ImGui::DragFloat("##oNear##Camera", &camera->oNear, 0.5f, 10.f, camera->oFar - 1.f);
-								});
-								Funcs::Field("Ortho-Far", [&](CString)
-								{
-									ImGui::DragFloat("##oFar##Camera", &camera->oFar, 0.5f, camera->oNear + 1.f, 100.f);
-								});
-								Funcs::Field("Color", [&](CString)
-								{
-									ImGui::ColorEdit4("##Color##Camera", &camera->color[0]);
+									Funcs::Field("Near", [&](CString)
+									{
+										ImGui::DragFloat("##oNear##Camera", &camera->oNear, 0.5f, 10.f, camera->oFar - 1.f);
+									});
+									Funcs::Field("Far", [&](CString)
+									{
+										ImGui::DragFloat("##oFar##Camera", &camera->oFar, 0.5f, camera->oNear + 1.f, 100.f);
+									});
+									Funcs::Field("Matrix", [&](CString)
+									{
+										mat4 mat = camera->getOrthoMatrix();
+										GUI::EditMat4f("##O##Matrix##Camera", mat);
+									});
 								});
 							});
 						}

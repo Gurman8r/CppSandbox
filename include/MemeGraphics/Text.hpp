@@ -52,7 +52,7 @@ namespace ml
 
 		mutable bool m_changed;
 		mutable List<const Texture *> m_textures;
-		mutable List<RectQuadArray> m_vertices;
+		mutable List<Array<float, Shapes::RectQuad::Size>> m_vertices;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

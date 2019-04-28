@@ -9,6 +9,10 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
+	class Rigidbody;
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_PHYSICS_API PhysicsWorld
 		: public ITrackable
 		, public INonCopyable
@@ -16,6 +20,9 @@ namespace ml
 	public:
 		PhysicsWorld();
 		~PhysicsWorld();
+
+	public:
+		bool setupRigidbody(const Rigidbody * value);
 
 	public:
 		inline const PhysicsState & state() const	{ return m_state; }

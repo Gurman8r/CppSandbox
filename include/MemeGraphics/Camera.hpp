@@ -21,10 +21,8 @@ namespace ml
 		Camera & updateRes(const vec2i & resolution);
 
 	public:
-		inline const Transform &	getOrtho() const		{ return m_ortho; }
-		inline const Transform &	getPersp() const		{ return m_persp; }
-		inline const mat4 &			getOrthoMatrix() const	{ return m_ortho.getMat(); }
-		inline const mat4 &			getPerspMatrix() const	{ return m_persp.getMat(); }
+		inline const mat4 &	getOrthoMatrix() const	{ return m_ortho; }
+		inline const mat4 &	getPerspMatrix() const	{ return m_persp; }
 
 		inline const vec3 & forward(const vec3 & value)
 		{
@@ -51,8 +49,8 @@ namespace ml
 	private:
 		vec2i		m_res;
 		vec3		m_target;
-		Transform	m_ortho;
-		Transform	m_persp;
+		mat4		m_ortho;
+		mat4		m_persp;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

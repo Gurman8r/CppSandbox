@@ -40,29 +40,20 @@ namespace ml
 		bool saveToFile(const String & filename) const override;
 
 	public:
-		// Hash Component
-		/* * * * * * * * * * * * * * * * * * * * */
-		template <class Component> 
-		inline size_t hash() const
-		{
-			ML_assert_is_base_of(ITrackable, Component);
-			return (size_t)(&typeid(Component))->hash_code();
-		}
-
 		// Find Component
 		/* * * * * * * * * * * * * * * * * * * * */
 		template <class Component> 
 		inline iterator find()
 		{
 			ML_assert_is_base_of(ITrackable, Component);
-			return (iterator)(m_map.find(this->hash<Component>()));
+			return (iterator)(m_map.find(ML_typeof(Component)));
 		}
 
 		template <class Component>
 		inline const_iterator find() const
 		{
 			ML_assert_is_base_of(ITrackable, Component);
-			return (const_iterator)(m_map.find(this->hash<Component>()));
+			return (const_iterator)(m_map.find(ML_typeof(Component)));
 		}
 
 		// Add Component
@@ -73,7 +64,8 @@ namespace ml
 			ML_assert_is_base_of(ITrackable, Component);
 			return ((this->find<Component>() == this->end())
 				? (reinterpret_cast<Component *>(m_map.insert({ 
-						this->hash<Component>(), new Component() 
+						ML_typeof(Component), 
+						new Component() 
 					}).first->second))
 				: (NULL)
 			);
@@ -85,7 +77,8 @@ namespace ml
 			ML_assert_is_base_of(ITrackable, Component);
 			return ((this->find<Component>() == this->end())
 				? (reinterpret_cast<Component *>(m_map.insert({
-						this->hash<Component>(), new Component(value)
+						ML_typeof(Component), 
+						new Component(value)
 					}).first->second))
 				: (NULL)
 			);

@@ -5,6 +5,17 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	BoxCollider::BoxCollider()
+		: m_size(0.0f)
+	{
+	}
+
+	BoxCollider::BoxCollider(const vec3 & size)
+		: m_size(size)
+	{
+	}
+
+	BoxCollider::BoxCollider(const BoxCollider & copy)
+		: m_size(copy.m_size)
 	{
 	}
 

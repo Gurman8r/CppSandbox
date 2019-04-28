@@ -26,12 +26,15 @@ namespace ml
 	public: // Static Functions
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		static bool Decompose(const mat4 & value, vec3 & scl, quat & rot, vec3 & tns, vec3 & skw, vec4 & psp);
+		static mat4 Inverse(const mat4 & value);
+		static mat4 LookAt(const vec3 & eye, const vec3 & pos, const vec3 & up);
+		static mat4 Orthographic(const FloatRect & area);
+		static mat4 Orthographic(const FloatRect & area, const float zNear, const float zFar);
+		static mat4 Perspective(const float fov, const float aspect, const float zNear, const float zFar);
 		static mat4 Rotate(const mat4 & value, const float angle, const vec3 & axis);
 		static mat4 Rotate(const mat4 & value, const quat & rot);
 		static mat4 Scale(const mat4 & value, const vec3 & scl);
 		static mat4 Translate(const mat4 & value, const vec3 & tns);
-		static mat4 LookAt(const vec3 & eye, const vec3 & pos, const vec3 & up);
-		static mat4 Inverse(const mat4 & value);
 
 
 	public: // Member Functions
@@ -62,7 +65,8 @@ namespace ml
 		const vec3 &	getScl() const;		// Get Scale
 		const vec3 &	getSkw() const;		// Get Skew
 
-	private:
+
+	private: // Data
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		mat4 m_matrix;
 

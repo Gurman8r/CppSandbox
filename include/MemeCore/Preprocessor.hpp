@@ -18,6 +18,10 @@
 (bitvalue ? ML_bitSet(value, bit) : ML_bitClear(value, bit))
 
 
+// Type Hash Macro
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+#define ML_typeof(value) ((const std::type_info *)(&typeid(value)))->hash_code()
+
 // Clamp Macro
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 #define ML_CLAMP(value, min, max) \

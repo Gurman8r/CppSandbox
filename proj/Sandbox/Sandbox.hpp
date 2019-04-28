@@ -6,6 +6,7 @@
 #include <MemeGraphics/Camera.hpp>
 #include <MemeGraphics/Canvas.hpp>
 #include <MemeGraphics/Light.hpp>
+#include <MemePhysics/PhysicsEvents.hpp>
 
 namespace DEMO
 {

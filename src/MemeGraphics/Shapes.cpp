@@ -4,30 +4,56 @@ namespace ml
 {
 	// Rect Quad
 	/* * * * * * * * * * * * * * * * * * * * */
-	Shapes::RectQuad::array_type Shapes::RectQuad::genGlyphQuad(const FloatRect & r)
+	VertexList Shapes::RectQuad::genQuadVerts(const FloatRect & r, const RectUVs & uv)
 	{
-		return 
+		return
 		{
-			r.left(),  r.bot(), 0.0f,	1.0f, 1.0f, 1.0f, 1.0f,		0.0f, 0.0f,
-			r.left(),  r.top(), 0.0f,	1.0f, 1.0f, 1.0f, 1.0f,		0.0f, 1.0f,
-			r.right(), r.top(), 0.0f,	1.0f, 1.0f, 1.0f, 1.0f,		1.0f, 1.0f,
-			r.left(),  r.bot(), 0.0f,	1.0f, 1.0f, 1.0f, 1.0f,		0.0f, 0.0f,
-			r.right(), r.top(), 0.0f,	1.0f, 1.0f, 1.0f, 1.0f,		1.0f, 1.0f,
-			r.right(), r.bot(), 0.0f,	1.0f, 1.0f, 1.0f, 1.0f,		1.0f, 0.0f,
+		Vertex({ r.left(),  r.bottom()	},	Color::White,	{ uv[ 0], uv[ 1] }),
+		Vertex({ r.left(),  r.top()		},	Color::White,	{ uv[ 2], uv[ 3] }),
+		Vertex({ r.right(), r.top()		},	Color::White,	{ uv[ 4], uv[ 5] }),
+		Vertex({ r.left(),  r.bottom()	},	Color::White,	{ uv[ 6], uv[ 7] }),
+		Vertex({ r.right(), r.top()		},	Color::White,	{ uv[ 8], uv[ 9] }),
+		Vertex({ r.right(), r.bottom()	},	Color::White,	{ uv[10], uv[11] }),
 		};
 	}
 
-	Shapes::RectQuad::array_type Shapes::RectQuad::genSpriteQuad(const FloatRect & r)
+	Array<float, Shapes::RectQuad::Size> Shapes::RectQuad::genQuad(const FloatRect & r, const RectUVs & uv)
 	{
-		return 
+		return
 		{
-			r.left(),  r.bot(), 0.0f,	1.0f, 1.0f, 1.0f, 1.0f,		0.0f, 1.0f,
-			r.left(),  r.top(), 0.0f,	1.0f, 1.0f, 1.0f, 1.0f,		0.0f, 0.0f,
-			r.right(), r.top(), 0.0f,	1.0f, 1.0f, 1.0f, 1.0f,		1.0f, 0.0f,
-			r.left(),  r.bot(), 0.0f,	1.0f, 1.0f, 1.0f, 1.0f,		0.0f, 1.0f,
-			r.right(), r.top(), 0.0f,	1.0f, 1.0f, 1.0f, 1.0f,		1.0f, 0.0f,
-			r.right(), r.bot(), 0.0f,	1.0f, 1.0f, 1.0f, 1.0f,		1.0f, 1.0f,
+			r.left(),  r.bottom(),	0.0f,	1.0f, 1.0f, 1.0f, 1.0f,		uv[ 0],	uv[ 1],
+			r.left(),  r.top(),		0.0f,	1.0f, 1.0f, 1.0f, 1.0f,		uv[ 2],	uv[ 3],
+			r.right(), r.top(),		0.0f,	1.0f, 1.0f, 1.0f, 1.0f,		uv[ 4],	uv[ 5],
+			r.left(),  r.bottom(),	0.0f,	1.0f, 1.0f, 1.0f, 1.0f,		uv[ 6],	uv[ 7],
+			r.right(), r.top(),		0.0f,	1.0f, 1.0f, 1.0f, 1.0f,		uv[ 8],	uv[ 9],
+			r.right(), r.bottom(),	0.0f,	1.0f, 1.0f, 1.0f, 1.0f,		uv[10], uv[11],
 		};
+	}
+
+	Array<float, Shapes::RectQuad::Size> Shapes::RectQuad::genGlyphQuad(const FloatRect & r)
+	{
+		return genQuad(r, 
+		{
+			0.0f, 1.0f, // LB
+			0.0f, 0.0f, // LT
+			1.0f, 0.0f, // RT
+			0.0f, 1.0f, // LB
+			1.0f, 0.0f, // RT
+			1.0f, 1.0f  // RB
+		});
+	}
+
+	Array<float, Shapes::RectQuad::Size> Shapes::RectQuad::genSpriteQuad(const FloatRect & r)
+	{
+		return genQuad(r,
+		{
+			0.0f, 0.0f, // LB
+			0.0f, 1.0f, // LT
+			1.0f, 1.0f, // RT
+			0.0f, 0.0f, // LB
+			1.0f, 1.0f, // RT
+			1.0f, 0.0f  // RB
+		});
 	}
 
 

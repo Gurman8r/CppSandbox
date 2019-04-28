@@ -22,7 +22,7 @@ namespace ml
 		, pFar		(ML_CAM_DEFAULT_PFAR)
 		, oNear		(ML_CAM_DEFAULT_ONEAR)
 		, oFar		(ML_CAM_DEFAULT_OFAR)
-		, color		(Color::White)
+		, color		(Color::Black)
 	{
 	}
 
@@ -37,7 +37,7 @@ namespace ml
 		, pFar		(pFar)
 		, oNear		(oNear)
 		, oFar		(oFar)
-		, color		(Color::White)
+		, color		(Color::Black)
 	{
 	}
 
@@ -69,22 +69,19 @@ namespace ml
 			m_res = value;
 
 			// Orthographic
-			m_ortho.update(glm::ortho(
-				0.0f, 
-				0.0f,
-				(float)value[0], 
-				(float)value[1],
-				this->oNear,
+			m_ortho = Transform::Orthographic(
+				{ vec2f::Zero, (vec2f)value },
+				this->oNear, 
 				this->oFar
-			));
+			);
 
 			// Perspective
-			m_persp.update(glm::perspective(
+			m_persp = Transform::Perspective(
 				this->fov,
 				(float)value[0] / (float)value[1],
 				this->pNear,
 				this->pFar
-			));
+			);
 		}
 		return (*this);
 	}

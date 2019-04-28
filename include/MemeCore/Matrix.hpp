@@ -139,6 +139,36 @@ namespace ml
 		inline const_pointer	data()	const	{ return &(*this)[0];		}
 		inline const_reference	front()	const	{ return (*this)[0];		}
 
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		inline const_reference get(const size_t i) const
+		{
+			return (*this)[i];
+		}
+
+		inline self_type & set(const size_t i, const_reference value)
+		{
+			((*this)[i] = value); return (*this);
+		}
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		template <
+			size_t X = Cols, size_t Y = Rows,
+			typename = typename std::enable_if<(X > 1 && Y > 1)>::type
+		> inline const_reference get(const size_t x, const size_t y) const
+		{
+			return get(y * Cols + x);
+		}
+
+		template <
+			size_t X = Cols, size_t Y = Rows,
+			typename = typename std::enable_if<(X > 1 && Y > 1)>::type
+		> inline self_type & set(const size_t x, const size_t y, const_reference value)
+		{
+			return set(y * Cols + x, value);
+		}
+
 
 	public: // Static Functions
 		/* * * * * * * * * * * * * * * * * * * * */

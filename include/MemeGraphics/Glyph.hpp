@@ -24,14 +24,14 @@ namespace ml
 		{
 		}
 
-		inline const vec2 bearing()	const { return bounds.position(); }
-		inline const vec2 size()		const { return bounds.size(); }
-		inline const float x()			const { return bearing()[0]; }
-		inline const float y()			const { return bearing()[1]; }
-		inline const float width()		const { return size()[0]; }
-		inline const float height()		const { return size()[1]; }
-		inline const vec2 offset()		const { return vec2(x(), -(height() - y())); }
-		inline const float step()		const { return (float)(advance >> VertexCount); }
+		inline const vec2	bearing()	const { return bounds.position(); }
+		inline const vec2	size()		const { return bounds.size(); }
+		inline const float	x()			const { return bearing()[0]; }
+		inline const float	y()			const { return bearing()[1]; }
+		inline const float	width()		const { return size()[0]; }
+		inline const float	height()	const { return size()[1]; }
+		inline const vec2	offset()	const { return { x(), -y() }; }
+		inline const float	step()		const { return (float)(advance >> VertexCount); }
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

@@ -50,6 +50,7 @@ namespace ml
 		Array(const init_type & copy)
 			: base_type()
 		{
+			assert((copy.size() == this->size()) && "Array initializer size mismatch!");
 			std::copy(copy.begin(), copy.end(), this->begin());
 		}
 		Array(const base_type & copy)

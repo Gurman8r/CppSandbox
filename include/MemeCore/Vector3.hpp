@@ -46,6 +46,11 @@ namespace ml
 		{
 		}
 
+		Vector3(const_reference x, const_reference y)
+			: base_type({ x, y, static_cast<value_type>(0) })
+		{
+		}
+
 		Vector3(const_reference x, const_reference y, const_reference z)
 			: base_type({ x, y, z })
 		{

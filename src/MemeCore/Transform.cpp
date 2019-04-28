@@ -68,6 +68,52 @@ namespace ml
 		return false;
 	}
 
+	mat4 Transform::LookAt(const vec3 & eye, const vec3 & pos, const vec3 & up)
+	{
+		return glm::lookAt(
+			(glm::vec3)(eye),
+			(glm::vec3)(pos),
+			(glm::vec3)(up)
+		);
+	}
+
+	mat4 Transform::Inverse(const mat4 & value)
+	{
+		return mat4(glm::inverse((glm::mat4)value));
+	}
+
+	mat4 Transform::Orthographic(const FloatRect & area)
+	{
+		return mat4(glm::ortho(
+			area.left(),
+			area.right(),
+			area.bottom(),
+			area.top()
+		));
+	}
+
+	mat4 Transform::Orthographic(const FloatRect & area, const float zNear, const float zFar)
+	{
+		return mat4(glm::ortho(
+			area.left(),
+			area.right(),
+			area.bottom(),
+			area.top(),
+			zNear,
+			zFar
+		));
+	}
+
+	mat4 Transform::Perspective(const float fov, const float aspect, const float zNear, const float zFar)
+	{
+		return mat4(glm::perspective(
+			fov,
+			aspect,
+			zNear,
+			zFar
+		));
+	}
+	
 	mat4 Transform::Rotate(const mat4 & value, const float angle, const vec3 & axis)
 	{
 		return glm::rotate(
@@ -96,21 +142,7 @@ namespace ml
 		return glm::translate((glm::mat4)(value), (glm::vec3)(tns));
 	}
 
-	mat4 Transform::LookAt(const vec3 & eye, const vec3 & pos, const vec3 & up)
-	{
-		return glm::lookAt(
-			(glm::vec3)(eye),
-			(glm::vec3)(pos),
-			(glm::vec3)(up)
-		);
-	}
-
-	mat4 Transform::Inverse(const mat4 & value)
-	{
-		return glm::inverse((glm::mat4)value);
-	}
-
-
+	
 	// Member Functions
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 

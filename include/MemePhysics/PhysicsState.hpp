@@ -23,6 +23,7 @@ namespace ml
 	public:
 		void			clear();
 		bool			empty() const;
+		int32_t			push();
 		PhysicsState &	resize(const size_t value);
 		int32_t			size() const;
 
@@ -47,9 +48,9 @@ namespace ml
 	private:
 		int32_t m_size;
 
-		List<vec3> m_pos;
+		List<vec3>	m_pos;
 		List<quat>	m_rot;
-		List<mat4> m_mat;
+		List<mat4>	m_mat;
 		List<mat4>	m_inv;
 	};
 

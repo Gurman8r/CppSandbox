@@ -14,10 +14,19 @@ namespace ml
 	public:
 		struct ML_GRAPHICS_API RectQuad final
 		{
-			enum { Size = Vertex::Size * 6 };
-			using  array_type = typename Array<float, Size>;
-			static array_type genGlyphQuad(const FloatRect & r);
-			static array_type genSpriteQuad(const FloatRect & r);
+			enum 
+			{ 
+				Size	= (Vertex::Size * 6), 
+				NumUV	= (Size * 2),
+			};
+
+			using RectUVs = typename std::array<float, Size * 2>;
+
+			static VertexList genQuadVerts(const FloatRect & r, const RectUVs & uv);
+
+			static Array<float, Size> genQuad(const FloatRect & r, const RectUVs & uv);
+			static Array<float, Size> genGlyphQuad(const FloatRect & r);
+			static Array<float, Size> genSpriteQuad(const FloatRect & r);
 		};
 
 		struct ML_GRAPHICS_API Triangle final
@@ -43,10 +52,6 @@ namespace ml
 			const static List<float> Vertices;
 		};
 	};
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	using RectQuadArray = typename Shapes::RectQuad::array_type;
 
 	/* * * * * * * * * * * * * * * * * * * * */
 }

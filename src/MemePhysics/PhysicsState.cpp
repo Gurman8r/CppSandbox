@@ -40,6 +40,16 @@ namespace ml
 		return (size() == 0);
 	}
 
+	int32_t PhysicsState::push()
+	{
+		m_size++;
+		m_pos.push_back(vec3());
+		m_rot.push_back(quat());
+		m_mat.push_back(mat4());
+		m_inv.push_back(mat4());
+		return (size() - 1);
+	}
+
 	PhysicsState & PhysicsState::resize(const size_t value)
 	{
 		if (m_size = (int32_t)(value))

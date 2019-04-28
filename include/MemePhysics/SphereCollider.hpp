@@ -12,10 +12,16 @@ namespace ml
 	{
 	public:
 		SphereCollider();
+		SphereCollider(const float radius);
+		SphereCollider(const SphereCollider & copy);
 		~SphereCollider();
 
-	private:
+	public:
+		inline const float	radius() const	{ return m_radius; }
+		inline float &		radius()		{ return m_radius; }
 
+	private:
+		float m_radius;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

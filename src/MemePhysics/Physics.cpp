@@ -35,9 +35,9 @@ namespace ml
 			
 			m_mutex.unlock();
 
-			const Duration & elapsed = m_timer.stop().elapsed();
-
 			m_world.state() = value;
+
+			const Duration & elapsed = m_timer.stop().elapsed();
 
 			if (elapsed.milliseconds() < ML_PHYSICS_TIMESTEP)
 			{

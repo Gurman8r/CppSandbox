@@ -5,6 +5,17 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	SphereCollider::SphereCollider()
+		: m_radius(0.0f)
+	{
+	}
+
+	SphereCollider::SphereCollider(const float radius)
+		: m_radius(radius)
+	{
+	}
+
+	SphereCollider::SphereCollider(const SphereCollider & copy)
+		: m_radius(copy.m_radius)
 	{
 	}
 

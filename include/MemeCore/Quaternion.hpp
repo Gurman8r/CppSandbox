@@ -132,7 +132,7 @@ namespace ml
 
 		inline const_value pitch() const
 		{
-			return value_type(std::atan2f(
+			return (value_type)(std::atan2f(
 				(2.0f * ((*this)[1] * (*this)[2] + this->real() * (*this)[0])),
 				(
 					this->real() * this->real() - (*this)[0] *
@@ -143,7 +143,7 @@ namespace ml
 
 		inline const_value roll() const
 		{
-			return value_type(std::atan2f(
+			return (value_type)(std::atan2f(
 				(2.0f * ((*this)[0] * (*this)[1] + this->real() * (*this)[2])),
 				(
 					this->real() * this->real() + (*this)[0] * (*this)[0] -
@@ -154,9 +154,9 @@ namespace ml
 
 		inline const_value yaw() const
 		{
-			return std::asinf(std::min(std::max(
-				(-2.0f * ((*this)[0] * (*this)[2] - this->real() * (*this)[1])),
-				-1.0f),
+			return std::asinf(ML_CLAMP(
+				(-2.0f * ((*this)[0] * (*this)[2] - this->real() * (*this)[1])), 
+				-1.0f, 
 				1.0f
 			));
 		}
