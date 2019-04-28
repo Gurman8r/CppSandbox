@@ -41,8 +41,8 @@ namespace ml
 		static const vec3 Gravity;
 
 	private:
-		Physics() {}
-		~Physics() {}
+		Physics();
+		~Physics();
 
 	public:
 		bool dispose() override;
@@ -74,15 +74,17 @@ namespace ml
 		template <
 			class Fun,
 			class ... Args
-		> inline void capture(Fun && fun, Args && ... args)
+		> inline void forEach(Fun && fun, Args && ... args)
 		{
 			PhysicsState stateCopy;
 			if (beginUpdate(stateCopy))
 			{
-				fun(stateCopy, (args)...);
+				for (int32_t i = 0, imax = stateCopy.size(); i < imax; i++)
+				{
+					fun(i, stateCopy, (args)...);
+				}
 				endUpdate(stateCopy);
 			}
-
 		}
 
 	private:

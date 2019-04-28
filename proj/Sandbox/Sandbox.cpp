@@ -696,62 +696,52 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 			while (ML_Engine.isRunning())
 			{
-				// Total Time
-				const float totalT = ML_Time.elapsed().delta();
+				const float totalT = ML_Time.elapsed().delta(); // Total Time
+				const float deltaT = ML_Engine.elapsed().delta(); // Delta Time
 
-				// Delta Time
-				const float deltaT = ML_Engine.elapsed().delta();
-
-				// Get copy of current world state
-				ML_Physics.capture([&](ml::PhysicsState & stateCopy)
+				ML_Physics.forEach([&](const int32_t i, ml::PhysicsState & stateCopy)
 				{
-					for (int32_t i = 0, imax = stateCopy.size(); i < imax; i++)
+					// Get copy's data
+					ml::vec3 pos;
+					ml::quat rot;
+					if (stateCopy.getPos(i, pos) &&
+						stateCopy.getRot(i, rot))
 					{
-						// Get copy's data
-						ml::vec3 pos;
-						ml::quat rot;
-						if (stateCopy.getPos(i, pos) &&
-							stateCopy.getRot(i, rot))
+						switch (i)
 						{
-							switch (i)
-							{
-							case RB_BORG:
-								pos = { pos[0], +ML_Time.cos(), pos[2] };
-								rot = ml::quat::angleAxis(totalT, ml::vec3::One);
-								break;
+						case RB_BORG:
+							pos = { pos[0], +ML_Time.cos(), pos[2] };
+							rot = ml::quat::angleAxis(totalT, ml::vec3::One);
+							break;
 
-							case RB_CUBE:
-								pos = { pos[0], -ML_Time.sin(), pos[2] };
-								rot = ml::quat::angleAxis(totalT, ml::vec3::One);
-								break;
+						case RB_CUBE:
+							pos = { pos[0], -ML_Time.sin(), pos[2] };
+							rot = ml::quat::angleAxis(totalT, ml::vec3::One);
+							break;
 
-							case RB_NAVBALL:
-								pos = { pos[0], -ML_Time.cos(), pos[2] };
-								rot = ml::quat::angleAxis(totalT, ml::vec3::Forward);
-								break;
+						case RB_NAVBALL:
+							pos = { pos[0], -ML_Time.cos(), pos[2] };
+							rot = ml::quat::angleAxis(totalT, ml::vec3::Forward);
+							break;
 
-							case RB_MOON:
-								pos = { pos[0], +ML_Time.sin(), pos[2] };
-								rot = ml::quat::angleAxis(totalT, ml::vec3::Up);
-								break;
+						case RB_MOON:
+							pos = { pos[0], +ML_Time.sin(), pos[2] };
+							rot = ml::quat::angleAxis(totalT, ml::vec3::Up);
+							break;
 
-							case RB_EARTH:
-								rot = ml::quat::angleAxis(totalT, ml::vec3::Up);
-								break;
+						case RB_EARTH:
+							rot = ml::quat::angleAxis(totalT, ml::vec3::Up);
+							break;
 
-							case RB_GROUND:
-								break;
-							}
-
-							// Set copy's data
-							if (stateCopy.setPos(i, pos) &&
-								stateCopy.setRot(i, rot)
-							) continue;
-							else
-							{
-								ml::Debug::log("Failed updating state: {0}", i);
-							}
+						case RB_GROUND:
+							break;
 						}
+
+						assert( // Set copy's data
+							stateCopy.setPos(i, pos) &&
+							stateCopy.setRot(i, rot) &&
+							"Failed updating state!"
+						);
 					}
 				});
 			}

@@ -12,6 +12,17 @@ namespace ml
 	const vec3 Physics::Gravity(0.0f, ML_GRAVITY, 0.0f);
 
 	/* * * * * * * * * * * * * * * * * * * * */
+	
+	Physics::Physics() 
+	{
+	}
+	
+	Physics::~Physics() 
+	{
+		dispose();
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
 
 	bool Physics::dispose()
 	{
