@@ -163,6 +163,7 @@ namespace ml
 
 		inline mat3 toMat3() const
 		{
+			// not sure if this is correct
 			const_value xx = ((*this)[0] * (*this)[0]);
 			const_value xy = ((*this)[0] * (*this)[1]);
 			const_value xz = ((*this)[0] * (*this)[2]);

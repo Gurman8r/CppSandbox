@@ -105,6 +105,11 @@ namespace ml
 		);
 	}
 
+	mat4 Transform::Inverse(const mat4 & value)
+	{
+		return glm::inverse((glm::mat4)value);
+	}
+
 
 	// Member Functions
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -138,7 +143,7 @@ namespace ml
 
 	Transform & Transform::update(const Transform & other)
 	{
-		return update(other.getMatrix());
+		return update(other.getMat());
 	}
 
 	Transform & Transform::update(const mat4 & value)
@@ -169,9 +174,11 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
+	const mat4 & Transform::getMat()	const { return m_matrix; }
+	const mat4	 Transform::getInv()	const { return Inverse(m_matrix); }
 	const vec4 & Transform::getPsp()	const { return decompose().m_psp; }
 	const vec3 & Transform::getPos()	const { return decompose().m_pos; }
-	const quat  & Transform::getRot()	const { return decompose().m_rot; }
+	const quat & Transform::getRot()	const { return decompose().m_rot; }
 	const vec3 & Transform::getScl()	const { return decompose().m_scl; }
 	const vec3 & Transform::getSkw()	const { return decompose().m_skw; }
 	

@@ -8,6 +8,10 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
+	class Rigidbody;
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_PHYSICS_API Collider
 		: public ITrackable
 	{

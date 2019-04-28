@@ -23,7 +23,7 @@
 
 <item>
 	type = entity
-	name = sanic
+	name = navball
 </item>
 
 <item>

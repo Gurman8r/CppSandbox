@@ -1,4 +1,5 @@
 #include <MemeGraphics/Camera.hpp>
+#include <MemeGraphics/Color.hpp>
 
 #define ML_CAM_DEFAULT_FOV		45.0f
 #define ML_CAM_DEFAULT_PNEAR	0.1f
@@ -21,6 +22,7 @@ namespace ml
 		, pFar		(ML_CAM_DEFAULT_PFAR)
 		, oNear		(ML_CAM_DEFAULT_ONEAR)
 		, oFar		(ML_CAM_DEFAULT_OFAR)
+		, color		(Color::White)
 	{
 	}
 
@@ -35,20 +37,22 @@ namespace ml
 		, pFar		(pFar)
 		, oNear		(oNear)
 		, oFar		(oFar)
+		, color		(Color::White)
 	{
 	}
 
 	Camera::Camera(const Camera & copy)
 		: m_res		(copy.m_res)
-		, position	(copy.position)
 		, m_target	(copy.m_target)
 		, m_ortho	(copy.m_ortho)
 		, m_persp	(copy.m_persp)
+		, position	(copy.position)
 		, fov		(copy.fov)
 		, pNear		(copy.pNear)
 		, pFar		(copy.pFar)
 		, oNear		(copy.oNear)
 		, oFar		(copy.oFar)
+		, color		(copy.color)
 	{
 	}
 
@@ -60,7 +64,7 @@ namespace ml
 
 	Camera & Camera::updateRes(const vec2i & value)
 	{
-		if ((value != vec2i::Zero) && (this->m_res != value))
+		if ((value != vec2i::Zero) && (m_res != value))
 		{
 			m_res = value;
 

@@ -259,9 +259,9 @@ namespace ml
 								{
 									ImGui::DragFloat("##oFar##Camera", &camera->oFar, 0.5f, camera->oNear + 1.f, 100.f);
 								});
-								Funcs::Field("Background Color", [&](CString)
+								Funcs::Field("Color", [&](CString)
 								{
-									ImGui::ColorEdit4("##BackgroundColor##Camera", &camera->backgroundColor[0]);
+									ImGui::ColorEdit4("##Color##Camera", &camera->color[0]);
 								});
 							});
 						}
@@ -451,11 +451,29 @@ namespace ml
 
 						// Rigidbody
 						/* * * * * * * * * * * * * * * * * * * * */
-						if (Rigidbody * rigidbody = ent->get<Rigidbody>())
+						if (Rigidbody * rb = ent->get<Rigidbody>())
 						{
 							Funcs::Group("Rigidbody", [&]()
 							{
-								ImGui::Text("OK");
+								Funcs::Field("Index", [&](CString)
+								{
+									ImGui::Text("%i", rb->index());
+								});
+
+								Funcs::Field("Collider", [&](CString)
+								{
+									ImGui::Text("%s", rb->collider() ? "OK" : "NULL");
+								});
+
+								Funcs::Field("Particle", [&](CString)
+								{
+									ImGui::Text("%s", rb->particle() ? "OK" : "NULL");
+								});
+
+								Funcs::Field("Transform", [&](CString)
+								{
+									ImGui::Text("%s", rb->transform() ? "OK" : "NULL");
+								});
 							});
 						}
 
@@ -515,7 +533,7 @@ namespace ml
 								Funcs::Field("Matrix", [&](CString)
 								{
 									ImGui::NewLine();
-									mat4 mat = transform->getMatrix();
+									mat4 mat = transform->getMat();
 									if (GUI::EditMat4f("##Matrix##Transform", mat, 0.01f))
 									{
 										transform->update(mat);

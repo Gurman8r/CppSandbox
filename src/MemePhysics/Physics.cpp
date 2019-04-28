@@ -16,11 +16,11 @@ namespace ml
 		{
 			m_updating = true;
 
-			value = world().state();
+			value = m_world.state();
 			
-			timer().start();
+			m_timer.start();
 
-			mutex().lock();
+			m_mutex.lock();
 			
 			return true;
 		}
@@ -33,15 +33,15 @@ namespace ml
 		{
 			m_updating = false;
 			
-			mutex().unlock();
+			m_mutex.unlock();
 
-			const Duration & elapsed = timer().stop().elapsed();
+			const Duration & elapsed = m_timer.stop().elapsed();
 
-			world().state() = value;
+			m_world.state() = value;
 
 			if (elapsed.milliseconds() < ML_PHYSICS_TIMESTEP)
 			{
-				thread().sleep(ML_PHYSICS_TIMESTEP - elapsed.milliseconds());
+				m_thread.sleep(ML_PHYSICS_TIMESTEP - elapsed.milliseconds());
 			}
 			
 			return true;

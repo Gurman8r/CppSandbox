@@ -35,6 +35,9 @@
 #include <MemeNet/NetServer.hpp>
 #include <MemePhysics/Physics.hpp>
 #include <MemePhysics/Rigidbody.hpp>
+#include <MemePhysics/BoxCollider.hpp>
+#include <MemePhysics/SphereCollider.hpp>
+#include <MemePhysics/Particle.hpp>
 #include <MemeScript/Interpreter.hpp>
 #include <MemeWindow/WindowEvents.hpp>
 
@@ -44,7 +47,7 @@ enum Rigidbody_ID : int32_t
 {
 	RB_BORG,
 	RB_CUBE,
-	RB_SANIC,
+	RB_NAVBALL,
 	RB_MOON,
 	RB_EARTH,
 	RB_GROUND,
@@ -261,6 +264,10 @@ namespace DEMO
 
 	void Sandbox::onLoad(const ml::LoadEvent * ev)
 	{
+		// Create Canvas
+		/* * * * * * * * * * * * * * * * * * * * */
+		m_canvas.create();
+
 		// Load Default Meshes
 		/* * * * * * * * * * * * * * * * * * * * */
 		ML_Res.meshes.load("default_triangle")->loadFromMemory(
@@ -301,15 +308,6 @@ namespace DEMO
 			ml::Debug::logError("Failed Loading Manifest");
 		}
 
-		// Create Canvas
-		/* * * * * * * * * * * * * * * * * * * * */
-		m_canvas.create();
-	}
-
-	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-	void Sandbox::onStart(const ml::StartEvent * ev)
-	{
 		// Set Icon
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (const ml::Image * icon = ML_Res.images.get("icon"))
@@ -321,6 +319,7 @@ namespace DEMO
 
 		// Setup Plugins
 		/* * * * * * * * * * * * * * * * * * * * */
+		if (!ML_Res.plugins.empty())
 		{
 			if (ml::Plugin * plugin = ML_Res.plugins.get("TestPlugin"))
 			{
@@ -336,297 +335,314 @@ namespace DEMO
 				}
 			}
 		}
+	}
 
-		// Setup Sprites
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+	void Sandbox::onStart(const ml::StartEvent * ev)
+	{
+		// Sprites
 		/* * * * * * * * * * * * * * * * * * * * */
+		if (ml::Sprite * spr = ML_Res.sprites.get("neutrino"))
 		{
-			if (ml::Sprite * spr = ML_Res.sprites.get("neutrino"))
-			{
-				spr->setPosition(ml::vec2(0.95f, 0.075f) * this->getSize())
-					.setScale	(0.5f)
-					.setRotation(0.0f)
-					.setOrigin	(0.5f)
-					.setColor	(ml::Color::White);
-			}
+			spr->setPosition(ml::vec2(0.95f, 0.075f) * this->getSize())
+				.setScale	(0.5f)
+				.setRotation(0.0f)
+				.setOrigin	(0.5f)
+				.setColor	(ml::Color::White);
 		}
 
-		// Setup Entities
+		// Camera
 		/* * * * * * * * * * * * * * * * * * * * */
+		if (ml::Entity * ent = ML_Res.entities.get("camera"))
 		{
-			// Camera
-			/* * * * * * * * * * * * * * * * * * * * */
-			if (ml::Entity * ent = ML_Res.entities.get("camera"))
-			{
-				ml::Camera * camera = ent->add<ml::Camera>({
-					SETTINGS.fieldOfView,
-					SETTINGS.perspNear,
-					SETTINGS.perspFar,
-					SETTINGS.orthoNear,
-					SETTINGS.orthoFar
-				});
-				camera->backgroundColor = { 0.025f, 0.025f, 0.025f, 1.0f };
-				camera->position = { 0.0f, 1.0f, 10.0f };
+			ml::Camera * camera = ent->add<ml::Camera>({
+				SETTINGS.fieldOfView,
+				SETTINGS.perspNear,
+				SETTINGS.perspFar,
+				SETTINGS.orthoNear,
+				SETTINGS.orthoFar
+			});
+			camera->color = { 0.025f, 0.025f, 0.025f, 1.0f };
+			camera->position = { 0.0f, 1.0f, 10.0f };
 
-				ml::Transform * transform = ent->add<ml::Transform>(
-					ml::mat4::Identity()
-				);
-				transform->lookAt(
-					camera->position,
-					camera->position + ml::vec3::Back,
-					ml::vec3::Up
-				);
-			}
-
-			// Light
-			/* * * * * * * * * * * * * * * * * * * * */
-			if (ml::Entity * ent = ML_Res.entities.get("light"))
-			{
-				ml::Transform * transform = ent->add<ml::Transform>({
-					{ 0.0f, 1.0f, 30.0f }, // position
-					{ 1.0f }, // scale
-					{ } // rotation
-				});
-
-				ml::Light * light = ent->add<ml::Light>({
-					ml::Color::LightYellow
-				});
-
-				ml::Renderer * renderer = ent->add<ml::Renderer>({
-					ML_Res.models.get("sphere8x6"),
-					ml::Material(ML_Res.shaders.get("solid"), 
-					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->getPerspMatrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Transform>()->getMatrix() },
-						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->getMatrix() },
-						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&light->color },
-					}),
-					ml::RenderStates({
-						{ ml::GL::AlphaTest,{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::Blend,	{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::CullFace,	{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::DepthTest,{ ml::RenderVar::Bool, 1 } },
-					})
-				});
-			}
-
-			// Borg
-			/* * * * * * * * * * * * * * * * * * * * */
-			if (ml::Entity * ent = ML_Res.entities.get("borg"))
-			{
-				ml::Transform * transform = ent->add<ml::Transform>({
-					{ 5.0f, 0.0f, 0.0f }, // position
-					{ 1.0f }, // scale
-					{ } // rotation
-				});
-
-				ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
-					RB_BORG, transform
-				});
-
-				ml::Renderer * renderer = ent->add<ml::Renderer>({
-					ML_Res.models.get("default_cube"),
-					ml::Material(ML_Res.shaders.get("basic"),
-					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->getPerspMatrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Transform>()->getMatrix() },
-						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->getMatrix() },
-						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
-						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("borg") },
-					}),
-					ml::RenderStates({
-						{ ml::GL::AlphaTest,{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::Blend,	{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::CullFace,	{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::DepthTest,{ ml::RenderVar::Bool, 1 } },
-					})
-				});
-			}
-
-			// Cube
-			/* * * * * * * * * * * * * * * * * * * * */
-			if (ml::Entity * ent = ML_Res.entities.get("cube"))
-			{
-				ml::Transform * transform = ent->add<ml::Transform>({
-					{ 0.0f, 0.0f, -5.0f }, // position
-					{ 0.5f }, // scale
-					{ } // rotation
-				});
-
-				ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
-					RB_CUBE, transform
-				});
-
-				ml::Renderer * renderer = ent->add<ml::Renderer>({
-					ML_Res.models.get("cube"),
-					ml::Material(ML_Res.shaders.get("normal"), 
-					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->getPerspMatrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Transform>()->getMatrix() },
-						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->getMatrix() },
-						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
-						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm") },
-					}),
-					ml::RenderStates({
-						{ ml::GL::AlphaTest,{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::Blend,	{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::CullFace,	{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::DepthTest,{ ml::RenderVar::Bool, 1 } },
-					})
-				});
-			}
-
-			// Sanic
-			/* * * * * * * * * * * * * * * * * * * * */
-			if (ml::Entity * ent = ML_Res.entities.get("sanic"))
-			{
-				ml::Transform * transform = ent->add<ml::Transform>({
-					{ -5.0f, 0.0f, 0.0f }, // position
-					{ 1.0f }, // scale
-					{ } // rotation
-				});
-
-				ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
-					RB_SANIC, transform
-				});
-
-				ml::Renderer * renderer = ent->add<ml::Renderer>({
-					ML_Res.models.get("default_quad"),
-					ml::Material(ML_Res.shaders.get("basic"),
-					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->getPerspMatrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Transform>()->getMatrix() },
-						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->getMatrix() },
-						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
-						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("sanic") },
-					}),
-					ml::RenderStates({
-						{ ml::GL::AlphaTest,{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::Blend,	{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::CullFace,	{ ml::RenderVar::Bool, 0 } },
-						{ ml::GL::DepthTest,{ ml::RenderVar::Bool, 1 } },
-					})
-				});
-			}
-
-			// Moon
-			/* * * * * * * * * * * * * * * * * * * * */
-			if (ml::Entity * ent = ML_Res.entities.get("moon"))
-			{
-				ml::Transform * transform = ent->add<ml::Transform>({
-					{ 0.0f, 0.0f, 5.0f }, // position
-					{ 0.5f }, // scale
-					{ } // rotation
-				});
-
-				ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
-					RB_MOON, transform
-				});
-
-				ml::Renderer * renderer = ent->add<ml::Renderer>({
-					ML_Res.models.get("sphere32x24"),
-					ml::Material(ML_Res.shaders.get("lighting"),
-					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->getPerspMatrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Transform>()->getMatrix() },
-						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->getMatrix() },
-						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("moon_dm") },
-						{ ML_FRAG_SPEC_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("moon_nm") },
-						{ "Frag.cameraPos",	ml::Uniform::Vec3,	&ML_CAMERA->get<ml::Transform>()->getPos() },
-						{ "Frag.lightPos",	ml::Uniform::Vec3,	&ML_LIGHT->get<ml::Transform>()->getPos() },
-						{ "Frag.diffuse",	ml::Uniform::Vec4,	&ML_LIGHT->get<ml::Light>()->color },
-						{ "Frag.ambient",	ml::Uniform::Float, &globals.ambient },
-						{ "Frag.specular",	ml::Uniform::Float, &globals.specular },
-						{ "Frag.shininess",	ml::Uniform::Int,	&globals.shininess },
-					}),
-					ml::RenderStates({
-						{ ml::GL::AlphaTest,{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::Blend,	{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::CullFace,	{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::DepthTest,{ ml::RenderVar::Bool, 1 } },
-					})
-				});
-			}
-
-			// Earth
-			/* * * * * * * * * * * * * * * * * * * * */
-			if (ml::Entity * ent = ML_Res.entities.get("earth"))
-			{
-				ml::Transform * transform = ent->add<ml::Transform>({
-					{ 0.0f }, // position
-					{ 1.0f }, // scale
-					{ } // rotation
-				});
-
-				ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
-					RB_EARTH, transform
-				});
-
-				ml::Renderer * renderer = ent->add<ml::Renderer>({
-					ML_Res.models.get("sphere32x24"),
-					ml::Material(ML_Res.shaders.get("lighting"), 
-					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->getPerspMatrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Transform>()->getMatrix() },
-						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->getMatrix() },
-						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("earth_dm") },
-						{ ML_FRAG_SPEC_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("earth_sm") },
-						{ "Frag.cameraPos",	ml::Uniform::Vec3,	&ML_CAMERA->get<ml::Transform>()->getPos() },
-						{ "Frag.lightPos",	ml::Uniform::Vec3,	&ML_LIGHT->get<ml::Transform>()->getPos() },
-						{ "Frag.diffuse",	ml::Uniform::Vec4,	&ML_LIGHT->get<ml::Light>()->color },
-						{ "Frag.ambient",	ml::Uniform::Float, &globals.ambient },
-						{ "Frag.specular",	ml::Uniform::Float, &globals.specular },
-						{ "Frag.shininess",	ml::Uniform::Int,	&globals.shininess },
-					}),
-					ml::RenderStates({
-						{ ml::GL::AlphaTest,{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::Blend,	{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::CullFace,	{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::DepthTest,{ ml::RenderVar::Bool, 1 } },
-					})
-				});
-			}
-
-			// Ground
-			/* * * * * * * * * * * * * * * * * * * * */
-			if (ml::Entity * ent = ML_Res.entities.get("ground"))
-			{
-				ml::Transform * transform = ent->add<ml::Transform>({
-					{ 0.0f, -2.5f, 0.0f }, // position
-					{ 12.5, 0.25f, 12.5 }, // scale
-					{ } // rotation
-				});
-
-				//ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
-				//	RB_GROUND, transform
-				//});
-
-				ml::Renderer * renderer = ent->add<ml::Renderer>({
-					ML_Res.models.get("cube"),
-					ml::Material(ML_Res.shaders.get("normal"), 
-					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->getPerspMatrix() },
-						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Transform>()->getMatrix() },
-						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->getMatrix() },
-						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
-						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm") },
-					}),
-					ml::RenderStates({
-						{ ml::GL::AlphaTest,{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::Blend,	{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::CullFace,	{ ml::RenderVar::Bool, 1 } },
-						{ ml::GL::DepthTest,{ ml::RenderVar::Bool, 1 } },
-					})
-				});
-			}
+			ml::Transform * transform = ent->add<ml::Transform>(
+				ml::mat4::Identity()
+			);
+			transform->lookAt(
+				camera->position,
+				camera->position + ml::vec3::Back,
+				ml::vec3::Up
+			);
 		}
 
-		// Physics
+		// Light
+		/* * * * * * * * * * * * * * * * * * * * */
+		if (ml::Entity * ent = ML_Res.entities.get("light"))
+		{
+			ml::Transform * transform = ent->add<ml::Transform>({
+				{ 0.0f, 1.0f, 30.0f }, // position
+				{ 1.0f }, // scale
+				{ } // rotation
+			});
+
+			ml::Light * light = ent->add<ml::Light>({
+				ml::Color::LightYellow
+			});
+
+			ml::Renderer * renderer = ent->add<ml::Renderer>({
+				ML_Res.models.get("sphere8x6"),
+				ml::Material(ML_Res.shaders.get("solid"),
+				{
+					{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->getPerspMatrix() },
+					{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Transform>()->getMat() },
+					{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->getMat() },
+					{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&light->color },
+				}),
+				ml::RenderStates({
+					{ ml::GL::AlphaTest,{ ml::RenderVar::Bool, 1 } },
+					{ ml::GL::Blend,	{ ml::RenderVar::Bool, 1 } },
+					{ ml::GL::CullFace,	{ ml::RenderVar::Bool, 1 } },
+					{ ml::GL::DepthTest,{ ml::RenderVar::Bool, 1 } },
+				})
+			});
+		}
+
+		// Borg
+		/* * * * * * * * * * * * * * * * * * * * */
+		if (ml::Entity * ent = ML_Res.entities.get("borg"))
+		{
+			ml::Transform * transform = ent->add<ml::Transform>({
+				{ 5.0f, 0.0f, 0.0f }, // position
+				{ 1.0f }, // scale
+				{ } // rotation
+			});
+
+			ml::BoxCollider * collider = ent->add<ml::BoxCollider>({
+			});
+
+			ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
+				RB_BORG, transform, collider, NULL
+			});
+
+			ml::Renderer * renderer = ent->add<ml::Renderer>({
+				ML_Res.models.get("default_cube"),
+				ml::Material(ML_Res.shaders.get("basic"),
+				{
+					{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->getPerspMatrix() },
+					{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Transform>()->getMat() },
+					{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->getMat() },
+					{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
+					{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("borg") },
+				}),
+				ml::RenderStates({
+					{ ml::GL::AlphaTest,{ ml::RenderVar::Bool, 1 } },
+					{ ml::GL::Blend,	{ ml::RenderVar::Bool, 1 } },
+					{ ml::GL::CullFace,	{ ml::RenderVar::Bool, 1 } },
+					{ ml::GL::DepthTest,{ ml::RenderVar::Bool, 1 } },
+				})
+			});
+		}
+
+		// Cube
+		/* * * * * * * * * * * * * * * * * * * * */
+		if (ml::Entity * ent = ML_Res.entities.get("cube"))
+		{
+			ml::Transform * transform = ent->add<ml::Transform>({
+				{ 0.0f, 0.0f, -5.0f }, // position
+				{ 0.5f }, // scale
+				{ } // rotation
+			});
+
+			ml::BoxCollider * collider = ent->add<ml::BoxCollider>({
+			});
+
+			ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
+				RB_CUBE, transform, collider, NULL
+			});
+
+			ml::Renderer * renderer = ent->add<ml::Renderer>({
+				ML_Res.models.get("cube"),
+				ml::Material(ML_Res.shaders.get("normal"),
+				{
+					{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->getPerspMatrix() },
+					{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Transform>()->getMat() },
+					{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->getMat() },
+					{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
+					{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm") },
+				}),
+				ml::RenderStates({
+					{ ml::GL::AlphaTest,{ ml::RenderVar::Bool, 1 } },
+					{ ml::GL::Blend,	{ ml::RenderVar::Bool, 1 } },
+					{ ml::GL::CullFace,	{ ml::RenderVar::Bool, 1 } },
+					{ ml::GL::DepthTest,{ ml::RenderVar::Bool, 1 } },
+				})
+			});
+		}
+
+		// Navball
+		/* * * * * * * * * * * * * * * * * * * * */
+		if (ml::Entity * ent = ML_Res.entities.get("navball"))
+		{
+			ml::Transform * transform = ent->add<ml::Transform>({
+				{ -5.0f, 0.0f, 0.0f }, // position
+				{ 1.0f }, // scale
+				{ } // rotation
+			});
+
+			ml::SphereCollider * collider = ent->add<ml::SphereCollider>({
+			});
+
+			ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
+				RB_NAVBALL, transform, collider, NULL
+			});
+
+			ml::Renderer * renderer = ent->add<ml::Renderer>({
+				ML_Res.models.get("sphere32x24"),
+				ml::Material(ML_Res.shaders.get("basic"),
+				{
+					{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->getPerspMatrix() },
+					{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Transform>()->getMat() },
+					{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->getMat() },
+					{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
+					{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("navball") },
+				}),
+				ml::RenderStates({
+					{ ml::GL::AlphaTest,{ ml::RenderVar::Bool, 1 } },
+					{ ml::GL::Blend,	{ ml::RenderVar::Bool, 1 } },
+					{ ml::GL::CullFace,	{ ml::RenderVar::Bool, 1 } },
+					{ ml::GL::DepthTest,{ ml::RenderVar::Bool, 1 } },
+				})
+			});
+		}
+
+		// Moon
+		/* * * * * * * * * * * * * * * * * * * * */
+		if (ml::Entity * ent = ML_Res.entities.get("moon"))
+		{
+			ml::Transform * transform = ent->add<ml::Transform>({
+				{ 0.0f, 0.0f, 5.0f }, // position
+				{ 0.5f }, // scale
+				{ } // rotation
+			});
+
+			ml::SphereCollider * collider = ent->add<ml::SphereCollider>({
+			});
+
+			ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
+				RB_MOON, transform, collider, NULL
+			});
+
+			ml::Renderer * renderer = ent->add<ml::Renderer>({
+				ML_Res.models.get("sphere32x24"),
+				ml::Material(ML_Res.shaders.get("lighting"),
+				{
+					{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->getPerspMatrix() },
+					{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Transform>()->getMat() },
+					{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->getMat() },
+					{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("moon_dm") },
+					{ ML_FRAG_SPEC_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("moon_nm") },
+					{ "Frag.cameraPos",	ml::Uniform::Vec3,	&ML_CAMERA->get<ml::Transform>()->getPos() },
+					{ "Frag.lightPos",	ml::Uniform::Vec3,	&ML_LIGHT->get<ml::Transform>()->getPos() },
+					{ "Frag.diffuse",	ml::Uniform::Vec4,	&ML_LIGHT->get<ml::Light>()->color },
+					{ "Frag.ambient",	ml::Uniform::Float, &globals.ambient },
+					{ "Frag.specular",	ml::Uniform::Float, &globals.specular },
+					{ "Frag.shininess",	ml::Uniform::Int,	&globals.shininess },
+				}),
+				ml::RenderStates({
+					{ ml::GL::AlphaTest,{ ml::RenderVar::Bool, 1 } },
+					{ ml::GL::Blend,	{ ml::RenderVar::Bool, 1 } },
+					{ ml::GL::CullFace,	{ ml::RenderVar::Bool, 1 } },
+					{ ml::GL::DepthTest,{ ml::RenderVar::Bool, 1 } },
+				})
+			});
+		}
+
+		// Earth
+		/* * * * * * * * * * * * * * * * * * * * */
+		if (ml::Entity * ent = ML_Res.entities.get("earth"))
+		{
+			ml::Transform * transform = ent->add<ml::Transform>({
+				{ 0.0f }, // position
+				{ 1.0f }, // scale
+				{ } // rotation
+			});
+
+			ml::SphereCollider * collider = ent->add<ml::SphereCollider>({
+			});
+
+			ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
+				RB_EARTH, transform, collider, NULL
+			});
+
+			ml::Renderer * renderer = ent->add<ml::Renderer>({
+				ML_Res.models.get("sphere32x24"),
+				ml::Material(ML_Res.shaders.get("lighting"),
+				{
+					{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->getPerspMatrix() },
+					{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Transform>()->getMat() },
+					{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->getMat() },
+					{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("earth_dm") },
+					{ ML_FRAG_SPEC_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("earth_sm") },
+					{ "Frag.cameraPos",	ml::Uniform::Vec3,	&ML_CAMERA->get<ml::Transform>()->getPos() },
+					{ "Frag.lightPos",	ml::Uniform::Vec3,	&ML_LIGHT->get<ml::Transform>()->getPos() },
+					{ "Frag.diffuse",	ml::Uniform::Vec4,	&ML_LIGHT->get<ml::Light>()->color },
+					{ "Frag.ambient",	ml::Uniform::Float, &globals.ambient },
+					{ "Frag.specular",	ml::Uniform::Float, &globals.specular },
+					{ "Frag.shininess",	ml::Uniform::Int,	&globals.shininess },
+				}),
+				ml::RenderStates({
+					{ ml::GL::AlphaTest,{ ml::RenderVar::Bool, 1 } },
+					{ ml::GL::Blend,	{ ml::RenderVar::Bool, 1 } },
+					{ ml::GL::CullFace,	{ ml::RenderVar::Bool, 1 } },
+					{ ml::GL::DepthTest,{ ml::RenderVar::Bool, 1 } },
+				})
+			});
+		}
+
+		// Ground
+		/* * * * * * * * * * * * * * * * * * * * */
+		if (ml::Entity * ent = ML_Res.entities.get("ground"))
+		{
+			ml::Transform * transform = ent->add<ml::Transform>({
+				{ 0.0f, -2.5f, 0.0f }, // position
+				{ 12.5, 0.25f, 12.5 }, // scale
+				{ } // rotation
+			});
+
+			ml::BoxCollider * collider = ent->add<ml::BoxCollider>({
+			});
+
+			ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
+				RB_GROUND, transform, collider, NULL
+			});
+
+			ml::Renderer * renderer = ent->add<ml::Renderer>({
+				ML_Res.models.get("cube"),
+				ml::Material(ML_Res.shaders.get("normal"),
+				{
+					{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->getPerspMatrix() },
+					{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Transform>()->getMat() },
+					{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->getMat() },
+					{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
+					{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm") },
+				}),
+				ml::RenderStates({
+					{ ml::GL::AlphaTest,{ ml::RenderVar::Bool, 1 } },
+					{ ml::GL::Blend,	{ ml::RenderVar::Bool, 1 } },
+					{ ml::GL::CullFace,	{ ml::RenderVar::Bool, 1 } },
+					{ ml::GL::DepthTest,{ ml::RenderVar::Bool, 1 } },
+				})
+			});
+		}
+
+		// Launch Physics
 		/* * * * * * * * * * * * * * * * * * * * */
 		ML_Physics.thread().launch([]()
 		{
 			// Setup
 			/* * * * * * * * * * * * * * * * * * * * */
-			if (ml::PhysicsState & state = ML_Physics.world().state().resize(MAX_RIGIDBODY - 1))
+			if (ml::PhysicsState & state = ML_Physics.world().state().resize(MAX_RIGIDBODY))
 			{
 				for (const auto & pair : ML_Res.entities)
 				{
@@ -659,7 +675,7 @@ namespace DEMO
 				ml::PhysicsState state;
 				if (ML_Physics.beginUpdate(state))
 				{
-					for (int32_t i = 0; i < state.size(); i++)
+					for (int32_t i = 0, imax = state.size(); i < imax; i++)
 					{
 						ml::vec3 pos;
 						ml::quat rot;
@@ -678,7 +694,7 @@ namespace DEMO
 								rot = ml::quat::angleAxis(totalT, ml::vec3::One);
 								break;
 
-							case RB_SANIC:
+							case RB_NAVBALL:
 								pos = { pos[0], -ML_Time.cos(), pos[2] };
 								rot = ml::quat::angleAxis(totalT, ml::vec3::Forward);
 								break;
@@ -908,7 +924,7 @@ namespace DEMO
 			scene->bind();
 
 			// Clear Screen
-			this->clear(ML_CAMERA->get<ml::Camera>()->backgroundColor);
+			this->clear(ML_CAMERA->get<ml::Camera>()->color);
 
 			// Draw Renderers
 			for (const auto & pair : ML_Res.entities)
@@ -933,12 +949,15 @@ namespace DEMO
 				});
 				states.apply();
 
+				// Ortho Matrix
+				const ml::mat4 & ortho = ML_CAMERA->get<ml::Camera>()->getOrthoMatrix();
+
 				// Draw Sprites
 				if (const ml::Shader * shader = ML_Res.shaders.get("sprites"))
 				{
 					static ml::RenderBatch batch(&m_canvas.vao(), &m_canvas.vbo(), { shader,
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->getOrthoMatrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ortho },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4 },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D },
 					} });
@@ -954,7 +973,7 @@ namespace DEMO
 				{
 					static ml::RenderBatch batch(&m_canvas.vao(), &m_canvas.vbo(), { shader,
 					{
-						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->getOrthoMatrix() },
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ortho },
 						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4 },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D },
 					} });

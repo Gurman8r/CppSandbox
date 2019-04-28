@@ -163,8 +163,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\MemePhysics\BoxCollider.hpp" />
-    <ClInclude Include="..\..\include\MemePhysics\AABB.hpp" />
     <ClInclude Include="..\..\include\MemePhysics\Collider.hpp" />
+    <ClInclude Include="..\..\include\MemePhysics\ConvexHull.hpp" />
     <ClInclude Include="..\..\include\MemePhysics\Export.hpp" />
     <ClInclude Include="..\..\include\MemePhysics\Force.hpp" />
     <ClInclude Include="..\..\include\MemePhysics\Physics.hpp" />
@@ -172,18 +172,20 @@
     <ClInclude Include="..\..\include\MemePhysics\PhysicsEvents.hpp" />
     <ClInclude Include="..\..\include\MemePhysics\PhysicsState.hpp" />
     <ClInclude Include="..\..\include\MemePhysics\PhysicsWorld.hpp" />
+    <ClInclude Include="..\..\include\MemePhysics\Ray.hpp" />
     <ClInclude Include="..\..\include\MemePhysics\Rigidbody.hpp" />
     <ClInclude Include="..\..\include\MemePhysics\SphereCollider.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\MemePhysics\AABB.cpp" />
     <ClCompile Include="..\..\src\MemePhysics\BoxCollider.cpp" />
     <ClCompile Include="..\..\src\MemePhysics\Collider.cpp" />
+    <ClCompile Include="..\..\src\MemePhysics\ConvexHull.cpp" />
     <ClCompile Include="..\..\src\MemePhysics\Force.cpp" />
     <ClCompile Include="..\..\src\MemePhysics\Physics.cpp" />
     <ClCompile Include="..\..\src\MemePhysics\Particle.cpp" />
     <ClCompile Include="..\..\src\MemePhysics\PhysicsState.cpp" />
     <ClCompile Include="..\..\src\MemePhysics\PhysicsWorld.cpp" />
+    <ClCompile Include="..\..\src\MemePhysics\Ray.cpp" />
     <ClCompile Include="..\..\src\MemePhysics\Rigidbody.cpp" />
     <ClCompile Include="..\..\src\MemePhysics\SphereCollider.cpp" />
   </ItemGroup>

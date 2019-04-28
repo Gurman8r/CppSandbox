@@ -33,7 +33,7 @@ namespace ml
 		inline const vec2 & scale()	const { return m_scale;		}
 
 	public:
-		inline const mat4 & getMatrix() const
+		inline const mat4 & getMat() const
 		{
 			update();
 			return m_matrix;

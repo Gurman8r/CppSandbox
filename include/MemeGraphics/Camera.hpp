@@ -23,8 +23,8 @@ namespace ml
 	public:
 		inline const Transform &	getOrtho() const		{ return m_ortho; }
 		inline const Transform &	getPersp() const		{ return m_persp; }
-		inline const mat4 &			getOrthoMatrix() const	{ return m_ortho.getMatrix(); }
-		inline const mat4 &			getPerspMatrix() const	{ return m_persp.getMatrix(); }
+		inline const mat4 &			getOrthoMatrix() const	{ return m_ortho.getMat(); }
+		inline const mat4 &			getPerspMatrix() const	{ return m_persp.getMat(); }
 
 		inline const vec3 & forward(const vec3 & value)
 		{
@@ -46,7 +46,7 @@ namespace ml
 		float		fov;
 		float		pNear, pFar;
 		float		oNear, oFar;
-		vec4		backgroundColor;
+		vec4		color;
 
 	private:
 		vec2i		m_res;

@@ -1,14 +1,14 @@
-#include <MemePhysics/AABB.hpp>
+#include <MemePhysics/ConvexHull.hpp>
 
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	AABB::AABB()
+	ConvexHull::ConvexHull()
 	{
 	}
 
-	AABB::~AABB()
+	ConvexHull::~ConvexHull()
 	{
 	}
 
