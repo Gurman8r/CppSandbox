@@ -21,12 +21,12 @@ namespace ml
 
 	float Time::sin() const
 	{
-		return sinf(elapsed().delta());
+		return std::sinf(elapsed().delta());
 	}
 
 	float Time::cos() const
 	{
-		return cosf(elapsed().delta());
+		return std::cosf(elapsed().delta());
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
