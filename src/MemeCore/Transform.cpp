@@ -7,10 +7,6 @@ namespace ml
 	Transform::Transform()
 		: m_matrix(mat4::Identity())
 	{
-		(*this)
-			.translate(vec3::Zero)
-			.rotate(0.0f, vec3::One)
-			.scale(vec3::One);
 	}
 
 	Transform::Transform(const vec3 & pos, const vec3 & scl)

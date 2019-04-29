@@ -368,9 +368,7 @@ namespace DEMO
 				camera->position = { 0.0f, 1.0f, 10.0f };
 				camera->forward(ml::vec3::Back);
 
-				ml::Transform * transform = ent->add<ml::Transform>(
-					ml::mat4::Identity()
-				);
+				ml::Transform * transform = ent->add<ml::Transform>();
 				transform->lookAt(camera->position, camera->forward());
 			}
 
@@ -812,7 +810,7 @@ namespace DEMO
 							transform->lookAt(camera->position, camera->forward());
 
 							camera->position
-								+= camera->right()
+								+=	camera->right()
 								*	ev->elapsed.delta()
 								*	globals.camSpd;
 						}
@@ -821,7 +819,7 @@ namespace DEMO
 			}
 		}
 
-		// Update Physics
+		// Sync Entities with Physics
 		/* * * * * * * * * * * * * * * * * * * * */
 		ML_Physics.getCopyState([&](const ml::PhysicsState & state)
 		{
@@ -995,7 +993,6 @@ namespace DEMO
 								{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4 },
 								{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D },
 							}));
-					
 					for (const auto & pair : ML_Res.sprites)
 					{
 						this->draw((*pair.second), batch);
@@ -1014,7 +1011,6 @@ namespace DEMO
 								{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4 },
 								{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D },
 							}));
-
 					for (const auto & pair : m_text)
 					{
 						this->draw(pair.second, batch);
