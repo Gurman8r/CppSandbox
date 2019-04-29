@@ -26,8 +26,10 @@ namespace ml
 		vec3 angularAcc;
 		vec3 angularMomentum;
 		vec3 torque;
-		mat4 inertiaTensor, inertiaTensorInv;
-		mat4 inertiaTensor_world, inertiaTensorInv_world;
+		mat3 inertiaTensor;
+		mat3 inertiaTensorInv;
+		mat3 inertiaTensor_world;
+		mat3 inertiaTensorInv_world;
 		vec3 centerMass;
 		vec3 centerMass_world;
 
@@ -35,7 +37,6 @@ namespace ml
 
 		Particle();
 		Particle(const vec3 & pos, const float mass);
-		Particle(const vec3 & pos, const vec3 & vel, const vec3 & acc, const float mass);
 		Particle(const Particle & copy);
 		~Particle();
 
