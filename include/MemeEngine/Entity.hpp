@@ -72,6 +72,19 @@ namespace ml
 		}
 
 		template <class Component>
+		inline Component * add(Component * value)
+		{
+			ML_assert_is_base_of(ITrackable, Component);
+			return ((this->find<Component>() == this->end())
+				? (reinterpret_cast<Component *>(m_map.insert({
+						ML_typeof(Component),
+						value
+					}).first->second))
+				: (NULL)
+			);
+		}
+
+		template <class Component>
 		inline Component * add(const Component & value)
 		{
 			ML_assert_is_base_of(ITrackable, Component);

@@ -12,7 +12,6 @@ namespace ml
 		, m_transform	(NULL)
 		, m_collider	(NULL)
 		, m_particle	(NULL)
-		, m_linked		(false)
 	{
 	}
 
@@ -21,7 +20,6 @@ namespace ml
 		, m_transform	(transform)
 		, m_collider	(collider)
 		, m_particle	(particle)
-		, m_linked		(false)
 	{
 	}
 
@@ -30,22 +28,11 @@ namespace ml
 		, m_transform	(copy.m_transform)
 		, m_collider	(copy.m_collider)
 		, m_particle	(copy.m_particle)
-		, m_linked		(copy.m_linked)
 	{
 	}
 
 	Rigidbody::~Rigidbody()
 	{
-	}
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
-	bool Rigidbody::createLinkToWorld() const
-	{
-		return ((!m_linked)
-			? (m_linked = ML_Physics.createLinkToRigidbody(this))
-			: (false)
-		);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

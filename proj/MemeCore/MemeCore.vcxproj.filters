@@ -236,9 +236,6 @@
     <ClCompile Include="..\..\src\MemeCore\Time.cpp">
       <Filter>Source Files\Time</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemeCore\Duration.cpp">
-      <Filter>Source Files\Time</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemeCore\MemoryTracker.cpp">
       <Filter>Source Files\Memory</Filter>
     </ClCompile>

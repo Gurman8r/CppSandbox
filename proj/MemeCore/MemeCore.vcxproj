@@ -233,7 +233,6 @@
     <ClCompile Include="..\..\src\MemeCore\TestRequest.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Thread.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Time.cpp" />
-    <ClCompile Include="..\..\src\MemeCore\Duration.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Timer.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Transform.cpp" />
     <ClCompile Include="..\..\src\MemeCore\Worker.cpp" />

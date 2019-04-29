@@ -51,10 +51,7 @@ namespace ml
 
 	public: // Operators
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-		inline operator bool() const 
-		{
-			return !(this->empty()); 
-		}
+		inline operator bool() const { return !(this->empty()); }
 
 
 	public: // Getters
@@ -64,7 +61,7 @@ namespace ml
 		{
 			if (static_cast<size_t>(index) < data.size())
 			{
-				value = data[static_cast<size_t>(index)];
+				value = T(data[static_cast<size_t>(index)]);
 				return true;
 			}
 			return false;
@@ -110,12 +107,23 @@ namespace ml
 		template <class T> 
 		inline bool set(const int32_t index, List<T> & data, const T & value)
 		{
-			if (static_cast<size_t>(index) < data.size())
+			if (index >= 0)
 			{
-				data[static_cast<size_t>(index)] = value;
-				return true;
+				if (static_cast<size_t>(index) < data.size())
+				{
+					data[static_cast<size_t>(index)] = T(value);
+					return true;
+				}
+				else
+				{
+					data.resize(static_cast<size_t>(index + 1));
+					return set(index, data, value);
+				}
 			}
-			return false;
+			else
+			{
+				return false;
+			}
 		}
 
 		template <Type ID, class T = vec3> 
@@ -149,50 +157,6 @@ namespace ml
 			case PhysicsState::T_Inv: return set<mat4>(index, m_inv, value);
 			default:
 				return false;
-			}
-		}
-
-
-	public: // Pushers
-		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-		template <class T>
-		inline int32_t push(List<T> & data, const T & value)
-		{
-			data.push_back(value);
-			return (int32_t)(data.size() - 1);
-		}
-
-		template <Type ID, class T = vec3>
-		inline int32_t push(const vec3 & value)
-		{
-			switch (ID)
-			{
-			case PhysicsState::T_Pos: return push<vec3>(m_pos, value);
-			default:
-				return -1;
-			}
-		}
-
-		template <Type ID, class T = quat>
-		inline int32_t push(const quat & value)
-		{
-			switch (ID)
-			{
-			case PhysicsState::T_Rot: return push<quat>(m_rot, value);
-			default:
-				return -1;
-			}
-		}
-
-		template <Type ID, class T = mat4>
-		inline int32_t push(const mat4 & value)
-		{
-			switch (ID)
-			{
-			case PhysicsState::T_Mat: return push<mat4>(m_mat, value);
-			case PhysicsState::T_Inv: return push<mat4>(m_inv, value);
-			default:
-				return -1;
 			}
 		}
 

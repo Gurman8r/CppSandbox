@@ -47,10 +47,10 @@ enum Rigidbody_ID : int32_t
 {
 	RB_BORG,
 	RB_CUBE,
-	RB_NAVBALL,
-	RB_MOON,
 	RB_EARTH,
-	RB_GROUND
+	RB_GROUND,
+	RB_MOON,
+	RB_NAVBALL
 };
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -425,13 +425,9 @@ namespace DEMO
 					1.0f // mass
 				});
 
-				ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
-					RB_BORG, transform, collider, particle
-				});
-				if (!rb->createLinkToWorld())
-				{
-					ml::Debug::logError("Failed creating RB world link: {0}", rb->index());
-				}
+				ml::Rigidbody * rb = ent->add<ml::Rigidbody>(ML_Physics.createNewRigidbody(
+					{ RB_BORG, transform, collider, particle }
+				));
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("default_cube"),
@@ -471,13 +467,9 @@ namespace DEMO
 					1.0f // mass
 				});
 
-				ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
-					RB_CUBE, transform, collider, particle
-				});
-				if (!rb->createLinkToWorld())
-				{
-					ml::Debug::logError("Failed creating RB world link: {0}", rb->index());
-				}
+				ml::Rigidbody * rb = ent->add<ml::Rigidbody>(ML_Physics.createNewRigidbody(
+					{ RB_CUBE, transform, collider, particle }
+				));
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("cube"),
@@ -517,13 +509,9 @@ namespace DEMO
 					1.0f // mass
 				});
 
-				ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
-					RB_NAVBALL, transform, collider, particle
-				});
-				if (!rb->createLinkToWorld())
-				{
-					ml::Debug::logError("Failed creating RB world link: {0}", rb->index());
-				}
+				ml::Rigidbody * rb = ent->add<ml::Rigidbody>(ML_Physics.createNewRigidbody(
+					{ RB_NAVBALL, transform, collider, particle }
+				));
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("sphere32x24"),
@@ -563,13 +551,9 @@ namespace DEMO
 					1.0f // mass
 				});
 
-				ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
-					RB_MOON, transform, collider, particle
-				});
-				if (!rb->createLinkToWorld())
-				{
-					ml::Debug::logError("Failed creating RB world link: {0}", rb->index());
-				}
+				ml::Rigidbody * rb = ent->add<ml::Rigidbody>(ML_Physics.createNewRigidbody(
+					{ RB_MOON, transform, collider, particle }
+				));
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("sphere32x24"),
@@ -615,13 +599,9 @@ namespace DEMO
 					1.0f // mass
 				});
 
-				ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
-					RB_EARTH, transform, collider, particle
-				});
-				if (!rb->createLinkToWorld())
-				{
-					ml::Debug::logError("Failed creating RB world link: {0}", rb->index());
-				}
+				ml::Rigidbody * rb = ent->add<ml::Rigidbody>(ML_Physics.createNewRigidbody(
+					{ RB_EARTH, transform, collider, particle }
+				));
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("sphere32x24"),
@@ -667,13 +647,9 @@ namespace DEMO
 					1.0f // mass
 				});
 
-				ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
-					RB_GROUND, transform, collider, particle
-				});
-				if (!rb->createLinkToWorld())
-				{
-					ml::Debug::logError("Failed creating RB world link: {0}", rb->index());
-				}
+				ml::Rigidbody * rb = ent->add<ml::Rigidbody>(ML_Physics.createNewRigidbody(
+					{ RB_GROUND, transform, collider, particle }
+				));
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("cube"),
@@ -700,18 +676,19 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 		ML_Physics.launch([]()
 		{
+			// While the window is alive and open
 			while (ML_Engine.isRunning())
 			{
 				const float totalT = ML_Time.elapsed().delta(); // Total Time
 				const float deltaT = ML_Engine.elapsed().delta(); // Delta Time
 
-				// Iterate over and update the copy state
-				ML_Physics.forEach([&](const int32_t i, ml::PhysicsState & state)
+				// Update each element in the copy state
+				ML_Physics.updateAll([&](const int32_t i, ml::PhysicsState & state)
 				{
-					// The actual RB if needed
+					// Get the RB if needed
 					if (const ml::Rigidbody * rb = ML_Physics.getLinkedRigidbody(i))
 					{
-						// The RB's components
+						// Get the RB's components
 						const ml::Collider	* c = rb->collider();
 						const ml::Particle	* p = rb->particle();
 						const ml::Transform * t = rb->transform();
@@ -758,14 +735,18 @@ namespace DEMO
 							break;
 						}
 
-						// Set copy state's data
+						// Apply changes to copy state
 						if (!state.set<state.T_Pos>(i, pos) ||
 							!state.set<state.T_Rot>(i, rot) ||
 							!state.set<state.T_Mat>(i, mat) ||
 							!state.set<state.T_Inv>(i, inv))
 						{
-							ml::Debug::logError("Failed updating state: {0}", i);
+							ml::Debug::logError("Physics | Failed setting copy state: {0}", i);
 						}
+					}
+					else
+					{
+						ml::Debug::logError("Physics | Failed getting copy state: {0}", i);
 					}
 				});
 			}
@@ -815,20 +796,26 @@ namespace DEMO
 		{
 			camera->updateRes(this->getFrameSize());
 
+			// Camera Transform
 			if (ml::Transform * transform = ML_CAMERA->get<ml::Transform>())
 			{
-				if (ml::Transform * target = ML_Res.entities.get("earth")->get<ml::Transform>())
+				// Target Entity
+				if (const ml::Entity * ent = ML_Res.entities.get("earth"))
 				{
-					if (globals.camAuto)
+					// Target Transform
+					if (const ml::Transform * target = ent->get<ml::Transform>())
 					{
-						camera->forward(target->getPos() - camera->position);
+						if (globals.camAuto)
+						{
+							camera->forward(target->getPos() - camera->position);
 
-						transform->lookAt(camera->position, camera->forward());
+							transform->lookAt(camera->position, camera->forward());
 
-						camera->position
-							+= camera->right()
-							*	ev->elapsed.delta()
-							*	globals.camSpd;
+							camera->position
+								+= camera->right()
+								*	ev->elapsed.delta()
+								*	globals.camSpd;
+						}
 					}
 				}
 			}

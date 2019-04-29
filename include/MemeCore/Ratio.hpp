@@ -8,9 +8,9 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	template <
-		intmax_t N, // Numerator
-		intmax_t D	// Denominator
-	> using Ratio = typename std::ratio<N, D>;
+		intmax_t Num,
+		intmax_t Den = 1
+	> using Ratio = typename std::ratio<Num, Den>;
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
@@ -35,10 +35,10 @@ namespace ml
 
 	template <
 		typename T, 
-		intmax_t N, 
-		intmax_t D
+		intmax_t Num, 
+		intmax_t Den
 	>
-	constexpr T ratio_cast(const T & value, const Ratio<N, D> & r)
+	constexpr T ratio_cast(const T & value, const Ratio<Num, Den> & r)
 	{
 		return 
 			((((T)(r.num) == (T)(1)) && ((T)(r.den) == (T)(1)))

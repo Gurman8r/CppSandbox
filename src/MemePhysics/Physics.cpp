@@ -43,39 +43,46 @@ namespace ml
 		{
 			if (const Transform * transform = value->transform())
 			{
-				if (m_state.push<PhysicsState::T_Pos>(vec3()) == i &&
-					m_state.push<PhysicsState::T_Rot>(quat()) == i &&
-					m_state.push<PhysicsState::T_Mat>(mat4()) == i &&
-					m_state.push<PhysicsState::T_Inv>(mat4()) == i)
+				if (m_state.set<PhysicsState::T_Pos>(i, transform->getPos()) &&
+					m_state.set<PhysicsState::T_Rot>(i, transform->getRot()) &&
+					m_state.set<PhysicsState::T_Mat>(i, transform->getMat()) &&
+					m_state.set<PhysicsState::T_Inv>(i, transform->getInv()))
 				{
-					if (m_state.set<PhysicsState::T_Pos>(i, transform->getPos()) &&
-						m_state.set<PhysicsState::T_Rot>(i, transform->getRot()) &&
-						m_state.set<PhysicsState::T_Mat>(i, transform->getMat()) &&
-						m_state.set<PhysicsState::T_Inv>(i, transform->getInv()))
-					{
-						m_rb.push_back(value);
-						
-						return ((m_state.m_size = (int32_t)m_rb.size()) > 0);
-					}
-					else
-					{
-						return Debug::logError("Failed setting RB data");
-					}
+					m_rb.push_back(value);
+
+					return ((m_state.m_size = (int32_t)m_rb.size()) > 0);
 				}
 				else
 				{
-					return Debug::logError("Failed pushing RB data");
+					return Debug::logError("Physics | Failed setting Rigidbody data");
 				}
 			}
 			else
 			{
-				return Debug::logError("Failed getting RB transform");
+				return Debug::logError("Physics | Failed getting Rigidbody Transform");
 			}
 		}
 		else
 		{
-			return Debug::logError("Invalid RB index");
+			return Debug::logError("Physics | Invalid Rigidbody index");
 		}
+	}
+
+	Rigidbody * Physics::createNewRigidbody(const Rigidbody & copy)
+	{
+		if (copy.index() >= 0)
+		{
+			if (Rigidbody * temp = new Rigidbody(copy))
+			{
+				if (createLinkToRigidbody(temp))
+				{
+					return temp;
+				}
+				delete temp;
+				Debug::logError("Physics | Failed creating new Rigidbody");
+			}
+		}
+		return NULL;
 	}
 
 	const Rigidbody * Physics::getLinkedRigidbody(const int32_t index) const
@@ -102,7 +109,10 @@ namespace ml
 			
 			return true;
 		}
-		return false;
+		else
+		{
+			return Debug::logError("Physics | Unable to call Physics::beginUpdate");
+		}
 	}
 
 	bool Physics::endUpdate(const PhysicsState & value)
@@ -117,14 +127,17 @@ namespace ml
 
 			m_state.deepCopy(value);
 
-			if (m_elapsed.milliseconds() < ML_PHYSICS_TIMESTEP)
+			if (m_elapsed.milliseconds() < ML_PHYSICS_FPS_60)
 			{
-				m_thread.sleep(ML_PHYSICS_TIMESTEP - m_elapsed.milliseconds());
+				m_thread.sleep(ML_PHYSICS_FPS_60 - m_elapsed.milliseconds());
 			}
 			
 			return true;
 		}
-		return false;
+		else
+		{
+			return Debug::logError("Physics | Unable to call Physics::endUpdate");
+		}
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

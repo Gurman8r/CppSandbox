@@ -13,13 +13,12 @@
 
 /* * * * * * * * * * * * * * * * * * * * */
 
-# define ML_PHYSICS_TIMESTEP_15 60
-# define ML_PHYSICS_TIMESTEP_30 30
-# define ML_PHYSICS_TIMESTEP_60 15
+# define ML_PHYSICS_FPS_15 60
+# define ML_PHYSICS_FPS_30 30
+# define ML_PHYSICS_FPS_60 15
 
-# ifndef ML_PHYSICS_TIMESTEP
-# define ML_PHYSICS_TIMESTEP ML_PHYSICS_TIMESTEP_60
-# endif
+#define ML_PHYSICS_TIME_CAST(t) ml::Milliseconds(t)
+#define ML_PHYSICS_TIME_STEP	ML_PHYSICS_TIME_CAST(ML_PHYSICS_FPS_60)
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -41,7 +40,6 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		static const vec3 Gravity;
 
-
 	private:
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		Physics();
@@ -56,6 +54,7 @@ namespace ml
 	public:
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		bool createLinkToRigidbody(const Rigidbody * rb);
+		Rigidbody * createNewRigidbody(const Rigidbody & copy);
 		const Rigidbody * getLinkedRigidbody(const int32_t index) const;
 
 
@@ -68,15 +67,17 @@ namespace ml
 	public:
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		template <
-			class Fun, class ... Args
+			class Fun, 
+			class ... Args
 		> inline bool launch(Fun && fun, Args && ... args)
 		{
 			return m_thread.launch(fun, (args)...);
 		}
 
 		template <
-			class Fun, class ... Args
-		> inline bool forEach(Fun && fun, Args && ... args)
+			class Fun, 
+			class ... Args
+		> inline bool updateAll(Fun && fun, Args && ... args)
 		{
 			PhysicsState temp;
 			if (beginUpdate(temp))
@@ -91,7 +92,8 @@ namespace ml
 		}
 
 		template <
-			class Fun, class ... Args
+			class Fun, 
+			class ... Args
 		> inline bool getCopyState(Fun && fun, Args && ... args)
 		{
 			PhysicsState temp;

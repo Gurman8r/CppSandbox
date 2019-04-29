@@ -1,10 +1,12 @@
 #include <MemePhysics/PhysicsState.hpp>
+#include <MemeCore/Debug.hpp>
 
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	PhysicsState::PhysicsState()  { dispose(); }
+
 	PhysicsState::~PhysicsState() { dispose(); }
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -57,10 +59,13 @@ namespace ml
 	{
 		if (m_size)
 		{
-			assert("State pos size mismatch" && (m_pos.size() == m_size));
-			assert("State rot size mismatch" && (m_rot.size() == m_size));
-			assert("State mat size mismatch" && (m_mat.size() == m_size));
-			assert("State inv size mismatch" && (m_inv.size() == m_size));
+			if ((m_pos.size() != m_size) ||
+				(m_rot.size() != m_size) ||
+				(m_mat.size() != m_size) ||
+				(m_inv.size() != m_size))
+			{
+				Debug::logError("Physics | State data size mismatch");
+			}
 		}
 		return m_size;
 	}
