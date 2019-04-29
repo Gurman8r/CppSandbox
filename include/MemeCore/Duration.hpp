@@ -56,36 +56,31 @@ namespace ml
 		constexpr const uint64_t hours() const
 		{
 			return std::chrono::duration_cast<Hours>(
-				Minutes(this->minutes())
-			).count();
+				Minutes(this->minutes())).count();
 		}
 
 		constexpr const uint64_t minutes() const
 		{
 			return std::chrono::duration_cast<Minutes>(
-				Seconds(this->seconds())
-			).count();
+				Seconds(this->seconds())).count();
 		}
 
 		constexpr const uint64_t seconds() const
 		{
 			return std::chrono::duration_cast<Seconds>(
-				Milliseconds(this->milliseconds())
-			).count();
+				Milliseconds(this->milliseconds())).count();
 		}
 
 		constexpr const uint64_t milliseconds() const
 		{
 			return std::chrono::duration_cast<Milliseconds>(
-				Microseconds(this->microseconds())
-			).count();
+				Microseconds(this->microseconds())).count();
 		}
 
 		constexpr const uint64_t microseconds() const
 		{
 			return std::chrono::duration_cast<Microseconds>(
-				Nanoseconds(this->nanoseconds())
-			).count();
+				Nanoseconds(this->nanoseconds())).count();
 		}
 
 		constexpr const uint64_t nanoseconds() const
@@ -101,7 +96,7 @@ namespace ml
 			return this->nanoseconds();
 		}
 
-		constexpr const float delta() const 
+		constexpr float delta() const 
 		{
 			return ((float)this->milliseconds() / (float)Milli::den); 
 		}
@@ -109,67 +104,40 @@ namespace ml
 	
 	public:
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-		template <class T> 
-		constexpr bool equals(const T & other) const
-		{
-			return ((uint64_t)(*this) == (uint64_t)(Duration(other)));
-		}
-
-		template <class T>
-		constexpr bool lessThan(const T & other) const
-		{
-			return ((uint64_t)(*this) < (uint64_t)(Duration(other)));
-		}
-
-		template <class T>
-		constexpr bool notEquals(const T & value) const
-		{
-			return !this->equals(value);
-		}
-
-		template <class T> 
-		constexpr bool greaterThan(const T & value) const
-		{
-			return !this->lessThan(value);
-		}
-
-
-	public:
-		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		template <class T>
 		constexpr friend bool operator==(const Duration & lhs, const T & rhs)
 		{
-			return lhs.equals(rhs);
-		}
-
-		template <class T>
-		constexpr friend bool operator!=(const Duration & lhs, const T & rhs)
-		{
-			return lhs.notEquals(rhs);
-		}
-
-		template <class T>
-		constexpr friend bool operator >(const Duration & lhs, const T & rhs)
-		{
-			return lhs.greaterThan(rhs);
+			return ((uint64_t)lhs == (uint64_t)(Duration(rhs)));
 		}
 
 		template <class T>
 		constexpr friend bool operator <(const Duration & lhs, const T & rhs)
 		{
-			return lhs.lessThan(rhs);
+			return ((uint64_t)lhs < (uint64_t)(Duration(rhs)));
+		}
+
+		template <class T>
+		constexpr friend bool operator!=(const Duration & lhs, const T & rhs)
+		{
+			return !(lhs == rhs);
+		}
+
+		template <class T>
+		constexpr friend bool operator >(const Duration & lhs, const T & rhs)
+		{
+			return !(lhs < rhs);
 		}
 
 		template <class T>
 		constexpr friend bool operator>=(const Duration & lhs, const T & rhs)
 		{
-			return (lhs.equals(rhs) || lhs.greaterThan(rhs));
+			return (lhs > rhs) || (lhs == rhs);
 		}
 
 		template <class T>
 		constexpr friend bool operator<=(const Duration & lhs, const T & rhs)
 		{
-			return (lhs.equals(rhs) || lhs.lessThan(rhs));
+			return (lhs < rhs) || (lhs == rhs);
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
