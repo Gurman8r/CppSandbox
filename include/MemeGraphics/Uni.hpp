@@ -19,7 +19,7 @@ namespace ml
 	{
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		enum : int32_t
+		enum Types : int32_t
 		{
 			None,
 			Int,	// Integer
@@ -31,7 +31,7 @@ namespace ml
 			Mat3,	// Matrix3x3
 			Mat4,	// Matrix4x4
 			Tex,	// Texture
-			MAX_TYPE
+			MAX_UNI_TYPES
 		};
 
 		using id_type = typename const int32_t;
@@ -80,8 +80,6 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		enum : id_type { ID = _Type };
-
-		static constexpr id_type id { (id_type)(_Type) };
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
@@ -133,7 +131,6 @@ namespace ml
 	ML_GEN_UNIFORM(	uni_mat3_t,	uni_base::Mat3	);
 	ML_GEN_UNIFORM(	uni_mat4_t,	uni_base::Mat4	);
 	ML_GEN_UNIFORM(	uni_tex_t,	uni_base::Tex	);
-
 
 
 	// Value Types

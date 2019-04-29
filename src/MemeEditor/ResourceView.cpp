@@ -653,97 +653,146 @@ namespace ml
 					{
 						for (auto & pair : mat->uniforms())
 						{
-							switch (pair.second->type)
+							Funcs::Field(pair.second->name.c_str(), [&](CString, const String & name)
 							{
-							case uni_flt::ID:
-								if (auto u = dynamic_cast<uni_flt *>(pair.second))
+								auto flag_const = []()
 								{
-									Funcs::Field(u->name.c_str(), [&](CString)
-									{
-										ImGui::DragFloat(String("##Float##Uni##" + pair.second->name).c_str(), &u->data, 0.1f);
-									});
-								}
-								break;
+									ImGui::PushStyleColor(ImGuiCol_Text, { 1.0f, 0.4f, 0.4f, 1.0f });
+									ImGui::Text("[CONST]");
+									ImGui::PopStyleColor();
+								};
 
-							case uni_int::ID:
-								if (auto u = dynamic_cast<uni_int *>(pair.second))
+								switch (pair.second->type)
 								{
-									Funcs::Field(u->name.c_str(), [&](CString)
+									// Flt
+									/* * * * * * * * * * * * * * * * * * * * */
+								case uni_flt::ID:
+									if (auto u = dynamic_cast<uni_flt *>(pair.second))
 									{
-										ImGui::DragInt(String("##Int##Uni##" + pair.second->name).c_str(), &u->data, 0.1f);
-									});
-								}
-								break;
-
-							case uni_vec2::ID:
-								if (auto u = dynamic_cast<uni_vec2 *>(pair.second))
-								{
-									Funcs::Field(u->name.c_str(), [&](CString)
+										ImGui::DragFloat(String("##Float##Uni##" + name).c_str(), &u->data, 0.1f);
+									}
+									else if (auto u = dynamic_cast<uni_flt_cr *>(pair.second))
 									{
-										GUI::EditVec2f(String("##Vec2##Uni##" + pair.second->name).c_str(), u->data, 0.1f);
-									});
-								}
-								break;
+										flag_const();
+										auto temp = u->data;
+										ImGui::DragFloat(String("##Float##Uni##" + name).c_str(), &temp, 0.1f);
+									}
+									break;
 
-							case uni_vec3::ID:
-								if (auto u = dynamic_cast<uni_vec3 *>(pair.second))
-								{
-									Funcs::Field(u->name.c_str(), [&](CString)
+									// Int
+									/* * * * * * * * * * * * * * * * * * * * */
+								case uni_int::ID:
+									if (auto u = dynamic_cast<uni_int *>(pair.second))
 									{
-										GUI::EditVec3f(String("##Vec3##Uni##" + pair.second->name).c_str(), u->data, 0.1f);
-									});
-								}
-								break;
-
-							case uni_vec4::ID:
-								if (auto u = dynamic_cast<uni_vec4 *>(pair.second))
-								{
-									Funcs::Field(u->name.c_str(), [&](CString)
+										ImGui::DragInt(String("##Int##Uni##" + name).c_str(), &u->data, 0.1f);
+									}
+									else if (auto u = dynamic_cast<uni_int_cr *>(pair.second))
 									{
-										GUI::EditVec4f(String("##Vec4##Uni##" + pair.second->name).c_str(), u->data, 0.1f);
-									});
-								}
-								break;
+										flag_const();
+										auto temp = u->data;
+										ImGui::DragInt(String("##Int##Uni##" + name).c_str(), &temp, 0.1f);
+									}
+									break;
 
-							case uni_col4::ID:
-								if (auto u = dynamic_cast<uni_col4 *>(pair.second))
-								{
-									Funcs::Field(u->name.c_str(), [&](CString)
+									// Vec2
+									/* * * * * * * * * * * * * * * * * * * * */
+								case uni_vec2::ID:
+									if (auto u = dynamic_cast<uni_vec2 *>(pair.second))
 									{
-										ImGui::ColorEdit4(String("##Color##Uni##" + pair.second->name).c_str(), &u->data[0]);
-									});
-								}
-								break;
-
-							case uni_mat3::ID:
-								if (auto u = dynamic_cast<uni_mat3 *>(pair.second))
-								{
-									Funcs::Field(u->name.c_str(), [&](CString)
+										GUI::EditVec2f(String("##Vec2##Uni##" + name).c_str(), u->data, 0.1f);
+									}
+									else if (auto u = dynamic_cast<uni_vec2_cr *>(pair.second))
 									{
-										GUI::EditMat3f(String("##Mat3##Uni##" + pair.second->name).c_str(), u->data, 0.1f);
-									});
-								}
-								break;
+										flag_const();
+										auto temp = u->data;
+										GUI::EditVec2f(String("##Vec2##Uni##" + name).c_str(), temp, 0.1f);
+									}
+									break;
 
-							case uni_mat4::ID:
-								if (auto u = dynamic_cast<uni_mat4 *>(pair.second))
-								{
-									Funcs::Field(u->name.c_str(), [&](CString)
+									// Vec3
+									/* * * * * * * * * * * * * * * * * * * * */
+								case uni_vec3::ID:
+									if (auto u = dynamic_cast<uni_vec3 *>(pair.second))
 									{
-										GUI::EditMat4f(String("##Mat4##Uni##" + pair.second->name).c_str(), u->data, 0.1f);
-									});
-								}
-								break;
+										GUI::EditVec3f(String("##Vec3##Uni##" + name).c_str(), u->data, 0.1f);
+									}
+									else if (auto u = dynamic_cast<uni_vec3_cr *>(pair.second))
+									{
+										flag_const();
+										auto temp = u->data;
+										GUI::EditVec3f(String("##Vec3##Uni##" + name).c_str(), temp, 0.1f);
+									}
+									break;
 
-							case uni_tex_cp::ID:
-								if (auto u = dynamic_cast<uni_tex_cp *>(pair.second))
-								{
-									Funcs::Field(pair.second->name.c_str(), [&](CString)
+									// Vec4
+									/* * * * * * * * * * * * * * * * * * * * */
+								case uni_vec4::ID:
+									if (auto u = dynamic_cast<uni_vec4 *>(pair.second))
+									{
+										GUI::EditVec4f(String("##Vec4##Uni##" + name).c_str(), u->data, 0.1f);
+									}
+									else if (auto u = dynamic_cast<uni_vec4_cr *>(pair.second))
+									{
+										flag_const();
+										auto temp = u->data;
+										GUI::EditVec4f(String("##Vec4##Uni##" + name).c_str(), temp, 0.1f);
+									}
+									break;
+
+									// Col4
+									/* * * * * * * * * * * * * * * * * * * * */
+								case uni_col4::ID:
+									if (auto u = dynamic_cast<uni_col4 *>(pair.second))
+									{
+										ImGui::ColorEdit4(String("##Color##Uni##" + name).c_str(), &u->data[0]);
+									}
+									else if (auto u = dynamic_cast<uni_col4_cr *>(pair.second))
+									{
+										flag_const();
+										auto temp = u->data;
+										ImGui::ColorEdit4(String("##Color##Uni##" + name).c_str(), &temp[0]);
+									}
+									break;
+
+									// Mat3
+									/* * * * * * * * * * * * * * * * * * * * */
+								case uni_mat3::ID:
+									if (auto u = dynamic_cast<uni_mat3 *>(pair.second))
+									{
+										GUI::EditMat3f(String("##Mat3##Uni##" + name).c_str(), u->data, 0.1f);
+									}
+									else if (auto u = dynamic_cast<uni_mat3_cr *>(pair.second))
+									{
+										flag_const();
+										auto temp = u->data;
+										GUI::EditMat3f(String("##Mat3##Uni##" + name).c_str(), temp, 0.1f);
+									}
+									break;
+
+									// Mat4
+									/* * * * * * * * * * * * * * * * * * * * */
+								case uni_mat4::ID:
+									if (auto u = dynamic_cast<uni_mat4 *>(pair.second))
+									{
+										GUI::EditMat4f(String("##Mat4##Uni##" + name).c_str(), u->data, 0.1f);
+									}
+									else if (auto u = dynamic_cast<uni_mat4_cr *>(pair.second))
+									{
+										flag_const();
+										auto temp = u->data;
+										GUI::EditMat4f(String("##Mat4##Uni##" + name).c_str(), temp, 0.1f);
+									}
+									break;
+
+									// Tex
+									/* * * * * * * * * * * * * * * * * * * * */
+								case uni_tex_cp::ID:
+									if (auto u = dynamic_cast<uni_tex_cp *>(pair.second))
 									{
 										int32_t index = ML_Res.textures.getIndexOf(u->data);
 										List<String> keys = ML_Res.textures.keys();
 										if (ImGui::Combo(
-											String("##Tex##Uni##" + pair.second->name).c_str(),
+											String("##Tex##Uni##" + name).c_str(),
 											&index,
 											ImGui_Helper::vector_getter,
 											static_cast<void *>(&keys),
@@ -751,10 +800,11 @@ namespace ml
 										{
 											u->data = ML_Res.textures.getByIndex(index);
 										}
-									});
+									}
+									break;
 								}
-								break;
-							}
+
+							}, pair.second->name);
 						}
 					});
 

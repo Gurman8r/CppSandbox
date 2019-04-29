@@ -18,7 +18,7 @@ namespace ml
 	{
 	public:
 		using UniformList = typename List<uni_base *>;
-		using UniformMap = typename HashMap<String, uni_base *>;
+		using UniformMap = typename Map<String, uni_base *>;
 
 	public:
 		Material();
