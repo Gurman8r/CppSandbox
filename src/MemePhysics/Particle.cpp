@@ -4,38 +4,68 @@
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
-	//Melody: (and me) update these as well
+	
 	Particle::Particle()
-		: pos		(vec3::Zero)
-		, vel		(vec3::Zero)
-		, acc		(vec3::Zero)
-		, force		(vec3::Zero)
-		, mass		(0.0f)
-		, massInv	(0.0f)
+		: pos					()
+		, vel					()
+		, acc					()
+		, force					()
+		, mass					(0.0f)
+		, massInv				(0.0f)
+		, rotation				()
+		, angularVel			()
+		, angularAcc			()
+		, angularMomentum		()
+		, torque				()
+		, inertiaTensor			()
+		, inertiaTensorInv		()
+		, inertiaTensor_world	()
+		, inertiaTensorInv_world()
+		, centerMass			()
+		, centerMass_world		()
 	{
 	}
 
 	Particle::Particle(const vec3 & pos, const float mass)
-		: Particle(pos, vec3::Zero, vec3::Zero, mass)
-	{
-	}
-
-	Particle::Particle(const vec3 & pos, const vec3 & vel, const vec3 & acc, const float mass)
-		: pos		(pos)
-		, vel		(vel)
-		, acc		(acc)
-		, force		(vec3::Zero)
+		: pos					(pos)
+		, vel					()
+		, acc					()
+		, force					()
+		, mass					()
+		, massInv				()
+		, rotation				()
+		, angularVel			()
+		, angularAcc			()
+		, angularMomentum		()
+		, torque				()
+		, inertiaTensor			()
+		, inertiaTensorInv		()
+		, inertiaTensor_world	()
+		, inertiaTensorInv_world()
+		, centerMass			()
+		, centerMass_world		()
 	{
 		setMass(mass);
 	}
 
 	Particle::Particle(const Particle & copy)
-		: pos		(copy.pos)
-		, vel		(copy.vel)
-		, acc		(copy.acc)
-		, force		(copy.force)
-		, mass		(copy.mass)
-		, massInv	(copy.massInv)
+		: pos					(copy.pos)
+		, vel					(copy.vel)
+		, acc					(copy.acc)
+		, force					(copy.force)
+		, mass					(copy.mass)
+		, massInv				(copy.massInv)
+		, rotation				(copy.rotation)
+		, angularVel			(copy.angularVel)
+		, angularAcc			(copy.angularAcc)
+		, angularMomentum		(copy.angularMomentum)
+		, torque				(copy.torque)
+		, inertiaTensor			(copy.inertiaTensor)
+		, inertiaTensorInv		(copy.inertiaTensorInv)
+		, inertiaTensor_world	(copy.inertiaTensor_world)
+		, inertiaTensorInv_world(copy.inertiaTensorInv_world)
+		, centerMass			(copy.centerMass)
+		, centerMass_world		(copy.centerMass_world)
 	{
 	}
 
