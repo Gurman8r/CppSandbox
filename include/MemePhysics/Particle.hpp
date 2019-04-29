@@ -16,6 +16,7 @@ namespace ml
 		vec3 vel;
 		vec3 acc;
 		vec3 force;
+		vec3 momentum;
 		float mass;
 		float massInv;
 
@@ -55,7 +56,7 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 		//inertia Tensor Stuff
 		//put stuff here. Ask melody how she wants to do it.
-
+		//dans are column major, melodys are row. swap em. Or, make them as glm matrices then convert: probably better.
 
 		/* * * * * * * * * * * * * * * * * * * * */
 		static vec3 rotateForce(Particle *p, vec3 force);

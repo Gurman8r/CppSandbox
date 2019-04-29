@@ -79,6 +79,22 @@ namespace ml
 	Particle & Particle::reset()
 	{
 		// TODO: insert return statement here
+		pos = 0.0f;
+		vel = 0.0f;
+		acc = 0.0f;
+		momentum = 0.0f;
+		force = 0.0f;
+		mass = massInv = 0.0f;
+		rotation = glm::quat();
+		angularVel = 0.0f;
+		angularAcc = 0.0f;
+		angularMomentum = 0.0f;
+		torque = 0.0f;
+		inertiaTensor = inertiaTensorInv = mat3::Identity();
+		inertiaTensor_world = inertiaTensorInv_world = mat3::Identity();
+		centerMass = 0.0f;
+		centerMass_world = 0.0f;
+
 		return (*this);
 	}
 
@@ -100,13 +116,9 @@ namespace ml
 	{
 		// TODO: insert return statement here
 		//Melody: how do you multiply a matrix and a vector?
-		glm::mat4 m1 = mat4();
-		glm::vec4 v1 = vec4(vec3(1, 2, 3), 4);
-		
-		vec4 v2 = (m1 * v1);
-		vec3 v3 = glm::vec3(((glm::mat4)(mat4::Identity()))[3]); 
 
 		//angularAcc = 
+		angularAcc = (glm::mat3)(inertiaTensorInv_world) * (glm::vec3)(torque);
 		return (*this);
 	}
 
