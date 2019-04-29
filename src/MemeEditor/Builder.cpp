@@ -72,7 +72,7 @@ namespace ml
 			"}\n",
 			{
 				Uniform{ ML_FRAG_MAIN_COL, uni_base::Col4, 0 },
-				Uniform{ ML_FRAG_MAIN_TEX, uni_base::Tex2D, 0 },
+				Uniform{ ML_FRAG_MAIN_TEX, uni_base::Tex, 0 },
 			}
 		));
 		

@@ -134,7 +134,7 @@ namespace ml
 		{
 			update();
 
-			if (auto u = batch.mat->find_uni<uni_col>(ML_FRAG_MAIN_COL))
+			if (auto u = batch.mat->find_uni<uni_col4>(ML_FRAG_MAIN_COL))
 			{
 				u->data = m_color;
 			}

@@ -10,31 +10,35 @@ namespace ml
 
 	class Texture;
 
+	// Base Uni
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 	class uni_base
 		: public ITrackable
 		, public INonCopyable
 	{
 	public:
-		enum Type : int32_t
+		using type_base = typename int32_t;
+		using id_type	= typename const type_base;
+
+		enum : type_base
 		{
 			None,
-			Int,
-			Float,
-			Vec2,
-			Vec3,
-			Vec4, Col4,
-			Mat3,
-			Mat4,
-			Tex2D,
+			Int,	// Integer
+			Flt,	// Float
+			Vec2,	// Vector2
+			Vec3,	// Vector3
+			Vec4,	// Vector4
+			Col4,	// Color
+			Mat3,	// Matrix3x3
+			Mat4,	// Matrix4x4
+			Tex,	// Texture
 			MAX_TYPE
 		};
 
 		String	name;
-		Type	type;
+		id_type type;
 
-		uni_base(const String & name, const Type type)
+		uni_base(const String & name, id_type type)
 			: name(name)
 			, type(type)
 		{
@@ -43,81 +47,80 @@ namespace ml
 		virtual ~uni_base() {}
 	};
 
+	// Base Generic Uni
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-	template <class Elem, uni_base::Type Ty>
-	struct uni_t : public uni_base
+	template <
+		class	_Elem, 
+		int32_t _Type
+	> struct uni_t : public uni_base
 	{
-		static constexpr auto MyType { (Type)Ty };
+		static constexpr auto ID { static_cast<id_type>(_Type) };
 
-		Elem data;
+		_Elem data;
 
-		uni_t(const String & name, Elem data)
-			: uni_base(name, Ty)
-			, data(data)
-		{
-		}
-
-		virtual ~uni_t() {}
+		uni_t(const String & name, _Elem data) : uni_base(name, _Type), data(data) {}
 	};
 
-	template <class Elem, uni_base::Type Ty>
-	struct uni_cr_t : uni_t<const Elem &, Ty>
-	{
-		uni_cr_t(const String & name, const Elem & data)
-			: uni_t<const Elem &, Ty>(name, data)
-		{
-		}
 
-		virtual ~uni_cr_t() {}
+	// Generators
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+#define ML_GEN_UNI_T(NAME, TYPE_ID) \
+	template <class T> struct NAME : public uni_t<T, TYPE_ID> \
+	{ \
+		using value_type	= typename T; \
+		using base_type		= typename uni_t<T, TYPE_ID>; \
+		NAME(const String & name, T data) : uni_t<T, TYPE_ID>(name, data) {} \
 	};
 
-	template <class Elem, uni_base::Type Ty>
-	struct uni_cp_t : uni_t<const Elem *, Ty>
-	{
-		uni_cp_t(const String & name, const Elem * data)
-			: uni_t<const Elem *, Ty>(name, data)
-		{
-		}
+	/* * * * * * * * * * * * * * * * * * * * */
 
-		virtual ~uni_cp_t() {}
-	};
+	ML_GEN_UNI_T(	uni_flt_t,		uni_base::Flt	)
+	ML_GEN_UNI_T(	uni_int_t,		uni_base::Int	)
+	ML_GEN_UNI_T(	uni_vec2_t,		uni_base::Vec2	)
+	ML_GEN_UNI_T(	uni_vec3_t,		uni_base::Vec3	)
+	ML_GEN_UNI_T(	uni_vec4_t,		uni_base::Vec4	)
+	ML_GEN_UNI_T(	uni_col4_t,		uni_base::Col4	)
+	ML_GEN_UNI_T(	uni_mat3_t,		uni_base::Mat3	)
+	ML_GEN_UNI_T(	uni_mat4_t,		uni_base::Mat4	)
+	ML_GEN_UNI_T(	uni_tex_t,		uni_base::Tex	)
 
-	// Value
+
+	// Value Types
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-	using uni_flt		= typename uni_t<float,			uni_base::Float>;
-	using uni_int		= typename uni_t<int32_t,		uni_base::Int>;
-	using uni_vec2		= typename uni_t<vec2,			uni_base::Vec2>;
-	using uni_vec3		= typename uni_t<vec3,			uni_base::Vec3>;
-	using uni_vec4		= typename uni_t<vec4,			uni_base::Vec4>;
-	using uni_col		= typename uni_t<vec4,			uni_base::Col4>;
-	using uni_mat3		= typename uni_t<mat3,			uni_base::Mat3>;
-	using uni_mat4		= typename uni_t<mat4,			uni_base::Mat4>;
+	using uni_flt		= typename uni_flt_t	<float>;
+	using uni_int		= typename uni_int_t	<int32_t>;
+	using uni_vec2		= typename uni_vec2_t	<vec2>;
+	using uni_vec3		= typename uni_vec3_t	<vec3>;
+	using uni_vec4		= typename uni_vec3_t	<vec4>;
+	using uni_col4		= typename uni_col4_t	<vec4>;
+	using uni_mat3		= typename uni_mat3_t	<mat3>;
+	using uni_mat4		= typename uni_mat4_t	<mat4>;
 
-	// Const Reference
-	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-	using uni_cr_flt	= typename uni_cr_t<float,		uni_base::Float>;
-	using uni_cr_int	= typename uni_cr_t<int32_t,	uni_base::Int>;
-	using uni_cr_vec2	= typename uni_cr_t<vec2,		uni_base::Vec2>;
-	using uni_cr_vec3	= typename uni_cr_t<vec3,		uni_base::Vec3>;
-	using uni_cr_vec4	= typename uni_cr_t<vec4,		uni_base::Vec4>;
-	using uni_cr_col	= typename uni_cr_t<vec4,		uni_base::Col4>;
-	using uni_cr_mat3	= typename uni_cr_t<mat3,		uni_base::Mat3>;
-	using uni_cr_mat4	= typename uni_cr_t<mat4,		uni_base::Mat4>;
 
-	// Const Pointer
+	// Const Reference Types
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-	using uni_cp_flt	= typename uni_cp_t<float,		uni_base::Float>;
-	using uni_cp_int	= typename uni_cp_t<int32_t,	uni_base::Int>;
-	using uni_cp_vec2	= typename uni_cp_t<vec2,		uni_base::Vec2>;
-	using uni_cp_vec3	= typename uni_cp_t<vec3,		uni_base::Vec3>;
-	using uni_cp_vec4	= typename uni_cp_t<vec4,		uni_base::Vec4>;
-	using uni_cp_col	= typename uni_cp_t<vec4,		uni_base::Col4>;
-	using uni_cp_mat3	= typename uni_cp_t<mat3,		uni_base::Mat3>;
-	using uni_cp_mat4	= typename uni_cp_t<mat4,		uni_base::Mat4>;
-	using uni_cp_tex	= typename uni_cp_t<Texture,	uni_base::Tex2D>;
+	using uni_cr_flt	= typename uni_flt_t	<const float &>;
+	using uni_cr_int	= typename uni_int_t	<const int32_t &>;
+	using uni_cr_vec2	= typename uni_vec2_t	<const vec2 &>;
+	using uni_cr_vec3	= typename uni_vec3_t	<const vec3 &>;
+	using uni_cr_vec4	= typename uni_vec3_t	<const vec4 &>;
+	using uni_cr_col4	= typename uni_col4_t	<const vec4 &>;
+	using uni_cr_mat3	= typename uni_mat3_t	<const mat3 &>;
+	using uni_cr_mat4	= typename uni_mat4_t	<const mat4 &>;
 
+
+	// Const Pointer Types
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+	using uni_cp_flt	= typename uni_flt_t	<const float *>;
+	using uni_cp_int	= typename uni_int_t	<const int32_t *>;
+	using uni_cp_vec2	= typename uni_vec2_t	<const vec2 *>;
+	using uni_cp_vec3	= typename uni_vec3_t	<const vec3 *>;
+	using uni_cp_vec4	= typename uni_vec3_t	<const vec4 *>;
+	using uni_cp_col4	= typename uni_col4_t	<const vec4 *>;
+	using uni_cp_mat3	= typename uni_mat3_t	<const mat3 *>;
+	using uni_cp_mat4	= typename uni_mat4_t	<const mat4 *>;
+	using uni_cp_tex	= typename uni_tex_t	<const Texture *>;
 }
 
 #endif // !_ML_UNI_HPP_
