@@ -40,11 +40,11 @@ namespace ml
 		return !(m_thr);
 	}
 
-	void Thread::sleep(const ml::Duration & value)
+	void Thread::sleep(const Duration & value)
 	{
 		if (joinable())
 		{
-			std::this_thread::sleep_for((Milliseconds)value);
+			std::this_thread::sleep_for(static_cast<Duration::base_unit>(value));
 		}
 	}
 

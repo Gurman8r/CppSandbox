@@ -127,9 +127,9 @@ namespace ml
 
 			m_state.deepCopy(value);
 
-			if (m_elapsed.milliseconds() < ML_PHYSICS_FPS_60)
+			if (m_elapsed < Physics::TimeStep)
 			{
-				m_thread.sleep(ML_PHYSICS_FPS_60 - m_elapsed.milliseconds());
+				m_thread.sleep(Physics::TimeStep - m_elapsed);
 			}
 			
 			return true;

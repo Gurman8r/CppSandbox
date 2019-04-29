@@ -1,26 +1,11 @@
 #ifndef _ML_PHYSICS_HPP_
 #define _ML_PHYSICS_HPP_
 
-/* * * * * * * * * * * * * * * * * * * * */
-
 #include <MemePhysics/PhysicsState.hpp>
 #include <MemeCore/Timer.hpp>
 #include <MemeCore/Thread.hpp>
 
-/* * * * * * * * * * * * * * * * * * * * */
-
 #define ML_Physics ml::Physics::getInstance()
-
-/* * * * * * * * * * * * * * * * * * * * */
-
-# define ML_PHYSICS_FPS_15 60
-# define ML_PHYSICS_FPS_30 30
-# define ML_PHYSICS_FPS_60 15
-
-#define ML_PHYSICS_TIME_CAST(t) ml::Milliseconds(t)
-#define ML_PHYSICS_TIME_STEP	ML_PHYSICS_TIME_CAST(ML_PHYSICS_FPS_60)
-
-/* * * * * * * * * * * * * * * * * * * * */
 
 namespace ml
 {
@@ -38,6 +23,11 @@ namespace ml
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		static constexpr auto FPS_15	{ Milliseconds(60) };
+		static constexpr auto FPS_30	{ Milliseconds(30) };
+		static constexpr auto FPS_60	{ Milliseconds(15) };
+		static constexpr auto TimeStep	{ FPS_60 };
+
 		static const vec3 Gravity;
 
 	private:

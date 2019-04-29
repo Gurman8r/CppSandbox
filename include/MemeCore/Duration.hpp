@@ -21,13 +21,19 @@ namespace ml
 	{
 	public:
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		using base_unit = typename Nanoseconds;
+
+		static constexpr auto Zero { static_cast<base_unit>(0).count() };
+
+	public:
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		constexpr Duration()
-			: m_nanos(0ULL)
+			: m_nanos(Zero)
 		{
 		}
 
 		constexpr Duration(const intmax_t value)
-			: m_nanos((value > 0) ? (uint64_t)value : 0ULL)
+			: m_nanos((value > Zero) ? static_cast<uint64_t>(value) : Zero)
 		{
 		}
 
@@ -45,7 +51,7 @@ namespace ml
 			class Rep,
 			class Per
 		> constexpr Duration(const std::chrono::duration<Rep, Per> & value)
-			: m_nanos(std::chrono::duration_cast<Nanoseconds>(value).count())
+			: m_nanos(std::chrono::duration_cast<base_unit>(value).count())
 		{
 		}
 
@@ -107,13 +113,13 @@ namespace ml
 		template <class T>
 		constexpr friend bool operator==(const Duration & lhs, const T & rhs)
 		{
-			return ((uint64_t)lhs == (uint64_t)(Duration(rhs)));
+			return ((uint64_t)(lhs) == (uint64_t)(Duration(rhs)));
 		}
 
 		template <class T>
 		constexpr friend bool operator <(const Duration & lhs, const T & rhs)
 		{
-			return ((uint64_t)lhs < (uint64_t)(Duration(rhs)));
+			return ((uint64_t)(lhs) < (uint64_t)(Duration(rhs)));
 		}
 
 		template <class T>
@@ -152,6 +158,18 @@ namespace ml
 		constexpr friend Duration operator-(const Duration & lhs, const T & rhs)
 		{
 			return Duration((uint64_t)lhs - (uint64_t)rhs);
+		}
+
+		template <class T>
+		constexpr friend Duration & operator+=(Duration & lhs, const T & rhs)
+		{
+			return (lhs = (lhs + rhs));
+		}
+
+		template <class T>
+		constexpr friend Duration operator-=(Duration & lhs, const T & rhs)
+		{
+			return (lhs = (lhs - rhs));
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
