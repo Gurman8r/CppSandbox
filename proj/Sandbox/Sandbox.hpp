@@ -51,11 +51,6 @@ namespace DEMO
 			bool			camAuto		= true;
 			float			camSpd		= 1.0f;
 			
-			// Light
-			float			ambient		= 0.01f;
-			float			specular	= 0.1f;
-			int32_t			shininess	= 8;
-			
 			// Effects
 			int32_t			effectMode	= 0;
 			

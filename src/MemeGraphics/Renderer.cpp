@@ -44,7 +44,7 @@ namespace ml
 
 			if (m_material.bind())
 			{
-				target.draw(*m_drawable);
+				target.draw(m_drawable);
 
 				m_material.unbind();
 			}

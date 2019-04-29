@@ -8,6 +8,7 @@ namespace ml
 		: name(String())
 		, type(None)
 		, data(NULL)
+		, flag(0)
 	{
 	}
 	
@@ -15,6 +16,7 @@ namespace ml
 		: name(name)
 		, type(None)
 		, data(NULL)
+		, flag(0)
 	{
 	}
 	
@@ -22,13 +24,23 @@ namespace ml
 		: name(name)
 		, type(type)
 		, data(NULL)
+		, flag(0)
 	{
 	}
 	
-	Uniform::Uniform(const String & name, const int32_t type, const void * data)
+	Uniform::Uniform(const String & name, const int32_t type, const void * data, int32_t flag)
 		: name(name)
 		, type(type)
-		, data(data)
+		, data(std::remove_cv_t<void *>(data))
+		, flag(flag)
+	{
+	}
+
+	Uniform::Uniform(const Uniform & copy, const void * data, int32_t flag)
+		: name(copy.name)
+		, type(copy.type)
+		, data(std::remove_cv_t<void *>(data))
+		, flag(flag)
 	{
 	}
 	
@@ -36,11 +48,24 @@ namespace ml
 		: name(copy.name)
 		, type(copy.type)
 		, data(copy.data)
+		, flag(copy.flag)
 	{
 	}
 	
 	Uniform::~Uniform()
 	{
+		if (data)
+		{
+			switch (flag)
+			{
+			case 1:
+				break;
+
+			case 2:
+				//ML_free(data);
+				break;
+			}
+		}
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

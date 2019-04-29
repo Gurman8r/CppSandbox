@@ -399,7 +399,7 @@ namespace ml
 											{
 											case Uniform::Tex2D:
 											{
-												int32_t index = ML_Res.textures.getIndexOf(uni->get_pointer<Texture>());
+												int32_t index = ML_Res.textures.getIndexOf(uni->get_ptr<Texture>());
 												List<String> keys = ML_Res.textures.keys();
 												if (ImGui::Combo(
 													"##Tex2D##Value",
@@ -410,7 +410,7 @@ namespace ml
 												{
 													if (const Texture * value = ML_Res.textures.getByIndex(index))
 													{
-														uni->data = value;
+														(*uni) = Uniform(*uni, value);
 													}
 												}
 											}
@@ -418,43 +418,98 @@ namespace ml
 											case Uniform::Int:
 											{
 												int32_t temp = uni->get_value<int32_t>();
-												if (ImGui::DragInt("##Int##Value", &temp, 0.1f)) {}
+												if (ImGui::DragInt("##Int##Value", &temp, 0.1f)) 
+												{
+													if (uni->flag == 1)
+													{
+														*((int32_t *)uni->data) = temp;
+													}
+												}
 											}
 											break;
 											case Uniform::Float:
 											{
 												float temp = uni->get_value<float>();
-												if (ImGui::DragFloat("##Float##Value", &temp, 0.1f)) {}
+												if (ImGui::DragFloat("##Float##Value", &temp, 0.1f)) 
+												{
+													if (uni->flag == 1)
+													{
+														*((float *)uni->data) = temp;
+													}
+												}
+
 											}
 											break;
 											case Uniform::Vec2:
 											{
 												vec2 temp = uni->get_value<vec2>();
-												if (GUI::EditVec2f("##Vec2##Value", temp, 0.1f)) {}
+												if (GUI::EditVec2f("##Vec2##Value", temp, 0.1f)) 
+												{
+													if (uni->flag == 2)
+													{
+														*((vec2 *)uni->data) = temp;
+													}
+												}
 											}
 											break;
 											case Uniform::Vec3:
 											{
 												vec3 temp = uni->get_value<vec3>();
-												if (GUI::EditVec3f("##Vec3##Value", temp, 0.1f)) {}
+												if (GUI::EditVec3f("##Vec3##Value", temp, 0.1f))
+												{
+													if (uni->flag == 2)
+													{
+														*((vec3 *)uni->data) = temp;
+													}
+												}
 											}
 											break;
 											case Uniform::Vec4:
 											{
 												vec4 temp = uni->get_value<vec4>();
-												if (GUI::EditVec4f("##Vec4##Value", temp, 0.1f)) {}
+												if (GUI::EditVec4f("##Vec4##Value", temp, 0.1f))
+												{
+													if (uni->flag == 2)
+													{
+														*((vec4 *)uni->data) = temp;
+													}
+												}
+											}
+											break;
+											case Uniform::Col4:
+											{
+												vec4 temp = uni->get_value<vec4>();
+												if (ImGui::ColorEdit4("##Col4##Value", &temp[0]))
+												{
+													if (uni->flag == 2)
+													{
+														*((vec4 *)uni->data) = temp;
+													}
+												}
 											}
 											break;
 											case Uniform::Mat3:
 											{
 												mat3 temp = uni->get_value<mat3>();
-												if (GUI::EditMat3f("##Mat3##Value", temp, 0.1f)) {}
+												if (GUI::EditMat3f("##Mat3##Value", temp, 0.1f))
+												{
+													if (uni->flag == 2)
+													{
+														*((mat3 *)uni->data) = temp;
+													}
+												}
 											}
 											break;
 											case Uniform::Mat4:
 											{
 												mat4 temp = uni->get_value<mat4>();
-												if (GUI::EditMat4f("##Mat4##Value", temp, 0.1f)) {}
+												if (GUI::EditMat4f("##Mat4##Value", temp, 0.1f))
+												{
+													if (uni->flag == 2)
+													{
+														*((mat4 *)uni->data) = temp;
+													}
+												}
 											}
 											break;
 											}
@@ -1073,11 +1128,68 @@ namespace ml
 
 			for (auto & pair : ML_Res.sprites)
 			{
-				Funcs::Group(pair.first.c_str(), [&](CString name, const Sprite * e)
+				Funcs::Group(pair.first.c_str(), [&](CString name, Sprite * spr)
 				{
 					Funcs::Field("Name", [&](CString label)
 					{
 						ImGui::Text("%s", name);
+					});
+					Funcs::Field("Color", [&](CString label)
+					{
+						auto temp = spr->color();
+						if (ImGui::ColorEdit4("##Color##Sprite", &temp[0]))
+						{
+							spr->setColor(temp);
+						}
+					});
+					Funcs::Field("Origin", [&](CString label)
+					{
+						auto temp = spr->origin();
+						if (GUI::EditVec2f("##Origin##Sprite", temp))
+						{
+							spr->setOrigin(temp);
+						}
+					});
+					Funcs::Field("Position", [&](CString label)
+					{
+						auto temp = spr->position();
+						if (GUI::EditVec2f("##Position##Sprite", temp))
+						{
+							spr->setPosition(temp);
+						}
+					});
+					Funcs::Field("Rotation", [&](CString label)
+					{
+						auto temp = spr->rotation();
+						if (ImGui::DragFloat("##Rotation##Sprite", &temp, 0.5f))
+						{
+							spr->setRotation(temp);
+						}
+					});
+					Funcs::Field("Scale", [&](CString label)
+					{
+						auto temp = spr->scale();
+						if (GUI::EditVec2f("##Scale##Sprite", temp))
+						{
+							spr->setScale(temp);
+						}
+					});
+					Funcs::Field("Texture", [&](CString label)
+					{
+						int32_t index = ML_Res.textures.getIndexOf(spr->texture());
+						List<String> keys = ML_Res.textures.keys();
+						if (ImGui::Combo(
+							"##Tex2D##Value",
+							&index,
+							ImGui_Helper::vector_getter,
+							static_cast<void *>(&keys),
+							(int32_t)(keys.size())))
+						{
+							if (const Texture * value = ML_Res.textures.getByIndex(index))
+							{
+								spr->setTexture(value);
+							}
+						}
 					});
 					if (const String file = ML_Res.sprites.getFile(name))
 					{

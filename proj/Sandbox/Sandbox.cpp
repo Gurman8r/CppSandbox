@@ -314,7 +314,12 @@ namespace DEMO
 
 			this->setIcons({ temp });
 		}
+	}
 
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+	void Sandbox::onStart(const ml::StartEvent * ev)
+	{
 		// Setup Plugins
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (!ML_Res.plugins.empty())
@@ -323,7 +328,7 @@ namespace DEMO
 			{
 				if (void * msg = plugin->lib().callFunction<void *>(
 					ML_str(ML_Plugin_Test), "TEST"
-				))
+					))
 				{
 					ml::Debug::log((ml::CString)(msg));
 				}
@@ -333,13 +338,8 @@ namespace DEMO
 				}
 			}
 		}
-	}
 
-	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-	void Sandbox::onStart(const ml::StartEvent * ev)
-	{
-		// Sprites
+		// Setup Sprites
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (ml::Sprite * spr = ML_Res.sprites.get("neutrino"))
 		{
@@ -393,7 +393,7 @@ namespace DEMO
 						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->getPerspMatrix() },
 						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Transform>()->getMat() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->getMat() },
-						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&light->color },
+						{ ML_FRAG_MAIN_COL,	ml::Uniform::Col4,	&light->color },
 					}),
 					ml::RenderStates({
 						{ ml::GL::AlphaTest,{ ml::RenderVar::Bool, 1 } },
@@ -434,7 +434,7 @@ namespace DEMO
 						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->getPerspMatrix() },
 						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Transform>()->getMat() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->getMat() },
-						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
+						{ ML_FRAG_MAIN_COL,	ml::Uniform::Col4,	&ml::Color::White },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("borg") },
 					}),
 					ml::RenderStates({
@@ -476,7 +476,7 @@ namespace DEMO
 						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->getPerspMatrix() },
 						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Transform>()->getMat() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->getMat() },
-						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
+						{ ML_FRAG_MAIN_COL,	ml::Uniform::Col4,	&ml::Color::White },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm") },
 					}),
 					ml::RenderStates({
@@ -518,7 +518,7 @@ namespace DEMO
 						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->getPerspMatrix() },
 						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Transform>()->getMat() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->getMat() },
-						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
+						{ ML_FRAG_MAIN_COL,	ml::Uniform::Col4,	&ml::Color::White },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("navball") },
 					}),
 					ml::RenderStates({
@@ -564,10 +564,10 @@ namespace DEMO
 						{ ML_FRAG_SPEC_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("moon_nm") },
 						{ "Frag.cameraPos",	ml::Uniform::Vec3,	&ML_CAMERA->get<ml::Transform>()->getPos() },
 						{ "Frag.lightPos",	ml::Uniform::Vec3,	&ML_LIGHT->get<ml::Transform>()->getPos() },
-						{ "Frag.diffuse",	ml::Uniform::Vec4,	&ML_LIGHT->get<ml::Light>()->color },
-						{ "Frag.ambient",	ml::Uniform::Float, &globals.ambient },
-						{ "Frag.specular",	ml::Uniform::Float, &globals.specular },
-						{ "Frag.shininess",	ml::Uniform::Int,	&globals.shininess },
+						{ "Frag.diffuse",	ml::Uniform::Col4,	&ML_LIGHT->get<ml::Light>()->color },
+						{ "Frag.ambient",	ml::Uniform::Float, new float(0.01f), 1 },
+						{ "Frag.specular",	ml::Uniform::Float, new float(0.1f), 1 },
+						{ "Frag.shininess",	ml::Uniform::Int,	new int32_t(8), 1 },
 					}),
 					ml::RenderStates({
 						{ ml::GL::AlphaTest,{ ml::RenderVar::Bool, 1 } },
@@ -612,10 +612,10 @@ namespace DEMO
 						{ ML_FRAG_SPEC_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("earth_sm") },
 						{ "Frag.cameraPos",	ml::Uniform::Vec3,	&ML_CAMERA->get<ml::Transform>()->getPos() },
 						{ "Frag.lightPos",	ml::Uniform::Vec3,	&ML_LIGHT->get<ml::Transform>()->getPos() },
-						{ "Frag.diffuse",	ml::Uniform::Vec4,	&ML_LIGHT->get<ml::Light>()->color },
-						{ "Frag.ambient",	ml::Uniform::Float, &globals.ambient },
-						{ "Frag.specular",	ml::Uniform::Float, &globals.specular },
-						{ "Frag.shininess",	ml::Uniform::Int,	&globals.shininess },
+						{ "Frag.diffuse",	ml::Uniform::Col4,	&ML_LIGHT->get<ml::Light>()->color },
+						{ "Frag.ambient",	ml::Uniform::Float, new float(0.01f), 1 },
+						{ "Frag.specular",	ml::Uniform::Float, new float(0.1f), 1 },
+						{ "Frag.shininess",	ml::Uniform::Int,	new int32_t(8), 1 },
 					}),
 					ml::RenderStates({
 						{ ml::GL::AlphaTest,{ ml::RenderVar::Bool, 1 } },
@@ -656,7 +656,7 @@ namespace DEMO
 						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Camera>()->getPerspMatrix() },
 						{ ML_VERT_VIEW,		ml::Uniform::Mat4,	&ML_CAMERA->get<ml::Transform>()->getMat() },
 						{ ML_VERT_MODEL,	ml::Uniform::Mat4,	&transform->getMat() },
-						{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&ml::Color::White },
+						{ ML_FRAG_MAIN_COL,	ml::Uniform::Col4,	&ml::Color::White },
 						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D,	ML_Res.textures.get("stone_dm") },
 					}),
 					ml::RenderStates({
@@ -830,7 +830,6 @@ namespace DEMO
 					ml::vec3 scl = rb->transform()->getScl();
 					ml::vec3 pos;
 					ml::quat rot;
-
 					if (state.get<state.T_Pos>(rb->index(), pos) &&
 						state.get<state.T_Rot>(rb->index(), rot))
 					{
@@ -958,16 +957,16 @@ namespace DEMO
 			// Draw Renderers
 			for (const auto & pair : ML_Res.entities)
 			{
-				if (const ml::Renderer * renderer = pair.second->get<ml::Renderer>())
-				{
-					this->draw(*renderer);
-				}
+				this->draw(pair.second->get<ml::Renderer>());
 			}
 
 			// Draw 2D
 			/* * * * * * * * * * * * * * * * * * * * */
 			{
-				// Setup States
+				// Ortho Matrix
+				const ml::mat4 & ortho = ML_CAMERA->get<ml::Camera>()->getOrthoMatrix();
+
+				// Render States
 				static ml::RenderStates states
 				({
 					{ ml::GL::AlphaTest,	{ ml::RenderVar::Bool, 1 } },
@@ -978,39 +977,30 @@ namespace DEMO
 				});
 				states.apply();
 
-				// Ortho Matrix
-				const ml::mat4 & ortho = ML_CAMERA->get<ml::Camera>()->getOrthoMatrix();
-
 				// Draw Sprites
 				if (const ml::Shader * shader = ML_Res.shaders.get("sprites"))
 				{
-					static ml::RenderBatch batch(
-						&m_canvas.vao(),
-						&m_canvas.vbo(),
-						ml::Material(shader,
-							{
-								{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ortho },
-								{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4 },
-								{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D },
-							}));
+					static ml::RenderBatch batch(&m_canvas.vao(), &m_canvas.vbo(), { shader,
+					{
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ortho },
+						{ ML_FRAG_MAIN_COL,	ml::Uniform::Col4 },
+						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D },
+					} });
 					for (const auto & pair : ML_Res.sprites)
 					{
-						this->draw((*pair.second), batch);
+						this->draw(pair.second, batch);
 					}
 				}
 
 				// Draw Text
 				if (const ml::Shader * shader = ML_Res.shaders.get("text"))
 				{
-					static ml::RenderBatch batch(
-						&m_canvas.vao(),
-						&m_canvas.vbo(),
-						ml::Material(shader,
-							{
-								{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ortho },
-								{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4 },
-								{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D },
-							}));
+					static ml::RenderBatch batch(&m_canvas.vao(), &m_canvas.vbo(), { shader,
+					{
+						{ ML_VERT_PROJ,		ml::Uniform::Mat4,	&ortho },
+						{ ML_FRAG_MAIN_COL,	ml::Uniform::Col4 },
+						{ ML_FRAG_MAIN_TEX,	ml::Uniform::Tex2D },
+					} });
 					for (const auto & pair : m_text)
 					{
 						this->draw(pair.second, batch);
@@ -1020,7 +1010,7 @@ namespace DEMO
 				// Draw Geometry
 				static ml::Material geometry = { ML_Res.shaders.get("geometry"),
 				{
-					{ ML_FRAG_MAIN_COL,	ml::Uniform::Vec4,	&globals.lineColor },
+					{ ML_FRAG_MAIN_COL,	ml::Uniform::Col4,	&globals.lineColor },
 					{ "Geom.mode",		ml::Uniform::Int,	&globals.lineMode },
 					{ "Geom.delta",		ml::Uniform::Float, &globals.lineDelta },
 					{ "Geom.size",		ml::Uniform::Float, &globals.lineSize },
@@ -1110,14 +1100,6 @@ namespace DEMO
 				ImGui::Text("Camera");
 				ImGui::Checkbox("Auto##Camera", &globals.camAuto);
 				ImGui::DragFloat("Speed##Camera", &globals.camSpd, 0.1f, -5.f, 5.f);
-				ImGui::Separator();
-
-				/* * * * * * * * * * * * * * * * * * * * */
-
-				ImGui::Text("Light");
-				ImGui::DragFloat("Ambient##Light", &globals.ambient, 0.01f, 0.f, 1.f);
-				ImGui::DragFloat("Specular##Light", &globals.specular, 0.01f, 0.1f, 10.f);
-				ImGui::DragInt("Shininess##Light", &globals.shininess, 1.f, 1, 256);
 				ImGui::Separator();
 
 				/* * * * * * * * * * * * * * * * * * * * */

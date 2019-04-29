@@ -27,6 +27,18 @@ namespace ml
 	
 	/* * * * * * * * * * * * * * * * * * * * */
 
+	RenderTarget & RenderTarget::draw(const IDrawable * value)
+	{
+		return (value) ? draw(*value) : (*this);
+	}
+
+	RenderTarget & RenderTarget::draw(const IDrawable * value, const RenderBatch & batch)
+	{
+		return (value) ? draw(*value, batch) : (*this);
+	}
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	RenderTarget & RenderTarget::draw(const IDrawable & value)
 	{
 		RenderBatch batch;

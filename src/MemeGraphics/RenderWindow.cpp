@@ -59,7 +59,7 @@ namespace ml
 		case ml::GraphicsEvent::EV_GL_Error:
 			if (const auto * ev = value->as<ml::GL_ErrorEvent>())
 			{
-				ml::cout << (*ev) << ml::endl;
+				ml::cerr << (*ev) << ml::endl;
 			}
 			break;
 

@@ -27,6 +27,11 @@ namespace ml
 
 	public: // Drawing
 		/* * * * * * * * * * * * * * * * * * * * */
+		RenderTarget & draw(const IDrawable * value);
+		RenderTarget & draw(const IDrawable * value, const RenderBatch & batch);
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
 		RenderTarget & draw(const IDrawable & value);
 		RenderTarget & draw(const IDrawable & value, const RenderBatch & batch);
 		

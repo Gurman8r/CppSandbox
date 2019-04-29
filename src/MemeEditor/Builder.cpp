@@ -162,17 +162,17 @@ namespace ml
 			{
 				if (Uniform * u = &(*value)[i])
 				{
-					if (ImGui::Selectable(
-						(u->name.c_str()),
-						(m_selected == i),
-						(ImGuiSelectableFlags_AllowDoubleClick)))
-					{
-						m_selected = i;
-
-						if (ImGui::IsMouseDoubleClicked(0))
-						{
-						}
-					}
+					//if (ImGui::Selectable(
+					//	(u->name.c_str()),
+					//	(m_selected == i),
+					//	(ImGuiSelectableFlags_AllowDoubleClick)))
+					//{
+					//	m_selected = i;
+					//
+					//	if (ImGui::IsMouseDoubleClicked(0))
+					//	{
+					//	}
+					//}
 				}
 			}
 			ImGui::Separator();

@@ -15,6 +15,7 @@ namespace ml
 	{
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
+
 		enum : int32_t
 		{
 			None,
@@ -22,56 +23,52 @@ namespace ml
 			Float,
 			Vec2,
 			Vec3,
-			Vec4,
+			Vec4, Col4,
 			Mat3,
 			Mat4,
 			Tex2D,
 			MAX_TYPE
 		};
 
-	public:
 		/* * * * * * * * * * * * * * * * * * * * */
+
 		Uniform();
 		Uniform(const String & name);
 		Uniform(const String & name, const int32_t type);
-		Uniform(const String & name, const int32_t type, const void * data);
+		Uniform(const String & name, const int32_t type, const void * data, int32_t flag = 0);
+		Uniform(const Uniform & copy, const void * data, int32_t flag = 0);
 		Uniform(const Uniform & copy);
 		~Uniform();
 
-	public:
 		/* * * * * * * * * * * * * * * * * * * * */
-		String		 name;
-		int32_t		 type;
-		const void * data;
 
-	public:
+		String	name;
+		int32_t	type;
+		void *	data;
+		int32_t	flag;
+
 		/* * * * * * * * * * * * * * * * * * * * */
+
 		void serialize(std::ostream & out) const override;
 		void deserialize(std::istream & in) override;
 
-	public:
 		/* * * * * * * * * * * * * * * * * * * * */
+
 		bool equals(const Uniform & other) const override;
 		bool lessThan(const Uniform & other) const override;
 
-	public:
 		/* * * * * * * * * * * * * * * * * * * * */
-		template <
-			class T
-		> inline const T * get_pointer() const
+
+		template <class T>
+		inline const T * get_ptr() const
 		{
 			return reinterpret_cast<const T *>(data);
 		}
 
-		template <
-			class T
-		> inline const T & get_value(const T & def = T()) const
+		template <class T>
+		inline const T & get_value() const
 		{
-			const T * temp;
-			return ((temp = get_pointer<T>()) 
-				? (*temp) 
-				: (def)
-			);
+			return (*get_ptr<T>());
 		}
 	};
 
