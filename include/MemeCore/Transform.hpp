@@ -31,8 +31,10 @@ namespace ml
 		static mat4 Orthographic(const FloatRect & area);
 		static mat4 Orthographic(const FloatRect & area, const float zNear, const float zFar);
 		static mat4 Perspective(const float fov, const float aspect, const float zNear, const float zFar);
+		static mat3 RebaseMatrix(const mat3 & m3, const mat4 & m4);
 		static mat4 Rotate(const mat4 & value, const float angle, const vec3 & axis);
 		static mat4 Rotate(const mat4 & value, const quat & rot);
+		static vec3 RebasePoint(const vec3 & value, const mat4 & t);
 		static mat4 Scale(const mat4 & value, const vec3 & scl);
 		static mat4 Translate(const mat4 & value, const vec3 & tns);
 		static mat4 Transpose(const mat4 & value);

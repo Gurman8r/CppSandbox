@@ -21,6 +21,10 @@ namespace ml
 		, m_collider	(collider)
 		, m_particle	(particle)
 	{
+		if (m_particle)
+		{
+			m_particle->index = index;
+		}
 	}
 
 	Rigidbody::Rigidbody(const Rigidbody & copy)

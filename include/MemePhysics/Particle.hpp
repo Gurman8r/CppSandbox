@@ -11,6 +11,7 @@ namespace ml
 		: public ITrackable
 	{
 		/* * * * * * * * * * * * * * * * * * * * */
+		int32_t index;
 
 		vec3 pos;
 		vec3 vel;
@@ -58,7 +59,7 @@ namespace ml
 		//inertia Tensor Stuff
 		//put stuff here. Ask melody how she wants to do it.
 		//dans are column major, melodys are row. swap em. Or, make them as glm matrices then convert: probably better.
-
+		Particle & setInertiaTensor();
 		/* * * * * * * * * * * * * * * * * * * * */
 		static vec3 rotateForce(Particle *p, vec3 force);
 
@@ -69,6 +70,10 @@ namespace ml
 		Particle & integrateEulerExplicit(const float dt);
 		Particle & integrateEulerSemiImplicit(const float dt);
 		Particle & integrateEulerKinematic(const float dt);
+
+		/* * * * * * * * * * * * * * * * * * * * */
+		Particle & updateInertiaTensor();
+		Particle & updateCenterMass();
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	};

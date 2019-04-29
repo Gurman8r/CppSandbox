@@ -1,12 +1,17 @@
 #include <MemePhysics/Particle.hpp>
 #include <MemePhysics/Physics.hpp>
+#include <MemePhysics/Rigidbody.hpp>
+#include <MemePhysics/BoxCollider.hpp>
+#include <MemePhysics/SphereCollider.hpp>
+#include <MemeCore/Debug.hpp>
 
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 	
 	Particle::Particle()
-		: pos					()
+		: index					(-1)
+		, pos					()
 		, vel					()
 		, acc					()
 		, force					()
@@ -27,7 +32,8 @@ namespace ml
 	}
 
 	Particle::Particle(const vec3 & pos, const float mass)
-		: pos					(pos)
+		: index					(-1)
+		, pos					(pos)
 		, vel					()
 		, acc					()
 		, force					()
@@ -49,7 +55,8 @@ namespace ml
 	}
 
 	Particle::Particle(const Particle & copy)
-		: pos					(copy.pos)
+		: index					(copy.index)
+		, pos					(copy.pos)
 		, vel					(copy.vel)
 		, acc					(copy.acc)
 		, force					(copy.force)
@@ -164,6 +171,51 @@ namespace ml
 
 	//Melody: (and me) these need to be updated to include rotational
 
+	Particle & Particle::setInertiaTensor()
+	{
+		// TODO: insert return statement here
+
+		if (const Rigidbody * rb = ML_Physics.getLinkedRigidbody(index))
+		{
+			glm::mat3 temp = glm::mat3();
+			switch (rb->collider()->getHullType())
+			{
+			case Collider::T_Box:
+				if (auto c = dynamic_cast<const BoxCollider *>(rb)) 
+				{
+					float w = c->size()[0];
+					float h = c->size()[1];
+					float d = c->size()[2];
+
+					float coeff = mass * 5.0f / 3.0f;
+					temp[0][0] *= coeff * ((h*h) + (d * d));
+					temp[1][1] *= coeff * ((w*w) + (d * d));
+					temp[2][2] *= coeff * ((h*h) + (w * w));
+
+					inertiaTensor = temp;
+					inertiaTensorInv = glm::inverse(temp);
+				}
+				break;
+			case Collider::T_Sphere:
+				if (auto c = dynamic_cast<const SphereCollider *>(rb))
+				{
+					float r = c->radius();
+
+					float coeff = mass * r * r * 2.0f / 3.0f;
+					temp *= coeff;
+					inertiaTensor = temp;
+					inertiaTensorInv = glm::inverse(temp);
+					
+				}
+				break;
+
+			default:
+				break;
+			}
+		}
+		return (*this);
+	}
+
 	vec3 Particle::rotateForce(Particle * p, vec3 force)
 	{
 		vec3 wv = force * p->rotation[3];
@@ -180,6 +232,15 @@ namespace ml
 	{
 		pos += (vel * dt);
 		vel += (acc * dt);
+
+		
+		glm::quat q = ((glm::vec3)angularVel * (glm::quat)rotation);
+		q *= (dt / 2.0f);
+		rotation += (quat)q;
+		rotation.normalize();
+
+		angularVel += angularAcc * dt;
+
 		return (*this);
 	}
 
@@ -187,12 +248,39 @@ namespace ml
 	{
 		vel += (acc * dt);
 		pos += (vel * dt);
+
+		angularVel += angularAcc * dt;
+
+		glm::quat q = ((glm::vec3)angularVel * (glm::quat)rotation);
+		q *= (dt / 2.0f);
+		rotation += (quat)q;
+		rotation.normalize();
 		return (*this);
 	}
 
 	Particle & Particle::integrateEulerKinematic(const float dt)
 	{
 		pos += ((vel * dt) + (acc * (dt * dt * 0.5f)));
+		return (*this);
+	}
+
+	Particle & Particle::updateInertiaTensor()
+	{
+		if (const Transform * transform = ML_Physics.getLinkedRigidbody(index)->transform())
+		{
+			inertiaTensor_world = Transform::RebaseMatrix(inertiaTensor, transform->getMat());
+			inertiaTensorInv_world = Transform::RebaseMatrix(inertiaTensorInv, transform->getMat());
+		}
+		return (*this);
+	}
+
+	Particle & Particle::updateCenterMass()
+	{
+		// TODO: insert return statement here
+		if (const Transform * transform = ML_Physics.getLinkedRigidbody(index)->transform())
+		{
+			centerMass_world = Transform::RebasePoint(centerMass, transform->getMat());
+		}
 		return (*this);
 	}
 

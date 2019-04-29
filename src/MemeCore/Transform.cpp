@@ -109,6 +109,57 @@ namespace ml
 			zFar
 		));
 	}
+
+	mat3 Transform::RebaseMatrix(const mat3 & mIn, const mat4 & tIn)
+	{
+		glm::mat3 m = (glm::mat3)mIn;
+		glm::mat4 t = (glm::mat4)tIn;
+
+		//sourced directly from a3ds a3particleRebaseMatrix_internal by Daniel Buckstein
+		glm::mat3 tmp;
+		// first column
+		tmp[0][0] = m[0][0] * t[0][0] + m[1][0] * t[1][0] + m[2][0] * t[2][0];
+		tmp[0][1] = m[0][1] * t[0][0] + m[1][1] * t[1][0] + m[2][1] * t[2][0];
+		tmp[0][2] = m[0][2] * t[0][0] + m[1][2] * t[1][0] + m[2][2] * t[2][0];
+
+		// second column
+		tmp[1][0] = m[0][0] * t[0][1] + m[1][0] * t[1][1] + m[2][0] * t[2][1];
+		tmp[1][1] = m[0][1] * t[0][1] + m[1][1] * t[1][1] + m[2][1] * t[2][1];
+		tmp[1][2] = m[0][2] * t[0][1] + m[1][2] * t[1][1] + m[2][2] * t[2][1];
+
+		// third column
+		tmp[2][0] = m[0][0] * t[0][2] + m[1][0] * t[1][2] + m[2][0] * t[2][2];
+		tmp[2][1] = m[0][1] * t[0][2] + m[1][1] * t[1][2] + m[2][1] * t[2][2];
+		tmp[2][2] = m[0][2] * t[0][2] + m[1][2] * t[1][2] + m[2][2] * t[2][2];
+
+		// now (t * tmp)
+		glm::mat3 out;
+		out[0][0] = t[0][0] * tmp[0][0] + t[1][0] * tmp[0][1] + t[2][0] * tmp[0][2];
+		out[0][1] = t[0][1] * tmp[0][0] + t[1][1] * tmp[0][1] + t[2][1] * tmp[0][2];
+		out[0][2] = t[0][2] * tmp[0][0] + t[1][2] * tmp[0][1] + t[2][2] * tmp[0][2];
+
+		out[1][0] = t[0][0] * tmp[1][0] + t[1][0] * tmp[1][1] + t[2][0] * tmp[1][2];
+		out[1][1] = t[0][1] * tmp[1][0] + t[1][1] * tmp[1][1] + t[2][1] * tmp[1][2];
+		out[1][2] = t[0][2] * tmp[1][0] + t[1][2] * tmp[1][1] + t[2][2] * tmp[1][2];
+
+		out[2][0] = t[0][0] * tmp[2][0] + t[1][0] * tmp[2][1] + t[2][0] * tmp[2][2];
+		out[2][1] = t[0][1] * tmp[2][0] + t[1][1] * tmp[2][1] + t[2][1] * tmp[2][2];
+		out[2][2] = t[0][2] * tmp[2][0] + t[1][2] * tmp[2][1] + t[2][2] * tmp[2][2];
+
+		return out;
+	}
+
+	vec3 Transform::RebasePoint(const vec3 & value, const mat4 & tt)
+	{
+		glm::vec3 v = (glm::vec3)value;
+		glm::mat4 t = (glm::mat4)tt;
+
+		return vec3(
+			t[0][0] * v[0] + t[1][0] * v[1] + t[2][0] * v[2] + t[3][0],
+			t[0][1] * v[0] + t[1][1] * v[1] + t[2][1] * v[2] + t[3][1],
+			t[0][2] * v[0] + t[1][2] * v[1] + t[2][2] * v[2] + t[3][2]
+		);
+	}
 	
 	mat4 Transform::Rotate(const mat4 & m, const float angle, const vec3 & v)
 	{
