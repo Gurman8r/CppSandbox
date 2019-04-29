@@ -365,7 +365,7 @@ namespace DEMO
 					SETTINGS.orthoNear,
 					SETTINGS.orthoFar
 				);
-				camera->color = { 0.025f, 0.025f, 0.025f, 1.0f };
+				camera->color = { ml::vec3 { 0.198f }, 1.0f };
 				camera->position = { 0.0f, 1.0f, 10.0f };
 				camera->forward(ml::vec3::Back);
 

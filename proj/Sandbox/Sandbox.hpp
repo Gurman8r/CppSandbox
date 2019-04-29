@@ -52,9 +52,9 @@ namespace DEMO
 			float		camSpd		= 1.0f;
 			
 			// Effects
-			int32_t		effectMode	= 0;
-		};
-		Globals globals;
+			int32_t		effectMode	= 3;
+		
+		} globals;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 	};
