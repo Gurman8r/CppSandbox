@@ -55,6 +55,12 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 		inline const int32_t & getHullType() const { return m_hullType; }
 
+	public:
+		/* * * * * * * * * * * * * * * * * * * * */
+		inline operator bool() const 
+		{
+			return (getHullType() > T_None) && (getHullType() < MAX_COLLIDER_TYPE);
+		}
 
 	private:
 		/* * * * * * * * * * * * * * * * * * * * */

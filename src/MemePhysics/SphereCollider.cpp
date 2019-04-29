@@ -34,12 +34,18 @@ namespace ml
 		switch (other.getHullType())
 		{
 		case Collider::T_Box:
-			return false;
+			if (auto temp = static_cast<const BoxCollider &>(other))
+			{
+				return false;
+			}
 
 		case Collider::T_Sphere:
-			return false;
+			if (auto temp = static_cast<const SphereCollider &>(other))
+			{
+				return false;
+			}
 
-		default:
+		default: 
 			return false;
 		}
 	}
