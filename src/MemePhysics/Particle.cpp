@@ -138,8 +138,12 @@ namespace ml
 	{
 		vec3 wv = force * p->rotation[3];
 		//Melody: (and me) check this once I'm sure how cross works
-
-		return vec3();
+		vec3 cross1 = vec3::cross(p->rotation, force);
+		vec3 r2 = p->rotation.complex() * 2.0f;
+		vec3 sum = cross1 + wv;
+		vec3 cross2 = vec3::cross(r2, sum);
+		force += cross2;
+		return force;
 	}
 
 	Particle & Particle::integrateEulerExplicit(const float dt)
