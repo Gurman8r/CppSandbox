@@ -323,51 +323,49 @@ namespace ml
 								});
 								
 								// States
-								Funcs::Group("States", [&]()
+								//Funcs::Group("States", [&]() {});
+								for (auto & pair : renderer->states())
 								{
-									for (auto & pair : renderer->states())
+									switch (pair.first)
 									{
-										switch (pair.first)
+									case GL::AlphaTest:
+										Funcs::Field("Alpha Test", [&](CString)
 										{
-										case GL::AlphaTest:
-											Funcs::Field("Alpha Test", [&](CString)
-											{
-												ImGui::Checkbox("##AlphaTest##States", (bool *)(pair.second.ptr()));
-											});
-											break;
-										case GL::Blend:
-											Funcs::Field("Blend", [&](CString)
-											{
-												ImGui::Checkbox("##Blend##States", (bool *)(pair.second.ptr()));
-											});
-											break;
-										case GL::CullFace:
-											Funcs::Field("Cull Face", [&](CString)
-											{
-												ImGui::Checkbox("##CullFace##States", (bool *)(pair.second.ptr()));
-											});
-											break;
-										case GL::DepthTest:
-											Funcs::Field("Depth Test", [&](CString)
-											{
-												ImGui::Checkbox("##DepthTest##States", (bool *)(pair.second.ptr()));
-											});
-											break;
-										case GL::Multisample:
-											Funcs::Field("Multisample", [&](CString)
-											{
-												ImGui::Checkbox("##Multisample##States", (bool *)(pair.second.ptr()));
-											});
-											break;
-										case GL::Texture2D:
-											Funcs::Field("Texture2D", [&](CString)
-											{
-												ImGui::Checkbox("##Texture2D##States", (bool *)(pair.second.ptr()));
-											});
-											break;
-										}
+											ImGui::Checkbox("##AlphaTest##States", (bool *)(pair.second.ptr()));
+										});
+										break;
+									case GL::Blend:
+										Funcs::Field("Blend", [&](CString)
+										{
+											ImGui::Checkbox("##Blend##States", (bool *)(pair.second.ptr()));
+										});
+										break;
+									case GL::CullFace:
+										Funcs::Field("Cull Face", [&](CString)
+										{
+											ImGui::Checkbox("##CullFace##States", (bool *)(pair.second.ptr()));
+										});
+										break;
+									case GL::DepthTest:
+										Funcs::Field("Depth Test", [&](CString)
+										{
+											ImGui::Checkbox("##DepthTest##States", (bool *)(pair.second.ptr()));
+										});
+										break;
+									case GL::Multisample:
+										Funcs::Field("Multisample", [&](CString)
+										{
+											ImGui::Checkbox("##Multisample##States", (bool *)(pair.second.ptr()));
+										});
+										break;
+									case GL::Texture2D:
+										Funcs::Field("Texture2D", [&](CString)
+										{
+											ImGui::Checkbox("##Texture2D##States", (bool *)(pair.second.ptr()));
+										});
+										break;
 									}
-								});
+								}
 							});
 						}
 

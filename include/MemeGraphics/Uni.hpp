@@ -20,6 +20,7 @@ namespace ml
 		using type_base = typename int32_t;
 		using id_type	= typename const type_base;
 
+	public:
 		enum : type_base
 		{
 			None,
@@ -35,9 +36,11 @@ namespace ml
 			MAX_TYPE
 		};
 
+	public:
 		String	name;
 		id_type type;
 
+	public:
 		uni_base(const String & name, id_type type)
 			: name(name)
 			, type(type)
@@ -54,36 +57,41 @@ namespace ml
 		int32_t _Type
 	> struct uni_t : public uni_base
 	{
-		static constexpr auto ID { static_cast<id_type>(_Type) };
+		using value_type	= typename _Elem;
+		using base_type		= typename uni_base;
+		using self_type		= typename uni_t<value_type, _Type>;
 
-		_Elem data;
+		enum : id_type { ID = _Type };
 
-		uni_t(const String & name, _Elem data) : uni_base(name, _Type), data(data) {}
+		value_type data;
+
+		uni_t(const String & name, value_type data) : base_type(name, ID), data(data) {}
 	};
 
 
 	// Generators
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#define ML_GEN_UNI_T(NAME, TYPE_ID) \
-	template <class T> struct NAME : public uni_t<T, TYPE_ID> \
-	{ \
-		using value_type	= typename T; \
-		using base_type		= typename uni_t<T, TYPE_ID>; \
-		NAME(const String & name, T data) : uni_t<T, TYPE_ID>(name, data) {} \
+#define ML_GEN_UNI_T(NAME, TYPE)											\
+	template <class T> struct NAME : public uni_t<T, TYPE>					\
+	{																		\
+		using value_type	= typename T;									\
+		using base_type		= typename uni_t<T, TYPE>;						\
+		using self_type		= typename NAME<value_type>;					\
+		NAME(const String & name, T data) : uni_t<T, TYPE>(name, data) {}	\
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	ML_GEN_UNI_T(	uni_flt_t,		uni_base::Flt	)
-	ML_GEN_UNI_T(	uni_int_t,		uni_base::Int	)
-	ML_GEN_UNI_T(	uni_vec2_t,		uni_base::Vec2	)
-	ML_GEN_UNI_T(	uni_vec3_t,		uni_base::Vec3	)
-	ML_GEN_UNI_T(	uni_vec4_t,		uni_base::Vec4	)
-	ML_GEN_UNI_T(	uni_col4_t,		uni_base::Col4	)
-	ML_GEN_UNI_T(	uni_mat3_t,		uni_base::Mat3	)
-	ML_GEN_UNI_T(	uni_mat4_t,		uni_base::Mat4	)
-	ML_GEN_UNI_T(	uni_tex_t,		uni_base::Tex	)
+	ML_GEN_UNI_T(	uni_flt_t,		uni_base::Flt	);
+	ML_GEN_UNI_T(	uni_int_t,		uni_base::Int	);
+	ML_GEN_UNI_T(	uni_vec2_t,		uni_base::Vec2	);
+	ML_GEN_UNI_T(	uni_vec3_t,		uni_base::Vec3	);
+	ML_GEN_UNI_T(	uni_vec4_t,		uni_base::Vec4	);
+	ML_GEN_UNI_T(	uni_col4_t,		uni_base::Col4	);
+	ML_GEN_UNI_T(	uni_mat3_t,		uni_base::Mat3	);
+	ML_GEN_UNI_T(	uni_mat4_t,		uni_base::Mat4	);
+	ML_GEN_UNI_T(	uni_tex_t,		uni_base::Tex	);
 
 
 	// Value Types
@@ -92,7 +100,7 @@ namespace ml
 	using uni_int		= typename uni_int_t	<int32_t>;
 	using uni_vec2		= typename uni_vec2_t	<vec2>;
 	using uni_vec3		= typename uni_vec3_t	<vec3>;
-	using uni_vec4		= typename uni_vec3_t	<vec4>;
+	using uni_vec4		= typename uni_vec4_t	<vec4>;
 	using uni_col4		= typename uni_col4_t	<vec4>;
 	using uni_mat3		= typename uni_mat3_t	<mat3>;
 	using uni_mat4		= typename uni_mat4_t	<mat4>;

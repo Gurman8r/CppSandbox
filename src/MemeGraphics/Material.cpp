@@ -5,7 +5,7 @@
 
 namespace ml
 {
-	/* * * * * * * * * * * * * * * * * * * * */
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	Material::Material()
 		: m_shader	(NULL)
@@ -40,7 +40,7 @@ namespace ml
 		dispose();
 	}
 
-	/* * * * * * * * * * * * * * * * * * * * */
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	bool Material::dispose()
 	{
@@ -57,7 +57,7 @@ namespace ml
 		return true;
 	}
 
-	/* * * * * * * * * * * * * * * * * * * * */
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	bool Material::bind() const
 	{
@@ -70,7 +70,9 @@ namespace ml
 
 				switch (pair.second->type)
 				{
-				case uni_base::Flt:
+					// Flt
+					/* * * * * * * * * * * * * * * * * * * * */
+				case uni_flt::ID:
 					if (auto u = dynamic_cast<const uni_flt *>(pair.second))
 						m_shader->setUniform(u->name, u->data);
 					else if (auto u = dynamic_cast<const uni_cr_flt *>(pair.second))
@@ -79,7 +81,9 @@ namespace ml
 						m_shader->setUniform(u->name, *u->data);
 					break;
 
-				case uni_base::Int:
+					// Int
+					/* * * * * * * * * * * * * * * * * * * * */
+				case uni_int::ID:
 					if (auto u = dynamic_cast<const uni_int *>(pair.second))
 						m_shader->setUniform(u->name, u->data);
 					else if (auto u = dynamic_cast<const uni_cr_int *>(pair.second))
@@ -88,7 +92,9 @@ namespace ml
 						m_shader->setUniform(u->name, *u->data);
 					break;
 
-				case uni_base::Vec2:
+					// Vec2
+					/* * * * * * * * * * * * * * * * * * * * */
+				case uni_vec2::ID:
 					if (auto u = dynamic_cast<const uni_vec2 *>(pair.second))
 						m_shader->setUniform(u->name, u->data);
 					else if (auto u = dynamic_cast<const uni_cr_vec2 *>(pair.second))
@@ -97,7 +103,9 @@ namespace ml
 						m_shader->setUniform(u->name, *u->data);
 					break;
 
-				case uni_base::Vec3:
+					// Vec3
+					/* * * * * * * * * * * * * * * * * * * * */
+				case uni_vec3::ID:
 					if (auto u = dynamic_cast<const uni_vec3 *>(pair.second))
 						m_shader->setUniform(u->name, u->data);
 					else if (auto u = dynamic_cast<const uni_cr_vec3 *>(pair.second))
@@ -106,7 +114,9 @@ namespace ml
 						m_shader->setUniform(u->name, *u->data);
 					break;
 
-				case uni_base::Vec4:
+					// Vec4
+					/* * * * * * * * * * * * * * * * * * * * */
+				case uni_vec4::ID:
 					if (auto u = dynamic_cast<const uni_vec4 *>(pair.second))
 						m_shader->setUniform(u->name, u->data);
 					else if (auto u = dynamic_cast<const uni_cr_vec4 *>(pair.second))
@@ -115,7 +125,9 @@ namespace ml
 						m_shader->setUniform(u->name, *u->data);
 					break;
 
-				case uni_base::Col4:
+					// Col4
+					/* * * * * * * * * * * * * * * * * * * * */
+				case uni_col4::ID:
 					if (auto u = dynamic_cast<const uni_col4 *>(pair.second))
 						m_shader->setUniform(u->name, u->data);
 					else if (auto u = dynamic_cast<const uni_cr_col4 *>(pair.second))
@@ -124,7 +136,9 @@ namespace ml
 						m_shader->setUniform(u->name, *u->data);
 					break;
 
-				case uni_base::Mat3:
+					// Mat3
+					/* * * * * * * * * * * * * * * * * * * * */
+				case uni_mat3::ID:
 					if (auto u = dynamic_cast<const uni_mat3 *>(pair.second))
 						m_shader->setUniform(u->name, u->data);
 					else if (auto u = dynamic_cast<const uni_cr_mat3 *>(pair.second))
@@ -133,7 +147,9 @@ namespace ml
 						m_shader->setUniform(u->name, *u->data);
 					break;
 
-				case uni_base::Mat4:
+					// Mat4
+					/* * * * * * * * * * * * * * * * * * * * */
+				case uni_mat4::ID:
 					if (auto u = dynamic_cast<const uni_mat4 *>(pair.second))
 						m_shader->setUniform(u->name, u->data);
 					else if (auto u = dynamic_cast<const uni_cr_mat4 *>(pair.second))
@@ -142,7 +158,9 @@ namespace ml
 						m_shader->setUniform(u->name, *u->data);
 					break;
 
-				case uni_base::Tex:
+					// Tex
+					/* * * * * * * * * * * * * * * * * * * * */
+				case uni_cp_tex::ID:
 					if (auto u = dynamic_cast<const uni_cp_tex *>(pair.second))
 						m_shader->setUniform(u->name, *u->data);
 					break;
@@ -163,5 +181,5 @@ namespace ml
 		}
 	}
 
-	/* * * * * * * * * * * * * * * * * * * * */
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 }
