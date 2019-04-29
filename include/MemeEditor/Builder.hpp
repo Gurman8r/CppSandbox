@@ -3,13 +3,14 @@
 
 #include <MemeEditor/GUI_Window.hpp>
 #include <MemeEditor/Document.hpp>
-#include <MemeGraphics/Material.hpp>
 
 #define ML_Builder ml::Builder::getInstance()
 #define ML_TEST_SHADER "built_shader"
 
 namespace ml
 {
+	class Shader;
+
 	struct Uniform
 	{
 		String name;

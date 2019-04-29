@@ -98,7 +98,7 @@ namespace ml
 				u->data = m_color;
 			}
 
-			if (auto u = batch.mat->find_uni<uni_cp_tex>(ML_FRAG_MAIN_TEX))
+			if (auto u = batch.mat->find_uni<uni_tex_cp>(ML_FRAG_MAIN_TEX))
 			{
 				u->data = m_texture;
 			}

@@ -391,10 +391,10 @@ namespace DEMO
 					"mat_light",
 					ML_Res.shaders.get("solid"),
 					ml::List<ml::uni_base *>({
-						new ml::uni_cr_mat4	(ML_VERT_PROJ,		ML_CAMERA->get<ml::Camera>()->getPerspMatrix()),
-						new ml::uni_cr_mat4	(ML_VERT_VIEW,		ML_CAMERA->get<ml::Transform>()->getMat()),
-						new ml::uni_cr_mat4	(ML_VERT_MODEL,		transform->getMat()),
-						new ml::uni_cr_col4	(ML_FRAG_MAIN_COL,	light->color),
+						new ml::uni_mat4_cr	(ML_VERT_PROJ,		ML_CAMERA->get<ml::Camera>()->getPerspMatrix()),
+						new ml::uni_mat4_cr	(ML_VERT_VIEW,		ML_CAMERA->get<ml::Transform>()->getMat()),
+						new ml::uni_mat4_cr	(ML_VERT_MODEL,		transform->getMat()),
+						new ml::uni_col4_cr	(ML_FRAG_MAIN_COL,	light->color),
 						}));
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>(
@@ -436,11 +436,11 @@ namespace DEMO
 					"mat_borg",
 					ML_Res.shaders.get("basic"),
 					ml::List<ml::uni_base *>({
-						new ml::uni_cr_mat4	(ML_VERT_PROJ,		ML_CAMERA->get<ml::Camera>()->getPerspMatrix()),
-						new ml::uni_cr_mat4	(ML_VERT_VIEW,		ML_CAMERA->get<ml::Transform>()->getMat()),
-						new ml::uni_cr_mat4	(ML_VERT_MODEL,		transform->getMat()),
-						new ml::uni_cr_col4	(ML_FRAG_MAIN_COL,	ml::Color::White),
-						new ml::uni_cp_tex	(ML_FRAG_MAIN_TEX,	ML_Res.textures.get("borg")),
+						new ml::uni_mat4_cr	(ML_VERT_PROJ,		ML_CAMERA->get<ml::Camera>()->getPerspMatrix()),
+						new ml::uni_mat4_cr	(ML_VERT_VIEW,		ML_CAMERA->get<ml::Transform>()->getMat()),
+						new ml::uni_mat4_cr	(ML_VERT_MODEL,		transform->getMat()),
+						new ml::uni_col4_cr	(ML_FRAG_MAIN_COL,	ml::Color::White),
+						new ml::uni_tex_cp	(ML_FRAG_MAIN_TEX,	ML_Res.textures.get("borg")),
 						}));
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>(
@@ -482,11 +482,11 @@ namespace DEMO
 					"mat_cube",
 					ML_Res.shaders.get("normal"),
 					ml::List<ml::uni_base *>({
-						new ml::uni_cr_mat4	(ML_VERT_PROJ,		ML_CAMERA->get<ml::Camera>()->getPerspMatrix()),
-						new ml::uni_cr_mat4	(ML_VERT_VIEW,		ML_CAMERA->get<ml::Transform>()->getMat()),
-						new ml::uni_cr_mat4	(ML_VERT_MODEL,		transform->getMat()),
-						new ml::uni_cr_col4	(ML_FRAG_MAIN_COL,	ml::Color::White),
-						new ml::uni_cp_tex	(ML_FRAG_MAIN_TEX,	ML_Res.textures.get("stone_dm")),
+						new ml::uni_mat4_cr	(ML_VERT_PROJ,		ML_CAMERA->get<ml::Camera>()->getPerspMatrix()),
+						new ml::uni_mat4_cr	(ML_VERT_VIEW,		ML_CAMERA->get<ml::Transform>()->getMat()),
+						new ml::uni_mat4_cr	(ML_VERT_MODEL,		transform->getMat()),
+						new ml::uni_col4_cr	(ML_FRAG_MAIN_COL,	ml::Color::White),
+						new ml::uni_tex_cp	(ML_FRAG_MAIN_TEX,	ML_Res.textures.get("stone_dm")),
 						}));
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>(
@@ -528,11 +528,11 @@ namespace DEMO
 					"mat_navball",
 					ML_Res.shaders.get("basic"),
 					ml::List<ml::uni_base *>({
-						new ml::uni_cr_mat4	(ML_VERT_PROJ,		ML_CAMERA->get<ml::Camera>()->getPerspMatrix()),
-						new ml::uni_cr_mat4	(ML_VERT_VIEW,		ML_CAMERA->get<ml::Transform>()->getMat()),
-						new ml::uni_cr_mat4	(ML_VERT_MODEL,		transform->getMat()),
-						new ml::uni_cr_col4	(ML_FRAG_MAIN_COL,	ml::Color::White),
-						new ml::uni_cp_tex	(ML_FRAG_MAIN_TEX,	ML_Res.textures.get("navball")),
+						new ml::uni_mat4_cr	(ML_VERT_PROJ,		ML_CAMERA->get<ml::Camera>()->getPerspMatrix()),
+						new ml::uni_mat4_cr	(ML_VERT_VIEW,		ML_CAMERA->get<ml::Transform>()->getMat()),
+						new ml::uni_mat4_cr	(ML_VERT_MODEL,		transform->getMat()),
+						new ml::uni_col4_cr	(ML_FRAG_MAIN_COL,	ml::Color::White),
+						new ml::uni_tex_cp	(ML_FRAG_MAIN_TEX,	ML_Res.textures.get("navball")),
 						}));
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>(
@@ -574,14 +574,14 @@ namespace DEMO
 					"mat_moon",
 					ML_Res.shaders.get("lighting"),
 					ml::List<ml::uni_base *> ({
-						new ml::uni_cr_mat4	(ML_VERT_PROJ,		ML_CAMERA->get<ml::Camera>()->getPerspMatrix()),
-						new ml::uni_cr_mat4	(ML_VERT_VIEW,		ML_CAMERA->get<ml::Transform>()->getMat()),
-						new ml::uni_cr_mat4	(ML_VERT_MODEL,		transform->getMat()),
-						new ml::uni_cr_vec3	("Frag.cameraPos",	ML_CAMERA->get<ml::Transform>()->getPos()),
-						new ml::uni_cr_vec3	("Frag.lightPos",	ML_LIGHT->get<ml::Transform>()->getPos()),
-						new ml::uni_cr_col4	("Frag.diffuse",	ML_LIGHT->get<ml::Light>()->color),
-						new ml::uni_cp_tex	(ML_FRAG_MAIN_TEX,	ML_Res.textures.get("moon_dm")),
-						new ml::uni_cp_tex	(ML_FRAG_SPEC_TEX,	ML_Res.textures.get("moon_sm")),
+						new ml::uni_mat4_cr	(ML_VERT_PROJ,		ML_CAMERA->get<ml::Camera>()->getPerspMatrix()),
+						new ml::uni_mat4_cr	(ML_VERT_VIEW,		ML_CAMERA->get<ml::Transform>()->getMat()),
+						new ml::uni_mat4_cr	(ML_VERT_MODEL,		transform->getMat()),
+						new ml::uni_vec3_cr	("Frag.cameraPos",	ML_CAMERA->get<ml::Transform>()->getPos()),
+						new ml::uni_vec3_cr	("Frag.lightPos",	ML_LIGHT->get<ml::Transform>()->getPos()),
+						new ml::uni_col4_cr	("Frag.diffuse",	ML_LIGHT->get<ml::Light>()->color),
+						new ml::uni_tex_cp	(ML_FRAG_MAIN_TEX,	ML_Res.textures.get("moon_dm")),
+						new ml::uni_tex_cp	(ML_FRAG_SPEC_TEX,	ML_Res.textures.get("moon_sm")),
 						new ml::uni_flt		("Frag.ambient",	0.01f),
 						new ml::uni_flt		("Frag.specular",	0.1f),
 						new ml::uni_int		("Frag.shininess",	8),
@@ -626,14 +626,14 @@ namespace DEMO
 					"mat_earth",
 					ML_Res.shaders.get("lighting"),
 					ml::List<ml::uni_base *> ({
-						new ml::uni_cr_mat4	(ML_VERT_PROJ,		ML_CAMERA->get<ml::Camera>()->getPerspMatrix()),
-						new ml::uni_cr_mat4	(ML_VERT_VIEW,		ML_CAMERA->get<ml::Transform>()->getMat()),
-						new ml::uni_cr_mat4	(ML_VERT_MODEL,		transform->getMat()),
-						new ml::uni_cr_vec3	("Frag.cameraPos",	ML_CAMERA->get<ml::Transform>()->getPos()),
-						new ml::uni_cr_vec3	("Frag.lightPos",	ML_LIGHT->get<ml::Transform>()->getPos()),
-						new ml::uni_cr_col4	("Frag.diffuse",	ML_LIGHT->get<ml::Light>()->color),
-						new ml::uni_cp_tex	(ML_FRAG_MAIN_TEX,	ML_Res.textures.get("earth_dm")),
-						new ml::uni_cp_tex	(ML_FRAG_SPEC_TEX,	ML_Res.textures.get("earth_sm")),
+						new ml::uni_mat4_cr	(ML_VERT_PROJ,		ML_CAMERA->get<ml::Camera>()->getPerspMatrix()),
+						new ml::uni_mat4_cr	(ML_VERT_VIEW,		ML_CAMERA->get<ml::Transform>()->getMat()),
+						new ml::uni_mat4_cr	(ML_VERT_MODEL,		transform->getMat()),
+						new ml::uni_vec3_cr	("Frag.cameraPos",	ML_CAMERA->get<ml::Transform>()->getPos()),
+						new ml::uni_vec3_cr	("Frag.lightPos",	ML_LIGHT->get<ml::Transform>()->getPos()),
+						new ml::uni_col4_cr	("Frag.diffuse",	ML_LIGHT->get<ml::Light>()->color),
+						new ml::uni_tex_cp	(ML_FRAG_MAIN_TEX,	ML_Res.textures.get("earth_dm")),
+						new ml::uni_tex_cp	(ML_FRAG_SPEC_TEX,	ML_Res.textures.get("earth_sm")),
 						new ml::uni_flt		("Frag.ambient",	0.01f),
 						new ml::uni_flt		("Frag.specular",	0.1f),
 						new ml::uni_int		("Frag.shininess",	8),
@@ -678,11 +678,11 @@ namespace DEMO
 					"mat_ground",
 					ML_Res.shaders.get("normal"),
 					ml::List<ml::uni_base *>({
-						new ml::uni_cr_mat4	(ML_VERT_PROJ,		ML_CAMERA->get<ml::Camera>()->getPerspMatrix()),
-						new ml::uni_cr_mat4	(ML_VERT_VIEW,		ML_CAMERA->get<ml::Transform>()->getMat()),
-						new ml::uni_cr_mat4	(ML_VERT_MODEL,		transform->getMat()),
-						new ml::uni_cr_col4	(ML_FRAG_MAIN_COL,	ml::Color::White),
-						new ml::uni_cp_tex	(ML_FRAG_MAIN_TEX,	ML_Res.textures.get("stone_dm")),
+						new ml::uni_mat4_cr	(ML_VERT_PROJ,		ML_CAMERA->get<ml::Camera>()->getPerspMatrix()),
+						new ml::uni_mat4_cr	(ML_VERT_VIEW,		ML_CAMERA->get<ml::Transform>()->getMat()),
+						new ml::uni_mat4_cr	(ML_VERT_MODEL,		transform->getMat()),
+						new ml::uni_col4_cr	(ML_FRAG_MAIN_COL,	ml::Color::White),
+						new ml::uni_tex_cp	(ML_FRAG_MAIN_TEX,	ML_Res.textures.get("stone_dm")),
 						}));
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>(
@@ -1009,13 +1009,13 @@ namespace DEMO
 				// Draw Sprites
 				if (const ml::Shader * shader = ML_Res.shaders.get("sprites"))
 				{
-					static ml::Material * material = ML_Res.materials.load_forward(
+					static ml::Material * const material = ML_Res.materials.load_forward(
 						"mat_sprites",
 						shader,
 						ml::List<ml::uni_base *>({
-							new ml::uni_cr_mat4	(ML_VERT_PROJ,		ortho),
-							new ml::uni_col4		(ML_FRAG_MAIN_COL,	ml::Color::White),
-							new ml::uni_cp_tex	(ML_FRAG_MAIN_TEX,	NULL),
+							new ml::uni_mat4_cr	(ML_VERT_PROJ,		ortho),
+							new ml::uni_col4	(ML_FRAG_MAIN_COL,	ml::Color::White),
+							new ml::uni_tex_cp	(ML_FRAG_MAIN_TEX,	NULL),
 							}));
 
 					static ml::RenderBatch batch(&m_canvas.vao(), &m_canvas.vbo(), material);
@@ -1029,13 +1029,13 @@ namespace DEMO
 				// Draw Text
 				if (const ml::Shader * shader = ML_Res.shaders.get("text"))
 				{
-					static ml::Material * material = ML_Res.materials.load_forward(
+					static ml::Material * const material = ML_Res.materials.load_forward(
 						"mat_text",
 						shader,
 						ml::List<ml::uni_base *>({
-							new ml::uni_cr_mat4	(ML_VERT_PROJ,		ortho),
-							new ml::uni_col4		(ML_FRAG_MAIN_COL,	ml::Color::White),
-							new ml::uni_cp_tex	(ML_FRAG_MAIN_TEX,	NULL),
+							new ml::uni_mat4_cr	(ML_VERT_PROJ,		ortho),
+							new ml::uni_col4	(ML_FRAG_MAIN_COL,	ml::Color::White),
+							new ml::uni_tex_cp	(ML_FRAG_MAIN_TEX,	NULL),
 							}));
 
 					static ml::RenderBatch batch(&m_canvas.vao(), &m_canvas.vbo(), material);
@@ -1049,7 +1049,7 @@ namespace DEMO
 				// Draw Geometry
 				if (const ml::Shader * shader = ML_Res.shaders.get("geometry"))
 				{
-					static ml::Material * material = ML_Res.materials.load_forward(
+					static ml::Material * const material = ML_Res.materials.load_forward(
 						"mat_geometry", 
 						shader,
 						ml::List<ml::uni_base *>({

@@ -141,7 +141,7 @@ namespace ml
 
 			for (size_t i = 0, imax = m_string.size(); i < imax; i++)
 			{
-				if (auto u = batch.mat->find_uni<uni_cp_tex>(ML_FRAG_MAIN_TEX))
+				if (auto u = batch.mat->find_uni<uni_tex_cp>(ML_FRAG_MAIN_TEX))
 				{
 					u->data = m_textures[i];
 				}

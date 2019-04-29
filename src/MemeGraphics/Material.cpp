@@ -75,9 +75,9 @@ namespace ml
 				case uni_flt::ID:
 					if (auto u = dynamic_cast<const uni_flt *>(pair.second))
 						m_shader->setUniform(u->name, u->data);
-					else if (auto u = dynamic_cast<const uni_cr_flt *>(pair.second))
+					else if (auto u = dynamic_cast<const uni_flt_cr *>(pair.second))
 						m_shader->setUniform(u->name, u->data);
-					else if (auto u = dynamic_cast<const uni_cp_flt *>(pair.second))
+					else if (auto u = dynamic_cast<const uni_flt_cp *>(pair.second))
 						m_shader->setUniform(u->name, *u->data);
 					break;
 
@@ -86,9 +86,9 @@ namespace ml
 				case uni_int::ID:
 					if (auto u = dynamic_cast<const uni_int *>(pair.second))
 						m_shader->setUniform(u->name, u->data);
-					else if (auto u = dynamic_cast<const uni_cr_int *>(pair.second))
+					else if (auto u = dynamic_cast<const uni_int_cr *>(pair.second))
 						m_shader->setUniform(u->name, u->data);
-					else if (auto u = dynamic_cast<const uni_cp_int *>(pair.second))
+					else if (auto u = dynamic_cast<const uni_int_cp *>(pair.second))
 						m_shader->setUniform(u->name, *u->data);
 					break;
 
@@ -97,9 +97,9 @@ namespace ml
 				case uni_vec2::ID:
 					if (auto u = dynamic_cast<const uni_vec2 *>(pair.second))
 						m_shader->setUniform(u->name, u->data);
-					else if (auto u = dynamic_cast<const uni_cr_vec2 *>(pair.second))
+					else if (auto u = dynamic_cast<const uni_vec2_cr *>(pair.second))
 						m_shader->setUniform(u->name, u->data);
-					else if (auto u = dynamic_cast<const uni_cp_vec2 *>(pair.second))
+					else if (auto u = dynamic_cast<const uni_vec2_cp *>(pair.second))
 						m_shader->setUniform(u->name, *u->data);
 					break;
 
@@ -108,9 +108,9 @@ namespace ml
 				case uni_vec3::ID:
 					if (auto u = dynamic_cast<const uni_vec3 *>(pair.second))
 						m_shader->setUniform(u->name, u->data);
-					else if (auto u = dynamic_cast<const uni_cr_vec3 *>(pair.second))
+					else if (auto u = dynamic_cast<const uni_vec3_cr *>(pair.second))
 						m_shader->setUniform(u->name, u->data);
-					else if (auto u = dynamic_cast<const uni_cp_vec3 *>(pair.second))
+					else if (auto u = dynamic_cast<const uni_vec3_cp *>(pair.second))
 						m_shader->setUniform(u->name, *u->data);
 					break;
 
@@ -119,9 +119,9 @@ namespace ml
 				case uni_vec4::ID:
 					if (auto u = dynamic_cast<const uni_vec4 *>(pair.second))
 						m_shader->setUniform(u->name, u->data);
-					else if (auto u = dynamic_cast<const uni_cr_vec4 *>(pair.second))
+					else if (auto u = dynamic_cast<const uni_vec4_cr *>(pair.second))
 						m_shader->setUniform(u->name, u->data);
-					else if (auto u = dynamic_cast<const uni_cp_vec4 *>(pair.second))
+					else if (auto u = dynamic_cast<const uni_vec4_cp *>(pair.second))
 						m_shader->setUniform(u->name, *u->data);
 					break;
 
@@ -130,9 +130,9 @@ namespace ml
 				case uni_col4::ID:
 					if (auto u = dynamic_cast<const uni_col4 *>(pair.second))
 						m_shader->setUniform(u->name, u->data);
-					else if (auto u = dynamic_cast<const uni_cr_col4 *>(pair.second))
+					else if (auto u = dynamic_cast<const uni_col4_cr *>(pair.second))
 						m_shader->setUniform(u->name, u->data);
-					else if (auto u = dynamic_cast<const uni_cp_col4 *>(pair.second))
+					else if (auto u = dynamic_cast<const uni_col4_cp *>(pair.second))
 						m_shader->setUniform(u->name, *u->data);
 					break;
 
@@ -141,9 +141,9 @@ namespace ml
 				case uni_mat3::ID:
 					if (auto u = dynamic_cast<const uni_mat3 *>(pair.second))
 						m_shader->setUniform(u->name, u->data);
-					else if (auto u = dynamic_cast<const uni_cr_mat3 *>(pair.second))
+					else if (auto u = dynamic_cast<const uni_mat3_cr *>(pair.second))
 						m_shader->setUniform(u->name, u->data);
-					else if (auto u = dynamic_cast<const uni_cp_mat3 *>(pair.second))
+					else if (auto u = dynamic_cast<const uni_mat3_cp *>(pair.second))
 						m_shader->setUniform(u->name, *u->data);
 					break;
 
@@ -152,16 +152,16 @@ namespace ml
 				case uni_mat4::ID:
 					if (auto u = dynamic_cast<const uni_mat4 *>(pair.second))
 						m_shader->setUniform(u->name, u->data);
-					else if (auto u = dynamic_cast<const uni_cr_mat4 *>(pair.second))
+					else if (auto u = dynamic_cast<const uni_mat4_cr *>(pair.second))
 						m_shader->setUniform(u->name, u->data);
-					else if (auto u = dynamic_cast<const uni_cp_mat4 *>(pair.second))
+					else if (auto u = dynamic_cast<const uni_mat4_cp *>(pair.second))
 						m_shader->setUniform(u->name, *u->data);
 					break;
 
 					// Tex
 					/* * * * * * * * * * * * * * * * * * * * */
-				case uni_cp_tex::ID:
-					if (auto u = dynamic_cast<const uni_cp_tex *>(pair.second))
+				case uni_tex_cp::ID:
+					if (auto u = dynamic_cast<const uni_tex_cp *>(pair.second))
 						m_shader->setUniform(u->name, *u->data);
 					break;
 				}

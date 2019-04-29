@@ -172,13 +172,10 @@ namespace ml
 
 	void ResourceView::draw_effects()
 	{
+		if (ML_Res.effects.empty()) return;
+
 		Funcs::Group(ML_Res.effects.name().c_str(), [&]()
 		{
-			if (ML_Res.effects.empty())
-			{
-				return ImGui::Text("None");
-			}
-
 			for (auto & pair : ML_Res.effects)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Effect * e)
@@ -214,13 +211,10 @@ namespace ml
 
 	void ResourceView::draw_entities()
 	{
+		if (ML_Res.entities.empty()) return;
+
 		Funcs::Group(ML_Res.entities.name().c_str(), [&]()
 		{
-			if (ML_Res.entities.empty())
-			{
-				return ImGui::Text("None");
-			}
-
 			for (auto & pair : ML_Res.entities)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, Entity * ent)
@@ -496,13 +490,10 @@ namespace ml
 
 	void ResourceView::draw_fonts()
 	{
+		if (ML_Res.fonts.empty()) return;
+
 		Funcs::Group(ML_Res.fonts.name().c_str(), [&]()
 		{
-			if (ML_Res.fonts.empty())
-			{
-				return ImGui::Text("None");
-			}
-
 			for (auto & pair : ML_Res.fonts)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Font * e)
@@ -542,13 +533,10 @@ namespace ml
 
 	void ResourceView::draw_images()
 	{
+		if (ML_Res.images.empty()) return;
+
 		Funcs::Group(ML_Res.images.name().c_str(), [&]()
 		{
-			if (ML_Res.images.empty())
-			{
-				return ImGui::Text("None");
-			}
-
 			for (auto & pair : ML_Res.images)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Image * e)
@@ -588,13 +576,10 @@ namespace ml
 
 	void ResourceView::draw_lua()
 	{
+		if (ML_Res.lua.empty()) return;
+
 		Funcs::Group(ML_Res.lua.name().c_str(), [&]()
 		{
-			if (ML_Res.lua.empty())
-			{
-				return ImGui::Text("None");
-			}
-
 			for (auto & pair : ML_Res.lua)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const LuaScript * e)
@@ -630,13 +615,10 @@ namespace ml
 
 	void ResourceView::draw_materials()
 	{
+		if (ML_Res.materials.empty()) return;
+
 		Funcs::Group(ML_Res.materials.name().c_str(), [&]()
 		{
-			if (ML_Res.materials.empty())
-			{
-				return ImGui::Text("None");
-			}
-
 			for (auto & pair : ML_Res.materials)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, Material * mat)
@@ -673,57 +655,57 @@ namespace ml
 						{
 							switch (pair.second->type)
 							{
-							case uni_base::Flt:
+							case uni_flt::ID:
 								if (auto u = dynamic_cast<uni_flt *>(pair.second))
 								{
 									Funcs::Field(u->name.c_str(), [&](CString)
 									{
-										ImGui::DragFloat(String("##Float##Uni##" + pair.second->name).c_str(), &u->data);
+										ImGui::DragFloat(String("##Float##Uni##" + pair.second->name).c_str(), &u->data, 0.1f);
 									});
 								}
 								break;
 
-							case uni_base::Int:
+							case uni_int::ID:
 								if (auto u = dynamic_cast<uni_int *>(pair.second))
 								{
 									Funcs::Field(u->name.c_str(), [&](CString)
 									{
-										ImGui::DragInt(String("##Int##Uni##" + pair.second->name).c_str(), &u->data);
+										ImGui::DragInt(String("##Int##Uni##" + pair.second->name).c_str(), &u->data, 0.1f);
 									});
 								}
 								break;
 
-							case uni_base::Vec2:
+							case uni_vec2::ID:
 								if (auto u = dynamic_cast<uni_vec2 *>(pair.second))
 								{
 									Funcs::Field(u->name.c_str(), [&](CString)
 									{
-										GUI::EditVec2f(String("##Vec2##Uni##" + pair.second->name).c_str(), u->data);
+										GUI::EditVec2f(String("##Vec2##Uni##" + pair.second->name).c_str(), u->data, 0.1f);
 									});
 								}
 								break;
 
-							case uni_base::Vec3:
+							case uni_vec3::ID:
 								if (auto u = dynamic_cast<uni_vec3 *>(pair.second))
 								{
 									Funcs::Field(u->name.c_str(), [&](CString)
 									{
-										GUI::EditVec3f(String("##Vec3##Uni##" + pair.second->name).c_str(), u->data);
+										GUI::EditVec3f(String("##Vec3##Uni##" + pair.second->name).c_str(), u->data, 0.1f);
 									});
 								}
 								break;
 
-							case uni_base::Vec4:
+							case uni_vec4::ID:
 								if (auto u = dynamic_cast<uni_vec4 *>(pair.second))
 								{
 									Funcs::Field(u->name.c_str(), [&](CString)
 									{
-										GUI::EditVec4f(String("##Vec4##Uni##" + pair.second->name).c_str(), u->data);
+										GUI::EditVec4f(String("##Vec4##Uni##" + pair.second->name).c_str(), u->data, 0.1f);
 									});
 								}
 								break;
 
-							case uni_base::Col4:
+							case uni_col4::ID:
 								if (auto u = dynamic_cast<uni_col4 *>(pair.second))
 								{
 									Funcs::Field(u->name.c_str(), [&](CString)
@@ -733,35 +715,35 @@ namespace ml
 								}
 								break;
 
-							case uni_base::Mat3:
+							case uni_mat3::ID:
 								if (auto u = dynamic_cast<uni_mat3 *>(pair.second))
 								{
 									Funcs::Field(u->name.c_str(), [&](CString)
 									{
-										GUI::EditMat3f(String("##Mat3##Uni##" + pair.second->name).c_str(), u->data);
+										GUI::EditMat3f(String("##Mat3##Uni##" + pair.second->name).c_str(), u->data, 0.1f);
 									});
 								}
 								break;
 
-							case uni_base::Mat4:
+							case uni_mat4::ID:
 								if (auto u = dynamic_cast<uni_mat4 *>(pair.second))
 								{
 									Funcs::Field(u->name.c_str(), [&](CString)
 									{
-										GUI::EditMat4f(String("##Mat4##Uni##" + pair.second->name).c_str(), u->data);
+										GUI::EditMat4f(String("##Mat4##Uni##" + pair.second->name).c_str(), u->data, 0.1f);
 									});
 								}
 								break;
 
-							case uni_base::Tex:
-								if (auto u = dynamic_cast<uni_cp_tex *>(pair.second))
+							case uni_tex_cp::ID:
+								if (auto u = dynamic_cast<uni_tex_cp *>(pair.second))
 								{
 									Funcs::Field(pair.second->name.c_str(), [&](CString)
 									{
 										int32_t index = ML_Res.textures.getIndexOf(u->data);
 										List<String> keys = ML_Res.textures.keys();
 										if (ImGui::Combo(
-											String("##Tex2D##Uni##" + pair.second->name).c_str(),
+											String("##Tex##Uni##" + pair.second->name).c_str(),
 											&index,
 											ImGui_Helper::vector_getter,
 											static_cast<void *>(&keys),
@@ -804,13 +786,10 @@ namespace ml
 
 	void ResourceView::draw_meshes()
 	{
+		if (ML_Res.meshes.empty()) return;
+
 		Funcs::Group(ML_Res.meshes.name().c_str(), [&]()
 		{
-			if (ML_Res.meshes.empty())
-			{
-				return ImGui::Text("None");
-			}
-
 			for (auto & pair : ML_Res.meshes)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Mesh * e)
@@ -846,13 +825,10 @@ namespace ml
 
 	void ResourceView::draw_models()
 	{
+		if (ML_Res.models.empty()) return;
+
 		Funcs::Group(ML_Res.models.name().c_str(), [&]()
 		{
-			if (ML_Res.models.empty())
-			{
-				return ImGui::Text("None");
-			}
-
 			for (auto & pair : ML_Res.models)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Model * e)
@@ -888,13 +864,10 @@ namespace ml
 
 	void ResourceView::draw_plugins()
 	{
+		if (ML_Res.plugins.empty()) return;
+
 		Funcs::Group(ML_Res.plugins.name().c_str(), [&]()
 		{
-			if (ML_Res.plugins.empty())
-			{
-				return ImGui::Text("None");
-			}
-
 			for (auto & pair : ML_Res.plugins)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Plugin * e)
@@ -930,20 +903,32 @@ namespace ml
 
 	void ResourceView::draw_scripts()
 	{
+		if (ML_Res.scripts.empty()) return;
+
 		Funcs::Group(ML_Res.scripts.name().c_str(), [&]()
 		{
-			if (ML_Res.scripts.empty())
-			{
-				return ImGui::Text("None");
-			}
-
 			for (auto & pair : ML_Res.scripts)
 			{
-				Funcs::Group(pair.first.c_str(), [&](CString name, const Script * e)
+				Funcs::Group(pair.first.c_str(), [&](CString name, Script * scr)
 				{
-					Funcs::Field("Name", [&](CString label)
+					Funcs::Field("Name", [&](CString)
 					{
 						ImGui::Text("%s", name);
+					});
+					Funcs::Field("Actions", [&](CString)
+					{
+						if (ImGui::Selectable("Build"))
+						{
+							scr->build({});
+						}
+						if (ImGui::Selectable("Run"))
+						{
+							scr->run();
+						}
+						if (ImGui::Selectable("Build & Run"))
+						{
+							scr->buildAndRun({});
+						}
 					});
 					if (const String file = ML_Res.scripts.getFile(name))
 					{
@@ -972,13 +957,10 @@ namespace ml
 
 	void ResourceView::draw_shaders()
 	{
+		if (ML_Res.shaders.empty()) return;
+
 		Funcs::Group(ML_Res.shaders.name().c_str(), [&]()
 		{
-			if (ML_Res.shaders.empty())
-			{
-				return ImGui::Text("None");
-			}
-
 			for (auto & pair : ML_Res.shaders)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Shader * e)
@@ -1014,13 +996,10 @@ namespace ml
 
 	void ResourceView::draw_skyboxes()
 	{
+		if (ML_Res.skyboxes.empty()) return;
+
 		Funcs::Group(ML_Res.skyboxes.name().c_str(), [&]()
 		{
-			if (ML_Res.skyboxes.empty())
-			{
-				return ImGui::Text("None");
-			}
-
 			for (auto & pair : ML_Res.skyboxes)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Skybox * e)
@@ -1056,13 +1035,10 @@ namespace ml
 
 	void ResourceView::draw_sounds()
 	{
+		if (ML_Res.sounds.empty()) return;
+
 		Funcs::Group(ML_Res.sounds.name().c_str(), [&]()
 		{
-			if (ML_Res.sounds.empty())
-			{
-				return ImGui::Text("None");
-			}
-
 			for (auto & pair : ML_Res.sounds)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, const Sound * e)
@@ -1098,13 +1074,10 @@ namespace ml
 
 	void ResourceView::draw_sprites()
 	{
+		if (ML_Res.entities.empty()) return;
+
 		Funcs::Group(ML_Res.sprites.name().c_str(), [&]()
 		{
-			if (ML_Res.sprites.empty())
-			{
-				return ImGui::Text("None");
-			}
-
 			for (auto & pair : ML_Res.sprites)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, Sprite * spr)
@@ -1197,13 +1170,10 @@ namespace ml
 
 	void ResourceView::draw_textures()
 	{
+		if (ML_Res.textures.empty()) return;
+
 		Funcs::Group(ML_Res.textures.name().c_str(), [&]()
 		{
-			if (ML_Res.textures.empty())
-			{
-				return ImGui::Text("None");
-			}
-
 			for (auto & pair : ML_Res.textures)
 			{
 				Funcs::Group(pair.first.c_str(), [&](CString name, Texture * tex)

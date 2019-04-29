@@ -3,6 +3,7 @@
 #include <MemeEditor/GUI.hpp>
 #include <MemeEditor/ImGui.hpp>
 #include <MemeGraphics/ShaderAPI.hpp>
+#include <MemeGraphics/Material.hpp>
 #include <MemeGraphics/Uni.hpp>
 #include <MemeCore/Debug.hpp>
 

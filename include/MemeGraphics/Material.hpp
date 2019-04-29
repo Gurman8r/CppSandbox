@@ -7,7 +7,7 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	class uni_base;
+	struct uni_base;
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
