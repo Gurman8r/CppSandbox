@@ -47,12 +47,9 @@ namespace DEMO
 
 		struct Globals
 		{
-			// Camera
-			bool		camAuto		= true;
-			float		camSpd		= 1.0f;
-			
-			// Effects
-			int32_t		effectMode	= 3;
+			bool	camAuto		= true;
+			float	camSpd		= 1.0f;
+			int32_t	effectMode	= 3;
 		
 		} globals;
 

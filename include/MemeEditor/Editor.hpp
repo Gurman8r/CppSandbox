@@ -40,10 +40,10 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 		bool show_terminal		= true;
 		bool show_browser		= true;
-		bool show_builder		= true;
+		bool show_builder		= false;
 		bool show_inspector		= true;
 		bool show_sceneView		= true;
-		bool show_textEditor	= true;
+		bool show_textEditor	= false;
 		bool show_resourceView	= true;
 		bool show_profiler		= true;
 		bool show_network		= false;

@@ -1101,26 +1101,6 @@ namespace DEMO
 		if (ML_Editor.show_imgui_style)		{ ml::ImGui_Builtin::showStyle(&ML_Editor.show_imgui_style); }
 		if (ML_Editor.show_imgui_about)		{ ml::ImGui_Builtin::showAbout(&ML_Editor.show_imgui_about); }
 		
-		// Editors
-		if (ML_Editor.show_network)			{ ML_NetworkHUD.drawGui(&ML_Editor.show_network); }
-		if (ML_Editor.show_profiler)		{ ML_Profiler.drawGui(&ML_Editor.show_profiler); }
-		if (ML_Editor.show_browser)			{ ML_Browser.drawGui(&ML_Editor.show_browser); }
-		if (ML_Editor.show_resourceView)	{ ML_ResourceView.drawGui(&ML_Editor.show_resourceView); }
-		if (ML_Editor.show_terminal)		{ ML_Terminal.drawGui(&ML_Editor.show_terminal); }
-		if (ML_Editor.show_textEditor)		{ ML_TextEditor.drawGui(&ML_Editor.show_textEditor); }
-		if (ML_Editor.show_builder)			{ ML_Builder.drawGui(&ML_Editor.show_builder); }
-		
-		// Scene View
-		if (ML_Editor.show_sceneView)
-		{
-			ML_SceneView.drawFun(&ML_Editor.show_sceneView, [&]()
-			{
-				if (ml::Effect * post = ML_Res.effects.get("frame_post"))
-				{
-					ML_SceneView.updateTexture(&post->texture());
-				}
-			});
-		}
 
 		// Inspector
 		if (ML_Editor.show_inspector)
@@ -1148,6 +1128,27 @@ namespace DEMO
 				ImGui::Separator();
 
 				/* * * * * * * * * * * * * * * * * * * * */
+			});
+		}
+
+		// Editors
+		if (ML_Editor.show_builder)			{ ML_Builder.drawGui(&ML_Editor.show_builder); }
+		if (ML_Editor.show_network)			{ ML_NetworkHUD.drawGui(&ML_Editor.show_network); }
+		if (ML_Editor.show_profiler)		{ ML_Profiler.drawGui(&ML_Editor.show_profiler); }
+		if (ML_Editor.show_browser)			{ ML_Browser.drawGui(&ML_Editor.show_browser); }
+		if (ML_Editor.show_resourceView)	{ ML_ResourceView.drawGui(&ML_Editor.show_resourceView); }
+		if (ML_Editor.show_terminal)		{ ML_Terminal.drawGui(&ML_Editor.show_terminal); }
+		if (ML_Editor.show_textEditor)		{ ML_TextEditor.drawGui(&ML_Editor.show_textEditor); }
+		
+		// Scene View
+		if (ML_Editor.show_sceneView)
+		{
+			ML_SceneView.drawFun(&ML_Editor.show_sceneView, [&]()
+			{
+				if (ml::Effect * post = ML_Res.effects.get("frame_post"))
+				{
+					ML_SceneView.updateTexture(&post->texture());
+				}
 			});
 		}
 	}
