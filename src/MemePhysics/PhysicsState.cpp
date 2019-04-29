@@ -4,8 +4,7 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-	PhysicsState::PhysicsState() { dispose(); }
-
+	PhysicsState::PhysicsState()  { dispose(); }
 	PhysicsState::~PhysicsState() { dispose(); }
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -42,16 +41,6 @@ namespace ml
 		return (size() == 0);
 	}
 
-	int32_t PhysicsState::push()
-	{
-		m_size++;
-		m_pos.push_back(vec3());
-		m_rot.push_back(quat());
-		m_mat.push_back(mat4());
-		m_inv.push_back(mat4());
-		return (size() - 1);
-	}
-
 	PhysicsState & PhysicsState::resize(const size_t value)
 	{
 		if (m_size = (int32_t)(value))
@@ -66,6 +55,13 @@ namespace ml
 
 	int32_t PhysicsState::size() const
 	{
+		if (m_size)
+		{
+			assert("State pos size mismatch" && (m_pos.size() == m_size));
+			assert("State rot size mismatch" && (m_rot.size() == m_size));
+			assert("State mat size mismatch" && (m_mat.size() == m_size));
+			assert("State inv size mismatch" && (m_inv.size() == m_size));
+		}
 		return m_size;
 	}
 

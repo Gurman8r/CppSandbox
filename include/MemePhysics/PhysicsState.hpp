@@ -10,14 +10,20 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
+	class Physics;
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	class ML_PHYSICS_API PhysicsState final
 		: public ITrackable
 		, public IDisposable
 		, public INonCopyable
 	{
-	public:
+		friend class Physics;
+
+	public: // Enums
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-		enum Type : uint32_t
+		enum Type : size_t
 		{
 			T_Pos,
 			T_Rot,
@@ -28,7 +34,7 @@ namespace ml
 		};
 
 
-	public:
+	private: // Ctor / Dtor
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		PhysicsState();
 		~PhysicsState();
@@ -39,66 +45,60 @@ namespace ml
 		PhysicsState &	deepCopy(const PhysicsState & other);
 		bool			dispose() override;
 		bool			empty() const;
-		int32_t			push();
 		PhysicsState &	resize(const size_t value);
 		int32_t			size() const;
 
 
 	public: // Operators
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-		inline operator bool() const { return !(this->empty()); }
+		inline operator bool() const 
+		{
+			return !(this->empty()); 
+		}
 
 
 	public: // Getters
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-		template <
-			class Elem
-		> inline bool get(const int32_t index, const List<Elem> & list, Elem & value) const
+		template <class T>
+		inline bool get(const int32_t index, const List<T> & data, T & value) const
 		{
-			if ((index >= 0) && ((size_t)(index) < list.size()))
+			if (static_cast<size_t>(index) < data.size())
 			{
-				value = list[(size_t)(index)];
+				value = data[static_cast<size_t>(index)];
 				return true;
 			}
 			return false;
 		}
 
-		template <
-			Type ID, class Elem = vec3
-		> inline bool get(const int32_t index, vec3 & value) const
+		template <Type ID, class T = vec3> 
+		inline bool get(const int32_t index, vec3 & value) const
 		{
 			switch (ID)
 			{
-			case PhysicsState::T_Pos:
-				return this->get<vec3>(index, m_pos, value);
+			case PhysicsState::T_Pos: return get<vec3>(index, m_pos, value);
 			default:
 				return false;
 			}
 		}
 
-		template <
-			Type ID, class Elem = quat
-		> inline bool get(const int32_t index, quat & value) const
+		template <Type ID, class T = quat> 
+		inline bool get(const int32_t index, quat & value) const
 		{
 			switch (ID)
 			{
-			case PhysicsState::T_Rot:
-				return this->get<quat>(index, m_rot, value);
+			case PhysicsState::T_Rot: return get<quat>(index, m_rot, value);
 			default:
 				return false;
 			}
 		}
 
-		template <
-			Type ID, class Elem = mat4
-		> inline bool get(const int32_t index, mat4 & value) const
+		template <Type ID, class T = mat4> 
+		inline bool get(const int32_t index, mat4 & value) const
 		{
 			switch (ID)
 			{
-			case PhysicsState::T_Mat:
-				return this->get<mat4>(index, m_mat, value);
-			case PhysicsState::T_Inv:
-				return this->get<mat4>(index, m_inv, value);
+			case PhysicsState::T_Mat: return get<mat4>(index, m_mat, value);
+			case PhysicsState::T_Inv: return get<mat4>(index, m_inv, value);
 			default:
 				return false;
 			}
@@ -107,54 +107,95 @@ namespace ml
 
 	public: // Setters
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-		template <
-			class Elem
-		> inline bool set(const int32_t index, List<Elem> & list, const Elem & value)
+		template <class T> 
+		inline bool set(const int32_t index, List<T> & data, const T & value)
 		{
-			if ((index >= 0) && ((size_t)(index) < list.size()))
+			if (static_cast<size_t>(index) < data.size())
 			{
-				list[(size_t)(index)] = value;
+				data[static_cast<size_t>(index)] = value;
 				return true;
 			}
 			return false;
 		}
 
-		template <
-			Type ID, class Elem = vec3
-		> inline bool set(const int32_t index, const vec3 & value)
+		template <Type ID, class T = vec3> 
+		inline bool set(const int32_t index, const vec3 & value)
 		{
 			switch (ID)
 			{
-			case PhysicsState::T_Pos: return this->set<vec3>(index, m_pos, value);
+			case PhysicsState::T_Pos: return set<vec3>(index, m_pos, value);
 			default:
 				return false;
 			}
 		}
 
-		template <
-			Type ID, class Elem = quat
-		> inline bool set(const int32_t index, const quat & value)
+		template <Type ID, class T = quat> 
+		inline bool set(const int32_t index, const quat & value)
 		{
 			switch (ID)
 			{
-			case PhysicsState::T_Rot: return this->set<quat>(index, m_rot, value);
+			case PhysicsState::T_Rot: return set<quat>(index, m_rot, value);
 			default: 
 				return false;
 			}
 		}
 
-		template <
-			Type ID, class Elem = mat4
-		> inline bool set(const int32_t index, const mat4 & value)
+		template <Type ID, class T = mat4> 
+		inline bool set(const int32_t index, const mat4 & value)
 		{
 			switch (ID)
 			{
-			case PhysicsState::T_Mat:	return this->set<mat4>(index, m_mat, value);
-			case PhysicsState::T_Inv:	return this->set<mat4>(index, m_inv, value);
+			case PhysicsState::T_Mat: return set<mat4>(index, m_mat, value);
+			case PhysicsState::T_Inv: return set<mat4>(index, m_inv, value);
 			default:
 				return false;
 			}
 		}
+
+
+	public: // Pushers
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		template <class T>
+		inline int32_t push(List<T> & data, const T & value)
+		{
+			data.push_back(value);
+			return (int32_t)(data.size() - 1);
+		}
+
+		template <Type ID, class T = vec3>
+		inline int32_t push(const vec3 & value)
+		{
+			switch (ID)
+			{
+			case PhysicsState::T_Pos: return push<vec3>(m_pos, value);
+			default:
+				return -1;
+			}
+		}
+
+		template <Type ID, class T = quat>
+		inline int32_t push(const quat & value)
+		{
+			switch (ID)
+			{
+			case PhysicsState::T_Rot: return push<quat>(m_rot, value);
+			default:
+				return -1;
+			}
+		}
+
+		template <Type ID, class T = mat4>
+		inline int32_t push(const mat4 & value)
+		{
+			switch (ID)
+			{
+			case PhysicsState::T_Mat: return push<mat4>(m_mat, value);
+			case PhysicsState::T_Inv: return push<mat4>(m_inv, value);
+			default:
+				return -1;
+			}
+		}
+
 
 	private:
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

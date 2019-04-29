@@ -23,6 +23,9 @@ namespace ml
 		~Rigidbody();
 
 	public:
+		bool createLinkToWorld() const;
+
+	public:
 		inline const int32_t	index()		const	{ return m_index;		}
 		
 		inline const Collider * collider()	const	{ return m_collider;	}
@@ -35,10 +38,11 @@ namespace ml
 		inline Transform *		transform()			{ return m_transform;	}
 
 	private:
-		int32_t		m_index;
-		Transform * m_transform;
-		Collider *	m_collider;
-		Particle *	m_particle;
+		int32_t			m_index;
+		Transform *		m_transform;
+		Collider *		m_collider;
+		Particle *		m_particle;
+		mutable bool	m_linked;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

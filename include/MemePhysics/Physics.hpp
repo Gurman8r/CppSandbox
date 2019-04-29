@@ -41,6 +41,7 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		static const vec3 Gravity;
 
+
 	private:
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		Physics();
@@ -49,12 +50,7 @@ namespace ml
 	public:
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		bool dispose() override;
-
-
-	public:
-		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-		bool initializeState(const size_t count);
-		bool setupRigidbody(const Rigidbody * value);
+		bool createLinkToRigidbody(const Rigidbody * rb);
 
 
 	private:
@@ -110,12 +106,14 @@ namespace ml
 
 	private:
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-		bool			m_updating = false;
+		bool			m_updating;
 		PhysicsState	m_state;
 		Mutex			m_mutex;
 		Thread			m_thread;
 		Timer			m_timer;
 		Duration		m_elapsed;
+
+		List<const Rigidbody *> m_rb;
 
 	};
 

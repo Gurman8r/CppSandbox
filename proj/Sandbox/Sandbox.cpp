@@ -50,9 +50,7 @@ enum Rigidbody_ID : int32_t
 	RB_NAVBALL,
 	RB_MOON,
 	RB_EARTH,
-	RB_GROUND,
-
-	MAX_RIGIDBODY
+	RB_GROUND
 };
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -430,6 +428,10 @@ namespace DEMO
 				ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
 					RB_BORG, transform, collider, particle
 				});
+				if (!rb->createLinkToWorld())
+				{
+					ml::Debug::logError("Failed creating RB world link: {0}", rb->index());
+				}
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("default_cube"),
@@ -472,6 +474,10 @@ namespace DEMO
 				ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
 					RB_CUBE, transform, collider, particle
 				});
+				if (!rb->createLinkToWorld())
+				{
+					ml::Debug::logError("Failed creating RB world link: {0}", rb->index());
+				}
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("cube"),
@@ -514,6 +520,10 @@ namespace DEMO
 				ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
 					RB_NAVBALL, transform, collider, particle
 				});
+				if (!rb->createLinkToWorld())
+				{
+					ml::Debug::logError("Failed creating RB world link: {0}", rb->index());
+				}
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("sphere32x24"),
@@ -556,6 +566,10 @@ namespace DEMO
 				ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
 					RB_MOON, transform, collider, particle
 				});
+				if (!rb->createLinkToWorld())
+				{
+					ml::Debug::logError("Failed creating RB world link: {0}", rb->index());
+				}
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("sphere32x24"),
@@ -604,6 +618,10 @@ namespace DEMO
 				ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
 					RB_EARTH, transform, collider, particle
 				});
+				if (!rb->createLinkToWorld())
+				{
+					ml::Debug::logError("Failed creating RB world link: {0}", rb->index());
+				}
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("sphere32x24"),
@@ -652,6 +670,10 @@ namespace DEMO
 				ml::Rigidbody * rb = ent->add<ml::Rigidbody>({
 					RB_GROUND, transform, collider, particle
 				});
+				if (!rb->createLinkToWorld())
+				{
+					ml::Debug::logError("Failed creating RB world link: {0}", rb->index());
+				}
 
 				ml::Renderer * renderer = ent->add<ml::Renderer>({
 					ML_Res.models.get("cube"),
@@ -678,26 +700,6 @@ namespace DEMO
 		/* * * * * * * * * * * * * * * * * * * * */
 		ML_Physics.launch([]()
 		{
-			// Physics Setup
-			/* * * * * * * * * * * * * * * * * * * * */
-			if (ML_Physics.initializeState(MAX_RIGIDBODY))
-			{
-				for (const auto & pair : ML_Res.entities)
-				{
-					if (const ml::Rigidbody * rb = pair.second->get<ml::Rigidbody>())
-					{
-						if (!ML_Physics.setupRigidbody(rb))
-						{
-							ml::Debug::logError("Failed initializing rigidbody: {0}",
-								rb->index()
-							);
-						}
-					}
-				}
-			}
-
-			// Physics Update
-			/* * * * * * * * * * * * * * * * * * * * */
 			while (ML_Engine.isRunning())
 			{
 				const float totalT = ML_Time.elapsed().delta(); // Total Time
@@ -757,8 +759,6 @@ namespace DEMO
 					}
 				});
 			}
-
-			/* * * * * * * * * * * * * * * * * * * * */
 		});
 	}
 
