@@ -3,13 +3,35 @@
 
 #include <MemeEditor/GUI_Window.hpp>
 #include <MemeEditor/Document.hpp>
-#include <MemeGraphics/Shader.hpp>
+#include <MemeGraphics/Material.hpp>
 
 #define ML_Builder ml::Builder::getInstance()
 #define ML_TEST_SHADER "built_shader"
 
 namespace ml
 {
+	struct Uniform
+	{
+		String name;
+		int32_t type;
+		const void * data;
+
+		inline friend bool operator==(const Uniform & a, const Uniform & b)
+		{
+			return a.name == b.name && a.name == b.name;
+		}
+
+		inline friend bool operator<(const Uniform & a, const Uniform & b)
+		{
+			return a.name < b.name && a.name < b.name;
+		}
+
+		inline friend std::ostream & operator<<(std::ostream & out, const Uniform & u)
+		{
+			return out;
+		}
+	};
+
 	// Shader Builder/Editor
 	class ML_EDITOR_API Builder final
 		: public GUI_Window

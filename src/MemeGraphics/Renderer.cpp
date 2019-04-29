@@ -8,14 +8,14 @@ namespace ml
 
 	Renderer::Renderer()
 		: m_drawable(NULL)
-		, m_material()
+		, m_material(NULL)
 		, m_states	()
 	{
 	}
 
 	Renderer::Renderer(
 		const IDrawable		* drawable,
-		const Material		& material,
+		const Material		* material,
 		const RenderStates	& states)
 		: m_drawable(drawable)
 		, m_material(material)
@@ -38,15 +38,15 @@ namespace ml
 
 	void Renderer::draw(RenderTarget & target, RenderBatch batch) const
 	{
-		if (m_drawable)
+		if (m_drawable && m_material)
 		{
 			m_states.apply();
 
-			if (m_material.bind())
+			if (m_material->bind())
 			{
 				target.draw(m_drawable);
 
-				m_material.unbind();
+				m_material->unbind();
 			}
 		}
 	}

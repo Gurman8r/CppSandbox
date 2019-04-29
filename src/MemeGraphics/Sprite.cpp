@@ -2,6 +2,7 @@
 #include <MemeGraphics/RenderTarget.hpp>
 #include <MemeGraphics/Shapes.hpp>
 #include <MemeGraphics/ShaderAPI.hpp>
+#include <MemeGraphics/Uni.hpp>
 
 namespace ml
 {
@@ -92,14 +93,14 @@ namespace ml
 	{
 		if (m_texture)
 		{
-			if (Uniform * col = batch.mat.uniforms().find(ML_FRAG_MAIN_COL))
+			if (auto u = batch.mat->find_uni<uni_col>(ML_FRAG_MAIN_COL))
 			{
-				(*col) = Uniform(*col, &m_color);
+				u->data = m_color;
 			}
-			
-			if (Uniform * tex = batch.mat.uniforms().find(ML_FRAG_MAIN_TEX))
+
+			if (auto u = batch.mat->find_uni<uni_cp_tex>(ML_FRAG_MAIN_TEX))
 			{
-				(*tex) = Uniform(*tex, m_texture);
+				u->data = m_texture;
 			}
 
 			const ml::vec2 size = (scale() * m_texture->size());

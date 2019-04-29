@@ -1,5 +1,6 @@
 #include <MemeGraphics/Text.hpp>
 #include <MemeGraphics/ShaderAPI.hpp>
+#include <MemeGraphics/Uni.hpp>
 
 namespace ml
 {
@@ -103,7 +104,7 @@ namespace ml
 
 			for (size_t i = 0, imax = m_string.size(); i < imax; i++)
 			{
-				const Glyph & glyph = (*m_font).getGlyph(m_string[i], m_fontSize);
+				const Glyph & glyph = m_font->getGlyph(m_string[i], m_fontSize);
 				
 				const FloatRect rect(
 					glyph.offset() + pos * m_scale,
@@ -133,16 +134,16 @@ namespace ml
 		{
 			update();
 
-			if (Uniform * col = batch.mat.uniforms().find(ML_FRAG_MAIN_COL))
+			if (auto u = batch.mat->find_uni<uni_col>(ML_FRAG_MAIN_COL))
 			{
-				(*col) = Uniform(*col, &m_color);
+				u->data = m_color;
 			}
 
 			for (size_t i = 0, imax = m_string.size(); i < imax; i++)
 			{
-				if (Uniform * tex = batch.mat.uniforms().find(ML_FRAG_MAIN_TEX))
+				if (auto u = batch.mat->find_uni<uni_cp_tex>(ML_FRAG_MAIN_TEX))
 				{
-					(*tex) = Uniform(*tex, m_textures[i]);
+					u->data = m_textures[i];
 				}
 
 				target.draw(m_vertices[i].data(), Shapes::RectQuad::Size, batch);

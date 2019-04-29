@@ -60,9 +60,6 @@
     <ClInclude Include="..\..\include\MemeGraphics\Mesh.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\Uniform.hpp">
-      <Filter>Header Files\DS</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Vertex.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
@@ -83,9 +80,6 @@
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\RenderWindow.hpp">
       <Filter>Header Files\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemeGraphics\UniformSet.hpp">
-      <Filter>Header Files\DS</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\MemeGraphics\Skybox.hpp">
       <Filter>Header Files\DS</Filter>
@@ -168,6 +162,9 @@
     <ClInclude Include="..\..\include\MemeGraphics\Light.hpp">
       <Filter>Header Files\DS</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\MemeGraphics\Uni.hpp">
+      <Filter>Header Files\DS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemeGraphics\Color.cpp">
@@ -185,9 +182,6 @@
     <ClCompile Include="..\..\src\MemeGraphics\Font.cpp">
       <Filter>Source Files\DS</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MemeGraphics\Uniform.cpp">
-      <Filter>Source Files\DS</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Text.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
@@ -202,9 +196,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\RenderTarget.cpp">
       <Filter>Source Files\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MemeGraphics\UniformSet.cpp">
-      <Filter>Source Files\DS</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\MemeGraphics\Skybox.cpp">
       <Filter>Source Files\DS</Filter>

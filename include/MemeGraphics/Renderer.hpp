@@ -18,7 +18,7 @@ namespace ml
 
 		Renderer(
 			const IDrawable		* drawable,
-			const Material		& material,
+			const Material		* material,
 			const RenderStates	& states);
 
 		Renderer(const Renderer & copy);
@@ -27,12 +27,12 @@ namespace ml
 
 	public:
 		inline const IDrawable		* drawable() const	{ return m_drawable; }
-		inline const Material		& material() const	{ return m_material; }
+		inline const Material		* material() const	{ return m_material; }
 		inline const RenderStates	& states()	 const	{ return m_states; }
 
 	public:
 		inline const IDrawable *	& drawable()		{ return m_drawable; }
-		inline Material				& material()		{ return m_material; }
+		inline const Material *		& material()		{ return m_material; }
 		inline RenderStates			& states()			{ return m_states; }
 
 	public:
@@ -40,7 +40,7 @@ namespace ml
 
 	private:
 		const IDrawable *	m_drawable;
-		Material			m_material;
+		const Material *	m_material;
 		RenderStates		m_states;
 	};
 

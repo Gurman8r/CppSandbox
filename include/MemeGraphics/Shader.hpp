@@ -1,7 +1,6 @@
 #ifndef _ML_SHADER_HPP_
 #define _ML_SHADER_HPP_
 
-#include <MemeGraphics/UniformSet.hpp>
 #include <MemeGraphics/Texture.hpp>
 #include <MemeCore/Transform.hpp>
 #include <MemeGraphics/Color.hpp>
@@ -41,10 +40,6 @@ namespace ml
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
-		bool setUniform(const Uniform & value) const;
-
-	public:
-		/* * * * * * * * * * * * * * * * * * * * */
 		bool setUniform(const String & name, const float value) const;
 		bool setUniform(const String & name, const int32_t value) const;
 		bool setUniform(const String & name, const vec2 & value) const;
@@ -56,6 +51,7 @@ namespace ml
 		bool setUniform(const String & name, const mat3 & value) const;
 		bool setUniform(const String & name, const mat4 & value) const;
 		bool setUniform(const String & name, const Texture & value) const;
+		bool setUniform(const String & name, const Transform & value) const;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 

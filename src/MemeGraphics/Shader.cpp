@@ -207,28 +207,6 @@ namespace ml
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
-
-	bool Shader::setUniform(const Uniform & u) const
-	{
-		if (u.name && u.type && u.data)
-		{
-			switch (u.type)
-			{
-			case Uniform::Int:	return setUniform(u.name, u.get_value<int32_t>());
-			case Uniform::Float:return setUniform(u.name, u.get_value<float>());
-			case Uniform::Vec2:	return setUniform(u.name, u.get_value<vec2>());
-			case Uniform::Vec3:	return setUniform(u.name, u.get_value<vec3>());
-			case Uniform::Col4:
-			case Uniform::Vec4:	return setUniform(u.name, u.get_value<vec4>());
-			case Uniform::Mat3:	return setUniform(u.name, u.get_value<mat3>());
-			case Uniform::Mat4:	return setUniform(u.name, u.get_value<mat4>());
-			case Uniform::Tex2D:return setUniform(u.name, u.get_value<Texture>());
-			}
-		}
-		return false;
-	}
-
-	/* * * * * * * * * * * * * * * * * * * * */
 	
 	bool Shader::setUniform(const String & name, const float value) const
 	{
@@ -357,6 +335,11 @@ namespace ml
 			}
 		}
 		return u;
+	}
+
+	bool Shader::setUniform(const String & name, const Transform & value) const
+	{
+		return setUniform(name, value.getMat());
 	}
 	
 	/* * * * * * * * * * * * * * * * * * * * */

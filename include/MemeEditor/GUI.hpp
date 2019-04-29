@@ -8,10 +8,6 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	class Uniform;
-
-	/* * * * * * * * * * * * * * * * * * * * */
-
 	class ML_EDITOR_API GUI final
 	{
 	public:

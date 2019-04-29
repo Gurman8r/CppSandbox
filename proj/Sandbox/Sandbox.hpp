@@ -48,18 +48,11 @@ namespace DEMO
 		struct Globals
 		{
 			// Camera
-			bool			camAuto		= true;
-			float			camSpd		= 1.0f;
+			bool		camAuto		= true;
+			float		camSpd		= 1.0f;
 			
 			// Effects
-			int32_t			effectMode	= 0;
-			
-			// Geometry
-			int32_t			lineMode	= -1;
-			ml::vec4		lineColor	= { 0.385f, 0.0f, 1.0f, 1.0f }; // Purple
-			float			lineDelta	= 1.0f;
-			float			lineSize	= 0.995f;
-			int32_t			lineSamples	= 16;
+			int32_t		effectMode	= 0;
 		};
 		Globals globals;
 

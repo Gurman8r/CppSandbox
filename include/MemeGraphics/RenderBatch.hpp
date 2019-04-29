@@ -17,7 +17,7 @@ namespace ml
 
 		const VAO *	vao;
 		const VBO *	vbo;
-		Material	mat;
+		Material *	mat;
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
@@ -28,7 +28,7 @@ namespace ml
 		{
 		}
 
-		RenderBatch(const VAO * vao, const VBO * vbo, const Material & mat)
+		RenderBatch(const VAO * vao, const VBO * vbo, Material * mat)
 			: vao(vao)
 			, vbo(vbo)
 			, mat(mat)

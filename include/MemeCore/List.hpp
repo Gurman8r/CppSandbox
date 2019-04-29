@@ -17,8 +17,9 @@ namespace ml
 		, public IComparable<std::vector<_Elem, _Alloc>>
 		, public IComparable<List<_Elem, _Alloc>>
 	{
-		static_assert(detail::has_left_shift<std::ostream &, _Elem>::value, 
-			"List must contain serializable values."
+		static_assert(
+			detail::has_left_shift<std::ostream &, _Elem>::value, 
+			"List elements require \'operator<<(std::ostream&)\'"
 		);
 
 	public: // Usings

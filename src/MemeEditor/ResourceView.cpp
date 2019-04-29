@@ -13,6 +13,7 @@
 #include <MemePhysics/Rigidbody.hpp>
 #include <MemePhysics/Particle.hpp>
 #include <MemeGraphics/Camera.hpp>
+#include <MemeGraphics/Uni.hpp>
 
 namespace ml
 {
@@ -320,25 +321,6 @@ namespace ml
 										}
 									}
 								});
-
-								// Shader
-								Funcs::Field("Shader", [&](CString)
-								{
-									List<String> keys = ML_Res.shaders.keys();
-									int32_t index = ML_Res.shaders.getIndexOf(renderer->material().shader());
-									if (ImGui::Combo(
-										"##Shader##Renderer",
-										&index,
-										ImGui_Helper::vector_getter,
-										static_cast<void *>(&keys),
-										(int32_t)(keys.size())))
-									{
-										if (const Shader * value = ML_Res.shaders.getByIndex(index))
-										{
-											renderer->material().shader() = value;
-										}
-									}
-								});
 								
 								// States
 								Funcs::Group("States", [&]()
@@ -384,138 +366,6 @@ namespace ml
 											});
 											break;
 										}
-									}
-								});
-
-								// Uniforms
-								Funcs::Group("Uniforms", [&]()
-								{
-									for (auto & pair : renderer->material().uniforms())
-									{
-										ImGui::PushID(pair.second.name.c_str());
-										Funcs::Field(pair.first.c_str(), [&](CString, Uniform * uni)
-										{
-											switch (uni->type)
-											{
-											case Uniform::Tex2D:
-											{
-												int32_t index = ML_Res.textures.getIndexOf(uni->get_ptr<Texture>());
-												List<String> keys = ML_Res.textures.keys();
-												if (ImGui::Combo(
-													"##Tex2D##Value",
-													&index,
-													ImGui_Helper::vector_getter,
-													static_cast<void *>(&keys),
-													(int32_t)(keys.size())))
-												{
-													if (const Texture * value = ML_Res.textures.getByIndex(index))
-													{
-														(*uni) = Uniform(*uni, value);
-													}
-												}
-											}
-											break;
-											case Uniform::Int:
-											{
-												int32_t temp = uni->get_value<int32_t>();
-												if (ImGui::DragInt("##Int##Value", &temp, 0.1f)) 
-												{
-													if (uni->flag == 1)
-													{
-														*((int32_t *)uni->data) = temp;
-													}
-												}
-											}
-											break;
-											case Uniform::Float:
-											{
-												float temp = uni->get_value<float>();
-												if (ImGui::DragFloat("##Float##Value", &temp, 0.1f)) 
-												{
-													if (uni->flag == 1)
-													{
-														*((float *)uni->data) = temp;
-													}
-												}
-
-											}
-											break;
-											case Uniform::Vec2:
-											{
-												vec2 temp = uni->get_value<vec2>();
-												if (GUI::EditVec2f("##Vec2##Value", temp, 0.1f)) 
-												{
-													if (uni->flag == 2)
-													{
-														*((vec2 *)uni->data) = temp;
-													}
-												}
-											}
-											break;
-											case Uniform::Vec3:
-											{
-												vec3 temp = uni->get_value<vec3>();
-												if (GUI::EditVec3f("##Vec3##Value", temp, 0.1f))
-												{
-													if (uni->flag == 2)
-													{
-														*((vec3 *)uni->data) = temp;
-													}
-												}
-											}
-											break;
-											case Uniform::Vec4:
-											{
-												vec4 temp = uni->get_value<vec4>();
-												if (GUI::EditVec4f("##Vec4##Value", temp, 0.1f))
-												{
-													if (uni->flag == 2)
-													{
-														*((vec4 *)uni->data) = temp;
-													}
-												}
-											}
-											break;
-											case Uniform::Col4:
-											{
-												vec4 temp = uni->get_value<vec4>();
-												if (ImGui::ColorEdit4("##Col4##Value", &temp[0]))
-												{
-													if (uni->flag == 2)
-													{
-														*((vec4 *)uni->data) = temp;
-													}
-												}
-											}
-											break;
-											case Uniform::Mat3:
-											{
-												mat3 temp = uni->get_value<mat3>();
-												if (GUI::EditMat3f("##Mat3##Value", temp, 0.1f))
-												{
-													if (uni->flag == 2)
-													{
-														*((mat3 *)uni->data) = temp;
-													}
-												}
-											}
-											break;
-											case Uniform::Mat4:
-											{
-												mat4 temp = uni->get_value<mat4>();
-												if (GUI::EditMat4f("##Mat4##Value", temp, 0.1f))
-												{
-													if (uni->flag == 2)
-													{
-														*((mat4 *)uni->data) = temp;
-													}
-												}
-											}
-											break;
-											}
-
-										}, &pair.second);
-										ImGui::PopID();
 									}
 								});
 							});
@@ -791,13 +641,160 @@ namespace ml
 
 			for (auto & pair : ML_Res.materials)
 			{
-				Funcs::Group(pair.first.c_str(), [&](CString name, const Material * mat)
+				Funcs::Group(pair.first.c_str(), [&](CString name, Material * mat)
 				{
+					// Name
 					Funcs::Field("Name", [&](CString)
 					{
 						ImGui::Text("%s", name);
 					});
 
+					// Shader
+					Funcs::Field("Shader", [&](CString)
+					{
+						List<String> keys = ML_Res.shaders.keys();
+						int32_t index = ML_Res.shaders.getIndexOf(mat->shader());
+						if (ImGui::Combo(
+							"##Shader##Renderer",
+							&index,
+							ImGui_Helper::vector_getter,
+							static_cast<void *>(&keys),
+							(int32_t)(keys.size())))
+						{
+							if (const Shader * value = ML_Res.shaders.getByIndex(index))
+							{
+								mat->shader() = value;
+							}
+						}
+					});
+
+					// Uniforms
+					Funcs::Group("Uniforms", [&]()
+					{
+						for (auto & pair : mat->uniforms())
+						{
+							switch (pair.second->type)
+							{
+							case uni_base::Tex2D:
+								if (auto u = dynamic_cast<uni_cp_tex *>(pair.second))
+								{
+									Funcs::Field(pair.second->name.c_str(), [&](CString)
+									{
+										int32_t index = ML_Res.textures.getIndexOf(u->data);
+										List<String> keys = ML_Res.textures.keys();
+										if (ImGui::Combo(
+											String("##Tex2D##Uni##" + pair.second->name).c_str(),
+											&index,
+											ImGui_Helper::vector_getter,
+											static_cast<void *>(&keys),
+											(int32_t)(keys.size())))
+										{
+											u->data = ML_Res.textures.getByIndex(index);
+										}
+									});
+								}
+								break;
+
+							case uni_base::Float:
+								if (auto u = dynamic_cast<uni_flt *>(pair.second))
+								{
+									Funcs::Field(u->name.c_str(), [&](CString)
+									{
+										if (ImGui::DragFloat(String("##Float##Uni##" + pair.second->name).c_str(), &u->data))
+										{
+										}
+									});
+								}
+								break;
+
+							case uni_base::Int:
+								if (auto u = dynamic_cast<uni_int *>(pair.second))
+								{
+									Funcs::Field(u->name.c_str(), [&](CString)
+									{
+										if (ImGui::DragInt(String("##Int##Uni##" + pair.second->name).c_str(), &u->data))
+										{
+										}
+									});
+								}
+								break;
+
+							case uni_base::Vec2:
+								if (auto u = dynamic_cast<uni_vec2 *>(pair.second))
+								{
+									Funcs::Field(u->name.c_str(), [&](CString)
+									{
+										if (GUI::EditVec2f(String("##Vec2##Uni##" + pair.second->name).c_str(), u->data))
+										{
+										}
+									});
+								}
+								break;
+
+							case uni_base::Vec3:
+								if (auto u = dynamic_cast<uni_vec3 *>(pair.second))
+								{
+									Funcs::Field(u->name.c_str(), [&](CString)
+									{
+										if (GUI::EditVec3f(String("##Vec3##Uni##" + pair.second->name).c_str(), u->data))
+										{
+										}
+									});
+								}
+								break;
+
+							case uni_base::Vec4:
+								if (auto u = dynamic_cast<uni_vec4 *>(pair.second))
+								{
+									Funcs::Field(u->name.c_str(), [&](CString)
+									{
+										if (GUI::EditVec4f(String("##Vec4##Uni##" + pair.second->name).c_str(), u->data))
+										{
+										}
+									});
+								}
+								break;
+
+							case uni_base::Col4:
+								if (auto u = dynamic_cast<uni_col *>(pair.second))
+								{
+									Funcs::Field(u->name.c_str(), [&](CString)
+									{
+										if (ImGui::ColorEdit4(String("##Color##Uni##" + pair.second->name).c_str(), &u->data[0]))
+										{
+										}
+									});
+								}
+								break;
+
+							case uni_base::Mat3:
+								if (auto u = dynamic_cast<uni_mat3 *>(pair.second))
+								{
+									Funcs::Field(u->name.c_str(), [&](CString)
+									{
+										if (GUI::EditMat3f(String("##Mat3##Uni##" + pair.second->name).c_str(), u->data))
+										{
+										}
+									});
+								}
+								break;
+
+							case uni_base::Mat4:
+								if (auto u = dynamic_cast<uni_mat4 *>(pair.second))
+								{
+									Funcs::Field(u->name.c_str(), [&](CString)
+									{
+										if (GUI::EditMat4f(String("##Mat4##Uni##" + pair.second->name).c_str(), u->data))
+										{
+										}
+									});
+								}
+								break;
+							}
+						}
+					});
+
+					// File
 					if (const String file = ML_Res.materials.getFile(name))
 					{
 						Funcs::Field("File", [&](CString)

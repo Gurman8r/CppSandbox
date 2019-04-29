@@ -187,6 +187,15 @@ namespace ml
 			return NULL;
 		}
 
+		template <class ... Args>
+		inline pointer load_forward(const String & name, Args && ... args)
+		{
+			return ((get(name))
+				? (NULL)
+				: (this->insert(name, new value_type(std::forward<Args>(args)...)))
+			);
+		}
+
 
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 

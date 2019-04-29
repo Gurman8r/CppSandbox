@@ -75,15 +75,11 @@ namespace ml
 
 	void MemoryTracker::freeAllocation(void * value)
 	{
-		if (value)
+		iterator it;
+		if ((it = m_records.find(static_cast<ITrackable *>(value))) != m_records.end())
 		{
-			iterator it;
-			if ((it = m_records.find(static_cast<ITrackable *>(value))) != m_records.end())
-			{
-				m_records.erase(it);
-			}
+			m_records.erase(it);
 			std::free(value);
-			value = NULL;
 		}
 	}
 
@@ -93,7 +89,10 @@ namespace ml
 	{
 		for (const_iterator it = m_records.begin(); it != m_records.end(); ++it)
 		{
-			out << (*it->first) << (it->second) << endl;
+			out << std::left
+				<< std::setw(15)
+				<< it->first->GetTypeName() << " -> " << (it->second) 
+				<< endl;
 		}
 		out << endl;
 	}

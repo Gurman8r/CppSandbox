@@ -34,6 +34,7 @@
     <ClInclude Include="..\..\include\MemeGraphics\IndexBuffer.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Light.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Material.hpp" />
+    <ClInclude Include="..\..\include\MemeGraphics\Uni.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\VertexList.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Mesh.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Model.hpp" />
@@ -54,8 +55,6 @@
     <ClInclude Include="..\..\include\MemeGraphics\Sprite.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Text.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Texture.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\Uniform.hpp" />
-    <ClInclude Include="..\..\include\MemeGraphics\UniformSet.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\Vertex.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\VertexArray.hpp" />
     <ClInclude Include="..\..\include\MemeGraphics\VertexBuffer.hpp" />
@@ -91,8 +90,6 @@
     <ClCompile Include="..\..\src\MemeGraphics\Sprite.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Text.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Texture.cpp" />
-    <ClCompile Include="..\..\src\MemeGraphics\Uniform.cpp" />
-    <ClCompile Include="..\..\src\MemeGraphics\UniformSet.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\Vertex.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\VertexArray.cpp" />
     <ClCompile Include="..\..\src\MemeGraphics\VertexBuffer.cpp" />

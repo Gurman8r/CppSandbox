@@ -3,6 +3,7 @@
 #include <MemeEditor/GUI.hpp>
 #include <MemeEditor/ImGui.hpp>
 #include <MemeGraphics/ShaderAPI.hpp>
+#include <MemeGraphics/Uni.hpp>
 #include <MemeCore/Debug.hpp>
 
 namespace ml
@@ -56,12 +57,12 @@ namespace ml
 			"\tgl_Position = ml_MVP_Position();\n"
 			"}\n",
 			{
-				Uniform(ML_VERT_MODEL,	Uniform::Mat4),
-				Uniform(ML_VERT_VIEW,	Uniform::Mat4),
-				Uniform(ML_VERT_PROJ,	Uniform::Mat4),
+				Uniform{ ML_VERT_MODEL,	uni_base::Mat4, 0 },
+				Uniform{ ML_VERT_VIEW,	uni_base::Mat4, 0 },
+				Uniform{ ML_VERT_PROJ,	uni_base::Mat4, 0 },
 			}
 		));
-
+		
 		set_data(BuilderData("Fragment",
 			"#include <common/Frag.Draw.shader>\n"
 			"#shader fragment\n"
@@ -70,11 +71,11 @@ namespace ml
 			"\tgl_Color = Frag.mainCol * texture(Frag.mainTex, In.Texcoord);\n"
 			"}\n",
 			{
-				Uniform(ML_FRAG_MAIN_COL, Uniform::Vec4),
-				Uniform(ML_FRAG_MAIN_TEX, Uniform::Tex2D),
+				Uniform{ ML_FRAG_MAIN_COL, uni_base::Col4, 0 },
+				Uniform{ ML_FRAG_MAIN_TEX, uni_base::Tex2D, 0 },
 			}
 		));
-
+		
 		set_data(BuilderData("Geometry", "", {}));
 	}
 
@@ -162,17 +163,17 @@ namespace ml
 			{
 				if (Uniform * u = &(*value)[i])
 				{
-					//if (ImGui::Selectable(
-					//	(u->name.c_str()),
-					//	(m_selected == i),
-					//	(ImGuiSelectableFlags_AllowDoubleClick)))
-					//{
-					//	m_selected = i;
-					//
-					//	if (ImGui::IsMouseDoubleClicked(0))
-					//	{
-					//	}
-					//}
+					if (ImGui::Selectable(
+						(u->name.c_str()),
+						(m_selected == i),
+						(ImGuiSelectableFlags_AllowDoubleClick)))
+					{
+						m_selected = i;
+					
+						if (ImGui::IsMouseDoubleClicked(0))
+						{
+						}
+					}
 				}
 			}
 			ImGui::Separator();
@@ -201,7 +202,7 @@ namespace ml
 				ImGui::SameLine();
 				if (ImGui::Button("New"))
 				{
-					value->push_back(Uniform("New.Uniform"));
+					value->push_back(Uniform { "New.Uniform", 0, 0 });
 					m_selected = value->size() - 1;
 				}
 				ImGui::SameLine();
@@ -209,7 +210,7 @@ namespace ml
 				{
 					if (value->size() > 0)
 					{
-						value->insert(value->begin() + m_selected, Uniform("New.Uniform"));
+						value->insert(value->begin() + m_selected, Uniform { "New.Uniform", 0, 0 });
 					}
 				}
 				ImGui::SameLine();
