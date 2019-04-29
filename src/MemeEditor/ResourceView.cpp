@@ -11,6 +11,7 @@
 #include <MemeGraphics/Renderer.hpp>
 #include <MemeGraphics/Light.hpp>
 #include <MemePhysics/Rigidbody.hpp>
+#include <MemePhysics/Particle.hpp>
 #include <MemeGraphics/Camera.hpp>
 
 namespace ml

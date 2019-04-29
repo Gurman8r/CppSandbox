@@ -47,10 +47,16 @@ namespace ml
 		Physics();
 		~Physics();
 
+
 	public:
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		bool dispose() override;
+
+
+	public:
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		bool createLinkToRigidbody(const Rigidbody * rb);
+		const Rigidbody * getLinkedRigidbody(const int32_t index) const;
 
 
 	private:

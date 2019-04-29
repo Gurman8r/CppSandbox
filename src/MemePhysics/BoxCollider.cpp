@@ -1,21 +1,25 @@
 #include <MemePhysics/BoxCollider.hpp>
+#include <MemePhysics/SphereCollider.hpp>
 
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	BoxCollider::BoxCollider()
-		: m_size(0.0f)
+		: Collider(Collider::T_Box)
+		, m_size(0.0f)
 	{
 	}
 
 	BoxCollider::BoxCollider(const vec3 & size)
-		: m_size(size)
+		: Collider(Collider::T_Box)
+		, m_size(size)
 	{
 	}
 
 	BoxCollider::BoxCollider(const BoxCollider & copy)
-		: m_size(copy.m_size)
+		: Collider(Collider::T_Box)
+		, m_size(copy.m_size)
 	{
 	}
 
@@ -23,9 +27,21 @@ namespace ml
 	{
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	bool BoxCollider::checkCollision(const Collider & other) const
 	{
-		return false;
+		switch (other.getHullType())
+		{
+		case Collider::T_Box:
+			return false;
+
+		case Collider::T_Sphere:
+			return false;
+		
+		default:
+			return false;
+		}
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

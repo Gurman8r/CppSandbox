@@ -1,21 +1,25 @@
 #include <MemePhysics/SphereCollider.hpp>
+#include <MemePhysics/BoxCollider.hpp>
 
 namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	SphereCollider::SphereCollider()
-		: m_radius(0.0f)
+		: Collider(Collider::T_Sphere)
+		, m_radius(0.0f)
 	{
 	}
 
 	SphereCollider::SphereCollider(const float radius)
-		: m_radius(radius)
+		: Collider(Collider::T_Sphere)
+		, m_radius(radius)
 	{
 	}
 
 	SphereCollider::SphereCollider(const SphereCollider & copy)
-		: m_radius(copy.m_radius)
+		: Collider(Collider::T_Sphere)
+		, m_radius(copy.m_radius)
 	{
 	}
 
@@ -23,9 +27,21 @@ namespace ml
 	{
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	bool SphereCollider::checkCollision(const Collider & other) const
 	{
-		return false;
+		switch (other.getHullType())
+		{
+		case Collider::T_Box:
+			return false;
+
+		case Collider::T_Sphere:
+			return false;
+
+		default:
+			return false;
+		}
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */

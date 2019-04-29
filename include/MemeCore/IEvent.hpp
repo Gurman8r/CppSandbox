@@ -63,7 +63,7 @@ namespace ml
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * */
-		IEvent(int32_t id)
+		IEvent(const int32_t id)
 			: m_eventID(id)
 		{
 		}
@@ -92,7 +92,7 @@ namespace ml
 
 	private: // Data
 		/* * * * * * * * * * * * * * * * * * * * */
-		int32_t m_eventID;
+		const int32_t m_eventID;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

@@ -78,6 +78,14 @@ namespace ml
 		}
 	}
 
+	const Rigidbody * Physics::getLinkedRigidbody(const int32_t index) const
+	{
+		return (((static_cast<size_t>(index) < m_rb.size()))
+			? (m_rb[static_cast<size_t>(index)])
+			: (NULL)
+		);
+	}
+
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	bool Physics::beginUpdate(PhysicsState & value)

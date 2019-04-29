@@ -705,9 +705,19 @@ namespace DEMO
 				const float totalT = ML_Time.elapsed().delta(); // Total Time
 				const float deltaT = ML_Engine.elapsed().delta(); // Delta Time
 
+				// Iterate over and update the copy state
 				ML_Physics.forEach([&](const int32_t i, ml::PhysicsState & state)
 				{
-					// Get copy's data
+					// The actual RB if needed
+					if (const ml::Rigidbody * rb = ML_Physics.getLinkedRigidbody(i))
+					{
+						// The RB's components
+						const ml::Collider	* c = rb->collider();
+						const ml::Particle	* p = rb->particle();
+						const ml::Transform * t = rb->transform();
+					}
+
+					// Get copy state's data
 					ml::vec3 pos;
 					ml::quat rot;
 					ml::mat4 mat;
@@ -717,7 +727,7 @@ namespace DEMO
 						state.get<state.T_Mat>(i, mat) &&
 						state.get<state.T_Inv>(i, inv))
 					{
-						// Modify copy's data
+						// Modify copy state's data
 						switch (i)
 						{
 						case RB_BORG:
@@ -748,7 +758,7 @@ namespace DEMO
 							break;
 						}
 
-						// Set copy's data
+						// Set copy state's data
 						if (!state.set<state.T_Pos>(i, pos) ||
 							!state.set<state.T_Rot>(i, rot) ||
 							!state.set<state.T_Mat>(i, mat) ||

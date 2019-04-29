@@ -164,7 +164,6 @@
   <ItemGroup>
     <ClInclude Include="..\..\include\MemePhysics\BoxCollider.hpp" />
     <ClInclude Include="..\..\include\MemePhysics\Collider.hpp" />
-    <ClInclude Include="..\..\include\MemePhysics\ConvexHull.hpp" />
     <ClInclude Include="..\..\include\MemePhysics\Export.hpp" />
     <ClInclude Include="..\..\include\MemePhysics\Force.hpp" />
     <ClInclude Include="..\..\include\MemePhysics\Physics.hpp" />
@@ -177,8 +176,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\MemePhysics\BoxCollider.cpp" />
-    <ClCompile Include="..\..\src\MemePhysics\Collider.cpp" />
-    <ClCompile Include="..\..\src\MemePhysics\ConvexHull.cpp" />
     <ClCompile Include="..\..\src\MemePhysics\Force.cpp" />
     <ClCompile Include="..\..\src\MemePhysics\Physics.cpp" />
     <ClCompile Include="..\..\src\MemePhysics\Particle.cpp" />
