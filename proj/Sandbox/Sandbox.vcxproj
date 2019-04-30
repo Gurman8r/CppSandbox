@@ -162,11 +162,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DemoPhysics.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Sandbox.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DemoPhysics.hpp" />
     <ClInclude Include="Settings.hpp" />
     <ClInclude Include="Sandbox.hpp" />
   </ItemGroup>

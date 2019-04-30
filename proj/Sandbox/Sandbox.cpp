@@ -2,6 +2,7 @@
 
 #include "Sandbox.hpp"
 #include "Settings.hpp"
+#include "DemoPhysics.hpp"
 
 #include <MemeAudio/Audio.hpp>
 #include <MemeCore/Debug.hpp>
@@ -42,18 +43,6 @@
 #include <MemePhysics/Particle.hpp>
 #include <MemeScript/Interpreter.hpp>
 #include <MemeWindow/WindowEvents.hpp>
-
-/* * * * * * * * * * * * * * * * * * * * */
-
-enum Rigidbody_ID : int32_t
-{
-	RB_BORG,
-	RB_CUBE,
-	RB_EARTH,
-	RB_GROUND,
-	RB_MOON,
-	RB_NAVBALL
-};
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -307,7 +296,12 @@ namespace DEMO
 		{
 			ml::Debug::logError("Failed Loading Manifest");
 		}
+	}
 
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+	void Sandbox::onStart(const ml::StartEvent * ev)
+	{
 		// Set Icon
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (const ml::Image * icon = ML_Res.images.get("icon"))
@@ -316,12 +310,7 @@ namespace DEMO
 
 			this->setIcons({ temp });
 		}
-	}
 
-	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-	void Sandbox::onStart(const ml::StartEvent * ev)
-	{
 		// Setup Plugins
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (!ML_Res.plugins.empty())
@@ -699,102 +688,20 @@ namespace DEMO
 			}
 		}
 
-
 		// Launch Physics
 		/* * * * * * * * * * * * * * * * * * * * */
-		ML_Physics.launch([]()
+		if (!ML_Physics.launch(demo_physics::init))
 		{
-			// While the window is alive and open
-			while (ML_Engine.isRunning())
-			{
-				// Total Time
-				const float totalT = ML_Time.elapsed().delta(); 
-				
-				// Delta Time
-				const float deltaT = ML_Engine.elapsed().delta<ml::Milliseconds, ml::Micro>();
-
-				// Update each element in the copy state
-				ML_Physics.updateAll([&](const int32_t i, ml::PhysicsState & state)
-				{
-					// Get the RB if needed
-					ml::Rigidbody	* rb = ML_Physics.getLinkedRigidbody(i);
-					ml::Collider	* c = rb->collider();
-					ml::Particle	* p = rb->particle();
-					ml::Transform	* t = rb->transform();
-
-					// Get copy state's data
-					ml::vec3 pos;
-					ml::quat rot;
-					ml::mat4 mat;
-					ml::mat4 inv;
-					if (state.get<state.T_Pos>(i, pos) &&
-						state.get<state.T_Rot>(i, rot) &&
-						state.get<state.T_Mat>(i, mat) &&
-						state.get<state.T_Inv>(i, inv))
-					{
-						// Modify copy state's data
-						switch (i)
-						{
-						case RB_BORG:
-							(*p).applyForce(ml::vec3::Zero);
-							pos = { pos[0], +ML_Time.cos(), pos[2] };
-							rot = ml::quat::angleAxis(totalT, ml::vec3::One);
-							break;
-
-						case RB_CUBE:
-							(*p).applyForce(ml::vec3::Zero);
-							pos = { pos[0], -ML_Time.sin(), pos[2] };
-							rot = ml::quat::angleAxis(totalT, ml::vec3::One);
-							break;
-
-						case RB_NAVBALL:
-							(*p).applyForce(ml::vec3::Zero);
-							pos = { pos[0], -ML_Time.cos(), pos[2] };
-							rot = ml::quat::angleAxis(totalT, ml::vec3::Forward);
-							break;
-
-						case RB_MOON:
-							(*p).applyForce(ml::vec3::Zero);
-							pos = { pos[0], +ML_Time.sin(), pos[2] };
-							rot = ml::quat::angleAxis(totalT, ml::vec3::Up);
-							break;
-
-						case RB_EARTH:
-							(*p).applyForce(ml::Force::gravity(ml::vec3::Up, p->mass))
-								.integrateEulerExplicit(deltaT)
-								.convertForce()
-								.updateCenterMass()
-								.updateInertiaTensor()
-								;
-							//rot = ml::quat::angleAxis(totalT, ml::vec3::Up);
-							rot = p->rotation;
-							pos = p->pos;
-							break;
-
-						case RB_GROUND:
-							break;
-						}
-
-						// Apply changes to copy state
-						if (!state.set<state.T_Pos>(i, pos) ||
-							!state.set<state.T_Rot>(i, rot) ||
-							!state.set<state.T_Mat>(i, mat) ||
-							!state.set<state.T_Inv>(i, inv))
-						{
-							ml::Debug::logError("Physics | Failed setting copy state: {0}", i);
-						}
-					}
-					else
-					{
-						ml::Debug::logError("Physics | Failed getting copy state: {0}", i);
-					}
-				});
-			}
-		});
+			ml::Debug::fatal("Failed launching Physics");
+		}
 	}
 
 	void Sandbox::onUpdate(const ml::UpdateEvent * ev)
 	{
+		// Sync Physics
+		/* * * * * * * * * * * * * * * * * * * * */
+		while (!ML_Physics.getCopyState(demo_physics::sync));
+
 		// Update Std Out
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (m_rdbuf)
@@ -821,38 +728,6 @@ namespace DEMO
 		else if (SETTINGS.isClient)
 		{
 			ML_NetClient.poll();
-		}
-
-		// Sync Physics
-		/* * * * * * * * * * * * * * * * * * * * */
-		if (!ML_Physics.getCopyState([&](const ml::PhysicsState & state)
-		{
-			for (auto & pair : ML_Res.entities)
-			{
-				if (ml::Rigidbody * rb = pair.second->get<ml::Rigidbody>())
-				{
-					ml::vec3 scl = rb->transform()->getScl();
-					ml::vec3 pos;
-					ml::quat rot;
-					ml::mat4 mat;
-					ml::mat4 inv;
-
-					if (state.get<state.T_Pos>(rb->index(), pos) &&
-						state.get<state.T_Rot>(rb->index(), rot) &&
-						state.get<state.T_Mat>(rb->index(), mat) &&
-						state.get<state.T_Inv>(rb->index(), inv))
-					{
-						(*rb->transform())
-							.update(ml::mat4::Identity())
-							.translate(pos)
-							.rotate(rot)
-							.scale(scl)
-							;
-					}
-				}
-			}
-		}))
-		{
 		}
 
 		// Update Effects
@@ -990,6 +865,8 @@ namespace DEMO
 		}
 	}
 
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 	void Sandbox::onDraw(const ml::DrawEvent * ev)
 	{
 		// Draw Scene
@@ -1119,7 +996,27 @@ namespace DEMO
 		if (ML_Editor.show_imgui_metrics)	{ ml::ImGui_Builtin::showMetrics(&ML_Editor.show_imgui_metrics); }
 		if (ML_Editor.show_imgui_style)		{ ml::ImGui_Builtin::showStyle(&ML_Editor.show_imgui_style); }
 		if (ML_Editor.show_imgui_about)		{ ml::ImGui_Builtin::showAbout(&ML_Editor.show_imgui_about); }
+
+		// Editors
+		if (ML_Editor.show_builder)			{ ML_Builder.drawGui(&ML_Editor.show_builder); }
+		if (ML_Editor.show_network)			{ ML_NetworkHUD.drawGui(&ML_Editor.show_network); }
+		if (ML_Editor.show_profiler)		{ ML_Profiler.drawGui(&ML_Editor.show_profiler); }
+		if (ML_Editor.show_browser)			{ ML_Browser.drawGui(&ML_Editor.show_browser); }
+		if (ML_Editor.show_resourceView)	{ ML_ResourceView.drawGui(&ML_Editor.show_resourceView); }
+		if (ML_Editor.show_terminal)		{ ML_Terminal.drawGui(&ML_Editor.show_terminal); }
+		if (ML_Editor.show_textEditor)		{ ML_TextEditor.drawGui(&ML_Editor.show_textEditor); }
 		
+		// Scene View
+		if (ML_Editor.show_sceneView)
+		{
+			ML_SceneView.drawFun(&ML_Editor.show_sceneView, [&]()
+			{
+				if (ml::Effect * post = ML_Res.effects.get("frame_post"))
+				{
+					ML_SceneView.updateTexture(&post->texture());
+				}
+			});
+		}
 
 		// Inspector
 		if (ML_Editor.show_inspector)
@@ -1147,27 +1044,6 @@ namespace DEMO
 				ImGui::Separator();
 
 				/* * * * * * * * * * * * * * * * * * * * */
-			});
-		}
-
-		// Editors
-		if (ML_Editor.show_builder)			{ ML_Builder.drawGui(&ML_Editor.show_builder); }
-		if (ML_Editor.show_network)			{ ML_NetworkHUD.drawGui(&ML_Editor.show_network); }
-		if (ML_Editor.show_profiler)		{ ML_Profiler.drawGui(&ML_Editor.show_profiler); }
-		if (ML_Editor.show_browser)			{ ML_Browser.drawGui(&ML_Editor.show_browser); }
-		if (ML_Editor.show_resourceView)	{ ML_ResourceView.drawGui(&ML_Editor.show_resourceView); }
-		if (ML_Editor.show_terminal)		{ ML_Terminal.drawGui(&ML_Editor.show_terminal); }
-		if (ML_Editor.show_textEditor)		{ ML_TextEditor.drawGui(&ML_Editor.show_textEditor); }
-		
-		// Scene View
-		if (ML_Editor.show_sceneView)
-		{
-			ML_SceneView.drawFun(&ML_Editor.show_sceneView, [&]()
-			{
-				if (ml::Effect * post = ML_Res.effects.get("frame_post"))
-				{
-					ML_SceneView.updateTexture(&post->texture());
-				}
 			});
 		}
 	}

@@ -229,6 +229,73 @@ namespace ml
 					// Components
 					/* * * * * * * * * * * * * * * * * * * * */
 					{
+						// Transform
+						/* * * * * * * * * * * * * * * * * * * * */
+						if (Transform * transform = ent->get<Transform>())
+						{
+							Funcs::Group("Transform", [&]()
+							{
+								Funcs::Field("Actions", [&](CString)
+								{
+									if (ImGui::Selectable("Reset"))
+									{
+										transform->update(mat4::Identity());
+									}
+								});
+
+								Funcs::Field("Position", [&](CString)
+								{
+									vec3 pos = transform->getPos();
+									if (GUI::EditVec3f("##Position##Transform", pos, 0.01f))
+									{
+										(*transform)
+											.translate(pos - transform->getPos())
+											.rotate(0.0f, vec3::One)
+											.scale(1.0f)
+											;
+									}
+								});
+
+								Funcs::Field("Rotation", [&](CString)
+								{
+									quat rot = transform->getRot();
+									if (GUI::EditQuat("##Rotation##Transform", rot, 0.01f))
+									{
+										(*transform)
+											.translate(0.0f)
+											.rotate(rot)
+											.scale(1.0f)
+											;
+									}
+								});
+
+								Funcs::Field("Scale", [&](CString)
+								{
+									vec3 scl = transform->getScl();
+									if (GUI::EditVec3f("##Scale##Transform", scl, 0.01f))
+									{
+										(*transform)
+											.translate(0.0f)
+											.rotate(0.0f, vec3::One)
+											.scale(scl)
+											;
+									}
+								});
+
+								Funcs::Field("Matrix", [&](CString)
+								{
+									ImGui::NewLine();
+									mat4 mat = transform->getMat();
+									if (GUI::EditMat4f("##Matrix##Transform", mat, 0.01f))
+									{
+										transform->update(mat);
+									}
+									ImGui::NewLine();
+								});
+
+							});
+						}
+
 						// Camera
 						/* * * * * * * * * * * * * * * * * * * * */
 						if (Camera * camera = ent->get<Camera>())
@@ -381,80 +448,16 @@ namespace ml
 
 								Funcs::Field("Particle", [&](CString)
 								{
-									ImGui::Text("%s", rb->particle() ? "OK" : "NULL");
+									if (ImGui::Selectable("Reset"))
+									{
+										rb->particle()->reset();
+									}
 								});
 
 								Funcs::Field("Transform", [&](CString)
 								{
 									ImGui::Text("%s", rb->transform() ? "OK" : "NULL");
 								});
-							});
-						}
-
-						// Transform
-						/* * * * * * * * * * * * * * * * * * * * */
-						if (Transform * transform = ent->get<Transform>())
-						{
-							Funcs::Group("Transform", [&]()
-							{
-								Funcs::Field("Actions", [&](CString) 
-								{
-									if (ImGui::Selectable("Reset"))
-									{
-										transform->update(mat4::Identity());
-									}
-								});
-
-								Funcs::Field("Position", [&](CString)
-								{
-									vec3 pos = transform->getPos();
-									if (GUI::EditVec3f("##Position##Transform", pos, 0.01f))
-									{
-										(*transform)
-											.translate(pos - transform->getPos())
-											.rotate(0.0f, vec3::One)
-											.scale(1.0f)
-											;
-									}
-								});
-
-								Funcs::Field("Rotation", [&](CString) 
-								{
-									quat rot = transform->getRot();
-									if (GUI::EditQuat("##Rotation##Transform", rot, 0.01f))
-									{
-										(*transform)
-											.translate(0.0f)
-											.rotate(rot)
-											.scale(1.0f)
-											;
-									}
-								});
-								
-								Funcs::Field("Scale", [&](CString)
-								{
-									vec3 scl = transform->getScl();
-									if (GUI::EditVec3f("##Scale##Transform", scl, 0.01f))
-									{
-										(*transform)
-											.translate(0.0f)
-											.rotate(0.0f, vec3::One)
-											.scale(scl)
-											;
-									}
-								});
-
-								Funcs::Field("Matrix", [&](CString)
-								{
-									ImGui::NewLine();
-									mat4 mat = transform->getMat();
-									if (GUI::EditMat4f("##Matrix##Transform", mat, 0.01f))
-									{
-										transform->update(mat);
-									}
-									ImGui::NewLine();
-								});
-
 							});
 						}
 					}

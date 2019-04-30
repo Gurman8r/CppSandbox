@@ -88,7 +88,7 @@ namespace ml
 			{
 				fun(temp, (args)...);
 			}
-			return (bool)(temp);
+			return temp;
 		}
 		
 	public:

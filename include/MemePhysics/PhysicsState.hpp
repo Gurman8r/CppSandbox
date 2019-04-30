@@ -21,7 +21,7 @@ namespace ml
 	{
 		friend class Physics;
 
-	public: // Enums
+	public:
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		enum Type : size_t
 		{
@@ -34,13 +34,13 @@ namespace ml
 		};
 
 
-	private: // Ctor / Dtor
+	private:
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		PhysicsState();
 		~PhysicsState();
 
 
-	public: // Functions
+	public: // Helper Functions
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		PhysicsState &	deepCopy(const PhysicsState & other);
 		bool			dispose() override;
@@ -54,7 +54,7 @@ namespace ml
 		inline operator bool() const { return !(this->empty()); }
 
 
-	public: // Getters
+	private: // Getters
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		template <class T>
 		inline bool get(const int32_t index, const List<T> & data, T & value) const
@@ -67,6 +67,8 @@ namespace ml
 			return false;
 		}
 
+	public:
+		// Get Vec3
 		template <Type ID, class T = vec3> 
 		inline bool get(const int32_t index, vec3 & value) const
 		{
@@ -78,6 +80,7 @@ namespace ml
 			}
 		}
 
+		// Get Quat
 		template <Type ID, class T = quat> 
 		inline bool get(const int32_t index, quat & value) const
 		{
@@ -89,6 +92,7 @@ namespace ml
 			}
 		}
 
+		// Get Mat4
 		template <Type ID, class T = mat4> 
 		inline bool get(const int32_t index, mat4 & value) const
 		{
@@ -102,7 +106,7 @@ namespace ml
 		}
 
 
-	public: // Setters
+	private: // Setters
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		template <class T> 
 		inline bool set(const int32_t index, List<T> & data, const T & value)
@@ -126,6 +130,8 @@ namespace ml
 			}
 		}
 
+	public:
+		// Set Vec3
 		template <Type ID, class T = vec3> 
 		inline bool set(const int32_t index, const vec3 & value)
 		{
@@ -137,6 +143,7 @@ namespace ml
 			}
 		}
 
+		// Set Quat
 		template <Type ID, class T = quat> 
 		inline bool set(const int32_t index, const quat & value)
 		{
@@ -148,6 +155,7 @@ namespace ml
 			}
 		}
 
+		// Set Mat4
 		template <Type ID, class T = mat4> 
 		inline bool set(const int32_t index, const mat4 & value)
 		{
