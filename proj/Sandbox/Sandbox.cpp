@@ -35,6 +35,7 @@
 #include <MemeNet/NetClient.hpp>
 #include <MemeNet/NetServer.hpp>
 #include <MemePhysics/Physics.hpp>
+#include <MemePhysics/Force.hpp>
 #include <MemePhysics/Rigidbody.hpp>
 #include <MemePhysics/BoxCollider.hpp>
 #include <MemePhysics/SphereCollider.hpp>
@@ -615,12 +616,12 @@ namespace DEMO
 
 				ml::Particle * particle = ent->add<ml::Particle>(
 					transform->getPos(), // position
-					1.0f // mass
+					0.25f // mass
 				);
-
 				ml::Rigidbody * rb = ent->add<ml::Rigidbody>(ML_Physics.createNewRigidbody(
 					{ RB_EARTH, transform, collider, particle }
 				));
+				particle->setInertiaTensor();
 
 				const ml::Material * material = ML_Res.materials.load_forward(
 					"mat_earth",
@@ -707,19 +708,16 @@ namespace DEMO
 			while (ML_Engine.isRunning())
 			{
 				const float totalT = ML_Time.elapsed().delta(); // Total Time
-				const float deltaT = ML_Engine.elapsed().delta(); // Delta Time
+				const float deltaT = ML_Engine.elapsed().delta() / 1000.f; // Delta Time
 
 				// Update each element in the copy state
 				ML_Physics.updateAll([&](const int32_t i, ml::PhysicsState & state)
 				{
 					// Get the RB if needed
-					if (const ml::Rigidbody * rb = ML_Physics.getLinkedRigidbody(i))
-					{
-						// Get the RB's components
-						const ml::Collider	* c = rb->collider();
-						const ml::Particle	* p = rb->particle();
-						const ml::Transform * t = rb->transform();
-					}
+					ml::Rigidbody * rb = ML_Physics.getLinkedRigidbody(i);
+					ml::Collider	* c = rb->collider();
+					ml::Particle	* p = rb->particle();
+					ml::Transform * t = rb->transform();
 
 					// Get copy state's data
 					ml::vec3 pos;
@@ -756,6 +754,12 @@ namespace DEMO
 
 						case RB_EARTH:
 							rot = ml::quat::angleAxis(totalT, ml::vec3::Up);
+							//p->applyForce(ml::Force::gravity(ml::vec3::Up, p->mass));
+							//p->integrateEulerExplicit(deltaT);
+							//p->convertForce();
+							//p->updateCenterMass();
+							//p->updateInertiaTensor();
+							//pos = p->pos;
 							break;
 
 						case RB_GROUND:
@@ -817,6 +821,31 @@ namespace DEMO
 			pair.second->resize(this->getFrameSize());
 		}
 
+		// Sync Entities with Physics
+		/* * * * * * * * * * * * * * * * * * * * */
+		while (!ML_Physics.getCopyState([&](const ml::PhysicsState & state)
+		{
+			for (auto & pair : ML_Res.entities)
+			{
+				if (ml::Rigidbody * rb = pair.second->get<ml::Rigidbody>())
+				{
+					ml::vec3 scl = rb->transform()->getScl();
+					ml::vec3 pos;
+					ml::quat rot;
+					if (state.get<state.T_Pos>(rb->index(), pos) &&
+						state.get<state.T_Rot>(rb->index(), rot))
+					{
+						(*rb->transform())
+							.update(ml::mat4::Identity())
+							.translate(pos)
+							.rotate(rot)
+							.scale(scl)
+							;
+					}
+				}
+			}
+		}));
+
 		// Update Camera
 		/* * * * * * * * * * * * * * * * * * * * */
 		if (ml::Camera * camera = ML_CAMERA->get<ml::Camera>())
@@ -847,32 +876,6 @@ namespace DEMO
 				}
 			}
 		}
-
-		// Sync Entities with Physics
-		/* * * * * * * * * * * * * * * * * * * * */
-		ML_Physics.getCopyState([&](const ml::PhysicsState & state)
-		{
-			for (auto & pair : ML_Res.entities)
-			{
-				if (ml::Rigidbody * rb = pair.second->get<ml::Rigidbody>())
-				{
-					ml::vec3 scl = rb->transform()->getScl();
-					ml::vec3 pos;
-					ml::quat rot;
-					if (state.get<state.T_Pos>(rb->index(), pos) &&
-						state.get<state.T_Rot>(rb->index(), rot))
-					{
-						(*rb->transform())
-							.update(ml::mat4::Identity())
-							.translate(pos)
-							.rotate(rot)
-							.scale(scl)
-							;
-					}
-				}
-			}
-		});
-
 
 		// Update Text
 		/* * * * * * * * * * * * * * * * * * * * */

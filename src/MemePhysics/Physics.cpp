@@ -36,7 +36,7 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-	bool Physics::createLinkToRigidbody(const Rigidbody * value)
+	bool Physics::createLinkToRigidbody(Rigidbody * value)
 	{
 		int32_t i;
 		if (value && ((i = value->index()) >= 0))
@@ -85,7 +85,7 @@ namespace ml
 		return NULL;
 	}
 
-	const Rigidbody * Physics::getLinkedRigidbody(const int32_t index) const
+	Rigidbody * Physics::getLinkedRigidbody(const int32_t index) const
 	{
 		return (((static_cast<size_t>(index) < m_rb.size()))
 			? (m_rb[static_cast<size_t>(index)])

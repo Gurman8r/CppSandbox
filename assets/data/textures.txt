@@ -39,6 +39,12 @@
 	image = navball
 </item>
 
+<item>
+	type = texture
+	name = buck
+	image = buck
+</item>
+
 
 # Earth
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #

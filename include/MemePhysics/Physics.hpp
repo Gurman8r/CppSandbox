@@ -23,9 +23,9 @@ namespace ml
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-		static constexpr auto FPS_15	{ Milliseconds(60) };
-		static constexpr auto FPS_30	{ Milliseconds(30) };
-		static constexpr auto FPS_60	{ Milliseconds(15) };
+		static constexpr auto FPS_15	{ static_cast<Milliseconds>(60) };
+		static constexpr auto FPS_30	{ static_cast<Milliseconds>(30) };
+		static constexpr auto FPS_60	{ static_cast<Milliseconds>(15) };
 		static constexpr auto TimeStep	{ FPS_60 };
 
 		static const vec3 Gravity;
@@ -43,9 +43,9 @@ namespace ml
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-		bool createLinkToRigidbody(const Rigidbody * rb);
+		bool createLinkToRigidbody(Rigidbody * rb);
 		Rigidbody * createNewRigidbody(const Rigidbody & copy);
-		const Rigidbody * getLinkedRigidbody(const int32_t index) const;
+		Rigidbody * getLinkedRigidbody(const int32_t index) const;
 
 
 	private:
@@ -87,7 +87,7 @@ namespace ml
 		> inline bool getCopyState(Fun && fun, Args && ... args)
 		{
 			PhysicsState temp;
-			if (temp.deepCopy(m_state))
+			if (!m_updating && temp.deepCopy(m_state))
 			{
 				fun(temp, (args)...);
 			}
@@ -111,7 +111,7 @@ namespace ml
 		Timer			m_timer;
 		Duration		m_elapsed;
 
-		List<const Rigidbody *> m_rb;
+		List<Rigidbody *> m_rb;
 
 	};
 

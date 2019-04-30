@@ -7,7 +7,7 @@ namespace ml
 
 	const vec3 Force::gravity(const vec3 & up, const float mass)
 	{
-		return (up * Physics::Gravity[1]);
+		return (up * Physics::Gravity[1] * mass);
 	}
 
 	const vec3 Force::normal(const vec3 & grav, const vec3 & norm)

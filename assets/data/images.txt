@@ -43,4 +43,10 @@
 	file = ../../../assets/images/navball.png
 </item>
 
+<item>
+	type = image
+	name = buck
+	file = ../../../assets/images/buck.png
+</item>
+
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #
