@@ -144,6 +144,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{E8217DB0-4AA6-4A5F-A8DB-F38A8ABF4B24}"
 	ProjectSection(SolutionItems) = preProject
 		assets\images\borg.png = assets\images\borg.png
+		assets\images\buck.png = assets\images\buck.png
 		assets\images\dean.png = assets\images\dean.png
 		assets\images\grass.png = assets\images\grass.png
 		assets\images\neutrino.png = assets\images\neutrino.png

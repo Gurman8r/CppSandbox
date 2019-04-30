@@ -44,7 +44,7 @@ namespace ml
 	{
 		if (joinable())
 		{
-			std::this_thread::sleep_for(static_cast<Duration::base_unit>(value));
+			std::this_thread::sleep_for(value.base());
 		}
 	}
 

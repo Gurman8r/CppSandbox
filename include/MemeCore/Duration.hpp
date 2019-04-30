@@ -2,7 +2,6 @@
 #define _ML_DURATION_HPP_
 
 #include <MemeCore/Ratio.hpp>
-#include <MemeCore/ITrackable.hpp>
 
 namespace ml
 {
@@ -17,33 +16,32 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	class ML_CORE_API Duration final
+	class Duration final
 	{
-	public:
+	public: // Usings
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-		using base_unit = typename Nanoseconds;
+		using base_t = typename Nanoseconds;
 
-		static constexpr auto Zero { static_cast<base_unit>(0).count() };
 
-	public:
+	private: // Data
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		uint64_t m_base;
+
+
+	public: // Constructors
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		constexpr Duration()
-			: m_nanos(Zero)
-		{
-		}
-
-		constexpr Duration(const intmax_t value)
-			: m_nanos((value > Zero) ? static_cast<uint64_t>(value) : Zero)
+			: m_base(0)
 		{
 		}
 
 		constexpr Duration(const uint64_t value)
-			: m_nanos(value)
+			: m_base(value)
 		{
 		}
 
 		constexpr Duration(const Duration & copy)
-			: m_nanos(copy.m_nanos)
+			: m_base(copy.m_base)
 		{
 		}
 
@@ -51,75 +49,102 @@ namespace ml
 			class Rep,
 			class Per
 		> constexpr Duration(const std::chrono::duration<Rep, Per> & value)
-			: m_nanos(std::chrono::duration_cast<base_unit>(value).count())
+			: m_base(std::chrono::duration_cast<base_t>(value).count())
 		{
 		}
 
-		~Duration() {}
 
-	public:
+	public: // Helpers
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-		constexpr const uint64_t hours() const
+		constexpr operator uint64_t() const
 		{
-			return std::chrono::duration_cast<Hours>(
-				Minutes(this->minutes())).count();
+			return m_base;
 		}
 
-		constexpr const uint64_t minutes() const
+		constexpr base_t base() const
 		{
-			return std::chrono::duration_cast<Minutes>(
-				Seconds(this->seconds())).count();
+			return static_cast<base_t>(m_base);
 		}
 
-		constexpr const uint64_t seconds() const
+		template <
+			class Rep = typename Milliseconds,
+			class Per = typename Rep::period
+		> constexpr float delta() const
 		{
-			return std::chrono::duration_cast<Seconds>(
-				Milliseconds(this->milliseconds())).count();
-		}
-
-		constexpr const uint64_t milliseconds() const
-		{
-			return std::chrono::duration_cast<Milliseconds>(
-				Microseconds(this->microseconds())).count();
-		}
-
-		constexpr const uint64_t microseconds() const
-		{
-			return std::chrono::duration_cast<Microseconds>(
-				Nanoseconds(this->nanoseconds())).count();
-		}
-
-		constexpr const uint64_t nanoseconds() const
-		{
-			return m_nanos;
+			static_assert(0 < Per::den,
+				"period negative or zero"
+			);
+			return
+				static_cast<float>(std::chrono::duration_cast<Rep>(base()).count()) /
+				static_cast<float>(Per::den);
 		}
 
 
-	public:
+	public: // Conversions
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-		constexpr operator uint64_t() const 
+		constexpr uint64_t hours() const
 		{
-			return this->nanoseconds();
+			return std::chrono::duration_cast<Hours>(base()).count();
 		}
 
-		constexpr float delta() const 
+		constexpr uint64_t minutes() const
 		{
-			return ((float)this->milliseconds() / (float)Milli::den); 
+			return std::chrono::duration_cast<Minutes>(base()).count();
+		}
+
+		constexpr uint64_t seconds() const
+		{
+			return std::chrono::duration_cast<Seconds>(base()).count();
+		}
+
+		constexpr uint64_t millis() const
+		{
+			return std::chrono::duration_cast<Milliseconds>(base()).count();
+		}
+
+		constexpr uint64_t micros() const
+		{
+			return std::chrono::duration_cast<Microseconds>(base()).count();
+		}
+
+		constexpr uint64_t nanos() const
+		{
+			return std::chrono::duration_cast<Nanoseconds>(base()).count();
 		}
 
 	
-	public:
+	public: // Operators
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		inline friend std::ostream & operator<<(std::ostream & out, const Duration & value)
+		{
+			return out
+				<< (((value.hours() % 24) / 10) % 10)
+				<< ((value.hours() % 24) % 10)
+				<< ':'
+				<< (((value.minutes() % 60) / 10) % 10)
+				<< ((value.minutes() % 60) % 10)
+				<< ':'
+				<< (((value.seconds() % 60) / 10) % 10)
+				<< ((value.seconds() % 60) % 10)
+				<< ':'
+				<< ((value.millis() % 1000) / 100)
+				<< ((value.millis() % 100) / 10);
+		}
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
 		template <class T>
 		constexpr friend bool operator==(const Duration & lhs, const T & rhs)
 		{
-			return ((uint64_t)(lhs) == (uint64_t)(Duration(rhs)));
+			return static_cast<uint64_t>(lhs) == 
+				static_cast<uint64_t>(static_cast<Duration>(rhs));
 		}
 
 		template <class T>
 		constexpr friend bool operator <(const Duration & lhs, const T & rhs)
 		{
-			return ((uint64_t)(lhs) < (uint64_t)(Duration(rhs)));
+			return static_cast<uint64_t>(lhs) <
+				static_cast<uint64_t>(static_cast<Duration>(rhs));
 		}
 
 		template <class T>
@@ -151,13 +176,13 @@ namespace ml
 		template <class T>
 		constexpr friend Duration operator+(const Duration & lhs, const T & rhs)
 		{
-			return Duration((uint64_t)lhs + (uint64_t)rhs);
+			return Duration(static_cast<uint64_t>(lhs) + static_cast<uint64_t>(rhs));
 		}
 
 		template <class T>
 		constexpr friend Duration operator-(const Duration & lhs, const T & rhs)
 		{
-			return Duration((uint64_t)lhs - (uint64_t)rhs);
+			return Duration(static_cast<uint64_t>(lhs) - static_cast<uint64_t>(rhs));
 		}
 
 		template <class T>
@@ -165,43 +190,15 @@ namespace ml
 		{
 			return (lhs = (lhs + rhs));
 		}
-
+		
 		template <class T>
 		constexpr friend Duration operator-=(Duration & lhs, const T & rhs)
 		{
 			return (lhs = (lhs - rhs));
 		}
 
-		/* * * * * * * * * * * * * * * * * * * * */
-		
-		inline friend std::ostream & operator<<(std::ostream & out, const Duration & value)
-		{
-			return out 
-				<< (((value.hours() % 24) / 10) % 10)
-				<< ((value.hours() % 24) % 10)
-				<< ':'
-				<< (((value.minutes() % 60) / 10) % 10)
-				<< ((value.minutes() % 60) % 10)
-				<< ':'
-				<< (((value.seconds() % 60) / 10) % 10)
-				<< ((value.seconds() % 60) % 10)
-				<< ':'
-				<< ((value.milliseconds() % 1000) / 100)
-				<< ((value.milliseconds() % 100) / 10);
-		}
-
-		inline friend std::istream & operator>>(std::istream & in, Duration & value)
-		{
-			return in >> value.m_nanos;
-		}
-
-
-	private:
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-		uint64_t m_nanos;
 	};
-
-	/* * * * * * * * * * * * * * * * * * * * */
 }
 
 #endif // !_ML_DURATION_HPP_

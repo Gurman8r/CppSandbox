@@ -23,12 +23,9 @@ namespace ml
 
 	public:
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-		static constexpr auto FPS_15	{ static_cast<Milliseconds>(60) };
-		static constexpr auto FPS_30	{ static_cast<Milliseconds>(30) };
-		static constexpr auto FPS_60	{ static_cast<Milliseconds>(15) };
-		static constexpr auto TimeStep	{ FPS_60 };
-
 		static const vec3 Gravity;
+
+		static constexpr Duration TimeStep { static_cast<Milliseconds>(15) };
 
 	private:
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

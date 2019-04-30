@@ -2,6 +2,7 @@
 #define _ML_TIMER_HPP_
 
 #include <MemeCore/Duration.hpp>
+#include <MemeCore/ITrackable.hpp>
 
 namespace ml
 {

@@ -14,22 +14,22 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	using Atto	= typename std::atto;	// 1, 1000000000000000000LL
-	using Femto = typename std::femto;	// 1, 1000000000000000LL
-	using Pico	= typename std::pico;	// 1, 1000000000000LL
-	using Nano	= typename std::nano;	// 1, 1000000000
-	using Micro = typename std::micro;	// 1, 1000000
-	using Milli	= typename std::milli;	// 1, 1000
-	using Centi = typename std::centi;	// 1, 100
-	using Deci	= typename std::deci;	// 1, 10
-	using Deca	= typename std::deca;	// 10, 1
-	using Hecto = typename std::hecto;	// 100, 1
-	using Kilo	= typename std::kilo;	// 1000, 1
-	using Mega	= typename std::mega;	// 1000000, 1
-	using Giga	= typename std::giga;	// 1000000000, 1
-	using Tera	= typename std::tera;	// 1000000000000LL, 1
-	using Peta	= typename std::peta;	// 1000000000000000LL, 1
-	using Exa	= typename std::exa;	// 1000000000000000000LL, 1
+	using Atto	= typename Ratio<1, 1000000000000000000LL>;
+	using Femto = typename Ratio<1, 1000000000000000LL>;
+	using Pico	= typename Ratio<1, 1000000000000LL>;
+	using Nano	= typename Ratio<1, 1000000000>;
+	using Micro = typename Ratio<1, 1000000>;
+	using Milli	= typename Ratio<1, 1000>;
+	using Centi = typename Ratio<1, 100>;
+	using Deci	= typename Ratio<1, 10>;
+	using Deca	= typename Ratio<10, 1>;
+	using Hecto = typename Ratio<100, 1>;
+	using Kilo	= typename Ratio<1000, 1>;
+	using Mega	= typename Ratio<1000000, 1>;
+	using Giga	= typename Ratio<1000000000, 1>;
+	using Tera	= typename Ratio<1000000000000LL, 1>;
+	using Peta	= typename Ratio<1000000000000000LL, 1>;
+	using Exa	= typename Ratio<1000000000000000000LL, 1>;
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
@@ -37,8 +37,7 @@ namespace ml
 		typename T, 
 		intmax_t Num, 
 		intmax_t Den
-	>
-	constexpr T ratio_cast(const T & value, const Ratio<Num, Den> & r)
+	> constexpr T ratio_cast(const T & value, const Ratio<Num, Den> & r)
 	{
 		return 
 			((((T)(r.num) == (T)(1)) && ((T)(r.den) == (T)(1)))

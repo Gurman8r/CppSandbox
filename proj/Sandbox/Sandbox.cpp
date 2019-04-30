@@ -707,17 +707,20 @@ namespace DEMO
 			// While the window is alive and open
 			while (ML_Engine.isRunning())
 			{
-				const float totalT = ML_Time.elapsed().delta(); // Total Time
-				const float deltaT = ML_Engine.elapsed().delta() / 1000.f; // Delta Time
+				// Total Time
+				const float totalT = ML_Time.elapsed().delta(); 
+				
+				// Delta Time
+				const float deltaT = ML_Engine.elapsed().delta<ml::Milliseconds, ml::Micro>();
 
 				// Update each element in the copy state
 				ML_Physics.updateAll([&](const int32_t i, ml::PhysicsState & state)
 				{
 					// Get the RB if needed
-					ml::Rigidbody * rb = ML_Physics.getLinkedRigidbody(i);
+					ml::Rigidbody	* rb = ML_Physics.getLinkedRigidbody(i);
 					ml::Collider	* c = rb->collider();
 					ml::Particle	* p = rb->particle();
-					ml::Transform * t = rb->transform();
+					ml::Transform	* t = rb->transform();
 
 					// Get copy state's data
 					ml::vec3 pos;
@@ -733,33 +736,39 @@ namespace DEMO
 						switch (i)
 						{
 						case RB_BORG:
+							(*p).applyForce(ml::vec3::Zero);
 							pos = { pos[0], +ML_Time.cos(), pos[2] };
 							rot = ml::quat::angleAxis(totalT, ml::vec3::One);
 							break;
 
 						case RB_CUBE:
+							(*p).applyForce(ml::vec3::Zero);
 							pos = { pos[0], -ML_Time.sin(), pos[2] };
 							rot = ml::quat::angleAxis(totalT, ml::vec3::One);
 							break;
 
 						case RB_NAVBALL:
+							(*p).applyForce(ml::vec3::Zero);
 							pos = { pos[0], -ML_Time.cos(), pos[2] };
 							rot = ml::quat::angleAxis(totalT, ml::vec3::Forward);
 							break;
 
 						case RB_MOON:
+							(*p).applyForce(ml::vec3::Zero);
 							pos = { pos[0], +ML_Time.sin(), pos[2] };
 							rot = ml::quat::angleAxis(totalT, ml::vec3::Up);
 							break;
 
 						case RB_EARTH:
-							rot = ml::quat::angleAxis(totalT, ml::vec3::Up);
-							//p->applyForce(ml::Force::gravity(ml::vec3::Up, p->mass));
-							//p->integrateEulerExplicit(deltaT);
-							//p->convertForce();
-							//p->updateCenterMass();
-							//p->updateInertiaTensor();
-							//pos = p->pos;
+							(*p).applyForce(ml::Force::gravity(ml::vec3::Up, p->mass))
+								.integrateEulerExplicit(deltaT)
+								.convertForce()
+								.updateCenterMass()
+								.updateInertiaTensor()
+								;
+							//rot = ml::quat::angleAxis(totalT, ml::vec3::Up);
+							rot = p->rotation;
+							pos = p->pos;
 							break;
 
 						case RB_GROUND:
@@ -814,16 +823,9 @@ namespace DEMO
 			ML_NetClient.poll();
 		}
 
-		// Update Effects
+		// Sync Physics
 		/* * * * * * * * * * * * * * * * * * * * */
-		for (auto & pair : ML_Res.effects)
-		{
-			pair.second->resize(this->getFrameSize());
-		}
-
-		// Sync Entities with Physics
-		/* * * * * * * * * * * * * * * * * * * * */
-		while (!ML_Physics.getCopyState([&](const ml::PhysicsState & state)
+		if (!ML_Physics.getCopyState([&](const ml::PhysicsState & state)
 		{
 			for (auto & pair : ML_Res.entities)
 			{
@@ -832,8 +834,13 @@ namespace DEMO
 					ml::vec3 scl = rb->transform()->getScl();
 					ml::vec3 pos;
 					ml::quat rot;
+					ml::mat4 mat;
+					ml::mat4 inv;
+
 					if (state.get<state.T_Pos>(rb->index(), pos) &&
-						state.get<state.T_Rot>(rb->index(), rot))
+						state.get<state.T_Rot>(rb->index(), rot) &&
+						state.get<state.T_Mat>(rb->index(), mat) &&
+						state.get<state.T_Inv>(rb->index(), inv))
 					{
 						(*rb->transform())
 							.update(ml::mat4::Identity())
@@ -844,7 +851,16 @@ namespace DEMO
 					}
 				}
 			}
-		}));
+		}))
+		{
+		}
+
+		// Update Effects
+		/* * * * * * * * * * * * * * * * * * * * */
+		for (auto & pair : ML_Res.effects)
+		{
+			pair.second->resize(this->getFrameSize());
+		}
 
 		// Update Camera
 		/* * * * * * * * * * * * * * * * * * * * */
