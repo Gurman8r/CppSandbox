@@ -126,12 +126,7 @@ namespace DEMO
 				!state.set<state.T_Mat>(i, mat) ||
 				!state.set<state.T_Inv>(i, inv))
 			{
-				ml::Debug::logError("Physics | Failed setting copy state: {0}", i);
 			}
-		}
-		else
-		{
-			ml::Debug::logError("Physics | Failed getting copy state: {0}", i);
 		}
 	}
 
