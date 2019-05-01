@@ -8,15 +8,15 @@ namespace ml
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	template <
-		intmax_t Num,
-		intmax_t Den = 1
+		uint64_t Num,
+		uint64_t Den = 1
 	> using Ratio = typename std::ratio<Num, Den>;
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	using Atto	= typename Ratio<1, 1000000000000000000LL>;
-	using Femto = typename Ratio<1, 1000000000000000LL>;
-	using Pico	= typename Ratio<1, 1000000000000LL>;
+	using Atto	= typename Ratio<1, 1000000000000000000ULL>;
+	using Femto = typename Ratio<1, 1000000000000000ULL>;
+	using Pico	= typename Ratio<1, 1000000000000ULL>;
 	using Nano	= typename Ratio<1, 1000000000>;
 	using Micro = typename Ratio<1, 1000000>;
 	using Milli	= typename Ratio<1, 1000>;
@@ -27,16 +27,16 @@ namespace ml
 	using Kilo	= typename Ratio<1000, 1>;
 	using Mega	= typename Ratio<1000000, 1>;
 	using Giga	= typename Ratio<1000000000, 1>;
-	using Tera	= typename Ratio<1000000000000LL, 1>;
-	using Peta	= typename Ratio<1000000000000000LL, 1>;
-	using Exa	= typename Ratio<1000000000000000000LL, 1>;
+	using Tera	= typename Ratio<1000000000000ULL, 1>;
+	using Peta	= typename Ratio<1000000000000000ULL, 1>;
+	using Exa	= typename Ratio<1000000000000000000ULL, 1>;
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
 	template <
 		typename T, 
-		intmax_t Num, 
-		intmax_t Den
+		uint64_t Num, 
+		uint64_t Den
 	> constexpr T ratio_cast(const T & value, const Ratio<Num, Den> & r)
 	{
 		return 
