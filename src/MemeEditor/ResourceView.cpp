@@ -773,11 +773,6 @@ namespace ml
 									ImGui::Text("%i", rb->index());
 								});
 
-								Layout::Field("Collider", [&](CString)
-								{
-									ImGui::Text("%s", rb->collider() ? "OK" : "NULL");
-								});
-
 								Layout::Field("Particle", [&](CString)
 								{
 									if (ImGui::Selectable("Reset##Particle##Rigidbody"))
@@ -792,7 +787,12 @@ namespace ml
 									GUI::EditVec3f("Momentum##Particle##Rigidbody", rb->particle()->momentum);
 								});
 
-								Layout::Field("Transform##Particle##Rigidbody", [&](CString)
+								Layout::Field("Collider", [&](CString)
+								{
+									ImGui::Text("%s", rb->collider() ? "OK" : "NULL");
+								});
+
+								Layout::Field("Transform", [&](CString)
 								{
 									ImGui::Text("%s", rb->transform() ? "OK" : "NULL");
 								});
