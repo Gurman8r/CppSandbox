@@ -68,23 +68,6 @@ namespace ml
 		}
 	}
 
-	Rigidbody * Physics::createNewRigidbody(const Rigidbody & copy)
-	{
-		if (copy.index() >= 0)
-		{
-			if (Rigidbody * temp = new Rigidbody(copy))
-			{
-				if (createLinkToRigidbody(temp))
-				{
-					return temp;
-				}
-				delete temp;
-				Debug::logError("Physics | Failed creating new Rigidbody");
-			}
-		}
-		return NULL;
-	}
-
 	Rigidbody * Physics::getLinkedRigidbody(const int32_t index) const
 	{
 		return (((static_cast<size_t>(index) < m_rb.size()))

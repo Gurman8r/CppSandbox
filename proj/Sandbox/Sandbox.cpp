@@ -419,7 +419,7 @@ namespace DEMO
 				);
 
 				ml::Rigidbody * rb = ent->add<ml::Rigidbody>(ML_Physics.createNewRigidbody(
-					{ RB_BORG, transform, collider, particle }
+					RB_BORG, transform, collider, particle
 				));
 
 				const ml::Material * material = ML_Res.materials.load_forward(
@@ -465,7 +465,7 @@ namespace DEMO
 				);
 
 				ml::Rigidbody * rb = ent->add<ml::Rigidbody>(ML_Physics.createNewRigidbody(
-					{ RB_CUBE, transform, collider, particle }
+					RB_CUBE, transform, collider, particle
 				));
 
 				const ml::Material * material = ML_Res.materials.load_forward(
@@ -511,7 +511,7 @@ namespace DEMO
 				);
 
 				ml::Rigidbody * rb = ent->add<ml::Rigidbody>(ML_Physics.createNewRigidbody(
-					{ RB_NAVBALL, transform, collider, particle }
+					RB_NAVBALL, transform, collider, particle
 				));
 
 				const ml::Material * material = ML_Res.materials.load_forward(
@@ -557,7 +557,7 @@ namespace DEMO
 				);
 
 				ml::Rigidbody * rb = ent->add<ml::Rigidbody>(ML_Physics.createNewRigidbody(
-					{ RB_MOON, transform, collider, particle }
+					RB_MOON, transform, collider, particle
 				));
 
 				const ml::Material * material = ML_Res.materials.load_forward(
@@ -609,7 +609,7 @@ namespace DEMO
 					0.25f // mass
 				);
 				ml::Rigidbody * rb = ent->add<ml::Rigidbody>(ML_Physics.createNewRigidbody(
-					{ RB_EARTH, transform, collider, particle }
+					RB_EARTH, transform, collider, particle
 				));
 				particle->setInertiaTensor();
 
@@ -663,7 +663,7 @@ namespace DEMO
 				);
 
 				ml::Rigidbody * rb = ent->add<ml::Rigidbody>(ML_Physics.createNewRigidbody(
-					{ RB_GROUND, transform, collider, particle }
+					RB_GROUND, transform, collider, particle
 				));
 
 				const ml::Material * material = ML_Res.materials.load_forward(

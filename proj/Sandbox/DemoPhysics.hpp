@@ -11,10 +11,10 @@ namespace DEMO
 	{
 		RB_BORG,
 		RB_CUBE,
+		RB_NAVBALL,
+		RB_MOON,
 		RB_EARTH,
 		RB_GROUND,
-		RB_MOON,
-		RB_NAVBALL,
 
 		MAX_DEMO_RIGIDBODY
 	};

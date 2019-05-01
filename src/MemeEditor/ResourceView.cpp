@@ -548,6 +548,8 @@ namespace ml
 		{
 			for (auto & pair : ML_Res.entities)
 			{
+				ImGui::PushID(pair.first.c_str());
+				
 				Layout::Group(pair.first.c_str(), [&](CString name, Entity * ent)
 				{
 					// Name
@@ -715,7 +717,6 @@ namespace ml
 								});
 
 								// States
-								//Layout::Group("States", [&]() {});
 								for (auto & pair : renderer->states())
 								{
 									switch (pair.first)
@@ -779,13 +780,19 @@ namespace ml
 
 								Layout::Field("Particle", [&](CString)
 								{
-									if (ImGui::Selectable("Reset"))
+									if (ImGui::Selectable("Reset##Particle##Rigidbody"))
 									{
 										rb->particle()->reset();
 									}
+
+									GUI::EditVec3f("Position##Particle##Rigidbody", rb->particle()->pos);
+									GUI::EditVec3f("Velocity##Particle##Rigidbody", rb->particle()->vel);
+									GUI::EditVec3f("Acccleration##Particle##Rigidbody", rb->particle()->acc);
+									GUI::EditVec3f("Force##Particle##Rigidbody", rb->particle()->force);
+									GUI::EditVec3f("Momentum##Particle##Rigidbody", rb->particle()->momentum);
 								});
 
-								Layout::Field("Transform", [&](CString)
+								Layout::Field("Transform##Particle##Rigidbody", [&](CString)
 								{
 									ImGui::Text("%s", rb->transform() ? "OK" : "NULL");
 								});
@@ -818,7 +825,9 @@ namespace ml
 					/* * * * * * * * * * * * * * * * * * * * */
 
 				}, pair.first.c_str(), pair.second);
-			}
+			
+				ImGui::PopID();
+}
 		});
 	}
 

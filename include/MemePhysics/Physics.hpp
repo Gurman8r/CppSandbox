@@ -41,7 +41,22 @@ namespace ml
 	public:
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		bool createLinkToRigidbody(Rigidbody * rb);
-		Rigidbody * createNewRigidbody(const Rigidbody & copy);
+
+		template <class ... Args>
+		Rigidbody * createNewRigidbody(Args && ... args)
+		{
+			if (Rigidbody * temp = new Rigidbody(std::forward<Args>(args)...))
+			{
+				if (createLinkToRigidbody(temp))
+				{
+					return temp;
+				}
+				delete temp;
+				Debug::logError("Physics | Failed creating new Rigidbody");
+			}
+			return NULL;
+		}
+		
 		Rigidbody * getLinkedRigidbody(const int32_t index) const;
 
 

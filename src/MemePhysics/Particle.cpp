@@ -116,12 +116,12 @@ namespace ml
 	Particle & Particle::reset()
 	{
 		// TODO: insert return statement here
-		pos = 0.0f;
-		vel = 0.0f;
-		acc = 0.0f;
-		momentum = 0.0f;
-		force = 0.0f;
-		mass = massInv = 0.0f;
+		pos			= vec3::Zero;
+		vel			= vec3::Zero;
+		acc			= vec3::Zero;
+		force		= vec3::Zero;
+		momentum	= vec3::Zero;
+
 		rotation = glm::quat();
 		angularVel = 0.0f;
 		angularAcc = 0.0f;
@@ -181,7 +181,7 @@ namespace ml
 			switch (rb->collider()->getHullType())
 			{
 			case Collider::T_Box:
-				if (auto c = dynamic_cast<const BoxCollider *>(rb)) 
+				if (auto c = dynamic_cast<const BoxCollider *>(rb->collider()))
 				{
 					float w = c->size()[0];
 					float h = c->size()[1];
@@ -197,7 +197,7 @@ namespace ml
 				}
 				break;
 			case Collider::T_Sphere:
-				if (auto c = dynamic_cast<const SphereCollider *>(rb))
+				if (auto c = dynamic_cast<const SphereCollider *>(rb->collider()))
 				{
 					float r = c->radius();
 
@@ -205,7 +205,6 @@ namespace ml
 					temp *= coeff;
 					inertiaTensor = temp;
 					inertiaTensorInv = glm::inverse(temp);
-					
 				}
 				break;
 
@@ -266,20 +265,25 @@ namespace ml
 
 	Particle & Particle::updateInertiaTensor()
 	{
-		if (const Transform * transform = ML_Physics.getLinkedRigidbody(index)->transform())
+		if (auto rb = ML_Physics.getLinkedRigidbody(index))
 		{
-			inertiaTensor_world = Transform::RebaseMatrix(inertiaTensor, transform->getMat());
-			inertiaTensorInv_world = Transform::RebaseMatrix(inertiaTensorInv, transform->getMat());
+			if (const Transform * transform = rb->transform())
+			{
+				inertiaTensor_world = Transform::RebaseMatrix(inertiaTensor, transform->getMat());
+				inertiaTensorInv_world = Transform::RebaseMatrix(inertiaTensorInv, transform->getMat());
+			}
 		}
 		return (*this);
 	}
 
 	Particle & Particle::updateCenterMass()
 	{
-		// TODO: insert return statement here
-		if (const Transform * transform = ML_Physics.getLinkedRigidbody(index)->transform())
+		if (auto rb = ML_Physics.getLinkedRigidbody(index))
 		{
-			centerMass_world = Transform::RebasePoint(centerMass, transform->getMat());
+			if (const Transform * transform = rb->transform())
+			{
+				centerMass_world = Transform::RebasePoint(centerMass, transform->getMat());
+			}
 		}
 		return (*this);
 	}
