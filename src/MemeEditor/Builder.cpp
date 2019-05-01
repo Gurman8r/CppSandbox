@@ -13,6 +13,8 @@
 "#shader vertex\n" \
 "#version 410 core\n" \
 "\n" \
+"/* * * * * * * * * * * * * * * * * * * * */\n" \
+"\n" \
 "layout(location = 0) in vec3 a_Position;\n" \
 "layout(location = 1) in vec4 a_Normal;\n" \
 "layout(location = 2) in vec2 a_Texcoord;\n" \
@@ -32,11 +34,16 @@
 "};\n" \
 "\n" \
 "uniform Vert_Uniforms Vert;\n" \
+"\n" \
+"/* * * * * * * * * * * * * * * * * * * * */\n" \
+"\n" \
 ""
 
 #define ML_FRAG_EXAMPLE \
 "#shader fragment\n" \
 "#version 410 core\n" \
+"\n" \
+"/* * * * * * * * * * * * * * * * * * * * */\n" \
 "\n" \
 "in VertexData\n" \
 "{\n" \
@@ -55,9 +62,12 @@
 "\n" \
 "uniform Frag_Uniforms Frag;\n" \
 "\n" \
+"/* * * * * * * * * * * * * * * * * * * * */\n" \
 ""
 
 #define ML_MAIN_EXAMPLE \
+"/* * * * * * * * * * * * * * * * * * * * */\n" \
+"\n" \
 "#shader vertex\n" \
 "#include \"Vertex\"\n" \
 "\n" \
@@ -81,6 +91,8 @@
 "{\n" \
 "	gl_Color = Frag.mainCol * texture(Frag.mainTex, In.Texcoord);\n" \
 "}\n" \
+"\n" \
+"/* * * * * * * * * * * * * * * * * * * * */\n" \
 ""
 
 /* * * * * * * * * * * * * * * * * * * * */
@@ -115,7 +127,7 @@ namespace ml
 
 	bool Builder::drawGui(bool * p_open)
 	{
-		if (beginDraw(p_open, ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_AlwaysAutoResize))
+		if (beginDraw(p_open, ImGuiWindowFlags_MenuBar))
 		{
 			// Menu Bar
 			/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -187,27 +199,29 @@ namespace ml
 							{
 								if (line.find("#include") != String::npos)
 								{
+									bool found = false;
 									String name;
 									if (ShaderParser::parseWrapped(line, '\"', '\"', name))
 									{
-										bool found = false;
 										for (auto f : files)
 										{
 											if (f->name == name)
 											{
-												out << parseIncludes(files, String(f->text));
+												out << parseIncludes(files, f->text);
 												found = true;
 												break;
 											}
 										}
-										if (found)
-										{
-											break;
-										}
+									}
+									if (!found)
+									{
+										out << line << endl;
 									}
 								}
-
-								out << line << endl;
+								else
+								{
+									out << line << endl;
+								}
 							}
 
 							return out.str();
@@ -218,14 +232,14 @@ namespace ml
 						m_files, 
 						m_files.front()->text
 					);
-					
+
 					if (m_shader && m_shader->loadFromMemory(source))
 					{
 						Debug::log("Compiled Shader: {0}", ML_TEST_SHADER);
 					}
 					else
 					{
-						Debug::logError("Failed Compiling Shader");
+						Debug::logError("Failed Compiling Shader:\n{0}", ML_TEST_SHADER);
 					}
 				}
 
