@@ -2,11 +2,88 @@
 #include <MemeEngine/Resources.hpp>
 #include <MemeEditor/GUI.hpp>
 #include <MemeEditor/ImGui.hpp>
-#include <MemeGraphics/ShaderAPI.hpp>
 #include <MemeGraphics/ShaderParser.hpp>
 #include <MemeGraphics/Material.hpp>
 #include <MemeGraphics/Uni.hpp>
 #include <MemeCore/Debug.hpp>
+
+/* * * * * * * * * * * * * * * * * * * * */
+
+#define ML_VERT_EXAMPLE \
+"#shader vertex\n" \
+"#version 410 core\n" \
+"\n" \
+"layout(location = 0) in vec3 a_Position;\n" \
+"layout(location = 1) in vec4 a_Normal;\n" \
+"layout(location = 2) in vec2 a_Texcoord;\n" \
+"\n" \
+"out VertexData\n" \
+"{\n" \
+"	vec3 Position;\n" \
+"	vec4 Normal;\n" \
+"	vec2 Texcoord;\n" \
+"} Out;\n" \
+"\n" \
+"struct Vert_Uniforms\n" \
+"{\n" \
+"	mat4 proj;\n" \
+"	mat4 view;\n" \
+"	mat4 model;\n" \
+"};\n" \
+"\n" \
+"uniform Vert_Uniforms Vert;\n" \
+""
+
+#define ML_FRAG_EXAMPLE \
+"#shader fragment\n" \
+"#version 410 core\n" \
+"\n" \
+"in VertexData\n" \
+"{\n" \
+"	vec3 Position;\n" \
+"	vec4 Normal;\n" \
+"	vec2 Texcoord;\n" \
+"} In;\n" \
+"\n" \
+"out vec4 gl_Color;\n" \
+"\n" \
+"struct Frag_Uniforms\n" \
+"{\n" \
+"	vec4 mainCol;\n" \
+"	sampler2D mainTex;\n" \
+"};\n" \
+"\n" \
+"uniform Frag_Uniforms Frag;\n" \
+"\n" \
+""
+
+#define ML_MAIN_EXAMPLE \
+"#shader vertex\n" \
+"#include \"Vertex\"\n" \
+"\n" \
+"void main()\n" \
+"{\n" \
+"	Out.Position = a_Position;\n" \
+"	Out.Normal = a_Normal;\n" \
+"	Out.Texcoord = a_Texcoord;\n" \
+"	\n" \
+"	mat4 MVP = (Vert.proj * Vert.view * Vert.model);\n" \
+"	\n" \
+"	gl_Position = MVP * vec4(Out.Position, 1.0);\n" \
+"}\n" \
+"\n" \
+"/* * * * * * * * * * * * * * * * * * * * */\n" \
+"\n" \
+"#shader fragment\n" \
+"#include \"Fragment\"\n" \
+"\n" \
+"void main()\n" \
+"{\n" \
+"	gl_Color = Frag.mainCol * texture(Frag.mainTex, In.Texcoord);\n" \
+"}\n" \
+""
+
+/* * * * * * * * * * * * * * * * * * * * */
 
 namespace ml
 {
@@ -16,9 +93,9 @@ namespace ml
 		: GUI_Window("Builder")
 		, m_shader(ML_Res.shaders.load(ML_TEST_SHADER))
 	{
+		m_files.push_back(new BuildFile("Main", ML_MAIN_EXAMPLE));
 		m_files.push_back(new BuildFile("Vertex", ML_VERT_EXAMPLE));
 		m_files.push_back(new BuildFile("Fragment", ML_FRAG_EXAMPLE));
-		//m_files.push_back(new BuildFile("Geometry", ML_GEOM_EXAMPLE));
 	}
 
 	Builder::~Builder()
@@ -73,7 +150,6 @@ namespace ml
 								Debug::logError("Name cannot be empty");
 								return;
 							}
-
 							for (auto file : m_files)
 							{
 								if (file->name == name)
@@ -82,7 +158,6 @@ namespace ml
 									return;
 								}
 							}
-
 							m_files.push_back(new BuildFile(name, String()));
 						};
 						addNewFile();
@@ -103,9 +178,7 @@ namespace ml
 				{
 					struct BuilderParser
 					{
-						inline static String parseIncludes(
-							const List<BuildFile *> & files, const String & src
-						)
+						inline static String parseIncludes(const List<BuildFile *> & files, const String & src)
 						{
 							SStream out;
 							SStream ss(src);
@@ -141,12 +214,12 @@ namespace ml
 						}
 					};
 
-
-					SStream ss;
-					ss	<< BuilderParser::parseIncludes(m_files, m_files[0]->text)
-						<< BuilderParser::parseIncludes(m_files, m_files[1]->text);
+					String source = BuilderParser::parseIncludes(
+						m_files, 
+						m_files.front()->text
+					);
 					
-					if (m_shader && m_shader->loadFromMemory(ss.str()))
+					if (m_shader && m_shader->loadFromMemory(source))
 					{
 						Debug::log("Compiled Shader: {0}", ML_TEST_SHADER);
 					}
@@ -177,7 +250,10 @@ namespace ml
 				
 					const size_t i = (it - m_files.begin());
 
-					bool * t_open = i > 1 ? &file->open : NULL;
+					bool * t_open = (i > 0
+						? &file->open
+						: NULL
+					);
 
 					// File Tab
 					if (ImGui::BeginTabItem(
@@ -193,6 +269,21 @@ namespace ml
 							ImGuiWindowFlags_AlwaysHorizontalScrollbar
 						))
 						{	/* * * * * * * * * * * * * * * * * * * * */
+
+							if (i > 0)
+							{
+								char buf[32];
+								std::strcpy(buf, file->name.c_str());
+								if (ImGui::InputText(
+									"Name",
+									buf,
+									Document::NameSize,
+									ImGuiInputTextFlags_EnterReturnsTrue
+								))
+								{
+									file->name = buf;
+								}
+							}
 
 							if (ImGui::InputTextMultiline(
 								String("##File" + file->name + "##Text").c_str(),

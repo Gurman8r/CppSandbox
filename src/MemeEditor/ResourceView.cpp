@@ -88,50 +88,19 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		template <
-			class Fun, class ... Args
-		> inline static void ConstField(CString label, Fun fun, Args ... args)
-		{
-			ImGui::AlignTextToFramePadding();
-			ImGui::PushStyleColor(ImGuiCol_Text, { 1.0f, 0.4f, 0.4f, 1.0f });
-			ImGui::Text(" [const]");
-			ImGui::PopStyleColor();
-			ImGui::SameLine();
-
-			ImGui::TreeNodeEx(
-				"ResourceView_Field",
-				ImGuiTreeNodeFlags_Leaf |
-				ImGuiTreeNodeFlags_NoTreePushOnOpen |
-				ImGuiTreeNodeFlags_Bullet,
-				"%s",
-				label);
-			
-
-			ImGui::NextColumn();
-			ImGui::PushItemWidth(-1);
-			{
-				fun(label, (args)...);
-			}
-			ImGui::PopItemWidth();
-			ImGui::NextColumn();
-		}
-
 		inline static int32_t EditUniform(const String & label, uni_base * value, bool show_constants)
 		{
 			int32_t flag = 0;
 
-			auto header_editable = [&]()
+			auto toolbar_editable = [&]()
 			{
-				if (ImGui::Button(String("Delete" + label).c_str()))
-				{
-					flag = 1;
-				}
+				if (ImGui::Button(String("Delete" + label).c_str())) { flag = 1; }
 			};
 
-			auto header_const = [&]()
+			auto toolbar_constant = [&]()
 			{
 				ImGui::PushStyleColor(ImGuiCol_Text, { 1.0f, 0.4f, 0.4f, 1.0f });
-				ImGui::Text("[const] ");
+				ImGui::Text(" [const]");
 				ImGui::PopStyleColor();
 			};
 
@@ -145,6 +114,7 @@ namespace ml
 					Layout::Field(value->name.c_str(), [&](CString)
 					{
 						ImGui::DragFloat(String(label + "##Float##Uni##" + value->name).c_str(), &u->data, 0.1f);
+						toolbar_editable();
 					});
 					break;
 				}
@@ -152,7 +122,8 @@ namespace ml
 				{
 					if (auto u = dynamic_cast<uni_flt_cr *>(value))
 					{
-						Layout::ConstField(value->name.c_str(), [&](CString)
+						toolbar_constant();
+						Layout::Field(value->name.c_str(), [&](CString)
 						{
 							auto temp = u->data;
 							ImGui::DragFloat(String(label + "##Float##Uni##" + value->name).c_str(), &temp, 0.1f);
@@ -169,6 +140,7 @@ namespace ml
 					Layout::Field(value->name.c_str(), [&](CString)
 					{
 						ImGui::DragInt(String(label + "##Int##Uni##" + value->name).c_str(), &u->data, 0.1f);
+						toolbar_editable();
 					});
 					break;
 				}
@@ -176,7 +148,8 @@ namespace ml
 				{
 					if (auto u = dynamic_cast<uni_int_cr *>(value))
 					{
-						Layout::ConstField(value->name.c_str(), [&](CString)
+						toolbar_constant();
+						Layout::Field(value->name.c_str(), [&](CString)
 						{
 							auto temp = u->data;
 							ImGui::DragInt(String(label + "##Int##Uni##" + value->name).c_str(), &temp, 0.1f);
@@ -193,6 +166,7 @@ namespace ml
 					Layout::Field(value->name.c_str(), [&](CString)
 					{
 						GUI::EditVec2f(String(label + "##Vec2##Uni##" + value->name).c_str(), u->data, 0.1f);
+						toolbar_editable();
 					});
 					break;
 				}
@@ -200,7 +174,8 @@ namespace ml
 				{
 					if (auto u = dynamic_cast<uni_vec2_cr *>(value))
 					{
-						Layout::ConstField(value->name.c_str(), [&](CString)
+						toolbar_constant();
+						Layout::Field(value->name.c_str(), [&](CString)
 						{
 							auto temp = u->data;
 							GUI::EditVec2f(String(label + "##Vec2##Uni##" + value->name).c_str(), temp, 0.1f);
@@ -217,6 +192,7 @@ namespace ml
 					Layout::Field(value->name.c_str(), [&](CString)
 					{
 						GUI::EditVec3f(String(label + "##Vec3##Uni##" + value->name).c_str(), u->data, 0.1f);
+						toolbar_editable();
 					});
 					break;
 				}
@@ -224,7 +200,8 @@ namespace ml
 				{
 					if (auto u = dynamic_cast<uni_vec3_cr *>(value))
 					{
-						Layout::ConstField(value->name.c_str(), [&](CString)
+						toolbar_constant();
+						Layout::Field(value->name.c_str(), [&](CString)
 						{
 							auto temp = u->data;
 							GUI::EditVec3f(String(label + "##Vec3##Uni##" + value->name).c_str(), temp, 0.1f);
@@ -241,6 +218,7 @@ namespace ml
 					Layout::Field(value->name.c_str(), [&](CString)
 					{
 						GUI::EditVec4f(String(label + "##Vec4##Uni##" + value->name).c_str(), u->data, 0.1f);
+						toolbar_editable();
 					});
 					break;
 				}
@@ -248,7 +226,8 @@ namespace ml
 				{
 					if (auto u = dynamic_cast<uni_vec4_cr *>(value))
 					{
-						Layout::ConstField(value->name.c_str(), [&](CString)
+						toolbar_constant();
+						Layout::Field(value->name.c_str(), [&](CString)
 						{
 							auto temp = u->data;
 							GUI::EditVec4f(String(label + "##Vec4##Uni##" + value->name).c_str(), temp, 0.1f);
@@ -265,6 +244,7 @@ namespace ml
 					Layout::Field(value->name.c_str(), [&](CString)
 					{
 						ImGui::ColorEdit4(String(label + "##Color##Uni##" + value->name).c_str(), &u->data[0]);
+						toolbar_editable();
 					});
 					break;
 				}
@@ -272,7 +252,8 @@ namespace ml
 				{
 					if (auto u = dynamic_cast<uni_col4_cr *>(value))
 					{
-						Layout::ConstField(value->name.c_str(), [&](CString)
+						toolbar_constant();
+						Layout::Field(value->name.c_str(), [&](CString)
 						{
 							auto temp = u->data;
 							ImGui::ColorEdit4(String(label + "##Color##Uni##" + value->name).c_str(), &temp[0]);
@@ -289,6 +270,7 @@ namespace ml
 					Layout::Field(value->name.c_str(), [&](CString)
 					{
 						GUI::EditMat3f(String(label + "##Mat3##Uni##" + value->name).c_str(), u->data, 0.1f);
+						toolbar_editable();
 					});
 					break;
 				}
@@ -296,7 +278,8 @@ namespace ml
 				{
 					if (auto u = dynamic_cast<uni_mat3_cr *>(value))
 					{
-						Layout::ConstField(value->name.c_str(), [&](CString)
+						toolbar_constant();
+						Layout::Field(value->name.c_str(), [&](CString)
 						{
 							auto temp = u->data;
 							GUI::EditMat3f(String(label + "##Mat3##Uni##" + value->name).c_str(), temp, 0.1f);
@@ -313,6 +296,7 @@ namespace ml
 					Layout::Field(value->name.c_str(), [&](CString)
 					{
 						GUI::EditMat4f(String(label + "##Mat4##Uni##" + value->name).c_str(), u->data, 0.1f);
+						toolbar_editable();
 					});
 					break;
 				}
@@ -320,7 +304,8 @@ namespace ml
 				{
 					if (auto u = dynamic_cast<uni_mat4_cr *>(value))
 					{
-						Layout::ConstField(value->name.c_str(), [&](CString)
+						toolbar_constant();
+						Layout::Field(value->name.c_str(), [&](CString)
 						{
 							auto temp = u->data;
 							GUI::EditMat4f(String(label + "##Mat4##Uni##" + value->name).c_str(), temp, 0.1f);
@@ -347,6 +332,7 @@ namespace ml
 						{
 							u->data = ML_Res.textures.getByIndex(index);
 						}
+						toolbar_editable();
 					});
 
 				}
