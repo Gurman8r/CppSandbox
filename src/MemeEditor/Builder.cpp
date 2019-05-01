@@ -3,6 +3,7 @@
 #include <MemeEditor/GUI.hpp>
 #include <MemeEditor/ImGui.hpp>
 #include <MemeGraphics/ShaderAPI.hpp>
+#include <MemeGraphics/ShaderParser.hpp>
 #include <MemeGraphics/Material.hpp>
 #include <MemeGraphics/Uni.hpp>
 #include <MemeCore/Debug.hpp>
@@ -100,14 +101,50 @@ namespace ml
 				/* * * * * * * * * * * * * * * * * * * * */
 				if (ImGui::MenuItem("Compile"))
 				{
-					SStream ss;
-
-					for (auto & it : m_files)
+					struct BuilderParser
 					{
-						it->dirty = false;
+						inline static String parseIncludes(
+							const List<BuildFile *> & files, const String & src
+						)
+						{
+							SStream out;
+							SStream ss(src);
+							String line;
+							while (std::getline(ss, line))
+							{
+								if (line.find("#include") != String::npos)
+								{
+									String name;
+									if (ShaderParser::parseWrapped(line, '\"', '\"', name))
+									{
+										bool found = false;
+										for (auto f : files)
+										{
+											if (f->name == name)
+											{
+												out << parseIncludes(files, String(f->text));
+												found = true;
+												break;
+											}
+										}
+										if (found)
+										{
+											break;
+										}
+									}
+								}
 
-						ss << it->text << endl << endl;
-					}
+								out << line << endl;
+							}
+
+							return out.str();
+						}
+					};
+
+
+					SStream ss;
+					ss	<< BuilderParser::parseIncludes(m_files, m_files[0]->text)
+						<< BuilderParser::parseIncludes(m_files, m_files[1]->text);
 					
 					if (m_shader && m_shader->loadFromMemory(ss.str()))
 					{
