@@ -24,6 +24,7 @@ struct Frag_Uniforms
 	float		ambient;
 	float		specular;
 	int			shininess;
+	vec4		mainCol;
 	sampler2D	mainTex;
 	sampler2D	specTex;
 };
@@ -52,7 +53,7 @@ void main()
 	vec4	specular= (specCol * specTex);
 
 	// Output
-	gl_Color = (ambient + diffuse + specular);
+	gl_Color = Frag.mainCol * (ambient + diffuse + specular);
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

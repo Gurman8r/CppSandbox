@@ -55,4 +55,10 @@
 	file = ../../../assets/shaders/skybox.shader
 </item>
 
+<item>
+	type = shader
+	name = example
+	file = ../../../assets/shaders/example.shader
+</item>
+
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * #

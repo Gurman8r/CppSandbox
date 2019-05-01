@@ -429,7 +429,7 @@ namespace DEMO
 						new ml::uni_mat4_cr	(ML_VERT_PROJ,		ML_CAMERA->get<ml::Camera>()->getPerspMatrix()),
 						new ml::uni_mat4_cr	(ML_VERT_VIEW,		ML_CAMERA->get<ml::Transform>()->getMat()),
 						new ml::uni_mat4_cr	(ML_VERT_MODEL,		transform->getMat()),
-						new ml::uni_col4_cr	(ML_FRAG_MAIN_COL,	ml::Color::White),
+						new ml::uni_col4	(ML_FRAG_MAIN_COL,	ml::Color::White),
 						new ml::uni_tex_cp	(ML_FRAG_MAIN_TEX,	ML_Res.textures.get("borg")),
 						}));
 
@@ -475,7 +475,7 @@ namespace DEMO
 						new ml::uni_mat4_cr	(ML_VERT_PROJ,		ML_CAMERA->get<ml::Camera>()->getPerspMatrix()),
 						new ml::uni_mat4_cr	(ML_VERT_VIEW,		ML_CAMERA->get<ml::Transform>()->getMat()),
 						new ml::uni_mat4_cr	(ML_VERT_MODEL,		transform->getMat()),
-						new ml::uni_col4_cr	(ML_FRAG_MAIN_COL,	ml::Color::White),
+						new ml::uni_col4	(ML_FRAG_MAIN_COL,	ml::Color::White),
 						new ml::uni_tex_cp	(ML_FRAG_MAIN_TEX,	ML_Res.textures.get("stone_dm")),
 						}));
 
@@ -521,7 +521,7 @@ namespace DEMO
 						new ml::uni_mat4_cr	(ML_VERT_PROJ,		ML_CAMERA->get<ml::Camera>()->getPerspMatrix()),
 						new ml::uni_mat4_cr	(ML_VERT_VIEW,		ML_CAMERA->get<ml::Transform>()->getMat()),
 						new ml::uni_mat4_cr	(ML_VERT_MODEL,		transform->getMat()),
-						new ml::uni_col4_cr	(ML_FRAG_MAIN_COL,	ml::Color::White),
+						new ml::uni_col4	(ML_FRAG_MAIN_COL,	ml::Color::White),
 						new ml::uni_tex_cp	(ML_FRAG_MAIN_TEX,	ML_Res.textures.get("navball")),
 						}));
 
@@ -570,8 +570,9 @@ namespace DEMO
 						new ml::uni_vec3_cr	("Frag.cameraPos",	ML_CAMERA->get<ml::Transform>()->getPos()),
 						new ml::uni_vec3_cr	("Frag.lightPos",	ML_LIGHT->get<ml::Transform>()->getPos()),
 						new ml::uni_col4_cr	("Frag.diffuse",	ML_LIGHT->get<ml::Light>()->color),
+						new ml::uni_col4	(ML_FRAG_MAIN_COL,	ml::Color::White),
 						new ml::uni_tex_cp	(ML_FRAG_MAIN_TEX,	ML_Res.textures.get("moon_dm")),
-						new ml::uni_tex_cp	(ML_FRAG_SPEC_TEX,	ML_Res.textures.get("moon_sm")),
+						new ml::uni_tex_cp	("Frag.specTex",	ML_Res.textures.get("moon_nm")),
 						new ml::uni_flt		("Frag.ambient",	0.01f),
 						new ml::uni_flt		("Frag.specular",	0.1f),
 						new ml::uni_int		("Frag.shininess",	8),
@@ -622,8 +623,9 @@ namespace DEMO
 						new ml::uni_vec3_cr	("Frag.cameraPos",	ML_CAMERA->get<ml::Transform>()->getPos()),
 						new ml::uni_vec3_cr	("Frag.lightPos",	ML_LIGHT->get<ml::Transform>()->getPos()),
 						new ml::uni_col4_cr	("Frag.diffuse",	ML_LIGHT->get<ml::Light>()->color),
+						new ml::uni_col4	(ML_FRAG_MAIN_COL,	ml::Color::White),
 						new ml::uni_tex_cp	(ML_FRAG_MAIN_TEX,	ML_Res.textures.get("earth_dm")),
-						new ml::uni_tex_cp	(ML_FRAG_SPEC_TEX,	ML_Res.textures.get("earth_sm")),
+						new ml::uni_tex_cp	("Frag.specTex",	ML_Res.textures.get("earth_sm")),
 						new ml::uni_flt		("Frag.ambient",	0.01f),
 						new ml::uni_flt		("Frag.specular",	0.1f),
 						new ml::uni_int		("Frag.shininess",	8),
@@ -671,7 +673,7 @@ namespace DEMO
 						new ml::uni_mat4_cr	(ML_VERT_PROJ,		ML_CAMERA->get<ml::Camera>()->getPerspMatrix()),
 						new ml::uni_mat4_cr	(ML_VERT_VIEW,		ML_CAMERA->get<ml::Transform>()->getMat()),
 						new ml::uni_mat4_cr	(ML_VERT_MODEL,		transform->getMat()),
-						new ml::uni_col4_cr	(ML_FRAG_MAIN_COL,	ml::Color::White),
+						new ml::uni_col4	(ML_FRAG_MAIN_COL,	ml::Color::White),
 						new ml::uni_tex_cp	(ML_FRAG_MAIN_TEX,	ML_Res.textures.get("stone_dm")),
 						}));
 
@@ -998,13 +1000,13 @@ namespace DEMO
 		if (ML_Editor.show_imgui_about)		{ ml::ImGui_Builtin::showAbout(&ML_Editor.show_imgui_about); }
 
 		// Editors
-		if (ML_Editor.show_builder)			{ ML_Builder.drawGui(&ML_Editor.show_builder); }
 		if (ML_Editor.show_network)			{ ML_NetworkHUD.drawGui(&ML_Editor.show_network); }
 		if (ML_Editor.show_profiler)		{ ML_Profiler.drawGui(&ML_Editor.show_profiler); }
 		if (ML_Editor.show_browser)			{ ML_Browser.drawGui(&ML_Editor.show_browser); }
 		if (ML_Editor.show_resourceView)	{ ML_ResourceView.drawGui(&ML_Editor.show_resourceView); }
 		if (ML_Editor.show_terminal)		{ ML_Terminal.drawGui(&ML_Editor.show_terminal); }
 		if (ML_Editor.show_textEditor)		{ ML_TextEditor.drawGui(&ML_Editor.show_textEditor); }
+		if (ML_Editor.show_builder)			{ ML_Builder.drawGui(&ML_Editor.show_builder); }
 		
 		// Scene View
 		if (ML_Editor.show_sceneView)

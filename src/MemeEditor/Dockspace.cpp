@@ -59,8 +59,8 @@ namespace ml
 				//dockWindow(ML_Inspector.title(),	left_U);
 				dockWindow(ML_Terminal.title(),		left_D);
 				dockWindow(ML_SceneView.title(),	center_U);
-				dockWindow(ML_Builder.title(),		center_D);
 				dockWindow(ML_TextEditor.title(),	center_D);
+				dockWindow(ML_Builder.title(),		center_D);
 
 				endBuilder(root);
 			};

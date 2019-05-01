@@ -24,7 +24,7 @@ namespace ml
 		bool drawGui(bool * p_open) override;
 
 	private:
-		struct Funcs;
+		struct Layout;
 
 		void draw_effects	();
 		void draw_entities	();

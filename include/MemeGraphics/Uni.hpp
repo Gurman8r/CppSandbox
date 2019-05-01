@@ -1,4 +1,3 @@
-
 #ifndef _ML_UNI_HPP_
 #define _ML_UNI_HPP_
 
@@ -22,7 +21,6 @@ namespace ml
 
 		enum Types : int32_t
 		{
-			None,
 			Flt,	// Float
 			Int,	// Integer
 			Vec2,	// Vector2

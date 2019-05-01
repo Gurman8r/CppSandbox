@@ -36,6 +36,11 @@ namespace ml
 		void unbind() const;
 
 	public:
+		inline bool find_any(const String & name) const
+		{
+			return (m_uniforms.find(name) != m_uniforms.end());
+		}
+
 		template <class T>
 		inline const T * find_uni(const String & name) const
 		{

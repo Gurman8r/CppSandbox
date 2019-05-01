@@ -17,13 +17,12 @@
 
 namespace ml
 {
-	struct ResourceView::Funcs
+	struct ResourceView::Layout
 	{
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		template <
-			class Fun,
-			class ... Args
+			class Fun, class ... Args
 		> inline static void Columns(Fun fun, Args ... args)
 		{
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { 2, 2 });
@@ -40,8 +39,7 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		template <
-			class Fun,
-			class ... Args
+			class Fun, class ... Args
 		> inline static void Group(CString label, Fun fun, Args ... args)
 		{
 			ImGui::PushID(label);
@@ -68,8 +66,7 @@ namespace ml
 		/* * * * * * * * * * * * * * * * * * * * */
 
 		template <
-			class Fun, 
-			class ... Args
+			class Fun, class ... Args
 		> inline static void Field(CString label, Fun fun, Args ... args)
 		{
 			ImGui::AlignTextToFramePadding();
@@ -87,6 +84,258 @@ namespace ml
 			}
 			ImGui::PopItemWidth();
 			ImGui::NextColumn();
+		}
+
+		/* * * * * * * * * * * * * * * * * * * * */
+
+		inline static int32_t EditUniform(const String & label, uni_base * value)
+		{
+			int32_t flag = 0;
+
+			auto header_editable = [&]() 
+			{
+				if (ImGui::Button(String("Delete" + label).c_str()))
+				{
+					flag = 1;
+				}
+			};
+
+			auto header_const = [&]()
+			{
+				ImGui::PushStyleColor(ImGuiCol_Text, { 1.0f, 0.4f, 0.4f, 1.0f });
+				ImGui::Text("[const]");
+				ImGui::PopStyleColor();
+			};
+
+			Layout::Field(value->name.c_str(), [&](CString, const String & name)
+			{
+				switch (value->type)
+				{
+					// Flt
+					/* * * * * * * * * * * * * * * * * * * * */
+				case uni_flt::ID:
+					if (auto u = dynamic_cast<uni_flt *>(value))
+					{
+						header_editable();
+						ImGui::DragFloat(String(label + "##Float##Uni##" + name).c_str(), &u->data, 0.1f);
+					}
+					else if (auto u = dynamic_cast<uni_flt_cr *>(value))
+					{
+						header_const();
+						auto temp = u->data;
+						ImGui::DragFloat(String(label + "##Float##Uni##" + name).c_str(), &temp, 0.1f);
+					}
+					break;
+
+					// Int
+					/* * * * * * * * * * * * * * * * * * * * */
+				case uni_int::ID:
+					if (auto u = dynamic_cast<uni_int *>(value))
+					{
+						header_editable();
+						ImGui::DragInt(String(label + "##Int##Uni##" + name).c_str(), &u->data, 0.1f);
+					}
+					else if (auto u = dynamic_cast<uni_int_cr *>(value))
+					{
+						header_const();
+						auto temp = u->data;
+						ImGui::DragInt(String(label + "##Int##Uni##" + name).c_str(), &temp, 0.1f);
+					}
+					break;
+
+					// Vec2
+					/* * * * * * * * * * * * * * * * * * * * */
+				case uni_vec2::ID:
+					if (auto u = dynamic_cast<uni_vec2 *>(value))
+					{
+						header_editable();
+						GUI::EditVec2f(String(label + "##Vec2##Uni##" + name).c_str(), u->data, 0.1f);
+					}
+					else if (auto u = dynamic_cast<uni_vec2_cr *>(value))
+					{
+						header_const();
+						auto temp = u->data;
+						GUI::EditVec2f(String(label + "##Vec2##Uni##" + name).c_str(), temp, 0.1f);
+					}
+					break;
+
+					// Vec3
+					/* * * * * * * * * * * * * * * * * * * * */
+				case uni_vec3::ID:
+					if (auto u = dynamic_cast<uni_vec3 *>(value))
+					{
+						header_editable();
+						GUI::EditVec3f(String(label + "##Vec3##Uni##" + name).c_str(), u->data, 0.1f);
+					}
+					else if (auto u = dynamic_cast<uni_vec3_cr *>(value))
+					{
+						header_const();
+						auto temp = u->data;
+						GUI::EditVec3f(String(label + "##Vec3##Uni##" + name).c_str(), temp, 0.1f);
+					}
+					break;
+
+					// Vec4
+					/* * * * * * * * * * * * * * * * * * * * */
+				case uni_vec4::ID:
+					if (auto u = dynamic_cast<uni_vec4 *>(value))
+					{
+						header_editable();
+						GUI::EditVec4f(String(label + "##Vec4##Uni##" + name).c_str(), u->data, 0.1f);
+					}
+					else if (auto u = dynamic_cast<uni_vec4_cr *>(value))
+					{
+						header_const();
+						auto temp = u->data;
+						GUI::EditVec4f(String(label + "##Vec4##Uni##" + name).c_str(), temp, 0.1f);
+					}
+					break;
+
+					// Col4
+					/* * * * * * * * * * * * * * * * * * * * */
+				case uni_col4::ID:
+					if (auto u = dynamic_cast<uni_col4 *>(value))
+					{
+						header_editable();
+						ImGui::ColorEdit4(String(label + "##Color##Uni##" + name).c_str(), &u->data[0]);
+					}
+					else if (auto u = dynamic_cast<uni_col4_cr *>(value))
+					{
+						header_const();
+						auto temp = u->data;
+						ImGui::ColorEdit4(String(label + "##Color##Uni##" + name).c_str(), &temp[0]);
+					}
+					break;
+
+					// Mat3
+					/* * * * * * * * * * * * * * * * * * * * */
+				case uni_mat3::ID:
+					if (auto u = dynamic_cast<uni_mat3 *>(value))
+					{
+						header_editable();
+						GUI::EditMat3f(String(label + "##Mat3##Uni##" + name).c_str(), u->data, 0.1f);
+					}
+					else if (auto u = dynamic_cast<uni_mat3_cr *>(value))
+					{
+						header_const();
+						auto temp = u->data;
+						GUI::EditMat3f(String(label + "##Mat3##Uni##" + name).c_str(), temp, 0.1f);
+					}
+					break;
+
+					// Mat4
+					/* * * * * * * * * * * * * * * * * * * * */
+				case uni_mat4::ID:
+					if (auto u = dynamic_cast<uni_mat4 *>(value))
+					{
+						header_editable();
+						GUI::EditMat4f(String(label + "##Mat4##Uni##" + name).c_str(), u->data, 0.1f);
+					}
+					else if (auto u = dynamic_cast<uni_mat4_cr *>(value))
+					{
+						header_const();
+						auto temp = u->data;
+						GUI::EditMat4f(String(label + "##Mat4##Uni##" + name).c_str(), temp, 0.1f);
+					}
+					break;
+
+					// Tex
+					/* * * * * * * * * * * * * * * * * * * * */
+				case uni_tex_cp::ID:
+					if (auto u = dynamic_cast<uni_tex_cp *>(value))
+					{
+						header_editable();
+						int32_t index = ML_Res.textures.getIndexOf(u->data);
+						List<String> keys = ML_Res.textures.keys();
+						if (ImGui::Combo(
+							String(label + "##Tex##Uni##" + name).c_str(),
+							&index,
+							ImGui_Helper::vector_getter,
+							static_cast<void *>(&keys),
+							(int32_t)(keys.size())))
+						{
+							u->data = ML_Res.textures.getByIndex(index);
+						}
+					}
+					break;
+				}
+
+				ImGui::Separator();
+
+			}, value->name);
+
+			return flag;
+		}
+
+		inline static void NewUniform(Material * mat)
+		{
+			if (ImGui::Button("New Uniform..."))
+			{
+				ImGui::OpenPopup("New Uniform Editor");
+			}
+			if (ImGui::BeginPopupModal("New Uniform Editor", NULL, ImGuiWindowFlags_MenuBar))
+			{
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+				static const CString typeList[] =
+				{
+					"Float",
+					"Int",
+					"Vec2",
+					"Vec3",
+					"Vec4",
+					"Col4",
+					"Mat3",
+					"Mat4",
+					"Tex",
+				};
+				static int32_t type	= 0;
+				static char name[32] = "New_Uniform\0";
+
+				ImGui::Combo("Type", &type, typeList, IM_ARRAYSIZE(typeList));
+				ImGui::InputText("Name", name, IM_ARRAYSIZE(name), ImGuiInputTextFlags_EnterReturnsTrue);
+
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+				if (ImGui::Button("Submit"))
+				{
+					if (String(name) && !mat->find_any(name))
+					{
+						uni_base * u = NULL;
+						switch (type)
+						{
+						case uni_base::Flt	: u = new uni_flt	(name, 0);	break;
+						case uni_base::Int	: u = new uni_int	(name, 0);	break;
+						case uni_base::Vec2	: u = new uni_vec2	(name, 0);	break;
+						case uni_base::Vec3	: u = new uni_vec3	(name, 0);	break;
+						case uni_base::Vec4	: u = new uni_vec4	(name, 0);	break;
+						case uni_base::Col4	: u = new uni_col4	(name, 0);	break;
+						case uni_base::Mat3	: u = new uni_mat3	(name, 0);	break;
+						case uni_base::Mat4	: u = new uni_mat4	(name, 0);	break;
+						case uni_base::Tex	: u = new uni_tex_cp(name, 0);	break;
+						}
+						if (u && (u = mat->uniforms().insert({ name, u }).first->second))
+						{
+							type = 0;
+							std::strcpy(name, "New_Uniform\0");
+							ImGui::CloseCurrentPopup();
+						}
+					}
+					else
+					{
+						Debug::logError("A uniform with that name already exists!");
+					}
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("Cancel"))
+				{
+					ImGui::CloseCurrentPopup();
+				}
+
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+				ImGui::EndPopup();
+			}
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -144,7 +393,7 @@ namespace ml
 
 			/* * * * * * * * * * * * * * * * * * * * */
 
-			Funcs::Columns([&]()
+			Layout::Columns([&]()
 			{
 				draw_effects	();
 				draw_entities	();
@@ -174,19 +423,19 @@ namespace ml
 	{
 		if (ML_Res.effects.empty()) return;
 
-		Funcs::Group(ML_Res.effects.name().c_str(), [&]()
+		Layout::Group(ML_Res.effects.name().c_str(), [&]()
 		{
 			for (auto & pair : ML_Res.effects)
 			{
-				Funcs::Group(pair.first.c_str(), [&](CString name, const Effect * e)
+				Layout::Group(pair.first.c_str(), [&](CString name, const Effect * e)
 				{
-					Funcs::Field("Name", [&](CString label)
+					Layout::Field("Name", [&](CString label)
 					{
 						ImGui::Text("%s", name);
 					});
 					if (const String file = ML_Res.effects.getFile(name))
 					{
-						Funcs::Field("File", [&](CString)
+						Layout::Field("File", [&](CString)
 						{
 							const String fName = ML_FS.getFileName(file);
 							if (ImGui::Selectable(fName.c_str()))
@@ -194,7 +443,7 @@ namespace ml
 								ML_EventSystem.fireEvent(OS_ExecuteEvent("open", ML_FS.getPathTo(file)));
 							}
 						});
-						Funcs::Field("Path", [&](CString)
+						Layout::Field("Path", [&](CString)
 						{
 							const String fPath = ML_FS.getFilePath(file);
 							if (ImGui::Selectable(fPath.c_str()))
@@ -213,15 +462,15 @@ namespace ml
 	{
 		if (ML_Res.entities.empty()) return;
 
-		Funcs::Group(ML_Res.entities.name().c_str(), [&]()
+		Layout::Group(ML_Res.entities.name().c_str(), [&]()
 		{
 			for (auto & pair : ML_Res.entities)
 			{
-				Funcs::Group(pair.first.c_str(), [&](CString name, Entity * ent)
+				Layout::Group(pair.first.c_str(), [&](CString name, Entity * ent)
 				{
 					// Name
 					/* * * * * * * * * * * * * * * * * * * * */
-					Funcs::Field("Name", [&](CString)
+					Layout::Field("Name", [&](CString)
 					{
 						ImGui::Text("%s", name);
 					});
@@ -233,9 +482,9 @@ namespace ml
 						/* * * * * * * * * * * * * * * * * * * * */
 						if (Transform * transform = ent->get<Transform>())
 						{
-							Funcs::Group("Transform", [&]()
+							Layout::Group("Transform", [&]()
 							{
-								Funcs::Field("Actions", [&](CString)
+								Layout::Field("Actions", [&](CString)
 								{
 									if (ImGui::Selectable("Reset"))
 									{
@@ -243,7 +492,7 @@ namespace ml
 									}
 								});
 
-								Funcs::Field("Position", [&](CString)
+								Layout::Field("Position", [&](CString)
 								{
 									vec3 pos = transform->getPos();
 									if (GUI::EditVec3f("##Position##Transform", pos, 0.01f))
@@ -256,7 +505,7 @@ namespace ml
 									}
 								});
 
-								Funcs::Field("Rotation", [&](CString)
+								Layout::Field("Rotation", [&](CString)
 								{
 									quat rot = transform->getRot();
 									if (GUI::EditQuat("##Rotation##Transform", rot, 0.01f))
@@ -269,7 +518,7 @@ namespace ml
 									}
 								});
 
-								Funcs::Field("Scale", [&](CString)
+								Layout::Field("Scale", [&](CString)
 								{
 									vec3 scl = transform->getScl();
 									if (GUI::EditVec3f("##Scale##Transform", scl, 0.01f))
@@ -282,7 +531,7 @@ namespace ml
 									}
 								});
 
-								Funcs::Field("Matrix", [&](CString)
+								Layout::Field("Matrix", [&](CString)
 								{
 									ImGui::NewLine();
 									mat4 mat = transform->getMat();
@@ -300,43 +549,43 @@ namespace ml
 						/* * * * * * * * * * * * * * * * * * * * */
 						if (Camera * camera = ent->get<Camera>())
 						{
-							Funcs::Group("Camera", [&]()
+							Layout::Group("Camera", [&]()
 							{
-								Funcs::Field("Color", [&](CString)
+								Layout::Field("Color", [&](CString)
 								{
 									ImGui::ColorEdit4("##Color##Camera", &camera->color[0]);
 								});
-								Funcs::Field("FOV", [&](CString)
+								Layout::Field("FOV", [&](CString)
 								{
 									ImGui::DragFloat("##FOV##Camera", &camera->fov, 0.5f, 10.f, 100.f);
 								});
-								Funcs::Group("Perspective", [&]() 
+								Layout::Group("Perspective", [&]() 
 								{
-									Funcs::Field("Near", [&](CString)
+									Layout::Field("Near", [&](CString)
 									{
 										ImGui::DragFloat("##pNear##Camera", &camera->pNear, 0.5f, 10.f, camera->pFar - 1.f);
 									});
-									Funcs::Field("Far", [&](CString)
+									Layout::Field("Far", [&](CString)
 									{
 										ImGui::DragFloat("##pFar##Camera", &camera->pFar, 0.5f, camera->pNear + 1.f, 1000.0f);
 									});
-									Funcs::Field("Matrix", [&](CString)
+									Layout::Field("Matrix", [&](CString)
 									{
 										mat4 mat = camera->getPerspMatrix();
 										GUI::EditMat4f("##O##Matrix##Camera", mat);
 									});
 								});
-								Funcs::Group("Orthographic", [&]()
+								Layout::Group("Orthographic", [&]()
 								{
-									Funcs::Field("Near", [&](CString)
+									Layout::Field("Near", [&](CString)
 									{
 										ImGui::DragFloat("##oNear##Camera", &camera->oNear, 0.5f, 10.f, camera->oFar - 1.f);
 									});
-									Funcs::Field("Far", [&](CString)
+									Layout::Field("Far", [&](CString)
 									{
 										ImGui::DragFloat("##oFar##Camera", &camera->oFar, 0.5f, camera->oNear + 1.f, 100.f);
 									});
-									Funcs::Field("Matrix", [&](CString)
+									Layout::Field("Matrix", [&](CString)
 									{
 										mat4 mat = camera->getOrthoMatrix();
 										GUI::EditMat4f("##O##Matrix##Camera", mat);
@@ -349,9 +598,9 @@ namespace ml
 						/* * * * * * * * * * * * * * * * * * * * */
 						if (Light * light = ent->get<Light>())
 						{
-							Funcs::Group("Light", [&]()
+							Layout::Group("Light", [&]()
 							{
-								Funcs::Field("Color", [&](CString) 
+								Layout::Field("Color", [&](CString) 
 								{
 									ImGui::ColorEdit4("##Color##Light", &light->color[0]);
 								});
@@ -362,10 +611,10 @@ namespace ml
 						/* * * * * * * * * * * * * * * * * * * * */
 						if (Renderer * renderer = ent->get<Renderer>())
 						{
-							Funcs::Group("Renderer", [&]()
+							Layout::Group("Renderer", [&]()
 							{
 								// Model
-								Funcs::Field("Model", [&](CString)
+								Layout::Field("Model", [&](CString)
 								{
 									List<String> keys = ML_Res.models.keys();
 									int32_t index = ML_Res.models.getIndexOf((Model *)(renderer->drawable()));
@@ -384,43 +633,43 @@ namespace ml
 								});
 								
 								// States
-								//Funcs::Group("States", [&]() {});
+								//Layout::Group("States", [&]() {});
 								for (auto & pair : renderer->states())
 								{
 									switch (pair.first)
 									{
 									case GL::AlphaTest:
-										Funcs::Field("Alpha Test", [&](CString)
+										Layout::Field("Alpha Test", [&](CString)
 										{
 											ImGui::Checkbox("##AlphaTest##States", (bool *)(pair.second.ptr()));
 										});
 										break;
 									case GL::Blend:
-										Funcs::Field("Blend", [&](CString)
+										Layout::Field("Blend", [&](CString)
 										{
 											ImGui::Checkbox("##Blend##States", (bool *)(pair.second.ptr()));
 										});
 										break;
 									case GL::CullFace:
-										Funcs::Field("Cull Face", [&](CString)
+										Layout::Field("Cull Face", [&](CString)
 										{
 											ImGui::Checkbox("##CullFace##States", (bool *)(pair.second.ptr()));
 										});
 										break;
 									case GL::DepthTest:
-										Funcs::Field("Depth Test", [&](CString)
+										Layout::Field("Depth Test", [&](CString)
 										{
 											ImGui::Checkbox("##DepthTest##States", (bool *)(pair.second.ptr()));
 										});
 										break;
 									case GL::Multisample:
-										Funcs::Field("Multisample", [&](CString)
+										Layout::Field("Multisample", [&](CString)
 										{
 											ImGui::Checkbox("##Multisample##States", (bool *)(pair.second.ptr()));
 										});
 										break;
 									case GL::Texture2D:
-										Funcs::Field("Texture2D", [&](CString)
+										Layout::Field("Texture2D", [&](CString)
 										{
 											ImGui::Checkbox("##Texture2D##States", (bool *)(pair.second.ptr()));
 										});
@@ -434,19 +683,19 @@ namespace ml
 						/* * * * * * * * * * * * * * * * * * * * */
 						if (Rigidbody * rb = ent->get<Rigidbody>())
 						{
-							Funcs::Group("Rigidbody", [&]()
+							Layout::Group("Rigidbody", [&]()
 							{
-								Funcs::Field("Index", [&](CString)
+								Layout::Field("Index", [&](CString)
 								{
 									ImGui::Text("%i", rb->index());
 								});
 
-								Funcs::Field("Collider", [&](CString)
+								Layout::Field("Collider", [&](CString)
 								{
 									ImGui::Text("%s", rb->collider() ? "OK" : "NULL");
 								});
 
-								Funcs::Field("Particle", [&](CString)
+								Layout::Field("Particle", [&](CString)
 								{
 									if (ImGui::Selectable("Reset"))
 									{
@@ -454,7 +703,7 @@ namespace ml
 									}
 								});
 
-								Funcs::Field("Transform", [&](CString)
+								Layout::Field("Transform", [&](CString)
 								{
 									ImGui::Text("%s", rb->transform() ? "OK" : "NULL");
 								});
@@ -466,7 +715,7 @@ namespace ml
 					/* * * * * * * * * * * * * * * * * * * * */
 					if (const String file = ML_Res.entities.getFile(name))
 					{
-						Funcs::Field("File", [&](CString)
+						Layout::Field("File", [&](CString)
 						{
 							const String fName = ML_FS.getFileName(file);
 							if (ImGui::Selectable(fName.c_str()))
@@ -474,7 +723,7 @@ namespace ml
 								ML_EventSystem.fireEvent(OS_ExecuteEvent("open", ML_FS.getPathTo(file)));
 							}
 						});
-						Funcs::Field("Path", [&](CString)
+						Layout::Field("Path", [&](CString)
 						{
 							const String fPath = ML_FS.getFilePath(file);
 							if (ImGui::Selectable(fPath.c_str()))
@@ -495,23 +744,23 @@ namespace ml
 	{
 		if (ML_Res.fonts.empty()) return;
 
-		Funcs::Group(ML_Res.fonts.name().c_str(), [&]()
+		Layout::Group(ML_Res.fonts.name().c_str(), [&]()
 		{
 			for (auto & pair : ML_Res.fonts)
 			{
-				Funcs::Group(pair.first.c_str(), [&](CString name, const Font * e)
+				Layout::Group(pair.first.c_str(), [&](CString name, const Font * e)
 				{
-					Funcs::Field("Name", [&](CString label)
+					Layout::Field("Name", [&](CString label)
 					{
 						ImGui::Selectable(name);
 					});
-					Funcs::Field("Family", [&](CString label)
+					Layout::Field("Family", [&](CString label)
 					{
 						ImGui::Selectable(e->getInfo().family.c_str());
 					});
 					if (const String file = ML_Res.fonts.getFile(name))
 					{
-						Funcs::Field("File", [&](CString)
+						Layout::Field("File", [&](CString)
 						{
 							const String fName = ML_FS.getFileName(file);
 							if (ImGui::Selectable(fName.c_str()))
@@ -519,7 +768,7 @@ namespace ml
 								ML_EventSystem.fireEvent(OS_ExecuteEvent("open", ML_FS.getPathTo(file)));
 							}
 						});
-						Funcs::Field("Path", [&](CString)
+						Layout::Field("Path", [&](CString)
 						{
 							const String fPath = ML_FS.getFilePath(file);
 							if (ImGui::Selectable(fPath.c_str()))
@@ -538,23 +787,23 @@ namespace ml
 	{
 		if (ML_Res.images.empty()) return;
 
-		Funcs::Group(ML_Res.images.name().c_str(), [&]()
+		Layout::Group(ML_Res.images.name().c_str(), [&]()
 		{
 			for (auto & pair : ML_Res.images)
 			{
-				Funcs::Group(pair.first.c_str(), [&](CString name, const Image * e)
+				Layout::Group(pair.first.c_str(), [&](CString name, const Image * e)
 				{
-					Funcs::Field("Name", [&](CString label)
+					Layout::Field("Name", [&](CString label)
 					{
 						ImGui::Text("%s", name);
 					});
-					Funcs::Field("Size", [&](CString label)
+					Layout::Field("Size", [&](CString label)
 					{
 						ImGui::Text("%u x %u", e->width(), e->height());
 					});
 					if (const String file = ML_Res.images.getFile(name))
 					{
-						Funcs::Field("File", [&](CString)
+						Layout::Field("File", [&](CString)
 						{
 							const String fName = ML_FS.getFileName(file);
 							if (ImGui::Selectable(fName.c_str()))
@@ -562,7 +811,7 @@ namespace ml
 								ML_EventSystem.fireEvent(OS_ExecuteEvent("open", ML_FS.getPathTo(file)));
 							}
 						});
-						Funcs::Field("Path", [&](CString)
+						Layout::Field("Path", [&](CString)
 						{
 							const String fPath = ML_FS.getFilePath(file);
 							if (ImGui::Selectable(fPath.c_str()))
@@ -581,19 +830,19 @@ namespace ml
 	{
 		if (ML_Res.lua.empty()) return;
 
-		Funcs::Group(ML_Res.lua.name().c_str(), [&]()
+		Layout::Group(ML_Res.lua.name().c_str(), [&]()
 		{
 			for (auto & pair : ML_Res.lua)
 			{
-				Funcs::Group(pair.first.c_str(), [&](CString name, const LuaScript * e)
+				Layout::Group(pair.first.c_str(), [&](CString name, const LuaScript * e)
 				{
-					Funcs::Field("Name", [&](CString label)
+					Layout::Field("Name", [&](CString label)
 					{
 						ImGui::Text("%s", name);
 					});
 					if (const String file = ML_Res.lua.getFile(name))
 					{
-						Funcs::Field("File", [&](CString)
+						Layout::Field("File", [&](CString)
 						{
 							const String fName = ML_FS.getFileName(file);
 							if (ImGui::Selectable(fName.c_str()))
@@ -601,7 +850,7 @@ namespace ml
 								ML_EventSystem.fireEvent(OS_ExecuteEvent("open", ML_FS.getPathTo(file)));
 							}
 						});
-						Funcs::Field("Path", [&](CString)
+						Layout::Field("Path", [&](CString)
 						{
 							const String fPath = ML_FS.getFilePath(file);
 							if (ImGui::Selectable(fPath.c_str()))
@@ -620,20 +869,20 @@ namespace ml
 	{
 		if (ML_Res.materials.empty()) return;
 
-		Funcs::Group(ML_Res.materials.name().c_str(), [&]()
+		Layout::Group(ML_Res.materials.name().c_str(), [&]()
 		{
 			for (auto & pair : ML_Res.materials)
 			{
-				Funcs::Group(pair.first.c_str(), [&](CString name, Material * mat)
+				Layout::Group(pair.first.c_str(), [&](CString name, Material * mat)
 				{
 					// Name
-					Funcs::Field("Name", [&](CString)
+					Layout::Field("Name", [&](CString)
 					{
 						ImGui::Text("%s", name);
 					});
 
 					// Shader
-					Funcs::Field("Shader", [&](CString)
+					Layout::Field("Shader", [&](CString)
 					{
 						List<String> keys = ML_Res.shaders.keys();
 						int32_t index = ML_Res.shaders.getIndexOf(mat->shader());
@@ -652,185 +901,38 @@ namespace ml
 					});
 
 					// Uniforms
-					Funcs::Group("Uniforms", [&]()
+					Layout::Group("Uniforms", [&]()
 					{
-						for (auto & pair : mat->uniforms())
+						Layout::NewUniform(mat);
+
+						if (!mat->uniforms().empty())
 						{
-							Funcs::Field(pair.second->name.c_str(), [&](CString, const String & name)
-							{
-								auto flag_const = []()
-								{
-									ImGui::PushStyleColor(ImGuiCol_Text, { 1.0f, 0.4f, 0.4f, 1.0f });
-									ImGui::Text("[CONST]");
-									ImGui::PopStyleColor();
-								};
-
-								switch (pair.second->type)
-								{
-									// Flt
-									/* * * * * * * * * * * * * * * * * * * * */
-								case uni_flt::ID:
-									if (auto u = dynamic_cast<uni_flt *>(pair.second))
-									{
-										ImGui::DragFloat(String("##Float##Uni##" + name).c_str(), &u->data, 0.1f);
-									}
-									else if (auto u = dynamic_cast<uni_flt_cr *>(pair.second))
-									{
-										flag_const();
-										auto temp = u->data;
-										ImGui::DragFloat(String("##Float##Uni##" + name).c_str(), &temp, 0.1f);
-									}
-									break;
-
-									// Int
-									/* * * * * * * * * * * * * * * * * * * * */
-								case uni_int::ID:
-									if (auto u = dynamic_cast<uni_int *>(pair.second))
-									{
-										ImGui::DragInt(String("##Int##Uni##" + name).c_str(), &u->data, 0.1f);
-									}
-									else if (auto u = dynamic_cast<uni_int_cr *>(pair.second))
-									{
-										flag_const();
-										auto temp = u->data;
-										ImGui::DragInt(String("##Int##Uni##" + name).c_str(), &temp, 0.1f);
-									}
-									break;
-
-									// Vec2
-									/* * * * * * * * * * * * * * * * * * * * */
-								case uni_vec2::ID:
-									if (auto u = dynamic_cast<uni_vec2 *>(pair.second))
-									{
-										GUI::EditVec2f(String("##Vec2##Uni##" + name).c_str(), u->data, 0.1f);
-									}
-									else if (auto u = dynamic_cast<uni_vec2_cr *>(pair.second))
-									{
-										flag_const();
-										auto temp = u->data;
-										GUI::EditVec2f(String("##Vec2##Uni##" + name).c_str(), temp, 0.1f);
-									}
-									break;
-
-									// Vec3
-									/* * * * * * * * * * * * * * * * * * * * */
-								case uni_vec3::ID:
-									if (auto u = dynamic_cast<uni_vec3 *>(pair.second))
-									{
-										GUI::EditVec3f(String("##Vec3##Uni##" + name).c_str(), u->data, 0.1f);
-									}
-									else if (auto u = dynamic_cast<uni_vec3_cr *>(pair.second))
-									{
-										flag_const();
-										auto temp = u->data;
-										GUI::EditVec3f(String("##Vec3##Uni##" + name).c_str(), temp, 0.1f);
-									}
-									break;
-
-									// Vec4
-									/* * * * * * * * * * * * * * * * * * * * */
-								case uni_vec4::ID:
-									if (auto u = dynamic_cast<uni_vec4 *>(pair.second))
-									{
-										GUI::EditVec4f(String("##Vec4##Uni##" + name).c_str(), u->data, 0.1f);
-									}
-									else if (auto u = dynamic_cast<uni_vec4_cr *>(pair.second))
-									{
-										flag_const();
-										auto temp = u->data;
-										GUI::EditVec4f(String("##Vec4##Uni##" + name).c_str(), temp, 0.1f);
-									}
-									break;
-
-									// Col4
-									/* * * * * * * * * * * * * * * * * * * * */
-								case uni_col4::ID:
-									if (auto u = dynamic_cast<uni_col4 *>(pair.second))
-									{
-										ImGui::ColorEdit4(String("##Color##Uni##" + name).c_str(), &u->data[0]);
-									}
-									else if (auto u = dynamic_cast<uni_col4_cr *>(pair.second))
-									{
-										flag_const();
-										auto temp = u->data;
-										ImGui::ColorEdit4(String("##Color##Uni##" + name).c_str(), &temp[0]);
-									}
-									break;
-
-									// Mat3
-									/* * * * * * * * * * * * * * * * * * * * */
-								case uni_mat3::ID:
-									if (auto u = dynamic_cast<uni_mat3 *>(pair.second))
-									{
-										GUI::EditMat3f(String("##Mat3##Uni##" + name).c_str(), u->data, 0.1f);
-									}
-									else if (auto u = dynamic_cast<uni_mat3_cr *>(pair.second))
-									{
-										flag_const();
-										auto temp = u->data;
-										GUI::EditMat3f(String("##Mat3##Uni##" + name).c_str(), temp, 0.1f);
-									}
-									break;
-
-									// Mat4
-									/* * * * * * * * * * * * * * * * * * * * */
-								case uni_mat4::ID:
-									if (auto u = dynamic_cast<uni_mat4 *>(pair.second))
-									{
-										GUI::EditMat4f(String("##Mat4##Uni##" + name).c_str(), u->data, 0.1f);
-									}
-									else if (auto u = dynamic_cast<uni_mat4_cr *>(pair.second))
-									{
-										flag_const();
-										auto temp = u->data;
-										GUI::EditMat4f(String("##Mat4##Uni##" + name).c_str(), temp, 0.1f);
-									}
-									break;
-
-									// Tex
-									/* * * * * * * * * * * * * * * * * * * * */
-								case uni_tex_cp::ID:
-									if (auto u = dynamic_cast<uni_tex_cp *>(pair.second))
-									{
-										int32_t index = ML_Res.textures.getIndexOf(u->data);
-										List<String> keys = ML_Res.textures.keys();
-										if (ImGui::Combo(
-											String("##Tex##Uni##" + name).c_str(),
-											&index,
-											ImGui_Helper::vector_getter,
-											static_cast<void *>(&keys),
-											(int32_t)(keys.size())))
-										{
-											u->data = ML_Res.textures.getByIndex(index);
-										}
-									}
-									break;
-								}
-
-							}, pair.second->name);
+							ImGui::Separator();
 						}
-					});
 
-					// File
-					if (const String file = ML_Res.materials.getFile(name))
-					{
-						Funcs::Field("File", [&](CString)
+						std::vector<Material::UniformMap::iterator> toRemove;
+						
+						for (auto it = mat->uniforms().begin(); it != mat->uniforms().end(); it++)
 						{
-							const String fName = ML_FS.getFileName(file);
-							if (ImGui::Selectable(fName.c_str()))
+							int32_t flag = Layout::EditUniform(String("##" + String(name) + "##Uniform##" + it->first), it->second);
+							switch (flag)
 							{
-								ML_EventSystem.fireEvent(OS_ExecuteEvent("open", ML_FS.getPathTo(file)));
+							case 1:
+								toRemove.push_back(it);
+								break;
+							default:
+								break;
 							}
-						});
-						Funcs::Field("Path", [&](CString)
+						}
+
+						for (auto it : toRemove)
 						{
-							const String fPath = ML_FS.getFilePath(file);
-							if (ImGui::Selectable(fPath.c_str()))
-							{
-								ML_EventSystem.fireEvent(OS_ExecuteEvent("open", ML_FS.getPathTo(fPath)));
-							}
-						});
-					}
+							auto u = it->second;
+							mat->uniforms().erase(it);
+							ITrackable::operator delete(u);
+						}
+
+					});
 
 				}, pair.first.c_str(), pair.second);
 			}
@@ -841,19 +943,19 @@ namespace ml
 	{
 		if (ML_Res.meshes.empty()) return;
 
-		Funcs::Group(ML_Res.meshes.name().c_str(), [&]()
+		Layout::Group(ML_Res.meshes.name().c_str(), [&]()
 		{
 			for (auto & pair : ML_Res.meshes)
 			{
-				Funcs::Group(pair.first.c_str(), [&](CString name, const Mesh * e)
+				Layout::Group(pair.first.c_str(), [&](CString name, const Mesh * e)
 				{
-					Funcs::Field("Name", [&](CString label)
+					Layout::Field("Name", [&](CString label)
 					{
 						ImGui::Text("%s", name);
 					});
 					if (const String file = ML_Res.meshes.getFile(name))
 					{
-						Funcs::Field("File", [&](CString)
+						Layout::Field("File", [&](CString)
 						{
 							const String fName = ML_FS.getFileName(file);
 							if (ImGui::Selectable(fName.c_str()))
@@ -861,7 +963,7 @@ namespace ml
 								ML_EventSystem.fireEvent(OS_ExecuteEvent("open", ML_FS.getPathTo(file)));
 							}
 						});
-						Funcs::Field("Path", [&](CString)
+						Layout::Field("Path", [&](CString)
 						{
 							const String fPath = ML_FS.getFilePath(file);
 							if (ImGui::Selectable(fPath.c_str()))
@@ -880,19 +982,19 @@ namespace ml
 	{
 		if (ML_Res.models.empty()) return;
 
-		Funcs::Group(ML_Res.models.name().c_str(), [&]()
+		Layout::Group(ML_Res.models.name().c_str(), [&]()
 		{
 			for (auto & pair : ML_Res.models)
 			{
-				Funcs::Group(pair.first.c_str(), [&](CString name, const Model * e)
+				Layout::Group(pair.first.c_str(), [&](CString name, const Model * e)
 				{
-					Funcs::Field("Name", [&](CString label)
+					Layout::Field("Name", [&](CString label)
 					{
 						ImGui::Text("%s", name);
 					});
 					if (const String file = ML_Res.models.getFile(name))
 					{
-						Funcs::Field("File", [&](CString)
+						Layout::Field("File", [&](CString)
 						{
 							const String fName = ML_FS.getFileName(file);
 							if (ImGui::Selectable(fName.c_str()))
@@ -900,7 +1002,7 @@ namespace ml
 								ML_EventSystem.fireEvent(OS_ExecuteEvent("open", ML_FS.getPathTo(file)));
 							}
 						});
-						Funcs::Field("Path", [&](CString)
+						Layout::Field("Path", [&](CString)
 						{
 							const String fPath = ML_FS.getFilePath(file);
 							if (ImGui::Selectable(fPath.c_str()))
@@ -919,19 +1021,19 @@ namespace ml
 	{
 		if (ML_Res.plugins.empty()) return;
 
-		Funcs::Group(ML_Res.plugins.name().c_str(), [&]()
+		Layout::Group(ML_Res.plugins.name().c_str(), [&]()
 		{
 			for (auto & pair : ML_Res.plugins)
 			{
-				Funcs::Group(pair.first.c_str(), [&](CString name, const Plugin * e)
+				Layout::Group(pair.first.c_str(), [&](CString name, const Plugin * e)
 				{
-					Funcs::Field("Name", [&](CString label)
+					Layout::Field("Name", [&](CString label)
 					{
 						ImGui::Text("%s", name);
 					});
 					if (const String file = ML_Res.plugins.getFile(name))
 					{
-						Funcs::Field("File", [&](CString)
+						Layout::Field("File", [&](CString)
 						{
 							const String fName = ML_FS.getFileName(file);
 							if (ImGui::Selectable(fName.c_str()))
@@ -939,7 +1041,7 @@ namespace ml
 								ML_EventSystem.fireEvent(OS_ExecuteEvent("open", ML_FS.getPathTo(file)));
 							}
 						});
-						Funcs::Field("Path", [&](CString)
+						Layout::Field("Path", [&](CString)
 						{
 							const String fPath = ML_FS.getFilePath(file);
 							if (ImGui::Selectable(fPath.c_str()))
@@ -958,17 +1060,17 @@ namespace ml
 	{
 		if (ML_Res.scripts.empty()) return;
 
-		Funcs::Group(ML_Res.scripts.name().c_str(), [&]()
+		Layout::Group(ML_Res.scripts.name().c_str(), [&]()
 		{
 			for (auto & pair : ML_Res.scripts)
 			{
-				Funcs::Group(pair.first.c_str(), [&](CString name, Script * scr)
+				Layout::Group(pair.first.c_str(), [&](CString name, Script * scr)
 				{
-					Funcs::Field("Name", [&](CString)
+					Layout::Field("Name", [&](CString)
 					{
 						ImGui::Text("%s", name);
 					});
-					Funcs::Field("Actions", [&](CString)
+					Layout::Field("Actions", [&](CString)
 					{
 						if (ImGui::Selectable("Build"))
 						{
@@ -985,7 +1087,7 @@ namespace ml
 					});
 					if (const String file = ML_Res.scripts.getFile(name))
 					{
-						Funcs::Field("File", [&](CString)
+						Layout::Field("File", [&](CString)
 						{
 							const String fName = ML_FS.getFileName(file);
 							if (ImGui::Selectable(fName.c_str()))
@@ -993,7 +1095,7 @@ namespace ml
 								ML_EventSystem.fireEvent(OS_ExecuteEvent("open", ML_FS.getPathTo(file)));
 							}
 						});
-						Funcs::Field("Path", [&](CString)
+						Layout::Field("Path", [&](CString)
 						{
 							const String fPath = ML_FS.getFilePath(file);
 							if (ImGui::Selectable(fPath.c_str()))
@@ -1012,19 +1114,19 @@ namespace ml
 	{
 		if (ML_Res.shaders.empty()) return;
 
-		Funcs::Group(ML_Res.shaders.name().c_str(), [&]()
+		Layout::Group(ML_Res.shaders.name().c_str(), [&]()
 		{
 			for (auto & pair : ML_Res.shaders)
 			{
-				Funcs::Group(pair.first.c_str(), [&](CString name, const Shader * e)
+				Layout::Group(pair.first.c_str(), [&](CString name, const Shader * e)
 				{
-					Funcs::Field("Name", [&](CString label)
+					Layout::Field("Name", [&](CString label)
 					{
 						ImGui::Text("%s", name);
 					});
 					if (const String file = ML_Res.shaders.getFile(name))
 					{
-						Funcs::Field("File", [&](CString)
+						Layout::Field("File", [&](CString)
 						{
 							const String fName = ML_FS.getFileName(file);
 							if (ImGui::Selectable(fName.c_str()))
@@ -1032,7 +1134,7 @@ namespace ml
 								ML_EventSystem.fireEvent(OS_ExecuteEvent("open", ML_FS.getPathTo(file)));
 							}
 						});
-						Funcs::Field("Path", [&](CString)
+						Layout::Field("Path", [&](CString)
 						{
 							const String fPath = ML_FS.getFilePath(file);
 							if (ImGui::Selectable(fPath.c_str()))
@@ -1051,19 +1153,19 @@ namespace ml
 	{
 		if (ML_Res.skyboxes.empty()) return;
 
-		Funcs::Group(ML_Res.skyboxes.name().c_str(), [&]()
+		Layout::Group(ML_Res.skyboxes.name().c_str(), [&]()
 		{
 			for (auto & pair : ML_Res.skyboxes)
 			{
-				Funcs::Group(pair.first.c_str(), [&](CString name, const Skybox * e)
+				Layout::Group(pair.first.c_str(), [&](CString name, const Skybox * e)
 				{
-					Funcs::Field("Name", [&](CString label)
+					Layout::Field("Name", [&](CString label)
 					{
 						ImGui::Text("%s", name);
 					});
 					if (const String file = ML_Res.skyboxes.getFile(name))
 					{
-						Funcs::Field("File", [&](CString)
+						Layout::Field("File", [&](CString)
 						{
 							const String fName = ML_FS.getFileName(file);
 							if (ImGui::Selectable(fName.c_str()))
@@ -1071,7 +1173,7 @@ namespace ml
 								ML_EventSystem.fireEvent(OS_ExecuteEvent("open", ML_FS.getPathTo(file)));
 							}
 						});
-						Funcs::Field("Path", [&](CString)
+						Layout::Field("Path", [&](CString)
 						{
 							const String fPath = ML_FS.getFilePath(file);
 							if (ImGui::Selectable(fPath.c_str()))
@@ -1090,19 +1192,19 @@ namespace ml
 	{
 		if (ML_Res.sounds.empty()) return;
 
-		Funcs::Group(ML_Res.sounds.name().c_str(), [&]()
+		Layout::Group(ML_Res.sounds.name().c_str(), [&]()
 		{
 			for (auto & pair : ML_Res.sounds)
 			{
-				Funcs::Group(pair.first.c_str(), [&](CString name, const Sound * e)
+				Layout::Group(pair.first.c_str(), [&](CString name, const Sound * e)
 				{
-					Funcs::Field("Name", [&](CString label)
+					Layout::Field("Name", [&](CString label)
 					{
 						ImGui::Text("%s", name);
 					});
 					if (const String file = ML_Res.sounds.getFile(name))
 					{
-						Funcs::Field("File", [&](CString)
+						Layout::Field("File", [&](CString)
 						{
 							const String fName = ML_FS.getFileName(file);
 							if (ImGui::Selectable(fName.c_str()))
@@ -1110,7 +1212,7 @@ namespace ml
 								ML_EventSystem.fireEvent(OS_ExecuteEvent("open", ML_FS.getPathTo(file)));
 							}
 						});
-						Funcs::Field("Path", [&](CString)
+						Layout::Field("Path", [&](CString)
 						{
 							const String fPath = ML_FS.getFilePath(file);
 							if (ImGui::Selectable(fPath.c_str()))
@@ -1129,17 +1231,17 @@ namespace ml
 	{
 		if (ML_Res.entities.empty()) return;
 
-		Funcs::Group(ML_Res.sprites.name().c_str(), [&]()
+		Layout::Group(ML_Res.sprites.name().c_str(), [&]()
 		{
 			for (auto & pair : ML_Res.sprites)
 			{
-				Funcs::Group(pair.first.c_str(), [&](CString name, Sprite * spr)
+				Layout::Group(pair.first.c_str(), [&](CString name, Sprite * spr)
 				{
-					Funcs::Field("Name", [&](CString label)
+					Layout::Field("Name", [&](CString label)
 					{
 						ImGui::Text("%s", name);
 					});
-					Funcs::Field("Color", [&](CString label)
+					Layout::Field("Color", [&](CString label)
 					{
 						auto temp = spr->color();
 						if (ImGui::ColorEdit4("##Color##Sprite", &temp[0]))
@@ -1147,7 +1249,7 @@ namespace ml
 							spr->setColor(temp);
 						}
 					});
-					Funcs::Field("Origin", [&](CString label)
+					Layout::Field("Origin", [&](CString label)
 					{
 						auto temp = spr->origin();
 						if (GUI::EditVec2f("##Origin##Sprite", temp))
@@ -1155,7 +1257,7 @@ namespace ml
 							spr->setOrigin(temp);
 						}
 					});
-					Funcs::Field("Position", [&](CString label)
+					Layout::Field("Position", [&](CString label)
 					{
 						auto temp = spr->position();
 						if (GUI::EditVec2f("##Position##Sprite", temp))
@@ -1163,7 +1265,7 @@ namespace ml
 							spr->setPosition(temp);
 						}
 					});
-					Funcs::Field("Rotation", [&](CString label)
+					Layout::Field("Rotation", [&](CString label)
 					{
 						auto temp = spr->rotation();
 						if (ImGui::DragFloat("##Rotation##Sprite", &temp, 0.5f))
@@ -1171,7 +1273,7 @@ namespace ml
 							spr->setRotation(temp);
 						}
 					});
-					Funcs::Field("Scale", [&](CString label)
+					Layout::Field("Scale", [&](CString label)
 					{
 						auto temp = spr->scale();
 						if (GUI::EditVec2f("##Scale##Sprite", temp))
@@ -1179,7 +1281,7 @@ namespace ml
 							spr->setScale(temp);
 						}
 					});
-					Funcs::Field("Texture", [&](CString label)
+					Layout::Field("Texture", [&](CString label)
 					{
 						int32_t index = ML_Res.textures.getIndexOf(spr->texture());
 						List<String> keys = ML_Res.textures.keys();
@@ -1198,7 +1300,7 @@ namespace ml
 					});
 					if (const String file = ML_Res.sprites.getFile(name))
 					{
-						Funcs::Field("File", [&](CString)
+						Layout::Field("File", [&](CString)
 						{
 							const String fName = ML_FS.getFileName(file);
 							if (ImGui::Selectable(fName.c_str()))
@@ -1206,7 +1308,7 @@ namespace ml
 								ML_EventSystem.fireEvent(OS_ExecuteEvent("open", ML_FS.getPathTo(file)));
 							}
 						});
-						Funcs::Field("Path", [&](CString)
+						Layout::Field("Path", [&](CString)
 						{
 							const String fPath = ML_FS.getFilePath(file);
 							if (ImGui::Selectable(fPath.c_str()))
@@ -1225,25 +1327,25 @@ namespace ml
 	{
 		if (ML_Res.textures.empty()) return;
 
-		Funcs::Group(ML_Res.textures.name().c_str(), [&]()
+		Layout::Group(ML_Res.textures.name().c_str(), [&]()
 		{
 			for (auto & pair : ML_Res.textures)
 			{
-				Funcs::Group(pair.first.c_str(), [&](CString name, Texture * tex)
+				Layout::Group(pair.first.c_str(), [&](CString name, Texture * tex)
 				{
-					Funcs::Field("Name", [&](CString label)
+					Layout::Field("Name", [&](CString label)
 					{
 						ImGui::Text("%s", name);
 					});
-					Funcs::Field("Size", [&](CString label)
+					Layout::Field("Size", [&](CString label)
 					{
 						ImGui::Text("%u x %u", tex->width(), tex->height());
 					});
-					Funcs::Field("Real Size", [&](CString label)
+					Layout::Field("Real Size", [&](CString label)
 					{
 						ImGui::Text("%u x %u", tex->realWidth(), tex->realHeight());
 					});
-					Funcs::Field("Mipmapped", [&](CString label)
+					Layout::Field("Mipmapped", [&](CString label)
 					{
 						bool temp = tex->mipmapped();
 						if (ImGui::Checkbox("##Texture##Mipmapped", &temp))
@@ -1251,7 +1353,7 @@ namespace ml
 							tex->setMipmapped(temp);
 						}
 					});
-					Funcs::Field("Repeated", [&](CString label)
+					Layout::Field("Repeated", [&](CString label)
 					{
 						bool temp = tex->repeated();
 						if (ImGui::Checkbox("##Texture##Repeated", &temp))
@@ -1259,7 +1361,7 @@ namespace ml
 							tex->setRepeated(temp);
 						}
 					});
-					Funcs::Field("Smooth", [&](CString label)
+					Layout::Field("Smooth", [&](CString label)
 					{
 						bool temp = tex->smooth();
 						if (ImGui::Checkbox("##Texture##Smooth", &temp))
@@ -1270,7 +1372,7 @@ namespace ml
 
 					if (const String file = ML_Res.textures.getFile(name))
 					{
-						Funcs::Field("File", [&](CString)
+						Layout::Field("File", [&](CString)
 						{
 							const String fName = ML_FS.getFileName(file);
 							if (ImGui::Selectable(fName.c_str()))
@@ -1278,7 +1380,7 @@ namespace ml
 								ML_EventSystem.fireEvent(OS_ExecuteEvent("open", ML_FS.getPathTo(file)));
 							}
 						});
-						Funcs::Field("Path", [&](CString)
+						Layout::Field("Path", [&](CString)
 						{
 							const String fPath = ML_FS.getFilePath(file);
 							if (ImGui::Selectable(fPath.c_str()))

@@ -65,7 +65,7 @@ namespace ml
 		{
 			for (const auto & pair : m_uniforms)
 			{
-				if (!pair.second || !pair.second->name || !pair.second->type)
+				if (!pair.second || !pair.second->name)
 					continue;
 
 				switch (pair.second->type)

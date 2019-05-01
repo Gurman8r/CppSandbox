@@ -184,6 +184,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shaders", "shaders", "{EBE5A83C-5F76-4C8A-9AC9-C76829814D46}"
 	ProjectSection(SolutionItems) = preProject
 		assets\shaders\basic.shader = assets\shaders\basic.shader
+		assets\shaders\example.shader = assets\shaders\example.shader
 		assets\shaders\framebuffer.shader = assets\shaders\framebuffer.shader
 		assets\shaders\geometry.shader = assets\shaders\geometry.shader
 		assets\shaders\lighting.shader = assets\shaders\lighting.shader

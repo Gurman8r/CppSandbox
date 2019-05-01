@@ -56,10 +56,10 @@ namespace ml
 
 		switch (*value)
 		{
-		case ml::GraphicsEvent::EV_GL_Error:
-			if (const auto * ev = value->as<ml::GL_ErrorEvent>())
+		case GraphicsEvent::EV_GL_Error:
+			if (const auto * ev = value->as<GL_ErrorEvent>())
 			{
-				ml::cerr << (*ev) << ml::endl;
+				ml::cout << (*ev) << ml::endl;
 			}
 			break;
 
