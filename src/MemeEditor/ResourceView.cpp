@@ -768,23 +768,42 @@ namespace ml
 						{
 							Layout::Group("Rigidbody", [&]()
 							{
+								Layout::Field("Enabled", [&](CString)
+								{
+									ImGui::Checkbox("##Enabled##Rigidbody", &rb->enabled);
+								});
+
 								Layout::Field("Index", [&](CString)
 								{
 									ImGui::Text("%i", rb->index());
 								});
 
-								Layout::Field("Particle", [&](CString)
+								Layout::Group("Motion Controller", [&]()
 								{
-									if (ImGui::Selectable("Reset##Particle##Rigidbody"))
+									Layout::Field("Actions", [&](CString)
 									{
-										rb->particle()->reset();
-									}
+										if (ImGui::Selectable("Reset##Particle##Rigidbody"))
+										{
+											rb->particle()->reset();
+										}
+									});
+									Layout::Field("Position",				[&](CString) {	GUI::EditVec3f("##Position##Particle##Rigidbody",						rb->particle()->pos);});
+									Layout::Field("Velocity",				[&](CString) {	GUI::EditVec3f("##Velocity##Particle##Rigidbody",						rb->particle()->vel);});
+									Layout::Field("Acceleration",			[&](CString) {	GUI::EditVec3f("##Acceleration##Particle##Rigidbody",					rb->particle()->acc);});
+									Layout::Field("Force",					[&](CString) {	GUI::EditVec3f("##Force##Particle##Rigidbody",							rb->particle()->force);});
+									Layout::Field("Momentum",				[&](CString) {	GUI::EditVec3f("##Momentum##Particle##Rigidbody",						rb->particle()->momentum);});
+									Layout::Field("Rotation",				[&](CString) {	GUI::EditQuat ("##Rotation##Particle##Rigidbody",						rb->particle()->rotation);});
+									Layout::Field("Angular Velocity",		[&](CString) {	GUI::EditVec3f("##Angular Velocity##Particle##Rigidbody",				rb->particle()->angularVel);});
+									Layout::Field("Angular Acceleration",	[&](CString) {	GUI::EditVec3f("##Angular Acceleration##Particle##Rigidbody",			rb->particle()->angularAcc);});
+									Layout::Field("Angular Momentum",		[&](CString) {	GUI::EditVec3f("##Angular Momentum##Particle##Rigidbody",				rb->particle()->angularMomentum);});
+									Layout::Field("Torque",					[&](CString) {	GUI::EditVec3f("##Torque##Particle##Rigidbody",							rb->particle()->torque);});
+									Layout::Field("Inirtia Tensor",			[&](CString) {	GUI::EditMat3f("##Inirtia Tensor##Particle##Rigidbody",					rb->particle()->inertiaTensor);});
+									Layout::Field("IT Inverse",				[&](CString) {	GUI::EditMat3f("##Inirtia Tensor Inverse##Particle##Rigidbody",			rb->particle()->inertiaTensorInv);});
+									Layout::Field("IT World",				[&](CString) {	GUI::EditMat3f("##Inirtia Tensor World##Particle##Rigidbody",			rb->particle()->inertiaTensor_world);});
+									Layout::Field("IT World Inverse",		[&](CString) {	GUI::EditMat3f("##Inirtia Tensor World Inverse##Particle##Rigidbody",	rb->particle()->inertiaTensorInv_world);});
+									Layout::Field("Center Mass",			[&](CString) {	GUI::EditVec3f("##Center Mass##Particle##Rigidbody",					rb->particle()->centerMass);});
+									Layout::Field("Center Mass World",		[&](CString) {	GUI::EditVec3f("##Center Mass World##Particle##Rigidbody",				rb->particle()->centerMass_world);});
 
-									GUI::EditVec3f("Position##Particle##Rigidbody", rb->particle()->pos);
-									GUI::EditVec3f("Velocity##Particle##Rigidbody", rb->particle()->vel);
-									GUI::EditVec3f("Acccleration##Particle##Rigidbody", rb->particle()->acc);
-									GUI::EditVec3f("Force##Particle##Rigidbody", rb->particle()->force);
-									GUI::EditVec3f("Momentum##Particle##Rigidbody", rb->particle()->momentum);
 								});
 
 								Layout::Field("Collider", [&](CString)

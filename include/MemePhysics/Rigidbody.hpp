@@ -34,6 +34,8 @@ namespace ml
 		inline const Transform *transform() const	{ return m_transform;	}
 		inline Transform *		transform()			{ return m_transform;	}
 
+		bool enabled = true;
+
 	private:
 		int32_t			m_index;
 		Transform *		m_transform;

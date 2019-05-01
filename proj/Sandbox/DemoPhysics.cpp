@@ -49,7 +49,8 @@ namespace DEMO
 		if (state.get<state.T_Pos>(i, pos) &&
 			state.get<state.T_Rot>(i, rot) &&
 			state.get<state.T_Mat>(i, mat) &&
-			state.get<state.T_Inv>(i, inv))
+			state.get<state.T_Inv>(i, inv) &&
+			rb->enabled)
 		{
 			// Modify copy state's data
 			switch (i)
