@@ -43,7 +43,7 @@ namespace ml
 		bool show_builder		= true;
 		bool show_inspector		= false;
 		bool show_sceneView		= true;
-		bool show_textEditor	= true;
+		bool show_textEditor	= false;
 		bool show_resourceView	= true;
 		bool show_profiler		= true;
 		bool show_network		= false;

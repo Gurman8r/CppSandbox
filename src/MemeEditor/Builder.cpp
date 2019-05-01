@@ -15,18 +15,18 @@ namespace ml
 		: GUI_Window("Builder")
 		, m_shader(ML_Res.shaders.load(ML_TEST_SHADER))
 	{
-		createFile("Vertex",	ML_VERT_EXAMPLE);
-		createFile("Fragment",	ML_FRAG_EXAMPLE);
-		createFile("Geometry",	ML_GEOM_EXAMPLE);
+		m_files.push_back(new BuildFile("Vertex", ML_VERT_EXAMPLE));
+		m_files.push_back(new BuildFile("Fragment", ML_FRAG_EXAMPLE));
+		//m_files.push_back(new BuildFile("Geometry", ML_GEOM_EXAMPLE));
 	}
 
 	Builder::~Builder()
 	{
-		for (auto & pair : m_data)
+		for (auto it : m_files)
 		{
-			delete pair.second;
+			delete it;
 		}
-		m_data.clear();
+		m_files.clear();
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
@@ -39,21 +39,77 @@ namespace ml
 	{
 		if (beginDraw(p_open, ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_AlwaysAutoResize))
 		{
-			// Store Full Source
-			/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-			SStream source;
-			for (const auto & pair : m_data)
-			{
-				source << pair.second->data << endl << endl;
-			}
-
 			// Menu Bar
 			/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 			if (ImGui::BeginMenuBar())
 			{
+				// New
+				/* * * * * * * * * * * * * * * * * * * * */
+				if (ImGui::MenuItem("New"))
+				{
+					ImGui::OpenPopup("New File");
+				}
+				if (ImGui::BeginPopupModal("New File", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+				{
+					static char name[32] = "New File";
+
+					auto closePopup = [&]()
+					{
+						std::strcpy(name, "New File");
+						ImGui::CloseCurrentPopup();
+					};
+
+					ImGui::InputText("Name", name, IM_ARRAYSIZE(name),
+						ImGuiInputTextFlags_EnterReturnsTrue
+					);
+
+					if (ImGui::Button("Submit"))
+					{
+						auto addNewFile = [&]()
+						{
+							if (!String(name))
+							{
+								Debug::logError("Name cannot be empty");
+								return;
+							}
+
+							for (auto file : m_files)
+							{
+								if (file->name == name)
+								{
+									Debug::logError("File with name \'{0}\' already exists", name);
+									return;
+								}
+							}
+
+							m_files.push_back(new BuildFile(name, String()));
+						};
+						addNewFile();
+						closePopup();
+					}
+					ImGui::SameLine();
+					if (ImGui::Button("Cancel"))
+					{
+						closePopup();
+					}
+
+					ImGui::EndPopup();
+				}
+
+				// Compile
+				/* * * * * * * * * * * * * * * * * * * * */
 				if (ImGui::MenuItem("Compile"))
 				{
-					if (m_shader && m_shader->loadFromMemory(source.str()))
+					SStream ss;
+
+					for (auto & it : m_files)
+					{
+						it->dirty = false;
+
+						ss << it->text << endl << endl;
+					}
+					
+					if (m_shader && m_shader->loadFromMemory(ss.str()))
 					{
 						Debug::log("Compiled Shader: {0}", ML_TEST_SHADER);
 					}
@@ -66,41 +122,71 @@ namespace ml
 				ImGui::EndMenuBar();
 			}
 
-			// Tab Bar
+			// File Tabs Bar
 			/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 			ImGui::BeginGroup();
-			ImGui::BeginChild("Tabs");
-			if (ImGui::BeginTabBar("Main Tab Bar", ImGuiTabBarFlags_Reorderable))
+			ImGui::BeginChild("Shader Content Tabs");
+			if (ImGui::BeginTabBar("Shader Content Tabs", ImGuiTabBarFlags_Reorderable))
 			{
 				/* * * * * * * * * * * * * * * * * * * * */
-				
-				for (auto & pair : m_data)
-				{
-					BuildFile *	file = pair.second;
 
-					if (ImGui::BeginTabItem(file->name.c_str()))
-					{
+				std::vector<BuildMap::iterator> toRemove;
+
+				/* * * * * * * * * * * * * * * * * * * * */
+
+				for (auto it = m_files.begin(); it != m_files.end(); it++)
+				{
+					BuildFile *	file = (*it);
+				
+					const size_t i = (it - m_files.begin());
+
+					bool * t_open = i > 1 ? &file->open : NULL;
+
+					// File Tab
+					if (ImGui::BeginTabItem(
+						String("[" + std::to_string(i) + "] " + file->name).c_str(),
+						t_open,
+						0//file->dirty ? ImGuiTabItemFlags_UnsavedDocument : 0
+					))
+					{	// Input Text Content Area
 						if (ImGui::BeginChild(
-							"ShaderSourceInput", 
-							{ 0, 0 }, 
+							"InputTextContentArea",
+							{ 0, 0 },
 							true,
 							ImGuiWindowFlags_AlwaysHorizontalScrollbar
 						))
-						{
+						{	/* * * * * * * * * * * * * * * * * * * * */
+
 							if (ImGui::InputTextMultiline(
-								"##ShaderSourceInput",
-								file->data,
+								String("##File" + file->name + "##Text").c_str(),
+								file->text,
 								BuildFile::MaxSize,
 								{ -1.f, -1.f },
 								ImGuiInputTextFlags_AllowTabInput
 							))
 							{
-								// changed
+								file->dirty = true;
 							}
+
+							/* * * * * * * * * * * * * * * * * * * * */
+
 							ImGui::EndChild();
 						}
 						ImGui::EndTabItem();
 					}
+
+					if (!file->open)
+					{
+						toRemove.push_back(it);
+					}
+				}
+
+				/* * * * * * * * * * * * * * * * * * * * */
+
+				for (auto it : toRemove)
+				{
+					delete (*it);
+					m_files.erase(it);
 				}
 
 				/* * * * * * * * * * * * * * * * * * * * */

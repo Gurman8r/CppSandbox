@@ -30,15 +30,21 @@ namespace ml
 			using Source = typename char[MaxSize];
 
 			String	name;
-			Source	data;
+			Source	text;
+			bool	open;
+			bool	dirty;
 
-			BuildFile(const String & name, const String & data)
+			BuildFile(const String & name, const String & text = String())
 				: name(name)
-				, data()
+				, text()
+				, open(true)
+				, dirty(false)
 			{
-				std::strcpy(this->data, data.c_str());
+				if (text) { std::strcpy(this->text, text.c_str()); }
 			}
 		};
+
+		using BuildMap = typename List<BuildFile *>;
 
 	private:
 		/* * * * * * * * * * * * * * * * * * * * */
@@ -52,17 +58,7 @@ namespace ml
 
 	private:
 		/* * * * * * * * * * * * * * * * * * * * */
-		inline BuildFile * createFile(const String & name, const String & data)
-		{
-			return ((m_data.find(name) == m_data.end())
-				? (m_data.insert({ name, new BuildFile(name, data) }).first->second)
-				: (NULL)
-			);
-		}
-
-	private:
-		/* * * * * * * * * * * * * * * * * * * * */
-		Map<String, BuildFile *> m_data;
+		BuildMap m_files;
 		Shader * m_shader;
 	};
 

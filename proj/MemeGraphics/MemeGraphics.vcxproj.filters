@@ -22,9 +22,6 @@
     <Filter Include="Header Files\Drawable">
       <UniqueIdentifier>{d15342cc-d15c-402e-accc-c3a2c45796a3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Drawable">
-      <UniqueIdentifier>{22518504-c8c3-4139-b999-60b4911a73bd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Rendering">
       <UniqueIdentifier>{0948861a-0cdf-4c56-afbb-b4a431bb642a}</UniqueIdentifier>
     </Filter>
@@ -42,6 +39,9 @@
     </Filter>
     <Filter Include="Header Files\Handles">
       <UniqueIdentifier>{f40141fa-939c-4f2f-898e-eecc94a97b5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Drawable">
+      <UniqueIdentifier>{22518504-c8c3-4139-b999-60b4911a73bd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

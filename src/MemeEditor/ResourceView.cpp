@@ -88,11 +88,39 @@ namespace ml
 
 		/* * * * * * * * * * * * * * * * * * * * */
 
-		inline static int32_t EditUniform(const String & label, uni_base * value)
+		template <
+			class Fun, class ... Args
+		> inline static void ConstField(CString label, Fun fun, Args ... args)
+		{
+			ImGui::AlignTextToFramePadding();
+			ImGui::PushStyleColor(ImGuiCol_Text, { 1.0f, 0.4f, 0.4f, 1.0f });
+			ImGui::Text(" [const]");
+			ImGui::PopStyleColor();
+			ImGui::SameLine();
+
+			ImGui::TreeNodeEx(
+				"ResourceView_Field",
+				ImGuiTreeNodeFlags_Leaf |
+				ImGuiTreeNodeFlags_NoTreePushOnOpen |
+				ImGuiTreeNodeFlags_Bullet,
+				"%s",
+				label);
+			
+
+			ImGui::NextColumn();
+			ImGui::PushItemWidth(-1);
+			{
+				fun(label, (args)...);
+			}
+			ImGui::PopItemWidth();
+			ImGui::NextColumn();
+		}
+
+		inline static int32_t EditUniform(const String & label, uni_base * value, bool show_constants)
 		{
 			int32_t flag = 0;
 
-			auto header_editable = [&]() 
+			auto header_editable = [&]()
 			{
 				if (ImGui::Button(String("Delete" + label).c_str()))
 				{
@@ -103,152 +131,215 @@ namespace ml
 			auto header_const = [&]()
 			{
 				ImGui::PushStyleColor(ImGuiCol_Text, { 1.0f, 0.4f, 0.4f, 1.0f });
-				ImGui::Text("[const]");
+				ImGui::Text("[const] ");
 				ImGui::PopStyleColor();
 			};
 
-			Layout::Field(value->name.c_str(), [&](CString, const String & name)
+			switch (value->type)
 			{
-				switch (value->type)
+				// Flt
+				/* * * * * * * * * * * * * * * * * * * * */
+			case uni_flt::ID:
+				if (auto u = dynamic_cast<uni_flt *>(value))
 				{
-					// Flt
-					/* * * * * * * * * * * * * * * * * * * * */
-				case uni_flt::ID:
-					if (auto u = dynamic_cast<uni_flt *>(value))
+					Layout::Field(value->name.c_str(), [&](CString)
 					{
-						header_editable();
-						ImGui::DragFloat(String(label + "##Float##Uni##" + name).c_str(), &u->data, 0.1f);
-					}
-					else if (auto u = dynamic_cast<uni_flt_cr *>(value))
-					{
-						header_const();
-						auto temp = u->data;
-						ImGui::DragFloat(String(label + "##Float##Uni##" + name).c_str(), &temp, 0.1f);
-					}
+						ImGui::DragFloat(String(label + "##Float##Uni##" + value->name).c_str(), &u->data, 0.1f);
+					});
 					break;
+				}
+				else if (show_constants)
+				{
+					if (auto u = dynamic_cast<uni_flt_cr *>(value))
+					{
+						Layout::ConstField(value->name.c_str(), [&](CString)
+						{
+							auto temp = u->data;
+							ImGui::DragFloat(String(label + "##Float##Uni##" + value->name).c_str(), &temp, 0.1f);
+						});
+						break;
+					}
+				}
 
-					// Int
-					/* * * * * * * * * * * * * * * * * * * * */
-				case uni_int::ID:
-					if (auto u = dynamic_cast<uni_int *>(value))
+				// Int
+				/* * * * * * * * * * * * * * * * * * * * */
+			case uni_int::ID:
+				if (auto u = dynamic_cast<uni_int *>(value))
+				{
+					Layout::Field(value->name.c_str(), [&](CString)
 					{
-						header_editable();
-						ImGui::DragInt(String(label + "##Int##Uni##" + name).c_str(), &u->data, 0.1f);
-					}
-					else if (auto u = dynamic_cast<uni_int_cr *>(value))
-					{
-						header_const();
-						auto temp = u->data;
-						ImGui::DragInt(String(label + "##Int##Uni##" + name).c_str(), &temp, 0.1f);
-					}
+						ImGui::DragInt(String(label + "##Int##Uni##" + value->name).c_str(), &u->data, 0.1f);
+					});
 					break;
+				}
+				else if (show_constants)
+				{
+					if (auto u = dynamic_cast<uni_int_cr *>(value))
+					{
+						Layout::ConstField(value->name.c_str(), [&](CString)
+						{
+							auto temp = u->data;
+							ImGui::DragInt(String(label + "##Int##Uni##" + value->name).c_str(), &temp, 0.1f);
+						});
+						break;
+					}
+				}
 
-					// Vec2
-					/* * * * * * * * * * * * * * * * * * * * */
-				case uni_vec2::ID:
-					if (auto u = dynamic_cast<uni_vec2 *>(value))
+				// Vec2
+				/* * * * * * * * * * * * * * * * * * * * */
+			case uni_vec2::ID:
+				if (auto u = dynamic_cast<uni_vec2 *>(value))
+				{
+					Layout::Field(value->name.c_str(), [&](CString)
 					{
-						header_editable();
-						GUI::EditVec2f(String(label + "##Vec2##Uni##" + name).c_str(), u->data, 0.1f);
-					}
-					else if (auto u = dynamic_cast<uni_vec2_cr *>(value))
-					{
-						header_const();
-						auto temp = u->data;
-						GUI::EditVec2f(String(label + "##Vec2##Uni##" + name).c_str(), temp, 0.1f);
-					}
+						GUI::EditVec2f(String(label + "##Vec2##Uni##" + value->name).c_str(), u->data, 0.1f);
+					});
 					break;
+				}
+				else if (show_constants)
+				{
+					if (auto u = dynamic_cast<uni_vec2_cr *>(value))
+					{
+						Layout::ConstField(value->name.c_str(), [&](CString)
+						{
+							auto temp = u->data;
+							GUI::EditVec2f(String(label + "##Vec2##Uni##" + value->name).c_str(), temp, 0.1f);
+						});
+						break;
+					}
+				}
 
-					// Vec3
-					/* * * * * * * * * * * * * * * * * * * * */
-				case uni_vec3::ID:
-					if (auto u = dynamic_cast<uni_vec3 *>(value))
+				// Vec3
+				/* * * * * * * * * * * * * * * * * * * * */
+			case uni_vec3::ID:
+				if (auto u = dynamic_cast<uni_vec3 *>(value))
+				{
+					Layout::Field(value->name.c_str(), [&](CString)
 					{
-						header_editable();
-						GUI::EditVec3f(String(label + "##Vec3##Uni##" + name).c_str(), u->data, 0.1f);
-					}
-					else if (auto u = dynamic_cast<uni_vec3_cr *>(value))
-					{
-						header_const();
-						auto temp = u->data;
-						GUI::EditVec3f(String(label + "##Vec3##Uni##" + name).c_str(), temp, 0.1f);
-					}
+						GUI::EditVec3f(String(label + "##Vec3##Uni##" + value->name).c_str(), u->data, 0.1f);
+					});
 					break;
+				}
+				else if (show_constants)
+				{
+					if (auto u = dynamic_cast<uni_vec3_cr *>(value))
+					{
+						Layout::ConstField(value->name.c_str(), [&](CString)
+						{
+							auto temp = u->data;
+							GUI::EditVec3f(String(label + "##Vec3##Uni##" + value->name).c_str(), temp, 0.1f);
+						});
+						break;
+					}
+				}
 
-					// Vec4
-					/* * * * * * * * * * * * * * * * * * * * */
-				case uni_vec4::ID:
-					if (auto u = dynamic_cast<uni_vec4 *>(value))
+				// Vec4
+				/* * * * * * * * * * * * * * * * * * * * */
+			case uni_vec4::ID:
+				if (auto u = dynamic_cast<uni_vec4 *>(value))
+				{
+					Layout::Field(value->name.c_str(), [&](CString)
 					{
-						header_editable();
-						GUI::EditVec4f(String(label + "##Vec4##Uni##" + name).c_str(), u->data, 0.1f);
-					}
-					else if (auto u = dynamic_cast<uni_vec4_cr *>(value))
-					{
-						header_const();
-						auto temp = u->data;
-						GUI::EditVec4f(String(label + "##Vec4##Uni##" + name).c_str(), temp, 0.1f);
-					}
+						GUI::EditVec4f(String(label + "##Vec4##Uni##" + value->name).c_str(), u->data, 0.1f);
+					});
 					break;
+				}
+				else if (show_constants)
+				{
+					if (auto u = dynamic_cast<uni_vec4_cr *>(value))
+					{
+						Layout::ConstField(value->name.c_str(), [&](CString)
+						{
+							auto temp = u->data;
+							GUI::EditVec4f(String(label + "##Vec4##Uni##" + value->name).c_str(), temp, 0.1f);
+						});
+						break;
+					}
+				}
 
-					// Col4
-					/* * * * * * * * * * * * * * * * * * * * */
-				case uni_col4::ID:
-					if (auto u = dynamic_cast<uni_col4 *>(value))
+				// Col4
+				/* * * * * * * * * * * * * * * * * * * * */
+			case uni_col4::ID:
+				if (auto u = dynamic_cast<uni_col4 *>(value))
+				{
+					Layout::Field(value->name.c_str(), [&](CString)
 					{
-						header_editable();
-						ImGui::ColorEdit4(String(label + "##Color##Uni##" + name).c_str(), &u->data[0]);
-					}
-					else if (auto u = dynamic_cast<uni_col4_cr *>(value))
-					{
-						header_const();
-						auto temp = u->data;
-						ImGui::ColorEdit4(String(label + "##Color##Uni##" + name).c_str(), &temp[0]);
-					}
+						ImGui::ColorEdit4(String(label + "##Color##Uni##" + value->name).c_str(), &u->data[0]);
+					});
 					break;
+				}
+				else if (show_constants)
+				{
+					if (auto u = dynamic_cast<uni_col4_cr *>(value))
+					{
+						Layout::ConstField(value->name.c_str(), [&](CString)
+						{
+							auto temp = u->data;
+							ImGui::ColorEdit4(String(label + "##Color##Uni##" + value->name).c_str(), &temp[0]);
+						});
+						break;
+					}
+				}
 
-					// Mat3
-					/* * * * * * * * * * * * * * * * * * * * */
-				case uni_mat3::ID:
-					if (auto u = dynamic_cast<uni_mat3 *>(value))
+				// Mat3
+				/* * * * * * * * * * * * * * * * * * * * */
+			case uni_mat3::ID:
+				if (auto u = dynamic_cast<uni_mat3 *>(value))
+				{
+					Layout::Field(value->name.c_str(), [&](CString)
 					{
-						header_editable();
-						GUI::EditMat3f(String(label + "##Mat3##Uni##" + name).c_str(), u->data, 0.1f);
-					}
-					else if (auto u = dynamic_cast<uni_mat3_cr *>(value))
-					{
-						header_const();
-						auto temp = u->data;
-						GUI::EditMat3f(String(label + "##Mat3##Uni##" + name).c_str(), temp, 0.1f);
-					}
+						GUI::EditMat3f(String(label + "##Mat3##Uni##" + value->name).c_str(), u->data, 0.1f);
+					});
 					break;
+				}
+				else if (show_constants)
+				{
+					if (auto u = dynamic_cast<uni_mat3_cr *>(value))
+					{
+						Layout::ConstField(value->name.c_str(), [&](CString)
+						{
+							auto temp = u->data;
+							GUI::EditMat3f(String(label + "##Mat3##Uni##" + value->name).c_str(), temp, 0.1f);
+						});
+						break;
+					}
+				}
 
-					// Mat4
-					/* * * * * * * * * * * * * * * * * * * * */
-				case uni_mat4::ID:
-					if (auto u = dynamic_cast<uni_mat4 *>(value))
+				// Mat4
+				/* * * * * * * * * * * * * * * * * * * * */
+			case uni_mat4::ID:
+				if (auto u = dynamic_cast<uni_mat4 *>(value))
+				{
+					Layout::Field(value->name.c_str(), [&](CString)
 					{
-						header_editable();
-						GUI::EditMat4f(String(label + "##Mat4##Uni##" + name).c_str(), u->data, 0.1f);
-					}
-					else if (auto u = dynamic_cast<uni_mat4_cr *>(value))
-					{
-						header_const();
-						auto temp = u->data;
-						GUI::EditMat4f(String(label + "##Mat4##Uni##" + name).c_str(), temp, 0.1f);
-					}
+						GUI::EditMat4f(String(label + "##Mat4##Uni##" + value->name).c_str(), u->data, 0.1f);
+					});
 					break;
-
-					// Tex
-					/* * * * * * * * * * * * * * * * * * * * */
-				case uni_tex_cp::ID:
-					if (auto u = dynamic_cast<uni_tex_cp *>(value))
+				}
+				else if (show_constants)
+				{
+					if (auto u = dynamic_cast<uni_mat4_cr *>(value))
 					{
-						header_editable();
+						Layout::ConstField(value->name.c_str(), [&](CString)
+						{
+							auto temp = u->data;
+							GUI::EditMat4f(String(label + "##Mat4##Uni##" + value->name).c_str(), temp, 0.1f);
+						});
+						break;
+					}
+				}
+
+				// Tex
+				/* * * * * * * * * * * * * * * * * * * * */
+			case uni_tex_cp::ID:
+				if (auto u = dynamic_cast<uni_tex_cp *>(value))
+				{
+					Layout::Field(value->name.c_str(), [&](CString)
+					{
 						int32_t index = ML_Res.textures.getIndexOf(u->data);
 						List<String> keys = ML_Res.textures.keys();
 						if (ImGui::Combo(
-							String(label + "##Tex##Uni##" + name).c_str(),
+							String(label + "##Tex##Uni##" + value->name).c_str(),
 							&index,
 							ImGui_Helper::vector_getter,
 							static_cast<void *>(&keys),
@@ -256,13 +347,13 @@ namespace ml
 						{
 							u->data = ML_Res.textures.getByIndex(index);
 						}
-					}
-					break;
+					});
+
 				}
+				break;
+			}
 
-				ImGui::Separator();
-
-			}, value->name);
+			ImGui::Separator();
 
 			return flag;
 		}
@@ -273,7 +364,7 @@ namespace ml
 			{
 				ImGui::OpenPopup("New Uniform Editor");
 			}
-			if (ImGui::BeginPopupModal("New Uniform Editor", NULL, ImGuiWindowFlags_MenuBar))
+			if (ImGui::BeginPopupModal("New Uniform Editor", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 			{
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
@@ -289,8 +380,15 @@ namespace ml
 					"Mat4",
 					"Tex",
 				};
-				static int32_t type	= 0;
+				static int32_t type = 0;
 				static char name[32] = "New_Uniform\0";
+
+				auto closePopup = [&]()
+				{
+					type = 0;
+					std::strcpy(name, "New_Uniform\0");
+					ImGui::CloseCurrentPopup();
+				};
 
 				ImGui::Combo("Type", &type, typeList, IM_ARRAYSIZE(typeList));
 				ImGui::InputText("Name", name, IM_ARRAYSIZE(name), ImGuiInputTextFlags_EnterReturnsTrue);
@@ -304,21 +402,19 @@ namespace ml
 						uni_base * u = NULL;
 						switch (type)
 						{
-						case uni_base::Flt	: u = new uni_flt	(name, 0);	break;
-						case uni_base::Int	: u = new uni_int	(name, 0);	break;
-						case uni_base::Vec2	: u = new uni_vec2	(name, 0);	break;
-						case uni_base::Vec3	: u = new uni_vec3	(name, 0);	break;
-						case uni_base::Vec4	: u = new uni_vec4	(name, 0);	break;
-						case uni_base::Col4	: u = new uni_col4	(name, 0);	break;
-						case uni_base::Mat3	: u = new uni_mat3	(name, 0);	break;
-						case uni_base::Mat4	: u = new uni_mat4	(name, 0);	break;
-						case uni_base::Tex	: u = new uni_tex_cp(name, 0);	break;
+						case uni_base::Flt: u = new uni_flt(name, 0);	break;
+						case uni_base::Int: u = new uni_int(name, 0);	break;
+						case uni_base::Vec2: u = new uni_vec2(name, 0);	break;
+						case uni_base::Vec3: u = new uni_vec3(name, 0);	break;
+						case uni_base::Vec4: u = new uni_vec4(name, 0);	break;
+						case uni_base::Col4: u = new uni_col4(name, 0);	break;
+						case uni_base::Mat3: u = new uni_mat3(name, 0);	break;
+						case uni_base::Mat4: u = new uni_mat4(name, 0);	break;
+						case uni_base::Tex: u = new uni_tex_cp(name, 0);	break;
 						}
 						if (u && (u = mat->uniforms().insert({ name, u }).first->second))
 						{
-							type = 0;
-							std::strcpy(name, "New_Uniform\0");
-							ImGui::CloseCurrentPopup();
+							closePopup();
 						}
 					}
 					else
@@ -329,7 +425,7 @@ namespace ml
 				ImGui::SameLine();
 				if (ImGui::Button("Cancel"))
 				{
-					ImGui::CloseCurrentPopup();
+					closePopup();
 				}
 
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -371,21 +467,21 @@ namespace ml
 			{
 				if (ImGui::BeginMenu("New (WIP)"))
 				{
-					if (ImGui::MenuItem("Effect"	)) { /**/ }
-					if (ImGui::MenuItem("Entity"	)) { /**/ }
-					if (ImGui::MenuItem("Font"		)) { /**/ }
-					if (ImGui::MenuItem("Image"		)) { /**/ }
-					if (ImGui::MenuItem("Lua"		)) { /**/ }
-					if (ImGui::MenuItem("Material"	)) { /**/ }
-					if (ImGui::MenuItem("Mesh"		)) { /**/ }
-					if (ImGui::MenuItem("Model"		)) { /**/ }
-					if (ImGui::MenuItem("Plugin"	)) { /**/ }
-					if (ImGui::MenuItem("Script"	)) { /**/ }
-					if (ImGui::MenuItem("Shader"	)) { /**/ }
-					if (ImGui::MenuItem("Skybox"	)) { /**/ }
-					if (ImGui::MenuItem("Sound"		)) { /**/ }
-					if (ImGui::MenuItem("Sprite"	)) { /**/ }
-					if (ImGui::MenuItem("Texture"	)) { /**/ }
+					if (ImGui::MenuItem("Effect")) { /**/ }
+					if (ImGui::MenuItem("Entity")) { /**/ }
+					if (ImGui::MenuItem("Font")) { /**/ }
+					if (ImGui::MenuItem("Image")) { /**/ }
+					if (ImGui::MenuItem("Lua")) { /**/ }
+					if (ImGui::MenuItem("Material")) { /**/ }
+					if (ImGui::MenuItem("Mesh")) { /**/ }
+					if (ImGui::MenuItem("Model")) { /**/ }
+					if (ImGui::MenuItem("Plugin")) { /**/ }
+					if (ImGui::MenuItem("Script")) { /**/ }
+					if (ImGui::MenuItem("Shader")) { /**/ }
+					if (ImGui::MenuItem("Skybox")) { /**/ }
+					if (ImGui::MenuItem("Sound")) { /**/ }
+					if (ImGui::MenuItem("Sprite")) { /**/ }
+					if (ImGui::MenuItem("Texture")) { /**/ }
 					ImGui::EndMenu();
 				}
 				ImGui::EndMenuBar();
@@ -395,21 +491,21 @@ namespace ml
 
 			Layout::Columns([&]()
 			{
-				draw_effects	();
-				draw_entities	();
-				draw_fonts		();
-				draw_images		();
-				draw_lua		();
-				draw_meshes		();
-				draw_materials	();
-				draw_models		();
-				draw_plugins	();
-				draw_scripts	();
-				draw_shaders	();
-				draw_skyboxes	();
-				draw_sounds		();
-				draw_sprites	();
-				draw_textures	();
+				draw_effects();
+				draw_entities();
+				draw_fonts();
+				draw_images();
+				draw_lua();
+				draw_meshes();
+				draw_materials();
+				draw_models();
+				draw_plugins();
+				draw_scripts();
+				draw_shaders();
+				draw_skyboxes();
+				draw_sounds();
+				draw_sprites();
+				draw_textures();
 			});
 
 			/* * * * * * * * * * * * * * * * * * * * */
@@ -559,7 +655,7 @@ namespace ml
 								{
 									ImGui::DragFloat("##FOV##Camera", &camera->fov, 0.5f, 10.f, 100.f);
 								});
-								Layout::Group("Perspective", [&]() 
+								Layout::Group("Perspective", [&]()
 								{
 									Layout::Field("Near", [&](CString)
 									{
@@ -600,7 +696,7 @@ namespace ml
 						{
 							Layout::Group("Light", [&]()
 							{
-								Layout::Field("Color", [&](CString) 
+								Layout::Field("Color", [&](CString)
 								{
 									ImGui::ColorEdit4("##Color##Light", &light->color[0]);
 								});
@@ -631,7 +727,7 @@ namespace ml
 										}
 									}
 								});
-								
+
 								// States
 								//Layout::Group("States", [&]() {});
 								for (auto & pair : renderer->states())
@@ -903,6 +999,10 @@ namespace ml
 					// Uniforms
 					Layout::Group("Uniforms", [&]()
 					{
+						static bool show_constants = true;
+
+						ImGui::Checkbox("Show Constants", &show_constants);
+
 						Layout::NewUniform(mat);
 
 						if (!mat->uniforms().empty())
@@ -911,25 +1011,24 @@ namespace ml
 						}
 
 						std::vector<Material::UniformMap::iterator> toRemove;
-						
+
 						for (auto it = mat->uniforms().begin(); it != mat->uniforms().end(); it++)
 						{
-							int32_t flag = Layout::EditUniform(String("##" + String(name) + "##Uniform##" + it->first), it->second);
-							switch (flag)
+							const String label("##" + String(name) + "##Uniform##" + it->first);
+
+							const int32_t flag = Layout::EditUniform(label, it->second, show_constants);
+
+							if (flag == 1)
 							{
-							case 1:
 								toRemove.push_back(it);
-								break;
-							default:
-								break;
 							}
 						}
 
 						for (auto it : toRemove)
 						{
-							auto u = it->second;
+							uni_base * u = it->second;
 							mat->uniforms().erase(it);
-							ITrackable::operator delete(u);
+							delete u;
 						}
 
 					});
