@@ -239,8 +239,16 @@ namespace ml
 		pos += (vel * dt);
 		vel += (acc * dt);
 
-		
-		glm::quat q = ((glm::vec3)angularVel * (glm::quat)rotation);
+		vec4 rot = rotation;
+
+		vec3 cr = vec3::cross(angularVel, rot);
+		vec3 pr = angularVel * rot[3];
+		vec3 ad = cr + pr;
+		float dot = -(angularVel.dot(rot));
+		vec4 q = ad;
+		q[3] = dot;
+
+		//glm::quat q = ((glm::vec3)angularVel * (glm::quat)rotation);
 		q *= (dt / 2.0f);
 		rotation += (quat)q;
 		rotation.normalize();
@@ -256,8 +264,16 @@ namespace ml
 		pos += (vel * dt);
 
 		angularVel += angularAcc * dt;
+		vec4 rot = rotation;
 
-		glm::quat q = ((glm::vec3)angularVel * (glm::quat)rotation);
+		vec3 cr = vec3::cross(angularVel, rot);
+		vec3 pr = angularVel * rot[3];
+		vec3 ad = cr + pr;
+		float dot = -(angularVel.dot(rot));
+		vec4 q = ad;
+		q[3] = dot;
+
+		//glm::quat q = ((glm::vec3)angularVel * (glm::quat)rotation);
 		q *= (dt / 2.0f);
 		rotation += (quat)q;
 		rotation.normalize();
