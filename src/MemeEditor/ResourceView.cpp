@@ -600,6 +600,18 @@ namespace ml
 											.scale(1.0f)
 											;
 									}
+
+
+
+								});
+
+								Layout::Field("Euler Angles", [&](CString)
+								{
+									quat rot = transform->getRot();
+
+									vec3 euler = rot.eulerAngles();
+									GUI::EditVec3f("##EulerAngles##Transform", euler);
+
 								});
 
 								Layout::Field("Scale", [&](CString)
