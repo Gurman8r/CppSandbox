@@ -611,7 +611,6 @@ namespace DEMO
 				ml::Rigidbody * rb = ent->add<ml::Rigidbody>(ML_Physics.createNewRigidbody(
 					RB_EARTH, transform, collider, particle
 				));
-				particle->setInertiaTensor();
 
 				const ml::Material * material = ML_Res.materials.load_forward(
 					"mat_earth",

@@ -24,6 +24,7 @@ namespace ml
 		if (m_particle)
 		{
 			m_particle->index = index;
+			m_particle->setInertiaTensor();
 		}
 	}
 

@@ -33,7 +33,7 @@ namespace DEMO
 	{
 		static float deltaT, totalT;
 		totalT = ML_Time.elapsed().delta();
-		deltaT = ML_Engine.elapsed().delta<ml::Milliseconds, ml::Micro>();
+		deltaT = ML_Engine.elapsed().delta<ml::Milliseconds, ml::Milli>();
 
 		// Get the RB
 		ml::Rigidbody	* rb = ML_Physics.getLinkedRigidbody(i);
@@ -62,6 +62,15 @@ namespace DEMO
 				(*p).applyForce(ml::vec3::Zero);
 				pos = { pos[0], +ML_Time.cos(), pos[2] };
 				rot = ml::quat::angleAxis(totalT, ml::vec3::One);
+				//(*p).applyForceLocation(ml::vec3::Left, p->centerMass_world + ml::vec3{ 0.2f, 0.1f, 0.0f })
+				//	.integrateEulerExplicit(deltaT)
+				//	.convertTorque()
+				//	.updateCenterMass()
+				//	.updateInertiaTensor()
+				//	.resetTorque();
+				//
+				//rot = p->rotation;
+				//pos = p->pos;
 			}
 			break;
 
@@ -72,6 +81,7 @@ namespace DEMO
 				(*p).applyForce(ml::vec3::Zero);
 				pos = { pos[0], -ML_Time.sin(), pos[2] };
 				rot = ml::quat::angleAxis(totalT, ml::vec3::One);
+				
 			}
 			break;
 
@@ -99,11 +109,14 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 			case RB_EARTH:
 			{
-				(*p).applyForce(ml::Force::gravity(ml::vec3::Up, p->mass))
+				(*p).applyForceLocation(ml::vec3::Down * 4.0f, p->centerMass_world + ml::vec3{ 0.2f, 0.0f, -0.2f })
 					.integrateEulerExplicit(deltaT)
 					.convertForce()
+					.convertTorque()
 					.updateCenterMass()
 					.updateInertiaTensor()
+					.resetForce()
+					.resetTorque()
 					;
 				//rot = ml::quat::angleAxis(totalT, ml::vec3::Up);
 				rot = p->rotation;

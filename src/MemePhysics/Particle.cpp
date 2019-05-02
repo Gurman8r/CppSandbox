@@ -115,7 +115,6 @@ namespace ml
 
 	Particle & Particle::reset()
 	{
-		// TODO: insert return statement here
 		pos			= vec3::Zero;
 		vel			= vec3::Zero;
 		acc			= vec3::Zero;
@@ -137,44 +136,48 @@ namespace ml
 
 	bool Particle::isRotating()
 	{
-		// TODO: insert return statement here
 		return (angularVel.sqrMagnitude() != 0.0f);
 	}
 
 	Particle & Particle::applyForceLocation(const vec3 & force, const vec3 worldLoc)
 	{
-		// TODO: insert return statement here
-		torque += vec3::cross((worldLoc - centerMass_world), force);
+		vec3 arm = worldLoc - centerMass_world;
+		vec3 directComp = glm::proj((glm::vec3)force, (glm::vec3)arm);
+		this->force += directComp;
+		torque += vec3::cross((arm), force);
+		//Debug::log("Direct: {0}\t Force: {1}", directComp, force);
+
+		cout 
+			<< "Arm: " << arm << endl
+			<< "Direct: " << directComp << endl;
+
 		return (*this);
 
+		/*
+		forceAtLocation;
+		arm = location - centermass;
+		direct = project forceAtLocation onto Arm;
+		rotational = forceAtLocation - direct;
+		
+		*/
 	}
 
 	Particle & Particle::convertTorque()
 	{
-		// TODO: insert return statement here
-		//Melody: how do you multiply a matrix and a vector?
-
-		//angularAcc = 
 		angularAcc = (glm::mat3)(inertiaTensorInv_world) * (glm::vec3)(torque);
 		return (*this);
 	}
 
 	Particle & Particle::resetTorque()
 	{
-		// TODO: insert return statement here
 		torque = 0.0f;
-
 		return (*this);
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	//Melody: (and me) these need to be updated to include rotational
-
 	Particle & Particle::setInertiaTensor()
 	{
-		// TODO: insert return statement here
-
 		if (const Rigidbody * rb = ML_Physics.getLinkedRigidbody(index))
 		{
 			glm::mat3 temp = glm::mat3();
@@ -218,7 +221,6 @@ namespace ml
 	vec3 Particle::rotateForce(Particle * p, vec3 force)
 	{
 		vec3 wv = force * p->rotation[3];
-		//Melody: (and me) check this once I'm sure how cross works
 		vec3 cross1 = vec3::cross(p->rotation, force);
 		vec3 r2 = p->rotation.complex() * 2.0f;
 		vec3 sum = cross1 + wv;
