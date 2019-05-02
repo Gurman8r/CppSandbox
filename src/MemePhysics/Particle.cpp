@@ -142,9 +142,10 @@ namespace ml
 	Particle & Particle::applyForceLocation(const vec3 & force, const vec3 worldLoc)
 	{
 		vec3 arm = worldLoc - centerMass_world;
-		vec3 directComp = glm::proj((glm::vec3)force, (glm::vec3)arm);
-		this->force += directComp;
-
+		//according to this article:
+		//https://gafferongames.com/post/physics_in_3d/
+		// the force in its entirety is applied to torque and linear force
+		this->force += force;
 		torque += vec3::cross((arm), force);
 		//Debug::log("Direct: {0}\t Force: {1}", directComp, force);
 
