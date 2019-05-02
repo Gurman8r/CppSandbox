@@ -109,7 +109,7 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 			case RB_EARTH:
 			{
-				(*p).applyForceLocation(ml::vec3::Down * 4.0f, p->centerMass_world + ml::vec3{ 0.2f, 0.0f, -0.2f })
+				(*p).applyForceLocation(ml::vec3::Down, p->centerMass_world + ml::vec3::Right * 1.5f)
 					.integrateEulerExplicit(deltaT)
 					.convertForce()
 					.convertTorque()

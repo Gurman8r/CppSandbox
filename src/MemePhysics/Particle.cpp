@@ -144,12 +144,13 @@ namespace ml
 		vec3 arm = worldLoc - centerMass_world;
 		vec3 directComp = glm::proj((glm::vec3)force, (glm::vec3)arm);
 		this->force += directComp;
+
 		torque += vec3::cross((arm), force);
 		//Debug::log("Direct: {0}\t Force: {1}", directComp, force);
 
-		cout 
-			<< "Arm: " << arm << endl
-			<< "Direct: " << directComp << endl;
+		//cout 
+		//	<< "Arm: " << arm << endl
+		//	<< "Direct: " << directComp << endl;
 
 		return (*this);
 
@@ -176,10 +177,13 @@ namespace ml
 
 	/* * * * * * * * * * * * * * * * * * * * */
 
-	Particle & Particle::setInertiaTensor()
+	Particle & Particle::setInertiaTensor(const Rigidbody * rb)
 	{
-		if (const Rigidbody * rb = ML_Physics.getLinkedRigidbody(index))
+		//if (const Rigidbody * rb = ML_Physics.getLinkedRigidbody(index))
+		if (rb)
 		{
+			this->index = rb->index();
+
 			glm::mat3 temp = glm::mat3();
 			switch (rb->collider()->getHullType())
 			{

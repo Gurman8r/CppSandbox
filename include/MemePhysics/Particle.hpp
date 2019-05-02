@@ -7,6 +7,10 @@ namespace ml
 {
 	/* * * * * * * * * * * * * * * * * * * * */
 
+	class Rigidbody;
+
+	/* * * * * * * * * * * * * * * * * * * * */
+
 	struct ML_PHYSICS_API Particle final
 		: public ITrackable
 	{
@@ -59,7 +63,7 @@ namespace ml
 		//inertia Tensor Stuff
 		//put stuff here. Ask melody how she wants to do it.
 		//dans are column major, melodys are row. swap em. Or, make them as glm matrices then convert: probably better.
-		Particle & setInertiaTensor();
+		Particle & setInertiaTensor(const Rigidbody * rb);
 		/* * * * * * * * * * * * * * * * * * * * */
 		static vec3 rotateForce(Particle *p, vec3 force);
 
