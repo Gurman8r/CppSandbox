@@ -787,6 +787,8 @@ namespace ml
 											rb->particle()->reset();
 										}
 									});
+									Layout::Field("Mass",					[&](CString) {	ImGui::DragFloat("##Mass##Particle##Rigidbody",							&rb->particle()->mass);});
+									Layout::Field("Mass Inv",				[&](CString) {	ImGui::DragFloat("##MassInv##Particle##Rigidbody",						&rb->particle()->massInv);});
 									Layout::Field("Position",				[&](CString) {	GUI::EditVec3f("##Position##Particle##Rigidbody",						rb->particle()->pos);});
 									Layout::Field("Velocity",				[&](CString) {	GUI::EditVec3f("##Velocity##Particle##Rigidbody",						rb->particle()->vel);});
 									Layout::Field("Acceleration",			[&](CString) {	GUI::EditVec3f("##Acceleration##Particle##Rigidbody",					rb->particle()->acc);});
