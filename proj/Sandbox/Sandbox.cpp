@@ -603,6 +603,7 @@ namespace DEMO
 				ml::SphereCollider * collider = ent->add<ml::SphereCollider>(
 					transform->getScl()[0] // radius
 				);
+				collider->center_world = transform->getPos();
 
 				ml::Particle * particle = ent->add<ml::Particle>(
 					transform->getPos(), // position
@@ -655,6 +656,7 @@ namespace DEMO
 				ml::BoxCollider * collider = ent->add<ml::BoxCollider>(
 					transform->getScl() // size
 				);
+				collider->center_world = transform->getPos();
 
 				ml::Particle * particle = ent->add<ml::Particle>(
 					transform->getPos(), // position

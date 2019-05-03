@@ -20,11 +20,9 @@ namespace ml
 		bool checkCollision(const Collider & other) const override;
 
 	public:
-		inline const vec3 & size() const	{ return m_size; }
-		inline vec3 &		size()			{ return m_size; }
+		vec3 size;
+		vec3 center_world;
 
-	private:
-		vec3 m_size;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

@@ -10,6 +10,8 @@
 #include <MemePhysics/Collider.hpp>
 #include <MemePhysics/Particle.hpp>
 #include <MemePhysics/Rigidbody.hpp>
+#include <MemePhysics/SphereCollider.hpp>
+#include <MemePhysics/BoxCollider.hpp>
 
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -31,9 +33,12 @@ namespace DEMO
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 	void demo_physics::update(const int32_t i, ml::PhysicsState & state)
 	{
+		static ml::SphereCollider * c_earth;
+		static ml::BoxCollider * c_ground;
+
 		static float deltaT, totalT;
 		totalT = ML_Time.elapsed().delta();
-		deltaT = ML_Engine.elapsed().delta<ml::Milliseconds, ml::Milli>();
+		deltaT = ML_Engine.elapsed().delta<ml::Milliseconds, ml::Ratio<1, 10000>>();
 
 		// Get the RB
 		ml::Rigidbody	* rb = ML_Physics.getLinkedRigidbody(i);
@@ -109,8 +114,40 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 			case RB_EARTH:
 			{
-				(*p).applyForceLocation(ml::vec3::Left * 0.003f, p->centerMass_world + ml::vec3::Right)
-					.integrateEulerSemiImplicit(deltaT)
+				c_earth = !c_earth ? (dynamic_cast<ml::SphereCollider *>(c)) : c_earth;
+
+				//(*p).applyForceLocation(ml::vec3::Left * 0.003f, p->centerMass_world + ml::vec3::Right)
+				//	.integrateEulerSemiImplicit(deltaT)
+				//	.convertForce()
+				//	.convertTorque()
+				//	.updateCenterMass()
+				//	.updateInertiaTensor()
+				//	.resetForce()
+				//	.resetTorque()
+				//	;
+
+				(*p).applyForce(ml::Force::gravity(ml::vec3::Up, p->mass))
+					.applyForceLocation(ml::vec3::Left, p->centerMass_world + ml::vec3(0.0f, 1.0f, 0.0f));
+				
+				if (c_earth && c_ground)
+				{
+					if (c_earth->checkCollision(*c_ground))
+					{
+						
+						p->pos += c_earth->collPush;
+						p->vel -= c_earth->collNorm * p->vel.dot(c_earth->collDelta);
+						(*p).applyForce(ml::Force::normal(p->force, ml::vec3::Up));
+						//friction
+						ml::vec3 fric = ml::Force::frictionStatic(ml::vec3::Up, ml::vec3::Left, 0.48f);
+						if (p->isMoving())
+						{
+							(*p).applyForceLocation(fric, c_earth->contactPoint);
+						}
+						
+					}
+				}
+
+				(*p).integrateEulerSemiImplicit(deltaT)
 					.convertForce()
 					.convertTorque()
 					.updateCenterMass()
@@ -118,9 +155,15 @@ namespace DEMO
 					.resetForce()
 					.resetTorque()
 					;
+
 				//rot = ml::quat::angleAxis(totalT, ml::vec3::Up);
 				rot = p->rotation;
 				pos = p->pos;
+
+				if (auto sphere = dynamic_cast<ml::SphereCollider *>(c))
+				{
+					sphere->center_world = pos;
+				}
 			}
 			break;
 
@@ -128,7 +171,8 @@ namespace DEMO
 			/* * * * * * * * * * * * * * * * * * * * */
 			case RB_GROUND:
 			{
-
+				c_ground = !c_ground ? (dynamic_cast<ml::BoxCollider *>(c)) : c_ground;
+				pos = p->pos;
 			}
 			break;
 			}

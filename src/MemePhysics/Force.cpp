@@ -20,7 +20,7 @@ namespace ml
 		return (grav + norm);
 	}
 
-	const vec3 Force::frictionStatic(const vec3 & norm, const vec3 & vel, const vec3 & opp, const vec3 & coeff)
+	const vec3 Force::frictionStatic(const vec3 & norm, const vec3 & opp, const vec3 & coeff)
 	{
 		const vec3 max = (norm * coeff);
 		

@@ -191,9 +191,9 @@ namespace ml
 			case Collider::T_Box:
 				if (auto c = dynamic_cast<const BoxCollider *>(rb->collider()))
 				{
-					float w = c->size()[0];
-					float h = c->size()[1];
-					float d = c->size()[2];
+					float w = c->size[0];
+					float h = c->size[1];
+					float d = c->size[2];
 
 					float coeff = mass * 5.0f / 3.0f;
 					temp[0][0] *= coeff * ((h*h) + (d * d));
@@ -207,7 +207,7 @@ namespace ml
 			case Collider::T_Sphere:
 				if (auto c = dynamic_cast<const SphereCollider *>(rb->collider()))
 				{
-					float r = c->radius();
+					float r = c->radius;
 
 					float coeff = mass * r * r * 2.0f / 3.0f;
 					temp *= coeff;

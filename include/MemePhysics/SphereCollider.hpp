@@ -20,11 +20,10 @@ namespace ml
 		bool checkCollision(const Collider & other) const override;
 
 	public:
-		inline const float	radius() const	{ return m_radius; }
-		inline float &		radius()		{ return m_radius; }
-
-	private:
-		float m_radius;
+		float radius;
+		vec3 center_world;
+		mutable bool collideFlag = false;
+		mutable vec3 contactPoint, collPush, collNorm, collDelta;
 	};
 
 	/* * * * * * * * * * * * * * * * * * * * */

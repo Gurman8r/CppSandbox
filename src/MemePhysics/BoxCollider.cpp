@@ -7,19 +7,19 @@ namespace ml
 
 	BoxCollider::BoxCollider()
 		: Collider(Collider::T_Box)
-		, m_size(0.0f)
+		, size(0.0f)
 	{
 	}
 
 	BoxCollider::BoxCollider(const vec3 & size)
 		: Collider(Collider::T_Box)
-		, m_size(size)
+		, size(size)
 	{
 	}
 
 	BoxCollider::BoxCollider(const BoxCollider & copy)
 		: Collider(Collider::T_Box)
-		, m_size(copy.m_size)
+		, size(copy.size)
 	{
 	}
 
